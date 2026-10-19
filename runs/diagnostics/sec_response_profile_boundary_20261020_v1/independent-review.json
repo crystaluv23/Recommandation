@@ -1,0 +1,60 @@
+{
+  "schema_version": "independent-sec-response-profile-boundary-review-v1",
+  "conclusion": "No remaining blocker observed in bounded synthetic receipt/source-link/reconstruction/readonly controls after the exhibit-index-code fix.",
+  "source_read_before_and_after_sha256": "4be88aef933eade926ce7268a87b408451392645ef01e595dd2be24ff6362cf5",
+  "original_reader_sha256": "ba8d5cab19c468a222eac6d9a1883587d666f551f23ea5cb4c60a87c9eafd02b",
+  "artifact_bindings": {
+    "original-reader.py.txt": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/sec_response_profile_boundary_20261020_v1/original-reader.py.txt",
+      "sha256": "ba8d5cab19c468a222eac6d9a1883587d666f551f23ea5cb4c60a87c9eafd02b"
+    },
+    "probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/sec_response_profile_boundary_20261020_v1/probe.py",
+      "sha256": "e89c5f500372bdec71de6f09aafff27d9a5ea5b17fa5d5eee86d0e921f5a088a"
+    },
+    "initial-results.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/sec_response_profile_boundary_20261020_v1/initial-results.json",
+      "sha256": "0bed67cc89baed7c41364e39a2b53c7cb4daf3c5d2537ff141bf9cac63e70c5e"
+    },
+    "current-results.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/sec_response_profile_boundary_20261020_v1/current-results.json",
+      "sha256": "2f3dbcefd39a7ee143f0ebf29225f383327adfd92f469c4d366b2c14c8a2789f"
+    },
+    "final-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/sec_response_profile_boundary_20261020_v1/final-probe.py",
+      "sha256": "d7a2f3006dc788666fdc091c9935a6bf1de7f84f02706d87a2d42f515413d246"
+    },
+    "final-results.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/sec_response_profile_boundary_20261020_v1/final-results.json",
+      "sha256": "b49440c49a91606c9992d9b92e529f86440f606245be88956c4d11417e229bab"
+    }
+  },
+  "fixed_original_failure": {
+    "payload": "<tr><td>99.1</td><td><a href=\"aif.htm\">Annual information; see Exhibit99.2 for financials</a></td></tr>",
+    "claim": "99.2",
+    "old": "Materialize/restart/worker accepted by treating a description cross-reference as the target exhibit index code.",
+    "new": "ReviewedSourceRejected. Correct99.1 still accepted; ambiguous multi-link/multi-code claims reject, while literal-linked unknown type=null remains accepted."
+  },
+  "executed_counts": {
+    "initial_negative_controls": 18,
+    "initial_rejections": 17,
+    "initial_false_admits": 1,
+    "initial_positive_controls": 4,
+    "final_same18_negative_controls_rejected": 18,
+    "final_same4_positive_controls_passed": 4,
+    "additional_final_targeted_controls_passed": 10
+  },
+  "evidence_scope": [
+    "Independent fixture builder and temporary oracle, independent managed submissions anchors and retained HTTP receipt/raw carriers; no implementation test fixture reused.",
+    "Method/path/SHA/byte count/duplicate name or endpoint/response URL/time/root issuer/archive link/parallel array/duplicate target/parent form/role/backdate/code mutations rehashed before the actual native materializer.",
+    "Actual raw body changed with rehashed receipt still rejected against original complete content; gzip with mixed-case Content-Encoding accepted; raw drift rejected on refresh and worker reconstruction, not cached across calls.",
+    "Primary root/recent, root-linked managed carriers, root+archive HTTP response carriers and explicit exhibit paths retained exact worker records."
+  ],
+  "limits": [
+    "No network/model/Signalapply/LabelStore/fullprepare/realcase/globaloracle writes. No source or spec/test edits by this review.",
+    "This checks mechanical local receipt/source identity, exact retained bytes, link/code and native time equality. It is not SEC signature authenticity, APIvintage, primary narrative sufficiency or clock-economic-truth proof. A wholly self-consistent forged entire source graph is outside local reader authentication.",
+    "MS annual API02:25:14Z versus header/authoritative-clock evidence remains unresolved. Mechanical profile equality must not convert that source into a resolved acceptance truth or admit it into the new operating input; retain its separate unknown/exclusion disposition.",
+    "KGC incorporated links/numbering do not establish AIF/MD&A/financial content sufficiency. Untaken or unreviewed bodies remain unknown.",
+    "No wholeF2/readiness/MVP or research benefit closure."
+  ]
+}

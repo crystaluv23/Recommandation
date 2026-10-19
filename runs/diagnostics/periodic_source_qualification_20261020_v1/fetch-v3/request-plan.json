@@ -1,0 +1,158 @@
+{
+  "schema_version": "bounded-kgc-literal-operating-exhibits-plan-v1",
+  "created_at": "2026-10-19T22:07:42.914386+00:00",
+  "scope": "Only two literal same-issuer/same-parent-accession KGC AIF and MD&A bodies. Existing40-F wrapper remains incomplete; no audited-FS99.3 fetch or completeness claim. No normalization, append, admission or readiness.",
+  "max_GET_attempts": 2,
+  "automatic_retries": 0,
+  "redirects_allowed": false,
+  "stop_same_host_on_http_status": [
+    403,
+    429
+  ],
+  "stop_entire_batch_on_transport_error": true,
+  "minimum_seconds_between_GET_attempts": 1.0,
+  "request_headers": {
+    "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+    "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+    "Accept-Encoding": "identity"
+  },
+  "headers_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+    "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e"
+  },
+  "headers_source_request_name": "kgc-fy2024-40f-primary",
+  "transport_helpers": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/collector.py",
+    "sha256": "2b52e84e67c4d743f1857a1c54349086012627cb188393215fb6f6d40e33c194"
+  },
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/primary-content-review.json",
+      "sha256": "0eda73af9ac47e2cdc88a115e506b1460fd603606b60af6918ca410068fdc853"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/kgc-fy2024-40f-primary.response.raw",
+      "sha256": "014548bf51ae4915583b200660f77068f180444ff5d412107282840351847d97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+      "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/request-plan.json",
+      "sha256": "11800c79f50246305e2b91bd44cb90bafe1c068950170d5db0130c8b5ed3acde"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/collector.py",
+      "sha256": "2b52e84e67c4d743f1857a1c54349086012627cb188393215fb6f6d40e33c194"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/request-plan.json",
+      "sha256": "9c5354f0f2455ad45caf43f9c8079e345e3897a09deeccdb59b90e4ecb78d4a2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/collector.py",
+      "sha256": "7145f8bd399868a16ca486f2714467868291c5c2bf6ddfa40ddf029ffbad750b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/results.json",
+      "sha256": "696e0121d387fc0e12b2f7df13a78655294404297b9e81f909da79f79c820147"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/ms-fy2024-10k-primary.response.raw",
+      "sha256": "03d6f7bb67a718c245fb468eb7364074d658a7860d8fb32f5b5f8b222b3a2f12"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/ms-fy2024-submission-header.response-prefix.raw",
+      "sha256": "45e8e094c5333d04f42616e5f3062cfb0319cd6a19d145f429c8ff7c7244daf8"
+    }
+  ],
+  "primary_content_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/primary-content-review.json",
+    "sha256": "0eda73af9ac47e2cdc88a115e506b1460fd603606b60af6918ca410068fdc853"
+  },
+  "parent_primary": {
+    "raw_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/kgc-fy2024-40f-primary.response.raw",
+      "sha256": "014548bf51ae4915583b200660f77068f180444ff5d412107282840351847d97"
+    },
+    "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231x40f.htm",
+    "form": "40-F",
+    "accession_number": "0001104659-25-028819",
+    "retained_parent_acceptance": "2025-03-27T20:55:21.000Z",
+    "source_receipt": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+      "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e"
+    }
+  },
+  "required_prior_execution": {
+    "plan": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/request-plan.json",
+      "sha256": "9c5354f0f2455ad45caf43f9c8079e345e3897a09deeccdb59b90e4ecb78d4a2"
+    },
+    "collector": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/collector.py",
+      "sha256": "7145f8bd399868a16ca486f2714467868291c5c2bf6ddfa40ddf029ffbad750b"
+    },
+    "results_path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/results.json",
+    "results_artifact": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/results.json",
+      "sha256": "696e0121d387fc0e12b2f7df13a78655294404297b9e81f909da79f79c820147"
+    },
+    "condition": "Completed exact fetch-v2; no403/429/samehoststop/transporterror. Prior receipts/raw identities and hashes must remain exact. Missing, partial or stopped v2 blocks every v3 GET."
+  },
+  "requests": [
+    {
+      "name": "kgc-fy2024-99_1-annual_information_form",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231xex99d1.htm",
+      "kind": "incorporated_exhibit_candidate",
+      "exhibit_type": "99.1",
+      "candidate_scope": "annual_information_form",
+      "parent_form": "40-F",
+      "parent_accession_number": "0001104659-25-028819",
+      "literal_parent_anchor": {
+        "start": 369972,
+        "end_exclusive": 370391,
+        "href_raw": "kgc-20241231xex99d1.htm",
+        "raw_literal": "<a style=\"-sec-extract:exhibit;font-family:&quot;'Times New Roman','Times','serif'&quot;;\" href=\"kgc-20241231xex99d1.htm\"><span style=\"font-family:'Times New Roman','Times','serif';font-style:normal;font-weight:normal;\">Annual Information Form&#160;for Kinross Gold Corporation dated March&#160;27</span><span style=\"font-family:'Times New Roman','Times','serif';font-style:normal;font-weight:normal;\">, 2025</span></a>",
+        "anchor_text_reviewed": "Annual Information Form for Kinross Gold Corporation dated March 27 , 2025"
+      },
+      "availability_basis": "No earlier than the exact parent accession source acceptance, pending formal source qualification. February12 references do not backdate these bytes."
+    },
+    {
+      "name": "kgc-fy2024-99_2-annual_management_discussion",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231xex99d2.htm",
+      "kind": "incorporated_exhibit_candidate",
+      "exhibit_type": "99.2",
+      "candidate_scope": "annual_management_discussion",
+      "parent_form": "40-F",
+      "parent_accession_number": "0001104659-25-028819",
+      "literal_parent_anchor": {
+        "start": 371633,
+        "end_exclusive": 371983,
+        "href_raw": "kgc-20241231xex99d2.htm",
+        "raw_literal": "<a style=\"-sec-extract:exhibit;font-family:&quot;'Times New Roman','Times','serif'&quot;;\" href=\"kgc-20241231xex99d2.htm\"><span style=\"font-family:'Times New Roman','Times','serif';font-style:normal;font-weight:normal;\">Kinross Gold Corporation Management&#8217;s Discussion and Analysis as filed on Form&#160;6-K on February&#160;12, 2025</span></a>",
+        "anchor_text_reviewed": "Kinross Gold Corporation Management’s Discussion and Analysis as filed on Form 6-K on February 12, 2025"
+      },
+      "availability_basis": "No earlier than the exact parent accession source acceptance, pending formal source qualification. February12 references do not backdate these bytes."
+    }
+  ],
+  "unfetched_and_unreviewed": [
+    "Exhibit99.3 audited financial statements/notes are not requested or proved complete."
+  ],
+  "semantic_limits": [
+    "Reference to a February12 filing does not prove earlier availability of these exact March27-accession bytes.",
+    "Keep parent Form40-F and incorporated-exhibit identity distinct; do not relabel a cover or exhibit as a standalone periodic primary.",
+    "SuccessfulHTTP/bodyform alone is not operating admission; actual body/object/period/unit and limitations remain for later review.",
+    "New plan cannot bypass v2 same-host403/429 or transport stop. No retries/new root after failure."
+  ],
+  "external_llm_calls": 0,
+  "models": 0,
+  "signal_apply": false,
+  "LabelStore_access": false,
+  "full_prepare": false,
+  "global_oracle_writes": 0,
+  "execution_status": "planned_not_executed"
+}

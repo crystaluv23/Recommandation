@@ -4,7 +4,9 @@ from __future__ import annotations
 import hashlib
 import json
 import math
-from urllib.parse import quote
+import re
+from urllib.parse import quote, urljoin
+from html.parser import HTMLParser
 from datetime import date, datetime, time, timedelta, timezone
 from functools import wraps
 from pathlib import Path
@@ -16,7 +18,7 @@ from stock_opportunity_agent.data.sec_company_facts import (
     STANDARD_FORMS, STANDARD_TAXONOMIES, materialize_company_fact_documents,
     validate_company_facts_response,
 )
-from stock_opportunity_agent.data.sources.core import DataSourceError
+from stock_opportunity_agent.data.sources.core import DataSourceError, decode_response_text
 from stock_opportunity_agent.models import ValidationError
 
 
@@ -39,7 +41,7 @@ def _source_boundary(function):
 
 
 @_source_boundary
-def _read_bound(binding: Mapping[str, Any]) -> tuple[bytes, Any]:
+def _read_bound_bytes(binding: Mapping[str, Any]) -> bytes:
     path = Path(str(binding["path"]))
     try:
         raw = path.read_bytes()
@@ -47,6 +49,12 @@ def _read_bound(binding: Mapping[str, Any]) -> tuple[bytes, Any]:
         raise ReviewedSourceRejected(f"reviewed source artifact missing: {path}") from exc
     if hashlib.sha256(raw).hexdigest() != binding["sha256"]:
         raise ReviewedSourceRejected(f"reviewed source artifact changed: {path}")
+    return raw
+
+
+@_source_boundary
+def _read_bound(binding: Mapping[str, Any]) -> tuple[bytes, Any]:
+    raw = _read_bound_bytes(binding)
     return raw, json.loads(raw)
 
 
@@ -97,6 +105,227 @@ def _verify_sec_document(document, row, proofs, cutoff):
             or document.available_at != accepted or document.published_at != accepted
             or accepted > cutoff):
         raise ReviewedSourceRejected("SEC availability/filing proof differs from original or scope")
+
+
+def _sec_response_text(proof, receipt, endpoint, raw_memo):
+    """Read an exact successful retained SEC GET without repackaging its bytes."""
+    requests = receipt["requests"]
+    if (not isinstance(requests, list) or any(not isinstance(item, Mapping) for item in requests)
+            or any(type(receipt.get(key)) is not int or receipt[key] != 0
+                   for key in ("automatic_retries", "redirects_followed"))):
+        raise ReviewedSourceRejected("SEC receipt retry/redirect/request shape differs")
+    matches = [item for item in requests if item.get("name") == proof["entry_name"]]
+    if len(matches) != 1 or sum(item.get("url") == endpoint for item in requests) != 1:
+        raise ReviewedSourceRejected("SEC receipt request identity is ambiguous")
+    request = matches[0]
+    if (proof["endpoint"] != endpoint or request.get("method") != "GET" or request.get("url") != endpoint
+            or request.get("response_url") != endpoint or request.get("status") != "http_response_retained"
+            or type(request.get("http_status")) is not int or request["http_status"] != 200
+            or _instant(request["started_at_utc"]) > _instant(request["retrieved_at_utc"])):
+        raise ReviewedSourceRejected("SEC retained response request/status/clock differs")
+    raw_binding = proof["raw_response"]
+    raw_path = Path(request["raw_response"])
+    if not raw_path.is_absolute():
+        raw_path = Path(proof["artifact"]["path"]).resolve().parent / raw_path
+    if (raw_path.resolve() != Path(raw_binding["path"]).resolve()
+            or request["raw_sha256"] != raw_binding["sha256"]):
+        raise ReviewedSourceRejected("SEC receipt raw response binding differs")
+    key = (str(raw_path.resolve()), raw_binding["sha256"])
+    if key not in raw_memo:
+        raw_memo[key] = _read_bound_bytes(raw_binding)
+    raw = raw_memo[key]
+    if type(request.get("bytes")) is not int or request["bytes"] != len(raw):
+        raise ReviewedSourceRejected("SEC receipt raw response byte count differs")
+    headers = request["response_headers"]
+    if not isinstance(headers, Mapping):
+        raise ReviewedSourceRejected("SEC receipt response headers are malformed")
+    encodings = [value for name, value in headers.items() if name.casefold() == "content-encoding"]
+    if len(encodings) > 1 or (encodings and not isinstance(encodings[0], str)):
+        raise ReviewedSourceRejected("SEC response content encoding is ambiguous")
+    try:
+        return decode_response_text(raw, encodings[0] if encodings else None)
+    except EOFError as exc:
+        raise ReviewedSourceRejected("SEC compressed response is truncated") from exc
+
+
+def _sec_json_payload(proof, artifact, endpoint, payload_memo, raw_memo):
+    """Decode one explicit managed or HTTP-response submissions carrier."""
+    key = (canonical_json_hash(proof), endpoint)
+    if key not in payload_memo:
+        if proof["kind"].endswith("_response"):
+            payload = json.loads(_sec_response_text(proof, artifact, endpoint, raw_memo))
+        else:
+            if (artifact.get("endpoint") != endpoint or artifact.get("source_key") != "sec_edgar"
+                    or artifact.get("capability") != "filing_documents" or artifact.get("payload_kind") != "json"
+                    or artifact.get("params") != [["method", "GET"]]):
+                raise ReviewedSourceRejected("SEC managed submissions request differs")
+            _instant(artifact["retrieved_at"])
+            payload = artifact["body"]
+        if not isinstance(payload, Mapping):
+            raise ReviewedSourceRejected("SEC submissions payload must be an object")
+        payload_memo[key] = payload
+    return payload_memo[key]
+
+
+def _sec_source_cik(value):
+    if type(value) is int and 0 < value < 10**10:
+        return str(value).zfill(10)
+    if isinstance(value, str) and re.fullmatch(r"[0-9]{1,10}", value.strip()) and int(value.strip()) > 0:
+        return value.strip().zfill(10)
+    raise ReviewedSourceRejected("SEC submissions CIK is malformed")
+
+
+class _SecExhibitLinks(HTMLParser):
+    """Retain literal anchor links and their enclosing exhibit-index row text."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.links, self.rows, self.stack = [], [], []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "tr":
+            self.stack.append({"cells": [], "links": [], "cell": None})
+        if tag in {"td", "th"} and self.stack:
+            cell = {"text": []}
+            self.stack[-1]["cells"].append(cell)
+            self.stack[-1]["cell"] = cell
+        if tag == "a":
+            for name, value in attrs:
+                if name == "href" and isinstance(value, str):
+                    self.links.append(value)
+                    if self.stack:
+                        self.stack[-1]["links"].append(value)
+
+    def handle_data(self, data):
+        if self.stack and self.stack[-1]["cell"] is not None:
+            self.stack[-1]["cell"]["text"].append(data)
+
+    def handle_endtag(self, tag):
+        if tag == "tr" and self.stack:
+            self.rows.append(self.stack.pop())
+        elif tag in {"td", "th"} and self.stack:
+            self.stack[-1]["cell"] = None
+
+
+def _proved_sec_exhibit_code(parser, parent_endpoint, target_endpoint, claimed):
+    """Require an unambiguous index-number cell, never descriptive cross-references."""
+    proved = set()
+    for row in parser.rows:
+        links = {urljoin(parent_endpoint, link) for link in row["links"]}
+        if target_endpoint not in links:
+            continue
+        cells = [" ".join("".join(cell["text"]).split()) for cell in row["cells"]]
+        nonempty = [text for text in cells if text]
+        codes = [re.fullmatch(r"(?:Exhibit\s+)?([0-9]+(?:\.[0-9]+)?)", text, re.IGNORECASE) for text in nonempty]
+        if not codes or codes[0] is None:
+            continue
+        if len(links) != 1 or sum(match is not None for match in codes) != 1:
+            return False
+        proved.add(codes[0].group(1))
+    return proved == {claimed}
+
+
+def _verify_sec_response_document(document, row, proofs, cutoff, payload_memo, raw_memo, *, exhibit=False):
+    """Verify an explicit root/recent or truly root-linked SEC response chain."""
+    roots = set(proofs) & {"sec_submissions_root", "sec_submissions_root_response"}
+    archives = set(proofs) & {"sec_submissions_linked_archive", "sec_submissions_linked_archive_response"}
+    body_kinds = {"sec_static_archive_body_response"}
+    if exhibit:
+        body_kinds.add("sec_parent_primary_response")
+    if (len(roots) != 1 or len(archives) > 1 or set(proofs) != body_kinds | roots | archives):
+        raise ReviewedSourceRejected("SEC response profile proof kinds differ")
+    root_proof, root_artifact = proofs[next(iter(roots))]
+    cik = _sec_source_cik(root_proof["issuer_cik"])
+    if root_proof["issuer_cik"] != cik:
+        raise ReviewedSourceRejected("SEC proof issuer must be canonical")
+    root_endpoint = "https://data.sec.gov/submissions/CIK" + cik + ".json"
+    source = _sec_json_payload(root_proof, root_artifact, root_endpoint, payload_memo, raw_memo)
+    if _sec_source_cik(source.get("cik")) != cik:
+        raise ReviewedSourceRejected("SEC root issuer differs")
+    linked = None
+    if archives:
+        archive_proof, artifact = proofs[next(iter(archives))]
+        filename = archive_proof["filename"]
+        if not isinstance(filename, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*\.json", filename):
+            raise ReviewedSourceRejected("SEC linked archive filename is unsafe")
+        files = source["filings"]["files"]
+        if not isinstance(files, list) or any(not isinstance(item, Mapping) for item in files):
+            raise ReviewedSourceRejected("SEC root history links are malformed")
+        links = [item for item in files if item.get("name") == filename]
+        if len(links) != 1:
+            raise ReviewedSourceRejected("SEC archive requires a unique root link")
+        linked = links[0]
+        arrays = _sec_json_payload(archive_proof, artifact,
+            "https://data.sec.gov/submissions/" + filename, payload_memo, raw_memo)
+    else:
+        arrays = source["filings"]["recent"]
+    required = ("accessionNumber", "filingDate", "form", "primaryDocument", "acceptanceDateTime")
+    if not isinstance(arrays, Mapping) or any(not isinstance(arrays.get(key), list) for key in required):
+        raise ReviewedSourceRejected("SEC target filing arrays are malformed")
+    count = len(arrays["accessionNumber"])
+    if any(not isinstance(values, list) or len(values) != count for values in arrays.values()):
+        raise ReviewedSourceRejected("SEC parallel filing arrays have inconsistent lengths")
+    accession = root_proof["accession_number"]
+    if not isinstance(accession, str) or not re.fullmatch(r"[0-9]{10}-[0-9]{2}-[0-9]{6}", accession):
+        raise ReviewedSourceRejected("SEC target accession is malformed")
+    matches = [i for i, value in enumerate(arrays["accessionNumber"]) if value == accession]
+    if len(matches) != 1:
+        raise ReviewedSourceRejected("SEC exact target is missing or ambiguous")
+    index = matches[0]
+    if any(not isinstance(arrays[key][index], str) or not arrays[key][index] for key in required):
+        raise ReviewedSourceRejected("SEC target filing fields are malformed")
+    filed = date.fromisoformat(arrays["filingDate"][index])
+    primary, form = arrays["primaryDocument"][index], arrays["form"][index]
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", primary):
+        raise ReviewedSourceRejected("SEC primary document filename is unsafe")
+    if linked is not None:
+        lower, upper = date.fromisoformat(linked["filingFrom"]), date.fromisoformat(linked["filingTo"])
+        if (type(linked.get("filingCount")) is not int or linked["filingCount"] != count
+                or not lower <= filed <= upper):
+            raise ReviewedSourceRejected("SEC linked count or target date window differs")
+    accepted = _instant(arrays["acceptanceDateTime"][index]).astimezone(timezone.utc)
+    endpoint = "https://www.sec.gov/Archives/edgar/data/" + str(int(cik)) + "/" + accession.replace("-", "") + "/" + primary
+    body_proof, receipt = proofs["sec_static_archive_body_response"]
+    role = "incorporated_exhibit" if exhibit else "primary"
+    if body_proof.get("document_role") != role:
+        raise ReviewedSourceRejected("SEC response document role differs")
+    document_id = "sec:cik_" + cik + ":" + accession.replace("-", "")
+    metadata = {"source_url": endpoint, "accession_number": accession,
+        "form": form, "provider": "sec_edgar", "cik": cik}
+    if exhibit:
+        parent_proof, parent_receipt = proofs["sec_parent_primary_response"]
+        parent = _sec_response_text(parent_proof, parent_receipt, endpoint, raw_memo)
+        if (parent_proof.get("document_role") != "primary"
+                or content_sha256(parent) != parent_proof["expected_content_hash"]):
+            raise ReviewedSourceRejected("SEC exhibit parent response differs")
+        filename = body_proof["exhibit_document"]
+        if (not isinstance(filename, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", filename)
+                or filename == primary):
+            raise ReviewedSourceRejected("SEC exhibit filename is unsafe or equals primary")
+        parser = _SecExhibitLinks()
+        parser.feed(parent)
+        exhibit_endpoint = endpoint.rsplit("/", 1)[0] + "/" + filename
+        if not any(urljoin(endpoint, link) == exhibit_endpoint for link in parser.links):
+            raise ReviewedSourceRejected("SEC exhibit is not linked by the proved parent")
+        exhibit_type = body_proof["exhibit_type"]
+        if exhibit_type is not None:
+            if (not isinstance(exhibit_type, str) or not re.fullmatch(r"[0-9]+(?:\.[0-9]+)?", exhibit_type)
+                    or not _proved_sec_exhibit_code(parser, endpoint, exhibit_endpoint, exhibit_type)):
+                raise ReviewedSourceRejected("SEC exhibit type is not proved by its parent index row")
+        endpoint = exhibit_endpoint
+        document_id = "sec-exhibit:cik_" + cik + ":" + accession.replace("-", "") + ":" + filename
+        metadata.update(source_url=endpoint, parent_form=form, parent_primary_document=primary,
+            exhibit_document=filename, document_role=role, exhibit_type=exhibit_type)
+    content = _sec_response_text(body_proof, receipt, endpoint, raw_memo)
+    expected = RawInfoDocument.create(document_id=document_id,
+        company_id="cik_" + cik, source_type="filing", published_at=accepted, available_at=accepted,
+        content=content, metadata=metadata)
+    if (form != root_proof["form"] or primary != root_proof["primary_document"]
+            or filed.isoformat() != root_proof["filing_date"] or accepted != _instant(root_proof["accepted_at"])
+            or accepted != _instant(row["reviewed_available_at"]) or accepted > cutoff
+            or content_sha256(content) != body_proof["expected_content_hash"]
+            or canonical_json_hash(expected.to_dict()) != canonical_json_hash(document.to_dict())):
+        raise ReviewedSourceRejected("SEC response target/body/original availability differs")
 
 
 def _market_response(proof, endpoint, expected_query, *, not_before=None):
@@ -317,7 +546,7 @@ def _verify_companyfacts_document(document, row, proofs, cutoff, memo):
 
 @_source_boundary
 def _verified_review(binding: Mapping[str, Any]) -> tuple[dict, list[RawInfoDocument]]:
-    decoded, companyfacts = {}, {}
+    decoded, companyfacts, sec_payloads, sec_raw = {}, {}, {}, {}
 
     def read_bound(artifact):
         key = (str(Path(artifact["path"]).resolve()), artifact["sha256"])
@@ -364,6 +593,10 @@ def _verified_review(binding: Mapping[str, Any]) -> tuple[dict, list[RawInfoDocu
             _verify_market_document(document, row, proofs, cutoff)
         elif profile == "sec_companyfacts_filed_next_utc_day_v1":
             _verify_companyfacts_document(document, row, proofs, cutoff, companyfacts)
+        elif profile == "sec_filing_response_acceptance_v1":
+            _verify_sec_response_document(document, row, proofs, cutoff, sec_payloads, sec_raw)
+        elif profile == "sec_filing_exhibit_response_v1":
+            _verify_sec_response_document(document, row, proofs, cutoff, sec_payloads, sec_raw, exhibit=True)
         else:
             raise ReviewedSourceRejected("unsupported reviewed proof profile")
         documents.append(document)

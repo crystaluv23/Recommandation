@@ -1,0 +1,155 @@
+{
+  "schema_version": "bounded-periodic-annual-header-plan-v1",
+  "created_at": "2026-10-19T22:04:10.445522+00:00",
+  "scope": "Two exact read-only requests only: actual annual-row primary plus independently retained complete-submission header prefix. No attachment, normalization, source append, admission, readiness, clock interpretation or policy change.",
+  "max_GET_attempts": 2,
+  "automatic_retries": 0,
+  "redirects_allowed": false,
+  "stop_same_host_on_http_status": [
+    403,
+    429
+  ],
+  "stop_entire_batch_on_transport_error": true,
+  "minimum_seconds_between_GET_attempts": 1.0,
+  "request_headers": {
+    "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+    "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+    "Accept-Encoding": "identity"
+  },
+  "headers_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+    "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e"
+  },
+  "headers_source_request_name": "kgc-fy2024-40f-primary",
+  "transport_helpers": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/collector.py",
+    "sha256": "2b52e84e67c4d743f1857a1c54349086012627cb188393215fb6f6d40e33c194"
+  },
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/request-plan.json",
+      "sha256": "11800c79f50246305e2b91bd44cb90bafe1c068950170d5db0130c8b5ed3acde"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+      "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/collector.py",
+      "sha256": "2b52e84e67c4d743f1857a1c54349086012627cb188393215fb6f6d40e33c194"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/header-request-plan.json",
+      "sha256": "2a859226fef0cdaba5552f862474423c237ad1c87e9838cb387917b7e60e5cfd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/header-get-receipt.json",
+      "sha256": "f2005a4ee0374ff27599e69717ff037d238cc1b480fc2e932a0883b702212c0a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/submission-header.response-prefix.raw",
+      "sha256": "30ee01cc0d2fc360e9443da7ca3524c6f639e52e67b6bc023721229739b9e8cd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/ms_current_submissions_root.response.raw",
+      "sha256": "86a336522bd3013ce7c7eeae3c3e919b3b8c9701cff8d2d9ebb46ac41f5fd73b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/ms-fy2024-linked-submissions-archive.response.raw",
+      "sha256": "efcca5f763356548290eac0b89fc57d19479935aad9e0c1cf762f76e42a25162"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/kgc-fy2024-40f-primary.response.raw",
+      "sha256": "014548bf51ae4915583b200660f77068f180444ff5d412107282840351847d97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/ms-q12025-10q-primary.response.raw",
+      "sha256": "fb7c40d9141c347571d3f86806f9909db98f60dd4ca426a01a8bd6a3f179ff5f"
+    }
+  ],
+  "annual_metadata_source": {
+    "fetch_v1_results": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+      "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e"
+    },
+    "retained_current_root": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/ms_current_submissions_root.response.raw",
+      "sha256": "86a336522bd3013ce7c7eeae3c3e919b3b8c9701cff8d2d9ebb46ac41f5fd73b"
+    },
+    "linked_archive_raw": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/ms-fy2024-linked-submissions-archive.response.raw",
+      "sha256": "efcca5f763356548290eac0b89fc57d19479935aad9e0c1cf762f76e42a25162"
+    },
+    "unique_archive_row_index": 1149,
+    "exact_row": {
+      "accessionNumber": "0000895421-25-000304",
+      "filingDate": "2025-02-21",
+      "form": "10-K",
+      "reportDate": "2024-12-31",
+      "primaryDocument": "ms-20241231.htm",
+      "acceptanceDateTime": "2025-02-22T02:25:14.000Z"
+    }
+  },
+  "target": {
+    "issuer_cik": "0000895421",
+    "company_id": "cik_0000895421",
+    "accession_number": "0000895421-25-000304",
+    "form": "10-K",
+    "filing_date": "2025-02-21",
+    "report_date": "2024-12-31",
+    "primary_document": "ms-20241231.htm",
+    "api_acceptance_datetime": "2025-02-22T02:25:14.000Z"
+  },
+  "requests": [
+    {
+      "name": "ms-fy2024-10k-primary",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000304/ms-20241231.htm",
+      "kind": "static_annual_primary",
+      "endpoint_provenance": "Actual uniquely matching retained archive primaryDocument, exact issuer/accession directory.",
+      "retention": "full raw HTTP response; body scope remains unreviewed."
+    },
+    {
+      "name": "ms-fy2024-submission-header",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000304/0000895421-25-000304.txt",
+      "kind": "complete_submission_header_prefix",
+      "endpoint_provenance": "Previously successful same-issuer SEC Archives complete-submission template, exact new accession. Existence is not presumed before this GET.",
+      "request_range": "bytes=0-65535",
+      "max_retained_response_bytes": 65536,
+      "retention": "Retain at most65536 returned bytes; prefix SHA only, even if HTTP200 ignores Range. Require complete SEC-header before literal identity/token interpretation; never claim full-submission hash."
+    }
+  ],
+  "prefix_protocol_evidence": {
+    "request_plan": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/header-request-plan.json",
+      "sha256": "2a859226fef0cdaba5552f862474423c237ad1c87e9838cb387917b7e60e5cfd"
+    },
+    "retained_receipt": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/header-get-receipt.json",
+      "sha256": "f2005a4ee0374ff27599e69717ff037d238cc1b480fc2e932a0883b702212c0a"
+    },
+    "retained_prefix_raw": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/submission-header.response-prefix.raw",
+      "sha256": "30ee01cc0d2fc360e9443da7ca3524c6f639e52e67b6bc023721229739b9e8cd"
+    },
+    "old_standalone_prefix_collector": "not_saved; existing bound plan/receipt/prefix are protocol evidence, and fetch-v1 supplies reusable transport helpers"
+  },
+  "unresolved_clock_question": {
+    "filed_only_policy_instant": "2025-02-22T00:00:00+00:00",
+    "api_acceptance_datetime": "2025-02-22T02:25:14.000Z",
+    "action": "Collect literal independent header fields only; do not replace either clock, assume timezone, or change source policy."
+  },
+  "limits": [
+    "No KGC attachments in this plan; semantic wrapper/body limitations remain.",
+    "HTTP404/redirect/error/missing-complete-header/wrongidentity remains failed or unknown; no retry/new URL.",
+    "No annual content or prefix becomes a RawInfoDocument or admitted proof merely because bytes were returned."
+  ],
+  "external_llm_calls": 0,
+  "models": 0,
+  "signal_apply": false,
+  "LabelStore_access": false,
+  "full_prepare": false,
+  "global_oracle_writes": 0,
+  "execution_status": "planned_not_executed"
+}

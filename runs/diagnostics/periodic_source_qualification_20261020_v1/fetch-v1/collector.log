@@ -1,0 +1,15 @@
+START 2026-10-19T21:58:04.069228+00:00
+COMMAND ["/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3", "runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/collector.py"]
+STDOUT_AND_STDERR_MERGED
+{"name": "kgc-fy2024-40f-primary", "http_status": 200, "bytes": 391524, "raw_sha256": "014548bf51ae4915583b200660f77068f180444ff5d412107282840351847d97"}
+{"name": "ms-q12025-10q-primary", "http_status": 200, "bytes": 6662772, "raw_sha256": "fb7c40d9141c347571d3f86806f9909db98f60dd4ca426a01a8bd6a3f179ff5f"}
+{"name": "ms-fy2024-linked-submissions-archive", "http_status": 200, "bytes": 401833, "raw_sha256": "efcca5f763356548290eac0b89fc57d19479935aad9e0c1cf762f76e42a25162"}
+{
+  "results": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+  "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e",
+  "GET_attempts": 3,
+  "source_admission": false
+}
+
+EXIT 0
+END 2026-10-19T21:58:08.253843+00:00

@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：有界7SEC GET取得KGC父40F及独立AIF/MDA、MSQ1/annual及真实archive/header；MSannual clock冲突仍unknown，不做timezone/financial policy改动。新增显式receipt/root-linked及parent-exhibit来源profiles，保留真实form与March27链；独立发现描述cross-reference误认附件编号已按编号cell家族修复，同18拒绝/4正控与10追加控制通过，40安全关联tripwire零触发。无新globalappend/view/readiness，下一独立冻结同15/270输入复测，不关闭F2/full48/MVP。
+
 - 2026-10-20：冻结a533e121唯一data-only执行完成，607新peracc产品全部nativeappend/canonical回读，旧global15030文件及review48rows不变，新650doc view/worker/restart相等。独立真实15cache/607products/全部270source+PIT+期间核对，exactv12从108→243resolved、固定0→13/15达0.8；两家11/18及news缺口原样保留，FTAI364同日行不准入。0新GET/模型/apply/标签/fullprepare，不关闭测量/full48/MVP。额外有界KGC/MS来源检查找到可重建原MS11:59clock的旧archive链，未改原件或消除新API冲突；下一仅missingperiodic正文与原生archiveproof。
 
 - 2026-10-20：新增显式SEC CompanyFacts filed次UTC日proof分支，绑定cache/raw/newnormalization、完整products及原件；不改oracle根门或primaryaudit限制。独立发现Python true==1/int==float漏判，canonical exact贯通原件/readonlyappend/restore及新diagnostic；30安全selectors带labels/prepare tripwire通过，root此前31项重复误选labels/临时fullprepare例外如实保留。新15case derivation/input-only脚本准备完成但实际未执行，无新GET/模型，整体MVP仍open。

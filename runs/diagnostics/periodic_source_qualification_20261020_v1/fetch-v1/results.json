@@ -1,0 +1,169 @@
+{
+  "schema_version": "bounded-periodic-primary-fetch-result-v1",
+  "plan_sha256": "11800c79f50246305e2b91bd44cb90bafe1c068950170d5db0130c8b5ed3acde",
+  "collector_sha256": "2b52e84e67c4d743f1857a1c54349086012627cb188393215fb6f6d40e33c194",
+  "max_GET_attempts": 3,
+  "GET_attempts": 3,
+  "requests": [
+    {
+      "name": "kgc-fy2024-40f-primary",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231x40f.htm",
+      "request_headers": {
+        "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+        "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+        "Accept-Encoding": "identity"
+      },
+      "started_at_utc": "2026-10-19T21:58:04.156093+00:00",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "response_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231x40f.htm",
+      "retrieved_at_utc": "2026-10-19T21:58:05.422874+00:00",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/kgc-fy2024-40f-primary.response.raw",
+      "raw_sha256": "014548bf51ae4915583b200660f77068f180444ff5d412107282840351847d97",
+      "bytes": 391524,
+      "response_headers": {
+        "Content-Type": "text/html",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-amz-id-2": "UFg7celnv5vS8iObwlMtW/cAHbnJpIVnOXfPKvC3fjg/ahH/au0Bacrv1GolyewvzoKJI+sF4+M=",
+        "x-amz-request-id": "Q9VJ9WGDC6C91G1J",
+        "x-amz-replication-status": "COMPLETED",
+        "Last-Modified": "Thu, 27 Mar 2025 20:55:50 GMT",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-meta-mode": "33188",
+        "x-amz-version-id": "HNwrKXtxEzpRbLYfyjCc3g9.urPMaIRR",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "1; mode=block",
+        "Pragma": "no-cache",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "Vary": "Accept-Encoding",
+        "Cache-Control": "no-cache, no-store, no-transform, proxy-revalidate",
+        "Date": "Mon, 19 Oct 2026 21:58:05 GMT",
+        "Transfer-Encoding": "chunked",
+        "Connection": "Transfer-Encoding",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Set-Cookie": "[REDACTED_SECRET]"
+      },
+      "semantic_body_scope": "not_reviewed_no_admission"
+    },
+    {
+      "name": "ms-q12025-10q-primary",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000343/ms-20250331.htm",
+      "request_headers": {
+        "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+        "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+        "Accept-Encoding": "identity"
+      },
+      "started_at_utc": "2026-10-19T21:58:05.423672+00:00",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "response_url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000343/ms-20250331.htm",
+      "retrieved_at_utc": "2026-10-19T21:58:06.974478+00:00",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/ms-q12025-10q-primary.response.raw",
+      "raw_sha256": "fb7c40d9141c347571d3f86806f9909db98f60dd4ca426a01a8bd6a3f179ff5f",
+      "bytes": 6662772,
+      "response_headers": {
+        "Content-Type": "text/html",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-amz-id-2": "XNqjGHNSOECMN5soqJXzLBpnkL1HqzAfKGmkf/v2ymQH3wy2ik6lR9WQyFR/lLnlbCX9xxG44Ss=",
+        "x-amz-request-id": "YWAC67B5A7CD3JXG",
+        "x-amz-replication-status": "COMPLETED",
+        "Last-Modified": "Mon, 05 May 2025 20:13:32 GMT",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-meta-mode": "33188",
+        "x-amz-version-id": "WBz2TcuIuAncWBbsYRZx8KsIWLBuFpWD",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "1; mode=block",
+        "Pragma": "no-cache",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "Vary": "Accept-Encoding",
+        "Cache-Control": "no-cache, no-store, no-transform, proxy-revalidate",
+        "Date": "Mon, 19 Oct 2026 21:58:06 GMT",
+        "Transfer-Encoding": "chunked",
+        "Connection": "Transfer-Encoding",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Set-Cookie": "[REDACTED_SECRET]"
+      },
+      "semantic_body_scope": "not_reviewed_no_admission"
+    },
+    {
+      "name": "ms-fy2024-linked-submissions-archive",
+      "method": "GET",
+      "url": "https://data.sec.gov/submissions/CIK0000895421-submissions-006.json",
+      "request_headers": {
+        "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+        "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+        "Accept-Encoding": "identity"
+      },
+      "started_at_utc": "2026-10-19T21:58:06.979198+00:00",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "response_url": "https://data.sec.gov/submissions/CIK0000895421-submissions-006.json",
+      "retrieved_at_utc": "2026-10-19T21:58:08.233451+00:00",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/ms-fy2024-linked-submissions-archive.response.raw",
+      "raw_sha256": "efcca5f763356548290eac0b89fc57d19479935aad9e0c1cf762f76e42a25162",
+      "bytes": 401833,
+      "response_headers": {
+        "x-amzn-RequestId": "1ee716ab-8a4a-4fdc-a99f-c5401757855a",
+        "Access-Control-Allow-Origin": "*",
+        "x-amz-apigw-id": "FgvRjHLUIAMEvbA=",
+        "X-Amzn-Trace-Id": "Root=1-6ad6926f-6869001840008a20fbe74539",
+        "Content-Type": "application/json",
+        "Vary": "Accept-Encoding",
+        "Date": "Mon, 19 Oct 2026 21:58:08 GMT",
+        "Transfer-Encoding": "chunked",
+        "Connection": "Transfer-Encoding",
+        "Strict-Transport-Security": "max-age=31536000 ; preload"
+      },
+      "semantic_body_scope": "not_reviewed_no_admission",
+      "annual_target_check": {
+        "parallel_array_lengths": {
+          "accessionNumber": 2039,
+          "filingDate": 2039,
+          "form": 2039,
+          "reportDate": 2039,
+          "primaryDocument": 2039,
+          "acceptanceDateTime": 2039
+        },
+        "equal_required_arrays": true,
+        "unique_accession_matches": 1,
+        "rows": [
+          {
+            "accessionNumber": "0000895421-25-000304",
+            "filingDate": "2025-02-21",
+            "form": "10-K",
+            "reportDate": "2024-12-31",
+            "primaryDocument": "ms-20241231.htm",
+            "acceptanceDateTime": "2025-02-22T02:25:14.000Z"
+          }
+        ],
+        "target_identity_equal": true,
+        "root_declared_entry": {
+          "name": "CIK0000895421-submissions-006.json",
+          "filingCount": 2039,
+          "filingFrom": "2025-02-04",
+          "filingTo": "2025-03-12"
+        },
+        "actual_filing_date_min": "2025-02-04",
+        "actual_filing_date_max": "2025-03-13"
+      }
+    }
+  ],
+  "automatic_retries": 0,
+  "redirects_followed": 0,
+  "external_llm_calls": 0,
+  "source_appends": 0,
+  "source_admission": false,
+  "labels_loaded": false,
+  "signal_apply_executed": false,
+  "full_prepare_executed": false,
+  "bound_inputs_unchanged": true,
+  "finished_at_utc": "2026-10-19T21:58:08.245517+00:00"
+}

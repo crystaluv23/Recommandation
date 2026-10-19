@@ -101,3 +101,14 @@ force. Within one review verification, repeated immutable bindings may share
 their decoded bytes and one complete reconstruction; every refresh starts a new
 verification and rereads/hash-checks all bound files. No process-wide or persisted
 verification cache may bypass evidence drift.
+
+## Retained SEC HTTP responses
+
+The explicit [SEC response profile](reviewed_sec_response_profile.md) adds
+`sec_filing_response_acceptance_v1`. It binds retained raw HTTP bytes through
+their real receipt, with root/recent or a genuinely root-linked flat archive.
+Managed root/history caches remain explicit alternate carriers; responses are
+never wrapped into invented managed caches. Existing root-only, market and
+Company Facts profiles retain their semantics and cannot fall back into this
+profile after failure. All immutable original/view, canonical record equality,
+refresh/restart and original-oracle-root guards remain in force.

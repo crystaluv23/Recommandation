@@ -1,0 +1,111 @@
+{
+  "schema_version": "bounded-kgc-exhibit-fetch-results-v1",
+  "plan_sha256": "02723ead4016f6672276ffbec3ad2f14623af2e36ffa70e4bb50374b6958f04b",
+  "collector_sha256": "0e09282233630571a1c0557c1c8ec2aed555afcb03eea8b798e73014d05f480e",
+  "required_prior_result_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/results.json",
+      "sha256": "696e0121d387fc0e12b2f7df13a78655294404297b9e81f909da79f79c820147"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/ms-fy2024-10k-primary.response.raw",
+      "sha256": "03d6f7bb67a718c245fb468eb7364074d658a7860d8fb32f5b5f8b222b3a2f12"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/ms-fy2024-submission-header.response-prefix.raw",
+      "sha256": "45e8e094c5333d04f42616e5f3062cfb0319cd6a19d145f429c8ff7c7244daf8"
+    }
+  ],
+  "max_GET_attempts": 2,
+  "GET_attempts": 2,
+  "requests": [
+    {
+      "name": "kgc-fy2024-99_1-annual_information_form",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231xex99d1.htm",
+      "request_headers": {
+        "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+        "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+        "Accept-Encoding": "identity"
+      },
+      "started_at_utc": "2026-10-19T22:10:05.763730+00:00",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "response_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231xex99d1.htm",
+      "retrieved_at_utc": "2026-10-19T22:10:07.128908+00:00",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v3/kgc-fy2024-99_1-annual_information_form.response.raw",
+      "raw_sha256": "d069c1ce5a041bc6e407e4226cc47aeac9059d3ba5ab5d03ebc314a94c37a11f",
+      "bytes": 2052871,
+      "response_headers": {
+        "Content-Type": "text/html",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-amz-id-2": "YV/ClgNU4sPZg8YjQYY7C6cjsO+wgkSvDMypWFhNnGxinfiAZK9Uvskh/s3+L5NE+b+iIY9SGNI=",
+        "x-amz-request-id": "TE07RG1N8M7HB4D6",
+        "x-amz-replication-status": "COMPLETED",
+        "Last-Modified": "Thu, 27 Mar 2025 20:55:50 GMT",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-meta-mode": "33188",
+        "x-amz-version-id": "_hWD_ioCIIrsVQIhdBKHJYshXsoe7cdf",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "1; mode=block",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "Vary": "Accept-Encoding",
+        "Date": "Mon, 19 Oct 2026 22:10:06 GMT",
+        "Transfer-Encoding": "chunked",
+        "Connection": "Transfer-Encoding",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Set-Cookie": "[REDACTED_SECRET]"
+      },
+      "body_scope": "not_reviewed_not_admitted"
+    },
+    {
+      "name": "kgc-fy2024-99_2-annual_management_discussion",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231xex99d2.htm",
+      "request_headers": {
+        "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+        "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+        "Accept-Encoding": "identity"
+      },
+      "started_at_utc": "2026-10-19T22:10:07.130783+00:00",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "response_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231xex99d2.htm",
+      "retrieved_at_utc": "2026-10-19T22:10:08.610655+00:00",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v3/kgc-fy2024-99_2-annual_management_discussion.response.raw",
+      "raw_sha256": "b57c5da91edf40ccdc5d1806655cf88878cd033ddf7a7c74815de1962323a5ae",
+      "bytes": 2150339,
+      "response_headers": {
+        "Content-Type": "text/html",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-amz-id-2": "b76l2tQaamz8tQXz6I2Lg679g6eCdjg50oy82P37QFhD5WQ2n2CAgNXVLgzVEykm9ma2KD+PD8w=",
+        "x-amz-request-id": "AMRTJVSRBBRKS1RJ",
+        "x-amz-replication-status": "COMPLETED",
+        "Last-Modified": "Thu, 27 Mar 2025 20:55:50 GMT",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-meta-mode": "33188",
+        "x-amz-version-id": "PnrEVGN3PsFa4IFwRR4wkgCzgc1zqamU",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "1; mode=block",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "Vary": "Accept-Encoding",
+        "Date": "Mon, 19 Oct 2026 22:10:07 GMT",
+        "Transfer-Encoding": "chunked",
+        "Connection": "Transfer-Encoding",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Set-Cookie": "[REDACTED_SECRET]"
+      },
+      "body_scope": "not_reviewed_not_admitted"
+    }
+  ],
+  "automatic_retries": 0,
+  "redirects_followed": 0,
+  "source_admission": false,
+  "source_appends": 0,
+  "external_llm_calls": 0,
+  "labels_loaded": false,
+  "signal_apply_executed": false,
+  "full_prepare_executed": false,
+  "bound_inputs_unchanged": true,
+  "finished_at_utc": "2026-10-19T22:10:08.626503+00:00"
+}

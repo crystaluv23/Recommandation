@@ -2,10 +2,12 @@
 
 更新：2026-10-20。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)
 尚未收敛；独立收益为后续里程碑、仍未知。生产 LLM 节点由独立 subagent 执行，
-外部 LLM 调用0；只读资料取证已授权，单独计数。本批37有界取证GET（30行情+7SEC），
+外部 LLM 调用0；只读资料取证已授权，单独计数。本批44有界取证GET（30行情+14SEC），
 规范web查阅另列；0新生产LLM节点，host tokens/cost及资料API成本未测量。
 
 ## 当前验收
+
+[SEC periodic来源proof](../reports/sec-periodic-source-proofs-20261020.md)：新7GET均200，KGC父40F为wrapper、AIF/MD&A独立正文及MSQ1中期已取；MSannual正文已取但时间冲突仍unknown，不以JSON新clock纠正旧件。显式真实receipt/root-linked及parent-exhibit profiles完成；独立发现描述跨引误认编号已修，同18拒绝/4正控及10追加通过，40安全关联带tripwire零触发。尚无新来源append/view/readiness，下一仅冻结独立来源与同15case/270输入复测；整体MVP仍open。
 
 最新 [财务来源/readiness](../reports/anchor-financial-source-readiness-20261020.md)：
 固定15case/45旧source对象不缩；607新peracc产品逐canonical append/load相等，
@@ -27,7 +29,7 @@ root此前31关联误带真实labels hash和临时fullprepare拒绝，已披露�
 [经营来源](../reports/anchor-operating-source-readiness-20261020.md)原27保分母，
 26proof pass/24经营正文准入/3unknown；13经营投影均partial_context_budget。
 新本地KGC/MS11原件+22cache候选未找到漏选periodic组合；精确KGC40F/MSQ1
-正文待取证，MSQ2晚于cutoff。旧MS archive可native完整重建原11:59Z记录，
+正文已取见新proof批，旧view仍不改，MSQ2晚于cutoff。旧MS archive可native完整重建原11:59Z记录，
 与新API15:59Z冲突仍保留，不识别原writer或猜时区修正。
 
 [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md)新控制3/3窄通过，

@@ -1,0 +1,202 @@
+{
+  "schema_version": "bounded-periodic-primary-fetch-v1",
+  "created_at": "2026-10-19T21:56:46.205726+00:00",
+  "scope": "Only the two exact pre-cutoff static periodic-primary candidates and one uniquely current-root-linked MS annual archive; original15 financial cases unchanged. This is source proof collection, not admission or readiness.",
+  "fixed_scope": {
+    "inventory.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/inventory.json",
+      "sha256": "5888ce3bc68708ed29f908f9a5386b28c48023cc2009940909855c3f44d39aa1"
+    },
+    "proposal.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/proposal.json",
+      "sha256": "5553b9ea635a4b65e8f9fc7067d6c88017266901fe89814570dbfa5965ffc456"
+    },
+    "annual-pointer.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/annual-pointer.json",
+      "sha256": "4d4c772edd403531ee90f8088111e0ae2fd344dc700bc0bab3fc27c31605cee3"
+    }
+  },
+  "max_GET_attempts": 3,
+  "automatic_retries": 0,
+  "redirects_allowed": false,
+  "stop_same_host_on_http_status": [
+    403,
+    429
+  ],
+  "stop_entire_batch_on_transport_error": true,
+  "minimum_seconds_between_GET_attempts": 1.0,
+  "timeout_seconds": 35,
+  "headers_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/results.json",
+    "sha256": "8865be321f337392dd6503bb5fcd0b25af56017eb6b6e4b63714e5d1b59efe77"
+  },
+  "headers_source_request_name": "ms_current_submissions_root",
+  "request_headers": {
+    "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+    "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+    "Accept-Encoding": "identity"
+  },
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/inventory.json",
+      "sha256": "5888ce3bc68708ed29f908f9a5386b28c48023cc2009940909855c3f44d39aa1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/proposal.json",
+      "sha256": "5553b9ea635a4b65e8f9fc7067d6c88017266901fe89814570dbfa5965ffc456"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/annual-pointer.json",
+      "sha256": "4d4c772edd403531ee90f8088111e0ae2fd344dc700bc0bab3fc27c31605cee3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_source_qualification_20261020_v1/inventory.json",
+      "sha256": "4da1faff57f64bcb1e5571d3b3b7bd4d006ad8b5ac427da59a76a5b279d63f8b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/71c8d72b414df8ea108f88b6.json",
+      "sha256": "7278e57575af886912ca77a0fe9e773d8609ba43ff6f6b30973bc13c2bf015ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0000895421/secfacts:0000895421:0000895421-25-000304:ad51e86455773da3.json",
+      "sha256": "05e0237c7b2258c409af1fbcf2ebc2faf5bd82853a064137fec366dd401ba5a7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/input_manifest.json",
+      "sha256": "807fb3dcc990f34822adf79b64c07f50c407c659367dc9b43be68793413df465"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/normalizations/cik_0000895421:20250731.json",
+      "sha256": "1a0f03ed91ead1379d2f414540199d7fd992766ea874caf5ee1333260805e67f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/results.json",
+      "sha256": "8865be321f337392dd6503bb5fcd0b25af56017eb6b6e4b63714e5d1b59efe77"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/ms_current_submissions_root.response.raw",
+      "sha256": "86a336522bd3013ce7c7eeae3c3e919b3b8c9701cff8d2d9ebb46ac41f5fd73b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/request-plan.json",
+      "sha256": "6c64e6713f3b4cf18a002fd35a9a3120261e2d38d56462bab635c050d793b2e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+      "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+      "sha256": "7db12b87f71525120a01fe319d3a9961b39def093d3db5ddb0fa4df2a16d64d2"
+    }
+  ],
+  "requests": [
+    {
+      "name": "kgc-fy2024-40f-primary",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231x40f.htm",
+      "kind": "static_primary",
+      "ticker": "KGC",
+      "case_cutoff": "2025-09-30T00:00:00+00:00",
+      "form": "40-F",
+      "period_end": "2024-12-31",
+      "accession_number": "0001104659-25-028819",
+      "primary_document": "kgc-20241231x40f.htm",
+      "retained_expected_acceptance": "2025-03-27T20:55:21.000Z",
+      "retained_submissions": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+        "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+      },
+      "body_scope_before_GET": "unknown_not_admitted"
+    },
+    {
+      "name": "ms-q12025-10q-primary",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000343/ms-20250331.htm",
+      "kind": "static_primary",
+      "ticker": "MS",
+      "case_cutoff": "2025-07-31T00:00:00+00:00",
+      "form": "10-Q",
+      "period_end": "2025-03-31",
+      "accession_number": "0000895421-25-000343",
+      "primary_document": "ms-20250331.htm",
+      "retained_expected_acceptance": "2025-05-05T20:13:06.000Z",
+      "retained_submissions": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+        "sha256": "7db12b87f71525120a01fe319d3a9961b39def093d3db5ddb0fa4df2a16d64d2"
+      },
+      "body_scope_before_GET": "unknown_not_admitted"
+    },
+    {
+      "name": "ms-fy2024-linked-submissions-archive",
+      "method": "GET",
+      "url": "https://data.sec.gov/submissions/CIK0000895421-submissions-006.json",
+      "kind": "linked_annual_submissions_archive",
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/ms_current_submissions_root.response.raw",
+        "sha256": "86a336522bd3013ce7c7eeae3c3e919b3b8c9701cff8d2d9ebb46ac41f5fd73b"
+      },
+      "root_file_entry": {
+        "name": "CIK0000895421-submissions-006.json",
+        "filingCount": 2039,
+        "filingFrom": "2025-02-04",
+        "filingTo": "2025-03-12"
+      },
+      "target_accession": "0000895421-25-000304",
+      "target_filing_date": "2025-02-21",
+      "primary_document": "unknown_pending_archive",
+      "acceptance_datetime": "unknown_pending_archive"
+    }
+  ],
+  "annual_pointer": {
+    "status": "unique_actual_CompanyFacts_and_typed_source_pointer; primary/acceptance pending linked archive",
+    "target": {
+      "company_id": "cik_0000895421",
+      "accession_number": "0000895421-25-000304",
+      "filing_date": "2025-02-21",
+      "form": "10-K",
+      "period_end": "2024-12-31",
+      "fiscal_year": 2024,
+      "fiscal_period": "FY"
+    },
+    "matching_raw_source_rows": 346,
+    "exact_cache": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/71c8d72b414df8ea108f88b6.json",
+      "sha256": "7278e57575af886912ca77a0fe9e773d8609ba43ff6f6b30973bc13c2bf015ba"
+    },
+    "typed_product": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0000895421/secfacts:0000895421:0000895421-25-000304:ad51e86455773da3.json",
+      "sha256": "05e0237c7b2258c409af1fbcf2ebc2faf5bd82853a064137fec366dd401ba5a7"
+    },
+    "typed_available_at": "2025-02-22T00:00:00+00:00",
+    "retained_current_root": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/ms_current_submissions_root.response.raw",
+      "sha256": "86a336522bd3013ce7c7eeae3c3e919b3b8c9701cff8d2d9ebb46ac41f5fd73b"
+    },
+    "unique_link_entry": {
+      "name": "CIK0000895421-submissions-006.json",
+      "filingCount": 2039,
+      "filingFrom": "2025-02-04",
+      "filingTo": "2025-03-12"
+    },
+    "root_link_matches": 1,
+    "old_annual_pointer_result_preserved": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/annual-pointer.json",
+      "sha256": "4d4c772edd403531ee90f8088111e0ae2fd344dc700bc0bab3fc27c31605cee3"
+    }
+  },
+  "semantic_limits": [
+    "A 200 response, form name or annual/interim membership does not establish a full operating body.",
+    "KGC40-F may be cover/incorporation only. If so it stays outside the operating admitted set; literal attachment links require a later separate plan. Do not change PERIODIC_FORMS or relabel body scope.",
+    "MS Q1 body also requires actual content-scope review. Current MS annual primary and exact acceptance remain unknown until the uniquely linked archive proves them; no annual primary URL is guessed or fetched in this plan.",
+    "Root-declared page ranges/counts and actual page extrema are separate observations. Preserve source vintages and target identity/clock conflicts; no repackage or time tolerance.",
+    "404, cover-only, invalid arrays or target mismatch remain source gaps. This collector performs no normalization, global append, profile admission or readiness preparation."
+  ],
+  "external_llm_calls": 0,
+  "models": 0,
+  "Signal_apply": false,
+  "LabelStore_access": false,
+  "full_prepare": false,
+  "global_oracle_writes": 0,
+  "execution_status": "planned_not_executed"
+}

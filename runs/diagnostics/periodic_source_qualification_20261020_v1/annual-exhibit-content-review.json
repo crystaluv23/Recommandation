@@ -1,0 +1,353 @@
+{
+  "schema_version": "annual-exhibit-independent-content-review-v1",
+  "reviewed_at": "2026-10-19T22:14:37.060504+00:00",
+  "scope": "Coding/review role; exact retained full-body source inspection only, not a production model answer or source admission.",
+  "inspection_method": "Hash-check complete retrieved bytes and parse the complete bodies with production _normalized_visible_text; inspect section spread, identity/units/periods, material business/risk/statement passages and external-reference clauses. Anchors are bounded raw Unicode offsets, not a claim every table/number or external reference was independently verified.",
+  "offset_convention": "Zero-based Unicode character offsets into exact UTF8-decoded bytes without newline conversion, end exclusive. Native normalized quotes preserve HTML entities; readable copies explicitly decode them.",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/ms-fy2024-10k-primary.response.raw",
+      "sha256": "03d6f7bb67a718c245fb468eb7364074d658a7860d8fb32f5b5f8b222b3a2f12"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v3/kgc-fy2024-99_1-annual_information_form.response.raw",
+      "sha256": "d069c1ce5a041bc6e407e4226cc47aeac9059d3ba5ab5d03ebc314a94c37a11f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v3/kgc-fy2024-99_2-annual_management_discussion.response.raw",
+      "sha256": "b57c5da91edf40ccdc5d1806655cf88878cd033ddf7a7c74815de1962323a5ae"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/ms-fy2024-submission-header.response-prefix.raw",
+      "sha256": "45e8e094c5333d04f42616e5f3062cfb0319cd6a19d145f429c8ff7c7244daf8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/ms-annual-clock-review.json",
+      "sha256": "2e3b3236087315163cbfea622f1c17313f35178a7b2b655434e6b15283a37bc3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+      "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/results.json",
+      "sha256": "696e0121d387fc0e12b2f7df13a78655294404297b9e81f909da79f79c820147"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v3/results.json",
+      "sha256": "50152176b1e936fb702b6addaa49465ddaba766b06b59c9c4d05e4de926b31d3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/primary-content-review.json",
+      "sha256": "0eda73af9ac47e2cdc88a115e506b1460fd603606b60af6918ca410068fdc853"
+    }
+  ],
+  "documents": {
+    "MS_annual": {
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/ms-fy2024-10k-primary.response.raw",
+        "sha256": "03d6f7bb67a718c245fb468eb7364074d658a7860d8fb32f5b5f8b222b3a2f12",
+        "bytes": 9788509,
+        "decoded_characters": 9788509,
+        "production_visible_characters": 837270
+      },
+      "closing_html_tag_present": true,
+      "tail_visible_marker": "or (Dennis M. Nally) /s/ MARY L. SCHAPIRO Director (Mary L. Schapiro) /s/ PERRY M. TRAQUINA Director (Perry M. Traquina) /s/ RAYFORD WILKINS, JR. Director (Rayford Wilkins, Jr.) 159 December 2024 Form 10-K",
+      "anchors": [
+        {
+          "purpose": "annual_identity_period",
+          "raw_character_start": 1039494,
+          "raw_character_end_exclusive": 1043527,
+          "raw_span_sha256": "7bd0ffefe97ff069ad4e45ddb1ee836998bc91e93b59534ed0651dab458fd733",
+          "normalized_visible_quote": "FORM 10-K ANNUAL REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the year ended December 31 , 2024 Commission File Number 1-11758 (Exact name of Registrant as specified in its charter) Delaware 1585 Broadway 36-3145972 (212) 7",
+          "readable_quote_html_entities_decoded": "FORM 10-K ANNUAL REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the year ended December 31 , 2024 Commission File Number 1-11758 (Exact name of Registrant as specified in its charter) Delaware 1585 Broadway 36-3145972 (212) 7"
+        },
+        {
+          "purpose": "business_object",
+          "raw_character_start": 1221273,
+          "raw_character_end_exclusive": 1221623,
+          "raw_span_sha256": "077ba4d2501482fda1f234adf479d358c23885d376ac018445d60f554494eb09",
+          "normalized_visible_quote": "We are a global financial services firm that, through our subsidiaries and affiliates, advises, and originates, trades, manages and distributes capital for governments, institutions and individuals. We were originally incorporated under the laws of the State of Delaware in 1981, and our predecessor companies date back to 1924. We are a financial ho",
+          "readable_quote_html_entities_decoded": "We are a global financial services firm that, through our subsidiaries and affiliates, advises, and originates, trades, manages and distributes capital for governments, institutions and individuals. We were originally incorporated under the laws of the State of Delaware in 1981, and our predecessor companies date back to 1924. We are a financial ho"
+        },
+        {
+          "purpose": "three_segments",
+          "raw_character_start": 1223459,
+          "raw_character_end_exclusive": 1223838,
+          "raw_span_sha256": "eed0ebb5d79f7762153a01b1e4228a81fd088b0d81fb26b45f30c5d88c1e1321",
+          "normalized_visible_quote": "each of our business segments: Institutional Securities, Wealth Management and Investment Management. Through our subsidiaries and affiliates, we provide a wide variety of products and services to a large and diversified group of",
+          "readable_quote_html_entities_decoded": "each of our business segments: Institutional Securities, Wealth Management and Investment Management. Through our subsidiaries and affiliates, we provide a wide variety of products and services to a large and diversified group of"
+        },
+        {
+          "purpose": "substantive_credit_risk",
+          "raw_character_start": 1348664,
+          "raw_character_end_exclusive": 1349190,
+          "raw_span_sha256": "c057558a4bd3ca5a849a8ed52f46b68a096897934931ae06652dfe9a3ce86827",
+          "normalized_visible_quote": "We are exposed to the risk that third parties that are indebted to us will not perform their obligations. We incur significant credit risk exposure through our Institutional Securities business segment. This risk may arise from a variety of business activities, including, but not limited to: extending credit to clients through v",
+          "readable_quote_html_entities_decoded": "We are exposed to the risk that third parties that are indebted to us will not perform their obligations. We incur significant credit risk exposure through our Institutional Securities business segment. This risk may arise from a variety of business activities, including, but not limited to: extending credit to clients through v"
+        },
+        {
+          "purpose": "audited_statement_scope",
+          "raw_character_start": 3577482,
+          "raw_character_end_exclusive": 3577882,
+          "raw_span_sha256": "1a6c852e07468b98127dbff557452d7ce24a7902cd325482ffedfc34193204f2",
+          "normalized_visible_quote": "We have audited the accompanying consolidated balance sheets of Morgan Stanley and subsidiaries (the &#8220;Firm&#8221;) as of December 31, 2024 and 2023, the related consolidated income statements, comprehensive income statements, cash flow statements and statements of changes in total equity for each of the three years in the period ended December 31, 2024, and the related notes (collectively re",
+          "readable_quote_html_entities_decoded": "We have audited the accompanying consolidated balance sheets of Morgan Stanley and subsidiaries (the “Firm”) as of December 31, 2024 and 2023, the related consolidated income statements, comprehensive income statements, cash flow statements and statements of changes in total equity for each of the three years in the period ended December 31, 2024, and the related notes (collectively re"
+        },
+        {
+          "purpose": "actual_cashflow_table_units",
+          "raw_character_start": 3837319,
+          "raw_character_end_exclusive": 3841861,
+          "raw_span_sha256": "c194ca5680002b65bdeadc536b454619af001e3c1561112f06f18b89b4395eac",
+          "normalized_visible_quote": "Consolidated Cash Flow Statement $ in millions 2024 2023 2022 Cash flows from operating activities Net income $ 13,529 &#160; $ 9,230 &#160; $ 11,179 &#160; Adjustments to reconcile net income to net cash provided by (used for) operating activities:",
+          "readable_quote_html_entities_decoded": "Consolidated Cash Flow Statement $ in millions 2024 2023 2022 Cash flows from operating activities Net income $ 13,529   $ 9,230   $ 11,179   Adjustments to reconcile net income to net cash provided by (used for) operating activities:"
+        },
+        {
+          "purpose": "external_proxy_reference",
+          "raw_character_start": 1076326,
+          "raw_character_end_exclusive": 1078515,
+          "raw_span_sha256": "4fe553d02bda1fbd0ca2905d8ef6a0ec1bdc4821ed70df67c38638a1656b82ba",
+          "normalized_visible_quote": "Portions of the Registrant&#8217;s definitive proxy statement for its 2025 annual meeting of shareholders are incorporated by reference in Part III of this Form 10-K. Table of Contents &#160; ANNUAL REPORT ON FORM 10-K For the yea",
+          "readable_quote_html_entities_decoded": "Portions of the Registrant’s definitive proxy statement for its 2025 annual meeting of shareholders are incorporated by reference in Part III of this Form 10-K. Table of Contents   ANNUAL REPORT ON FORM 10-K For the yea"
+        }
+      ],
+      "raw_unit_declaration": "<xbrli:unit id=\"usd\"><xbrli:measure>iso4217:USD</xbrli:measure></xbrli:unit>",
+      "source_inline_identity": {
+        "EntityRegistrantName": "MORGAN STANLEY",
+        "EntityCentralIndexKey": "0000895421",
+        "DocumentType": "10-K"
+      },
+      "identity": "Morgan Stanley, CIK0000895421, FY2024 Form10-K, accession0000895421-25-000304; body inline identity plus separately retained header agree.",
+      "period_and_units": "Year ended December31,2024; audited balance sheets2024/2023 and three-year2024/2023/2022 statement comparatives. USD unit declarations; table-specific millions/billions/share/per-share units remain distinct.",
+      "actual_body_scope": "Substantive full annual primary HTML with business/regulatory sections, three operating segments, risk factors, MD&A, liquidity/capital/risk management, independent auditor opinion, statements, accounting notes, exhibits index and signatures. Not a cover-only document.",
+      "completeness_limits": [
+        "Full retrieved primary body is not every incorporated exhibit or proxy. PartIII expressly incorporates the2025 proxy statement, not fetched here.",
+        "Listed historical agreements/exhibits and external websites are not all retrieved. No claim of independent audit of every numeric disclosure or complete external-reference corpus."
+      ],
+      "time_disposition": {
+        "status": "unknown_time_conflict_excluded_from_next_operating_inputs",
+        "literal_SEC_header": {
+          "acceptance_datetime_token": "20250221162514",
+          "accession_number": "0000895421-25-000304",
+          "submission_type": "10-K",
+          "filed_as_of_date_token": "20250221",
+          "conformed_period_of_report_token": "20241231",
+          "issuer_cik_tokens": [
+            "0000895421"
+          ]
+        },
+        "raw_prefix": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/ms-fy2024-submission-header.response-prefix.raw",
+          "sha256": "45e8e094c5333d04f42616e5f3062cfb0319cd6a19d145f429c8ff7c7244daf8"
+        },
+        "API_acceptance": "2025-02-22T02:25:14.000Z",
+        "filed_only_policy_instant": "2025-02-22T00:00:00+00:00",
+        "interpretation": "Keep all source clocks unchanged; no assumed offset or date-derived replacement. A mechanical profile result does not establish qualified time.",
+        "clock_review": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/ms-annual-clock-review.json",
+          "sha256": "2e3b3236087315163cbfea622f1c17313f35178a7b2b655434e6b15283a37bc3"
+        }
+      },
+      "content_semantic_positive": true,
+      "qualified_time_proven": false,
+      "recommended_for_next_inputs": false
+    },
+    "KGC_AIF": {
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v3/kgc-fy2024-99_1-annual_information_form.response.raw",
+        "sha256": "d069c1ce5a041bc6e407e4226cc47aeac9059d3ba5ab5d03ebc314a94c37a11f",
+        "bytes": 2052871,
+        "decoded_characters": 2052871,
+        "production_visible_characters": 377149
+      },
+      "closing_html_tag_present": true,
+      "tail_visible_marker": "g to (i) controlled companies; (ii) events outside the control of the member; (iii) the death, disability or resignation of the member; and (iv) the occurrence of certain exceptional circumstances. 93",
+      "anchors": [
+        {
+          "purpose": "identity_period",
+          "raw_character_start": 1938,
+          "raw_character_end_exclusive": 7228,
+          "raw_span_sha256": "752846c3455272d8a19aefd4921ef94e613aaa4f01e2df0ad767c6cf8a1748d0",
+          "normalized_visible_quote": "KINROSS GOLD CORPORATION ANNUAL INFORMATION FORM FOR THE&#160;YEAR ENDED DECEMBER&#160;31, 2024 Dated March&#160;27, 2025 Table of Contents TABLE OF CONTENTS &#160;&#160;&#160;&#160; Page CAUTIONARY STATEMENT 3",
+          "readable_quote_html_entities_decoded": "KINROSS GOLD CORPORATION ANNUAL INFORMATION FORM FOR THE YEAR ENDED DECEMBER 31, 2024 Dated March 27, 2025 Table of Contents TABLE OF CONTENTS      Page CAUTIONARY STATEMENT 3"
+        },
+        {
+          "purpose": "default_units_period",
+          "raw_character_start": 41638,
+          "raw_character_end_exclusive": 43376,
+          "raw_span_sha256": "62305de47200aaedd68378b1b2d4ab9e283f89940d2ca97249114b83be7eb8cf",
+          "normalized_visible_quote": "all dollar amounts are in U.S. dollars unless expressly stated otherwise; &#9679; information is presented as of December&#160;31, 2024, unless expressly stated otherwise; and &#9679; references to &#8220; Kinross &#8221;, the &#8220; Compa",
+          "readable_quote_html_entities_decoded": "all dollar amounts are in U.S. dollars unless expressly stated otherwise; ● information is presented as of December 31, 2024, unless expressly stated otherwise; and ● references to “ Kinross ”, the “ Compa"
+        },
+        {
+          "purpose": "business_object_geography",
+          "raw_character_start": 100221,
+          "raw_character_end_exclusive": 107013,
+          "raw_span_sha256": "995979afdc954584faa6f8e50f4160770893fb68cbc2440aa06ec9e151c8a76f",
+          "normalized_visible_quote": "Kinross is engaged in gold mining and related activities, including exploration and acquisition of gold-bearing properties, the extraction and processing of gold-containing ore, and reclamation of gold mining properties. Kinross&#8217; gold production and exploration activities are carried out principally in Canada, the United States, Brazil, Chile, Mauritania and Finland. The material properties of Kinross as of December&#160;31, 2024, were as follows: Property Property &#160;&#160;&#160;&#160; Location &#160;&#160;&#160;&#160; Ownership 3 Paracatu &#160; Brazil",
+          "readable_quote_html_entities_decoded": "Kinross is engaged in gold mining and related activities, including exploration and acquisition of gold-bearing properties, the extraction and processing of gold-containing ore, and reclamation of gold mining properties. Kinross’ gold production and exploration activities are carried out principally in Canada, the United States, Brazil, Chile, Mauritania and Finland. The material properties of Kinross as of December 31, 2024, were as follows: Property Property      Location      Ownership 3 Paracatu   Brazil"
+        },
+        {
+          "purpose": "product_customer_scope",
+          "raw_character_start": 164512,
+          "raw_character_end_exclusive": 164582,
+          "raw_span_sha256": "f4b1b752919c75565f59fcdb499151363bddae79a6d0d1be8e18e85d4673a415",
+          "normalized_visible_quote": "Kinross sells all of its refined gold to banks, and refiners. In 2024,",
+          "readable_quote_html_entities_decoded": "Kinross sells all of its refined gold to banks, and refiners. In 2024,"
+        },
+        {
+          "purpose": "material_property_substance",
+          "raw_character_start": 1276738,
+          "raw_character_end_exclusive": 1276998,
+          "raw_span_sha256": "6148d7f5d5ecc62c44ea19d0f5d8605de699e109371f4f5d9f8867af757596cd",
+          "normalized_visible_quote": "The Paracatu mine is a large-scale open pit mine located adjacent to the city of Paracatu, situated in the northwestern portion of Minas Gerais State, 230 kilometres southeast of the national capital Bras&#237;lia and 480 kilometres northwest of the state capi",
+          "readable_quote_html_entities_decoded": "The Paracatu mine is a large-scale open pit mine located adjacent to the city of Paracatu, situated in the northwestern portion of Minas Gerais State, 230 kilometres southeast of the national capital Brasília and 480 kilometres northwest of the state capi"
+        },
+        {
+          "purpose": "substantive_risks",
+          "raw_character_start": 1467312,
+          "raw_character_end_exclusive": 1468147,
+          "raw_span_sha256": "646673b3f829b208f93b24f7e7a4911e0084731a73e3c3cc41bd9a1b0e2046bc",
+          "normalized_visible_quote": "RISK FACTORS The business and operations of Kinross are subject to risks. In addition to considering the other information in this AIF, you should consider carefully the following factors in deciding whether to invest in securities of Kinross. If any of these risks occur, or if other risks not currently anticipated or fully appreciated occur, the business an",
+          "readable_quote_html_entities_decoded": "RISK FACTORS The business and operations of Kinross are subject to risks. In addition to considering the other information in this AIF, you should consider carefully the following factors in deciding whether to invest in securities of Kinross. If any of these risks occur, or if other risks not currently anticipated or fully appreciated occur, the business an"
+        },
+        {
+          "purpose": "external_technical_reports",
+          "raw_character_start": 1274958,
+          "raw_character_end_exclusive": 1276345,
+          "raw_span_sha256": "d4d19a1e6a959ec9ad81a9b4432f481d187d9b17778acbbffe36f2f14fd2c11e",
+          "normalized_visible_quote": "Technical Report Please see the Company&#8217;s National Instrument 43-101 Technical Report dated March&#160;10, 2020 in respect of Paracatu, prepared by John Sims, available at www.kinross.com and under the Company&#8217;s profile on SEDAR+ at www.sedarplus.ca . Detailed financial, production and operational information for the Paracatu mine are available in Kinross&#8217; MD&amp;A for the&#160;year ended December&#160;31, 2024. 23 Table of Cont",
+          "readable_quote_html_entities_decoded": "Technical Report Please see the Company’s National Instrument 43-101 Technical Report dated March 10, 2020 in respect of Paracatu, prepared by John Sims, available at www.kinross.com and under the Company’s profile on SEDAR+ at www.sedarplus.ca . Detailed financial, production and operational information for the Paracatu mine are available in Kinross’ MD&A for the year ended December 31, 2024. 23 Table of Cont"
+        },
+        {
+          "purpose": "external_circular_reference",
+          "raw_character_start": 1887959,
+          "raw_character_end_exclusive": 1888593,
+          "raw_span_sha256": "3a9bac78ef8a3d0901889b6fc92dabcfc1045b41582b3b934c7f854dd618fce5",
+          "normalized_visible_quote": "Additional information relating to the Company can be found on SEDAR+ at www.sedarplus.ca . Additional information, including directors&#8217; and officers&#8217; remuneration and indebtedness, principal holders of the Company&#8217;s securities and securities authorized for issuance under equity compensation plans is contained in the management information circular of the Company filed for its most recent annual meeting of shareholders. Additional financial information is provided in the Company&#8217;s audited consolidated",
+          "readable_quote_html_entities_decoded": "Additional information relating to the Company can be found on SEDAR+ at www.sedarplus.ca . Additional information, including directors’ and officers’ remuneration and indebtedness, principal holders of the Company’s securities and securities authorized for issuance under equity compensation plans is contained in the management information circular of the Company filed for its most recent annual meeting of shareholders. Additional financial information is provided in the Company’s audited consolidated"
+        }
+      ],
+      "identity": "Kinross Gold Corporation, annual information form FY2024, datedMarch27,2025; actual parent40-F accession0001104659-25-028819 incorporated exhibit99.1.",
+      "period_and_units": "Information as ofDecember31,2024 unless expressly stated otherwise; defaultU.S.dollars unless stated otherwise. Site-specific ore/tonnage/grade/ounces, percentages and explicitC$ exceptions are distinct units.",
+      "actual_body_scope": "Substantive annual operating information: corporate structure/history, mining/exploration/acquisition/extraction/reclamation, geographic and mine-property descriptions, marketing, reserves/resources, risk factors, capital/governance/legal matters, glossary and committee material through visiblepage93.",
+      "completeness_limits": [
+        "Technical property reportsNI43-101 and certain underlying reserve/resource work are separately referenced and not fetched.",
+        "Additional information refers to a management circular; other supplemental corporate material remains external.",
+        "This is exhibit99.1, not the40-F primary or audited financial statements99.3; AIF plus MD&A does not include the unfetched financial-statement notes."
+      ],
+      "availability_basis": "Only the exact March27 parent accession acceptance chain may qualify these retrieved bytes. Do not backdate to February12 references.",
+      "candidate_role": "incorporated_exhibit",
+      "content_semantic_positive": true,
+      "recommended_for_next_candidate_review": true
+    },
+    "KGC_MDA": {
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v3/kgc-fy2024-99_2-annual_management_discussion.response.raw",
+        "sha256": "b57c5da91edf40ccdc5d1806655cf88878cd033ddf7a7c74815de1962323a5ae",
+        "bytes": 2150339,
+        "decoded_characters": 2150339,
+        "production_visible_characters": 235834
+      },
+      "closing_html_tag_present": true,
+      "tail_visible_marker": " fluctuating simultaneously by 10% in the same direction, either appreciating or depreciating, taking into consideration the impact of hedging and the weighting of each currency within our consolidated cost structure. 54",
+      "anchors": [
+        {
+          "purpose": "identity_period_preparation_date",
+          "raw_character_start": 748,
+          "raw_character_end_exclusive": 1688,
+          "raw_span_sha256": "5d43658ea28cde99e49b3b7d26e1fbbc439b85262e261405e664624d481f66b8",
+          "normalized_visible_quote": "KINROSS GOLD CORPORATION MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS For the year ended December 31, 2024 This management&#8217;s discussion and analysis (&#8220;MD&amp;A&#8221;), prepared as of February 12, 2025, relates to the financial condition and results of operations of Kinross Gold Corporation together with its wholly owned subsidiaries, as at December 31, 2024 and for the year then ended, and is intended to supplement and complement Kinross Gold Corporation&#8217;s audited annual consolidated financial statements for the year ended Dece",
+          "readable_quote_html_entities_decoded": "KINROSS GOLD CORPORATION MANAGEMENT’S DISCUSSION AND ANALYSIS For the year ended December 31, 2024 This management’s discussion and analysis (“MD&A”), prepared as of February 12, 2025, relates to the financial condition and results of operations of Kinross Gold Corporation together with its wholly owned subsidiaries, as at December 31, 2024 and for the year then ended, and is intended to supplement and complement Kinross Gold Corporation’s audited annual consolidated financial statements for the year ended Dece"
+        },
+        {
+          "purpose": "USD_IFRS",
+          "raw_character_start": 2367,
+          "raw_character_end_exclusive": 2637,
+          "raw_span_sha256": "f76570035a758829ccbb04782c37a10e65c8c31eea0cfb4a98d697a785cf9c50",
+          "normalized_visible_quote": "are presented in U.S. dollars. The financial statements have been prepared in accordance with International Financial Reporting Standards (&#8220;IFRS&#8221;) as issued by the International Accounting Standards Board (&#8220;IASB&#8221;). This discussion addresses matte",
+          "readable_quote_html_entities_decoded": "are presented in U.S. dollars. The financial statements have been prepared in accordance with International Financial Reporting Standards (“IFRS”) as issued by the International Accounting Standards Board (“IASB”). This discussion addresses matte"
+        },
+        {
+          "purpose": "business_object_geography",
+          "raw_character_start": 6648,
+          "raw_character_end_exclusive": 7463,
+          "raw_span_sha256": "b0f4257760d1b98c274a43f1c3fea4b1c58f9217083cc29b81e1dde3a98b60f5",
+          "normalized_visible_quote": "Kinross is engaged in gold mining and related activities, including exploration and acquisition of gold-bearing properties, the extraction and processing of gold-containing ore, and reclamation of gold mining properties. Kinross&#8217; gold production and exploration activities are carried out principally in Canada, the United States, Brazil, Chile, Mauritania and Finland. Gold is produced in the form of dor&#233;, which is shipped to refineries for final processing. Kinross also produces and sells a quantity of silver. The profitability and operating cash flow of Kinross are affected by various factors, including the amount of gold and silver produced, the market prices",
+          "readable_quote_html_entities_decoded": "Kinross is engaged in gold mining and related activities, including exploration and acquisition of gold-bearing properties, the extraction and processing of gold-containing ore, and reclamation of gold mining properties. Kinross’ gold production and exploration activities are carried out principally in Canada, the United States, Brazil, Chile, Mauritania and Finland. Gold is produced in the form of doré, which is shipped to refineries for final processing. Kinross also produces and sells a quantity of silver. The profitability and operating cash flow of Kinross are affected by various factors, including the amount of gold and silver produced, the market prices"
+        },
+        {
+          "purpose": "mines_are_segments",
+          "raw_character_start": 8962,
+          "raw_character_end_exclusive": 16078,
+          "raw_span_sha256": "9dc92f4d216abbad164b818cda676009ba9a15c5856f48a508c81cbaef565974",
+          "normalized_visible_quote": "significant operating mines is generally considered to be a separate segment. The reportable segments are those operations whose operating results are reviewed by the chief operating decision maker to make decisions about resources to be allocated to the segment and assess its performance. Ownership&#160;percentage&#160;at&#160;December&#160;31, Operating Segments &#160;&#160;&#160;&#160; Operator",
+          "readable_quote_html_entities_decoded": "significant operating mines is generally considered to be a separate segment. The reportable segments are those operations whose operating results are reviewed by the chief operating decision maker to make decisions about resources to be allocated to the segment and assess its performance. Ownership percentage at December 31, Operating Segments      Operator"
+        },
+        {
+          "purpose": "table_scales_comparatives",
+          "raw_character_start": 44592,
+          "raw_character_end_exclusive": 47628,
+          "raw_span_sha256": "d4a4a1cc2c0d7dadf5d79deef4a2ea031eac25396c0130f5fce01df15b2b883a",
+          "normalized_visible_quote": "(in millions, except ounces, per share amounts and per ounce amounts) &#160;&#160;&#160;&#160; 2024 &#160;&#160;&#160;&#160; 2023 &#160;&#160;&#160;&#160; 2022 (g) &#160;&#160;&#160;&#160; Change &#160;&#160;&#160;&#160; %&#160;Ch",
+          "readable_quote_html_entities_decoded": "(in millions, except ounces, per share amounts and per ounce amounts)      2024      2023      2022 (g)      Change      % Ch"
+        },
+        {
+          "purpose": "substantive_risk_analysis",
+          "raw_character_start": 1465990,
+          "raw_character_end_exclusive": 1466798,
+          "raw_span_sha256": "b1cc91f591bee5564813c9b86b54596a6f48f4b8db997567eb263aed87946a8c",
+          "normalized_visible_quote": "10. RISK ANALYSIS The business of Kinross contains significant risk due to the nature of mining, exploration, and development activities. Certain risk factors, including but not limited to those listed below, are similar across the mining industry while others are specific to Kinross. The risk factors below may include details of how Kinross seeks to mitigate these risks where possible. For additional discussion of risk factors, please refer to the Company&#8217;s Annual Information Form for the year ended December 31, 2023, which is available on the Company&#8217;s website www.kinross.com and",
+          "readable_quote_html_entities_decoded": "10. RISK ANALYSIS The business of Kinross contains significant risk due to the nature of mining, exploration, and development activities. Certain risk factors, including but not limited to those listed below, are similar across the mining industry while others are specific to Kinross. The risk factors below may include details of how Kinross seeks to mitigate these risks where possible. For additional discussion of risk factors, please refer to the Company’s Annual Information Form for the year ended December 31, 2023, which is available on the Company’s website www.kinross.com and"
+        },
+        {
+          "purpose": "external_statements_requirement",
+          "raw_character_start": 1542,
+          "raw_character_end_exclusive": 2002,
+          "raw_span_sha256": "11aec9bed12ab08344511b03f8fe093f13796f8cc9ccacdcb052270492b2d6e1",
+          "normalized_visible_quote": "is intended to supplement and complement Kinross Gold Corporation&#8217;s audited annual consolidated financial statements for the year ended December 31, 2024 and the notes thereto (the &#8220;financial statements&#8221;). Readers are cautioned that the MD&amp;A contains forward-looking statements about expected future events and financial and operating performance of the Company, and that actual events may vary from management&#8217;s expectations. Reade",
+          "readable_quote_html_entities_decoded": "is intended to supplement and complement Kinross Gold Corporation’s audited annual consolidated financial statements for the year ended December 31, 2024 and the notes thereto (the “financial statements”). Readers are cautioned that the MD&A contains forward-looking statements about expected future events and financial and operating performance of the Company, and that actual events may vary from management’s expectations. Reade"
+        },
+        {
+          "purpose": "non_GAAP_caveat",
+          "raw_character_start": 271015,
+          "raw_character_end_exclusive": 271783,
+          "raw_span_sha256": "c7b379a92ca81b80aa665b716e62a9662aeaf5b520ac24f6b40ac98b924c3d1a",
+          "normalized_visible_quote": "Non-GAAP financial measures and ratios have no standardized meaning under IFRS and therefore, may not be comparable to similar measures presented by other issuers. (d) &#8220;Capital expenditures&#8221; is as r",
+          "readable_quote_html_entities_decoded": "Non-GAAP financial measures and ratios have no standardized meaning under IFRS and therefore, may not be comparable to similar measures presented by other issuers. (d) “Capital expenditures” is as r"
+        }
+      ],
+      "identity": "Kinross Gold Corporation annual MD&A FY2024, preparedFebruary12,2025, retrieved as actual parent40-F March27 accession0001104659-25-028819 incorporated exhibit99.2.",
+      "period_and_units": "Financial condition/results as at/forDecember31,2024; tables include2023/2022 comparatives. U.S.dollars/IFRS; millions except ounces/per-share/per-ounce where stated. Non-GAAP metrics have their own definitions/reconciliations and no standardized IFRS meaning.",
+      "actual_body_scope": "Substantive annual operating and financial discussion through visiblepage54: business/mining activities, mines-as-segments, consolidated highlights, operating results, financial condition/cashflow/liquidity/capital/derivatives, outlook, risk analysis, non-GAAP definitions/reconciliations and sensitivities.",
+      "completeness_limits": [
+        "Opening paragraphs explicitly supplement separately available audited annual financial statements and notes. Those99.3 bytes remain unfetched/unreviewed.",
+        "Risk discussion refers to the priorFY2023 AIF and plannedFY2024 AIF; the newly retrievedFY2024 AIF adds its own material but does not prove all cross-referenced historical material was read.",
+        "Forward-looking guidance/estimates remain prospective, not realized facts or outcome labels."
+      ],
+      "availability_basis": "Preparation-dateFebruary12 is not an availability proof for the exact March27-accession bytes; retain the parent acceptance chain.",
+      "candidate_role": "incorporated_exhibit",
+      "content_semantic_positive": true,
+      "recommended_for_next_candidate_review": true
+    }
+  },
+  "next_operating_candidate_recommendation": {
+    "KGC": [
+      "Qualify99.1AIF and99.2MD&A separately through exact parent/literal-exhibit provenance; keep parent40-F wrapper distinction. Their real content supports annual business/risk/segment orientation without claiming99.3auditedFS completeness."
+    ],
+    "MS": [
+      "Prefer already reviewed substantive Q1-2025 Form10-Q through its exact retained root/archive proof. Annual-OR-interim does not require obtainingannual10-K.",
+      "Keep this annual body as content-positive/time-unknown outside the next admitted input set until its source-clock policy question is resolved."
+    ],
+    "no_guarantee": "Candidate semantic suitability is independent from source-time qualification, actual default-menu selection/projection, whole-body model visibility or financial Signal correctness."
+  },
+  "unfetched_audited_FS99_3_remains_unknown": true,
+  "files_before_after_hashes_equal": true,
+  "GETs": 0,
+  "global_appends": 0,
+  "source_admissions": 0,
+  "Signal_apply": false,
+  "models": 0,
+  "LabelStore_access": false,
+  "full_prepare": false
+}

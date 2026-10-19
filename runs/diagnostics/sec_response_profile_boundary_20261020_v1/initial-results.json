@@ -1,0 +1,113 @@
+{
+  "reader_sha256": "ba8d5cab19c468a222eac6d9a1883587d666f551f23ea5cb4c60a87c9eafd02b",
+  "synthetic_isolated_scope": true,
+  "negative_controls": {
+    "wrong_method": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC retained response request/status/clock differs"
+    },
+    "wrong_raw_path": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC receipt raw response binding differs"
+    },
+    "wrong_raw_SHA": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC receipt raw response binding differs"
+    },
+    "wrong_bytes_type": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC receipt raw response byte count differs"
+    },
+    "duplicate_endpoint": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC receipt request identity is ambiguous"
+    },
+    "duplicate_name": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC receipt request identity is ambiguous"
+    },
+    "wrong_response_url": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC retained response request/status/clock differs"
+    },
+    "clock_naive": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "reviewed source time must be aware"
+    },
+    "clock_reverse": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC retained response request/status/clock differs"
+    },
+    "root_wrong_issuer": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC root issuer differs"
+    },
+    "missing_root_link": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC archive requires a unique root link"
+    },
+    "bad_parallel_column": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC parallel filing arrays have inconsistent lengths"
+    },
+    "target_duplicate": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC exact target is missing or ambiguous"
+    },
+    "bad_parent_form": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC response target/body/original availability differs"
+    },
+    "backdate_original": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC response target/body/original availability differs"
+    },
+    "body_wrong_role": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC response document role differs"
+    },
+    "wrong_exhibit_code": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC exhibit type is not proved by its parent index row"
+    },
+    "incidental_code_in_description": {
+      "accepted": true,
+      "worker_exact": true
+    }
+  },
+  "positive_controls": {
+    "primary_root": {
+      "accepted": true,
+      "worker_exact": true
+    },
+    "primary_linked": {
+      "accepted": true,
+      "worker_exact": true
+    },
+    "response_root_linked": {
+      "accepted": true,
+      "worker_exact": true
+    },
+    "exhibit": {
+      "accepted": true,
+      "worker_exact": true
+    }
+  }
+}

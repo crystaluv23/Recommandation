@@ -1,0 +1,52 @@
+{
+  "reader_sha256": "4be88aef933eade926ce7268a87b408451392645ef01e595dd2be24ff6362cf5",
+  "controls": {
+    "same_crossreference_wrong_code": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC exhibit type is not proved by its parent index row"
+    },
+    "same_crossreference_right_code": {
+      "accepted": true,
+      "worker_exact": true
+    },
+    "ambiguous_multiple_links": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC exhibit type is not proved by its parent index row"
+    },
+    "ambiguous_multiple_code_cells": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC exhibit type is not proved by its parent index row"
+    },
+    "uncertain_null_type": {
+      "accepted": true,
+      "worker_exact": true
+    },
+    "wrong_accession_link": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC exhibit is not linked by the proved parent"
+    },
+    "rehashed_actual_body_mutation": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "SEC response target/body/original availability differs"
+    },
+    "gzip_case_insensitive_positive": {
+      "accepted": true,
+      "worker_exact": true
+    },
+    "refresh_raw_drift": {
+      "rejected": true,
+      "type": "ReviewedSourceRejected",
+      "message": "reviewed source artifact changed: /private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpb3awxx6w/drift/body.raw"
+    },
+    "worker_raw_drift": {
+      "rejected": true,
+      "type": "ReviewedSourceRejected",
+      "message": "reviewed source artifact changed: /private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpb3awxx6w/drift/body.raw"
+    }
+  }
+}

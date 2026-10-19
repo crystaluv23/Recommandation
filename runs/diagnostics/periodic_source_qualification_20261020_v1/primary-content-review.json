@@ -1,0 +1,145 @@
+{
+  "schema_version": "independent-periodic-primary-content-review-v1",
+  "scope": "Read-only retained primary bodies and one exact linked archive row; no new GET/model/labels/Signalapply/normalization/source admission/global mutation.",
+  "offset_convention": "Zero-based Python Unicode character offsets in exact UTF-8 decoded raw body, newline bytes preserved; end exclusive. Quotes use production _normalized_visible_text and retain entity spellings. These are source-inspection anchors, not a claimed model projection.",
+  "results_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+    "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e"
+  },
+  "KGC": {
+    "source": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/kgc-fy2024-40f-primary.response.raw",
+      "sha256": "014548bf51ae4915583b200660f77068f180444ff5d412107282840351847d97",
+      "bytes": 391524,
+      "decoded_characters": 391524,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231x40f.htm"
+    },
+    "actual_meaning": "FY2024 Form40-F annual regulatory wrapper with substantive governance/control/auditor-fee/forward-looking disclosures; it explicitly places the operating AIF, annual MD&A and audited financial statements in separate exhibits99.1/99.2/99.3. It is not a standalone full annual operating narrative.",
+    "evidence": [
+      {
+        "raw_character_start": 315906,
+        "raw_character_end_exclusive": 316474,
+        "normalized_visible_quote": "Our Annual Information Form&#160;dated March&#160;27, 2025 and Management&#8217;s Discussion and Analysis, together with our audited consolidated financial statements and notes thereto as at December 31, 2024 and 2023 and for the&#160;years then ended, are filed under cover of this form as exhibits 99.1, 99.2 and 99.3, respectively. Our common shares are listed on the Toronto Stock Exchange and the New York Stock Exchange. There"
+      },
+      {
+        "raw_character_start": 336788,
+        "raw_character_end_exclusive": 337368,
+        "normalized_visible_quote": "OFF-BALANCE SHEET ARRANGEMENTS Our off-balance sheet arrangements are disclosed in Kinross&#8217; Management&#8217;s Discussion and Analysis included as exhibit 99.2 under the captions &#8220;Liquidity and Capital Resources&#8221; and &#8220;Risk Analysis&#8221; and under Note&#160;10, &#8220;Long-Term Debt and Credit Facilities&#8221;, under Note&#160;11, &#8220;Provisions&#8221;, and under Note&#160;18, &#8220;Commitments and Continge"
+      },
+      {
+        "raw_character_start": 331643,
+        "raw_character_end_exclusive": 335694,
+        "normalized_visible_quote": "Audit Fees C$5,843,000 C$4,853,000 Audit-Related Fees C$195,000 C$230,000 Tax Fees C$30,000 nil All Other Fees 1 C$376,000 C$444,000 Audit-related fees inc"
+      }
+    ],
+    "literal_operating_exhibit_links": [
+      {
+        "href_raw": "kgc-20241231xex99d1.htm",
+        "resolved_static_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231xex99d1.htm",
+        "anchor_raw_character_start": 369972,
+        "anchor_raw_character_end_exclusive": 370391,
+        "anchor_text": "Annual Information Form for Kinross Gold Corporation dated March 27 , 2025",
+        "same_SEC_host_issuer_and_accession_directory": true,
+        "body_fetched_or_reviewed_in_this_task": false,
+        "time_note": "Link under this March27 accession supports a bounded next request; reference to February12 filing alone does not prove earlier availability of these exact bytes."
+      },
+      {
+        "href_raw": "kgc-20241231xex99d2.htm",
+        "resolved_static_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231xex99d2.htm",
+        "anchor_raw_character_start": 371633,
+        "anchor_raw_character_end_exclusive": 371983,
+        "anchor_text": "Kinross Gold Corporation Management’s Discussion and Analysis as filed on Form 6-K on February 12, 2025",
+        "same_SEC_host_issuer_and_accession_directory": true,
+        "body_fetched_or_reviewed_in_this_task": false,
+        "time_note": "Link under this March27 accession supports a bounded next request; reference to February12 filing alone does not prove earlier availability of these exact bytes."
+      },
+      {
+        "href_raw": "kgc-20241231xex99d3.htm",
+        "resolved_static_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231xex99d3.htm",
+        "anchor_raw_character_start": 373225,
+        "anchor_raw_character_end_exclusive": 373970,
+        "anchor_text": "Audited consolidated financial statements of Kinross Gold Corporation as at December 31, 2024 and 2023 and for the years then ended, together with the report of KPMG LLP, the independent registered public accounting firm of Kinross Gold Corporation thereon and the report of KPMG LLP, the independent registered public accounting firm of Kinross Gold Corporation on the effectiveness of internal control over financial reporting as of December 31, 2024, as furnished on Form 6-K on February 12, 2025",
+        "same_SEC_host_issuer_and_accession_directory": true,
+        "body_fetched_or_reviewed_in_this_task": false,
+        "time_note": "Link under this March27 accession supports a bounded next request; reference to February12 filing alone does not prove earlier availability of these exact bytes."
+      }
+    ],
+    "units": "The displayed principal accountant fee table is C$ (Canadian dollars); do not assign it the USD unit of the already retained Q2 MD&A/financials.",
+    "current_full_operating_body_contract_satisfied": false,
+    "limits": "Annual form qualification and complete primary-file retrieval do not establish that incorporated exhibit bodies have been obtained or read. These three new exhibit bodies are not in this task. Prior Q2 ex99.1 contains real interim operations/financials but remains separate6-K evidence; no form reclassification.",
+    "next_minimal_content_scope": "Review the literal AIF and annual MD&A for business/risks/segment economics; the literal audited statements link is separately available when financial notes or annual financial-statement context are required. No content or time inferred from link titles."
+  },
+  "MS_Q1": {
+    "source": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/ms-q12025-10q-primary.response.raw",
+      "sha256": "fb7c40d9141c347571d3f86806f9909db98f60dd4ca426a01a8bd6a3f179ff5f",
+      "bytes": 6662772,
+      "decoded_characters": 6662772,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000343/ms-20250331.htm"
+    },
+    "actual_meaning": "Substantive complete primary Q1-2025 interim10-Q body: MD&A, three business segments and operating results, liquidity/capital, market/credit/country risk disclosures, unaudited consolidated statements/notes, controls/exhibits/signatures. Not a cover-only filing.",
+    "evidence": [
+      {
+        "raw_character_start": 988706,
+        "raw_character_end_exclusive": 989505,
+        "normalized_visible_quote": "Introduction Morgan Stanley is a global financial services firm that maintains significant market positions in each of its business segments&#8212;Institutional Securities, Wealth Management and Investment Management. Morgan Stanley, through its subsidiaries and affiliates, provides a wide variety of products and services to a large and diversified group of clients and customers, including corporations, governments, financial institutions and individuals. Unless the context otherwise requires, the terms"
+      },
+      {
+        "raw_character_start": 1004656,
+        "raw_character_end_exclusive": 1005007,
+        "normalized_visible_quote": "We reported net revenues of $17.7 billion in the quarter ended March 31, 2025 (&#8220;current quarter,&#8221; or &#8220;1Q 2025&#8221;), which increased by 17% compared with $15.1 billion in the quarter ended March 31, 2024 (&#8220;prior year quarter,&#8221; or &#8220;1Q 2024&#8221;). Net income applicable to Morgan Stanley was $4.3 billion in the c"
+      },
+      {
+        "raw_character_start": 1902518,
+        "raw_character_end_exclusive": 1907597,
+        "normalized_visible_quote": "95%/One-Day Management VaR for the Trading Portfolio &#160; Three Months Ended March 31, 2025 $ in millions Period End Average High 1 Low 1 Interest rate and credit spread $ 25 &#160; $ 30 &#160; $ 39 &#160;"
+      },
+      {
+        "raw_character_start": 2910469,
+        "raw_character_end_exclusive": 2910893,
+        "normalized_visible_quote": " accompanying financial statements should be read in conjunction with the Firm&#8217;s financial statements and notes thereto included in the 2024 Form 10-K. Certain footnote disclosures included in the 2024 Form 10-K have been condensed or omitted from these financial statements as they are not required for interim reporting under U.S. GAAP. The financial statements reflect all adjustments of a normal, recurring nature "
+      },
+      {
+        "raw_character_start": 6634641,
+        "raw_character_end_exclusive": 6635561,
+        "normalized_visible_quote": "Risk Factors For a discussion of the risk factors affecting the Firm, see &#8220;Risk Factors&#8221; in Part I, Item 1A of the 2024 Form 10-K. Unregistered Sales of Equity Securities and Use of Proceeds Issuer"
+      },
+      {
+        "raw_character_start": 1002825,
+        "raw_character_end_exclusive": 1004675,
+        "normalized_visible_quote": "Net Revenues ($ in millions) Net Income Applicable to Morgan Stanley ($ in millions) Earnings per Diluted Common Share We reported net rev"
+      }
+    ],
+    "unit_anchor": {
+      "raw_character_start": 3163,
+      "raw_character_end_exclusive": 3239,
+      "raw_literal": "<xbrli:unit id=\"usd\"><xbrli:measure>iso4217:USD</xbrli:measure></xbrli:unit>",
+      "meaning": "Embedded monetary unit is USD; visible tables separately specify millions/billions, shares or per-share units. Do not apply a uniform numerical scale to the report."
+    },
+    "period_and_scales": "Quarter ended March31,2025; operating results compare Q1-2024; balance-sheet comparatives include December31,2024. Visible monetary tables use $millions or $billions, EPS/per-share and shares use their own units.",
+    "substantive_interim_body_positive": true,
+    "annual_reference_gap": "Risk Factors points to PartI Item1A of2024 Form10-K; interim statements explicitly condense/omit annual footnotes and are to be read with2024 Form10-K. This supports interim content without proving full annual risk/accounting background.",
+    "contract_implication": "Existing annual-OR-interim menu permits an interim source alone. These ordinary annual references do not create a new requirement to obtain annual before treating this as substantive interim material. Source proof/clock qualification and actual model-visible projection remain separate, unexecuted here."
+  },
+  "MS_annual_clock_observation": {
+    "archive_binding": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/ms-fy2024-linked-submissions-archive.response.raw",
+      "sha256": "efcca5f763356548290eac0b89fc57d19479935aad9e0c1cf762f76e42a25162"
+    },
+    "unique_array_index": 1149,
+    "exact_row": {
+      "accessionNumber": "0000895421-25-000304",
+      "filingDate": "2025-02-21",
+      "form": "10-K",
+      "reportDate": "2024-12-31",
+      "primaryDocument": "ms-20241231.htm",
+      "acceptanceDateTime": "2025-02-22T02:25:14.000Z"
+    },
+    "approved_filed_plus_one_policy_instant": "2025-02-22T00:00:00+00:00",
+    "archive_acceptance_instant_literal": "2025-02-22T02:25:14.000Z",
+    "archive_minus_policy_seconds": 8714.0,
+    "meaning": "Two different clocks: a defined filed-date availability policy and an upstream acceptanceDateTime value. Neither establishes that the other is wrong. Do not rewrite either original or silently change policy.",
+    "remaining_specific_evidence": "If exact acceptance semantics are needed, retain this accession exact SEC submission header and apply the authoritative source-specific clock rules. Annual primary/header not fetched or reviewed here; no timezone guessed."
+  },
+  "overall": "KGC full-operating-body gap remains; MS Q1 is a substantive interim positive pending explicit proof/admission and actual consumption. No overallF2/readiness/model/MVP closure."
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": "root-ms-annual-literal-clock-review-v1",
+  "created_at": "2026-10-19T22:11:31.129317+00:00",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/results.json",
+      "sha256": "696e0121d387fc0e12b2f7df13a78655294404297b9e81f909da79f79c820147"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/ms-fy2024-submission-header.response-prefix.raw",
+      "sha256": "45e8e094c5333d04f42616e5f3062cfb0319cd6a19d145f429c8ff7c7244daf8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/ms-fy2024-linked-submissions-archive.response.raw",
+      "sha256": "efcca5f763356548290eac0b89fc57d19479935aad9e0c1cf762f76e42a25162"
+    }
+  ],
+  "identity": {
+    "issuer_cik": "0000895421",
+    "accession_number": "0000895421-25-000304",
+    "form": "10-K",
+    "filed_date": "2025-02-21",
+    "report_date": "2024-12-31"
+  },
+  "literal_clocks": {
+    "SGML_acceptance_no_offset": "20250221162514",
+    "submissions_acceptance_aware": "2025-02-22T02:25:14.000Z",
+    "financial_existing_filed_next_UTC_day_policy": "2025-02-22T00:00:00+00:00",
+    "retained_primary_Last_Modified": "Fri, 21 Feb 2025 21:25:57 GMT"
+  },
+  "primary_documentation": [
+    {
+      "url": "https://www.sec.gov/about/webmaster-frequently-asked-questions",
+      "section": "How can I understand EDGAR Timestamps?",
+      "finding": "SEC labels header acceptance time EST and says no timestamp indicates first sec.gov content availability."
+    },
+    {
+      "url": "https://www.sec.gov/info/edgar/specifications/pds_dissemination_spec.pdf",
+      "status": "March2025 draft version as currently served",
+      "section": "Control Block Field Definitions, PDF page10",
+      "finding": "Acceptance Time is labeled EST; not field-specific evidence of summer DST behavior."
+    }
+  ],
+  "technical_primary_developer_documentation": {
+    "url": "https://app.edgar.tools/docs/api/filings",
+    "section": "Acceptance times",
+    "finding": "Author documents SEC submissions timestamps varying by filer/day and recommends original SGML header with America/New_York; this is developer observation, not an SEC correction notice for this filing."
+  },
+  "inference_only": {
+    "winter_EST_interpretation_UTC": "2025-02-21T21:25:14+00:00",
+    "current_JSON_seconds_later": 18000.0,
+    "interpretation": "Feb21 winter EST maps16:25:14 to21:25:14Z, consistent with Last-Modified43seconds later. This is corroborative inference, not proof of first availability and not permission for an automatic timezone correction."
+  },
+  "decision": {
+    "annual_body_time_qualification": "unresolved_excluded_from_new_operating_input",
+    "primary_body_semantics": "separate independent review pending",
+    "next_scope": "Use separately proved substantive MSQ1 interim original for the full annual-or-interim requirement; retain annual evidence and clocks unchanged.",
+    "source_policy_changed": false,
+    "financial_policy_changed": false,
+    "existing_original_retimed": false
+  },
+  "limits": [
+    "No blanket subtraction from submissions JSON.",
+    "Do not treat Last-Modified as first publication.",
+    "Complete SEC header is inside a retained65536byte prefix; no full submission hash.",
+    "Root-only mechanical equality does not resolve an independently observed clock conflict."
+  ],
+  "network_requests": 0,
+  "external_llm_calls": 0,
+  "labels_loaded": false,
+  "full_prepare_executed": false
+}
