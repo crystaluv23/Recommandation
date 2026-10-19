@@ -1,0 +1,89 @@
+{
+  "json_output": {
+    "base_hash": "1bc65d4f95327bff04822a164e7b5ce72fbc6c41c37c4a06962765eda9fcdece",
+    "operations": [
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "The Company stated it was updating its previously announced financial outlook for the second quarter 2025, expecting total revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "net_share_retirement_yoy=0.181749",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "net_share_retirement_yoy=0.181749",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "The Company stated it was updating its previously announced financial outlook for the second quarter 2025, expecting total revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million."
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "net_share_retirement_yoy=0.181749"
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 2,
+          "reason": "The order/contract Signal returned domain_unavailable (normal coverage outcome, not a technical failure); no validated evidence on new commercial partnerships, AI monetization milestones, or material contracts was produced, so the need is preserved unchanged.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "full",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ],
+          "need_index": 4,
+          "reason": "The June 25, 2025 filing explicitly states updated Q2 2025 guidance with revenue of $244 million to $249 million and adjusted EBITDA of $88 million to $93 million, answering the guidance question for the most recent quarter; the visible text does not include prior guidance figures or key assumptions, but the requested guidance disclosure itself is provided.",
+          "residual_need": null
+        }
+      }
+    ]
+  },
+  "model": "deepseek-flash",
+  "request_hash": "661a335547b88591a6b4d0e17a53efce71388eb0e51c2a2cc416d3e62cf3785e",
+  "response_id": "be5be095-aa5a-4721-8999-e2f72737ef66",
+  "usage": {
+    "cost": 0.0026871600000000005,
+    "cost_basis": "provider_usage",
+    "input_tokens": 8487,
+    "output_tokens": 555,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 8487
+  }
+}

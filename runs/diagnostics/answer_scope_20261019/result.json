@@ -1,0 +1,37 @@
+{
+  "finished_at": "2026-10-19T03:20:18.867452+00:00",
+  "passed": false,
+  "research_acceptance_closed": false,
+  "samples": [
+    {
+      "failure_type": "CandidateExecutionRejected",
+      "passed": false,
+      "request_hashes": [
+        "661a335547b88591a6b4d0e17a53efce71388eb0e51c2a2cc416d3e62cf3785e",
+        "ab40b31ff82ee10afa22353e5fcb54ca6336302c55fd4db6459a7d74b8a80368",
+        "b3b41101d0093bb9ef2b97b5d4ff139e41061a0e4a2c37e2252e6960827e99ca"
+      ],
+      "sample_id": "plan_r0001_c01"
+    },
+    {
+      "failure_type": "CandidateExecutionRejected",
+      "passed": false,
+      "request_hashes": [
+        "6aad354cce973692110dd1af1bd98649cc4bd7df5528407ee95e2a9807fa9bb7",
+        "9ccda97ef206f37b0f47755d364ceb53d70b4eb4e7ee994d5977fc9a48bd4873",
+        "71517a6e52e0c19a1030d79801c29d07d999f42f99bc83aa93b03512205cdb92"
+      ],
+      "sample_id": "plan_r0001_c02"
+    }
+  ],
+  "schema_version": "executed-answer-scope-result-v1",
+  "scope": "reflect_stage_and_local_consumer_assembly",
+  "source_pit_accepted": false,
+  "usage": {
+    "actual_cost": 0.01605744,
+    "attempt_count": 6,
+    "in_progress": 0,
+    "interrupted": 0,
+    "reserved_cost": 0.09292864
+  }
+}

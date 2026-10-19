@@ -1,0 +1,116 @@
+{
+  "json_output": {
+    "base_hash": "ef8c9a32f023dbdef8a28e9bab69015e8f56a217b1537403b1253f0ac8866b6a",
+    "operations": [
+      {
+        "op": "replace",
+        "path": "decision",
+        "value": "finalize"
+      },
+      {
+        "op": "replace",
+        "path": "current_beliefs[2]",
+        "value": "The issuer's product roadmap includes AI-driven matching, verification, and a summer launch, but management characterized the work as early and not yet proven at scale; the June 25, 2025 filing only restates a Q2 2025 outlook update without prior figures, so direction and magnitude remain unestablished."
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "The June 25, 2025 filing states the Company is updating its previously announced financial outlook for the second quarter 2025, with total revenue expected between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million; the prior guidance figures are not visible, so the revision's direction and magnitude cannot be established."
+      },
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total [ANON_ID_0001]. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "partial",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ],
+          "need_index": 2,
+          "reason": "The June 25, 2025 filing confirms an updated Q2 2025 outlook with revenue of $244 million to $249 million and adjusted EBITDA of $88 million to $93 million, but it addresses Q2 2025 rather than the Q3 2025 range and omits prior figures, so the direction and magnitude of any Q3 2025 revision remain unanswered.",
+          "residual_need": "What did the issuer disclose by the prediction time about the direction and magnitude of any revision to its prior Q3 2025 guidance range?"
+        }
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 4,
+          "reason": "No current-batch evidence addresses new commercial partnerships, off-take commitments, or binding contracts; the order confirmation signal returned domain_unavailable, which is not evidence of absence and cannot answer the need.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 0,
+          "reason": "No current-batch evidence addresses the timing or measurable success criteria for the AI-driven matching and verification initiatives, including member-quality or engagement metrics.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 1,
+          "reason": "No current-batch evidence addresses paying-user trends after Q2 2025 or whether the decline is stabilizing.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 3,
+          "reason": "No current-batch evidence addresses the summer product launch or any pre-launch adoption, retention, or monetization metrics.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 5,
+          "reason": "No current-batch evidence addresses capital allocation plans, including share repurchases or dilution.",
+          "residual_need": null
+        }
+      }
+    ]
+  },
+  "model": "deepseek-flash",
+  "request_hash": "9ccda97ef206f37b0f47755d364ceb53d70b4eb4e7ee994d5977fc9a48bd4873",
+  "response_id": "71b79fdd-a5dd-4c8b-aebe-9c8086111bb0",
+  "usage": {
+    "cost": 0.002562,
+    "cost_basis": "provider_usage",
+    "input_tokens": 7496,
+    "output_tokens": 827,
+    "prompt_cache_hit_tokens": 2944,
+    "prompt_cache_miss_tokens": 4552
+  }
+}

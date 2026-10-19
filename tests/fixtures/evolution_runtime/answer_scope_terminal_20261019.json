@@ -1,0 +1,1498 @@
+{
+  "source": "runs/diagnostics/answer_scope_20261019",
+  "frozen_revision": "8d9105db2a179d525b59e496e9cd8338f03d4d4c",
+  "scope": "exact anonymous wire envelopes and native responses; offline protocol replay only, never model-compliance or research acceptance",
+  "cases": [
+    {
+      "sample_id": "plan_r0001_c01",
+      "first_request_hash": "ab40b31ff82ee10afa22353e5fcb54ca6336302c55fd4db6459a7d74b8a80368",
+      "correction_request_hash": "b3b41101d0093bb9ef2b97b5d4ff139e41061a0e4a2c37e2252e6960827e99ca",
+      "first_response_sha256": "ade2be5c29a14bea4ea17d62a948d839a950da83292dc5156f2b091abd725035",
+      "correction_response_sha256": "4a0792a6b3c6260aa719249db7db7f7829220e1ba35fbcb61b43fee53349a54f",
+      "prior_envelope": {
+        "contradictions": [],
+        "current_beliefs": [
+          "The issuer disclosed a plan to implement a global workforce reduction and restructuring of its operations, with forward-looking statements flagging execution and timing risks.",
+          "A third-party investigation report cited an 8.7% decrease in total paying users in Q2 2025 and a 15.94% stock drop after the announcement, pointing to demand and sentiment pressure.",
+          "The issuer's management commentary emphasized a clear and focused strategy and investments in AI and product technology, but the visible transcript excerpt does not quantify adoption or monetization.",
+          "The issuer's Class A common stock had 103,951,845 shares issued and outstanding as of June 30, 2025, down from 107,107,632 as of December 31, 2024, indicating share count reduction.",
+          "The Company stated it was updating its previously announced financial outlook for the second quarter 2025, expecting total revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+          "net_share_retirement_yoy=0.181749"
+        ],
+        "decision": "continue",
+        "hypotheses": [
+          "If the issuer's restructuring and AI-driven product initiatives produce measurable paying-user stabilization or revenue growth by the horizon end, then the adjusted share price could re-rate toward the doubling threshold; otherwise, continued user declines and impairment charges will keep the stock depressed.",
+          "If the issuer discloses new commercial partnerships, AI feature monetization, or cost savings from the workforce reduction that exceed current expectations, then the expectation gap could close and drive a sharp repricing within six months.",
+          "If the issuer's Q3 2025 results show further paying-user declines or revenue contraction, then the stock may remain below the doubling threshold, as the market continues to price in weak demand and execution risk."
+        ],
+        "need_dispositions": [],
+        "next_information_needs": [
+          "What specific cost savings or operational benefits does the issuer expect from the global workforce reduction and restructuring, and by what date does it expect to realize them?",
+          "What are the latest disclosed trends in total paying users and average revenue per paying user for the most recent quarter, and how do they compare to prior periods?",
+          "Has the issuer announced any new commercial partnerships, AI product monetization milestones, or material contracts that could drive revenue growth within the next six months?",
+          "What is the issuer's current share repurchase authorization or any disclosed plans to reduce share count further, and how might that affect the share price?",
+          "Are there any disclosed regulatory, legal, or competitive developments that could materially affect the issuer's business or stock price within the next six months?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [],
+        "supporting_evidence": [
+          {
+            "claim": "The issuer disclosed a plan to implement a global workforce reduction and restructuring of its operations, with forward-looking statements flagging execution and timing risks.",
+            "exact_text": "the risk that the costs and charges related to our recently announced plan to implement a global workforce reduction and restructuring of our operations may be greater than anticipated or incurred in different periods than anticipated",
+            "kind": "basic_info",
+            "projection_id": "projection_f5e5258464d4602a2ffccc9e"
+          },
+          {
+            "claim": "A third-party investigation report cited an 8.7% decrease in total paying users in Q2 2025 and a 15.94% stock drop after the announcement, pointing to demand and sentiment pressure.",
+            "exact_text": "This investigation comes after [ANON_ID_0000] reported an 8.7% decrease in total paying users in Q2 2025 and analysts expressed concerns that new AI-powered features and stricter verification measures would negatively impact user and payer growth. [ANON_ID_0000]'s stock fell 15.94% after the announcement.",
+            "kind": "basic_info",
+            "projection_id": "projection_0a39f87989579f9ee66e27d7"
+          },
+          {
+            "claim": "The issuer's management commentary emphasized a clear and focused strategy and investments in AI and product technology, but the visible transcript excerpt does not quantify adoption or monetization.",
+            "exact_text": "Hello, everyone, and thank you for joining us today. I’m excited to be back leading [ANON_ID_0000]. We’re moving fast with a clear and focused strategy. It has been really exciting to see the energy the team has around what we are building and t",
+            "kind": "basic_info",
+            "projection_id": "projection_029e0f859b8e8372134fe18b"
+          },
+          {
+            "claim": "The issuer's Class A common stock had 103,951,845 shares issued and outstanding as of June 30, 2025, down from 107,107,632 as of December 31, 2024, indicating share count reduction.",
+            "exact_text": "Class A common stock (par value $ 0.01 per share, 6,000,000,000 shares authorized; 103,951,845 shares issued and outstanding as of June 30, 2025; 107,107,632 shares issued and outstanding as of December 31, 2024) 1,040 1,071",
+            "kind": "basic_info",
+            "projection_id": "projection_d5f65227c7db9101b4c0ccc8"
+          },
+          {
+            "claim": "The Company stated it was updating its previously announced financial outlook for the second quarter 2025, expecting total revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "kind": "signal",
+            "signal_ref": "guidance_acceleration:v3"
+          },
+          {
+            "claim": "net_share_retirement_yoy=0.181749",
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "kind": "signal",
+            "signal_ref": "net_share_retirement_yoy:v3"
+          },
+          {
+            "claim": "net_share_retirement_yoy=0.181749",
+            "evidence_group": "supporting",
+            "evidence_index": 1,
+            "kind": "signal",
+            "signal_ref": "net_share_retirement_yoy:v3"
+          }
+        ]
+      },
+      "executed_selection_intents": [],
+      "reflection_runtime": {
+        "must_finalize": true,
+        "termination_trigger": "budget_exhausted"
+      },
+      "batch": {
+        "document_fingerprints": {
+          "guidance_acceleration:v3": [
+            "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e:3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+            "sec:cik_0001830043:000095017025022236:95e758e72472b2ecf0f6db129ea5872108b5f61836c8da3b169d9340d21d5cd3",
+            "sec:cik_0001830043:000095017025030151:bc736a7f9ffdc55dd9ed70131c8d2c91eddf576c1068e8319a6d6de5e98ff801",
+            "sec:cik_0001830043:000095017025069174:2d79019ce935feaaf4a8fcf2a7ed81519d24d176b73d7dfd2dc7d122e7225406",
+            "sec:cik_0001830043:000119312525008082:3b458765b902fa9beb6e2d6081de0a5e9db55e3628eec2dbed99c0b84daf740e",
+            "sec:cik_0001830043:000119312525042459:4e751991e821abedcfe1fa093cab9e75e7bdc1f5f7b037efeed41e8c8583adb8",
+            "sec:cik_0001830043:000119312525137071:c00525757e3f07cda7a0c9e9c74f0a1f3522270818f137420ef92d2d1ec00c3c",
+            "sec:cik_0001830043:000119312525146199:0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "sec:cik_0001830043:000162828025038334:a838c8f2ce610055dd50fde590a2d11b6c054e163296169d3b85eb2eb1fc968e",
+            "sec:cik_0001830043:000162828025038861:f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3"
+          ],
+          "net_share_retirement_yoy:v3": [
+            "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc:88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6"
+          ],
+          "order_confirmation_disclosed:v2": [
+            "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e:3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+            "avnews_82c6cc3e5143825f6225f673:e3fa9e10193ccb7d57c63d8a3602d521845ddbc7897bee1a1d1e0882663786f6",
+            "avnews_99c1e020321bc0ff6a2d08e8:700757a1accffeff42ab2ce1b5ae5f774f37b8cc88fdd3e6cf23c770f420fe32",
+            "avnews_f143cf6ee086c31fde8b96ad:54bd594f5a1a8b94790b70a9910b4516ec1fa3f8e6841cef80b746fb43cd895b",
+            "sec:cik_0001830043:000095017025065679:586713255fbdeb1f2d847d0542499dfc430f3d05f8ed70fa126dce94083f3d6d",
+            "sec:cik_0001830043:000095017025069174:2d79019ce935feaaf4a8fcf2a7ed81519d24d176b73d7dfd2dc7d122e7225406",
+            "sec:cik_0001830043:000119312525137071:c00525757e3f07cda7a0c9e9c74f0a1f3522270818f137420ef92d2d1ec00c3c",
+            "sec:cik_0001830043:000119312525146199:0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "sec:cik_0001830043:000162828025038334:a838c8f2ce610055dd50fde590a2d11b6c054e163296169d3b85eb2eb1fc968e",
+            "sec:cik_0001830043:000162828025038861:f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3"
+          ]
+        },
+        "resolutions": [
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 1,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 32,
+              "observed_observation_count": 0,
+              "observed_period_span_days": 2373,
+              "query_evaluated": true,
+              "query_matched_document_count": 1,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "selected_document_count": 1,
+              "selection_truncated": false,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-08-07T00:00:00+00:00",
+                "content_hash": "88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6",
+                "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:net_share_retirement_yoy:v3",
+                  "source_types": [
+                    "financials"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Measure year-over-year net share retirement, with dilution represented as a negative value.",
+              "max_documents": 10,
+              "minimum_distinct_periods": 2,
+              "minimum_period_span_days": 330,
+              "query": "weighted average shares shares outstanding",
+              "request_id": "signal:net_share_retirement_yoy:v3",
+              "source_types": [
+                "financials"
+              ]
+            },
+            "status": "resolved"
+          },
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 11,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 1,
+              "observed_observation_count": 0,
+              "observed_period_span_days": null,
+              "query_evaluated": true,
+              "query_matched_document_count": 11,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "selected_document_count": 10,
+              "selection_truncated": true,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-02-28T22:12:38+00:00",
+                "content_hash": "bc736a7f9ffdc55dd9ed70131c8d2c91eddf576c1068e8319a6d6de5e98ff801",
+                "document_id": "sec:cik_0001830043:000095017025030151"
+              },
+              {
+                "available_at": "2025-05-12T20:06:43+00:00",
+                "content_hash": "2d79019ce935feaaf4a8fcf2a7ed81519d24d176b73d7dfd2dc7d122e7225406",
+                "document_id": "sec:cik_0001830043:000095017025069174"
+              },
+              {
+                "available_at": "2025-08-07T20:05:33+00:00",
+                "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+                "document_id": "sec:cik_0001830043:000162828025038861"
+              },
+              {
+                "available_at": "2025-06-25T12:20:35+00:00",
+                "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+                "document_id": "sec:cik_0001830043:000119312525146199"
+              },
+              {
+                "available_at": "2025-06-06T20:15:15+00:00",
+                "content_hash": "c00525757e3f07cda7a0c9e9c74f0a1f3522270818f137420ef92d2d1ec00c3c",
+                "document_id": "sec:cik_0001830043:000119312525137071"
+              },
+              {
+                "available_at": "2025-05-08T00:00:00+00:00",
+                "content_hash": "3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+                "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e"
+              },
+              {
+                "available_at": "2025-01-17T13:25:30+00:00",
+                "content_hash": "3b458765b902fa9beb6e2d6081de0a5e9db55e3628eec2dbed99c0b84daf740e",
+                "document_id": "sec:cik_0001830043:000119312525008082"
+              },
+              {
+                "available_at": "2025-02-28T21:02:09+00:00",
+                "content_hash": "4e751991e821abedcfe1fa093cab9e75e7bdc1f5f7b037efeed41e8c8583adb8",
+                "document_id": "sec:cik_0001830043:000119312525042459"
+              },
+              {
+                "available_at": "2025-08-06T20:12:14+00:00",
+                "content_hash": "a838c8f2ce610055dd50fde590a2d11b6c054e163296169d3b85eb2eb1fc968e",
+                "document_id": "sec:cik_0001830043:000162828025038334"
+              },
+              {
+                "available_at": "2025-02-18T21:13:51+00:00",
+                "content_hash": "95e758e72472b2ecf0f6db129ea5872108b5f61836c8da3b169d9340d21d5cd3",
+                "document_id": "sec:cik_0001830043:000095017025022236"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "sec:cik_0001830043:000095017025030151",
+                    "sec:cik_0001830043:000095017025069174",
+                    "sec:cik_0001830043:000162828025038861",
+                    "sec:cik_0001830043:000119312525146199",
+                    "sec:cik_0001830043:000119312525137071",
+                    "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+                    "sec:cik_0001830043:000119312525008082",
+                    "sec:cik_0001830043:000119312525042459",
+                    "sec:cik_0001830043:000162828025038334",
+                    "sec:cik_0001830043:000095017025022236"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:guidance_acceleration:v3",
+                  "source_types": [
+                    "earnings_call",
+                    "company_announcement",
+                    "press_release",
+                    "filing"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+              "lookback_days": 365,
+              "max_documents": 10,
+              "query": "guidance outlook forecast raises guidance raised guidance lowers guidance lowered guidance reaffirms guidance reaffirmed guidance updated guidance revised guidance now expects management expects company expects",
+              "request_id": "signal:guidance_acceleration:v3",
+              "source_types": [
+                "earnings_call",
+                "company_announcement",
+                "press_release",
+                "filing"
+              ]
+            },
+            "status": "resolved"
+          },
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 23,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 1,
+              "observed_observation_count": 0,
+              "observed_period_span_days": null,
+              "query_evaluated": true,
+              "query_matched_document_count": 11,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "selected_document_count": 10,
+              "selection_truncated": true,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-05-12T20:06:43+00:00",
+                "content_hash": "2d79019ce935feaaf4a8fcf2a7ed81519d24d176b73d7dfd2dc7d122e7225406",
+                "document_id": "sec:cik_0001830043:000095017025069174"
+              },
+              {
+                "available_at": "2025-08-07T20:05:33+00:00",
+                "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+                "document_id": "sec:cik_0001830043:000162828025038861"
+              },
+              {
+                "available_at": "2025-05-07T20:14:55+00:00",
+                "content_hash": "586713255fbdeb1f2d847d0542499dfc430f3d05f8ed70fa126dce94083f3d6d",
+                "document_id": "sec:cik_0001830043:000095017025065679"
+              },
+              {
+                "available_at": "2025-08-06T20:12:14+00:00",
+                "content_hash": "a838c8f2ce610055dd50fde590a2d11b6c054e163296169d3b85eb2eb1fc968e",
+                "document_id": "sec:cik_0001830043:000162828025038334"
+              },
+              {
+                "available_at": "2025-06-06T20:15:15+00:00",
+                "content_hash": "c00525757e3f07cda7a0c9e9c74f0a1f3522270818f137420ef92d2d1ec00c3c",
+                "document_id": "sec:cik_0001830043:000119312525137071"
+              },
+              {
+                "available_at": "2025-06-25T12:20:35+00:00",
+                "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+                "document_id": "sec:cik_0001830043:000119312525146199"
+              },
+              {
+                "available_at": "2025-05-08T00:00:00+00:00",
+                "content_hash": "3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+                "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e"
+              },
+              {
+                "available_at": "2025-07-03T00:00:00+00:00",
+                "content_hash": "54bd594f5a1a8b94790b70a9910b4516ec1fa3f8e6841cef80b746fb43cd895b",
+                "document_id": "avnews_f143cf6ee086c31fde8b96ad"
+              },
+              {
+                "available_at": "2025-04-24T17:52:47+00:00",
+                "content_hash": "e3fa9e10193ccb7d57c63d8a3602d521845ddbc7897bee1a1d1e0882663786f6",
+                "document_id": "avnews_82c6cc3e5143825f6225f673"
+              },
+              {
+                "available_at": "2025-09-28T10:00:00+00:00",
+                "content_hash": "700757a1accffeff42ab2ce1b5ae5f774f37b8cc88fdd3e6cf23c770f420fe32",
+                "document_id": "avnews_99c1e020321bc0ff6a2d08e8"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "sec:cik_0001830043:000095017025069174",
+                    "sec:cik_0001830043:000162828025038861",
+                    "sec:cik_0001830043:000095017025065679",
+                    "sec:cik_0001830043:000162828025038334",
+                    "sec:cik_0001830043:000119312525137071",
+                    "sec:cik_0001830043:000119312525146199",
+                    "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+                    "avnews_f143cf6ee086c31fde8b96ad",
+                    "avnews_82c6cc3e5143825f6225f673",
+                    "avnews_99c1e020321bc0ff6a2d08e8"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:order_confirmation_disclosed:v2",
+                  "source_types": [
+                    "filing",
+                    "news",
+                    "transcript",
+                    "10-k",
+                    "10-q",
+                    "8-k",
+                    "company_news",
+                    "sec_filing",
+                    "earnings_call"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units.",
+              "lookback_days": 180,
+              "max_documents": 10,
+              "query": "order contract offtake binding award customer order delivery schedule named counterparty purchase agreement supply agreement new order offtake agreement binding contract",
+              "request_id": "signal:order_confirmation_disclosed:v2",
+              "source_types": [
+                "filing",
+                "news",
+                "transcript",
+                "10-k",
+                "10-q",
+                "8-k",
+                "company_news",
+                "sec_filing",
+                "earnings_call"
+              ]
+            },
+            "status": "resolved"
+          }
+        ],
+        "results": [
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": [
+                {
+                  "document_id": "sec:cik_0001830043:000119312525146199",
+                  "exact_span": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244&#160;million and $249&#160;million, and adjusted EBITDA between $88&#160;million and $93&#160;million.",
+                  "timestamp": "2025-06-25T12:20:35+00:00"
+                }
+              ]
+            },
+            "execution": {
+              "status": "success"
+            },
+            "interpretation": {
+              "summary": "The June 25, 2025 filing explicitly states the Company is updating its previously announced financial outlook for Q2 2025 and provides new revenue and adjusted EBITDA ranges. This is an explicit revision statement with a current numeric level, but the visible text does not include the prior guidance figures, so the direction and magnitude of the change cannot be established from the available spans. The change is therefore treated as neutral rather than positive or negative."
+            },
+            "signal_id": "guidance_acceleration",
+            "state": {
+              "confidence": 0.5,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "version": 3
+          },
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": []
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            },
+            "interpretation": {
+              "summary": "The visible projections contain no disclosure of a new customer order, contract, offtake agreement, or binding award with a named counterparty or program and a stated or implied value, volume, or delivery schedule. The available text covers litigation, annual meeting voting results, related-party transactions, executive compensation, cost-reduction and marketing-spend commentary, layoffs, a securities-fraud investigation, and financial statements, none of which confirms a qualifying order or contract event. Because the visible text does not address a new customer order or contract award at all, the skill cannot be applied to a measured object."
+            },
+            "signal_id": "order_confirmation_disclosed",
+            "state": {
+              "confidence": 0.5,
+              "value": "unavailable"
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "version": 2
+          },
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+                  "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":104319154}",
+                  "timestamp": "2025-08-07T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+                  "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2024-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-01-01\",\"val\":127490453}",
+                  "timestamp": "2025-08-07T00:00:00+00:00"
+                }
+              ]
+            },
+            "execution": {
+              "status": "success"
+            },
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=0.181749"
+            },
+            "measurement": {
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "period": {
+                "end": "2025-06-30",
+                "start": "2025-01-01"
+              },
+              "unit": "fraction",
+              "value": 0.18174928753292607
+            },
+            "signal_id": "net_share_retirement_yoy",
+            "state": {
+              "confidence": 1.0,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "version": 3
+          }
+        ],
+        "signal_calls": 3,
+        "skipped_unchanged_refs": [],
+        "usage": {
+          "cost": 0.00671916,
+          "llm_calls": 2,
+          "tokens": 23563
+        }
+      },
+      "first_response": {
+        "base_hash": "c1d89bef614cc79d85004f0dd1f15da4ed8286560c4a28a37a6ab2486ea6c449",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "current_beliefs[5]",
+            "value": "net_share_retirement_yoy=0.181749"
+          },
+          {
+            "op": "replace",
+            "path": "supporting_evidence[5]",
+            "value": {
+              "claim": "net_share_retirement_yoy=0.181749",
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "kind": "signal",
+              "signal_ref": "net_share_retirement_yoy:v3"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "supporting_evidence[6]",
+            "value": {
+              "claim": "net_share_retirement_yoy=0.181749",
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "kind": "signal",
+              "signal_ref": "net_share_retirement_yoy:v3"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "decision",
+            "value": "finalize"
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 0,
+              "reason": "No current-batch Signal addresses restructuring cost savings, operational benefits, or realization timing; the workforce-reduction evidence is a risk disclosure only.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 1,
+              "reason": "No current-batch Signal provides paying-user or ARPPU trends for the most recent quarter; the Q2 2025 paying-user decline is prior Basic Info context, not a current-batch measurement.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 2,
+              "reason": "order_confirmation_disclosed returned domain_unavailable (coverage insufficiency, not absence), and no other current-batch Signal reports partnerships, AI monetization milestones, or material contracts.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "partial",
+              "evidence_refs": [
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 0,
+                  "signal_ref": "net_share_retirement_yoy:v3"
+                },
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 1,
+                  "signal_ref": "net_share_retirement_yoy:v3"
+                }
+              ],
+              "need_index": 3,
+              "reason": "The net_share_retirement_yoy Signal measures a positive year-over-year reduction in weighted-average shares for the 2025-01-01 to 2025-06-30 duration, answering the disclosed share-count-reduction facet; no current-batch evidence states a repurchase authorization amount or its price effect.",
+              "residual_need": "What is the issuer's current share repurchase authorization, and how might it affect the share price?"
+            }
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 4,
+              "reason": "No current-batch Signal addresses regulatory, legal, or competitive developments; guidance_acceleration only restates the Q2 2025 revenue and adjusted EBITDA outlook ranges.",
+              "residual_need": null
+            }
+          }
+        ]
+      },
+      "correction_base": {
+        "contradictions": [],
+        "current_beliefs": [
+          "The issuer disclosed a plan to implement a global workforce reduction and restructuring of its operations, with forward-looking statements flagging execution and timing risks.",
+          "A third-party investigation report cited an 8.7% decrease in total paying users in Q2 2025 and a 15.94% stock drop after the announcement, pointing to demand and sentiment pressure.",
+          "The issuer's management commentary emphasized a clear and focused strategy and investments in AI and product technology, but the visible transcript excerpt does not quantify adoption or monetization.",
+          "The issuer's Class A common stock had 103,951,845 shares issued and outstanding as of June 30, 2025, down from 107,107,632 as of December 31, 2024, indicating share count reduction.",
+          "The Company stated it was updating its previously announced financial outlook for the second quarter 2025, expecting total revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+          "net_share_retirement_yoy=0.181749"
+        ],
+        "decision": "finalize",
+        "hypotheses": [
+          "If the issuer's restructuring and AI-driven product initiatives produce measurable paying-user stabilization or revenue growth by the horizon end, then the adjusted share price could re-rate toward the doubling threshold; otherwise, continued user declines and impairment charges will keep the stock depressed.",
+          "If the issuer discloses new commercial partnerships, AI feature monetization, or cost savings from the workforce reduction that exceed current expectations, then the expectation gap could close and drive a sharp repricing within six months.",
+          "If the issuer's Q3 2025 results show further paying-user declines or revenue contraction, then the stock may remain below the doubling threshold, as the market continues to price in weak demand and execution risk."
+        ],
+        "need_dispositions": [
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [],
+            "need_index": 0,
+            "reason": "No current-batch Signal addresses restructuring cost savings, operational benefits, or realization timing; the workforce-reduction evidence is a risk disclosure only.",
+            "residual_need": null
+          },
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [],
+            "need_index": 1,
+            "reason": "No current-batch Signal provides paying-user or ARPPU trends for the most recent quarter; the Q2 2025 paying-user decline is prior Basic Info context, not a current-batch measurement.",
+            "residual_need": null
+          },
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [],
+            "need_index": 2,
+            "reason": "order_confirmation_disclosed returned domain_unavailable (coverage insufficiency, not absence), and no other current-batch Signal reports partnerships, AI monetization milestones, or material contracts.",
+            "residual_need": null
+          },
+          {
+            "answer_scope": "partial",
+            "evidence_refs": [
+              {
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+                "signal_ref": "net_share_retirement_yoy:v3"
+              },
+              {
+                "evidence_group": "supporting",
+                "evidence_index": 1,
+                "signal_ref": "net_share_retirement_yoy:v3"
+              }
+            ],
+            "need_index": 3,
+            "reason": "The net_share_retirement_yoy Signal measures a positive year-over-year reduction in weighted-average shares for the 2025-01-01 to 2025-06-30 duration, answering the disclosed share-count-reduction facet; no current-batch evidence states a repurchase authorization amount or its price effect.",
+            "residual_need": "What is the issuer's current share repurchase authorization, and how might it affect the share price?"
+          },
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [],
+            "need_index": 4,
+            "reason": "No current-batch Signal addresses regulatory, legal, or competitive developments; guidance_acceleration only restates the Q2 2025 revenue and adjusted EBITDA outlook ranges.",
+            "residual_need": null
+          }
+        ],
+        "next_information_needs": [
+          "What specific cost savings or operational benefits does the issuer expect from the global workforce reduction and restructuring, and by what date does it expect to realize them?",
+          "What are the latest disclosed trends in total paying users and average revenue per paying user for the most recent quarter, and how do they compare to prior periods?",
+          "Has the issuer announced any new commercial partnerships, AI product monetization milestones, or material contracts that could drive revenue growth within the next six months?",
+          "What is the issuer's current share repurchase authorization or any disclosed plans to reduce share count further, and how might that affect the share price?",
+          "Are there any disclosed regulatory, legal, or competitive developments that could materially affect the issuer's business or stock price within the next six months?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [],
+        "supporting_evidence": [
+          {
+            "claim": "The issuer disclosed a plan to implement a global workforce reduction and restructuring of its operations, with forward-looking statements flagging execution and timing risks.",
+            "exact_text": "the risk that the costs and charges related to our recently announced plan to implement a global workforce reduction and restructuring of our operations may be greater than anticipated or incurred in different periods than anticipated",
+            "kind": "basic_info",
+            "projection_id": "projection_f5e5258464d4602a2ffccc9e"
+          },
+          {
+            "claim": "A third-party investigation report cited an 8.7% decrease in total paying users in Q2 2025 and a 15.94% stock drop after the announcement, pointing to demand and sentiment pressure.",
+            "exact_text": "This investigation comes after [ANON_ID_0000] reported an 8.7% decrease in total paying users in Q2 2025 and analysts expressed concerns that new AI-powered features and stricter verification measures would negatively impact user and payer growth. [ANON_ID_0000]'s stock fell 15.94% after the announcement.",
+            "kind": "basic_info",
+            "projection_id": "projection_0a39f87989579f9ee66e27d7"
+          },
+          {
+            "claim": "The issuer's management commentary emphasized a clear and focused strategy and investments in AI and product technology, but the visible transcript excerpt does not quantify adoption or monetization.",
+            "exact_text": "Hello, everyone, and thank you for joining us today. I’m excited to be back leading [ANON_ID_0000]. We’re moving fast with a clear and focused strategy. It has been really exciting to see the energy the team has around what we are building and t",
+            "kind": "basic_info",
+            "projection_id": "projection_029e0f859b8e8372134fe18b"
+          },
+          {
+            "claim": "The issuer's Class A common stock had 103,951,845 shares issued and outstanding as of June 30, 2025, down from 107,107,632 as of December 31, 2024, indicating share count reduction.",
+            "exact_text": "Class A common stock (par value $ 0.01 per share, 6,000,000,000 shares authorized; 103,951,845 shares issued and outstanding as of June 30, 2025; 107,107,632 shares issued and outstanding as of December 31, 2024) 1,040 1,071",
+            "kind": "basic_info",
+            "projection_id": "projection_d5f65227c7db9101b4c0ccc8"
+          },
+          {
+            "claim": "The Company stated it was updating its previously announced financial outlook for the second quarter 2025, expecting total revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "kind": "signal",
+            "signal_ref": "guidance_acceleration:v3"
+          },
+          {
+            "claim": "net_share_retirement_yoy=0.181749",
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "kind": "signal",
+            "signal_ref": "net_share_retirement_yoy:v3"
+          },
+          {
+            "claim": "net_share_retirement_yoy=0.181749",
+            "evidence_group": "supporting",
+            "evidence_index": 1,
+            "kind": "signal",
+            "signal_ref": "net_share_retirement_yoy:v3"
+          }
+        ]
+      },
+      "old_correction": {
+        "base_hash": "11bacf827802df7871f3903c9c8bc905965fe1b95737c3e4d3aa97728d798111",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "need_dispositions[0]",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 0,
+              "reason": "No current-batch Signal addresses restructuring cost savings, operational benefits, or realization timing; the workforce-reduction evidence is a risk disclosure only.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "replace",
+            "path": "need_dispositions[1]",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 1,
+              "reason": "No current-batch Signal provides paying-user or ARPPU trends for the most recent quarter; the Q2 2025 paying-user decline is prior Basic Info context, not a current-batch measurement.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "replace",
+            "path": "need_dispositions[2]",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 2,
+              "reason": "order_confirmation_disclosed returned domain_unavailable (coverage insufficiency, not absence), and no other current-batch Signal reports partnerships, AI monetization milestones, or material contracts.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "replace",
+            "path": "need_dispositions[3]",
+            "value": {
+              "answer_scope": "partial",
+              "evidence_refs": [
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 0,
+                  "signal_ref": "net_share_retirement_yoy:v3"
+                },
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 1,
+                  "signal_ref": "net_share_retirement_yoy:v3"
+                }
+              ],
+              "need_index": 3,
+              "reason": "The net_share_retirement_yoy Signal measures a positive year-over-year reduction in weighted-average shares for the 2025-01-01 to 2025-06-30 duration, answering the disclosed share-count-reduction facet; no current-batch evidence states a repurchase authorization amount or its price effect.",
+              "residual_need": "What is the issuer's current share repurchase authorization, and how might it affect the share price?"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "need_dispositions[4]",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 4,
+              "reason": "No current-batch Signal addresses regulatory, legal, or competitive developments; guidance_acceleration only restates the Q2 2025 revenue and adjusted EBITDA outlook ranges.",
+              "residual_need": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "plan_r0001_c02",
+      "first_request_hash": "9ccda97ef206f37b0f47755d364ceb53d70b4eb4e7ee994d5977fc9a48bd4873",
+      "correction_request_hash": "71517a6e52e0c19a1030d79801c29d07d999f42f99bc83aa93b03512205cdb92",
+      "first_response_sha256": "ea33fff2df5ff81464614fa1b842a5d1b58b10d06423554049d5f5bc06622573",
+      "correction_response_sha256": "9e88d0e8d53f867838b95ed0b08187ef4f4f341f5bdd27b8d40b35bf07232822",
+      "prior_envelope": {
+        "contradictions": [],
+        "current_beliefs": [
+          "Management explicitly warned that efforts to improve the member base will likely result in fewer paying members in the near term, a self-disclosed headwind to the top of the funnel.",
+          "Management identified cost savings and reduced marketing spend, which supports profitability but does not by itself create a revenue or expectation reacceleration catalyst.",
+          "The issuer's product roadmap includes AI-driven matching, verification, and a summer launch, but management characterized the work as early and not yet proven at scale.",
+          "The issuer's balance sheet and cash generation were described as strong, which reduces near-term solvency risk but does not establish a path to a doubling of the adjusted share price."
+        ],
+        "decision": "continue",
+        "hypotheses": [
+          "The issuer is not positioned for a six-calendar-month adjusted-share-price doubling because its own Q1 2025 commentary and Q2 2025 guidance describe near-term paying-user and revenue contraction, and no visible evidence shows a commercial inflection large enough to reverse that trajectory.",
+          "If the issuer's AI-driven matching and verification initiatives produce measurable member-quality and engagement improvements before the horizon end, the market could re-rate the stock upward, but the visible evidence does not yet quantify adoption or retention gains sufficient to support a doubling.",
+          "The most likely path to a doubling would require a new, source-backed catalyst such as a binding commercial partnership, a material upward guidance revision, or evidence of accelerating payer growth, none of which is visible in the supplied Basic Info."
+        ],
+        "need_dispositions": [],
+        "next_information_needs": [
+          "What did the issuer disclose by the prediction time about the expected timing and measurable success criteria for its AI-driven matching and verification initiatives, including any member-quality or engagement metrics?",
+          "What did the issuer disclose by the prediction time about paying-user trends after Q2 2025, including any early Q3 2025 data or commentary on whether the decline is stabilizing?",
+          "What did the issuer disclose by the prediction time about whether the prior Q3 2025 guidance range has been reaffirmed or revised, and the direction and magnitude of any revision?",
+          "What did the issuer disclose by the prediction time about the summer product launch, including any pre-launch adoption, retention, or monetization metrics?",
+          "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+          "What did the issuer disclose by the prediction time about its capital allocation plans, including share repurchases or dilution, that could affect the adjusted share price within the horizon?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [],
+        "supporting_evidence": [
+          {
+            "claim": "A third-party investigation report states that the issuer reported an 8.7% decrease in total paying users in Q2 2025 and that its stock fell 15.94% after the announcement.",
+            "exact_text": "This investigation comes after [ANON_ID_0000] reported an 8.7% decrease in total paying users in Q2 2025 and analysts expressed concerns that new AI-powered features and stricter verification measures would negatively impact user and payer growth. [ANON_ID_0000]'s stock fell 15.94% after the announcement.",
+            "kind": "basic_info",
+            "projection_id": "projection_0a39f87989579f9ee66e27d7"
+          },
+          {
+            "claim": "A third-party news report states that the issuer's stock saw a 0.22% decline on a Friday, closing at $9.08, and that the stock is currently trading significantly below its 52-week high.",
+            "exact_text": "[ANON_ID_0001]. ([ANON_ID_0002]) stock saw a 0.22% decline on a Friday, closing at $9.08, while the S&P 500 Index experienced a gain of 0.23%. This underperformance adds to a challenging month for [ANON_ID_0000], which has lost 4.22% compared to the S&P 500's 1.29% gain. The stock is currently trading significantly below its 52-week high, indicating a bearish trend.",
+            "kind": "basic_info",
+            "projection_id": "projection_4a50091b38550fa1aacfeac0"
+          },
+          {
+            "claim": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total [ANON_ID_0001]. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "kind": "signal",
+            "signal_ref": "guidance_acceleration:v3"
+          }
+        ]
+      },
+      "executed_selection_intents": [],
+      "reflection_runtime": {
+        "must_finalize": true,
+        "termination_trigger": "budget_exhausted"
+      },
+      "batch": {
+        "document_fingerprints": {
+          "guidance_acceleration:v3": [
+            "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e:3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+            "sec:cik_0001830043:000095017025022236:95e758e72472b2ecf0f6db129ea5872108b5f61836c8da3b169d9340d21d5cd3",
+            "sec:cik_0001830043:000095017025030151:bc736a7f9ffdc55dd9ed70131c8d2c91eddf576c1068e8319a6d6de5e98ff801",
+            "sec:cik_0001830043:000095017025069174:2d79019ce935feaaf4a8fcf2a7ed81519d24d176b73d7dfd2dc7d122e7225406",
+            "sec:cik_0001830043:000119312525008082:3b458765b902fa9beb6e2d6081de0a5e9db55e3628eec2dbed99c0b84daf740e",
+            "sec:cik_0001830043:000119312525042459:4e751991e821abedcfe1fa093cab9e75e7bdc1f5f7b037efeed41e8c8583adb8",
+            "sec:cik_0001830043:000119312525137071:c00525757e3f07cda7a0c9e9c74f0a1f3522270818f137420ef92d2d1ec00c3c",
+            "sec:cik_0001830043:000119312525146199:0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "sec:cik_0001830043:000162828025038334:a838c8f2ce610055dd50fde590a2d11b6c054e163296169d3b85eb2eb1fc968e",
+            "sec:cik_0001830043:000162828025038861:f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3"
+          ],
+          "order_confirmation_disclosed:v2": [
+            "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e:3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+            "avnews_82c6cc3e5143825f6225f673:e3fa9e10193ccb7d57c63d8a3602d521845ddbc7897bee1a1d1e0882663786f6",
+            "avnews_99c1e020321bc0ff6a2d08e8:700757a1accffeff42ab2ce1b5ae5f774f37b8cc88fdd3e6cf23c770f420fe32",
+            "avnews_f143cf6ee086c31fde8b96ad:54bd594f5a1a8b94790b70a9910b4516ec1fa3f8e6841cef80b746fb43cd895b",
+            "sec:cik_0001830043:000095017025065679:586713255fbdeb1f2d847d0542499dfc430f3d05f8ed70fa126dce94083f3d6d",
+            "sec:cik_0001830043:000095017025069174:2d79019ce935feaaf4a8fcf2a7ed81519d24d176b73d7dfd2dc7d122e7225406",
+            "sec:cik_0001830043:000119312525137071:c00525757e3f07cda7a0c9e9c74f0a1f3522270818f137420ef92d2d1ec00c3c",
+            "sec:cik_0001830043:000119312525146199:0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "sec:cik_0001830043:000162828025038334:a838c8f2ce610055dd50fde590a2d11b6c054e163296169d3b85eb2eb1fc968e",
+            "sec:cik_0001830043:000162828025038861:f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3"
+          ]
+        },
+        "resolutions": [
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 11,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 1,
+              "observed_observation_count": 0,
+              "observed_period_span_days": null,
+              "query_evaluated": true,
+              "query_matched_document_count": 11,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "selected_document_count": 10,
+              "selection_truncated": true,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-02-28T22:12:38+00:00",
+                "content_hash": "bc736a7f9ffdc55dd9ed70131c8d2c91eddf576c1068e8319a6d6de5e98ff801",
+                "document_id": "sec:cik_0001830043:000095017025030151"
+              },
+              {
+                "available_at": "2025-05-12T20:06:43+00:00",
+                "content_hash": "2d79019ce935feaaf4a8fcf2a7ed81519d24d176b73d7dfd2dc7d122e7225406",
+                "document_id": "sec:cik_0001830043:000095017025069174"
+              },
+              {
+                "available_at": "2025-08-07T20:05:33+00:00",
+                "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+                "document_id": "sec:cik_0001830043:000162828025038861"
+              },
+              {
+                "available_at": "2025-06-25T12:20:35+00:00",
+                "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+                "document_id": "sec:cik_0001830043:000119312525146199"
+              },
+              {
+                "available_at": "2025-06-06T20:15:15+00:00",
+                "content_hash": "c00525757e3f07cda7a0c9e9c74f0a1f3522270818f137420ef92d2d1ec00c3c",
+                "document_id": "sec:cik_0001830043:000119312525137071"
+              },
+              {
+                "available_at": "2025-05-08T00:00:00+00:00",
+                "content_hash": "3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+                "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e"
+              },
+              {
+                "available_at": "2025-01-17T13:25:30+00:00",
+                "content_hash": "3b458765b902fa9beb6e2d6081de0a5e9db55e3628eec2dbed99c0b84daf740e",
+                "document_id": "sec:cik_0001830043:000119312525008082"
+              },
+              {
+                "available_at": "2025-02-28T21:02:09+00:00",
+                "content_hash": "4e751991e821abedcfe1fa093cab9e75e7bdc1f5f7b037efeed41e8c8583adb8",
+                "document_id": "sec:cik_0001830043:000119312525042459"
+              },
+              {
+                "available_at": "2025-08-06T20:12:14+00:00",
+                "content_hash": "a838c8f2ce610055dd50fde590a2d11b6c054e163296169d3b85eb2eb1fc968e",
+                "document_id": "sec:cik_0001830043:000162828025038334"
+              },
+              {
+                "available_at": "2025-02-18T21:13:51+00:00",
+                "content_hash": "95e758e72472b2ecf0f6db129ea5872108b5f61836c8da3b169d9340d21d5cd3",
+                "document_id": "sec:cik_0001830043:000095017025022236"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "sec:cik_0001830043:000095017025030151",
+                    "sec:cik_0001830043:000095017025069174",
+                    "sec:cik_0001830043:000162828025038861",
+                    "sec:cik_0001830043:000119312525146199",
+                    "sec:cik_0001830043:000119312525137071",
+                    "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+                    "sec:cik_0001830043:000119312525008082",
+                    "sec:cik_0001830043:000119312525042459",
+                    "sec:cik_0001830043:000162828025038334",
+                    "sec:cik_0001830043:000095017025022236"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:guidance_acceleration:v3",
+                  "source_types": [
+                    "earnings_call",
+                    "company_announcement",
+                    "press_release",
+                    "filing"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+              "lookback_days": 365,
+              "max_documents": 10,
+              "query": "guidance outlook forecast raises guidance raised guidance lowers guidance lowered guidance reaffirms guidance reaffirmed guidance updated guidance revised guidance now expects management expects company expects",
+              "request_id": "signal:guidance_acceleration:v3",
+              "source_types": [
+                "earnings_call",
+                "company_announcement",
+                "press_release",
+                "filing"
+              ]
+            },
+            "status": "resolved"
+          },
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 23,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 1,
+              "observed_observation_count": 0,
+              "observed_period_span_days": null,
+              "query_evaluated": true,
+              "query_matched_document_count": 11,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "selected_document_count": 10,
+              "selection_truncated": true,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-05-12T20:06:43+00:00",
+                "content_hash": "2d79019ce935feaaf4a8fcf2a7ed81519d24d176b73d7dfd2dc7d122e7225406",
+                "document_id": "sec:cik_0001830043:000095017025069174"
+              },
+              {
+                "available_at": "2025-08-07T20:05:33+00:00",
+                "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+                "document_id": "sec:cik_0001830043:000162828025038861"
+              },
+              {
+                "available_at": "2025-05-07T20:14:55+00:00",
+                "content_hash": "586713255fbdeb1f2d847d0542499dfc430f3d05f8ed70fa126dce94083f3d6d",
+                "document_id": "sec:cik_0001830043:000095017025065679"
+              },
+              {
+                "available_at": "2025-08-06T20:12:14+00:00",
+                "content_hash": "a838c8f2ce610055dd50fde590a2d11b6c054e163296169d3b85eb2eb1fc968e",
+                "document_id": "sec:cik_0001830043:000162828025038334"
+              },
+              {
+                "available_at": "2025-06-06T20:15:15+00:00",
+                "content_hash": "c00525757e3f07cda7a0c9e9c74f0a1f3522270818f137420ef92d2d1ec00c3c",
+                "document_id": "sec:cik_0001830043:000119312525137071"
+              },
+              {
+                "available_at": "2025-06-25T12:20:35+00:00",
+                "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+                "document_id": "sec:cik_0001830043:000119312525146199"
+              },
+              {
+                "available_at": "2025-05-08T00:00:00+00:00",
+                "content_hash": "3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+                "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e"
+              },
+              {
+                "available_at": "2025-07-03T00:00:00+00:00",
+                "content_hash": "54bd594f5a1a8b94790b70a9910b4516ec1fa3f8e6841cef80b746fb43cd895b",
+                "document_id": "avnews_f143cf6ee086c31fde8b96ad"
+              },
+              {
+                "available_at": "2025-04-24T17:52:47+00:00",
+                "content_hash": "e3fa9e10193ccb7d57c63d8a3602d521845ddbc7897bee1a1d1e0882663786f6",
+                "document_id": "avnews_82c6cc3e5143825f6225f673"
+              },
+              {
+                "available_at": "2025-09-28T10:00:00+00:00",
+                "content_hash": "700757a1accffeff42ab2ce1b5ae5f774f37b8cc88fdd3e6cf23c770f420fe32",
+                "document_id": "avnews_99c1e020321bc0ff6a2d08e8"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "sec:cik_0001830043:000095017025069174",
+                    "sec:cik_0001830043:000162828025038861",
+                    "sec:cik_0001830043:000095017025065679",
+                    "sec:cik_0001830043:000162828025038334",
+                    "sec:cik_0001830043:000119312525137071",
+                    "sec:cik_0001830043:000119312525146199",
+                    "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+                    "avnews_f143cf6ee086c31fde8b96ad",
+                    "avnews_82c6cc3e5143825f6225f673",
+                    "avnews_99c1e020321bc0ff6a2d08e8"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:order_confirmation_disclosed:v2",
+                  "source_types": [
+                    "filing",
+                    "news",
+                    "transcript",
+                    "10-k",
+                    "10-q",
+                    "8-k",
+                    "company_news",
+                    "sec_filing",
+                    "earnings_call"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units.",
+              "lookback_days": 180,
+              "max_documents": 10,
+              "query": "order contract offtake binding award customer order delivery schedule named counterparty purchase agreement supply agreement new order offtake agreement binding contract",
+              "request_id": "signal:order_confirmation_disclosed:v2",
+              "source_types": [
+                "filing",
+                "news",
+                "transcript",
+                "10-k",
+                "10-q",
+                "8-k",
+                "company_news",
+                "sec_filing",
+                "earnings_call"
+              ]
+            },
+            "status": "resolved"
+          }
+        ],
+        "results": [
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": [
+                {
+                  "document_id": "sec:cik_0001830043:000119312525146199",
+                  "exact_span": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244&#160;million and $249&#160;million, and adjusted EBITDA between $88&#160;million and $93&#160;million.",
+                  "timestamp": "2025-06-25T12:20:35+00:00"
+                }
+              ]
+            },
+            "execution": {
+              "status": "success"
+            },
+            "interpretation": {
+              "summary": "The June 25, 2025 filing explicitly states the Company is updating its previously announced financial outlook for Q2 2025 and provides new revenue and adjusted EBITDA ranges. This is an explicit revision statement with a current numeric level, but the visible text does not include the prior guidance figures, so the direction and magnitude of the change cannot be established from the available spans. The change is therefore treated as neutral rather than positive or negative."
+            },
+            "signal_id": "guidance_acceleration",
+            "state": {
+              "confidence": 0.5,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "version": 3
+          },
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": []
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            },
+            "interpretation": {
+              "summary": "The visible projections contain no disclosure of a new customer order, contract, offtake agreement, or binding award with a named counterparty or program and a stated or implied value, volume, or delivery schedule. The available text covers litigation, annual meeting voting results, related-party transactions, executive compensation, cost-reduction and marketing-spend commentary, layoffs, a securities-fraud investigation, and financial statements, none of which confirms a qualifying order or contract event. Because the visible text does not address a new customer order or contract award at all, the skill cannot be applied to a measured object."
+            },
+            "signal_id": "order_confirmation_disclosed",
+            "state": {
+              "confidence": 0.5,
+              "value": "unavailable"
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "version": 2
+          }
+        ],
+        "signal_calls": 2,
+        "skipped_unchanged_refs": [],
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 0,
+          "tokens": 23563
+        }
+      },
+      "first_response": {
+        "base_hash": "ef8c9a32f023dbdef8a28e9bab69015e8f56a217b1537403b1253f0ac8866b6a",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "decision",
+            "value": "finalize"
+          },
+          {
+            "op": "replace",
+            "path": "current_beliefs[2]",
+            "value": "The issuer's product roadmap includes AI-driven matching, verification, and a summer launch, but management characterized the work as early and not yet proven at scale; the June 25, 2025 filing only restates a Q2 2025 outlook update without prior figures, so direction and magnitude remain unestablished."
+          },
+          {
+            "op": "append",
+            "path": "current_beliefs",
+            "value": "The June 25, 2025 filing states the Company is updating its previously announced financial outlook for the second quarter 2025, with total revenue expected between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million; the prior guidance figures are not visible, so the revision's direction and magnitude cannot be established."
+          },
+          {
+            "op": "append",
+            "path": "supporting_evidence",
+            "value": {
+              "claim": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total [ANON_ID_0001]. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "kind": "signal",
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "partial",
+              "evidence_refs": [
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 0,
+                  "signal_ref": "guidance_acceleration:v3"
+                }
+              ],
+              "need_index": 2,
+              "reason": "The June 25, 2025 filing confirms an updated Q2 2025 outlook with revenue of $244 million to $249 million and adjusted EBITDA of $88 million to $93 million, but it addresses Q2 2025 rather than the Q3 2025 range and omits prior figures, so the direction and magnitude of any Q3 2025 revision remain unanswered.",
+              "residual_need": "What did the issuer disclose by the prediction time about the direction and magnitude of any revision to its prior Q3 2025 guidance range?"
+            }
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 4,
+              "reason": "No current-batch evidence addresses new commercial partnerships, off-take commitments, or binding contracts; the order confirmation signal returned domain_unavailable, which is not evidence of absence and cannot answer the need.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 0,
+              "reason": "No current-batch evidence addresses the timing or measurable success criteria for the AI-driven matching and verification initiatives, including member-quality or engagement metrics.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 1,
+              "reason": "No current-batch evidence addresses paying-user trends after Q2 2025 or whether the decline is stabilizing.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 3,
+              "reason": "No current-batch evidence addresses the summer product launch or any pre-launch adoption, retention, or monetization metrics.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "append",
+            "path": "need_dispositions",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 5,
+              "reason": "No current-batch evidence addresses capital allocation plans, including share repurchases or dilution.",
+              "residual_need": null
+            }
+          }
+        ]
+      },
+      "correction_base": {
+        "contradictions": [],
+        "current_beliefs": [
+          "Management explicitly warned that efforts to improve the member base will likely result in fewer paying members in the near term, a self-disclosed headwind to the top of the funnel.",
+          "Management identified cost savings and reduced marketing spend, which supports profitability but does not by itself create a revenue or expectation reacceleration catalyst.",
+          "The issuer's balance sheet and cash generation were described as strong, which reduces near-term solvency risk but does not establish a path to a doubling of the adjusted share price."
+        ],
+        "decision": "finalize",
+        "hypotheses": [
+          "The issuer is not positioned for a six-calendar-month adjusted-share-price doubling because its own Q1 2025 commentary and Q2 2025 guidance describe near-term paying-user and revenue contraction, and no visible evidence shows a commercial inflection large enough to reverse that trajectory.",
+          "If the issuer's AI-driven matching and verification initiatives produce measurable member-quality and engagement improvements before the horizon end, the market could re-rate the stock upward, but the visible evidence does not yet quantify adoption or retention gains sufficient to support a doubling.",
+          "The most likely path to a doubling would require a new, source-backed catalyst such as a binding commercial partnership, a material upward guidance revision, or evidence of accelerating payer growth, none of which is visible in the supplied Basic Info."
+        ],
+        "need_dispositions": [
+          {
+            "answer_scope": "partial",
+            "evidence_refs": [
+              {
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+                "signal_ref": "guidance_acceleration:v3"
+              }
+            ],
+            "need_index": 2,
+            "reason": "The June 25, 2025 filing confirms an updated Q2 2025 outlook with revenue of $244 million to $249 million and adjusted EBITDA of $88 million to $93 million, but it addresses Q2 2025 rather than the Q3 2025 range and omits prior figures, so the direction and magnitude of any Q3 2025 revision remain unanswered.",
+            "residual_need": "What did the issuer disclose by the prediction time about the direction and magnitude of any revision to its prior Q3 2025 guidance range?"
+          },
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [],
+            "need_index": 4,
+            "reason": "No current-batch evidence addresses new commercial partnerships, off-take commitments, or binding contracts; the order confirmation signal returned domain_unavailable, which is not evidence of absence and cannot answer the need.",
+            "residual_need": null
+          },
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [],
+            "need_index": 0,
+            "reason": "No current-batch evidence addresses the timing or measurable success criteria for the AI-driven matching and verification initiatives, including member-quality or engagement metrics.",
+            "residual_need": null
+          },
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [],
+            "need_index": 1,
+            "reason": "No current-batch evidence addresses paying-user trends after Q2 2025 or whether the decline is stabilizing.",
+            "residual_need": null
+          },
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [],
+            "need_index": 3,
+            "reason": "No current-batch evidence addresses the summer product launch or any pre-launch adoption, retention, or monetization metrics.",
+            "residual_need": null
+          },
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [],
+            "need_index": 5,
+            "reason": "No current-batch evidence addresses capital allocation plans, including share repurchases or dilution.",
+            "residual_need": null
+          }
+        ],
+        "next_information_needs": [
+          "What did the issuer disclose by the prediction time about the expected timing and measurable success criteria for its AI-driven matching and verification initiatives, including any member-quality or engagement metrics?",
+          "What did the issuer disclose by the prediction time about paying-user trends after Q2 2025, including any early Q3 2025 data or commentary on whether the decline is stabilizing?",
+          "What did the issuer disclose by the prediction time about whether the prior Q3 2025 guidance range has been reaffirmed or revised, and the direction and magnitude of any revision?",
+          "What did the issuer disclose by the prediction time about the summer product launch, including any pre-launch adoption, retention, or monetization metrics?",
+          "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+          "What did the issuer disclose by the prediction time about its capital allocation plans, including share repurchases or dilution, that could affect the adjusted share price within the horizon?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [],
+        "supporting_evidence": [
+          {
+            "claim": "A third-party investigation report states that the issuer reported an 8.7% decrease in total paying users in Q2 2025 and that its stock fell 15.94% after the announcement.",
+            "exact_text": "This investigation comes after [ANON_ID_0000] reported an 8.7% decrease in total paying users in Q2 2025 and analysts expressed concerns that new AI-powered features and stricter verification measures would negatively impact user and payer growth. [ANON_ID_0000]'s stock fell 15.94% after the announcement.",
+            "kind": "basic_info",
+            "projection_id": "projection_0a39f87989579f9ee66e27d7"
+          },
+          {
+            "claim": "A third-party news report states that the issuer's stock saw a 0.22% decline on a Friday, closing at $9.08, and that the stock is currently trading significantly below its 52-week high.",
+            "exact_text": "[ANON_ID_0001]. ([ANON_ID_0002]) stock saw a 0.22% decline on a Friday, closing at $9.08, while the S&P 500 Index experienced a gain of 0.23%. This underperformance adds to a challenging month for [ANON_ID_0000], which has lost 4.22% compared to the S&P 500's 1.29% gain. The stock is currently trading significantly below its 52-week high, indicating a bearish trend.",
+            "kind": "basic_info",
+            "projection_id": "projection_4a50091b38550fa1aacfeac0"
+          },
+          {
+            "claim": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total [ANON_ID_0001]. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "kind": "signal",
+            "signal_ref": "guidance_acceleration:v3"
+          },
+          {
+            "claim": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total [ANON_ID_0001]. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "kind": "signal",
+            "signal_ref": "guidance_acceleration:v3"
+          }
+        ]
+      },
+      "old_correction": {
+        "base_hash": "16b9dc9d6797f91539d99f3dce23d3193a5836632f8ed0c22c1e040063018cbd",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "need_dispositions[0]",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 0,
+              "reason": "No current-batch evidence addresses the timing or measurable success criteria for the AI-driven matching and verification initiatives, including member-quality or engagement metrics.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "replace",
+            "path": "need_dispositions[1]",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 1,
+              "reason": "No current-batch evidence addresses paying-user trends after Q2 2025 or whether the decline is stabilizing.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "replace",
+            "path": "need_dispositions[2]",
+            "value": {
+              "answer_scope": "partial",
+              "evidence_refs": [
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 0,
+                  "signal_ref": "guidance_acceleration:v3"
+                }
+              ],
+              "need_index": 2,
+              "reason": "The June 25, 2025 filing confirms an updated Q2 2025 outlook with revenue of $244 million to $249 million and adjusted EBITDA of $88 million to $93 million, but it addresses Q2 2025 rather than the Q3 2025 range and omits prior figures, so the direction and magnitude of any Q3 2025 revision remain unanswered.",
+              "residual_need": "What did the issuer disclose by the prediction time about the direction and magnitude of any revision to its prior Q3 2025 guidance range?"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "need_dispositions[3]",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 3,
+              "reason": "No current-batch evidence addresses the summer product launch or any pre-launch adoption, retention, or monetization metrics.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "replace",
+            "path": "need_dispositions[4]",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 4,
+              "reason": "No current-batch evidence addresses new commercial partnerships, off-take commitments, or binding contracts; the order confirmation signal returned domain_unavailable, which is not evidence of absence and cannot answer the need.",
+              "residual_need": null
+            }
+          },
+          {
+            "op": "replace",
+            "path": "need_dispositions[5]",
+            "value": {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 5,
+              "reason": "No current-batch evidence addresses capital allocation plans, including share repurchases or dilution.",
+              "residual_need": null
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

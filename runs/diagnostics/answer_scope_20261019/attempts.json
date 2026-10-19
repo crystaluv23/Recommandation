@@ -1,0 +1,67 @@
+{
+  "attempts": [
+    {
+      "actual_cost": 0.0026871600000000005,
+      "attempt_id": 1,
+      "finished_at": "2026-10-19T03:20:00.022801+00:00",
+      "request_hash": "661a335547b88591a6b4d0e17a53efce71388eb0e51c2a2cc416d3e62cf3785e",
+      "reserved_cost": 0.015604400000000001,
+      "response_hash": "9d4d9419dc99355aede4fe994352b1eebd4c95b2700483a8671ac173ce97c2f5",
+      "started_at": "2026-10-19T03:19:56.791281+00:00",
+      "status": "completed"
+    },
+    {
+      "actual_cost": 0.00280448,
+      "attempt_id": 2,
+      "finished_at": "2026-10-19T03:20:03.716001+00:00",
+      "request_hash": "ab40b31ff82ee10afa22353e5fcb54ca6336302c55fd4db6459a7d74b8a80368",
+      "reserved_cost": 0.01572004,
+      "response_hash": "62125df48582c7071ad424c660d7039bf4c736cea7cbfcaa9452147e342ada58",
+      "started_at": "2026-10-19T03:20:00.055391+00:00",
+      "status": "completed"
+    },
+    {
+      "actual_cost": 0.00287392,
+      "attempt_id": 3,
+      "finished_at": "2026-10-19T03:20:07.239372+00:00",
+      "request_hash": "b3b41101d0093bb9ef2b97b5d4ff139e41061a0e4a2c37e2252e6960827e99ca",
+      "reserved_cost": 0.01660624,
+      "response_hash": "635b8f72ab4ffbe0c2ff0d70b5f33e0a6750eda08db04667874f6297134c8737",
+      "started_at": "2026-10-19T03:20:03.742941+00:00",
+      "status": "completed"
+    },
+    {
+      "actual_cost": 0.0024248000000000004,
+      "attempt_id": 4,
+      "finished_at": "2026-10-19T03:20:11.656917+00:00",
+      "request_hash": "6aad354cce973692110dd1af1bd98649cc4bd7df5528407ee95e2a9807fa9bb7",
+      "reserved_cost": 0.01456196,
+      "response_hash": "6bb44e1fa4898cfee552599a86841a642a6108a695efa035d904dca4bb4e341a",
+      "started_at": "2026-10-19T03:20:07.262179+00:00",
+      "status": "completed"
+    },
+    {
+      "actual_cost": 0.002562,
+      "attempt_id": 5,
+      "finished_at": "2026-10-19T03:20:15.656125+00:00",
+      "request_hash": "9ccda97ef206f37b0f47755d364ceb53d70b4eb4e7ee994d5977fc9a48bd4873",
+      "reserved_cost": 0.01450092,
+      "response_hash": "9619933043553733c0f34857fb5425688e734d604671413972668702972c76d1",
+      "started_at": "2026-10-19T03:20:11.688364+00:00",
+      "status": "completed"
+    },
+    {
+      "actual_cost": 0.00270508,
+      "attempt_id": 6,
+      "finished_at": "2026-10-19T03:20:18.862134+00:00",
+      "request_hash": "71517a6e52e0c19a1030d79801c29d07d999f42f99bc83aa93b03512205cdb92",
+      "reserved_cost": 0.01593508,
+      "response_hash": "2599f2315d2d9180105ee3d326a227a1be362ceae6ec9bc9af62516cf9683077",
+      "started_at": "2026-10-19T03:20:15.692853+00:00",
+      "status": "completed"
+    }
+  ],
+  "max_attempts": 8,
+  "max_total_cost": 0.25,
+  "schema_version": "evolution-attempt-ledger-v1"
+}

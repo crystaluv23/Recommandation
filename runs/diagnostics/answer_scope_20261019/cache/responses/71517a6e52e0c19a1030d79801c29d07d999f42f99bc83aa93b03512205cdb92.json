@@ -1,0 +1,90 @@
+{
+  "json_output": {
+    "base_hash": "16b9dc9d6797f91539d99f3dce23d3193a5836632f8ed0c22c1e040063018cbd",
+    "operations": [
+      {
+        "op": "replace",
+        "path": "need_dispositions[0]",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 0,
+          "reason": "No current-batch evidence addresses the timing or measurable success criteria for the AI-driven matching and verification initiatives, including member-quality or engagement metrics.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "replace",
+        "path": "need_dispositions[1]",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 1,
+          "reason": "No current-batch evidence addresses paying-user trends after Q2 2025 or whether the decline is stabilizing.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "replace",
+        "path": "need_dispositions[2]",
+        "value": {
+          "answer_scope": "partial",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ],
+          "need_index": 2,
+          "reason": "The June 25, 2025 filing confirms an updated Q2 2025 outlook with revenue of $244 million to $249 million and adjusted EBITDA of $88 million to $93 million, but it addresses Q2 2025 rather than the Q3 2025 range and omits prior figures, so the direction and magnitude of any Q3 2025 revision remain unanswered.",
+          "residual_need": "What did the issuer disclose by the prediction time about the direction and magnitude of any revision to its prior Q3 2025 guidance range?"
+        }
+      },
+      {
+        "op": "replace",
+        "path": "need_dispositions[3]",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 3,
+          "reason": "No current-batch evidence addresses the summer product launch or any pre-launch adoption, retention, or monetization metrics.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "replace",
+        "path": "need_dispositions[4]",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 4,
+          "reason": "No current-batch evidence addresses new commercial partnerships, off-take commitments, or binding contracts; the order confirmation signal returned domain_unavailable, which is not evidence of absence and cannot answer the need.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "replace",
+        "path": "need_dispositions[5]",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 5,
+          "reason": "No current-batch evidence addresses capital allocation plans, including share repurchases or dilution.",
+          "residual_need": null
+        }
+      }
+    ]
+  },
+  "model": "deepseek-flash",
+  "request_hash": "71517a6e52e0c19a1030d79801c29d07d999f42f99bc83aa93b03512205cdb92",
+  "response_id": "089a145b-bc62-476c-bbf0-137d14652869",
+  "usage": {
+    "cost": 0.00270508,
+    "cost_basis": "provider_usage",
+    "input_tokens": 8523,
+    "output_tokens": 569,
+    "prompt_cache_hit_tokens": 3456,
+    "prompt_cache_miss_tokens": 5067
+  }
+}

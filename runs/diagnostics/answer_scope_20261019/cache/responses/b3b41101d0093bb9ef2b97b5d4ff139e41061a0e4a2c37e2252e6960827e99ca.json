@@ -1,0 +1,84 @@
+{
+  "json_output": {
+    "base_hash": "11bacf827802df7871f3903c9c8bc905965fe1b95737c3e4d3aa97728d798111",
+    "operations": [
+      {
+        "op": "replace",
+        "path": "need_dispositions[0]",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 0,
+          "reason": "No current-batch Signal addresses restructuring cost savings, operational benefits, or realization timing; the workforce-reduction evidence is a risk disclosure only.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "replace",
+        "path": "need_dispositions[1]",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 1,
+          "reason": "No current-batch Signal provides paying-user or ARPPU trends for the most recent quarter; the Q2 2025 paying-user decline is prior Basic Info context, not a current-batch measurement.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "replace",
+        "path": "need_dispositions[2]",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 2,
+          "reason": "order_confirmation_disclosed returned domain_unavailable (coverage insufficiency, not absence), and no other current-batch Signal reports partnerships, AI monetization milestones, or material contracts.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "replace",
+        "path": "need_dispositions[3]",
+        "value": {
+          "answer_scope": "partial",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "net_share_retirement_yoy:v3"
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "signal_ref": "net_share_retirement_yoy:v3"
+            }
+          ],
+          "need_index": 3,
+          "reason": "The net_share_retirement_yoy Signal measures a positive year-over-year reduction in weighted-average shares for the 2025-01-01 to 2025-06-30 duration, answering the disclosed share-count-reduction facet; no current-batch evidence states a repurchase authorization amount or its price effect.",
+          "residual_need": "What is the issuer's current share repurchase authorization, and how might it affect the share price?"
+        }
+      },
+      {
+        "op": "replace",
+        "path": "need_dispositions[4]",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 4,
+          "reason": "No current-batch Signal addresses regulatory, legal, or competitive developments; guidance_acceleration only restates the Q2 2025 revenue and adjusted EBITDA outlook ranges.",
+          "residual_need": null
+        }
+      }
+    ]
+  },
+  "model": "deepseek-flash",
+  "request_hash": "b3b41101d0093bb9ef2b97b5d4ff139e41061a0e4a2c37e2252e6960827e99ca",
+  "response_id": "99b0a6d4-b209-47e9-9ab1-c17e0f616140",
+  "usage": {
+    "cost": 0.00287392,
+    "cost_basis": "provider_usage",
+    "input_tokens": 9196,
+    "output_tokens": 534,
+    "prompt_cache_hit_tokens": 3328,
+    "prompt_cache_miss_tokens": 5868
+  }
+}

@@ -342,6 +342,17 @@ prior needs are preserved and legacy unindexed routing cannot force progress.
 
 ## Executed need dispositions (2026-10-19)
 
+`need_transition_contract.required_disposition_need_indices` is the sorted unique
+set of valid prior indices owned by this invocation's indexed direct-answer
+selections. The contract and disposition validator derive ownership identically.
+It is independent of the presence of a reused Signal batch or indexed need rules.
+When the set is empty, `need_dispositions` must be `[]`; terminal closure does not
+inherit ownership from an earlier round. An unowned row permits only removal,
+with the exact allowed index set in typed repair context. It cannot be repaired
+by inventing ownership, reindexing the row, or assigning an unanswered verdict.
+With nonempty ownership, genuinely missing rows retain their separate bounded
+append obligations; valid sibling rows remain outside correction authority.
+
 `validate_need_dispositions` validates temporary Reflect metadata and returns canonical
 rows. Each indexed direct-answer target occurrence requires exactly one row containing
 exactly `need_index`, `answer_scope`, `residual_need`, `evidence_refs`, and `reason`.

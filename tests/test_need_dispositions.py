@@ -64,6 +64,47 @@ class NeedDispositionTests(TestCase):
         contract = _reflection_need_transition_contract(self.previous, (self.selection,), self.batch)
         self.assertIn("expectation only", contract["need_rules"][0]["required_transition"])
 
+    def test_contract_lists_sorted_unique_direct_owners_and_explicit_empty(self):
+        previous = replace(self.previous, next_information_needs=(self.need, "Other demand", "Another direct demand"))
+        selections = (replace(self.selection, target_need_indices=(2,)), self.selection,
+            replace(self.selection, signal_ref="other_guidance:v1"),
+            replace(self.selection, reason_code="combine_evidence", target_need_indices=(1,), answer_scope=None))
+        contract = _reflection_need_transition_contract(previous, selections, self.batch)
+        self.assertEqual(contract["required_disposition_need_indices"], [0, 2])
+        for empty in ((), (replace(self.selection, target_need_indices=(), answer_scope=None),),
+                      (replace(self.selection, reason_code="combine_evidence", answer_scope=None),)):
+            with self.subTest(selections=empty):
+                contract = _reflection_need_transition_contract(previous, empty, self.batch)
+                self.assertEqual(contract["required_disposition_need_indices"], [])
+                self.assertTrue(all(row["required_transition"] == "preserve_exactly" for row in contract["need_rules"]))
+
+    def test_unowned_row_removal_and_missing_owned_append_preserve_valid_sibling(self):
+        from stock_opportunity_agent.research.evolution_output_validation import _validation_obligations
+        from stock_opportunity_agent.research.evolution_state_patch import apply_state_patch, state_patch_contract
+
+        previous = replace(self.previous, next_information_needs=(self.need, "Unselected demand", "Another direct demand"))
+        selections = (self.selection, replace(self.selection, target_need_indices=(2,)))
+        rows = [self.row(), self.row(index=1)]
+        with self.assertRaises(StructuredValidationError) as caught:
+            self.validate(previous, rows, previous=previous, selections=selections)
+        issues = caught.exception.issues
+        unowned = next(issue for issue in issues if issue.paths == ("need_dispositions[1]",))
+        self.assertEqual(unowned.allowed_repairs, ("remove",))
+        self.assertEqual(unowned.repair_context["required_disposition_need_indices"], [0, 2])
+        base = {**previous.to_dict(), "need_dispositions": rows}
+        feedback = _validation_obligations(caught.exception, base)
+        contract = state_patch_contract(base, mode="correction", obligations=feedback["obligations"])
+        self.assertEqual(contract["allowed_operations"], [
+            {"op": "remove", "path": "need_dispositions[1]", "descendants": False},
+            {"op": "append", "path": "need_dispositions", "descendants": False},
+        ])
+        repaired = apply_state_patch(base, {"base_hash": contract["base_hash"], "operations": [
+            {"op": "remove", "path": "need_dispositions[1]"},
+            {"op": "append", "path": "need_dispositions", "value": self.row(index=2)},
+        ]}, contract=contract)
+        self.assertEqual(repaired["need_dispositions"][0], rows[0])
+        self.assertEqual(self.validate(previous, repaired["need_dispositions"], previous=previous, selections=selections), previous)
+
     def test_partial_measurement_can_fully_answer_narrow_need(self):
         completed = replace(self.current, next_information_needs=(), decision=ResearchDecision.FINALIZE)
         self.assertEqual(self.validate(completed, [self.row("full")]), completed)

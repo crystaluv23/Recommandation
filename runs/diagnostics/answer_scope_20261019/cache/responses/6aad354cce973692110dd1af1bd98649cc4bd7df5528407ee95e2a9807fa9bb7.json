@@ -1,0 +1,72 @@
+{
+  "json_output": {
+    "base_hash": "5f17c1eab40472546526ab97201a0ebd7a1c27596b92222badc3acd51ac15b47",
+    "operations": [
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total [ANON_ID_0001]. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "The June 25, 2025 filing states the Company is updating its previously announced financial outlook for the second quarter 2025, with total [ANON_ID_0001]. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million."
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "The visible guidance text does not include the prior Q2 2025 figures, so the direction and magnitude of the revision cannot be established from the available spans; the change is treated as neutral rather than positive or negative."
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "partial",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ],
+          "need_index": 2,
+          "reason": "The executed evidence provides a current numeric Q2 2025 revenue and adjusted EBITDA outlook revision, but it does not address the Q3 2025 outlook or whether the prior Q3 2025 range was reaffirmed or revised, so only the current-level facet is answered.",
+          "residual_need": "What did the issuer disclose by the prediction time about whether the prior Q3 2025 guidance range has been reaffirmed or revised, and the direction and magnitude of any revision?"
+        }
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 4,
+          "reason": "The order_confirmation_disclosed:v2 result is domain_unavailable: visible evidence was insufficient for a canonical conclusion, which is not evidence of absence and cannot answer the question about new commercial partnerships, off-take commitments, or binding contracts.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "replace",
+        "path": "next_information_needs[2]",
+        "value": "What did the issuer disclose by the prediction time about whether the prior Q3 2025 guidance range has been reaffirmed or revised, and the direction and magnitude of any revision?"
+      }
+    ]
+  },
+  "model": "deepseek-flash",
+  "request_hash": "6aad354cce973692110dd1af1bd98649cc4bd7df5528407ee95e2a9807fa9bb7",
+  "response_id": "c3e1750c-b133-4c8c-ad09-3e212d271d8f",
+  "usage": {
+    "cost": 0.0024248000000000004,
+    "cost_basis": "provider_usage",
+    "input_tokens": 7522,
+    "output_tokens": 569,
+    "prompt_cache_hit_tokens": 2944,
+    "prompt_cache_miss_tokens": 4578
+  }
+}

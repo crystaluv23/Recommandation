@@ -1,0 +1,43 @@
+{
+  "created_at": "2026-10-19T03:19:46.646774+00:00",
+  "forbidden": [
+    "full_cycle",
+    "prediction",
+    "posthoc_model",
+    "provider_acquisition",
+    "goal_resume",
+    "tool_exchange"
+  ],
+  "input_hash": "df4a59662445df411aad3a6ad8d64298e7807e11c0a45ca4db8683cbe730677f",
+  "limits": {
+    "max_calls_per_invocation": 2,
+    "max_reflect_invocations_per_sample": 2,
+    "max_request_tokens": 131072,
+    "max_samples": 2,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_external_attempts": 8,
+  "max_total_cost": 0.25,
+  "model": {
+    "alias": "deepseek-v4-flash",
+    "api_key_env_var": "DEEPSEEK_API_KEY",
+    "default_input_cost_per_million_tokens": 0.28,
+    "default_max_output_tokens": 8000,
+    "default_output_cost_per_million_tokens": 0.56,
+    "default_reasoning_effort": "none",
+    "description": "Direct DeepSeek V4 Flash Responses API model for plain-JSON evolution and anonymous no-web judging.",
+    "model": "deepseek-v4-flash",
+    "proposal_profile": "plain_json",
+    "provider": "deepseek",
+    "provider_identity": "deepseek",
+    "provider_route": null,
+    "roles": [
+      "evolution",
+      "judge"
+    ],
+    "web_tools_allowed": false
+  },
+  "schema_version": "executed-answer-scope-stage-contract-v1",
+  "scope": "separately_authorized_reflect_stage_only"
+}

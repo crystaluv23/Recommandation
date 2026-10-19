@@ -2354,6 +2354,23 @@ def raw_need_disposition_issues(
     return issues
 
 
+def _need_disposition_owners(
+    previous_state: ResearchState | None,
+    selections: tuple[SignalSelectionDecision, ...],
+) -> dict[int, set[str]]:
+    """Bind only this invocation's valid indexed direct-answer occurrences."""
+
+    prior_needs = previous_state.next_information_needs if previous_state else ()
+    owners: dict[int, set[str]] = {}
+    for selection in selections:
+        if selection.reason_code != "answer_need":
+            continue
+        for index in selection.target_need_indices:
+            if isinstance(index, int) and not isinstance(index, bool) and 0 <= index < len(prior_needs):
+                owners.setdefault(index, set()).add(selection.signal_ref)
+    return owners
+
+
 def _collect_need_dispositions(
     need_dispositions: object, *, previous_state: ResearchState | None,
     state: ResearchState | None, selections: tuple[SignalSelectionDecision, ...],
@@ -2377,7 +2394,8 @@ def _collect_need_dispositions(
                 "dependency_allowed_repairs": {name: ["replace", "remove"] for name in dependencies},
                 **dict(context or {}),
             },
-            message=message + "; author an actual disposition, never infer it from routing scope or measurement coverage",
+            message=(message if repairs == ("remove",) else message
+                     + "; author an actual disposition, never infer it from routing scope or measurement coverage"),
         ))
 
     if not isinstance(need_dispositions, list):
@@ -2385,13 +2403,8 @@ def _collect_need_dispositions(
                 repairs=("replace",), context={"invalid_container_paths": ["need_dispositions"]})
         return (), tuple(issues)
     prior_needs = previous_state.next_information_needs if previous_state else ()
-    owners: dict[int, set[str]] = {}
-    for selection in selections:
-        if selection.reason_code != "answer_need":
-            continue
-        for index in selection.target_need_indices:
-            if isinstance(index, int) and not isinstance(index, bool) and 0 <= index < len(prior_needs):
-                owners.setdefault(index, set()).add(selection.signal_ref)
+    owners = _need_disposition_owners(previous_state, selections)
+    allowed_indices = sorted(owners)
     results = {result.ref: result for result in (batch.results if batch else ())}
     previous_keys = {
         _research_evidence_key(item)
@@ -2415,12 +2428,17 @@ def _collect_need_dispositions(
     for position, raw in enumerate(need_dispositions):
         issue_count = len(issues)
         path = f"need_dispositions[{position}]"
-        if not isinstance(raw, Mapping) or set(raw) != required:
-            invalid(path, "Disposition must contain exactly need_index, answer_scope, residual_need, evidence_refs and reason")
+        if not owners:
+            invalid(path, "This invocation has no indexed direct-answer targets; need_dispositions must be []; remove this row without replacing or reindexing it",
+                    repairs=("remove",), context={"required_disposition_need_indices": []})
             continue
-        index = raw["need_index"]
+        index = raw.get("need_index") if isinstance(raw, Mapping) else None
         if not isinstance(index, int) or isinstance(index, bool) or index not in owners:
-            invalid(path, "Disposition need_index must name an indexed direct-answer target in the prior snapshot")
+            invalid(path, f"This row has no direct-answer ownership; remove it without reindexing. Allowed prior need indices are {allowed_indices}; missing targets have separate append obligations",
+                    repairs=("remove",), context={"required_disposition_need_indices": allowed_indices})
+            continue
+        if set(raw) != required:
+            invalid(path, "Disposition must contain exactly need_index, answer_scope, residual_need, evidence_refs and reason")
             continue
         if declared_counts[index] != 1:
             invalid(path, "Each prior need occurrence requires exactly one disposition")
@@ -2501,6 +2519,7 @@ def _reflection_need_transition_contract(
 
     prediction_date = _prediction_date_from_context(evaluation_context)
     results = {result.ref: result for result in batch.results}
+    owners = _need_disposition_owners(state, selections)
     rules: list[dict[str, Any]] = []
     for index, need in enumerate(state.next_information_needs):
         available_answer_refs: list[str] = []
@@ -2537,7 +2556,7 @@ def _reflection_need_transition_contract(
                 else:
                     action["residual_need"] = selection.residual_need
                 available_answer_actions.append(action)
-        indexed_answer = any(item.reason_code == "answer_need" and index in item.target_need_indices for item in selections)
+        indexed_answer = index in owners
         required_transition = (
             "author actual need_disposition from executed evidence: unanswered preserves_exactly; "
             "full removes this occurrence; partial uses its actual bounded residual; routing scope is expectation only"
@@ -2555,6 +2574,7 @@ def _reflection_need_transition_contract(
             }
         )
     return {
+        "required_disposition_need_indices": sorted(owners),
         "need_rules": rules,
         "legacy_unindexed_answer_signal_refs": [
             item.signal_ref

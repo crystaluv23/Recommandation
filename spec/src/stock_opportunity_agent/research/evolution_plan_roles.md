@@ -16,6 +16,14 @@ An unanswered disposition preserves the need exactly. Its evidence refs may be
 empty or cite valid adopted current-batch evidence explaining a period or scope
 mismatch; those refs do not claim the need was answered or authorize closure.
 
+The prompt uses `need_transition_contract.required_disposition_need_indices` as
+the exhaustive current-invocation target set. An empty set requires
+`need_dispositions=[]`, even when a terminal closure sees the previous Signal
+batch and many unresolved indexed needs. Those needs remain preserved; visible
+evidence is not new ownership. For an illegal owner row, correction explicitly
+requests removal and exposes the exact allowed indices, never a fabricated
+unanswered row or rewritten prior ResearchState to make that row fit.
+
 The complete envelope is validated before success; unknown fields are never
 silently discarded. Typed corrections and fallback retain their exact authority.
 Quarantining evidence requires revalidating dispositions and need transitions;
