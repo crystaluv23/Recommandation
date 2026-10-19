@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/root-frozen-source-new-tests.py", line 20, in <module>
+    assert suite.countTestCases()==16,suite.countTestCases()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 9

@@ -1,0 +1,71 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_reviewed_frozen_source_snapshot.py",
+    "-v"
+  ],
+  "PYTHONPATH": "src:scripts",
+  "started_at": "2026-10-19T23:27:30.741052+00:00",
+  "finished_at": "2026-10-19T23:27:31.154023+00:00",
+  "exit_code": 0,
+  "before": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_snapshot.py",
+      "sha256": "6ecbfefd0f82c3df6a384c8a1f0483d8c782bd2452c242a0ff123dcd3e20de8b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_snapshot.md",
+      "sha256": "660955b6d22707c4b2b20040ad64d164985c6195e35924e9a76533c9652b5f60"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_frozen_source_snapshot.py",
+      "sha256": "fe6da7d11d549b8d4e10c5b64766440fadb5e1ffd6c20b1f6624da2272b2d3db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    }
+  ],
+  "after": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_snapshot.py",
+      "sha256": "6ecbfefd0f82c3df6a384c8a1f0483d8c782bd2452c242a0ff123dcd3e20de8b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_snapshot.md",
+      "sha256": "660955b6d22707c4b2b20040ad64d164985c6195e35924e9a76533c9652b5f60"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_frozen_source_snapshot.py",
+      "sha256": "fe6da7d11d549b8d4e10c5b64766440fadb5e1ffd6c20b1f6624da2272b2d3db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    }
+  ],
+  "same": true,
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/focused-tests-alias-final.log",
+    "sha256": "7b9481ef106ec358a6ed2024894cd2012091e1b46c777d77afe4ddbe23a9719b"
+  },
+  "scope": "8 temp-only tests; actual unchanged alias original retained, no filing clone; multi-canonical conflicting originals unknown/collision; mismatch retains unknown; no actual fixed40 prepare/global store/network/model/labels/matrices",
+  "initial_evidence_retained": [
+    "focused-tests.log",
+    "focused-tests.json"
+  ]
+}

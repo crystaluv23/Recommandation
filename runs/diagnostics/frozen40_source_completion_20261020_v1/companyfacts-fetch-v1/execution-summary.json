@@ -1,0 +1,26 @@
+{
+  "status": "successful",
+  "terminal": true,
+  "GET_attempts": 1,
+  "results": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/results.json",
+    "sha256": "0320bfe5ede9d97cccbbf1084d5be68bd869fa4849fae5563624b16990915dce"
+  },
+  "additional_companyfacts": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/additional-companyfacts.json",
+    "sha256": "08663a73b394baf3793b85a3c23e3020c2b57c11d753588ae8cf26d2029b7b2c"
+  },
+  "native_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/cache/data/sec_edgar/financial_statements/dba16fe3ea281103d64c3364.json",
+    "sha256": "02e05b3f33613f698acad65a8565d3bba8a5897d0eab17ae0939736f62f9287e"
+  },
+  "raw_response_proof": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/raw-response-proof.json",
+    "sha256": "81baee446ae7f9d4f58d23b925cd576b2254dd419770823b666ce44ec19ebea6"
+  },
+  "http_status": 200,
+  "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/gpre-companyfacts.response.raw",
+  "raw_sha256": "db9fcf737b51370991c1476c264eedbc3ce343daaad597e7b99da4381a56e472",
+  "bytes": 3619984,
+  "exit_code": 0
+}

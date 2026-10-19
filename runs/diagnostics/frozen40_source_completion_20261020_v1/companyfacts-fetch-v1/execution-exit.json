@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/collector.py",
+    "--execute",
+    "--plan",
+    "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/request-plan.json",
+    "--expected-plan-sha",
+    "a3d78051c0b8d9e7be012ce1069032d100794c1646e2c802842383c8282bef62"
+  ],
+  "started_at": "2026-10-19T23:17:42.101326+00:00",
+  "exit_code": 0,
+  "finished_at": "2026-10-19T23:17:44.370362+00:00"
+}

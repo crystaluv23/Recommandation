@@ -55,7 +55,12 @@ The original proof reader supports the reviewed static SEC archive body plus
 cached submissions acceptance pair. It checks exact endpoint/body equality,
 issuer/accession/form/primary-document identity and exact accepted/available/
 published instant equality. It never rewrites original availability to match
-proof. Excluded and unknown records remain in the four-record review, outside
+proof. Both this pair and the explicit SEC response profiles use the shared
+[source-versus-form rule](filing_orientation.md): preserve generic filing aliases
+and accept an exact typed SEC source only when it agrees with the proved form.
+Unsupported sources cannot become filings through metadata. Do not relabel an
+original, change its ID or clock, or narrow generic legitimate nonoperating forms.
+Excluded and unknown records remain in the four-record review, outside
 the materialized document set. Snapshot restart rechecks these same originals
 and proofs; additions, missing files, changed scope/root/hash or content reject
 before visibility. Snapshot returns the reviewed store type, never an appendable

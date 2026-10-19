@@ -2,7 +2,7 @@
 
 更新：2026-10-20。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)
 尚未收敛；独立收益为后续里程碑、仍未知。生产 LLM 节点由独立 subagent 执行，
-外部 LLM 调用0；只读资料取证已授权，单独计数。本批44有界取证GET（30行情+14SEC），
+外部 LLM 调用0；只读资料取证已授权，单独计数。本批45有界取证GET（30行情+15SEC），
 规范web查阅另列；0新生产LLM节点，host tokens/cost及资料API成本未测量。
 
 ## 当前验收
@@ -92,8 +92,9 @@ v182实际冻结40且绑定当前APPROVED，旧运行完成仍1/1。旧“48”�
 原40投影已实际完成；owner读混合清单但仅输出身份/时间/split白名单，execute只stream原件SHA。
 先补原40范围内未覆盖24nonanchor+BMBL财务的来源链，不从3511×日期重选cohort。
 [新跨根清点](../reports/frozen40-source-completion-preparation-20261020.md)保持25家：一次精确key路径匹配定位24家CompanyFacts cache/raw，
-GPRE仍缺；原20未定位中19是cache根漏查。25root/42market keys有候选，不等准入或年度正文充分。
-GPRE仅1GET采集计划与native managedcache/实际rawproof候选完成，5temp及独立5控制通过，待代码checkpoint后sole executor真实采集。
-另在实现25财务/24market经营统一写入前检查，0globalstore/append/view/matrix/model，不重入任何旧stage。
+GPRE仅缺旧链；原20未定位中19是cache根漏查。25root/42market keys有候选，不等准入或年度正文充分。
+GPRE唯一真实GET200/3.62MB，nativecache/rawproof/完整HTTP-CIK-clock链独立复核；0重试/append/typed。
+25财务/24market经营写入前检查候选完成；原件10-k别名校验漏接已修，48安全关联/17独立反例及root16新测试通过。
+待冻结唯一实际prepare；0globalstore/append/view/matrix/model，不重入任何旧stage。
 不改变lookback/refs或推断news不存在；未恢复旧运行/不触LockedTest。
 原8项用户改动保持；MVP goal active未完成。

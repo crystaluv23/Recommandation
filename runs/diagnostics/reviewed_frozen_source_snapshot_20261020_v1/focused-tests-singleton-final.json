@@ -1,0 +1,68 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_reviewed_frozen_source_snapshot.py",
+    "-v"
+  ],
+  "PYTHONPATH": "src:scripts",
+  "started_at": "2026-10-19T23:37:03.320908+00:00",
+  "finished_at": "2026-10-19T23:37:03.736260+00:00",
+  "exit_code": 0,
+  "before": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_snapshot.py",
+      "sha256": "b05af2849b3e54563e6041b8c11dff4d96ddce35875b4c19b7d40a2f6e126516"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_snapshot.md",
+      "sha256": "1d7cea6c99ad68f8dd8442624561a5496ee6d395ac3ca1ac90e0934690b69c8a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_frozen_source_snapshot.py",
+      "sha256": "247da143a875e2a59943db4dc833921e8b0ead5f1a98cbc180d49a255a0cfac5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    }
+  ],
+  "after": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_snapshot.py",
+      "sha256": "b05af2849b3e54563e6041b8c11dff4d96ddce35875b4c19b7d40a2f6e126516"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_snapshot.md",
+      "sha256": "1d7cea6c99ad68f8dd8442624561a5496ee6d395ac3ca1ac90e0934690b69c8a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_frozen_source_snapshot.py",
+      "sha256": "247da143a875e2a59943db4dc833921e8b0ead5f1a98cbc180d49a255a0cfac5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    }
+  ],
+  "same": true,
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/focused-tests-singleton-final.log",
+    "sha256": "c84fadc16228c0f871249852369bcd1cfa46283e83543399b4632fb123bb51ba"
+  },
+  "scope": "8 temp-only tests, successful GET singleton with strict integer-one counters; rehashed POST/failed/True/0/False counterexamples rejected; no actual source prepare or GPRE artifact change",
+  "all_previous_logs_retained": true
+}

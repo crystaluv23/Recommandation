@@ -1,0 +1,121 @@
+{
+  "scope": "Independent two real-source native verifier probes only. No globalstore/model/GET/labels/normalize/materialize/append. source_type=filing clones existed in memory only.",
+  "table": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/operating-target-candidates.json",
+    "sha256": "53be103294e060b90fa5b80fa7d47ab9b4e997432ca9f4c1e8661d7feb0134b0"
+  },
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "4be88aef933eade926ce7268a87b408451392645ef01e595dd2be24ff6362cf5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/resolution.md",
+      "sha256": "cb56f58a6b3b5b8b44fa2c97ea4965a87002928f1844b2cc924e87d9efa174d7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_snapshot.md",
+      "sha256": "9d70993e7875c3194c9462d9fa8f2042f73f24fde40a173e4ef263818685d90f"
+    }
+  ],
+  "checks": [
+    {
+      "ticker": "LEU",
+      "case_id": "cik_0001065059:20250131",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001065059/sec:cik_0001065059:000106505924000013.json",
+        "sha256": "013f9e58b5813bbda256714f70ce1bd9f9d03f04d62a310d5d719a13074e8665"
+      },
+      "original_type": "10-k",
+      "original_id": "sec:cik_0001065059:000106505924000013",
+      "native_original_rejection": "static SEC filing proof requires filing source type",
+      "in_memory_only_source_type_filing_remaining_proof_passed": true,
+      "no_alias_clone_persisted_or_admitted": true,
+      "cutoff_before_availability_rejected": "SEC availability/filing proof differs from original or scope",
+      "accepted_available_published": "2024-02-09T21:23:04+00:00",
+      "case_cutoff": "2025-01-31T00:00:00+00:00",
+      "body_cache_retrieved_at": "2026-09-12T17:42:24.171029+00:00",
+      "body_cache_later_than_accepted_is_not_rejection": true,
+      "body_exact_equal": true,
+      "body_hash": "2c070d1a03431bd497a93777ed4a970ce942935325d722c7a546eb8e9bbc9845",
+      "proofs": [
+        {
+          "kind": "sec_static_archive_body",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v61/cache/data/sec_edgar/filing_documents/8f36d0801211d764b4559aff.json",
+            "sha256": "59953498f6e0b43c569f9d95956e7cd87ccfcf373c3579044ad76ce95e09d7c2"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1065059/000106505924000013/leu-20231231.htm",
+          "expected_content_hash": "2c070d1a03431bd497a93777ed4a970ce942935325d722c7a546eb8e9bbc9845"
+        },
+        {
+          "kind": "sec_submissions_acceptance",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v41/cache/data/sec_edgar/filing_documents/f13ec5d95af278537d647093.json",
+            "sha256": "523a41450442a310e34f1300aefbc640a704114c9b86dd259ab0d4cde9f7227c"
+          },
+          "issuer_cik": "0001065059",
+          "accession_number": "0001065059-24-000013",
+          "form": "10-K",
+          "primary_document": "leu-20231231.htm",
+          "accepted_at": "2024-02-09T21:23:04+00:00"
+        }
+      ]
+    },
+    {
+      "ticker": "TNDM",
+      "case_id": "cik_0001438133:20250930",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001438133/sec:cik_0001438133:000143813325000036.json",
+        "sha256": "d2acbaed435be385b67ce0d4599d3bca3571e69f0eefb69da56d4878a8083313"
+      },
+      "original_type": "10-k",
+      "original_id": "sec:cik_0001438133:000143813325000036",
+      "native_original_rejection": "static SEC filing proof requires filing source type",
+      "in_memory_only_source_type_filing_remaining_proof_passed": true,
+      "no_alias_clone_persisted_or_admitted": true,
+      "cutoff_before_availability_rejected": "SEC availability/filing proof differs from original or scope",
+      "accepted_available_published": "2025-02-26T21:09:22+00:00",
+      "case_cutoff": "2025-09-30T00:00:00+00:00",
+      "body_cache_retrieved_at": "2026-09-13T01:29:09.732802+00:00",
+      "body_cache_later_than_accepted_is_not_rejection": true,
+      "body_exact_equal": true,
+      "body_hash": "18a27217d0d6b381c092f764fd7190d9209a76aee74fc8a00fa89750e5c77524",
+      "proofs": [
+        {
+          "kind": "sec_static_archive_body",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/7d0cde91e2bf81cc6293e4f3.json",
+            "sha256": "5b8671b6ccaf91c2ae58fdce52db70136f3b669aeef0296086a21f16c2c567c7"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1438133/000143813325000036/tndm-20241231.htm",
+          "expected_content_hash": "18a27217d0d6b381c092f764fd7190d9209a76aee74fc8a00fa89750e5c77524"
+        },
+        {
+          "kind": "sec_submissions_acceptance",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/5d06634a0bdf604115251530.json",
+            "sha256": "d597e97babd52606468c0dbfe4dad8debcbd3e288d52932e750e657295b1b4b5"
+          },
+          "issuer_cik": "0001438133",
+          "accession_number": "0001438133-25-000036",
+          "form": "10-K",
+          "primary_document": "tndm-20241231.htm",
+          "accepted_at": "2025-02-26T21:09:22+00:00"
+        }
+      ]
+    }
+  ],
+  "originals_and_proofs_unchanged": true,
+  "conclusion": "For both annual originals the actual native gate fails on source_type=10-k; same complete in-memory record with only source_type=filing passes remaining bound body/issuer/accession/form/primary/aware acceptance/PIT checks. Source cache retrieval later than public acceptance is valid static backfill and is not a rejection condition.",
+  "contract_interface": "SecFilingAdapter supports sec_filing/filing/filing_body/exact SEC forms and emits request-selected source_type under a type-independent sec:company:accession ID. Resolution owning contract139-150 already supports generic filing-family and exact matching metadata forms; specific forms are not interchangeable. This is existing producer-to-qualification alias capability not connected, not justification to relabel canonical originals or relax identity/time/body checks.",
+  "minimal_extension": "Spec-first accept only existing generic filing aliases or exact form-named SEC types whose metadata proves the same form, preserving original source_type and complete canonical record. Apply the same rule wherever primary reconstruction hardcodes filing; retain all existing proof and cutoff checks, reject mismatched form aliases. No changed research definition or canonical schema is needed for this capability connection.",
+  "limits": [
+    "These are verifier-only probes, not source admission/materialization or whole-body operating sufficiency reviews.",
+    "Passing an unchanged type-clone isolates the lexical blocker; it does not authorize persisting clone bytes or upgrading original record disposition."
+  ]
+}

@@ -1,0 +1,216 @@
+{
+  "scope": "Independent temporary receipt-family counterexamples only, no real prepare/GET/globalstore/labels",
+  "script_sha256": "27137c4aaf532ce02f43b5869b995cbfab29d9a2465ad56b1e01474dcc03fa40",
+  "checks": [
+    {
+      "variant": "base_GET",
+      "actual_result": "ReviewedSourceRejected:bound source changed: /var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+      "receipt": {
+        "status": "successful",
+        "terminal": true,
+        "GET_attempts": 1,
+        "network_open_calls": 1,
+        "HTTP_responses_retained": 1,
+        "attempt_reservations": 1,
+        "automatic_retries": 0,
+        "redirects_followed": 0,
+        "native_cache": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/cache.json",
+          "sha256": "1960c8c7099c010ad81f5e6319e95d61b5769b83060698bc6e5c9fcaee5a12bc"
+        },
+        "raw_response_proof": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/oracle/sec_company_facts_raw_response/cik_0000000001/sec_edgar:cik_0000000001:sec_company_facts_raw_response:107ffd1b28d53156c36c09eb.json",
+          "sha256": "bdc8520e582772c08040262d4fff2eed736311e93dc5b7494b78ea120673dd1c"
+        },
+        "requests": [
+          {
+            "method": "GET",
+            "status": "http_response_retained",
+            "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "response_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "http_status": 200,
+            "raw_response": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+            "raw_sha256": "817158ba7c30351e74d5dac238d51af8b7c050bc0a375f892a4cd22a6628b9cd",
+            "response_headers": {},
+            "bytes": 449
+          }
+        ]
+      }
+    },
+    {
+      "variant": "POST",
+      "actual_result": "ReviewedSourceRejected:bound source changed: /var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+      "receipt": {
+        "status": "successful",
+        "terminal": true,
+        "GET_attempts": 1,
+        "network_open_calls": 1,
+        "HTTP_responses_retained": 1,
+        "attempt_reservations": 1,
+        "automatic_retries": 0,
+        "redirects_followed": 0,
+        "native_cache": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/cache.json",
+          "sha256": "1960c8c7099c010ad81f5e6319e95d61b5769b83060698bc6e5c9fcaee5a12bc"
+        },
+        "raw_response_proof": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/oracle/sec_company_facts_raw_response/cik_0000000001/sec_edgar:cik_0000000001:sec_company_facts_raw_response:107ffd1b28d53156c36c09eb.json",
+          "sha256": "bdc8520e582772c08040262d4fff2eed736311e93dc5b7494b78ea120673dd1c"
+        },
+        "requests": [
+          {
+            "method": "POST",
+            "status": "http_response_retained",
+            "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "response_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "http_status": 200,
+            "raw_response": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+            "raw_sha256": "817158ba7c30351e74d5dac238d51af8b7c050bc0a375f892a4cd22a6628b9cd",
+            "response_headers": {},
+            "bytes": 449
+          }
+        ]
+      }
+    },
+    {
+      "variant": "retained_bool",
+      "actual_result": "ReviewedSourceRejected:bound source changed: /var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+      "receipt": {
+        "status": "successful",
+        "terminal": true,
+        "GET_attempts": 1,
+        "network_open_calls": 1,
+        "HTTP_responses_retained": true,
+        "attempt_reservations": 1,
+        "automatic_retries": 0,
+        "redirects_followed": 0,
+        "native_cache": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/cache.json",
+          "sha256": "1960c8c7099c010ad81f5e6319e95d61b5769b83060698bc6e5c9fcaee5a12bc"
+        },
+        "raw_response_proof": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/oracle/sec_company_facts_raw_response/cik_0000000001/sec_edgar:cik_0000000001:sec_company_facts_raw_response:107ffd1b28d53156c36c09eb.json",
+          "sha256": "bdc8520e582772c08040262d4fff2eed736311e93dc5b7494b78ea120673dd1c"
+        },
+        "requests": [
+          {
+            "method": "GET",
+            "status": "http_response_retained",
+            "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "response_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "http_status": 200,
+            "raw_response": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+            "raw_sha256": "817158ba7c30351e74d5dac238d51af8b7c050bc0a375f892a4cd22a6628b9cd",
+            "response_headers": {},
+            "bytes": 449
+          }
+        ]
+      }
+    },
+    {
+      "variant": "open_count_zero",
+      "actual_result": "ReviewedSourceRejected:bound source changed: /var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+      "receipt": {
+        "status": "successful",
+        "terminal": true,
+        "GET_attempts": 1,
+        "network_open_calls": 0,
+        "HTTP_responses_retained": 1,
+        "attempt_reservations": 1,
+        "automatic_retries": 0,
+        "redirects_followed": 0,
+        "native_cache": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/cache.json",
+          "sha256": "1960c8c7099c010ad81f5e6319e95d61b5769b83060698bc6e5c9fcaee5a12bc"
+        },
+        "raw_response_proof": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/oracle/sec_company_facts_raw_response/cik_0000000001/sec_edgar:cik_0000000001:sec_company_facts_raw_response:107ffd1b28d53156c36c09eb.json",
+          "sha256": "bdc8520e582772c08040262d4fff2eed736311e93dc5b7494b78ea120673dd1c"
+        },
+        "requests": [
+          {
+            "method": "GET",
+            "status": "http_response_retained",
+            "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "response_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "http_status": 200,
+            "raw_response": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+            "raw_sha256": "817158ba7c30351e74d5dac238d51af8b7c050bc0a375f892a4cd22a6628b9cd",
+            "response_headers": {},
+            "bytes": 449
+          }
+        ]
+      }
+    },
+    {
+      "variant": "reservation_bool",
+      "actual_result": "ReviewedSourceRejected:bound source changed: /var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+      "receipt": {
+        "status": "successful",
+        "terminal": true,
+        "GET_attempts": 1,
+        "network_open_calls": 1,
+        "HTTP_responses_retained": 1,
+        "attempt_reservations": false,
+        "automatic_retries": 0,
+        "redirects_followed": 0,
+        "native_cache": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/cache.json",
+          "sha256": "1960c8c7099c010ad81f5e6319e95d61b5769b83060698bc6e5c9fcaee5a12bc"
+        },
+        "raw_response_proof": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/oracle/sec_company_facts_raw_response/cik_0000000001/sec_edgar:cik_0000000001:sec_company_facts_raw_response:107ffd1b28d53156c36c09eb.json",
+          "sha256": "bdc8520e582772c08040262d4fff2eed736311e93dc5b7494b78ea120673dd1c"
+        },
+        "requests": [
+          {
+            "method": "GET",
+            "status": "http_response_retained",
+            "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "response_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "http_status": 200,
+            "raw_response": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+            "raw_sha256": "817158ba7c30351e74d5dac238d51af8b7c050bc0a375f892a4cd22a6628b9cd",
+            "response_headers": {},
+            "bytes": 449
+          }
+        ]
+      }
+    },
+    {
+      "variant": "request_failed",
+      "actual_result": "ReviewedSourceRejected:bound source changed: /var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+      "receipt": {
+        "status": "successful",
+        "terminal": true,
+        "GET_attempts": 1,
+        "network_open_calls": 1,
+        "HTTP_responses_retained": 1,
+        "attempt_reservations": 1,
+        "automatic_retries": 0,
+        "redirects_followed": 0,
+        "native_cache": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/cache.json",
+          "sha256": "1960c8c7099c010ad81f5e6319e95d61b5769b83060698bc6e5c9fcaee5a12bc"
+        },
+        "raw_response_proof": {
+          "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/fixture/oracle/sec_company_facts_raw_response/cik_0000000001/sec_edgar:cik_0000000001:sec_company_facts_raw_response:107ffd1b28d53156c36c09eb.json",
+          "sha256": "bdc8520e582772c08040262d4fff2eed736311e93dc5b7494b78ea120673dd1c"
+        },
+        "requests": [
+          {
+            "method": "GET",
+            "status": "failed",
+            "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "response_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+            "http_status": 200,
+            "raw_response": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9oxpymr5/response.raw",
+            "raw_sha256": "817158ba7c30351e74d5dac238d51af8b7c050bc0a375f892a4cd22a6628b9cd",
+            "response_headers": {},
+            "bytes": 449
+          }
+        ]
+      }
+    }
+  ]
+}

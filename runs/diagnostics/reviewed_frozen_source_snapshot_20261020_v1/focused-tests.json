@@ -1,0 +1,52 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_reviewed_frozen_source_snapshot.py",
+    "-v"
+  ],
+  "PYTHONPATH": "src:scripts",
+  "started_at": "2026-10-19T23:24:59.042333+00:00",
+  "finished_at": "2026-10-19T23:24:59.442567+00:00",
+  "exit_code": 0,
+  "before": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_snapshot.py",
+      "sha256": "b1a06a6ee2c20f20602e3693678a42a31adc8c1f454c92c467169587bbabd093"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_snapshot.md",
+      "sha256": "adbc236c24cdb6841ef8893f44c9f616e2d96af0e6d2f96dae1d53e302fabf12"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_frozen_source_snapshot.py",
+      "sha256": "daf475f277a54dfdb16137851f7fe274a793c2ee7ec9bd54ff9a949777067f79"
+    }
+  ],
+  "after": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_snapshot.py",
+      "sha256": "b1a06a6ee2c20f20602e3693678a42a31adc8c1f454c92c467169587bbabd093"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_snapshot.md",
+      "sha256": "adbc236c24cdb6841ef8893f44c9f616e2d96af0e6d2f96dae1d53e302fabf12"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_frozen_source_snapshot.py",
+      "sha256": "daf475f277a54dfdb16137851f7fe274a793c2ee7ec9bd54ff9a949777067f79"
+    }
+  ],
+  "same": true,
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/focused-tests.log",
+    "sha256": "78b4c7a506ae14daecf92dbb0aadfbaf23ebc6e180b2ef0372ef25e13cdf8b35"
+  },
+  "scope": "8 temp-only tests; no actual fixed40 prepare/global store/network/model/labels/matrices",
+  "initial_failure": "First development run had 6 passing/2 fixture errors: /var versus resolved /private/var binding paths. Fixture roots resolved; no production relaxation."
+}

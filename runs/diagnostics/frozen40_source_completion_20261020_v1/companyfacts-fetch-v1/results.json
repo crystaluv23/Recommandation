@@ -1,0 +1,64 @@
+{
+  "GET_attempts": 1,
+  "HTTP_responses_retained": 1,
+  "attempt_reservations": 1,
+  "automatic_retries": 0,
+  "cache_retrieved_at": "2026-10-19T23:17:44.069857+00:00",
+  "collector_sha256": "f8f9d55fc0f4f83470079e8c8239d9e8e413c56d0e3d3751ee990426bbed0477",
+  "external_llm_calls": 0,
+  "finished_at_utc": "2026-10-19T23:17:44.345751+00:00",
+  "labels_loaded": false,
+  "max_GET_attempts": 1,
+  "native_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/cache/data/sec_edgar/financial_statements/dba16fe3ea281103d64c3364.json",
+    "sha256": "02e05b3f33613f698acad65a8565d3bba8a5897d0eab17ae0939736f62f9287e"
+  },
+  "native_ledger": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/request-ledger.jsonl",
+    "sha256": "5aa3dc6edd8a7edf9c55d701945bc981fe897403a6bb02b1336643d366ac6699"
+  },
+  "network_open_calls": 1,
+  "plan_sha256": "a3d78051c0b8d9e7be012ce1069032d100794c1646e2c802842383c8282bef62",
+  "proof_normalized_at": "2026-10-19T23:17:44.291228+00:00",
+  "raw_response_proof": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/raw-response-proof.json",
+    "sha256": "81baee446ae7f9d4f58d23b925cd576b2254dd419770823b666ce44ec19ebea6"
+  },
+  "redirects_followed": 0,
+  "requests": [
+    {
+      "bytes": 3619984,
+      "http_status": 200,
+      "method": "GET",
+      "name": "gpre-companyfacts",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/gpre-companyfacts.response.raw",
+      "raw_sha256": "db9fcf737b51370991c1476c264eedbc3ce343daaad597e7b99da4381a56e472",
+      "request_headers": {
+        "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+        "Accept-Encoding": "identity",
+        "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com"
+      },
+      "response_headers": {
+        "Connection": "Transfer-Encoding",
+        "Content-Type": "application/json",
+        "Date": "Mon, 19 Oct 2026 23:17:43 GMT",
+        "Strict-Transport-Security": "max-age=31536000 ; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Amzn-Trace-Id": "Root=1-6ad6a517-5e93399eb0e99a604c0c0b7b",
+        "x-amz-apigw-id": "Fg67sERRoAMETJw=",
+        "x-amzn-RequestId": "a84fed2e-2f7f-4da1-85bd-2f7e99b40941"
+      },
+      "response_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001309402.json",
+      "retrieved_at_utc": "2026-10-19T23:17:44.044982+00:00",
+      "started_at_utc": "2026-10-19T23:17:42.313335+00:00",
+      "status": "http_response_retained",
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001309402.json"
+    }
+  ],
+  "schema_version": "gpre-companyfacts-single-fetch-result-v1",
+  "source_appends": 0,
+  "status": "successful",
+  "terminal": true,
+  "typed_products_materialized": 0
+}

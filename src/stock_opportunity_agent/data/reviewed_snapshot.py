@@ -14,6 +14,7 @@ from typing import Any, Mapping
 
 from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore, content_sha256
+from stock_opportunity_agent.data.filing_orientation import filing_source_matches_form
 from stock_opportunity_agent.data.sec_company_facts import (
     STANDARD_FORMS, STANDARD_TAXONOMIES, materialize_company_fact_documents,
     validate_company_facts_response,
@@ -71,10 +72,10 @@ def _instant(value: Any) -> datetime:
 def _verify_sec_document(document, row, proofs, cutoff):
     if set(proofs) != {"sec_static_archive_body", "sec_submissions_acceptance"}:
         raise ReviewedSourceRejected("admitted source requires retained SEC body and acceptance proof")
-    if document.source_type != "filing":
-        raise ReviewedSourceRejected("static SEC filing proof requires filing source type")
     body_proof, body = proofs["sec_static_archive_body"]
     acceptance, submissions = proofs["sec_submissions_acceptance"]
+    if not filing_source_matches_form(document.source_type, acceptance["form"]):
+        raise ReviewedSourceRejected("static SEC source type differs from proved filing form")
     if (body.get("endpoint") != body_proof["endpoint"] or body.get("body") != document.content
             or content_sha256(body["body"]) != body_proof["expected_content_hash"]):
         raise ReviewedSourceRejected("static SEC body differs from admitted original")
@@ -276,6 +277,8 @@ def _verify_sec_response_document(document, row, proofs, cutoff, payload_memo, r
         raise ReviewedSourceRejected("SEC target filing fields are malformed")
     filed = date.fromisoformat(arrays["filingDate"][index])
     primary, form = arrays["primaryDocument"][index], arrays["form"][index]
+    if not filing_source_matches_form(document.source_type, form):
+        raise ReviewedSourceRejected("SEC response source type differs from proved filing form")
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", primary):
         raise ReviewedSourceRejected("SEC primary document filename is unsafe")
     if linked is not None:
@@ -318,7 +321,7 @@ def _verify_sec_response_document(document, row, proofs, cutoff, payload_memo, r
             exhibit_document=filename, document_role=role, exhibit_type=exhibit_type)
     content = _sec_response_text(body_proof, receipt, endpoint, raw_memo)
     expected = RawInfoDocument.create(document_id=document_id,
-        company_id="cik_" + cik, source_type="filing", published_at=accepted, available_at=accepted,
+        company_id="cik_" + cik, source_type=document.source_type, published_at=accepted, available_at=accepted,
         content=content, metadata=metadata)
     if (form != root_proof["form"] or primary != root_proof["primary_document"]
             or filed.isoformat() != root_proof["filing_date"] or accepted != _instant(root_proof["accepted_at"])

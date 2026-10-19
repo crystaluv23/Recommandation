@@ -1,0 +1,145 @@
+{
+  "scope": "Only explicit safe related selectors, no real labels/fullprepare/socket access. Prior unsafe legacy selectors excluded.",
+  "selectors": [
+    "tests.test_reviewed_sec_source_aliases",
+    "tests.test_reviewed_sec_response_profile",
+    "tests.test_reviewed_companyfacts_profile",
+    "tests.test_reviewed_market_profile",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_actual_four_source_denominator_and_all_public_read_interfaces",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_declared_oracle_identity_cannot_be_relocated_without_original_records",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_explicit_binding_rejects_downgrade_root_hash_and_added_file",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_materialization_cannot_write_inside_original_oracle_even_via_symlink",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_production_resolver_factory_rejects_enabled_contract_even_without_external_flag",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_proof_drift_rechecked_without_touching_originals",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_real_resolver_exact_time_and_unknown_is_gap",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_snapshot_replay_append_and_acquisition_cannot_widen",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_source_shape_metadata_availability_and_duplicate_proofs_are_rejected",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_submissions_endpoint_must_match_sec_issuer"
+  ],
+  "expanded_test_ids": [
+    "tests.test_reviewed_sec_source_aliases.ReviewedSecSourceAliasTests.test_aliases_do_not_relax_cutoff_or_proof_form_identity",
+    "tests.test_reviewed_sec_source_aliases.ReviewedSecSourceAliasTests.test_generic_nonoperating_and_amendments_remain_qualified",
+    "tests.test_reviewed_sec_source_aliases.ReviewedSecSourceAliasTests.test_http_exhibit_preserves_source_and_real_parent_form",
+    "tests.test_reviewed_sec_source_aliases.ReviewedSecSourceAliasTests.test_http_primary_preserves_aliases_at_generic_and_exact_native_lookup",
+    "tests.test_reviewed_sec_source_aliases.ReviewedSecSourceAliasTests.test_legacy_managed_pair_preserves_generic_and_all_six_exact_aliases",
+    "tests.test_reviewed_sec_source_aliases.ReviewedSecSourceAliasTests.test_rehashed_materialized_type_change_cannot_replace_admitted_original_on_restore",
+    "tests.test_reviewed_sec_source_aliases.ReviewedSecSourceAliasTests.test_shared_predicate_keeps_generic_scope_and_exact_operating_forms_separate",
+    "tests.test_reviewed_sec_source_aliases.ReviewedSecSourceAliasTests.test_wrong_form_unsupported_or_substring_source_reject_even_with_rehashed_original",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_actual_retained_kgc_parent_index_layout_proves_only_its_literal_codes",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_exhibit_cannot_relabel_unguarded_links_form_or_time",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_explicit_root_linked_and_response_carriers_restore_without_repackaging",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_index_code_cell_excludes_description_cross_reference_and_ambiguous_rows",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_literal_parent_exhibit_role_type_and_parent_acceptance",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_native_compression_and_equivalent_aware_offsets",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_raw_proof_drift_reverified_at_refresh_and_worker_restore",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_rehashed_original_and_raw_bytes_cannot_change",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_rehashed_receipt_mechanical_tampering_rejects",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_root_link_array_target_and_cutoff_counterexamples",
+    "tests.test_reviewed_companyfacts_profile.ReviewedCompanyFactsProfileTests.test_clocks_and_equivalent_offsets_preserve_utc_cutoff",
+    "tests.test_reviewed_companyfacts_profile.ReviewedCompanyFactsProfileTests.test_manifest_original_root_and_worker_membership_drift_fail",
+    "tests.test_reviewed_companyfacts_profile.ReviewedCompanyFactsProfileTests.test_native_materialize_restore_worker_and_explicit_subset",
+    "tests.test_reviewed_companyfacts_profile.ReviewedCompanyFactsProfileTests.test_numeric_json_type_changes_reject_exact_replay_and_rehashed_restore",
+    "tests.test_reviewed_companyfacts_profile.ReviewedCompanyFactsProfileTests.test_per_review_decode_and_normalizer_reuse_never_crosses_refresh",
+    "tests.test_reviewed_companyfacts_profile.ReviewedCompanyFactsProfileTests.test_rehashed_managed_request_and_provider_identity_fail_closed",
+    "tests.test_reviewed_companyfacts_profile.ReviewedCompanyFactsProfileTests.test_rehashed_original_values_units_periods_filed_times_and_flags_reject",
+    "tests.test_reviewed_companyfacts_profile.ReviewedCompanyFactsProfileTests.test_selection_scope_provenance_and_complete_membership_are_enforced",
+    "tests.test_reviewed_companyfacts_profile.ReviewedCompanyFactsProfileTests.test_whole_raw_legacy_aggregate_and_missing_or_cross_bound_proofs_reject",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_actual_diagnostic_freeze_loader_factory_and_runtime_baseline",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_falsey_pagination_shape_regression",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_later_review_scope_cannot_leave_earliest_consumer_unproved",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_malformed_timestamps_are_typed_source_rejections",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_normalization_prices_and_all_bar_clocks_are_bound",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_pagination_aliases_reject_malformed_shapes_and_accept_null",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_real_original_baseline_restore_and_optional_corroboration",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_rebound_wrong_proof_and_request_variants_are_rejected",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_sec_parallel_array_malformed_stays_on_typed_boundary",
+    "tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_synthetic_weekend_cutoff_and_equivalent_timezone_clocks",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_actual_four_source_denominator_and_all_public_read_interfaces",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_declared_oracle_identity_cannot_be_relocated_without_original_records",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_explicit_binding_rejects_downgrade_root_hash_and_added_file",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_materialization_cannot_write_inside_original_oracle_even_via_symlink",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_production_resolver_factory_rejects_enabled_contract_even_without_external_flag",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_proof_drift_rechecked_without_touching_originals",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_real_resolver_exact_time_and_unknown_is_gap",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_snapshot_replay_append_and_acquisition_cannot_widen",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_source_shape_metadata_availability_and_duplicate_proofs_are_rejected",
+    "tests.test_reviewed_source_snapshot.ReviewedSourceSnapshotTests.test_submissions_endpoint_must_match_sec_issuer"
+  ],
+  "excluded_unsafe_test_names": [
+    "test_minimal_input_verification_cannot_drop_reviewed_binding",
+    "test_fresh_narrow_cli_freeze_restores_view_and_preserves_full_readiness_failure"
+  ],
+  "tripwires": [
+    "minimal.LABELS unreadable sentinel",
+    "real LABELS path builtins/io.open forbidden",
+    "minimal.prepare and _prepare_workspace forbidden",
+    "socket.socket and create_connection forbidden"
+  ],
+  "tripwire_calls": {
+    "labels": 0,
+    "prepare": 0,
+    "socket": 0
+  },
+  "candidate_files_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/filing_orientation.md",
+      "sha256": "2b290ec3e606fcffde5fe63f926c297173b6eade6d576900377ae1c0574b8f3a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_snapshot.md",
+      "sha256": "66d950b0832fcc188e9169449b98188e5135c06353fd621fd41a964ebc40c697"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_sec_response_profile.md",
+      "sha256": "1830fd242cf759437ba339c0ed2824aaf1951301f37c157044bc92ef5cb94149"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_sec_source_aliases.py",
+      "sha256": "040ddab348a55507c42afb4bf652b162d7a43897ddf3d2d0c95cf4e09633259b"
+    }
+  ],
+  "candidate_files_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/filing_orientation.md",
+      "sha256": "2b290ec3e606fcffde5fe63f926c297173b6eade6d576900377ae1c0574b8f3a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_snapshot.md",
+      "sha256": "66d950b0832fcc188e9169449b98188e5135c06353fd621fd41a964ebc40c697"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_sec_response_profile.md",
+      "sha256": "1830fd242cf759437ba339c0ed2824aaf1951301f37c157044bc92ef5cb94149"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_sec_source_aliases.py",
+      "sha256": "040ddab348a55507c42afb4bf652b162d7a43897ddf3d2d0c95cf4e09633259b"
+    }
+  ],
+  "source_stable": true,
+  "tests_run": 48,
+  "successful": true,
+  "failures": 0,
+  "errors": 0,
+  "log": {
+    "path": "/tmp/sec-alias-final-48-safe.log",
+    "sha256": "366084d83a4b46b5194d7030769d1164285fcd3af3697d9aa1c2d0c0f7a8cc89"
+  }
+}

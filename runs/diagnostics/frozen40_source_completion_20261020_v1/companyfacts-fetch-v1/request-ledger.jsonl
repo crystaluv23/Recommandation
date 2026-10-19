@@ -1,0 +1,1 @@
+{"cache_key": "dba16fe3ea281103d64c3364", "capability": "financial_statements", "endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001309402.json", "message": null, "next_retry_at": null, "requested_at": "2026-10-19T23:17:44.069857+00:00", "source_key": "sec_edgar", "status": "fetched"}

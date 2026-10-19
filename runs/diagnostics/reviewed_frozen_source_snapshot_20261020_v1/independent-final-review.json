@@ -1,0 +1,104 @@
+{
+  "scope": "Independent static final candidate review and canonical temporary receipt/nativefinancial fixtures only. No actual prepare/source scan/globalstore/GET/models/LabelStore/LockedTest.",
+  "current_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_snapshot.py",
+      "sha256": "b05af2849b3e54563e6041b8c11dff4d96ddce35875b4c19b7d40a2f6e126516"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_snapshot.md",
+      "sha256": "1d7cea6c99ad68f8dd8442624561a5496ee6d395ac3ca1ac90e0934690b69c8a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_frozen_source_snapshot.py",
+      "sha256": "247da143a875e2a59943db4dc833921e8b0ead5f1a98cbc180d49a255a0cfac5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    }
+  ],
+  "previous_valid_failure_evidence": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-receipt-counterexamples.json",
+    "sha256": "9dc3608e1a27b0742c0c59c454a45fc5252afa5522a43a011b7fb27f4b3ba602",
+    "meaning": "old script27137 positiveGET accepted and five single-field contradictory receipts alsoaccepted"
+  },
+  "prior_harness_misuse": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-receipt-original-counterexamples.json",
+    "sha256": "bfee1308abfd15be5d1d67e3540b7956137f5748db59796b156286292d76cbda",
+    "meaning": "unresolved /var temp path made all cases including positive fail binding guard; excluded from product failure inference"
+  },
+  "checks": [
+    {
+      "case": "base_GET",
+      "accepted": true,
+      "expected_pass": true
+    },
+    {
+      "case": "POST",
+      "accepted": false,
+      "expected_pass": false
+    },
+    {
+      "case": "retained_bool",
+      "accepted": false,
+      "expected_pass": false
+    },
+    {
+      "case": "open_count_zero",
+      "accepted": false,
+      "expected_pass": false
+    },
+    {
+      "case": "reservation_bool",
+      "accepted": false,
+      "expected_pass": false
+    },
+    {
+      "case": "request_failed",
+      "accepted": false,
+      "expected_pass": false
+    },
+    {
+      "case": "GET_attempts_bool",
+      "accepted": false,
+      "expected_pass": false
+    },
+    {
+      "case": "actual native materializer+profile,all complete products persisted",
+      "product_count": 2,
+      "whole_expected_set_count": 2,
+      "status": "preappend_eligible"
+    },
+    {
+      "case": "injected mixed product profile failure keeps fulltwofiles/fullset,not family success",
+      "status": "unknown_native_profile_failed",
+      "product_count": 2
+    },
+    {
+      "case": "full-record crossnamespace clock conflict",
+      "collision": true
+    },
+    {
+      "case": "actual prepare-only extra globalstore/append/prepare_inputs guards",
+      "passed": true
+    }
+  ],
+  "all_passed": true,
+  "static_connections_reviewed": [
+    "Exactfixed40 projection remains bound;25distinct financial and24nonAnchor market+24operating cases match original company/split/cutoff/ticker, no source-based replacement.",
+    "NativeCompanyFacts full comparative selection/threeproof profile/full expected set, variants/ambiguities and crossnamespace canonical collisions preserved.",
+    "Operating supplemental bound existing fullrecord is preferred unchanged; multiplecanonicals or sourceproof mismatch remainunknown;prototype onlywhenno boundoriginal.",
+    "Knownmissing GET requests are source-bound endpoint/query only and preserve associations; no request execution or newCollector invoked.",
+    "Prepare-only wrapper inherits existing socket/model/LabelStore/fullprepare/Signalapply guards and adds RawInfoStore init/append/prepare_inputs rejection. No futureexecute/view/matrix implemented."
+  ],
+  "conclusion": "Fixed receipt-family false acceptance is closed under finalhash, with genuine positive preserved. No additional bounded blocker found for authorized prepare-only diagnosis; not source admission or execution authorization.",
+  "limits": [
+    "The complete real25source responses and realfixed40 preparation were not executed by this independentreview. Existingowner8tests evidence is separate from these independent fixtures.",
+    "Partial/gap/unknown outcomes remain valid diagnosis results and do not imply readiness or numeric measurement."
+  ]
+}

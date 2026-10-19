@@ -82,9 +82,14 @@ valid ordered declared filing bounds and the target's actual `filingDate`
 inside them. Whole-page date extrema need not equal the declared bounds; do not
 introduce a tolerance or reinterpret acceptance time to force equality.
 
-Require exact expected primary archive URL, canonical SEC document id, `filing`
-source type and complete native filing metadata (`provider`, CIK, accession,
-form and source URL). Complete reconstructed record equality uses canonical
+Require exact expected primary archive URL, canonical SEC document id, and the
+shared [source-versus-form rule](filing_orientation.md). Preserve the verified
+original's `filing`, `sec_filing` or `filing_body` alias; exact typed SEC sources
+must agree with the actual parent form for both primary and exhibit profiles.
+Generic aliases continue to support legitimate nonoperating forms and amendments;
+other sources and substring aliases reject. Reconstruct the expected record
+with that verified original source type and complete native filing metadata
+(`provider`, CIK, accession, form and source URL). Complete record equality uses canonical
 hashes, preserving JSON value types. The target accepted instant must exactly
 equal row available, original available and published instants and be no later
 than the actual case cutoff. Equivalent offsets preserve instants. Missing or

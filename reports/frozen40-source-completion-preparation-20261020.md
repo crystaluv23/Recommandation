@@ -47,7 +47,20 @@ ordered native HTTP/cache/raw clocks and terminal reentry refusal. The
 [independent collection review](../runs/diagnostics/frozen40_source_completion_20261020_v1/independent-companyfacts-fetch-review.json)
 binds collector f8f9d55fc0f4f83470079e8c8239d9e8e413c56d0e3d3751ee990426bbed0477
 and plan a3d78051c0b8d9e7be012ce1069032d100794c1646e2c802842383c8282bef62.
-No data request has been sent in this phase yet.
+The sole actual collection then succeeded under checkpointce785ece: one GET,
+HTTP200,3619984raw bytes, SHA
+db9fcf737b51370991c1476c264eedbc3ce343daaad597e7b99da4381a56e472.
+The [actual collection review](../runs/diagnostics/frozen40_source_completion_20261020_v1/independent-actual-companyfacts-fetch-review.json)
+independently verified whole HTTP/cache/native raw canonical content, CIK1309402,
+content-derived ID, ordered start/fetch/cache/raw clocks, one fetched ledger entry
+and terminal marker. No retry, redirect, typed products or global append occurred.
+The new response is current source evidence, never an as-published API vintage.
+The [explicit additional table](../runs/diagnostics/frozen40_source_completion_20261020_v1/additional-companyfacts.json)
+binds only this actual cache/rawproof/receipt for the fixedGPREcase. All25 financial
+families now have candidate chains, pending complete native reconstruction/profile
+and full-record ID collision checks. This phase made1dataGET/0externalLLM calls;
+the current source-proof series total is45(30market+15SEC), excluding separate
+technical-document browsing.
 
 The new owning preparation spec fixes all40 identities,25 financial families and
 24market/operating families. The implementation is prepare-only: real native
@@ -57,3 +70,23 @@ new view, input matrix, model, Signalapply, LabelStore or LockedTest read.
 Additional source receipts must be explicit bound inputs, never implicit network
 fallback. The later unified source qualification and dual720 consumption remain
 separate work and are not claimed by a successful preparation.
+
+The native adapter already supported generic filing types and six exact form
+aliases, but source qualification required only `filing`. Actual LEU/TNDM
+original `10-k` records exposed this mismatch. The shared form predicate now
+accepts the declared aliases with exact matching forms, while retaining all
+issuer, body, clock, cutoff and restore checks. Originals are not renamed.
+Eight new alias controls,48 explicit safe related tests and17 independent
+counterexamples passed; the original failure probe remains unchanged.
+The final preparation candidate also passed eight temporary tests. Root ran
+both new modules together:16/16 with zero label/network/fullprepare tripwires.
+The first root runner stopped before tests because its `/tmp` import path
+omitted the repository; that failed startup log is retained separately.
+These local checks do not establish actual admission or model compliance.
+The final independent receipt review found that a rehashed POST/failed request
+or inconsistent singleton counters could still enter the additional-input
+boundary. The actual GPRE receipt remained correct. The owning spec and code
+now require the exact GET/retained-response status and strict singleton counters;
+new controls retain a successful positive and reject each conflicting variant.
+The initial independent `/var`-alias temporary harness failed its binding check
+before reaching this boundary; it is preserved separately from the valid probe.

@@ -1,0 +1,64 @@
+{
+  "scope": "Independent actual single-fetch artifacts read once, never collector rerun/fake/GET/LabelStore/global append/typed normalize.",
+  "bindings": {
+    "collector.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/collector.py",
+      "sha256": "f8f9d55fc0f4f83470079e8c8239d9e8e413c56d0e3d3751ee990426bbed0477"
+    },
+    "request-plan.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/request-plan.json",
+      "sha256": "a3d78051c0b8d9e7be012ce1069032d100794c1646e2c802842383c8282bef62"
+    },
+    "results.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/results.json",
+      "sha256": "0320bfe5ede9d97cccbbf1084d5be68bd869fa4849fae5563624b16990915dce"
+    },
+    ".attempt.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/.attempt.json",
+      "sha256": "eb36ebe6c947478aa7240f53c52f4639b6a36be7a3ce92abac93c887ea85156d"
+    },
+    "request-ledger.jsonl": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/request-ledger.jsonl",
+      "sha256": "5aa3dc6edd8a7edf9c55d701945bc981fe897403a6bb02b1336643d366ac6699"
+    },
+    "execution-summary.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/execution-summary.json",
+      "sha256": "705acf3bdef330041f7a1df99985b2deda855b44d3d7f543de06ffe598ee5a42"
+    },
+    "execution-exit.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/execution-exit.json",
+      "sha256": "338553f3ab36b8e09580b0c020bd253a51bb5437608b0b3cb21d62301775d2cd"
+    }
+  },
+  "actual_HTTP": {
+    "requests": 1,
+    "status": 200,
+    "bytes": 3619984,
+    "raw_sha256": "db9fcf737b51370991c1476c264eedbc3ce343daaad597e7b99da4381a56e472",
+    "endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001309402.json",
+    "automatic_retries": 0,
+    "redirects_followed": 0
+  },
+  "native_whole_body_matches_raw": true,
+  "strict_issuer_CIK": "0001309402",
+  "raw_native_record_id": "sec_edgar:cik_0001309402:sec_company_facts_raw_response:4c7c94253afee62c6a03cc7c",
+  "raw_native_content_hash": "4c7c94253afee62c6a03cc7c3b6e730a1542acc46d04886585e219e3c5070404",
+  "actual_clocks": {
+    "start": "2026-10-19T23:17:42.313335+00:00",
+    "HTTP_retrieved": "2026-10-19T23:17:44.044982+00:00",
+    "cache_retrieved": "2026-10-19T23:17:44.069857+00:00",
+    "proof_normalized": "2026-10-19T23:17:44.291228+00:00",
+    "finished": "2026-10-19T23:17:44.345751+00:00"
+  },
+  "ledger_fetched_entries": 1,
+  "terminal_attempt_marker": true,
+  "additional_table_matches_exact_bindings": true,
+  "source_appends_and_typed_products_declared_zero": true,
+  "no_global_writer_in_bound_collector": true,
+  "limits": [
+    "This confirms one actual current SEC response and managed-cache/raw-proof chain, not normalized products or source admission.",
+    "No as-of API vintage or primary-filing numerical audit asserted.",
+    "No independent global filesystem-before map is present for this narrow fetch; zero global writes is supported by the bound collector output paths/static interface and persisted0 counters, not a whole-global byte rescan."
+  ],
+  "native_cache_body_exact_canonical_JSON_types_match_HTTP": true
+}

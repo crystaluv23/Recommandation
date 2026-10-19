@@ -1,0 +1,129 @@
+{
+  "scope": "Independent readonly actual LEU/TNDM verifier plus isolated temporary fixture/read-only-view/consumer checks; no real oracle/store construction, GET, models, labels, LockedTest or source modifications.",
+  "old_failure_preserved": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/sec-source-alias-boundary-probe.json",
+    "sha256": "54734b14b01658a151852db8f9470ea25920498a120c7d5c4584d6d45d2c608d"
+  },
+  "current_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_sec_source_aliases.py",
+      "sha256": "040ddab348a55507c42afb4bf652b162d7a43897ddf3d2d0c95cf4e09633259b"
+    }
+  ],
+  "checks": [
+    {
+      "case": "actual LEU",
+      "original_type": "10-k",
+      "document_id": "sec:cik_0001065059:000106505924000013",
+      "native_proofs_pass_without_clone": true,
+      "early_cutoff_rejected": true,
+      "original_source_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001065059/sec:cik_0001065059:000106505924000013.json",
+        "sha256": "013f9e58b5813bbda256714f70ce1bd9f9d03f04d62a310d5d719a13074e8665"
+      }
+    },
+    {
+      "case": "actual TNDM",
+      "original_type": "10-k",
+      "document_id": "sec:cik_0001438133:000143813325000036",
+      "native_proofs_pass_without_clone": true,
+      "early_cutoff_rejected": true,
+      "original_source_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001438133/sec:cik_0001438133:000143813325000036.json",
+        "sha256": "d2acbaed435be385b67ce0d4599d3bca3571e69f0eefb69da56d4878a8083313"
+      }
+    },
+    {
+      "case": "shared predicate generic registration/amendment positives, exact6 whole-form and typed/malformed negatives",
+      "passed": true
+    },
+    {
+      "case": "legacy generic 10-K/A",
+      "original_type_retained": "sec_filing",
+      "native_view_restart_worker_and_generic_consumer": true
+    },
+    {
+      "case": "legacy wrong_form_alias",
+      "rehashed_negative_rejected": true
+    },
+    {
+      "case": "legacy metadata_type",
+      "rehashed_negative_rejected": true
+    },
+    {
+      "case": "legacy url",
+      "rehashed_negative_rejected": true
+    },
+    {
+      "case": "legacy body",
+      "rehashed_negative_rejected": true
+    },
+    {
+      "case": "legacy cutoff",
+      "rehashed_negative_rejected": true
+    },
+    {
+      "case": "legacy rehashed materialized legal-alias substitution",
+      "restore_rejected": true
+    },
+    {
+      "case": "response generic S-1",
+      "original_type_retained": "filing_body",
+      "native_view_restart_worker_and_generic_consumer": true
+    },
+    {
+      "case": "response wrong_form_alias",
+      "rehashed_negative_rejected": true
+    },
+    {
+      "case": "response metadata_type",
+      "rehashed_negative_rejected": true
+    },
+    {
+      "case": "response url",
+      "rehashed_negative_rejected": true
+    },
+    {
+      "case": "response body",
+      "rehashed_negative_rejected": true
+    },
+    {
+      "case": "response cutoff",
+      "rehashed_negative_rejected": true
+    },
+    {
+      "case": "response rehashed materialized legal-alias substitution",
+      "restore_rejected": true
+    }
+  ],
+  "all_passed": true,
+  "actual_originals_and_proofs_unchanged": true,
+  "limits": [
+    "Only source-type capability connection and native source qualification/readonly consumption; not whole-body operating sufficiency or actual case readiness.",
+    "Real LEU/TNDM sources were verifier-only, not materialized or appended; no original type/clock/content was changed.",
+    "Generic registration/amended forms remain proof-qualified but are not automatically declared annual/interim operating reports."
+  ],
+  "owning_spec_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/filing_orientation.md",
+      "sha256": "2b290ec3e606fcffde5fe63f926c297173b6eade6d576900377ae1c0574b8f3a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_snapshot.md",
+      "sha256": "66d950b0832fcc188e9169449b98188e5135c06353fd621fd41a964ebc40c697"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_sec_response_profile.md",
+      "sha256": "1830fd242cf759437ba339c0ed2824aaf1951301f37c157044bc92ef5cb94149"
+    }
+  ],
+  "independent_probe_script_sha256": "9374bd4f3b6c782fcced44ddf3455966d4da474823c3a7d6cf6fbd9d669c5480"
+}
