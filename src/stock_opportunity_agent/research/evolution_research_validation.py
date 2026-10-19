@@ -2538,6 +2538,34 @@ def _collect_need_dispositions(
                     invalid(ref_path, "Evidence tuple must be unique, available, in the executed batch and newly adopted by current state")
                 ref_keys.add(key)
                 normalized_refs.append(dict(ref))
+        row_issues = issues[issue_count:]
+        mirror_text = raw["residual_need"]
+        if (state is not None and scope == "partial"
+                and isinstance(mirror_text, str) and mirror_text.strip()
+                and mirror_text not in prior_needs and row_issues
+                and all(issue.paths == (path + ".residual_need",) for issue in row_issues)
+                and sum(isinstance(row, Mapping) and row.get("residual_need") == mirror_text
+                        for row in need_dispositions) == 1):
+            mirrors = [offset for offset, text in enumerate(state.next_information_needs)
+                       if text == mirror_text]
+            if len(mirrors) == 1:
+                mirror_path = f"next_information_needs[{mirrors[0]}]"
+                for offset in range(issue_count, len(issues)):
+                    issue = issues[offset]
+                    context = dict(issue.repair_context)
+                    context["dependency_allowed_repairs"] = {
+                        **context.get("dependency_allowed_repairs", {}),
+                        mirror_path: ["replace"],
+                    }
+                    context.update(prior_need_index=index,
+                                   residual_mirror_path=mirror_path,
+                                   residual_mirror_original=mirror_text)
+                    issues[offset] = replace(issue,
+                        dependent_paths=(*issue.dependent_paths, mirror_path),
+                        repair_context=context,
+                        message=issue.message + f"; if replacing this residual, synchronize "
+                            f"its unique exact mirror at {mirror_path} with the same new "
+                            "residual using replace only; preserve every other need")
         if len(issues) == issue_count:
             normalized.append({"need_index": index, "answer_scope": scope,
                                "residual_need": residual, "evidence_refs": normalized_refs,
@@ -3252,6 +3280,7 @@ def _validate_research_state_refs(
         else set()
     )
     actual_dispositions: tuple[dict[str, Any], ...] = ()
+    disposition_issues: tuple[ValidationIssue, ...] = ()
     if phase == "reflect" and need_dispositions is not None:
         actual_dispositions, disposition_issues = _collect_need_dispositions(
             need_dispositions, previous_state=previous_state,
@@ -3268,6 +3297,21 @@ def _validate_research_state_refs(
         need_dispositions=actual_dispositions,
         evaluation_context=evaluation_context,
     )
+    # An invalid but fully bound partial mirror is still rejected. Keep its
+    # correction snapshot intact instead of restoring its prior before the
+    # residual+mirror repair has a chance to run; every other occurrence stays
+    # under the normal conservative transition contract.
+    pending_mirror_owners = {
+        issue.repair_context["prior_need_index"]
+        for issue in disposition_issues
+        if "residual_mirror_path" in issue.repair_context
+    }
+    targeted_answer_need_errors = [
+        error for error in targeted_answer_need_errors
+        if not (error.get("required_action") == "restore_exactly"
+                and any(error.get("prior_state_path") == f"next_information_needs[{index}]"
+                        for index in pending_mirror_owners))
+    ]
     cosmetic_needs = _cosmetically_retained_information_needs(
         previous_state.next_information_needs if previous_state else (),
         state.next_information_needs,

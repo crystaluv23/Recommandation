@@ -1,0 +1,70 @@
+test_already_adopted_evidence_does_not_grant_mirror_authority (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_already_adopted_evidence_does_not_grant_mirror_authority) ... ok
+test_ambiguous_or_missing_mirrors_do_not_grant_state_edits (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_ambiguous_or_missing_mirrors_do_not_grant_state_edits) ... ok
+test_duplicate_prior_preserves_unowned_occurrence (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_duplicate_prior_preserves_unowned_occurrence) ... ERROR
+test_exact_historical_49_50_replay_retains_the_original_surplus (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_exact_historical_49_50_replay_retains_the_original_surplus) ... ok
+test_foreign_row_no_owner_and_invalid_refs_do_not_grant_mirror (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_foreign_row_no_owner_and_invalid_refs_do_not_grant_mirror) ... ok
+test_raw_diagnostic_without_state_never_grants_mirror_authority (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_raw_diagnostic_without_state_never_grants_mirror_authority) ... ok
+test_residual_equal_to_any_prior_need_is_not_a_repairable_mirror (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_residual_equal_to_any_prior_need_is_not_a_repairable_mirror) ... ok
+test_scope_rejects_other_need_whole_array_and_belief_edits (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_scope_rejects_other_need_whole_array_and_belief_edits) ... ok
+test_scripted_authorized_sync_survives_native_parse_persistence_and_next_consumer (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_scripted_authorized_sync_survives_native_parse_persistence_and_next_consumer) ... FAIL
+test_two_owned_rows_sharing_residual_do_not_grant_unique_state_slot (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_two_owned_rows_sharing_residual_do_not_grant_unique_state_slot) ... ok
+test_unique_mirror_slot_is_bound_by_exact_value_not_owned_index (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_unique_mirror_slot_is_bound_by_exact_value_not_owned_index) ... FAIL
+test_unique_owned_mirror_gets_only_replace_dependency (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_unique_owned_mirror_gets_only_replace_dependency) ... FAIL
+
+======================================================================
+ERROR: test_duplicate_prior_preserves_unowned_occurrence (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_duplicate_prior_preserves_unowned_occurrence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_owned_partial_residual_mirror.py", line 140, in test_duplicate_prior_preserves_unowned_occurrence
+    fixed = apply_state_patch(base, patch(contract,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py", line 307, in apply_state_patch
+    raise ValidationError(f"patch operation is outside typed authority: {op} {path}")
+stock_opportunity_agent.models.ValidationError: patch operation is outside typed authority: replace next_information_needs[4]
+
+======================================================================
+FAIL: test_scripted_authorized_sync_survives_native_parse_persistence_and_next_consumer (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_scripted_authorized_sync_survives_native_parse_persistence_and_next_consumer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_owned_partial_residual_mirror.py", line 101, in test_scripted_authorized_sync_survives_native_parse_persistence_and_next_consumer
+    result = self.controller(caller).reflect(self.plan, self.prior, self.batch)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 449, in reflect
+    reflected, usage = _complete_parsed_role(
+                       ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 3977, in _complete_parsed_role
+    return _complete_parsed_role_impl(caller, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 4157, in _complete_parsed_role_impl
+    value, step_usage = _complete_json_with_invalid_value(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1672, in _complete_json_with_invalid_value
+    return caller.complete_json(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_evolution_state_patch.py", line 56, in complete_json
+    value = answer(kwargs) if callable(answer) else answer
+            ^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_owned_partial_residual_mirror.py", line 95, in synchronized
+    self.assertIn({'op': 'replace', 'path': 'next_information_needs[4]', 'descendants': False}, contract['allowed_operations'])
+AssertionError: {'op': 'replace', 'path': 'next_information_needs[4]', 'descendants': False} not found in [{'op': 'replace', 'path': 'need_dispositions[0].residual_need', 'descendants': False}, {'op': 'remove', 'path': 'need_dispositions[0].residual_need', 'descendants': False}, {'op': 'replace', 'path': 'need_dispositions[0]', 'descendants': True}, {'op': 'remove', 'path': 'need_dispositions[0]', 'descendants': False}]
+
+======================================================================
+FAIL: test_unique_mirror_slot_is_bound_by_exact_value_not_owned_index (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_unique_mirror_slot_is_bound_by_exact_value_not_owned_index)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_owned_partial_residual_mirror.py", line 181, in test_unique_mirror_slot_is_bound_by_exact_value_not_owned_index
+    self.assertIn({'op': 'replace', 'path': 'next_information_needs[5]', 'descendants': False},
+AssertionError: {'op': 'replace', 'path': 'next_information_needs[5]', 'descendants': False} not found in [{'op': 'replace', 'path': 'need_dispositions[0].residual_need', 'descendants': False}, {'op': 'remove', 'path': 'need_dispositions[0].residual_need', 'descendants': False}, {'op': 'replace', 'path': 'need_dispositions[0]', 'descendants': True}, {'op': 'remove', 'path': 'need_dispositions[0]', 'descendants': False}]
+
+======================================================================
+FAIL: test_unique_owned_mirror_gets_only_replace_dependency (tests.test_owned_partial_residual_mirror.OwnedPartialResidualMirrorTests.test_unique_owned_mirror_gets_only_replace_dependency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_owned_partial_residual_mirror.py", line 83, in test_unique_owned_mirror_gets_only_replace_dependency
+    self.assertIn({'op': 'replace', 'path': 'next_information_needs[4]', 'descendants': False}, permissions)
+AssertionError: {'op': 'replace', 'path': 'next_information_needs[4]', 'descendants': False} not found in [{'op': 'replace', 'path': 'need_dispositions[0].residual_need', 'descendants': False}, {'op': 'remove', 'path': 'need_dispositions[0].residual_need', 'descendants': False}, {'op': 'replace', 'path': 'need_dispositions[0]', 'descendants': True}, {'op': 'remove', 'path': 'need_dispositions[0]', 'descendants': False}]
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.032s
+
+FAILED (failures=3, errors=1)

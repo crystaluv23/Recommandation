@@ -457,10 +457,26 @@
         "runs/diagnostics/reviewed_fast_prefix_20261020_v1/independent-review.json"
       ],
       "result": "Native known-sample prefix reaches durable prediction before labels with7fresh roles/1residual-only typedcorrection. Actual financing apply neutral plus ownedReflect partial disposition enter final context; deterministic OCF/netshare unavailable, terminalReflect0models. Six rows retain long/short representations of one compound unknown;52file completedrestore exact0dispatch, logical406596under512k. Root independent exact checks passed; final narrow independent semantic review passed with limits, no overall F4/F6/F7/MVP closure."
+    },
+    {
+      "id": "engineering-mvp-owned-partial-residual-mirror-20261020",
+      "strategy": "exact_owned_mirror_typed_permission_and_pending_owner_restoration",
+      "failure_families": [
+        "residual_only_repair_permission",
+        "precorrection_prior_restoration_duplicates_bound_mirror"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/owned-partial-residual-mirror-20261020.md",
+        "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/independent/independent-review.json",
+        "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/focused-tests.log",
+        "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/historical-prefix-unchanged.json"
+      ],
+      "result": "Independent14 and225related offline tests passed. Original49/50 remain six; explicitly scripted paired sync reaches five through parser/persistence/Predictor. Invalid row remains rejected; only bound owner restore deferred. No fresh roles/data/historical artifact mutation; fresh compliance/wholeF7/MVP open."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-accepted-plan-prefix-executed-20261020",
+    "after_iteration": "engineering-mvp-owned-partial-residual-mirror-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -533,7 +549,11 @@
       "reports/reviewed-generated-plan-prefix-20261020.md",
       "runs/diagnostics/reviewed_fast_prefix_20261020_v1/execution_summary.json",
       "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/independent/root-final-consumption-checks.json",
-      "runs/diagnostics/reviewed_fast_prefix_20261020_v1/independent-review.json"
+      "runs/diagnostics/reviewed_fast_prefix_20261020_v1/independent-review.json",
+      "reports/owned-partial-residual-mirror-20261020.md",
+      "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/independent/independent-review.json",
+      "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/focused-tests.log",
+      "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/historical-prefix-unchanged.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -561,21 +581,22 @@
       "Global event dedup merged identical validation events acrossH_init cases; sample-attributed raw-event sequence is necessary, while unique receipts alone count physical calls.",
       "A direction regex starts at an earlier collection Decide and crosses a local without-deciding prohibition to a later target word. Successful correction events can be empty, so exact request traces/receipts, not events alone, establish correction count.",
       "Without-clause recognition alone left ordinary do-not masks swallowing later finite decisions, and singular-only target words missed shares/prices. Keep local direction spans bounded and test both false rejection and false admission, without widening the shared prohibition guard.",
-      "A residual-only typed correction does not authorize rewriting an existing long mirrored need. Runtime conservatively appended the shorter residual, leaving two representations; preserve actual six-row state rather than claiming five needs or six independent discoveries."
+      "A residual-only typed correction does not authorize rewriting an existing long mirrored need. Runtime conservatively appended the shorter residual, leaving two representations; preserve actual six-row state rather than claiming five needs or six independent discoveries.",
+      "Initial prompt omitted300character bound and repair allowed only disposition fields. Mirror permission alone still let pre-correction restore append prior need; native integration replay exposed this ordering. Only a fully bound invalid row now defers its own restore while remaining rejected."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "source_definition_visibility_and_exact_residual_followup",
-      "action": "Checkpoint the independently accepted bounded connection, then select a separate scoped fix for missing versioned comparison definition in selector cards and retain redundant residual limits; no source/code/run change in this evidence batch.",
-      "stop": "No more roles/resume except the completedrestore already verified; no labels/score/Fast/Slow or larger budget.",
-      "question": "Which existing producer contract first loses the exact period/unit/comparison definition or residual slot identity before later model consumption?",
-      "pass": "A concrete existing-contract omission is isolated with original artifacts and a minimal separate spec-first fix plan; earlier actual connection remains unchanged.",
+      "strategy": "exact_owned_mirror_local_contract_then_fresh_trigger",
+      "action": "Checkpoint bounded mirror repair. Fresh compliance requires separately frozen Reflect under current authorization; historical six rows unchanged. F4 measurement scope separate.",
+      "stop": "No new roles/API/data or frozen-prefix resume; no semantic deduplication or automatic coupling.",
+      "question": "Will future Reflect obey residual bound or synchronize only its authorized mirror?",
+      "pass": "Separate native trigger proves authored synchronization and unchanged unknowns.",
       "fail": "Any unsupported need closure, incorrect period/unit, future source, semantic unavailable inversion or false model/Fastcompletion claim.",
-      "on_pass": "Implement only the selected demonstrated family under a new code checkpoint, without reusing old completion as new execution.",
+      "on_pass": "Close actual correction behavior only, not overallF7/MVP.",
       "on_fail": "Retain exact failure and repair the demonstrated family in a new freeze; never rewrite this case.",
-      "new_evidence": "Seven new actual roles/one typedcorrection and full final-context/sink52file restore independently passed. Actual second routing exposed missing weighted-average comparison definition and residual-only repair preserved two representations of one need.",
-      "distinguishing_variable": "Exact versioned definition and authorized residual-slot identity at the producer boundary, rather than generic Signal labels or similarity guessing."
+      "new_evidence": "Independent14/related225 offline tests; unchanged52historical files. Original operations6, scripted paired patch5.",
+      "distinguishing_variable": "Authored paired synchronization versus local permission/replay."
     }
   },
   "successor_prerequisites": [

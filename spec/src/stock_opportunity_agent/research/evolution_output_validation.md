@@ -405,6 +405,39 @@ returned coordinate it actually names; when the targeted occurrence is
 absent, the exact residual is appended and a preserved duplicate of the
 prior text is never consumed as the write target.
 
+For a current owned partial disposition with an invalid residual, the owning
+row validator may expose one additional correction dependency: replace the
+unique exact `next_information_needs[index]` mirror of that invalid residual.
+This requires a complete validated current state, one disposition for that
+indexed owner, valid reason and newly adopted current-batch evidence, and no
+other row sharing the residual. The residual must be nonblank text distinct
+from every prior need, and exactly one current need must equal it byte-for-byte.
+Only residual issues may remain on that row. Raw metadata diagnostics without
+validated adoption, foreign/unowned rows, repeated mirrors or ambiguous rows
+grant no such authority. The dependency permits replace of that one existing
+slot, never add/remove, the whole array, other needs or a state rewrite.
+
+The correction obligation binds prior owner index, exact invalid residual and
+returned mirror path under the existing failed-snapshot patch hash. A role
+shortening the residual should replace both that residual and its authorized
+mirror with the same genuinely unanswered text. The initial Reflect prompt
+discloses the existing 1-300 character limit and exact replacement requirement.
+While that fully bound residual issue remains invalid, defer only the same
+owner occurrence's `restore_exactly` prior-need transition. Otherwise the
+pre-correction fallback would add the prior into the snapshot and even a
+correctly synchronized patch would later produce two copies of the short
+residual. The invalid row still prevents acceptance; after correction, complete
+row/adoption/occurrence validation runs normally. Other transition obligations
+remain active, and unbound/ambiguous invalid rows retain conservative prior
+restoration. This is no authority to accept a missing need or delete a row.
+This grants no runtime semantic deduplication or automatic coupling: an old
+patch changing only the disposition can still leave the long mirror intact,
+and the existing conservative exact-transition fallback remains unchanged.
+Offline replay of such an old answer is not new model compliance. A separate
+explicitly synchronized patch fixture may prove the new bounded permission,
+canonical parsing and downstream persistence/consumption without rewriting
+historical replies, six-row states or completed checkpoints.
+
 A whole-member path named by a `restore_exactly` obligation is a prior-state
 coordinate, not a returned write target: its projection performs no
 coordinate copy at all, because the failed object's row at that index may be

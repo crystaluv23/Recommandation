@@ -23,6 +23,11 @@ p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留�
 
 ## 最近实际证据
 
+- [F7残留镜像纠错](../reports/owned-partial-residual-mirror-20261020.md)：初始提示明示
+  1–300字；仅有效owned partial的唯一exact镜像获indexed replace权限，同owner
+  恢复义务延后到纠错后复验。独立14项及225关联测试通过；旧49/50仍6行，
+  明确离线双路径同步才5行并经持久化/实际Predictor输入保真，不证明fresh服从。
+
 - 新 [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)：
   实际apply neutral→ownedReflect partial→Predictor/sink已连接，7新角色/1纠错，
   52文件恢复全等、0标签。6行needs含同一长短残留，两个deterministic unavailable，
@@ -54,6 +59,7 @@ p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留�
 
 ## 下一步
 
-本批限定连接已通过；完成证据checkpoint，保留1纠错及真实6行冗余scope。
-路由card未完整披露weighted-average比较要求，不能称已验期末股数/测量身份；
-后续producer/selector家族另批处理，不热改本冻结。原8项改动保留。
+本批局部权限/恢复连接已离线通过；下次真实触发仍须独立核模型是否同步该slot。
+旧prefix52原件及6行历史状态不改，未重入冻结执行。路由card缺weighted-average
+比较/source/period定义及actual executor契约留下一批；需共享精确measurement_scope，
+不把v3 prose当partial0.5执行保证或称已测错值（实际unavailable无数值）。原8项改动保留。

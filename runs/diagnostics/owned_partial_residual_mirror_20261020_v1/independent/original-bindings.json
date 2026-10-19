@@ -1,0 +1,10 @@
+{
+  "git_commit": "6a53b50b9210f26169987b6753e61d949c923f92",
+  "sources": {
+    "src/stock_opportunity_agent/research/evolution_research_validation.py": "291ffc2423efb2049e20656780a1bb921837b7616975ada2ab48954cf19f3ad7",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "4a7f169d9a7362ff75a64873aa2c02760e1e9a036e639daa3eea5d79a10b2bc0",
+    "src/stock_opportunity_agent/research/evolution_state_patch.py": "7bb2c074b8b54508a105e523421e1d42c5c6a417beb047ee6bd061b956b6f6b0",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "ae81af2964e896273bd6828da61b8acc9f0bb816e7bfd9cc7e2c341cbb4c03d3"
+  },
+  "fixture_sha256": "a82f60a4ea67e4312ab07b420225d9b5e1aa1d456ead5b7bd50dd92f7946522a"
+}

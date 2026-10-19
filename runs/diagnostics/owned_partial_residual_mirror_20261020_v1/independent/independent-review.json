@@ -1,0 +1,72 @@
+{
+  "status": "14_independent_offline_family_tests_passed",
+  "scope": "Owned invalid partial-residual repair authority and its original native-controller parser/fallback/persistence/next-consumer connection; scripted offline callers only.",
+  "old_failure": {
+    "commit": "6a53b50b9210f26169987b6753e61d949c923f92",
+    "initial_log": "original-tests.log:7 tests,4pass,2fail,1error",
+    "expanded_log": "expanded-original-tests.log:12 tests,8pass,3fail,1error",
+    "observed": "Original code refused the explicit mirror synchronization dependency. Real49/50 authored operations replayed conservatively to six needs. The subsequent permission-only candidate still duplicated the prior need before correction; native integration test exposed this and the scoped pending-owner deferral addressed it."
+  },
+  "current_result": {
+    "log": "current-tests.log",
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "actual_records_modified": false,
+    "external_or_native_model_calls": 0,
+    "invalid_row_not_admitted": "validate_need_dispositions still raises on the long residual; original native controller only returns successful metadata after a valid short residual. Pending deferral does not add an invalid row to actual_dispositions.",
+    "unique_mirror": "Only a complete uniquely owned partial row with valid newly adopted current-batch refs and a single exact non-prior residual/mirror receives replace-only authority for that indexed state slot. Owner index and mirror index need not match.",
+    "deferral": "Only that owner occurrence restore_exactly is postponed while the residual issue remains a rejection; unrelated need restoration and invalid-evidence owner restoration remain enforced.",
+    "negative_controls": [
+      "multiple or absent exact mirrors",
+      "two owned rows sharing one residual",
+      "no owner and foreign row",
+      "invalid or already adopted evidence",
+      "invalid reason and duplicate disposition row",
+      "raw diagnostics without a state",
+      "residual equal to prior need",
+      "whole-array/append/remove/other-need/belief edits rejected"
+    ],
+    "duplicate_prior": "An unowned duplicate prior occurrence survives; no global text deduplication.",
+    "scripted_sync": "A separate explicitly authored residual+mirror patch passes the actual LLMResearchController parser to exactly five needs, keeps original0–3 verbatim and prospective net equity dilution unknown, survives JSON persistence/reload, and enters actual _assemble_final_context -> LLMBlindPredictor payload with matching disposition metadata.",
+    "historical_reply": "Exact original49/50 operations, with only transport snapshot base hashes rebound for offline caller context, remain six needs. Original50 did not author the newly permitted mirror synchronization; no historical answer or outcome is rewritten."
+  },
+  "limits": [
+    "Permission and rejection/restoration boundary only; no fresh model compliance or independent research gain proved.",
+    "No deterministic auto-coupling or text deduplication added; a model correction must actually synchronize the permitted slot to achieve a single residual.",
+    "Ambiguous, unowned or otherwise invalid rows retain conservative prior-need handling.",
+    "No fullMVP or wholeF7 closure."
+  ],
+  "current_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "1b8808ab56e14548812848fd3b45abb3f26ce31a40d4424d64d30c1e3ae74aa6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "4a7f169d9a7362ff75a64873aa2c02760e1e9a036e639daa3eea5d79a10b2bc0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py",
+      "sha256": "7bb2c074b8b54508a105e523421e1d42c5c6a417beb047ee6bd061b956b6f6b0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "92843345d783f388468e6d1bddbca916a451a6e85129441c4867d745acd1ef91"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_owned_partial_residual_mirror.py",
+      "sha256": "c4ace5cdf0c604f30922a1bada8fedb090964ddd58744dafe5ac5e2193da6af5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/fixtures/owned_partial_residual_mirror.json",
+      "sha256": "a82f60a4ea67e4312ab07b420225d9b5e1aa1d456ead5b7bd50dd92f7946522a"
+    }
+  ],
+  "evidence_bindings": {
+    "original-bindings.json": "910bcc94db0c188672fc357c6c4d55f37f023cd4468ce9e40215bcf7bd19cf66",
+    "original-tests.log": "96e6e7a6e70026a5596fa2cf4911cd5e943aa539da22b91bba21f1fa207678c1",
+    "expanded-original-tests.log": "36da7fd24da0fd33d2707128660215e715a100b7c2302d2f586f118312ff2936",
+    "current-tests.log": "c0867e922f5df713e0b0cf0f5ea7fd6fb6a15b63990d9a24014dd3c4fc8ba607"
+  }
+}

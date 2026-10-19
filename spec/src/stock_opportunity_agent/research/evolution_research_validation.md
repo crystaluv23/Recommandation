@@ -52,6 +52,14 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
 
 ## Invariants
 
+- Owned partial-disposition residual correction follows the
+  [snapshot-bound mirror dependency contract](evolution_output_validation.md#need-transition-restoration-and-drift-pairing-round-19).
+  After complete row/adoption validation, a unique exact current-state mirror
+  may receive replace-only permission at its individual existing need index.
+  No matching/unique mirror or ownership means no extra permission; raw-only
+  diagnostics cannot infer adoption. Untargeted needs, duplicate occurrences
+  and the conservative exact-transition fallback remain protected.
+
 - When the existing unavailable-topic check rejects a new belief or resolution,
   its remove-only obligation carries the exact returned text, field and
   unavailable Signal reference with `mechanical_action=remove_unavailable_finding`.
