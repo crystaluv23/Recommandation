@@ -1,0 +1,1 @@
+{"base_hash":"415a873e0d5afd2b813805540b3bea3cdde4d4113f9b2002fca49530f98912a9","operations":[{"op":"replace","path":"next_information_needs[0]","value":"What Q3 2025 revenue guidance, if any, had the issuer publicly disclosed by 2025-09-30T00:00:00+00:00?"}]}

@@ -1,0 +1,34 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "9d5126bfb6d1466025500ecd25929a465929e5c60003106b8ab2f8eb7ca0aa2d",
+    "operations": [
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 0,
+          "reason": "The executed evidence reports realized revenue disclosed after prediction_time, rather than revenue guidance available by prediction_time for the requested quarter. It cannot be adopted as cutoff-eligible evidence and does not answer the owned guidance question. Preserve that question unchanged and continue collection because the guidance disclosed by the cutoff remains a specific, material information need.",
+          "residual_need": null
+        }
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"9d5126bfb6d1466025500ecd25929a465929e5c60003106b8ab2f8eb7ca0aa2d\",\"operations\":[{\"op\":\"append\",\"path\":\"need_dispositions\",\"value\":{\"need_index\":0,\"answer_scope\":\"unanswered\",\"residual_need\":null,\"evidence_refs\":[],\"reason\":\"The executed evidence reports realized revenue disclosed after prediction_time, rather than revenue guidance available by prediction_time for the requested quarter. It cannot be adopted as cutoff-eligible evidence and does not answer the owned guidance question. Preserve that question unchanged and continue collection because the guidance disclosed by the cutoff remains a specific, material information need.\"}}]}\n",
+  "request_hash": "52c653270a888b977fdce92d2a6ea0b486b025cc0e5967f451af9269bb053293",
+  "response_id": "local-52c653270a888b977fdce92d2a6ea0b486b025cc0e5967f451af9269bb053293",
+  "usage": {
+    "accounting_tokens": 30105,
+    "agent_id": "/root/role_06",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "529002fb43c0dd32f541c7351a3a6696f4d2d288f9bead6119a0fbefec7f70dd",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "aeaa9cd59152a691795e4bfd022d686af2608e98add7168b10858695ae1f161a",
+    "request_hash": "52c653270a888b977fdce92d2a6ea0b486b025cc0e5967f451af9269bb053293",
+    "token_usage": null
+  }
+}

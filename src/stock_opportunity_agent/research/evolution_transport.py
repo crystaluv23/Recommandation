@@ -850,6 +850,7 @@ class StructuredRoleClient:
         acknowledged_contract_hash: str | None = None,
         environ: Mapping[str, str] | None = None,
         on_progress: ProgressCallback | None = None,
+        local_role_exchange: Any | None = None,
     ) -> None:
         self.registration = registration
         self.contract = contract
@@ -862,6 +863,16 @@ class StructuredRoleClient:
         self.acknowledged_contract_hash = acknowledged_contract_hash
         self.environ = environ
         self.on_progress = on_progress
+        if local_role_exchange is not None and registration.alias != "independent-subagent":
+            raise ValidationError("local role exchange requires independent-subagent registration")
+        if registration.alias == "independent-subagent":
+            if allow_external:
+                raise ValidationError("independent-subagent disallows external execution")
+            if local_role_exchange is None:
+                from stock_opportunity_agent.research.local_role_exchange import LocalRoleExchange
+                local_role_exchange = LocalRoleExchange(
+                    self.workspace / "local_roles", max_calls=int(contract.limits.get("max_local_role_calls", 0)))
+        self.local_role_exchange = local_role_exchange
         self.request_hash_trace: list[str] = []
         self.max_structured_corrections = int(
             contract.limits.get("max_structured_corrections", 1)
@@ -1305,6 +1316,25 @@ class StructuredRoleClient:
                 _usage_from_cache(cached),
                 _decision_token_scores_from_cache(cached),
             )
+        if self.local_role_exchange is not None:
+            reservation = len(json.dumps(request["messages"], ensure_ascii=False,
+                                        sort_keys=True, separators=(",", ":")).encode("utf-8")) + output_limit
+            if max_request_tokens is not None and reservation > max_request_tokens:
+                raise RuntimeBudgetExceeded("local role request reservation exceeds remaining case budget")
+            raw_output, local_usage = self.local_role_exchange.receive(request, accounting_tokens=reservation)
+            usage = AgentUsage(llm_calls=1, tokens=reservation, cost=0.0)
+            try:
+                parsed, normalization = _parse_json_object_envelope(raw_output)
+            except (json.JSONDecodeError, ValidationError) as exc:
+                raise StructuredOutputInvalid(str(exc), raw_output, usage,
+                                             output_token_limit=output_limit) from exc
+            record = {"response_id": "local-" + request_hash, "model": "independent-subagent",
+                      "json_output": parsed, "usage": local_usage, "raw_output": raw_output,
+                      "decision_token_scores": None}
+            if normalization is not None:
+                record["structured_output_normalization"] = normalization
+            self.cache.store(request_hash, record)
+            return parsed, usage, None
         if not self.allow_external:
             _emit_runtime_progress(
                 self.on_progress,

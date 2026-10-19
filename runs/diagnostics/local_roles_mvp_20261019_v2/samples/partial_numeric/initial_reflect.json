@@ -1,0 +1,55 @@
+{
+  "kind": "independent_local_role",
+  "metadata": {
+    "need_dispositions": {
+      "items": [
+        {
+          "answer_scope": "partial",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ],
+          "need_index": 0,
+          "prior_need": "What is the issuer's Q3 2025 revenue guidance, and was it raised or lowered from prior guidance?",
+          "reason": "The executed evidence supplies the issuer's expected revenue for Q3 2025 in a disclosure available before prediction_time. It supplies no prior guidance for that period, so whether guidance was raised or lowered remains unanswered. Technical admission does not establish predictive contribution; the effect remains unverified.",
+          "residual_need": "Was the issuer's Q3 2025 revenue guidance raised or lowered from prior guidance, based on disclosures available by prediction_time?"
+        }
+      ],
+      "prior_state_hash": "81a0724bb4bc613c9d55d244cecce843099d98532c95c9d08966c6518291c4a5"
+    }
+  },
+  "request_hashes": [
+    "02d6041ef214a4d1d0f3f35ca948a4d7fd1d1d90b51cef1fbf8e9ff0bb817a30"
+  ],
+  "stage": "initial_reflect",
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "For Q3 2025, the company expects revenue of $140 million."
+    ],
+    "decision": "continue",
+    "hypotheses": [],
+    "next_information_needs": [
+      "Was the issuer's Q3 2025 revenue guidance raised or lowered from prior guidance, based on disclosures available by prediction_time?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "For Q3 2025, the company expects revenue of $140 million.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 0,
+    "tokens": 30239
+  }
+}

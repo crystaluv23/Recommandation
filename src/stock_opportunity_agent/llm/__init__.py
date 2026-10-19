@@ -33,7 +33,7 @@ _DISCOVERED = False
 _DISCOVERING = False
 _MODEL_ROLES = frozenset({"evolution", "judge"})
 _PROPOSAL_PROFILES = frozenset(
-    {"none", "reviewed_file", "plain_json", "openrouter_fusion"}
+    {"none", "reviewed_file", "plain_json", "openrouter_fusion", "independent_agent"}
 )
 
 
@@ -90,6 +90,8 @@ class RegisteredModel:
             raise ValidationError("registered model roles must be unique")
         if self.proposal_profile not in _PROPOSAL_PROFILES:
             raise ValidationError("unsupported registered model proposal profile")
+        if self.proposal_profile == "independent_agent" and self.provider != "local":
+            raise ValidationError("independent_agent profile requires local provider")
         if "evolution" in self.roles and self.proposal_profile == "none":
             raise ValidationError("evolution model requires a proposal profile")
         if "judge" in self.roles and self.web_tools_allowed:

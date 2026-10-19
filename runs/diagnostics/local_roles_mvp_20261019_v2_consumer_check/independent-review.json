@@ -1,0 +1,82 @@
+{
+  "accepted_original_chain_count": 2,
+  "accepted_synthetic_with_companion_consumption": [
+    "future_forecast",
+    "partial_numeric"
+  ],
+  "engineering_mvp_closed": false,
+  "fixed_denominator": 7,
+  "independent_prediction_benefit_established": false,
+  "original_chain_denominator": 2,
+  "remaining": [
+    "Three synthetic prior needs do not satisfy explicit-as-of input contract.",
+    "Native correction additionally reveals ISO datetime boundary recognition issue.",
+    "Synthetic original consumer driver omits required identity aliases and state deltas.",
+    "Fresh valid-input variant batch and the remaining MVP stages are unverified."
+  ],
+  "remote_provider_tested": false,
+  "reviewer": "/root",
+  "role_outputs_edited": false,
+  "rows": [
+    {
+      "answer_scope_semantics": "consistent_with_visible_material",
+      "basis": "Q2 revenue/adjusted EBITDA outlook supports neither requested Q3/FY guidance nor assumptions. Both guidance and unavailable commercial-result needs remain unanswered in accepted state; terminal only finalizes.",
+      "first_raw_output_sha256": "1e0696f0179270b73c1071a314677b50380f2e4a0a2b0b7bb6744d1bdd31df30",
+      "first_request_hash": "0c2ab024ec2c3445e9bc6dd3d814e5abd24857d1d1d4b32166d8e0d5df834a07",
+      "sample_id": "plan_r0001_c01",
+      "synthetic": false
+    },
+    {
+      "answer_scope_semantics": "consistent_with_visible_material",
+      "basis": "Q2 figures do not answer Q3 amount or revision direction. Accepted state preserves the original complete need, and terminal only finalizes.",
+      "first_raw_output_sha256": "007f1d497e5870c2a3d7d5b5ef29b215cc75592e1474f28afa52fb95cd726d4d",
+      "first_request_hash": "096a879052ba45acdc625329ac952bd53fbe3a9971c71633cdbc022c3935d749",
+      "sample_id": "plan_r0001_c02",
+      "synthetic": false
+    },
+    {
+      "answer_scope_semantics": "consistent_with_visible_material",
+      "basis": "Q2-only evidence does not answer the requested Q3 amount. Raw first answer correctly retains the need; frozen pipeline rejects the unbounded inherited need. No accepted stage exists.",
+      "first_raw_output_sha256": "4feb6ffb4064ef345cd60639760cf473a4ffc6ab858e7f4d00e681d02d2ba71d",
+      "first_request_hash": "9e66761870869706f1d12e996eddeea45155e81387e7184d0957e631477dcccd",
+      "sample_id": "q2_only",
+      "synthetic": true
+    },
+    {
+      "answer_scope_semantics": "consistent_with_visible_material",
+      "basis": "The explicitly synthetic pre-cutoff Q3 forecast supplies the requested revenue amount. Raw/accepted response legitimately resolves only the narrow amount need; it does not infer change direction. Original driver then fails in consumer harness.",
+      "first_raw_output_sha256": "807b418d64c485617be1ebee2ec1186f860044f01f0ad8bc226e508f6d6c9fc1",
+      "first_request_hash": "1789dce8c6dcc94d86b9047cf436b638edbd888e0f71ac1a5520ab70ff788c00",
+      "sample_id": "future_forecast",
+      "synthetic": true
+    },
+    {
+      "answer_scope_semantics": "consistent_with_visible_material",
+      "basis": "The explicitly synthetic Q3 amount is supplied but no prior comparison exists. Accepted partial leaves precisely whether Q3 guidance was raised/lowered; terminal retains that residual. Original driver then fails in consumer harness.",
+      "first_raw_output_sha256": "c9fcaf4c252cbe13b1877cf822b02281d1ca968770547d4946cde3b49ec3bdfc",
+      "first_request_hash": "02d6041ef214a4d1d0f3f35ca948a4d7fd1d1d90b51cef1fbf8e9ff0bb817a30",
+      "sample_id": "partial_numeric",
+      "synthetic": true
+    },
+    {
+      "answer_scope_semantics": "consistent_with_visible_material",
+      "basis": "Post-cutoff realized revenue cannot serve as historical guidance. First answer adopts no evidence and retains the gap. Its frozen inherited need is temporally unbounded and pipeline fails; no accepted stage exists.",
+      "first_raw_output_sha256": "aeaa9cd59152a691795e4bfd022d686af2608e98add7168b10858695ae1f161a",
+      "first_request_hash": "52c653270a888b977fdce92d2a6ea0b486b025cc0e5967f451af9269bb053293",
+      "sample_id": "future_actual",
+      "synthetic": true
+    },
+    {
+      "answer_scope_semantics": "consistent_with_visible_material",
+      "basis": "Terminal first answer emits no ownerless disposition and preserves the unanswered need. This checks the disposition boundary only; the inherited unbounded need prevents pipeline acceptance.",
+      "first_raw_output_sha256": "be68d5ec33503569685dd497865578eb604531d740d4badcce440e0c7d60784a",
+      "first_request_hash": "7dfe520036a79c5180f05d466fa4606b0a3b88057d75230811cc36896ecca915",
+      "sample_id": "terminal_empty_owner",
+      "synthetic": true
+    }
+  ],
+  "schema_version": "independent-answer-scope-review-v1",
+  "scope": "Answer-scope meaning of seven first answers, accepted original states and terminal preservation. No general role/prediction/PIT claim.",
+  "source_authenticity_closed": false,
+  "unchanged_failed_frozen_batch": "progress.json retains failures, including invalid synthetic prior states and original consumer harness TypeErrors. Companion checks do not replace that result."
+}

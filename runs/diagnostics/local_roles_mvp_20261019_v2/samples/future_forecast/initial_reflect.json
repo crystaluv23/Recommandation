@@ -1,0 +1,55 @@
+{
+  "kind": "independent_local_role",
+  "metadata": {
+    "need_dispositions": {
+      "items": [
+        {
+          "answer_scope": "full",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ],
+          "need_index": 0,
+          "prior_need": "What is the issuer's Q3 2025 revenue guidance?",
+          "reason": "The disclosure available before prediction_time explicitly states the issuer's revenue guidance for the requested quarter. This fully answers the narrow guidance question. Prior guidance is absent, so acceleration cannot be determined; that comparison was not requested. Technical admission does not establish prediction benefit.",
+          "residual_need": null
+        }
+      ],
+      "prior_state_hash": "c447f24430e9a23fd66356bf934497fbc2a840f24a6003811faf7ee01d5545bb"
+    }
+  },
+  "request_hashes": [
+    "1789dce8c6dcc94d86b9047cf436b638edbd888e0f71ac1a5520ab70ff788c00"
+  ],
+  "stage": "initial_reflect",
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "For Q3 2025, the company expects revenue of $140 million."
+    ],
+    "decision": "finalize",
+    "hypotheses": [],
+    "next_information_needs": [],
+    "open_questions": [],
+    "resolved_questions": [
+      "What is the issuer's Q3 2025 revenue guidance?"
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "For Q3 2025, the company expects revenue of $140 million.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 30089
+  }
+}

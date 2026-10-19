@@ -207,16 +207,22 @@ required body is obtained, the request is `required_coverage_incomplete`, not a
 claim that historical data does not exist; successful bodies retain the same
 scan-incomplete audit diagnostic.
 
-An Alpha Vantage transcript request pairs the historical transcript endpoint
-with the provider's earnings-history metadata. The adapter derives the exact
-fiscal `YYYYQn` label from quarterly and annual fiscal-period ends, selects only
-quarters whose provider-reported `reportedDate` is before the case cutoff, and
-uses the next UTC day as `available_at` because the endpoint supplies a date but
-not an intraday publication time. The transcript response must repeat the
-requested symbol and quarter and contain substantive turns. The complete
-provider JSON is stored as Raw Info; a missing or ambiguous fiscal-period/date
-mapping remains unavailable rather than borrowing the case date or current
-retrieval time.
+Historical transcript availability follows the user-approved public-content
+policy (2026-10-19). Earnings `reportedDate` and provider quarter echoes are
+retrieval clues, never proof of full conference-content availability or of the
+issuer's true fiscal period. Require reviewed first-party evidence identifying
+the issuer, fiscal period and complete publicly accessible content. A verified
+full replay/transcript publication instant may supply the exact time. If only
+the actual conference date is established, require evidence that the conference
+ended and that its complete content was public before the next UTC midnight;
+only then use that midnight conservatively. A scheduled start announcement,
+provider retrieval time, case cutoff or a URL alone cannot establish this.
+Unknown completion, UTC boundary, availability or fiscal mapping leaves only
+that record unavailable; other verified sources remain eligible. Corrections
+must use new document IDs, original hash/evidence lineage and an explicit
+successor manifest exclusion of superseded records; retain all originals and
+completed-run inputs. The historical adapter's reported-date clock is known
+noncompliant pending the corresponding proof and snapshot implementation.
 
 Adapter routing may deterministically recover the SEC identifier from a
 canonical `company_id` shaped as `cik_##########` when the label-free case

@@ -5,6 +5,35 @@
 Own reproducibility checks, external request persistence, attempt and cost
 ledgers, exact-response caching, and the structured model-client boundary.
 
+## Independent local role execution (engineering MVP)
+
+An explicitly selected `independent-subagent` backend replaces every structured
+LLM call with an independent role, without network/API execution. It uses the
+same stage contract, egress identity projection, request hash, parser, typed
+correction, fallback and consumers. The backend identity is local and cannot
+claim a registered remote model was tested. Before dispatch, enforce the frozen
+byte-plus-output request reservation and cumulative local-call ceiling. An
+unanswered request pauses as control flow; it is neither no-pattern nor a
+technical research result. Persist an immutable inbox containing only the exact
+model messages, output contract and request binding. Independent role agents
+receive no acceptance answers, prior chat or repository access beyond that
+request and explicitly supplied tool results. Each correction is a new request
+with the original runtime correction payload.
+
+Raw role responses bind the request hash, inbox hash and agent identity and are
+saved before parsing. Resume consumes the same response, never silently asks
+again; exact request cache and no-progress correction rules remain active.
+Malformed output follows `StructuredOutputInvalid` and the existing correction
+path. Agent token usage/internal cost are unknown: byte-plus-output accounting
+is a conservative reservation, API cost is zero, and log probabilities are
+absent. Local execution proves this backend's behavior only; provider API
+transport and statistical prediction benefit remain separately unverified.
+Production factories that select this alias use the same constructor: when an
+exchange is not explicitly supplied it binds `workspace/local_roles` with the
+required frozen `limits.max_local_role_calls`. Missing limits or external mode
+are rejected before dispatch. Existing remote aliases and contracts retain their
+original execution path. This does not authorize a full successor run.
+
 ## Invariants
 
 - Every external request is persisted before transmission.

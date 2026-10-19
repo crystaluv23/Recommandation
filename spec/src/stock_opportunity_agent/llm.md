@@ -13,6 +13,10 @@ not a free-form tool loop, owns sampling, label disclosure, staging, and gates.
 
 ## Generic Agent Contract
 
+The local `independent-subagent` registration uses the `independent_agent`
+profile and requires explicit LocalRoleExchange injection in StructuredRoleClient.
+It has no API credentials/prices, external fallback or token probabilities.
+
 `GenericAgent.run(prompt, tools, workspace, output_schema, max_steps)` executes
 a bounded loop:
 

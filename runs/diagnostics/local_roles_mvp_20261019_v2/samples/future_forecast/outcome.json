@@ -1,0 +1,9 @@
+{
+  "error": "_assemble_final_context() missing 1 required keyword-only argument: 'additional_identity_aliases'",
+  "failure_type": "TypeError",
+  "mechanical_passed": false,
+  "request_hashes": [
+    "1789dce8c6dcc94d86b9047cf436b638edbd888e0f71ac1a5520ab70ff788c00"
+  ],
+  "sample_id": "future_forecast"
+}

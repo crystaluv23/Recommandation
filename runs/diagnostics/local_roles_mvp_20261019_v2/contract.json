@@ -1,0 +1,15 @@
+{
+  "backend": "independent-subagent",
+  "expectations_hash": "95d9272c9b42974ee26ca38bffd4aad746daee081cdff8a79db74cff50648665",
+  "fixed_denominator": 7,
+  "input_hash": "fde5c1d9fb71859306dc16e9e336b091194a613a97bbbf20d3c3535cf65d1d7c",
+  "limits": {
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_external_api_calls": 0,
+  "max_local_calls": 28,
+  "schema_version": "engineering-mvp-local-reflect-v1",
+  "scope": "Reflect and actual local consumer assembly; no predictor or whole-cycle acceptance"
+}

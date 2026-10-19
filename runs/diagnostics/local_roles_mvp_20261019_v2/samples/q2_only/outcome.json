@@ -1,0 +1,7 @@
+{
+  "error": "research_controller_reflect failed validation after one correction: research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[0]', next_information_needs[0]='What revenue guidance for Q3 2025, if any, had the issuer publicly disclosed by 2025-09-30T00:00:00+00:00? Use only disclosures available by that cutoff.', future_source_date_refs=[\"Q3 2025\"], prediction_time='2025-09-30'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not; deterministic evidence grounding remained invalid: continuing research requires next information needs; finalize or add one unresolved issuer need",
+  "failure_type": "CandidateExecutionRejected",
+  "mechanical_passed": false,
+  "request_hashes": [],
+  "sample_id": "q2_only"
+}

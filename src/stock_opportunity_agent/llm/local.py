@@ -41,3 +41,14 @@ def local_heuristic_model(_settings: ModelClientSettings) -> None:
     """Use the existing deterministic Ralph blind analyzer."""
 
     return None
+
+
+@register_model(
+    "independent-subagent", provider="local", model="independent-subagent",
+    roles=("evolution", "judge"), api_key_env_var="",
+    description="Independent role agent through exact local request/response files; no API transport.",
+    proposal_profile="independent_agent", default_max_output_tokens=16384,
+)
+def independent_subagent_model(_settings: ModelClientSettings) -> None:
+    """Require explicit LocalRoleExchange injection in StructuredRoleClient."""
+    return None

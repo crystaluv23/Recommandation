@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "9ceab67f01727600ae4be46273be17819f786fd0ce713ab00f1dc345917be228",
+    "operations": [
+      {
+        "op": "replace",
+        "path": "next_information_needs[0]",
+        "value": "What revenue guidance for Q3 2025 had the issuer publicly disclosed by prediction_time (2025-09-30T00:00:00+00:00)? Use only disclosures already available by that cutoff."
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"9ceab67f01727600ae4be46273be17819f786fd0ce713ab00f1dc345917be228\",\"operations\":[{\"op\":\"replace\",\"path\":\"next_information_needs[0]\",\"value\":\"What revenue guidance for Q3 2025 had the issuer publicly disclosed by prediction_time (2025-09-30T00:00:00+00:00)? Use only disclosures already available by that cutoff.\"}]}\n",
+  "request_hash": "b8bca4fa3ba1d1436e47b536d3a4de243dca4abe774c560eb0be234933e23fc9",
+  "response_id": "local-b8bca4fa3ba1d1436e47b536d3a4de243dca4abe774c560eb0be234933e23fc9",
+  "usage": {
+    "accounting_tokens": 32213,
+    "agent_id": "/root/role_12",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "1197fc7e983bb79e5822d36d7af19e67fa05d551884af8531a20ae7f97717d74",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "6ffd743011406962cc07774f20716bbadb66ec302815e07af78cb8ac41206251",
+    "request_hash": "b8bca4fa3ba1d1436e47b536d3a4de243dca4abe774c560eb0be234933e23fc9",
+    "token_usage": null
+  }
+}

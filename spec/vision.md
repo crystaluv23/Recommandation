@@ -114,6 +114,13 @@ Each module should make this line easier to audit. Modules are not independent r
 
 ## MVP Scope
 
+The current Fast/Slow engineering milestone follows the user-approved
+[engineering MVP acceptance contract](engineering-mvp.md). It requires bounded
+input correctness, research execution, reusable Signal lifecycle, feedback
+consumption and recovery. Statistical prediction improvement and independent
+self-evolution benefit are later milestones and remain unverified; this scope
+does not relax PIT, labels, failure denominators or technical admission.
+
 The first useful version should focus on:
 
 - US-listed common stocks.

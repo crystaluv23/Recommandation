@@ -38,8 +38,12 @@ until a later exact window-partition plan fills the gap.
 
 ## Point-in-Time and Relevance Contract
 
-- `time_published` is parsed as the provider's UTC publication timestamp and is
-  used for both `published_at` and `available_at`.
+- `time_published` is parsed as the provider's UTC publication timestamp. It
+  describes the article clock, not proof that the returned title/summary version
+  existed then. Historical research admission additionally requires reviewed
+  content-version availability lineage. The existing producer's direct
+  `published_at=available_at=time_published` behavior is known incomplete for
+  dynamic later summaries and is not a trusted-input acceptance result.
 - Missing or malformed publication timestamps are excluded; retrieval time is
   never substituted.
 - Articles outside the serialized plan window are excluded even if returned by
@@ -55,6 +59,14 @@ Raw Info ids are derived from provider identity plus content, so exact replay is
 idempotent while a corrected provider record becomes a new append-only record.
 No historical outcome, split ownership, or post-cutoff result may enter the plan
 or metadata.
+
+Keep contaminated and unknown original records immutable. A reviewed successor
+input must identify admitted replacements and excluded originals explicitly;
+appending a corrected record alone cannot leave the bad version searchable in
+that successor. A future year, dynamic URL or fiscal label alone is not a
+pollution detector: legal as-of forecasts and non-calendar fiscal years remain
+admissible when their version availability is established. Automated lexical
+rules cannot supply missing source semantics or fabricate corrected timestamps.
 
 ## Persistence, Quota, and Resume
 

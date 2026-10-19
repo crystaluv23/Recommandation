@@ -1,0 +1,10 @@
+{
+  "error": "_assemble_final_context() missing 1 required keyword-only argument: 'additional_identity_aliases'",
+  "failure_type": "TypeError",
+  "mechanical_passed": false,
+  "request_hashes": [
+    "02d6041ef214a4d1d0f3f35ca948a4d7fd1d1d90b51cef1fbf8e9ff0bb817a30",
+    "f7a58b2977f34078a99989a61fbd21e4108974cc336122726d0c9ecde2695218"
+  ],
+  "sample_id": "partial_numeric"
+}

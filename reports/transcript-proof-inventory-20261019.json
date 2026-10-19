@@ -1,0 +1,511 @@
+{
+  "schema_version": "transcript-public-content-proof-inventory-v1",
+  "status": "all_pending_no_migration",
+  "policy": "user_approved_public_complete_content_20261019",
+  "source_manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/input_manifest.json",
+    "sha256": "3c6a74fea9c3e29742d9759f11a9087cbb16726e17d509ec1f4dd7d5e2b48d3c"
+  },
+  "fixed_denominator": 26,
+  "original_records_verified": 26,
+  "public_content_proofs_accepted": 0,
+  "oracle_writes": 0,
+  "external_api_calls": 0,
+  "scope_note": "Hash verification proves original bytes only. Historical preview and scheduled conference announcements are not completed public-content proof. No online review in this zero-API batch. All records retain explicit pending; this does not claim their content was unavailable.",
+  "records": [
+    {
+      "document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b",
+      "company_id": "cik_0000701818",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b.json",
+      "file_sha256": "1e548ac54d38a9c4a38a6763410bda767f57d2c23a47f207ad051527f397289d",
+      "content_hash": "2761f139f195f3fb785c442b14f71654e518ad32b97da6881d29a6ba21a88fce",
+      "provider_fiscal_period": "2025Q1",
+      "published_at": "2025-05-06T00:00:00+00:00",
+      "available_at": "2025-05-07T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": true,
+      "proposal_source_url": "https://www.kinross.com/English/news-and-investors/news-releases/press-release-details/2025/Kinross-to-announce-Q1-results-on-May-6-2025/default.aspx",
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665",
+      "company_id": "cik_0000701818",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665.json",
+      "file_sha256": "764e4d75432a1e94414ab848598da741fca4ed6502d7c10aaeeee3172dffee13",
+      "content_hash": "b4cdd180de023800dac85665b5fcb5dfd0b87e509edd854b1c38a6207105e94a",
+      "provider_fiscal_period": "2025Q2",
+      "published_at": "2025-07-30T00:00:00+00:00",
+      "available_at": "2025-07-31T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a",
+      "company_id": "cik_0000860413",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000860413/alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a.json",
+      "file_sha256": "5103acfc4c4987c36f42f83e93840aad7d4403d14cce45099afd4bf4f4b012aa",
+      "content_hash": "0f2df7d4dde1b1d0e3dcd42a820e41313c8a8d67c0df7fde9e027afdd7c630ad",
+      "provider_fiscal_period": "2025Q1",
+      "published_at": "2025-04-29T00:00:00+00:00",
+      "available_at": "2025-04-30T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": true,
+      "proposal_source_url": "https://www.sec.gov/Archives/edgar/data/860413/000086041325000057/fibk-20250331x8kpr.htm",
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e",
+      "company_id": "cik_0000860413",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000860413/alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e.json",
+      "file_sha256": "a2ed0b264e6597d7994792b2581ba1c1d865d6a004e1df7174d2fef16854ba59",
+      "content_hash": "5c87489efef8befa6410f69ee50f332053b8a9e4f56473b82aaf031af7cd3dc2",
+      "provider_fiscal_period": "2025Q2",
+      "published_at": "2025-07-29T00:00:00+00:00",
+      "available_at": "2025-07-30T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": true,
+      "proposal_source_url": "https://www.sec.gov/Archives/edgar/data/860413/000086041325000114/fibk-20250630x8kpr.htm",
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000895421:earnings_call:4991cd407c0da0768c268d49",
+      "company_id": "cik_0000895421",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000895421/alpha_vantage:cik_0000895421:earnings_call:4991cd407c0da0768c268d49.json",
+      "file_sha256": "5b05465542ec6e704ad6c9a0167210dd4beeb6d9fe0944b47564bf3fa12e7d74",
+      "content_hash": "4991cd407c0da0768c268d49bb06371fe31a6379636e3a2df63ee9f1162e6313",
+      "provider_fiscal_period": "2025Q2",
+      "published_at": "2025-07-16T00:00:00+00:00",
+      "available_at": "2025-07-17T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000895421:earnings_call:5d4f3600f93dd9c8e001d802",
+      "company_id": "cik_0000895421",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000895421/alpha_vantage:cik_0000895421:earnings_call:5d4f3600f93dd9c8e001d802.json",
+      "file_sha256": "e93a59ec12c1695b882fa18fb55c2a389321ec9f4013726e47a10feeec6d9a4c",
+      "content_hash": "5d4f3600f93dd9c8e001d8024e7c50fa890e17e2a4ac465a69356e6b4d02ff17",
+      "provider_fiscal_period": "2025Q1",
+      "published_at": "2025-04-11T00:00:00+00:00",
+      "available_at": "2025-04-12T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d",
+      "company_id": "cik_0000895728",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000895728/alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d.json",
+      "file_sha256": "3311b695c2c9cd0a92c03b37a8fb31fc266e38915fd3749b5c432d605b184fcc",
+      "content_hash": "1671fd0384ab41adb0c9f05d9214a0330c6a3b17c90a6b2310258a99d8523cd4",
+      "provider_fiscal_period": "2025Q2",
+      "published_at": "2025-08-01T00:00:00+00:00",
+      "available_at": "2025-08-02T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af",
+      "company_id": "cik_0000895728",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000895728/alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af.json",
+      "file_sha256": "9d4f14509352afdb8a3a7aab51be6d43d2a07fab229c0251501f14fff6cb63e0",
+      "content_hash": "fa7da0996dd0446fc96799af2b07ee9d59e86b835401f4970bc559b6cc1ee537",
+      "provider_fiscal_period": "2025Q1",
+      "published_at": "2025-05-09T00:00:00+00:00",
+      "available_at": "2025-05-10T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000936395:earnings_call:20258bddd129b37a173d7a2e",
+      "company_id": "cik_0000936395",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000936395/alpha_vantage:cik_0000936395:earnings_call:20258bddd129b37a173d7a2e.json",
+      "file_sha256": "c8cca552e2bdbc86fc9d90847e819a7ba846b90a58e8d3d0cbe38b38a7818538",
+      "content_hash": "20258bddd129b37a173d7a2e93415dd7e49b6cee04c37aa7c23244576c265b1a",
+      "provider_fiscal_period": "2025Q3",
+      "published_at": "2025-09-04T00:00:00+00:00",
+      "available_at": "2025-09-05T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000936395:earnings_call:5ccd7fe1e6f86751f3d011c4",
+      "company_id": "cik_0000936395",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000936395/alpha_vantage:cik_0000936395:earnings_call:5ccd7fe1e6f86751f3d011c4.json",
+      "file_sha256": "1ea50ca0ff0e41d9b463a93c7ab8a394858a0e13e6be94d5bc22571f25657ba0",
+      "content_hash": "5ccd7fe1e6f86751f3d011c45510a6e25d19fe41c9061a8a2248f1aa04843534",
+      "provider_fiscal_period": "2025Q2",
+      "published_at": "2025-06-05T00:00:00+00:00",
+      "available_at": "2025-06-06T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001018963:earnings_call:7e2a69eede1c1b4c9695b46a",
+      "company_id": "cik_0001018963",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001018963/alpha_vantage:cik_0001018963:earnings_call:7e2a69eede1c1b4c9695b46a.json",
+      "file_sha256": "772489f923a9561dc1a1355286a8211b7e1bd0459651c0556ace53320e51e12c",
+      "content_hash": "7e2a69eede1c1b4c9695b46ae7d80b9f29fce02ff8bdf141aa47d04dad9cac55",
+      "provider_fiscal_period": "2025Q1",
+      "published_at": "2025-05-01T00:00:00+00:00",
+      "available_at": "2025-05-02T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001018963:earnings_call:b0b34701653d7e0a2cd607ef",
+      "company_id": "cik_0001018963",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001018963/alpha_vantage:cik_0001018963:earnings_call:b0b34701653d7e0a2cd607ef.json",
+      "file_sha256": "7c7921e6bf00befef5853de57faef82fdba71c0881859862dcd1f45734009890",
+      "content_hash": "b0b34701653d7e0a2cd607efbd1be15a61ef393459b7c47128338ee0627d5fee",
+      "provider_fiscal_period": "2025Q2",
+      "published_at": "2025-07-31T00:00:00+00:00",
+      "available_at": "2025-08-01T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001051627:earnings_call:2ee31980cdce97120fff94ad",
+      "company_id": "cik_0001051627",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001051627/alpha_vantage:cik_0001051627:earnings_call:2ee31980cdce97120fff94ad.json",
+      "file_sha256": "931cdc4c7b2633ff39e4ae71626068098b7572d97f2fa7c45b07cade2849ecc6",
+      "content_hash": "2ee31980cdce97120fff94adc65deefda3e7b659861f3b7f362f1fa00e9a4448",
+      "provider_fiscal_period": "2024Q4",
+      "published_at": "2025-02-20T00:00:00+00:00",
+      "available_at": "2025-02-21T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001051627:earnings_call:cca0e576bc815687121312f0",
+      "company_id": "cik_0001051627",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001051627/alpha_vantage:cik_0001051627:earnings_call:cca0e576bc815687121312f0.json",
+      "file_sha256": "b93d11103743ec0682bc094151a517dec1d5a109b2f796a656e802cba9b9b0de",
+      "content_hash": "cca0e576bc815687121312f0fe0a3c46717325c165103cb4c7407c25678c7dcb",
+      "provider_fiscal_period": "2025Q2",
+      "published_at": "2025-07-31T00:00:00+00:00",
+      "available_at": "2025-08-01T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001114995:earnings_call:56963e7fdddc4c2a731ab0cb",
+      "company_id": "cik_0001114995",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001114995/alpha_vantage:cik_0001114995:earnings_call:56963e7fdddc4c2a731ab0cb.json",
+      "file_sha256": "739c3b90d6c4814dcd1b7633aa63f3629334957054284a202426ec600aea88b3",
+      "content_hash": "56963e7fdddc4c2a731ab0cbbfc21141b1e4089762e27e26787b24166b371fdc",
+      "provider_fiscal_period": "2024Q3",
+      "published_at": "2024-10-23T00:00:00+00:00",
+      "available_at": "2024-10-24T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001114995:earnings_call:8fb807995bdde614fddde66d",
+      "company_id": "cik_0001114995",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001114995/alpha_vantage:cik_0001114995:earnings_call:8fb807995bdde614fddde66d.json",
+      "file_sha256": "aa74da6312554392e505e4b42a26c5986b4e62263ecb9679f5ec92dc254e4919",
+      "content_hash": "8fb807995bdde614fddde66d4fef26c5178f1a74886a5c95e49a51ae534f767b",
+      "provider_fiscal_period": "2024Q4",
+      "published_at": "2025-02-05T00:00:00+00:00",
+      "available_at": "2025-02-06T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001174922:earnings_call:d7b5b20f33fc541b281aa4fc",
+      "company_id": "cik_0001174922",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001174922/alpha_vantage:cik_0001174922:earnings_call:d7b5b20f33fc541b281aa4fc.json",
+      "file_sha256": "dd275f6678ca5c6c3724907f81d4189702c4742c4e374fe1844ebbe507e72ccc",
+      "content_hash": "d7b5b20f33fc541b281aa4fc7705482bb9f2b49d1069a61fc4dcd73556874d65",
+      "provider_fiscal_period": "2025Q1",
+      "published_at": "2025-05-06T00:00:00+00:00",
+      "available_at": "2025-05-07T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001309402:earnings_call:c24a7e3f69c8213549547c34",
+      "company_id": "cik_0001309402",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001309402/alpha_vantage:cik_0001309402:earnings_call:c24a7e3f69c8213549547c34.json",
+      "file_sha256": "2aa98d39ed282fbe18afc49a4c158d05a41aace67e64ac1a3d33518cf7123c2e",
+      "content_hash": "c24a7e3f69c8213549547c34cc6bb0a49af3c801f7bf878ff4035de7f9600b6f",
+      "provider_fiscal_period": "2025Q1",
+      "published_at": "2025-05-08T00:00:00+00:00",
+      "available_at": "2025-05-09T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001309402:earnings_call:fc2a37b31742bfbc3b48bc14",
+      "company_id": "cik_0001309402",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001309402/alpha_vantage:cik_0001309402:earnings_call:fc2a37b31742bfbc3b48bc14.json",
+      "file_sha256": "5ae219f38631df6a272bb3da5d2416bc40216b2de1847e96068b04b6f91e5cc7",
+      "content_hash": "fc2a37b31742bfbc3b48bc14f8be32c57aa94cae6b9f980d9688012ddaa8b87d",
+      "provider_fiscal_period": "2024Q4",
+      "published_at": "2025-02-07T00:00:00+00:00",
+      "available_at": "2025-02-08T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001576942:earnings_call:4c59689781c1f6e972246d25",
+      "company_id": "cik_0001576942",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001576942/alpha_vantage:cik_0001576942:earnings_call:4c59689781c1f6e972246d25.json",
+      "file_sha256": "f4300f4fdeacbf84ba1e88afc9e86c4ac0736844484b856fd87df7c532b267ca",
+      "content_hash": "4c59689781c1f6e972246d256b8d1bad30a8b8f778c641f742ad386962d52c05",
+      "provider_fiscal_period": "2025Q1",
+      "published_at": "2024-12-10T00:00:00+00:00",
+      "available_at": "2024-12-11T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001576942:earnings_call:e32acd3fe08e04908e514cc9",
+      "company_id": "cik_0001576942",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001576942/alpha_vantage:cik_0001576942:earnings_call:e32acd3fe08e04908e514cc9.json",
+      "file_sha256": "ea6068f6440bfddb949810c579e7a1fa80684f89202df1d4891184277d410887",
+      "content_hash": "e32acd3fe08e04908e514cc9e34008fc8cfcf78e35acb5754760c7950a096dc3",
+      "provider_fiscal_period": "2025Q2",
+      "published_at": "2025-03-11T00:00:00+00:00",
+      "available_at": "2025-03-12T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001590364:earnings_call:1d83f5b836b1615c722d8f29",
+      "company_id": "cik_0001590364",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001590364/alpha_vantage:cik_0001590364:earnings_call:1d83f5b836b1615c722d8f29.json",
+      "file_sha256": "2fef52e5ea401960bb72fec66e81d56c88463efef31ac322112a7389e47529a0",
+      "content_hash": "1d83f5b836b1615c722d8f29738676ba1225eecf794af9df11717b3a771137e5",
+      "provider_fiscal_period": "2025Q1",
+      "published_at": "2025-04-30T00:00:00+00:00",
+      "available_at": "2025-05-01T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001590364:earnings_call:55324a9027cb59212ffea652",
+      "company_id": "cik_0001590364",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001590364/alpha_vantage:cik_0001590364:earnings_call:55324a9027cb59212ffea652.json",
+      "file_sha256": "5a7a47d6e8dd9ef20d6c6be6c78885c70dd72ac3685c2749019b161b922609d8",
+      "content_hash": "55324a9027cb59212ffea652a9385f6e132faa7886ab21b86e4bc995b83bfe29",
+      "provider_fiscal_period": "2025Q2",
+      "published_at": "2025-07-29T00:00:00+00:00",
+      "available_at": "2025-07-30T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+      "company_id": "cik_0001830043",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001830043/alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e.json",
+      "file_sha256": "f23c7887094f0cb484d053e6d04aab37e6f6a98d8e6bd7ad2c73b3ef2d718bc3",
+      "content_hash": "3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+      "provider_fiscal_period": "2025Q1",
+      "published_at": "2025-05-07T00:00:00+00:00",
+      "available_at": "2025-05-08T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001869198:earnings_call:aa8f522e8e241985b6e59a83",
+      "company_id": "cik_0001869198",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001869198/alpha_vantage:cik_0001869198:earnings_call:aa8f522e8e241985b6e59a83.json",
+      "file_sha256": "4a604ae944f31a07babaa4f1a17126ea13d72b854ffdd17f08e46ef9d027b395",
+      "content_hash": "aa8f522e8e241985b6e59a833348b1f4a8683457268f42f017ba269e6882e2cf",
+      "provider_fiscal_period": "2024Q4",
+      "published_at": "2025-02-27T00:00:00+00:00",
+      "available_at": "2025-02-28T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": false,
+      "proposal_source_url": null,
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324",
+      "company_id": "cik_0001920294",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001920294/alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324.json",
+      "file_sha256": "f7f6a3842330a156e2ac7f4acb4a2d885b07ab098251254dc4d45625a2f9775e",
+      "content_hash": "c75a3969dca155a9308193243fe3d3f351b19dab0deae9d59345598e2fdd0a5d",
+      "provider_fiscal_period": "2024Q4",
+      "published_at": "2024-10-29T00:00:00+00:00",
+      "available_at": "2024-10-30T00:00:00+00:00",
+      "proof_status": "pending_full_public_content_evidence",
+      "old_correction_preview_exists": true,
+      "proposal_source_url": "https://investor.rezolve.com/node/7716/html",
+      "missing_proof": [
+        "actual_conference_completion_or_full_replay_transcript_publication",
+        "verified_UTC_boundary",
+        "issuer_fiscal_period_and_content_identity"
+      ],
+      "successor_admitted": false
+    }
+  ]
+}

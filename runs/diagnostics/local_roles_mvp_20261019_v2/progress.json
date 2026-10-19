@@ -1,0 +1,84 @@
+{
+  "engineering_mvp_closed": false,
+  "external_api_calls": 0,
+  "fixed_denominator": 7,
+  "outcomes": [
+    {
+      "independent_semantic_verdict": "pending_review",
+      "mechanical_checks": {
+        "disposition_survives_critic": true,
+        "disposition_survives_final_context": true,
+        "disposition_survives_posthoc": true,
+        "target_not_falsely_resolved": true,
+        "terminal_state_finalized": true,
+        "untargeted_needs_preserved": true
+      },
+      "mechanical_passed": true,
+      "request_hashes": [
+        "0c2ab024ec2c3445e9bc6dd3d814e5abd24857d1d1d4b32166d8e0d5df834a07",
+        "f428025de2da47a0f65770a9b02d2e016c15fe2b0c63104b8874012398737a72"
+      ],
+      "sample_id": "plan_r0001_c01"
+    },
+    {
+      "independent_semantic_verdict": "pending_review",
+      "mechanical_checks": {
+        "disposition_survives_critic": true,
+        "disposition_survives_final_context": true,
+        "disposition_survives_posthoc": true,
+        "target_not_falsely_resolved": true,
+        "terminal_state_finalized": true,
+        "untargeted_needs_preserved": true
+      },
+      "mechanical_passed": true,
+      "request_hashes": [
+        "096a879052ba45acdc625329ac952bd53fbe3a9971c71633cdbc022c3935d749",
+        "d249a13416daf1e641c8843cbb274b1b566d218622a355e1e324efb4444f05dd"
+      ],
+      "sample_id": "plan_r0001_c02"
+    },
+    {
+      "error": "research_controller_reflect failed validation after one correction: research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[0]', next_information_needs[0]='What revenue guidance for Q3 2025, if any, had the issuer publicly disclosed by 2025-09-30T00:00:00+00:00? Use only disclosures available by that cutoff.', future_source_date_refs=[\"Q3 2025\"], prediction_time='2025-09-30'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not; deterministic evidence grounding remained invalid: continuing research requires next information needs; finalize or add one unresolved issuer need",
+      "failure_type": "CandidateExecutionRejected",
+      "mechanical_passed": false,
+      "request_hashes": [],
+      "sample_id": "q2_only"
+    },
+    {
+      "error": "_assemble_final_context() missing 1 required keyword-only argument: 'additional_identity_aliases'",
+      "failure_type": "TypeError",
+      "mechanical_passed": false,
+      "request_hashes": [
+        "1789dce8c6dcc94d86b9047cf436b638edbd888e0f71ac1a5520ab70ff788c00"
+      ],
+      "sample_id": "future_forecast"
+    },
+    {
+      "error": "_assemble_final_context() missing 1 required keyword-only argument: 'additional_identity_aliases'",
+      "failure_type": "TypeError",
+      "mechanical_passed": false,
+      "request_hashes": [
+        "02d6041ef214a4d1d0f3f35ca948a4d7fd1d1d90b51cef1fbf8e9ff0bb817a30",
+        "f7a58b2977f34078a99989a61fbd21e4108974cc336122726d0c9ecde2695218"
+      ],
+      "sample_id": "partial_numeric"
+    },
+    {
+      "error": "research_controller_reflect failed validation after one correction: research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[1]', next_information_needs[1]=\"What is the issuer's Q3 2025 revenue guidance?\", future_source_date_refs=[\"Q3 2025\"], prediction_time='2025-09-30'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not; deterministic evidence grounding remained invalid: research_controller_reflect violated the supplied need transition contract: {'prior_state_path': 'next_information_needs[0]', 'value': \"What is the issuer's Q3 2025 revenue guidance?\", 'issue': 'untargeted need changed or was removed', 'required_action': 'restore_exactly', 'required_need': \"What is the issuer's Q3 2025 revenue guidance?\", 'required_need_occurrences': 1}. Preserve every untargeted prior need exactly",
+      "failure_type": "CandidateExecutionRejected",
+      "mechanical_passed": false,
+      "request_hashes": [],
+      "sample_id": "future_actual"
+    },
+    {
+      "error": "research_controller_reflect failed validation after one correction: research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[0]', next_information_needs[0]='What Q3 2025 revenue guidance, if any, had the issuer publicly disclosed by 2025-09-30T00:00:00+00:00?', future_source_date_refs=[\"Q3 2025\"], prediction_time='2025-09-30'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not; deterministic evidence grounding remained invalid: research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[0]', next_information_needs[0]=\"What is the issuer's Q3 2025 revenue guidance?\", future_source_date_refs=[\"Q3 2025\"], prediction_time='2025-09-30'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not",
+      "failure_type": "CandidateExecutionRejected",
+      "mechanical_passed": false,
+      "request_hashes": [],
+      "sample_id": "terminal_empty_owner"
+    }
+  ],
+  "pending": [],
+  "source_pit_accepted": false,
+  "status": "completed_requires_independent_review"
+}
