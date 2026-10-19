@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "objective": "Fast→Slow→后继Fast实际内容合规、新magnitude技术准入与精确复用、PIT支持的幅度扩展和独立收益",
   "goal_snapshot": {"status": "none", "checked_at": "2026-10-07T11:24:24Z"},
   "acceptance": [
@@ -15,14 +15,18 @@
   "review": {
     "after_iteration": "v182",
     "evidence": ["memory/meta/reviews.md", "reports/self-evolution-retrospective-20260927.md"],
-    "blind_spots": ["旧教训被重复阅读但没有改变启动决策", "把局部兼容性验证作为完整后继的主要依据", "过晚检查正文历史版本和合同本身的语义", "未先区分检索/计算行为与研究假设无效"],
+    "blind_spots": ["旧教训被重复阅读但没有改变启动决策；把局部兼容性验证作为完整后继的主要依据", "过晚检查正文历史版本与合同语义，未先区分检索/计算行为和研究假设无效", "旧meta只比较策略文字，诊断可冒充完整后继；改名可绕过停滞，advance与汇总可矛盾"],
     "decision": {
+      "acceptance_id": "content_chain",
+      "kind": "diagnose",
       "strategy": "bounded_causal_diagnosis_before_successor",
       "action": "先治理停滞触发和输入/合同前提；后续仅在合法授权范围内设计有对照的阶段诊断，再决定完整后继",
       "question": "卡住的是输入/通道/合同/实际消费，还是在正确条件下仍无研究增量？",
       "pass": "一项命名失败家族在生产构造、反例和适用后继消费上有对应证据；能说明诊断排除了哪个根因",
       "fail": "仍只获得旧答结构通过、测试数量增加或相同no-pattern；不得转成收益/全链通过",
-      "stop": "前提未满足或两次相同诊断无区分信息时改变假设/范围，控制限制时立即停止目标工作"
+      "stop": "前提未满足或两次相同诊断无区分信息时改变假设/范围，控制限制时立即停止目标工作",
+      "on_pass": "依据命名失败家族的实际边界证据评审下一批；完整后继须另形成full_successor决策并满足全部原前提",
+      "on_fail": "保持验收开放，定位首个失败边界并缩小诊断；重复无区分信息时换假设或停止该策略"
     }
   },
   "successor_prerequisites": [

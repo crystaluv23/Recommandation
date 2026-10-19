@@ -1,6 +1,6 @@
 # Memory Guide
 
-Do not read memory at session start. Use this guide only when prior project experience might apply, or when starting work on a specific module and doing the required quick trigger-map scan.
+Use this index when a matching failure, module or review trigger applies; do not load all history. The current [agent workflow](../spec/agent-workflow.md) owns action and acceptance rules. Experiences supply scoped evidence, not a parallel approval or reporting process. Legacy visit counts and usage logs are historical only.
 
 ## Trigger Map
 

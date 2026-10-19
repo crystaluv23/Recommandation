@@ -16,6 +16,8 @@ from pathlib import Path
 import re
 
 LEVELS = {"unknown": 0, "diagnosed": 1, "local": 2, "live": 3, "independent": 4}
+DECISION_KINDS = {"diagnose", "repair", "full_successor", "stop", "human_decision"}
+CHECK_KINDS = {"diagnose", "repair", "full_successor"}
 REQUIRED = (
     "AGENTS.md", "spec/agent-workflow.md", "progress/status.md",
     "memory/GUIDE.md", "memory/meta/reviews.md",
@@ -48,7 +50,7 @@ def check_state(root: Path, state: dict, *, before_successor: bool = False,
             require(not Path(value).is_absolute() and candidate.is_relative_to(root.resolve())
                     and candidate.is_file(), f"{owner}: inaccessible evidence {value}")
 
-    require(state.get("schema_version") == 1, "unsupported meta schema")
+    require(state.get("schema_version") == 2, "unsupported meta schema")
     text_fields(state, ("objective",), "state")
     goals = state.get("acceptance", [])
     require(isinstance(goals, list) and bool(goals), "missing acceptance items")
@@ -72,7 +74,7 @@ def check_state(root: Path, state: dict, *, before_successor: bool = False,
     seen = set()
     previous_families = set()
     recurrent = False
-    for iteration in rounds:
+    for index, iteration in enumerate(rounds):
         text_fields(iteration, ("id", "strategy"), "iteration")
         require(iteration.get("id") not in seen, "duplicate iteration id")
         seen.add(iteration.get("id"))
@@ -91,12 +93,16 @@ def check_state(root: Path, state: dict, *, before_successor: bool = False,
             require(LEVELS.get(advance.get("level"), -1) >=
                     LEVELS.get((item or {}).get("required_level"), 99),
                     "advance substitutes lower-level evidence")
+            if index == len(rounds) - 1:
+                require(LEVELS.get(advance.get("level"), 99) <=
+                        LEVELS.get((item or {}).get("level"), -1),
+                        "latest advance exceeds current acceptance evidence level")
             evidence(advance.get("evidence"), "advance")
 
-    stagnant = (len(rounds) >= 2 and rounds[-1].get("strategy") == rounds[-2].get("strategy")
-                and not rounds[-1].get("acceptance_advances")
+    stagnant = (len(rounds) >= 2 and not rounds[-1].get("acceptance_advances")
                 and not rounds[-2].get("acceptance_advances"))
     review = state.get("review") or {}
+    decision = review.get("decision") or {}
     if stagnant or recurrent or before_successor:
         require(bool(rounds) and review.get("after_iteration") == rounds[-1].get("id"),
                 "latest stagnation/recurrence requires a current review")
@@ -105,9 +111,17 @@ def check_state(root: Path, state: dict, *, before_successor: bool = False,
                 bool(review.get("blind_spots")) and
                 all(isinstance(x, str) and x.strip() for x in review["blind_spots"]),
                 "review must explain missed assumptions")
-        decision = review.get("decision") or {}
-        text_fields(decision, ("strategy", "action", "question", "pass", "fail", "stop"), "review")
-        if rounds and decision.get("strategy") == rounds[-1].get("strategy"):
+        text_fields(decision, ("acceptance_id", "strategy", "action", "stop"), "review")
+        require(decision.get("kind") in DECISION_KINDS, "unknown review decision kind")
+        item = by_id.get(decision.get("acceptance_id"))
+        require(item is not None, "review references unknown acceptance item")
+        if decision.get("kind") != "stop":
+            require(item is not None and item.get("closed") is False,
+                    "review must target an open acceptance item")
+        if decision.get("kind") in CHECK_KINDS:
+            text_fields(decision, ("question", "pass", "fail", "on_pass", "on_fail"), "review")
+        if (decision.get("kind") in CHECK_KINDS and rounds and
+                decision.get("strategy") == rounds[-1].get("strategy")):
             text_fields(decision, ("new_evidence", "distinguishing_variable"), "unchanged strategy")
 
     prerequisites = state.get("successor_prerequisites")
@@ -132,15 +146,19 @@ def check_state(root: Path, state: dict, *, before_successor: bool = False,
         age = ((now or datetime.now(timezone.utc)) - stamp).total_seconds()
         require(-30 <= age <= 600, "successor blocked: goal receipt stale or future")
         plan = state.get("successor_plan") or {}
-        text_fields(plan, ("question", "pass", "fail", "stop", "strategy"), "successor plan")
+        require(decision.get("kind") == "full_successor",
+                "successor blocked: reviewed decision is not full_successor")
+        text_fields(plan, ("strategy", "acceptance_id", "why_full_run", "budget"), "successor plan")
         evidence(plan.get("authorization_evidence"), "successor authorization")
         evidence(plan.get("freeze_evidence"), "successor freeze")
         require(bool(re.fullmatch(r"[0-9a-f]{40}", plan.get("revision", ""))),
                 "successor requires exact frozen revision")
         require(bool(re.fullmatch(r"[0-9a-f]{64}", plan.get("manifest_sha256", ""))),
                 "successor requires exact manifest hash")
-        require(plan.get("strategy") == (review.get("decision") or {}).get("strategy"),
+        require(plan.get("strategy") == decision.get("strategy"),
                 "successor strategy differs from reviewed decision")
+        require(plan.get("acceptance_id") == decision.get("acceptance_id"),
+                "successor acceptance differs from reviewed decision")
 
     archive = state.get("history_archive") or {}
     evidence([archive.get("path")], "status archive")

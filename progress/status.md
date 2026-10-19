@@ -1,59 +1,55 @@
 # 当前状态
 
-更新：2026-10-07。当前新授权工作：重构助手 meta 机制；没有恢复旧目标实验。
-目标服务最近查询返回 `goal: null`，不能当作 active 或恢复许可。
-历史 03:41:36Z 的 `usageLimited` 及其停止决策保留在原报告中。
+更新：2026-10-19。当前授权工作：依据再次复盘重构项目 meta；没有恢复旧研究实验。
+目标服务最后保存的查询是2026-10-07的 `goal: null`，不是当前实时状态或恢复许可。
+本轮未查询/修改目标服务与监控；历史usageLimited及停止决策保留原报告。
 
-## 结论
+## 研究终态（2026-10-07保存，未新增运行）
 
-系统尚未收敛。v182 已结束（exit0，2026-10-06T21:59:30.527295Z），正式
-Fast/Slow 指针 1/1。冻结 revision `85ffff9ed976cc4597b7e6e26a2dfe7537ab4099`；
-不得热改、重启或把旧 PID 当作活跃。608 attempts：603 completed / 5 failed；
-ledger $2.74348592 含失败预留，不是精确 invoice。
+系统尚未收敛。v182已结束，正式Fast/Slow指针1/1，冻结revision
+`85ffff9ed976cc4597b7e6e26a2dfe7537ab4099`。不得热改、重启或把旧PID当活跃。
 
 | 验收项 | 已证实 | 尚未达到 |
 | --- | --- | --- |
-| 实际内容与技术合规 | 两Plan共48案，case技术排除0；4案有成对内容链报告，Kinross部分亲读 | 44/48未完整内容验收；180 Signal含6 validation_failed、15 domain_unavailable |
-| 正确反馈与后继消费 | 真实450/451失败已定位；来源分组/覆盖修复离线通过 | v182 memory failed / 0 processed / 3518 pending；新教训未消费 |
-| 新magnitude及精确复用 | 无新magnitude；方向order_confirmation_disclosed:v3已发布 | magnitude候选/验证/发布0；方向v3 pending_use/unverified |
-| 有效幅度与独立收益 | c01/c02 BinaryF1 .785714/.827586，magnitude macroF1 .148148/.175439 | 29正向全2–3x；无独立收益确认，污染输入不可背书 |
+| 实际内容与技术合规 | 两Plan共48案；4案有成对内容报告，Kinross部分亲读 | 44/48未完整内容验收；6 Signal validation_failed、15 domain_unavailable |
+| 正确反馈与后继消费 | 450/451失败已定位，来源分组/覆盖修复离线通过 | v182 memory failed / 0 processed / 3518 pending，新教训未消费 |
+| 新magnitude及精确复用 | 方向order_confirmation_disclosed:v3已发布 | magnitude候选/验证/发布0；方向v3 pending_use/unverified |
+| 有效幅度与独立收益 | c01/c02 BinaryF1 .785714/.827586 | 29正向全2–3x；无独立收益确认，污染输入不可背书 |
 
-权威终态：[终态审计](../reports/v182-terminal-slow-and-source-partition-audit-20261007.md)。
-当前验收与停滞决策：[convergence.json](convergence.json)。
+权威证据：[终态审计](../reports/v182-terminal-slow-and-source-partition-audit-20261007.md)、
+[当前收敛记录](convergence.json)。旧报告中的active仅表示报告当时的状态。
 
-## 新确认的前提缺陷
+## 研究前提仍未关闭
 
-- [Bumble审计](../reports/v182-bumble-pair-content-and-future-source-audit-20261007.md)：
-  旧日期摘要含2026年公布的实际业绩，真实模型请求已收到；需历史正文版本及新manifest。
-- [回答范围合同审查](../reports/v182-executed-answer-scope-contract-review-20261007.md)：
-  Q2 partial被当作Q3 full，完整validator/fallback维护了错误完成状态；提案尚未实施。
-- [来源时间提案](../reports/transcript-availability-policy-review-20261007.md)：
-  transcript可用时间定义待人类选择，不能默改旧oracle/3606批准输入。
-- 独立40issuer×2replicate四臂评价方案仍待确认；不执行依赖该决定的实验。
+- [Bumble来源版本](../reports/v182-bumble-pair-content-and-future-source-audit-20261007.md)：
+  旧日期摘要含未来实际业绩并进入真实请求，需历史正文版本及新manifest。
+- [实际回答范围](../reports/v182-executed-answer-scope-contract-review-20261007.md)：
+  Q2 partial被当作Q3 full；完整validator/fallback维护错误完成状态，提案尚未实施。
+- [来源时间政策](../reports/transcript-availability-policy-review-20261007.md)与独立
+  40issuer×2replicate四臂协议待决策；本轮meta授权不替代研究定义或实验授权。
 
-## 本次 meta 改造
+## 本轮 meta 变更与验证
 
-AGENTS 已缩成当前入口；新增停滞/复发反思与后继行政门槛；取消经验阅读计数、
-咨询日志及机械提交。每轮必须绑定命名验收项和证据层；复盘必须改变下一步行动。
-`check_project.py` 默认检查记录一致性，`--before-successor` 检查复盘、前提、
-新鲜目标状态及具体冻结计划。它不接管业务executor，也不证明学习或收益。
-实际新触发下能否改变决策仍待验证，见 [meta复审](../memory/meta/reviews.md)。
-既有监控保持 PAUSED，只将9623字符的历史快照prompt缩为1156字符的当前入口/
-触发规则；未恢复目标或executor。
-17条meta反例测试通过（bundled/system Python均通过），pre-push lint
-2026-10-07T11:34:06Z PASS已读；当前完整后继检查按预期拒绝，不是产品验收PASS。
+AGENTS压缩为责任/行动入口，详细合同集中在agent-workflow；insights只索引证据。
+本地检查改为schema2：诊断/停止不得放行完整后继，计划须绑定同一开放验收项，
+latest advance不得高于汇总层级；两轮无推进不因改策略名免审。独立fixture和
+实际CLI反例替代从当前账本复制的样例。研究acceptance、iterations、前提和旧
+目标receipt保持原值；没有用本次改造宣称研究推进。
+
+31项meta测试在bundled/system Python均通过，含实际CLI正反例与格式错误退出。
+旧checker三个误放行反例已复现；当前完整后继检查按预期拒绝，研究状态原值核对通过。
+本轮lint反馈保存于 `.lint-feedback/pre-push-last.log`。
+机制仍只检查本地行政矛盾，未接管executor，不能证明语义、权限或研究收益。
+复盘依据及实际效果边界见 [meta复审](../memory/meta/reviews.md)。
 
 ## 下一步与停止条件
 
-1. 下一次实际停滞/复发事件：验证机制是否改变行动及结果，而不只检查文件存在。
-2. 以后在合法授权/控制状态下：先完成来源版本及回答范围合同前提，采用有边界、
-   能区分根因的诊断；不因本次meta或旧离线测试PASS直接再跑完整Fast/Slow。
-3. 完整后继须刷新服务状态/用户答复，满足 [工作契约](../spec/agent-workflow.md)
-   并冻结新revision/manifest；独立收益单列，不追求机械发布/幅度配额。
+下次获授权的研究工作先处理来源/合同前提，以有边界诊断区分根因。当前决策仍为
+`diagnose`、successor_plan为空；完整后继检查应拒绝，不能改记录求PASS。
+真实触发时核对是否执行选定动作并减少不确定性；两轮没有新信息则换假设/范围
+或停止策略。不能因本次meta或局部测试通过默认完整重跑。
 
 ## 历史入口
 
-旧 `status.md` 已原字节保留为 [状态历史归档](status-history-20261007.md)，
-440109 bytes / SHA256 `dfdc3809b5c06e5dde06db6a4c00489f300a183fd24a244ec046c6f01f47777a`。
-该归档包括旧模块表、ACTIVE/PID与中间结论，全部仅作历史，不是当前状态。
-详细变更见 [changelog](changelog.md)，原证据见 reports；不复制回本入口。
+[原状态归档](status-history-20261007.md)保持440109 bytes及原SHA256；旧ACTIVE/PID
+仅作历史。[changelog](changelog.md)保存变化，reports保存原证据。

@@ -1,105 +1,70 @@
-# Stock Opportunity Agent — Session Entry
+# Stock Opportunity Agent — 协作入口
 
-Read this file first. Then read [progress/status.md](progress/status.md).
-These are the bounded current entry points; historical logs are not current state.
+先读本文件和 [当前状态](progress/status.md)。历史报告和旧 ACTIVE/PID 不是当前状态。
+目标：构建持续运行的美国股票机会研究系统，输出未来 3–6 个月的观察名单、
+有证据的论点及复核产物。交易、杠杆、仓位和券商接入须另有明确授权与上层设计。
 
-## Product and authority
+## 责任与设计权限
 
-Build a long-running US stock opportunity research agent for the next 3–6 months.
-Output watchlists, evidence-backed theses and review artifacts. Trading, brokerage,
-leverage and position sizing require explicit user approval and top-down design.
+- 用户决定目标、研究定义、优先级和资源边界；助手负责查证、诊断、实现、验收。
+  不把核对真实输入、生产连接和系统性修复的责任推回给用户。
+- 当前用户要求与已有授权持续有效，普通实施选择自主完成。设计顺序是
+  [vision](spec/vision.md) → [architecture](spec/architecture.md) → owning module spec。
+  改行为先改 spec；遇上层冲突或研究定义、canonical schema、评分、PIT、准入政策、
+  接口的实质取舍，先准备具体方案并取得所需决策，不能默改或重复索取已有许可。
+- spec 是应有行为；代码、实际请求和保存产物才说明已实现行为。经验不高于契约。
 
-Design authority: [vision](spec/vision.md) → [architecture](spec/architecture.md)
-→ owning module specs under `spec/src/`. User instructions and existing authorized
-scope persist. Read the owning spec before implementation; if a change conflicts
-with an ancestor, name the conflict and obtain the corresponding decision first.
-Write/update specs before code. Do not silently change research definitions,
-canonical schemas, scoring, promotion policy, PIT guarantees or module interfaces.
+## 按验收问题工作
 
-## Work toward acceptance, not activity
+- 多步骤工作先简述：本轮验收项和证据层、当前证据、待区分解释、检查与停止条件。
+  预先说明不同结果如何改变判断和行动。结束说明关闭了什么、依据、未知项及是否值得继续。
+  普通低风险改动无需新增计划表、ledger 或评审流程。
+- 输入可信、真实执行、正确反馈及消费、新能力复用、独立收益分别举证。
+  局部测试、exit0、引用/hash、反思文本和版本数量不能替代研究进展。
+- 修复以适用错误家族为单位，核对从生产输入到校验/纠错、持久化和后继消费的连接。
+  验证原失败、变体和反例；确定性事项归代码，研究语义回到原材料。
+- 验证模型行为须看真实请求、原答、纠错、落盘和精确版本消费；旧答脚本回放不证明
+  新模型服从。重要关闭结论安排反例审查，不以多个 agent 赞同代替独立效果证据。
 
-For multi-step work, state the concrete problem, verifiable success criteria,
-current evidence, and stopping condition before starting. At the end identify
-which acceptance item advanced and at what evidence level. Tests, commits,
-reports, calls, version numbers and exit0 are not themselves research progress.
+## 复发、停滞和扩大运行
 
-Keep input credibility, correct execution, correct/consumed feedback, new capability
-and reuse, and independent benefit separate. A local fix can close a local defect;
-it cannot close a live-behavior or benefit requirement. Never infer economic truth
-from valid citations, hashes, schema validation or a correct single prediction.
+同类复发/迁移、连续两轮无目标验收推进、输入或合同矛盾、声明超出证据，以及
+完整付费后继或机制扩展前，读取 [工作契约](spec/agent-workflow.md) 和
+[经验索引](memory/GUIDE.md) 中匹配条目。区分回归、漏修、未部署和过早关闭，
+说明旧检查为何失败、自己漏掉什么，选择能区分根因的下一步。
 
-**Mandatory reflection:** read [the agent-workflow contract](spec/agent-workflow.md)
-and the matching [experience index](memory/GUIDE.md) when a supposedly fixed failure
-recurs, two consecutive rounds of the same strategy advance no acceptance item,
-input/contract/repair authority becomes inconsistent, claim levels drift, or before
-a complete paid successor/complexity expansion. During sustained work, check for
-information gain about every 30 minutes; do not generate timed paperwork.
-
-The reflection must explain why prior checks failed, inspect the entire applicable
-producer/prompt/validator/typed-repair/fallback/consumer/persistence/next-cycle chain,
-name the assistant's missed assumptions, and choose a changed action with a bounded
-falsifiable check. Repeating “more prompts/tests/another run” is insufficient.
-If the strategy stays the same, justify it with new evidence and a distinguishing
-variable. Do not rename the problem or reset history to escape this rule.
-
-Track long-running convergence in [progress/convergence.json](progress/convergence.json),
-updated at substantive round/review/decision boundaries only. Before a full live
-successor refresh service/run/user state, freeze inputs/code and run:
+没有新信息就换假设/范围或停止该策略；不得默认“补丁通过→完整重跑”。
+持续工作约 30 分钟仍在修补/扫描时检查信息增量，不制造定时文档。
+长期研究只在实质轮次/决策边界更新 [收敛记录](progress/convergence.json)。
+完整后继须刷新服务/运行/用户状态、核实授权预算、满足前提并冻结代码/输入，再运行：
 
 ```sh
 python3 scripts/check_project.py --before-successor
 ```
 
-This is an administrative gate, not research validation or authorization. Check
-failed prerequisites rather than edit them to obtain PASS. Approved independent
-diagnostics may continue; never report them as complete-cohort acceptance.
+该检查必须与复盘选定的行动一致；诊断/停止不能放行完整运行。PASS 只说明
+行政记录一致，不能验证语义、授予权限或证明收益；不得改记录凑 PASS。
 
-## Runtime and evidence boundaries
+## 不可退让的运行边界
 
-- Preserve PIT, historical body versions, object/period/unit applicability, labels,
-  fixed failure denominators, identity masking and Locked Test. Do not weaken Signals
-  coverage, literal/whole-word/boundary validation or typed repair authority.
-- Compare actual production prompts, inputs, raw responses, native corrections,
-  persisted records and exact-version downstream consumption. Check the original
-  defect, representative variations and counterexamples; do not mock the decisive
-  production boundary. Scripted old-answer replay does not prove model compliance.
-- Completed runs stay completed. Use authoritative round/cycle pointers and fresh
-  service status, never old PIDs or staged artifacts. Keep code/input snapshots
-  immutable and one executor serial. Recovery follows the original contract.
-- Goal usage/budget limits stop that goal. Do not replace, resume or relabel it to
-  evade the limit. `null` is not active. Only an actual service return to active
-  under user authorization permits continuation. Separately authorized work remains
-  scoped to that work; it does not resume old experiments.
-- No factor/class quotas or mechanically invented research conclusions to create
-  progress. Honest no-pattern is valid; limited search is not proof of absence.
-- Preserve credentials outside artifacts and output. Sending/publishing/other
-  external actions require the corresponding existing or explicit authorization.
+- 保留 PIT 历史正文、对象/期间/单位、标签、固定失败分母、身份屏蔽、Locked Test、
+  Signals 覆盖、literal/whole-word/boundary 校验和 typed 修复权限。
+- 完成运行保持完成。权威 round/cycle 指针决定完成；staged/cache/log 不代替指针。
+  冻结代码/输入不可热改；一个 executor 串行，恢复服从原合同。
+- 目标 usage/budget 限制立即停止该目标，不替换/重命名/自行恢复。null 不等于 active；
+  只有服务实际恢复且有用户授权才可继续。单独授权工作不恢复旧实验。
+- 不用因子/类别配额或编造语义制造进展。诚实无结果有效，有限搜索不是不存在证明。
+- 凭据不进入产物或输出；发送、发布和其他外部行动须有对应授权。
 
-## Implementation and knowledge discipline
+## 保持简单并完成交付
 
-Use minimum necessary code, explicit one-way interfaces, established style,
-public docstrings and declared dependencies (`pyproject.toml` for Python).
-Change only task files. Test deterministic behavior in `tests/`; judge LLM research
-quality with real evidence and evaluation artifacts. Scale verification to risk.
-
-Consult memory on a matching trigger; read only relevant entries. **No read counters,
-consultation logs or bookkeeping-only commits.** Record adoption or a counterexample
-only when it changes a decision. Existing `visit_times` and usage logs are history.
-Repeatedly ineffective lessons must be narrowed, converted into checks or retired.
-The workflow contract takes precedence over obsolete experience instructions.
-
-Keep status short and current. Preserve detailed history in reports/changelog or
-an explicitly historical archive. Don't copy stale ACTIVE/PID claims into current
-status. Rules that only generate work must themselves be simplified or removed.
-
-## End of a substantive change
-
-Sync specs, update current status and append one meaningful changelog entry.
-Record non-obvious reusable lessons/reviews only when needed. Run suitable tests
-and `scripts/lint_repo.sh`; read `.lint-feedback/pre-push-last.log` after every
-manual pre-push lint or push. `core.hooksPath` is `.githooks`.
-
-Inspect `git status`, stage only this task's files and create a concise checkpoint
-before the final reply whenever project files changed. Keep unrelated user edits
-out. Report verification failures and limits honestly. A meta-check PASS does not
-prove these rules changed future behavior; verify that at the next real trigger.
+- 最小必要代码、明确单向接口、既有风格、公开 docstring；Python 依赖写入
+  `pyproject.toml`。只改任务文件；按风险选测试，使用项目兼容 Python 与 `PYTHONPATH=src`。
+- 经验按需读取，不计数、不写咨询日志、不作 bookkeeping-only 提交。重复或无效规则
+  合并、缩小范围或删除；工作契约优先于旧经验规则。
+- status 保持短且当前，历史留在 changelog/reports/明确归档；不要复制旧运行状态。
+  实质修改同步 spec/status，追加一条有意义 changelog。
+- 运行适当测试及 `scripts/lint_repo.sh`；每次手动 pre-push lint 或 push 后亲读
+  `.lint-feedback/pre-push-last.log`。`core.hooksPath` 为 `.githooks`。
+- 结束前检查 git status，只 stage 本任务文件并提交简洁 checkpoint；保留其他改动。
+  报告失败与证据局限。meta 机制的实际效果须在下次真实触发验收，不能靠文件存在证明。
