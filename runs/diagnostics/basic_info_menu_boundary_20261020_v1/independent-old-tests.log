@@ -1,0 +1,176 @@
+{
+  "head": "760d7c41c3d7e1e020b846cc363763b98a19984c",
+  "file_sha256": {
+    "tests/test_basic_info_menu_boundaries.py": "cb13a5af0946647a49c5e58fe4bdf7c57210f5ee107a3ad66d1a377acacde623",
+    "src/stock_opportunity_agent/research/evolution_core.py": "51989a939486ba0a8d373ab7712d6e0f52a558ee9c4bc0811f0df1698950c543",
+    "src/stock_opportunity_agent/data/resolution.py": "aa262e6b0e368aa32161272339c8283a4e1ec98687e8943908c878570f2c9013",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "f5134cb9d61c836a1b1268ab3c40381ad2f89c18f749e333d3ca49f64c1eb70e"
+  },
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_basic_info_menu_boundaries"
+  ],
+  "returncode": 1,
+  "source_unchanged_during_test": true,
+  "external_llm_calls": 0,
+  "data_requests": 0
+}
+
+F...FFFFFF.FFFFF
+======================================================================
+FAIL: test_current_report_title_cannot_clear_operating_report_gap (tests.test_basic_info_menu_boundaries.BasicInfoExactFormBoundaryTests.test_current_report_title_cannot_clear_operating_report_gap)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 153, in test_current_report_title_cannot_clear_operating_report_gap
+    self.assertFalse(coverage["contract_satisfied"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_substring_title_reference_and_amendment_do_not_prove_original (tests.test_basic_info_menu_boundaries.BasicInfoExactFormBoundaryTests.test_substring_title_reference_and_amendment_do_not_prove_original) (document='substring')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 116, in test_substring_title_reference_and_amendment_do_not_prove_original
+    self.assertFalse(_matches_source_type(document, ("10-k",)))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_substring_title_reference_and_amendment_do_not_prove_original (tests.test_basic_info_menu_boundaries.BasicInfoExactFormBoundaryTests.test_substring_title_reference_and_amendment_do_not_prove_original) (document='suffix')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 116, in test_substring_title_reference_and_amendment_do_not_prove_original
+    self.assertFalse(_matches_source_type(document, ("10-k",)))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_substring_title_reference_and_amendment_do_not_prove_original (tests.test_basic_info_menu_boundaries.BasicInfoExactFormBoundaryTests.test_substring_title_reference_and_amendment_do_not_prove_original) (document='amendment')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 116, in test_substring_title_reference_and_amendment_do_not_prove_original
+    self.assertFalse(_matches_source_type(document, ("10-k",)))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_substring_title_reference_and_amendment_do_not_prove_original (tests.test_basic_info_menu_boundaries.BasicInfoExactFormBoundaryTests.test_substring_title_reference_and_amendment_do_not_prove_original) (document='title_reference')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 116, in test_substring_title_reference_and_amendment_do_not_prove_original
+    self.assertFalse(_matches_source_type(document, ("10-k",)))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_substring_title_reference_and_amendment_do_not_prove_original (tests.test_basic_info_menu_boundaries.BasicInfoExactFormBoundaryTests.test_substring_title_reference_and_amendment_do_not_prove_original) (document='title_only')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 116, in test_substring_title_reference_and_amendment_do_not_prove_original
+    self.assertFalse(_matches_source_type(document, ("10-k",)))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_substring_title_reference_and_amendment_do_not_prove_original (tests.test_basic_info_menu_boundaries.BasicInfoExactFormBoundaryTests.test_substring_title_reference_and_amendment_do_not_prove_original) (document='conflicting_type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 116, in test_substring_title_reference_and_amendment_do_not_prove_original
+    self.assertFalse(_matches_source_type(document, ("10-k",)))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_direct_execution_rejects_free_requests_before_resolving (tests.test_basic_info_menu_boundaries.BasicInfoMenuEntryBoundaryTests.test_direct_execution_rejects_free_requests_before_resolving) (request={'request_id': 'free', 'description': 'Recent news.', 'source_types': ['news'], 'max_documents': 1, 'lookback_days': 180, 'query': 'merger target price'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 71, in test_direct_execution_rejects_free_requests_before_resolving
+    execute_information_plan(
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 3144, in execute_information_plan
+    basic_info_bundle = signal_executor.resolver.resolve_basic_info(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+AssertionError: unvalidated request reached retrieval
+
+======================================================================
+FAIL: test_direct_execution_rejects_free_requests_before_resolving (tests.test_basic_info_menu_boundaries.BasicInfoMenuEntryBoundaryTests.test_direct_execution_rejects_free_requests_before_resolving) (request={'request_id': 'free', 'description': 'Recent posts.', 'source_types': ['social_media'], 'max_documents': 1, 'lookback_days': 180})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 71, in test_direct_execution_rejects_free_requests_before_resolving
+    execute_information_plan(
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 3144, in execute_information_plan
+    basic_info_bundle = signal_executor.resolver.resolve_basic_info(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+AssertionError: unvalidated request reached retrieval
+
+======================================================================
+FAIL: test_direct_execution_rejects_free_requests_before_resolving (tests.test_basic_info_menu_boundaries.BasicInfoMenuEntryBoundaryTests.test_direct_execution_rejects_free_requests_before_resolving) (request={'request_id': 'free', 'description': 'Recent news.', 'source_types': ['news'], 'max_documents': 1})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 71, in test_direct_execution_rejects_free_requests_before_resolving
+    execute_information_plan(
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 3144, in execute_information_plan
+    basic_info_bundle = signal_executor.resolver.resolve_basic_info(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+AssertionError: unvalidated request reached retrieval
+
+======================================================================
+FAIL: test_direct_execution_rejects_free_requests_before_resolving (tests.test_basic_info_menu_boundaries.BasicInfoMenuEntryBoundaryTests.test_direct_execution_rejects_free_requests_before_resolving) (request={'request_id': 'free', 'description': 'Recent news.', 'source_types': ['news'], 'max_documents': 10, 'lookback_days': 365})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 71, in test_direct_execution_rejects_free_requests_before_resolving
+    execute_information_plan(
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 3144, in execute_information_plan
+    basic_info_bundle = signal_executor.resolver.resolve_basic_info(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+AssertionError: unvalidated request reached retrieval
+
+======================================================================
+FAIL: test_direct_execution_rejects_free_requests_before_resolving (tests.test_basic_info_menu_boundaries.BasicInfoMenuEntryBoundaryTests.test_direct_execution_rejects_free_requests_before_resolving) (request={'request_id': 'free', 'description': 'Search merger target prices.', 'source_types': ['news'], 'max_documents': 1, 'lookback_days': 180})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_basic_info_menu_boundaries.py", line 71, in test_direct_execution_rejects_free_requests_before_resolving
+    execute_information_plan(
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 3144, in execute_information_plan
+    basic_info_bundle = signal_executor.resolver.resolve_basic_info(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+AssertionError: unvalidated request reached retrieval
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.005s
+
+FAILED (failures=12)

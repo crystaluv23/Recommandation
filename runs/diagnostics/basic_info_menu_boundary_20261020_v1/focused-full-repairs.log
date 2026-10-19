@@ -1,0 +1,56 @@
+======================================================================
+ERROR: test_duplicates_introduced_by_scoped_correction_are_repaired (tests.test_plan_source_set_repair.PlanSourceSetRepairTests.test_duplicates_introduced_by_scoped_correction_are_repaired)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_plan_source_set_repair.py", line 39, in test_duplicates_introduced_by_scoped_correction_are_repaired
+    plan, caller = self.propose([invalid, corrected])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_plan_source_set_repair.py", line 20, in propose
+    plan = LLMInformationPlanProposer(caller).propose(round_id=1, candidate_index=1,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3113, in propose
+    value = complete_proposal_request(stage, request_payload)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3011, in complete_proposal_request
+    value, _usage = _complete_json_with_invalid_value(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1672, in _complete_json_with_invalid_value
+    return caller.complete_json(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/evolution_runtime_test_support.py", line 470, in complete_json
+    output = _recorded_output_patch(base, output, contract)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/evolution_runtime_test_support.py", line 376, in _recorded_output_patch
+    return recorded_response_patch(base, output)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py", line 493, in recorded_response_patch
+    visit(dict(base), dict(response), "")
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py", line 467, in visit
+    visit(old[key], new[key], child)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py", line 467, in visit
+    visit(old[key], new[key], child)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py", line 487, in visit
+    visit(value, new[index], f"{path}[{index}]")
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py", line 467, in visit
+    visit(old[key], new[key], child)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py", line 484, in visit
+    raise ValidationError("recorded replacement plus deletion requires an explicit delta")
+stock_opportunity_agent.models.ValidationError: recorded replacement plus deletion requires an explicit delta
+
+======================================================================
+FAIL: test_parent_comparison_only_deltas_metrics_on_exact_snapshot (tests.test_plan_evolution_engine.PlanEvolutionEngineTests.test_parent_comparison_only_deltas_metrics_on_exact_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_plan_evolution_engine.py", line 882, in test_parent_comparison_only_deltas_metrics_on_exact_snapshot
+    self.assertEqual(
+AssertionError: Items in the first set but not the second:
+'orientation.v1.financial_facts'
+'orientation.v1.operating_report'
+Items in the second set but not the first:
+'recent_annual_filing'
+'reported_financial_facts'
+
+----------------------------------------------------------------------
+Ran 275 tests in 21.691s
+
+FAILED (failures=1, errors=1)

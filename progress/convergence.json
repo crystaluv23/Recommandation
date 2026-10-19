@@ -51,7 +51,7 @@
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json"
       ],
-      "remaining": "UTC daily windows, actual visibility wire/legacy recovery, earliest-consumer split coverage and local-judge/JEV permission guards pass narrow independent checks; runtime stop metadata/F9 blind prefix not executed; F2 background, Slow, global sources and full48/loop remain open"
+      "remaining": "Native blind prefix and corrected Posthoc narrow examples passed; closed orientation implementation requires final regression and fresh proposer/H_init behavior. Full48/source/transcript/Slow/newSignal/fullF10/MVP remain open."
     },
     {
       "id": "feedback_consumption",
@@ -347,10 +347,35 @@
         "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/execution_summary.json"
       ],
       "result": "First answer source membership rejected; one typed correction removed only2refs, final2items independently accepted1/1 with nativeidentity. Two actual roles, nofallback;19files exact completedrestore0newdispatch. Feedback not committed toFast/Slow or consumed downstream; fullF10/MVP/benefit open."
+    },
+    {
+      "id": "engineering-mvp-basic-info-menu-20261020",
+      "strategy": "closed_orientation_compiler_and_same_pool_operating_selection",
+      "failure_families": [
+        "proposer_only_gate_direct_execution_bypass",
+        "orientation_description_vs_generic_filing_coverage",
+        "substring_form_and_nonfiling_metadata_upgrade",
+        "query_rank_over_latest_interim"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/basic-info-orientation-menu-20261020.md",
+        "runs/diagnostics/basic_info_menu_boundary_20261020_v1/independent-old-tests.log",
+        "runs/diagnostics/basic_info_menu_boundary_20261020_v1/independent-current-tests.log",
+        "runs/diagnostics/basic_info_menu_boundary_20261020_v1/root-provisional-enb-bootstrap.json",
+        "runs/diagnostics/basic_info_menu_boundary_20261020_v1/full-tests-first.log",
+        "runs/diagnostics/basic_info_menu_boundary_20261020_v1/alias-original.json",
+        "runs/diagnostics/basic_info_menu_boundary_20261020_v1/independent-alias-current-tests.log",
+        "runs/diagnostics/basic_info_menu_boundary_20261020_v1/full-tests-final.log",
+        "runs/diagnostics/basic_info_menu_boundary_20261020_v1/prompt-only-final-check.json",
+        "runs/diagnostics/basic_info_menu_boundary_20261020_v1/final-projection-check.json",
+        "runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/source-boundary-review.json"
+      ],
+      "result": "First full1832 has12 retained failures from old fixtures/old-ID coverage assumptions; repaired with alias-route admission. Final full1835 PASS182.698s, then prompt-only reconciliation330 relatedPASS. Independent16/sourceconsumer/projection checks pass; pre-push lintPASS17:54:59Z. No fresh menu-role behavior/fullMVP closure."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-native-posthoc-accepted-20261020",
+    "after_iteration": "engineering-mvp-basic-info-menu-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -388,7 +413,18 @@
       "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/preflight-result.json",
       "reports/reviewed-posthoc-stage-20261020.md",
       "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/independent-review.json",
-      "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/execution_summary.json"
+      "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/execution_summary.json",
+      "reports/basic-info-orientation-menu-20261020.md",
+      "runs/diagnostics/basic_info_menu_boundary_20261020_v1/independent-old-tests.log",
+      "runs/diagnostics/basic_info_menu_boundary_20261020_v1/independent-current-tests.log",
+      "runs/diagnostics/basic_info_menu_boundary_20261020_v1/root-provisional-enb-bootstrap.json",
+      "runs/diagnostics/basic_info_menu_boundary_20261020_v1/full-tests-first.log",
+      "runs/diagnostics/basic_info_menu_boundary_20261020_v1/alias-original.json",
+      "runs/diagnostics/basic_info_menu_boundary_20261020_v1/independent-alias-current-tests.log",
+      "runs/diagnostics/basic_info_menu_boundary_20261020_v1/full-tests-final.log",
+      "runs/diagnostics/basic_info_menu_boundary_20261020_v1/prompt-only-final-check.json",
+      "runs/diagnostics/basic_info_menu_boundary_20261020_v1/final-projection-check.json",
+      "runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/source-boundary-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -409,19 +445,23 @@
       "A finalize-only native sink test skipped actual SignalBatchResult, and the observer wrongly assumed to_dict. Parent continuation and completed restoration must distinguish a prepared budget-blocked request journal from an answered role; source-resolved technical budget_blocked is not domain insufficiency.",
       "LabelStore.load checked internal shape but not the promised archive/hash/calculator/contract/reconciliation; a /dev/null zero-hash roundtrip fixture concealed the missing source gate. A calculator-consistent record can still come from a different bound price history.",
       "Case Posthoc does not inherit the Plan/Round progressive-read wrapper; inspect the actual entry before promising read_refs/browse. Preserve its real deterministic case catalog and repair resolver instead of adding capability for an oracle.",
-      "A terminal no_findings prefix does not cover native partial salvage with a valid sibling and no_findings null, all-invalid salvage or deterministic promotion; preserve native validation events rather than infer absence of fallback from one output field."
+      "A terminal no_findings prefix does not cover native partial salvage with a valid sibling and no_findings null, all-invalid salvage or deterministic promotion; preserve native validation events rather than infer absence of fallback from one output field.",
+      "Source whitelist/query gate at proposer did not enforce semantic templates at direct core; exact form substring/title and metadata upgrades cleared coverage falsely. Query relevance also hid latest interim; actual bounded projection, not form presence, is required for operating background.",
+      "Fixed canonical menu routing conflicts with literal available-source membership: existing resolver aliases must be admitted semantically while Plans still copy fixed routes. Old tests also assumed one filing and treated8K as annual/interim fulfillment."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "diagnose_orientation_menu_contract_and_operating_background_coverage",
-      "action": "Read-only trace vision/architecture, BasicInfo closed menu vs RawInfoRequest/defaultPlan and cached/acquisition form ranking; distinguish F1 interface execution gap from F2 source coverage using preserved BMBL and unadmitted ENB candidates.",
-      "stop": "No spec/code/sourceview/model changes in the F2 diagnosis; preserve full48 readiness and Fast/Slow publication boundaries.",
-      "question": "Can the current closed orientation contract be implemented with existing request coverage/selection interfaces while preserving generic8K and honest missing background, or is a material interface decision required?",
-      "pass": "Concrete producer-to-resolver/acquisition/menu evidence and a bounded genuine annual-background positive plus missing/foreign-form counterexample proposal before edits.",
-      "fail": "Rename a request or add forbidden query/form filters and report operating coverage fulfilled, or treat persisted feedback as Slow consumption.",
-      "on_pass": "Close only bounded Posthoc feedback behavior/persistence, then design legitimate scoring/Critic/committed feedback prerequisites.",
-      "on_fail": "Retain qualification failure and repair the owning single-door label admission before any feedback role."
+      "kind": "repair",
+      "strategy": "closed_orientation_compiler_and_same_pool_operating_selection",
+      "action": "Implement existing five-action contract with one compiler, fixed internal recipe and same-pool exact filing selection; validate old failures/variants and actual ENB projection before new roles.",
+      "stop": "No new roles or full successor until stable focused/full/lint and scoped checkpoint; preserve archived/free policies as read-only and original pointers.",
+      "question": "Does every new producer/executor enforce the same fixed semantic action and do qualified annual/interim originals yield actual visible business material without overstating coverage?",
+      "pass": "Independent direct/proposer/form boundaries, adapter append/cache equivalence and substantive partial projection positive; subsequent fresh native menu/H_init batch remains separately required.",
+      "fail": "Runtime legacy bypass, arbitrary template description/query/coverage, title/substring form proof or count/form presence represented as business completeness.",
+      "on_pass": "Checkpoint this deterministic family then freeze bounded actual proposer/H_init requests under predeclared oracle.",
+      "on_fail": "Retain exact failures and repair owning path without new source/model scope or budget expansion.",
+      "new_evidence": "Actual ENB business text visible under partial projection; full1832 exposed12 legacy fixture/producer connection assumptions, plus alias-only capability mismatch, now16 independent/114 related pass.",
+      "distinguishing_variable": "Same semantic template at proposer and direct core, same eligible document pool through adapter/append/cache, actual projected business text versus file-form presence."
     }
   },
   "successor_prerequisites": [

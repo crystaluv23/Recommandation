@@ -1,6 +1,7 @@
 """Research reflection, evidence mapping, and terminal role tests."""
 
 from tests.evolution_runtime_test_support import *  # noqa: F403
+from stock_opportunity_agent.research.basic_info_orientation import make_orientation_request
 from stock_opportunity_agent.research.evolution_research_validation import (
     _normalize_research_state_output,
     _validate_research_state_refs,
@@ -2855,13 +2856,7 @@ class ReflectionRoleAdapterTests(TestCase):
             "used_experience_refs": [],
             "B": {
                 "requests": [
-                    {
-                        "request_id": "market",
-                        "description": "compact market evidence",
-                        "source_types": ["market_data"],
-                        "lookback_days": 30,
-                        "max_documents": 1,
-                    }
+                    dict(make_orientation_request("market_backbone", max_documents=1).to_dict())
                 ]
             },
             "H_init": (

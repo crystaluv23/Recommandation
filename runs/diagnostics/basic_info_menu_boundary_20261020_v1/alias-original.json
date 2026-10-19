@@ -1,0 +1,76 @@
+{
+  "scope": "Current fixed semantic actions and existing compatible source aliases; deterministic no model/API",
+  "plan": {
+    "plan_id": "plan_manual_v1",
+    "parent_ids": [],
+    "basic_info_policy": {
+      "requests": [
+        {
+          "request_id": "orientation.v1.operating_report",
+          "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+          "source_types": [
+            "filing"
+          ],
+          "max_documents": 2,
+          "lookback_days": 730
+        },
+        {
+          "request_id": "orientation.v1.market_backbone",
+          "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+          "source_types": [
+            "market_data"
+          ],
+          "max_documents": 1,
+          "lookback_days": 45
+        }
+      ]
+    },
+    "initial_research_skill": "Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs.",
+    "reflection_skill": "Reflect over the entire Signal batch. Track support, contradiction, resolved questions, concentration risk, and the next smallest set of information needs; finalize only when the surge thesis is decidable.",
+    "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction."
+  },
+  "actual": [
+    {
+      "available_source_types": [
+        "filing",
+        "market_data"
+      ],
+      "accepted": true
+    },
+    {
+      "available_source_types": [
+        "sec_filing",
+        "prices"
+      ],
+      "accepted": false,
+      "issues": [
+        {
+          "code": "plan_source_type_unsupported",
+          "paths": [
+            "B.requests[0].source_types[0]",
+            "B.requests[1].source_types[0]"
+          ]
+        }
+      ]
+    },
+    {
+      "available_source_types": [
+        "social_media"
+      ],
+      "accepted": false,
+      "issues": [
+        {
+          "code": "plan_source_type_unsupported",
+          "paths": [
+            "B.requests[0].source_types[0]",
+            "B.requests[1].source_types[0]"
+          ]
+        }
+      ]
+    }
+  ],
+  "code": {
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "f558bba32f17b5f61a82cb1da92430609f6a6bd5175f7eaa7e1cad46d8c2c046",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "9c8e3d9a5111489cd193bf19de55a611881e2395457041573b6095ef1f41f796"
+  }
+}

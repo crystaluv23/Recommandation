@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from stock_opportunity_agent.research.basic_info_orientation import compile_basic_info_requests, make_orientation_request
+
 import hashlib
 import html
 import json
@@ -3142,7 +3144,7 @@ def execute_information_plan(
     resolved_case_id = case_id or _default_case_id(company_id, prediction_time)
     _validate_id(resolved_case_id, "case_id")
     basic_info_bundle = signal_executor.resolver.resolve_basic_info(
-        plan.basic_info_policy.requests,
+        compile_basic_info_requests(plan.basic_info_policy),
         company_id=company_id,
         identity=company_basic_source,
         as_of=prediction_time,
@@ -6671,49 +6673,9 @@ def default_information_plan() -> InformationPlan:
         plan_id="plan_manual_v1",
         parent_ids=(),
         basic_info_policy=BasicInfoPolicy(
-            requests=(
-                RawInfoRequest(
-                    request_id="recent_annual_filing",
-                    description=(
-                        "Read the latest applicable annual or interim operating report "
-                        "available before the prediction time for the business model, "
-                        "risks, and segment economics."
-                    ),
-                    source_types=("filing",),
-                    lookback_days=730,
-                    max_documents=1,
-                ),
-                RawInfoRequest(
-                    request_id="recent_company_news",
-                    description=(
-                        "Retrieve recent company-specific news that may change market "
-                        "expectations, financing, customers, regulation, or products."
-                    ),
-                    source_types=("news",),
-                    lookback_days=180,
-                    max_documents=5,
-                ),
-                RawInfoRequest(
-                    request_id="reported_financial_facts",
-                    description=(
-                        "Inspect reported financial facts available at the prediction "
-                        "time for growth, margins, cash, and capital structure."
-                    ),
-                    source_types=("sec_company_facts",),
-                    lookback_days=730,
-                    max_documents=2,
-                ),
-                RawInfoRequest(
-                    request_id="recent_market_backbone",
-                    description=(
-                        "Inspect the latest 45 days of point-in-time price and volume "
-                        "for early market confirmation or contradiction."
-                    ),
-                    source_types=("market_data",),
-                    lookback_days=45,
-                    max_documents=1,
-                ),
-            )
+            requests=tuple(make_orientation_request(action) for action in (
+                "operating_report", "scoped_news", "financial_facts", "market_backbone",
+            ))
         ),
         initial_research_skill=(
             "Form an initial commercialization and expectation-gap hypothesis from "

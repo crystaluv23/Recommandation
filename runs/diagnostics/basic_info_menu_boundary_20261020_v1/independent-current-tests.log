@@ -1,0 +1,26 @@
+{
+  "head": "760d7c41c3d7e1e020b846cc363763b98a19984c",
+  "working_tree_file_sha256": {
+    "tests/test_basic_info_menu_boundaries.py": "33ffc3601d522f1103177f9a80fb45b4384ec98dd31afb83cc4039bc980ae2f4",
+    "src/stock_opportunity_agent/data/filing_orientation.py": "f770e0c0f15b046c564c54a736dfac24b73e6fe7bb9c24454801b2789d1cad68",
+    "src/stock_opportunity_agent/data/resolution.py": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5",
+    "src/stock_opportunity_agent/research/basic_info_orientation.py": "3df0eca1bf22fdaa61280e226b97e58d73f5296382f75b4102bbb205825e92ba",
+    "src/stock_opportunity_agent/research/evolution_core.py": "fcc8f724e781bcbff0676c7dd9dc6f819a4d5fe19cd95521da852ee7b28953ed",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "f558bba32f17b5f61a82cb1da92430609f6a6bd5175f7eaa7e1cad46d8c2c046",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "9c8e3d9a5111489cd193bf19de55a611881e2395457041573b6095ef1f41f796"
+  },
+  "returncode": 0,
+  "source_unchanged_during_test": true,
+  "actual_old_archive": "runs/diagnostics/reviewed_fast_prefix_20261019_v2/inputs.json",
+  "archive_sha256": "e54ccc9cb1ddbe631c7ad33fd4e15373841c1611d2d4853e15b3600dd59f1f7a",
+  "actual_old_plan_roundtrip_equal": true,
+  "actual_old_archive_unchanged": true,
+  "external_llm_calls": 0,
+  "data_requests": 0
+}
+
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 0.007s
+
+OK

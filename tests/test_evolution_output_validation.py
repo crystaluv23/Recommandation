@@ -3745,20 +3745,9 @@ class OwnershipScopeLocalNegationTests(TestCase):
                 analysis_prompt="Weigh supporting and counter evidence.",
             )
 
-        base = {
-            "request_id": "scoped_news",
-            "description": "Recent company news.",
-            "source_types": ["news"],
-            "lookback_days": 180,
-            "max_documents": 5,
-        }
-        market = {
-            "request_id": "recent_market_backbone",
-            "description": "Point-in-time price and volume.",
-            "source_types": ["market_data"],
-            "lookback_days": 45,
-            "max_documents": 1,
-        }
+        from stock_opportunity_agent.research.basic_info_orientation import make_orientation_request
+        base = make_orientation_request("scoped_news").to_dict()
+        market = make_orientation_request("market_backbone").to_dict()
         # The menu-compliant composition passes.
         _validate_plan_for_proposer_context(
             plan_with([base, market]), available_source_types=("news", "market_data")
@@ -3771,7 +3760,7 @@ class OwnershipScopeLocalNegationTests(TestCase):
                 available_source_types=("news", "market_data"),
             )
         codes = [issue.code for issue in caught.exception.issues]
-        self.assertIn("basic_info_query_not_expressible", codes)
+        self.assertIn("basic_info_action_parameter_invalid", codes)
         self.assertEqual(
             caught.exception.issues[0].paths, ("B.requests[0].query",)
         )
@@ -3783,28 +3772,9 @@ class OwnershipScopeLocalNegationTests(TestCase):
                 available_source_types=("social_media", "market_data"),
             )
         codes = [issue.code for issue in caught.exception.issues]
-        self.assertIn("basic_info_family_outside_menu", codes)
-        # Mixed families obey the strictest matched lookback bound.
-        mixed = {
-            "request_id": "bridge",
-            "description": "Bridge view.",
-            "source_types": ["earnings_call", "filing", "financials"],
-            "lookback_days": 365,
-            "max_documents": 3,
-        }
-        _validate_plan_for_proposer_context(
-            plan_with([mixed, market]),
-            available_source_types=(
-                "earnings_call", "filing", "financials", "market_data",
-            ),
-        )
-        overreached = dict(mixed, lookback_days=730)
-        with self.assertRaises(StructuredValidationError) as caught:
-            _validate_plan_for_proposer_context(
-                plan_with([overreached, market]),
-                available_source_types=(
-                    "earnings_call", "filing", "financials", "market_data",
-                ),
-            )
-        codes = [issue.code for issue in caught.exception.issues]
-        self.assertIn("basic_info_lookback_out_of_bounds", codes)
+        self.assertIn("basic_info_action_parameter_invalid", codes)
+        # Mixed routing is not a semantic action in the closed menu.
+        mixed = dict(base, source_types=["earnings_call", "filing", "financials"])
+        with self.assertRaises(StructuredValidationError):
+            _validate_plan_for_proposer_context(plan_with([mixed, market]),
+                available_source_types=("earnings_call", "filing", "financials", "market_data"))

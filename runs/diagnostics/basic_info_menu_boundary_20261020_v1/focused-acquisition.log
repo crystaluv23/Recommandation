@@ -1,0 +1,13 @@
+======================================================================
+ERROR: test_operating_menu_acquisition_append_and_cached_pool_agree (tests.test_data_resolution.EvidenceResolverTests.test_operating_menu_acquisition_append_and_cached_pool_agree)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 861, in test_operating_menu_acquisition_append_and_cached_pool_agree
+    self.assertEqual([row.metadata["form"] for row in fresh.documents], ["10-K", "10-Q"])
+                      ^^^^^^^^^^^^
+AttributeError: 'RawInfoDocumentRef' object has no attribute 'metadata'
+
+----------------------------------------------------------------------
+Ran 49 tests in 0.038s
+
+FAILED (errors=1)

@@ -847,7 +847,7 @@ class PlanEvolutionEngineTests(TestCase):
                     request
                     for request in base.basic_info_policy.requests
                     if request.request_id
-                    in {"recent_company_news", "recent_market_backbone"}
+                    in {"orientation.v1.scoped_news", "orientation.v1.market_backbone"}
                 )
             ),
         )
@@ -881,7 +881,7 @@ class PlanEvolutionEngineTests(TestCase):
         }
         self.assertEqual(
             removed_ids,
-            {"recent_annual_filing", "reported_financial_facts"},
+            {"orientation.v1.operating_report", "orientation.v1.financial_facts"},
         )
 
         cross_snapshot = build_parent_plan_comparison(

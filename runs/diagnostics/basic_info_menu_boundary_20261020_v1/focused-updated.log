@@ -1,0 +1,13 @@
+======================================================================
+ERROR: test_operating_menu_acquisition_append_and_cached_pool_agree (tests.test_data_resolution.EvidenceResolverTests.test_operating_menu_acquisition_append_and_cached_pool_agree)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 862, in test_operating_menu_acquisition_append_and_cached_pool_agree
+    self.assertIsNone(fresh.data_gap)
+                      ^^^^^^^^^^^^^^
+AttributeError: 'RawInfoResolution' object has no attribute 'data_gap'
+
+----------------------------------------------------------------------
+Ran 219 tests in 5.346s
+
+FAILED (errors=1)

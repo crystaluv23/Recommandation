@@ -2,6 +2,8 @@
 """Freeze and resume the native blind prefix, stopping before any outcome read."""
 from __future__ import annotations
 
+from stock_opportunity_agent.research.basic_info_orientation import compile_basic_info_requests
+
 import argparse
 from dataclasses import asdict
 from datetime import datetime
@@ -51,7 +53,7 @@ def _code_bindings():
 
 def _bootstrap(store, sample):
     bundle = EvidenceResolver(store.snapshot()).resolve_basic_info(
-        InformationPlan.from_dict(sample['plan']).basic_info_policy.requests,
+        compile_basic_info_requests(InformationPlan.from_dict(sample['plan']).basic_info_policy),
         company_id=sample['company_id'],identity=sample['identity'],as_of=datetime.fromisoformat(sample['prediction_time']))
     model,lineage=project_basic_info_bundle(bundle)
     return {'bundle':bundle.to_dict(),'model_context':model,'lineage':lineage}

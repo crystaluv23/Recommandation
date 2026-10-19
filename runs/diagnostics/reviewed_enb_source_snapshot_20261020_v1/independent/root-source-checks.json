@@ -1,0 +1,38 @@
+{
+  "review_sha256": "f2561de8ed23a52aa853f8a6cc0d6f222a755dd335ef12006c34a59c07e9642b",
+  "snapshot_manifest_sha256": "62b55f393a0debdba1a310bbb13a95d1fc440469d70a138a61b84eeecb45722c",
+  "admitted_exact_count": 3,
+  "records": [
+    {
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "form": "10-K",
+      "accepted_at": "2025-02-14T12:10:59+00:00",
+      "exact_original_body": true,
+      "submissions_unique_match": true,
+      "literal_witness": "Liquids Pipelines consists of pipelines and terminals in Canada and the US that transport and export various grades of crude oil and other liquid hydrocarbons, which delivers approximately six million barrels per day (mm",
+      "normalized_offset": 49156
+    },
+    {
+      "document_id": "sec:cik_0000895728:000095017025101102",
+      "form": "10-Q",
+      "accepted_at": "2025-08-01T11:02:37+00:00",
+      "exact_original_body": true,
+      "submissions_unique_match": true,
+      "literal_witness": "Canadian dollars, all references to \"dollars\" or \"$\" are to Canadian dollars and all references to \"US$\" are to United States (US) dollars. All amounts are provided on a before-tax basis, unless otherwise stated. &#160; ",
+      "normalized_offset": 5773
+    },
+    {
+      "document_id": "sec:cik_0000895728:000110465925061164",
+      "form": "8-K",
+      "accepted_at": "2025-06-20T20:13:35+00:00",
+      "exact_original_body": true,
+      "submissions_unique_match": true,
+      "literal_witness": "4.600% Senior Notes due 2028 (the &#8220;2028 Notes&#8221;), US$600,000,000 aggregate principal amount of its 4.900% Senior Notes due 2030 (the &#8220;2030 Notes&#8221;), US$900,000,000 aggregate principal amount of its ",
+      "normalized_offset": 2426
+    }
+  ],
+  "checks_passed": true,
+  "new_network_calls": 0,
+  "new_model_responses": 0,
+  "scope": "Retained source identity/body/availability and exact loader only; not new model compliance or global readiness."
+}

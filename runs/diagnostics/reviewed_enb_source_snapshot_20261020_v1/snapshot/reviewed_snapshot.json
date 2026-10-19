@@ -1,0 +1,34 @@
+{
+  "documents": [
+    {
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "path": "documents/0000.json",
+      "sha256": "88632704b4b0cd6f1079621beecfb8b5ca4e7ba2af15a49f70a4a1f33ae7f76a"
+    },
+    {
+      "document_id": "sec:cik_0000895728:000095017025101102",
+      "path": "documents/0001.json",
+      "sha256": "9c172d0e48f52a23c333992b8bb14024b9a747e7029b22e6aa7ee4003dde6745"
+    },
+    {
+      "document_id": "sec:cik_0000895728:000110465925061164",
+      "path": "documents/0002.json",
+      "sha256": "4033bdec191af7d9ca8d8ae11c432eafd3d97a742a9a90218e5e802839124805"
+    }
+  ],
+  "oracle_sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855",
+  "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/snapshot",
+  "schema_version": "materialized-reviewed-raw-info-v1",
+  "scope": {
+    "acquisition_allowed": false,
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "company_ids": [
+      "cik_0000895728"
+    ],
+    "purpose": "Three fixed ENB SEC originals for later cross-issuer business/units acceptance; source admission only, no model/price/anchor qualification."
+  },
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/enb-reviewed-source-inputs-20261020.json",
+    "sha256": "f2561de8ed23a52aa853f8a6cc0d6f222a755dd335ef12006c34a59c07e9642b"
+  }
+}

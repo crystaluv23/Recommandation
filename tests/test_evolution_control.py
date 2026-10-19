@@ -29,6 +29,17 @@ from stock_opportunity_agent.signal_library import SignalLearningEvent
 
 
 class RunControlTests(TestCase):
+    def test_explicit_menu_version_mismatch_is_not_rewritten_by_builder(self) -> None:
+        from stock_opportunity_agent.research.evolution_control import build_run_contract
+        for version in (None, "old-menu", 1):
+            with self.subTest(version=version), self.assertRaisesRegex(ValidationError, "orientation menu version"):
+                build_run_contract(run_id="version", dataset_manifest_path="not-read.json",
+                    inventory=None, raw_info_oracle=None, raw_info_inventory_hash="x",
+                    initial_signal_registry_version=1, initial_signal_registry_hash="x",
+                    priors={}, role_aliases={}, project_root=".",
+                    limits={"basic_info_orientation_menu_version": version},
+                    max_external_attempts=1, max_total_cost=1)
+
     def test_frozen_cost_representation_survives_restart(self) -> None:
         for cost in (100, 100.0, 100.25):
             with self.subTest(cost=repr(cost)), tempfile.TemporaryDirectory() as directory:

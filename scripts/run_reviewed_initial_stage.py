@@ -2,6 +2,8 @@
 """Freeze/resume actual reviewed Basic Info projection and independent H_init."""
 from __future__ import annotations
 
+from stock_opportunity_agent.research.basic_info_orientation import compile_basic_info_requests
+
 import argparse
 from dataclasses import asdict
 from datetime import datetime
@@ -31,7 +33,7 @@ def _samples():
 
 def _bootstrap(resolver, sample):
     plan = InformationPlan.from_dict(sample["plan"])
-    bundle = resolver.resolve_basic_info(plan.basic_info_policy.requests,
+    bundle = resolver.resolve_basic_info(compile_basic_info_requests(plan.basic_info_policy),
         company_id=sample["company_id"], identity=sample["identity"],
         as_of=datetime.fromisoformat(sample["prediction_time"]))
     model, lineage = project_basic_info_bundle(bundle)

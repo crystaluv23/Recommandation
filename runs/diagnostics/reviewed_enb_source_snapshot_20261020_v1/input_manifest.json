@@ -1,0 +1,25 @@
+{
+  "schema_version": "narrow-reviewed-source-stage-inputs-v1",
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/enb-reviewed-source-inputs-20261020.json",
+    "sha256": "f2561de8ed23a52aa853f8a6cc0d6f222a755dd335ef12006c34a59c07e9642b"
+  },
+  "reviewed_source_snapshot": {
+    "store_type": "reviewed",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/snapshot",
+    "manifest_sha256": "62b55f393a0debdba1a310bbb13a95d1fc440469d70a138a61b84eeecb45722c"
+  },
+  "fixed_source_denominator": 3,
+  "scope": {
+    "company_ids": [
+      "cik_0000895728"
+    ],
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "purpose": "Three fixed ENB SEC originals for later cross-issuer business/units acceptance; source admission only, no model/price/anchor qualification.",
+    "acquisition_allowed": false
+  },
+  "full_approved_dataset_freeze": false,
+  "model_calls_authorized": false,
+  "external_api_calls": 0,
+  "original_oracle_writes": 0
+}

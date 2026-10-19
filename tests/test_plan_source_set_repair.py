@@ -23,22 +23,22 @@ class PlanSourceSetRepairTests(TestCase):
 
     def test_initial_duplicates_preserve_membership_and_original(self):
         output = self.output()
-        output["B"]["requests"][1]["source_types"] = ["filing", "filing_body", "filing", "sec_filing"]
+        output["B"]["requests"][1]["source_types"] = ["news", "news"]
         original = deepcopy(output)
         plan, caller = self.propose([output])
-        self.assertEqual(plan.basic_info_policy.requests[1].source_types, ("filing", "filing_body", "sec_filing"))
+        self.assertEqual(plan.basic_info_policy.requests[1].source_types, ("news",))
         self.assertEqual(output, original)
         self.assertEqual(len(caller.calls), 1)
         self.assertEqual(plan.initial_research_skill, output["H_init"])
 
     def test_duplicates_introduced_by_scoped_correction_are_repaired(self):
         invalid = self.output()
-        invalid["B"]["requests"][1]["source_types"] = ["filing", "10-k", "20-f", "10-q"]
+        invalid["B"]["requests"][1]["source_types"] = ["filing", "10-k"]
         corrected = deepcopy(invalid)
-        corrected["B"]["requests"][1]["source_types"] = ["filing", "filing_body", "sec_filing", "filing"]
+        corrected["B"]["requests"][1]["source_types"] = ["news", "news"]
         plan, caller = self.propose([invalid, corrected])
         self.assertEqual(len(caller.calls), 2)
-        self.assertEqual(plan.basic_info_policy.requests[1].source_types, ("filing", "filing_body", "sec_filing"))
+        self.assertEqual(plan.basic_info_policy.requests[1].source_types, ("news",))
         self.assertEqual(plan.basic_info_policy.requests[0].to_dict(), invalid["B"]["requests"][0])
         self.assertEqual(plan.reflection_skill, invalid["H_reflect"])
 

@@ -2,6 +2,8 @@
 """Freeze a five-original market view and consume its real UTC runtime baseline."""
 from __future__ import annotations
 
+from stock_opportunity_agent.research.basic_info_orientation import compile_basic_info_requests
+
 import argparse
 from datetime import datetime, timedelta
 import json
@@ -49,7 +51,7 @@ def diagnose(review_path: Path, output: Path):
         raise ReviewedSourceRejected('this diagnostic expects exactly one scoped original market record')
     market = markets[0]
     identity = {'ticker':market.metadata['symbol']}
-    bundle = resolver.resolve_basic_info(default_information_plan().basic_info_policy.requests,
+    bundle = resolver.resolve_basic_info(compile_basic_info_requests(default_information_plan().basic_info_policy),
         company_id=market.company_id, identity=identity, as_of=cutoff)
     model, lineage = project_basic_info_bundle(bundle)
     market_docs = tuple(d for result in bundle.requests if 'market_data' in result.request.source_types
@@ -95,7 +97,7 @@ def diagnose(review_path: Path, output: Path):
         'worker_preserves_review_type':type(worker) is type(store),
         'old_sec_view_unchanged':old_files==[_binding(p) for p in sorted(old_root.rglob('*.json'))],
         'old_sec_view_only_filings':len(old_store.documents)==2 and all(d.source_type=='filing' for d in old_store.documents),
-        'default_market_request_resolved':any(r.request.request_id=='recent_market_backbone' and r.status=='resolved' for r in bundle.requests),
+        'default_market_request_resolved':any(r.request.request_id=='orientation.v1.market_backbone' and r.status=='resolved' for r in bundle.requests),
         'runtime_baseline':baseline,'runtime_baseline_source_ids':[d.document_id for d in market_docs],
         'actual_market_bar_count':len(json.loads(market.content)),
         'basic_info_market_visibility':[{'request_id':r.request.request_id,

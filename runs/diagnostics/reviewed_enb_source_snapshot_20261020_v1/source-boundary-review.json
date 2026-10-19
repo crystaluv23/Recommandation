@@ -1,0 +1,48 @@
+{
+  "status": "three_fixed_SEC_source_admission_and_store_consumption_passed",
+  "scope": "New isolated ENB SEC-only reviewed view, not model semantic acceptance or a full default InformationPlan.",
+  "fixed_source_denominator": 3,
+  "materialization": "Existing materialize_reviewed_snapshot production entry verifies original records, static SEC bodies and unique submissions acceptance proofs before writing only the new isolated view.",
+  "actual_checks": {
+    "new_process_loader_restart_exact3": true,
+    "reviewed_worker_type_and_explicit_binding": true,
+    "acquisition_allowed": false,
+    "resolver_and_serialized_resolution_reload_exact3": true,
+    "PIT_one_second_before_rejected_and_exact_instant_available": true,
+    "append_exact_idempotent_false_parent_and_worker": true,
+    "originals_and_proofs_before_after_identical": true,
+    "current_data_helper_bindings_equal_executed27": true
+  },
+  "input_manifest_hash": "ad159533ee833a52dbc1ef8ae832743b5b7a76a9326993d4a11308910ffc5081",
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/enb-reviewed-source-inputs-20261020.json",
+    "sha256": "f2561de8ed23a52aa853f8a6cc0d6f222a755dd335ef12006c34a59c07e9642b"
+  },
+  "reviewed_source_snapshot": {
+    "store_type": "reviewed",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/snapshot",
+    "manifest_sha256": "62b55f393a0debdba1a310bbb13a95d1fc440469d70a138a61b84eeecb45722c"
+  },
+  "result_sha256": "4b22bb368b957b65539de4125def3ae0f95c385fadc6054827c0a49e2ce950dc",
+  "root_independent_source_checks": {
+    "script": "runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/independent/root-source-checks.py",
+    "result": "runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/independent/root-source-checks.json",
+    "reviewer_did_not_modify_root_owned_files": true
+  },
+  "limits": [
+    "No foreign-form20-F/40-F/6-K claim: ENB elects domestic forms.",
+    "CAD annual/interim units and explicitUSD notes remain original; consumers still require exact-unit interpretation.",
+    "No qualified ENB market baseline/CompanyFacts JSON, full defaultprefix or deterministic secfacts Signal claim.",
+    "Actual future orientation projection visibility remains a separate frozen stage."
+  ],
+  "extra_scope_limits": [
+    "Source-text normalization offsets are method-specific. Earlier48470 used evolution_core._normalized_projection_text; do not compare directly to data.resolution._normalized_visible_text join offsets. Actual business statement final projection visibility remains unproved here.",
+    "No defaultBasicInfo, H_init, Signal/Predictor, label, full48 or anchor run. Unknown/missing market/news/CompanyFacts sources are not repaired or company-negative evidence.",
+    "Initial diagnostic guard imported ssl after replacing socket.socket and failed before consumer execution; original script/error preserved. Only diagnostic import ordering was fixed; production was unchanged."
+  ],
+  "network_attempts": 0,
+  "model_calls": 0,
+  "new_anchors": 0,
+  "original_oracle_writes": 0,
+  "self_evaluation_not_independent_model_gain": true
+}

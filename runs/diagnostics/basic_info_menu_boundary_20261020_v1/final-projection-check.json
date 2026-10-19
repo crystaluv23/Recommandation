@@ -1,0 +1,78 @@
+{
+  "scope": "Current final code deterministic default compiler/store/resolver/projection equals provisional actual business-visible artifact exactly; no role behavior claim",
+  "provisional_artifact": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/basic_info_menu_boundary_20261020_v1/root-provisional-enb-bootstrap.json",
+    "sha256": "6fa307eaf7f327f22f61b6f2587526abacfdc057193ed776f51a36dc441d39aa"
+  },
+  "reviewed_source_manifest_sha256": "62b55f393a0debdba1a310bbb13a95d1fc440469d70a138a61b84eeecb45722c",
+  "code_bindings": {
+    "src/stock_opportunity_agent/data/resolution.py": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5",
+    "src/stock_opportunity_agent/data/acquisition.py": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe",
+    "src/stock_opportunity_agent/data/filing_orientation.py": "f770e0c0f15b046c564c54a736dfac24b73e6fe7bb9c24454801b2789d1cad68",
+    "src/stock_opportunity_agent/research/evolution_core.py": "fcc8f724e781bcbff0676c7dd9dc6f819a4d5fe19cd95521da852ee7b28953ed",
+    "src/stock_opportunity_agent/research/basic_info_orientation.py": "bca6ffa3e4bc88bbfedcf2a787220cf47b6a9cc8556c92225aa23360e68c4b23",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "648622454df59607ab1e25eb0d398f7d5fcb88e7a6c13d90af8af21c7a03e96e",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "cdddd2494595480aadbd5f17b776be4d40d1c03f9388b32b6613264259177cce"
+  },
+  "bundle_hash": "cea6cc0fe18a2e20ecf1173ffc4c15600173df49e2cd8d74ecb8b3be05ce3b93",
+  "model_context_hash": "c617917fcbc3b690d844decd5c9f06c293265d9e1d95349ef4f83dd32b857559",
+  "lineage_hash": "14a64e47deec63cbb6a8dfb16c5530310a9dc47d6a7b24c4dcc9a4e7e9d46e05",
+  "all_three_objects_exactly_equal": true,
+  "actual_summary": [
+    {
+      "id": "orientation.v1.operating_report",
+      "status": "resolved",
+      "projection_status": "partial_context_budget",
+      "visible": 17,
+      "available": 24,
+      "documents": [
+        "sec:cik_0000895728:000089572825000006",
+        "sec:cik_0000895728:000095017025101102"
+      ],
+      "business_witnesses": [
+        ",890 259 24,044 Total revenue from contracts with customers 12,132 5,780 6,028 259 24,199 Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated Year ended December 31, 2022 (millions of Canadian dollars) Revenue from products transferred at a point in time \u2014 \u2014 127 \u2014 127 Revenue from products and ser",
+        "contracts with customers 12,132 5,780 6,028 259 24,199 Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated Year ended December 31, 2022 (millions of Canadian dollars) Revenue from products transferred at a point in time \u2014 \u2014 127 \u2014 127 Revenue from products and services transferred over time 1 11,51",
+        "s transferred over time 1 12,132 5,763 5,890 259 24,044 Total revenue from contracts with customers 12,132 5,780 6,028 259 24,199 Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated Year ended December 31, 2022 (millions of Canadian dollars) Revenue from products transferred at a point in time \u2014 \u2014",
+        " from contracts with customers 6,143 3,216 5,879 94 15,332 Six months ended June 30, 2024 Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated (millions of Canadian dollars) Revenues from products transferred at a point in time \u2014 78 62 \u2014 140 Revenues from products and services transferred over time",
+        "3 3,216 5,879 94 15,332 Six months ended June 30, 2024 Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated (millions of Canadian dollars) Revenues from products transferred at a point in time \u2014 78 62 \u2014 140 Revenues from products and services transferred over time 1 6,137 2,904 3,423 101 12,565 Tot",
+        "ces transferred over time 1 6,143 3,164 5,812 94 15,213 Total revenue from contracts with customers 6,143 3,216 5,879 94 15,332 Six months ended June 30, 2024 Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated (millions of Canadian dollars) Revenues from products transferred at a point in time \u2014 ",
+        "from contracts with customers 2,970 1,539 1,962 52 6,523 Three months ended June 30, 2024 Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated (millions of Canadian dollars) Revenues from products transferred at a point in time \u2014 38 33 \u2014 71 Revenues from products and services transferred over time ",
+        "Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated (millions of Canadian dollars) Revenues from products transferred at a point in time \u2014 28 31 \u2014 59 Revenues from products and services transferred over time 1 2,970 1,511 1,931 52 6,464 Total ",
+        "ices transferred over time 1 2,970 1,511 1,931 52 6,464 Total revenue from contracts with customers 2,970 1,539 1,962 52 6,523 Three months ended June 30, 2024 Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated (millions of Canadian dollars) Revenues from products transferred at a point in time \u2014",
+        "as of July 1, 2021 through to the end of 2028. 129 Recognition and Measurement of Revenue Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated Year ended December 31, 2024 (millions of Canadian dollars) Revenue from products transferred at a point in time \u2014 158 137 \u2014 295 Revenue from products and s",
+        "nd of 2028. 129 Recognition and Measurement of Revenue Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated Year ended December 31, 2024 (millions of Canadian dollars) Revenue from products transferred at a point in time \u2014 158 137 \u2014 295 Revenue from products and services transferred over time 1 12,",
+        "s transferred over time 1 12,213 5,852 7,390 189 25,644 Total revenue from contracts with customers 12,213 6,010 7,527 189 25,939 Liquids Pipelines Gas Transmission Gas Distribution and Storage Renewable Power Generation Consolidated Year ended December 31, 2023 (millions of Canadian dollars) Revenue from products transferred at a point in time \u2014 1"
+      ]
+    },
+    {
+      "id": "orientation.v1.scoped_news",
+      "status": "unresolved",
+      "projection_status": "unavailable",
+      "visible": 0,
+      "available": 0,
+      "documents": [],
+      "business_witnesses": []
+    },
+    {
+      "id": "orientation.v1.financial_facts",
+      "status": "unresolved",
+      "projection_status": "unavailable",
+      "visible": 0,
+      "available": 0,
+      "documents": [],
+      "business_witnesses": []
+    },
+    {
+      "id": "orientation.v1.market_backbone",
+      "status": "unresolved",
+      "projection_status": "unavailable",
+      "visible": 0,
+      "available": 0,
+      "documents": [],
+      "business_witnesses": []
+    }
+  ],
+  "new_model_responses": 0,
+  "readonly_data_requests": 0,
+  "external_llm_calls": 0
+}

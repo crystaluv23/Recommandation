@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from stock_opportunity_agent.data.filing_orientation import operating_order, OPERATING_REQUEST_ID
+
 import hashlib
 import json
 from dataclasses import asdict
@@ -203,6 +205,9 @@ class SecFilingAdapter:
             ]
             if core_filings:
                 eligible = core_filings
+        if request.request_id == OPERATING_REQUEST_ID:
+            eligible = operating_order(eligible, lambda item: item.form.strip().upper(),
+                lambda item: item.accepted_at or _midnight(item.filing_date))
         documents: list[RawInfoDocument] = []
         source_type = _first_supported(request.source_types, self.source_types)
         failures: list[str] = []

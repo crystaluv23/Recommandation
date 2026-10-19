@@ -1,0 +1,21 @@
+{
+  "scope": "After1835fullPASS only production prompt strings reconciled with unchanged validators;330relatedprompttestsPASS",
+  "files": [
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "tested_before_prompt_sha256": "cdddd2494595480aadbd5f17b776be4d40d1c03f9388b32b6613264259177cce",
+      "current_sha256": "d2b39ac61e0c53924ad4d19fc9d2a11ed2463315b0c8317bae9633097e823ef7",
+      "reconstructed_prior_matches_actual_full_code_binding": true,
+      "AST_equal_except_string_constants": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "tested_before_prompt_sha256": "648622454df59607ab1e25eb0d398f7d5fcb88e7a6c13d90af8af21c7a03e96e",
+      "current_sha256": "ae81af2964e896273bd6828da61b8acc9f0bb816e7bfd9cc7e2c341cbb4c03d3",
+      "reconstructed_prior_matches_actual_full_code_binding": true,
+      "AST_equal_except_string_constants": true
+    }
+  ],
+  "full_log_sha256": "5cf53895f87ae065eb57718141c2ac411ccd2d02a43f25d022cb5518c032028c",
+  "focused_log_sha256": "b9473d92960b4c0d0b20b6a0f114835d77ec5b7fda41f923a8ba43207bbce16e"
+}

@@ -1,0 +1,15 @@
+======================================================================
+ERROR: test_data_acquisition (unittest.loader._FailedTest.test_data_acquisition)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_data_acquisition
+Traceback (most recent call last):
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'tests.test_data_acquisition'
+
+
+----------------------------------------------------------------------
+Ran 63 tests in 0.036s
+
+FAILED (errors=1)

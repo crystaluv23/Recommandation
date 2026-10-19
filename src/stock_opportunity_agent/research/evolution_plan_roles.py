@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from stock_opportunity_agent.research.basic_info_orientation import orientation_menu, validate_raw_orientation_policy
+
 import contextlib
 import json
 import re
@@ -2850,6 +2852,7 @@ class LLMInformationPlanProposer:
         _validate_additive_meta_payload(meta_payload)
         payload: dict[str, Any] = {
             "fixed_prior": prior,
+            "basic_info_orientation_menu": orientation_menu(self.available_source_types),
             "parents": [item.to_dict() for item in parents],
             "meta_info": meta_payload,
             # Snapshot discipline: pin the exact experience-tree view this
@@ -2890,16 +2893,12 @@ class LLMInformationPlanProposer:
             "object containing B, H_init, H_reflect, H_analyse, and "
             "used_experience_refs as members of that same object. B is an analyst-style source "
             "retrieval plan, not a fixed company profile or computed Signal. "
-            "Basic Info is a constrained orientation stage: compose B.requests "
-            "from the closed source-type families — market backbone "
-            "(market_data, lookback <= 120, 1-2 documents), operating report "
-            "(filing, <= 730, 1-5), management commentary (earnings_call/"
-            "earnings_transcript, <= 365, 1-3), scoped news (news/company_news, "
-            "<= 365, 1-5), and financial facts (financials/sec_company_facts, "
-            "<= 730, 1-3). Requests may combine families under the strictest "
-            "matched bounds. A free-text query field is not expressible and "
-            "will be rejected; deep retrieval happens in the research loop's "
-            "document channel and Signal execution, not at bootstrap. "
+            "Basic Info composes only the exact versioned action requests in "
+            "basic_info_orientation_menu. Copy each selected request_id, description "
+            "and source_types verbatim; vary only published integer lookback/count "
+            "bounds. Do not author query or coverage fields. Internal fixed recipes "
+            "are compiler-owned, not Plan parameters. Select supported actions under "
+            "available_source_types rather than requiring every family. "
             "Meta-info is a bounded brief view of committed retrospective memory. "
             "Complete originals remain stored. A brief retains its applicability, "
             "limitations, source handles and validation status; legacy_unreviewed "
@@ -2952,18 +2951,18 @@ class LLMInformationPlanProposer:
             "proposal_context.proposal_constraints.required_change_focus through "
             "an actual content "
             "change while retaining the full four-field Plan contract."
-            " Every B request is executed under the target company_id. Do not ask "
-            "for general competitor, peer, or rival actions as though B searches "
-            "other issuers; competitive requests must explicitly ask for the target "
-            "issuer's own disclosures or target-company-scoped news mentioning "
-            "competition. company_news/news may contain third-party reporting, so "
-            "never describe those source types as the issuer's own disclosure."
-            " Use generic filing for cross-issuer business, risk, annual, or interim "
-            "report research unless one exact SEC form is itself required. Do not "
-            "assume every U.S.-listed issuer files 10-K or 10-Q; foreign issuers may "
-            "use 20-F, 40-F, or 6-K, and exact-form requests are never substituted."
-            " Every B.source_types item must exactly equal a supplied "
-            "available_source_types value. H_analyse may organize and weight evidence "
+            " Every B request is executed under the target company_id only. "
+            "The menu owns fixed descriptions and source routing. Deeper competitive "
+            "or exact-form questions belong in H skills and the research loop; "
+            "do not author B descriptions or source edits for those questions. "
+            "Unsupported form coverage remains a gap. "
+            "company_news/news may contain third-party reporting, so never call "
+            "those source types the issuer's own disclosure. Do not assume every "
+            "U.S.-listed issuer files 10-K or 10-Q; foreign issuers may use 20-F, 40-F, or 6-K. "
+            " Choose only available_action_ids from the orientation menu, whose fixed "
+            "source routes are compatible with available_source_types aliases. "
+            "Keep template source_types verbatim; inventory aliases are not Plan edits. "
+            "H_analyse may organize and weight evidence "
             "only; it must not compute a probability, classify the final Signal, "
             "change the horizon/label/four-way judgment, or generate a prediction."
             + _UNTRUSTED_DATA_INSTRUCTION
@@ -3188,6 +3187,7 @@ class LLMInformationPlanProposer:
                                 "Missing metadata is unknown, not an empty adoption list; "
                                 "preserve B and every H_* field"),
                         ))
+                    validate_raw_orientation_policy(normalized.get("B", normalized.get("basic_info_policy", {})))
                     plan = _parse_role_output(
                         stage, normalized, InformationPlan.from_dict
                     )

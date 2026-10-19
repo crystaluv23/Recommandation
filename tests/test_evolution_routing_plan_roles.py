@@ -1,6 +1,7 @@
 """Signal routing, prediction, and Plan role-adapter tests."""
 
 from tests.evolution_runtime_test_support import *  # noqa: F403
+from stock_opportunity_agent.research.basic_info_orientation import make_orientation_request
 from stock_opportunity_agent.models import StructuredValidationError, ValidationIssue
 from stock_opportunity_agent.research.evolution_output_validation import (
     _routing_context_only_fallback,
@@ -3181,15 +3182,38 @@ class RoutingAndPlanRoleTests(TestCase):
             "round_reflection_skipped_single_complete_plan",
         )
 
+    def test_fixed_menu_admits_existing_source_alias_routes_and_discloses_actions(self):
+        from stock_opportunity_agent.research.evolution_core import BasicInfoPolicy
+        from stock_opportunity_agent.research.evolution_output_validation import _validate_plan_for_proposer_context
+        from stock_opportunity_agent.models import StructuredValidationError
+        from dataclasses import replace
+        parent = default_information_plan()
+        plan = replace(parent, basic_info_policy=BasicInfoPolicy(tuple(
+            make_orientation_request(action) for action in ("operating_report", "market_backbone"))))
+        output = {"B": plan.basic_info_policy.to_dict(), "H_init": plan.initial_research_skill,
+            "H_reflect": plan.reflection_skill, "H_analyse": plan.analysis_prompt,
+            "used_experience_refs": []}
+        caller = ScriptedRoleCaller([output])
+        accepted = LLMInformationPlanProposer(caller, available_source_types=("sec_filing", "prices")).propose(
+            round_id=1, candidate_index=1, candidate_count=1, proposal_attempt=1,
+            forbidden_plan_ids=(), parents=(), meta_info=(), prior="Fixed prior")
+        self.assertEqual(accepted.basic_info_policy.to_dict(), plan.basic_info_policy.to_dict())
+        menu = caller.calls[0]["payload"]["proposal_context"]["basic_info_orientation_menu"]
+        self.assertEqual(menu["available_action_ids"], ["orientation.v1.market_backbone", "orientation.v1.operating_report"])
+        prompt = caller.calls[0]["system_prompt"]
+        self.assertIn("positive-integer lookback_days", prompt)
+        self.assertIn("at most once per action", prompt)
+        self.assertNotIn("one to eight", prompt)
+        self.assertNotIn("competitive requests must explicitly", prompt)
+        self.assertNotIn("unless one exact SEC form", prompt)
+        self.assertIn("Unsupported form coverage remains a gap", prompt)
+        with self.assertRaises(StructuredValidationError) as caught:
+            _validate_plan_for_proposer_context(plan, available_source_types=("social_media",))
+        self.assertIn("plan_source_type_unsupported", [item.code for item in caught.exception.issues])
+
     def test_plan_proposer_accepts_canonical_fields_and_slots_children(self) -> None:
         policy = {
-            "requests": [{
-                "request_id": "recent_market_backbone",
-                "description": "Read recent point-in-time price and volume.",
-                "source_types": ["market_data"],
-                "lookback_days": 45,
-                "max_documents": 1,
-            }]
+            "requests": [make_orientation_request("market_backbone").to_dict()]
         }
         caller = ScriptedRoleCaller([
             {
@@ -3234,7 +3258,7 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertEqual(first.plan_id, "plan_r0001_c01")
         self.assertEqual(
             first.basic_info_policy.requests[-1].request_id,
-            "recent_market_backbone",
+            "orientation.v1.market_backbone",
         )
         self.assertEqual(first.parent_ids, ("plan_manual_v1",))
         self.assertEqual(caller.calls[0]["temperature"], 1.0)
@@ -3325,25 +3349,8 @@ class RoutingAndPlanRoleTests(TestCase):
             "used_experience_refs": [],
             "B": {
                 "requests": [
-                    {
-                        "request_id": "target_disclosures_filings",
-                        "description": (
-                            "Target company's own filing disclosures about "
-                            "operations and financing."
-                        ),
-                        "source_types": ["filing"],
-                        "lookback_days": 180,
-                        "max_documents": 5,
-                    },
-                    {
-                        "request_id": "recent_market_backbone",
-                        "description": (
-                            "Read recent point-in-time price and volume."
-                        ),
-                        "source_types": ["market_data"],
-                        "lookback_days": 45,
-                        "max_documents": 1,
-                    },
+                    make_orientation_request("operating_report").to_dict(),
+                    make_orientation_request("market_backbone").to_dict(),
                 ]
             },
             "H_init": parent.initial_research_skill,
@@ -3391,23 +3398,8 @@ class RoutingAndPlanRoleTests(TestCase):
             "used_experience_refs": [],
             "B": {
                 "requests": [
-                    {
-                        "request_id": "target_disclosures_news",
-                        "description": (
-                            "Target company's own disclosures about customers, "
-                            "financing, and product milestones."
-                        ),
-                        "source_types": ["company_news"],
-                        "lookback_days": 180,
-                        "max_documents": 5,
-                    },
-                    {
-                        "request_id": "recent_market_backbone",
-                        "description": "Read recent point-in-time price and volume.",
-                        "source_types": ["market_data"],
-                        "lookback_days": 45,
-                        "max_documents": 1,
-                    },
+                    dict(make_orientation_request("scoped_news").to_dict(), description="Target company's own disclosures about customers, financing, and product milestones."),
+                    make_orientation_request("market_backbone").to_dict(),
                 ]
             },
             "H_init": parent.initial_research_skill,
@@ -3415,10 +3407,7 @@ class RoutingAndPlanRoleTests(TestCase):
             "H_analyse": parent.analysis_prompt,
         }
         corrected = json.loads(json.dumps(invalid))
-        corrected["B"]["requests"][0]["description"] = (
-            "Target-company-scoped news about customers, financing, and product "
-            "milestones."
-        )
+        corrected["B"]["requests"][0]["description"] = make_orientation_request("scoped_news").description
         caller = ScriptedRoleCaller([invalid, corrected])
 
         plan = LLMInformationPlanProposer(caller).propose(
@@ -3453,20 +3442,8 @@ class RoutingAndPlanRoleTests(TestCase):
             "used_experience_refs": [],
             "B": {
                 "requests": [
-                    {
-                        "request_id": "target_news",
-                        "description": "Target-company-scoped milestone news.",
-                        "source_types": ["company_news"],
-                        "lookback_days": 180,
-                        "max_documents": 5,
-                    },
-                    {
-                        "request_id": "recent_market_backbone",
-                        "description": "Read recent point-in-time price and volume.",
-                        "source_types": ["market_data"],
-                        "lookback_days": 45,
-                        "max_documents": 1,
-                    },
+                    make_orientation_request("scoped_news").to_dict(),
+                    make_orientation_request("market_backbone").to_dict(),
                 ]
             },
             "H_init": (
@@ -3635,7 +3612,8 @@ class RoutingAndPlanRoleTests(TestCase):
                 "v10_proposer_semantics_and_focus.json"
             ).read_text(encoding="utf-8")
         )
-        unchanged = fixture["unchanged_focus_fields"]
+        unchanged = dict(fixture["unchanged_focus_fields"])
+        unchanged["B"] = default_information_plan().basic_info_policy.to_dict()
         parent = InformationPlan.from_dict(
             {
                 "plan_id": "historical_parent",
@@ -3683,13 +3661,7 @@ class RoutingAndPlanRoleTests(TestCase):
                     "used_experience_refs": [],
                     "B": {
                         "requests": [
-                            {
-                                "request_id": "recent_market_backbone",
-                                "description": "Read recent price and volume.",
-                                "source_types": ["market_data"],
-                                "lookback_days": 45,
-                                "max_documents": 1,
-                            }
+                            make_orientation_request("market_backbone").to_dict()
                         ]
                     },
                     "H_init": (
@@ -3843,13 +3815,7 @@ class RoutingAndPlanRoleTests(TestCase):
 
     def test_v145_proposer_pins_experience_snapshot_hash(self) -> None:
         policy = {
-            "requests": [{
-                "request_id": "recent_market_backbone",
-                "description": "Read recent point-in-time price and volume.",
-                "source_types": ["market_data"],
-                "lookback_days": 45,
-                "max_documents": 1,
-            }]
+            "requests": [make_orientation_request("market_backbone").to_dict()]
         }
         plan_output = {
             "used_experience_refs": [],

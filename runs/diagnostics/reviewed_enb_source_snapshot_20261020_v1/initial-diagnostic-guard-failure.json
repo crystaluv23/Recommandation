@@ -1,0 +1,7 @@
+{
+  "kind": "diagnostic_fixture_import_guard_error",
+  "error": "TypeError while ssl defines SSLSocket after socket.socket was replaced with a function",
+  "production_source_consumer_executed": false,
+  "original_script_sha256": "606564501064a7ecf450381b3a13fd6f02060779dbfb087ad0d4e2330341092e",
+  "fix": "Initialize ssl before installing socket guard; no production implementation changes."
+}

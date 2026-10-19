@@ -32,7 +32,7 @@ class ReviewedInitialStageTests(TestCase):
             self.assertEqual(len(first["pending"]), 2)
             self.assertEqual(first["independent_receipts"], 0)
             for pending, expected_status, expected_accn in zip(first["pending"],
-                    ("partial_context_budget", "complete"), ("000162828025038861", "000119312525146199")):
+                    ("partial_context_budget", "unavailable"), ("000162828025038861", "000119312525146199")):
                 inbox = json.loads(Path(pending["inbox_path"]).read_text())
                 self.assertEqual(pending["stage"], "research_controller_initialize")
                 wire = json.dumps(inbox["messages"])
@@ -44,15 +44,24 @@ class ReviewedInitialStageTests(TestCase):
                 rows = payload["basic_info"]["requests"]
                 self.assertEqual(rows[0]["projection_status"], expected_status)
                 if pending["sample_id"] == "s02":
-                    # Existing F2 fulfillment gap is preserved, not certified.
-                    self.assertEqual(rows[0]["status"], "resolved")
-                    self.assertIsNone(rows[0]["data_gap"])
+                    # Current 8-K remains visible evidence but cannot clear the
+                    # compiled annual-OR-interim operating-source requirement.
+                    self.assertEqual(rows[0]["status"], "unresolved")
+                    self.assertEqual(rows[0]["data_gap"]["reason"], "required_coverage_incomplete")
                     self.assertIn("FORM 8-K", wire)
                 for req in rows[1:]:
                     self.assertEqual(req["status"], "unresolved")
                     self.assertIsNotNone(req["data_gap"])
                 audit = json.loads((root / "samples" / pending["sample_id"] / "basic_info.json").read_text())
-                self.assertTrue(all(expected_accn in row["document_id"] for row in audit["projection_lineage"]["entries"]))
+                entries = audit["projection_lineage"]["entries"]
+                selected = {row["document_id"] for row in audit["bundle"]["requests"][0]["documents"]}
+                self.assertTrue(entries)
+                self.assertTrue(all(row["document_id"] in selected for row in entries))
+                self.assertTrue(any(expected_accn in row["document_id"] for row in entries))
+                if pending["sample_id"] == "s01":
+                    self.assertEqual(len(selected), 2)  # periodic report plus legal current filing
+                    self.assertEqual(rows[0]["status"], "resolved")
+                    self.assertIsNone(rows[0]["data_gap"])
             second = resume(root)
             self.assertEqual(first, second)
             self.assertEqual(len(list((root / "exchange/inbox").glob("*.json"))), 2)

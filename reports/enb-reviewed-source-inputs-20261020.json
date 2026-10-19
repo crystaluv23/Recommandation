@@ -1,0 +1,139 @@
+{
+  "schema_version": "reviewed-raw-info-snapshot-v1",
+  "status": "reviewed_local_static_sec_materials_for_new_isolated_view",
+  "scope": {
+    "company_ids": [
+      "cik_0000895728"
+    ],
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "purpose": "Three fixed ENB SEC originals for later cross-issuer business/units acceptance; source admission only, no model/price/anchor qualification.",
+    "acquisition_allowed": false
+  },
+  "oracle_identity": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/oracle.json",
+    "sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855"
+  },
+  "records": [
+    {
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "company_id": "cik_0000895728",
+      "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000089572825000006.json",
+        "sha256": "88632704b4b0cd6f1079621beecfb8b5ca4e7ba2af15a49f70a4a1f33ae7f76a"
+      },
+      "proof_profile": "sec_archive_acceptance_v1",
+      "verdict": "admitted",
+      "reason": "Static annual operating report for fiscal2024, including original business/segment context; default monetary unit CAD unless otherwise stated.",
+      "reviewed_available_at": "2025-02-14T12:10:59+00:00",
+      "proofs": [
+        {
+          "kind": "sec_static_archive_body",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/6e4b10692099e75192411496.json",
+            "sha256": "099407d7fbf3fd7d9f700f3968bfaaa3c5abf1a26956e1ee25ed445d94a7ef2a"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/895728/000089572825000006/enb-20241231.htm",
+          "expected_content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e"
+        },
+        {
+          "kind": "sec_submissions_acceptance",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aef35d31db2b831136174b7.json",
+            "sha256": "762f921f69a79c313444aeaa5fb8852ca966422a18d4ff29b2c6d741a86acd08"
+          },
+          "issuer_cik": "0000895728",
+          "accession_number": "0000895728-25-000006",
+          "accepted_at": "2025-02-14T12:10:59+00:00",
+          "primary_document": "enb-20241231.htm",
+          "form": "10-K"
+        }
+      ]
+    },
+    {
+      "document_id": "sec:cik_0000895728:000095017025101102",
+      "company_id": "cik_0000895728",
+      "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000095017025101102.json",
+        "sha256": "9c172d0e48f52a23c333992b8bb14024b9a747e7029b22e6aa7ee4003dde6745"
+      },
+      "proof_profile": "sec_archive_acceptance_v1",
+      "verdict": "admitted",
+      "reason": "Static June2025 interim operating report; preserve CAD millions and distinct quarter/six-month table periods.",
+      "reviewed_available_at": "2025-08-01T11:02:37+00:00",
+      "proofs": [
+        {
+          "kind": "sec_static_archive_body",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/7a0cdba6ca05b7f1d7a3d8eb.json",
+            "sha256": "cd8443dc679491afdd37e9653b82a5f0969d2e4933a5395ba6629afca086fe63"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/895728/000095017025101102/enb-20250630.htm",
+          "expected_content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba"
+        },
+        {
+          "kind": "sec_submissions_acceptance",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aef35d31db2b831136174b7.json",
+            "sha256": "762f921f69a79c313444aeaa5fb8852ca966422a18d4ff29b2c6d741a86acd08"
+          },
+          "issuer_cik": "0000895728",
+          "accession_number": "0000950170-25-101102",
+          "accepted_at": "2025-08-01T11:02:37+00:00",
+          "primary_document": "enb-20250630.htm",
+          "form": "10-Q"
+        }
+      ]
+    },
+    {
+      "document_id": "sec:cik_0000895728:000110465925061164",
+      "company_id": "cik_0000895728",
+      "content_hash": "9d4de12e12d34744e4ac891324ba16a196b949cdc6f6802959369f8769827c0f",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000110465925061164.json",
+        "sha256": "4033bdec191af7d9ca8d8ae11c432eafd3d97a742a9a90218e5e802839124805"
+      },
+      "proof_profile": "sec_archive_acceptance_v1",
+      "verdict": "admitted",
+      "reason": "Static current report with explicitly USD senior-note terms; financing event evidence does not itself supply annual business coverage.",
+      "reviewed_available_at": "2025-06-20T20:13:35+00:00",
+      "proofs": [
+        {
+          "kind": "sec_static_archive_body",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/ad04ca7a0b8973e405d9e2b3.json",
+            "sha256": "0d784f7555a09b2795575ab837f0e670b8f4a3bc0b1fe69313207de6f365cae2"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/895728/000110465925061164/tm2517955d4_8k.htm",
+          "expected_content_hash": "9d4de12e12d34744e4ac891324ba16a196b949cdc6f6802959369f8769827c0f"
+        },
+        {
+          "kind": "sec_submissions_acceptance",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aef35d31db2b831136174b7.json",
+            "sha256": "762f921f69a79c313444aeaa5fb8852ca966422a18d4ff29b2c6d741a86acd08"
+          },
+          "issuer_cik": "0000895728",
+          "accession_number": "0001104659-25-061164",
+          "accepted_at": "2025-06-20T20:13:35+00:00",
+          "primary_document": "tm2517955d4_8k.htm",
+          "form": "8-K"
+        }
+      ]
+    }
+  ],
+  "candidate_review": {
+    "path": "/Users/l/Project/Recommandation/reports/enb-source-candidates-20261019.json",
+    "sha256": "caf3f6b6ea64d7e874372ecd017aaf843f79c4a7b4629c337571a8408aba88eb"
+  },
+  "limitations": [
+    "Foreign private issuer elects domestic 10-K/10-Q/8-K; this is not foreign-form20-F/40-F/6-K coverage.",
+    "Annual/interim reports default to CAD; current8-K note terms explicitly use USD. Preserve exact monetary scope.",
+    "Three SEC originals alone do not qualify an ENB market baseline, CompanyFacts JSON or a complete default Fast prefix.",
+    "Input source admission is not fresh model compliance, semantic feedback, causal effect or independent benefit."
+  ],
+  "external_api_calls": 0,
+  "original_oracle_writes": 0,
+  "manifest_hash": "61ebe0d6f6e15dca5486632cd3413f7d21bffc3d5d4bb822c98577222243d32e"
+}

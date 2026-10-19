@@ -1,99 +1,48 @@
 # 当前状态
 
-更新：2026-10-20。本轮目标为用户批准的
-[Fast/Slow 工程 MVP](../spec/engineering-mvp.md)，**尚未收敛，继续迭代**。
-独立预测收益属于后续里程碑，仍未验证。用户要求生产 LLM 位置由独立 subagent
-处理；外部 LLM 调用保持零，用户现允许只读公开资料取证。新资料请求单独计数，
-不热加入已冻结输入；未恢复旧目标或完整付费运行。
+更新：2026-10-20。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)
+尚未收敛；独立收益为后续里程碑、仍未知。生产 LLM 节点由独立 subagent 执行，
+外部 LLM 调用0；只读资料取证已授权，单独计数。本轮新资料/模型请求均0。
 
-正式盲预测前缀v2单例通过独立语义/精确消费审查，预测先持久化再停于标签前边界。
-三实际角色（原H_init/路由两答精确继承+新Predictor一答），0纠错；apply/Reflect模型
-未执行：两Signal技术budget_blocked，确定性finalize仍保留4needs。32文件恢复全等，
-0新inbox/receipt，原v1观察器失败保留；完整F9/MVP仍open。
-见 [单例前缀验收](../reports/reviewed-fast-prefix-acceptance-20261019.md)。
-[单门标签准入](../reports/label-store-admission-20261020.md) 已修：旧18误放反例新拒，
-独立流式/严格类型/全记录重算通过；真实6554首次全load9.463s，未改store/定义。
-1806全量通过；provider价条/issuer真实性与完整F10仍独立未关。
-[独立Posthoc](../reports/reviewed-posthoc-stage-20261020.md) 两角色/一次来源关联纠错后窄审1/1，
-2items原生保存，19文件恢复全等/零新派发；尚未提交Fast反馈或被Slow消费。
+## 当前验收
 
+[BasicInfo 闭合菜单](../reports/basic-info-orientation-menu-20261020.md) 已按既定
+architecture 实现五个固定 semantic action、同编译器 proposer/direct core/default
+门禁及版本绑定；固定内部 recipe 不向 Plan 开放自由 query。历史运输/归档不改。
+operating annual-OR-interim 同池选择年度+最新季度，generic8K/6K不冒充经营资格。
+独立16项/初始data62项、related372项及依赖修复114项通过；首次全量12失败保留，
+旧fixture与实际旧ID依赖已修；最终1835全量/182.698s及prompt-only后330项通过。
+新 ENB 三 SEC-only view 已物化；实际投影17/24 partial含业务正句，其他三类缺源。
+尚未运行新菜单的真实 proposer/H_init，不把可见原句当模型理解/完整背景通过。
 
-## 新证据：F7 范围通过，F8 新消费时间边界已修
+## 最近实际证据
 
-[v3 报告](../reports/local-role-mvp-v3-stage-acceptance-20261019.md)、
-[冻结七样本与原始结果](../runs/diagnostics/local_roles_mvp_20261019_v3/progress.json)、
-[独立范围审查](../runs/diagnostics/local_roles_mvp_20261019_v3/independent-review.json)。
-显式 `independent-subagent` 后端保留原生产请求、匿名投影、parser、typed 纠错、
-fallback、持久化及精确消费者；13 条新请求均由隔离角色实际回答，原答/角色身份/hash
-绑定保存，内部成本与实测 token 用量未知，无 logprobs。
+- [盲预测前缀](../reports/reviewed-fast-prefix-acceptance-20261019.md)：单例真实
+  H_init/路由/Predictor三角色（前两答精确继承），0纠错，预测先durable再停标签前；
+  两Signal technical budget_blocked、apply/Reflect模型未执行，4needs保留。
+  32文件恢复全等；原v1观察器失败保留，完整F9仍open。
+- [native Posthoc](../reports/reviewed-posthoc-stage-20261020.md)：首答来源关联拒绝，
+  唯一typed纠错恰删两refs，最终2items独立窄审1/1；0fallback，19文件恢复全等。
+  未提交Fast反馈、未发布Slow来源或消费，不等于完整F10。
+- [LabelStore](../reports/label-store-admission-20261020.md)：真实archive/hash/合同/
+  calculator/6554全记录重算单门通过；原18误放保留。1806全量为该批证据；
+  不证明 provider价条/issuer真实性。本轮生产变化须另过最终全量。
+- [来源/日线与可见性](../reports/daily-market-consumer-boundaries-20261019.md)：
+  BMBL两SEC+market250窄准入、UTC与实际消费者摘要修复；全部窗口未必已读。
+- [Signal窄批次](../reports/reviewed-signal-stage-20261019.md)及
+  [H_init](../reports/reviewed-initial-stage-20261019.md)有原生角色/语义证据；
+  旧generic filing的经营背景不足未被旧角色通过掩盖。
 
-- v3 七个合法 prior 的 accepted state 回答范围/残留均正确，三个消费者处置精确保真。
-  13 个独立角色：7 首答、1 次仅修 evidence 形状的 typed 纠错、5 后续 terminal；
-  首答结构 6/7，最终机械 7/7；F7 这一冻结范围通过独立审查。
-- **旧 v3 F8 未通过**：future_actual 故障注入虽未被 state 采纳，未来实绩摘要仍进入
-  final/posthoc/critic，最初 Reflect 请求也可见。正常 F6 校验会拒绝该 timestamp；
-  这是绕过 F6 后 serialized/staged result 的模型消费边界缺防线，不是 F6 已证漏放。
-- [新确定性边界诊断](../reports/signal-model-pit-boundary-20261019.md)：同一原件在
-  Reflect/final/posthoc/critic/直接 Predictor 五入口均 typed 拒绝，负控零 inbox。
-  六个合法样本消费者仍保真，合法 forecast 可进入原 Predictor caller 待处理；
-  不重调角色，未证明新预测行为。原 v3 原件/结果不变，来源正文可信仍未关闭。
-- [旧 v2](../reports/local-role-mvp-stage-acceptance-20261019.md) 固定七分母仍 2 机械通过、
-  5 失败，原件/原答/旧结果均保留。新 v3 结果不能改写旧失败，也不能证明所有消费者安全。
+## 未关闭边界
 
-最新 1770 项全量离线测试通过；本批 188 聚焦、包装后 117 同源检查通过；
-market/旧 SEC 21 项聚焦及独立 27 固定案、
-null/alias 反例均通过；H_init 先前 117 项相关检查通过。Lint 通过且已亲读 feedback。
-并发预算/cache 原答复核与 F8 本地证据时间守卫已修；这些局部机械边界不能替代
-完整运行、模型行为或源码/输入全域语义验收。
+完整48案readiness缺16 market anchors；26 transcript完整公开内容时间证明仍0。
+污染历史news排除/unknown不表示事件不存在，原资料与失败分母保持。
+旧v182权威Fast/Slow=1/1已完成不可重启；memory失败processed0/pending3518未修成成功。
+方向/magnitude新Signal技术准入、精确复用、完整F10提交及Slow消费、完整闭环/MVP
+和独立预测收益均未验证。本次MVP goal active；未恢复旧实验/不启动完整后继。
 
-## 窄来源准入与下一批次
+## 下一步
 
-已实现并实跑[四来源 view](../reports/reviewed-source-snapshot-20261019.md)：2 SEC admitted、
-1 污染 news excluded、1 transcript unknown；窄冻结→生产 loader→worker snapshot→resolver
-恢复均精确保留集合。完整 48 案 prepare 仍缺 16 个 anchor 而失败，未缩分母/要求。
-零新模型调用，原件不变；全库来源可信仍未关闭。下一步核查本地 market 原始请求/响应、
-issuer 与调整时点证明；不足则先做可执行 SEC 检索/Signal stage，不造 baseline。
-保留失败；后续按可信输入→检索阅读→Signal→Reflect→Slow→后继→恢复推进。
-
-新 [market proof view](../reports/reviewed-market-snapshot-20261019.md) 经独立反例审窄通过：
-固定 5 原件，现 3 admitted（2 SEC+原 market 250），1 excluded/1 unknown；旧 view
-与原件不变。生产 parser/adapter 全对象重建、issuer/全类型 split ledger、双 clock、
-分页/参数/价格/恢复均核，optional 235 不是逐行重复下载门槛。实际 UTC baseline helper
-算出 6.494；没有手填价格或新 HTTP/模型调用。12 旧 falsey pagination 漏放已修，
-独立 27 固定案与 null/alias 反例通过。
-[新确定性依赖修复](../reports/daily-market-consumer-boundaries-20261019.md) 已独立窄验：
-同一 aware instant 四个日线入口统一 UTC 日；BasicInfo 两层遗漏保留到实际
-Predictor、posthoc 两入口与 critic wire。旧有损 index 可从同轨迹 canonical bundle
-恢复已知遗漏，模型仍只见部分 45d，未声称全读。另修 review scope 晚于 source
-availability 时 split proof 漏覆盖最早 consumer 的泛化假设；原 BMBL 资格不变，
-两个旧 gap 反例新拒，精确/更大覆盖区间合法。local judge+JEV 及 caller 显式禁外部
-执行现于 provider 构造前 typed 拒绝；合法 remotejudge/localproposer hybrid 保留。
-全部原失败保留，零新角色答/资料请求；这些是守卫而非新模型行为或完整 readiness。
-[3 次只读资料取证](../reports/bmbl-market-readonly-proof-review-20261019.md) 与零外部 LLM
-分开计数。ENB 新 [候选原材](../reports/enb-source-candidates-20261019.json) 只留后继准备，
-未加入这 5 原件或当前 view，未扩大 issuer/期间分母。
-[三样本 direct SEC stage](../reports/reviewed-signal-stage-20261019.md) 已实际完成：
-7 个新隔离角色，3/3 窄语义通过。customer 正控及实际 full Reflect 保真；早 cutoff
-和缺 prior 两例经生产守卫保留 need，零伪 Reflect；guidance categorical 边界仍未决。
-[默认 BasicInfo→H_init 双 cutoff](../reports/reviewed-initial-stage-20261019.md) 又有 2 个
-独立首答，2/2 经原材/全部 11 needs 独立审查窄通过，零纠错。晚时点 19/24 部分投影、
-早时点 6/6 投影和三类 DataGap 均保留；有条件假说不冒称收益/market expectations。
-F2 经营背景目标与 generic filing 可执行覆盖脱节仍 open；8-K 本身是合法来源。
-两次 completed resume 的 16 产物完整 before/after hash 不变，零新请求/receipt。
-本批不加 anchor/label，不进 evaluator/Predictor；94 code/2 原文件绑定及嵌套来源
-proof 保持；此前1744 全量、117 相关检查通过。当前真实前缀状态见首段。
-
-用户已选择[完整公开会议内容时间口径](../reports/transcript-availability-policy-review-20261007.md)，
-owning spec 已同步；[26 份原件清单](../reports/transcript-proof-inventory-20261019.json)
-全部保留，完整公开时间证明仍 0/26。四条旧 preview 不是已验证替换输入，未写 oracle。
-历史新闻 producer 旧发布日期对应后来正文的家族仍未全局修复；只有本次精确版本在
-reviewed view 排除，完整来源可信验收未通过。
-
-## 旧运行与未完成能力
-
-v182 Fast/Slow 权威完成指针仍 1/1，已完成，未热改或重启。
-[旧终态审计](../reports/v182-terminal-slow-and-source-partition-audit-20261007.md)：
-Slow memory failed、0 processed、3518 pending；magnitude 候选/验证/发布为 0，方向
-v3 的后继实际使用未验证。48 案内容验收未全完成，不能声明完整 MVP 或独立收益。
-[上一轮远程 Reflect 0/2 失败](../reports/v182-answer-scope-stage-acceptance-20261019.md)
-保留原结果；本轮独立角色行为不是旧供应商模型已修好的证据。
+当前family已过全量、prompt相关测试、lint及独立ENB恢复；scoped checkpoint后冻结
+新菜单 proposer 和 ENB业务正控/BMBL早cut不足的真实H_init原请求。新角色由root派发，
+不擅加预算、不热改旧冻结、保留原8项工作树改动。

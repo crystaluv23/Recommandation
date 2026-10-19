@@ -1,0 +1,132 @@
+======================================================================
+ERROR: test_plan_proposer_accepts_canonical_fields_and_slots_children (tests.test_evolution_routing_plan_roles.RoutingAndPlanRoleTests.test_plan_proposer_accepts_canonical_fields_and_slots_children)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3123, in propose
+    value = apply_state_patch(failed_value, value, contract=patch_contract)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py", line 307, in apply_state_patch
+    raise ValidationError(f"patch operation is outside typed authority: {op} {path}")
+stock_opportunity_agent.models.ValidationError: patch operation is outside typed authority: replace H_init
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py", line 3213, in test_plan_proposer_accepts_canonical_fields_and_slots_children
+    first = proposer.propose(
+            ^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3216, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose has no typed local repair authority: patch operation is outside typed authority: replace H_init
+
+======================================================================
+ERROR: test_plan_proposer_accepts_rebased_imported_history_meta_prefix (tests.test_evolution_routing_plan_roles.RoutingAndPlanRoleTests.test_plan_proposer_accepts_rebased_imported_history_meta_prefix)
+Imported and local lessons survive brief projection after id rebasing.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py", line 3369, in test_plan_proposer_accepts_rebased_imported_history_meta_prefix
+    plan = LLMInformationPlanProposer(caller).propose(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3111, in propose
+    value = complete_proposal_request(stage, request_payload)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3009, in complete_proposal_request
+    value, _usage = _complete_json_with_invalid_value(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1672, in _complete_json_with_invalid_value
+    return caller.complete_json(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/evolution_runtime_test_support.py", line 448, in complete_json
+    output = self.outputs.pop(0)
+             ^^^^^^^^^^^^^^^^^^^
+IndexError: pop from empty list
+
+======================================================================
+ERROR: test_plan_proposer_receives_briefs_with_exact_additive_sources_available (tests.test_evolution_routing_plan_roles.RoutingAndPlanRoleTests.test_plan_proposer_receives_briefs_with_exact_additive_sources_available)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py", line 3771, in test_plan_proposer_receives_briefs_with_exact_additive_sources_available
+    proposed = LLMInformationPlanProposer(caller).propose(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3111, in propose
+    value = complete_proposal_request(stage, request_payload)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3009, in complete_proposal_request
+    value, _usage = _complete_json_with_invalid_value(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1672, in _complete_json_with_invalid_value
+    return caller.complete_json(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/evolution_runtime_test_support.py", line 448, in complete_json
+    output = self.outputs.pop(0)
+             ^^^^^^^^^^^^^^^^^^^
+IndexError: pop from empty list
+
+======================================================================
+ERROR: test_plan_proposer_repairs_unsupported_ownership_in_role_skill (tests.test_evolution_routing_plan_roles.RoutingAndPlanRoleTests.test_plan_proposer_repairs_unsupported_ownership_in_role_skill)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py", line 3486, in test_plan_proposer_repairs_unsupported_ownership_in_role_skill
+    plan = LLMInformationPlanProposer(caller).propose(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3222, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose rejected after one correction: Choose an exact action request from the versioned orientation menu; Choose an exact action request from the versioned orientation menu
+
+======================================================================
+ERROR: test_v10_proposer_corrects_change_outside_required_focus (tests.test_evolution_routing_plan_roles.RoutingAndPlanRoleTests.test_v10_proposer_corrects_change_outside_required_focus)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3123, in propose
+    value = apply_state_patch(failed_value, value, contract=patch_contract)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py", line 307, in apply_state_patch
+    raise ValidationError(f"patch operation is outside typed authority: {op} {path}")
+stock_opportunity_agent.models.ValidationError: patch operation is outside typed authority: replace H_init
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py", line 3660, in test_v10_proposer_corrects_change_outside_required_focus
+    plan = LLMInformationPlanProposer(caller).propose(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3216, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose has no typed local repair authority: patch operation is outside typed authority: replace H_init
+
+======================================================================
+ERROR: test_v111_plan_proposer_does780_relabels_news_as_issuer_owned (tests.test_evolution_routing_plan_roles.RoutingAndPlanRoleTests.test_v111_plan_proposer_does780_relabels_news_as_issuer_owned)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py", line 3424, in test_v111_plan_proposer_does780_relabels_news_as_issuer_owned
+    plan = LLMInformationPlanProposer(caller).propose(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3222, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose rejected after one correction: Choose an exact action request from the versioned orientation menu; Choose an exact action request from the versioned orientation menu
+
+======================================================================
+ERROR: test_v145_proposer_pins_experience_snapshot_hash (tests.test_evolution_routing_plan_roles.RoutingAndPlanRoleTests.test_v145_proposer_pins_experience_snapshot_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py", line 3863, in test_v145_proposer_pins_experience_snapshot_hash
+    proposal = proposer.propose(
+               ^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3222, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose rejected after one correction: Choose an exact action request from the versioned orientation menu
+
+======================================================================
+ERROR: test_v145_basic_info_menu_rejects_free_text_query_and_foreign_families (tests.test_evolution_output_validation.OwnershipScopeLocalNegationTests.test_v145_basic_info_menu_rejects_free_text_query_and_foreign_families)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3763, in test_v145_basic_info_menu_rejects_free_text_query_and_foreign_families
+    _validate_plan_for_proposer_context(
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 1713, in _validate_plan_for_proposer_context
+    raise StructuredValidationError(issues)
+stock_opportunity_agent.models.StructuredValidationError: Choose an exact action request from the versioned orientation menu; Choose an exact action request from the versioned orientation menu
+
+----------------------------------------------------------------------
+Ran 308 tests in 8.576s
+
+FAILED (errors=8)

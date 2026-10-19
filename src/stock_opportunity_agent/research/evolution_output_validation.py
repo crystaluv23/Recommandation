@@ -1184,10 +1184,13 @@ _INFORMATION_PLAN_OUTPUT = (
     "Return [] when none were adopted. Mere visibility, a deferred ref or a "
     "parent's use does not establish adoption; do not copy outcome conclusions "
     "into blind research instructions. "
-    "B must be an object with exactly one requests array containing one to eight "
-    "request objects. Every request requires string request_id and description, "
-    "a non-empty array of string source_types, and integer max_documents; optional "
-    "fields are positive-integer lookback_days. Free-text query is not supported "
+    "B must be an object with exactly one requests array containing one or more "
+    "distinct available action requests, at most once per action, copied from "
+    "basic_info_orientation_menu. request_id, "
+    "description and source_types are exact fixed action values; do not author "
+    "new descriptions, source combinations or coverage knobs. Every request requires string request_id and description, "
+    "a non-empty array of string source_types, positive-integer lookback_days "
+    "and integer max_documents. Free-text query is not supported "
     "in B; deep retrieval belongs to the research document channel and Signal "
     "execution. H_init, "
     "H_reflect, and H_analyse must each be a non-empty string containing your own "
@@ -1205,9 +1208,10 @@ _INFORMATION_PLAN_OUTPUT = (
     "B must contain at least one compact market-backbone request whose "
     "source_types includes market_data, whose lookback_days is at most 60, "
     "and whose max_documents is 1. Every B request is resolved under the "
-    "target company_id. Do not request general competitor, peer, or rival actions "
-    "as though B searches other issuers; competitive requests must explicitly use "
-    "the target issuer's own disclosures or target-company-scoped news. "
+    "target company_id. The menu owns fixed descriptions and source routing; "
+    "deeper competitive or exact-form questions belong in H skills and the "
+    "research loop, not new B descriptions or source edits. Unsupported form "
+    "coverage remains a gap. "
     "company_news/news may contain third-party reporting, so never describe those "
     "source types as the issuer's own disclosure."
 )
@@ -1668,127 +1672,10 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
 # counts. Free-text retrieval queries are not expressible at the bootstrap
 # stage — deep retrieval lives in the research loop's document channel and
 # in frozen-policy Signal execution.
-_BASIC_INFO_ORIENTATION_MENU = {
-    "market_backbone": {
-        "source_types": {"market_data", "historical_price", "price_daily", "prices"},
-        "max_lookback_days": 120,
-        "document_range": (1, 2),
-    },
-    "operating_report": {
-        "source_types": {"filing", "sec_filing", "filing_body"},
-        "max_lookback_days": 730,
-        "document_range": (1, 5),
-    },
-    "management_commentary": {
-        "source_types": {"earnings_call", "earnings_transcript"},
-        "max_lookback_days": 365,
-        "document_range": (1, 3),
-    },
-    "scoped_news": {
-        "source_types": {"news", "company_news"},
-        "max_lookback_days": 365,
-        "document_range": (1, 5),
-    },
-    "financial_facts": {
-        "source_types": {
-            "financials",
-            "sec_company_facts",
-            "financial_statements",
-            "company_facts",
-        },
-        "max_lookback_days": 730,
-        "document_range": (1, 3),
-    },
-}
-
-
 def _validate_basic_info_orientation_menu(plan: InformationPlan) -> None:
-    """Constrain proposed Basic Info requests to the closed orientation menu.
-
-    Requests may compose several orientation families (a bridge request may
-    combine transcript, filing, and financial sources), but every source
-    type must belong to some family, the lookback obeys the strictest
-    matched bound, and the document count stays inside the matched range.
-    Free-text retrieval queries are never expressible.
-    """
-
-    issues: list[ValidationIssue] = []
-    families = tuple(_BASIC_INFO_ORIENTATION_MENU.values())
-    all_menu_sources = {
-        source for entry in families for source in entry["source_types"]
-    }
-    for index, request in enumerate(plan.basic_info_policy.requests):
-        base = "B.requests[{}]".format(index)
-        if request.query and str(request.query).strip():
-            issues.append(ValidationIssue(
-                code="basic_info_query_not_expressible",
-                message=(
-                    "Basic Info is a constrained orientation stage: free-text "
-                    "retrieval queries are not expressible. Compose orientation "
-                    "actions from the closed source-type families with bounded "
-                    "lookback and document counts; deep retrieval belongs to the "
-                    "research loop's document channel and Signal execution."
-                ),
-                paths=(base + ".query",),
-                allowed_repairs=("remove",),
-            ))
-        matched = [
-            entry
-            for entry in families
-            if request.source_types
-            and set(request.source_types) & entry["source_types"]
-        ]
-        uncovered = (
-            set(request.source_types) - all_menu_sources
-            if request.source_types
-            else set()
-        )
-        if not matched or uncovered:
-            family_summary = ", ".join(
-                "{}: {}".format(name, sorted(entry["source_types"]))
-                for name, entry in _BASIC_INFO_ORIENTATION_MENU.items()
-            )
-            issues.append(ValidationIssue(
-                code="basic_info_family_outside_menu",
-                message=(
-                    "Basic Info request source types must belong to the closed "
-                    "orientation families (" + family_summary
-                    + "); uncovered=" + repr(sorted(uncovered))
-                ),
-                paths=(base + ".source_types",),
-                allowed_repairs=("replace",),
-            ))
-            continue
-        strictest_lookback = min(entry["max_lookback_days"] for entry in matched)
-        if (
-            request.lookback_days is None
-            or request.lookback_days > strictest_lookback
-        ):
-            issues.append(ValidationIssue(
-                code="basic_info_lookback_out_of_bounds",
-                message=(
-                    "Basic Info lookback must be at most "
-                    + str(strictest_lookback)
-                    + " days for this orientation composition"
-                ),
-                paths=(base + ".lookback_days",),
-                allowed_repairs=("replace",),
-            ))
-        low = min(entry["document_range"][0] for entry in matched)
-        high = max(entry["document_range"][1] for entry in matched)
-        if not low <= request.max_documents <= high:
-            issues.append(ValidationIssue(
-                code="basic_info_document_count_out_of_bounds",
-                message=(
-                    "Basic Info max_documents must be between "
-                    + str(low) + " and " + str(high)
-                    + " for this orientation composition"
-                ),
-                paths=(base + ".max_documents",),
-                allowed_repairs=("replace",),
-            ))
-    if issues:
-        raise StructuredValidationError(issues)
+    """Apply the same action compiler used at new direct execution."""
+    from stock_opportunity_agent.research.basic_info_orientation import compile_basic_info_requests
+    compile_basic_info_requests(plan.basic_info_policy)
 
 
 def _validate_plan_for_proposer_context(
@@ -1806,12 +1693,14 @@ def _validate_plan_for_proposer_context(
             validate(plan)
         except StructuredValidationError as exc:
             issues.extend(exc.issues)
+    from stock_opportunity_agent.data.resolution import source_types_compatible
+    available = tuple(available_source_types)
     unsupported = sorted(
         {
             source_type
             for request in plan.basic_info_policy.requests
             for source_type in request.source_types
-            if source_type not in set(available_source_types)
+            if not source_types_compatible((source_type,), available)
         }
     )
     if unsupported:

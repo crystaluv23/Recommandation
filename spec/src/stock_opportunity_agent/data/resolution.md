@@ -381,3 +381,18 @@ head selection. See [markup](markup.md). Research projection and the Raw Info
 library reuse this rule with exact original raw offsets; hidden XBRL taxonomy
 headers cannot consume the readable body allowance. This does not infer external
 CSS visibility or guarantee financial-topic coverage.
+
+## Compiled operating orientation
+
+The versioned operating-report action uses a fixed internal query and a pure
+annual/interim ordering shared with acquisition before its body-fetch ceiling.
+Default count two prefers available annual plus latest interim; count one
+prefers annual background when present, else interim. Its OR completeness group
+is exact 10-K/10-Q/20-F/40-F, not an annual requirement. Generic 8-K/6-K/amendment
+material remains readable; it does not by form alone clear that requirement.
+Exact matching uses authoritative form metadata (or exact typed source form),
+not a title mention or substring. Conflicting form declarations fail exact
+qualification; amendments do not silently stand in for original forms.
+All ordinary generic filing requests keep their current ordering. Periodic
+availability and retrieved counts do not declare business facts fully visible;
+projection budgets, source gaps and omitted markers remain authoritative.

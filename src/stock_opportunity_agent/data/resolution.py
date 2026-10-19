@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from stock_opportunity_agent.data.filing_orientation import exact_document_form, operating_order, OPERATING_REQUEST_ID
+
 import hashlib
 import json
 import math
@@ -2138,7 +2140,10 @@ def _rank_documents(
         hit_count = _document_query_hit_count(document, tokens)
         return (-hit_count, -document.available_at.timestamp(), document.document_id)
 
-    return sorted(documents, key=key)
+    ranked = sorted(documents, key=key)
+    if request.request_id == OPERATING_REQUEST_ID:
+        return operating_order(ranked, exact_document_form, lambda item: item.available_at)
+    return ranked
 
 
 def _filter_company_news_documents(
@@ -2280,22 +2285,20 @@ def _matches_source_type(
 ) -> bool:
     requested = {item.casefold() for item in requested_types}
     actual = document.source_type.casefold()
+    requested_forms = requested.intersection(_EXACT_SEC_FORMS)
+    if requested_forms:
+        form = exact_document_form(document)
+        if form is not None and form.casefold() in requested_forms:
+            return True
+        requested = requested - requested_forms
+        if not requested:
+            return False
     if actual in requested:
         return True
-    requested_forms = requested.intersection(_EXACT_SEC_FORMS)
-    filing_types = _GENERIC_FILING_TYPES | _EXACT_SEC_FORMS
-    if requested_forms and actual in filing_types:
-        if actual not in _GENERIC_FILING_TYPES:
-            return False
-        searchable = " ".join(
-            str(document.metadata.get(key, "")) for key in ("form", "title")
-        ).casefold()
-        return any(form in searchable for form in requested_forms)
-    if actual in _EXACT_SEC_FORMS and requested.intersection(
-        _GENERIC_FILING_TYPES
-    ):
+    if actual in _EXACT_SEC_FORMS and requested.intersection(_GENERIC_FILING_TYPES):
         return True
-    return source_types_compatible((actual,), requested - requested_forms)
+    return source_types_compatible((actual,), requested)
+
 
 
 _SOURCE_TYPE_FAMILIES = (

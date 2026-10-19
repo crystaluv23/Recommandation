@@ -1,0 +1,310 @@
+{
+  "schema_version": "reviewed-enb-source-snapshot-diagnostic-v1",
+  "scope": "Only three fixed ENB SEC originals. Existing production materialization/store/restart/worker/resolver used; not a complete default InformationPlan run or new model semantic evidence.",
+  "input_manifest_hash": "ad159533ee833a52dbc1ef8ae832743b5b7a76a9326993d4a11308910ffc5081",
+  "reviewed_source_snapshot": {
+    "store_type": "reviewed",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/snapshot",
+    "manifest_sha256": "62b55f393a0debdba1a310bbb13a95d1fc440469d70a138a61b84eeecb45722c"
+  },
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/enb-reviewed-source-inputs-20261020.json",
+    "sha256": "f2561de8ed23a52aa853f8a6cc0d6f222a755dd335ef12006c34a59c07e9642b"
+  },
+  "fixed_source_denominator": 3,
+  "admitted_documents": [
+    {
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+      "record_hash": "9c54b118f931c1d3d014351ab0f70a3b9a5f7bffa05911b8f8dacd2ab852db0d",
+      "available_at": "2025-02-14T12:10:59+00:00"
+    },
+    {
+      "document_id": "sec:cik_0000895728:000095017025101102",
+      "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+      "record_hash": "d42d80576fe690a94f0c096cf3ebde08a345e8f4ad344e65412f5a241394cf96",
+      "available_at": "2025-08-01T11:02:37+00:00"
+    },
+    {
+      "document_id": "sec:cik_0000895728:000110465925061164",
+      "content_hash": "9d4de12e12d34744e4ac891324ba16a196b949cdc6f6802959369f8769827c0f",
+      "record_hash": "2139263194c5b190867fa03f10b12df1a7a4e13e2d3d204be8b1e5d32c4a8746",
+      "available_at": "2025-06-20T20:13:35+00:00"
+    }
+  ],
+  "actual_loader_restart": {
+    "acquisition_allowed": false,
+    "binding": {
+      "manifest_sha256": "62b55f393a0debdba1a310bbb13a95d1fc440469d70a138a61b84eeecb45722c",
+      "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/snapshot",
+      "store_type": "reviewed"
+    },
+    "documents": [
+      {
+        "available_at": "2025-02-14T12:10:59+00:00",
+        "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+        "document_id": "sec:cik_0000895728:000089572825000006",
+        "record_hash": "9c54b118f931c1d3d014351ab0f70a3b9a5f7bffa05911b8f8dacd2ab852db0d"
+      },
+      {
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+        "document_id": "sec:cik_0000895728:000095017025101102",
+        "record_hash": "d42d80576fe690a94f0c096cf3ebde08a345e8f4ad344e65412f5a241394cf96"
+      },
+      {
+        "available_at": "2025-06-20T20:13:35+00:00",
+        "content_hash": "9d4de12e12d34744e4ac891324ba16a196b949cdc6f6802959369f8769827c0f",
+        "document_id": "sec:cik_0000895728:000110465925061164",
+        "record_hash": "2139263194c5b190867fa03f10b12df1a7a4e13e2d3d204be8b1e5d32c4a8746"
+      }
+    ],
+    "store_type": "ReviewedRawInfoStore"
+  },
+  "worker_type_preserved": true,
+  "worker_explicit_binding_preserved": true,
+  "worker_acquisition_allowed": false,
+  "resolver_exact_three": true,
+  "resolver_reload_exact_three": true,
+  "resolution": {
+    "request": {
+      "request_id": "enb-fixed-sec-only",
+      "description": "Read only the fixed admitted ENB SEC originals.",
+      "source_types": [
+        "filing"
+      ],
+      "max_documents": 3,
+      "lookback_days": 730
+    },
+    "status": "resolved",
+    "documents": [
+      {
+        "document_id": "sec:cik_0000895728:000095017025101102",
+        "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+        "available_at": "2025-08-01T11:02:37+00:00"
+      },
+      {
+        "document_id": "sec:cik_0000895728:000110465925061164",
+        "content_hash": "9d4de12e12d34744e4ac891324ba16a196b949cdc6f6802959369f8769827c0f",
+        "available_at": "2025-06-20T20:13:35+00:00"
+      },
+      {
+        "document_id": "sec:cik_0000895728:000089572825000006",
+        "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+        "available_at": "2025-02-14T12:10:59+00:00"
+      }
+    ],
+    "context_spans": [],
+    "events": [
+      {
+        "kind": "local_query",
+        "details": {
+          "phase": "initial",
+          "request_id": "enb-fixed-sec-only",
+          "source_types": [
+            "filing"
+          ],
+          "matched_document_ids": [
+            "sec:cik_0000895728:000095017025101102",
+            "sec:cik_0000895728:000110465925061164",
+            "sec:cik_0000895728:000089572825000006"
+          ]
+        }
+      }
+    ],
+    "appended_documents": [],
+    "data_gap": null,
+    "coverage": {
+      "eligible_document_count": 3,
+      "selected_document_count": 3,
+      "query_matched_document_count": null,
+      "query_status": "not_requested",
+      "query_requested": false,
+      "query_evaluated": false,
+      "selection_truncated": false,
+      "deduplicated_document_count": 0,
+      "visible_span_count": 0,
+      "context_truncated": null,
+      "required_source_group_count": 0,
+      "satisfied_source_group_count": 0,
+      "observed_distinct_period_count": 0,
+      "observed_period_span_days": null,
+      "observed_observation_count": 0,
+      "contract_satisfied": true,
+      "missing_requirements": []
+    },
+    "omitted_context_markers": []
+  },
+  "PIT_and_idempotence": [
+    {
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "available_at": "2025-02-14T12:10:59+00:00",
+      "before_one_second_rejected": true,
+      "exact_instant_load_search_and_resolver": true,
+      "exact_replay_added": false
+    },
+    {
+      "document_id": "sec:cik_0000895728:000095017025101102",
+      "available_at": "2025-08-01T11:02:37+00:00",
+      "before_one_second_rejected": true,
+      "exact_instant_load_search_and_resolver": true,
+      "exact_replay_added": false
+    },
+    {
+      "document_id": "sec:cik_0000895728:000110465925061164",
+      "available_at": "2025-06-20T20:13:35+00:00",
+      "before_one_second_rejected": true,
+      "exact_instant_load_search_and_resolver": true,
+      "exact_replay_added": false
+    }
+  ],
+  "snapshot_reopen_exact_three": true,
+  "source_and_proof_bindings_before": {
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000089572825000006.json": "88632704b4b0cd6f1079621beecfb8b5ca4e7ba2af15a49f70a4a1f33ae7f76a",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000095017025101102.json": "9c172d0e48f52a23c333992b8bb14024b9a747e7029b22e6aa7ee4003dde6745",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000110465925061164.json": "4033bdec191af7d9ca8d8ae11c432eafd3d97a742a9a90218e5e802839124805",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aef35d31db2b831136174b7.json": "762f921f69a79c313444aeaa5fb8852ca966422a18d4ff29b2c6d741a86acd08",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/7a0cdba6ca05b7f1d7a3d8eb.json": "cd8443dc679491afdd37e9653b82a5f0969d2e4933a5395ba6629afca086fe63",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/6e4b10692099e75192411496.json": "099407d7fbf3fd7d9f700f3968bfaaa3c5abf1a26956e1ee25ed445d94a7ef2a",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/oracle.json": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/ad04ca7a0b8973e405d9e2b3.json": "0d784f7555a09b2795575ab837f0e670b8f4a3bc0b1fe69313207de6f365cae2"
+  },
+  "source_and_proof_bindings_after": {
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000089572825000006.json": "88632704b4b0cd6f1079621beecfb8b5ca4e7ba2af15a49f70a4a1f33ae7f76a",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000095017025101102.json": "9c172d0e48f52a23c333992b8bb14024b9a747e7029b22e6aa7ee4003dde6745",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000110465925061164.json": "4033bdec191af7d9ca8d8ae11c432eafd3d97a742a9a90218e5e802839124805",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aef35d31db2b831136174b7.json": "762f921f69a79c313444aeaa5fb8852ca966422a18d4ff29b2c6d741a86acd08",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/7a0cdba6ca05b7f1d7a3d8eb.json": "cd8443dc679491afdd37e9653b82a5f0969d2e4933a5395ba6629afca086fe63",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/6e4b10692099e75192411496.json": "099407d7fbf3fd7d9f700f3968bfaaa3c5abf1a26956e1ee25ed445d94a7ef2a",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/oracle.json": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/ad04ca7a0b8973e405d9e2b3.json": "0d784f7555a09b2795575ab837f0e670b8f4a3bc0b1fe69313207de6f365cae2"
+  },
+  "original_records_and_proofs_unchanged": true,
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/__init__.py",
+      "sha256": "8aea988d69cda004b2cab3cb99fe5e36811c0bf9e8617889f1590278c197ac79"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "fc055a25a7f7e5730b588c7d4ef48cfe771daec59585b7ceac122fe7448d72f6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py",
+      "sha256": "207195fbf751d2bf69ffe3e8fdf11c23c16c2b6171457f250d4df67b760f2080"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/documents.py",
+      "sha256": "7f57d2e40ae9f5c60ae7c69ef75fac70d3217867632bd1e927e9d1c49a9981c9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "f770e0c0f15b046c564c54a736dfac24b73e6fe7bb9c24454801b2789d1cad68"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/historical_news.py",
+      "sha256": "8a5e07eb53d08cc4be95ba37f547d1d3864febdac03a11f6f1a162b52583cef2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/json_stream.py",
+      "sha256": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/markup.py",
+      "sha256": "6142b661e74dd16c9d08358478817cb35b3668cfb2c2b13182a3ffd0f2e555d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/point_in_time.py",
+      "sha256": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "a3d18cf70c09db50a6d52a00d423bdda0042be038704ae81f593c3bbfba19f05"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/__init__.py",
+      "sha256": "1b84151cfebec6ff6f42a7350f0d21df1870abe6592ef7db0a7177a7b4074590"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/alpha_vantage.py",
+      "sha256": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/catalog.py",
+      "sha256": "b59cfbe8b4a5e7174cb7d01db84e8a005f4da060f1eebeb6d84e6c4749bfa022"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py",
+      "sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/finnhub.py",
+      "sha256": "74dfda1e717b168ad6bb9764a266cb9cf0c2327261bdaec8b08680207f62efa2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/fred.py",
+      "sha256": "9b15369b9c9a414bb412559e01876fa77acf931a1467fff4c56e1215e4a71aee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/massive.py",
+      "sha256": "359d5fa9a96e963167ccab61c22431a240f94697c13c50fb606ef6438615160b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/openfigi.py",
+      "sha256": "237bd47a6c4c1064db960714bb6bf992cf0370c2ce07b9e1441a58d1d3a24d85"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py",
+      "sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/stooq.py",
+      "sha256": "4483d28bd8d6f4ef71d52d599eccd5338b697eeb19a9422cbd3da60f89cfd134"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/structured.py",
+      "sha256": "77a36978955b2aa40805a38f78437d275f71498ddbfb61ebd1ba658b562feb6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/artifacts.py",
+      "sha256": "04695d82683e7a9d7332cfe02dda29c47abacd05dda698e8cb4a8f969dacdd75"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/models.py",
+      "sha256": "7e0704241b11313b8c99720371ed1e5b76015b33f5af2d2d4a9f911bbfac98fb"
+    }
+  ],
+  "diagnostic_script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/verify-enb-source.py",
+    "sha256": "3795825612cec8cb932ecee2e6aa8fc9ecdb83cf52eef43e81e015c37f46241d"
+  },
+  "all_requested_source_boundary_checks_passed": true,
+  "network_attempts": [],
+  "external_api_calls": 0,
+  "model_calls": 0,
+  "new_anchors": 0,
+  "full48_preflight_or_execution": false,
+  "source_qualification_not_model_semantic_pass": true,
+  "limits": [
+    "No foreign-form20-F/40-F/6-K claim: ENB elects domestic forms.",
+    "CAD annual/interim units and explicitUSD notes remain original; consumers still require exact-unit interpretation.",
+    "No qualified ENB market baseline/CompanyFacts JSON, full defaultprefix or deterministic secfacts Signal claim.",
+    "Actual future orientation projection visibility remains a separate frozen stage."
+  ]
+}

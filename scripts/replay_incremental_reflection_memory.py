@@ -518,7 +518,9 @@ def _production_proposer_replay(sources: HistoricalSources, meta: Mapping[str, A
                     raise AssertionError("production proposer did not receive an exact persisted case view")
                 output = {
                     "used_experience_refs": [],
-                    "B": parent.basic_info_policy.to_dict(),
+                    # A current scripted proposal uses today's closed menu;
+                    # the historical parent/disclosed evidence remain unchanged.
+                    "B": default_information_plan().basic_info_policy.to_dict(),
                     "H_init": parent.initial_research_skill + " Preserve the applicability conditions and limitations of a retrieved lesson when forming information needs.",
                     "H_reflect": parent.reflection_skill,
                     # A scripted proposal must honor today's fixed screening

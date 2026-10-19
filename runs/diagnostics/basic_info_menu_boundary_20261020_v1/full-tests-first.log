@@ -1,0 +1,176 @@
+[17:43:59] run_interrupted · committed round=0 · committed cycle=0
+[17:43:59] retryable_external_error
+[17:43:59] cycle_paused · committed round=0 · committed cycle=0
+[17:43:59] [round 4] cycle_paused · committed round=0 · committed cycle=0
+======================================================================
+ERROR: test_v30_proposer_rejects_controller_owned_prediction_ontology (test_evolution_reflection_roles.ReflectionRoleAdapterTests.test_v30_proposer_rejects_controller_owned_prediction_ontology)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_reflection_roles.py", line 2893, in test_v30_proposer_rejects_controller_owned_prediction_ontology
+    ).propose(
+      ^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3222, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose rejected after one correction: Choose an exact action request from the versioned orientation menu
+
+======================================================================
+ERROR: test_plan_proposer_corrects_missing_market_backbone (test_evolution_signal_role_adapters.SignalRoleAdapterTests.test_plan_proposer_corrects_missing_market_backbone)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_signal_role_adapters.py", line 2552, in test_plan_proposer_corrects_missing_market_backbone
+    plan = LLMInformationPlanProposer(caller).propose(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3222, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose rejected after one correction: Choose an exact action request from the versioned orientation menu; Choose an exact action request from the versioned orientation menu
+
+======================================================================
+ERROR: test_plan_proposer_repairs_malformed_provider_json_once (test_evolution_signal_role_adapters.SignalRoleAdapterTests.test_plan_proposer_repairs_malformed_provider_json_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_signal_role_adapters.py", line 2496, in test_plan_proposer_repairs_malformed_provider_json_once
+    plan = LLMInformationPlanProposer(caller).propose(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3222, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose rejected after one correction: Choose an exact action request from the versioned orientation menu; Choose an exact action request from the versioned orientation menu
+
+======================================================================
+ERROR: test_v81_plan_proposer_corrects_cross_issuer_request_scope (test_evolution_signal_role_adapters.SignalRoleAdapterTests.test_v81_plan_proposer_corrects_cross_issuer_request_scope)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_signal_role_adapters.py", line 2764, in test_v81_plan_proposer_corrects_cross_issuer_request_scope
+    plan = LLMInformationPlanProposer(caller).propose(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3222, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose rejected after one correction: Choose an exact action request from the versioned orientation menu; Choose an exact action request from the versioned orientation menu; Choose an exact action request from the versioned orientation menu
+
+======================================================================
+ERROR: test_v91_plan_proposer_confines_query_correction_scope (test_evolution_signal_role_adapters.SignalRoleAdapterTests.test_v91_plan_proposer_confines_query_correction_scope)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_signal_role_adapters.py", line 2650, in test_v91_plan_proposer_confines_query_correction_scope
+    plan = LLMInformationPlanProposer(caller).propose(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3222, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose rejected after one correction: Choose an exact action request from the versioned orientation menu; Choose an exact action request from the versioned orientation menu
+
+======================================================================
+ERROR: test_v91_plan_proposer_omits_empty_optional_query_without_call (test_evolution_signal_role_adapters.SignalRoleAdapterTests.test_v91_plan_proposer_omits_empty_optional_query_without_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_signal_role_adapters.py", line 2699, in test_v91_plan_proposer_omits_empty_optional_query_without_call
+    plan = LLMInformationPlanProposer(caller).propose(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3111, in propose
+    value = complete_proposal_request(stage, request_payload)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3009, in complete_proposal_request
+    value, _usage = _complete_json_with_invalid_value(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1672, in _complete_json_with_invalid_value
+    return caller.complete_json(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/evolution_runtime_test_support.py", line 448, in complete_json
+    output = self.outputs.pop(0)
+             ^^^^^^^^^^^^^^^^^^^
+IndexError: pop from empty list
+
+======================================================================
+ERROR: test_parent_comparison_only_deltas_metrics_on_exact_snapshot (test_plan_evolution_engine.PlanEvolutionEngineTests.test_parent_comparison_only_deltas_metrics_on_exact_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_plan_evolution_engine.py", line 845, in test_parent_comparison_only_deltas_metrics_on_exact_snapshot
+    basic_info_policy=BasicInfoPolicy(
+                      ^^^^^^^^^^^^^^^^
+  File "<string>", line 4, in __init__
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 621, in __post_init__
+    raise ValidationError("basic info policy requires requests")
+stock_opportunity_agent.models.ValidationError: basic info policy requires requests
+
+======================================================================
+ERROR: test_duplicates_introduced_by_scoped_correction_are_repaired (test_plan_source_set_repair.PlanSourceSetRepairTests.test_duplicates_introduced_by_scoped_correction_are_repaired)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_plan_source_set_repair.py", line 39, in test_duplicates_introduced_by_scoped_correction_are_repaired
+    plan, caller = self.propose([invalid, corrected])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_plan_source_set_repair.py", line 20, in propose
+    plan = LLMInformationPlanProposer(caller).propose(round_id=1, candidate_index=1,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3222, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose rejected after one correction: Use fixed orientation template values and published integer parameter bounds; Plan query/coverage are not authorable
+
+======================================================================
+ERROR: test_initial_duplicates_preserve_membership_and_original (test_plan_source_set_repair.PlanSourceSetRepairTests.test_initial_duplicates_preserve_membership_and_original)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_plan_source_set_repair.py", line 28, in test_initial_duplicates_preserve_membership_and_original
+    plan, caller = self.propose([output])
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_plan_source_set_repair.py", line 20, in propose
+    plan = LLMInformationPlanProposer(caller).propose(round_id=1, candidate_index=1,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3111, in propose
+    value = complete_proposal_request(stage, request_payload)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3009, in complete_proposal_request
+    value, _usage = _complete_json_with_invalid_value(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1672, in _complete_json_with_invalid_value
+    return caller.complete_json(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/evolution_runtime_test_support.py", line 448, in complete_json
+    output = self.outputs.pop(0)
+             ^^^^^^^^^^^^^^^^^^^
+IndexError: pop from empty list
+
+======================================================================
+FAIL: test_production_contract_replay_preserves_real_evidence_without_network (test_reflection_memory_replay.HistoricalReflectionReplayTests.test_production_contract_replay_preserves_real_evidence_without_network)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_reflection_memory_replay.py", line 96, in test_production_contract_replay_preserves_real_evidence_without_network
+    result = run_replay()
+             ^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/replay_incremental_reflection_memory.py", line 664, in run_replay
+    proposer_replay = _production_proposer_replay(sources, meta)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/replay_incremental_reflection_memory.py", line 533, in _production_proposer_replay
+    proposed = LLMInformationPlanProposer(caller).propose(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3111, in propose
+    value = complete_proposal_request(stage, request_payload)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3009, in complete_proposal_request
+    value, _usage = _complete_json_with_invalid_value(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1672, in _complete_json_with_invalid_value
+    return caller.complete_json(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/replay_incremental_reflection_memory.py", line 529, in complete_json
+    raise AssertionError("offline proposer fixture unexpectedly requested correction")
+AssertionError: offline proposer fixture unexpectedly requested correction
+
+======================================================================
+FAIL: test_actual_projection_masked_initialize_pending_and_idempotency (test_reviewed_initial_stage.ReviewedInitialStageTests.test_actual_projection_masked_initialize_pending_and_idempotency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_reviewed_initial_stage.py", line 55, in test_actual_projection_masked_initialize_pending_and_idempotency
+    self.assertTrue(all(expected_accn in row["document_id"] for row in audit["projection_lineage"]["entries"]))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_actual_diagnostic_freeze_loader_factory_and_runtime_baseline (test_reviewed_market_profile.ReviewedMarketProfileTests.test_actual_diagnostic_freeze_loader_factory_and_runtime_baseline)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_reviewed_market_profile.py", line 189, in test_actual_diagnostic_freeze_loader_factory_and_runtime_baseline
+    self.assertTrue(result['narrow_source_checks_passed'])
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1832 tests in 183.619s
+
+FAILED (failures=3, errors=9)

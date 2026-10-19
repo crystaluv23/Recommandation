@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from stock_opportunity_agent.research.basic_info_orientation import MENU_VERSION as BASIC_INFO_MENU_VERSION
+
 import math
 import os
 import platform
@@ -188,6 +190,8 @@ class EvolutionRunContract:
     schema_version: str = "evolution-run-contract-v8"
 
     def __post_init__(self) -> None:
+        if self.limits.get("basic_info_orientation_menu_version", BASIC_INFO_MENU_VERSION) != BASIC_INFO_MENU_VERSION:
+            raise ValidationError("unsupported Basic Info orientation menu version")
         reasoning_reserve = self.limits.get("structured_reasoning_token_reserve", 0)
         if (
             isinstance(reasoning_reserve, bool)
@@ -3047,6 +3051,10 @@ def build_run_contract(
 ) -> EvolutionRunContract:
     """Build one bounded contract from reviewed, hashed local inputs."""
 
+    if ("basic_info_orientation_menu_version" in limits
+            and limits["basic_info_orientation_menu_version"] != BASIC_INFO_MENU_VERSION):
+        raise ValidationError("unsupported BasicInfo orientation menu version")
+
     manifest_path = Path(dataset_manifest_path)
     manifest = _read_json(manifest_path)
     if manifest.get("approval_status") != "human_approved":
@@ -3080,7 +3088,7 @@ def build_run_contract(
         models=models,
         code_revision=current_code_revision(project_root),
         python_runtime=platform.python_version(),
-        limits=dict(limits),
+        limits={**dict(limits), "basic_info_orientation_menu_version": BASIC_INFO_MENU_VERSION},
         max_external_attempts=max_external_attempts,
         max_total_cost=max_total_cost,
         seed_pool_manifest_hash=seed_pool_manifest_hash,

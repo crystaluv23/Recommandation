@@ -3,6 +3,7 @@
 from copy import deepcopy
 
 from tests.evolution_runtime_test_support import *  # noqa: F403
+from stock_opportunity_agent.research.basic_info_orientation import make_orientation_request
 from stock_opportunity_agent.research import (
     evolution_core as core_module,
     evolution_signal_roles as signal_roles_module,
@@ -2460,20 +2461,8 @@ class SignalRoleAdapterTests(TestCase):
                         "used_experience_refs": [],
                         "B": {
                             "requests": [
-                                {
-                                    "request_id": "recent_news",
-                                    "description": "Read recent company news.",
-                                    "source_types": ["news"],
-                                    "lookback_days": 180,
-                                    "max_documents": 5,
-                                },
-                                {
-                                    "request_id": "recent_market_backbone",
-                                    "description": "Read recent market data.",
-                                    "source_types": ["market_data"],
-                                    "lookback_days": 45,
-                                    "max_documents": 1,
-                                }
+                                dict(make_orientation_request("scoped_news", max_documents=5).to_dict()),
+                                dict(make_orientation_request("market_backbone", max_documents=1).to_dict())
                             ]
                         },
                         "H_init": (
@@ -2515,13 +2504,7 @@ class SignalRoleAdapterTests(TestCase):
             "used_experience_refs": [],
             "B": {
                 "requests": [
-                    {
-                        "request_id": "recent_news",
-                        "description": "Read recent company news.",
-                        "source_types": ["news"],
-                        "lookback_days": 180,
-                        "max_documents": 5,
-                    }
+                    dict(make_orientation_request("scoped_news", max_documents=5).to_dict())
                 ]
             },
             "H_init": (
@@ -2539,13 +2522,7 @@ class SignalRoleAdapterTests(TestCase):
         }
         corrected = json.loads(json.dumps(missing))
         corrected["B"]["requests"].append(
-            {
-                "request_id": "recent_market_backbone",
-                "description": "Read recent point-in-time price and volume.",
-                "source_types": ["market_data"],
-                "lookback_days": 45,
-                "max_documents": 1,
-            }
+            dict(make_orientation_request("market_backbone", max_documents=1).to_dict())
         )
         caller = ScriptedRoleCaller([missing, corrected])
 
@@ -2562,7 +2539,7 @@ class SignalRoleAdapterTests(TestCase):
 
         self.assertEqual(
             plan.basic_info_policy.requests[-1].request_id,
-            "recent_market_backbone",
+            "orientation.v1.market_backbone",
         )
         self.assertEqual(
             [call["stage"] for call in caller.calls],
@@ -2575,21 +2552,8 @@ class SignalRoleAdapterTests(TestCase):
             "used_experience_refs": [],
             "B": {
                 "requests": [
-                    {
-                        "request_id": "recent_company_news",
-                        "description": "Read recent target-company news.",
-                        "source_types": ["news"],
-                        "lookback_days": 180,
-                        "max_documents": 5,
-                    },
-                    {
-                        "request_id": "recent_market_backbone",
-                        "description": "Read recent point-in-time price and volume.",
-                        "source_types": ["market_data"],
-                        "lookback_days": 45,
-                        "max_documents": 1,
-                        "query": 7,
-                    },
+                    dict(make_orientation_request("scoped_news", max_documents=5).to_dict()),
+                    dict(make_orientation_request("market_backbone", max_documents=1).to_dict(), query=7),
                 ]
             },
             "H_init": (
@@ -2671,14 +2635,7 @@ class SignalRoleAdapterTests(TestCase):
             "used_experience_refs": [],
             "B": {
                 "requests": [
-                    {
-                        "request_id": "recent_market_backbone",
-                        "description": "Read recent point-in-time price and volume.",
-                        "source_types": ["market_data"],
-                        "lookback_days": 45,
-                        "max_documents": 1,
-                        "query": "",
-                    }
+                    dict(make_orientation_request("market_backbone", max_documents=1).to_dict(), query='')
                 ]
             },
             "H_init": (
@@ -2715,30 +2672,9 @@ class SignalRoleAdapterTests(TestCase):
             "used_experience_refs": [],
             "B": {
                 "requests": [
-                    {
-                        "request_id": "recent_company_news",
-                        "description": "Read recent company news.",
-                        "source_types": ["news"],
-                        "lookback_days": 180,
-                        "max_documents": 5,
-                    },
-                    {
-                        "request_id": "recent_market_backbone",
-                        "description": "Read recent market data.",
-                        "source_types": ["market_data"],
-                        "lookback_days": 45,
-                        "max_documents": 1,
-                    },
-                    {
-                        "request_id": "competitor_actions",
-                        "description": (
-                            "Competitor actions that could affect the company's "
-                            "market position."
-                        ),
-                        "source_types": ["news"],
-                        "lookback_days": 180,
-                        "max_documents": 3,
-                    },
+                    make_orientation_request("operating_report").to_dict(),
+                    dict(make_orientation_request("market_backbone", max_documents=1).to_dict()),
+                    dict(make_orientation_request("scoped_news", max_documents=3).to_dict(), description="Competitor actions that could affect the company's market position."),
                 ]
             },
             "H_init": (
@@ -2756,9 +2692,7 @@ class SignalRoleAdapterTests(TestCase):
         }
         corrected = json.loads(json.dumps(invalid))
         corrected_request = corrected["B"]["requests"][2]
-        corrected_request["description"] = (
-            "Read target-company-scoped news about competitive position."
-        )
+        corrected_request["description"] = make_orientation_request("scoped_news").description
         caller = ScriptedRoleCaller([invalid, corrected])
 
         plan = LLMInformationPlanProposer(caller).propose(

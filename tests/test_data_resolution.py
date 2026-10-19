@@ -827,6 +827,43 @@ class EvidenceResolverTests(TestCase):
         self.assertEqual(resolution.status, "resolved")
         self.assertIn("financials", resolver.available_source_types)
 
+    def test_operating_menu_acquisition_append_and_cached_pool_agree(self) -> None:
+        from stock_opportunity_agent.research.basic_info_orientation import (
+            compile_basic_info_requests, make_orientation_request,
+        )
+        from stock_opportunity_agent.research.evolution_core import BasicInfoPolicy
+
+        attempted = []
+
+        class Client:
+            transport = None
+
+            def recent_filings_as_of(self, cik, as_of_date):
+                return [SimpleNamespace(form=form, accession_number=accession,
+                    filing_date=date(2025, 1, day), accepted_at=None,
+                    source_url=f"https://example.test/{accession}")
+                    for form, accession, day in (("8-K", "current", 14),
+                        ("10-Q", "quarter", 13), ("10-K", "annual", 10))]
+
+            def filing_document_text(self, filing):
+                attempted.append(filing.accession_number)
+                return f"{filing.form} business operations segments customers risks"
+
+        request = compile_basic_info_requests(BasicInfoPolicy(requests=(
+            make_orientation_request("operating_report"),)))[0]
+        store = RawInfoStore()
+        resolver = EvidenceResolver(store, adapters=(SecFilingAdapter(Client()),),
+            policy=DataAcquisitionPolicy(enabled=True, allowed_providers=("sec_edgar",),
+                allowed_capabilities=("filing_documents",), allowed_source_types=("filing",),
+                max_requests_per_cycle=1, max_requests_per_run=1))
+        fresh = resolver.resolve(request, company_id="issuer_1", identity={"cik": "1234"}, as_of=AS_OF)
+        self.assertEqual(attempted, ["annual", "quarter"])
+        self.assertEqual([row.metadata["form"] for row in resolver.load_documents(fresh, as_of=AS_OF)], ["10-K", "10-Q"])
+        self.assertIsNone(fresh.gap)
+        cached = EvidenceResolver(store).resolve(request, company_id="issuer_1", identity={}, as_of=AS_OF)
+        self.assertEqual([row.to_dict() for row in fresh.documents], [row.to_dict() for row in cached.documents])
+        self.assertEqual(attempted, ["annual", "quarter"])
+
     def test_generic_filing_request_prefers_core_forms_and_skips_failed_body(self) -> None:
         attempted: list[str] = []
 

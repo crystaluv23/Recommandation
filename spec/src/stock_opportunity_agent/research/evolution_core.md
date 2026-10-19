@@ -329,3 +329,8 @@ Posthoc dispatch. Present malformed/null blocks fail on the typed
 RuntimeTerminationInputRejected control-flow boundary, bypassing content
 correction, Plan rejection and research conclusions. Missing legacy blocks
 remain compatible unknowns.
+
+New bootstrap execution uses the shared [orientation compiler](basic_info_orientation.md)
+before resolving any Basic Info. Stored legacy Plan decoding remains separate
+from admission to a new run. Runtime uses fixed compiled recipes, never a free
+Plan query; raw source/request primitives remain available to deep research.

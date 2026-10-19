@@ -1,0 +1,8 @@
+[17:50:04] run_interrupted · committed round=0 · committed cycle=0
+[17:50:04] retryable_external_error
+[17:50:04] cycle_paused · committed round=0 · committed cycle=0
+[17:50:04] [round 4] cycle_paused · committed round=0 · committed cycle=0
+----------------------------------------------------------------------
+Ran 1835 tests in 182.698s
+
+OK
