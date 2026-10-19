@@ -1,0 +1,83 @@
+{
+  "schema_version": "reviewed-orientation-independent-expectations-v1",
+  "author": "root acceptance side before fresh proposer or H_init answers",
+  "scope": "One actual native proposer followed by its exact accepted Plan in one BasicInfo/H_init consumer, plus two fixed default-Plan orientation controls. Source, legal-action and semantic acceptance only; no Predictor, labels, scoring, completed Fast or Slow publication.",
+  "fixed_denominator": {
+    "proposer": 1,
+    "H_init": 3
+  },
+  "source_inputs": {
+    "bmbl": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v4/input_manifest.json",
+    "enb": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/input_manifest.json",
+    "acquisition_allowed": false,
+    "originals_and_old_freezes_immutable": true
+  },
+  "proposer_case": {
+    "sample_id": "p01",
+    "parent": "A disclosed manual seed with current fixed operating_report and market_backbone actions plus original default H_* skills. It has no invented evaluation/fitness/PlanRecord. Preserve its exact frozen bytes.",
+    "source_capabilities": "Freeze a filing+market compatible inventory and the exact disclosed current menu. The native adapter must admit compatible aliases without allowing a Plan to edit canonical template source routing.",
+    "expected": "A genuinely new Plan under the original proposer change-focus contract; only fixed versioned templates and bounded integer choices. Actual source-capability constraints, fixed Predictor semantics, identity/output scans and allowed experience use remain in force.",
+    "consumer": "Persist the exact accepted InformationPlan and compile/resolve it directly for h01. No manual addition/removal of actions, rewriting descriptions, changing H_* or substituting the default Plan after seeing the answer.",
+    "no_forced_action": "A legal proposer may choose its action composition. Do not add an operating-report quota to make a favorable result. Conditional h01 fact expectations follow the actual accepted actions, while h02 independently tests business-orientation capability.",
+    "meta_info": "Freeze an explicitly empty native meta_info tuple/empty memory index. Do not import unsubmitted standalone Posthoc feedback or invent historical Experience."
+  },
+  "H_init_cases": [
+    {
+      "sample_id": "h01",
+      "company_id": "cik_0001830043",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "plan": "Exact p01 accepted output",
+      "expected": "Consume the actual compiled Plan and exact source bundle. Mandatory compact market action supplies the real PIT price inputs; compute/inject anchors through existing production helpers from full selected market documents. Every authored fact must match actual visible evidence. Operating facts are allowed only if its actual actions disclose them. Missing actions/materials remain unobserved rather than negative company facts."
+    },
+    {
+      "sample_id": "h02",
+      "company_id": "cik_0000895728",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "plan": "Frozen current default Plan",
+      "expected": "Substantive business orientation from the supplied annual/interim material, supported by literal projection evidence: liquid-hydrocarbon pipeline/terminal transport or natural-gas pipeline/gathering/processing operations are known positive controls. Preserve historical report scope. Annual/interim reports default to CAD and the relevant tables use CAD millions; any explicitly US$ amount in any report remains USD. Preserve original table periods and never infer one global unit for every number. Do not infer current market expectations, prices or financial-facts JSON from unavailable sources.",
+      "known_limits": "Only three qualified SEC originals. No qualified ENB market baseline, standalone CompanyFacts JSON or news. Native source/projection omission metadata must remain exact; 17/24 partial is a preflight observation to rebind at final freeze, not a mandated model statement or proof of full reading.",
+      "sufficient_material_condition": "Before dispatch bind the actual production-bootstrap model projections and verify substantive business passages are actually visible. A source file or 17/24 count alone is not this capability positive. Do not tune the fixed recipe against the model answer."
+    },
+    {
+      "sample_id": "h03",
+      "company_id": "cik_0001830043",
+      "prediction_time": "2025-07-01T00:00:00+00:00",
+      "plan": "Frozen current default Plan",
+      "expected": "The visible eligible filing is the pre-cutoff 8-K; later 10-Q and market-source availability must not enter. Its annual-OR-interim requirement remains unsatisfied with the native coverage gap. Any actually visible 8-K observation may be used in its proper period, but cannot turn a missing operating report/business background into completeness. Genuine unanswered needs remain executable and preserved; Q2 guidance cannot supply Q3 actuals or a prior-guidance comparison."
+    }
+  ],
+  "shared_acceptance": {
+    "native_only": "Use real proposer and LLMResearchController.initialize, current compiler/resolver/projection/anonymizer/parser/typed correction/fallback and request budget. Each exact system/user request is answered by a fresh fork_turns none native subagent. It may read only that inbox and write its raw answer; no parent context, oracle, sources outside the original role context, network or external LLM.",
+    "facts_and_hypotheses": "Audit every accepted observation against visible original material, object/period/unit and literal provenance. Hypotheses remain conditional. Unknown evidence, partial visibility and technical failure cannot become negative company facts, market-expectations facts, efficacy claims or resolved needs.",
+    "anchors": "Runtime-computed anchors are injected verbatim if available, never model-authored substitutes. The absence of a qualified market source remains explicit. No LabelStore, GroundTruth, future-outcome calculation or future-data lookup is allowed in this blind stage.",
+    "projection_integrity": "Track source spans through actual wire input and accepted evidence refs; preserve document/source availability, projection IDs, omitted markers, fixed recipes and effective partial/unknown visibility. File selection or a valid citation alone does not prove the claim.",
+    "persistence_and_restore": "Persist the native accepted Plan, every exact BasicInfo bundle/projection/anchor and native ResearchState with actual ordered request traces, raw answers/corrections and independent receipts. Completed restore must verify bound artifacts and receipts with zero new dispatch and unchanged saved output.",
+    "failure_accounting": "Freeze first-answer, per-role correction and total-call ceilings before execution; count all actual native exchanges. Preserve first-answer failures and technical fallbacks under the fixed denominator. Fallback or honest technical abstention cannot pass a sufficient-material capability positive. Do not replace failed samples or raise the same frozen budget."
+  },
+  "limits_to_freeze_before_dispatch": {
+    "external_llm_calls": 0,
+    "new_readonly_data_requests": 0,
+    "local_call_and_request_unit_ceilings": "Set concrete ceilings after exact original-request preflight, within the currently authorized new bounded stage. All correction/read exchanges count. Do not resume or raise any earlier completed or exhausted collection.",
+    "actual_host_tokens": null,
+    "actual_host_cost": null,
+    "max_local_role_calls": 24,
+    "max_request_tokens": 131072,
+    "max_structured_corrections_per_native_request": 1,
+    "max_native_proposal_semantic_corrections": 1,
+    "max_native_proposer_memory_requests": 3,
+    "H_init_document_channel_protocol": "not_supported by initialize; pass production setter without inventing an exchange wrapper",
+    "accepted_case_budget": "After the initial boundary, apply the same existing native _consume_model_step to the actual returned AgentStep usage and frozen RuntimeLimits before declaring that sample accepted. Preserve the raw output if this check instead reports technical budget failure."
+  },
+  "not_covered": [
+    "Complete F1/F2/F3 coverage outside this declared source/action/context scope",
+    "Signal apply/Reflect, full blind Predictor or Fast submission",
+    "Slow consumption, direction/magnitude discovery, technical admission or successor use",
+    "Full 48-case readiness, transcript timing proofs or global source qualification",
+    "Engineering MVP convergence or independent predictive gain"
+  ],
+  "oracle_isolation": {
+    "fresh_outputs_seen": false,
+    "inject_into_role_payload": false
+  },
+  "engineering_mvp_closed": false
+}

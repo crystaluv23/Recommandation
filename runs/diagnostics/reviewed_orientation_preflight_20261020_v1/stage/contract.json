@@ -1,0 +1,38 @@
+{
+  "H_init_document_reads": "not_supported_by_native_initialize",
+  "actual_host_cost": null,
+  "actual_host_tokens": null,
+  "actual_model_version": null,
+  "backend": "independent-subagent",
+  "expectations_hash": "ecb1063f6eb45685b39ce559670b729d58e46b210c9206427ae4d981e3ebdf90",
+  "external_llm_calls_authorized": 0,
+  "fixed_denominator": {
+    "H_init": 3,
+    "proposer": 1
+  },
+  "input_hash": "4a68553f29c8292885d5adf7b2188006c595960a5347bbc7b5173a5f32b71ad1",
+  "limits": {
+    "max_local_role_calls": 24,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_local_calls": 24,
+  "menu_version": "basic-info-orientation-v1",
+  "model_selection": "inherited_host_default_precise_version_unknown",
+  "parallel_jev_decisions": false,
+  "proposer_memory_requests_max": 3,
+  "proposer_meta_info_empty": true,
+  "readonly_data_requests_authorized": 0,
+  "runtime_limits": {
+    "finalization_token_reserve": 64000,
+    "max_cost": 20.0,
+    "max_llm_calls": 8,
+    "max_llm_signals_per_round": 2,
+    "max_signal_calls": 1,
+    "max_signal_rounds": 1,
+    "max_signals_per_round": 4,
+    "max_tokens": 256000
+  },
+  "schema_version": "reviewed-native-orientation-stage-v1"
+}

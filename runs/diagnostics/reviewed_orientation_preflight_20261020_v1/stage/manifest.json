@@ -1,0 +1,1358 @@
+{
+  "code_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_executed_answer_scope.py",
+      "sha256": "6d5c9941e8b64f13eda7db754292ce6629fbbe105dce4ee2697c51419f3e956a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_fast_prefix.py",
+      "sha256": "9a4c8f0cf79ed0f46ae1f686d7c81181120e09244767c0607bad0bf368cf129c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_orientation_stage.py",
+      "sha256": "f6d8b81e2e218f030c8a0e0098cbc1c402c10063c0197c7d117ac71653afc578"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_posthoc_stage.py",
+      "sha256": "48ce78ed6a3cace0f154e005a70b54277379e5c8900e6ae5792d9f8043bd64e0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_signal_stage.py",
+      "sha256": "1d608df7fbeda9ed8dc581fa2669050e7af933d04caf479973c4c7da7df7c16e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_orientation_stage.md",
+      "sha256": "e198b73418d9d8674fbaac1738eec038ccb55e3d60c52b87a35e592bd163c22f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/__init__.py",
+      "sha256": "ad886197273f30a45b19150b41bd89c7884974f4704941b2fb7ac5e93a042ff0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/artifacts.py",
+      "sha256": "04695d82683e7a9d7332cfe02dda29c47abacd05dda698e8cb4a8f969dacdd75"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/__init__.py",
+      "sha256": "7d71a878cbbba5e7c722258fc1d7460ba433b708bbd6c481cc2a4d714e0343fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/inflections.py",
+      "sha256": "962b0c79dbd381a560a84155b3e6a881beb5421305839d1961bb30a87d57cbed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/label_store.py",
+      "sha256": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/learning.py",
+      "sha256": "0869902905c668e9575bf1291d9d6929e9701c04ffb1865b413dba958844d6db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/matching.py",
+      "sha256": "267664934c0eeafbfe37b5b98ff4f7c79a15017ef02ff3ab52b1cfad46d2c728"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/outcomes.py",
+      "sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/packets.py",
+      "sha256": "3a4c235f876bc37b5e6d8301bd078cc08c58b99c965c34ca5f929b845970472c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/selection.py",
+      "sha256": "0dabd0eb1e047c1503e5b7e722896186d02c9e280d2fdaabc0a0a380bdeb3c07"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/config.py",
+      "sha256": "15f986126132be975cc020142632d4f5a5dfb1e27135921c635b3a9367f76a50"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/__init__.py",
+      "sha256": "8aea988d69cda004b2cab3cb99fe5e36811c0bf9e8617889f1590278c197ac79"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "fc055a25a7f7e5730b588c7d4ef48cfe771daec59585b7ceac122fe7448d72f6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py",
+      "sha256": "207195fbf751d2bf69ffe3e8fdf11c23c16c2b6171457f250d4df67b760f2080"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/documents.py",
+      "sha256": "7f57d2e40ae9f5c60ae7c69ef75fac70d3217867632bd1e927e9d1c49a9981c9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "f770e0c0f15b046c564c54a736dfac24b73e6fe7bb9c24454801b2789d1cad68"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/historical_news.py",
+      "sha256": "8a5e07eb53d08cc4be95ba37f547d1d3864febdac03a11f6f1a162b52583cef2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/json_stream.py",
+      "sha256": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/markup.py",
+      "sha256": "6142b661e74dd16c9d08358478817cb35b3668cfb2c2b13182a3ffd0f2e555d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/point_in_time.py",
+      "sha256": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "a3d18cf70c09db50a6d52a00d423bdda0042be038704ae81f593c3bbfba19f05"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/__init__.py",
+      "sha256": "1b84151cfebec6ff6f42a7350f0d21df1870abe6592ef7db0a7177a7b4074590"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/alpha_vantage.py",
+      "sha256": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/catalog.py",
+      "sha256": "b59cfbe8b4a5e7174cb7d01db84e8a005f4da060f1eebeb6d84e6c4749bfa022"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py",
+      "sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/finnhub.py",
+      "sha256": "74dfda1e717b168ad6bb9764a266cb9cf0c2327261bdaec8b08680207f62efa2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/fred.py",
+      "sha256": "9b15369b9c9a414bb412559e01876fa77acf931a1467fff4c56e1215e4a71aee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/massive.py",
+      "sha256": "359d5fa9a96e963167ccab61c22431a240f94697c13c50fb606ef6438615160b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/openfigi.py",
+      "sha256": "237bd47a6c4c1064db960714bb6bf992cf0370c2ce07b9e1441a58d1d3a24d85"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py",
+      "sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/stooq.py",
+      "sha256": "4483d28bd8d6f4ef71d52d599eccd5338b697eeb19a9422cbd3da60f89cfd134"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/structured.py",
+      "sha256": "77a36978955b2aa40805a38f78437d275f71498ddbfb61ebd1ba658b562feb6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/__init__.py",
+      "sha256": "cc16eaea477be155eccb1f37c12f755d6672ea42cc265e171df2162e1939f0d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/agent.py",
+      "sha256": "d4450fe67bcb0607c5e006389094f8c1b46ba39f123ca55ec5384c8322dbae2e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/deepseek.py",
+      "sha256": "73d35cda63a13cd8aa080b9272f2729b63a4a77f76ebeece1a109cdee7c4c5e8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/local.py",
+      "sha256": "328d604fbf8205f8d1d1765697f9047a99b35aac8183c00ee15939dadd1efb2d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openai.py",
+      "sha256": "9cd43b389fb0ea37382d615b6572e4b360eb4da6c279896806cc420529df66c4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter.py",
+      "sha256": "ab7737565e81661ea41879492bad3a9b9513356dbf1ec32ef4b9d4d3955f6f51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter_jev.py",
+      "sha256": "836d95d9f5c2ace89ccb674bb0cdcee709a66a6656a1682f261877d8bb905291"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/__init__.py",
+      "sha256": "500e2b3660b859940efce402e89d78f9ca3f42117f7202bcc1ec68bcb57b493b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/knowledge.py",
+      "sha256": "df57838ed67bdb86abd99ea95594ec1239d968877ef8fa63bfce0c8848af4eca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/playbooks.py",
+      "sha256": "7eb513aee485afe1027e2db09f4c01dc8a3772eac130a973140316902d20446a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/signals.py",
+      "sha256": "16378ba31ae7a2248f44f053688223c8ff3ed096dcb0583fa6ba39d375526c1b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/themes.py",
+      "sha256": "923ead11d92d9337a471258f74180aa98750ea2fdab06e560690d39b7bcb6498"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/models.py",
+      "sha256": "7e0704241b11313b8c99720371ed1e5b76015b33f5af2d2d4a9f911bbfac98fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/orchestration.py",
+      "sha256": "6a0f001eeb5f5326fba76fb2393f5f56a894b104c79f7b3e1d49f3246443625f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/__init__.py",
+      "sha256": "87ba194588441926a3baf6754e6ecb49c29b88f7f23cdf9146d1b655ab59bace"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_orientation.py",
+      "sha256": "bca6ffa3e4bc88bbfedcf2a787220cf47b6a9cc8556c92225aa23360e68c4b23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_visibility.py",
+      "sha256": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cold_start.py",
+      "sha256": "1684343ee72c5b0b3eb21339094761574a5c608138c24f9eb8aa0401837f2603"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/compute_tools.py",
+      "sha256": "1ee884f6bcf610f80d774a1f1d9b76c99b0682427a655c06beec9526f99a3bcc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cross_round_reflection.py",
+      "sha256": "86b61e23f8f7e11a1c558dee54659ff9e7bc598dec8a3d6f3ab1558b9ffb1347"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/distillation.py",
+      "sha256": "bf7106cb0f20dcbc5ffbbccc930482422c395c61f9ada60c4560807bc92ecca0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evidence_acquisition.py",
+      "sha256": "52834ba6ebad97fe17513fad8864e15d8e034e07ea8d481e3056df9227d0ad4d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_benefit.py",
+      "sha256": "e7df40559b084168425e87b0d57a8113ea8d76a52e622fdbb020dc962c37e8d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "fcc8f724e781bcbff0676c7dd9dc6f819a4d5fe19cd95521da852ee7b28953ed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dashboard.py",
+      "sha256": "6870025b06d7070469a954dc190b8d99869062cdcb3f0392c60f4ee82cd70c83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py",
+      "sha256": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_jev_roles.py",
+      "sha256": "ce5590803f9374a7600aeb738400a4afa72d7f2059fbf3c8eb00f67a059130a3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "d2b39ac61e0c53924ad4d19fc9d2a11ed2463315b0c8317bae9633097e823ef7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "ae81af2964e896273bd6828da61b8acc9f0bb816e7bfd9cc7e2c341cbb4c03d3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "sha256": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "291ffc2423efb2049e20656780a1bb921837b7616975ada2ab48954cf19f3ad7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_runtime.py",
+      "sha256": "ed831068f375f7ef7e524faac120ce50df226874fcd7019e50b289cf1178dae2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_settings.py",
+      "sha256": "96c634fe572fdf56c677f1d43f2cb3e6f893dcc5a589b490c167d571f70cc8bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "1ef644e6041ee93d46db1098b4058eca4a4bae35019bef5dd61694e86610303a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py",
+      "sha256": "7bb2c074b8b54508a105e523421e1d42c5c6a417beb047ee6bd061b956b6f6b0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "582d43a4912c1248866c3dddd8b15aed24e5f22a4f72ccde2f2f6d10cb740b77"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/inflection_discovery.py",
+      "sha256": "4dc4484aaa64a7403d81ec2613c2026149473f1f615f216dc8b61c1c463291d4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/information_plan.py",
+      "sha256": "c3134df9c7d8a1a6342874f6ad80fa6f7386fa37ddb9e2ee4e7ea11ef4d51636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/local_role_exchange.py",
+      "sha256": "65b559f9c23d5f6951747b3a1e9314afe7fa337d6f90c68ec2b9086611478619"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "bffe40af047b810d2efdf5c2178b475b73e8c3f4fb90ef37ac5676ada4a32a13"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "48bc084ca33c095f0ecc0e93404b4d17eb580f1364defa758a8375fd7c93d4a6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "84febd7d707f5f850bb9f3f1570e40058dcc8129244dc52c8d7e5fd67367f00c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "c4bba21b5ec197a4f99fb2cefb5e8b2256dfc72dc92c9feffd47f455c4ddb917"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/playbooks.py",
+      "sha256": "ec064fe9a1c936ea464c1eb1499620ec212fae69ae0dc65b24d0af9be647aa23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_artifacts.py",
+      "sha256": "fb0ecf206731825cecf778dd2718502e9875c1d74db039b41ccc769a5cc46b86"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_loop.py",
+      "sha256": "fb490e85c7ec4fb89a63392710742f1ea8fabb39ee10dbc87a5c16d081bb1513"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/repair.py",
+      "sha256": "c36d52e01313318019eb1c73f1ae60a2d338f6b7dbb921782c626e6889b955ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/research_targets.py",
+      "sha256": "6d4ef5f618dd20aa5b7658623f904a30465a18640bba7023ac43dad8fa9ee925"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/scheme_evolution.py",
+      "sha256": "343f760c917c2574b1b5ce2b1a3e3323c1bfc3762680213aa2c557462e75c184"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "64f05159c03e2cd4cf0b9b2587a4b5dd31a68371b4a3e17313bc4d3c7ac173f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_tracking.py",
+      "sha256": "b6f749200506a00644d522ea6bce3a10b10ce3ba95c461d96c1fd405ac9b6e4b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py",
+      "sha256": "07d697e30483b37703cecf9355783148fd9e616ed9f9d907ce612a0ffa655e43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "363eb69e8f0439830290a3042eda31cd84f2c1205aa475f5d5300f302244442a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signals.py",
+      "sha256": "2f21a134ebf8b6a8fcd1b65e305829080bd531e2e9a324d4781fac2376aa2a97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/themes.py",
+      "sha256": "72e8f07c77e95afbee7495f411137df9c0b1dc80ab96feb0a06d0dc320f432ed"
+    }
+  ],
+  "completed_fast_round": false,
+  "contract_hash": "2fc463a9ac5904892d996ce892dea074b5696cdb828831480d3cfc33a5fe7955",
+  "labels_read": false,
+  "manifest_hash": "72601b30dc33b04596d86cd82b899721483c83adfc67e6571d25a1b2cedb9350",
+  "originals": [
+    {
+      "path": "/Users/l/Project/Recommandation/reports/enb-reviewed-source-inputs-20261020.json",
+      "sha256": "f2561de8ed23a52aa853f8a6cc0d6f222a755dd335ef12006c34a59c07e9642b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/enb-source-candidates-20261019.json",
+      "sha256": "caf3f6b6ea64d7e874372ecd017aaf843f79c4a7b4629c337571a8408aba88eb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/local-trusted-source-market-review-20261019.json",
+      "sha256": "80026c42e28408d10dc41ccc7873c8ce074e1fa621296e33bf342f4f11973a6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/v182-bumble-pair-content-and-future-source-audit-20261007.json",
+      "sha256": "143ebca8834b586f1258d507313f2388da19cae08c1e533f10aa7952a3be495d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001830043/alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e.json",
+      "sha256": "f23c7887094f0cb484d053e6d04aab37e6f6a98d8e6bd7ad2c73b3ef2d718bc3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000089572825000006.json",
+      "sha256": "88632704b4b0cd6f1079621beecfb8b5ca4e7ba2af15a49f70a4a1f33ae7f76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000095017025101102.json",
+      "sha256": "9c172d0e48f52a23c333992b8bb14024b9a747e7029b22e6aa7ee4003dde6745"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000110465925061164.json",
+      "sha256": "4033bdec191af7d9ca8d8ae11c432eafd3d97a742a9a90218e5e802839124805"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000119312525146199.json",
+      "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000162828025038861.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001830043/massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e.json",
+      "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/news/cik_0001830043/avnews_82c6cc3e5143825f6225f673.json",
+      "sha256": "c67fae71ac7135a621c36abf302d2eee97ffe6a9ca6d6c11ab53d0ff7715be46"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/oracle.json",
+      "sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/4166561a6da6904c722e4e5a.json",
+      "sha256": "04a5c1b732b2b8580246f3c169cfce5dde03471fda07711ad49b4d243475fb81"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aef35d31db2b831136174b7.json",
+      "sha256": "762f921f69a79c313444aeaa5fb8852ca966422a18d4ff29b2c6d741a86acd08"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/615a4af908c13d46cb5bd1a4.json",
+      "sha256": "79268825d2fe5f3193b384120c6daeab46b311c0d6bca19c27796a57b2774a2b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/6e4b10692099e75192411496.json",
+      "sha256": "099407d7fbf3fd7d9f700f3968bfaaa3c5abf1a26956e1ee25ed445d94a7ef2a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/7a0cdba6ca05b7f1d7a3d8eb.json",
+      "sha256": "cd8443dc679491afdd37e9653b82a5f0969d2e4933a5395ba6629afca086fe63"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/823014a354d76cf724d5edf4.json",
+      "sha256": "ed4c1e5ce5ad4036ee78f621df1166d09911134e9553db5b390e7a4048a8dcf8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/9558f4ca495c26a0af518a2e.json",
+      "sha256": "0aa953844eff2c4f2e95cedf67318f63367808fc3bfefe1478497f5a671b2295"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/ad04ca7a0b8973e405d9e2b3.json",
+      "sha256": "0d784f7555a09b2795575ab837f0e670b8f4a3bc0b1fe69313207de6f365cae2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/historical_identity.response.json",
+      "sha256": "5bd69c36b59c47185da91998f870ddeb00d62400f7f01832b74278db5af95020"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+      "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/splits.response.json",
+      "sha256": "a75375a255fc0dd5835aac5c5ee6bbb6e9424a0477a0c5a9b3620d3c223c23d5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/unadjusted_daily.response.json",
+      "sha256": "4a9dc4e88b73bd3b132c376c73c794ebf2d01f6e425760f04dd396a809d2b36a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/input_manifest.json",
+      "sha256": "6c18724510f763684e5580c6241b7c9d63d2195e2af738c4ef2957421792595b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/snapshot/documents/0000.json",
+      "sha256": "88632704b4b0cd6f1079621beecfb8b5ca4e7ba2af15a49f70a4a1f33ae7f76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/snapshot/documents/0001.json",
+      "sha256": "9c172d0e48f52a23c333992b8bb14024b9a747e7029b22e6aa7ee4003dde6745"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/snapshot/documents/0002.json",
+      "sha256": "4033bdec191af7d9ca8d8ae11c432eafd3d97a742a9a90218e5e802839124805"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/snapshot/oracle.json",
+      "sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/snapshot/reviewed_snapshot.json",
+      "sha256": "62b55f393a0debdba1a310bbb13a95d1fc440469d70a138a61b84eeecb45722c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v4/input_manifest.json",
+      "sha256": "e2f5202c211efed3ff6e0b5b8cc33a9b9b39c82f13647e73b11c13ae27f131dc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v4/snapshot/documents/0000.json",
+      "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v4/snapshot/documents/0001.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v4/snapshot/documents/0002.json",
+      "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v4/snapshot/oracle.json",
+      "sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v4/snapshot/reviewed_snapshot.json",
+      "sha256": "7dc57cf4e6426f669e20554aef7416d23fab3a7d8064f54960d208bfe6986d36"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/reviewed-orientation-stage-expectations-20261020.json",
+      "sha256": "b1ddb20696285bce9ff3cbdf66a64708bdd015cc002a3c4b7325746253e1ae62"
+    }
+  ],
+  "registry_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/.transitions/cycle-0001.json",
+      "sha256": "48b1ba55b1f0f2411289a2e1c3e5b992bf38b870dd3407c72a2a8bef696e7182"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/manifest.json",
+      "sha256": "dbe3fd99aa640e3f1108f61baba929f873b21210b228618bace6cae73a74cb4d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/stats.json",
+      "sha256": "61e7830a0af0bedb9d951052e0239fa748ba17fbd20de558c43b0742f825c7bb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v1/skill.md",
+      "sha256": "4f8e37030da3fac726bf9e33356b32b40013e7495db139e88a104d78b34bcf2b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v1/spec.json",
+      "sha256": "b25b2202ce7d8a4735a340e25abb3d3e3e03dce0cf230a3f474ea0f1014e4d83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v1/tests.json",
+      "sha256": "4a097a977d20af2a02cb5f53c0d60982d29f039e8772918959b0588013e150fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v2/skill.md",
+      "sha256": "4f8e37030da3fac726bf9e33356b32b40013e7495db139e88a104d78b34bcf2b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v2/spec.json",
+      "sha256": "e3c042a80ecc155c1a7f9d5815302dcb060ba9e99962de7a5aa71d8f8a7aa2e8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v2/tests.json",
+      "sha256": "4a097a977d20af2a02cb5f53c0d60982d29f039e8772918959b0588013e150fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v3/learning/events.jsonl",
+      "sha256": "e97ae8451e38b9ec9c0c02190479d00236952f7ec3f01df81a9e5c581cd0bd5c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v3/learning/profile.json",
+      "sha256": "39fa09b7cc71b6e617ee5d3a2a04ce69613ab2206910b066888d2dd534af5c0f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v3/skill.md",
+      "sha256": "4f8e37030da3fac726bf9e33356b32b40013e7495db139e88a104d78b34bcf2b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v3/spec.json",
+      "sha256": "2a6860372a426404e2f9a6f44ba1cf808bf26d21d0efa1004d55abcf42f6c684"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v3/tests.json",
+      "sha256": "4a097a977d20af2a02cb5f53c0d60982d29f039e8772918959b0588013e150fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v4/admission.json",
+      "sha256": "31186c8e5297f5be73eb415faac2988da6a11080c39ba77484a6122c8a5a2aac"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v4/learning/events.jsonl",
+      "sha256": "67d2c07743a84dd8df518109c8e4eb86ef8640a357cb7749f4b61b786b630d4f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v4/learning/profile.json",
+      "sha256": "95feb77a7fa248f0a25a3731af3f25f311f2a8e66c60155dc9c73cb2057e92d5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v4/skill.md",
+      "sha256": "19e2785efa46f7843fb2ef9013dd349a24206e92083bf6d9546dd992501648a0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v4/spec.json",
+      "sha256": "9caeb2af3d2b12e9ab77664c6160d4596ccf3b7861a2b253cb3911760703faf6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v4/tests.json",
+      "sha256": "4a097a977d20af2a02cb5f53c0d60982d29f039e8772918959b0588013e150fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/admission.json",
+      "sha256": "fe8f2efb69ca1210fd64520832dd803adbb63b511308883501a37670775f1cbe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/learning/events.jsonl",
+      "sha256": "5bdd05ffec31010433996a273e20aba863188b7820dce774ba3933ed9e594b07"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/learning/profile.json",
+      "sha256": "48551a22c9a0249b821680573a17a7a94ecfbd200137d96dd01d28f126e35645"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/skill.md",
+      "sha256": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/spec.json",
+      "sha256": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/tests.json",
+      "sha256": "4a097a977d20af2a02cb5f53c0d60982d29f039e8772918959b0588013e150fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/manifest.json",
+      "sha256": "10f10404891bae1cebc4b44a374e673dd9c4f6c1055e947a714232934a1c9741"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/stats.json",
+      "sha256": "795bedcb48a85dcb289aefba17f0ea58ffe5d80ec036f8056807605a6056dc5a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v1/skill.md",
+      "sha256": "9709939ebefbe292d77ac134db92023bc8a9a60eb73816743083104e313fc43e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v1/spec.json",
+      "sha256": "1e2135f31ce4083c35de982949f5b97472972ca07fceeb1106fe29cb34a4c516"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v1/tests.json",
+      "sha256": "94de97061ec63daaefa67efd7d19abd777467dcc0567012788ea0eb365be966f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v2/learning/events.jsonl",
+      "sha256": "39ada3d390891856b5fefa7b5b72889ba615cb11fa4c9e6a5f3d4aef83444290"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v2/learning/profile.json",
+      "sha256": "b09ef8fba190c5d70eb3aeb4d8070c3ff70636385334be3f0cd4e6fe1ed0ad20"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v2/spec.json",
+      "sha256": "c8a90a2f7c4b0000c038f547efd2012414abb1c57fcf457c9bc56a9e9dd823fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v2/tests.json",
+      "sha256": "13f2f7635409303dfec032955292945345b435b498e1e742cc4d394b650f3bc5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/manifest.json",
+      "sha256": "9b74d18e29a24eb0658f1d1b858055c00c94c7991a4e19cde777cba88d66b41d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/stats.json",
+      "sha256": "ce6d02e4c26e698183c151b54215c47b7e9fc1e9e884de33a5332c4cc42cd56d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v1/spec.json",
+      "sha256": "c8b50f0dfb0025bddec6d0bc5b766c20dcad2f9048e749f68048ff1d9e489d04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v1/tests.json",
+      "sha256": "2e937d5ccacb56308d87b5b4f92b53bbd24e6b6c42341cf44819325a7244464e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/learning/events.jsonl",
+      "sha256": "a13579e8c84673fce4afade505123c094e8b1af17a1a3ccef0e500e38431dce7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/learning/profile.json",
+      "sha256": "6d36fdda6ed11371ee6159b2efd9a01d21253ea72999570b524c0cc05cd1bb98"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/spec.json",
+      "sha256": "00a4595fe13d41e8bc0e972ef99fe6f9a8e5c46988aa47a667d8bf8816b309da"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/tests.json",
+      "sha256": "2e937d5ccacb56308d87b5b4f92b53bbd24e6b6c42341cf44819325a7244464e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/manifest.json",
+      "sha256": "77e04b28c47e0091f7e435c4daab62c87bbdd4bdf8737c14fb545af941af8389"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v1/skill.md",
+      "sha256": "b2378e03613546a77f0e586052c18512dfb3ee535f7a0e694e5fd7beb0df3ce0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v1/spec.json",
+      "sha256": "fa9c01516ad10b31c164542589a6b92d1904bd38a1127dc7c3a51fb7d2881909"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v1/tests.json",
+      "sha256": "e9e2aee78367cbd41a723a419caf83ed70e06d23f77aee309bfb2c085186aedf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v2/learning/events.jsonl",
+      "sha256": "87830803a373736709d1aea3d54f3727fc692829752491e7a85198926265d30e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v2/learning/profile.json",
+      "sha256": "980cedb10d9fcfa53e557a1fca7fc7073441f9b74476b954d62af686a4c95c51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v2/spec.json",
+      "sha256": "a4c30faa11f819b8f677939b56e0d1a92c2f3cfc1f798fe9d01714ffacd9c885"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v2/tests.json",
+      "sha256": "734a6014d3b28834d67f7e923b4cdb10ea8cbd6caa591a4e580c1fb487bc50e6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/manifest.json",
+      "sha256": "0580a2fd679384ec3ba9f8315bcfec6b2b2bab219a3d089d9e2d9dd3d5d38478"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v1/spec.json",
+      "sha256": "a48ea30c8f4d4cab1788bcd7766f8da21cfbd20e5164c9be211ecc146479040b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v1/tests.json",
+      "sha256": "2e8e776e595d8de360bf0a9a78f1ad479efe1b45e0a60af839452f45dc23169c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v2/spec.json",
+      "sha256": "103321bdd23bf1fa2d071d6383474599893de8854edca7bf2e54ba5ef2ded737"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v2/tests.json",
+      "sha256": "2e8e776e595d8de360bf0a9a78f1ad479efe1b45e0a60af839452f45dc23169c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/learning/events.jsonl",
+      "sha256": "6b0817abe8bf8de872d40d08e33332b483253b2d40f6a49a0ac07acc107e1204"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/learning/profile.json",
+      "sha256": "39a3227937d7e8ad540a9f931ea1d5d2c11f69758a24a90ad0fd4edc9adebd0b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/spec.json",
+      "sha256": "7f442b11c3fb3407ad0d7726e4fb28cbaa9f33c7c76ce6b52eaa1c9331bb6f60"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/tests.json",
+      "sha256": "2e8e776e595d8de360bf0a9a78f1ad479efe1b45e0a60af839452f45dc23169c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/manifest.json",
+      "sha256": "480a1beb2a5f33fd4430b1df3706b3be16192b322c5fd02cb2fb93368bc1b5a7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/stats.json",
+      "sha256": "5ebeb8cd295233b02b2c4a0d4f23503ae7203dae5a235cd254275cf9cdb880f1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v1/skill.md",
+      "sha256": "ddf825d33a0eb1dcba2aad2a257af6a79b169c0dea254a7ab223e4b7e6da2e57"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v1/spec.json",
+      "sha256": "d20f90fd5638bfd4df9c1aaa9e4c75b6c8a40b74c76ccc8147aa8383db1757f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v1/tests.json",
+      "sha256": "20e35880d45ced4fa999b5ab038dc39fdcb9120f9eaa282ba006390428aa5ed6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v2/learning/events.jsonl",
+      "sha256": "97a583a2b1e60d4cbd1087ede3b376bb2a2654776b48374c5a361a9de4a7f95a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v2/learning/profile.json",
+      "sha256": "6f9f8ee9b4ebde870c3847167e037624b00896d06c559043e90b1d2f8b445cac"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v2/spec.json",
+      "sha256": "6c73913d30ca36b63becd11e6016ad01c73a361a2fb1eca34de5ea88b65e32fa"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v2/tests.json",
+      "sha256": "676494226654bd500c9944ccfc1cb8907e7c35de80fbcaab0334008d3480a1f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/admission.json",
+      "sha256": "6f5debf6eefc606798770f7d4071d7ca8f99f129db39e850cec501a77f315abf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/learning/events.jsonl",
+      "sha256": "ecbb7914e29e44a7df368b9c40732f07bf0c00b3c889ea0997c1b5612545ce4a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/learning/profile.json",
+      "sha256": "a4df72840bfd848a332812ef8c2682d4882d3c4f56dd3bdaea4f3c938fe7984d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/spec.json",
+      "sha256": "19197cadb4729a131cf3c968ccc369ee0c7c0054ca95b719f7ff247f1b75613e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/tests.json",
+      "sha256": "676494226654bd500c9944ccfc1cb8907e7c35de80fbcaab0334008d3480a1f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/manifest.json",
+      "sha256": "4facfa3152b688d0a5d4abf8b476e2e4ecdf648953f41d36cf6a3a31d235a7db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/stats.json",
+      "sha256": "50e9370cfbce47abbc810149fe0bdba7485a07ae4b22f3832ad8923ecbaa86a8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v1/spec.json",
+      "sha256": "8cc58efd464289626e404bfdc024ec0f4926e0af66872e39bf385ef9210f9c27"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v1/tests.json",
+      "sha256": "a7413ab492ff444c1a9a022ff88c34ec8806918929dff27621872a0fd229d070"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v2/learning/events.jsonl",
+      "sha256": "a3cee3f702f07acdf0305edcb0aab3b128030954d30048a8859bc24b00206b28"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v2/learning/profile.json",
+      "sha256": "378e9ede2046c784c5387b3c9667d460bfdf1f2ccd0345417b1fbdf3660c48c3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v2/spec.json",
+      "sha256": "ccb42fbb56426fcdfe68b3ae0d6b1a8ef6b36ae7ef7f3036a8a16dbe9abf2f12"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v2/tests.json",
+      "sha256": "a7413ab492ff444c1a9a022ff88c34ec8806918929dff27621872a0fd229d070"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/admission.json",
+      "sha256": "64db82642a8e38537e26012b985c53f9c852dd35a992b69ea23264f299f958ab"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/learning/events.jsonl",
+      "sha256": "ca0af59ae10a30e35d3eb7459ef1cb11be6da0581a303055946ef231476740be"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/learning/profile.json",
+      "sha256": "a3909832d7c17feb80708ed85269c25646126565cac3ce73be2e4905f9ed9b07"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/spec.json",
+      "sha256": "e8e10fd2221aba605e4a2128340680e5f1c86d241504105580760ace96067505"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/tests.json",
+      "sha256": "a7413ab492ff444c1a9a022ff88c34ec8806918929dff27621872a0fd229d070"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/manifest.json",
+      "sha256": "eab48141105411350f1b188d2b2fffcec30d970ef0693755e15f2fc641fb8ad1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v1/spec.json",
+      "sha256": "2089b166c9a4d88ed8663beaebdb3c535716123a486beadbe75ba4230cd6b668"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v1/tests.json",
+      "sha256": "e684e16678dca2a81b4743fb1bee5f7e369062fcaeb8162822e8a9c7c8be75a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v2/learning/events.jsonl",
+      "sha256": "ff7ac4103fe37caca2d3f2d0ae017f5faf65c63365127f526a97acc5818e4adb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v2/learning/profile.json",
+      "sha256": "0fe111a6d10e120989f2560a519585e3af477f294527f839e943159cd7514132"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v2/spec.json",
+      "sha256": "cccc639ea02b2aaad172239a438bd429b950116a5d2a2d33f2aa0d677901d276"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v2/tests.json",
+      "sha256": "e684e16678dca2a81b4743fb1bee5f7e369062fcaeb8162822e8a9c7c8be75a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/manifest.json",
+      "sha256": "7a2a8d5811732bc0a0c651876b84d50563863a114170ca34e434682f72488703"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v1/spec.json",
+      "sha256": "18dea9302ba319c3aa0af6a79b3ffd3fbaedff56a139ecc32d1f8196a96ad620"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v1/tests.json",
+      "sha256": "601ee1eb6e868ba9b65e0de5a7c5df9ae7af5bda21b48578d0062b59748b12be"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/learning/events.jsonl",
+      "sha256": "cfb3535c5993d547bdd830e5cfc39c1ae3ff0d5e7f539fc682b832e7521d5af1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/learning/profile.json",
+      "sha256": "2a178800cb79b999228c622b2fcf57201b35d87fb54dd508a1487b72ed6746a8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/spec.json",
+      "sha256": "e2852a024a76e9b1b7f836c101ca02e09150727bbba93dbc6b1d077da76e4a1a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/tests.json",
+      "sha256": "601ee1eb6e868ba9b65e0de5a7c5df9ae7af5bda21b48578d0062b59748b12be"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/manifest.json",
+      "sha256": "cf842ad4816c95724f6465b48f8505fb67e59c89452201a038b9863734601580"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/stats.json",
+      "sha256": "96e4de9799a140ad0a47503109d0075e579cb2cc744896509eb1c357554e9052"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v1/spec.json",
+      "sha256": "0512ff73942e998e3fb445783f71e4ba2b7c4340d64d99a550833df3cf1f9d70"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v1/tests.json",
+      "sha256": "d9864cc33471659b1de65828bbdb6aa57b1bec2b4056a5f798d8c4739e4517b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v2/learning/events.jsonl",
+      "sha256": "5a0981bb8cc000754f8ae86eec555ef71b7bfd1b83af911cf3b80710fdf18ff5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v2/learning/profile.json",
+      "sha256": "42099d79aefc5c949e247b8e38a53e13f5227f23b76c3acd97a6be424ab0cda2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v2/spec.json",
+      "sha256": "00175663162b75b19654d0abb7df98ca66421867647d2fba57096b60748bb011"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v2/tests.json",
+      "sha256": "d9864cc33471659b1de65828bbdb6aa57b1bec2b4056a5f798d8c4739e4517b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/admission.json",
+      "sha256": "7410611427d16b86f5c0743dfe056f76fafc483954bb85ba23692d6e20916338"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/learning/events.jsonl",
+      "sha256": "5cb6683bdab42569747bb469dbffc90e61a1427a7d2093fb9d94d79643bcad97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/learning/profile.json",
+      "sha256": "6ade42a45b9bc938792f21f2b3b0089c61706ce68c8c368b52d0901f4d27f607"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/spec.json",
+      "sha256": "91acc7bf052c8a39114c5a119e6a9bec9c6093ccaf4ae65ea832d605255636cf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/tests.json",
+      "sha256": "d9864cc33471659b1de65828bbdb6aa57b1bec2b4056a5f798d8c4739e4517b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/manifest.json",
+      "sha256": "6743e1bf01f6bd7d06374c4337b9254f7cbf1ae7972c05908e4aca2d7cb419ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/stats.json",
+      "sha256": "24009842d57f0fcbf71d64b6ba8e375d70cb21fc3484ccbcbd5830657af83834"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v1/skill.md",
+      "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v1/spec.json",
+      "sha256": "9d4dff4e973f32a0d338d4d9548a6f54c6e9980ecbde65d9d7834d389d4a8861"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v1/tests.json",
+      "sha256": "6c2e6e93ef345d48ba48a69261fdb41218e2fbf0a924aaff07e2eed2a3cee022"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v2/learning/events.jsonl",
+      "sha256": "f14347aeed8e2974cc38fc599dd5a56ef2719dc948db905442cd42f98cbb205c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v2/learning/profile.json",
+      "sha256": "8df7f7b0d8f0b55aba29dab55cfd39b091d9e9278eb4f9e7e64719ffb8222498"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v2/skill.md",
+      "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v2/spec.json",
+      "sha256": "45539fda4df6f595ea5fc2d9222122e7dd01ec0ff9242df3ca79994532abe706"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v2/tests.json",
+      "sha256": "6c2e6e93ef345d48ba48a69261fdb41218e2fbf0a924aaff07e2eed2a3cee022"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/admission.json",
+      "sha256": "6fe03023b72cdae8f4d243fa40d5e3802372b9807a1f8941344ced1b2752be0e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/learning/events.jsonl",
+      "sha256": "ec9253c8d226c3ffd6fd2d162a6022b199a3cb2500897eb6bae4b88b56f1745c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/learning/profile.json",
+      "sha256": "8542abb7c8b7738d45fa73e679d137c28c08464935c3f9b76d98466170313690"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/skill.md",
+      "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/spec.json",
+      "sha256": "27ddc4483007f747f6a0aa7d7618ad2da560151f2d12b51ef8d5847b3c83d400"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/tests.json",
+      "sha256": "6c2e6e93ef345d48ba48a69261fdb41218e2fbf0a924aaff07e2eed2a3cee022"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/manifest.json",
+      "sha256": "2b804865a67917ef2d629d9d69cdc88603725742b4844f546952a3e0ff4bacf4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/versions/v1/spec.json",
+      "sha256": "46d0b7b6f79e4a1319d2e82b333e17c8b597b0fe2ca37526dea286e7a1d0449e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/versions/v1/tests.json",
+      "sha256": "7a2364d627c93eb97f3b6d228942b37204859723de47c90e4f3c90018839bb14"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/versions/v2/learning/events.jsonl",
+      "sha256": "608952048ffcb513dbc761dfb7dc69ab98fe23fd9fdc184820add71a653c87da"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/versions/v2/learning/profile.json",
+      "sha256": "bb56f1f05f158d604cbbe85793b7a1b16322d89d99fdb61c562e39342e1975df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/versions/v2/spec.json",
+      "sha256": "98bd4cbc4aaf1b7fca8bfaa8d14f0167da52f4a3cd94e9caa09b3bdec1536786"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/versions/v2/tests.json",
+      "sha256": "7a2364d627c93eb97f3b6d228942b37204859723de47c90e4f3c90018839bb14"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/manifest.json",
+      "sha256": "ece9671f6a208f7bdb6d18c46c7183eba02312fefd1c9051a6b2e7c6e024f7d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v1/spec.json",
+      "sha256": "298186290b11e7f49faa0808515d6d96bd96fb756410494ef4347d33099a0df3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v1/tests.json",
+      "sha256": "c0e1f41e86e6373562a06aa65445055fa9e711da1308fa9b23d4edb836b80d1c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v2/learning/events.jsonl",
+      "sha256": "263f7cf78f1da34344f15bb3ff680acdb022bb8714731c39b97986bd1d323bad"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v2/learning/profile.json",
+      "sha256": "41e1b3d37845133c24e2b817fa289b80e921b41b4a70f7b95c1a10f028b46ec0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v2/spec.json",
+      "sha256": "5fdc0c057e2c419f84b81ce8f384768c6c138b28e47e24851aeed6164c7c8d1b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v2/tests.json",
+      "sha256": "c0e1f41e86e6373562a06aa65445055fa9e711da1308fa9b23d4edb836b80d1c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/manifest.json",
+      "sha256": "b6da592313ea25ea0d574bd3c28e0622702abe1cd75a5bb13d1a0483596d5e30"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/stats.json",
+      "sha256": "b7f6c877c14a9274bcc5a56cd8e6f96b180f30e03aab740bf9b61be6862702d2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/versions/v1/spec.json",
+      "sha256": "379ba9d739b968bf24c0bed621743fec4e14964cc7311c1870e688f355ef1042"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/versions/v1/tests.json",
+      "sha256": "5b431cf312a99bdcf614a1938a8becb39a65d6f71da6dc4cdccc1239eca17567"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/versions/v2/learning/events.jsonl",
+      "sha256": "b8b78833827a51e834607793084cfe47bad2f93c7998c08ee1e29b6f94f43178"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/versions/v2/learning/profile.json",
+      "sha256": "19f0326983bf02f68468d8a72b48dc1cf4535dfcd6def3373527f011a3f93297"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/versions/v2/spec.json",
+      "sha256": "32213a3e163e264e5a98e085c547d872609c2c60b23fd6bd3c8cae961112d025"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/versions/v2/tests.json",
+      "sha256": "5b431cf312a99bdcf614a1938a8becb39a65d6f71da6dc4cdccc1239eca17567"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/manifest.json",
+      "sha256": "6a6c54b2e1defef87e7fcff3b326648f0292ea17be5fb6e493d4e1187428b230"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/stats.json",
+      "sha256": "ebfebeb9acde1954d4d7b31c0f68f14ca7333532ca8f0ac5325b2cf1ff021aa7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v1/skill.md",
+      "sha256": "e23b21416e25f2ece3b95374dd33d5f9105a089f2b2fabcfcc9a5f7ae2844d2e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v1/spec.json",
+      "sha256": "546290c063ce9cbb5a273a15bcb2533dff57da674409f05050f2f1f98809704a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v1/tests.json",
+      "sha256": "7d59cb694caa8454b6387cdc140c25e0279ad4932f0de3ca0608e4c36406200b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v2/learning/events.jsonl",
+      "sha256": "548dd7187df462a2a27c6478a5360c7f4a54d622c00b3a6fc283e4b8b9f19616"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v2/learning/profile.json",
+      "sha256": "be16ac050beee9c016c5a4b24cfe5d266cf9521571990994bb7ac98ffbe8e65b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v2/skill.md",
+      "sha256": "e23b21416e25f2ece3b95374dd33d5f9105a089f2b2fabcfcc9a5f7ae2844d2e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v2/spec.json",
+      "sha256": "4a4870daeafa254ee01de79413a943a68077a6e77f611671a7090b61786d535b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v2/tests.json",
+      "sha256": "7d59cb694caa8454b6387cdc140c25e0279ad4932f0de3ca0608e4c36406200b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v3/admission.json",
+      "sha256": "4272530dfb4236d32bd699dbc068270e382c9bd82e5ec2d4cb60db695f370859"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v3/skill.md",
+      "sha256": "cbe90f616917cfadd36b04ec800270772d0b5e3c6f6759e6726145d40a39e071"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v3/spec.json",
+      "sha256": "07d2fefcaeb8930c21c5c881f9fc32b3096542634e04bdacc19d40d01bce8387"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v3/tests.json",
+      "sha256": "7d59cb694caa8454b6387cdc140c25e0279ad4932f0de3ca0608e4c36406200b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/manifest.json",
+      "sha256": "be636ca0c8425768b9ffee0167c65f2e14828bf30a0bf649c8108810579975a7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/stats.json",
+      "sha256": "3d5c34019844b230f53c582bfd7d46c28332f084153b11b9b8dd57677c2ba64c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v1/skill.md",
+      "sha256": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v1/spec.json",
+      "sha256": "4f7558e09a221d883613d0741e6e4b6fca5937066ce6abd224af00ac722715fe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v1/tests.json",
+      "sha256": "e38a56328d3facf12cf4aa52492b91494f59d8016972cd16378581fcd28703c3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/learning/events.jsonl",
+      "sha256": "1134d2bbf8bbb8a5825ef3b9631c9808f920de7572e2637aa59eea26f70acfc3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/learning/profile.json",
+      "sha256": "af3fcd86d0652e2c3ced34ef9dafebcc9740e4d78d2a2a6bd7100a3dc6a94595"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/skill.md",
+      "sha256": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/spec.json",
+      "sha256": "b604c5c835f5203be8ef191d03b474698ee26a0c805d46ff1470803c80727d70"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/tests.json",
+      "sha256": "e38a56328d3facf12cf4aa52492b91494f59d8016972cd16378581fcd28703c3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/manifest.json",
+      "sha256": "56adf38dfa9b21ffbce593df532470e8a2a7898f144d99e44221f672be4d31f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/stats.json",
+      "sha256": "5ed93d424445e79dc9060b2739cf4b3c14f523758baa7d0a2df9eb0fac6d88f7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v1/skill.md",
+      "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v1/spec.json",
+      "sha256": "60e259b41af3c85e902bc3169b55ed660d01bf5557f4c2c45549839cc54bc3df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v1/tests.json",
+      "sha256": "ca1346e15ab1e9aec5e27d2d489efbaa74da6999c2f217aae9fc8439125dd06e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/learning/events.jsonl",
+      "sha256": "cb8ef2da6f3ff98ac89a25809745743f395a9f055ae6b3a0631d5160d9193eba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/learning/profile.json",
+      "sha256": "a7f471c06b506fa5711f1da96a4d058b57b657d70604b782e33eb6eacd5fde80"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/skill.md",
+      "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/spec.json",
+      "sha256": "56325ffe9f5bed14256073f640fece46ba4957d8bb56ecf838ebae173e8d109b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/tests.json",
+      "sha256": "ca1346e15ab1e9aec5e27d2d489efbaa74da6999c2f217aae9fc8439125dd06e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/registry.json",
+      "sha256": "41da62a18a371e11376933fb7dfe57f22440f3129467e2248a8c5d45d63ee0f4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/manifest.json",
+      "sha256": "1cea9ab92ad3dd40fc23bb7cf5a9b7a8d087a2cb32e784fe54a4bec3571ffbfc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/stats.json",
+      "sha256": "9ec18613e35e8ab14ad24d44bd831d5c2dbcc7e1555c205cd7e8883e0d0b12d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v1/skill.md",
+      "sha256": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v1/spec.json",
+      "sha256": "805e1a3a5c4a564c8410f958abdd9e39ea64ef1b46b7df77d8a5b158134f8c11"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v1/tests.json",
+      "sha256": "37a55364eb3cb15ad58ca92e668143dc3d4aadc0f809a25554f648be650a135f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/learning/events.jsonl",
+      "sha256": "4be85223397fcaa6e9fd3bbdbe4bd38328560c9fac8d382a114979f059ccebff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/learning/profile.json",
+      "sha256": "23876fcdaa5e3a8a5f64aeb4ae984ff2f2837595b96973a91ce3538b6a1773bb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/skill.md",
+      "sha256": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/spec.json",
+      "sha256": "30548fdbcb6d1ede05b3c5c703eaafdbaeed117e9ea1aa99a7c0667708b89c32"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/tests.json",
+      "sha256": "37a55364eb3cb15ad58ca92e668143dc3d4aadc0f809a25554f648be650a135f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/target_evaluations.jsonl",
+      "sha256": "7515b4f6744d25ab62e3958d6d478755a1f5f9af3c984353343c80b61289fb92"
+    }
+  ],
+  "schema_version": "reviewed-native-orientation-freeze-v1",
+  "slow_source_published": false
+}

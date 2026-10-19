@@ -1,0 +1,40 @@
+{
+  "completed_fast_round": false,
+  "engineering_mvp_closed": false,
+  "external_llm_calls": 0,
+  "fixed_denominator": {
+    "H_init": 3,
+    "proposer": 1
+  },
+  "independent_receipts": 0,
+  "labels_read": false,
+  "manifest_hash": "72601b30dc33b04596d86cd82b899721483c83adfc67e6571d25a1b2cedb9350",
+  "outcomes": [],
+  "pending": [
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v1/stage/exchange/inbox/e148aa2df12cf1612c9e640f6500e4a17662a1e4709bcce5ddc42ae9de5709a7.json",
+      "inbox_sha256": "14db45c074e924e461e554741c30e36ac274eb2b9e27c66ed259da9406aa66a3",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v1/stage/exchange/outbox/e148aa2df12cf1612c9e640f6500e4a17662a1e4709bcce5ddc42ae9de5709a7.txt",
+      "request_hash": "e148aa2df12cf1612c9e640f6500e4a17662a1e4709bcce5ddc42ae9de5709a7",
+      "sample_id": "p01",
+      "stage": "information_plan_propose"
+    },
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v1/stage/exchange/inbox/e3a7dc272bb605dfc2f40281c01723e664ede8bbc8603d3050fc624356ada14d.json",
+      "inbox_sha256": "1849f763301ea679ba744fac4ae0d05a9343350a3ebe391ce0d25665e70a627e",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v1/stage/exchange/outbox/e3a7dc272bb605dfc2f40281c01723e664ede8bbc8603d3050fc624356ada14d.txt",
+      "request_hash": "e3a7dc272bb605dfc2f40281c01723e664ede8bbc8603d3050fc624356ada14d",
+      "sample_id": "h02",
+      "stage": "research_controller_initialize"
+    },
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v1/stage/exchange/inbox/4a8f298354e820d7f03bd542436ae6e79ff6612c2f5eaf21942c761057a24795.json",
+      "inbox_sha256": "67a525e0a2edcf90556b1bc7715533fe2cbc239bdd37cfb997957e966a6d83eb",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v1/stage/exchange/outbox/4a8f298354e820d7f03bd542436ae6e79ff6612c2f5eaf21942c761057a24795.txt",
+      "request_hash": "4a8f298354e820d7f03bd542436ae6e79ff6612c2f5eaf21942c761057a24795",
+      "sample_id": "h03",
+      "stage": "research_controller_initialize"
+    }
+  ],
+  "readonly_data_requests": 0
+}

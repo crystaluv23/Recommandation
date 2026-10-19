@@ -1,0 +1,45 @@
+{
+  "completed_fast_round": false,
+  "engineering_mvp_closed": false,
+  "external_llm_calls": 0,
+  "fixed_denominator": {
+    "H_init": 3,
+    "proposer": 1
+  },
+  "independent_receipts": 0,
+  "labels_read": false,
+  "manifest_hash": "9fc5567749f3e12ce9fff084ce30fcb7cf541d3393fd2f3ec06560c253059c5c",
+  "outcomes": [
+    {
+      "sample_id": "h01",
+      "status": "awaiting_proposer"
+    }
+  ],
+  "pending": [
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v3/stage/exchange/inbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+      "inbox_sha256": "4c0914d553d05b153c87e7c8b3d0ad89189b9e164b15dddbb900af62f49684b6",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v3/stage/exchange/outbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.txt",
+      "request_hash": "570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1",
+      "sample_id": "p01",
+      "stage": "information_plan_propose"
+    },
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v3/stage/exchange/inbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+      "inbox_sha256": "0b0d84a8ad15ad951a38e80c71a69089f796af0b27cb110682cfc833e69af498",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v3/stage/exchange/outbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.txt",
+      "request_hash": "7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160",
+      "sample_id": "h02",
+      "stage": "research_controller_initialize"
+    },
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v3/stage/exchange/inbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+      "inbox_sha256": "7eb3a21ab703376a34524a8e65dfb7c1793b71c30fb02f4addd9f422fb9c555b",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v3/stage/exchange/outbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.txt",
+      "request_hash": "94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa",
+      "sample_id": "h03",
+      "stage": "research_controller_initialize"
+    }
+  ],
+  "readonly_data_requests": 0
+}

@@ -1,0 +1,34 @@
+{
+  "scope": "Independent final preflight only; no role answers",
+  "manifest_hash": "9fc5567749f3e12ce9fff084ce30fcb7cf541d3393fd2f3ec06560c253059c5c",
+  "all_current_bound_files_verified": true,
+  "requests": [
+    {
+      "sample_id": "p01",
+      "request_hash": "570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1",
+      "reservation_units": 19567,
+      "messages_exact": true,
+      "identity_hits": 0
+    },
+    {
+      "sample_id": "h02",
+      "request_hash": "7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160",
+      "reservation_units": 57939,
+      "messages_exact": true,
+      "identity_hits": 0
+    },
+    {
+      "sample_id": "h03",
+      "request_hash": "94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa",
+      "reservation_units": 35786,
+      "messages_exact": true,
+      "identity_hits": 0
+    }
+  ],
+  "empty_outboxes_receipts": true,
+  "prior_exact": true,
+  "h02_business_passages_visible": true,
+  "h03_periodic_gap_and_visible_8K": true,
+  "missing_market_has_no_anchor_or_metrics": true,
+  "repeat_resume_all_hashes_same": true
+}

@@ -1,0 +1,77 @@
+{
+  "status": "bounded_preflight_passed_no_answers",
+  "scope": "Only final runner/spec/test/current-code binding, canonical journal/inbox and prior/observer/budget review; no expanded source scan or role/model execution. This development preflight is not the formal run.",
+  "decision": "May checkpoint and create the new formal orientation stage under these frozen limits; fresh model behavior and h01 exact accepted-Plan consumption remain unobserved.",
+  "fixed_denominator": {
+    "H_init": 3,
+    "proposer": 1
+  },
+  "manifest_hash": "9fc5567749f3e12ce9fff084ce30fcb7cf541d3393fd2f3ec06560c253059c5c",
+  "current_frozen_code_files_verified": 100,
+  "wire_checks": [
+    {
+      "sample_id": "p01",
+      "request_hash": "570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1",
+      "canonical_request_sha256": "b1a42a616ee1a5db1d5628a4a1e59d2714346bacaf7c00454fb9ff696a53e9de",
+      "inbox_sha256": "4c0914d553d05b153c87e7c8b3d0ad89189b9e164b15dddbb900af62f49684b6",
+      "reservation_units": 19567
+    },
+    {
+      "sample_id": "h02",
+      "request_hash": "7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160",
+      "canonical_request_sha256": "6fd4b450fe8855db1a71d222d824ed9270b861d26326f9f2283a975014f82cc7",
+      "inbox_sha256": "0b0d84a8ad15ad951a38e80c71a69089f796af0b27cb110682cfc833e69af498",
+      "reservation_units": 57939
+    },
+    {
+      "sample_id": "h03",
+      "request_hash": "94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa",
+      "canonical_request_sha256": "cc82550a270af254a975955d007c90d1ab8d04402f5968b75c5919b33b494069",
+      "inbox_sha256": "7eb3a21ab703376a34524a8e65dfb7c1793b71c30fb02f4addd9f422fb9c555b",
+      "reservation_units": 35786
+    }
+  ],
+  "v3_journals_and_inbox_bytes_exact_v2": true,
+  "native_proposer_prior_exact_in_inputs_and_actual_proposal_context": true,
+  "observer_fix": {
+    "sample_ids_explicit_at_all_call_sites": [
+      "p01",
+      "h01",
+      "h02",
+      "h03"
+    ],
+    "original_event_dict_deepcopied": true,
+    "same_event_kept_in_order_across_samples": true,
+    "temporary_callback_check_order": [
+      "h02",
+      "h03",
+      "h02"
+    ],
+    "no_dedup": true,
+    "event_count_not_physical_calls": true
+  },
+  "budget_and_control_review": {
+    "request_131072_guard": "request_ready callback after journal persistence, before cache/receive/inbox; temporary oversize callback rejected with0dispatch",
+    "case_256000_and8calls": "Real accepted initialize AgentStep consumed by existing _consume_model_step; parsed_step distinct from budget-accepted initial_state",
+    "p01_to_h01": "Native accepted Plan must be saved exact before assigning it for h01; failure blocks fixed h01 denominator, pending leaves awaiting; no default substitution",
+    "native_bootstrap": "Actual execute_information_plan installs metrics/anchor/document provider before initialize; InitialBoundary after real returned step/budget blocks every tail/label path",
+    "H_init_document_reads": "not_supported_by_native_initialize; provider setup is not progressive-read capability",
+    "restore": "Full immutable/receipt/cache verifier only used after completion; pending/submitted in-progress states do not go through completed-only inventory check"
+  },
+  "preflight_repeat_resume_all16_files_equal": true,
+  "source_and_semantic_limits": [
+    "Qualified source scopes unchanged; this check does not repeat full source qualification",
+    "No fresh proposer/H_init answer, correction/fallback outcome, accepted h01 source composition or real completed-stage restore yet",
+    "No Signal/Reflect/Predictor/labels/score/trajectory/Slow publication or independent gain"
+  ],
+  "role_answers": 0,
+  "reviewer_resume_submit_or_dispatch": false,
+  "network_or_model_calls": 0,
+  "bindings": {
+    "scripts/run_reviewed_orientation_stage.py": "6a3b38543de998a75969592634a41fae615dbc9c3154a67fceaf6e4589d23fc0",
+    "spec/scripts/run_reviewed_orientation_stage.md": "dccbd4ad19dd5c225bb07e4a17a7625ca5444ad2da94d01fcd3505029a68b16d",
+    "tests/test_reviewed_orientation_stage.py": "d30a7ddc0e0ed59c748a9ede798e0c677d27e5132ed81764f37b5ae9a0cf443f",
+    "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/focused-final.log": "773f289e878375d6784c94d49dfaa1b00a175de4a843af68a6fd136f5c6cba84",
+    "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/preflight-result.json": "73da98d9d4cbf75f46b04ddac572acaa4e98c739683a42ab394783fc694332b0"
+  }
+}

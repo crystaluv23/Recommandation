@@ -13,7 +13,9 @@ operating annual-OR-interim 同池选择年度+最新季度，generic8K/6K不冒
 独立16项/初始data62项、related372项及依赖修复114项通过；首次全量12失败保留，
 旧fixture与实际旧ID依赖已修；最终1835全量/182.698s及prompt-only后330项通过。
 新 ENB 三 SEC-only view 已物化；实际投影17/24 partial含业务正句，其他三类缺源。
-尚未运行新菜单的真实 proposer/H_init，不把可见原句当模型理解/完整背景通过。
+新 [orientation阶段](../reports/reviewed-orientation-stage-20261020.md) 已真实预检1proposer+
+3H_init固定分母，生产prior原字冻结；24共享call/131072单request，0正式答。
+最终6项/独立v3预检通过、重复恢复全hash同；未把可见原句当模型理解通过。
 
 ## 最近实际证据
 
@@ -43,6 +45,6 @@ operating annual-OR-interim 同池选择年度+最新季度，generic8K/6K不冒
 
 ## 下一步
 
-当前family已过全量、prompt相关测试、lint及独立ENB恢复；scoped checkpoint后冻结
-新菜单 proposer 和 ENB业务正控/BMBL早cut不足的真实H_init原请求。新角色由root派发，
-不擅加预算、不热改旧冻结、保留原8项工作树改动。
+菜单实现已checkpoint10c64d46；新stage相关测试/独立预检/lint后另checkpoint并正式冻结。
+root派fresh41+，driver唯一resume；h01仅消费实际p01，h02/h03保持正控/不足固定分母。
+不擅加预算、不热改旧冻结，原8项工作树改动保留。

@@ -372,10 +372,30 @@
         "runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/source-boundary-review.json"
       ],
       "result": "First full1832 has12 retained failures from old fixtures/old-ID coverage assumptions; repaired with alias-route admission. Final full1835 PASS182.698s, then prompt-only reconciliation330 relatedPASS. Independent16/sourceconsumer/projection checks pass; pre-push lintPASS17:54:59Z. No fresh menu-role behavior/fullMVP closure."
+    },
+    {
+      "id": "engineering-mvp-native-orientation-preflight-20261020",
+      "strategy": "native_proposer_to_exact_plan_and_core_initial_boundary",
+      "failure_families": [
+        "simplified_prior_not_native_engine_input",
+        "premature_completed_inventory_check",
+        "per_request_vs_case_budget_confusion",
+        "persisted_plan_authorization_order"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-orientation-stage-20261020.md",
+        "reports/reviewed-orientation-stage-expectations-20261020.json",
+        "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/preflight-result.json",
+        "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/root-preflight-review.json",
+        "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/independent-review.json",
+        "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/focused-final.log"
+      ],
+      "result": "Final nativeproductionprior+sample-attributed observer6tests PASS2.303s;65 related checks earlierPASS. Finalv3 root/independent100code/source/Registry/wirebudget/0answers checks pass. New24call/131072request frozen only aftercheckpoint;h01awaits realPlan, no menu-role behavior yet."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-basic-info-menu-20261020",
+    "after_iteration": "engineering-mvp-native-orientation-preflight-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -424,7 +444,13 @@
       "runs/diagnostics/basic_info_menu_boundary_20261020_v1/full-tests-final.log",
       "runs/diagnostics/basic_info_menu_boundary_20261020_v1/prompt-only-final-check.json",
       "runs/diagnostics/basic_info_menu_boundary_20261020_v1/final-projection-check.json",
-      "runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/source-boundary-review.json"
+      "runs/diagnostics/reviewed_enb_source_snapshot_20261020_v1/source-boundary-review.json",
+      "reports/reviewed-orientation-stage-20261020.md",
+      "reports/reviewed-orientation-stage-expectations-20261020.json",
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v2/preflight-result.json",
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/root-preflight-review.json",
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/independent-review.json",
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/focused-final.log"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -447,21 +473,23 @@
       "Case Posthoc does not inherit the Plan/Round progressive-read wrapper; inspect the actual entry before promising read_refs/browse. Preserve its real deterministic case catalog and repair resolver instead of adding capability for an oracle.",
       "A terminal no_findings prefix does not cover native partial salvage with a valid sibling and no_findings null, all-invalid salvage or deterministic promotion; preserve native validation events rather than infer absence of fallback from one output field.",
       "Source whitelist/query gate at proposer did not enforce semantic templates at direct core; exact form substring/title and metadata upgrades cleared coverage falsely. Query relevance also hid latest interim; actual bounded projection, not form presence, is required for operating background.",
-      "Fixed canonical menu routing conflicts with literal available-source membership: existing resolver aliases must be admitted semantically while Plans still copy fixed routes. Old tests also assumed one filing and treated8K as annual/interim fulfillment."
+      "Fixed canonical menu routing conflicts with literal available-source membership: existing resolver aliases must be admitted semantically while Plans still copy fixed routes. Old tests also assumed one filing and treated8K as annual/interim fulfillment.",
+      "Case-bootstrap resemblance is insufficient: preserve engine proposer prior, core-computed anchor/metrics and exact native read capabilities. Completed-only inventory cannot reject real pending/submitted queues, and a parsed but unsuccessfully persisted Plan cannot authorize a consumer. Single request cap differs from aggregate case budget.",
+      "Global event dedup merged identical validation events acrossH_init cases; sample-attributed raw-event sequence is necessary, while unique receipts alone count physical calls."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "repair",
-      "strategy": "closed_orientation_compiler_and_same_pool_operating_selection",
-      "action": "Implement existing five-action contract with one compiler, fixed internal recipe and same-pool exact filing selection; validate old failures/variants and actual ENB projection before new roles.",
-      "stop": "No new roles or full successor until stable focused/full/lint and scoped checkpoint; preserve archived/free policies as read-only and original pointers.",
-      "question": "Does every new producer/executor enforce the same fixed semantic action and do qualified annual/interim originals yield actual visible business material without overstating coverage?",
-      "pass": "Independent direct/proposer/form boundaries, adapter append/cache equivalence and substantive partial projection positive; subsequent fresh native menu/H_init batch remains separately required.",
-      "fail": "Runtime legacy bypass, arbitrary template description/query/coverage, title/substring form proof or count/form presence represented as business completeness.",
-      "on_pass": "Checkpoint this deterministic family then freeze bounded actual proposer/H_init requests under predeclared oracle.",
-      "on_fail": "Retain exact failures and repair owning path without new source/model scope or budget expansion.",
-      "new_evidence": "Actual ENB business text visible under partial projection; full1832 exposed12 legacy fixture/producer connection assumptions, plus alias-only capability mismatch, now16 independent/114 related pass.",
-      "distinguishing_variable": "Same semantic template at proposer and direct core, same eligible document pool through adapter/append/cache, actual projected business text versus file-form presence."
+      "kind": "diagnose",
+      "strategy": "native_proposer_to_exact_plan_and_core_initial_boundary",
+      "action": "Freeze exact native proposer and real-core H_init requests under predeclared1+3oracle; independent raw responses through original parsers and source/needs semantic review.",
+      "stop": "Do not dispatch before scoped code/input/oracle freeze and preflight review; keep24/131072 ceilings and all failure denominators; no tail/labels/Fast/Slow.",
+      "question": "Can a nativeproposer obey the fixed menu and its exactPlan feed an actualbootstrap/H_init, while explicit business-positive and earlier-periodic-gap controls retain correct facts/needs?",
+      "pass": "Exact acceptedPlan/native initial states, original source claim audit and actual immutable completedrestore0newdispatch under frozen limits.",
+      "fail": "Default substitution, hand-entered price/control, fabricated tools/labels, semantic gaps converted to absence or overclaim, or persistence/budget failure counted accepted.",
+      "on_pass": "Close only the declared source/menu/initial-state examples; reassess remainingF10/Slow/newSignal/fullreadiness gaps.",
+      "on_fail": "Preserve exact raw/correction/artifacts and repair the demonstrated family under a separate freeze without raising this batch limits.",
+      "new_evidence": "Closedmenu1835full/330prompt checks and deterministicENB businessprojection now permit a real native role batch; actual3request preflight with nativeprior/caps is bound before answers.",
+      "distinguishing_variable": "Nativeproposer output consumed without rewriting, plus independent sufficient-business versus early missing-periodic controls through the same productionbootstrap."
     }
   },
   "successor_prerequisites": [

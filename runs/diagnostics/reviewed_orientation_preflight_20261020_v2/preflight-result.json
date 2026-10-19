@@ -1,0 +1,247 @@
+{
+  "H_init_document_reads": "not_supported_by_native_initialize",
+  "actual_host_cost": null,
+  "actual_host_tokens": null,
+  "aggregate_reservation_hard_upper_bound": 3145728,
+  "all_files_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/contract.json",
+      "sha256": "37d579399d62a7a4ae572cebf87342c9ada86a74b563fbcd78ab2a8de360d8b4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/contract.json",
+      "sha256": "8492b0385615273803c6fe3047a274ad188bbbd7e05e6eca85289c7147b04a7d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+      "sha256": "4c0914d553d05b153c87e7c8b3d0ad89189b9e164b15dddbb900af62f49684b6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+      "sha256": "0b0d84a8ad15ad951a38e80c71a69089f796af0b27cb110682cfc833e69af498"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+      "sha256": "7eb3a21ab703376a34524a8e65dfb7c1793b71c30fb02f4addd9f422fb9c555b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/expectations.json",
+      "sha256": "144bcd6be1193766611986afc9dae22fdb88e2f266cec33a69f758f7a8cfaffc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/inputs.json",
+      "sha256": "7cb78181220712d76d57d89c04456a77991b449783e0805b9f3b1d3f00c5cd8f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/manifest.json",
+      "sha256": "6304be0ba2be2aff7a15aa5ee96113563987fd1acdd607c7e747dd16f9268bea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/progress.json",
+      "sha256": "2c0122b89545563a216fa83f50ceb2cb700ad347a479d1a4481f4e0cf7063404"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/requests/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+      "sha256": "b1a42a616ee1a5db1d5628a4a1e59d2714346bacaf7c00454fb9ff696a53e9de"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/requests/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+      "sha256": "6fd4b450fe8855db1a71d222d824ed9270b861d26326f9f2283a975014f82cc7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/requests/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+      "sha256": "cc82550a270af254a975955d007c90d1ab8d04402f5968b75c5919b33b494069"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/samples/h02/bootstrap.json",
+      "sha256": "9463a2f1b5a99ed07695a86cffece08bebe02a7eff0aefefd0804b5eb09bdb5f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/samples/h03/bootstrap.json",
+      "sha256": "1bfde7395d8a87e34b208362ca44f43619ea335f10625db3f1fe957df26d513d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/unused_external_attempts.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/validation_events.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ],
+  "all_files_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/contract.json",
+      "sha256": "37d579399d62a7a4ae572cebf87342c9ada86a74b563fbcd78ab2a8de360d8b4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/contract.json",
+      "sha256": "8492b0385615273803c6fe3047a274ad188bbbd7e05e6eca85289c7147b04a7d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+      "sha256": "4c0914d553d05b153c87e7c8b3d0ad89189b9e164b15dddbb900af62f49684b6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+      "sha256": "0b0d84a8ad15ad951a38e80c71a69089f796af0b27cb110682cfc833e69af498"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+      "sha256": "7eb3a21ab703376a34524a8e65dfb7c1793b71c30fb02f4addd9f422fb9c555b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/expectations.json",
+      "sha256": "144bcd6be1193766611986afc9dae22fdb88e2f266cec33a69f758f7a8cfaffc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/inputs.json",
+      "sha256": "7cb78181220712d76d57d89c04456a77991b449783e0805b9f3b1d3f00c5cd8f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/manifest.json",
+      "sha256": "6304be0ba2be2aff7a15aa5ee96113563987fd1acdd607c7e747dd16f9268bea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/progress.json",
+      "sha256": "2c0122b89545563a216fa83f50ceb2cb700ad347a479d1a4481f4e0cf7063404"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/requests/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+      "sha256": "b1a42a616ee1a5db1d5628a4a1e59d2714346bacaf7c00454fb9ff696a53e9de"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/requests/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+      "sha256": "6fd4b450fe8855db1a71d222d824ed9270b861d26326f9f2283a975014f82cc7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/requests/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+      "sha256": "cc82550a270af254a975955d007c90d1ab8d04402f5968b75c5919b33b494069"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/samples/h02/bootstrap.json",
+      "sha256": "9463a2f1b5a99ed07695a86cffece08bebe02a7eff0aefefd0804b5eb09bdb5f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/samples/h03/bootstrap.json",
+      "sha256": "1bfde7395d8a87e34b208362ca44f43619ea335f10625db3f1fe957df26d513d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/unused_external_attempts.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/validation_events.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ],
+  "all_files_unchanged": true,
+  "external_llm_calls": 0,
+  "h01": "Only exact future acceptedp01 Plan; currently awaiting",
+  "max_local_calls": 24,
+  "max_request_units": 131072,
+  "new_role_answers": 0,
+  "prepare": {
+    "fixed_denominator": {
+      "H_init": 3,
+      "proposer": 1
+    },
+    "manifest_hash": "3fb60e8802d0f00d7e7a6e111c4ec6ed59f1c4eb9c25973a74290a8e7430014a",
+    "max_local_calls": 24,
+    "new_role_answers": 0
+  },
+  "proposer_memory_interactions_max": 3,
+  "readonly_data_requests": 0,
+  "repeat_resume_same": true,
+  "requests": [
+    {
+      "canonical_request_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/requests/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+      "canonical_request_sha256": "b1a42a616ee1a5db1d5628a4a1e59d2714346bacaf7c00454fb9ff696a53e9de",
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+      "inbox_sha256": "4c0914d553d05b153c87e7c8b3d0ad89189b9e164b15dddbb900af62f49684b6",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/outbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.txt",
+      "request_hash": "570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1",
+      "reservation_units": 19567,
+      "sample_id": "p01",
+      "stage": "information_plan_propose"
+    },
+    {
+      "canonical_request_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/requests/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+      "canonical_request_sha256": "6fd4b450fe8855db1a71d222d824ed9270b861d26326f9f2283a975014f82cc7",
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+      "inbox_sha256": "0b0d84a8ad15ad951a38e80c71a69089f796af0b27cb110682cfc833e69af498",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/outbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.txt",
+      "request_hash": "7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160",
+      "reservation_units": 57939,
+      "sample_id": "h02",
+      "stage": "research_controller_initialize"
+    },
+    {
+      "canonical_request_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/requests/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+      "canonical_request_sha256": "cc82550a270af254a975955d007c90d1ab8d04402f5968b75c5919b33b494069",
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+      "inbox_sha256": "7eb3a21ab703376a34524a8e65dfb7c1793b71c30fb02f4addd9f422fb9c555b",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/outbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.txt",
+      "request_hash": "94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa",
+      "reservation_units": 35786,
+      "sample_id": "h03",
+      "stage": "research_controller_initialize"
+    }
+  ],
+  "result": {
+    "completed_fast_round": false,
+    "engineering_mvp_closed": false,
+    "external_llm_calls": 0,
+    "fixed_denominator": {
+      "H_init": 3,
+      "proposer": 1
+    },
+    "independent_receipts": 0,
+    "labels_read": false,
+    "manifest_hash": "3fb60e8802d0f00d7e7a6e111c4ec6ed59f1c4eb9c25973a74290a8e7430014a",
+    "outcomes": [
+      {
+        "sample_id": "h01",
+        "status": "awaiting_proposer"
+      }
+    ],
+    "pending": [
+      {
+        "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "inbox_sha256": "4c0914d553d05b153c87e7c8b3d0ad89189b9e164b15dddbb900af62f49684b6",
+        "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/outbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.txt",
+        "request_hash": "570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1",
+        "sample_id": "p01",
+        "stage": "information_plan_propose"
+      },
+      {
+        "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "inbox_sha256": "0b0d84a8ad15ad951a38e80c71a69089f796af0b27cb110682cfc833e69af498",
+        "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/outbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.txt",
+        "request_hash": "7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160",
+        "sample_id": "h02",
+        "stage": "research_controller_initialize"
+      },
+      {
+        "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/inbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "inbox_sha256": "7eb3a21ab703376a34524a8e65dfb7c1793b71c30fb02f4addd9f422fb9c555b",
+        "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v2/stage/exchange/outbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.txt",
+        "request_hash": "94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa",
+        "sample_id": "h03",
+        "stage": "research_controller_initialize"
+      }
+    ],
+    "readonly_data_requests": 0
+  },
+  "runtime_limits": {
+    "finalization_token_reserve": 64000,
+    "max_cost": 20.0,
+    "max_llm_calls": 8,
+    "max_llm_signals_per_round": 2,
+    "max_signal_calls": 1,
+    "max_signal_rounds": 1,
+    "max_signals_per_round": 4,
+    "max_tokens": 256000
+  },
+  "scope": "Stable native actual-request preflight only,0role answers; not formal execution freeze"
+}
