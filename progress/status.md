@@ -29,8 +29,10 @@ Lint 通过且已亲读 feedback。反例审查另证实并发派发可突破本
 
 ## 下一最小批次与输入阻塞
 
-先修共享 root 原子调用准入与本地缓存原答复核，再修 timestamp-bound 识别及 driver
-消费者分支；预验证 prior 合法和纠错权限可满足，冻结新版本后由新独立角色重验正反控。
+上述共享 root 原子准入、缓存原答复核、aware timestamp-bound 与 driver 消费者分支
+已做[本地修复](../reports/local-role-integrity-repair-20261019.md)：旧反例先失败，新检查通过；
+1708 全量离线测试、最终 114 项聚焦检查通过。七 prior 已用生产校验预检合法，下一步
+冻结新版本后由新独立角色重验正反控，仍不能把局部通过当实际全链通过。
 保留本批失败，不用提示/季度 regex 掩盖。后续按可信输入→检索阅读→Signal→Reflect
 →Slow→后继→恢复推进。
 

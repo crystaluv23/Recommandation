@@ -17,3 +17,13 @@ attempt. The immutable contract permits at most 28 local calls and zero external
 API calls, one native correction per invocation, 131072 conservative request
 tokens and the existing per-role output limits. No old run is resumed and no
 whole research cycle or provider transport is claimed.
+
+After the first frozen batch exposed illegal synthetic priors and a consumer
+assembly omission, new freezes must prevalidate the complete prior state,
+tagged evidence, explicit cutoff, selection identity and representable partial
+residuals through owning production validators before any inbox is dispatched.
+Every synthetic prior uses an explicit runtime cutoff. Bind this preflight and
+the consumer verifier code into the new manifest. Consumer assembly includes
+the exact accepted stage deltas and identity aliases; failures preserve their
+request traces. Backend identity is frozen, actual internal model version is
+explicitly unknown. Prior frozen inputs/results are not migrated or rewritten.

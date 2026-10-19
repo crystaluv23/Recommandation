@@ -6,7 +6,7 @@ import json
 import math
 import re
 from dataclasses import replace
-from datetime import date, datetime
+from datetime import date, datetime, time, timezone
 from difflib import SequenceMatcher
 from typing import Any, Iterable, Mapping
 from stock_opportunity_agent.data.resolution import (
@@ -796,8 +796,13 @@ _EXPLICIT_CALENDAR_DATE = re.compile(
     r"August|September|October|November|December|Jan\.?|Feb\.?|Mar\.?|"
     r"Apr\.?|Jun\.?|Jul\.?|Aug\.?|Sep\.?|Sept\.?|Oct\.?|Nov\.?|Dec\.?)\s+"
     r"(?:(?P<day>\d{1,2})(?:st|nd|rd|th)?[,]?\s+)?(?P<year>20\d{2})|"
-    r"(?P<iso>20\d{2}-\d{2}-\d{2})))\b",
+    r"(?P<iso>20\d{2}-\d{2}-\d{2})))(?=\b|T)",
     re.IGNORECASE,
+)
+
+_AWARE_ISO_TIMESTAMP = re.compile(
+    r"\b20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"
+    r"(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})(?=$|[\s,;?!.\)])"
 )
 
 
@@ -820,7 +825,8 @@ _EXPLICIT_AS_OF_BOUND = re.compile(
     r"August|September|October|November|December|Jan\.?|Feb\.?|Mar\.?|"
     r"Apr\.?|Jun\.?|Jul\.?|Aug\.?|Sep\.?|Sept\.?|Oct\.?|Nov\.?|Dec\.?)\s+"
     r"(?:(?P<day>\d{1,2})(?:st|nd|rd|th)?[,]?\s+)?(?P<year>20\d{2})|"
-    r"(?P<iso>20\d{2}-\d{2}-\d{2})))\b",
+    r"(?P<iso>20\d{2}-\d{2}-\d{2})(?P<clock>T\d{2}:\d{2}:\d{2}"
+    r"(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2}))?))(?=$|[\s,;?!.\)])",
     re.IGNORECASE,
 )
 
@@ -989,17 +995,40 @@ def _calendar_match_date(match: re.Match[str], *, month_end: bool) -> date | Non
         return None
 
 
+def _bound_instant(value: date | datetime) -> datetime:
+    """Use aware instants for timestamp bounds; retain legacy date-only callers."""
+    return value if isinstance(value, datetime) else datetime.combine(value, time.min, tzinfo=timezone.utc)
+
+
+def _explicit_bound_value(match: re.Match[str]) -> date | datetime | None:
+    """Parse a complete aware timestamp or the original calendar-date form."""
+    clock = match.groupdict().get("clock")
+    if clock is None:
+        return _calendar_match_date(match, month_end=True)
+    try:
+        value = datetime.fromisoformat((str(match.group("iso")) + clock).replace("Z", "+00:00"))
+        return value if value.tzinfo is not None and value.utcoffset() is not None else None
+    except ValueError:
+        return None
+
+
 def _has_prediction_bounded_as_of_clause(
     text: str,
-    prediction_date: date,
+    prediction_date: date | datetime,
 ) -> bool:
     """Return whether an explicit as-of clause caps facts at the blind cutoff."""
 
     if _SYMBOLIC_AS_OF_BOUND.search(text):
         return True
     for match in _EXPLICIT_AS_OF_BOUND.finditer(text):
-        referenced = _calendar_match_date(match, month_end=True)
-        if referenced is not None and referenced <= prediction_date:
+        referenced = _explicit_bound_value(match)
+        if referenced is None:
+            continue
+        if isinstance(referenced, datetime):
+            allowed = referenced <= _bound_instant(prediction_date)
+        else:
+            allowed = referenced <= (prediction_date.date() if isinstance(prediction_date, datetime) else prediction_date)
+        if allowed:
             return True
     return False
 
@@ -1043,12 +1072,14 @@ def _future_publication_claim(text: str, offset: int) -> bool:
 
 def _future_source_date_refs(
     text: str,
-    prediction_date: date,
+    prediction_date: date | datetime,
     *,
     field_name: str,
 ) -> list[str]:
     """Return future or cutoff-open date scopes for requested realized facts."""
 
+    prediction_time = prediction_date
+    prediction_date = prediction_time.date() if isinstance(prediction_time, datetime) else prediction_time
     text = _TRAILING_FUTURE_EXCLUSION.sub("", text.replace("_", " "))
     fact_request = bool(
         _FUTURE_SOURCE_CONTENT_INTENT.search(text)
@@ -1065,6 +1096,19 @@ def _future_source_date_refs(
     future: list[str] = []
     covered_year_offsets: set[int] = set()
     future_source_availability = False
+    for match in _AWARE_ISO_TIMESTAMP.finditer(text):
+        try:
+            instant = datetime.fromisoformat(match.group(0).replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if instant > _bound_instant(prediction_time):
+            future.append(match.group(0))
+            future_source_availability |= _future_publication_claim(text, match.start())
+    for match in _EXPLICIT_AS_OF_BOUND.finditer(text):
+        referenced_bound = _explicit_bound_value(match)
+        if isinstance(referenced_bound, datetime) and referenced_bound > _bound_instant(prediction_time):
+            future.append(match.group(0))
+            future_source_availability = True
     for match in _EXPLICIT_CALENDAR_DATE.finditer(text):
         referenced = _calendar_match_date(match, month_end=False)
         year_start = match.start("year") if match.group("year") else match.start("iso")
@@ -1103,7 +1147,7 @@ def _future_source_date_refs(
     if not future:
         return []
     if (
-        _has_prediction_bounded_as_of_clause(text, prediction_date)
+        _has_prediction_bounded_as_of_clause(text, prediction_time)
         and _FUTURE_EXPECTATION_OR_SCHEDULE.search(text)
         and not _requests_realized_results(text)
         and not future_source_availability
@@ -1118,13 +1162,8 @@ def _raw_future_information_issues(
 ) -> list[ValidationIssue]:
     """Return typed issues for questions that require post-cutoff facts."""
 
-    if not isinstance(evaluation_context, Mapping):
-        return []
-    try:
-        prediction_date = datetime.fromisoformat(
-            str(evaluation_context.get("prediction_time")).replace("Z", "+00:00")
-        ).date()
-    except ValueError:
+    prediction_time = _prediction_time_from_context(evaluation_context)
+    if prediction_time is None:
         return []
     issues: list[ValidationIssue] = []
     for field_name in ("open_questions", "next_information_needs"):
@@ -1136,7 +1175,7 @@ def _raw_future_information_issues(
                 continue
             future_refs = _future_source_date_refs(
                 item,
-                prediction_date,
+                prediction_time,
                 field_name=field_name,
             )
             if not future_refs:
@@ -1151,7 +1190,7 @@ def _raw_future_information_issues(
                         f"invalid_field={path!r}, {path}={item!r}, "
                         "future_source_date_refs="
                         f"{json.dumps(future_refs, separators=(',', ':'))}, "
-                        f"prediction_time={prediction_date.isoformat()!r}. Remove "
+                        f"prediction_time={prediction_time.isoformat()!r}. Remove "
                         "this item or restate it to request only evidence already "
                         "available by prediction_time. A cutoff-bounded as-of "
                         "question about a disclosed future schedule, expectation, "
@@ -1161,7 +1200,7 @@ def _raw_future_information_issues(
                     paths=(path,),
                     allowed_repairs=("replace", "remove"),
                     repair_context={
-                        "prediction_time": prediction_date.isoformat(),
+                        "prediction_time": prediction_time.isoformat(),
                         "future_source_date_refs": future_refs,
                         "required_temporal_boundary": "available_by_prediction_time",
                     },
@@ -1291,25 +1330,23 @@ def _raw_research_state_compaction_issues(
     return issues
 
 
-def _prediction_date_from_context(
+def _prediction_time_from_context(
     evaluation_context: Mapping[str, Any] | None,
-) -> date | None:
-    """Return the runtime-owned blind cutoff date when supplied."""
-
+) -> datetime | None:
+    """Retain the runtime's actual aware cutoff through temporal consumers."""
     if not isinstance(evaluation_context, Mapping):
         return None
     try:
-        return datetime.fromisoformat(
-            str(evaluation_context.get("prediction_time")).replace("Z", "+00:00")
-        ).date()
+        value = datetime.fromisoformat(str(evaluation_context.get("prediction_time")).replace("Z", "+00:00"))
+        return value if value.tzinfo is not None and value.utcoffset() is not None else None
     except ValueError:
         return None
 
 
 def _need_as_of_bound_clause(
     need: str,
-    prediction_date: date | None = None,
-) -> tuple[str, date] | None:
+    prediction_date: date | datetime | None = None,
+) -> tuple[str, date | datetime] | None:
     """Return one explicit as-of clause bounding an information need.
 
     Without a prediction date the earliest explicit bound wins, so routing can
@@ -1318,15 +1355,19 @@ def _need_as_of_bound_clause(
     residual keeps the widest legitimate inherited scope.
     """
 
-    best: tuple[str, date] | None = None
+    best: tuple[str, date | datetime] | None = None
     for match in _EXPLICIT_AS_OF_BOUND.finditer(need):
-        referenced = _calendar_match_date(match, month_end=True)
+        referenced = _explicit_bound_value(match)
         if referenced is None:
             continue
-        if prediction_date is not None and referenced > prediction_date:
+        if prediction_date is not None and (
+            referenced > _bound_instant(prediction_date) if isinstance(referenced, datetime)
+            else referenced > (prediction_date.date() if isinstance(prediction_date, datetime) else prediction_date)
+        ):
             continue
         if best is None or (
-            referenced < best[1] if prediction_date is None else referenced >= best[1]
+            _bound_instant(referenced) < _bound_instant(best[1]) if prediction_date is None
+            else _bound_instant(referenced) >= _bound_instant(best[1])
         ):
             best = (match.group(0), referenced)
     return best
@@ -1343,7 +1384,7 @@ _INHERITABLE_EXPECTATION_CONTEXT = re.compile(
 def _bounded_residual_need(
     residual_need: str | None,
     prior_need: str,
-    prediction_date: date | None,
+    prediction_date: date | datetime | None,
 ) -> str | None:
     """Return the exact residual representation the temporal guard accepts.
 
@@ -1417,7 +1458,7 @@ def _reject_unrepresentable_partial_selections(
     the check is a no-op there.
     """
 
-    prediction_date = _prediction_date_from_context(evaluation_context)
+    prediction_date = _prediction_time_from_context(evaluation_context)
     if prediction_date is None:
         return
     for selection in selections:
@@ -1455,7 +1496,7 @@ def _restore_inherited_need_cutoffs(
 
     if previous_state is None or not isinstance(evaluation_context, Mapping):
         return
-    cutoff = _prediction_date_from_context(evaluation_context)
+    cutoff = _prediction_time_from_context(evaluation_context)
     if cutoff is None:
         return
 
@@ -2283,7 +2324,7 @@ def _reflection_selection_intents(
 ) -> list[dict[str, Any]]:
     """Project persisted routing decisions into the fields reflection still needs."""
 
-    prediction_date = _prediction_date_from_context(evaluation_context)
+    prediction_date = _prediction_time_from_context(evaluation_context)
     rows: list[dict[str, Any]] = []
     for item in selections:
         row = {
@@ -2417,7 +2458,7 @@ def _collect_need_dispositions(
         if isinstance(item, ResearchEvidenceRef) and item.kind == "signal"
         and _research_evidence_key(item) not in previous_keys
     }
-    prediction_date = _prediction_date_from_context(evaluation_context)
+    prediction_date = _prediction_time_from_context(evaluation_context)
     required = {"need_index", "answer_scope", "residual_need", "evidence_refs", "reason"}
     declared_counts: dict[int, int] = {}
     for raw in need_dispositions:
@@ -2517,7 +2558,7 @@ def _reflection_need_transition_contract(
 ) -> dict[str, Any]:
     """Expose expected routing scope without treating it as an executed answer."""
 
-    prediction_date = _prediction_date_from_context(evaluation_context)
+    prediction_date = _prediction_time_from_context(evaluation_context)
     results = {result.ref: result for result in batch.results}
     owners = _need_disposition_owners(state, selections)
     rules: list[dict[str, Any]] = []
@@ -3681,7 +3722,7 @@ def _targeted_answer_need_transition_errors(
 
     if previous is None:
         return []
-    prediction_date = _prediction_date_from_context(evaluation_context)
+    prediction_date = _prediction_time_from_context(evaluation_context)
     target_selections: dict[int, list[SignalSelectionDecision]] = {}
     for selection in selections:
         if (

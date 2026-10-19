@@ -1303,6 +1303,30 @@ class StructuredRoleClient:
             request_path=str(request_path),
         )
         cached = self.cache.load(request_hash)
+        if self.local_role_exchange is not None:
+            reservation = len(json.dumps(request["messages"], ensure_ascii=False,
+                                        sort_keys=True, separators=(",", ":")).encode("utf-8")) + output_limit
+            if max_request_tokens is not None and reservation > max_request_tokens:
+                raise RuntimeBudgetExceeded("local role request reservation exceeds remaining case budget")
+            raw_output, local_usage = self.local_role_exchange.receive(
+                request, accounting_tokens=reservation, allow_dispatch=cached is None)
+            usage = AgentUsage(llm_calls=1, tokens=reservation, cost=0.0)
+            try:
+                parsed, normalization = _parse_json_object_envelope(raw_output)
+            except (json.JSONDecodeError, ValidationError) as exc:
+                raise StructuredOutputInvalid(str(exc), raw_output, usage,
+                                             output_token_limit=output_limit) from exc
+            record = {"response_id": "local-" + request_hash, "model": "independent-subagent",
+                      "json_output": parsed, "usage": local_usage, "raw_output": raw_output,
+                      "decision_token_scores": None}
+            if normalization is not None:
+                record["structured_output_normalization"] = normalization
+            if cached is not None:
+                if _canonical_hash(cached) != _canonical_hash({"request_hash": request_hash, **record}):
+                    raise ValidationError("local response cache differs from its verified raw answer and receipt")
+                return parsed, _usage_from_cache(cached), None
+            self.cache.store(request_hash, record)
+            return parsed, usage, None
         if cached is not None:
             _emit_runtime_progress(
                 self.on_progress,
@@ -1316,25 +1340,6 @@ class StructuredRoleClient:
                 _usage_from_cache(cached),
                 _decision_token_scores_from_cache(cached),
             )
-        if self.local_role_exchange is not None:
-            reservation = len(json.dumps(request["messages"], ensure_ascii=False,
-                                        sort_keys=True, separators=(",", ":")).encode("utf-8")) + output_limit
-            if max_request_tokens is not None and reservation > max_request_tokens:
-                raise RuntimeBudgetExceeded("local role request reservation exceeds remaining case budget")
-            raw_output, local_usage = self.local_role_exchange.receive(request, accounting_tokens=reservation)
-            usage = AgentUsage(llm_calls=1, tokens=reservation, cost=0.0)
-            try:
-                parsed, normalization = _parse_json_object_envelope(raw_output)
-            except (json.JSONDecodeError, ValidationError) as exc:
-                raise StructuredOutputInvalid(str(exc), raw_output, usage,
-                                             output_token_limit=output_limit) from exc
-            record = {"response_id": "local-" + request_hash, "model": "independent-subagent",
-                      "json_output": parsed, "usage": local_usage, "raw_output": raw_output,
-                      "decision_token_scores": None}
-            if normalization is not None:
-                record["structured_output_normalization"] = normalization
-            self.cache.store(request_hash, record)
-            return parsed, usage, None
         if not self.allow_external:
             _emit_runtime_progress(
                 self.on_progress,

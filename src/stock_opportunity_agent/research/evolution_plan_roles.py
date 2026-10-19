@@ -118,7 +118,7 @@ from stock_opportunity_agent.research.evolution_research_validation import (
     _normalize_information_plan_output,
     _normalize_research_state_output,
     _normalized_need_content_tokens,
-    _prediction_date_from_context,
+    _prediction_time_from_context,
     _reflection_need_transition_contract,
     _reflection_selection_intents,
     raw_need_disposition_issues,
@@ -1315,7 +1315,7 @@ class LLMSignalRetrievalAgent:
                                 )
                             target_bound = _need_as_of_bound_clause(target_need)
                             routing_prediction_date = (
-                                _prediction_date_from_context(
+                                _prediction_time_from_context(
                                     self.evaluation_context
                                 )
                             )

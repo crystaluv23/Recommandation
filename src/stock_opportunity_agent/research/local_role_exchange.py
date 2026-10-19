@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import tempfile
+import fcntl
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -66,7 +67,8 @@ class LocalRoleExchange:
             "max_calls": max_calls, "external_api_calls": 0,
         })
 
-    def receive(self, request: Mapping[str, Any], *, accounting_tokens: int) -> tuple[str, dict[str, Any]]:
+    def receive(self, request: Mapping[str, Any], *, accounting_tokens: int,
+                allow_dispatch: bool = True) -> tuple[str, dict[str, Any]]:
         """Dispatch once or return a receipt-verified, byte-exact raw response."""
         digest = canonical_json_hash(request)
         inbox = self.root / "inbox" / f"{digest}.json"
@@ -79,20 +81,36 @@ class LocalRoleExchange:
             "max_output_tokens": request["max_output_tokens"],
             "output_contract": request.get("output_contract", request.get("response_format")),
         }
-        if not inbox.exists() and len(list((self.root / "inbox").glob("*.json"))) >= self.max_calls:
-            raise LocalRoleBudgetExhausted("local role frozen call ceiling exhausted")
-        _immutable(inbox, record)
+        with (self.root / ".dispatch.lock").open("a+", encoding="utf-8") as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            try:
+                _immutable(self.root / "contract.json", {
+                    "schema_version": "independent-local-role-exchange-v1",
+                    "max_calls": self.max_calls, "external_api_calls": 0,
+                })
+                if not inbox.exists():
+                    if not allow_dispatch:
+                        raise ValidationError("local cache is missing its original inbox")
+                    if len(list((self.root / "inbox").glob("*.json"))) >= self.max_calls:
+                        raise LocalRoleBudgetExhausted("local role frozen call ceiling exhausted")
+                _immutable(inbox, record)
+                inbox_bytes = inbox.read_bytes()
+            finally:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
         pending = {"stage": request["stage"], "request_hash": digest,
                    "inbox_path": str(inbox), "outbox_path": str(raw),
-                   "inbox_sha256": hashlib.sha256(inbox.read_bytes()).hexdigest()}
+                   "inbox_sha256": hashlib.sha256(inbox_bytes).hexdigest()}
         if not receipt_path.exists():
+            if not allow_dispatch:
+                raise ValidationError("local cache is missing its response receipt")
             raise LocalRoleRequestPending(pending)
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        raw_bytes = raw.read_bytes() if raw.is_file() else None
         if (receipt.get("request_hash") != digest or receipt.get("inbox_sha256") != pending["inbox_sha256"]
                 or not isinstance(receipt.get("agent_id"), str) or not receipt["agent_id"].strip()
-                or not raw.is_file() or receipt.get("raw_output_sha256") != hashlib.sha256(raw.read_bytes()).hexdigest()):
+                or raw_bytes is None or receipt.get("raw_output_sha256") != hashlib.sha256(raw_bytes).hexdigest()):
             raise ValidationError("local role response receipt does not bind exact request and raw answer")
-        return raw.read_text(encoding="utf-8"), {
+        return raw_bytes.decode("utf-8"), {
             **receipt, "accounting_tokens": accounting_tokens,
             "cost": 0.0, "cost_basis": "zero_external_api_cost_internal_unknown",
             "token_usage": None, "internal_agent_cost": None,

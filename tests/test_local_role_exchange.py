@@ -1,11 +1,15 @@
 """Local role dispatch must preserve production boundaries without network I/O."""
 import json
 import tempfile
+import subprocess
+import sys
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 from unittest import TestCase
 from unittest.mock import patch
+from concurrent.futures import ThreadPoolExecutor
+from threading import Barrier, BrokenBarrierError
 
 from stock_opportunity_agent.llm import get_model, RegisteredModel
 from stock_opportunity_agent.models import ValidationError
@@ -101,6 +105,132 @@ class LocalRoleExchangeTests(TestCase):
             Path(pending["outbox_path"]).write_text('{"answer":false}')
             with self.assertRaisesRegex(ValidationError, "receipt"):
                 client.complete_json(**self.kwargs())
+
+    def test_separate_clients_cannot_exceed_shared_ceiling_concurrently(self):
+        import stock_opportunity_agent.research.local_role_exchange as module
+        original = module._immutable
+        barrier = Barrier(2)
+
+        def delayed_publish(path, record):
+            if path.parent.name == "inbox":
+                try:
+                    barrier.wait(timeout=0.2)
+                except BrokenBarrierError:
+                    pass
+            return original(path, record)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            clients = [self.client(root, calls=1), self.client(root, calls=1)]
+
+            def dispatch(index):
+                kwargs = self.kwargs()
+                kwargs["system_prompt"] += str(index)
+                try:
+                    clients[index].complete_json(**kwargs)
+                except EvolutionControlFlow as exc:
+                    return type(exc).__name__
+
+            with patch.object(module, "_immutable", side_effect=delayed_publish), ThreadPoolExecutor(max_workers=2) as workers:
+                results = list(workers.map(dispatch, (0, 1)))
+            self.assertEqual(sorted(results), ["LocalRoleBudgetExhausted", "LocalRoleRequestPending"])
+            self.assertEqual(len(list((root / "local_roles/inbox").glob("*.json"))), 1)
+
+    def test_cache_resume_revalidates_raw_receipt_and_parsed_cache(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            client = self.client(root)
+            with self.assertRaises(LocalRoleRequestPending) as raised:
+                client.complete_json(**self.kwargs())
+            pending = raised.exception.pending
+            self.submit(client.local_role_exchange, pending, '{"answer":true}')
+            self.assertTrue(client.complete_json(**self.kwargs())[0]["answer"])
+            cache_path = root / "cache/responses" / f"{pending['request_hash']}.json"
+            original_cache = cache_path.read_bytes()
+            cache = json.loads(original_cache)
+            cache["json_output"] = {"answer": False}
+            cache_path.write_text(json.dumps(cache))
+            with self.assertRaisesRegex(ValidationError, "cache"):
+                self.client(root).complete_json(**self.kwargs())
+            cache_path.write_bytes(original_cache)
+            Path(pending["outbox_path"]).write_text('{"answer":false}')
+            with self.assertRaisesRegex(ValidationError, "receipt"):
+                self.client(root).complete_json(**self.kwargs())
+            self.assertEqual(len(list((root / "local_roles/inbox").glob("*.json"))), 1)
+
+    def test_shared_ceiling_is_serialized_between_processes(self):
+        code = '''
+import sys, time
+from pathlib import Path
+import stock_opportunity_agent.research.local_role_exchange as m
+root = Path(sys.argv[1])
+x = m.LocalRoleExchange(root, max_calls=1)
+original = m._immutable
+def slow(path, record):
+    if path.parent.name == "inbox": time.sleep(0.15)
+    return original(path, record)
+m._immutable = slow
+try:
+    x.receive({"stage": "test", "messages": [{"role": "user", "content": sys.argv[2]}], "max_output_tokens": 1}, accounting_tokens=1)
+except m.EvolutionControlFlow as e:
+    print(type(e).__name__)
+'''
+        with tempfile.TemporaryDirectory() as directory:
+            children = [subprocess.Popen([sys.executable, "-c", code, directory, str(i)],
+                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for i in range(2)]
+            results = []
+            for child in children:
+                out, err = child.communicate(timeout=10)
+                self.assertEqual(child.returncode, 0, err)
+                results.append(out.strip())
+            self.assertEqual(sorted(results), ["LocalRoleBudgetExhausted", "LocalRoleRequestPending"])
+            self.assertEqual(len(list((Path(directory) / "inbox").glob("*.json"))), 1)
+
+    def test_cache_cannot_adopt_replaced_receipt_or_recreate_missing_original(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            client = self.client(root)
+            with self.assertRaises(LocalRoleRequestPending) as raised:
+                client.complete_json(**self.kwargs())
+            pending = raised.exception.pending
+            self.submit(client.local_role_exchange, pending, '{"answer":true}')
+            client.complete_json(**self.kwargs())
+            receipt_path = root / "local_roles/receipts" / f"{pending['request_hash']}.json"
+            receipt = json.loads(receipt_path.read_text())
+            receipt["agent_id"] = "a-different-agent"
+            receipt_path.write_text(json.dumps(receipt))
+            with self.assertRaisesRegex(ValidationError, "cache"):
+                self.client(root).complete_json(**self.kwargs())
+            inbox = Path(pending["inbox_path"])
+            inbox.unlink()
+            with self.assertRaisesRegex(ValidationError, "missing its original inbox"):
+                self.client(root).complete_json(**self.kwargs())
+            self.assertFalse(inbox.exists())
+
+    def test_receipt_hash_and_return_use_one_raw_buffer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            client = self.client(root)
+            with self.assertRaises(LocalRoleRequestPending) as raised:
+                client.complete_json(**self.kwargs())
+            pending = raised.exception.pending
+            self.submit(client.local_role_exchange, pending, '{"answer":true}')
+            request = json.loads((root / "requests" / f"{pending['request_hash']}.json").read_text())["request"]
+            raw = Path(pending["outbox_path"])
+            original = Path.read_bytes
+            count = []
+
+            def change_after_read(path):
+                data = original(path)
+                if path == raw:
+                    count.append(True)
+                    path.write_text('{"answer":false}')
+                return data
+
+            with patch.object(Path, "read_bytes", change_after_read):
+                text, _usage = client.local_role_exchange.receive(request, accounting_tokens=1)
+            self.assertEqual(text, '{"answer":true}')
+            self.assertEqual(len(count), 1)
 
     def test_malformed_raw_preserved_and_enters_native_parser_failure(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -2,6 +2,19 @@
 
 ## Requested object and local exclusion scope (2026-10-02)
 
+### Exact timestamp bounds (2026-10-19)
+
+Explicit as-of bounds also accept complete aware ISO timestamps, including `Z`
+and numeric UTC offsets. Compare their actual instant with runtime
+`evaluation_context.prediction_time`, preserving same-day times and offsets
+through initial validation, routing, residual restoration, actual disposition
+and fallback. Equality and earlier instants are permitted; a later instant,
+naive timestamp, malformed suffix or invalid date grants no as-of allowance.
+Existing date-only/symbolic bounds keep their original meaning. Expectation/
+schedule framing is still mandatory; actual future findings and later source
+publication remain forbidden even with a valid bound. No unbounded shorthand
+forecast question is silently rewritten as a legal prior state.
+
 Runtime input detection distinguishes a lookup from an analysis of the supplied
 price. A question whose current-price subject immediately predicates whether
 expectations are discounted/reflected/priced in is analytical reference use;

@@ -3157,7 +3157,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
                 )
                 self.assertEqual(
                     obligation["prediction_time"],
-                    "2025-07-31",
+                    "2025-07-31T00:00:00+00:00",
                 )
                 self.assertEqual(
                     initialized.value.next_information_needs,

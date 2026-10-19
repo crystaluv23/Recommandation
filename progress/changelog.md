@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-19：紧接独立角色 v2 反例修复共享 root 跨线程/进程调用准入，cache 命中先复核 exact inbox/receipt/raw/parsed cache，并以单次 raw buffer 做 hash 和 decode。完整 aware ISO cutoff 贯通 routing/校验/残留/处置/fallback，拒同日稍后和未来来源 timestamp；保留日期与显式 cutoff 合同。driver 改为先过真实 prior 校验，消费者带真实 delta/alias，失败保留 trace。旧反例先失败，1708 全量及最终 114 聚焦检查通过；新实际角色尚待冻结执行，旧 v2 五失败不改。同步 convergence 为工程 MVP 和真实当前 review，独立收益仍 unknown 后置，无完整后继计划。
+
 - 2026-10-19：采用用户批准的 Fast/Slow 工程 MVP 范围，独立收益留作后续；增加显式本地独立角色交接及冻结七样本 Reflect driver。13 个隔离角色原答经过原生产 parser/纠错/持久化，原两样本贯通 terminal 与 final/posthoc/critic 处置传递。七分母仍仅 2 机械通过，5 个失败暴露非法 synthetic prior、ISO timestamp-bound 漏识别及 driver 漏参数；另行 consumer CLI 验证四份 accepted 输出保真，未改旧结果。1691 项原全量及新增聚焦检查通过；零外部 API。独立反例又证实并发本地调用上限和缓存原答复核缺陷，通用恢复未关闭；下一批修复。同步已授权 transcript 公开内容时间政策，26 份原件证明仍待核查，无 oracle 迁移；来源、Slow、magnitude、后继及完整 MVP 均未关闭。
 
 - 2026-10-19：按新meta机制选择v182回答范围阻塞，修订owning specs并分开Routing预期与Reflect实际处置，贯通typed修复、fallback、terminal和状态/反馈视图；原永久ResearchState仍八字段。1679项测试/lint通过后冻结8d9105db，两案真实Reflect/terminal共6调用，0/2语义通过：Q2仍被错误full/partial用于Q3，两terminal无owner处置纠错失败。保留全部原件和失败分母，停止该诊断；后续仅修复精确目标集合/空集合及remove-only机械协议并离线验证，未再调模型。回答范围、来源PIT、Slow消费和独立收益均开放；详见v182-answer-scope-stage-acceptance-20261019报告。

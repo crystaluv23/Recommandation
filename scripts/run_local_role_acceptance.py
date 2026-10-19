@@ -13,12 +13,17 @@ from diagnose_executed_answer_scope import (
     REPO, StageContract, _source_inputs, _reflect, _load_stage, binding, read_json,
     assemble_consumers,
 )
+from verify_local_role_consumers import verify_sample
 from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
 from stock_opportunity_agent.llm import get_model
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_core import ResearchState, ResearchDecision, _assemble_final_context, InformationPlan, SignalRound
 from stock_opportunity_agent.research.evolution_transport import ExternalAttemptLedger, StructuredRoleClient
 from stock_opportunity_agent.research.local_role_exchange import LocalRoleExchange, LocalRoleRequestPending
+from stock_opportunity_agent.research.evolution_research_validation import (
+    _normalize_research_state_output, _validate_research_state_refs,
+    _reject_unrepresentable_partial_selections,
+)
 
 
 def _variants(original):
@@ -31,6 +36,7 @@ def _variants(original):
     )
     samples, expected = [], []
     for name, need, quote, timestamp, scope, residual in definitions:
+        need = need.rstrip("?") + ", using only disclosures available by " + original["prediction_time"] + "?"
         sample = deepcopy(original)
         sample.update(sample_id=name, synthetic=True, target_need_index=0, target_need=need)
         sample["prior_state"] = {"hypotheses": [], "current_beliefs": [], "supporting_evidence": [],
@@ -59,6 +65,25 @@ def _variants(original):
     return samples, expected
 
 
+def preflight_samples(inputs):
+    """Reject illegal prior states and unrepresentable routing before dispatch."""
+    checked = []
+    for sample in inputs["samples"]:
+        state = ResearchState.from_dict(sample["prior_state"])
+        normalized = _normalize_research_state_output(state.to_dict(), previous_state=state,
+            evaluation_context=sample["evaluation_context"], computed_metric_cards=tuple(sample["computed_metric_cards"]))
+        if normalized != state.to_dict():
+            raise ValidationError("preflight may not rewrite a prior state")
+        _validate_research_state_refs(state, phase="reflect", previous_state=state,
+            basic_info=sample["basic_info"], need_dispositions=[], evaluation_context=sample["evaluation_context"])
+        round_row = SignalRound.from_dict(sample["signal_round"])
+        _reject_unrepresentable_partial_selections(round_row.selections, state.next_information_needs, sample["evaluation_context"])
+        checked.append({"sample_id": sample["sample_id"], "prior_state_hash": canonical_json_hash(state.to_dict()),
+                        "legal_prior_and_routing": True, "source_pit_accepted": False,
+                        "future_signal_evidence_fault_injection": sample["sample_id"] == "future_actual"})
+    return {"samples": checked, "fixed_denominator": len(checked)}
+
+
 def prepare(root):
     """Freeze the fixed seven-case denominator and independent expectations."""
     if root.exists():
@@ -70,20 +95,41 @@ def prepare(root):
     expected = [{"sample_id": s["sample_id"], "answer_scope": "unanswered", "must_preserve_need": True,
                  "need": s["target_need"], "historical_input_pit_accepted": False} for s in inputs["samples"]] + expected
     inputs["samples"].extend(variants)
-    contract = {"schema_version": "engineering-mvp-local-reflect-v1", "backend": "independent-subagent",
+    preflight = preflight_samples(inputs)
+    contract = {"schema_version": "engineering-mvp-local-reflect-v2", "backend": "independent-subagent",
+                "actual_model_version": None, "model_selection": "inherited_host_default_precise_version_unknown",
                 "fixed_denominator": 7, "max_local_calls": 28, "max_external_api_calls": 0,
                 "limits": {"max_structured_corrections": 1, "structured_reasoning_token_reserve": 0,
                            "max_request_tokens": 131072},
                 "scope": "Reflect and actual local consumer assembly; no predictor or whole-cycle acceptance",
-                "input_hash": canonical_json_hash(inputs), "expectations_hash": canonical_json_hash(expected)}
-    files = [*list((REPO / "src/stock_opportunity_agent").rglob("*.py")), Path(__file__), REPO / "scripts/diagnose_executed_answer_scope.py"]
+                "input_hash": canonical_json_hash(inputs), "expectations_hash": canonical_json_hash(expected),
+                "preflight_hash": canonical_json_hash(preflight)}
+    files = [*list((REPO / "src/stock_opportunity_agent").rglob("*.py")), Path(__file__),
+             REPO / "scripts/diagnose_executed_answer_scope.py", REPO / "scripts/verify_local_role_consumers.py"]
     manifest = {"contract_hash": canonical_json_hash(contract), "code_files": [binding(p) for p in sorted(files)],
                 "originals": originals, "fixed_sample_ids": [s["sample_id"] for s in inputs["samples"]]}
     manifest["manifest_hash"] = canonical_json_hash(manifest)
     root.mkdir(parents=True)
-    for name, value in (("inputs", inputs), ("expectations", expected), ("contract", contract), ("manifest", manifest)):
+    for name, value in (("inputs", inputs), ("expectations", expected), ("contract", contract), ("manifest", manifest), ("preflight", preflight)):
         atomic_write_json(root / f"{name}.json", value)
     return {"status": "frozen", "manifest_hash": manifest["manifest_hash"], "samples": manifest["fixed_sample_ids"]}
+
+
+def stage_consumer_checks(root, sample, state, expectation, *, output=None):
+    """Exercise the same actual consumer branch in diagnostics and CLI tests."""
+    if not sample["synthetic"]:
+        return assemble_consumers(root, sample)
+    stage = "terminal_closure" if sample.get("closure_only") else "initial_reflect"
+    saved = read_json(root / "samples" / sample["sample_id"] / f"{stage}.json")
+    rows = saved["metadata"].get("need_dispositions", {}).get("items", [])
+    scope = expectation["answer_scope"]
+    checks = {"correct_scope": not rows if scope is None else len(rows) == 1 and rows[0]["answer_scope"] == scope,
+              "preserved_need": not expectation["must_preserve_need"] or sample["target_need"] in state.next_information_needs,
+              "terminal_finalized": state.decision is ResearchDecision.FINALIZE}
+    consumer_result = verify_sample(root, sample, output or root / "consumers")
+    checks.update(consumer_result.get("checks", {}))
+    checks["accepted_consumers_verified"] = consumer_result["status"] == "consumers_verified"
+    return checks
 
 
 def resume(root):
@@ -97,7 +143,8 @@ def resume(root):
     contract, inputs = read_json(root / "contract.json"), read_json(root / "inputs.json")
     expected = json.loads((root / "expectations.json").read_text())
     if (canonical_json_hash(contract) != manifest["contract_hash"] or canonical_json_hash(inputs) != contract["input_hash"]
-            or canonical_json_hash(expected) != contract["expectations_hash"]):
+            or canonical_json_hash(expected) != contract["expectations_hash"]
+            or canonical_json_hash(read_json(root / "preflight.json")) != contract["preflight_hash"]):
         raise ValidationError("frozen inputs, expectations or contract changed")
     exchange = LocalRoleExchange(root / "exchange", max_calls=contract["max_local_calls"])
     ledger = ExternalAttemptLedger(root / "unused_external_attempts.json", max_attempts=1, max_total_cost=0.01)
@@ -115,8 +162,10 @@ def resume(root):
                 client = StructuredRoleClient(registration=get_model("independent-subagent"),
                     contract=StageContract(contract), workspace=root, ledger=ledger,
                     local_role_exchange=exchange, allow_external=False, environ={})
-                step = _reflect(client, sample, state=state, closure=closure)
-                traces.extend(client.request_hash_trace)
+                try:
+                    step = _reflect(client, sample, state=state, closure=closure)
+                finally:
+                    traces.extend(client.request_hash_trace)
                 stage = "terminal_closure" if closure else "initial_reflect"
                 atomic_write_json(sample_root / f"{stage}.json", {"kind": "independent_local_role", "stage": stage,
                     "state": step.value.to_dict(), "metadata": dict(step.metadata), "usage": asdict(step.usage),
@@ -124,24 +173,8 @@ def resume(root):
                 state = step.value
                 if state.decision is not ResearchDecision.CONTINUE:
                     break
-            if not sample["synthetic"]:
-                checks = assemble_consumers(root, sample)
-            else:
-                path = sample_root / ("terminal_closure.json" if sample.get("closure_only") else "initial_reflect.json")
-                saved = read_json(path)
-                rows = saved["metadata"].get("need_dispositions", {}).get("items", [])
-                expectation = next(e for e in expected if e["sample_id"] == sample["sample_id"])
-                scope = expectation["answer_scope"]
-                checks = {"correct_scope": not rows if scope is None else len(rows) == 1 and rows[0]["answer_scope"] == scope,
-                          "preserved_need": not expectation["must_preserve_need"] or sample["target_need"] in state.next_information_needs,
-                          "terminal_finalized": state.decision is ResearchDecision.FINALIZE}
-                context = _assemble_final_context(plan=InformationPlan.from_dict(sample["plan"]), company_id=sample["company_id"],
-                    basic_info=sample["basic_info"], state=state, rounds=(SignalRound.from_dict(sample["signal_round"]),),
-                    prediction_time=__import__("datetime").datetime.fromisoformat(sample["prediction_time"]),
-                    prediction_baseline=sample["prediction_baseline"], state_deltas=(), computed_metrics=sample["computed_metric_cards"],
-                    signal_research_status=sample["signal_research_status"])
-                atomic_write_json(root / "consumers" / f"{sample['sample_id']}.json", {"final_state": state.to_dict(), "context": context,
-                                  "semantic_review_required": True})
+            checks = stage_consumer_checks(root, sample, state,
+                next(e for e in expected if e["sample_id"] == sample["sample_id"]))
             outcome = {"sample_id": sample["sample_id"], "mechanical_checks": checks,
                        "mechanical_passed": all(checks.values()), "independent_semantic_verdict": "pending_review",
                        "request_hashes": traces}
