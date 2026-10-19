@@ -1,0 +1,155 @@
+{
+  "case_count": 18,
+  "cases": [
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "parser_local_judge",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "frozen_file_unchanged": true,
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "frozen_load_local_judge",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "preflight_local_judge",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "builder_local_judge",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "returned",
+      "expected": "returned",
+      "name": "parser_local_proposer",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "returned",
+      "expected": "returned",
+      "frozen_file_unchanged": true,
+      "name": "frozen_load_local_proposer",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "returned",
+      "expected": "returned",
+      "name": "preflight_local_proposer",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "returned",
+      "expected": "returned",
+      "name": "builder_local_proposer",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "parser_local_judge+proposer",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "frozen_file_unchanged": true,
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "frozen_load_local_judge+proposer",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "preflight_local_judge+proposer",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "builder_local_judge+proposer",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "runtime_alias_only",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "runtime_exchange_only",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ProviderBoundary",
+      "expected": "ProviderBoundary",
+      "message": "constructor sentinel; no environment or transport access",
+      "name": "runtime_contract_proposer_only",
+      "pass": true,
+      "provider_constructor_hits": 1
+    },
+    {
+      "actual": "ExternalExecutionNotReady",
+      "expected": "ExternalExecutionNotReady",
+      "message": "parallel Jev Decisions cannot bypass caller allow_external=False",
+      "name": "runtime_remote_explicit_false",
+      "pass": true,
+      "provider_constructor_hits": 0
+    },
+    {
+      "actual": "ProviderBoundary",
+      "expected": "ProviderBoundary",
+      "message": "constructor sentinel; no environment or transport access",
+      "name": "runtime_remote_true_preserved",
+      "pass": true,
+      "provider_constructor_hits": 1
+    },
+    {
+      "actual": "ProviderBoundary",
+      "expected": "ProviderBoundary",
+      "message": "constructor sentinel; no environment or transport access",
+      "name": "runtime_legacy_fake_caller_preserved",
+      "pass": true,
+      "provider_constructor_hits": 1
+    }
+  ],
+  "code_sha256": "f8f68768f6566669bbdd7510a5d2eb50dd24f3786e8333658b547c416f84ffd5",
+  "http_transmissions": 0,
+  "model_answers_created": 0,
+  "pass_count": 18,
+  "schema_version": "local-factory-independent-admission-matrix-v1",
+  "socket_connection_attempts": 0,
+  "synthetic_inputs": true
+}

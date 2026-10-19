@@ -10,3 +10,9 @@ Readable summaries retain supplied literal first/last dates beside the values;
 trading-session counts must not be relabeled as calendar-month horizons.
 Controller retains typed cards for validation while exposing this readable view.
 Final Predictor and compact Posthoc retain the same original typed cards.
+
+Daily observation eligibility uses `row_date < UTC_day(as_of)`. Equivalent
+aware instants retain identical values, literal refs and trading windows; the
+original `as_of` spelling is preserved on the card. Adjacent UTC days may
+legitimately select different rows. Trading-count formulas and fiscal periods
+are unchanged.

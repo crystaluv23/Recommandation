@@ -1,0 +1,14 @@
+test_legacy_final_restores_known_upstream_without_cross_request_inference (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_legacy_final_restores_known_upstream_without_cross_request_inference) ... FAIL
+
+======================================================================
+FAIL: test_legacy_final_restores_known_upstream_without_cross_request_inference (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_legacy_final_restores_known_upstream_without_cross_request_inference)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_daily_visibility_boundary.py", line 188, in test_legacy_final_restores_known_upstream_without_cross_request_inference
+    self.assertIs(market['source_context_truncated'], True)
+AssertionError: None is not True
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+FAILED (failures=1)

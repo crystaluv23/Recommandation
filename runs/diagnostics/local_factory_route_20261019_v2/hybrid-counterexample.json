@@ -1,0 +1,25 @@
+{
+  "cases": [
+    {
+      "contract_admission": "accepted",
+      "provider_constructor_hits": 1,
+      "runtime": "ProviderBoundary",
+      "runtime_message": "denied before key access/network",
+      "version": "original"
+    },
+    {
+      "admission_message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "contract_admission": "ExternalExecutionNotReady",
+      "provider_constructor_hits": 0,
+      "runtime": "ExternalExecutionNotReady",
+      "runtime_message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "version": "intermediate_guard"
+    }
+  ],
+  "fixture": "synthetic remote judge + local proposer, explicit allow_external=True",
+  "http_transmissions": 0,
+  "intermediate_control_sha256": "f8f68768f6566669bbdd7510a5d2eb50dd24f3786e8333658b547c416f84ffd5",
+  "model_answers_created": 0,
+  "original_control_sha256": "520384a58c0bb4c5e2dcaad838bc60dbf72f55c022536f54049f109e91e03525",
+  "socket_connection_attempts": 0
+}

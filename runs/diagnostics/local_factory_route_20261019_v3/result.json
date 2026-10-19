@@ -1,0 +1,243 @@
+{
+  "cases": [
+    {
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "builder_local_plus_jev",
+      "status": "raised",
+      "type": "ExternalExecutionNotReady"
+    },
+    {
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "loaded_contract_local_plus_jev",
+      "status": "raised",
+      "type": "ExternalExecutionNotReady"
+    },
+    {
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "preflight_mutated_local_plus_jev",
+      "status": "raised",
+      "type": "ExternalExecutionNotReady"
+    },
+    {
+      "name": "runtime_local_flag_false",
+      "status": "returned",
+      "value": [
+        "LLMSignalRetrievalAgent",
+        "LLMBlindPredictor"
+      ]
+    },
+    {
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "runtime_local_flag_true",
+      "status": "raised",
+      "type": "ExternalExecutionNotReady"
+    },
+    {
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "runtime_local_flag_true_no_key",
+      "status": "raised",
+      "type": "ExternalExecutionNotReady"
+    },
+    {
+      "message": "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions",
+      "name": "runtime_local_plus_jev_actual_predictor_transport",
+      "status": "raised",
+      "type": "ExternalExecutionNotReady"
+    }
+  ],
+  "external_ledger_summary": {
+    "actual_cost": 0,
+    "attempt_count": 0,
+    "in_progress": 0,
+    "interrupted": 0,
+    "reserved_cost": 0
+  },
+  "head": "80e1c798890db46e255ee7b82c1d34ee906923e3",
+  "http_transmissions": 0,
+  "http_transport_denials": [],
+  "local_contract": {
+    "code_revision": "6643ab9bb507762db00183fb44cfe8edf90c0b65",
+    "created_at": "2026-10-19T15:16:42.797443+00:00",
+    "cycle_mode": "fast_then_slow",
+    "data_acquisition": {
+      "allowed_capabilities": [],
+      "allowed_providers": [],
+      "allowed_source_types": [],
+      "enabled": false,
+      "max_requests_per_cycle": 0,
+      "max_requests_per_run": 0
+    },
+    "dataset_manifest_hash": "0a529a13ab94657d4b46c8dc7d653281bcec753f5d7e1729326272a5de2f9db2",
+    "initial_signal_registry_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "initial_signal_registry_version": 1,
+    "limits": {
+      "basic_info_context_chars": 32000,
+      "candidates_per_round": 1,
+      "evaluation": {
+        "anchor": {
+          "case_count": 16,
+          "label_counts": {
+            "10x_plus": 1,
+            "2_3x": 5,
+            "3_10x": 3,
+            "non_surge": 7
+          }
+        },
+        "base_seed": 42,
+        "cases_per_round": 24,
+        "fitness_gate": {
+          "require_finalized": true,
+          "require_predicted_positive": true,
+          "require_source_evidence": true,
+          "require_true_positive": true
+        },
+        "label_counts": {
+          "10x_plus": 2,
+          "2_3x": 7,
+          "3_10x": 5,
+          "non_surge": 10
+        },
+        "max_cases_per_company_per_round": 1,
+        "primary_metric": "binary_f1",
+        "proposal": {
+          "max_attempts_per_slot": 3,
+          "max_structured_corrections": 1
+        },
+        "random": {
+          "case_count": 8,
+          "label_counts": {
+            "10x_plus": 1,
+            "2_3x": 2,
+            "3_10x": 2,
+            "non_surge": 3
+          }
+        },
+        "secondary_metrics": [
+          "binary_precision",
+          "binary_recall",
+          "magnitude_macro_f1",
+          "magnitude_accuracy"
+        ]
+      },
+      "finalization_token_reserve": 36000,
+      "judge_temperature": 0.0,
+      "max_agent_steps": 20,
+      "max_case_cost": 5.0,
+      "max_llm_calls": 40,
+      "max_llm_signals_per_round": 2,
+      "max_local_role_calls": 4,
+      "max_parallel_plans": 1,
+      "max_signal_calls": 20,
+      "max_signal_rounds": 5,
+      "max_signals_per_round": 4,
+      "max_tokens": 120000,
+      "meta_context_chars": 48000,
+      "parent_selection_seed": 42,
+      "plan_proposal_temperature": 1.0,
+      "plan_rounds_per_signal_cycle": 1,
+      "posthoc_context_chars": 24000,
+      "predictor_context_bytes": 24000,
+      "random_k": 2,
+      "role_output_tokens": {
+        "controller": 8000,
+        "critic": 4000,
+        "h1": 8000,
+        "h2": 2000,
+        "h3": 8000,
+        "posthoc": 2000,
+        "predictor": 2000,
+        "proposer": 4000,
+        "routing": 2000,
+        "signal_batch": 4000,
+        "update": 8000
+      },
+      "signal_batch_context_chars": 32000,
+      "similarity_threshold": 0.9,
+      "top_k": 3
+    },
+    "locked_test_accessed": false,
+    "max_external_attempts": 1,
+    "max_slow_cycles": 1,
+    "max_total_cost": 1.0,
+    "min_new_signals_per_cycle": 1,
+    "models": {
+      "judge": {
+        "alias": "independent-subagent",
+        "api_key_available": false,
+        "api_key_env_var": "",
+        "default_input_cost_per_million_tokens": 0.0,
+        "default_max_output_tokens": 16384,
+        "default_output_cost_per_million_tokens": 0.0,
+        "default_reasoning_effort": null,
+        "description": "Independent role agent through exact local request/response files; no API transport.",
+        "model": "independent-subagent",
+        "proposal_profile": "independent_agent",
+        "provider": "local",
+        "provider_identity": "local",
+        "provider_route": null,
+        "roles": [
+          "evolution",
+          "judge"
+        ],
+        "web_tools_allowed": false
+      },
+      "proposer": {
+        "alias": "independent-subagent",
+        "api_key_available": false,
+        "api_key_env_var": "",
+        "default_input_cost_per_million_tokens": 0.0,
+        "default_max_output_tokens": 16384,
+        "default_output_cost_per_million_tokens": 0.0,
+        "default_reasoning_effort": null,
+        "description": "Independent role agent through exact local request/response files; no API transport.",
+        "model": "independent-subagent",
+        "proposal_profile": "independent_agent",
+        "provider": "local",
+        "provider_identity": "local",
+        "provider_route": null,
+        "roles": [
+          "evolution",
+          "judge"
+        ],
+        "web_tools_allowed": false
+      }
+    },
+    "predictor_semantics_hash": "bf2fe6d0963ca6bd4d831c31c07244c7483a4487147c86feca753a0ddbce87b5",
+    "priors_hash": "bf2b0d23b3d13b0afdc06cf60b2634eb5624de510420040b652628dc6f6f16d1",
+    "python_runtime": "3.12.14",
+    "raw_info_inventory_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "raw_info_oracle_id": "synthetic-probe-oracle",
+    "run_id": "synthetic-local-route-probe",
+    "schema_version": "evolution-run-contract-v8",
+    "slow_history_manifest_hash": null,
+    "source_type_catalog_hash": "e168b469c410c543091f7122be7aff19861858f2cc131b3d59a2f09cca235398"
+  },
+  "minimal_fix": [
+    "Reject independent-subagent combined with parallel_jev_decisions in build_run_contract before constructing remote model metadata.",
+    "Reject the same combination in contract admission and cycle preflight; retain immutable existing files rather than rewriting them.",
+    "Defend _parallel_decision_roles against local registration/exchange before OpenRouterJevClient.from_environ; worker and coordinator share this helper.",
+    "Keep flag=false native StructuredRoleClient roles unchanged, and retain remote-only behavior; never invent Jev probabilities or provider logprobs."
+  ],
+  "model_answers_created": 0,
+  "native_local_pending_positive": {
+    "exception": "LocalRoleRequestPending",
+    "receipt_count": 0,
+    "request_hash": "d7a9b01142999c0232020c654c78565ff8650e559035adb562b4577ca7a09d76"
+  },
+  "production_code_sha256": {
+    "scripts/evolve_information_schemes.py": "b5196a3c97a87e68a32e5fa9530c64f03b6848cf3bf096bf94961f9263e694a0",
+    "src/stock_opportunity_agent/llm/local.py": "328d604fbf8205f8d1d1765697f9047a99b35aac8183c00ee15939dadd1efb2d",
+    "src/stock_opportunity_agent/llm/openrouter_jev.py": "836d95d9f5c2ace89ccb674bb0cdcee709a66a6656a1682f261877d8bb905291",
+    "src/stock_opportunity_agent/research/evolution_control.py": "f8f68768f6566669bbdd7510a5d2eb50dd24f3786e8333658b547c416f84ffd5",
+    "src/stock_opportunity_agent/research/evolution_jev_roles.py": "ce5590803f9374a7600aeb738400a4afa72d7f2059fbf3c8eb00f67a059130a3",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "df012618ad92e7dc170246509744f1fd589b01e14b476fdc2525ad046775aeff",
+    "src/stock_opportunity_agent/research/evolution_transport.py": "6b4430408e99db535732ae7ce8658af25ac22cb60ea989247b9862ca78124679",
+    "src/stock_opportunity_agent/research/local_role_exchange.py": "65b559f9c23d5f6951747b3a1e9314afe7fa337d6f90c68ec2b9086611478619"
+  },
+  "provider_constructor_sentinel_hits": [],
+  "python_runtime": "3.12.14",
+  "schema_version": "local-factory-route-diagnostic-v1",
+  "scope": "Actual builder/contract parser/preflight/role factory and Jev predictor entry; no complete cycle or source admission.",
+  "socket_connection_attempts": 0,
+  "synthetic_inputs": true
+}

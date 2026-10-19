@@ -12,6 +12,7 @@ from datetime import date, datetime
 from decimal import Decimal
 from difflib import SequenceMatcher
 from typing import Any, Callable, Iterable, Mapping
+from stock_opportunity_agent.research.basic_info_visibility import basic_info_source_index
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.models import (
     StructuredValidationError,
@@ -1061,42 +1062,14 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
 
     _require_context_signal_pit(original_context)
     basic = original_context.get("basic_info", {})
-    source_index: list[dict[str, Any]] = []
+    source_index = basic_info_source_index(basic, upstream=original_context.get("basic_info_bundle")) if isinstance(basic, Mapping) else []
     data_gaps: list[dict[str, Any]] = []
     if isinstance(basic, Mapping):
-        compact_source_index = basic.get("source_index")
-        if isinstance(compact_source_index, list):
-            source_index.extend(
-                dict(item) for item in compact_source_index if isinstance(item, Mapping)
-            )
-            compact_data_gaps = basic.get("data_gaps", ())
-            if isinstance(compact_data_gaps, list):
-                data_gaps.extend(
-                    dict(item) for item in compact_data_gaps if isinstance(item, Mapping)
-                )
+        if isinstance(basic.get("source_index"), list):
+            data_gaps = [dict(row) for row in basic.get("data_gaps", ()) if isinstance(row, Mapping)]
         else:
-            for request_row in basic.get("requests", ()):
-                if not isinstance(request_row, Mapping):
-                    continue
-                request = request_row.get("request", {})
-                projections = request_row.get("projections", ())
-                source_index.append(
-                    {
-                        "request_id": request.get("request_id")
-                        if isinstance(request, Mapping)
-                        else None,
-                        "source_types": request.get("source_types", [])
-                        if isinstance(request, Mapping)
-                        else [],
-                        "projection_ids": [
-                            item.get("projection_id")
-                            for item in projections
-                            if isinstance(item, Mapping)
-                        ],
-                    }
-                )
-                if isinstance(request_row.get("data_gap"), Mapping):
-                    data_gaps.append(dict(request_row["data_gap"]))
+            data_gaps = [dict(row["data_gap"]) for row in basic.get("requests", ())
+                         if isinstance(row, Mapping) and isinstance(row.get("data_gap"), Mapping)]
     signal_results: list[dict[str, Any]] = []
     for result in _context_signal_results(original_context):
         state = result.get("state")

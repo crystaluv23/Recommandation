@@ -180,7 +180,10 @@ stable Signal Library, not only provider-facing aliases. In particular,
 `market_data` must route to a historical daily-price adapter. Materialized
 market-data documents must retain the chronological adjusted-close series in
 `metadata.prices`, because deterministic market Signals consume that exact
-field. When several authorized price adapters are available, runtime ordering
+field. Daily-price acquisition derives its request day from the aware cutoff
+converted to UTC: start is UTC day minus lookback, and end is UTC day minus
+one. Equivalent aware instants select the same dates; no other adapter or
+fiscal-period date contract changes. When several authorized price adapters are available, runtime ordering
 follows the source catalog: Massive first, Stooq second, and Alpha Vantage last;
 news continues to use Alpha Vantage. A provider error, empty response, or
 point-in-time result that still does not satisfy the request advances to the
@@ -304,7 +307,10 @@ For structured market-data documents, `lookback_days` applies to the dated
 observations exposed to Basic Info, not merely to the publication timestamp of
 the container document. A broader locally cached price document may satisfy a
 narrower request, but context selection must project it to observations inside
-the requested `[as_of - lookback_days, as_of]` window before chunking. Market
+the requested `[UTC_day(as_of) - lookback_days, UTC_day(as_of)]` closed
+window before chunking. Convert the aware instant to UTC before extracting
+the day; retain this reader's inclusive upper boundary (acquisition and price
+computations have their own strictly-before-day contracts). Market
 chunks are grouped only at complete JSON-row boundaries and have no overlap, so
 model-view metadata removal never receives a field name in one chunk and its
 value in another. This projection preserves literal source offsets and never

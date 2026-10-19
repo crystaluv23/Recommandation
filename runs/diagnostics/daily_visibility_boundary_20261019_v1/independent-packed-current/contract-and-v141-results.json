@@ -1,0 +1,118 @@
+{
+  "scope": "Ephemeral serialization/native transport sizing only; deterministic scripted disclosure answers; no external model/HTTP or research behavior claim.",
+  "variant_rows": 10,
+  "distinct_profiles": 7,
+  "variant_refs": [
+    "v0",
+    "v0",
+    "v1",
+    "v2",
+    "v3",
+    "v4",
+    "v5",
+    "v0",
+    "v0",
+    "v6"
+  ],
+  "exact_projection_order_duplicates_absence_preserved": true,
+  "input_unchanged": true,
+  "historical_critic_reconstruction": [
+    {
+      "cases": 24,
+      "rows": 176,
+      "profiles": 28,
+      "exact_reconstruction": true
+    },
+    {
+      "cases": 24,
+      "rows": 152,
+      "profiles": 30,
+      "exact_reconstruction": true
+    }
+  ],
+  "historical_sizes": {
+    "plan_r0001_c01": {
+      "stage": "plan_critic",
+      "initial_payload_utf8_bytes": 119715,
+      "after_disclosure_payload_utf8_bytes": 135512,
+      "top_level_field_utf8_bytes": {
+        "plan": 7734,
+        "metrics": 357,
+        "parent_comparisons": 2,
+        "trajectories": 36152,
+        "magnitude_diagnostics": 939,
+        "jev_calibration_diagnostics": 978,
+        "technical_completion": 303,
+        "source_catalog": 15509,
+        "source_coverage": 46,
+        "reflection_briefs": 46973,
+        "basic_info_visibility_profiles": 10396,
+        "memory_disclosures": 2,
+        "memory_access": 55
+      },
+      "scripted_model_calls": 3,
+      "exact_lower_case_read_then_selected": true
+    },
+    "plan_r0001_c02": {
+      "stage": "plan_critic",
+      "initial_payload_utf8_bytes": 114073,
+      "after_disclosure_payload_utf8_bytes": 129641,
+      "top_level_field_utf8_bytes": {
+        "plan": 7645,
+        "metrics": 370,
+        "parent_comparisons": 2,
+        "trajectories": 30267,
+        "magnitude_diagnostics": 938,
+        "jev_calibration_diagnostics": 1008,
+        "technical_completion": 303,
+        "source_catalog": 15506,
+        "source_coverage": 46,
+        "reflection_briefs": 46566,
+        "basic_info_visibility_profiles": 11096,
+        "memory_disclosures": 2,
+        "memory_access": 55
+      },
+      "scripted_model_calls": 3,
+      "exact_lower_case_read_then_selected": true
+    },
+    "round": {
+      "stage": "round_reflect",
+      "initial_payload_utf8_bytes": 89706,
+      "after_disclosure_payload_utf8_bytes": 105274,
+      "top_level_field_utf8_bytes": {
+        "round_id": 1,
+        "fixed_prior": 32,
+        "records": 26869,
+        "parent_comparisons_by_plan_id": 41,
+        "source_catalog": 15543,
+        "source_coverage": 46,
+        "reflection_briefs": 46948,
+        "memory_disclosures": 2,
+        "memory_access": 55
+      },
+      "scripted_model_calls": 3,
+      "exact_lower_case_read_then_selected": true
+    }
+  },
+  "source_hashes": [
+    {
+      "path": "runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/plans/plan_r0001_c01/record.json",
+      "sha256_before": "42816aa820e6ad91076f27318239381eb51559b58df9d3c1e259e58c8550d311",
+      "sha256_after": "42816aa820e6ad91076f27318239381eb51559b58df9d3c1e259e58c8550d311",
+      "unchanged": true
+    },
+    {
+      "path": "runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/plans/plan_r0001_c02/record.json",
+      "sha256_before": "a3dc91edf0e571c436f78002deb9a3ce3f5ab7fcdc2fc1bf57c9c334c3d90c17",
+      "sha256_after": "a3dc91edf0e571c436f78002deb9a3ce3f5ab7fcdc2fc1bf57c9c334c3d90c17",
+      "unchanged": true
+    }
+  ],
+  "network_attempts": 0,
+  "external_model_calls": 0,
+  "code_bindings": {
+    "src/stock_opportunity_agent/research/basic_info_visibility.py": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "91478d47b9bc25cb0563135ddb003eb7333f7a26ab8712e20186bd3c959bcdf8",
+    "scripts/replay_incremental_reflection_memory.py": "edcac6c0cac6619f9b7d93ff088794f624eb9af0cef3ec6827c5a8d5ee5401c2"
+  }
+}

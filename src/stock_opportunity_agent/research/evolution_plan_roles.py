@@ -9,6 +9,7 @@ from copy import deepcopy
 from dataclasses import replace
 from datetime import date, datetime, timezone
 from typing import Any, Callable, Iterable, Mapping
+from stock_opportunity_agent.research.basic_info_visibility import basic_info_source_index, pack_critic_visibility
 from stock_opportunity_agent.artifacts import canonical_json_hash as _canonical_hash
 from stock_opportunity_agent.research.evolution_dataset import _add_months
 from stock_opportunity_agent.research.evolution_reflection_memory import (
@@ -301,8 +302,10 @@ class LLMResearchController:
                 "contain only facts absent from visible Basic Info and from the state "
                 "you return. Source "
                 "status is not projection visibility; partial_context_budget, "
-                "omitted_context_budget, and no_context_spans prove neither presence "
-                "nor absence. The final Predictor assembly retains Basic Info "
+                "omitted_context_budget, visibility_unknown and no_context_spans prove neither presence "
+                "nor absence. Source/projection omission flags describe separate budgets; "
+                "null means unknown. Omission markers are discovery hints, not evidence. "
+                "The final Predictor assembly retains Basic Info "
                 "projections, this ResearchState, and later stage products. In "
                 "this state retain the smallest material direct support or "
                 "counter-evidence without enumerating requests or sources. "
@@ -3267,7 +3270,12 @@ def _plan_critic_trajectory(
             },
         }
     data = dict(item.to_dict())
-    compact: dict[str, Any] = {"case_index": case_index}
+    final = data.get("final_context", {})
+    basic = final.get("basic_info", {}) if isinstance(final, Mapping) else {}
+    if not isinstance(basic, Mapping) or not isinstance(basic.get("source_index"), list):
+        basic = data.get("basic_info_bundle", {})
+    compact: dict[str, Any] = {"case_index": case_index,
+        "basic_info_source_index": basic_info_source_index(basic, upstream=data.get("basic_info_bundle")) if isinstance(basic, Mapping) else []}
     for key in (
         "stop_reason",
         "termination_trigger",
@@ -3450,8 +3458,9 @@ class LLMPlanCritic:
                     "technical_exclusion", "candidate_judgment_feedback", "magnitude_feedback",
                     "recorded_signal_execution_failures",
                 ) if key in row},
-                 "state_evolution": _need_disposition_evolution(trajectory)}
-                for row, trajectory in zip(source_rows, trajectories)
+                 "state_evolution": _need_disposition_evolution(trajectory),
+                 "basic_info_source_index": summary.get("basic_info_source_index", [])}
+                for row, trajectory, summary in zip(source_rows, trajectories, payload["trajectories"], strict=True)
             ]
             if self.anonymous_aliases:
                 catalog = _mask_identity_values(catalog, self.anonymous_aliases)
@@ -3459,10 +3468,12 @@ class LLMPlanCritic:
                 trajectories_view = _mask_identity_values(
                     trajectories_view, self.anonymous_aliases
                 )
+            trajectories_view, visibility_profiles = pack_critic_visibility(trajectories_view)
             payload["source_catalog"] = catalog["sources"]
             payload["source_coverage"] = catalog["counts"]
             payload["reflection_briefs"] = briefs
             payload["trajectories"] = trajectories_view
+            payload["basic_info_visibility_profiles"] = visibility_profiles
 
             def parse_reflection(value: Mapping[str, Any]) -> PlanReflection:
                 items, selected, projection = _structured_reflection_items(
@@ -3481,6 +3492,10 @@ class LLMPlanCritic:
                 stage="plan_critic",
                 system_prompt=(
                     _PREDICTOR_ROLE_AUTHORITY +
+                    "Each trajectories.basic_info_source_index row combines its profile_ref descriptor "
+                    "from basic_info_visibility_profiles with its complete projection_ids. Read both "
+                    "as one visibility row. Profiles are local to this payload; null means unknown, "
+                    "and markers are discovery hints, not citable evidence or reflection source refs. "
                     "Ground reflection in this batch's deterministic outcome "
                     "diagnostics and sourced briefs. Read registered original case "
                     "reflections when post-hoc detail and its canonical outcome "

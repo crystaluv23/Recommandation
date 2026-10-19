@@ -152,3 +152,21 @@ Runtime source validation and committed Registry-chain validation use the
 production functions; neither imported source pointers nor a diagnostic staged
 candidate advance the successor's local pointers. Applying history again after
 own publication is forbidden; staged-result recovery remains authoritative.
+
+## Local backend and parallel Jev preflight
+
+A contract whose judge backend is independent-subagent cannot enable the parallel
+Jev Decisions path with provider-derived choice distributions. Builder, frozen-contract parsing and runtime preflight
+reject this capability conflict before constructing a remote provider. Runtime
+role composition also checks the actual judge caller registration/exchange and
+frozen judge identity, and rejects
+an explicit `allow_external=False` before constructing OpenRouter Jev. Missing
+legacy fake-caller permission metadata is not guessed false. Remote-only mode
+with explicit external permission retains its original decisions and scoring;
+flag false retains native StructuredRoleClient routing and four-way Predictor.
+No local token logprobs or provider identity are invented.
+
+A local proposer/mining/update with a remote judge remains a supported hybrid
+when external execution is explicitly permitted; those roles do not own the
+Jev closed-choice capability. This does not authorize remote calls in the
+current all-local run.

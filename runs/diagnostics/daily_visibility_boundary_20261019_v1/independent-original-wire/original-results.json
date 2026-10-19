@@ -1,0 +1,114 @@
+{
+  "scope": "Actual production roles/client/anonymous pending wire capture; no role answer or research completion. Prediction/truth are explicit synthetic transport fixtures.",
+  "rows": [
+    {
+      "role": "Predictor",
+      "request_hash": "e78f9dbedf3c901504cb5d0fedb5009de930b10337ff68d87eb6cd166df4ed36",
+      "stage": "blind_predictor_predict",
+      "inbox_sha256": "7f423d23befcd3d94aa1c77dc8c0cf8c2cefae402d2699c1b31f8ddfc3aec47d",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "raw_identity_absent": true,
+      "synthetic_prediction_and_outcome_only_for_transport": false
+    },
+    {
+      "role": "Posthoc_final",
+      "request_hash": "cdede43def20496654f1aa77b96849fb4a53d4a00f965d02e9878a5f8ebba5a9",
+      "stage": "blind_predictor_posthoc_reflect",
+      "inbox_sha256": "7ed64db564ab1c2bf550b11a9142d490d03880ee21e7dff492a13e285b114e54",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "raw_identity_absent": true,
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    },
+    {
+      "role": "Posthoc_direct",
+      "request_hash": "cdede43def20496654f1aa77b96849fb4a53d4a00f965d02e9878a5f8ebba5a9",
+      "stage": "blind_predictor_posthoc_reflect",
+      "inbox_sha256": "7ed64db564ab1c2bf550b11a9142d490d03880ee21e7dff492a13e285b114e54",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "raw_identity_absent": true,
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    },
+    {
+      "role": "Critic",
+      "request_hash": "c7fd2a93cf6c7845b7834e0138a2f1803c6195091e81159f6da8d5b1b579c7a9",
+      "stage": "plan_critic",
+      "inbox_sha256": "b6af805ae511adee9f839788608fe382960d69e2a31e0fd14bd611e605111af9",
+      "market_visibility_rows": [],
+      "raw_identity_absent": true,
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    }
+  ],
+  "role_answers": 0,
+  "network_calls": 0,
+  "roles_source_sha256": "ca1a473e46d692bcc9e6264e8db8f60dc0ce165f6cd6a51301bb5424246ca53d",
+  "visibility_helper_sha256": "bdf65f50c476e22b95308b02f6b2f36a77be07ebaf4ed04204295ef74492aa9c"
+}

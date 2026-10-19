@@ -8,6 +8,7 @@ from dataclasses import asdict
 from datetime import date, datetime, time, timedelta, timezone
 from typing import Any, Callable, Iterable, Mapping
 
+from stock_opportunity_agent.data.point_in_time import utc_day_of_instant
 from stock_opportunity_agent.data.raw_info import RawInfoDocument
 from stock_opportunity_agent.data.resolution import (
     AcquisitionFailure,
@@ -495,8 +496,9 @@ class HistoricalPriceAdapter:
     ) -> AcquisitionResult:
         cursor = _event_cursor(self.event_source)
         symbol = _identity_value(identity, "ticker", "symbol")
-        start = (as_of - timedelta(days=request.lookback_days or 365)).date()
-        end = (as_of - timedelta(days=1)).date()
+        cutoff_day = utc_day_of_instant(as_of)
+        start = cutoff_day - timedelta(days=request.lookback_days or 365)
+        end = cutoff_day - timedelta(days=1)
         bars = sorted(
             (
                 item

@@ -2409,10 +2409,12 @@ class ReflectionRoleAdapterTests(TestCase):
 
         compact = evolution_runtime_module._compact_posthoc_context(original_context)
 
-        self.assertEqual(
-            compact["basic_info_source_index"],
-            fixture["predictor_basic_info"]["source_index"],
-        )
+        # Legacy fields are preserved; absent visibility remains explicitly unknown.
+        for saved, original in zip(compact["basic_info_source_index"], fixture["predictor_basic_info"]["source_index"], strict=True):
+            self.assertEqual({key: saved[key] for key in original}, original)
+            self.assertIsNone(saved["source_context_truncated"])
+            self.assertIsNone(saved["projection_context_truncated"])
+            self.assertIsNone(saved["effective_context_truncated"])
         self.assertEqual(compact["data_gaps"], [])
         self.assertEqual(
             compact["prediction_baseline"]["mean_adjusted_close"], 23.982

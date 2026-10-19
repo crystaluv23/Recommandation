@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol
 
 from stock_opportunity_agent.data.markup import nonvisible_html_ranges
+from stock_opportunity_agent.data.point_in_time import utc_day_of_instant
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.sources.state import (
     DataQuotaDeferred,
@@ -2625,8 +2626,8 @@ def _structured_market_context_ranges(
     rows = _json_array_rows_with_offsets(document.content)
     if not rows:
         return ()
-    lower = (as_of - timedelta(days=request.lookback_days)).date()
-    upper = as_of.date()
+    upper = utc_day_of_instant(as_of)
+    lower = upper - timedelta(days=request.lookback_days)
     eligible = [
         (start, end)
         for start, end, value in rows

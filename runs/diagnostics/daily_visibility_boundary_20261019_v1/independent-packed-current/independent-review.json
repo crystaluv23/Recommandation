@@ -1,0 +1,130 @@
+{
+  "scope": "Close only payload-local lossless critic visibility packing and the fixed historical request-envelope regression; not model behavior, independent gain, full MVP or final all-tests approval.",
+  "verdict": "narrow_pass",
+  "old_failures_preserved": true,
+  "production_code_bindings": {
+    "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json": "248fbb13210991cd595ed0cc64f40c3079d6c2356a3333b92d14c6f5c8f32e49",
+    "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-visibility-field-costs.json": "9440e3bc39aa00b8b1e7b1589aa5d1314dda644786d767409c6a8e7b2fb10e1a",
+    "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-original-wire/original-results.json": "c2555a2240cbca13ee1607d23ece89a30d571a7691c0866f8cb6dc3ce129199e",
+    "runs/diagnostics/reviewed_market_snapshot_20261019_v2/basic_info.json": "aa6f73ed4cb0c53ca3eb78359c3bf62d9bf532d0acae14dd3c1ae5847c160dd7",
+    "runs/diagnostics/basic_info_visibility_boundary_20261019_v1/final_context.json": "c0532f89d626ecd3eedeb67c91b614a02af116db8fecf4e79f83da52fbbf0da3",
+    "src/stock_opportunity_agent/research/basic_info_visibility.py": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "91478d47b9bc25cb0563135ddb003eb7333f7a26ab8712e20186bd3c959bcdf8",
+    "scripts/replay_incremental_reflection_memory.py": "edcac6c0cac6619f9b7d93ff088794f624eb9af0cef3ec6827c5a8d5ee5401c2",
+    "spec/src/stock_opportunity_agent/research/basic_info_visibility.md": "e8c29045efc2f2dc421a656d7f2ea6bce5cbf572ada7c1cb420b4b7249740ece",
+    "spec/src/stock_opportunity_agent/research/evolution_plan_roles.md": "8940b2d8801b2b96cf9829d79bff1fcb2dc2eb0bfd6ec5d07cbd2aec7afc9e17"
+  },
+  "variant_checks": {
+    "rows": 10,
+    "profiles": 7,
+    "exact_null_false_absence_request_marker_order_duplicates_and_complete_projection_ids": true,
+    "input_unchanged": true
+  },
+  "actual_pending_wire": {
+    "newchain_critic_request_hash": "c0ad6e3883960fa96088900f52d95f794184372c38957656e7c99db37f5d6936",
+    "legacy_critic_request_hash": "1062c4728f844e67424afcd2358d9d7ac772777b5f51b05f415c0910e2e7b7fc",
+    "synthetic_raw_marker_identity_probe_hash": "e14706a556d3d16958fe2d01d93ecf025d5b47dd8c664193a35efecdb3c4786b",
+    "all_profiles_anonymous": true,
+    "all_rows_exactly_reconstructed": true,
+    "newchain_predictor_and_both_posthoc_request_hashes_unchanged": true,
+    "four_entrypoints_three_unique_pending_per_fixture": true,
+    "role_answers": 0,
+    "external_model_calls": 0,
+    "http_calls": 0
+  },
+  "native_historical_critic_reconstruction": [
+    {
+      "cases": 24,
+      "rows": 176,
+      "profiles": 28,
+      "exact_reconstruction": true
+    },
+    {
+      "cases": 24,
+      "rows": 152,
+      "profiles": 30,
+      "exact_reconstruction": true
+    }
+  ],
+  "original_hard_thresholds_utf8_bytes": {
+    "initial": 128000,
+    "after_disclosure": 176000
+  },
+  "native_historical_request_sizes": {
+    "plan_r0001_c01": {
+      "stage": "plan_critic",
+      "initial_payload_utf8_bytes": 119715,
+      "after_disclosure_payload_utf8_bytes": 135512,
+      "top_level_field_utf8_bytes": {
+        "plan": 7734,
+        "metrics": 357,
+        "parent_comparisons": 2,
+        "trajectories": 36152,
+        "magnitude_diagnostics": 939,
+        "jev_calibration_diagnostics": 978,
+        "technical_completion": 303,
+        "source_catalog": 15509,
+        "source_coverage": 46,
+        "reflection_briefs": 46973,
+        "basic_info_visibility_profiles": 10396,
+        "memory_disclosures": 2,
+        "memory_access": 55
+      },
+      "scripted_model_calls": 3,
+      "exact_lower_case_read_then_selected": true
+    },
+    "plan_r0001_c02": {
+      "stage": "plan_critic",
+      "initial_payload_utf8_bytes": 114073,
+      "after_disclosure_payload_utf8_bytes": 129641,
+      "top_level_field_utf8_bytes": {
+        "plan": 7645,
+        "metrics": 370,
+        "parent_comparisons": 2,
+        "trajectories": 30267,
+        "magnitude_diagnostics": 938,
+        "jev_calibration_diagnostics": 1008,
+        "technical_completion": 303,
+        "source_catalog": 15506,
+        "source_coverage": 46,
+        "reflection_briefs": 46566,
+        "basic_info_visibility_profiles": 11096,
+        "memory_disclosures": 2,
+        "memory_access": 55
+      },
+      "scripted_model_calls": 3,
+      "exact_lower_case_read_then_selected": true
+    },
+    "round": {
+      "stage": "round_reflect",
+      "initial_payload_utf8_bytes": 89706,
+      "after_disclosure_payload_utf8_bytes": 105274,
+      "top_level_field_utf8_bytes": {
+        "round_id": 1,
+        "fixed_prior": 32,
+        "records": 26869,
+        "parent_comparisons_by_plan_id": 41,
+        "source_catalog": 15543,
+        "source_coverage": 46,
+        "reflection_briefs": 46948,
+        "memory_disclosures": 2,
+        "memory_access": 55
+      },
+      "scripted_model_calls": 3,
+      "exact_lower_case_read_then_selected": true
+    }
+  },
+  "limitations": [
+    "Pending requests and scripted memory disclosures establish transport/wiring and byte size only, not fresh model understanding of profile joins.",
+    "No budget was raised; payload descriptors and IDs remain available by exact join. Provider token usage is not measured.",
+    "Original source/UTC/frozen case outcomes are not rerun or rewritten. Full suite/lint/checkpoint remains owner work."
+  ],
+  "artifact_sha256": {
+    "actual-role-wire.py": "a21698ce14203a3f1a442f6bbc5c007b2ff2708d3828d37d2bafaf72ee75a1b1",
+    "profile-contract-and-v141.py": "c0d3a8347c57d26e691421e07d2bb57fbbcb3d68988cef7dc728042800c8c5de",
+    "actual-newchain.json": "5a27b23609c0610ef3ddb8e766730b3843f89ac40c17dd85cb9cbee0b5867f10",
+    "actual-legacy.json": "d4e7d75e290a1ecf3116681ec2388ac1dfd95aa5761ce2fbec14d97b8d50d6a1",
+    "actual-marker-anonymity.json": "f79493dd4961a788c50d5885f5657dd90541d5845f266e7653434010ab07bf9a",
+    "contract-and-v141-results.json": "89f278a5df581bd05c3decd54d5a40be47c97b5e3a62063b8e0a6fe44c2e34f9"
+  }
+}

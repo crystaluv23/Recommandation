@@ -1,0 +1,46 @@
+[
+  {
+    "case": "temporary_rebound_original_review_later_scope",
+    "synthetic_request_variant": true,
+    "document_available_at": "2025-09-30T00:00:00+00:00",
+    "review_scope": "2025-10-15T00:00:00+00:00",
+    "split_gte": "2025-10-15",
+    "load_at_original_available_accepted": true,
+    "search_at_original_available_returns_market": true,
+    "does_not_claim_real_BMBL_split": true
+  },
+  {
+    "case": "synthetic_native_adjusted_series_with_gap_split",
+    "synthetic": true,
+    "assumed_split": {
+      "date": "2025-07-01",
+      "factor": "2-for-1",
+      "pre_split_quoted_close": 11,
+      "retrospective_adjusted_close": 5.5
+    },
+    "document_available_at": "2025-06-28T00:00:00+00:00",
+    "review_scope": "2025-07-04T00:00:00+00:00",
+    "split_proof_range": [
+      "2025-07-04",
+      "2025-07-06"
+    ],
+    "load_at_available_accepted": true,
+    "search_at_available_returns_market": true,
+    "consumer_baseline_at_available": {
+      "status": "available",
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "mean_adjusted_close": 5.5,
+      "trading_dates": [
+        "2025-06-23",
+        "2025-06-24",
+        "2025-06-25",
+        "2025-06-26",
+        "2025-06-27"
+      ],
+      "doubling_threshold": 11.0,
+      "recent_close": 5.5,
+      "recent_close_date": "2025-06-27"
+    },
+    "qualified_before_proved_absence_start": true
+  }
+]

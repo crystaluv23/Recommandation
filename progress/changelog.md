@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-19：修复日线四入口 local.date、两层可见性/旧轨迹恢复、critic 最后 wire 白名单、review scope 与 earliest load 的 split proof 覆盖假设，以及 local judge/JEV 和显式禁外部 caller 的旁路。保留原失败与中间过宽 hybrid 拒绝，实际匿名 pending wire/独立反例窄通过；原 250 记录和 5 分母不变，仍未全读 45d、未出新角色答/资料请求。下一步先补 runtime 停止元数据，再冻结生产盲前缀到 durable prediction，读标签前停止；F9/全 ready/loops/MVP 仍 open。
+
 - 2026-10-19：核对 BMBL 原 Massive adjusted=true 请求/响应可精确重现250行历史价格，但未来复权时点证明未建立，market保留unknown不准入。准备三中性样本direct SEC生产stage与独立oracle：客户分散、真实早cut不足、guidance/Q3残留；共享原生产4total/2LLM组合限额、分组执行及NO_SIGNAL_MATCH/all-unavailable确定性终结，无伪造budget耗尽/Reflect处置。1741全量、最终7项接口检查和独立preflight审查通过，尚无新角色回答或能力关闭。最新用户授权允许只读公开资料查询，禁外部LLM继续；冻结SEC stage资料请求仍0，market公开取证另计。
 
 - 2026-10-19：实现四来源 reviewed RawInfoStore 窄 view，静态 SEC body/submissions 精确身份与可用时点证明后仅 materialize 两 filing；污染 news 排除、transcript unknown 保留。生产 loader/worker snapshot/resolver/窄冻结恢复实跑，禁止 append/启用 acquisition/删除 binding 降级/原 oracle 内嵌目标；独立审查先发现 endpoint 和嵌套目录反例，再以错域/CIK/符号链接/恢复矩阵验证修复。原 48 案 prepare 因缺16 anchor 如实失败，未生成完整 freeze、未缩分母或跑完整 cycle；原件不变、0 model/API。下一步审本地 market 证明，或真实 SEC 检索/Signal stage；整体 MVP 开放。

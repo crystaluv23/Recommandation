@@ -1,0 +1,23 @@
+{
+  "fixed_source_denominator": 5,
+  "full_approved_dataset_freeze": false,
+  "model_calls_authorized": false,
+  "reviewed_source_snapshot": {
+    "manifest_sha256": "caa7b992c28d7e446a69e02ae02cbdf1c583822b3dd377cc4dfa7903c22fce26",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v3/snapshot",
+    "store_type": "reviewed"
+  },
+  "schema_version": "narrow-reviewed-market-inputs-v1",
+  "scope": {
+    "acquisition_allowed": false,
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "company_ids": [
+      "cik_0001830043"
+    ],
+    "purpose": "five-original source/market-baseline qualification only; not full cohort"
+  },
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/local-trusted-source-market-review-20261019.json",
+    "sha256": "80026c42e28408d10dc41ccc7873c8ce074e1fa621296e33bf342f4f11973a6e"
+  }
+}

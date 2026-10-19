@@ -1,0 +1,16 @@
+{
+  "scope": "Final current code/input binding verification only; fixed counterexamples and actual pending-wire/packing independently exercised once earlier, not rerun.",
+  "verdict": "narrow_pass",
+  "result_sha256": "965a6b34616f763a93bdc130d348f2cdc4e4458cfdd162cca73f56bceeb91521",
+  "all_current_file_hashes_match": true,
+  "binding_counts": {
+    "code_bindings": 94,
+    "source_bindings": 13
+  },
+  "actual_packed_wire_helper_and_roles_match": true,
+  "independent_pack_review_path": "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
+  "independent_pack_review_sha256": "78ad1f8bad87597b5a63fb2df12d1f2091262109127d64f307b9531f3b7f94dd",
+  "no_new_role_answers_or_http": true,
+  "full_suite_and_lint_not_approved_by_this_hash_check": true,
+  "engineering_mvp_closed": false
+}

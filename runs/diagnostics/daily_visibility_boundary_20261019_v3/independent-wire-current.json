@@ -1,0 +1,137 @@
+{
+  "network_calls": 0,
+  "role_answers": 0,
+  "roles_source_sha256": "df012618ad92e7dc170246509744f1fd589b01e14b476fdc2525ad046775aeff",
+  "rows": [
+    {
+      "inbox_sha256": "7f423d23befcd3d94aa1c77dc8c0cf8c2cefae402d2699c1b31f8ddfc3aec47d",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "raw_identity_absent": true,
+      "request_hash": "e78f9dbedf3c901504cb5d0fedb5009de930b10337ff68d87eb6cd166df4ed36",
+      "role": "Predictor",
+      "stage": "blind_predictor_predict",
+      "synthetic_prediction_and_outcome_only_for_transport": false
+    },
+    {
+      "inbox_sha256": "7ed64db564ab1c2bf550b11a9142d490d03880ee21e7dff492a13e285b114e54",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "raw_identity_absent": true,
+      "request_hash": "cdede43def20496654f1aa77b96849fb4a53d4a00f965d02e9878a5f8ebba5a9",
+      "role": "Posthoc_final",
+      "stage": "blind_predictor_posthoc_reflect",
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    },
+    {
+      "inbox_sha256": "7ed64db564ab1c2bf550b11a9142d490d03880ee21e7dff492a13e285b114e54",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "raw_identity_absent": true,
+      "request_hash": "cdede43def20496654f1aa77b96849fb4a53d4a00f965d02e9878a5f8ebba5a9",
+      "role": "Posthoc_direct",
+      "stage": "blind_predictor_posthoc_reflect",
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    },
+    {
+      "inbox_sha256": "2cd19238b5da40457f0917e4680d045dbdcac725afaf43ce1a633b91b09d7d2c",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "raw_identity_absent": true,
+      "request_hash": "dbca91e8a238ab5d03b2d1eaff4b1194e71d21a2d8f4fa23426122c1df350b08",
+      "role": "Critic",
+      "stage": "plan_critic",
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    }
+  ],
+  "scope": "Actual production roles/client/anonymous pending wire capture; no role answer or research completion. Prediction/truth are explicit synthetic transport fixtures.",
+  "visibility_helper_sha256": "bdf65f50c476e22b95308b02f6b2f36a77be07ebaf4ed04204295ef74492aa9c"
+}

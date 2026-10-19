@@ -1,0 +1,286 @@
+{
+  "scope": "Actual production roles/client/anonymous pending wire capture; no role answer or research completion. Prediction/truth are explicit synthetic transport fixtures.",
+  "rows": [
+    {
+      "role": "Predictor",
+      "request_hash": "e78f9dbedf3c901504cb5d0fedb5009de930b10337ff68d87eb6cd166df4ed36",
+      "stage": "blind_predictor_predict",
+      "inbox_sha256": "7f423d23befcd3d94aa1c77dc8c0cf8c2cefae402d2699c1b31f8ddfc3aec47d",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "profiles": {},
+      "packed_trajectories": [],
+      "exact_reconstruction": null,
+      "raw_identity_absent": true,
+      "synthetic_prediction_and_outcome_only_for_transport": false
+    },
+    {
+      "role": "Posthoc_final",
+      "request_hash": "cdede43def20496654f1aa77b96849fb4a53d4a00f965d02e9878a5f8ebba5a9",
+      "stage": "blind_predictor_posthoc_reflect",
+      "inbox_sha256": "7ed64db564ab1c2bf550b11a9142d490d03880ee21e7dff492a13e285b114e54",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "profiles": {},
+      "packed_trajectories": [],
+      "exact_reconstruction": null,
+      "raw_identity_absent": true,
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    },
+    {
+      "role": "Posthoc_direct",
+      "request_hash": "cdede43def20496654f1aa77b96849fb4a53d4a00f965d02e9878a5f8ebba5a9",
+      "stage": "blind_predictor_posthoc_reflect",
+      "inbox_sha256": "7ed64db564ab1c2bf550b11a9142d490d03880ee21e7dff492a13e285b114e54",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "profiles": {},
+      "packed_trajectories": [],
+      "exact_reconstruction": null,
+      "raw_identity_absent": true,
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    },
+    {
+      "role": "Critic",
+      "request_hash": "c0ad6e3883960fa96088900f52d95f794184372c38957656e7c99db37f5d6936",
+      "stage": "plan_critic",
+      "inbox_sha256": "ddeb58e75f066fcb151acaa6c17710e3ba060b8f9dd1a4bd8394fa123ca38629",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ]
+        }
+      ],
+      "profiles": {
+        "v0": {
+          "available_projection_count": 23,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "to correct &#8220;Accumulated other comprehensive income&#8221; and &#8220;Additional paid-in capital&#8221; r",
+            "mstances. Uncertainty about these assumptions, judgments and estimates could result in outcomes that require a",
+            "more likely than not (i.e., greater than 50% likelihood) that the fair value of a reporting unit is less than ",
+            "assets are tested for impairment annually as of October 1 or more frequently if certain circumstances indicate",
+            "ng estimated useful lives of long-lived assets and definite-lived intangible assets are routinely reviewed and",
+            "e Company still has an accumulated deficit balance, the excess over the par value will be applied to &#8220;Ad",
+            "0; 112 ( 112 ) \u2014 Share repurchases \u2014 \u2014 \u2014 \u2014 \u2014 5,291,186 ( 45,600 ) \u2014 \u2014 ( 45,600 ) 8,044 ( 37,556 ) Purchase of ",
+            "on expense 9,987 2,115 Net foreign exchange difference 25,635 658 Other, net 1,564 ( 2,459 ) Changes in assets"
+          ],
+          "omitted_projection_count": 5,
+          "projection_context_truncated": true,
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_annual_filing",
+          "source_context_truncated": true,
+          "source_types": [
+            "filing"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 18
+        },
+        "v1": {
+          "available_projection_count": 0,
+          "effective_context_truncated": false,
+          "omitted_context_markers": [],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_status": "unavailable",
+          "request_id": "recent_company_news",
+          "source_context_truncated": false,
+          "source_types": [
+            "news"
+          ],
+          "status": "unresolved",
+          "visible_projection_count": 0
+        },
+        "v2": {
+          "available_projection_count": 0,
+          "effective_context_truncated": false,
+          "omitted_context_markers": [],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_status": "unavailable",
+          "request_id": "reported_financial_facts",
+          "source_context_truncated": false,
+          "source_types": [
+            "sec_company_facts"
+          ],
+          "status": "unresolved",
+          "visible_projection_count": 0
+        },
+        "v3": {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      },
+      "packed_trajectories": [
+        {
+          "basic_info_source_index": [
+            {
+              "profile_ref": "v0",
+              "projection_ids": [
+                "projection_d84bdae2cd1041d8970aaed9",
+                "projection_b36b57b75d528096cbf3f01f",
+                "projection_f5e5258464d4602a2ffccc9e",
+                "projection_72c7dd5608b151dc514a11f5",
+                "projection_907da1a0881fb4891fdeaaf7",
+                "projection_2a73e1817749e8a383332552",
+                "projection_88561076473726b8c924ae4d",
+                "projection_28fc757258382ae931247a5b",
+                "projection_7654c004229c4e5ee47f8a47",
+                "projection_cccfe6f1b3000bd15b4aee00",
+                "projection_d5f65227c7db9101b4c0ccc8",
+                "projection_ef319ab39a183f8a50a94a02",
+                "projection_bf19f797ee166b87f3dbd67f",
+                "projection_93167a22b5fa777bc6f0d19f",
+                "projection_5ad5db9b3f4282191ef7cd69",
+                "projection_7ea0855fc24c4aaa0d110ce6",
+                "projection_61db3248717e2375435767db",
+                "projection_8a5a6e5cf95277bf3f4b1907"
+              ]
+            },
+            {
+              "profile_ref": "v1",
+              "projection_ids": []
+            },
+            {
+              "profile_ref": "v2",
+              "projection_ids": []
+            },
+            {
+              "profile_ref": "v3",
+              "projection_ids": [
+                "projection_e885fe196b2d87d88a643882"
+              ]
+            }
+          ],
+          "candidate_judgment_feedback": {
+            "assessment": "correct_negative_information_gap",
+            "binary_correct": true,
+            "candidate_judgment": "insufficient_information",
+            "predicted_binary_label": "non_surge",
+            "reflection_guidance": "The insufficient-information judgment was binary-correct for the realized non-surge, but still exposes an evidence-coverage gap; improve acquisition where possible without manufacturing certainty.",
+            "true_binary_label": "non_surge"
+          },
+          "case_index": 1,
+          "magnitude_feedback": {
+            "error_kind": "not_applicable",
+            "magnitude_applicable": false,
+            "magnitude_correct": false,
+            "ordinal_distance": null,
+            "predicted_magnitude": null,
+            "true_magnitude": null
+          },
+          "state_evolution": [],
+          "stop_reason": "no_signal_match",
+          "termination_trigger": null
+        }
+      ],
+      "exact_reconstruction": true,
+      "raw_identity_absent": true,
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    }
+  ],
+  "role_answers": 0,
+  "network_calls": 0,
+  "legacy_fixture": false,
+  "roles_source_sha256": "91478d47b9bc25cb0563135ddb003eb7333f7a26ab8712e20186bd3c959bcdf8",
+  "visibility_helper_sha256": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd"
+}

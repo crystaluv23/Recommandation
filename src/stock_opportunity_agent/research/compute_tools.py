@@ -20,6 +20,7 @@ import re
 from datetime import datetime
 from typing import Any, Iterable, Mapping
 
+from stock_opportunity_agent.data.point_in_time import utc_day_of_instant
 from stock_opportunity_agent.data.raw_info import RawInfoDocument
 from stock_opportunity_agent.models import ValidationError
 
@@ -242,13 +243,14 @@ def compute_metric(
         card["values"]["return_pct"], card["labels"]["trend"]
     """
 
+    cutoff_day = utc_day_of_instant(as_of)
     validated = _validate_params(metric_id, params)
     bars = collect_adjusted_close_bars(documents, as_of)
     series = _sorted_bars(bars)
     pit_series = [
         (date, close)
         for date, close in series
-        if datetime.fromisoformat(date).date() < as_of.date()
+        if datetime.fromisoformat(date).date() < cutoff_day
     ]
     if len(pit_series) < 2:
         raise ValidationError(

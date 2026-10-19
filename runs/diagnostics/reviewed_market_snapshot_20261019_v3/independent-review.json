@@ -1,0 +1,109 @@
+{
+  "actual_diagnostic": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v3/result.json",
+    "sha256": "90063a2ef1374fc178f1606ccdd0014dbc88a811abab56e722cc89579d4e1700"
+  },
+  "current_counterexamples": [
+    {
+      "case": "original_later_scope_gap",
+      "current": "rejected",
+      "detail": "split proof does not cover earliest allowed consumer through original fetch",
+      "old": "admitted"
+    },
+    {
+      "case": "original_native_synthetic_split_gap",
+      "current": "rejected",
+      "detail": "split proof does not cover earliest allowed consumer through original fetch",
+      "old": "admitted"
+    },
+    {
+      "begin": "2025-09-30",
+      "case": "exact_earliest_consumer",
+      "current": "admitted",
+      "end": "2026-08-16"
+    },
+    {
+      "begin": "2025-09-01",
+      "case": "coverage_superset",
+      "current": "admitted",
+      "end": "2026-08-17"
+    },
+    {
+      "begin": "2025-09-30",
+      "case": "scope_equivalent_offset",
+      "current": "admitted",
+      "end": "2026-08-16"
+    },
+    {
+      "begin": "2025-09-30",
+      "case": "nonempty_ledger",
+      "current": "rejected",
+      "end": "2026-08-16"
+    }
+  ],
+  "current_reader": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+    "sha256": "a3d18cf70c09db50a6d52a00d423bdda0042be038704ae81f593c3bbfba19f05"
+  },
+  "engineering_mvp_closed": false,
+  "final_binding_checks": {
+    "all_current_hashes_match": true,
+    "canonical_inputs_and_bound_review_match": true,
+    "code_files": 93,
+    "original_records": 5,
+    "proof_artifacts": 9
+  },
+  "input_manifest_hash": "b54e7aadc43a6d7af1a4c6c8a25e2bb3d2cd9c387b395a949ae3347b835e6e63",
+  "narrow_source_checks": {
+    "actual_UTC_baseline": {
+      "doubling_threshold": 12.988,
+      "mean_adjusted_close": 6.494,
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "recent_close": 6.3,
+      "recent_close_date": "2025-09-29",
+      "status": "available",
+      "trading_dates": [
+        "2025-09-23",
+        "2025-09-24",
+        "2025-09-25",
+        "2025-09-26",
+        "2025-09-29"
+      ]
+    },
+    "earliest_consumer_is_document_available_UTC_day_not_review_scope": true,
+    "empty_coverage_superset_accepted_nonempty_rejected": true,
+    "five_original_denominator_retained": true,
+    "news_excluded_transcript_unknown": true,
+    "optional235_not_new_requirement": true,
+    "original_BMBL_available_equals_scope_case_remains_supported": true,
+    "original_record_and_native_reconstruction_unchanged": true,
+    "query_exact_five_keys_all_types_and_real_GET_clock_preserved": true,
+    "same_two_SEC_plus_original250_market_admitted": true,
+    "worker_reload_binding_preserved": true
+  },
+  "network_calls": 0,
+  "new_model_answers": 0,
+  "old_gap_bindings": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_consumer_coverage_boundary_20261019_v1/independent-original-gap/bindings.json",
+    "sha256": "48f5a9d91c690d5f85b5bc6a82ba866f5fbb0b54b4cfc22b58231a46c0df0108"
+  },
+  "old_gap_reproducer": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_consumer_coverage_boundary_20261019_v1/independent-original-gap/cross-cutoff-gap.py",
+    "sha256": "d2ec11878f28d62985cf762b7587599622d2c5ef7830a584f8ace852314ec5a7"
+  },
+  "old_gap_results": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_consumer_coverage_boundary_20261019_v1/independent-original-gap/original-results.json",
+    "sha256": "5144da1a096f12f2670830da092529231b56397b287dd5440e1cdf4866a3d167"
+  },
+  "old_reader_git_revision": "80e1c798890db46e255ee7b82c1d34ee906923e3",
+  "old_reader_sha256": "7b66b0ea7cde651f9455c8e6e80b4ff500013a58397c69fb46e70d00e8a1ae8c",
+  "saved_original_replay_equal": true,
+  "schema_version": "independent-market-consumer-coverage-review-v1",
+  "scope_limits": [
+    "Not proof BMBL actually had a gap split; that counterexample is explicitly synthetic.",
+    "No source-signature authentication or exact cutoff vendor-vintage guarantee.",
+    "Full45day readable context is not proven; omission transparency is separately checked.",
+    "No full factory readiness/Predictor answer/whole-cycle recovery/MVP or independent benefit."
+  ],
+  "verdict": "narrow_source_qualification_and_earliest_consumer_coverage_family_pass"
+}

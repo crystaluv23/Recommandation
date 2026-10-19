@@ -1,0 +1,68 @@
+test_later_review_scope_cannot_leave_earliest_consumer_unproved (tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_later_review_scope_cannot_leave_earliest_consumer_unproved) ... FAIL
+test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review (tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review) ...
+  test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review (tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review) (start='2025-09-30', end='2026-08-16') ... ERROR
+  test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review (tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review) (start='2025-09-01', end='2026-08-17') ... ERROR
+
+======================================================================
+ERROR: test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review (tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review) (start='2025-09-30', end='2026-08-16')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_reviewed_market_profile.py", line 216, in test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review
+    binding = materialize_reviewed_snapshot(save_review(base,review),base/'view')
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 30, in checked
+    return function(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 296, in materialize_reviewed_snapshot
+    review, documents = _verified_review(review_binding)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 30, in checked
+    return function(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 281, in _verified_review
+    _verify_market_document(document, row, proofs, cutoff)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 227, in _verify_market_document
+    splits = _market_response(split_proof, "https://api.massive.com/stocks/v1/splits", query,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 111, in _market_response
+    raise ReviewedSourceRejected("market proof response differs from retained request")
+stock_opportunity_agent.data.reviewed_snapshot.ReviewedSourceRejected: market proof response differs from retained request
+
+======================================================================
+ERROR: test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review (tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review) (start='2025-09-01', end='2026-08-17')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_reviewed_market_profile.py", line 216, in test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review
+    binding = materialize_reviewed_snapshot(save_review(base,review),base/'view')
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 30, in checked
+    return function(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 296, in materialize_reviewed_snapshot
+    review, documents = _verified_review(review_binding)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 30, in checked
+    return function(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 281, in _verified_review
+    _verify_market_document(document, row, proofs, cutoff)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 227, in _verify_market_document
+    splits = _market_response(split_proof, "https://api.massive.com/stocks/v1/splits", query,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py", line 111, in _market_response
+    raise ReviewedSourceRejected("market proof response differs from retained request")
+stock_opportunity_agent.data.reviewed_snapshot.ReviewedSourceRejected: market proof response differs from retained request
+
+======================================================================
+FAIL: test_later_review_scope_cannot_leave_earliest_consumer_unproved (tests.test_reviewed_market_profile.ReviewedMarketProfileTests.test_later_review_scope_cannot_leave_earliest_consumer_unproved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_reviewed_market_profile.py", line 205, in test_later_review_scope_cannot_leave_earliest_consumer_unproved
+    with self.assertRaises(ReviewedSourceRejected):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ReviewedSourceRejected not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.083s
+
+FAILED (failures=1, errors=2)

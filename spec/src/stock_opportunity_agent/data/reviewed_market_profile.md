@@ -43,14 +43,17 @@ explicit freeze/root/manifest binding retain their existing behavior.
    date is the original series' latest observation date. This is the retained
    historical issuer proof, not a current metadata.symbol assertion.
 4. Bind the retained all-type split request and raw response. Verify the exact
-   expected endpoint and symbol; coverage must begin at the prediction cutoff
-   UTC date and extend through the later of the original aware cache and
-   normalization retrieval UTC dates. An event-type
+   expected endpoint and symbol; coverage must include the original document's
+   `available_at` UTC date (the earliest cutoff accepted by store load/search),
+   through the later of the original aware cache and normalization retrieval
+   UTC dates. Review scope may be later than source availability and cannot
+   substitute for this earliest consumer boundary. A request interval that is
+   a superset is accepted; a later start or earlier end is insufficient. An event-type
    filter or shorter interval is insufficient. Require HTTP/provider success,
    zero returned events and no next page. Known pagination aliases may be
    absent or explicitly null only; false, zero, empty string/array/object are
    malformed shapes, not proof of a complete page. Its retained retrieval instant must
-   be no earlier than the end instant it purports to cover; a query made before
+   be no earlier than the required later original retrieval instant; a query made before
    the old fetch cannot prove absence through that later fetch. This narrow profile cannot admit a
    nonempty ledger by inventing adjustment factors; such inputs remain
    unsupported/pending and are not negative company observations.

@@ -1,0 +1,16 @@
+{
+  "plan_r0001_c01": {
+    "original_bytes": 81052,
+    "packed_with_profiles_bytes": 31568,
+    "profile_count": 28,
+    "row_count": 176,
+    "exact_rebuild": true
+  },
+  "plan_r0001_c02": {
+    "original_bytes": 67627,
+    "packed_with_profiles_bytes": 27406,
+    "profile_count": 30,
+    "row_count": 152,
+    "exact_rebuild": true
+  }
+}

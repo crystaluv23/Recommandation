@@ -145,6 +145,17 @@ from stock_opportunity_agent.research.evolution_signal_roles import (
 )
 
 
+def _require_jev_backend_compatibility(models: Mapping[str, Any], enabled: bool) -> None:
+    """Keep a local-role contract from selecting a remote choice-distribution path."""
+
+    metadata = models.get("judge", {})
+    if enabled and isinstance(metadata, Mapping) and (
+            metadata.get("alias") == "independent-subagent"
+            or metadata.get("provider") == "independent_subagent"):
+        raise ExternalExecutionNotReady("local_backend_jev_incompatible",
+            "independent-subagent does not support parallel Jev Decisions; disable parallel_jev_decisions")
+
+
 @dataclass(frozen=True)
 class EvolutionRunContract:
     """Secret-free immutable identity for one bounded evolution run."""
@@ -230,6 +241,7 @@ class EvolutionRunContract:
             raise ValidationError("external attempt and cost ceilings must be positive")
         if self.locked_test_accessed:
             raise ValidationError("ordinary evolution contract cannot open Locked Test")
+        _require_jev_backend_compatibility(self.models, self.parallel_jev_decisions)
         if self.parallel_jev_decisions and "jev" not in self.models:
             raise ValidationError(
                 "parallel Jev decisions require a frozen Jev model identity"
@@ -2431,6 +2443,7 @@ def _validate_cycle_execution_request(
 ) -> None:
     """Reject non-executable or mismatched source-data execution requests."""
 
+    _require_jev_backend_compatibility(contract.models, contract.parallel_jev_decisions)
     if not contract.executable:
         raise ValidationError("legacy_contract_read_only")
     if contract.limits.get("reviewed_source_snapshot") is not None and contract.data_acquisition.enabled:
@@ -2486,6 +2499,17 @@ def _parallel_decision_roles(
 
     if not parallel_jev_decisions:
         return LLMSignalRetrievalAgent(judge_caller), LLMBlindPredictor(judge_caller)
+    registration = getattr(judge_caller, "registration", None)
+    models = dict(getattr(getattr(judge_caller, "contract", None), "models", {}))
+    _require_jev_backend_compatibility(models, True)
+    runtime = {"alias": getattr(registration, "alias", None),
+               "provider": getattr(registration, "provider", None)}
+    if getattr(judge_caller, "local_role_exchange", None) is not None:
+        runtime = {"alias": "independent-subagent"}
+    _require_jev_backend_compatibility({"judge": runtime}, True)
+    if getattr(judge_caller, "allow_external", None) is False:
+        raise ExternalExecutionNotReady("external_execution_disabled",
+            "parallel Jev Decisions cannot bypass caller allow_external=False")
     client = OpenRouterJevClient.from_environ(environ)
     return JevSignalRetrievalAgent(client), JevBlindPredictor(client, judge_caller)
 
@@ -3030,6 +3054,7 @@ def build_run_contract(
     if manifest.get("locked_test_sealed") is not True:
         raise ValidationError("dataset split manifest must seal Locked Test")
     models = public_model_contract(role_aliases, environ=environ)
+    _require_jev_backend_compatibility(models, parallel_jev_decisions)
     if parallel_jev_decisions:
         env = os.environ if environ is None else environ
         models["jev"] = {

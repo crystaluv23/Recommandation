@@ -46,3 +46,8 @@ The implementation exposes:
 ## Testing
 
 Use historical fixtures with future features and documents to ensure strict exclusion, deterministic source-priority selection, packet reproducibility, and explicit missing-feature behavior.
+
+`utc_day_of_instant` is a pure daily-market boundary helper: require an aware
+datetime and convert to UTC before extracting the date. It does not normalize
+fiscal/date-only source labels or alter any caller's interval inclusivity.
+Naive direct inputs are rejected, never interpreted using the host timezone.

@@ -1,0 +1,10 @@
+{
+  "git_revision": "80e1c798890db46e255ee7b82c1d34ee906923e3",
+  "reader_path": "/Users/l/Project/Recommandation/runs/diagnostics/market_consumer_coverage_boundary_20261019_v1/original_reader_source.py.txt",
+  "reader_sha256": "7b66b0ea7cde651f9455c8e6e80b4ff500013a58397c69fb46e70d00e8a1ae8c",
+  "script_sha256": "d2ec11878f28d62985cf762b7587599622d2c5ef7830a584f8ace852314ec5a7",
+  "results_sha256": "5144da1a096f12f2670830da092529231b56397b287dd5440e1cdf4866a3d167",
+  "scope": "Rehashed request variant and native synthetic split-gap counterexample; not evidence of actual BMBL split contamination.",
+  "network_calls": 0,
+  "model_calls": 0
+}

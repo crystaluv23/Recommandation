@@ -20,6 +20,14 @@ from stock_opportunity_agent.models import (
 )
 
 
+def utc_day_of_instant(instant: datetime) -> date:
+    """Return the UTC daily boundary of an aware instant, rejecting local guesses."""
+
+    if not isinstance(instant, datetime) or instant.tzinfo is None or instant.utcoffset() is None:
+        raise ValidationError("daily market cutoff must be an aware datetime")
+    return instant.astimezone(timezone.utc).date()
+
+
 def feature_records_as_of(features: Iterable[FeatureRecord], as_of_date: date) -> list[FeatureRecord]:
     """Return features whose availability date is not after ``as_of_date``."""
 

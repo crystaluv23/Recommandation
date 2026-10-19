@@ -1,0 +1,22 @@
+[15:20:38] run_interrupted · committed round=0 · committed cycle=0
+[15:20:38] retryable_external_error
+[15:20:38] cycle_paused · committed round=0 · committed cycle=0
+[15:20:38] [round 4] cycle_paused · committed round=0 · committed cycle=0
+======================================================================
+FAIL: test_production_contract_replay_preserves_real_evidence_without_network (test_reflection_memory_replay.HistoricalReflectionReplayTests.test_production_contract_replay_preserves_real_evidence_without_network)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_reflection_memory_replay.py", line 96, in test_production_contract_replay_preserves_real_evidence_without_network
+    result = run_replay()
+             ^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/replay_incremental_reflection_memory.py", line 665, in run_replay
+    reflection_sizes = _reflection_consumer_sizes(sources)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/replay_incremental_reflection_memory.py", line 650, in _reflection_consumer_sizes
+    raise AssertionError("actual reflection payload exceeds the offline acceptance envelope")
+AssertionError: actual reflection payload exceeds the offline acceptance envelope
+
+----------------------------------------------------------------------
+Ran 1769 tests in 133.348s
+
+FAILED (failures=1)

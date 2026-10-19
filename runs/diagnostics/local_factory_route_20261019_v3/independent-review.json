@@ -1,0 +1,37 @@
+{
+  "schema_version": "local-factory-route-independent-review-v1",
+  "reviewer": "/root/factory_route_review",
+  "control_source_sha256": "f8f68768f6566669bbdd7510a5d2eb50dd24f3786e8333658b547c416f84ffd5",
+  "status": "passed_narrow_factory_guard",
+  "original_failure_root": "runs/diagnostics/local_factory_route_20261019_v1",
+  "intermediate_overbroad_policy_root": "runs/diagnostics/local_factory_route_20261019_v2",
+  "actual_entries": [
+    "build_run_contract",
+    "EvolutionRunContract.from_dict",
+    "EvolutionRunContract.load_frozen",
+    "_validate_cycle_execution_request",
+    "_parallel_decision_roles",
+    "StructuredRoleClient.complete_json"
+  ],
+  "observations": [
+    "The original seven cases now reject local judge plus Jev before any external provider construction; flag false retains native agents.",
+    "A real remote StructuredRoleClient with allow_external=False rejects before the provider constructor; True reaches only a denied sentinel.",
+    "All 18 additional admission/frozen-load/preflight/builder/runtime cases pass the narrowed policy.",
+    "Local judge and both-local combinations reject. A local proposer with remote judge is accepted by builder/parser/frozen-load/preflight and reaches the denied runtime sentinel only with explicit True.",
+    "Runtime registration and local exchange independently reject; a legacy fake caller with absent permission metadata retains its pre-existing factory route.",
+    "All synthetic frozen-file bytes remain unchanged after accepted or rejected loads.",
+    "The native flag-false positive writes exactly one unanswered inbox, creates zero receipts and zero external attempts. No synthetic/root answer was submitted.",
+    "Coordinator and parallel worker use the same guarded helper. Other inspected production factory role composition uses StructuredRoleClient."
+  ],
+  "http_transmissions": 0,
+  "socket_connection_attempts": 0,
+  "model_answers_created": 0,
+  "new_model_receipts": 0,
+  "limitations": [
+    "Synthetic bounded entry probes, not a completed real Fast/Slow/factory cycle or full dataset readiness.",
+    "Remote sentinel positives prove route preservation only, not complete remote authorization/cache/attempt-ledger compliance.",
+    "No model behavior, source semantic admission, independent research gain or native-agent Jev probability/logprob capability is established.",
+    "The temporary clean Git identity in builder positives is diagnostic-only, explicitly synthetic, and cannot authorize a real frozen run.",
+    "Intermediate v2 imported-module/live-file hash racing is disclosed in its README; v3 source remained stable across final probe checks."
+  ]
+}

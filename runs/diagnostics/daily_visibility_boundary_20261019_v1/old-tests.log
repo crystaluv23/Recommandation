@@ -1,0 +1,60 @@
+test_actual_upstream_omission_reaches_all_consumers (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_actual_upstream_omission_reaches_all_consumers) ... FAIL
+test_both_budget_layers_and_unknown_legacy (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_both_budget_layers_and_unknown_legacy) ... ERROR
+test_critic_fallback_preserves_saved_model_visibility (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_critic_fallback_preserves_saved_model_visibility) ... ERROR
+test_adjacent_utc_day_keeps_distinct_strict_computation_boundary (tests.test_daily_visibility_boundary.DailyUTCWindowTests.test_adjacent_utc_day_keeps_distinct_strict_computation_boundary) ... ok
+test_equivalent_instants_keep_all_four_native_windows (tests.test_daily_visibility_boundary.DailyUTCWindowTests.test_equivalent_instants_keep_all_four_native_windows) ... FAIL
+test_reader_retains_its_inclusive_upper_day (tests.test_daily_visibility_boundary.DailyUTCWindowTests.test_reader_retains_its_inclusive_upper_day) ... FAIL
+
+======================================================================
+ERROR: test_both_budget_layers_and_unknown_legacy (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_both_budget_layers_and_unknown_legacy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_daily_visibility_boundary.py", line 114, in test_both_budget_layers_and_unknown_legacy
+    self.assertTrue(all(r['projection_context_truncated'] is True for r in partial))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_daily_visibility_boundary.py", line 114, in <genexpr>
+    self.assertTrue(all(r['projection_context_truncated'] is True for r in partial))
+                        ~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'projection_context_truncated'
+
+======================================================================
+ERROR: test_critic_fallback_preserves_saved_model_visibility (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_critic_fallback_preserves_saved_model_visibility)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_daily_visibility_boundary.py", line 129, in test_critic_fallback_preserves_saved_model_visibility
+    market = next(row for row in compact['basic_info_source_index'] if row['request_id']=='recent_market_backbone')
+                                 ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'basic_info_source_index'
+
+======================================================================
+FAIL: test_actual_upstream_omission_reaches_all_consumers (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_actual_upstream_omission_reaches_all_consumers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_daily_visibility_boundary.py", line 93, in test_actual_upstream_omission_reaches_all_consumers
+    self.assertEqual(row['projection_status'], 'partial_context_budget')
+AssertionError: 'complete' != 'partial_context_budget'
+- complete
++ partial_context_budget
+
+
+======================================================================
+FAIL: test_equivalent_instants_keep_all_four_native_windows (tests.test_daily_visibility_boundary.DailyUTCWindowTests.test_equivalent_instants_keep_all_four_native_windows)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_daily_visibility_boundary.py", line 65, in test_equivalent_instants_keep_all_four_native_windows
+    self.assertEqual(outputs[0], outputs[1])
+AssertionError: {'req[22 chars]-08-16', '2025-09-29')], 'acquired': {'documen[7378 chars]3}]}} != {'req[22 chars]-08-15', '2025-09-28')], 'acquired': {'documen[7407 chars]8}]}}
+Diff is 31228 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_reader_retains_its_inclusive_upper_day (tests.test_daily_visibility_boundary.DailyUTCWindowTests.test_reader_retains_its_inclusive_upper_day)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_daily_visibility_boundary.py", line 84, in test_reader_retains_its_inclusive_upper_day
+    self.assertIn('2025-09-30', exposed)
+AssertionError: '2025-09-30' not found in '{"as_of_date": "2025-09-29", "adjusted_close": 1}'
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.285s
+
+FAILED (failures=3, errors=2)

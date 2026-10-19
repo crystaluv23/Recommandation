@@ -1,0 +1,200 @@
+{
+  "UTC_independent_checks": {
+    "BasicInfo_closed_UTC_window_preserved": true,
+    "baseline_strict_and_adjacent_UTC_day_distinction_preserved": true,
+    "model_calls": 0,
+    "naive_four_entrances": "typed rejection before fetch",
+    "native_four_entrances": [
+      {
+        "baseline": 6.494,
+        "equivalent_zone_representations": 4,
+        "instant": "2025-09-30T00:00:00+00:00",
+        "request_window": [
+          "2025-08-16",
+          "2025-09-29"
+        ],
+        "values_endpoints_ranges_equal": true
+      },
+      {
+        "baseline": 6.494,
+        "equivalent_zone_representations": 4,
+        "instant": "2025-09-30T18:00:00+00:00",
+        "request_window": [
+          "2025-08-16",
+          "2025-09-29"
+        ],
+        "values_endpoints_ranges_equal": true
+      }
+    ],
+    "network_calls": 0
+  },
+  "actual_diagnostic": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
+    "sha256": "d55949e3f17896ea29af711a9d64fa8d17b09adfd956fb9426bf392e9ef3a5c6"
+  },
+  "actual_legacy_critic_wire": {
+    "inbox_sha256": "d71d0bd3846600c4452e9e2c4e038816542a11376ed9980bc02c7c04f4487972",
+    "market_visibility_rows": [
+      {
+        "available_projection_count": 1,
+        "effective_context_truncated": true,
+        "omitted_context_markers": [
+          "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+          "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+          "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+        ],
+        "omitted_projection_count": 0,
+        "projection_context_truncated": null,
+        "projection_ids": [
+          "projection_e885fe196b2d87d88a643882"
+        ],
+        "projection_status": "partial_context_budget",
+        "request_id": "recent_market_backbone",
+        "source_context_truncated": true,
+        "source_types": [
+          "market_data"
+        ],
+        "status": "resolved",
+        "visible_projection_count": 1
+      }
+    ],
+    "raw_identity_absent": true,
+    "request_hash": "b5b1c5827443536fab78fda009d1f58ec1380716c50eb9245b46a499529a5629",
+    "role": "Critic",
+    "stage": "plan_critic",
+    "synthetic_prediction_and_outcome_only_for_transport": true
+  },
+  "actual_transport_scope": {
+    "all_four_wire_rows": "source=true/projection=false/effective=true, partial_context_budget, original3markers, omittedcount0; all raw issuer aliases masked",
+    "does_not_prove_model_compliance": true,
+    "entrypoints": [
+      "Predictor",
+      "Posthoc final",
+      "Posthoc direct",
+      "Critic"
+    ],
+    "labels": "Synthetic prediction/groundtruth only for Posthoc/Critic transport fixture. Blind Predictor payload contains only final_context; no revealed label.",
+    "legacy_critic": "Recovers canonical bundle source=true and3markers while keeping unknown projection layer and saved projection IDs/counts.",
+    "reason": "Both Posthoc entrypoints compact to the same exact request identity.",
+    "role_answers": 0,
+    "unique_pending_requests": 3
+  },
+  "current_actual_wire_capture": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/daily_visibility_boundary_20261019_v3/independent-wire-current.json",
+    "sha256": "7e0dd31354e97516e603b1e965b756e7d2679667f06b1931308393df98c15607"
+  },
+  "engineering_mvp_closed": false,
+  "final_bindings": {
+    "all_current_hashes_match": true,
+    "code_files": 94,
+    "independent_pending_wires_match_these_source_hashes": true,
+    "roles": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "df012618ad92e7dc170246509744f1fd589b01e14b476fdc2525ad046775aeff"
+    },
+    "source_artifacts": 13,
+    "visibility_helper": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_visibility.py",
+      "sha256": "bdf65f50c476e22b95308b02f6b2f36a77be07ebaf4ed04204295ef74492aa9c"
+    }
+  },
+  "legacy_recovery_and_tristate_checks": {
+    "cases": [
+      {
+        "case": "complete",
+        "effective": false,
+        "projection": false,
+        "source": false
+      },
+      {
+        "case": "unknown",
+        "effective": null,
+        "projection": null,
+        "source": null
+      },
+      {
+        "case": "marker_omitted",
+        "effective": true,
+        "projection": null,
+        "source": null
+      },
+      {
+        "case": "legacy_partial",
+        "effective": true,
+        "projection": null,
+        "source": null
+      },
+      {
+        "case": "legacy_saved_true",
+        "effective": true,
+        "projection": null,
+        "source": null
+      },
+      {
+        "case": "count_omitted",
+        "effective": true,
+        "projection": null,
+        "source": null
+      }
+    ],
+    "different_id_not_merged": true,
+    "legacy_actual_critic_wire": {
+      "inbox_sha256": "d71d0bd3846600c4452e9e2c4e038816542a11376ed9980bc02c7c04f4487972",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": null,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "raw_identity_absent": true,
+      "request_hash": "b5b1c5827443536fab78fda009d1f58ec1380716c50eb9245b46a499529a5629",
+      "role": "Critic",
+      "stage": "plan_critic",
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    },
+    "same_id_source_plus_projection_markers_retained": 16
+  },
+  "network_calls": 0,
+  "new_model_answers": 0,
+  "old_wire_capture": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-original-wire/original-results.json",
+    "sha256": "c2555a2240cbca13ee1607d23ece89a30d571a7691c0866f8cb6dc3ce129199e"
+  },
+  "original_critic_wire_loss_to_current": {
+    "current_market_visibility_rows": 1,
+    "new_critic_request_hash": "dbca91e8a238ab5d03b2d1eaff4b1194e71d21a2d8f4fa23426122c1df350b08",
+    "old_critic_request_hash": "c7fd2a93cf6c7845b7834e0138a2f1803c6195091e81159f6da8d5b1b579c7a9",
+    "old_market_visibility_rows": 0,
+    "old_roles_sha256": "ca1a473e46d692bcc9e6264e8db8f60dc0ce165f6cd6a51301bb5424246ca53d"
+  },
+  "reusable_actual_role_script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-original-wire/actual-role-wire.py",
+    "sha256": "66d138a0a8daf181274863a728927a005a8662437a632f2e07990dd857b14e5b"
+  },
+  "schema_version": "independent-daily-utc-visibility-review-v1",
+  "scope_limits": [
+    "Omitted rows remain omitted; this closes disclosure/preservation rather than full45day visibility.",
+    "No fresh model prediction/reflection/critic answer, output semantics or independent benefit.",
+    "No full factory/case readiness or whole-cycle recovery.",
+    "Old completed artifacts and original failures remain unchanged."
+  ],
+  "verdict": "bounded_UTC_daily_measurement_and_visibility_transport_family_pass"
+}

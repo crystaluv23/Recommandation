@@ -216,14 +216,21 @@ def _verify_market_document(document, row, proofs, cutoff):
     split_requests = [r for r in request_records if r["name"] == split_proof["entry_name"]]
     if len(split_requests) != 1:
         raise ReviewedSourceRejected("split proof request identity is ambiguous")
-    limit = split_requests[0]["query"].get("limit")
+    query = split_requests[0]["query"]
+    expected_keys = {"ticker", "execution_date.gte", "execution_date.lte", "sort", "limit"}
+    if (not isinstance(query, dict) or set(query) != expected_keys
+            or query["ticker"] != symbol or query["sort"] != "execution_date.asc"):
+        raise ReviewedSourceRejected("split proof requires exact all-type request identity")
+    limit = query["limit"]
     if not isinstance(limit, str) or not limit.isdigit() or int(limit) <= 0:
         raise ReviewedSourceRejected("split proof query limit is invalid")
-    query = {"ticker": symbol, "execution_date.gte": cutoff.astimezone(timezone.utc).date().isoformat(),
-        "execution_date.lte": max(cached_at, normalized_at).astimezone(timezone.utc).date().isoformat(),
-        "sort": "execution_date.asc", "limit": limit}
-    if max(cached_at, normalized_at).astimezone(timezone.utc).date() < cutoff.astimezone(timezone.utc).date():
-        raise ReviewedSourceRejected("post-cutoff split profile has no valid coverage interval")
+    begin = date.fromisoformat(query["execution_date.gte"])
+    end_day = date.fromisoformat(query["execution_date.lte"])
+    required_begin = document.available_at.astimezone(timezone.utc).date()
+    required_end = max(cached_at, normalized_at).astimezone(timezone.utc).date()
+    if (begin.isoformat() != query["execution_date.gte"] or end_day.isoformat() != query["execution_date.lte"]
+            or begin > required_begin or end_day < required_end or required_end < required_begin):
+        raise ReviewedSourceRejected("split proof does not cover earliest allowed consumer through original fetch")
     splits = _market_response(split_proof, "https://api.massive.com/stocks/v1/splits", query,
         not_before=max(cached_at, normalized_at))
     if splits.get("results") != []:

@@ -554,3 +554,9 @@ rejected by `_validate_basic_info_orientation_menu`. Generic RawInfoRequest and
 research-document query support do not grant bootstrap query capability. This
 is prompt alignment with the existing validator, not a parser, canonical record,
 or typed repair permission change.
+
+Compact posthoc Basic Info source rows use the shared visibility summary for
+both final `source_index` packets and direct model `requests`. Neither path
+may discard omission markers, original status or counts, or turn missing
+upstream visibility into complete coverage. The summary retains separate
+source/projection unknowns and does not make markers citable evidence.

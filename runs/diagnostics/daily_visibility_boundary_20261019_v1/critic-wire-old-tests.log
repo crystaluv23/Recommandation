@@ -1,0 +1,16 @@
+test_actual_critic_and_posthoc_pending_wires_keep_compact_visibility (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_actual_critic_and_posthoc_pending_wires_keep_compact_visibility) ...
+  test_actual_critic_and_posthoc_pending_wires_keep_compact_visibility (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_actual_critic_and_posthoc_pending_wires_keep_compact_visibility) (stage='critic') ... ERROR
+
+======================================================================
+ERROR: test_actual_critic_and_posthoc_pending_wires_keep_compact_visibility (tests.test_daily_visibility_boundary.BasicInfoVisibilityTests.test_actual_critic_and_posthoc_pending_wires_keep_compact_visibility) (stage='critic')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_daily_visibility_boundary.py", line 233, in test_actual_critic_and_posthoc_pending_wires_keep_compact_visibility
+    index = (payload['trajectories'][0]['basic_info_source_index'] if stage=='critic'
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'basic_info_source_index'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.133s
+
+FAILED (errors=1)

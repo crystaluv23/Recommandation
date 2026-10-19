@@ -179,7 +179,8 @@ class ReviewedSourceSnapshotTests(TestCase):
     def test_production_resolver_factory_rejects_enabled_contract_even_without_external_flag(self):
         policy = DataAcquisitionPolicy(enabled=True, allowed_providers=("*",), allowed_capabilities=("*",),
             allowed_source_types=("*",), max_requests_per_cycle=1, max_requests_per_run=1)
-        contract = SimpleNamespace(executable=True, limits={"reviewed_source_snapshot": self.binding}, data_acquisition=policy)
+        contract = SimpleNamespace(executable=True, models={}, parallel_jev_decisions=False,
+            limits={"reviewed_source_snapshot": self.binding}, data_acquisition=policy)
         with self.assertRaises(ReviewedSourceRejected):
             _validate_cycle_execution_request(contract, allow_data_external=False)
         with self.assertRaises(ReviewedSourceRejected):

@@ -1,0 +1,89 @@
+{
+  "plan_r0001_c01": {
+    "cases": 24,
+    "rows": 176,
+    "index_bytes": 81002,
+    "keycosts": {
+      "available_projection_count": 5632,
+      "omitted_projection_count": 5280,
+      "projection_ids": 16291,
+      "projection_status": 7959,
+      "request_id": 7678,
+      "source_types": 6974,
+      "status": 3702,
+      "visible_projection_count": 5280,
+      "source_context_truncated": 5837,
+      "omitted_context_markers": 5280,
+      "projection_context_truncated": 6512,
+      "effective_context_truncated": 6336
+    },
+    "unique_whole_rows": 174,
+    "first_rows": [
+      {
+        "available_projection_count": 4,
+        "omitted_projection_count": 0,
+        "projection_ids": [
+          "projection_8b0ddd2e660ef461ec3f6dc6",
+          "projection_5542114a0d37ba5267450a1c",
+          "projection_d95ac02dccab836c1f121f69",
+          "projection_9cd3234bf54affbeb7b5f26a"
+        ],
+        "projection_status": "visibility_unknown",
+        "request_id": "mkt_backbone_45d",
+        "source_types": [
+          "market_data"
+        ],
+        "status": "resolved",
+        "visible_projection_count": 4,
+        "source_context_truncated": false,
+        "omitted_context_markers": [],
+        "projection_context_truncated": null,
+        "effective_context_truncated": null
+      }
+    ]
+  },
+  "plan_r0001_c02": {
+    "cases": 24,
+    "rows": 152,
+    "index_bytes": 67574,
+    "keycosts": {
+      "available_projection_count": 4864,
+      "omitted_projection_count": 4560,
+      "projection_ids": 12088,
+      "projection_status": 6873,
+      "request_id": 6384,
+      "source_types": 5871,
+      "status": 3198,
+      "visible_projection_count": 4560,
+      "source_context_truncated": 5039,
+      "omitted_context_markers": 4560,
+      "projection_context_truncated": 5624,
+      "effective_context_truncated": 5472
+    },
+    "unique_whole_rows": 150,
+    "first_rows": [
+      {
+        "available_projection_count": 4,
+        "omitted_projection_count": 0,
+        "projection_ids": [
+          "projection_8b0ddd2e660ef461ec3f6dc6",
+          "projection_5542114a0d37ba5267450a1c",
+          "projection_d95ac02dccab836c1f121f69",
+          "projection_9cd3234bf54affbeb7b5f26a"
+        ],
+        "projection_status": "visibility_unknown",
+        "request_id": "market_backbone",
+        "source_types": [
+          "market_data",
+          "price_daily"
+        ],
+        "status": "resolved",
+        "visible_projection_count": 4,
+        "source_context_truncated": false,
+        "omitted_context_markers": [],
+        "projection_context_truncated": null,
+        "effective_context_truncated": null
+      }
+    ]
+  }
+}

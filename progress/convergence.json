@@ -38,9 +38,20 @@
         "runs/diagnostics/reviewed_market_snapshot_20261019_v1/independent-review.json",
         "runs/diagnostics/reviewed_market_snapshot_20261019_v2/result.json",
         "runs/diagnostics/reviewed_market_snapshot_20261019_v2/independent-review.json",
-        "runs/diagnostics/market_baseline_timezone_boundary_20261019_v1/result.json"
+        "runs/diagnostics/market_baseline_timezone_boundary_20261019_v1/result.json",
+        "reports/daily-market-consumer-boundaries-20261019.md",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v3/independent-review.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v3/independent-review.json",
+        "runs/diagnostics/local_factory_route_20261019_v3/independent-review.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v4/result.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v4/independent-final-bindings-review.json",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v4/result.json",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v4/independent-final-bindings-review.json",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json"
       ],
-      "remaining": "五原件reviewed view中2SEC+market250窄准入及UTC baseline实际连接独立通过；baseline同instant本地date和BasicInfo上游截断下游complete仍open，F2经营背景覆盖/全factory本地旁路/F9/Slow/全局来源/48案与wholeloop未关"
+      "remaining": "UTC daily windows, actual visibility wire/legacy recovery, earliest-consumer split coverage and local-judge/JEV permission guards pass narrow independent checks; runtime stop metadata/F9 blind prefix not executed; F2 background, Slow, global sources and full48/loop remain open"
     },
     {
       "id": "feedback_consumption",
@@ -206,16 +217,49 @@
         "runs/diagnostics/reviewed_market_snapshot_20261019_v2/independent-review.json",
         "runs/diagnostics/market_baseline_timezone_boundary_20261019_v1/result.json"
       ]
+    },
+    {
+      "id": "engineering-mvp-daily-consumer-boundaries-20261019",
+      "strategy": "qualified_daily_inputs_actual_consumer_and_factory_guards",
+      "failure_families": [
+        "daily_instant_vs_local_date",
+        "multi_layer_projection_visibility",
+        "legacy_lossy_index_hides_saved_upstream",
+        "critic_last_wire_whitelist",
+        "review_scope_vs_earliest_source_consumer",
+        "local_jev_permission_bypass",
+        "critic_visibility_repeated_descriptor_payload_budget"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/daily-market-consumer-boundaries-20261019.md",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v3/independent-review.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v3/independent-review.json",
+        "runs/diagnostics/local_factory_route_20261019_v3/independent-review.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v4/result.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v4/independent-final-bindings-review.json",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v4/result.json",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v4/independent-final-bindings-review.json",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
+        "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json"
+      ]
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-reviewed-market-snapshot-20261019",
+    "after_iteration": "engineering-mvp-daily-consumer-boundaries-20261019",
     "evidence": [
-      "reports/reviewed-market-snapshot-20261019.md",
-      "runs/diagnostics/reviewed_market_snapshot_20261019_v1/independent-review.json",
-      "runs/diagnostics/reviewed_market_snapshot_20261019_v2/result.json",
-      "runs/diagnostics/reviewed_market_snapshot_20261019_v2/independent-review.json",
-      "runs/diagnostics/market_baseline_timezone_boundary_20261019_v1/result.json"
+      "reports/daily-market-consumer-boundaries-20261019.md",
+      "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
+      "runs/diagnostics/daily_visibility_boundary_20261019_v3/independent-review.json",
+      "runs/diagnostics/reviewed_market_snapshot_20261019_v3/independent-review.json",
+      "runs/diagnostics/local_factory_route_20261019_v3/independent-review.json",
+      "runs/diagnostics/reviewed_market_snapshot_20261019_v4/result.json",
+      "runs/diagnostics/reviewed_market_snapshot_20261019_v4/independent-final-bindings-review.json",
+      "runs/diagnostics/daily_visibility_boundary_20261019_v4/result.json",
+      "runs/diagnostics/daily_visibility_boundary_20261019_v4/independent-final-bindings-review.json",
+      "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
+      "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -226,19 +270,24 @@
       "默认annual/interim经营背景描述只有generic filing/max1执行条件；resolved不证明业务模型/风险/segments充分，8K合法但不能借改请求名宣布覆盖通过",
       "分页用truthiness把0/false/[]/{}当无下一页，重新绑定hash也通过；独立12形状反例揭露并修成absent/null",
       "来源资格UTC日边界正确不代表baseline helper：同瞬间-04使用local.date会排除最后一日；UTC正控不能替代等价时区反例",
-      "只看后层projection数量/complete漏掉上游coverage.context_truncated；BasicInfo实际仅展示45d的一块，不能把baseline全原件计算等同模型读完窗口"
+      "只看后层projection数量/complete漏掉上游coverage.context_truncated；BasicInfo实际仅展示45d的一块，不能把baseline全原件计算等同模型读完窗口",
+      "Review scope can follow source availability while load/search admit earlier consumers; the scope-only split proof missed that interval. Actual BMBL equality hid the generic assumption.",
+      "A present old final index can be lossy while the same saved canonical bundle retains upstream omission facts; preferring the index erased known information.",
+      "The critic helper retained visibility but the final memory whitelist erased it; inspect actual caller pending messages.",
+      "JEV owns judge choices, so any-local-role rejection broke the supported local-proposer/remote-judge hybrid; explicit allow_external=False also requires a guard.",
+      "Adding a complete per-case visibility descriptor fixed semantic loss but broke the existing V141 128k/176k actual input envelope; focused single-case wires missed multi-case field repetition. Preserve every descriptor/id through payload-local reversible sharing, not a larger budget."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "repair",
-      "strategy": "daily_utc_boundary_and_projection_visibility_dependencies",
-      "action": "先明确同instant UTC日边界在baseline/acquisition/观察范围的职责及分层截断语义，原失败保留，spec先行后修同族；通过后才冻结下一消费者/Predictor角色批次",
-      "stop": "不新增HTTP或外部LLM、不手填baseline、不扩大source分母/完整运行；wholefactory local+JEV旁路也须实际preflight拒绝",
-      "question": "同一aware instant是否在日线生产/筛选/baseline一致，已截断材料能否在后层仍准确告知可见性？",
-      "pass": "原6.494/6.602反例与等价offset/非交易日/边界变体统一UTC；上游budget截断不再被下游complete遮蔽且材料/markers保真",
-      "fail": "靠改timezone输入/期望/原件或只改标志而丢失可恢复材料来造通过，及把sourceprofile通过升成完整F9/MVP",
-      "on_pass": "独立反例审后新freeze实际Predictor/消费者调用，原4向输出/先存后标签与readiness保持",
-      "on_fail": "保留实际失败，限制影响范围并修明确producer→consumer族，不启动完整loop"
+      "kind": "diagnose",
+      "strategy": "production_blind_prefix_before_ground_truth_boundary",
+      "action": "Specify runtime-owned stop metadata in final context, then freeze default Plan, exact Registry/learning hash and five-original view for production execute_information_plan through durable prediction_sink; stop at a dedicated ground-truth boundary before reading labels.",
+      "stop": "No labels/LockedTest, fabricated complete trajectory/Fast, forced Signal/need/direction or schema-external repetition; unexecuted apply/Reflect stay not_exercised.",
+      "question": "Can actual H_init, need-driven retrieval/apply/Reflect, terminal and Predictor persist a faithful prediction before labels, and resume without duplicate role calls?",
+      "pass": "Inspect exact production requests/raw responses/native corrections/state/visibility/stop metadata and durable prediction; stop before label access, completed-prefix resume hashes unchanged and no new calls.",
+      "fail": "Observer-authored state/stop/baseline, early label reads, or helper/H_init success presented as Predictor persistence.",
+      "on_pass": "Close only the bounded blind prefix after independent semantic review, then design the smallest real feedback/Slow/reuse stage.",
+      "on_fail": "Keep original failures and repair their exact producer-consumer family without a full loop."
     }
   },
   "successor_prerequisites": [

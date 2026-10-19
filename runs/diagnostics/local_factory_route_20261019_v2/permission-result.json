@@ -1,0 +1,29 @@
+{
+  "cases": [
+    {
+      "allow_external": false,
+      "error_type": "ExternalExecutionNotReady",
+      "external_attempt_count": 0,
+      "message": "parallel Jev Decisions cannot bypass caller allow_external=False",
+      "provider_constructor_hits": [],
+      "registration": "deepseek-v4-flash",
+      "status": "raised"
+    },
+    {
+      "allow_external": true,
+      "error_type": "ProviderBoundary",
+      "external_attempt_count": 0,
+      "message": "provider constructor intercepted before environment/key access",
+      "provider_constructor_hits": [
+        "OpenRouterJevClient.from_environ"
+      ],
+      "registration": "deepseek-v4-flash",
+      "status": "raised"
+    }
+  ],
+  "code_sha256": "322f46f33ad84f4e750324da6fb40db8d8e07423bb1614f8e0bc9592cf7f962c",
+  "http_transmissions": 0,
+  "schema_version": "jev-transport-permission-diagnostic-v1",
+  "socket_connection_attempts": 0,
+  "synthetic_fixture": true
+}

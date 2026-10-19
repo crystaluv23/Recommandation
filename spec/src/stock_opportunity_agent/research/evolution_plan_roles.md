@@ -407,3 +407,30 @@ operations; its complete original role validation still executes locally.
 Ordinary research and semantic corrections retain the existing PIT data channel
 and complete evidence inputs. A model cannot promote a document-read answer into
 a mechanical repair: the nested patch contract rejects that output shape.
+
+Critic trajectories retain a compact `basic_info_source_index` from the saved
+final source index, or saved model Basic Info when no final index exists. The
+same visibility projection as final/posthoc retains both omission layers and
+markers without repeating source bodies or granting citation authority. Missing
+legacy fields stay unknown; do not infer complete reading from a resolved
+request, a projection count, or an empty marker list. Existing role-boundary
+identity masking applies to the whole summary.
+
+H_init instructions name `visibility_unknown` alongside partial/omitted views,
+explain null stage flags as unknown, and keep omission markers as discovery
+hints rather than evidence. These are general visibility semantics, not
+source-specific answer instructions.
+
+The final critic `trajectories_view` whitelist must retain this visibility
+summary after reflection-memory source registration; a correct intermediate
+trajectory helper is insufficient if the actual caller payload drops it. Test
+the final anonymized pending messages as well as compact helper results.
+
+The final critic request serializes complete visibility descriptors into
+payload-local `basic_info_visibility_profiles`; each case row keeps profile_ref
+and full projection ids. The instruction tells the critic to read both as one
+row, with null still unknown and markers still non-citable. Exact decoding must
+match the complete trajectory helper and retain identity masking. Native
+128000-byte initial / 176000-byte post-disclosure offline acceptance limits
+remain unchanged. No budget increase or visibility-field removal is allowed to
+fit the envelope.

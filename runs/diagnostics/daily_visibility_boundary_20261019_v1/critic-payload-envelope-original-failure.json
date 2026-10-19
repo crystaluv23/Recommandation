@@ -1,0 +1,65 @@
+{
+  "error": "actual reflection payload exceeds the offline acceptance envelope",
+  "sizes": {
+    "plan_r0001_c01": {
+      "stage": "plan_critic",
+      "initial_payload_utf8_bytes": 170421,
+      "after_disclosure_payload_utf8_bytes": 186218,
+      "top_level_field_utf8_bytes": {
+        "plan": 7734,
+        "metrics": 357,
+        "parent_comparisons": 2,
+        "trajectories": 97288,
+        "magnitude_diagnostics": 939,
+        "jev_calibration_diagnostics": 978,
+        "technical_completion": 303,
+        "source_catalog": 15509,
+        "source_coverage": 46,
+        "reflection_briefs": 46973,
+        "memory_disclosures": 2,
+        "memory_access": 55
+      },
+      "scripted_model_calls": 3,
+      "exact_lower_case_read_then_selected": true
+    },
+    "plan_r0001_c02": {
+      "stage": "plan_critic",
+      "initial_payload_utf8_bytes": 155348,
+      "after_disclosure_payload_utf8_bytes": 170916,
+      "top_level_field_utf8_bytes": {
+        "plan": 7645,
+        "metrics": 370,
+        "parent_comparisons": 2,
+        "trajectories": 82672,
+        "magnitude_diagnostics": 938,
+        "jev_calibration_diagnostics": 1008,
+        "technical_completion": 303,
+        "source_catalog": 15506,
+        "source_coverage": 46,
+        "reflection_briefs": 46566,
+        "memory_disclosures": 2,
+        "memory_access": 55
+      },
+      "scripted_model_calls": 3,
+      "exact_lower_case_read_then_selected": true
+    },
+    "round": {
+      "stage": "round_reflect",
+      "initial_payload_utf8_bytes": 89706,
+      "after_disclosure_payload_utf8_bytes": 105274,
+      "top_level_field_utf8_bytes": {
+        "round_id": 1,
+        "fixed_prior": 32,
+        "records": 26869,
+        "parent_comparisons_by_plan_id": 41,
+        "source_catalog": 15543,
+        "source_coverage": 46,
+        "reflection_briefs": 46948,
+        "memory_disclosures": 2,
+        "memory_access": 55
+      },
+      "scripted_model_calls": 3,
+      "exact_lower_case_read_then_selected": true
+    }
+  }
+}

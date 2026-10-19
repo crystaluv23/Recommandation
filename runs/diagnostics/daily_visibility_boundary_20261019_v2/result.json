@@ -1,0 +1,123 @@
+{
+  "actual_market_visibility": {
+    "available_projection_count": 1,
+    "effective_context_truncated": true,
+    "omitted_context_markers": [
+      "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+      "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+      "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+    ],
+    "omitted_projection_count": 0,
+    "projection_context_truncated": false,
+    "projection_status": "partial_context_budget",
+    "source_context_truncated": true,
+    "visible_projection_count": 1
+  },
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/point_in_time.py",
+      "sha256": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "808beb99c83fa8c39be191f8c5a7b32ea4ee28f57643dfb97ffc6bc04a910dbf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "aa262e6b0e368aa32161272339c8283a4e1ec98687e8943908c878570f2c9013"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/compute_tools.py",
+      "sha256": "1ee884f6bcf610f80d774a1f1d9b76c99b0682427a655c06beec9526f99a3bcc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_visibility.py",
+      "sha256": "14f3aa97080b310bbe713fd09af247ed0e876304b792d6983c83ea68e8650c08"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "442a0e103d814d44263acd2672d2ff6d2243c40649d63cc721641436abba069c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "8b88e5c869ec1d9da93dcb87bfd1358922c7f45496db6f7f09cc576120b32605"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "46b4178975215a32c295ccf4f1755d18cb09a12fae41504404db94415b55c6be"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_daily_visibility_boundary.py",
+      "sha256": "3afc672f92becab474a1361e0a363d20e08dd69ddf5c279be765576ee23eb125"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_daily_visibility_boundary.py",
+      "sha256": "4c0bbb37a301e5402f12b2376aebd49e6dde031b8ea6a4281d21c249036f9a13"
+    }
+  ],
+  "engineering_mvp_closed": false,
+  "equivalent_instants_equal": true,
+  "external_llm_calls": 0,
+  "fresh_model_behavior_proven": false,
+  "full_factory_preflight_proven": false,
+  "new_model_responses": 0,
+  "readonly_data_requests": 0,
+  "schema_version": "daily-visibility-boundary-diagnostic-v1",
+  "scope": "Deterministic UTC daily windows and two-stage visibility; no new prediction or completed case.",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v2/input_manifest.json",
+      "sha256": "5153d34a61ce399248f00775c7ede3615c91e614276d01d5744b1e5a66f6a07b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v2/basic_info.json",
+      "sha256": "aa6f73ed4cb0c53ca3eb78359c3bf62d9bf532d0acae14dd3c1ae5847c160dd7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v2/result.json",
+      "sha256": "01a3a7e98af9edd2feaf08f1863ff2ac40db4ceb35cfd44d717ba7679c7e8a66"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/4166561a6da6904c722e4e5a.json",
+      "sha256": "04a5c1b732b2b8580246f3c169cfce5dde03471fda07711ad49b4d243475fb81"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_baseline_timezone_boundary_20261019_v1/result.json",
+      "sha256": "1298bc2ee4f9646a85dc3cac16ec45c7c100a32e3fd9fe8f69eb3450b0671636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_baseline_timezone_boundary_20261019_v1/consumer-chain.json",
+      "sha256": "353b9c6ec619db5f8c488d63c6da7baa5f08c5b9be911a7e898745eff7006863"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/basic_info_visibility_boundary_20261019_v1/result.json",
+      "sha256": "78d30f509b520c28eb48eee5af747198f982d2b3b45559e01059c5bcc1a6ad12"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/basic_info_visibility_boundary_20261019_v1/final_context.json",
+      "sha256": "c0532f89d626ecd3eedeb67c91b614a02af116db8fecf4e79f83da52fbbf0da3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000119312525146199.json",
+      "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000162828025038861.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/news/cik_0001830043/avnews_82c6cc3e5143825f6225f673.json",
+      "sha256": "c67fae71ac7135a621c36abf302d2eee97ffe6a9ca6d6c11ab53d0ff7715be46"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001830043/alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e.json",
+      "sha256": "f23c7887094f0cb484d053e6d04aab37e6f6a98d8e6bd7ad2c73b3ef2d718bc3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001830043/massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e.json",
+      "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+    }
+  ],
+  "source_inputs_unchanged": true,
+  "visibility_equal_across_four_consumer_views": true
+}

@@ -1,0 +1,57 @@
+test_builder_and_frozen_parser_reject_any_local_role_with_jev (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_builder_and_frozen_parser_reject_any_local_role_with_jev) ...
+  test_builder_and_frozen_parser_reject_any_local_role_with_jev (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_builder_and_frozen_parser_reject_any_local_role_with_jev) (role='judge') ... FAIL
+  test_builder_and_frozen_parser_reject_any_local_role_with_jev (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_builder_and_frozen_parser_reject_any_local_role_with_jev) (role='proposer') ... FAIL
+  test_builder_and_frozen_parser_reject_any_local_role_with_jev (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_builder_and_frozen_parser_reject_any_local_role_with_jev) (role='mining') ... FAIL
+  test_builder_and_frozen_parser_reject_any_local_role_with_jev (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_builder_and_frozen_parser_reject_any_local_role_with_jev) (role='update') ... FAIL
+test_disabled_jev_keeps_native_roles (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_disabled_jev_keeps_native_roles) ... ok
+test_preflight_and_runtime_reject_before_provider (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_preflight_and_runtime_reject_before_provider) ... FAIL
+
+======================================================================
+FAIL: test_builder_and_frozen_parser_reject_any_local_role_with_jev (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_builder_and_frozen_parser_reject_any_local_role_with_jev) (role='judge')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_local_factory_route_guard.py", line 28, in test_builder_and_frozen_parser_reject_any_local_role_with_jev
+    with self.assertRaises(ExternalExecutionNotReady):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ExternalExecutionNotReady not raised
+
+======================================================================
+FAIL: test_builder_and_frozen_parser_reject_any_local_role_with_jev (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_builder_and_frozen_parser_reject_any_local_role_with_jev) (role='proposer')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_local_factory_route_guard.py", line 28, in test_builder_and_frozen_parser_reject_any_local_role_with_jev
+    with self.assertRaises(ExternalExecutionNotReady):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ExternalExecutionNotReady not raised
+
+======================================================================
+FAIL: test_builder_and_frozen_parser_reject_any_local_role_with_jev (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_builder_and_frozen_parser_reject_any_local_role_with_jev) (role='mining')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_local_factory_route_guard.py", line 28, in test_builder_and_frozen_parser_reject_any_local_role_with_jev
+    with self.assertRaises(ExternalExecutionNotReady):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ExternalExecutionNotReady not raised
+
+======================================================================
+FAIL: test_builder_and_frozen_parser_reject_any_local_role_with_jev (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_builder_and_frozen_parser_reject_any_local_role_with_jev) (role='update')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_local_factory_route_guard.py", line 28, in test_builder_and_frozen_parser_reject_any_local_role_with_jev
+    with self.assertRaises(ExternalExecutionNotReady):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ExternalExecutionNotReady not raised
+
+======================================================================
+FAIL: test_preflight_and_runtime_reject_before_provider (tests.test_local_factory_route_guard.LocalFactoryRouteGuardTests.test_preflight_and_runtime_reject_before_provider)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_local_factory_route_guard.py", line 46, in test_preflight_and_runtime_reject_before_provider
+    with self.assertRaises(ExternalExecutionNotReady):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ExternalExecutionNotReady not raised
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.010s
+
+FAILED (failures=5)

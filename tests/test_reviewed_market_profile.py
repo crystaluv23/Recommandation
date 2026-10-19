@@ -195,6 +195,30 @@ class ReviewedMarketProfileTests(TestCase):
             self.assertEqual(result['readonly_data_requests'], 0)
             self.assertEqual(result['fixed_source_denominator'], 5)
 
+    def test_later_review_scope_cannot_leave_earliest_consumer_unproved(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            review = json.loads(REVIEW.read_text())
+            review['scope']['as_of'] = '2025-10-15T00:00:00+00:00'
+            rebound_proof(base, review, 'massive_no_post_cutoff_splits',
+                request_change=lambda r:r['query'].update({'execution_date.gte':'2025-10-15'}))
+            with self.assertRaises(ReviewedSourceRejected):
+                materialize_reviewed_snapshot(save_review(base,review),base/'view')
+
+    def test_earliest_consumer_coverage_accepts_exact_or_superset_after_later_review(self):
+        for start, end in (('2025-09-30','2026-08-16'), ('2025-09-01','2026-08-17')):
+            with self.subTest(start=start,end=end), tempfile.TemporaryDirectory() as directory:
+                base = Path(directory)
+                review = json.loads(REVIEW.read_text())
+                review['scope']['as_of'] = '2025-10-15T00:00:00+00:00'
+                rebound_proof(base, review, 'massive_no_post_cutoff_splits',
+                    request_change=lambda r:r['query'].update({'execution_date.gte':start,'execution_date.lte':end}))
+                binding = materialize_reviewed_snapshot(save_review(base,review),base/'view')
+                store = open_raw_info_store(binding['root'],reviewed_snapshot=binding)
+                doc = store.load(review['records'][-1]['document_id'])
+                self.assertEqual(store.load(doc.document_id,as_of=doc.available_at),doc)
+                self.assertIn(doc,store.snapshot().search(doc.company_id,as_of=doc.available_at))
+
     def test_synthetic_weekend_cutoff_and_equivalent_timezone_clocks(self):
         # Synthetic generic source-shape positive: no actual source admission.
         with tempfile.TemporaryDirectory() as directory:
@@ -221,7 +245,7 @@ class ReviewedMarketProfileTests(TestCase):
             proofs, records = [origin], []
             for kind, name, ep, query, body in (
                 ('massive_historical_issuer','identity','https://api.massive.com/v3/reference/tickers/TEST',{'date':'2025-06-27'},{'status':'OK','results':identity}),
-                ('massive_no_post_cutoff_splits','splits','https://api.massive.com/stocks/v1/splits',{'ticker':symbol,'execution_date.gte':'2025-06-29','execution_date.lte':'2025-07-02','sort':'execution_date.asc','limit':'10'},{'status':'OK','results':[]})):
+                ('massive_no_post_cutoff_splits','splits','https://api.massive.com/stocks/v1/splits',{'ticker':symbol,'execution_date.gte':'2025-06-28','execution_date.lte':'2025-07-02','sort':'execution_date.asc','limit':'10'},{'status':'OK','results':[]})):
                 artifact=write(base/(name+'.json'),body)
                 records.append({'name':name,'endpoint':ep,'query':query,'retrieved_at':'2025-07-03T00:00:00+00:00','http_status':200,'provider_status':'OK','next_page_present':False,'raw_response':name+'.json','sha256':artifact['sha256']})
                 proof={'kind':kind,'artifact':artifact,'entry_name':name}

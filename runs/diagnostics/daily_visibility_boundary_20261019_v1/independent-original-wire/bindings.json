@@ -1,0 +1,7 @@
+{
+  "roles_source_sha256_at_capture": "ca1a473e46d692bcc9e6264e8db8f60dc0ce165f6cd6a51301bb5424246ca53d",
+  "helper_sha256_at_capture": "bdf65f50c476e22b95308b02f6b2f36a77be07ebaf4ed04204295ef74492aa9c",
+  "old_roles_saved_path": "/Users/l/Project/Recommandation/runs/diagnostics/daily_visibility_boundary_20261019_v1/critic_wire_original_roles.py.txt",
+  "script_sha256": "66d138a0a8daf181274863a728927a005a8662437a632f2e07990dd857b14e5b",
+  "scope": "Four actual production entrypoints; three unique pending requests because Posthoc final/direct are equal. Zero role answers; synthetic prediction/truth are only transport fixtures."
+}

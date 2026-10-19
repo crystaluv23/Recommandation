@@ -1,0 +1,31 @@
+{
+  "cases": [
+    {
+      "allow_external": false,
+      "error_type": "ProviderBoundary",
+      "external_attempt_count": 0,
+      "message": "provider constructor intercepted before environment/key access",
+      "provider_constructor_hits": [
+        "OpenRouterJevClient.from_environ"
+      ],
+      "registration": "deepseek-v4-flash",
+      "status": "raised"
+    },
+    {
+      "allow_external": true,
+      "error_type": "ProviderBoundary",
+      "external_attempt_count": 0,
+      "message": "provider constructor intercepted before environment/key access",
+      "provider_constructor_hits": [
+        "OpenRouterJevClient.from_environ"
+      ],
+      "registration": "deepseek-v4-flash",
+      "status": "raised"
+    }
+  ],
+  "code_sha256": "520384a58c0bb4c5e2dcaad838bc60dbf72f55c022536f54049f109e91e03525",
+  "http_transmissions": 0,
+  "schema_version": "jev-transport-permission-diagnostic-v1",
+  "socket_connection_attempts": 0,
+  "synthetic_fixture": true
+}

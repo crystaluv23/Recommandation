@@ -275,3 +275,28 @@ Bounded evidence windows end at a complete whitespace-delimited token when the
 character budget would otherwise split a word or numeric amount. The excerpt
 remains a contiguous source substring; no text is synthesized and the original
 truncation marker remains true. This avoids literal-but-incomplete token evidence.
+
+## Daily boundary and Basic Info visibility
+
+The fixed five-close baseline uses observation dates strictly before the UTC
+day of the aware prediction instant. Offset spelling cannot change its window.
+This does not change the five-session definition, doubling threshold or source
+availability filtering.
+
+Basic Info has two bounded presentation stages: resolver context selection and
+normalized model projection. Runtime model rows record separate
+`source_context_truncated` and `projection_context_truncated` booleans (null
+means unknown), plus their three-valued `effective_context_truncated`. Any
+known omission or omission marker makes the effective value true; false
+requires both stages explicitly false. Existing projection counts describe
+only the normalized projection candidates, never all source observations. A
+visible row with known upstream omissions is `partial_context_budget`; absent
+upstream knowledge cannot produce a `complete` claim (`visibility_unknown`).
+Source status, data gaps and current-level counts retain their distinct meaning.
+
+A shared compact visibility projection preserves those flags, counts, status,
+projection ids and bounded `omitted_context_markers` through final source index,
+both posthoc input forms, and saved-trajectory critic views. Markers remain
+discovery hints rather than evidence/citation authority and pass existing
+identity masking. No complete source body is copied into these summaries.
+Legacy saved rows retain unknown stage fields; old archives are not rewritten.

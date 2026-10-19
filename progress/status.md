@@ -6,6 +6,9 @@
 处理；外部 LLM 调用保持零，用户现允许只读公开资料取证。新资料请求单独计数，
 不热加入已冻结输入；未恢复旧目标或完整付费运行。
 
+当前修复批次最终 1770 全量通过；首轮 1768/1769 的 critic payload 预算回归及原尺寸
+保留。仅最后 wire 改为同 payload 可逆 profiles，全部字段/IDs 保真，原预算不变。
+
 ## 新证据：F7 范围通过，F8 新消费时间边界已修
 
 [v3 报告](../reports/local-role-mvp-v3-stage-acceptance-20261019.md)、
@@ -28,7 +31,8 @@ fallback、持久化及精确消费者；13 条新请求均由隔离角色实际
 - [旧 v2](../reports/local-role-mvp-stage-acceptance-20261019.md) 固定七分母仍 2 机械通过、
   5 失败，原件/原答/旧结果均保留。新 v3 结果不能改写旧失败，也不能证明所有消费者安全。
 
-最新 1753 项全量离线测试通过；market/旧 SEC 21 项聚焦及独立 27 固定案、
+最新 1770 项全量离线测试通过；本批 188 聚焦、包装后 117 同源检查通过；
+market/旧 SEC 21 项聚焦及独立 27 固定案、
 null/alias 反例均通过；H_init 先前 117 项相关检查通过。Lint 通过且已亲读 feedback。
 并发预算/cache 原答复核与 F8 本地证据时间守卫已修；这些局部机械边界不能替代
 完整运行、模型行为或源码/输入全域语义验收。
@@ -48,9 +52,15 @@ issuer 与调整时点证明；不足则先做可执行 SEC 检索/Signal stage�
 与原件不变。生产 parser/adapter 全对象重建、issuer/全类型 split ledger、双 clock、
 分页/参数/价格/恢复均核，optional 235 不是逐行重复下载门槛。实际 UTC baseline helper
 算出 6.494；没有手填价格或新 HTTP/模型调用。12 旧 falsey pagination 漏放已修，
-独立 27 固定案与 null/alias 反例通过。仍有两项实际 consumer 缺口：等价 -04 instant
-的旧 baseline 误取日期（6.602）；BasicInfo upstream 已截断但后层标 complete/0 omitted。
-这两类保持 false/open，不能据 source closure 开始声称 F9/完整 readiness 通过。
+独立 27 固定案与 null/alias 反例通过。
+[新确定性依赖修复](../reports/daily-market-consumer-boundaries-20261019.md) 已独立窄验：
+同一 aware instant 四个日线入口统一 UTC 日；BasicInfo 两层遗漏保留到实际
+Predictor、posthoc 两入口与 critic wire。旧有损 index 可从同轨迹 canonical bundle
+恢复已知遗漏，模型仍只见部分 45d，未声称全读。另修 review scope 晚于 source
+availability 时 split proof 漏覆盖最早 consumer 的泛化假设；原 BMBL 资格不变，
+两个旧 gap 反例新拒，精确/更大覆盖区间合法。local judge+JEV 及 caller 显式禁外部
+执行现于 provider 构造前 typed 拒绝；合法 remotejudge/localproposer hybrid 保留。
+全部原失败保留，零新角色答/资料请求；这些是守卫而非新模型行为或完整 readiness。
 [3 次只读资料取证](../reports/bmbl-market-readonly-proof-review-20261019.md) 与零外部 LLM
 分开计数。ENB 新 [候选原材](../reports/enb-source-candidates-20261019.json) 只留后继准备，
 未加入这 5 原件或当前 view，未扩大 issuer/期间分母。
@@ -63,8 +73,9 @@ issuer 与调整时点证明；不足则先做可执行 SEC 检索/Signal stage�
 F2 经营背景目标与 generic filing 可执行覆盖脱节仍 open；8-K 本身是合法来源。
 两次 completed resume 的 16 产物完整 before/after hash 不变，零新请求/receipt。
 本批不加 anchor/label，不进 evaluator/Predictor；94 code/2 原文件绑定及嵌套来源
-proof 保持。1744 全量、117 相关检查通过。下一步先收敛 daily UTC 边界和两段投影可见性，
-再冻结新的实际消费者/角色批次；全 factory 本地路由与 JEV 旁路也须先实测拒绝。
+proof 保持。1744 全量、117 相关检查通过。下一步先补 runtime-owned 停止元数据，
+再冻结 execute_information_plan 到 prediction_sink 的真实盲前缀；读标签前专用边界
+停止，不依赖 observer 注入，不把前缀称为完成 Fast。
 
 用户已选择[完整公开会议内容时间口径](../reports/transcript-availability-policy-review-20261007.md)，
 owning spec 已同步；[26 份原件清单](../reports/transcript-proof-inventory-20261019.json)

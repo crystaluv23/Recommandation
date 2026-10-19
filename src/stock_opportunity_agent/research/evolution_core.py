@@ -23,6 +23,7 @@ from stock_opportunity_agent.artifacts import (
     canonical_json_hash as _canonical_hash,
 )
 from stock_opportunity_agent.data.markup import nonvisible_html_ranges
+from stock_opportunity_agent.data.point_in_time import utc_day_of_instant
 from stock_opportunity_agent.data.raw_info import RawInfoDocument
 from stock_opportunity_agent.data.resolution import (
     document_has_strong_issuer_match,
@@ -32,6 +33,7 @@ from stock_opportunity_agent.data.resolution import (
 )
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.basic_info_visibility import basic_info_source_index, basic_info_visibility
 from stock_opportunity_agent.research.evolution_reflection_memory import (
     ReflectionItem,
     ReflectionMemoryIndex,
@@ -499,8 +501,10 @@ def project_basic_info_bundle(
             projection_status = "no_context_spans"
         elif visible_count == 0:
             projection_status = "omitted_context_budget"
-        elif omitted_count:
+        elif omitted_count or resolution.coverage.context_truncated is True:
             projection_status = "partial_context_budget"
+        elif resolution.coverage.context_truncated is None:
+            projection_status = "visibility_unknown"
         else:
             projection_status = "complete"
         # Disclose what the budgets omitted: resolver-level markers arrive on
@@ -514,19 +518,21 @@ def project_basic_info_bundle(
                 continue
             preview = " ".join(str(model_row["exact_text"]).split())
             omitted_markers.append(preview[:110])
-        model_requests.append(
-            {
-                "request": resolution.request.to_dict(),
-                "status": resolution.status,
-                "projections": model_spans,
-                "projection_status": projection_status,
-                "available_projection_count": available_count,
-                "visible_projection_count": visible_count,
-                "omitted_projection_count": omitted_count,
-                "omitted_context_markers": omitted_markers[:8],
-                "data_gap": resolution.gap.to_dict() if resolution.gap else None,
-            }
-        )
+        model_request = {
+            "request": resolution.request.to_dict(),
+            "status": resolution.status,
+            "projections": model_spans,
+            "projection_status": projection_status,
+            "available_projection_count": available_count,
+            "visible_projection_count": visible_count,
+            "omitted_projection_count": omitted_count,
+            "source_context_truncated": resolution.coverage.context_truncated,
+            "projection_context_truncated": bool(omitted_count),
+            "omitted_context_markers": omitted_markers[:8],
+            "data_gap": resolution.gap.to_dict() if resolution.gap else None,
+        }
+        model_request.update(basic_info_visibility(model_request))
+        model_requests.append(model_request)
     return (
         {"requests": model_requests, "max_normalized_characters": max_chars},
         {
@@ -3848,6 +3854,7 @@ def _prediction_baseline_from_market_documents(
 ) -> dict[str, Any]:
     """Compute the fixed baseline from complete PIT sources, never display slices."""
 
+    cutoff_day = utc_day_of_instant(prediction_time)
     market_source_types = {
         "historical_price",
         "market_data",
@@ -3881,7 +3888,7 @@ def _prediction_baseline_from_market_documents(
                 bar_date = datetime.fromisoformat(raw_date).date()
             except ValueError:
                 continue
-            if bar_date >= prediction_time.date():
+            if bar_date >= cutoff_day:
                 continue
             existing = bars.get(raw_date)
             close = float(raw_close)
@@ -4043,43 +4050,9 @@ def _assemble_final_context(
             if key in identity_keys and value is not None
         ),
     ]
-    source_index: list[dict[str, Any]] = []
-    data_gaps: list[dict[str, Any]] = []
-    for row in basic_info.get("requests", ()):
-        if not isinstance(row, Mapping):
-            continue
-        request = row.get("request", {})
-        projections = row.get("projections", ())
-        source_row = {
-            "request_id": (
-                request.get("request_id")
-                if isinstance(request, Mapping)
-                else None
-            ),
-            "source_types": (
-                list(request.get("source_types", ()))
-                if isinstance(request, Mapping)
-                else []
-            ),
-            "status": row.get("status"),
-            "projection_ids": [
-                item.get("projection_id")
-                for item in projections
-                if isinstance(item, Mapping)
-                and isinstance(item.get("projection_id"), str)
-            ],
-        }
-        for field_name in (
-            "projection_status",
-            "available_projection_count",
-            "visible_projection_count",
-            "omitted_projection_count",
-        ):
-            if field_name in row:
-                source_row[field_name] = row[field_name]
-        source_index.append(source_row)
-        if isinstance(row.get("data_gap"), Mapping):
-            data_gaps.append(dict(row["data_gap"]))
+    source_index = basic_info_source_index(basic_info)
+    data_gaps = [dict(row["data_gap"]) for row in basic_info.get("requests", ())
+                 if isinstance(row, Mapping) and isinstance(row.get("data_gap"), Mapping)]
 
     round_rows = tuple(rounds)
     signal_results = {

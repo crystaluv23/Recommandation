@@ -1,0 +1,84 @@
+{
+  "schema_version": "basic-info-multilayer-visibility-original-failure-v1",
+  "purpose": "Native deterministic final assembler probe with explicit fact-free legal diagnostic state; not fresh model execution or a completed case.",
+  "source_basic_info": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v2/basic_info.json",
+    "sha256": "aa6f73ed4cb0c53ca3eb78359c3bf62d9bf532d0acae14dd3c1ae5847c160dd7"
+  },
+  "code_revision": "80e1c798890db46e255ee7b82c1d34ee906923e3",
+  "prediction_time": "2025-09-30T00:00:00+00:00",
+  "probe_state": {
+    "hypotheses": [],
+    "current_beliefs": [],
+    "supporting_evidence": [],
+    "contradictions": [],
+    "resolved_questions": [],
+    "open_questions": [],
+    "next_information_needs": [
+      "What material operating evidence remained unavailable by the prediction cutoff?"
+    ],
+    "decision": "continue"
+  },
+  "first_probe_setup_failure": "Empty default continuing state was refused by canonical validator before assembly; legal fact-free need supplied for this probe.",
+  "source_market_coverage": {
+    "context_truncated": true,
+    "contract_satisfied": true,
+    "deduplicated_document_count": 0,
+    "eligible_document_count": 1,
+    "missing_requirements": [],
+    "observed_distinct_period_count": 250,
+    "observed_observation_count": 250,
+    "observed_period_span_days": 364,
+    "query_evaluated": false,
+    "query_matched_document_count": null,
+    "query_requested": false,
+    "query_status": "not_requested",
+    "required_source_group_count": 0,
+    "satisfied_source_group_count": 0,
+    "selected_document_count": 1,
+    "selection_truncated": false,
+    "visible_span_count": 1
+  },
+  "model_market_visibility": {
+    "available_projection_count": 1,
+    "data_gap": null,
+    "omitted_context_markers": [
+      "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+      "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+      "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+    ],
+    "omitted_projection_count": 0,
+    "projection_status": "complete",
+    "request": {
+      "description": "Inspect the latest 45 days of point-in-time price and volume for early market confirmation or contradiction.",
+      "lookback_days": 45,
+      "max_documents": 1,
+      "request_id": "recent_market_backbone",
+      "source_types": [
+        "market_data"
+      ]
+    },
+    "status": "resolved",
+    "visible_projection_count": 1
+  },
+  "final_market_source_index": {
+    "request_id": "recent_market_backbone",
+    "source_types": [
+      "market_data"
+    ],
+    "status": "resolved",
+    "projection_ids": [
+      "projection_e885fe196b2d87d88a643882"
+    ],
+    "projection_status": "complete",
+    "available_projection_count": 1,
+    "visible_projection_count": 1,
+    "omitted_projection_count": 0
+  },
+  "input_omission_markers": 3,
+  "final_market_omission_markers": 0,
+  "upstream_omission_disclosed_in_final_market_index": false,
+  "external_llm_calls": 0,
+  "data_requests": 0,
+  "mvp_closed": false
+}

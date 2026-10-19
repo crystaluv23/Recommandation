@@ -1,0 +1,34 @@
+{
+  "documents": [
+    {
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "path": "documents/0000.json",
+      "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+    },
+    {
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "path": "documents/0001.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    {
+      "document_id": "massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e",
+      "path": "documents/0002.json",
+      "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+    }
+  ],
+  "oracle_sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855",
+  "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v4/snapshot",
+  "schema_version": "materialized-reviewed-raw-info-v1",
+  "scope": {
+    "acquisition_allowed": false,
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "company_ids": [
+      "cik_0001830043"
+    ],
+    "purpose": "five-original source/market-baseline qualification only; not full cohort"
+  },
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/local-trusted-source-market-review-20261019.json",
+    "sha256": "80026c42e28408d10dc41ccc7873c8ce074e1fa621296e33bf342f4f11973a6e"
+  }
+}
