@@ -1,0 +1,28 @@
+{
+  "metadata": {},
+  "request_hashes": [
+    "165e32ff1c7149695d8bd9be4b17828eccbf1856ab08f6084741945d47d98302"
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 47637
+  },
+  "value": [
+    {
+      "applicability_hypothesis": "Historical repurchases may be offset by issuance; net share change can inform capital-structure context without establishing prospective dilution.",
+      "context_tags": [
+        "mature_operations",
+        "recurring_revenue",
+        "consumer"
+      ],
+      "expected_role": "coverage",
+      "reason_code": "combine_evidence",
+      "selection_reason": "Measure year-over-year net share retirement to check whether completed repurchases translated into lower shares outstanding.",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "target_need_indices": [
+        4
+      ]
+    }
+  ]
+}

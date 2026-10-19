@@ -1,0 +1,266 @@
+{
+  "completion_hash": "9688d8a277612df75682ebd1b97f7d030ba87ac09f2251513ff04c7b71890597",
+  "immutable_artifacts": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/cache/responses/165e32ff1c7149695d8bd9be4b17828eccbf1856ab08f6084741945d47d98302.json",
+      "sha256": "4968160759f5272160c99a9ddf087078748ef1cad895b4f7f2ccf748f563391c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/cache/responses/174abecf78d54c2755be623ec16368eb94f4a93c1ee4a46de27e9a6a730ceda4.json",
+      "sha256": "1d178abae02d19b535acfaa04b756a62df722c4a5caa86910ea0cb2365107ba0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/cache/responses/3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9.json",
+      "sha256": "387db304eecf22be5462c8d7c21f322a7b96b2f2ac7657885a232ce5f71120a3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/cache/responses/5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4.json",
+      "sha256": "357204ed3e17476df3c3e5aa9771194f957a38613232a11a53b1ffc133b27c3a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/cache/responses/5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731.json",
+      "sha256": "b38ae2453dd18e9860ae76914c47ea1ffec24cbf6ea5f3feee72ce00f5ee6a2b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/cache/responses/92498314d9c77087d7ed2b0473a1497648f744e4623c302aee293cf03d0cacfe.json",
+      "sha256": "4aa2e9ea65e04f5a97dc64780d89cd2589302ef3a8b8f7bfc1d941bf087968ec"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/cache/responses/e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578.json",
+      "sha256": "ed2fe5fadebb9d7fe383d97ab167b48c3dad52e1670a7d7bf12ba8f19cbeea32"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/contract.json",
+      "sha256": "9eab71a0a3a9a601a164bb4d165613c75526d2e519137475b8f2d7e67f2d4638"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/contract.json",
+      "sha256": "88c5d7a7171f10a0713cf3520ebc25e0332b0444e78730c7834bc90333854436"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/inbox/165e32ff1c7149695d8bd9be4b17828eccbf1856ab08f6084741945d47d98302.json",
+      "sha256": "6add3fad9aef94742be4a7c2040589685bdeb60afc51d5299117a76e35970989"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/inbox/174abecf78d54c2755be623ec16368eb94f4a93c1ee4a46de27e9a6a730ceda4.json",
+      "sha256": "3e63660362ec5aa87bdd7b018e8b34d5635ec2f86bb990a5c8e39e084685b2f3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/inbox/3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9.json",
+      "sha256": "ec26778e62e4a6c436bf26c9a23d1ea2321ac404df33cb1195db3c6caf8a5f51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/inbox/5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4.json",
+      "sha256": "e8d11d02ebf57623896b84bf38f05211504dd5e6551c61f11f7e70bda47ed055"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/inbox/5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731.json",
+      "sha256": "61e7157d3ad61565a8036950e54ea16e19f885c711a822a33fe5869af6d56c15"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/inbox/92498314d9c77087d7ed2b0473a1497648f744e4623c302aee293cf03d0cacfe.json",
+      "sha256": "aaedcb7d1f9636cb4e1e28c2730bad31a383a8b427b151622b8d8225fc3fbd16"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/inbox/e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578.json",
+      "sha256": "cc78c71a027e615453f9bdca53378b9157d5b3830d119efa98aa5f08a9d7ad40"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/outbox/165e32ff1c7149695d8bd9be4b17828eccbf1856ab08f6084741945d47d98302.txt",
+      "sha256": "e3eb375c7d882224bcbb4462f17e6fcea8085ae2f64d0d2aad383110934e8c08"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/outbox/174abecf78d54c2755be623ec16368eb94f4a93c1ee4a46de27e9a6a730ceda4.txt",
+      "sha256": "b7613d118c1ebfb9cdb6325b8c9e6d9217cc183801e8d5f4124b82800fe73330"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/outbox/3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9.txt",
+      "sha256": "d0479b98953be5f17b6cc112029878481ec7b11a00bb3eb4b4379dfe81421937"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/outbox/5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4.txt",
+      "sha256": "ead54ab20305cbd393250d95dd12ffc28c89dee66124863c33309ebf5fb87105"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/outbox/5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731.txt",
+      "sha256": "21fe565f322f730d45dc5b74784b93cf7101317cc9ff29aef6fa08fc23895467"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/outbox/92498314d9c77087d7ed2b0473a1497648f744e4623c302aee293cf03d0cacfe.txt",
+      "sha256": "d29d3ea65c9d677cc9886bd59cb25dbc09a086c05a9db68dbeda5911abe3da29"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/outbox/e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578.txt",
+      "sha256": "8e58a8dcd6ca20aafb76f1e58df754b13333527803b3a553d9b050df514979b0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/receipts/165e32ff1c7149695d8bd9be4b17828eccbf1856ab08f6084741945d47d98302.json",
+      "sha256": "1f4537e1d04994b86765c2ce54639faef06044266adb575266e65c68ca08e26f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/receipts/174abecf78d54c2755be623ec16368eb94f4a93c1ee4a46de27e9a6a730ceda4.json",
+      "sha256": "4b554e574cdd639868a59a7f5e325c643a97059f92a66a2a7ccdf149ec8d8691"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/receipts/3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9.json",
+      "sha256": "058cd8b83e0ee79df3d7a9676aec284ad63ced01c07121b278b0e3d103a7f4ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/receipts/5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4.json",
+      "sha256": "eaebb0b47b8cb2064b7baa685067bbed243968aab1b0f7995630d7d7e6a7ac62"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/receipts/5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731.json",
+      "sha256": "f1213c4750225ccee9bf3f0bb2d953af1340c6c52cf8211bb11115b1844397f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/receipts/92498314d9c77087d7ed2b0473a1497648f744e4623c302aee293cf03d0cacfe.json",
+      "sha256": "45e2d72c49779168077464770990cd204eff49bfffd206d7db59e22367759e69"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/exchange/receipts/e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578.json",
+      "sha256": "9d04f990cbb9a8895dcbec11c959eff42d03996172500bd2ddab1a29e8aabb95"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/expectations.json",
+      "sha256": "0feebd1d129c09540a49434f06761234d0dff116418998221a36df764594448a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/inputs.json",
+      "sha256": "bf8783f057a11522d58e8e1568435d47335d78c5a08702e962987abc55a5507b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/manifest.json",
+      "sha256": "31d9b6ade2667ddcceb32de04f3bec37f8adae25a438a731526c98897c726441"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/observations/initialize_00.json",
+      "sha256": "5e7e6d73fb656f54992a0ced26a354e8e4332b37574f92ebd95b825c34e12c0c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/observations/prediction_00.json",
+      "sha256": "8502cf498fbc7074736c0744571aa7807051f33755e3fd982ba440f294b17091"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/observations/reflect_00.json",
+      "sha256": "0acdcf63f4bd35f1e5161b9aa9bf66df2e528e36a85efd1a18c2af8cc36f5fee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/observations/reflect_01.json",
+      "sha256": "81f7e96a990bb9ac581c93d7783a35b2aeccd4f17a1ad8755ce1fa064732e0ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/observations/routing_00.json",
+      "sha256": "659142d5567bfe6d04a17273e2f3495d7dcd04f7e917103600c69afbb4ee1639"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/observations/routing_01.json",
+      "sha256": "aab445aad104886e9509da710534f0b1ff106f7d78a9c55b62c8cc4d2afc6c11"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/observations/signal_group_00.json",
+      "sha256": "1045609ae5e619f41134510d80f165381fcb0f2361781ff63daee6c9116462da"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/observations/signal_group_01.json",
+      "sha256": "4cadeccbfa5e746334be7fcfff9a882740cfb8a004fc8ac4ad68e039dd475c8a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/observations/signal_group_02.json",
+      "sha256": "c1cc77108fec0d779601a90ca1e0269490526d180be31bae300e7c895f36928c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/prediction.json",
+      "sha256": "0d43f0682e5404bd176bb6a59c8adc9952b1822f181836f1112b68495f4ccfa0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/preflight.json",
+      "sha256": "b89e499bfeb4d07a5464c152d675f1ad80040345c7122e85ada38db1db3615c6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/requests/165e32ff1c7149695d8bd9be4b17828eccbf1856ab08f6084741945d47d98302.json",
+      "sha256": "3c91a74c3936ad61a4f7044660d9b5556264519ffb1983bc353bbdf11a913c78"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/requests/174abecf78d54c2755be623ec16368eb94f4a93c1ee4a46de27e9a6a730ceda4.json",
+      "sha256": "2e178b00dd223a73a2ba403e9bd775da2208c9f04e36672890160c7ea790b4e6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/requests/3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9.json",
+      "sha256": "477ef13dc5476a346e17d1cc970d2163f242ab8c2e7f8cb8f290aa3bcc4ea937"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/requests/5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4.json",
+      "sha256": "33ef9aa1799834dd8c01349fa5ddc4ec5dd6c6ea23959e5b64fa8e5319d56912"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/requests/5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731.json",
+      "sha256": "86f70e7f5385d70bc692e129102ce41544f7849ce03453d778f84a53271d48a7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/requests/92498314d9c77087d7ed2b0473a1497648f744e4623c302aee293cf03d0cacfe.json",
+      "sha256": "69eb85dd4410d82ea620f331a1694a3d7db88bf9682222e1d0f8b0111ca184ee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/requests/e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578.json",
+      "sha256": "bc556b1c3bf522737b9d81a79a29f8dceeb7053d23f866fd7ebad609bc74a861"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/unused_external_attempts.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    }
+  ],
+  "manifest_hash": "f3e8846189038deee84036cc7288437a436e70bf878171474a862cb3d76066e2",
+  "result": {
+    "actual_host_cost": null,
+    "actual_host_tokens": null,
+    "answered_model_requests": [
+      {
+        "request_hash": "165e32ff1c7149695d8bd9be4b17828eccbf1856ab08f6084741945d47d98302",
+        "stage": "signal_retrieval_cards"
+      },
+      {
+        "request_hash": "174abecf78d54c2755be623ec16368eb94f4a93c1ee4a46de27e9a6a730ceda4",
+        "stage": "research_controller_reflect"
+      },
+      {
+        "request_hash": "3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9",
+        "stage": "signal_retrieval_cards"
+      },
+      {
+        "request_hash": "5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4",
+        "stage": "research_controller_reflect_correction"
+      },
+      {
+        "request_hash": "5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731",
+        "stage": "llm_signal_batch_execute"
+      },
+      {
+        "request_hash": "92498314d9c77087d7ed2b0473a1497648f744e4623c302aee293cf03d0cacfe",
+        "stage": "blind_predictor_predict"
+      },
+      {
+        "request_hash": "e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578",
+        "stage": "research_controller_initialize"
+      }
+    ],
+    "apply_executed": true,
+    "apply_model_exercised": true,
+    "completed_fast_round": false,
+    "completed_trajectory": false,
+    "engineering_mvp_closed": false,
+    "external_llm_calls": 0,
+    "fixed_denominator": 1,
+    "ground_truth_reads": 0,
+    "historical_reused_role_responses": 0,
+    "independent_receipts": 7,
+    "new_role_receipts": 7,
+    "pending": [],
+    "prediction_ref": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/prediction.json",
+    "readonly_data_requests": 0,
+    "reflect_executed": true,
+    "reflect_model_exercised": true,
+    "sample_id": "s01",
+    "status": "prediction_persisted_before_labels_requires_independent_review"
+  }
+}

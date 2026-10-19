@@ -1,0 +1,88 @@
+{
+  "status": "narrow_actual_apply_owned_reflect_final_consumption_supported_with_stated_limits",
+  "critical_semantic_blockers_found": [],
+  "scope": "One fresh generated-Plan prefix on the known issuer/time. No labels read or prediction correctness/benefit assessed.",
+  "apply": {
+    "exact_version": "financing_listing_action:v5",
+    "accepted": "success / neutral / partial",
+    "source": "sec:cik_0001830043:000162828025038861",
+    "source_content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+    "source_available_at": "2025-08-07T20:05:33+00:00",
+    "quote_checks": "Four raw quotes literally occur in actual eligible wire projections; all four accepted HTML exact_spans literally occur in canonical SEC body.",
+    "fact_boundaries": "Six months ended June30 2025 repurchases 4.7m ClassA shares/$28.7m excluding excise tax; $2.9m term-loan repayment; no Q2 repurchases; June30 treasury retirement/$50.1m authorization and $50m revolver availability; June30 and six-month covenant compliance.",
+    "meaning": "Historical capital-structure facts do not establish prospective net dilution or a within-horizon directional runway/distress/tradability catalyst. Neutral is not stock direction."
+  },
+  "owned_reflect": {
+    "first_answer": "Mechanical rejection for residual longer than300 characters; no material invented-fact or unsupported-closure error found.",
+    "single_typed_correction": "Role50 only replaced authorized need_dispositions[0].residual_need with258 characters; no authority to edit the state mirror.",
+    "retention": "Original needs0–3 remain verbatim. Need4 partial retains OCF, capex, debt balances/maturities, covenant terms/later compliance, tax cash obligations, prospective net equity dilution and unverified annual coverage.",
+    "limitation": "Accepted and final states contain six needs: indices4 and5 are long and short versions of the same unresolved original compound need. Conservative surplus is not two independently discovered questions, new gain, or a closed exact single-residual mirror.",
+    "runtime_recovery": "Actual surplus is consistent with existing runtime-issued exact-transition fallback: append exact residual without guessing a writable similar slot or deleting other rows. No fallback=false claim is inferred from absent event metadata.",
+    "final_round1_partial_disposition_exact": true
+  },
+  "other_signals": {
+    "operating_cash_flow_margin:v2": "domain_unavailable due to missing financials; not negative cash generation.",
+    "net_share_retirement_yoy:v3": "domain_unavailable due to missing financials; no value/ending-shares measurement established. Actual v3 comparison requires latest weighted-average shares versus prior-year comparable period, same unit, but the actual selector compact card omits raw_retrieval.comparison_requirement and exposes only the generic retirement description. Routing wording about lower shares outstanding therefore remains an unverified proxy interpretation; weighted-average and point-in-time ending shares are not validated as equivalent. No wrong numerical value or prospective-dilution conclusion was produced in this case. This leaves a producer -> compact card -> selector definition-visibility limitation, without modifying the frozen Registry/version."
+  },
+  "predictor": {
+    "request_hash": "92498314d9c77087d7ed2b0473a1497648f744e4623c302aee293cf03d0cacfe",
+    "first_answer": "unlikely / medium / magnitude=null",
+    "semantic_review": "Authored facts match supplied periods/units and anchor. Conditional turnaround/execution inferences remain identified, neutral financing is not made directional, both domain-unavailable results are coverage gaps rather than economic absence, June30 conditions are not asserted current at Sep30, partial source visibility and max_signal_rounds remain explicit. No outcome accuracy assessed.",
+    "raw_to_accepted": "All authored fields preserved; accepted native form adds is_surge=false.",
+    "actual_final_wire_equals_durable_context": true,
+    "accepted_prediction_equals_durable_prediction": true,
+    "three_exact_signal_versions_preserved": true,
+    "six_actual_needs_and_partial_metadata_preserved": true,
+    "baseline": 6.494,
+    "doubling_threshold": 12.988,
+    "recent_close": 6.3,
+    "price_shape": "180 sessions Jan10 7.56 to Sep29 6.3; actual return_pct=-16.6667. Historical measurement is not future proof.",
+    "runtime_termination": {
+      "phase": "prediction_ready",
+      "stop_reason": "finalized",
+      "termination_trigger": "max_signal_rounds"
+    }
+  },
+  "execution_and_restore": {
+    "physical_new_roles": 7,
+    "historical_reused_roles": 0,
+    "typed_corrections": 1,
+    "actual_apply_model_exercised": true,
+    "first_owned_reflect_model_exercised": true,
+    "terminal_reflect_model_exercised": false,
+    "terminal": "Actual terminal observation has0modelcalls and finalizes at max_signal_rounds.",
+    "immutable_files_independently_rehashed": 52,
+    "before_after_completion_current_SHA_maps_equal": true,
+    "request_inbox_receipt_cache_sets_equal": 7,
+    "all_seven_canonical_request_raw_receipt_cache_bindings_checked": true,
+    "restore_new_dispatches": 0,
+    "restore_new_receipts": 0,
+    "recorded_ground_truth_reads": 0,
+    "completed_fast_round": false,
+    "completed_trajectory": false
+  },
+  "narrow_closure": "Actual apply model -> owned Reflect model -> accepted state/disposition -> exact anonymous Predictor context -> durable prediction -> unchanged completed restore is supported for this bounded sample, with redundant residual representation and unavailable measurement limitations preserved.",
+  "not_closed": [
+    "Overall MVP or complete F1–F9 families",
+    "full48 readiness",
+    "all needs or annual-report coverage",
+    "ending-shares measurement capability",
+    "terminal Reflect model behavior",
+    "Posthoc/Critic/Slow behavior",
+    "prediction accuracy, independent generalization or research benefit"
+  ],
+  "reviewer_actions": {
+    "production_resume": 0,
+    "submissions": 0,
+    "network_external_LLM_calls": 0,
+    "label_store_reads": 0,
+    "code_answer_edits": 0
+  },
+  "bindings": {
+    "manifest.json": "31d9b6ade2667ddcceb32de04f3bec37f8adae25a438a731526c98897c726441",
+    "expectations.json": "0feebd1d129c09540a49434f06761234d0dff116418998221a36df764594448a",
+    "prediction.json": "0d43f0682e5404bd176bb6a59c8adc9952b1822f181836f1112b68495f4ccfa0",
+    "execution_summary.json": "93300f46071d1a5cd1510b8059b87bf1cf65c1ab3091c741a6da008a4690f776",
+    "completion.json": "ead7b7f6a07edb58334959003d6866f98461f52a798f8a57b5e7b46d8b1d0d52"
+  }
+}

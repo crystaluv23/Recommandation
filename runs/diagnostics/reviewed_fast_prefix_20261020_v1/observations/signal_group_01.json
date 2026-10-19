@@ -1,0 +1,132 @@
+{
+  "document_fingerprints": {
+    "financing_listing_action:v5": [
+      "sec:cik_0001830043:000119312525146199:0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+      "sec:cik_0001830043:000162828025038861:f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3"
+    ]
+  },
+  "request_hashes": [
+    "5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731"
+  ],
+  "resolutions": [
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": null,
+      "documents": [
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+          "document_id": "sec:cik_0001830043:000162828025038861"
+        },
+        {
+          "available_at": "2025-06-25T12:20:35+00:00",
+          "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+          "document_id": "sec:cik_0001830043:000119312525146199"
+        }
+      ],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [
+              "sec:cik_0001830043:000162828025038861",
+              "sec:cik_0001830043:000119312525146199"
+            ],
+            "phase": "initial",
+            "request_id": "signal:financing_listing_action:v5",
+            "source_types": [
+              "filing",
+              "company_announcement",
+              "news"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability.",
+        "lookback_days": 730,
+        "max_documents": 10,
+        "query": "financing offering listing compliance reverse split PIPE financing securities purchase agreement at-the-market sales agreement equity offering convertible note conversion pre-funded warrant reverse merger investment grade credit rating credit facility amendment",
+        "request_id": "signal:financing_listing_action:v5",
+        "source_types": [
+          "filing",
+          "company_announcement",
+          "news"
+        ]
+      },
+      "status": "resolved"
+    }
+  ],
+  "results": [
+    {
+      "evidence": {
+        "counter": [
+          {
+            "document_id": "sec:cik_0001830043:000162828025038861",
+            "exact_span": "During each of the six months ended June&#160;30, 2025 and 2024, we used $2.9 million to repay a portion of the outstanding indebtedness under our Original Term Loan.",
+            "timestamp": "2025-08-07T20:05:33+00:00"
+          },
+          {
+            "document_id": "sec:cik_0001830043:000162828025038861",
+            "exact_span": "During the six months ended June&#160;30, 2025, the Company repurchased <ix:nonFraction unitRef=\"shares\" contextRef=\"c-91\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodShares\" scale=\"6\" id=\"f-544\">4.7</ix:nonFraction> million shares of Class A common stock for $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-92\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodValue\" scale=\"6\" id=\"f-545\"><ix:nonFraction unitRef=\"usd\" contextRef=\"c-93\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodValue\" scale=\"6\" id=\"f-546\">28.7</ix:nonFraction></ix:nonFraction> million, excluding excise tax obligations.",
+            "timestamp": "2025-08-07T20:05:33+00:00"
+          },
+          {
+            "document_id": "sec:cik_0001830043:000162828025038861",
+            "exact_span": "There were <ix:nonFraction unitRef=\"shares\" contextRef=\"c-96\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodShares\" format=\"ixt:fixed-zero\" scale=\"0\" id=\"f-550\"><ix:nonFraction unitRef=\"shares\" contextRef=\"c-97\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodShares\" format=\"ixt:fixed-zero\" scale=\"0\" id=\"f-551\">no</ix:nonFraction></ix:nonFraction> share repurchases during the three months ended June&#160;30, 2025 and 2024. As of June&#160;30, 2025, all treasury shares were retired, and a total of $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-90\" decimals=\"-5\" name=\"us-gaap:StockRepurchaseProgramRemainingAuthorizedRepurchaseAmount1\" scale=\"6\" id=\"f-552\">50.1</ix:nonFraction> million remained available for repurchase under the repurchase program.",
+            "timestamp": "2025-08-07T20:05:33+00:00"
+          },
+          {
+            "document_id": "sec:cik_0001830043:000162828025038861",
+            "exact_span": "As of June&#160;30, 2025, amounts available under the Revolving Credit Facility were $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-232\" decimals=\"-5\" name=\"us-gaap:LineOfCreditFacilityRemainingBorrowingCapacity\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-872\">50.0</ix:nonFraction>&#160;million. As of June&#160;30, 2025, and at all times during the six months ended June&#160;30, 2025, the Company was in compliance with the financial debt covenants.",
+            "timestamp": "2025-08-07T20:05:33+00:00"
+          }
+        ],
+        "supporting": []
+      },
+      "execution": {
+        "status": "success"
+      },
+      "interpretation": {
+        "summary": "Neutral capital-structure facts: the issuer completed first-half 2025 share repurchases of 4.7 million shares for $28.7 million, excluding excise tax obligations, and repaid $2.9 million under its Original Term Loan. All treasury shares were retired by June 30, with no second-quarter repurchases. These historical actions document repayment and share retirement, but the cited spans do not establish a prospective net-dilution change or a within-horizon change in runway, distress, or tradability relevant to the fixed surge target. Revolving credit availability and covenant compliance describe the existing position rather than an independently established directional catalyst. Additional evidence may exist in omitted text."
+      },
+      "signal_id": "financing_listing_action",
+      "state": {
+        "confidence": 0.93,
+        "value": "neutral"
+      },
+      "status": {
+        "coverage": "partial"
+      },
+      "version": 5
+    }
+  ],
+  "signal_calls": 1,
+  "skipped_unchanged_refs": [],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 52584
+  }
+}

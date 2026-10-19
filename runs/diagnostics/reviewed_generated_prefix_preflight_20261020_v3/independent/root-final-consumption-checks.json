@@ -1,0 +1,54 @@
+{
+  "scope": "Independent exact final consumer and actual restore check; semantic review separate",
+  "raw_prediction_equals_accepted_except_native_is_surge": true,
+  "wire_and_sink_anchors_stop_metrics_exact": true,
+  "wire_and_sink_all_six_needs_exact": true,
+  "initial_untargeted_needs_0_to_3_exact": true,
+  "actual_partial_disposition_retained_in_state_evolution": true,
+  "prospective_dilution_residual_preserved": true,
+  "need_representation_limit": "One unanswered composite need has long+short redundant residuals; not six independent research questions",
+  "requests": [
+    {
+      "hash": "165e32ff1c7149695d8bd9be4b17828eccbf1856ab08f6084741945d47d98302",
+      "stage": "signal_retrieval_cards",
+      "reservation": 47637
+    },
+    {
+      "hash": "174abecf78d54c2755be623ec16368eb94f4a93c1ee4a46de27e9a6a730ceda4",
+      "stage": "research_controller_reflect",
+      "reservation": 59874
+    },
+    {
+      "hash": "3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9",
+      "stage": "signal_retrieval_cards",
+      "reservation": 53303
+    },
+    {
+      "hash": "5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4",
+      "stage": "research_controller_reflect_correction",
+      "reservation": 60337
+    },
+    {
+      "hash": "5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731",
+      "stage": "llm_signal_batch_execute",
+      "reservation": 52584
+    },
+    {
+      "hash": "92498314d9c77087d7ed2b0473a1497648f744e4623c302aee293cf03d0cacfe",
+      "stage": "blind_predictor_predict",
+      "reservation": 72562
+    },
+    {
+      "hash": "e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578",
+      "stage": "research_controller_initialize",
+      "reservation": 60299
+    }
+  ],
+  "native_reservation_total": 406596,
+  "restored_files": 52,
+  "all_before_after_current_SHA_equal": true,
+  "new_dispatches": 0,
+  "new_receipts": 0,
+  "labels_read": false,
+  "engineering_mvp_closed": false
+}

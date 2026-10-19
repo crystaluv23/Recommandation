@@ -1,0 +1,52 @@
+{
+  "actual_host_cost": null,
+  "actual_host_tokens": null,
+  "answered_model_requests": [
+    {
+      "request_hash": "165e32ff1c7149695d8bd9be4b17828eccbf1856ab08f6084741945d47d98302",
+      "stage": "signal_retrieval_cards"
+    },
+    {
+      "request_hash": "174abecf78d54c2755be623ec16368eb94f4a93c1ee4a46de27e9a6a730ceda4",
+      "stage": "research_controller_reflect"
+    },
+    {
+      "request_hash": "3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9",
+      "stage": "signal_retrieval_cards"
+    },
+    {
+      "request_hash": "5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4",
+      "stage": "research_controller_reflect_correction"
+    },
+    {
+      "request_hash": "5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731",
+      "stage": "llm_signal_batch_execute"
+    },
+    {
+      "request_hash": "92498314d9c77087d7ed2b0473a1497648f744e4623c302aee293cf03d0cacfe",
+      "stage": "blind_predictor_predict"
+    },
+    {
+      "request_hash": "e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578",
+      "stage": "research_controller_initialize"
+    }
+  ],
+  "apply_executed": true,
+  "apply_model_exercised": true,
+  "completed_fast_round": false,
+  "completed_trajectory": false,
+  "engineering_mvp_closed": false,
+  "external_llm_calls": 0,
+  "fixed_denominator": 1,
+  "ground_truth_reads": 0,
+  "historical_reused_role_responses": 0,
+  "independent_receipts": 7,
+  "new_role_receipts": 7,
+  "pending": [],
+  "prediction_ref": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/prediction.json",
+  "readonly_data_requests": 0,
+  "reflect_executed": true,
+  "reflect_model_exercised": true,
+  "sample_id": "s01",
+  "status": "prediction_persisted_before_labels_requires_independent_review"
+}

@@ -2,7 +2,8 @@
 
 更新：2026-10-20。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)
 尚未收敛；独立收益为后续里程碑、仍未知。生产 LLM 节点由独立 subagent 执行，
-外部 LLM 调用0；只读资料取证已授权，单独计数。本轮新资料0；最新有界stage有5次独立角色执行，host tokens/cost未知。
+外部 LLM 调用0；只读资料取证已授权，单独计数。新前缀7次独立角色执行，
+0新资料，host tokens/cost未知。
 
 ## 当前验收
 
@@ -22,6 +23,11 @@ p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留�
 
 ## 最近实际证据
 
+- 新 [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)：
+  实际apply neutral→ownedReflect partial→Predictor/sink已连接，7新角色/1纠错，
+  52文件恢复全等、0标签。6行needs含同一长短残留，两个deterministic unavailable，
+  terminalReflect确定性终结无新模型；最终窄语义/完整final消费独立通过，
+  不等于整体F4/F6/F7或MVP通过。
 - [盲预测前缀](../reports/reviewed-fast-prefix-acceptance-20261019.md)：单例真实
   H_init/路由/Predictor三角色（前两答精确继承），0纠错，预测先durable再停标签前；
   两Signal technical budget_blocked、apply/Reflect模型未执行，4needs保留。
@@ -48,7 +54,6 @@ p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留�
 
 ## 下一步
 
-guard已提交222104ad；新 [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)
-准备独立512k/max24、32exchange/131072每request，0旧答继承/0正式新答。
-聚焦23项及零答预检通过，待独立current审查/lint/checkpoint后由root派fresh46+。
-保留首拒与全部原答，禁止扩大否定豁免、追加本批角色或热改冻结。原8项改动保留。
+本批限定连接已通过；完成证据checkpoint，保留1纠错及真实6行冗余scope。
+路由card未完整披露weighted-average比较要求，不能称已验期末股数/测量身份；
+后续producer/selector家族另批处理，不热改本冻结。原8项改动保留。

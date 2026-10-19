@@ -51,7 +51,7 @@
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json"
       ],
-      "remaining": "Declared native1+3 orientation examples and bounded local direction guard family passed. Fresh exact-Plan prefix actual F4/F6/F7 model connection remains pending. Full48/source/transcript/Slow/newSignal/fullF10/MVP remain open."
+      "remaining": "Declared orientation examples, local negation guard and one actual financing-apply/ownedReflect/full final-consumer prefix passed narrowly. Six-row duplicate residual and selector compact-card measurement definition remain limited. Full48/source/transcript/Slow/newSignal/fullF10/MVP remain open."
     },
     {
       "id": "feedback_consumption",
@@ -442,10 +442,25 @@
         "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/independent/accepted-plan-prefix-tests.log"
       ],
       "result": "Fresh-only prefix prepares exact acceptedp01 provenance/new512k case budget with no role/cache inheritance. Single-request131072 guard precedes receive; actual zero-answer initial pending60299 and idempotent preflight bind before roles. Source wrapper initial prepare failure retained;Final23 focused tests pass44.362s. No actual apply/Reflect or wholeMVP closure. Fresh-oracle empty controls reject before source preparation; unchanged legacy oracle retains default256k."
+    },
+    {
+      "id": "engineering-mvp-accepted-plan-prefix-executed-20261020",
+      "strategy": "actual_native_apply_owned_reflect_and_final_consumer",
+      "failure_families": [
+        "residual_length_typed_repair_with_conservative_mirror_append"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-generated-plan-prefix-20261020.md",
+        "runs/diagnostics/reviewed_fast_prefix_20261020_v1/execution_summary.json",
+        "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/independent/root-final-consumption-checks.json",
+        "runs/diagnostics/reviewed_fast_prefix_20261020_v1/independent-review.json"
+      ],
+      "result": "Native known-sample prefix reaches durable prediction before labels with7fresh roles/1residual-only typedcorrection. Actual financing apply neutral plus ownedReflect partial disposition enter final context; deterministic OCF/netshare unavailable, terminalReflect0models. Six rows retain long/short representations of one compound unknown;52file completedrestore exact0dispatch, logical406596under512k. Root independent exact checks passed; final narrow independent semantic review passed with limits, no overall F4/F6/F7/MVP closure."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-accepted-plan-prefix-preflight-20261020",
+    "after_iteration": "engineering-mvp-accepted-plan-prefix-executed-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -514,7 +529,11 @@
       "reports/reviewed-generated-plan-prefix-20261020.md",
       "reports/reviewed-generated-plan-prefix-expectations-20261020.json",
       "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/preflight-result.json",
-      "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/independent/accepted-plan-prefix-tests.log"
+      "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/independent/accepted-plan-prefix-tests.log",
+      "reports/reviewed-generated-plan-prefix-20261020.md",
+      "runs/diagnostics/reviewed_fast_prefix_20261020_v1/execution_summary.json",
+      "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/independent/root-final-consumption-checks.json",
+      "runs/diagnostics/reviewed_fast_prefix_20261020_v1/independent-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -541,21 +560,22 @@
       "Case-bootstrap resemblance is insufficient: preserve engine proposer prior, core-computed anchor/metrics and exact native read capabilities. Completed-only inventory cannot reject real pending/submitted queues, and a parsed but unsuccessfully persisted Plan cannot authorize a consumer. Single request cap differs from aggregate case budget.",
       "Global event dedup merged identical validation events acrossH_init cases; sample-attributed raw-event sequence is necessary, while unique receipts alone count physical calls.",
       "A direction regex starts at an earlier collection Decide and crosses a local without-deciding prohibition to a later target word. Successful correction events can be empty, so exact request traces/receipts, not events alone, establish correction count.",
-      "Without-clause recognition alone left ordinary do-not masks swallowing later finite decisions, and singular-only target words missed shares/prices. Keep local direction spans bounded and test both false rejection and false admission, without widening the shared prohibition guard."
+      "Without-clause recognition alone left ordinary do-not masks swallowing later finite decisions, and singular-only target words missed shares/prices. Keep local direction spans bounded and test both false rejection and false admission, without widening the shared prohibition guard.",
+      "A residual-only typed correction does not authorize rewriting an existing long mirrored need. Runtime conservatively appended the shorter residual, leaving two representations; preserve actual six-row state rather than claiming five needs or six independent discoveries."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "fresh_accepted_plan_prefix_actual_signal_reflect_connection",
-      "action": "After scoped checkpoint and current zero-answer preflight review, freeze newroot with exact acceptedp01/new512k case and32request ceiling, then dispatch only actual native requests through independent roles.",
-      "stop": "No parent/cache inheritance, no post-freeze ceiling changes, no labels/outcomes/Fast/Slow. Missing/unexercised connections remain open.",
-      "question": "What new finite case budget preserves the native predictor/finalization reserve while permitting selected Signalapply and ownedReflect under honest failure accounting?",
-      "pass": "Actual Signalapply and ownedReflect requests accepted against source/need contract, exact results/dispositions consumed by finalPredictor/sink and completedrestore unchanged.",
-      "fail": "Budgets are raised inside oldfreeze, reserve silently removed, source gaps converted to technical success, or model-selected stages claimed executed without requests.",
-      "on_pass": "Close only this knownsample actualconnection subitem; keep sourcecoverage/fullF10/Slow/independentbenefit open.",
-      "on_fail": "Retain technical failure and choose a smaller supported question rather than inflate oldrun.",
-      "new_evidence": "Oldprefix16547apply reservation exceeded14269remaining, so methodsentered neverproved modelapply/Reflect; new acceptedPlan and independentlybounded budget permit a fresh native integration test without rewriting oldfailures.",
-      "distinguishing_variable": "Actual new role request/response and acceptedresult/needdisposition consumption under native reserve, versus old technicalbudget stop."
+      "strategy": "source_definition_visibility_and_exact_residual_followup",
+      "action": "Checkpoint the independently accepted bounded connection, then select a separate scoped fix for missing versioned comparison definition in selector cards and retain redundant residual limits; no source/code/run change in this evidence batch.",
+      "stop": "No more roles/resume except the completedrestore already verified; no labels/score/Fast/Slow or larger budget.",
+      "question": "Which existing producer contract first loses the exact period/unit/comparison definition or residual slot identity before later model consumption?",
+      "pass": "A concrete existing-contract omission is isolated with original artifacts and a minimal separate spec-first fix plan; earlier actual connection remains unchanged.",
+      "fail": "Any unsupported need closure, incorrect period/unit, future source, semantic unavailable inversion or false model/Fastcompletion claim.",
+      "on_pass": "Implement only the selected demonstrated family under a new code checkpoint, without reusing old completion as new execution.",
+      "on_fail": "Retain exact failure and repair the demonstrated family in a new freeze; never rewrite this case.",
+      "new_evidence": "Seven new actual roles/one typedcorrection and full final-context/sink52file restore independently passed. Actual second routing exposed missing weighted-average comparison definition and residual-only repair preserved two representations of one need.",
+      "distinguishing_variable": "Exact versioned definition and authorized residual-slot identity at the producer boundary, rather than generic Signal labels or similarity guessing."
     }
   },
   "successor_prerequisites": [

@@ -1,0 +1,99 @@
+{
+  "document_fingerprints": {
+    "operating_cash_flow_margin:v2": []
+  },
+  "request_hashes": [],
+  "resolutions": [
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1",
+          "distinct_periods=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+        "provider": null,
+        "reason": "no_matching_documents",
+        "request_id": "signal:operating_cash_flow_margin:v2",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:operating_cash_flow_margin:v2",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration.",
+        "max_documents": 10,
+        "minimum_distinct_periods": 1,
+        "query": "operating cash flow revenue",
+        "request_id": "signal:operating_cash_flow_margin:v2",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "status": "unresolved"
+    }
+  ],
+  "results": [
+    {
+      "evidence": {
+        "counter": [],
+        "supporting": []
+      },
+      "execution": {
+        "status": "domain_unavailable"
+      },
+      "interpretation": {
+        "summary": "Point-in-time inputs did not satisfy the Signal retrieval contract."
+      },
+      "signal_id": "operating_cash_flow_margin",
+      "state": {
+        "confidence": 0.0,
+        "value": "unavailable"
+      },
+      "status": {
+        "coverage": "unavailable"
+      },
+      "version": 2
+    }
+  ],
+  "signal_calls": 1,
+  "skipped_unchanged_refs": [],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 0,
+    "tokens": 0
+  }
+}

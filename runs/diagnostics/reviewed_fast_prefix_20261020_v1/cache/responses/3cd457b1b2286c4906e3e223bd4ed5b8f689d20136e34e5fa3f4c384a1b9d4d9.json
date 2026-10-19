@@ -1,0 +1,56 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "selections": [
+      {
+        "answer_scope": "partial",
+        "applicability_hypothesis": "Inference: financing disclosures available by the cutoff may clarify whether equity actions create prospective dilution during the restructuring.",
+        "context_tags": [
+          "mature_operations",
+          "recurring_revenue",
+          "consumer"
+        ],
+        "expected_role": "primary",
+        "reason_code": "answer_need",
+        "residual_need": "As of 2025-09-30, what annual and subsequent disclosures established operating cash flow, capital expenditure, debt balances and maturities, covenants and tax-related cash obligations? Direct annual-report coverage remains unverified.",
+        "selection_reason": "Assess disclosed equity financing actions and their prospective dilution implications.",
+        "signal_ref": "financing_listing_action:v5",
+        "target_need_indices": [
+          4
+        ]
+      },
+      {
+        "answer_scope": null,
+        "applicability_hypothesis": "Inference: matching operating cash flow and revenue for the latest exact reported duration may help assess cash generation under revenue pressure without resolving the broader financial obligations.",
+        "context_tags": [
+          "mature_operations",
+          "recurring_revenue",
+          "consumer"
+        ],
+        "expected_role": "confirmation",
+        "reason_code": "combine_evidence",
+        "residual_need": null,
+        "selection_reason": "Measure reported cash generation relative to revenue to contextualize whether the turnaround can fund itself.",
+        "signal_ref": "operating_cash_flow_margin:v2",
+        "target_need_indices": [
+          4
+        ]
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"selections\":[{\"signal_ref\":\"financing_listing_action:v5\",\"reason_code\":\"answer_need\",\"selection_reason\":\"Assess disclosed equity financing actions and their prospective dilution implications.\",\"applicability_hypothesis\":\"Inference: financing disclosures available by the cutoff may clarify whether equity actions create prospective dilution during the restructuring.\",\"expected_role\":\"primary\",\"target_need_indices\":[4],\"answer_scope\":\"partial\",\"residual_need\":\"As of 2025-09-30, what annual and subsequent disclosures established operating cash flow, capital expenditure, debt balances and maturities, covenants and tax-related cash obligations? Direct annual-report coverage remains unverified.\",\"context_tags\":[\"mature_operations\",\"recurring_revenue\",\"consumer\"]},{\"signal_ref\":\"operating_cash_flow_margin:v2\",\"reason_code\":\"combine_evidence\",\"selection_reason\":\"Measure reported cash generation relative to revenue to contextualize whether the turnaround can fund itself.\",\"applicability_hypothesis\":\"Inference: matching operating cash flow and revenue for the latest exact reported duration may help assess cash generation under revenue pressure without resolving the broader financial obligations.\",\"expected_role\":\"confirmation\",\"target_need_indices\":[4],\"answer_scope\":null,\"residual_need\":null,\"context_tags\":[\"mature_operations\",\"recurring_revenue\",\"consumer\"]}]}",
+  "request_hash": "3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9",
+  "response_id": "local-3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9",
+  "usage": {
+    "accounting_tokens": 53303,
+    "agent_id": "/root/role_47",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "ec26778e62e4a6c436bf26c9a23d1ea2321ac404df33cb1195db3c6caf8a5f51",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "d0479b98953be5f17b6cc112029878481ec7b11a00bb3eb4b4379dfe81421937",
+    "request_hash": "3cd457b1b2286c4906e3e223bd4ed5b8f689d20136e34e5fa3f4c384a1b9d4d9",
+    "token_usage": null
+  }
+}

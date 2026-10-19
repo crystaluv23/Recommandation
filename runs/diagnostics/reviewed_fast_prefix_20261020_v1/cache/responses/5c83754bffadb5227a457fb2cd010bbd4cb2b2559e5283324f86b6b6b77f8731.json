@@ -1,0 +1,60 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "results": [
+      {
+        "result": {
+          "evidence": {
+            "counter": [
+              {
+                "exact_text": "During each of the six months ended June 30, 2025 and 2024, we used $2.9 million to repay a portion of the outstanding indebtedness under our Original Term Loan.",
+                "projection_id": "projection_082ddd3913b7e1afb3ef8218"
+              },
+              {
+                "exact_text": "During the six months ended June 30, 2025, the Company repurchased 4.7 million shares of Class A common stock for $ 28.7 million, excluding excise tax obligations.",
+                "projection_id": "projection_cc653ccc4bd9ca62173a22e6"
+              },
+              {
+                "exact_text": "There were no share repurchases during the three months ended June 30, 2025 and 2024. As of June 30, 2025, all treasury shares were retired, and a total of $ 50.1 million remained available for repurchase under the repurchase program.",
+                "projection_id": "projection_cc653ccc4bd9ca62173a22e6"
+              },
+              {
+                "exact_text": "As of June 30, 2025, amounts available under the Revolving Credit Facility were $ 50.0 million. As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants.",
+                "projection_id": "projection_a6ffd86867502311f473c91f"
+              }
+            ],
+            "supporting": []
+          },
+          "interpretation": {
+            "summary": "Neutral capital-structure facts: the issuer completed first-half 2025 share repurchases of 4.7 million shares for $28.7 million, excluding excise tax obligations, and repaid $2.9 million under its Original Term Loan. All treasury shares were retired by June 30, with no second-quarter repurchases. These historical actions document repayment and share retirement, but the cited spans do not establish a prospective net-dilution change or a within-horizon change in runway, distress, or tradability relevant to the fixed surge target. Revolving credit availability and covenant compliance describe the existing position rather than an independently established directional catalyst. Additional evidence may exist in omitted text."
+          },
+          "signal_id": "financing_listing_action",
+          "state": {
+            "confidence": 0.93,
+            "value": "neutral"
+          },
+          "status": {
+            "coverage": "partial"
+          },
+          "version": 5
+        },
+        "signal_ref": "financing_listing_action:v5"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"results\":[{\"result\":{\"evidence\":{\"counter\":[{\"projection_id\":\"projection_082ddd3913b7e1afb3ef8218\",\"exact_text\":\"During each of the six months ended June 30, 2025 and 2024, we used $2.9 million to repay a portion of the outstanding indebtedness under our Original Term Loan.\"},{\"projection_id\":\"projection_cc653ccc4bd9ca62173a22e6\",\"exact_text\":\"During the six months ended June 30, 2025, the Company repurchased 4.7 million shares of Class A common stock for $ 28.7 million, excluding excise tax obligations.\"},{\"projection_id\":\"projection_cc653ccc4bd9ca62173a22e6\",\"exact_text\":\"There were no share repurchases during the three months ended June 30, 2025 and 2024. As of June 30, 2025, all treasury shares were retired, and a total of $ 50.1 million remained available for repurchase under the repurchase program.\"},{\"projection_id\":\"projection_a6ffd86867502311f473c91f\",\"exact_text\":\"As of June 30, 2025, amounts available under the Revolving Credit Facility were $ 50.0 million. As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants.\"}],\"supporting\":[]},\"interpretation\":{\"summary\":\"Neutral capital-structure facts: the issuer completed first-half 2025 share repurchases of 4.7 million shares for $28.7 million, excluding excise tax obligations, and repaid $2.9 million under its Original Term Loan. All treasury shares were retired by June 30, with no second-quarter repurchases. These historical actions document repayment and share retirement, but the cited spans do not establish a prospective net-dilution change or a within-horizon change in runway, distress, or tradability relevant to the fixed surge target. Revolving credit availability and covenant compliance describe the existing position rather than an independently established directional catalyst. Additional evidence may exist in omitted text.\"},\"signal_id\":\"financing_listing_action\",\"state\":{\"confidence\":0.93,\"value\":\"neutral\"},\"status\":{\"coverage\":\"partial\"},\"version\":5},\"signal_ref\":\"financing_listing_action:v5\"}]}",
+  "request_hash": "5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731",
+  "response_id": "local-5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731",
+  "usage": {
+    "accounting_tokens": 52584,
+    "agent_id": "/root/role_48",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "61e7157d3ad61565a8036950e54ea16e19f885c711a822a33fe5869af6d56c15",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "21fe565f322f730d45dc5b74784b93cf7101317cc9ff29aef6fa08fc23895467",
+    "request_hash": "5c83754bffadb5227a457fb2cd010bbd4cb2b2559e5283324f86b6b6b77f8731",
+    "token_usage": null
+  }
+}

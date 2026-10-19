@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "d9e36422c4be04dd929b7d2bdb6a506eaa079d1a4e16c9835776a592bc190b9a",
+    "operations": [
+      {
+        "op": "replace",
+        "path": "need_dispositions[0].residual_need",
+        "value": "By prediction time, what disclosures established operating cash flow, capital expenditure, debt balances and maturities, covenant terms and later compliance, tax cash obligations and prospective net equity dilution? Annual-report coverage remains unverified."
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"d9e36422c4be04dd929b7d2bdb6a506eaa079d1a4e16c9835776a592bc190b9a\",\"operations\":[{\"op\":\"replace\",\"path\":\"need_dispositions[0].residual_need\",\"value\":\"By prediction time, what disclosures established operating cash flow, capital expenditure, debt balances and maturities, covenant terms and later compliance, tax cash obligations and prospective net equity dilution? Annual-report coverage remains unverified.\"}]}",
+  "request_hash": "5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4",
+  "response_id": "local-5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4",
+  "usage": {
+    "accounting_tokens": 60337,
+    "agent_id": "/root/role_50",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "e8d11d02ebf57623896b84bf38f05211504dd5e6551c61f11f7e70bda47ed055",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "ead54ab20305cbd393250d95dd12ffc28c89dee66124863c33309ebf5fb87105",
+    "request_hash": "5c15baad84fb57b1d844fb526361aebfcd75fcf2df0c08049d269f9309d645b4",
+    "token_usage": null
+  }
+}
