@@ -1,0 +1,74 @@
+{
+  "schema_version": "reviewed-source-candidates-v1",
+  "purpose": "Candidate input preparation for later cross-issuer acceptance; not admission or a model oracle.",
+  "company_id": "cik_0000895728",
+  "cutoff": "2025-09-30T00:00:00+00:00",
+  "submissions": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aef35d31db2b831136174b7.json",
+    "sha256": "762f921f69a79c313444aeaa5fb8852ca966422a18d4ff29b2c6d741a86acd08"
+  },
+  "records": [
+    {
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000089572825000006.json",
+        "sha256": "88632704b4b0cd6f1079621beecfb8b5ca4e7ba2af15a49f70a4a1f33ae7f76a"
+      },
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+      "form": "10-K",
+      "available_at": "2025-02-14T12:10:59+00:00",
+      "primary_document": "enb-20241231.htm",
+      "static_body": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/6e4b10692099e75192411496.json",
+        "sha256": "099407d7fbf3fd7d9f700f3968bfaaa3c5abf1a26956e1ee25ed445d94a7ef2a"
+      },
+      "static_endpoint": "https://www.sec.gov/Archives/edgar/data/895728/000089572825000006/enb-20241231.htm",
+      "independent_material_review_summary": "Annual report contains substantive business-segment descriptions."
+    },
+    {
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000095017025101102.json",
+        "sha256": "9c172d0e48f52a23c333992b8bb14024b9a747e7029b22e6aa7ee4003dde6745"
+      },
+      "document_id": "sec:cik_0000895728:000095017025101102",
+      "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+      "form": "10-Q",
+      "available_at": "2025-08-01T11:02:37+00:00",
+      "primary_document": "enb-20250630.htm",
+      "static_body": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/7a0cdba6ca05b7f1d7a3d8eb.json",
+        "sha256": "cd8443dc679491afdd37e9653b82a5f0969d2e4933a5395ba6629afca086fe63"
+      },
+      "static_endpoint": "https://www.sec.gov/Archives/edgar/data/895728/000095017025101102/enb-20250630.htm",
+      "independent_material_review_summary": "Interim report contains segment revenue and operating comparisons; preserve CAD units."
+    },
+    {
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000110465925061164.json",
+        "sha256": "4033bdec191af7d9ca8d8ae11c432eafd3d97a742a9a90218e5e802839124805"
+      },
+      "document_id": "sec:cik_0000895728:000110465925061164",
+      "content_hash": "9d4de12e12d34744e4ac891324ba16a196b949cdc6f6802959369f8769827c0f",
+      "form": "8-K",
+      "available_at": "2025-06-20T20:13:35+00:00",
+      "primary_document": "tm2517955d4_8k.htm",
+      "static_body": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/ad04ca7a0b8973e405d9e2b3.json",
+        "sha256": "0d784f7555a09b2795575ab837f0e670b8f4a3bc0b1fe69313207de6f365cae2"
+      },
+      "static_endpoint": "https://www.sec.gov/Archives/edgar/data/895728/000110465925061164/tm2517955d4_8k.htm",
+      "independent_material_review_summary": "Current report contains USD senior-note terms, including amounts, rates and maturities."
+    }
+  ],
+  "independent_reviewer": "/root/acceptance_review",
+  "root_machine_checks": "Exact cached body/content hash, source URL, SEC accession/form/primary document, and accepted/published/available instants match for all three records.",
+  "limits": [
+    "Foreign private issuer elects domestic forms; no 20-F/40-F/6-K capability claim.",
+    "Latest earnings 8-K 000095017025101101 references an exhibit; not reviewed as a complete earnings body.",
+    "No current view or original modified; no new network or external LLM request.",
+    "New source view materialization, consumer checks and fresh model generalization remain unperformed."
+  ],
+  "admitted": false,
+  "new_network_calls": 0,
+  "external_llm_calls": 0
+}

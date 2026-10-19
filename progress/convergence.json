@@ -33,9 +33,14 @@
         "reports/reviewed-initial-stage-20261019.md",
         "runs/diagnostics/reviewed_initial_stage_20261019_v1/progress.json",
         "runs/diagnostics/reviewed_initial_stage_20261019_v1/execution_summary.json",
-        "runs/diagnostics/reviewed_initial_stage_20261019_v1/independent-review.json"
+        "runs/diagnostics/reviewed_initial_stage_20261019_v1/independent-review.json",
+        "reports/reviewed-market-snapshot-20261019.md",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v1/independent-review.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v2/result.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v2/independent-review.json",
+        "runs/diagnostics/market_baseline_timezone_boundary_20261019_v1/result.json"
       ],
-      "remaining": "受控SEC三样本Signal链与双cutoff H_init窄范围独立通过；F2经营背景目标覆盖仍open，market proof待新view机械准入；全局来源/完整Predictor/Slow/48案与wholeloop仍未关闭，完整prepare缺16 anchor失败"
+      "remaining": "五原件reviewed view中2SEC+market250窄准入及UTC baseline实际连接独立通过；baseline同instant本地date和BasicInfo上游截断下游complete仍open，F2经营背景覆盖/全factory本地旁路/F9/Slow/全局来源/48案与wholeloop未关"
     },
     {
       "id": "feedback_consumption",
@@ -184,15 +189,33 @@
         "runs/diagnostics/reviewed_initial_stage_20261019_v1/execution_summary.json",
         "runs/diagnostics/reviewed_initial_stage_20261019_v1/independent-review.json"
       ]
+    },
+    {
+      "id": "engineering-mvp-reviewed-market-snapshot-20261019",
+      "strategy": "independent_market_proof_profile_and_runtime_baseline",
+      "failure_families": [
+        "pagination_falsey_shape",
+        "daily_instant_vs_local_date",
+        "multi_layer_projection_visibility"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-market-snapshot-20261019.md",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v1/independent-review.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v2/result.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v2/independent-review.json",
+        "runs/diagnostics/market_baseline_timezone_boundary_20261019_v1/result.json"
+      ]
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-reviewed-initial-stage-20261019",
+    "after_iteration": "engineering-mvp-reviewed-market-snapshot-20261019",
     "evidence": [
-      "reports/reviewed-initial-stage-20261019.md",
-      "runs/diagnostics/reviewed_initial_stage_20261019_v1/progress.json",
-      "runs/diagnostics/reviewed_initial_stage_20261019_v1/execution_summary.json",
-      "runs/diagnostics/reviewed_initial_stage_20261019_v1/independent-review.json"
+      "reports/reviewed-market-snapshot-20261019.md",
+      "runs/diagnostics/reviewed_market_snapshot_20261019_v1/independent-review.json",
+      "runs/diagnostics/reviewed_market_snapshot_20261019_v2/result.json",
+      "runs/diagnostics/reviewed_market_snapshot_20261019_v2/independent-review.json",
+      "runs/diagnostics/market_baseline_timezone_boundary_20261019_v1/result.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -200,19 +223,22 @@
       "恢复后的stage.usage0是cache计费值，不能代替实际独立receipt唯一调用统计",
       "旧compact卡省略证据时间但消费者信任runtime来源；现在必须保留原始时间binding或从full artifact重建，不能推断旧卡资格",
       "只核body和submissions内容未核cache endpoint，且未约束materialize目录可能污染原oracle；独立tmp反例已修，不能把窄view当完整readiness",
-      "默认annual/interim经营背景描述只有generic filing/max1执行条件；resolved不证明业务模型/风险/segments充分，8K合法但不能借改请求名宣布覆盖通过"
+      "默认annual/interim经营背景描述只有generic filing/max1执行条件；resolved不证明业务模型/风险/segments充分，8K合法但不能借改请求名宣布覆盖通过",
+      "分页用truthiness把0/false/[]/{}当无下一页，重新绑定hash也通过；独立12形状反例揭露并修成absent/null",
+      "来源资格UTC日边界正确不代表baseline helper：同瞬间-04使用local.date会排除最后一日；UTC正控不能替代等价时区反例",
+      "只看后层projection数量/complete漏掉上游coverage.context_truncated；BasicInfo实际仅展示45d的一块，不能把baseline全原件计算等同模型读完窗口"
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "repair",
-      "strategy": "reviewed_market_proof_profile_before_predictor",
-      "action": "在新reviewed root绑定已审Massive原cache与retained GET，production parser/adapter重建完整原对象、核issuer/split basis，负控与实际baseline helper验证；旧SEC manifest与原oracle不改",
-      "stop": "不新增HTTP或外部LLM；证据失败则保留typed source gap，不以235/250硬编码或重复下载每行造准入；不启动完整FastSlow",
-      "question": "既有来源/normalization/调整证明能否通过同一reviewed loader安全准入市场原件，并由runtime实际计算固定baseline？",
-      "pass": "五原件固定分母，新view含2SEC+1market且unknown/excluded仍隔离；source/recovery负控拒绝，原baseline helper实际输出有可追溯依据",
-      "fail": "错issuer/参数/窗口/adjusted/价格/分页/ledger覆盖仍进入view，或人工填baseline/篡改原件/扩大完成声明",
-      "on_pass": "独立反例审后冻结下一实际Predictor/consumer有界角色批次，保留完整evaluator/readiness约束",
-      "on_fail": "保留原输入与失败证据，修精确proof family，不扩大完整运行"
+      "strategy": "daily_utc_boundary_and_projection_visibility_dependencies",
+      "action": "先明确同instant UTC日边界在baseline/acquisition/观察范围的职责及分层截断语义，原失败保留，spec先行后修同族；通过后才冻结下一消费者/Predictor角色批次",
+      "stop": "不新增HTTP或外部LLM、不手填baseline、不扩大source分母/完整运行；wholefactory local+JEV旁路也须实际preflight拒绝",
+      "question": "同一aware instant是否在日线生产/筛选/baseline一致，已截断材料能否在后层仍准确告知可见性？",
+      "pass": "原6.494/6.602反例与等价offset/非交易日/边界变体统一UTC；上游budget截断不再被下游complete遮蔽且材料/markers保真",
+      "fail": "靠改timezone输入/期望/原件或只改标志而丢失可恢复材料来造通过，及把sourceprofile通过升成完整F9/MVP",
+      "on_pass": "独立反例审后新freeze实际Predictor/消费者调用，原4向输出/先存后标签与readiness保持",
+      "on_fail": "保留实际失败，限制影响范围并修明确producer→consumer族，不启动完整loop"
     }
   },
   "successor_prerequisites": [

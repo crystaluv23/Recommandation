@@ -1,6 +1,7 @@
 # Reviewed Massive daily-market proof profile
 
-Status: approved implementation contract; not yet implemented or admitted. The completed
+Status: implemented and independently checked in the five-original narrow
+source cohort; each new record still requires this proof verification. The completed
 SEC view and frozen H_init batch remain unchanged. This extends the existing
 reviewed snapshot reader with one independent market proof profile; it does not
 change RawInfoDocument, global oracle metadata or the generic store interface.
@@ -26,7 +27,12 @@ explicit freeze/root/manifest binding retain their existing behavior.
 2. Reuse the actual production provider parser and HistoricalPriceAdapter with
    the original retrieval instant and original source inputs. Require complete
    reconstructed `to_dict()` equality, including full content/hash, identity,
-   times, all prices and metadata. Do not replace mismatching fields with values
+   times, all prices and metadata. The HTTP cache retrieval clock and later
+   normalization clock are separate runtime facts: bind both, require every
+   canonical bar to use the same aware normalization instant no earlier than
+   the cache instant, and pass that declared normalization clock to the original
+   parser. Equivalent timezone offsets denote the same instant. No arbitrary
+   clock tolerance is introduced. Do not replace mismatching fields with values
    copied from the original merely to obtain equality. Every original daily
    observation must be valid, chronological, unique and within declared request
    and cutoff bounds; metadata.prices and body must agree through the existing
@@ -38,9 +44,14 @@ explicit freeze/root/manifest binding retain their existing behavior.
    historical issuer proof, not a current metadata.symbol assertion.
 4. Bind the retained all-type split request and raw response. Verify the exact
    expected endpoint and symbol; coverage must begin at the prediction cutoff
-   date and extend through the original aware retrieval date. An event-type
+   UTC date and extend through the later of the original aware cache and
+   normalization retrieval UTC dates. An event-type
    filter or shorter interval is insufficient. Require HTTP/provider success,
-   zero returned events and no next page. This narrow profile cannot admit a
+   zero returned events and no next page. Known pagination aliases may be
+   absent or explicitly null only; false, zero, empty string/array/object are
+   malformed shapes, not proof of a complete page. Its retained retrieval instant must
+   be no earlier than the end instant it purports to cover; a query made before
+   the old fetch cannot prove absence through that later fetch. This narrow profile cannot admit a
    nonempty ledger by inventing adjustment factors; such inputs remain
    unsupported/pending and are not negative company observations.
 5. The retained 235-row unadjusted response is additional corroboration. If

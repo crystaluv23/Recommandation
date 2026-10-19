@@ -1,0 +1,195 @@
+{
+  "schema_version": "reviewed-raw-info-snapshot-v1",
+  "status": "candidate_not_materialized",
+  "scope": {
+    "company_ids": [
+      "cik_0001830043"
+    ],
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "purpose": "five-original source/market-baseline qualification only; not full cohort",
+    "acquisition_allowed": false
+  },
+  "oracle_identity": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/oracle.json",
+    "sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855"
+  },
+  "records": [
+    {
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "company_id": "cik_0001830043",
+      "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000119312525146199.json",
+        "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+      },
+      "verdict": "admitted",
+      "reason": "Q2 2025 forward revenue and adjusted EBITDA guidance; original numeric ranges and context remain available, not Q3/FY answers.",
+      "reviewed_available_at": "2025-06-25T12:20:35+00:00",
+      "proofs": [
+        {
+          "kind": "sec_static_archive_body",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/9558f4ca495c26a0af518a2e.json",
+            "sha256": "0aa953844eff2c4f2e95cedf67318f63367808fc3bfefe1478497f5a671b2295"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1830043/000119312525146199/d915271d8k.htm",
+          "expected_content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7"
+        },
+        {
+          "kind": "sec_submissions_acceptance",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/823014a354d76cf724d5edf4.json",
+            "sha256": "ed4c1e5ce5ad4036ee78f621df1166d09911134e9553db5b390e7a4048a8dcf8"
+          },
+          "issuer_cik": "0001830043",
+          "accession_number": "0001193125-25-146199",
+          "accepted_at": "2025-06-25T12:20:35+00:00",
+          "primary_document": "d915271d8k.htm",
+          "form": "8-K"
+        }
+      ]
+    },
+    {
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "company_id": "cik_0001830043",
+      "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000162828025038861.json",
+        "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+      },
+      "verdict": "admitted",
+      "reason": "Issuer Q2 2025 10-Q; same-unit share and fiscal-period disclosures require original table/context reading, not automatic cross-tag arithmetic.",
+      "reviewed_available_at": "2025-08-07T20:05:33+00:00",
+      "proofs": [
+        {
+          "kind": "sec_static_archive_body",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/615a4af908c13d46cb5bd1a4.json",
+            "sha256": "79268825d2fe5f3193b384120c6daeab46b311c0d6bca19c27796a57b2774a2b"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1830043/000162828025038861/bmbl-20250630.htm",
+          "expected_content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3"
+        },
+        {
+          "kind": "sec_submissions_acceptance",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/823014a354d76cf724d5edf4.json",
+            "sha256": "ed4c1e5ce5ad4036ee78f621df1166d09911134e9553db5b390e7a4048a8dcf8"
+          },
+          "issuer_cik": "0001830043",
+          "accession_number": "0001628280-25-038861",
+          "accepted_at": "2025-08-07T20:05:33+00:00",
+          "primary_document": "bmbl-20250630.htm",
+          "form": "10-Q"
+        }
+      ]
+    },
+    {
+      "document_id": "avnews_82c6cc3e5143825f6225f673",
+      "company_id": "cik_0001830043",
+      "content_hash": "e3fa9e10193ccb7d57c63d8a3602d521845ddbc7897bee1a1d1e0882663786f6",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/news/cik_0001830043/avnews_82c6cc3e5143825f6225f673.json",
+        "sha256": "c67fae71ac7135a621c36abf302d2eee97ffe6a9ca6d6c11ab53d0ff7715be46"
+      },
+      "verdict": "excluded",
+      "reason": "Saved provider title/summary at 2025-04-24 contains later FY2025 realized disclosures; original audit binds provider/source identity. Exclude this exact body version without inventing a corrected timestamp or replacing it with another document.",
+      "proofs": [
+        {
+          "kind": "bound_prior_source_version_audit",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/reports/v182-bumble-pair-content-and-future-source-audit-20261007.json",
+            "sha256": "143ebca8834b586f1258d507313f2388da19cae08c1e533f10aa7952a3be495d"
+          }
+        }
+      ]
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+      "company_id": "cik_0001830043",
+      "content_hash": "3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001830043/alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e.json",
+        "sha256": "f23c7887094f0cb484d053e6d04aab37e6f6a98d8e6bd7ad2c73b3ef2d718bc3"
+      },
+      "verdict": "unknown",
+      "reason": "Complete public-conference-content and UTC completion proof not established in this local scope; provider reportedDate alone is insufficient.",
+      "proofs": []
+    },
+    {
+      "document_id": "massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e",
+      "company_id": "cik_0001830043",
+      "content_hash": "c48ddf33f63755eb0e12623ebd4358593898f691d587dc25890a69a33702603f",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001830043/massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e.json",
+        "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+      },
+      "verdict": "admitted",
+      "reason": "Candidate: exact original provider/production reconstruction, historical issuer and no-post-cutoff-split basis proof; no exact vintage or predictive effect guarantee.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "kind": "massive_daily_origin",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/4166561a6da6904c722e4e5a.json",
+            "sha256": "04a5c1b732b2b8580246f3c169cfce5dde03471fda07711ad49b4d243475fb81"
+          },
+          "provider_retrieved_at": "2026-08-16T07:28:08.034427+00:00",
+          "normalization_retrieved_at": "2026-08-16T07:28:08.042545+00:00"
+        },
+        {
+          "kind": "massive_historical_issuer",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/historical_identity.response.json",
+            "sha256": "5bd69c36b59c47185da91998f870ddeb00d62400f7f01832b74278db5af95020"
+          },
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+            "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+          },
+          "entry_name": "historical_identity",
+          "expected_identity": {
+            "ticker": "BMBL",
+            "cik": "0001830043",
+            "market": "stocks",
+            "locale": "us",
+            "primary_exchange": "XNAS",
+            "type": "CS",
+            "currency_name": "usd"
+          }
+        },
+        {
+          "kind": "massive_no_post_cutoff_splits",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/splits.response.json",
+            "sha256": "a75375a255fc0dd5835aac5c5ee6bbb6e9424a0477a0c5a9b3620d3c223c23d5"
+          },
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+            "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+          },
+          "entry_name": "splits"
+        },
+        {
+          "kind": "massive_unadjusted_overlap",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/unadjusted_daily.response.json",
+            "sha256": "4a9dc4e88b73bd3b132c376c73c794ebf2d01f6e425760f04dd396a809d2b36a"
+          },
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+            "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+          },
+          "entry_name": "unadjusted_daily"
+        }
+      ]
+    }
+  ],
+  "unknown_or_outside_scope_is_not_negative_evidence": true,
+  "transcript_complete_proofs_accepted": 0,
+  "original_oracle_writes": 0,
+  "manifest_hash": "8ac30fc2580721d4113d0d92e4ed76c439a6db2e0e3e252e16863dd015c735e1",
+  "external_llm_calls": 0,
+  "readonly_data_requests_for_retained_proofs": 3
+}

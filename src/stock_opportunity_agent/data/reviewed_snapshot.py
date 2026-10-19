@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import datetime
+import math
+from urllib.parse import quote
+from datetime import date, datetime, time, timedelta, timezone
 from functools import wraps
 from pathlib import Path
 from typing import Any, Mapping
@@ -26,7 +28,7 @@ def _source_boundary(function):
     def checked(*args, **kwargs):
         try:
             return function(*args, **kwargs)
-        except (KeyError, TypeError, ValueError, AttributeError, OSError, ValidationError) as exc:
+        except (KeyError, IndexError, TypeError, ValueError, OverflowError, AttributeError, OSError, ValidationError) as exc:
             raise ReviewedSourceRejected(f"invalid reviewed source artifact: {exc}") from exc
     return checked
 
@@ -51,6 +53,191 @@ def _instant(value: Any) -> datetime:
     if result.tzinfo is None or result.utcoffset() is None:
         raise ReviewedSourceRejected("reviewed source time must be aware")
     return result
+
+
+def _verify_sec_document(document, row, proofs, cutoff):
+    if set(proofs) != {"sec_static_archive_body", "sec_submissions_acceptance"}:
+        raise ReviewedSourceRejected("admitted source requires retained SEC body and acceptance proof")
+    if document.source_type != "filing":
+        raise ReviewedSourceRejected("static SEC filing proof requires filing source type")
+    body_proof, body = proofs["sec_static_archive_body"]
+    acceptance, submissions = proofs["sec_submissions_acceptance"]
+    if (body.get("endpoint") != body_proof["endpoint"] or body.get("body") != document.content
+            or content_sha256(body["body"]) != body_proof["expected_content_hash"]):
+        raise ReviewedSourceRejected("static SEC body differs from admitted original")
+    source = submissions["body"]
+    if submissions.get("endpoint") != "https://data.sec.gov/submissions/CIK" + acceptance["issuer_cik"] + ".json":
+        raise ReviewedSourceRejected("SEC submissions endpoint differs from reviewed issuer")
+    recent = source["filings"]["recent"]
+    accession = acceptance["accession_number"]
+    matches = [i for i, value in enumerate(recent["accessionNumber"]) if value == accession]
+    if (str(source["cik"]).zfill(10) != acceptance["issuer_cik"] or len(matches) != 1
+            or document.company_id != "cik_" + acceptance["issuer_cik"]
+            or document.document_id != "sec:" + document.company_id + ":" + accession.replace("-", "")):
+        raise ReviewedSourceRejected("SEC issuer/accession identity differs")
+    index = matches[0]
+    accepted = _instant(recent["acceptanceDateTime"][index])
+    expected_endpoint = ("https://www.sec.gov/Archives/edgar/data/" + str(int(acceptance["issuer_cik"]))
+        + "/" + accession.replace("-", "") + "/" + acceptance["primary_document"])
+    expected_metadata = {"source_url": expected_endpoint, "accession_number": accession,
+        "form": acceptance["form"], "provider": "sec_edgar", "cik": acceptance["issuer_cik"]}
+    if any(key in document.metadata and document.metadata[key] != expected
+           for key, expected in expected_metadata.items()):
+        raise ReviewedSourceRejected("SEC source metadata differs from retained proof")
+    if (recent["form"][index] != acceptance["form"]
+            or recent["primaryDocument"][index] != acceptance["primary_document"]
+            or body_proof["endpoint"] != expected_endpoint
+            or accepted != _instant(acceptance["accepted_at"])
+            or accepted != _instant(row["reviewed_available_at"])
+            or document.available_at != accepted or document.published_at != accepted
+            or accepted > cutoff):
+        raise ReviewedSourceRejected("SEC availability/filing proof differs from original or scope")
+
+
+def _market_response(proof, endpoint, expected_query, *, not_before=None):
+    """Match retained response bytes to the exact sanitized successful request."""
+    raw, body = _read_bound(proof["artifact"])
+    _bytes, records = _read_bound(proof["request_record"])
+    matches = [item for item in records if item["name"] == proof["entry_name"]]
+    if len(matches) != 1:
+        raise ReviewedSourceRejected("market proof request identity is ambiguous")
+    request = matches[0]
+    expected_path = Path(proof["request_record"]["path"]).resolve().parent / request["raw_response"]
+    if (request["endpoint"] != endpoint or request["query"] != expected_query
+            or request["http_status"] != 200 or request["provider_status"] != "OK"
+            or request["next_page_present"] is not False
+            or expected_path.resolve() != Path(proof["artifact"]["path"]).resolve()
+            or request["sha256"] != hashlib.sha256(raw).hexdigest()):
+        raise ReviewedSourceRejected("market proof response differs from retained request")
+    _complete_market_body(body)
+    retrieved_at = _instant(request["retrieved_at"])
+    if not_before is not None and retrieved_at < not_before:
+        raise ReviewedSourceRejected("market proof was retrieved before its covered interval ended")
+    return body
+
+
+def _complete_market_body(body):
+    if (not isinstance(body, dict) or body.get("status") != "OK" or "error" in body
+            or any(key in body and body[key] is not None for key in ("next_url", "next_page", "next_page_token"))):
+        raise ReviewedSourceRejected("market proof requires a successful complete page")
+
+
+def _daily_market_rows(body, symbol, adjusted, start, end):
+    """Check bounded daily shape before calling the production numeric parser."""
+    _complete_market_body(body)
+    rows = body.get("results")
+    if body.get("ticker") != symbol or body.get("adjusted") is not adjusted or not isinstance(rows, list) or not rows:
+        raise ReviewedSourceRejected("market aggregate identity/basis/rows differ")
+    for key in ("count", "resultsCount"):
+        if key in body and (type(body[key]) is not int or body[key] != len(rows)):
+            raise ReviewedSourceRejected("market aggregate row count differs")
+    days = []
+    for row in rows:
+        if not isinstance(row, dict):
+            raise ReviewedSourceRejected("market aggregate row must be an object")
+        if type(row["t"]) is not int:
+            raise ReviewedSourceRejected("market observation timestamp must be integer milliseconds")
+        day = datetime.fromtimestamp(row["t"] / 1000, timezone.utc).date()
+        if not start <= day <= end:
+            raise ReviewedSourceRejected("market aggregate observation exceeds request window")
+        if any(isinstance(row[key], bool) or not math.isfinite(float(row[key])) or float(row[key]) < 0 for key in ("o", "h", "l", "c", "v")):
+            raise ReviewedSourceRejected("market aggregate contains invalid numeric values")
+        days.append(day)
+    if days != sorted(set(days)):
+        raise ReviewedSourceRejected("market aggregate dates repeat or are unordered")
+    return rows, days
+
+
+def _verify_market_document(document, row, proofs, cutoff):
+    """Verify one original daily aggregate using retained local provider proofs."""
+    from stock_opportunity_agent.data.acquisition import HistoricalPriceAdapter
+    from stock_opportunity_agent.data.resolution import RawInfoRequest
+    from stock_opportunity_agent.data.sources.core import DataSourceError
+    from stock_opportunity_agent.data.sources.massive import _price_bar_from_result
+
+    required = {"massive_daily_origin", "massive_historical_issuer", "massive_no_post_cutoff_splits"}
+    if not required <= set(proofs) or set(proofs) - required - {"massive_unadjusted_overlap"}:
+        raise ReviewedSourceRejected("market source requires origin, issuer and split-basis proofs")
+    if document.source_type != "market_data" or document.metadata.get("provider") != "massive":
+        raise ReviewedSourceRejected("market proof requires Massive market_data source")
+    origin, cache = proofs["massive_daily_origin"]
+    symbol = document.metadata["symbol"]
+    start, end = date.fromisoformat(document.metadata["start"]), date.fromisoformat(document.metadata["end"])
+    if start > end or end >= cutoff.astimezone(timezone.utc).date() or not isinstance(symbol, str) or not symbol or symbol != symbol.upper():
+        raise ReviewedSourceRejected("market source symbol/window is invalid")
+    endpoint = f"https://api.massive.com/v2/aggs/ticker/{quote(symbol, safe='')}/range/1/day/{start.isoformat()}/{end.isoformat()}"
+    params = cache.get("params")
+    if (cache.get("endpoint") != endpoint or cache.get("source_key") != "massive"
+            or cache.get("capability") != "price_daily" or cache.get("payload_kind") != "json"
+            or not isinstance(params, list) or any(not isinstance(p, list) or len(p) != 2 for p in params)
+            or len({p[0] for p in params}) != len(params)
+            or dict(params) != {"method": "GET", "adjusted": "true", "limit": "50000", "sort": "asc"}):
+        raise ReviewedSourceRejected("market origin endpoint or sanitized parameters differ")
+    cached_at = _instant(cache["retrieved_at"])
+    normalized_at = _instant(origin["normalization_retrieved_at"])
+    if cached_at != _instant(origin["provider_retrieved_at"]) or normalized_at < cached_at:
+        raise ReviewedSourceRejected("market cache/normalization clocks differ")
+    canonical_bars = json.loads(document.content)
+    if (not isinstance(canonical_bars, list) or not canonical_bars
+            or any(_instant(bar["retrieved_at"]) != normalized_at for bar in canonical_bars)):
+        raise ReviewedSourceRejected("market canonical bars require one bound normalization clock")
+    raw_rows, days = _daily_market_rows(cache["body"], symbol, True, start, end)
+    if days[-1] >= cutoff.astimezone(timezone.utc).date() or document.available_at > cutoff:
+        raise ReviewedSourceRejected("market observations exceed prediction cutoff")
+    if document.available_at != _instant(row["reviewed_available_at"]):
+        raise ReviewedSourceRejected("market reviewed availability differs from original")
+    source_as_of = datetime.combine(end + timedelta(days=1), time.min, tzinfo=timezone.utc)
+    try:
+        bars = [_price_bar_from_result(symbol, item, normalized_at.astimezone(timezone.utc), adjusted=True) for item in raw_rows]
+        adapter = HistoricalPriceAdapter("massive", lambda _symbol, _start, _end: bars)
+        reconstructed = adapter.acquire(RawInfoRequest("reviewed_market_origin", "Reconstruct retained daily provider input.",
+            (document.source_type,), lookback_days=(source_as_of.date() - start).days, max_documents=1),
+            company_id=document.company_id, identity={"ticker": symbol}, as_of=source_as_of).documents
+    except DataSourceError as exc:
+        raise ReviewedSourceRejected(f"market production normalization rejected: {exc}") from exc
+    if len(reconstructed) != 1 or reconstructed[0].to_dict() != document.to_dict():
+        raise ReviewedSourceRejected("market complete production reconstruction differs from original")
+
+    issuer_proof, _issuer_body = proofs["massive_historical_issuer"]
+    issuer = _market_response(issuer_proof, f"https://api.massive.com/v3/reference/tickers/{quote(symbol, safe='')}",
+        {"date": days[-1].isoformat()})["results"]
+    expected_identity = issuer_proof["expected_identity"]
+    keys = {"ticker", "cik", "market", "locale", "primary_exchange", "type", "currency_name"}
+    if (set(expected_identity) != keys or any(issuer.get(k) != expected_identity[k] for k in keys)
+            or issuer.get("ticker") != symbol or not str(issuer.get("cik", "")).isdigit()
+            or document.company_id != "cik_" + str(issuer["cik"]).zfill(10)
+            or issuer.get("market") != "stocks" or issuer.get("locale") != "us"
+            or issuer.get("type") != "CS" or issuer.get("currency_name") != "usd"
+            or not issuer.get("primary_exchange")):
+        raise ReviewedSourceRejected("historical market issuer identity differs")
+
+    split_proof, _split_body = proofs["massive_no_post_cutoff_splits"]
+    _data, request_records = _read_bound(split_proof["request_record"])
+    split_requests = [r for r in request_records if r["name"] == split_proof["entry_name"]]
+    if len(split_requests) != 1:
+        raise ReviewedSourceRejected("split proof request identity is ambiguous")
+    limit = split_requests[0]["query"].get("limit")
+    if not isinstance(limit, str) or not limit.isdigit() or int(limit) <= 0:
+        raise ReviewedSourceRejected("split proof query limit is invalid")
+    query = {"ticker": symbol, "execution_date.gte": cutoff.astimezone(timezone.utc).date().isoformat(),
+        "execution_date.lte": max(cached_at, normalized_at).astimezone(timezone.utc).date().isoformat(),
+        "sort": "execution_date.asc", "limit": limit}
+    if max(cached_at, normalized_at).astimezone(timezone.utc).date() < cutoff.astimezone(timezone.utc).date():
+        raise ReviewedSourceRejected("post-cutoff split profile has no valid coverage interval")
+    splits = _market_response(split_proof, "https://api.massive.com/stocks/v1/splits", query,
+        not_before=max(cached_at, normalized_at))
+    if splits.get("results") != []:
+        raise ReviewedSourceRejected("this market profile requires an empty complete post-cutoff split ledger")
+
+    if "massive_unadjusted_overlap" in proofs:
+        extra_proof, _extra = proofs["massive_unadjusted_overlap"]
+        extra = _market_response(extra_proof, endpoint, {"adjusted": "false", "sort": "asc", "limit": "50000"})
+        extra_rows, extra_days = _daily_market_rows(extra, symbol, False, start, end)
+        original_by_day = dict(zip(days, raw_rows, strict=True))
+        overlap = [(day, item) for day, item in zip(extra_days, extra_rows, strict=True) if day in original_by_day]
+        if not overlap or any(float(item[key]) != float(original_by_day[day][key])
+                for day, item in overlap for key in ("o", "h", "l", "c", "v")):
+            raise ReviewedSourceRejected("market unadjusted overlap differs from original basis")
 
 
 @_source_boundary
@@ -87,42 +274,13 @@ def _verified_review(binding: Mapping[str, Any]) -> tuple[dict, list[RawInfoDocu
             continue
         if row["verdict"] != "admitted":
             raise ReviewedSourceRejected("unknown reviewed disposition")
-        if set(proofs) != {"sec_static_archive_body", "sec_submissions_acceptance"}:
-            raise ReviewedSourceRejected("admitted source requires retained SEC body and acceptance proof")
-        if document.source_type != "filing":
-            raise ReviewedSourceRejected("static SEC filing proof requires filing source type")
-        body_proof, body = proofs["sec_static_archive_body"]
-        acceptance, submissions = proofs["sec_submissions_acceptance"]
-        if (body.get("endpoint") != body_proof["endpoint"] or body.get("body") != document.content
-                or content_sha256(body["body"]) != body_proof["expected_content_hash"]):
-            raise ReviewedSourceRejected("static SEC body differs from admitted original")
-        source = submissions["body"]
-        if submissions.get("endpoint") != "https://data.sec.gov/submissions/CIK" + acceptance["issuer_cik"] + ".json":
-            raise ReviewedSourceRejected("SEC submissions endpoint differs from reviewed issuer")
-        recent = source["filings"]["recent"]
-        accession = acceptance["accession_number"]
-        matches = [i for i, value in enumerate(recent["accessionNumber"]) if value == accession]
-        if (str(source["cik"]).zfill(10) != acceptance["issuer_cik"] or len(matches) != 1
-                or document.company_id != "cik_" + acceptance["issuer_cik"]
-                or document.document_id != "sec:" + document.company_id + ":" + accession.replace("-", "")):
-            raise ReviewedSourceRejected("SEC issuer/accession identity differs")
-        index = matches[0]
-        accepted = _instant(recent["acceptanceDateTime"][index])
-        expected_endpoint = ("https://www.sec.gov/Archives/edgar/data/" + str(int(acceptance["issuer_cik"]))
-            + "/" + accession.replace("-", "") + "/" + acceptance["primary_document"])
-        expected_metadata = {"source_url": expected_endpoint, "accession_number": accession,
-            "form": acceptance["form"], "provider": "sec_edgar", "cik": acceptance["issuer_cik"]}
-        if any(key in document.metadata and document.metadata[key] != expected
-               for key, expected in expected_metadata.items()):
-            raise ReviewedSourceRejected("SEC source metadata differs from retained proof")
-        if (recent["form"][index] != acceptance["form"]
-                or recent["primaryDocument"][index] != acceptance["primary_document"]
-                or body_proof["endpoint"] != expected_endpoint
-                or accepted != _instant(acceptance["accepted_at"])
-                or accepted != _instant(row["reviewed_available_at"])
-                or document.available_at != accepted or document.published_at != accepted
-                or accepted > cutoff):
-            raise ReviewedSourceRejected("SEC availability/filing proof differs from original or scope")
+        profile = row.get("proof_profile", "sec_archive_acceptance_v1")
+        if profile == "sec_archive_acceptance_v1":
+            _verify_sec_document(document, row, proofs, cutoff)
+        elif profile == "massive_daily_no_post_cutoff_split_v1":
+            _verify_market_document(document, row, proofs, cutoff)
+        else:
+            raise ReviewedSourceRejected("unsupported reviewed proof profile")
         documents.append(document)
     return review, documents
 

@@ -41,7 +41,7 @@ unchanged; no old run is resumed with new admission semantics. Global oracle
 growth alone cannot make a new record visible in the frozen view.
 
 `materialize_reviewed_snapshot(review_path, root)` verifies every scoped original
-and retained proof before writing two admitted copies and an immutable manifest.
+and retained proof before writing the declared admitted canonical copies and an immutable manifest.
 Its binding explicitly names `store_type=reviewed`, exact root and manifest hash.
 `open_raw_info_store(root, reviewed_snapshot=binding)` requires that type, root
 and hash even if the marker was removed or renamed; it cannot fall back to a
@@ -51,7 +51,7 @@ loader. New minimal-round input manifests retain the binding, and preparation,
 verification and runtime use that same view. Reviewed inputs with no explicit
 binding are rejected. Existing plain-store contracts retain their old behavior.
 
-The first proof reader supports only the reviewed static SEC archive body plus
+The original proof reader supports the reviewed static SEC archive body plus
 cached submissions acceptance pair. It checks exact endpoint/body equality,
 issuer/accession/form/primary-document identity and exact accepted/available/
 published instant equality. It never rewrites original availability to match
@@ -77,3 +77,14 @@ acceptance, unknown/missing proof, mismatched identity/content/hash, attempted
 new adapter append/requery, snapshot/refresh/restart, global growth and original
 bytes unchanged. Content semantics require independent original-material
 review; no year/URL regex or substituted SEC prose cleans a provider summary.
+
+## Market extension
+
+The separately approved [market proof profile](reviewed_market_profile.md) adds
+a narrowly supported Massive daily aggregate proof branch. It reuses the same
+review/freeze/read-only view interfaces in a new five-record review and isolated
+root; existing four-record SEC inputs and their historical bindings stay intact.
+Source-family selection is explicit, never a fallback from failed SEC proof.
+The five-original market cohort has materialization and negative-control
+evidence; this does not admit other market records or close its known
+consumer day-boundary/visibility gaps.

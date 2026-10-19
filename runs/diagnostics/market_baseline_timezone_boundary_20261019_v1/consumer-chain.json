@@ -1,0 +1,137 @@
+{
+  "schema_version": "daily-date-consumer-equivalent-instants-v1",
+  "purpose": "Original native acquisition, BasicInfo observation-window and compute-card failure diagnosis using cached source; no live fetch, model call or source admission.",
+  "source": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001830043/massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e.json",
+    "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+  },
+  "raw_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/4166561a6da6904c722e4e5a.json",
+    "sha256": "04a5c1b732b2b8580246f3c169cfce5dde03471fda07711ad49b4d243475fb81"
+  },
+  "equivalent_instants": true,
+  "outputs": [
+    {
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "cached_fetch_requests": [
+        {
+          "symbol": "BMBL",
+          "start": "2025-08-16",
+          "end": "2025-09-29"
+        }
+      ],
+      "acquired_market_window": {
+        "provider": "massive",
+        "symbol": "BMBL",
+        "start": "2025-08-16",
+        "end": "2025-09-29"
+      },
+      "acquired_bar_count": 30,
+      "visible_first_date": "\"2025-08-18\"",
+      "visible_contains_aug15": false,
+      "basic_info_projection_count": 4,
+      "computed_price_shape": {
+        "schema_version": "computed-metric-card-v1",
+        "metric": "price_shape",
+        "params": {
+          "window_days": 30
+        },
+        "as_of": "2025-09-30T00:00:00+00:00",
+        "values": {
+          "window_trading_days": 30,
+          "first_close": 6.37,
+          "last_close": 6.3,
+          "high": 7.17,
+          "low": 6.1,
+          "return_pct": -1.0989,
+          "max_drawdown_pct": -12.4128,
+          "daily_volatility_pct": 2.1072
+        },
+        "labels": {
+          "trend": "range"
+        },
+        "literal_refs": [
+          {
+            "as_of_date": "2025-08-18",
+            "adjusted_close": 6.37
+          },
+          {
+            "as_of_date": "2025-09-29",
+            "adjusted_close": 6.3
+          }
+        ]
+      }
+    },
+    {
+      "prediction_time": "2025-09-29T20:00:00-04:00",
+      "cached_fetch_requests": [
+        {
+          "symbol": "BMBL",
+          "start": "2025-08-15",
+          "end": "2025-09-28"
+        }
+      ],
+      "acquired_market_window": {
+        "provider": "massive",
+        "symbol": "BMBL",
+        "start": "2025-08-15",
+        "end": "2025-09-28"
+      },
+      "acquired_bar_count": 30,
+      "visible_first_date": "\"2025-08-15\"",
+      "visible_contains_aug15": true,
+      "basic_info_projection_count": 4,
+      "computed_price_shape": {
+        "schema_version": "computed-metric-card-v1",
+        "metric": "price_shape",
+        "params": {
+          "window_days": 30
+        },
+        "as_of": "2025-09-29T20:00:00-04:00",
+        "values": {
+          "window_trading_days": 30,
+          "first_close": 6.29,
+          "last_close": 6.28,
+          "high": 7.17,
+          "low": 6.1,
+          "return_pct": -0.159,
+          "max_drawdown_pct": -12.4128,
+          "daily_volatility_pct": 2.1196
+        },
+        "labels": {
+          "trend": "range"
+        },
+        "literal_refs": [
+          {
+            "as_of_date": "2025-08-15",
+            "adjusted_close": 6.29
+          },
+          {
+            "as_of_date": "2025-09-26",
+            "adjusted_close": 6.28
+          }
+        ]
+      }
+    }
+  ],
+  "price_shape_values_equal": false,
+  "request_windows_equal": false,
+  "basic_info_first_dates_equal": false,
+  "data_requests": 0,
+  "external_llm_calls": 0,
+  "originals_unchanged": true,
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "a04e29b762762949ad2c4d622dccb0ccaab1984e2fbcb255044642c4dd112706"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "ae4ff81593f2a107b4309c4f7e90362d793c2c4c498f92f6f7de4040b65a3094"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/compute_tools.py",
+      "sha256": "342ce67492c9c5d4a9c9d2f146743370cd6bb787a323703c593f4e80376ba088"
+    }
+  ]
+}

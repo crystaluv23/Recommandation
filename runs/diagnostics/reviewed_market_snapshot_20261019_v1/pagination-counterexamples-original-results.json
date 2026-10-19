@@ -1,0 +1,142 @@
+{
+  "reader_sha256": "483ea86e068f283215e63720eab7c7809c40e2520ae1c023aa3bcc3ef7c0f046",
+  "cases": [
+    {
+      "name": "original_positive",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "without_optional_235_overlap",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_daily_origin_next_url_0",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_daily_origin_next_url_False",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_daily_origin_next_url_[]",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_daily_origin_next_url_{}",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_historical_issuer_next_url_0",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_historical_issuer_next_url_False",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_historical_issuer_next_url_[]",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_historical_issuer_next_url_{}",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_no_post_cutoff_splits_next_url_0",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_no_post_cutoff_splits_next_url_False",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_no_post_cutoff_splits_next_url_[]",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "massive_no_post_cutoff_splits_next_url_{}",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "origin_t_True",
+      "outcome": "rejected",
+      "detail": "market observation timestamp must be integer milliseconds"
+    },
+    {
+      "name": "origin_t_0",
+      "outcome": "rejected",
+      "detail": "market aggregate observation exceeds request window"
+    },
+    {
+      "name": "origin_t_1750000000000.0",
+      "outcome": "rejected",
+      "detail": "market observation timestamp must be integer milliseconds"
+    },
+    {
+      "name": "origin_c_True",
+      "outcome": "rejected",
+      "detail": "market aggregate contains invalid numeric values"
+    },
+    {
+      "name": "origin_v_True",
+      "outcome": "rejected",
+      "detail": "market aggregate contains invalid numeric values"
+    },
+    {
+      "name": "origin_c_nan",
+      "outcome": "rejected",
+      "detail": "market aggregate contains invalid numeric values"
+    },
+    {
+      "name": "origin_c_inf",
+      "outcome": "rejected",
+      "detail": "market aggregate contains invalid numeric values"
+    },
+    {
+      "name": "split_results_None",
+      "outcome": "rejected",
+      "detail": "this market profile requires an empty complete post-cutoff split ledger"
+    },
+    {
+      "name": "split_results_{}",
+      "outcome": "rejected",
+      "detail": "this market profile requires an empty complete post-cutoff split ledger"
+    },
+    {
+      "name": "split_results_False",
+      "outcome": "rejected",
+      "detail": "this market profile requires an empty complete post-cutoff split ledger"
+    },
+    {
+      "name": "split_get_before_old_fetch",
+      "outcome": "rejected",
+      "detail": "market proof was retrieved before its covered interval ended"
+    },
+    {
+      "name": "split_get_equivalent_offset",
+      "outcome": "admitted",
+      "detail": 3
+    },
+    {
+      "name": "normalization_clock_equivalent_offset",
+      "outcome": "admitted",
+      "detail": 3
+    }
+  ],
+  "network_calls": 0,
+  "role_calls": 0
+}

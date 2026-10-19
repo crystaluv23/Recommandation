@@ -1,0 +1,318 @@
+{
+  "actual_diagnostic": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v2/result.json",
+    "sha256": "01a3a7e98af9edd2feaf08f1863ff2ac40db4ceb35cfd44d717ba7679c7e8a66"
+  },
+  "actual_source_and_consumer_checks": {
+    "admitted_document_count": 3,
+    "admitted_set": "exact original250-row market document plus the same two SEC filings; news excluded and transcript unknown",
+    "baseline_independently_recomputed": true,
+    "baseline_source_ids": [
+      "massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e"
+    ],
+    "explicit_view_and_worker": "v2 input binding agrees with result, production loader succeeds, worker remains ReviewedRawInfoStore with exact same documents",
+    "fixed_source_denominator": 5,
+    "optional_235_overlap": "Additional corroboration remains optional; omitting it still admits all three original documents. No per-row duplicate download or cutoff-time vintage gate was introduced.",
+    "production_full_reconstruction": "v2 loader re-verifies complete original through production numeric parser/HistoricalPriceAdapter, including content, metadata.prices, request window, two aware clocks and whole-record equality",
+    "proof_identity": "bound original request/body, historical ticker/CIK, no-post-cutoff-split exact all-type range through later fetch/normalization instant, HTTP/provider shape and retrieval ordering rechecked",
+    "runtime_baseline": {
+      "doubling_threshold": 12.988,
+      "mean_adjusted_close": 6.494,
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "recent_close": 6.3,
+      "recent_close_date": "2025-09-29",
+      "status": "available",
+      "trading_dates": [
+        "2025-09-23",
+        "2025-09-24",
+        "2025-09-25",
+        "2025-09-26",
+        "2025-09-29"
+      ]
+    }
+  },
+  "alias_family_additional_checks": [
+    {
+      "key": "next_url",
+      "kind": "massive_daily_origin",
+      "outcome": "admitted",
+      "value": null
+    },
+    {
+      "key": "next_page",
+      "kind": "massive_daily_origin",
+      "outcome": "admitted",
+      "value": null
+    },
+    {
+      "key": "next_page_token",
+      "kind": "massive_daily_origin",
+      "outcome": "admitted",
+      "value": null
+    },
+    {
+      "key": "next_page",
+      "kind": "massive_daily_origin",
+      "outcome": "rejected",
+      "value": false
+    },
+    {
+      "key": "next_page_token",
+      "kind": "massive_daily_origin",
+      "outcome": "rejected",
+      "value": []
+    },
+    {
+      "key": "next_url",
+      "kind": "massive_historical_issuer",
+      "outcome": "admitted",
+      "value": null
+    },
+    {
+      "key": "next_page",
+      "kind": "massive_historical_issuer",
+      "outcome": "admitted",
+      "value": null
+    },
+    {
+      "key": "next_page_token",
+      "kind": "massive_historical_issuer",
+      "outcome": "admitted",
+      "value": null
+    },
+    {
+      "key": "next_page",
+      "kind": "massive_historical_issuer",
+      "outcome": "rejected",
+      "value": false
+    },
+    {
+      "key": "next_page_token",
+      "kind": "massive_historical_issuer",
+      "outcome": "rejected",
+      "value": []
+    },
+    {
+      "key": "next_url",
+      "kind": "massive_no_post_cutoff_splits",
+      "outcome": "admitted",
+      "value": null
+    },
+    {
+      "key": "next_page",
+      "kind": "massive_no_post_cutoff_splits",
+      "outcome": "admitted",
+      "value": null
+    },
+    {
+      "key": "next_page_token",
+      "kind": "massive_no_post_cutoff_splits",
+      "outcome": "admitted",
+      "value": null
+    },
+    {
+      "key": "next_page",
+      "kind": "massive_no_post_cutoff_splits",
+      "outcome": "rejected",
+      "value": false
+    },
+    {
+      "key": "next_page_token",
+      "kind": "massive_no_post_cutoff_splits",
+      "outcome": "rejected",
+      "value": []
+    }
+  ],
+  "binding_checks": {
+    "all_hashes_match_current_v2": true,
+    "canonical_input_manifest_hash_matches": true,
+    "code_files": 92,
+    "original_records": 5,
+    "proof_artifacts": 9,
+    "v1_original_reader_result_script_and_counterexample_results_unchanged": true
+  },
+  "critical_findings": [],
+  "current_reader": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+    "sha256": "7b66b0ea7cde651f9455c8e6e80b4ff500013a58397c69fb46e70d00e8a1ae8c"
+  },
+  "engineering_mvp_closed": false,
+  "fixed_counterexamples": {
+    "case_comparison": [
+      {
+        "name": "original_positive",
+        "new_outcome": "admitted",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "without_optional_235_overlap",
+        "new_outcome": "admitted",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_daily_origin_next_url_0",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_daily_origin_next_url_False",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_daily_origin_next_url_[]",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_daily_origin_next_url_{}",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_historical_issuer_next_url_0",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_historical_issuer_next_url_False",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_historical_issuer_next_url_[]",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_historical_issuer_next_url_{}",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_no_post_cutoff_splits_next_url_0",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_no_post_cutoff_splits_next_url_False",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_no_post_cutoff_splits_next_url_[]",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "massive_no_post_cutoff_splits_next_url_{}",
+        "new_outcome": "rejected",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "origin_t_True",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "origin_t_0",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "origin_t_1750000000000.0",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "origin_c_True",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "origin_v_True",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "origin_c_nan",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "origin_c_inf",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "split_results_None",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "split_results_{}",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "split_results_False",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "split_get_before_old_fetch",
+        "new_outcome": "rejected",
+        "old_outcome": "rejected"
+      },
+      {
+        "name": "split_get_equivalent_offset",
+        "new_outcome": "admitted",
+        "old_outcome": "admitted"
+      },
+      {
+        "name": "normalization_clock_equivalent_offset",
+        "new_outcome": "admitted",
+        "old_outcome": "admitted"
+      }
+    ],
+    "current_results": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v2/independent-counterexamples-current.json",
+      "sha256": "675e5d828d123cf00b0bee1b62210e6e79c78490e50fd4e8dbdcae43b2b31c5d"
+    },
+    "fixed_cases": 27,
+    "old_malformed_admit_to_new_typed_reject": 12,
+    "old_results": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v1/pagination-counterexamples-original-results.json",
+      "sha256": "e02e2cf9f09d63facc981aa370a30238fded152d4eb6aa94fbda6180c066ac4e"
+    },
+    "original_optional_omission_and_equivalent_clock_positives_preserved": 4,
+    "other_negative_shapes_preserved": 11,
+    "saved_script": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v1/pagination-counterexamples.py",
+      "sha256": "98acf2d1f833f471f6f09b7977ec7f90ce7bb5f7ec74d8ff7171b80c6ffb5b6c"
+    }
+  },
+  "former_P2_pagination_status": "closed locally for this failure family: all present non-null pagination values reject; absent and explicit null remain valid across all three aliases",
+  "input_manifest_hash": "0bf510e1530d7b9b6aacf015bcaae1c2ac8492ac6a70f1cc7185cbbe0b7aca5e",
+  "network_calls": 0,
+  "new_role_answers": 0,
+  "old_reader_sha256": "483ea86e068f283215e63720eab7c7809c40e2520ae1c023aa3bcc3ef7c0f046",
+  "preserved_open_boundaries": {
+    "BasicInfo45day_visibility": "Actual model context is still Aug18–Aug28 only; upstream context_truncated=true, model projection_status=complete, visible1/omitted0 and three later omitted previews. v2 reports basic_info_market_visibility_family_closed=false. This does not prove full45-day reading.",
+    "baseline_day_boundary": "Known equivalent-instant/local-date failure remains separately bound; v2 baseline_day_boundary_family_closed=false. The actual UTC6.494 positive does not close it.",
+    "not_executed": [
+      "full factory/readiness preflight",
+      "Predictor/F9",
+      "fresh model behavior",
+      "whole-cycle recovery",
+      "full cohort",
+      "independent predictive benefit"
+    ],
+    "source_authentication": "Retained exact supplier artifacts and reviewed proof profile, not authentication of arbitrary proof authors or universal data correctness; exact vendor cutoff vintage not guaranteed."
+  },
+  "reviewer": "independent acceptance_review",
+  "schema_version": "reviewed-market-profile-independent-review-v2",
+  "tests_scope": "Reused exact saved27 probes plus9 fullmaterialize/reload null positives and6 other-alias falsey negatives. Did not rerun full tests or old bounded LLM stages.",
+  "v1_or_source_originals_modified": false,
+  "verdict": "narrow_source_profile_qualified_and_fixed_pagination_family_closed"
+}

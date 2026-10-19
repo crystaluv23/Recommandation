@@ -28,12 +28,10 @@ fallback、持久化及精确消费者；13 条新请求均由隔离角色实际
 - [旧 v2](../reports/local-role-mvp-stage-acceptance-20261019.md) 固定七分母仍 2 机械通过、
   5 失败，原件/原答/旧结果均保留。新 v3 结果不能改写旧失败，也不能证明所有消费者安全。
 
-最新 1744 项全量离线测试与 H_init 相关 117 项检查通过；先前 Signal stage 最终
-7 项接口、来源/control/resolution
-另有 110 项聚焦检查，F8 有
-14 个边界测试/10 个独立共存绑定反例，来源 view 有 12 个聚焦及独立隔离反例。
-Lint 通过且已亲读 feedback。并发调用数/cache 原答复核两缺陷已修且独立线程/进程/
-篡改反例通过；只关闭该本地机械边界，完整运行恢复未验证。
+最新 1753 项全量离线测试通过；market/旧 SEC 21 项聚焦及独立 27 固定案、
+null/alias 反例均通过；H_init 先前 117 项相关检查通过。Lint 通过且已亲读 feedback。
+并发预算/cache 原答复核与 F8 本地证据时间守卫已修；这些局部机械边界不能替代
+完整运行、模型行为或源码/输入全域语义验收。
 
 ## 窄来源准入与下一批次
 
@@ -45,14 +43,17 @@ issuer 与调整时点证明；不足则先做可执行 SEC 检索/Signal stage�
 保留本批失败。后续按可信输入→检索阅读→Signal→Reflect
 →Slow→后继→恢复推进。
 
-本地 Massive 原始 adjusted response 已由生产 parser/adapter 精确重建 250 行及完整
-RawInfoDocument（[原本地审查](../reports/bmbl-market-input-review-20261019.json)）。
-[新增 3 次只读 provider GET 取证](../reports/bmbl-market-readonly-proof-review-20261019.md)
-补充历史 issuer 与 post-cutoff 至旧 fetch 的 all-type split 空 ledger，覆盖旧 response
-调整 basis；235 交集 OHLCV 相同是额外正证，15 行未重复返回不自动阻止旧 250 候选。
-现有合同不要求 cutoff-time archive，也不要求每行重复下载；来源/normalize/adjustment
-窄证据已具备，下一步仍须新 view 的 proof binding/负控与实际消费验证，尚未正式准入。
-当前固定 SEC 输入不变。
+新 [market proof view](../reports/reviewed-market-snapshot-20261019.md) 经独立反例审窄通过：
+固定 5 原件，现 3 admitted（2 SEC+原 market 250），1 excluded/1 unknown；旧 view
+与原件不变。生产 parser/adapter 全对象重建、issuer/全类型 split ledger、双 clock、
+分页/参数/价格/恢复均核，optional 235 不是逐行重复下载门槛。实际 UTC baseline helper
+算出 6.494；没有手填价格或新 HTTP/模型调用。12 旧 falsey pagination 漏放已修，
+独立 27 固定案与 null/alias 反例通过。仍有两项实际 consumer 缺口：等价 -04 instant
+的旧 baseline 误取日期（6.602）；BasicInfo upstream 已截断但后层标 complete/0 omitted。
+这两类保持 false/open，不能据 source closure 开始声称 F9/完整 readiness 通过。
+[3 次只读资料取证](../reports/bmbl-market-readonly-proof-review-20261019.md) 与零外部 LLM
+分开计数。ENB 新 [候选原材](../reports/enb-source-candidates-20261019.json) 只留后继准备，
+未加入这 5 原件或当前 view，未扩大 issuer/期间分母。
 [三样本 direct SEC stage](../reports/reviewed-signal-stage-20261019.md) 已实际完成：
 7 个新隔离角色，3/3 窄语义通过。customer 正控及实际 full Reflect 保真；早 cutoff
 和缺 prior 两例经生产守卫保留 need，零伪 Reflect；guidance categorical 边界仍未决。
@@ -62,9 +63,8 @@ RawInfoDocument（[原本地审查](../reports/bmbl-market-input-review-20261019
 F2 经营背景目标与 generic filing 可执行覆盖脱节仍 open；8-K 本身是合法来源。
 两次 completed resume 的 16 产物完整 before/after hash 不变，零新请求/receipt。
 本批不加 anchor/label，不进 evaluator/Predictor；94 code/2 原文件绑定及嵌套来源
-proof 保持。1744 全量、117 相关检查通过。下一步按已审本地材料实现新的
-[market proof profile](../spec/src/stock_opportunity_agent/data/reviewed_market_profile.md)，
-验证完整原对象重建、隔离 view 和实际 runtime baseline，不手填价格或重查资料。
+proof 保持。1744 全量、117 相关检查通过。下一步先收敛 daily UTC 边界和两段投影可见性，
+再冻结新的实际消费者/角色批次；全 factory 本地路由与 JEV 旁路也须先实测拒绝。
 
 用户已选择[完整公开会议内容时间口径](../reports/transcript-availability-policy-review-20261007.md)，
 owning spec 已同步；[26 份原件清单](../reports/transcript-proof-inventory-20261019.json)

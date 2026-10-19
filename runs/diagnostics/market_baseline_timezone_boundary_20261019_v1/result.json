@@ -1,0 +1,53 @@
+{
+  "schema_version": "market-baseline-equivalent-instants-v1",
+  "purpose": "Deterministic original failure diagnosis; not source admission or model execution.",
+  "source": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001830043/massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e.json",
+    "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+  },
+  "equivalent_instants": true,
+  "expected_invariant": "Equivalent aware instants select the same complete daily observations and computed baseline.",
+  "actual_outputs": [
+    {
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "result": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 6.494,
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ],
+        "doubling_threshold": 12.988,
+        "recent_close": 6.3,
+        "recent_close_date": "2025-09-29"
+      }
+    },
+    {
+      "prediction_time": "2025-09-29T20:00:00-04:00",
+      "result": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 6.601999999999999,
+        "trading_dates": [
+          "2025-09-22",
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26"
+        ],
+        "doubling_threshold": 13.203999999999999,
+        "recent_close": 6.28,
+        "recent_close_date": "2025-09-26"
+      }
+    }
+  ],
+  "equal_outputs": false,
+  "external_llm_calls": 0,
+  "data_requests": 0,
+  "source_or_finished_run_changed": false,
+  "mvp_closed": false
+}

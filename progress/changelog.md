@@ -738,3 +738,5 @@
 - 2026-10-19：保存父处三次只读 Massive GET 与独立 235 日 OHLCV/issuer/split ledger 审查；原 250 行由生产 parser/adapter 完整重现，15 行未重复返回不构成新拒绝门槛；未新增 cutoff-vintage 政策，市场待 proof-bound view 验证准入，既有 SEC 冻结不改。
 
 - 2026-10-19：默认 BasicInfo→H_init 双 cutoff 实际隔离首答 2/2 窄语义通过，9 引用与 11 needs 经独立原材审查，零纠错；16 产物恢复完整 hash 不变。F2 经营背景覆盖仍 open，下一步已批准 market proof-bound view 机械验收，原对象与旧冻结不改。
+
+- 2026-10-19：新五原件 market reviewed view 窄准入与恢复通过，3 admitted/1 excluded/1 unknown；全原件生产重建与实际 UTC baseline 6.494，分页 falsey 漏放经独立 12 反例修复。保留 baseline 同 instant/local date 与两层投影可见性失败，ENB 三份候选仅后继准备不加入本批。

@@ -1,0 +1,74 @@
+{
+  "actual_diagnostic": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v1/result.json",
+    "sha256": "fae32f216c1c9b16c8bd5c2cca3547dc49dc4d78bc25e02c39ad35dffd2fcd82"
+  },
+  "consumer_limitations": [
+    {
+      "allowed_claim": "The request resolves and projection lineage is retained. Do not claim every recent bar or latest-day market confirmation was visible.",
+      "evidence": "Default45day request resolves the source document, but actual model projection contains only Aug18–Aug28 (1055 chars). Bundle coverage.context_truncated=true; omitted markers preview Aug29/Sep15/Sep26. Model projection_status=complete and omitted_projection_count=0 refer to selected projection serialization and cannot prove full45day reading.",
+      "family": "BasicInfo45day_visibility",
+      "scope": "Existing downstream projection limitation, not a market-profile source proof failure."
+    },
+    {
+      "family": "baseline_equivalent_instant_day_boundary",
+      "scope": "Known separate diagnostic retained by parent; this profile review does not close it or treat the UTC positive as general timezone correctness."
+    }
+  ],
+  "counterexample_results": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v1/pagination-counterexamples-original-results.json",
+    "sha256": "e02e2cf9f09d63facc981aa370a30238fded152d4eb6aa94fbda6180c066ac4e"
+  },
+  "counterexample_script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v1/pagination-counterexamples.py",
+    "sha256": "98acf2d1f833f471f6f09b7977ec7f90ce7bb5f7ec74d8ff7171b80c6ffb5b6c"
+  },
+  "engineering_mvp_closed": false,
+  "findings": [
+    {
+      "evidence": "_complete_market_body tests truthiness. Origin, issuer and split proofs each accept next_url=0/False/[]/{} after artifact/request/review hashes are consistently rebound; materialize and reload admit three records in all 12 cases.",
+      "family": "malformed_pagination_shape",
+      "file": "src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "line": 119,
+      "minimum_fix": "Check present pagination fields by explicit allowed absence shape rather than truthiness, for next_url/next_page/next_page_token. Preserve documented no-page positives.",
+      "priority": "P2",
+      "required_retest": "Run these identical saved probes against the new reader; retain old 12 admits versus new typed rejects.",
+      "scope": "This is actual acceptance of malformed completeness proof, blocking the advertised fail-closed shape boundary. Real retained source responses omit these fields; this review does not establish mispriced or future-contaminated current data. Malformed values are not demonstrated hidden legitimate page URLs."
+    }
+  ],
+  "fixed_probe_count": 27,
+  "network_calls": 0,
+  "new_role_answers": 0,
+  "not_closed": [
+    "malformed pagination boundary pending repair",
+    "full45day model visibility",
+    "baseline timezone family",
+    "Predictor/F9",
+    "full factory readiness",
+    "whole-cycle recovery",
+    "complete MVP",
+    "independent predictive benefit"
+  ],
+  "originals_modified": false,
+  "positive_checks": {
+    "actual_baseline": "Independently recomputed from the restored original: mean6.494, recent6.3, doubling12.988 on Sep23/24/25/26/29. No hand-inserted baseline.",
+    "actual_bindings_at_audit": "92 code, five original and nine proof byte bindings all matched before reader repair.",
+    "actual_originals": "Five-record denominator preserved; materialized set is exactly two SEC plus original market document; polluted news excluded and transcript unknown.",
+    "aware_instants": "Equivalent +08 offsets for fetch/normalization and split GET clock accepted.",
+    "focused_tests": "Existing test_reviewed_market_profile.py: 7 tests passed. These tests did not catch malformed falsey pagination.",
+    "negative_shapes": "Seven timestamp/numeric variants (bool, float timestamp, out-of-window timestamp, NaN/Inf), three non-list empty-ledger results shapes, and split GET before normalization instant all typed-rejected.",
+    "optional_overlap": "Original with optional235 and without it both admit three documents. Missing duplicate download of 15 old rows is not a rejection condition.",
+    "production_reconstruction": "All 250 retained rows reconstruct through production provider parser and HistoricalPriceAdapter to exact whole RawInfoDocument; both fetch and normalization clocks remain bound.",
+    "readonly_view": "Production reload and worker snapshot retain ReviewedRawInfoStore. Dropping explicit binding, wrong root and removing snapshot manifest rejected; exact append replay is no-op."
+  },
+  "reviewed_reader_sha256": "483ea86e068f283215e63720eab7c7809c40e2520ae1c023aa3bcc3ef7c0f046",
+  "reviewer": "independent acceptance_review",
+  "saved_reader": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_market_snapshot_20261019_v1/original_reader_source.py.txt",
+    "sha256": "483ea86e068f283215e63720eab7c7809c40e2520ae1c023aa3bcc3ef7c0f046"
+  },
+  "saved_reader_reproduction_equal_to_original_results": true,
+  "schema_version": "reviewed-market-profile-independent-review-v1",
+  "source_semantics_limit": "Provider request/body/normalization/identity/split basis are bound for this narrow original and cutoff; no signature-based source authentication or exact cutoff-time vendor vintage is claimed.",
+  "verdict": "needs_pagination_shape_fix_before_claimed_negative_boundary_closure"
+}
