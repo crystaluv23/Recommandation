@@ -1,0 +1,66 @@
+{
+  "status": "bounded_preflight_passed_no_answers",
+  "decision": "May freeze the current native case Posthoc stage and dispatch its exact formal pending after its canonical request journal/inbox hash is checked. No material interface/semantic/anonymity/persistence blocker found in this bounded review.",
+  "fixed_denominator": 1,
+  "models_dispatched_by_reviewer": 0,
+  "future_answers_read": false,
+  "actual_pending": {
+    "request_hash": "beba78080ab4e2d68a1bfd55ea99550f45c5a02d1be4ad75799952f3ad58049d",
+    "inbox_sha256": "8c42e32858daa752a287ebf9f6ac715eedaf64091a6739670a6b09e585ffd119",
+    "input_reservation_plus_output": 36510,
+    "limit": 131072,
+    "max_output_tokens": 8000,
+    "full_canonical_request_journal": "Temporary root was removed by producer. Inbox hash/identity and native message projection checked; complete request hash must be checked from the formal requests journal before answering. This is a remaining identity check, not a semantic failure."
+  },
+  "actual_wire_findings": [
+    "Actual compact context and original prediction equal production projection/saved accepted objects exactly",
+    "All four unresolved needs retained; two budget_blocked Signal entries remain unknown technical gaps; ready/finalized termination retains budget_exhausted trigger",
+    "Filing 18/23 partial visibility plus both layers of truncation/markers and unresolved source gaps preserved",
+    "Baseline 6.494/recent close6.3/threshold12.988 and historical180sessions retain distinct definitions from revealed six-calendar-month outcome",
+    "Whole request contains zero identity-alias matches",
+    "Framework correctness/candidate feedback/magnitude feedback equal production deterministic functions; magnitude is not applicable for this non-surge truth",
+    "One canonical_case_facts source supplies a valid source_ref/case scope and canonical binary=true/magnitude=null claims; no Plan scope or lower reflection items are supplied",
+    "Case entry provides no progressive read/browse wrapper; citation closure is mechanical scope repair. No harness-created capability is added",
+    "No mandatory finding or causal explanation: no_findings_reason is permissible and is not actionable feedback success; related_signal_refs is optional and cannot be forced from compact-only Signal refs"
+  ],
+  "independent_checks": {
+    "actual_wire_parent_restore": 31,
+    "small_label_source_freeze": 11,
+    "all_passed": true,
+    "legal_completed_restore_fixture": "Three previously reviewed answered responses plus two undispatched journals; exact old bytes copied only into temp directory, max_calls32 matching its copied exchange contract. No answer submitted, no model execution. This is a restore wiring control, not a new8call Posthoc behavior test.",
+    "negative_restore_controls": "raw/receipt/cache modification, missing receipt and extra orphan cache rejected even with recomputed fixture completion map; feedback/unbound file mutation rejected; all restore operations left fixture files unchanged",
+    "qualification_controls": "Small legally generated synthetic archive/store accepted; changed/missing archive, label manifest/records, parent files, bound code, oracle, baseline or key rejected. No real903MB archive scan or production labels loaded by reviewer.",
+    "original_probe_corrections": "Two reviewer-fixture mistakes retained in original-probe script/results: inbox omits complete request hash inputs, and copied32call exchange cannot be instantiated with8. Neither was a production failure."
+  },
+  "freeze_restore_review": [
+    "Prepare verifies completed parent checkpoint, historical Git source/lineage and native receipts/cached originals before strict truth loading",
+    "Inputs freeze full parent files, external originals/Registry, label manifest/records/archive SHA and exact record/calculator/contract; resume revalidates bindings and strict source",
+    "Adapter computes feedback; harness persists exact step.value/usage/metadata and request_hash_trace order with native source identities/relations. No observer-authored findings",
+    "Completion hashes immutable artifact map; completed restore checks source/parent and native receipt/cache originals without re-executing model",
+    "Not exercised until a fresh accepted response: real feedback persistence, any typed correction/fallback and actual completed Posthoc restore"
+  ],
+  "remaining": [
+    "Formal canonical request journal binding check before answering",
+    "Fresh Posthoc semantic behavior is unobserved; no model answer has been inspected",
+    "Canonical archive consistency does not independently authenticate provider prices, adjusted basis or issuer mapping globally",
+    "Does not close scoring, completed Fast trajectory/round, Critic model behavior, Slow publication/consumption, independent gain or full F10/MVP"
+  ],
+  "bindings": {
+    "scripts/run_reviewed_posthoc_stage.py": "2e71d23af96d8a30208e87bd93f1a9cc10505f6db1e1345d9ee2d3137159a3e0",
+    "spec/scripts/run_reviewed_posthoc_stage.md": "ad16bb546a086478fd02193d738087ba8373498c087dd3fd442dcf8d34fb4624",
+    "reports/reviewed-posthoc-stage-expectations-20261020.json": "ac91d954cf0b417552784e934767d689c2b7f0d7f8ae583cfde69cae1d01d329",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "62c9f788b2a5741087976f67d60379f89374f51be740fc75575b2cc687ea47df",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "f5134cb9d61c836a1b1268ab3c40381ad2f89c18f749e333d3ca49f64c1eb70e",
+    "src/stock_opportunity_agent/cases/label_store.py": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af",
+    "src/stock_opportunity_agent/data/json_stream.py": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea"
+  },
+  "artifacts": {
+    "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/preflight-checks-original-probe.py": "33586f269a29d97ad61e4710c8e41f05582635f012fc1fc2f339be0f61c8e730",
+    "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/preflight-checks.py": "e249f93209bf030ae13d21d84b895aca512675c5bd8366941e13eb3fcb8319ac",
+    "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/preflight-results-original-probe.json": "b617194ce338a9fe88f92486148d46bbf0c3c0ee2f738898fd4fa6de04412c70",
+    "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/preflight-results.json": "fee316aeb6dc1d31cbf553c61ec6970819b991cc247d67c8df4f87db64161954",
+    "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/qualification-freeze-results.json": "8f2fb94f5680e9290efc5a713a6f387fd2a5215dc16c2db0cab8d01ca19eb8bf",
+    "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/qualification-freeze.py": "b4db65aa7aa52687817d8882e2e1dd256fb81a1f7c8ff4478fa146940111317c"
+  },
+  "network_attempts": 0
+}

@@ -1,0 +1,46 @@
+{
+  "temporary_prepare_and_actual_native_pending": {
+    "sample_id": "s01",
+    "fixed_denominator": 1,
+    "pending": [
+      {
+        "sample_id": "s01",
+        "stage": "blind_predictor_posthoc_reflect",
+        "request_hash": "beba78080ab4e2d68a1bfd55ea99550f45c5a02d1be4ad75799952f3ad58049d",
+        "inbox_path": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/posthoc-preflight-2rkmco7p/stage/exchange/inbox/beba78080ab4e2d68a1bfd55ea99550f45c5a02d1be4ad75799952f3ad58049d.json",
+        "outbox_path": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/posthoc-preflight-2rkmco7p/stage/exchange/outbox/beba78080ab4e2d68a1bfd55ea99550f45c5a02d1be4ad75799952f3ad58049d.txt",
+        "inbox_sha256": "8c42e32858daa752a287ebf9f6ac715eedaf64091a6739670a6b09e585ffd119"
+      }
+    ],
+    "external_llm_calls": 0,
+    "readonly_data_requests": 0,
+    "actual_host_tokens": null,
+    "actual_host_cost": null,
+    "completed_trajectory": false,
+    "completed_fast_round": false,
+    "slow_source_published": false,
+    "case_progressive_reads": "not_supported_not_exercised",
+    "status": "pending_independent_role",
+    "physical_receipts": 0
+  },
+  "inbox_bytes": 28845,
+  "forbidden_alias_matches": [],
+  "production_answers": 0,
+  "request_reservation_tokens": 36510,
+  "max_request_tokens": 131072,
+  "request_within_frozen_budget": true,
+  "case_progressive_reads": "not_supported_not_exercised",
+  "actual_payload_fields": [
+    "candidate_judgment_feedback",
+    "compact_context",
+    "framework_prediction_correct",
+    "magnitude_feedback",
+    "original_prediction",
+    "revealed_ground_truth",
+    "source_catalog"
+  ],
+  "source_bindings": {
+    "scripts/run_reviewed_posthoc_stage.py": "2e71d23af96d8a30208e87bd93f1a9cc10505f6db1e1345d9ee2d3137159a3e0",
+    "spec/scripts/run_reviewed_posthoc_stage.md": "ad16bb546a086478fd02193d738087ba8373498c087dd3fd442dcf8d34fb4624"
+  }
+}

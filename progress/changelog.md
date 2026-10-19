@@ -750,3 +750,5 @@
 - 2026-10-19：实际默认Plan单例盲前缀到原生Predictor首答与durable sink，独立事实/期间/单位/控制原因消费窄审通过；原2答历史继承+新预测共3物理角色/0纠错，32产物恢复全等。apply技术预算阻断/Reflect确定性终结均无模型答，原v1失败保留；标签0读取，不造Fast完成，下一步先核真实单门truth再冻Posthoc。
 
 - 2026-10-20：实现既有LabelStore单门准入契约，严格archive/hash/calculator/contract/JSON类型及全部记录唯一计算器重算；旧18误放原证保留，新24固定/29流式变体独立通过，真实6554首次全load约9.46s/61MB。共享流式reader下沉data保dataset别名，不新增cache/定义/来源改写；真实s01仅在durable后核资格，Posthoc尚未派发，provider真值与完整F10/MVP仍open。
+
+- 2026-10-20：准备新的独立native case Posthoc stage，验证历史parent代码/全部checkpoint与严格LabelStore，实际匿名首请求预算36510<131072；保留原生catalog/citation-closure/纠错/失败fallback，纠正case并无Plan/Round渐进读取的跨角色假设。新8call预算不恢复prefix，正式答与语义审查待冻结，不造trajectory/score/Slow来源；冻结前发现仅终态reason漏计partial/all-invalid salvage与promoted，改为保留原生validation事件，生产结果不变。

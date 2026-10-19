@@ -1,0 +1,214 @@
+{
+  "scope": "Real pending inspected, zero model answers/submit/role creation. Historical parent only read/verified; tiny temporary restore fixtures reuse already-approved response bytes, do not prove new feedback behavior. No 903MB archive or actual LabelStore loading in this probe.",
+  "checks": [
+    {
+      "case": "parent_prediction_exact_before_truth",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "actual_request_hash",
+      "pass": false,
+      "error_type": "AssertionError",
+      "error": ""
+    },
+    {
+      "case": "compact_context_exact_native_projection",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "original_prediction_exact",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "native_deterministic_feedback",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "four_needs_retained_exact",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "two_technical_budget_gaps_and_runtime_trigger",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "market_anchor_and_distinct_periods",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "partial_18_of_23_and_gap_index",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "canonical_case_catalog_legal_scope_and_outcome",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "whole_wire_anonymous",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "input_plus_output_reservation_below_131072",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "actual_completed_parent_and_historical_code_verified",
+      "pass": true,
+      "result": {
+        "manifest_hash": "0d142755055323d2fa271caa820c993899773772306e27cc98b47194ad34367b"
+      }
+    },
+    {
+      "case": "historical_commit_not_full_SHA_rejected",
+      "pass": true,
+      "result": {
+        "rejected": true,
+        "error_type": "ValidationError",
+        "error": "historical parent requires an immutable full commit SHA"
+      }
+    },
+    {
+      "case": "historical_code_binding_tamper_rejected",
+      "pass": true,
+      "result": {
+        "rejected": true,
+        "error_type": "ValidationError",
+        "error": "cannot verify historical parent source"
+      }
+    },
+    {
+      "case": "completed_restore_legal_three_answered_two_journal_only",
+      "pass": false,
+      "error_type": "ValidationError",
+      "error": "local role immutable artifact changed: /private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/independent-posthoc-restore-fx8zw8uv/stage/exchange/contract.json"
+    },
+    {
+      "case": "restore_no_writes_legal_three_answered_two_journal_only",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "completed_restore_raw_changed",
+      "pass": true,
+      "result": {
+        "rejected": true,
+        "error_type": "ValidationError",
+        "error": "local role immutable artifact changed: /private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/independent-posthoc-restore-jubgkkbj/stage/exchange/contract.json"
+      }
+    },
+    {
+      "case": "restore_no_writes_raw_changed",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "completed_restore_receipt_changed",
+      "pass": true,
+      "result": {
+        "rejected": true,
+        "error_type": "ValidationError",
+        "error": "local role immutable artifact changed: /private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/independent-posthoc-restore-49o02g0t/stage/exchange/contract.json"
+      }
+    },
+    {
+      "case": "restore_no_writes_receipt_changed",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "completed_restore_cache_changed",
+      "pass": true,
+      "result": {
+        "rejected": true,
+        "error_type": "ValidationError",
+        "error": "local role immutable artifact changed: /private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/independent-posthoc-restore-vvqgjcge/stage/exchange/contract.json"
+      }
+    },
+    {
+      "case": "restore_no_writes_cache_changed",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "completed_restore_missing_receipt",
+      "pass": true,
+      "result": {
+        "rejected": true,
+        "error_type": "ValidationError",
+        "error": "request has partial or orphan response artifacts"
+      }
+    },
+    {
+      "case": "restore_no_writes_missing_receipt",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "completed_restore_extra_orphan_cache",
+      "pass": true,
+      "result": {
+        "rejected": true,
+        "error_type": "ValidationError",
+        "error": "request/response inventory contains orphan artifacts"
+      }
+    },
+    {
+      "case": "restore_no_writes_extra_orphan_cache",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "completed_restore_feedback_changed_no_rebind",
+      "pass": true,
+      "result": {
+        "rejected": true,
+        "error_type": "ValidationError",
+        "error": "completed Posthoc artifacts changed or missing"
+      }
+    },
+    {
+      "case": "restore_no_writes_feedback_changed_no_rebind",
+      "pass": true,
+      "result": true
+    },
+    {
+      "case": "completed_restore_unknown_extra_artifact",
+      "pass": true,
+      "result": {
+        "rejected": true,
+        "error_type": "ValidationError",
+        "error": "completed Posthoc artifacts changed or missing"
+      }
+    },
+    {
+      "case": "restore_no_writes_unknown_extra_artifact",
+      "pass": true,
+      "result": true
+    }
+  ],
+  "all_passed": false,
+  "request_hash": "beba78080ab4e2d68a1bfd55ea99550f45c5a02d1be4ad75799952f3ad58049d",
+  "request_reservation_bytes_plus_output_tokens": 36510,
+  "inbox_sha256": "8c42e32858daa752a287ebf9f6ac715eedaf64091a6739670a6b09e585ffd119",
+  "network_attempts": 0,
+  "bindings": {
+    "scripts/run_reviewed_posthoc_stage.py": "2e71d23af96d8a30208e87bd93f1a9cc10505f6db1e1345d9ee2d3137159a3e0",
+    "spec/scripts/run_reviewed_posthoc_stage.md": "ad16bb546a086478fd02193d738087ba8373498c087dd3fd442dcf8d34fb4624",
+    "reports/reviewed-posthoc-stage-expectations-20261020.json": "ac91d954cf0b417552784e934767d689c2b7f0d7f8ae583cfde69cae1d01d329",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "62c9f788b2a5741087976f67d60379f89374f51be740fc75575b2cc687ea47df",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "f5134cb9d61c836a1b1268ab3c40381ad2f89c18f749e333d3ca49f64c1eb70e",
+    "src/stock_opportunity_agent/cases/label_store.py": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af",
+    "src/stock_opportunity_agent/data/json_stream.py": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea"
+  }
+}

@@ -1,0 +1,1131 @@
+{
+  "scope": "Native LLMBlindPredictor.reflect, production parser/correction/salvage and harness exact persistence/restore. Scripted caller generates explicit synthetic test responses, no independent role/model execution, no formal parent/labels/root mutation. Complete request/receipt behavior is separately tested; this fixture dispatches zero requests.",
+  "all_passed": true,
+  "variants": [
+    {
+      "raw_fixture_responses": [
+        {
+          "reflection_items": [
+            {
+              "category": "misleading_signals",
+              "kind": "fact",
+              "brief": "The prediction acknowledged but underweighted the negative fundamental signals.",
+              "detail": "The source-backed guidance acceleration and financing actions were sufficient to identify the outcome class and scale.",
+              "scope": {
+                "case_refs": [
+                  "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+                ],
+                "plan_refs": [],
+                "conditions": "When the same evidence gap recurs."
+              },
+              "limitations": [
+                "This is an untested attribution, not a demonstrated improvement."
+              ],
+              "source_refs": [
+                "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+              ],
+              "counter_refs": [],
+              "outcome_claims": []
+            },
+            {
+              "category": "misleading_signals",
+              "kind": "fact",
+              "brief": "The saved prediction was positive and the revealed outcome was negative.",
+              "detail": "The saved prediction was positive and the revealed outcome was negative.",
+              "scope": {
+                "case_refs": [
+                  "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+                ],
+                "plan_refs": [],
+                "conditions": "When the same evidence gap recurs."
+              },
+              "limitations": [
+                "This is an untested attribution, not a demonstrated improvement."
+              ],
+              "source_refs": [
+                "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+              ],
+              "counter_refs": [],
+              "outcome_claims": []
+            }
+          ],
+          "selected_reflection_refs": [],
+          "no_findings_reason": null
+        },
+        {
+          "base_hash": "13ddbcf6126e72c352b55100efed37ad74c92b9fd49bd87c334f55eb20fcd015",
+          "operations": [
+            {
+              "op": "replace",
+              "path": "reflection_items[0].brief",
+              "value": "The prediction acknowledged but underweighted the negative fundamental signals. Keep this interpretation."
+            }
+          ]
+        }
+      ],
+      "good_sibling": {
+        "category": "misleading_signals",
+        "kind": "fact",
+        "brief": "The saved prediction was positive and the revealed outcome was negative.",
+        "detail": "The saved prediction was positive and the revealed outcome was negative.",
+        "scope": {
+          "case_refs": [
+            "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+          ],
+          "plan_refs": [],
+          "conditions": "When the same evidence gap recurs."
+        },
+        "limitations": [
+          "This is an untested attribution, not a demonstrated improvement."
+        ],
+        "source_refs": [
+          "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+        ],
+        "counter_refs": [],
+        "outcome_claims": []
+      },
+      "native_return_value": {
+        "prediction_outcome": {
+          "correct": false
+        },
+        "decision_drivers": [],
+        "why_prediction_failed": [],
+        "misleading_signals": [
+          "The saved prediction was positive and the revealed outcome was negative."
+        ],
+        "ignored_evidence": [],
+        "missing_information": [],
+        "plan_issues": [],
+        "reflection_items": [
+          {
+            "item_ref": "reflection:ed3d879335993f6c6d68c65f2e4dfe97ebde9cf89371ccccd88d2a7e4b693232",
+            "level": "case",
+            "owner_ref": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+            "category": "misleading_signals",
+            "kind": "fact",
+            "brief": "The saved prediction was positive and the revealed outcome was negative.",
+            "detail": "The saved prediction was positive and the revealed outcome was negative.",
+            "scope": {
+              "case_refs": [
+                "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+              ],
+              "plan_refs": [],
+              "conditions": "When the same evidence gap recurs."
+            },
+            "limitations": [
+              "This is an untested attribution, not a demonstrated improvement."
+            ],
+            "source_refs": [
+              "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+            ],
+            "counter_refs": [],
+            "outcome_claims": [],
+            "evidence_status": "sources_checked"
+          }
+        ],
+        "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+        "source_snapshot": {
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "candidate_judgment_feedback": {
+            "candidate_judgment": "possible",
+            "predicted_binary_label": "surge",
+            "true_binary_label": "non_surge",
+            "binary_correct": false,
+            "assessment": "false_positive",
+            "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it."
+          },
+          "magnitude_feedback": {
+            "magnitude_applicable": false,
+            "predicted_magnitude": "2-3x",
+            "true_magnitude": null,
+            "magnitude_correct": false,
+            "error_kind": "not_applicable",
+            "ordinal_distance": null
+          }
+        }
+      },
+      "observer_version": "old",
+      "variant": "partial_valid",
+      "feedback": {
+        "answered_request_hashes": [],
+        "metadata": {},
+        "native_validation_fallback": false,
+        "request_hashes": [],
+        "request_trace": [],
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 20
+        },
+        "value": {
+          "decision_drivers": [],
+          "ignored_evidence": [],
+          "misleading_signals": [
+            "The saved prediction was positive and the revealed outcome was negative."
+          ],
+          "missing_information": [],
+          "plan_issues": [],
+          "prediction_outcome": {
+            "correct": false
+          },
+          "reflection_items": [
+            {
+              "brief": "The saved prediction was positive and the revealed outcome was negative.",
+              "category": "misleading_signals",
+              "counter_refs": [],
+              "detail": "The saved prediction was positive and the revealed outcome was negative.",
+              "evidence_status": "sources_checked",
+              "item_ref": "reflection:ed3d879335993f6c6d68c65f2e4dfe97ebde9cf89371ccccd88d2a7e4b693232",
+              "kind": "fact",
+              "level": "case",
+              "limitations": [
+                "This is an untested attribution, not a demonstrated improvement."
+              ],
+              "outcome_claims": [],
+              "owner_ref": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+              "scope": {
+                "case_refs": [
+                  "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+                ],
+                "conditions": "When the same evidence gap recurs.",
+                "plan_refs": []
+              },
+              "source_refs": [
+                "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+              ]
+            }
+          ],
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "source_snapshot": {
+            "candidate_judgment_feedback": {
+              "assessment": "false_positive",
+              "binary_correct": false,
+              "candidate_judgment": "possible",
+              "predicted_binary_label": "surge",
+              "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it.",
+              "true_binary_label": "non_surge"
+            },
+            "magnitude_feedback": {
+              "error_kind": "not_applicable",
+              "magnitude_applicable": false,
+              "magnitude_correct": false,
+              "ordinal_distance": null,
+              "predicted_magnitude": "2-3x",
+              "true_magnitude": null
+            },
+            "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+          },
+          "why_prediction_failed": []
+        }
+      },
+      "result": {
+        "sample_id": "s01",
+        "fixed_denominator": 1,
+        "pending": [],
+        "external_llm_calls": 0,
+        "readonly_data_requests": 0,
+        "actual_host_tokens": null,
+        "actual_host_cost": null,
+        "completed_trajectory": false,
+        "completed_fast_round": false,
+        "slow_source_published": false,
+        "case_progressive_reads": "not_supported_not_exercised",
+        "status": "feedback_persisted_requires_independent_review",
+        "physical_receipts": 0,
+        "undispatched_journals": 0,
+        "native_validation_fallback": false,
+        "reflection_items": 1,
+        "no_findings_reason": null
+      },
+      "exact_native_value_persisted": true,
+      "completed_restore_without_writes": true
+    },
+    {
+      "raw_fixture_responses": [
+        {
+          "reflection_items": [
+            {
+              "category": "misleading_signals",
+              "kind": "fact",
+              "brief": "The prediction acknowledged but underweighted the negative fundamental signals.",
+              "detail": "The source-backed guidance acceleration and financing actions were sufficient to identify the outcome class and scale.",
+              "scope": {
+                "case_refs": [
+                  "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+                ],
+                "plan_refs": [],
+                "conditions": "When the same evidence gap recurs."
+              },
+              "limitations": [
+                "This is an untested attribution, not a demonstrated improvement."
+              ],
+              "source_refs": [
+                "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+              ],
+              "counter_refs": [],
+              "outcome_claims": []
+            }
+          ],
+          "selected_reflection_refs": [],
+          "no_findings_reason": null
+        },
+        {
+          "base_hash": "cc65f01ab547bc2406c9a745781f60440657e08dacb9c51cb32e20544d386e87",
+          "operations": [
+            {
+              "op": "replace",
+              "path": "reflection_items[0].brief",
+              "value": "The prediction acknowledged but underweighted the negative fundamental signals. Keep this interpretation."
+            }
+          ]
+        }
+      ],
+      "good_sibling": {
+        "category": "misleading_signals",
+        "kind": "fact",
+        "brief": "The saved prediction was positive and the revealed outcome was negative.",
+        "detail": "The saved prediction was positive and the revealed outcome was negative.",
+        "scope": {
+          "case_refs": [
+            "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+          ],
+          "plan_refs": [],
+          "conditions": "When the same evidence gap recurs."
+        },
+        "limitations": [
+          "This is an untested attribution, not a demonstrated improvement."
+        ],
+        "source_refs": [
+          "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+        ],
+        "counter_refs": [],
+        "outcome_claims": []
+      },
+      "native_return_value": {
+        "prediction_outcome": {
+          "correct": false
+        },
+        "decision_drivers": [],
+        "why_prediction_failed": [],
+        "misleading_signals": [],
+        "ignored_evidence": [],
+        "missing_information": [],
+        "plan_issues": [],
+        "reflection_items": [],
+        "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+        "source_snapshot": {
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "candidate_judgment_feedback": {
+            "candidate_judgment": "possible",
+            "predicted_binary_label": "surge",
+            "true_binary_label": "non_surge",
+            "binary_correct": false,
+            "assessment": "false_positive",
+            "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it."
+          },
+          "magnitude_feedback": {
+            "magnitude_applicable": false,
+            "predicted_magnitude": "2-3x",
+            "true_magnitude": null,
+            "magnitude_correct": false,
+            "error_kind": "not_applicable",
+            "ordinal_distance": null
+          }
+        },
+        "no_findings_reason": "reflection_items_all_invalid_salvaged: Retain the observable fact without weighting/sufficiency inference, or classify the explanation as a testable hypothesis; preserve other items and outcome facts"
+      },
+      "observer_version": "old",
+      "variant": "all_invalid",
+      "feedback": {
+        "answered_request_hashes": [],
+        "metadata": {},
+        "native_validation_fallback": false,
+        "request_hashes": [],
+        "request_trace": [],
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 20
+        },
+        "value": {
+          "decision_drivers": [],
+          "ignored_evidence": [],
+          "misleading_signals": [],
+          "missing_information": [],
+          "no_findings_reason": "reflection_items_all_invalid_salvaged: Retain the observable fact without weighting/sufficiency inference, or classify the explanation as a testable hypothesis; preserve other items and outcome facts",
+          "plan_issues": [],
+          "prediction_outcome": {
+            "correct": false
+          },
+          "reflection_items": [],
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "source_snapshot": {
+            "candidate_judgment_feedback": {
+              "assessment": "false_positive",
+              "binary_correct": false,
+              "candidate_judgment": "possible",
+              "predicted_binary_label": "surge",
+              "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it.",
+              "true_binary_label": "non_surge"
+            },
+            "magnitude_feedback": {
+              "error_kind": "not_applicable",
+              "magnitude_applicable": false,
+              "magnitude_correct": false,
+              "ordinal_distance": null,
+              "predicted_magnitude": "2-3x",
+              "true_magnitude": null
+            },
+            "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+          },
+          "why_prediction_failed": []
+        }
+      },
+      "result": {
+        "sample_id": "s01",
+        "fixed_denominator": 1,
+        "pending": [],
+        "external_llm_calls": 0,
+        "readonly_data_requests": 0,
+        "actual_host_tokens": null,
+        "actual_host_cost": null,
+        "completed_trajectory": false,
+        "completed_fast_round": false,
+        "slow_source_published": false,
+        "case_progressive_reads": "not_supported_not_exercised",
+        "status": "feedback_persisted_requires_independent_review",
+        "physical_receipts": 0,
+        "undispatched_journals": 0,
+        "native_validation_fallback": false,
+        "reflection_items": 0,
+        "no_findings_reason": "reflection_items_all_invalid_salvaged: Retain the observable fact without weighting/sufficiency inference, or classify the explanation as a testable hypothesis; preserve other items and outcome facts"
+      },
+      "exact_native_value_persisted": true,
+      "completed_restore_without_writes": true
+    },
+    {
+      "raw_fixture_responses": [
+        {
+          "reflection_items": [],
+          "selected_reflection_refs": [],
+          "no_findings_reason": "The synthetic limited packet provides no supported additional lesson."
+        }
+      ],
+      "native_return_value": {
+        "prediction_outcome": {
+          "correct": false
+        },
+        "decision_drivers": [],
+        "why_prediction_failed": [],
+        "misleading_signals": [],
+        "ignored_evidence": [],
+        "missing_information": [],
+        "plan_issues": [],
+        "reflection_items": [],
+        "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+        "source_snapshot": {
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "candidate_judgment_feedback": {
+            "candidate_judgment": "possible",
+            "predicted_binary_label": "surge",
+            "true_binary_label": "non_surge",
+            "binary_correct": false,
+            "assessment": "false_positive",
+            "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it."
+          },
+          "magnitude_feedback": {
+            "magnitude_applicable": false,
+            "predicted_magnitude": "2-3x",
+            "true_magnitude": null,
+            "magnitude_correct": false,
+            "error_kind": "not_applicable",
+            "ordinal_distance": null
+          }
+        },
+        "no_findings_reason": "The synthetic limited packet provides no supported additional lesson."
+      },
+      "observer_version": "old",
+      "variant": "honest_empty",
+      "feedback": {
+        "answered_request_hashes": [],
+        "metadata": {},
+        "native_validation_fallback": false,
+        "request_hashes": [],
+        "request_trace": [],
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 1,
+          "tokens": 10
+        },
+        "value": {
+          "decision_drivers": [],
+          "ignored_evidence": [],
+          "misleading_signals": [],
+          "missing_information": [],
+          "no_findings_reason": "The synthetic limited packet provides no supported additional lesson.",
+          "plan_issues": [],
+          "prediction_outcome": {
+            "correct": false
+          },
+          "reflection_items": [],
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "source_snapshot": {
+            "candidate_judgment_feedback": {
+              "assessment": "false_positive",
+              "binary_correct": false,
+              "candidate_judgment": "possible",
+              "predicted_binary_label": "surge",
+              "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it.",
+              "true_binary_label": "non_surge"
+            },
+            "magnitude_feedback": {
+              "error_kind": "not_applicable",
+              "magnitude_applicable": false,
+              "magnitude_correct": false,
+              "ordinal_distance": null,
+              "predicted_magnitude": "2-3x",
+              "true_magnitude": null
+            },
+            "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+          },
+          "why_prediction_failed": []
+        }
+      },
+      "result": {
+        "sample_id": "s01",
+        "fixed_denominator": 1,
+        "pending": [],
+        "external_llm_calls": 0,
+        "readonly_data_requests": 0,
+        "actual_host_tokens": null,
+        "actual_host_cost": null,
+        "completed_trajectory": false,
+        "completed_fast_round": false,
+        "slow_source_published": false,
+        "case_progressive_reads": "not_supported_not_exercised",
+        "status": "feedback_persisted_requires_independent_review",
+        "physical_receipts": 0,
+        "undispatched_journals": 0,
+        "native_validation_fallback": false,
+        "reflection_items": 0,
+        "no_findings_reason": "The synthetic limited packet provides no supported additional lesson."
+      },
+      "exact_native_value_persisted": true,
+      "completed_restore_without_writes": true
+    },
+    {
+      "raw_fixture_responses": [
+        {
+          "reflection_items": [
+            {
+              "category": "misleading_signals",
+              "kind": "fact",
+              "brief": "The prediction acknowledged but underweighted the negative fundamental signals.",
+              "detail": "The source-backed guidance acceleration and financing actions were sufficient to identify the outcome class and scale.",
+              "scope": {
+                "case_refs": [
+                  "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+                ],
+                "plan_refs": [],
+                "conditions": "When the same evidence gap recurs."
+              },
+              "limitations": [
+                "This is an untested attribution, not a demonstrated improvement."
+              ],
+              "source_refs": [
+                "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+              ],
+              "counter_refs": [],
+              "outcome_claims": []
+            },
+            {
+              "category": "misleading_signals",
+              "kind": "fact",
+              "brief": "The saved prediction was positive and the revealed outcome was negative.",
+              "detail": "The saved prediction was positive and the revealed outcome was negative.",
+              "scope": {
+                "case_refs": [
+                  "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+                ],
+                "plan_refs": [],
+                "conditions": "When the same evidence gap recurs."
+              },
+              "limitations": [
+                "This is an untested attribution, not a demonstrated improvement."
+              ],
+              "source_refs": [
+                "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+              ],
+              "counter_refs": [],
+              "outcome_claims": []
+            }
+          ],
+          "selected_reflection_refs": [],
+          "no_findings_reason": null
+        },
+        {
+          "base_hash": "13ddbcf6126e72c352b55100efed37ad74c92b9fd49bd87c334f55eb20fcd015",
+          "operations": [
+            {
+              "op": "replace",
+              "path": "reflection_items[0].brief",
+              "value": "The prediction acknowledged but underweighted the negative fundamental signals. Keep this interpretation."
+            }
+          ]
+        }
+      ],
+      "good_sibling": {
+        "category": "misleading_signals",
+        "kind": "fact",
+        "brief": "The saved prediction was positive and the revealed outcome was negative.",
+        "detail": "The saved prediction was positive and the revealed outcome was negative.",
+        "scope": {
+          "case_refs": [
+            "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+          ],
+          "plan_refs": [],
+          "conditions": "When the same evidence gap recurs."
+        },
+        "limitations": [
+          "This is an untested attribution, not a demonstrated improvement."
+        ],
+        "source_refs": [
+          "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+        ],
+        "counter_refs": [],
+        "outcome_claims": []
+      },
+      "native_return_value": {
+        "prediction_outcome": {
+          "correct": false
+        },
+        "decision_drivers": [],
+        "why_prediction_failed": [],
+        "misleading_signals": [
+          "The saved prediction was positive and the revealed outcome was negative."
+        ],
+        "ignored_evidence": [],
+        "missing_information": [],
+        "plan_issues": [],
+        "reflection_items": [
+          {
+            "item_ref": "reflection:ed3d879335993f6c6d68c65f2e4dfe97ebde9cf89371ccccd88d2a7e4b693232",
+            "level": "case",
+            "owner_ref": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+            "category": "misleading_signals",
+            "kind": "fact",
+            "brief": "The saved prediction was positive and the revealed outcome was negative.",
+            "detail": "The saved prediction was positive and the revealed outcome was negative.",
+            "scope": {
+              "case_refs": [
+                "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+              ],
+              "plan_refs": [],
+              "conditions": "When the same evidence gap recurs."
+            },
+            "limitations": [
+              "This is an untested attribution, not a demonstrated improvement."
+            ],
+            "source_refs": [
+              "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+            ],
+            "counter_refs": [],
+            "outcome_claims": [],
+            "evidence_status": "sources_checked"
+          }
+        ],
+        "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+        "source_snapshot": {
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "candidate_judgment_feedback": {
+            "candidate_judgment": "possible",
+            "predicted_binary_label": "surge",
+            "true_binary_label": "non_surge",
+            "binary_correct": false,
+            "assessment": "false_positive",
+            "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it."
+          },
+          "magnitude_feedback": {
+            "magnitude_applicable": false,
+            "predicted_magnitude": "2-3x",
+            "true_magnitude": null,
+            "magnitude_correct": false,
+            "error_kind": "not_applicable",
+            "ordinal_distance": null
+          }
+        }
+      },
+      "observer_version": "current",
+      "variant": "partial_valid",
+      "feedback": {
+        "answered_request_hashes": [],
+        "metadata": {},
+        "native_validation_fallback": true,
+        "native_validation_fallback_events": [
+          {
+            "context_only_paths": [],
+            "correction_count": 1,
+            "event_type": "structured_validation_fallback_applied",
+            "fallback_steps": [
+              {
+                "context_only_paths": [],
+                "normalized_paths": [],
+                "removed_paths": [
+                  "reflection_items[0]"
+                ],
+                "source_substitution_paths": []
+              }
+            ],
+            "normalized_paths": [],
+            "removed_paths": [
+              "reflection_items[0]"
+            ],
+            "source_substitution_paths": [],
+            "stage": "blind_predictor_posthoc_reflect"
+          }
+        ],
+        "request_hashes": [],
+        "request_trace": [],
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 20
+        },
+        "validation_events": [
+          {
+            "context_only_paths": [],
+            "correction_count": 1,
+            "event_type": "structured_validation_fallback_applied",
+            "fallback_steps": [
+              {
+                "context_only_paths": [],
+                "normalized_paths": [],
+                "removed_paths": [
+                  "reflection_items[0]"
+                ],
+                "source_substitution_paths": []
+              }
+            ],
+            "normalized_paths": [],
+            "removed_paths": [
+              "reflection_items[0]"
+            ],
+            "source_substitution_paths": [],
+            "stage": "blind_predictor_posthoc_reflect"
+          }
+        ],
+        "value": {
+          "decision_drivers": [],
+          "ignored_evidence": [],
+          "misleading_signals": [
+            "The saved prediction was positive and the revealed outcome was negative."
+          ],
+          "missing_information": [],
+          "plan_issues": [],
+          "prediction_outcome": {
+            "correct": false
+          },
+          "reflection_items": [
+            {
+              "brief": "The saved prediction was positive and the revealed outcome was negative.",
+              "category": "misleading_signals",
+              "counter_refs": [],
+              "detail": "The saved prediction was positive and the revealed outcome was negative.",
+              "evidence_status": "sources_checked",
+              "item_ref": "reflection:ed3d879335993f6c6d68c65f2e4dfe97ebde9cf89371ccccd88d2a7e4b693232",
+              "kind": "fact",
+              "level": "case",
+              "limitations": [
+                "This is an untested attribution, not a demonstrated improvement."
+              ],
+              "outcome_claims": [],
+              "owner_ref": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+              "scope": {
+                "case_refs": [
+                  "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+                ],
+                "conditions": "When the same evidence gap recurs.",
+                "plan_refs": []
+              },
+              "source_refs": [
+                "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+              ]
+            }
+          ],
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "source_snapshot": {
+            "candidate_judgment_feedback": {
+              "assessment": "false_positive",
+              "binary_correct": false,
+              "candidate_judgment": "possible",
+              "predicted_binary_label": "surge",
+              "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it.",
+              "true_binary_label": "non_surge"
+            },
+            "magnitude_feedback": {
+              "error_kind": "not_applicable",
+              "magnitude_applicable": false,
+              "magnitude_correct": false,
+              "ordinal_distance": null,
+              "predicted_magnitude": "2-3x",
+              "true_magnitude": null
+            },
+            "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+          },
+          "why_prediction_failed": []
+        }
+      },
+      "result": {
+        "sample_id": "s01",
+        "fixed_denominator": 1,
+        "pending": [],
+        "external_llm_calls": 0,
+        "readonly_data_requests": 0,
+        "actual_host_tokens": null,
+        "actual_host_cost": null,
+        "completed_trajectory": false,
+        "completed_fast_round": false,
+        "slow_source_published": false,
+        "case_progressive_reads": "not_supported_not_exercised",
+        "status": "feedback_persisted_requires_independent_review",
+        "physical_receipts": 0,
+        "undispatched_journals": 0,
+        "native_validation_fallback": true,
+        "reflection_items": 1,
+        "no_findings_reason": null
+      },
+      "exact_native_value_persisted": true,
+      "completed_restore_without_writes": true
+    },
+    {
+      "raw_fixture_responses": [
+        {
+          "reflection_items": [
+            {
+              "category": "misleading_signals",
+              "kind": "fact",
+              "brief": "The prediction acknowledged but underweighted the negative fundamental signals.",
+              "detail": "The source-backed guidance acceleration and financing actions were sufficient to identify the outcome class and scale.",
+              "scope": {
+                "case_refs": [
+                  "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+                ],
+                "plan_refs": [],
+                "conditions": "When the same evidence gap recurs."
+              },
+              "limitations": [
+                "This is an untested attribution, not a demonstrated improvement."
+              ],
+              "source_refs": [
+                "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+              ],
+              "counter_refs": [],
+              "outcome_claims": []
+            }
+          ],
+          "selected_reflection_refs": [],
+          "no_findings_reason": null
+        },
+        {
+          "base_hash": "cc65f01ab547bc2406c9a745781f60440657e08dacb9c51cb32e20544d386e87",
+          "operations": [
+            {
+              "op": "replace",
+              "path": "reflection_items[0].brief",
+              "value": "The prediction acknowledged but underweighted the negative fundamental signals. Keep this interpretation."
+            }
+          ]
+        }
+      ],
+      "good_sibling": {
+        "category": "misleading_signals",
+        "kind": "fact",
+        "brief": "The saved prediction was positive and the revealed outcome was negative.",
+        "detail": "The saved prediction was positive and the revealed outcome was negative.",
+        "scope": {
+          "case_refs": [
+            "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+          ],
+          "plan_refs": [],
+          "conditions": "When the same evidence gap recurs."
+        },
+        "limitations": [
+          "This is an untested attribution, not a demonstrated improvement."
+        ],
+        "source_refs": [
+          "reflection_source:7a7252f4456dc4ab30c2d5d4503cecfcd2736b2b0f3c9af208baefd3d4d291fd"
+        ],
+        "counter_refs": [],
+        "outcome_claims": []
+      },
+      "native_return_value": {
+        "prediction_outcome": {
+          "correct": false
+        },
+        "decision_drivers": [],
+        "why_prediction_failed": [],
+        "misleading_signals": [],
+        "ignored_evidence": [],
+        "missing_information": [],
+        "plan_issues": [],
+        "reflection_items": [],
+        "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+        "source_snapshot": {
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "candidate_judgment_feedback": {
+            "candidate_judgment": "possible",
+            "predicted_binary_label": "surge",
+            "true_binary_label": "non_surge",
+            "binary_correct": false,
+            "assessment": "false_positive",
+            "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it."
+          },
+          "magnitude_feedback": {
+            "magnitude_applicable": false,
+            "predicted_magnitude": "2-3x",
+            "true_magnitude": null,
+            "magnitude_correct": false,
+            "error_kind": "not_applicable",
+            "ordinal_distance": null
+          }
+        },
+        "no_findings_reason": "reflection_items_all_invalid_salvaged: Retain the observable fact without weighting/sufficiency inference, or classify the explanation as a testable hypothesis; preserve other items and outcome facts"
+      },
+      "observer_version": "current",
+      "variant": "all_invalid",
+      "feedback": {
+        "answered_request_hashes": [],
+        "metadata": {},
+        "native_validation_fallback": true,
+        "native_validation_fallback_events": [
+          {
+            "context_only_paths": [],
+            "correction_count": 1,
+            "event_type": "structured_validation_fallback_applied",
+            "fallback_steps": [
+              {
+                "context_only_paths": [],
+                "normalized_paths": [],
+                "removed_paths": [
+                  "reflection_items[0]"
+                ],
+                "source_substitution_paths": []
+              }
+            ],
+            "normalized_paths": [],
+            "removed_paths": [
+              "reflection_items[0]"
+            ],
+            "source_substitution_paths": [],
+            "stage": "blind_predictor_posthoc_reflect"
+          }
+        ],
+        "request_hashes": [],
+        "request_trace": [],
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 20
+        },
+        "validation_events": [
+          {
+            "context_only_paths": [],
+            "correction_count": 1,
+            "event_type": "structured_validation_fallback_applied",
+            "fallback_steps": [
+              {
+                "context_only_paths": [],
+                "normalized_paths": [],
+                "removed_paths": [
+                  "reflection_items[0]"
+                ],
+                "source_substitution_paths": []
+              }
+            ],
+            "normalized_paths": [],
+            "removed_paths": [
+              "reflection_items[0]"
+            ],
+            "source_substitution_paths": [],
+            "stage": "blind_predictor_posthoc_reflect"
+          }
+        ],
+        "value": {
+          "decision_drivers": [],
+          "ignored_evidence": [],
+          "misleading_signals": [],
+          "missing_information": [],
+          "no_findings_reason": "reflection_items_all_invalid_salvaged: Retain the observable fact without weighting/sufficiency inference, or classify the explanation as a testable hypothesis; preserve other items and outcome facts",
+          "plan_issues": [],
+          "prediction_outcome": {
+            "correct": false
+          },
+          "reflection_items": [],
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "source_snapshot": {
+            "candidate_judgment_feedback": {
+              "assessment": "false_positive",
+              "binary_correct": false,
+              "candidate_judgment": "possible",
+              "predicted_binary_label": "surge",
+              "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it.",
+              "true_binary_label": "non_surge"
+            },
+            "magnitude_feedback": {
+              "error_kind": "not_applicable",
+              "magnitude_applicable": false,
+              "magnitude_correct": false,
+              "ordinal_distance": null,
+              "predicted_magnitude": "2-3x",
+              "true_magnitude": null
+            },
+            "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+          },
+          "why_prediction_failed": []
+        }
+      },
+      "result": {
+        "sample_id": "s01",
+        "fixed_denominator": 1,
+        "pending": [],
+        "external_llm_calls": 0,
+        "readonly_data_requests": 0,
+        "actual_host_tokens": null,
+        "actual_host_cost": null,
+        "completed_trajectory": false,
+        "completed_fast_round": false,
+        "slow_source_published": false,
+        "case_progressive_reads": "not_supported_not_exercised",
+        "status": "feedback_persisted_requires_independent_review",
+        "physical_receipts": 0,
+        "undispatched_journals": 0,
+        "native_validation_fallback": true,
+        "reflection_items": 0,
+        "no_findings_reason": "reflection_items_all_invalid_salvaged: Retain the observable fact without weighting/sufficiency inference, or classify the explanation as a testable hypothesis; preserve other items and outcome facts"
+      },
+      "exact_native_value_persisted": true,
+      "completed_restore_without_writes": true
+    },
+    {
+      "raw_fixture_responses": [
+        {
+          "reflection_items": [],
+          "selected_reflection_refs": [],
+          "no_findings_reason": "The synthetic limited packet provides no supported additional lesson."
+        }
+      ],
+      "native_return_value": {
+        "prediction_outcome": {
+          "correct": false
+        },
+        "decision_drivers": [],
+        "why_prediction_failed": [],
+        "misleading_signals": [],
+        "ignored_evidence": [],
+        "missing_information": [],
+        "plan_issues": [],
+        "reflection_items": [],
+        "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+        "source_snapshot": {
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "candidate_judgment_feedback": {
+            "candidate_judgment": "possible",
+            "predicted_binary_label": "surge",
+            "true_binary_label": "non_surge",
+            "binary_correct": false,
+            "assessment": "false_positive",
+            "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it."
+          },
+          "magnitude_feedback": {
+            "magnitude_applicable": false,
+            "predicted_magnitude": "2-3x",
+            "true_magnitude": null,
+            "magnitude_correct": false,
+            "error_kind": "not_applicable",
+            "ordinal_distance": null
+          }
+        },
+        "no_findings_reason": "The synthetic limited packet provides no supported additional lesson."
+      },
+      "observer_version": "current",
+      "variant": "honest_empty",
+      "feedback": {
+        "answered_request_hashes": [],
+        "metadata": {},
+        "native_validation_fallback": false,
+        "native_validation_fallback_events": [],
+        "request_hashes": [],
+        "request_trace": [],
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 1,
+          "tokens": 10
+        },
+        "validation_events": [],
+        "value": {
+          "decision_drivers": [],
+          "ignored_evidence": [],
+          "misleading_signals": [],
+          "missing_information": [],
+          "no_findings_reason": "The synthetic limited packet provides no supported additional lesson.",
+          "plan_issues": [],
+          "prediction_outcome": {
+            "correct": false
+          },
+          "reflection_items": [],
+          "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b",
+          "source_snapshot": {
+            "candidate_judgment_feedback": {
+              "assessment": "false_positive",
+              "binary_correct": false,
+              "candidate_judgment": "possible",
+              "predicted_binary_label": "surge",
+              "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it.",
+              "true_binary_label": "non_surge"
+            },
+            "magnitude_feedback": {
+              "error_kind": "not_applicable",
+              "magnitude_applicable": false,
+              "magnitude_correct": false,
+              "ordinal_distance": null,
+              "predicted_magnitude": "2-3x",
+              "true_magnitude": null
+            },
+            "source_identity": "case:31aaafc22a39469742ba06a3be18b76a84cc5ccd3e9a4bcabe16a829aa9d719b"
+          },
+          "why_prediction_failed": []
+        }
+      },
+      "result": {
+        "sample_id": "s01",
+        "fixed_denominator": 1,
+        "pending": [],
+        "external_llm_calls": 0,
+        "readonly_data_requests": 0,
+        "actual_host_tokens": null,
+        "actual_host_cost": null,
+        "completed_trajectory": false,
+        "completed_fast_round": false,
+        "slow_source_published": false,
+        "case_progressive_reads": "not_supported_not_exercised",
+        "status": "feedback_persisted_requires_independent_review",
+        "physical_receipts": 0,
+        "undispatched_journals": 0,
+        "native_validation_fallback": false,
+        "reflection_items": 0,
+        "no_findings_reason": "The synthetic limited packet provides no supported additional lesson."
+      },
+      "exact_native_value_persisted": true,
+      "completed_restore_without_writes": true
+    }
+  ],
+  "native_value_and_scripted_responses_identical_old_vs_current": true,
+  "network_attempts": 0,
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/original-fallback-observer-script.py.txt": "2e71d23af96d8a30208e87bd93f1a9cc10505f6db1e1345d9ee2d3137159a3e0",
+    "/Users/l/Project/Recommandation/scripts/run_reviewed_posthoc_stage.py": "48ce78ed6a3cace0f154e005a70b54277379e5c8900e6ae5792d9f8043bd64e0",
+    "spec/scripts/run_reviewed_posthoc_stage.md": "fc39ff80827565bafe00bf629386d07f442e27becbfbb22e4d0d42fcf974417d",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "62c9f788b2a5741087976f67d60379f89374f51be740fc75575b2cc687ea47df",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "f5134cb9d61c836a1b1268ab3c40381ad2f89c18f749e333d3ca49f64c1eb70e"
+  }
+}

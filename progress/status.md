@@ -13,7 +13,8 @@
 见 [单例前缀验收](../reports/reviewed-fast-prefix-acceptance-20261019.md)。
 [单门标签准入](../reports/label-store-admission-20261020.md) 已修：旧18误放反例新拒，
 独立流式/严格类型/全记录重算通过；真实6554首次全load9.463s，未改store/定义。
-1806全量通过；provider价条/issuer真实性与完整F10仍独立未关，下一步另冻Posthoc。
+1806全量通过；provider价条/issuer真实性与完整F10仍独立未关。
+[独立Posthoc](../reports/reviewed-posthoc-stage-20261020.md) 实际匿名请求预检通过，待冻结/新答。
 
 
 ## 新证据：F7 范围通过，F8 新消费时间边界已修

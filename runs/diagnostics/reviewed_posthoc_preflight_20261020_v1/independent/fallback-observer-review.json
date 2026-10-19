@@ -1,0 +1,55 @@
+{
+  "status": "preflight_passed_after_observer_fix_no_answers",
+  "supersedes": "Original independent-review remains valid for input/anonymity/parent/qualification/restore, but its fallback-visibility confidence was incomplete. This addendum closes only the demonstrated observer accounting gap and provides current bindings.",
+  "reviewer_miss": "I checked terminal adapter failure-prefix handling and exact returned value but missed parser-internal partial salvage with no_findings_reason=null and all-invalid salvage prefix. The initial preflight did not establish complete fallback accounting; formal freeze was paused before any new answer.",
+  "fixed_failure": {
+    "original_observer_script_sha256": "2e71d23af96d8a30208e87bd93f1a9cc10505f6db1e1345d9ee2d3137159a3e0",
+    "old_actual_partial_salvage_flag": false,
+    "old_actual_all_invalid_flag": false,
+    "failure_preserved": true
+  },
+  "native_fixture_results": {
+    "runs": 6,
+    "old_current_variants": [
+      "partial_valid",
+      "all_invalid",
+      "honest_empty"
+    ],
+    "native_chain": "LLMBlindPredictor.reflect -> production _complete_parsed_role/correction -> row salvage -> original parser -> harness _execute feedback.json -> completed restore",
+    "one_typed_correction_used_in_salvage_fixtures": true,
+    "partial_valid": "New observer flag true with raw structured_validation_fallback_applied event; original valid sibling fields exact, no_findings_reason null",
+    "all_invalid": "New observer flag true with raw structured_validation_fallback_applied event; native all-invalid reason retained",
+    "honest_empty": "Flag false and no fallback events in both versions",
+    "same_scripted_raw_responses_and_native_values_old_current": true,
+    "exact_native_value_persisted": true,
+    "completed_restore_zero_writes": true,
+    "models_or_roles_executed": 0,
+    "real_label_store_reads": 0,
+    "scope": "Scripted synthetic caller responses are wiring fixtures, not fresh model compliance or feedback quality. Complete request/receipt behavior remains separately bound by prior restore tests."
+  },
+  "current_observer_review": [
+    "Only _execute changed among existing top-level functions/classes; producer/parser/source/parent/qualification/restore functions are AST-identical",
+    "Read-only on_progress copies original event dictionaries in sequence; fallback subset includes structured_validation_fallback_applied, deterministic_fallback_promoted, posthoc_reflection_validation_failed and both native reason prefixes",
+    "Observer does not alter native AgentStep or production prompt/payload; metadata is persisted and covered by completion artifact map",
+    "Applied fallback flag is neither semantic success nor an assertion of new research capability"
+  ],
+  "decision": "No remaining material blocker found for bounded formal freeze/dispatch once the complete formal request journal is checked against its inbox and canonical hash. No new model answer was read.",
+  "not_closed": [
+    "Fresh first-answer/correction/feedback semantics",
+    "Real accepted Posthoc persistence/completed restore",
+    "Provider/issuer qualification globally; Fast score/trajectory/Slow ingestion; full F10/MVP or independent benefit"
+  ],
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/original-fallback-observer-script.py.txt": "2e71d23af96d8a30208e87bd93f1a9cc10505f6db1e1345d9ee2d3137159a3e0",
+    "/Users/l/Project/Recommandation/scripts/run_reviewed_posthoc_stage.py": "48ce78ed6a3cace0f154e005a70b54277379e5c8900e6ae5792d9f8043bd64e0",
+    "spec/scripts/run_reviewed_posthoc_stage.md": "fc39ff80827565bafe00bf629386d07f442e27becbfbb22e4d0d42fcf974417d",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "62c9f788b2a5741087976f67d60379f89374f51be740fc75575b2cc687ea47df",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "f5134cb9d61c836a1b1268ab3c40381ad2f89c18f749e333d3ca49f64c1eb70e"
+  },
+  "evidence": {
+    "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/fallback-observer.py": "d78418a918a87c6da87f9c82caeb564248c2113ba9e20344a514840aeea45e69",
+    "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/fallback-observer-results.json": "084ab6095d9ed28f35b10ebbff12e889770f2a988039e77aa834b0d2d4b03f12",
+    "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/independent/independent-review.json": "51bd68c25d4bff32b19bd386103db2858b1213baf2e1f1aad0192a5e8d737467"
+  },
+  "network_attempts": 0
+}

@@ -1,0 +1,94 @@
+{
+  "scope": "Synthetic small archive/store, no actual canonical store reads; _verify fixture assumes already-prepared parent, does not claim a synthetic parent is production qualified. Actual parent verification is separate in preflight-checks.",
+  "cases": [
+    {
+      "case": "legal_qualified_source_freeze",
+      "expected": "accept",
+      "actual": "accept",
+      "pass": true
+    },
+    {
+      "case": "archive_changed",
+      "expected": "reject",
+      "actual": "reject",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: label archive SHA256 differs from manifest",
+      "pass": true
+    },
+    {
+      "case": "label_manifest_changed",
+      "expected": "reject",
+      "actual": "reject",
+      "error_type": "ValidationError",
+      "error": "original artifact changed: /private@TMP@/label/manifest.json",
+      "pass": true
+    },
+    {
+      "case": "label_records_changed",
+      "expected": "reject",
+      "actual": "reject",
+      "error_type": "ValidationError",
+      "error": "original artifact changed: /private@TMP@/label/labels.jsonl",
+      "pass": true
+    },
+    {
+      "case": "missing_archive",
+      "expected": "reject",
+      "actual": "reject",
+      "error_type": "ValidationError",
+      "error": "label archive must be a readable file",
+      "pass": true
+    },
+    {
+      "case": "parent_prediction_changed",
+      "expected": "reject",
+      "actual": "reject",
+      "error_type": "ValidationError",
+      "error": "Posthoc parent inventory changed",
+      "pass": true
+    },
+    {
+      "case": "parent_extra_file",
+      "expected": "reject",
+      "actual": "reject",
+      "error_type": "ValidationError",
+      "error": "Posthoc parent inventory changed",
+      "pass": true
+    },
+    {
+      "case": "code_binding_changed",
+      "expected": "reject",
+      "actual": "reject",
+      "error_type": "ValidationError",
+      "error": "original artifact changed: /private@TMP@/bound-code.txt",
+      "pass": true
+    },
+    {
+      "case": "oracle_changed",
+      "expected": "reject",
+      "actual": "reject",
+      "error_type": "ValidationError",
+      "error": "Posthoc frozen manifest/input/oracle/contract changed",
+      "pass": true
+    },
+    {
+      "case": "qualified_baseline_mismatch",
+      "expected": "reject",
+      "actual": "reject",
+      "error_type": "ValidationError",
+      "error": "canonical truth baseline differs from saved prediction",
+      "pass": true
+    },
+    {
+      "case": "qualified_key_missing",
+      "expected": "reject",
+      "actual": "reject",
+      "error_type": "UnknownLabelError",
+      "error": "no label for ('cik_00000043', '2025-01-15'); nearest stored keys: [('cik_00000042', '2025-01-15')]",
+      "pass": true
+    }
+  ],
+  "all_passed": true,
+  "network_attempts": 0,
+  "script_under_test_sha256": "2e71d23af96d8a30208e87bd93f1a9cc10505f6db1e1345d9ee2d3137159a3e0"
+}

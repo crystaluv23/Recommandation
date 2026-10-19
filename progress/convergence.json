@@ -315,10 +315,24 @@
         "runs/diagnostics/label_store_loader_boundary_20261020_v1/full-tests.log"
       ],
       "result": "18 original false admissions locally rejected; 24 fixed cases and 29 streaming variants independently pass. Actual6554 first strict load accepted in9.463s/61MB; Final current-source full6554 load accepted in9.383s/66MB with unchanged store/sink;1806 regression tests passed in180.865s. This verifies consistency with bound archive, not provider/issuer truth; no feedback role or fullF10 completion."
+    },
+    {
+      "id": "engineering-mvp-native-posthoc-preflight-20261020",
+      "strategy": "bounded_native_case_posthoc_after_strict_truth_admission",
+      "failure_families": [
+        "case_vs_plan_round_source_read_capability_scope"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-posthoc-stage-20261020.md",
+        "reports/reviewed-posthoc-stage-expectations-20261020.json",
+        "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/preflight-result.json"
+      ],
+      "result": "Actual native anonymous Posthoc pending preflight fits131072 under new8call ceiling,0answers. Case has citation closure but no progressive read wrapper; corrected before answers. Fresh feedback semantics/persistence/recovery remain pending; no trajectory/score/Slow source."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-label-admission-20261020",
+    "after_iteration": "engineering-mvp-native-posthoc-preflight-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -350,7 +364,10 @@
       "reports/label-store-admission-20261020.md",
       "runs/diagnostics/label_store_loader_boundary_20261020_v1/independent-current/independent-review.json",
       "runs/diagnostics/label_source_qualification_20261019_v1/actual-s01.json",
-      "runs/diagnostics/label_source_qualification_20261019_v1/strict-load-first.json"
+      "runs/diagnostics/label_source_qualification_20261019_v1/strict-load-first.json",
+      "reports/reviewed-posthoc-stage-20261020.md",
+      "reports/reviewed-posthoc-stage-expectations-20261020.json",
+      "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/preflight-result.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -369,15 +386,17 @@
       "Adding a complete per-case visibility descriptor fixed semantic loss but broke the existing V141 128k/176k actual input envelope; focused single-case wires missed multi-case field repetition. Preserve every descriptor/id through payload-local reversible sharing, not a larger budget.",
       "Final stop reason/trigger formerly existed only in the post-label trajectory; reservation and actual prediction require distinct runtime-owned phase. Cached multi-request native steps preserve tokens but aggregate zero calls, after which core restores only one; completed checkpoint restore is not interrupted replay equivalence.",
       "A finalize-only native sink test skipped actual SignalBatchResult, and the observer wrongly assumed to_dict. Parent continuation and completed restoration must distinguish a prepared budget-blocked request journal from an answered role; source-resolved technical budget_blocked is not domain insufficiency.",
-      "LabelStore.load checked internal shape but not the promised archive/hash/calculator/contract/reconciliation; a /dev/null zero-hash roundtrip fixture concealed the missing source gate. A calculator-consistent record can still come from a different bound price history."
+      "LabelStore.load checked internal shape but not the promised archive/hash/calculator/contract/reconciliation; a /dev/null zero-hash roundtrip fixture concealed the missing source gate. A calculator-consistent record can still come from a different bound price history.",
+      "Case Posthoc does not inherit the Plan/Round progressive-read wrapper; inspect the actual entry before promising read_refs/browse. Preserve its real deterministic case catalog and repair resolver instead of adding capability for an oracle.",
+      "A terminal no_findings prefix does not cover native partial salvage with a valid sibling and no_findings null, all-invalid salvage or deterministic promotion; preserve native validation events rather than infer absence of fallback from one output field."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "verify_strict_label_admission_then_freeze_native_posthoc",
-      "action": "Complete actual full-store current-source validation/regression, then freeze bounded native Posthoc using canonical qualified truth and saved durable prediction; no trajectory fabrication.",
-      "stop": "Do not dispatch feedback before strict source admission or revive prefix budget; archive reconciliation is not provider/issuer authentication.",
-      "question": "Does the source-admitted canonical truth enable bounded native Posthoc to preserve technical budget/coverage limits as durable feedback?",
+      "strategy": "freeze_bounded_native_posthoc_then_inspect_exact_feedback",
+      "action": "After focused wiring and independent preflight, freeze current code, exact accepted parent and strict canonical truth with a new8call stage budget; request fresh isolated native case feedback.",
+      "stop": "No parent budget revival, fabricated trajectory/score/Slow source, source-read wrapper or model-authored correctness; retain technical fallback separately.",
+      "question": "Does native case Posthoc produce source-scoped honest feedback from the exact saved prediction and canonical truth, and persist/restore it without new dispatch?",
       "pass": "Qualified canonical source with matching baseline/window, then independently inspect fresh native Posthoc raw/correction/persisted item and exact recovery.",
       "fail": "Loader exit0 accepted without source/contract verification or feedback interpreted as completed Fast/new benefit.",
       "on_pass": "Close only bounded Posthoc feedback behavior/persistence, then design legitimate scoring/Critic/committed feedback prerequisites.",

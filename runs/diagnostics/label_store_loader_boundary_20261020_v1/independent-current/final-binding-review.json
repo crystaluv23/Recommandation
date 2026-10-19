@@ -1,0 +1,32 @@
+{
+  "scope": "Independent check of final docstrings/EOF only; no repeated behavioral/real-store execution",
+  "checked_files": [
+    {
+      "path": "src/stock_opportunity_agent/cases/label_store.py",
+      "current_sha256": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af",
+      "tested_sha256": "6ce360ad56f728afcc751ecece06124290ec2ea09e4992cecdceea24f43396c9",
+      "exact_reverse_reconstruction_matches_tested_source": true,
+      "AST_equal_excluding_function_docstrings": true,
+      "new_docstrings": [
+        "load"
+      ],
+      "EOF_only_additional_difference": false
+    },
+    {
+      "path": "src/stock_opportunity_agent/data/json_stream.py",
+      "current_sha256": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea",
+      "tested_sha256": "63ffd0a15ae82859155fb65b7494312b90a6e322ec3962b2aa0582c4649bea89",
+      "exact_reverse_reconstruction_matches_tested_source": true,
+      "AST_equal_excluding_function_docstrings": true,
+      "new_docstrings": [
+        "close",
+        "consume",
+        "decode",
+        "peek"
+      ],
+      "EOF_only_additional_difference": true
+    }
+  ],
+  "all_passed": true,
+  "driver_sidecar_sha256": "155db6907afef2f7b2c4a480fc3e5140b3c02bc9202f32bcb211e7d668e32733"
+}

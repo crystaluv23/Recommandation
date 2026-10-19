@@ -1,0 +1,270 @@
+#!/usr/bin/env python3
+"""Freeze/resume one native case Posthoc without publishing a Fast/Slow result."""
+from __future__ import annotations
+
+import argparse
+from dataclasses import asdict
+from datetime import date
+import fcntl
+import hashlib
+import json
+from pathlib import Path
+import socket
+import subprocess
+
+from diagnose_executed_answer_scope import StageContract, binding, read_json
+from run_reviewed_signal_stage import REPO, _save_exact
+from run_reviewed_fast_prefix import _request_inventory, _immutable_artifacts as _prefix_artifacts
+from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
+from stock_opportunity_agent.cases.label_store import LabelStore
+from stock_opportunity_agent.cases.outcomes import add_months
+from stock_opportunity_agent.llm import get_model
+from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.evolution_core import BlindPrediction, GroundTruth, EvolutionControlFlow
+from stock_opportunity_agent.research.evolution_plan_roles import LLMBlindPredictor
+from stock_opportunity_agent.research.evolution_transport import (
+    StructuredRoleClient, ExternalAttemptLedger, _parse_json_object_envelope,
+)
+from stock_opportunity_agent.research.local_role_exchange import (
+    LocalRoleExchange, LocalRoleRequestPending, LocalRoleBudgetExhausted,
+)
+
+LABEL_ROOT = REPO / 'runs/cold_start/data/outcome-label-store-v1'
+PARENT_COMMIT = '7ac01ea82e4c857b8c910394e460ba06a3f2c853'
+LOCKS = {'.prefix.lock', '.posthoc.lock', '.dispatch.lock'}
+SIDECARS = {'progress.json', 'completion.json', 'execution_summary.json', 'independent-review.json'}
+
+
+def _code_bindings():
+    return [binding(path) for path in sorted([*(REPO/'src').rglob('*.py'), Path(__file__),
+        REPO/'scripts/run_reviewed_fast_prefix.py', REPO/'scripts/run_reviewed_signal_stage.py',
+        REPO/'scripts/diagnose_executed_answer_scope.py', REPO/'spec/scripts/run_reviewed_posthoc_stage.md'])]
+
+
+def _files(root, *, runtime=False):
+    return [binding(path) for path in sorted(root.rglob('*')) if path.is_file()
+        and path.name not in LOCKS and (not runtime or path.name not in SIDECARS)]
+
+
+def _historical_code_check(rows, commit):
+    if len(commit)!=40 or any(ch not in '0123456789abcdef' for ch in commit):
+        raise ValidationError('historical parent requires an immutable full commit SHA')
+    try:
+        actual=subprocess.run(['git','rev-parse','--verify',commit+'^{commit}'],cwd=REPO,
+            check=True,capture_output=True,text=True).stdout.strip()
+        if actual!=commit: raise ValidationError('historical parent commit identity changed')
+        for row in rows:
+            relative=Path(row['path']).resolve().relative_to(REPO)
+            raw=subprocess.run(['git','show',f'{commit}:{relative}'],cwd=REPO,check=True,capture_output=True).stdout
+            if hashlib.sha256(raw).hexdigest()!=row['sha256']:
+                raise ValidationError('historical parent code differs from frozen Git')
+    except (ValueError,subprocess.CalledProcessError) as exc:
+        raise ValidationError('cannot verify historical parent source') from exc
+
+
+def _verified_responses(root, max_calls):
+    """Verify original native raw, receipt and parsed cache without dispatch."""
+    answered,undispatched=_request_inventory(root)
+    exchange=LocalRoleExchange(root/'exchange',max_calls=max_calls)
+    for row in answered:
+        request=row['request']; digest=row['request_hash']
+        reservation=len(json.dumps(request['messages'],ensure_ascii=False,sort_keys=True,
+            separators=(',',':')).encode('utf-8'))+request['max_output_tokens']
+        raw,usage=exchange.receive(request,accounting_tokens=reservation,allow_dispatch=False)
+        parsed,normalization=_parse_json_object_envelope(raw)
+        expected={'request_hash':digest,'response_id':'local-'+digest,'model':'independent-subagent',
+            'json_output':parsed,'usage':usage,'raw_output':raw,'decision_token_scores':None}
+        if normalization is not None: expected['structured_output_normalization']=normalization
+        if canonical_json_hash(read_json(root/'cache/responses'/f'{digest}.json'))!=canonical_json_hash(expected):
+            raise ValidationError('native cached response differs from verified original')
+    return answered,undispatched
+
+
+def _parent_snapshot(parent, commit):
+    """Validate a completed historical prefix, retaining every original artifact."""
+    manifest=read_json(parent/'manifest.json'); digest=manifest.pop('manifest_hash')
+    contract=read_json(parent/'contract.json'); completion=read_json(parent/'completion.json')
+    completed_hash=completion.pop('completion_hash')
+    if (canonical_json_hash(manifest)!=digest or canonical_json_hash(contract)!=manifest['contract_hash']
+        or canonical_json_hash(completion)!=completed_hash or completion['manifest_hash']!=digest
+        or completion['immutable_artifacts']!=_prefix_artifacts(parent)):
+        raise ValidationError('completed parent manifest/checkpoint changed')
+    if (canonical_json_hash(read_json(parent/'inputs.json'))!=contract['input_hash']
+        or canonical_json_hash(read_json(parent/'expectations.json'))!=contract['expectations_hash']
+        or canonical_json_hash(read_json(parent/'preflight.json'))!=contract['preflight_hash']):
+        raise ValidationError('historical parent frozen inputs/oracle/preflight changed')
+    _historical_code_check(manifest['code_files'],commit)
+    external=manifest['originals']+manifest['registry_files']
+    if 'continuation' in manifest:
+        lineage=manifest['continuation']
+        if _prefix_artifacts(Path(lineage['parent_root']))!=lineage['parent_files']:
+            raise ValidationError('historical continuation parent changed')
+        external+=lineage['parent_files']
+        prior_manifest=read_json(Path(lineage['parent_root'])/'manifest.json')
+        _historical_code_check(prior_manifest['code_files'],lineage['parent_commit'])
+    for row in external: binding(Path(row['path']),row['sha256'])
+    _verified_responses(parent,contract['max_local_calls'])
+    return {'root':str(parent),'commit':commit,'manifest_hash':digest,'files':_files(parent),'external_files':external}
+
+
+def _qualified_truth(parent, label_root):
+    saved=read_json(parent/'prediction.json')
+    store=LabelStore.load(label_root)
+    record=store.record(saved['company_id'],saved['prediction_time'][:10])
+    baseline=saved['final_context'].get('prediction_baseline',{})
+    if (record.baseline_mean!=baseline.get('mean_adjusted_close')
+        or list(record.baseline_dates)!=baseline.get('trading_dates')):
+        raise ValidationError('canonical truth baseline differs from saved prediction')
+    instant=date.fromisoformat(record.as_of_date)
+    horizon=add_months(instant,6).isoformat()
+    if record.horizon_end!=horizon:
+        raise ValidationError('canonical truth horizon differs from six-calendar-month prediction')
+    truth=GroundTruth.from_dict(store.ground_truth(saved['company_id'],record.as_of_date))
+    qualification={'manifest':dict(store.manifest),'record':record.to_dict(),'truth':truth.to_dict(),
+        'label_files':[binding(label_root/'manifest.json'),binding(label_root/'labels.jsonl')],
+        'archive':{'path':store.manifest['archive_path'],'sha256':store.manifest['archive_sha256']},
+        'archive_consistency_only_not_provider_or_issuer_authentication':True}
+    return saved,truth,qualification
+
+
+def prepare(root: Path, expectations: Path, *, parent_root: Path | None=None, parent_commit: str=PARENT_COMMIT):
+    """Freeze a new bounded feedback stage after complete parent/source admission."""
+    if root.exists(): raise ValidationError('Posthoc destination must be new')
+    expected=read_json(expectations)
+    if expected.get('fixed_denominator')!=1 or expected.get('sample_id')!='s01':
+        raise ValidationError('Posthoc oracle must retain one neutral sample')
+    parent=(parent_root or Path(expected['parent']['root'])).resolve()
+    lineage=_parent_snapshot(parent,parent_commit)
+    saved,truth,qualification=_qualified_truth(parent,LABEL_ROOT)
+    declared=expected['parent']
+    if (declared['manifest_hash']!=lineage['manifest_hash']
+        or declared['prediction_sha256']!=binding(parent/'prediction.json')['sha256']
+        or declared['sample_key']!=[saved['company_id'],saved['prediction_time'][:10]]):
+        raise ValidationError('Posthoc oracle parent identity differs')
+    identity=read_json(parent/'inputs.json')['sample']['identity']
+    inputs={'sample_id':'s01','parent':lineage,'identity':identity,'label_root':str(LABEL_ROOT),
+        'prediction_file':binding(parent/'prediction.json'),'qualification':qualification}
+    contract={'schema_version':'reviewed-native-case-posthoc-v1','backend':'independent-subagent',
+        'fixed_denominator':1,'max_local_calls':8,'external_llm_calls_authorized':0,
+        'readonly_data_requests_authorized':0,'actual_host_tokens':None,'actual_host_cost':None,
+        'actual_model_version':None,'model_selection':'inherited_host_default_precise_version_unknown',
+        'limits':{'max_request_tokens':131072,'max_structured_corrections':1,
+                  'max_local_role_calls':8,'structured_reasoning_token_reserve':0},
+        'input_hash':canonical_json_hash(inputs),'expectations_hash':canonical_json_hash(expected),
+        'parent_collection_resumed':False,'case_progressive_reads':'not_supported_by_native_entry'}
+    manifest={'schema_version':'reviewed-native-case-posthoc-freeze-v1',
+        'contract_hash':canonical_json_hash(contract),'code_files':_code_bindings(),
+        'originals':[binding(expectations)],'completed_fast_round':False,'slow_source_published':False}
+    manifest['manifest_hash']=canonical_json_hash(manifest)
+    for name,value in (('inputs',inputs),('expectations',expected),('contract',contract),('manifest',manifest)):
+        atomic_write_json(root/(name+'.json'),value)
+    return {'manifest_hash':manifest['manifest_hash'],'fixed_denominator':1,'role_answers':0}
+
+
+def _verify(root):
+    manifest=read_json(root/'manifest.json'); digest=manifest.pop('manifest_hash')
+    inputs=read_json(root/'inputs.json'); contract=read_json(root/'contract.json')
+    if (canonical_json_hash(manifest)!=digest or canonical_json_hash(contract)!=manifest['contract_hash']
+        or canonical_json_hash(inputs)!=contract['input_hash']
+        or canonical_json_hash(read_json(root/'expectations.json'))!=contract['expectations_hash']):
+        raise ValidationError('Posthoc frozen manifest/input/oracle/contract changed')
+    for row in manifest['code_files']+manifest['originals']: binding(Path(row['path']),row['sha256'])
+    lineage=inputs['parent']; parent=Path(lineage['root'])
+    if _files(parent)!=lineage['files']: raise ValidationError('Posthoc parent inventory changed')
+    for row in lineage['external_files']: binding(Path(row['path']),row['sha256'])
+    for row in inputs['qualification']['label_files']: binding(Path(row['path']),row['sha256'])
+    saved,truth,qualification=_qualified_truth(parent,Path(inputs['label_root']))
+    if qualification!=inputs['qualification']: raise ValidationError('Posthoc canonical source qualification changed')
+    _verified_responses(parent,read_json(parent/'contract.json')['max_local_calls'])
+    return digest,inputs,contract,saved,truth
+
+
+def _completed_restore(root,manifest_hash,contract):
+    completion=read_json(root/'completion.json'); digest=completion.pop('completion_hash')
+    if (canonical_json_hash(completion)!=digest or completion['manifest_hash']!=manifest_hash
+        or completion['immutable_artifacts']!=_files(root,runtime=True)):
+        raise ValidationError('completed Posthoc artifacts changed or missing')
+    _verified_responses(root,contract['max_local_calls'])
+    return {**completion['result'],'restored_without_execution':True,'immutable_artifacts_unchanged':True}
+
+
+def _execute(root,manifest_hash,inputs,contract,saved,truth):
+    if (root/'completion.json').exists(): return _completed_restore(root,manifest_hash,contract)
+    exchange=LocalRoleExchange(root/'exchange',max_calls=contract['max_local_calls'])
+    client=StructuredRoleClient(registration=get_model('independent-subagent'),contract=StageContract(contract),
+        workspace=root,local_role_exchange=exchange,
+        ledger=ExternalAttemptLedger(root/'unused_external_attempts.json',max_attempts=1,max_total_cost=0.01),
+        allow_external=False,environ={})
+    predictor=LLMBlindPredictor(client)
+    predictor.set_request_token_budget(contract['limits']['max_request_tokens'])
+    result={'sample_id':'s01','fixed_denominator':1,'pending':[],'external_llm_calls':0,
+        'readonly_data_requests':0,'actual_host_tokens':None,'actual_host_cost':None,
+        'completed_trajectory':False,'completed_fast_round':False,'slow_source_published':False,
+        'case_progressive_reads':'not_supported_not_exercised'}
+    try:
+        with client.anonymous_case(aliases=tuple(inputs['identity']['identity_aliases']),
+            company_id=saved['company_id'],ticker=inputs['identity']['ticker']):
+            step=predictor.reflect(saved['final_context'],BlindPrediction.from_dict(saved['prediction']),truth)
+        answered,undispatched=_verified_responses(root,contract['max_local_calls'])
+        fallback=(step.value.no_findings_reason or '').startswith('posthoc_reflection_validation_failed:')
+        trace=list(client.request_hash_trace)
+        inventory={row['request_hash']:row['request'] for row in answered}
+        if set(trace)!=set(inventory):
+            raise ValidationError('Posthoc actual request trace differs from answered inventory')
+        record={'value':step.value.to_dict(),'usage':asdict(step.usage),'metadata':dict(step.metadata),
+            'request_hashes':trace,'answered_request_hashes':sorted(inventory),
+            'request_trace':[{'request_hash':digest,'stage':inventory[digest]['stage']} for digest in trace],
+            'native_validation_fallback':fallback}
+        _save_exact(root/'feedback.json',record)
+        if read_json(root/'feedback.json')!=record: raise ValidationError('Posthoc feedback readback differs')
+        result.update(status='feedback_persisted_requires_independent_review',
+            physical_receipts=len(answered),undispatched_journals=len(undispatched),
+            native_validation_fallback=fallback,reflection_items=len(step.value.reflection_items),
+            no_findings_reason=step.value.no_findings_reason)
+        completion={'manifest_hash':manifest_hash,'result':result,'immutable_artifacts':_files(root,runtime=True)}
+        completion['completion_hash']=canonical_json_hash(completion)
+        atomic_write_json(root/'completion.json',completion)
+    except LocalRoleRequestPending as exc:
+        result.update(status='pending_independent_role',pending=[{'sample_id':'s01',**exc.pending}])
+    except LocalRoleBudgetExhausted as exc:
+        result.update(status='control_budget_stopped',error=str(exc))
+    except EvolutionControlFlow as exc:
+        result.update(status='control_rejected',error_type=type(exc).__name__,error=str(exc))
+    except Exception as exc:
+        failure={'error_type':type(exc).__name__,'error':str(exc)}
+        _save_exact(root/'failure.json',failure); result.update(status='posthoc_failed',**failure)
+    result['physical_receipts']=len(list((root/'exchange/receipts').glob('*.json')))
+    atomic_write_json(root/'progress.json',result)
+    return result
+
+
+def resume(root: Path):
+    """Resume serially; completed feedback validates without another model call."""
+    with (root/'.posthoc.lock').open('a+') as lock:
+        fcntl.flock(lock.fileno(),fcntl.LOCK_EX)
+        return _execute(root,*_verify(root))
+
+
+def main():
+    """Prepare, resume or submit exact native requests with networking disabled."""
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--root',type=Path,required=True);parser.add_argument('--expectations',type=Path)
+    parser.add_argument('--parent-root',type=Path);parser.add_argument('--parent-commit',default=PARENT_COMMIT)
+    parser.add_argument('--request-hash');parser.add_argument('--agent-id')
+    modes=parser.add_mutually_exclusive_group(required=True)
+    modes.add_argument('--prepare',action='store_true');modes.add_argument('--resume',action='store_true')
+    modes.add_argument('--submit',action='store_true');args=parser.parse_args();root=args.root.resolve()
+    def forbidden(*_args,**_kwargs): raise AssertionError('network forbidden in reviewed Posthoc')
+    socket.socket=forbidden
+    if args.prepare:
+        if args.expectations is None: parser.error('--prepare requires --expectations')
+        value=prepare(root,args.expectations.resolve(),parent_root=args.parent_root,parent_commit=args.parent_commit)
+    elif args.submit:
+        if not args.request_hash or not args.agent_id: parser.error('--submit requires hash and actual agent id')
+        _,_,contract,_,_=_verify(root)
+        value=LocalRoleExchange(root/'exchange',max_calls=contract['max_local_calls']).submit(args.request_hash,agent_id=args.agent_id)
+    else: value=resume(root)
+    print(json.dumps(value,ensure_ascii=False,indent=2))
+
+
+if __name__=='__main__': main()
