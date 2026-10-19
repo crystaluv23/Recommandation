@@ -1,0 +1,183 @@
+{
+  "acceptance_rules": {
+    "citations": "Use transmitted projection identity and complete semantically supporting literals mapped through this document/hash/raw-offset lineage. Metadata dates/form labels and forecast boilerplate do not substitute for claim support.",
+    "f2_and_f3_separate": "Preserve the early annual/interim-vs-8K producer gap. Do not repair its status in this oracle, reclassify FORM8-K, or treat H_init as failed merely for analyzing legitimate supplied 8-K facts. Overall F2 request fulfillment remains incomplete even if H_init behaves correctly.",
+    "facts_vs_hypotheses": "Facts and quantities must be supported by the actual visible projections. Commercial consequences or market-expectation gaps without direct proof must stay explicitly conditional hypotheses; do not manufacture market expectations.",
+    "fallback": "Mechanical acceptance or fallback does not establish semantic acceptance. Missing useful grounded work remains a semantic failure.",
+    "grounded_positive_work": "Require useful nonempty initial reasoning anchored in material visible issuer disclosure, with faithful support and a substantively grounded conditional commercialization/expectation-gap hypothesis. Unknowns alone do not satisfy H_init. Positive work means evidence-bearing work, not mandatory bullish polarity.",
+    "missing_and_partial": "News, Company Facts and market gaps describe this frozen source envelope, not issuer-wide absence, zero revenue, no financing/demand or no market expectations. Omitted text remains unknown.",
+    "needs": "Needs must isolate genuinely absent issuer evidence that could already have been disclosed by prediction_time. Do not re-request an already visible answer; a deeper missing comparator/explanation remains legitimate. Request disclosures available by cutoff about scheduled events, not future realized results. No Signal IDs, labels, runtime baseline computation or transport diagnostics as issuer needs.",
+    "no_unique_thesis_or_need": "No unique thesis, categorical polarity, exact wording, specific customer fact or single mandatory next need is prescribed. Controls are alternatives and inference boundaries, not a checklist requiring every example.",
+    "time_and_measurement": "Preserve issuer/object/period/unit/source date. Forecasts stay forecasts, risk factors stay qualifications, reported results stay period-specific actuals. No invented arithmetic, metrics, events or outcomes."
+  },
+  "author": "independent acceptance_review",
+  "declared_before_any_fresh_role_answer": true,
+  "default_initial_skill": "Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs.",
+  "engineering_mvp_closed": false,
+  "fixed_denominator": 2,
+  "not_covered": [
+    "acquisition outside reviewed view",
+    "global source authenticity",
+    "full H_init capability",
+    "Signal chain",
+    "market admission/baseline",
+    "Predictor",
+    "Slow/feedback",
+    "full evaluator readiness/recovery",
+    "independent predictive benefit"
+  ],
+  "oracle_isolation": {
+    "do_not_inject_into_role_payload": true,
+    "network_calls": 0,
+    "new_model_calls": 0,
+    "role_outboxes_read": false
+  },
+  "reviewed_source_snapshot": {
+    "manifest_sha256": "718047b39270b0584a5c3fb08a7fb0caf3845f1a3cc6aa5768164c90cec5c7b5",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/snapshot",
+    "store_type": "reviewed"
+  },
+  "samples": [
+    {
+      "available_projection_count": 24,
+      "bootstrap_hash": "80d3528201cea6c250b8bb193d30c88d33381c4cac69dfbe12313486703a99ab",
+      "filing_request_status": "resolved",
+      "illustrative_visible_controls_not_mandatory_answer_list": [
+        {
+          "enclosing_raw_end": 215895,
+          "enclosing_raw_start": 215669,
+          "exact_visible_literal": "“Bumble App Revenue” is revenue derived from purchases or renewals of a Bumble app or Bumble For Friends app subscription plan and/or in-app purchases on Bumble app or Bumble For Friends app in the relevant period.",
+          "inference_boundary": "A definition does not establish user growth, pricing power, successful new commercialization or future revenue.",
+          "normalized_end": 766,
+          "normalized_start": 552,
+          "projection_id": "projection_28fc757258382ae931247a5b",
+          "source_meaning": "Visible subscription/renewal and in-app-purchase monetization definition."
+        },
+        {
+          "enclosing_raw_end": 197850,
+          "enclosing_raw_start": 197712,
+          "exact_visible_literal": "our ability to distribute our dating products through third parties, such as Apple App Store or Google Play Store, and offset related fees",
+          "inference_boundary": "Platform/distribution exposure is not revenue customer concentration and does not prove the risk materialized.",
+          "normalized_end": 1631,
+          "normalized_start": 1493,
+          "projection_id": "projection_f5e5258464d4602a2ffccc9e",
+          "source_meaning": "Issuer flags third-party distribution and fee risk."
+        },
+        {
+          "enclosing_raw_end": 310714,
+          "enclosing_raw_start": 306127,
+          "exact_visible_literal": "Three Months Ended June 30, 2025 Three Months Ended June 30, 2024 Six Months Ended June 30, 2025 Six Months Ended June 30, 2024 Revenue $ 248,229 $ 268,615 $ 495,330 $ 536,390",
+          "inference_boundary": "Preserve unit/period/entity. Lower reported revenue can be described; do not invent percentages, guidance comparisons, margins or returns.",
+          "normalized_end": 1231,
+          "normalized_start": 1056,
+          "projection_id": "projection_ef319ab39a183f8a50a94a02",
+          "source_meaning": "Reported revenue columns are Q2 2025/Q2 2024/H1 2025/H1 2024, in thousands under the visible operations-table header."
+        }
+      ],
+      "model_context_hash": "05e792c213250996c858e8fac3ca9f81102b597e4f4b0dbe36901c5e22ce63a4",
+      "omitted_projection_count": 5,
+      "other_default_request_gaps": [
+        {
+          "reason": "no_matching_documents",
+          "request_id": "recent_company_news"
+        },
+        {
+          "reason": "no_matching_documents",
+          "request_id": "reported_financial_facts"
+        },
+        {
+          "reason": "no_matching_documents",
+          "request_id": "recent_market_backbone"
+        }
+      ],
+      "plan_hash": "78a81dec6ca3ee74417c5172644cb5b33469220e7261b9db8e0c6930b2e8e7d0",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "projection_lineage_hash": "595b0220cda3bd3e054c1c16024507ba41f19c4cbd630a2fad4b684886bc8045",
+      "projection_status": "partial_context_budget",
+      "sample_boundaries": [
+        "Default max_documents=1 selects only the 10-Q. The separately admitted 8-K is not visible; do not borrow its guidance or restructuring estimates.",
+        "Projection is partial_context_budget: 19 of 24 available projections. Omitted content and previews do not prove facts or absence.",
+        "The customer-concentration sentence used in the separate Signal stage is not visible and is neither a required fact nor a forced next need.",
+        "Missing SEC Company Facts channel does not erase financial figures visible inside the filing. The cash-flow statement is truncated: its unseen operating-cash total is not established."
+      ],
+      "sample_id": "s01",
+      "selected_available_at": "2025-08-07T20:05:33+00:00",
+      "selected_content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+      "selected_document_id": "sec:cik_0001830043:000162828025038861",
+      "selected_form": "10-Q",
+      "visible_projection_count": 19
+    },
+    {
+      "available_projection_count": 6,
+      "bootstrap_hash": "56b0d469b5050f539ad2122872dfc9a4a4efe0e2d1e7f8305497640b41abed98",
+      "filing_request_status": "resolved",
+      "illustrative_visible_controls_not_mandatory_answer_list": [
+        {
+          "enclosing_raw_end": 19741,
+          "enclosing_raw_start": 19427,
+          "exact_visible_literal": "a reduction in the Company’s global workforce by approximately 240 roles, representing approximately 30% of the Company’s employees",
+          "inference_boundary": "Approval does not prove all jobs were eliminated or efficiency improved.",
+          "normalized_end": 711,
+          "normalized_start": 580,
+          "projection_id": "projection_2c4b2110c0a4436bf7d563ee",
+          "source_meaning": "Board approved the disclosed workforce reduction on June 23, 2025."
+        },
+        {
+          "enclosing_raw_end": 21594,
+          "enclosing_raw_start": 21414,
+          "exact_visible_literal": "The Company expects to achieve up to $40 million of annual cost savings",
+          "inference_boundary": "Not realized savings, guaranteed profit, immediate cash-flow uplift or growing demand.",
+          "normalized_end": 1660,
+          "normalized_start": 1589,
+          "projection_id": "projection_2c4b2110c0a4436bf7d563ee",
+          "source_meaning": "An expected upper bound on annual savings, mostly planned for reinvestment."
+        },
+        {
+          "enclosing_raw_end": 23508,
+          "enclosing_raw_start": 23242,
+          "exact_visible_literal": "The Company now expects total Bumble Inc. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+          "inference_boundary": "Not actual results, Q3/FY guidance, GAAP earnings or a proven revision direction without explicit prior comparator.",
+          "normalized_end": 1509,
+          "normalized_start": 1364,
+          "projection_id": "projection_2b701c5ee8cb6171aec66751",
+          "source_meaning": "Q2 2025 forecast, with revenue and adjusted EBITDA distinct."
+        }
+      ],
+      "model_context_hash": "54328156e14020f52f577345180f2cf7b9b32334fddd5d9623cb2e1d2652704c",
+      "omitted_projection_count": 0,
+      "other_default_request_gaps": [
+        {
+          "reason": "no_matching_documents",
+          "request_id": "recent_company_news"
+        },
+        {
+          "reason": "no_matching_documents",
+          "request_id": "reported_financial_facts"
+        },
+        {
+          "reason": "no_matching_documents",
+          "request_id": "recent_market_backbone"
+        }
+      ],
+      "plan_hash": "78a81dec6ca3ee74417c5172644cb5b33469220e7261b9db8e0c6930b2e8e7d0",
+      "prediction_time": "2025-07-01T00:00:00+00:00",
+      "projection_lineage_hash": "7bb3f192b5a0e3d04eba057d41c53d6586ae18b12e847e94b1746be4424d28e2",
+      "projection_status": "complete",
+      "sample_boundaries": [
+        "The 10-Q is unavailable at this cutoff; do not borrow its operating/financial facts.",
+        "The actual source is FORM 8-K. Resolved generic filing retrieval does not prove that the requested annual/interim operating report was read. Preserve this F2 producer-contract gap separately from H_init reasoning over the useful 8-K.",
+        "The producer declares annual/interim in description but supplies only generic filing type, no exact form filter, and max_documents=1. Current resolver status cannot establish semantic fulfillment of that description.",
+        "No explicit prior guidance level is visible. Updated/now expects alone cannot establish raised, lowered or unchanged guidance.",
+        "Dated forecasts for later periods remain legal uncertain forecasts; subsequent realized outcomes are not PIT-answerable needs."
+      ],
+      "sample_id": "s02",
+      "selected_available_at": "2025-06-25T12:20:35+00:00",
+      "selected_content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+      "selected_document_id": "sec:cik_0001830043:000119312525146199",
+      "selected_form": "8-K",
+      "visible_projection_count": 6
+    }
+  ],
+  "schema_version": "reviewed-initial-stage-independent-expectations-v1",
+  "scope": "Acceptance-side original-material oracle for actual default Basic Info -> H_init, never model context or authored role output"
+}

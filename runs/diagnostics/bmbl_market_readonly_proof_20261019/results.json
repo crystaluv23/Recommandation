@@ -1,0 +1,77 @@
+[
+  {
+    "name": "splits",
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "query": {
+      "ticker": "BMBL",
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-08-16",
+      "sort": "execution_date.asc",
+      "limit": "1000"
+    },
+    "retrieved_at": "2026-10-19T09:24:32.570826+00:00",
+    "http_status": 200,
+    "headers": {
+      "Date": "Mon, 19 Oct 2026 09:24:34 GMT",
+      "Content-Type": "application/json",
+      "Cache-Control": null
+    },
+    "raw_response": "splits.response.json",
+    "sha256": "a75375a255fc0dd5835aac5c5ee6bbb6e9424a0477a0c5a9b3620d3c223c23d5",
+    "bytes": 76,
+    "provider_status": "OK",
+    "next_page_present": false,
+    "result_count": 0
+  },
+  {
+    "name": "unadjusted_daily",
+    "endpoint": "https://api.massive.com/v2/aggs/ticker/BMBL/range/1/day/2024-09-30/2025-09-29",
+    "query": {
+      "adjusted": "false",
+      "sort": "asc",
+      "limit": "50000"
+    },
+    "retrieved_at": "2026-10-19T09:24:34.002718+00:00",
+    "http_status": 200,
+    "headers": {
+      "Date": "Mon, 19 Oct 2026 09:24:36 GMT",
+      "Content-Type": "application/json",
+      "Cache-Control": null
+    },
+    "raw_response": "unadjusted_daily.response.json",
+    "sha256": "4a9dc4e88b73bd3b132c376c73c794ebf2d01f6e425760f04dd396a809d2b36a",
+    "bytes": 22537,
+    "provider_status": "OK",
+    "next_page_present": false,
+    "result_count": 235,
+    "adjusted": false
+  },
+  {
+    "name": "historical_identity",
+    "endpoint": "https://api.massive.com/v3/reference/tickers/BMBL",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "retrieved_at": "2026-10-19T09:24:36.487801+00:00",
+    "http_status": 200,
+    "headers": {
+      "Date": "Mon, 19 Oct 2026 09:24:38 GMT",
+      "Content-Type": "application/json",
+      "Cache-Control": null
+    },
+    "raw_response": "historical_identity.response.json",
+    "sha256": "5bd69c36b59c47185da91998f870ddeb00d62400f7f01832b74278db5af95020",
+    "bytes": 1461,
+    "provider_status": "OK",
+    "next_page_present": false,
+    "identity": {
+      "ticker": "BMBL",
+      "name": "Bumble Inc. Class A Common Stock",
+      "cik": "0001830043",
+      "primary_exchange": "XNAS",
+      "type": "CS",
+      "active": true,
+      "currency_name": "usd"
+    }
+  }
+]

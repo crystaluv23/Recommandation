@@ -1,0 +1,43 @@
+{
+  "original_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/4166561a6da6904c722e4e5a.json",
+    "sha256": "04a5c1b732b2b8580246f3c169cfce5dde03471fda07711ad49b4d243475fb81"
+  },
+  "original_count": 250,
+  "new_unadjusted_count": 235,
+  "overlap_count": 235,
+  "original_first": "2024-09-30T04:00:00+00:00",
+  "original_last": "2025-09-29T04:00:00+00:00",
+  "new_first": "2024-10-21T04:00:00+00:00",
+  "new_last": "2025-09-29T04:00:00+00:00",
+  "missing_new_dates": [
+    "2024-09-30T04:00:00+00:00",
+    "2024-10-01T04:00:00+00:00",
+    "2024-10-02T04:00:00+00:00",
+    "2024-10-03T04:00:00+00:00",
+    "2024-10-04T04:00:00+00:00",
+    "2024-10-07T04:00:00+00:00",
+    "2024-10-08T04:00:00+00:00",
+    "2024-10-09T04:00:00+00:00",
+    "2024-10-10T04:00:00+00:00",
+    "2024-10-11T04:00:00+00:00",
+    "2024-10-14T04:00:00+00:00",
+    "2024-10-15T04:00:00+00:00",
+    "2024-10-16T04:00:00+00:00",
+    "2024-10-17T04:00:00+00:00",
+    "2024-10-18T04:00:00+00:00"
+  ],
+  "new_extra_dates": [],
+  "compared_fields": [
+    "o",
+    "h",
+    "l",
+    "c",
+    "v"
+  ],
+  "different_cells": [],
+  "new_response_claims_complete_requested_window": false,
+  "source_admitted": false,
+  "external_llm_calls": 0,
+  "read_only_data_http_attempts": 3
+}

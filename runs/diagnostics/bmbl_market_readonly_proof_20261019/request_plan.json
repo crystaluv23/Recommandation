@@ -1,0 +1,37 @@
+{
+  "schema_version": "read-only-market-proof-v1",
+  "purpose": "source review only; not admission or active stage input",
+  "max_http_attempts": 3,
+  "max_attempts_per_request": 1,
+  "external_llm_calls": 0,
+  "authorization": "user permits read-only source queries; no external LLM APIs",
+  "requests": [
+    {
+      "name": "splits",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "BMBL",
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      }
+    },
+    {
+      "name": "unadjusted_daily",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/BMBL/range/1/day/2024-09-30/2025-09-29",
+      "query": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": "50000"
+      }
+    },
+    {
+      "name": "historical_identity",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/BMBL",
+      "query": {
+        "date": "2025-09-29"
+      }
+    }
+  ]
+}

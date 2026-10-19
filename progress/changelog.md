@@ -732,3 +732,7 @@
 - 2026-10-07（meta机制重构，用户明确授权）：缩短AGENTS/current status，原440109字节状态逐字节/hash归档；取消visit_times/咨询日志/机械提交。新增工作契约、验收层级账本和失败复发/同策略两轮无推进的强制行动复盘；行政checker接入lint，完整后继需具体冻结计划、已满足前提和新鲜active目标，PASS不证明研究收益。保留用户8处改动和业务spec/runtime/历史原件。既有heartbeat保持PAUSED/原间隔/聊天，只更新短入口与触发规则，读回确认。反例测试与拒绝当前不合规后继验证，实际下一触发的meta效果仍待验证；未启动目标、模型调用或新实验。
 
 - 2026-10-19：冻结 direct reviewed SEC 三样本，7 个实际隔离角色经生产 routing/retrieve/apply/Reflect 与原校验持久化；独立原材/两消费者窄审 3/3，早 cutoff 与缺 prior 诚实保留，零伪 Reflect/处置。完成恢复 56 产物不变，guidance 分类及完整 MVP 仍未关闭。
+
+- 2026-10-19：准备默认 Plan 的 reviewed BasicInfo→H_init 双时点窄入口，保留部分投影与三类缺源，禁止补市场锚点或借请求名称改称披露类型；先完成生产请求/原 parser/恢复和输入漂移 wiring，正式角色执行待冻结。
+
+- 2026-10-19：保存父处三次只读 Massive GET 与独立 235 日 OHLCV/issuer/split ledger 审查；原 250 行由生产 parser/adapter 完整重现，15 行未重复返回不构成新拒绝门槛；未新增 cutoff-vintage 政策，市场待 proof-bound view 验证准入，既有 SEC 冻结不改。
