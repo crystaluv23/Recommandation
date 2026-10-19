@@ -1,0 +1,334 @@
+{
+  "scope": "Synthetic native transport/typed-correction/Signal-batch accounting only; no real independent agent or research answer. Logical calls are not new physical calls, tokens are conservative reservations, actual host cost/tokens unknown.",
+  "fixed_original_document_channel": {
+    "scope": "Synthetic native DocumentChannelCaller/StructuredRoleClient receipt fixture; no role or research behavior",
+    "first": {
+      "value": {
+        "fixture_done": true
+      },
+      "usage": {
+        "llm_calls": 2,
+        "tokens": 1013,
+        "cost": 0.0
+      },
+      "consumption_after_23_calls": {
+        "accepted": false,
+        "error": "runtime exceeded max_llm_calls"
+      },
+      "requests": [
+        "f230e1449e1c48b4a2801379458cff82f8895dc33baa7e93d6f52984f1c491eb",
+        "d1e7fbece5ff0aa0bc8fca8e6b590caa090e0ef2423640c4d407c4203932dbb4"
+      ]
+    },
+    "cached": {
+      "value": {
+        "fixture_done": true
+      },
+      "usage": {
+        "llm_calls": 2,
+        "tokens": 1013,
+        "cost": 0.0
+      },
+      "consumption_after_23_calls": {
+        "accepted": false,
+        "error": "runtime exceeded max_llm_calls"
+      },
+      "requests": [
+        "f230e1449e1c48b4a2801379458cff82f8895dc33baa7e93d6f52984f1c491eb",
+        "d1e7fbece5ff0aa0bc8fca8e6b590caa090e0ef2423640c4d407c4203932dbb4"
+      ]
+    },
+    "same_requests": true,
+    "inbox_count": 2,
+    "receipt_count": 2,
+    "external_llm_calls": 0,
+    "readonly_data_requests": 0,
+    "fresh_independent_roles": 0
+  },
+  "typed_correction": {
+    "name": "native_typed_correction",
+    "fresh": {
+      "value": {
+        "answer": true
+      },
+      "usage": {
+        "llm_calls": 2,
+        "tokens": 3431,
+        "cost": 0.0
+      },
+      "core_budget": {
+        "21": {
+          "accepted": true,
+          "usage": {
+            "llm_calls": 23,
+            "tokens": 3431,
+            "cost": 0.0
+          }
+        },
+        "22": {
+          "accepted": true,
+          "usage": {
+            "llm_calls": 24,
+            "tokens": 3431,
+            "cost": 0.0
+          }
+        },
+        "23": {
+          "accepted": false,
+          "error": "runtime exceeded max_llm_calls"
+        }
+      },
+      "request_hashes": [
+        "2ac2b5f0398145e2850fb47b5a3ac758db13f30ca999fa7ef45ecaaa22adb698",
+        "652ba762d9e590ea3e6816c2e2ea08b62a5143564206eab431bd16f1ecbac6df"
+      ]
+    },
+    "warm": {
+      "value": {
+        "answer": true
+      },
+      "usage": {
+        "llm_calls": 2,
+        "tokens": 3431,
+        "cost": 0.0
+      },
+      "core_budget": {
+        "21": {
+          "accepted": true,
+          "usage": {
+            "llm_calls": 23,
+            "tokens": 3431,
+            "cost": 0.0
+          }
+        },
+        "22": {
+          "accepted": true,
+          "usage": {
+            "llm_calls": 24,
+            "tokens": 3431,
+            "cost": 0.0
+          }
+        },
+        "23": {
+          "accepted": false,
+          "error": "runtime exceeded max_llm_calls"
+        }
+      },
+      "request_hashes": [
+        "2ac2b5f0398145e2850fb47b5a3ac758db13f30ca999fa7ef45ecaaa22adb698",
+        "652ba762d9e590ea3e6816c2e2ea08b62a5143564206eab431bd16f1ecbac6df"
+      ]
+    },
+    "all_original_artifact_bytes_unchanged": true,
+    "new_inbox": 0,
+    "new_receipts": 0,
+    "total_fixture_receipts": 2
+  },
+  "signal_batch": {
+    "name": "native_signal_batch_typed_correction",
+    "fresh": {
+      "results": {
+        "sibling:v1": {
+          "signal_id": "sibling",
+          "version": 1,
+          "state": {
+            "value": "neutral",
+            "confidence": 0.5
+          },
+          "interpretation": {
+            "summary": "Fixture unchanged guidance."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": [
+              {
+                "document_id": "fixture_filing",
+                "exact_span": "Management reaffirmed prior guidance.",
+                "timestamp": "2025-01-01T00:00:00+00:00"
+              }
+            ]
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          }
+        },
+        "pending:v1": {
+          "signal_id": "pending",
+          "version": 1,
+          "state": {
+            "value": "neutral",
+            "confidence": 0.5
+          },
+          "interpretation": {
+            "summary": "Fixture unchanged guidance."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": [
+              {
+                "document_id": "fixture_filing",
+                "exact_span": "Management reaffirmed prior guidance.",
+                "timestamp": "2025-01-01T00:00:00+00:00"
+              }
+            ]
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          }
+        }
+      },
+      "usage": {
+        "llm_calls": 2,
+        "tokens": 102372,
+        "cost": 0.0
+      },
+      "core_budget": {
+        "21": {
+          "accepted": true,
+          "usage": {
+            "llm_calls": 23,
+            "tokens": 102372,
+            "cost": 0.0
+          }
+        },
+        "22": {
+          "accepted": true,
+          "usage": {
+            "llm_calls": 24,
+            "tokens": 102372,
+            "cost": 0.0
+          }
+        },
+        "23": {
+          "accepted": false,
+          "error": "runtime exceeded max_llm_calls"
+        }
+      },
+      "request_hashes": [
+        "f139a6890bfb2b38347fadf3de304839c3619ccc5e01004f3b7bda00f20c24cf",
+        "aa3b4671f059a48dad54e75c1e71b0c1a75784a90570e554e47b1ca066198fbc"
+      ]
+    },
+    "warm": {
+      "results": {
+        "sibling:v1": {
+          "signal_id": "sibling",
+          "version": 1,
+          "state": {
+            "value": "neutral",
+            "confidence": 0.5
+          },
+          "interpretation": {
+            "summary": "Fixture unchanged guidance."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": [
+              {
+                "document_id": "fixture_filing",
+                "exact_span": "Management reaffirmed prior guidance.",
+                "timestamp": "2025-01-01T00:00:00+00:00"
+              }
+            ]
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          }
+        },
+        "pending:v1": {
+          "signal_id": "pending",
+          "version": 1,
+          "state": {
+            "value": "neutral",
+            "confidence": 0.5
+          },
+          "interpretation": {
+            "summary": "Fixture unchanged guidance."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": [
+              {
+                "document_id": "fixture_filing",
+                "exact_span": "Management reaffirmed prior guidance.",
+                "timestamp": "2025-01-01T00:00:00+00:00"
+              }
+            ]
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          }
+        }
+      },
+      "usage": {
+        "llm_calls": 2,
+        "tokens": 102372,
+        "cost": 0.0
+      },
+      "core_budget": {
+        "21": {
+          "accepted": true,
+          "usage": {
+            "llm_calls": 23,
+            "tokens": 102372,
+            "cost": 0.0
+          }
+        },
+        "22": {
+          "accepted": true,
+          "usage": {
+            "llm_calls": 24,
+            "tokens": 102372,
+            "cost": 0.0
+          }
+        },
+        "23": {
+          "accepted": false,
+          "error": "runtime exceeded max_llm_calls"
+        }
+      },
+      "request_hashes": [
+        "f139a6890bfb2b38347fadf3de304839c3619ccc5e01004f3b7bda00f20c24cf",
+        "aa3b4671f059a48dad54e75c1e71b0c1a75784a90570e554e47b1ca066198fbc"
+      ]
+    },
+    "all_original_artifact_bytes_unchanged": true,
+    "new_inbox": 0,
+    "new_receipts": 0,
+    "total_fixture_receipts": 2
+  },
+  "remote_cache_control": {
+    "actual_StructuredRoleClient_cached_usage": {
+      "llm_calls": 0,
+      "tokens": 456,
+      "cost": 0.0
+    },
+    "value": {
+      "fixture_done": true
+    },
+    "no_attempt_or_network": true,
+    "artifact_bytes_unchanged": true
+  },
+  "network_attempts": 0,
+  "actual_independent_roles": 0,
+  "host_actual_tokens": null,
+  "host_actual_cost": null,
+  "bindings": {
+    "src/stock_opportunity_agent/research/evolution_transport.py": "582d43a4912c1248866c3dddd8b15aed24e5f22a4f72ccde2f2f6d10cb740b77",
+    "spec/src/stock_opportunity_agent/research/evolution_transport.md": "b6abc33ed24074aa47aae8e3c0dd449189d045d33afc21926462921b5636b581",
+    "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/probe.py": "c9c0c476a94a3419ed998dfa84b40546daf20ecfa63b58c314837646fb06d057",
+    "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/result.json": "e975aa88bc3344f6ce21998562b75f2fb9543149666ff308dc01524e9e47c12c"
+  }
+}

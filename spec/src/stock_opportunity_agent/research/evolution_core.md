@@ -300,3 +300,32 @@ both posthoc input forms, and saved-trajectory critic views. Markers remain
 discovery hints rather than evidence/citation authority and pass existing
 identity masking. No complete source body is copied into these summaries.
 Legacy saved rows retain unknown stage fields; old archives are not rewritten.
+
+## Runtime termination disclosure
+
+New core-produced final contexts carry a runtime-owned `runtime_termination`
+block with exactly phase, stop_reason and termination_trigger. Phase is
+`research_in_progress` for prediction-token reservation views; both enum fields
+are null there even though the loop's internal stop_reason initially defaults
+to finalized. Phase becomes `prediction_ready` only after actual collection and
+terminal reflection end; stop_reason is then the actual RuntimeStopReason value
+and termination_trigger retains its independent actual enum value or null.
+ResearchState.decision remains a separate controller decision: a finalized state
+can retain unanswered needs or have been prompted by no-match/round/budget
+limits. A continuing state forced to predict by a limit can also be ready.
+No completion/outcome/need-closure inference follows from this block.
+
+The private assembler accepts an optional validated block. Omitted legacy
+arguments/contexts remain without it (unknown), and archived contexts are not
+rewritten. The core supplies it directly rather than an observer deriving it.
+Modern posthoc compaction retains the block exactly; legacy compaction does not
+invent it or change legacy source identity. Critic keeps its already recorded
+trajectory stop reason and trigger without a duplicate context block.
+
+A shared pure runtime_termination_view validator requires the exact three-key
+shape, a recognized phase, and existing enum values/nulls. Explicit in-progress
+blocks are accepted for estimation but rejected before actual Predictor or
+Posthoc dispatch. Present malformed/null blocks fail on the typed
+RuntimeTerminationInputRejected control-flow boundary, bypassing content
+correction, Plan rejection and research conclusions. Missing legacy blocks
+remain compatible unknowns.

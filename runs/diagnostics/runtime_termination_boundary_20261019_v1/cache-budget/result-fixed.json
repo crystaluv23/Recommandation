@@ -1,0 +1,46 @@
+{
+  "scope": "Synthetic native DocumentChannelCaller/StructuredRoleClient receipt fixture; no role or research behavior",
+  "first": {
+    "value": {
+      "fixture_done": true
+    },
+    "usage": {
+      "llm_calls": 2,
+      "tokens": 1013,
+      "cost": 0.0
+    },
+    "consumption_after_23_calls": {
+      "accepted": false,
+      "error": "runtime exceeded max_llm_calls"
+    },
+    "requests": [
+      "f230e1449e1c48b4a2801379458cff82f8895dc33baa7e93d6f52984f1c491eb",
+      "d1e7fbece5ff0aa0bc8fca8e6b590caa090e0ef2423640c4d407c4203932dbb4"
+    ]
+  },
+  "cached": {
+    "value": {
+      "fixture_done": true
+    },
+    "usage": {
+      "llm_calls": 2,
+      "tokens": 1013,
+      "cost": 0.0
+    },
+    "consumption_after_23_calls": {
+      "accepted": false,
+      "error": "runtime exceeded max_llm_calls"
+    },
+    "requests": [
+      "f230e1449e1c48b4a2801379458cff82f8895dc33baa7e93d6f52984f1c491eb",
+      "d1e7fbece5ff0aa0bc8fca8e6b590caa090e0ef2423640c4d407c4203932dbb4"
+    ]
+  },
+  "same_requests": true,
+  "inbox_count": 2,
+  "receipt_count": 2,
+  "external_llm_calls": 0,
+  "readonly_data_requests": 0,
+  "fresh_independent_roles": 0,
+  "same_budget_and_ceiling_outcome": true
+}

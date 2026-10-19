@@ -560,3 +560,9 @@ both final `source_index` packets and direct model `requests`. Neither path
 may discard omission markers, original status or counts, or turn missing
 upstream visibility into complete coverage. The summary retains separate
 source/projection unknowns and does not make markers citable evidence.
+
+When modern final context contains runtime_termination, compact posthoc carries
+that runtime-owned block exactly to the actual caller. Missing legacy blocks
+remain absent, never inferred from controller decision or source coverage, so
+legacy compact source identity remains unchanged. This is control metadata,
+not evidence and not a model-writable output field.

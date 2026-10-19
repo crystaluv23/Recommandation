@@ -1,0 +1,64 @@
+{
+  "scope": "Only native independent-subagent verified-cache logical budgeting; synthetic transport answers in temporary directories, no actual model-role or research behavior.",
+  "verdict": "narrow_pass",
+  "bindings": {
+    "src/stock_opportunity_agent/research/evolution_transport.py": "582d43a4912c1248866c3dddd8b15aed24e5f22a4f72ccde2f2f6d10cb740b77",
+    "spec/src/stock_opportunity_agent/research/evolution_transport.md": "b6abc33ed24074aa47aae8e3c0dd449189d045d33afc21926462921b5636b581",
+    "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/probe.py": "c9c0c476a94a3419ed998dfa84b40546daf20ecfa63b58c314837646fb06d057",
+    "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/result.json": "e975aa88bc3344f6ce21998562b75f2fb9543149666ff308dc01524e9e47c12c"
+  },
+  "original_failure_preserved": true,
+  "original_failure": "Two native document-channel requests fresh2/warm0 aggregated calls; core minimum1 admitted warm but rejected fresh at start23/max24.",
+  "fixed_original_failure": "Same exact two request hashes now fresh2/warm2, reservation1013, APIcost0, both core paths reject at start23/max24.",
+  "typed_role_correction": {
+    "fresh_and_warm_usage": {
+      "llm_calls": 2,
+      "tokens": 3431,
+      "cost": 0.0
+    },
+    "core_budget_equal": true,
+    "value_equal": true,
+    "all_saved_bytes_equal": true,
+    "new_inbox": 0,
+    "new_receipts": 0
+  },
+  "real_signal_batch_correction": {
+    "fresh_and_warm_usage": {
+      "llm_calls": 2,
+      "tokens": 102372,
+      "cost": 0.0
+    },
+    "both_siblings_success": true,
+    "core_budget_equal": true,
+    "value_equal": true,
+    "all_saved_bytes_equal": true,
+    "new_inbox": 0,
+    "new_receipts": 0
+  },
+  "actual_remote_cache_branch_positive_control": {
+    "actual_StructuredRoleClient_cached_usage": {
+      "llm_calls": 0,
+      "tokens": 456,
+      "cost": 0.0
+    },
+    "value": {
+      "fixture_done": true
+    },
+    "no_attempt_or_network": true,
+    "artifact_bytes_unchanged": true
+  },
+  "implementation_boundary": "Local receipt/raw/parser/cache equality revalidation still occurs before return; only that branch returns logical usage. Generic remote cache accounting remains unchanged. No cache/raw/receipt rewrite, no ceiling increase, no AgentUsage schema change.",
+  "logical_budget_is_not_physical_execution": true,
+  "physical_new_role_calls": 0,
+  "network_attempts": 0,
+  "actual_host_tokens": null,
+  "actual_host_cost": null,
+  "not_closed": [
+    "Fresh model behavior, prediction/semantic result, completed prefix, global recovery equivalence, full MVP or independent benefit.",
+    "Full suite/lint/checkpoint remain owner responsibility."
+  ],
+  "artifact_sha256": {
+    "native-cache-budget-results.json": "8485d6358e59b337e8ffee973cf9a888c8060d04a3444d0ac01e618aae28e82a",
+    "native-cache-budget.py": "c52b6a43f0604d1c8dcc4c5522b7a0432c7854706f8737ff029822698e76e173"
+  }
+}

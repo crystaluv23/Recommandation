@@ -1,0 +1,78 @@
+{
+  "scope": "Read-only source/spec review and one temporary prepare→actual first native H_init pending→duplicate pending resume; no new model answer.",
+  "verdict": "no_new_harness_blocker_in_reviewed_scope",
+  "script_and_spec_bindings": {
+    "scripts/run_reviewed_fast_prefix.py": "d374dfb4821a2a4a1d0eae93f0e92302bf0cd5b546b26ae381e90b22be195622",
+    "spec/scripts/run_reviewed_fast_prefix.md": "6a782cbaba4f206a9b4d283f20e798404dfa67fc5ccf58ab4d49c27806e29edc"
+  },
+  "actual_temp_first_pending": {
+    "scope": "Only actual frozen native first H_init input and duplicate pending resume; no role answers, no warm-cache multi-call traversal or completed restore exercised.",
+    "prepare": {
+      "manifest_hash": "84ab9f7d24dfddd77bc06e08a89a917b27ec79b8686d1d4b3f2dcf28ecc76667",
+      "fixed_denominator": 1,
+      "role_answers": 0
+    },
+    "first_status": "pending_independent_role",
+    "second_status": "pending_independent_role",
+    "stage": "research_controller_initialize",
+    "request_hash": "89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45",
+    "inbox_sha256": "3c04dca7403096e36adce86173cdcd9e021e9ab2b18c61ea0380469f81ab3deb",
+    "request_messages_sha256": "07ffff489d3ee3bef2f83cf85ad1b854c8525cfa114c9c7bdcdc5b3bdb4d2d21",
+    "anonymous": true,
+    "inbox_count": 1,
+    "receipts": 0,
+    "answers": 0,
+    "network_attempts": 0,
+    "no_prediction_or_completion": true,
+    "frozen_input_and_call_ceiling_mutations_rejected": true,
+    "registry_originals_unchanged": true,
+    "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+    "learning_hash": "ffe500cc7443a4c286f119c82744b254b2a0393e22b0cc9376f85d82f4937e79",
+    "registry_refs": 18,
+    "code_files": 95,
+    "registry_files": 198,
+    "local_calls": 32,
+    "payload_top_keys": [
+      "basic_info",
+      "computed_metrics",
+      "evaluation_anchor",
+      "evaluation_context",
+      "initial_research_skill",
+      "validation_feedback"
+    ]
+  },
+  "native_wiring_review": {
+    "calls_actual_execute_information_plan": true,
+    "one_anonymous_case_around_all_actual_callers": true,
+    "observer_records_original_return_without_replacement": true,
+    "sink_saves_exact_accepted_prediction_context_and_checks_readback": true,
+    "truth_provider_only_checks_saved_record_and_raises_pre_label_control_boundary": true,
+    "runtime_owned_termination_ready_not_injected_by_observer": true,
+    "registry_specs_and_learning_hash_frozen_and_verified": true,
+    "completed_restore_checks_exact_immutable_artifact_inventory_and_hashes_then_exchange_receive_without_dispatch": true
+  },
+  "limits": {
+    "local_calls": 32,
+    "finalization_token_reserve": 64000,
+    "max_cost": 20.0,
+    "max_llm_calls": 24,
+    "max_llm_signals_per_round": 2,
+    "max_signal_calls": 4,
+    "max_signal_rounds": 2,
+    "max_signals_per_round": 4,
+    "max_tokens": 256000
+  },
+  "explicit_remaining_checks": [
+    "Completed restore/durable-sink tamper branches have been source-reviewed here; dynamic tests are owned by prefix_boundary_tests agent.",
+    "No model output, routing, Signal apply, Reflect, Predictor answer or sink completion exercised here. Future unexecuted branches must be reported not_exercised.",
+    "Driver independently demonstrated native multi-call warm-cache billing difference (first2 calls vs cached core-minimum1) near max_llm_calls. This is not proof cost0 means zero logical accounting; interrupted budget-path equivalence remains unproven and must be retained as a limitation.",
+    "Formal code/input freeze and root dispatch authorization remain separate; no formal role request created by this temporary preflight."
+  ],
+  "role_answers": 0,
+  "network_attempts": 0,
+  "engineering_mvp_closed": false,
+  "artifacts": {
+    "first-pending-results.json": "f26af924225a67d301bd88fb34527ea777dddfbd47e92c43e0ea27055f2e506f",
+    "first-pending-preflight.py": "47ee3832780160cd2bafd380212556958fd936d56562955c98a25c0271ec542e"
+  }
+}

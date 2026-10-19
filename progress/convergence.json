@@ -244,10 +244,30 @@
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json"
       ]
+    },
+    {
+      "id": "engineering-mvp-runtime-termination-prefix-preflight-20261019",
+      "evidence": [
+        "reports/runtime-termination-and-blind-prefix-preflight-20261019.md",
+        "runs/diagnostics/runtime_termination_boundary_20261019_v1/independent/independent-review.json",
+        "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/result.json",
+        "runs/diagnostics/reviewed_fast_prefix_preflight_20261019_v1/independent/independent-review.json",
+        "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/result-fixed.json",
+        "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/independent/independent-review.json",
+        "runs/diagnostics/runtime_termination_boundary_20261019_v1/full-tests-final.log"
+      ],
+      "result": "Deterministic runtime stop disclosure and bounded native prefix wiring verified, no fresh answers/prediction. Original multi-request cache near-ceiling budget failure retained; native verified replay now preserves per-request logical budget units, with physical calls separately counted by unique receipts; focused18 pass. Independent native/remote actual cache review passed; final full1785/1785 in153.840s. First1780/1781 administrative intermediate-record failure retained.",
+      "acceptance_advances": [],
+      "strategy": "runtime_owned_stop_to_actual_consumer_and_native_prefix_checkpoint",
+      "failure_families": [
+        "post_label_only_stop_metadata",
+        "reservation_vs_ready_phase",
+        "multirequest_cache_call_accounting"
+      ]
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-daily-consumer-boundaries-20261019",
+    "after_iteration": "engineering-mvp-runtime-termination-prefix-preflight-20261019",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -259,7 +279,14 @@
       "runs/diagnostics/daily_visibility_boundary_20261019_v4/result.json",
       "runs/diagnostics/daily_visibility_boundary_20261019_v4/independent-final-bindings-review.json",
       "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
-      "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json"
+      "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json",
+      "reports/runtime-termination-and-blind-prefix-preflight-20261019.md",
+      "runs/diagnostics/runtime_termination_boundary_20261019_v1/independent/independent-review.json",
+      "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/result.json",
+      "runs/diagnostics/reviewed_fast_prefix_preflight_20261019_v1/independent/independent-review.json",
+      "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/result-fixed.json",
+      "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/independent/independent-review.json",
+      "runs/diagnostics/runtime_termination_boundary_20261019_v1/full-tests-final.log"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -275,7 +302,8 @@
       "A present old final index can be lossy while the same saved canonical bundle retains upstream omission facts; preferring the index erased known information.",
       "The critic helper retained visibility but the final memory whitelist erased it; inspect actual caller pending messages.",
       "JEV owns judge choices, so any-local-role rejection broke the supported local-proposer/remote-judge hybrid; explicit allow_external=False also requires a guard.",
-      "Adding a complete per-case visibility descriptor fixed semantic loss but broke the existing V141 128k/176k actual input envelope; focused single-case wires missed multi-case field repetition. Preserve every descriptor/id through payload-local reversible sharing, not a larger budget."
+      "Adding a complete per-case visibility descriptor fixed semantic loss but broke the existing V141 128k/176k actual input envelope; focused single-case wires missed multi-case field repetition. Preserve every descriptor/id through payload-local reversible sharing, not a larger budget.",
+      "Final stop reason/trigger formerly existed only in the post-label trajectory; reservation and actual prediction require distinct runtime-owned phase. Cached multi-request native steps preserve tokens but aggregate zero calls, after which core restores only one; completed checkpoint restore is not interrupted replay equivalence."
     ],
     "decision": {
       "acceptance_id": "content_chain",

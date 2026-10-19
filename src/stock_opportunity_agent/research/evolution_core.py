@@ -3014,6 +3014,34 @@ class EvolutionControlFlow(RuntimeError):
     """Base for pauses that must propagate beyond candidate diagnostics."""
 
 
+class RuntimeTerminationInputRejected(EvolutionControlFlow):
+    """Reject invalid runtime control metadata without assigning research blame."""
+
+
+def runtime_termination_view(
+    context: Mapping[str, Any], *, require_ready: bool = False,
+) -> dict[str, Any] | None:
+    """Validate optional runtime stopping metadata, preserving legacy unknowns."""
+
+    if "runtime_termination" not in context:
+        return None
+    value = context["runtime_termination"]
+    if not isinstance(value, Mapping) or set(value) != {"phase", "stop_reason", "termination_trigger"}:
+        raise RuntimeTerminationInputRejected("runtime_termination requires exact phase/reason/trigger fields")
+    phase = value["phase"]
+    reason, trigger = value["stop_reason"], value["termination_trigger"]
+    choices = {item.value for item in RuntimeStopReason}
+    if phase == "research_in_progress":
+        if reason is not None or trigger is not None or require_ready:
+            raise RuntimeTerminationInputRejected("in-progress runtime context cannot claim termination or enter prediction/posthoc")
+    elif phase == "prediction_ready":
+        if type(reason) is not str or reason not in choices or (trigger is not None and (type(trigger) is not str or trigger not in choices)):
+            raise RuntimeTerminationInputRejected("prediction-ready runtime context requires actual stop enums")
+    else:
+        raise RuntimeTerminationInputRejected("runtime_termination phase is invalid")
+    return deepcopy(dict(value))
+
+
 class CandidateExecutionRejected(ValidationError):
     """One candidate cannot continue after bounded structured correction."""
 
@@ -3200,7 +3228,7 @@ def execute_information_plan(
     signal_fingerprints: dict[str, tuple[str, ...]] = {}
     prior_signal_results: dict[str, Mapping[str, Any]] = {}
 
-    def current_final_context() -> dict[str, Any]:
+    def current_final_context(*, prediction_ready: bool = False) -> dict[str, Any]:
         """Compose the same complete evidence closure for preflight and prediction."""
 
         return _assemble_final_context(
@@ -3221,6 +3249,9 @@ def execute_information_plan(
             computed_metrics=(*bootstrap_computed, *document_channel.computed_metrics),
             document_views=document_channel.document_views,
             signal_research_status=signal_registry.research_status,
+            runtime_termination={"phase": "prediction_ready" if prediction_ready else "research_in_progress",
+                "stop_reason": stop_reason.value if prediction_ready else None,
+                "termination_trigger": termination_trigger.value if prediction_ready and termination_trigger is not None else None},
         )
 
     def predictor_reservation() -> int:
@@ -3515,7 +3546,7 @@ def execute_information_plan(
         else:
             stop_reason = termination_trigger
 
-    final_context = current_final_context()
+    final_context = current_final_context(prediction_ready=True)
     _set_request_token_budget(predictor, limits.max_tokens - model_usage.tokens)
     prediction_step = predictor.predict(final_context)
     model_usage = _consume_model_step(model_usage, prediction_step.usage, limits)
@@ -4039,6 +4070,7 @@ def _assemble_final_context(
     computed_metrics: Iterable[Mapping[str, Any]] = (),
     document_views: Iterable[Mapping[str, Any]] = (),
     signal_research_status: Mapping[str, Mapping[str, Any]] | None = None,
+    runtime_termination: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     identity_keys = {"company_id", "company_name", "ticker", "symbol"}
     identity_aliases = [
@@ -4170,6 +4202,8 @@ def _assemble_final_context(
         "final_research_state": state.to_dict(),
         "analysis_prompt": plan.analysis_prompt,
     }
+    if runtime_termination is not None:
+        context["runtime_termination"] = runtime_termination_view({"runtime_termination": runtime_termination})
     masked_context = _mask_identity_values(context, identity_aliases)
     _assert_identity_values_masked(masked_context, identity_aliases)
     context_bytes = len(

@@ -1,0 +1,49 @@
+{
+  "scope": "temporary native no-answer preflight; not formal freeze or fresh model behavior",
+  "prepared": {
+    "manifest_hash": "5fb7c7baa1eb482fff1aea42cafd93d7b2ee9a24b2671101792edf8b957d41e3",
+    "fixed_denominator": 1,
+    "role_answers": 0
+  },
+  "first_status": "pending_independent_role",
+  "stage": "research_controller_initialize",
+  "request_hash": "89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45",
+  "repeat_equal": true,
+  "inboxes": 1,
+  "receipts": 0,
+  "runtime_limits": {
+    "max_signal_rounds": 2,
+    "max_signal_calls": 4,
+    "max_llm_calls": 24,
+    "max_tokens": 256000,
+    "max_cost": 20.0,
+    "max_signals_per_round": 4,
+    "max_llm_signals_per_round": 2,
+    "finalization_token_reserve": 64000
+  },
+  "max_local_calls": 32,
+  "masked_identity": true,
+  "oracle_not_in_request": true,
+  "evaluation_anchor_present": true,
+  "external_llm_calls": 0,
+  "readonly_data_requests": 0,
+  "role_answers": 0,
+  "code": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_fast_prefix.py",
+      "sha256": "d374dfb4821a2a4a1d0eae93f0e92302bf0cd5b546b26ae381e90b22be195622"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "51989a939486ba0a8d373ab7712d6e0f52a558ee9c4bc0811f0df1698950c543"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "62c9f788b2a5741087976f67d60379f89374f51be740fc75575b2cc687ea47df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "f5134cb9d61c836a1b1268ab3c40381ad2f89c18f749e333d3ca49f64c1eb70e"
+    }
+  ]
+}

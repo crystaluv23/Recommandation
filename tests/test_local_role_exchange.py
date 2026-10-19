@@ -63,7 +63,7 @@ class LocalRoleExchangeTests(TestCase):
             with restarted.anonymous_case(aliases=("Issuer Alpha",), company_id="issuer-alpha"):
                 output2, usage2 = restarted.complete_json(**self.kwargs())
             self.assertEqual(output2, output)
-            self.assertEqual(usage2.llm_calls, 0)
+            self.assertEqual(usage2.llm_calls, 1)
             self.assertEqual(len(list((root / "local_roles/inbox").glob("*.json"))), 1)
             self.assertEqual(client.ledger.summary["attempt_count"], 0)
             cached = next((root / "cache/responses").glob("*.json"))

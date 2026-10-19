@@ -1,0 +1,160 @@
+{
+  "scope": "Actual execute_information_plan\u2192LLMBlindPredictor/StructuredRoleClient pending and actual posthoc transport only; synthetic controller/selector and prediction/truth; not production model behavior, sink completion or research result.",
+  "cases": [
+    {
+      "case": "init_finalize",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "finalized",
+        "termination_trigger": null
+      },
+      "decision": "finalize",
+      "reflect_count": 0,
+      "reservation_count": 0,
+      "predictor_request_hash": "237f4effe21f4eb19b8dcf626b29620655b533dd7a5f141730942eccb0d52bce",
+      "posthoc_request_hash": "1c424c394d16a54b3c5bbd5e3c3585533b0c0bcf04cba150d57292c3a98c3196",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "no_match",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "finalized",
+        "termination_trigger": "no_signal_match"
+      },
+      "decision": "finalize",
+      "reflect_count": 0,
+      "reservation_count": 1,
+      "predictor_request_hash": "2a87b633c348bcd124682b9ff757a468c1854bb1e62e81397d7dee013145a3f0",
+      "posthoc_request_hash": "a3b89044b68ed470ee3575f02348407ba87cb685d79cee8b5f2efaad2cb00b8b",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "max_round",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "finalized",
+        "termination_trigger": "max_signal_rounds"
+      },
+      "decision": "finalize",
+      "reflect_count": 1,
+      "reservation_count": 3,
+      "predictor_request_hash": "37cbb5f66a653a31afc9ee88988f14d670115a3a9ad339533275aa929b9fb9b5",
+      "posthoc_request_hash": "52e1ac7f95bd674af0535c17f747120b469e7de99d65a9f414e6c42228c9c6db",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "max_calls",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "finalized",
+        "termination_trigger": "max_signal_calls"
+      },
+      "decision": "finalize",
+      "reflect_count": 1,
+      "reservation_count": 3,
+      "predictor_request_hash": "2d6940fa82f4f9c2b7fe39e9598a45fb62d50c362a55170eb026a2a0cb2f3242",
+      "posthoc_request_hash": "2ef7728afc3ca83ba876647025269bef1b73637a472fb8c0c8c1dc133c18ad58",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "terminal_budget",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "finalized",
+        "termination_trigger": "budget_exhausted"
+      },
+      "decision": "finalize",
+      "reflect_count": 1,
+      "reservation_count": 3,
+      "predictor_request_hash": "72eddbbe1e1c531450145585e497777459aaf43ca9b4f104d48e6c4069315db9",
+      "posthoc_request_hash": "55715438bb91895ed5cca060cd0e2ada3f760efa05d24fba8dc894d317ffbbcb",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "hard_budget",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "budget_exhausted",
+        "termination_trigger": "budget_exhausted"
+      },
+      "decision": "continue",
+      "reflect_count": 0,
+      "reservation_count": 1,
+      "predictor_request_hash": "cb2a38471bf591c6245eb09ba2e6638453e333ba89adf7aad4d5fc65e5f84b81",
+      "posthoc_request_hash": "b6f83b19487079e1ce8313640d98441d68ac3082bcb02c0bce8e66d17dc983c9",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "max_round_continue",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "max_signal_rounds",
+        "termination_trigger": "max_signal_rounds"
+      },
+      "decision": "continue",
+      "reflect_count": 1,
+      "reservation_count": 3,
+      "predictor_request_hash": "7a1b180ddc24077d740aae1b05efd6314dd8742418fe51e094693350e96bf706",
+      "posthoc_request_hash": "27fa400a02e68f5424b077f42466bea4f9c6586eadb9b30dae7603721494785a",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    }
+  ],
+  "typed_rejection_checks": 126,
+  "legacy": [
+    {
+      "case": "init_finalize",
+      "legacy_posthoc_hash": "b1461388a8f56f61b7822d2099c117c890e69d38334200604d62f71e674a4eaf",
+      "legacy_runtime_block_absent": true
+    },
+    {
+      "case": "no_match",
+      "legacy_posthoc_hash": "b1461388a8f56f61b7822d2099c117c890e69d38334200604d62f71e674a4eaf",
+      "legacy_runtime_block_absent": true
+    },
+    {
+      "case": "max_round",
+      "legacy_posthoc_hash": "c2eaa660dd5409ccf083330452ae2bd0322e650ede00a3d8bda173c2add55a82",
+      "legacy_runtime_block_absent": true
+    },
+    {
+      "case": "max_calls",
+      "legacy_posthoc_hash": "c2eaa660dd5409ccf083330452ae2bd0322e650ede00a3d8bda173c2add55a82",
+      "legacy_runtime_block_absent": true
+    },
+    {
+      "case": "terminal_budget",
+      "legacy_posthoc_hash": "c2eaa660dd5409ccf083330452ae2bd0322e650ede00a3d8bda173c2add55a82",
+      "legacy_runtime_block_absent": true
+    },
+    {
+      "case": "hard_budget",
+      "legacy_posthoc_hash": "dadd6a0adf21d65a133ff64dc83bc0dda7185bc8f5d9f7d851f2a0a6c1ade3a7",
+      "legacy_runtime_block_absent": true
+    },
+    {
+      "case": "max_round_continue",
+      "legacy_posthoc_hash": "f74bd217165bd4869f30caf57ed1dbca57fdff70fc3556dbc08b2a40af97ae0d",
+      "legacy_runtime_block_absent": true
+    }
+  ],
+  "legacy_assembler_no_block": true,
+  "sink_calls": 0,
+  "label_provider_calls": 0,
+  "role_answers": 0,
+  "network_attempts": 0,
+  "code_bindings": {
+    "src/stock_opportunity_agent/research/evolution_core.py": "51989a939486ba0a8d373ab7712d6e0f52a558ee9c4bc0811f0df1698950c543",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "a57e15897a91d0eceeb84b75eb998380d85b25232c256df5b2e3a03f64c883c6",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "f5134cb9d61c836a1b1268ab3c40381ad2f89c18f749e333d3ca49f64c1eb70e",
+    "tests/scheme_evolution_test_support.py": "879ce0f834d49861d0979b6d27f87edfd08805cdf0a26ca9310fd0426e3c15e9",
+    "tests/test_information_plan_engine.py": "424909a629d2cc2abd1798e75a97ff931c637aebaffd4318bc9760f0acfa9c22"
+  }
+}

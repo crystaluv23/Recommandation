@@ -6,7 +6,14 @@
 处理；外部 LLM 调用保持零，用户现允许只读公开资料取证。新资料请求单独计数，
 不热加入已冻结输入；未恢复旧目标或完整付费运行。
 
-当前修复批次最终 1770 全量通过；首轮 1768/1769 的 critic payload 预算回归及原尺寸
+本批新增 runtime-owned 停止原因披露及 blind-prefix 原生接线，尚无新角色答案。
+实际 Predictor/Posthoc pending 七种终止组合与 typed 拒绝通过；prefix 8 项接线通过，
+正式批次待冻结。多请求缓存预算旧差异已保存并修复 native 逻辑计数，
+18 项聚焦及独立实际 cache/core 反例通过，最终全量 1785 项与 lint 通过；
+实际物理执行仍按唯一回执，未宣称一般中断恢复等价。
+见 [本批报告](../reports/runtime-termination-and-blind-prefix-preflight-20261019.md)。
+
+前批修复最终 1770 全量通过；首轮 1768/1769 的 critic payload 预算回归及原尺寸
 保留。仅最后 wire 改为同 payload 可逆 profiles，全部字段/IDs 保真，原预算不变。
 
 ## 新证据：F7 范围通过，F8 新消费时间边界已修

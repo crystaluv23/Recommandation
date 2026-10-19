@@ -27,6 +27,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     CandidateExecutionRejected,
     InformationPlan,
     RuntimeBudgetExceeded,
+    runtime_termination_view,
     _mask_identity_values,
 )
 from stock_opportunity_agent.research.repair import (
@@ -1060,6 +1061,7 @@ def _require_context_signal_pit(context: Mapping[str, Any]) -> None:
 def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, Any]:
     """Return the fixed post-hoc semantic view without the full Predictor packet."""
 
+    termination = runtime_termination_view(original_context, require_ready=True)
     _require_context_signal_pit(original_context)
     basic = original_context.get("basic_info", {})
     source_index = basic_info_source_index(basic, upstream=original_context.get("basic_info_bundle")) if isinstance(basic, Mapping) else []
@@ -1096,6 +1098,8 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
             and isinstance(row.get("need_dispositions"), Mapping)
         ],
     }
+    if termination is not None:
+        compact["runtime_termination"] = termination
     compact["cited_signal_evidence"] = original_context.get("cited_signal_evidence", [])
     compact["context_contract"] = {
         "target_chars": MAX_POSTHOC_MODEL_CHARS,

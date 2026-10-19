@@ -1324,7 +1324,10 @@ class StructuredRoleClient:
             if cached is not None:
                 if _canonical_hash(cached) != _canonical_hash({"request_hash": request_hash, **record}):
                     raise ValidationError("local response cache differs from its verified raw answer and receipt")
-                return parsed, _usage_from_cache(cached), None
+                # Native usage is a logical budget reservation, not a fresh
+                # physical execution. Preserve each read/correction on replay;
+                # unique immutable receipts separately count actual agents.
+                return parsed, usage, None
             self.cache.store(request_hash, record)
             return parsed, usage, None
         if cached is not None:

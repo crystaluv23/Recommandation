@@ -1,0 +1,46 @@
+{
+  "scope": "Actual production roles/client/anonymous pending wire capture; no role answer or research completion. Prediction/truth are explicit synthetic transport fixtures.",
+  "rows": [
+    {
+      "role": "Posthoc_final",
+      "request_hash": "cdede43def20496654f1aa77b96849fb4a53d4a00f965d02e9878a5f8ebba5a9",
+      "stage": "blind_predictor_posthoc_reflect",
+      "inbox_sha256": "7ed64db564ab1c2bf550b11a9142d490d03880ee21e7dff492a13e285b114e54",
+      "market_visibility_rows": [
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "recent_market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "profiles": {},
+      "packed_trajectories": [],
+      "exact_reconstruction": null,
+      "raw_identity_absent": true,
+      "synthetic_prediction_and_outcome_only_for_transport": true
+    }
+  ],
+  "role_answers": 0,
+  "network_calls": 0,
+  "legacy_fixture": false,
+  "synthetic_marker_alias_probe": false,
+  "roles_source_sha256": "a57e15897a91d0eceeb84b75eb998380d85b25232c256df5b2e3a03f64c883c6",
+  "visibility_helper_sha256": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd"
+}

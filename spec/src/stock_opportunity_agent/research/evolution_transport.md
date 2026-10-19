@@ -28,6 +28,17 @@ path. Agent token usage/internal cost are unknown: byte-plus-output accounting
 is a conservative reservation, API cost is zero, and log probabilities are
 absent. Local execution proves this backend's behavior only; provider API
 transport and statistical prediction benefit remain separately unverified.
+For this native backend, AgentUsage.llm_calls and tokens are conservative
+logical budget units, not measured physical executions or host token use. Each
+verified original role request contributes one budget call and its unchanged
+byte-plus-output reservation on both first consumption and exact cache replay,
+including document/compute reads and typed corrections within one role. Replay
+creates no new inbox, receipt or external charge; count actual independent
+executions from unique verified receipts/inbox changes. This keeps aggregation
+and native stopping decisions invariant across interrupted replay. Remote cache
+usage/accounting and attempt ledgers retain their existing zero-new-usage rule.
+Original request/raw/receipt/cache bytes remain unchanged.
+
 Production factories that select this alias use the same constructor: when an
 exchange is not explicitly supplied it binds `workspace/local_roles` with the
 required frozen `limits.max_local_role_calls`. Missing limits or external mode

@@ -47,6 +47,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     ResearchEvidenceRef,
     RoundMetaEntry,
     RuntimeBudgetExceeded,
+    runtime_termination_view,
     SignalSelectionDecision,
     candidate_judgment_feedback,
     is_technical_exclusion_trajectory,
@@ -1862,6 +1863,10 @@ _PREDICTOR_ROLE_AUTHORITY = (
     "The shell's required output overrides any Plan instruction to omit "
     "classification or prediction; leaving classification to the shell does "
     "not remove that system capability. "
+    "When present, runtime_termination describes collection control independently "
+    "of the controller decision: budget or no-match stops and unresolved needs "
+    "remain information limitations; finalize alone does not mean all questions "
+    "were answered. "
 )
 
 
@@ -1969,6 +1974,7 @@ class LLMBlindPredictor:
     def estimate_prediction_tokens(self, final_context: Mapping[str, Any]) -> int | None:
         """Reserve the same anonymous initial request that predict will send."""
 
+        runtime_termination_view(final_context)
         _require_context_signal_pit(final_context)
         estimator = getattr(self.caller, "estimate_json_request_tokens", None)
         if not callable(estimator):
@@ -1982,6 +1988,7 @@ class LLMBlindPredictor:
         )
 
     def predict(self, final_context: Mapping[str, Any]) -> AgentStep[BlindPrediction]:
+        runtime_termination_view(final_context, require_ready=True)
         _require_context_signal_pit(final_context)
         prediction, usage = _complete_parsed_role(
             self.caller,

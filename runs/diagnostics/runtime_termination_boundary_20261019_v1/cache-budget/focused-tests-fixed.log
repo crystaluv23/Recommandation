@@ -1,0 +1,23 @@
+test_document_read_aggregate_and_actual_core_ceiling_are_equal (tests.test_native_cache_budget.NativeCacheBudgetTests.test_document_read_aggregate_and_actual_core_ceiling_are_equal) ... ok
+test_native_signal_batch_correction_replays_same_results_and_budget (tests.test_native_cache_budget.NativeCacheBudgetTests.test_native_signal_batch_correction_replays_same_results_and_budget) ... ok
+test_remote_cache_remains_zero_new_calls_and_cost (tests.test_native_cache_budget.NativeCacheBudgetTests.test_remote_cache_remains_zero_new_calls_and_cost) ... ok
+test_typed_role_correction_retains_each_original_budget_call (tests.test_native_cache_budget.NativeCacheBudgetTests.test_typed_role_correction_retains_each_original_budget_call) ... ok
+test_atomic_publish_failure_leaves_no_partial_contract (tests.test_local_role_exchange.LocalRoleExchangeTests.test_atomic_publish_failure_leaves_no_partial_contract) ... ok
+test_binary_logprobs_are_absent_without_dispatch (tests.test_local_role_exchange.LocalRoleExchangeTests.test_binary_logprobs_are_absent_without_dispatch) ... ok
+test_budget_is_checked_before_dispatch (tests.test_local_role_exchange.LocalRoleExchangeTests.test_budget_is_checked_before_dispatch) ... ok
+test_cache_cannot_adopt_replaced_receipt_or_recreate_missing_original (tests.test_local_role_exchange.LocalRoleExchangeTests.test_cache_cannot_adopt_replaced_receipt_or_recreate_missing_original) ... ok
+test_cache_resume_revalidates_raw_receipt_and_parsed_cache (tests.test_local_role_exchange.LocalRoleExchangeTests.test_cache_resume_revalidates_raw_receipt_and_parsed_cache) ... ok
+test_external_mode_and_registration_impersonation_rejected (tests.test_local_role_exchange.LocalRoleExchangeTests.test_external_mode_and_registration_impersonation_rejected) ... ok
+test_malformed_raw_preserved_and_enters_native_parser_failure (tests.test_local_role_exchange.LocalRoleExchangeTests.test_malformed_raw_preserved_and_enters_native_parser_failure) ... ok
+test_masked_dispatch_receipt_restore_and_cache_resume (tests.test_local_role_exchange.LocalRoleExchangeTests.test_masked_dispatch_receipt_restore_and_cache_resume) ... ok
+test_missing_response_and_call_ceiling_are_control_flow (tests.test_local_role_exchange.LocalRoleExchangeTests.test_missing_response_and_call_ceiling_are_control_flow) ... ok
+test_raw_tamper_and_wrong_receipt_rejected (tests.test_local_role_exchange.LocalRoleExchangeTests.test_raw_tamper_and_wrong_receipt_rejected) ... ok
+test_receipt_hash_and_return_use_one_raw_buffer (tests.test_local_role_exchange.LocalRoleExchangeTests.test_receipt_hash_and_return_use_one_raw_buffer) ... ok
+test_repeated_correction_hash_keeps_no_progress_guard (tests.test_local_role_exchange.LocalRoleExchangeTests.test_repeated_correction_hash_keeps_no_progress_guard) ... ok
+test_separate_clients_cannot_exceed_shared_ceiling_concurrently (tests.test_local_role_exchange.LocalRoleExchangeTests.test_separate_clients_cannot_exceed_shared_ceiling_concurrently) ... ok
+test_shared_ceiling_is_serialized_between_processes (tests.test_local_role_exchange.LocalRoleExchangeTests.test_shared_ceiling_is_serialized_between_processes) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 1.000s
+
+OK

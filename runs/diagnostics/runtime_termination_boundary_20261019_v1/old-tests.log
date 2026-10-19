@@ -1,0 +1,58 @@
+======================================================================
+ERROR: test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations (tests.test_runtime_termination_context.RuntimeTerminationTests.test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations) (case='initialize_finalized')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_runtime_termination_context.py", line 71, in test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations
+    self.assertEqual(context['runtime_termination'],{'phase':'prediction_ready',
+                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'runtime_termination'
+
+======================================================================
+ERROR: test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations (tests.test_runtime_termination_context.RuntimeTerminationTests.test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations) (case='no_match')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_runtime_termination_context.py", line 71, in test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations
+    self.assertEqual(context['runtime_termination'],{'phase':'prediction_ready',
+                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'runtime_termination'
+
+======================================================================
+ERROR: test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations (tests.test_runtime_termination_context.RuntimeTerminationTests.test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations) (case='max_round')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_runtime_termination_context.py", line 71, in test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations
+    self.assertEqual(context['runtime_termination'],{'phase':'prediction_ready',
+                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'runtime_termination'
+
+======================================================================
+ERROR: test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations (tests.test_runtime_termination_context.RuntimeTerminationTests.test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations) (case='terminal_budget')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_runtime_termination_context.py", line 71, in test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations
+    self.assertEqual(context['runtime_termination'],{'phase':'prediction_ready',
+                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'runtime_termination'
+
+======================================================================
+ERROR: test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations (tests.test_runtime_termination_context.RuntimeTerminationTests.test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations) (case='hard_budget')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_runtime_termination_context.py", line 71, in test_actual_core_prediction_wire_and_reservation_keep_distinct_stop_combinations
+    self.assertEqual(context['runtime_termination'],{'phase':'prediction_ready',
+                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'runtime_termination'
+
+======================================================================
+ERROR: test_modern_posthoc_actual_wire_retains_block_and_legacy_keeps_it_absent (tests.test_runtime_termination_context.RuntimeTerminationTests.test_modern_posthoc_actual_wire_retains_block_and_legacy_keeps_it_absent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_runtime_termination_context.py", line 88, in test_modern_posthoc_actual_wire_retains_block_and_legacy_keeps_it_absent
+    else: self.assertEqual(compact['runtime_termination'],block)
+                           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'runtime_termination'
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.033s
+
+FAILED (errors=6)

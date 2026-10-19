@@ -1,0 +1,145 @@
+{
+  "scope": "Only runtime-owned termination metadata from actual core stop to native Predictor pending and modern/legacy Posthoc pending; deterministic synthetic controllers/selectors/prediction/truth, no production model behavior or completed prefix.",
+  "verdict": "narrow_pass",
+  "code_bindings": {
+    "src/stock_opportunity_agent/research/evolution_core.py": "51989a939486ba0a8d373ab7712d6e0f52a558ee9c4bc0811f0df1698950c543",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "a57e15897a91d0eceeb84b75eb998380d85b25232c256df5b2e3a03f64c883c6",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "f5134cb9d61c836a1b1268ab3c40381ad2f89c18f749e333d3ca49f64c1eb70e",
+    "tests/scheme_evolution_test_support.py": "879ce0f834d49861d0979b6d27f87edfd08805cdf0a26ca9310fd0426e3c15e9",
+    "tests/test_information_plan_engine.py": "424909a629d2cc2abd1798e75a97ff931c637aebaffd4318bc9760f0acfa9c22"
+  },
+  "actual_core_stop_combinations": [
+    {
+      "case": "init_finalize",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "finalized",
+        "termination_trigger": null
+      },
+      "decision": "finalize",
+      "reflect_count": 0,
+      "reservation_count": 0,
+      "predictor_request_hash": "237f4effe21f4eb19b8dcf626b29620655b533dd7a5f141730942eccb0d52bce",
+      "posthoc_request_hash": "1c424c394d16a54b3c5bbd5e3c3585533b0c0bcf04cba150d57292c3a98c3196",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "no_match",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "finalized",
+        "termination_trigger": "no_signal_match"
+      },
+      "decision": "finalize",
+      "reflect_count": 0,
+      "reservation_count": 1,
+      "predictor_request_hash": "2a87b633c348bcd124682b9ff757a468c1854bb1e62e81397d7dee013145a3f0",
+      "posthoc_request_hash": "a3b89044b68ed470ee3575f02348407ba87cb685d79cee8b5f2efaad2cb00b8b",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "max_round",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "finalized",
+        "termination_trigger": "max_signal_rounds"
+      },
+      "decision": "finalize",
+      "reflect_count": 1,
+      "reservation_count": 3,
+      "predictor_request_hash": "37cbb5f66a653a31afc9ee88988f14d670115a3a9ad339533275aa929b9fb9b5",
+      "posthoc_request_hash": "52e1ac7f95bd674af0535c17f747120b469e7de99d65a9f414e6c42228c9c6db",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "max_calls",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "finalized",
+        "termination_trigger": "max_signal_calls"
+      },
+      "decision": "finalize",
+      "reflect_count": 1,
+      "reservation_count": 3,
+      "predictor_request_hash": "2d6940fa82f4f9c2b7fe39e9598a45fb62d50c362a55170eb026a2a0cb2f3242",
+      "posthoc_request_hash": "2ef7728afc3ca83ba876647025269bef1b73637a472fb8c0c8c1dc133c18ad58",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "terminal_budget",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "finalized",
+        "termination_trigger": "budget_exhausted"
+      },
+      "decision": "finalize",
+      "reflect_count": 1,
+      "reservation_count": 3,
+      "predictor_request_hash": "72eddbbe1e1c531450145585e497777459aaf43ca9b4f104d48e6c4069315db9",
+      "posthoc_request_hash": "55715438bb91895ed5cca060cd0e2ada3f760efa05d24fba8dc894d317ffbbcb",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "hard_budget",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "budget_exhausted",
+        "termination_trigger": "budget_exhausted"
+      },
+      "decision": "continue",
+      "reflect_count": 0,
+      "reservation_count": 1,
+      "predictor_request_hash": "cb2a38471bf591c6245eb09ba2e6638453e333ba89adf7aad4d5fc65e5f84b81",
+      "posthoc_request_hash": "b6f83b19487079e1ce8313640d98441d68ac3082bcb02c0bce8e66d17dc983c9",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    },
+    {
+      "case": "max_round_continue",
+      "runtime_termination": {
+        "phase": "prediction_ready",
+        "stop_reason": "max_signal_rounds",
+        "termination_trigger": "max_signal_rounds"
+      },
+      "decision": "continue",
+      "reflect_count": 1,
+      "reservation_count": 3,
+      "predictor_request_hash": "7a1b180ddc24077d740aae1b05efd6314dd8742418fe51e094693350e96bf706",
+      "posthoc_request_hash": "27fa400a02e68f5424b077f42466bea4f9c6586eadb9b30dae7603721494785a",
+      "actual_wire_anonymous": true,
+      "retained_need": true
+    }
+  ],
+  "reservation_views_only_in_progress_nulls": true,
+  "every_actual_predictor_and_posthoc_ready_block_preserved_exactly": true,
+  "all_unresolved_needs_preserved": true,
+  "technical_negative_calls": 126,
+  "negative_result": "RuntimeTerminationInputRejected, no additional dispatch or content correction/fallback",
+  "legacy_assembler_absent_and_legacy_predictor_posthoc_compatible": true,
+  "legacy_actual_posthoc_identity_proof": {
+    "exact_request_hash_unchanged": "cdede43def20496654f1aa77b96849fb4a53d4a00f965d02e9878a5f8ebba5a9",
+    "prior_evidence_path": "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/actual-newchain.json",
+    "prior_evidence_sha256": "5a27b23609c0610ef3ddb8e766730b3843f89ac40c17dd85cb9cbee0b5867f10",
+    "meaning": "Exact prior actual pending request unchanged, including compact context and source catalog derived from source identity; no legacy block synthesized."
+  },
+  "model_answers": 0,
+  "network_attempts": 0,
+  "sink_calls": 0,
+  "label_provider_calls": 0,
+  "limitations": [
+    "No native fresh production answer or prediction is generated.",
+    "Actual durable sink ordering/persistence and fresh prefix semantic behavior remain for the frozen F8\u2192F9 batch.",
+    "These checks do not close full F8, F9, full MVP, prediction accuracy or independent benefit."
+  ],
+  "artifacts": {
+    "actual-core-predictor-posthoc-wire.py": "660b760b42369cd25ca9d4f2e4f89bf3d31f9e546754946ef2b2a30d2db29a5e",
+    "actual-core-predictor-posthoc-results.json": "f504bd4c850ca77572286d3cd34c1917b0626752ca026204b0580cb5a83edbec",
+    "legacy-posthoc-identity-wire.py": "0f2833d647344f806325adf60a87ebd5a4915e5f9d63087be124586582c009be",
+    "legacy-posthoc-identity-results.json": "a9937d82ed273466d1dfb17dec3f3ae66756d5c8d8a9bf1f36d271b21cacf387"
+  }
+}
