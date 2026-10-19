@@ -61,3 +61,11 @@ input-only consumers. Full48/defaultv6 readiness, transcript/news evidence,
 Signal measurements, fresh model behavior, Fast/Slow reuse and the overallMVP
 remain open. Production LLM work continues through isolated exact-request
 subagents under the user’s prohibition on external LLM APIs.
+
+The [new source-only diagnostic](../spec/scripts/diagnose_reviewed_periodic_operating_snapshot.md)
+is prepared but has not run. Four temporary-boundary tests pass. Preappend
+qualification now uses bound proof reads, unique proof kinds and only the two
+explicit profiles, matching the native materializer. A context-entry check also
+caught guards aimed at Protocol methods rather than the actual executor; the
+correct execute_batch guard is tested. Initial failures and the earlier tests
+are retained separately. All of this remains pre-execution evidence.

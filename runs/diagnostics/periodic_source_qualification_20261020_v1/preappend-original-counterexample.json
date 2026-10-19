@@ -1,0 +1,13 @@
+{
+  "scope": "Independent temporary source only _qualify call; no realstageprepare/execute/globalwrite",
+  "script_sha256": "e248570f6f50d06aad69552149d04a5479c39fc2e618cbf4fde0ba12a40eeaf3",
+  "qualify_source": "def _qualify(candidates, cases):\n    payload_memo, raw_memo = {}, {}\n    for candidate in candidates:\n        document = RawInfoDocument.from_dict(candidate[\"document\"])\n        matches = [case for case in cases if case[\"company_id\"] == document.company_id]\n        if len(matches) != 1:\n            raise ReviewedSourceRejected(\"periodic candidate has no unique original case\")\n        proofs = {proof[\"kind\"]: (proof, financial._read_bound(proof[\"artifact\"])[1])\n                  for proof in candidate[\"proofs\"]}\n        _verify_sec_response_document(document, {\"reviewed_available_at\": document.available_at.isoformat()},\n            proofs, datetime.fromisoformat(matches[0][\"cutoff\"]), payload_memo, raw_memo,\n            exhibit=candidate[\"proof_profile\"] == \"sec_filing_exhibit_response_v1\")\n",
+  "wrong_declared_receipt_SHA": "0000000000000000000000000000000000000000000000000000000000000000",
+  "actual_receipt_SHA": "171d29c57793095a1f82d5db7c7cc46bcdd118bbfe827edccca7a2cd1db20cb6",
+  "original_unbound_read_present": false,
+  "result": {
+    "accepted": false,
+    "type": "AttributeError",
+    "message": "<class 'stock_opportunity_agent.signal_library.SignalExecutor'> does not have the attribute 'execute'"
+  }
+}

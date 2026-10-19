@@ -1,0 +1,67 @@
+{
+  "scope": "Independent actual native profile through preappend caller on own temporary primary/exhibit fixtures, plus actual9 patched methods; no publicprepare/execute/realcase/global/network/model/labels/apply",
+  "script_sha256": "3dc7c3fb1a3e9e9113da48193f7b02f7d1616a3dbfd25a19faf09f002b17f188",
+  "results": {
+    "valid_primary": {
+      "accepted": true
+    },
+    "valid_exhibit": {
+      "accepted": true
+    },
+    "wrongSHA": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "reviewed source artifact changed: /private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpdiresjuj/wrongSHA/results.json"
+    },
+    "duplicate_proof_kind": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "duplicate periodic proof kind"
+    },
+    "unknown_profile": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "unsupported periodic proof profile"
+    },
+    "actual_prohibition_entrypoints": [
+      {
+        "target": "socket.socket",
+        "blocked": true
+      },
+      {
+        "target": "socket.create_connection",
+        "blocked": true
+      },
+      {
+        "target": "LabelStore.load",
+        "blocked": true
+      },
+      {
+        "target": "LabelStore.ground_truth",
+        "blocked": true
+      },
+      {
+        "target": "run_minimal_rounds.prepare",
+        "blocked": true
+      },
+      {
+        "target": "StructuredRoleClient.complete_json",
+        "blocked": true
+      },
+      {
+        "target": "StructuredRoleClient.complete_json_with_token_scores",
+        "blocked": true
+      },
+      {
+        "target": "StructuredRoleClient.complete_binary_token_with_scores",
+        "blocked": true
+      },
+      {
+        "target": "SignalExecutor.execute_batch",
+        "blocked": true
+      }
+    ],
+    "tripwires_restored": true
+  },
+  "production_stage_exists": false
+}

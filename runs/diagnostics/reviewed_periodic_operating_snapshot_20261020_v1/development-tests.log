@@ -1,0 +1,8 @@
+test_existing_execution_marker_blocks_reentry_before_any_global_store (tests.test_reviewed_periodic_operating_snapshot.PeriodicDiagnosticBoundaryTests.test_existing_execution_marker_blocks_reentry_before_any_global_store) ... ok
+test_preappend_qualification_checks_proof_binding_before_verifier (tests.test_reviewed_periodic_operating_snapshot.PeriodicDiagnosticBoundaryTests.test_preappend_qualification_checks_proof_binding_before_verifier) ... ok
+test_source_only_guards_actual_entry_points_and_restores_them (tests.test_reviewed_periodic_operating_snapshot.PeriodicDiagnosticBoundaryTests.test_source_only_guards_actual_entry_points_and_restores_them) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.004s
+
+OK

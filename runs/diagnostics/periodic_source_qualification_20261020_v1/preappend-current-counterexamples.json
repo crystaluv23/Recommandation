@@ -1,0 +1,19 @@
+{
+  "scope": "Independent tmp _qualify plus actual patched entrypoint calls; no publicprepare/execute/realglobal/labels/apply/network",
+  "script_sha256": "b6fe34874228cb9cd23fd1059541756164e92b9b4c4e989ec0deedbaec96ad5b",
+  "results": {
+    "valid": {
+      "accepted": true
+    },
+    "wrongSHA": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "reviewed source artifact changed: /private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmput1vlxnw/wrongSHA/results.json"
+    },
+    "duplicate_proof_kind": {
+      "accepted": true
+    },
+    "actual_tripwires_all_blocked": true,
+    "tripwires_restored": true
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "periodic-diagnostic-development-checks-v1",
+  "checked_at": "2026-10-19T22:24:50.636482+00:00",
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_reviewed_periodic_operating_snapshot",
+    "-v"
+  ],
+  "environment": {
+    "PYTHONPATH": "src:scripts"
+  },
+  "bindings_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_periodic_operating_snapshot.py",
+      "sha256": "3dc7c3fb1a3e9e9113da48193f7b02f7d1616a3dbfd25a19faf09f002b17f188"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_periodic_operating_snapshot.md",
+      "sha256": "3b0eaeb3d5787cde9169548e9f602e2302541e115ec9dafdc20c2ab7eebf679a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_periodic_operating_snapshot.py",
+      "sha256": "f3ede8200bfa5e26ed3bc7fab8bc0badad414bd136d67bb13b2749c1cb07c656"
+    }
+  ],
+  "bindings_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_periodic_operating_snapshot.py",
+      "sha256": "3dc7c3fb1a3e9e9113da48193f7b02f7d1616a3dbfd25a19faf09f002b17f188"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_periodic_operating_snapshot.md",
+      "sha256": "3b0eaeb3d5787cde9169548e9f602e2302541e115ec9dafdc20c2ab7eebf679a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_periodic_operating_snapshot.py",
+      "sha256": "f3ede8200bfa5e26ed3bc7fab8bc0badad414bd136d67bb13b2749c1cb07c656"
+    }
+  ],
+  "tests_exit": 0,
+  "tests_passed": 4,
+  "test_log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/development-final-tests.log",
+    "sha256": "72bf23743b8a1276dddef691ce0d505b49765dea228e60a2f0305f70f33d4a2a"
+  },
+  "real_prepare_executed": false,
+  "real_execute_executed": false,
+  "global_store_constructed": false,
+  "stage_exists": false,
+  "limitations": [
+    "Temporary caller/entry boundary tests; primary/exhibit test observes dispatch, independent real profiles remain separately reviewed."
+  ]
+}

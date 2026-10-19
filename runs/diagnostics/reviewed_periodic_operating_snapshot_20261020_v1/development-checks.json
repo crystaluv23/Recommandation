@@ -1,0 +1,65 @@
+{
+  "schema_version": "periodic-diagnostic-development-checks-v1",
+  "checked_at": "2026-10-19T22:23:43.146877+00:00",
+  "bindings_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_periodic_operating_snapshot.py",
+      "sha256": "b6fe34874228cb9cd23fd1059541756164e92b9b4c4e989ec0deedbaec96ad5b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_periodic_operating_snapshot.md",
+      "sha256": "3b0eaeb3d5787cde9169548e9f602e2302541e115ec9dafdc20c2ab7eebf679a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_periodic_operating_snapshot.py",
+      "sha256": "9ad3ceaab7e9e278d14d01adce60ed06cb3ede1888a06360b917e08f564a7411"
+    }
+  ],
+  "bindings_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_periodic_operating_snapshot.py",
+      "sha256": "b6fe34874228cb9cd23fd1059541756164e92b9b4c4e989ec0deedbaec96ad5b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_periodic_operating_snapshot.md",
+      "sha256": "3b0eaeb3d5787cde9169548e9f602e2302541e115ec9dafdc20c2ab7eebf679a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_periodic_operating_snapshot.py",
+      "sha256": "9ad3ceaab7e9e278d14d01adce60ed06cb3ede1888a06360b917e08f564a7411"
+    }
+  ],
+  "tests_exit": 0,
+  "tests_passed": 3,
+  "test_log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/development-tests.log",
+    "sha256": "15b3ad91de54b14df94ce63c9e996c1cc745fee45c10a7201d210d67a34204f4"
+  },
+  "real_prepare_executed": false,
+  "real_execute_executed": false,
+  "global_store_constructed": false,
+  "stage_exists": false,
+  "initial_development_failures": [
+    {
+      "phase": "import-only",
+      "error": "ImportError: content_sha256 was imported from artifacts instead of data.raw_info; corrected before operations."
+    },
+    {
+      "phase": "temporary guard test",
+      "error": "AttributeError: SignalExecutor has no execute; execute/execute_many belong to LLMSignalRunner Protocol; guard corrected to actual execute_batch."
+    }
+  ],
+  "limitations": [
+    "Temporary boundary tests only; no real source profile qualification or production diagnostic execution."
+  ],
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_reviewed_periodic_operating_snapshot",
+    "-v"
+  ],
+  "environment": {
+    "PYTHONPATH": "src:scripts"
+  }
+}
