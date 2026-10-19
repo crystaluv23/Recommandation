@@ -24,7 +24,7 @@ import json
 import math
 import re
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping
 
@@ -33,12 +33,132 @@ from stock_opportunity_agent.cases.outcomes import (
     six_month_smoothed_multiple,
 )
 from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.data.json_stream import StreamingJSONReader
 
 LABEL_STORE_VERSION = 1
 _MANIFEST_NAME = "manifest.json"
 _RECORDS_NAME = "labels.jsonl"
 _MAGNITUDE_CLASSES = ("2-3x", "3-10x", "10x+")
 _CASE_KEY_PATTERN = re.compile(r"^(cik_[0-9]+):([0-9]{4}-[0-9]{2}-[0-9]{2})$")
+
+
+def _strict_pairs(pairs):
+    value={}
+    for key,item in pairs:
+        if key in value:
+            raise ValidationError("duplicate JSON field: "+key)
+        value[key]=item
+    return value
+
+
+def _invalid_constant(value):
+    raise ValidationError("nonfinite JSON number: "+value)
+
+
+def _decoder():
+    return json.JSONDecoder(object_pairs_hook=_strict_pairs,parse_constant=_invalid_constant)
+
+
+def _iso_date(value,name):
+    if not isinstance(value,str) or not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}",value):
+        raise ValidationError(name+" must be a canonical ISO date")
+    try:
+        return date.fromisoformat(value)
+    except ValueError as exc:
+        raise ValidationError(name+" must be a valid ISO date") from exc
+
+
+def _positive_number(value,name):
+    try:
+        valid=type(value) in (int,float) and math.isfinite(value) and value>0
+    except (TypeError,ValueError,OverflowError):
+        valid=False
+    if not valid:
+        raise ValidationError(name+" must be finite and positive JSON number")
+
+
+def _read_object(path):
+    try:
+        value=_decoder().decode(path.read_text(encoding="utf-8"))
+    except (OSError,UnicodeError,ValueError,TypeError) as exc:
+        raise ValidationError("cannot read valid label JSON: "+str(path)) from exc
+    if not isinstance(value,dict):
+        raise ValidationError("label JSON must be an object: "+str(path))
+    return value
+
+
+def _label_lines(path):
+    try:
+        with path.open(encoding="utf-8") as handle:
+            yield from enumerate(handle,start=1)
+    except (OSError,UnicodeError) as exc:
+        raise ValidationError("cannot read label records: "+str(path)) from exc
+
+
+def _verify_archive(manifest,records):
+    archive=Path(manifest["archive_path"])
+    if not archive.is_file():
+        raise ValidationError("label archive must be a readable file")
+    grouped={}
+    for record in records.values():
+        grouped.setdefault(record.symbol,[]).append(record)
+    try:
+        reader=StreamingJSONReader(archive,decoder=_decoder(),with_hash=True,strict_whitespace=True)
+    except (OSError,UnicodeError) as exc:
+        raise ValidationError("cannot open label archive") from exc
+    keys=set(); symbols=set(); verified=set()
+    try:
+        reader.consume("{")
+        while reader.peek()!="}":
+            key=reader.decode()
+            if not isinstance(key,str) or key in keys:
+                raise ValidationError("label archive has invalid or duplicate object keys")
+            keys.add(key);reader.consume(":")
+            if key!="bars_by_symbol":
+                reader.decode()
+            else:
+                reader.consume("{")
+                while reader.peek()!="}":
+                    symbol=reader.decode()
+                    if not isinstance(symbol,str) or not symbol.strip() or symbol in symbols:
+                        raise ValidationError("label archive has invalid or duplicate symbols")
+                    symbols.add(symbol);reader.consume(":");bars=reader.decode()
+                    if not isinstance(bars,list) or any(not isinstance(bar,dict) for bar in bars):
+                        raise ValidationError("label archive history must be an array of price objects")
+                    if symbol in grouped:
+                        dates=set()
+                        for bar in bars:
+                            observed=_iso_date(bar.get("as_of_date"),"archive as_of_date")
+                            if observed in dates:
+                                raise ValidationError("label archive contains duplicate observation dates")
+                            dates.add(observed)
+                            _positive_number(bar.get("adjusted_close"),"archive adjusted_close")
+                            if "symbol" in bar and bar["symbol"]!=symbol:
+                                raise ValidationError("label archive row symbol differs from enclosing symbol")
+                        for record in grouped[symbol]:
+                            measured=six_month_smoothed_multiple(bars,date.fromisoformat(record.as_of_date))
+                            original=record.to_dict()
+                            if any(original[key]!=value for key,value in measured.items()):
+                                raise ValidationError("label record disagrees with frozen archive/calculator: "+str(record.key))
+                            verified.add(record.key)
+                    if reader.peek()!=",": break
+                    reader.consume(",")
+                    if reader.peek()=="}":
+                        raise ValidationError("label archive contains a trailing comma")
+                reader.consume("}")
+            if reader.peek()!=",": break
+            reader.consume(",")
+            if reader.peek()=="}":
+                raise ValidationError("label archive contains a trailing comma")
+        reader.consume("}");reader.finish()
+        if reader.content_sha256!=manifest["archive_sha256"]:
+            raise ValidationError("label archive SHA256 differs from manifest")
+        if "bars_by_symbol" not in keys or verified!=set(records):
+            raise ValidationError("label archive is missing required symbol histories")
+    except (OSError,UnicodeError,ValueError,TypeError,KeyError,IndexError,OverflowError) as exc:
+        raise ValidationError("invalid label archive or derived observation: "+str(exc)) from exc
+    finally:
+        reader.close()
 
 
 @dataclass(frozen=True)
@@ -58,6 +178,21 @@ class LabelRecord:
     magnitude: str | None
 
     def __post_init__(self) -> None:
+        for name in ("company_id","as_of_date","symbol","horizon_end"):
+            if not isinstance(getattr(self,name),str):
+                raise ValidationError("label "+name+" must be text")
+        if type(self.is_surge) is not bool:
+            raise ValidationError("label is_surge must be a JSON boolean")
+        if self.magnitude is not None and not isinstance(self.magnitude,str):
+            raise ValidationError("label magnitude must be text or null")
+        for name in ("baseline_dates","future_peak_dates"):
+            values=getattr(self,name)
+            if not isinstance(values,(list,tuple)):
+                raise ValidationError("label "+name+" must be an array")
+            object.__setattr__(self,name,tuple(values))
+            for item in values: _iso_date(item,"label "+name)
+        _iso_date(self.as_of_date,"label as_of_date")
+        _iso_date(self.horizon_end,"label horizon_end")
         if not re.fullmatch(r"cik_[0-9]+", self.company_id):
             raise ValidationError("label company_id must be a cik identifier")
         try:
@@ -74,8 +209,7 @@ class LabelRecord:
             ("future_peak_mean", self.future_peak_mean),
             ("realized_max_multiple", self.realized_max_multiple),
         ):
-            if not math.isfinite(value) or value <= 0:
-                raise ValidationError(f"label {name} must be finite and positive")
+            _positive_number(value,"label "+name)
         if len(self.baseline_dates) != 5 or len(set(self.baseline_dates)) != 5:
             raise ValidationError("label baseline requires five distinct dates")
         if len(self.future_peak_dates) != 5 or len(set(self.future_peak_dates)) != 5:
@@ -119,22 +253,26 @@ class LabelRecord:
             "baseline_dates", "future_peak_mean", "future_peak_dates",
             "horizon_end", "realized_max_multiple", "is_surge", "magnitude",
         }
+        if not isinstance(data,Mapping):
+            raise ValidationError("label record must be an object")
         missing = sorted(required - set(data))
         if missing:
             raise ValidationError(
                 "label record is missing fields: " + ", ".join(missing)
             )
+        if set(data)!=required:
+            raise ValidationError("label record contains unknown fields")
         return cls(
-            company_id=str(data["company_id"]),
-            as_of_date=str(data["as_of_date"]),
-            symbol=str(data["symbol"]),
-            baseline_mean=float(data["baseline_mean"]),
-            baseline_dates=tuple(str(item) for item in data["baseline_dates"]),
-            future_peak_mean=float(data["future_peak_mean"]),
-            future_peak_dates=tuple(str(item) for item in data["future_peak_dates"]),
-            horizon_end=str(data["horizon_end"]),
-            realized_max_multiple=float(data["realized_max_multiple"]),
-            is_surge=bool(data["is_surge"]),
+            company_id=data["company_id"],
+            as_of_date=data["as_of_date"],
+            symbol=data["symbol"],
+            baseline_mean=data["baseline_mean"],
+            baseline_dates=data["baseline_dates"],
+            future_peak_mean=data["future_peak_mean"],
+            future_peak_dates=data["future_peak_dates"],
+            horizon_end=data["horizon_end"],
+            realized_max_multiple=data["realized_max_multiple"],
+            is_surge=data["is_surge"],
             magnitude=data["magnitude"],
         )
 
@@ -157,6 +295,7 @@ class LabelStore:
 
     @classmethod
     def load(cls, path: str | Path) -> "LabelStore":
+        """Verify the bound archive, contract and every derived label before admission."""
         root = Path(path)
         manifest_path = root / _MANIFEST_NAME
         records_path = root / _RECORDS_NAME
@@ -165,40 +304,57 @@ class LabelStore:
                 f"label store is incomplete at {root}: expected "
                 f"{_MANIFEST_NAME} and {_RECORDS_NAME}"
             )
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest = _read_object(manifest_path)
         for field in (
             "store_version", "label_contract", "archive_path", "archive_sha256",
             "calculator", "created_at", "record_count",
         ):
             if field not in manifest:
                 raise ValidationError(f"label store manifest lacks {field}")
-        if int(manifest["store_version"]) != LABEL_STORE_VERSION:
+        if type(manifest["store_version"]) is not int or manifest["store_version"] != LABEL_STORE_VERSION:
             raise ValidationError(
                 f"unsupported label store version {manifest['store_version']} "
                 f"(expected {LABEL_STORE_VERSION})"
             )
+        if type(manifest["record_count"]) is not int or manifest["record_count"]<0:
+            raise ValidationError("label record_count must be a nonnegative JSON integer")
+        for name in ("archive_path","archive_sha256","calculator","created_at"):
+            if not isinstance(manifest[name],str) or not manifest[name].strip():
+                raise ValidationError("label manifest "+name+" must be nonempty text")
+        if not re.fullmatch(r"[0-9a-f]{64}",manifest["archive_sha256"]):
+            raise ValidationError("label archive SHA256 must be lowercase hexadecimal")
+        if manifest["calculator"]!="stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple":
+            raise ValidationError("label calculator identity is unsupported")
+        if manifest["label_contract"]!=SURGE_LABEL_CONTRACT:
+            raise ValidationError("label contract differs from the fixed outcome definition")
+        try:
+            created=datetime.fromisoformat(manifest["created_at"])
+            if created.tzinfo is None or created.utcoffset() is None:
+                raise ValueError("naive creation time")
+        except ValueError as exc:
+            raise ValidationError("label created_at must be an aware ISO timestamp") from exc
         records: dict[tuple[str, str], LabelRecord] = {}
-        with records_path.open(encoding="utf-8") as handle:
-            for line_number, line in enumerate(handle, start=1):
-                if not line.strip():
-                    continue
-                try:
-                    record = LabelRecord.from_dict(json.loads(line))
-                except ValidationError as exc:
-                    raise ValidationError(
-                        f"invalid label record at {records_path}:{line_number}: {exc}"
-                    ) from exc
-                if record.key in records:
-                    raise ValidationError(
-                        f"duplicate label key {record.key} at "
-                        f"{records_path}:{line_number}"
-                    )
-                records[record.key] = record
+        for line_number,line in _label_lines(records_path):
+            if not line.strip():
+                continue
+            try:
+                record = LabelRecord.from_dict(_decoder().decode(line))
+            except (ValidationError,ValueError,TypeError,KeyError,OverflowError) as exc:
+                raise ValidationError(
+                    f"invalid label record at {records_path}:{line_number}: {exc}"
+                ) from exc
+            if record.key in records:
+                raise ValidationError(
+                    f"duplicate label key {record.key} at "
+                    f"{records_path}:{line_number}"
+                )
+            records[record.key] = record
         if len(records) != int(manifest["record_count"]):
             raise ValidationError(
                 f"label store manifest declares {manifest['record_count']} "
                 f"records but {len(records)} loaded"
             )
+        _verify_archive(manifest,records)
         return cls(manifest=manifest, records=records)
 
     def __len__(self) -> int:

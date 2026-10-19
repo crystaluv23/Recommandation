@@ -1,0 +1,72 @@
+{
+  "scope": "Current-source complete strict single-door load, not provider/issuer authentication or feedback",
+  "checked_at": "2026-10-19T16:52:11.147509+00:00",
+  "status": "accepted",
+  "records": 6554,
+  "elapsed_seconds": 9.382638667011634,
+  "maxrss_native": 66043904,
+  "maxrss_unit": "bytes",
+  "source_bindings": {
+    "src/stock_opportunity_agent/cases/label_store.py": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af",
+    "src/stock_opportunity_agent/cases/outcomes.py": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff",
+    "src/stock_opportunity_agent/data/json_stream.py": "fab42479466ff1ff3eb6dac53d78d56c99cd8ff06bb55cff9d57242b4af43775",
+    "src/stock_opportunity_agent/research/evolution_dataset.py": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9"
+  },
+  "archive_path": "/Users/l/Project/Recommandation/runs/cold_start/formal/cold-start-formal-openrouter-2026-05-13/02_prices/price_histories.json",
+  "archive_actual_full_stream_sha_verified": "4fa43ed4e448babde2b936bf3e00f7dfddd053f02caf6e39ce6ce7df4769b333",
+  "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+  "label_contract": {
+    "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+    "binary_threshold": 2.0,
+    "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+    "horizon": "six_calendar_months",
+    "magnitude_classes": [
+      "2-3x",
+      "3-10x",
+      "10x+"
+    ]
+  },
+  "all_records_recomputed_by_unique_calculator": true,
+  "s01_record": {
+    "company_id": "cik_0001830043",
+    "as_of_date": "2025-09-30",
+    "symbol": "BMBL",
+    "baseline_mean": 6.494,
+    "baseline_dates": [
+      "2025-09-23",
+      "2025-09-24",
+      "2025-09-25",
+      "2025-09-26",
+      "2025-09-29"
+    ],
+    "future_peak_mean": 5.986,
+    "future_peak_dates": [
+      "2025-09-30",
+      "2025-10-01",
+      "2025-10-02",
+      "2025-10-03",
+      "2025-10-06"
+    ],
+    "horizon_end": "2026-03-30",
+    "realized_max_multiple": 0.9217739451801663,
+    "is_surge": false,
+    "magnitude": null
+  },
+  "s01_baseline_matches_saved_sink": true,
+  "before_files": {
+    "runs/cold_start/data/outcome-label-store-v1/manifest.json": "f2838f4dfff9bee51556224679c85672309d13bafeb2669ba082c847f3019ef2",
+    "runs/cold_start/data/outcome-label-store-v1/labels.jsonl": "9e1e9a6cad821cd443f7863cdba907029d9d5ea2ca27be8e9cc2c3947fd58fcc",
+    "runs/diagnostics/reviewed_fast_prefix_20261019_v2/prediction.json": "e6ec93caa339e3864df3f7e0d3321993ad88232e27e86eb049a106691ed2cdf2",
+    "runs/diagnostics/reviewed_fast_prefix_20261019_v2/completion.json": "fb1c3618cb554248ea329cdb69b5250e875166fe5e259eb6de8881c4c68a755e"
+  },
+  "after_files": {
+    "runs/cold_start/data/outcome-label-store-v1/manifest.json": "f2838f4dfff9bee51556224679c85672309d13bafeb2669ba082c847f3019ef2",
+    "runs/cold_start/data/outcome-label-store-v1/labels.jsonl": "9e1e9a6cad821cd443f7863cdba907029d9d5ea2ca27be8e9cc2c3947fd58fcc",
+    "runs/diagnostics/reviewed_fast_prefix_20261019_v2/prediction.json": "e6ec93caa339e3864df3f7e0d3321993ad88232e27e86eb049a106691ed2cdf2",
+    "runs/diagnostics/reviewed_fast_prefix_20261019_v2/completion.json": "fb1c3618cb554248ea329cdb69b5250e875166fe5e259eb6de8881c4c68a755e"
+  },
+  "files_unchanged": true,
+  "external_llm_calls": 0,
+  "readonly_data_requests": 0,
+  "posthoc_calls": 0
+}

@@ -1,0 +1,69 @@
+{
+  "scope": "Independent deterministic LabelStore evaluation-door counterexample verification. Tiny synthetic archives only; no real label store or full archive read, no role/model execution and no network.",
+  "conclusion": "The original 18 demonstrated false admissions are locally closed by current loader; strict full-stream parsing/hash and all-record unique-calculator reconciliation pass the bounded variants.",
+  "fixed_original_cases": {
+    "total": 24,
+    "original_false_admissions": 18,
+    "current_false_admissions": 0,
+    "legal_positive_accepted": true,
+    "five_old_negative_controls_rejected": true
+  },
+  "new_variants": {
+    "cases": 29,
+    "all_expected_results": true,
+    "direct_stream_exact_sha_assertions": 5,
+    "chunk_sizes_characters": [
+      1,
+      2,
+      7,
+      64,
+      1024
+    ],
+    "accepted": [
+      "CRLF and multibyte UTF8 with exact raw-byte SHA across all five chunk sizes",
+      "Multiple symbols and same-symbol multiple as_of records with every returned record exact"
+    ],
+    "rejected": [
+      "Rehashed top-object, symbol-object and array trailing commas",
+      "NBSP at leading/interstitial/trailing positions plus non-JSON VT and FF whitespace",
+      "Duplicate required symbols and top-level bars_by_symbol keys",
+      "Bad tail, second JSON value, truncated structural end and invalid UTF8",
+      "One unmatched record symbol and second-symbol calculator mismatch",
+      "Selected-bar bool/string numeric values, duplicate dates, mismatched row symbol and noncanonical date"
+    ],
+    "dataset_legacy_alias_and_default_whitespace_behavior_preserved": true
+  },
+  "basis": [
+    "Owning outcomes spec requires archive identity/hash, fixed calculator/contract and all-record derivation verification at load",
+    "Current reader hashes the same opened UTF8 stream, retains original newline bytes, forces complete EOF and rejects trailing content",
+    "Current loader supplies strict decoder and ASCII JSON whitespace; explicit object loops reject trailing commas",
+    "Only the existing six_month_smoothed_multiple computes all raw/derived observation fields; original calculator SHA unchanged"
+  ],
+  "remaining": [
+    "Does not authenticate provider price bars or adjusted-price basis",
+    "Does not establish CIK-symbol mapping or issuer identity qualification",
+    "Does not independently rerun or certify the driver-owned 903MB/6554-record performance or real s01 truth qualification",
+    "Does not establish model behavior, forecast correctness, research gain or full F10/MVP completion"
+  ],
+  "source_bindings": {
+    "src/stock_opportunity_agent/cases/label_store.py": "6ce360ad56f728afcc751ecece06124290ec2ea09e4992cecdceea24f43396c9",
+    "src/stock_opportunity_agent/cases/outcomes.py": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff",
+    "src/stock_opportunity_agent/data/json_stream.py": "63ffd0a15ae82859155fb65b7494312b90a6e322ec3962b2aa0582c4649bea89",
+    "src/stock_opportunity_agent/research/evolution_dataset.py": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9",
+    "spec/src/stock_opportunity_agent/cases/outcomes.md": "da3334ceaba824a89ea7056d0e631631ba1f2545581382908d0d711cce5ea016",
+    "spec/src/stock_opportunity_agent/data/json_stream.md": "84defdbef4bb66a961feae72d55468c15355df61fed88aa45282ef37e3d668ff"
+  },
+  "original_source_bindings": {
+    "loader_sha256": "662055ff5ad3bdcbe974096347708b71348d133cee56c47d39eb63d7cbe6ec25",
+    "calculator_sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff"
+  },
+  "network_attempts": 0,
+  "real_label_store_reads": 0,
+  "full_archive_runs": 0,
+  "files": {
+    "runs/diagnostics/label_store_loader_boundary_20261020_v1/original-counterexamples.json": "8bd92a098ee4c4071c71ebcf6d022613ac76b45ca7a7f2cb45f5ff454d2ca49c",
+    "runs/diagnostics/label_store_loader_boundary_20261020_v1/current-fixed-counterexamples.json": "0722828552ff19a55208695afccfd9ff244ef7989142e1dc193f79d12cb42255",
+    "runs/diagnostics/label_store_loader_boundary_20261020_v1/independent-current/stream-and-schema.py": "aeeffff03bc3e59d4d4682e3dc249780c6d9ea8d0651c4d8d0a1de7adad9b9f0",
+    "runs/diagnostics/label_store_loader_boundary_20261020_v1/independent-current/stream-and-schema-results.json": "3fb079809bc70e321f16c9bedca7e013857c28fdf37e07e8c0b51f93e969b333"
+  }
+}

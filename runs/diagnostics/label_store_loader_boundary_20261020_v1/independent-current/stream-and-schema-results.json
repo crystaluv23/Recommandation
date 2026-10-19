@@ -1,0 +1,331 @@
+{
+  "scope": "Tiny rehashed synthetic archives only. No real label store/archive/roles/network read or run. Loader deterministic schema/recompute door only, not CIK/provider/source qualification.",
+  "cases": [
+    {
+      "case": "legal_CRLF_UTF8_exact_SHA_chunk_1",
+      "chunk_size_characters": 1,
+      "expected": "accepted",
+      "archive_sha256": "c185d661f4fdc4c15bf7da9cbffe070f31e607f56a5a58db16d7a5b0f4e5a14d",
+      "archive_bytes": 12490,
+      "actual": "accepted",
+      "record_count": 1,
+      "pass": true
+    },
+    {
+      "case": "legal_CRLF_UTF8_exact_SHA_chunk_2",
+      "chunk_size_characters": 2,
+      "expected": "accepted",
+      "archive_sha256": "c185d661f4fdc4c15bf7da9cbffe070f31e607f56a5a58db16d7a5b0f4e5a14d",
+      "archive_bytes": 12490,
+      "actual": "accepted",
+      "record_count": 1,
+      "pass": true
+    },
+    {
+      "case": "legal_CRLF_UTF8_exact_SHA_chunk_7",
+      "chunk_size_characters": 7,
+      "expected": "accepted",
+      "archive_sha256": "c185d661f4fdc4c15bf7da9cbffe070f31e607f56a5a58db16d7a5b0f4e5a14d",
+      "archive_bytes": 12490,
+      "actual": "accepted",
+      "record_count": 1,
+      "pass": true
+    },
+    {
+      "case": "legal_CRLF_UTF8_exact_SHA_chunk_64",
+      "chunk_size_characters": 64,
+      "expected": "accepted",
+      "archive_sha256": "c185d661f4fdc4c15bf7da9cbffe070f31e607f56a5a58db16d7a5b0f4e5a14d",
+      "archive_bytes": 12490,
+      "actual": "accepted",
+      "record_count": 1,
+      "pass": true
+    },
+    {
+      "case": "legal_CRLF_UTF8_exact_SHA_chunk_1024",
+      "chunk_size_characters": 1024,
+      "expected": "accepted",
+      "archive_sha256": "c185d661f4fdc4c15bf7da9cbffe070f31e607f56a5a58db16d7a5b0f4e5a14d",
+      "archive_bytes": 12490,
+      "actual": "accepted",
+      "record_count": 1,
+      "pass": true
+    },
+    {
+      "case": "top_trailing_comma",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "29947c421aa829e4455c0db38d3893b0a9f532f6f4abc3b668d78fd7bb6f5415",
+      "archive_bytes": 7017,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: label archive contains a trailing comma",
+      "pass": true
+    },
+    {
+      "case": "symbol_trailing_comma",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "c656008740020e8205c3bd387b252ea49ca27a6146097e2f1c1e91aff5d0fbbe",
+      "archive_bytes": 7017,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: label archive contains a trailing comma",
+      "pass": true
+    },
+    {
+      "case": "array_trailing_comma",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "a987ea5d79a1b6486970023f09dd2ab88e08b9404f351cbf3a73081c6272d5f2",
+      "archive_bytes": 7017,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive contains invalid JSON",
+      "pass": true
+    },
+    {
+      "case": "NBSP_leading",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "4ab11d3d27430e0f5b0f320940f5be2cb17355e923fdb4f42ad356906d6b2704",
+      "archive_bytes": 7069,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive expected '{', received '\\xa0'",
+      "pass": true
+    },
+    {
+      "case": "NBSP_after_colon",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "d51fec110002c148b11baf6b3f49a7a76ff7378a97b6d5ff6711dd155ca06e32",
+      "archive_bytes": 7069,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive contains invalid JSON",
+      "pass": true
+    },
+    {
+      "case": "NBSP_between_symbols",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "ca683344d5b9e22d3fb4c45dd6cc27d6c73ff3bb93ddf39cfa7aaf7190b2b13e",
+      "archive_bytes": 7018,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive contains invalid JSON",
+      "pass": true
+    },
+    {
+      "case": "NBSP_trailing",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "10a0e7e8b72156cd405fd69be8178bfb8c62b4ecf327a3cab255b4564513675f",
+      "archive_bytes": 7069,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive has trailing JSON content",
+      "pass": true
+    },
+    {
+      "case": "vertical_tab_leading",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "c9dd787a85a40abbe0dd79b795f27d6dd386c84bd0c944777ba47bc30fea029b",
+      "archive_bytes": 7068,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive expected '{', received '\\x0b'",
+      "pass": true
+    },
+    {
+      "case": "form_feed_trailing",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "cbfd67e212d7d75f8c8806860ca878a59a52490d1d57af9040c0f75526829f1f",
+      "archive_bytes": 7068,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive has trailing JSON content",
+      "pass": true
+    },
+    {
+      "case": "duplicate_required_symbol",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "d2ac10137864602c712dec52466269de1f78dc5c868902e7d7cfeb55dca2afbb",
+      "archive_bytes": 14012,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: label archive has invalid or duplicate symbols",
+      "pass": true
+    },
+    {
+      "case": "duplicate_root_key",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "d62827062d96abaef724ef8288620d4330533b0f68b7b6aa4e6fc1546690cd5e",
+      "archive_bytes": 14031,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: label archive has invalid or duplicate object keys",
+      "pass": true
+    },
+    {
+      "case": "bad_tail_junk",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "7becef49d10c50715cdcc6e1bad0e896cbd4b2b34515cd5c8cb2268dbe4b1b74",
+      "archive_bytes": 7071,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive has trailing JSON content",
+      "pass": true
+    },
+    {
+      "case": "second_JSON_value",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "d02b3f50df108b66fb7b30a3b5e76a74bc8a3c7d48a1df01b8b98ebcde272ba9",
+      "archive_bytes": 7070,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive has trailing JSON content",
+      "pass": true
+    },
+    {
+      "case": "missing_final_brace",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "74f9739e2bc0bff28b1a34c07701f1359b8a59c225ebb2a8b873e138248dc5fb",
+      "archive_bytes": 7066,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive ended unexpectedly",
+      "pass": true
+    },
+    {
+      "case": "missing_symbol_brace",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "19f1b23333783fc16ddad503a49f254b04ad932fafff8d6e45b80236fe9059b5",
+      "archive_bytes": 7065,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: large price archive ended unexpectedly",
+      "pass": true
+    },
+    {
+      "case": "invalid_UTF8",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "8fda01d80bd4dd3734544a8b9b8e0833d3a1089d4695d39a48b0f914b58973f7",
+      "archive_bytes": 7068,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: 'utf-8' codec can't decode byte 0xff in position 7067: invalid start byte",
+      "pass": true
+    },
+    {
+      "case": "legal_multiple_symbols_and_same_symbol_two_asofs",
+      "chunk_size_characters": 7,
+      "expected": "accepted",
+      "archive_sha256": "992ba6c6b1818677b9c6928a128d4c23497f9c7fb01360a1cad598c3d1eb31e6",
+      "archive_bytes": 15164,
+      "actual": "accepted",
+      "record_count": 3,
+      "pass": true
+    },
+    {
+      "case": "one_of_three_records_symbol_unmatched",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "84cbd2c38c1ed9d86f4688f9b2dbfb7193b736b49ada79d855a20a3e088e2991",
+      "archive_bytes": 7618,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: label archive is missing required symbol histories",
+      "pass": true
+    },
+    {
+      "case": "second_symbol_record_recalculation_mismatch",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "cbeae7b3cb523a97da81de41f95224c3d6c14643de769fe3b173c2008dbf6a69",
+      "archive_bytes": 15163,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: label record disagrees with frozen archive/calculator: ('cik_00000043', '2025-01-15')",
+      "pass": true
+    },
+    {
+      "case": "selected_bar_bool",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "681155e770a492ae1077ab0ef05e9e609afb6c151effc50f11d84fc724e11254",
+      "archive_bytes": 7617,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: archive adjusted_close must be finite and positive JSON number",
+      "pass": true
+    },
+    {
+      "case": "selected_bar_string",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "f8c08f9ad7a32c0b8afc9651663a6acf5be8b10771041134fd0db71170af9169",
+      "archive_bytes": 7618,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: archive adjusted_close must be finite and positive JSON number",
+      "pass": true
+    },
+    {
+      "case": "duplicate_selected_date",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "f146d32345be7b62f046a2705454216c23a034933ad18bb8cbdade6d6ce7789d",
+      "archive_bytes": 7673,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: label archive contains duplicate observation dates",
+      "pass": true
+    },
+    {
+      "case": "mismatched_row_symbol",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "2d52a52aefc31e69d99d99b5bd230b8bcc998bddf0e80bd5074b824bd31e38d5",
+      "archive_bytes": 7637,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: label archive row symbol differs from enclosing symbol",
+      "pass": true
+    },
+    {
+      "case": "noncanonical_date",
+      "chunk_size_characters": 7,
+      "expected": "rejected",
+      "archive_sha256": "08a8bd93437c4acbd9c86fdb336bbdff348e83cbd6dd6265c2e092667ad149fb",
+      "archive_bytes": 7616,
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label archive or derived observation: archive as_of_date must be a canonical ISO date",
+      "pass": true
+    }
+  ],
+  "all_passed": true,
+  "direct_stream_hash_assertions": 5,
+  "legacy_reader_alias_and_default_behavior_preserved": true,
+  "network_attempts": 0,
+  "bindings": {
+    "src/stock_opportunity_agent/cases/label_store.py": "6ce360ad56f728afcc751ecece06124290ec2ea09e4992cecdceea24f43396c9",
+    "src/stock_opportunity_agent/cases/outcomes.py": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff",
+    "src/stock_opportunity_agent/data/json_stream.py": "63ffd0a15ae82859155fb65b7494312b90a6e322ec3962b2aa0582c4649bea89",
+    "src/stock_opportunity_agent/research/evolution_dataset.py": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9",
+    "spec/src/stock_opportunity_agent/cases/outcomes.md": "da3334ceaba824a89ea7056d0e631631ba1f2545581382908d0d711cce5ea016",
+    "spec/src/stock_opportunity_agent/data/json_stream.md": "84defdbef4bb66a961feae72d55468c15355df61fed88aa45282ef37e3d668ff"
+  },
+  "script_sha256": "aeeffff03bc3e59d4d4682e3dc249780c6d9ea8d0651c4d8d0a1de7adad9b9f0"
+}

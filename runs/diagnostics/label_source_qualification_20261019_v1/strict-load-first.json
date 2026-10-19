@@ -1,0 +1,12 @@
+{
+  "scope": "Actual complete canonical LabelStore strict-load compatibility/performance, no feedback role",
+  "status": "accepted",
+  "records": 6554,
+  "s01_baseline": 6.494,
+  "elapsed_seconds": 9.462626124965027,
+  "maxrss_native": 61079552,
+  "maxrss_unit": "bytes",
+  "external_llm_calls": 0,
+  "readonly_data_requests": 0,
+  "posthoc_calls": 0
+}

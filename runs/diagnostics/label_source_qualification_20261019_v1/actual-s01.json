@@ -1,0 +1,108 @@
+{
+  "scope": "Actual s01 post-durable-sink canonical source qualification only; no Posthoc dispatch or feedback",
+  "checked_at": "2026-10-19T16:39:47.425638+00:00",
+  "manifest": {
+    "archive_path": "/Users/l/Project/Recommandation/runs/cold_start/formal/cold-start-formal-openrouter-2026-05-13/02_prices/price_histories.json",
+    "archive_sha256": "4fa43ed4e448babde2b936bf3e00f7dfddd053f02caf6e39ce6ce7df4769b333",
+    "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+    "created_at": "2026-09-30T17:17:45.693976+00:00",
+    "label_contract": {
+      "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+      "binary_threshold": 2.0,
+      "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+      "horizon": "six_calendar_months",
+      "magnitude_classes": [
+        "2-3x",
+        "3-10x",
+        "10x+"
+      ]
+    },
+    "record_count": 6554,
+    "store_version": 1
+  },
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/outcome-label-store-v1/manifest.json",
+      "sha256": "f2838f4dfff9bee51556224679c85672309d13bafeb2669ba082c847f3019ef2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/outcome-label-store-v1/labels.jsonl",
+      "sha256": "9e1e9a6cad821cd443f7863cdba907029d9d5ea2ca27be8e9cc2c3947fd58fcc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/formal/cold-start-formal-openrouter-2026-05-13/02_prices/price_histories.json",
+      "sha256": "4fa43ed4e448babde2b936bf3e00f7dfddd053f02caf6e39ce6ce7df4769b333"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/label_store.py",
+      "sha256": "662055ff5ad3bdcbe974096347708b71348d133cee56c47d39eb63d7cbe6ec25"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/outcomes.py",
+      "sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff"
+    }
+  ],
+  "loaded_records": 6554,
+  "calculator_identity_matches": true,
+  "label_contract_matches": true,
+  "archive_sha_matches": true,
+  "target_record": {
+    "company_id": "cik_0001830043",
+    "as_of_date": "2025-09-30",
+    "symbol": "BMBL",
+    "baseline_mean": 6.494,
+    "baseline_dates": [
+      "2025-09-23",
+      "2025-09-24",
+      "2025-09-25",
+      "2025-09-26",
+      "2025-09-29"
+    ],
+    "future_peak_mean": 5.986,
+    "future_peak_dates": [
+      "2025-09-30",
+      "2025-10-01",
+      "2025-10-02",
+      "2025-10-03",
+      "2025-10-06"
+    ],
+    "horizon_end": "2026-03-30",
+    "realized_max_multiple": 0.9217739451801663,
+    "is_surge": false,
+    "magnitude": null
+  },
+  "unique_calculator_recomputed": {
+    "realized_max_multiple": 0.9217739451801663,
+    "is_surge": false,
+    "magnitude": null,
+    "baseline_mean": 6.494,
+    "future_peak_mean": 5.986,
+    "baseline_dates": [
+      "2025-09-23",
+      "2025-09-24",
+      "2025-09-25",
+      "2025-09-26",
+      "2025-09-29"
+    ],
+    "future_peak_dates": [
+      "2025-09-30",
+      "2025-10-01",
+      "2025-10-02",
+      "2025-10-03",
+      "2025-10-06"
+    ],
+    "horizon_end": "2026-03-30"
+  },
+  "record_exactly_matches_recomputation": true,
+  "baseline_matches_saved_sink": true,
+  "horizon_matches_saved_six_calendar_month_definition": true,
+  "target_archive_bars": 606,
+  "archive_first_date": "2023-12-11",
+  "archive_last_date": "2026-05-12",
+  "provider_price_truth_authenticated_by_this_check": false,
+  "loader_general_contract_gap": "load presently does not itself verify archive hash/calculator/contract/recompute; independently checked only this real key here",
+  "blind_prefix_modified": false,
+  "posthoc_calls": 0,
+  "external_llm_calls": 0,
+  "readonly_data_requests": 0
+}

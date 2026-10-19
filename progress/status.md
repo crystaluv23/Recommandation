@@ -1,6 +1,6 @@
 # 当前状态
 
-更新：2026-10-19。本轮目标为用户批准的
+更新：2026-10-20。本轮目标为用户批准的
 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)，**尚未收敛，继续迭代**。
 独立预测收益属于后续里程碑，仍未验证。用户要求生产 LLM 位置由独立 subagent
 处理；外部 LLM 调用保持零，用户现允许只读公开资料取证。新资料请求单独计数，
@@ -11,10 +11,10 @@
 未执行：两Signal技术budget_blocked，确定性finalize仍保留4needs。32文件恢复全等，
 0新inbox/receipt，原v1观察器失败保留；完整F9/MVP仍open。
 见 [单例前缀验收](../reports/reviewed-fast-prefix-acceptance-20261019.md)。
-下一步仅核canonical LabelStore真实资格，再设计独立Posthoc反馈阶段，不造trajectory。
+[单门标签准入](../reports/label-store-admission-20261020.md) 已修：旧18误放反例新拒，
+独立流式/严格类型/全记录重算通过；真实6554首次全load9.463s，未改store/定义。
+1806全量通过；provider价条/issuer真实性与完整F10仍独立未关，下一步另冻Posthoc。
 
-前批修复最终 1770 全量通过；首轮 1768/1769 的 critic payload 预算回归及原尺寸
-保留。仅最后 wire 改为同 payload 可逆 profiles，全部字段/IDs 保真，原预算不变。
 
 ## 新证据：F7 范围通过，F8 新消费时间边界已修
 

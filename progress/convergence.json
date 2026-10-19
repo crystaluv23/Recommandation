@@ -297,10 +297,28 @@
         "runs/diagnostics/reviewed_fast_prefix_20261019_v2/execution_summary.json"
       ],
       "result": "One case narrow F8 actual stop/gaps and F9 native prediction/sink/restore subitems independently accepted. Three actual roles across lineage,2 historical+1 new,0corrections; apply/Reflect models not_exercised. Labels0, wholeF9/MVP/benefit open."
+    },
+    {
+      "id": "engineering-mvp-label-admission-20261020",
+      "strategy": "enforce_existing_single_door_source_and_unique_calculator_admission",
+      "failure_families": [
+        "label_loader_source_binding_and_all_record_reconciliation",
+        "strict_full_stream_json_identity"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/label-store-admission-20261020.md",
+        "runs/diagnostics/label_store_loader_boundary_20261020_v1/independent-current/independent-review.json",
+        "runs/diagnostics/label_source_qualification_20261019_v1/actual-s01.json",
+        "runs/diagnostics/label_source_qualification_20261019_v1/strict-load-first.json",
+        "runs/diagnostics/label_source_qualification_20261019_v1/strict-load-final.json",
+        "runs/diagnostics/label_store_loader_boundary_20261020_v1/full-tests.log"
+      ],
+      "result": "18 original false admissions locally rejected; 24 fixed cases and 29 streaming variants independently pass. Actual6554 first strict load accepted in9.463s/61MB; Final current-source full6554 load accepted in9.383s/66MB with unchanged store/sink;1806 regression tests passed in180.865s. This verifies consistency with bound archive, not provider/issuer truth; no feedback role or fullF10 completion."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-blind-prefix-accepted-20261019",
+    "after_iteration": "engineering-mvp-label-admission-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -328,7 +346,11 @@
       "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/independent-review.json",
       "reports/reviewed-fast-prefix-acceptance-20261019.md",
       "runs/diagnostics/reviewed_fast_prefix_20261019_v2/independent-review.json",
-      "runs/diagnostics/reviewed_fast_prefix_20261019_v2/execution_summary.json"
+      "runs/diagnostics/reviewed_fast_prefix_20261019_v2/execution_summary.json",
+      "reports/label-store-admission-20261020.md",
+      "runs/diagnostics/label_store_loader_boundary_20261020_v1/independent-current/independent-review.json",
+      "runs/diagnostics/label_source_qualification_20261019_v1/actual-s01.json",
+      "runs/diagnostics/label_source_qualification_20261019_v1/strict-load-first.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -346,15 +368,16 @@
       "JEV owns judge choices, so any-local-role rejection broke the supported local-proposer/remote-judge hybrid; explicit allow_external=False also requires a guard.",
       "Adding a complete per-case visibility descriptor fixed semantic loss but broke the existing V141 128k/176k actual input envelope; focused single-case wires missed multi-case field repetition. Preserve every descriptor/id through payload-local reversible sharing, not a larger budget.",
       "Final stop reason/trigger formerly existed only in the post-label trajectory; reservation and actual prediction require distinct runtime-owned phase. Cached multi-request native steps preserve tokens but aggregate zero calls, after which core restores only one; completed checkpoint restore is not interrupted replay equivalence.",
-      "A finalize-only native sink test skipped actual SignalBatchResult, and the observer wrongly assumed to_dict. Parent continuation and completed restoration must distinguish a prepared budget-blocked request journal from an answered role; source-resolved technical budget_blocked is not domain insufficiency."
+      "A finalize-only native sink test skipped actual SignalBatchResult, and the observer wrongly assumed to_dict. Parent continuation and completed restoration must distinguish a prepared budget-blocked request journal from an answered role; source-resolved technical budget_blocked is not domain insufficiency.",
+      "LabelStore.load checked internal shape but not the promised archive/hash/calculator/contract/reconciliation; a /dev/null zero-hash roundtrip fixture concealed the missing source gate. A calculator-consistent record can still come from a different bound price history."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "qualify_canonical_truth_then_bounded_posthoc_feedback",
-      "action": "Verify actual s01 canonical LabelStore/archive/calculator/contract/baseline/horizon after durable prediction, then specify/freeze native Posthoc feedback alone; do not fabricate trajectory/score/Slow publication.",
-      "stop": "No label injection into blind requests, source/version/multiple fabrication, revival of exhausted prefix budget, or prefix-to-completed-Fast/Slow conversion.",
-      "question": "Does canonical truth match the saved prediction definition and can native Posthoc preserve truthful technical/coverage diagnosis as a durable feedback artifact?",
+      "strategy": "verify_strict_label_admission_then_freeze_native_posthoc",
+      "action": "Complete actual full-store current-source validation/regression, then freeze bounded native Posthoc using canonical qualified truth and saved durable prediction; no trajectory fabrication.",
+      "stop": "Do not dispatch feedback before strict source admission or revive prefix budget; archive reconciliation is not provider/issuer authentication.",
+      "question": "Does the source-admitted canonical truth enable bounded native Posthoc to preserve technical budget/coverage limits as durable feedback?",
       "pass": "Qualified canonical source with matching baseline/window, then independently inspect fresh native Posthoc raw/correction/persisted item and exact recovery.",
       "fail": "Loader exit0 accepted without source/contract verification or feedback interpreted as completed Fast/new benefit.",
       "on_pass": "Close only bounded Posthoc feedback behavior/persistence, then design legitimate scoring/Critic/committed feedback prerequisites.",

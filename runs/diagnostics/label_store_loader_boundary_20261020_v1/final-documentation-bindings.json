@@ -1,0 +1,19 @@
+{
+  "scope": "Non-behavioral public docstrings and final EOF whitespace binding; original executions are not rewritten",
+  "current_source_bindings": {
+    "src/stock_opportunity_agent/cases/label_store.py": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af",
+    "src/stock_opportunity_agent/data/json_stream.py": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea"
+  },
+  "independent_review_original_bindings": {
+    "src/stock_opportunity_agent/cases/label_store.py": "6ce360ad56f728afcc751ecece06124290ec2ea09e4992cecdceea24f43396c9",
+    "src/stock_opportunity_agent/data/json_stream.py": "63ffd0a15ae82859155fb65b7494312b90a6e322ec3962b2aa0582c4649bea89"
+  },
+  "reviewed_to_current_changes": [
+    "five public method docstrings only",
+    "one final empty line removed from new stream module"
+  ],
+  "reviewed_vs_current_ast_equal_after_function_docstring_removal": true,
+  "actual_final_store_load_sha_reconstructed_by_one_extra_eof_newline": true,
+  "no_calculator_or_parser_behavior_change": true,
+  "repeat_full_or_store_scan": false
+}

@@ -24,6 +24,7 @@ from stock_opportunity_agent.cases.outcomes import (
 )
 from stock_opportunity_agent.cases.selection import eligible_common_stock_listings
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoOracle, RawInfoStore
+from stock_opportunity_agent.data.json_stream import StreamingJSONReader as _StreamingJSONReader
 from stock_opportunity_agent.data.sources.core import SecurityListing
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
@@ -2348,80 +2349,6 @@ def _artifact_file_identity(path: Path) -> dict[str, Any]:
         "size_bytes": path.stat().st_size,
     }
 
-
-class _StreamingJSONReader:
-    """Incremental JSON decoder used for multi-hundred-megabyte local archives."""
-
-    def __init__(self, path: Path, *, chunk_size: int = 1024 * 1024) -> None:
-        self.handle = path.open("r", encoding="utf-8")
-        self.chunk_size = chunk_size
-        self.buffer = ""
-        self.position = 0
-        self.eof = False
-        self.decoder = json.JSONDecoder()
-
-    def close(self) -> None:
-        self.handle.close()
-
-    def peek(self) -> str:
-        self._skip_whitespace()
-        self._ensure_available()
-        return self.buffer[self.position]
-
-    def consume(self, expected: str) -> None:
-        actual = self.peek()
-        if actual != expected:
-            raise ValidationError(
-                f"large price archive expected {expected!r}, received {actual!r}"
-            )
-        self.position += 1
-        self._compact()
-
-    def decode(self) -> Any:
-        self._skip_whitespace()
-        while True:
-            try:
-                value, end = self.decoder.raw_decode(self.buffer, self.position)
-            except json.JSONDecodeError as exc:
-                if self.eof:
-                    raise ValidationError("large price archive contains invalid JSON") from exc
-                self._fill()
-                continue
-            self.position = end
-            self._compact()
-            return value
-
-    def _skip_whitespace(self) -> None:
-        while True:
-            while self.position < len(self.buffer) and self.buffer[
-                self.position
-            ].isspace():
-                self.position += 1
-            if self.position < len(self.buffer) or self.eof:
-                return
-            self._fill()
-
-    def _ensure_available(self) -> None:
-        if self.position >= len(self.buffer) and not self.eof:
-            self._fill()
-        if self.position >= len(self.buffer):
-            raise ValidationError("large price archive ended unexpectedly")
-
-    def _fill(self) -> None:
-        chunk = self.handle.read(self.chunk_size)
-        if not chunk:
-            self.eof = True
-            return
-        if self.position:
-            self.buffer = self.buffer[self.position :] + chunk
-            self.position = 0
-        else:
-            self.buffer += chunk
-
-    def _compact(self) -> None:
-        if self.position > self.chunk_size:
-            self.buffer = self.buffer[self.position :]
-            self.position = 0
 
 
 def _stream_selected_price_history(

@@ -748,3 +748,5 @@
 - 2026-10-19：真实 blind-prefix v1 两首答 H_init/路由窄审通过，但 observer 未核真实 SignalBatchResult 返回族而失败；原件不改。两 SEC resolved 的 apply 实际重建为技术 budget_blocked，0apply答；仅修诊断 serializer/新root续接，原2答历史精确继承及原总32上限，journal与dispatch分类贯穿完成恢复。
 
 - 2026-10-19：实际默认Plan单例盲前缀到原生Predictor首答与durable sink，独立事实/期间/单位/控制原因消费窄审通过；原2答历史继承+新预测共3物理角色/0纠错，32产物恢复全等。apply技术预算阻断/Reflect确定性终结均无模型答，原v1失败保留；标签0读取，不造Fast完成，下一步先核真实单门truth再冻Posthoc。
+
+- 2026-10-20：实现既有LabelStore单门准入契约，严格archive/hash/calculator/contract/JSON类型及全部记录唯一计算器重算；旧18误放原证保留，新24固定/29流式变体独立通过，真实6554首次全load约9.46s/61MB。共享流式reader下沉data保dataset别名，不新增cache/定义/来源改写；真实s01仅在durable后核资格，Posthoc尚未派发，provider真值与完整F10/MVP仍open。

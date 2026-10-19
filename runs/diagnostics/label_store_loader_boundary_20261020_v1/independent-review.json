@@ -1,0 +1,105 @@
+{
+  "schema_version": "label-store-independent-loader-boundary-audit-v1",
+  "scope": "Only temporary synthetic builder/calculator-valid archive and writer-produced one-record label stores. No actual s01 truth computed, no production store/archive/prefix/role input modified or read, no model/API/network.",
+  "verdict": "current_loader_not_verified_truth_boundary",
+  "positive_controls": 1,
+  "invalid_false_admissions": 18,
+  "existing_negative_controls_rejected": 5,
+  "strongest_counterexample": {
+    "archive_recomputed": {
+      "realized_max_multiple": 2.2,
+      "is_surge": true,
+      "magnitude": "2-3x",
+      "baseline_mean": 100.0,
+      "future_peak_mean": 220.0,
+      "baseline_dates": [
+        "2025-01-08",
+        "2025-01-09",
+        "2025-01-10",
+        "2025-01-13",
+        "2025-01-14"
+      ],
+      "future_peak_dates": [
+        "2025-04-28",
+        "2025-04-29",
+        "2025-04-30",
+        "2025-05-01",
+        "2025-05-02"
+      ],
+      "horizon_end": "2025-07-15"
+    },
+    "mutated_record_changes": {
+      "future_peak_mean": 120.0,
+      "is_surge": false,
+      "magnitude": null,
+      "realized_max_multiple": 1.2
+    },
+    "load_ground_truth_actually_returned": {
+      "realized_max_multiple": 1.2,
+      "is_surge": false,
+      "magnitude": null
+    },
+    "meaning": "Record means/multiple/boolean/magnitude are internally coherent but contradict the untouched bound archive; polarity flips without any loader rejection."
+  },
+  "proven_failures": [
+    {
+      "priority": "P1",
+      "code": "src/stock_opportunity_agent/cases/label_store.py:159-202",
+      "finding": "Load validates presence/version/count and local LabelRecord consistency, but never reads or hashes archive, recognizes calculator, checks contract, or recomputes the record. Missing/changed archive, wrong or malformed SHA, renamed calculator, changed or null label_contract all returned usable GroundTruth."
+    },
+    {
+      "priority": "P1",
+      "code": "src/stock_opportunity_agent/cases/label_store.py:60-94",
+      "finding": "Record model validates dates parse/count/distinct and threshold/magnitude consistency only. It accepts multiple not equal to peak/baseline, baseline dates after cutoff, peak dates before cutoff, incorrect horizon end, and absent archive symbol. These must also be reconciled with actual canonical calculator output."
+    },
+    {
+      "priority": "P2",
+      "code": "src/stock_opportunity_agent/cases/label_store.py:115-139;175;197",
+      "finding": "Coercion hides invalid schema: string false becomes bool true; numeric strings and bool values become numbers; True is accepted as both version1 and record_count1. Unknown record fields are ignored. This violates the existing strict-schema testing requirement, independent of source authentication."
+    }
+  ],
+  "coercion_example": {
+    "input_is_surge": "false",
+    "returned_is_surge": true
+  },
+  "owning_requirements": {
+    "path": "spec/src/stock_opportunity_agent/cases/outcomes.md",
+    "lines": "64-88,93-96",
+    "summary": "Single canonical evaluation-only door; raw observation and derived values recomputed from frozen archive; manifest binds archive identity/SHA, calculator, contract/count and loading verifies them; changed vintage/calculator uses new store version; strict schema and derivation-equivalence tests."
+  },
+  "minimum_contract_consistent_boundary": [
+    "Before returning a verified store, validate recognized manifest version/types and semantic label_contract/calculator identity, locate the bound archive, hash its exact bytes and verify the required archive structure. Do not claim hash alone proves issuer or adjusted-price semantics.",
+    "Parse actual record types without truthiness/numeric-string coercion; preserve fail-closed duplicate/count/missing-key checks. Reject undeclared record fields under strict record schema.",
+    "For each record use the one owning six_month_smoothed_multiple calculator on its archive symbol and as_of_date; compare baseline/peak means and exact dates, horizon end, multiple, surge boolean and magnitude. Validate arithmetic and chronology as applicable; no independent duplicate calculator or hand-entered truth.",
+    "Keep existing canonical store and historical metrics unchanged. A rebuild against a changed archive/calculator must be explicitly versioned, with evaluation-side binding and no leakage into blind packets."
+  ],
+  "not_proven": [
+    "This audit does not say any actual production/s01 label is wrong. Driver owns that original-material qualification and must report it separately.",
+    "Even a strict archive SHA and calculator reconciliation cannot alone authenticate the issuer-symbol mapping, provider adjustment basis or economic source correctness. Those require the existing source qualification evidence; no new absolute source-authentication claim is made.",
+    "No blind-agent Posthoc input or new model response was created. F10/general verified-loader qualification cannot be inferred from present load success."
+  ],
+  "reproduction": {
+    "script": "label-store-counterexamples.py",
+    "default": "Loads frozen original_label_store.py.txt and original_outcomes.py.txt; requires a NEW --output file and refuses overwrite.",
+    "new_reader_comparison": "Pass --loader /absolute/path/to/current/label_store.py with a fresh output; frozen calculator may be selected separately via --calculator.",
+    "runtime": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:. bundled Python3.12"
+  },
+  "code_bindings": {
+    "src/stock_opportunity_agent/cases/label_store.py": "662055ff5ad3bdcbe974096347708b71348d133cee56c47d39eb63d7cbe6ec25",
+    "src/stock_opportunity_agent/cases/outcomes.py": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff",
+    "spec/src/stock_opportunity_agent/cases/outcomes.md": "cebc9de36f1bceb3d60bdaee2ca5b2eecccfe7b277585b2cdd7e31fd96ab2348"
+  },
+  "frozen_module_hashes": {
+    "loader_sha256": "662055ff5ad3bdcbe974096347708b71348d133cee56c47d39eb63d7cbe6ec25",
+    "calculator_sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff"
+  },
+  "artifacts": {
+    "original-counterexamples.json": "8bd92a098ee4c4071c71ebcf6d022613ac76b45ca7a7f2cb45f5ff454d2ca49c",
+    "original_label_store.py.txt": "662055ff5ad3bdcbe974096347708b71348d133cee56c47d39eb63d7cbe6ec25",
+    "original_outcomes.py.txt": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff",
+    "label-store-counterexamples.py": "3d1c777a8d13d51b9a2ed6e5d9f5198e8c7481452f407adb40836b013fbb2d7f"
+  },
+  "network_attempts": 0,
+  "actual_s01_truth_accessed": false,
+  "production_edited": false
+}

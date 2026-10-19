@@ -1,0 +1,1851 @@
+{
+  "scope": "Only temporary synthetic legal store/archive, no s01 computation, production label read or blind input modification. All load results checked by actual ground_truth accessor.",
+  "calculator_expected": {
+    "realized_max_multiple": 2.2,
+    "is_surge": true,
+    "magnitude": "2-3x",
+    "baseline_mean": 100.0,
+    "future_peak_mean": 220.0,
+    "baseline_dates": [
+      "2025-01-08",
+      "2025-01-09",
+      "2025-01-10",
+      "2025-01-13",
+      "2025-01-14"
+    ],
+    "future_peak_dates": [
+      "2025-04-28",
+      "2025-04-29",
+      "2025-04-30",
+      "2025-05-01",
+      "2025-05-02"
+    ],
+    "horizon_end": "2025-07-15"
+  },
+  "positive_record": {
+    "company_id": "cik_00000042",
+    "as_of_date": "2025-01-15",
+    "symbol": "DEMO",
+    "baseline_mean": 100.0,
+    "baseline_dates": [
+      "2025-01-08",
+      "2025-01-09",
+      "2025-01-10",
+      "2025-01-13",
+      "2025-01-14"
+    ],
+    "future_peak_mean": 220.0,
+    "future_peak_dates": [
+      "2025-04-28",
+      "2025-04-29",
+      "2025-04-30",
+      "2025-05-01",
+      "2025-05-02"
+    ],
+    "horizon_end": "2025-07-15",
+    "realized_max_multiple": 2.2,
+    "is_surge": true,
+    "magnitude": "2-3x"
+  },
+  "fixture_archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+  "fixture_archive": {
+    "schema_version": "synthetic-price-archive-fixture",
+    "bars_by_symbol": {
+      "DEMO": [
+        {
+          "as_of_date": "2025-01-06",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-07",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-08",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-09",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-10",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-13",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-14",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-15",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-16",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-17",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-20",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-21",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-22",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-23",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-24",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-27",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-28",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-29",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-30",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-01-31",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-03",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-04",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-05",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-06",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-07",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-10",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-11",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-12",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-13",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-14",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-17",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-18",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-19",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-20",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-21",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-24",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-25",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-26",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-27",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-02-28",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-03",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-04",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-05",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-06",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-07",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-10",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-11",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-12",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-13",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-14",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-17",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-18",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-19",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-20",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-21",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-24",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-25",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-26",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-27",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-28",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-03-31",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-01",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-02",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-03",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-04",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-07",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-08",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-09",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-10",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-11",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-14",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-15",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-16",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-17",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-18",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-21",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-22",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-23",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-24",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-25",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-04-28",
+          "adjusted_close": 220.0
+        },
+        {
+          "as_of_date": "2025-04-29",
+          "adjusted_close": 220.0
+        },
+        {
+          "as_of_date": "2025-04-30",
+          "adjusted_close": 220.0
+        },
+        {
+          "as_of_date": "2025-05-01",
+          "adjusted_close": 220.0
+        },
+        {
+          "as_of_date": "2025-05-02",
+          "adjusted_close": 220.0
+        },
+        {
+          "as_of_date": "2025-05-05",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-06",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-07",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-08",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-09",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-12",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-13",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-14",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-15",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-16",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-19",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-20",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-21",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-22",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-23",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-26",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-27",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-28",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-29",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-05-30",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-02",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-03",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-04",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-05",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-06",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-09",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-10",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-11",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-12",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-13",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-16",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-17",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-18",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-19",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-20",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-23",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-24",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-25",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-26",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-27",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-06-30",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-01",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-02",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-03",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-04",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-07",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-08",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-09",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-10",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-11",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-14",
+          "adjusted_close": 100.0
+        },
+        {
+          "as_of_date": "2025-07-15",
+          "adjusted_close": 100.0
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "case": "valid_archive_contract_and_record",
+      "kind": "positive",
+      "expected": "accept",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": true
+    },
+    {
+      "case": "archive_missing",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "archive_sha_wrong",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "archive_sha_malformed",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "not-a-hash",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "archive_body_changed_same_manifest_sha",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "calculator_renamed",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "unapproved.fake_calculator",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "label_contract_changed_horizon_and_threshold",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 9.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "one_calendar_month",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "label_contract_null",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": null,
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "record_internally_coherent_wrong_archive_and_flipped_label",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "future_peak_mean": 120.0,
+        "is_surge": false,
+        "magnitude": null,
+        "realized_max_multiple": 1.2
+      },
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 1.2,
+        "is_surge": false,
+        "magnitude": null
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 120.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 1.2,
+        "is_surge": false,
+        "magnitude": null
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "record_ratio_disagrees_with_means_but_label_consistent",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "is_surge": false,
+        "magnitude": null,
+        "realized_max_multiple": 1.2
+      },
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 1.2,
+        "is_surge": false,
+        "magnitude": null
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 1.2,
+        "is_surge": false,
+        "magnitude": null
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "record_baseline_dates_after_prediction",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "baseline_dates": [
+          "2025-02-03",
+          "2025-02-04",
+          "2025-02-05",
+          "2025-02-06",
+          "2025-02-07"
+        ]
+      },
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-02-03",
+          "2025-02-04",
+          "2025-02-05",
+          "2025-02-06",
+          "2025-02-07"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "record_future_peak_before_prediction",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "future_peak_dates": [
+          "2025-01-06",
+          "2025-01-07",
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10"
+        ]
+      },
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-01-06",
+          "2025-01-07",
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "record_horizon_wrong",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "horizon_end": "2025-01-16"
+      },
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-01-16",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "record_symbol_absent_from_archive",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "symbol": "NOT_IN_ARCHIVE"
+      },
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "NOT_IN_ARCHIVE",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "is_surge_string_false_coerces_to_true",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "is_surge": "false"
+      },
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "numeric_strings_are_coerced",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "baseline_mean": "100",
+        "future_peak_mean": "220",
+        "realized_max_multiple": "2.2"
+      },
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "numeric_bool_is_coerced",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "baseline_mean": true
+      },
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 1.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "manifest_bool_version_and_count",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": true,
+        "store_version": true
+      },
+      "record_changes": {},
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "extra_undeclared_record_field",
+      "kind": "invalid",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "unrecognized_truth_authority": "accepted"
+      },
+      "actual": "accepted",
+      "returned_truth": {
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "returned_record": {
+        "company_id": "cik_00000042",
+        "as_of_date": "2025-01-15",
+        "symbol": "DEMO",
+        "baseline_mean": 100.0,
+        "baseline_dates": [
+          "2025-01-08",
+          "2025-01-09",
+          "2025-01-10",
+          "2025-01-13",
+          "2025-01-14"
+        ],
+        "future_peak_mean": 220.0,
+        "future_peak_dates": [
+          "2025-04-28",
+          "2025-04-29",
+          "2025-04-30",
+          "2025-05-01",
+          "2025-05-02"
+        ],
+        "horizon_end": "2025-07-15",
+        "realized_max_multiple": 2.2,
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "expected_behavior_met": false
+    },
+    {
+      "case": "magnitude_mismatch_existing_guard",
+      "kind": "negative_control",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {
+        "magnitude": "3-10x"
+      },
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label record at @TMP@/store/labels.jsonl:1: label magnitude disagrees with the multiple",
+      "expected_behavior_met": true
+    },
+    {
+      "case": "missing_symbol_existing_guard",
+      "kind": "negative_control",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "invalid label record at @TMP@/store/labels.jsonl:1: label record is missing fields: symbol",
+      "expected_behavior_met": true
+    },
+    {
+      "case": "duplicate_key_existing_guard",
+      "kind": "negative_control",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "duplicate label key ('cik_00000042', '2025-01-15') at @TMP@/store/labels.jsonl:2",
+      "expected_behavior_met": true
+    },
+    {
+      "case": "record_count_mismatch_existing_guard",
+      "kind": "negative_control",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 2,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "rejected",
+      "error_type": "ValidationError",
+      "error": "label store manifest declares 2 records but 1 loaded",
+      "expected_behavior_met": true
+    },
+    {
+      "case": "unknown_case_key_existing_guard",
+      "kind": "negative_control",
+      "expected": "reject",
+      "manifest_changes": {
+        "archive_sha256": "2dd055064200527d11b836e347f443f691cc93db5857c30ef406d2e4033d7590",
+        "calculator": "stock_opportunity_agent.cases.outcomes.six_month_smoothed_multiple",
+        "label_contract": {
+          "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+          "binary_threshold": 2.0,
+          "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+          "horizon": "six_calendar_months",
+          "magnitude_classes": [
+            "2-3x",
+            "3-10x",
+            "10x+"
+          ]
+        },
+        "record_count": 1,
+        "store_version": 1
+      },
+      "record_changes": {},
+      "actual": "rejected",
+      "error_type": "UnknownLabelError",
+      "error": "no label for ('cik_00000042', '2099-01-01'); nearest stored keys: [('cik_00000042', '2025-01-15')]",
+      "expected_behavior_met": true
+    }
+  ],
+  "false_admissions": [
+    "archive_missing",
+    "archive_sha_wrong",
+    "archive_sha_malformed",
+    "archive_body_changed_same_manifest_sha",
+    "calculator_renamed",
+    "label_contract_changed_horizon_and_threshold",
+    "label_contract_null",
+    "record_internally_coherent_wrong_archive_and_flipped_label",
+    "record_ratio_disagrees_with_means_but_label_consistent",
+    "record_baseline_dates_after_prediction",
+    "record_future_peak_before_prediction",
+    "record_horizon_wrong",
+    "record_symbol_absent_from_archive",
+    "is_surge_string_false_coerces_to_true",
+    "numeric_strings_are_coerced",
+    "numeric_bool_is_coerced",
+    "manifest_bool_version_and_count",
+    "extra_undeclared_record_field"
+  ],
+  "positive_control_passed": true,
+  "negative_controls_rejected": true,
+  "network_attempts": 0,
+  "module_under_test": {
+    "loader_sha256": "662055ff5ad3bdcbe974096347708b71348d133cee56c47d39eb63d7cbe6ec25",
+    "calculator_sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff"
+  },
+  "code_bindings": {
+    "src/stock_opportunity_agent/cases/label_store.py": "662055ff5ad3bdcbe974096347708b71348d133cee56c47d39eb63d7cbe6ec25",
+    "src/stock_opportunity_agent/cases/outcomes.py": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff",
+    "spec/src/stock_opportunity_agent/cases/outcomes.md": "cebc9de36f1bceb3d60bdaee2ca5b2eecccfe7b277585b2cdd7e31fd96ab2348"
+  }
+}

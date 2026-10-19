@@ -94,3 +94,33 @@ future data, and later comparison of alternative definitions. Label-store tests
 must additionally cover strict schema loading, manifest/record reconciliation,
 duplicate-key rejection, fail-closed unknown keys, and derivation equivalence
 with the shared calculator on synthetic bars.
+
+### Loader admission is enforced at the evaluation door
+
+LabelStore.load keeps its public interface and is fail-closed: manifest scalar
+fields and LabelRecord fields retain their declared JSON types (no bool-as-number,
+string-to-float/bool coercion or nonfinite values). Require the fixed calculator
+identity and exact current SURGE_LABEL_CONTRACT, a readable regular archive file,
+and its actual SHA256. Parse/hash the same archive stream before returning a
+store. For every stored record, use its selected symbol history and the single
+six_month_smoothed_multiple implementation to recompute all raw observations,
+dates/horizon and derived fields; exact disagreement rejects the load. Selected
+history rows require canonical ISO dates and finite positive numeric adjusted
+closes, with optional symbol metadata matching their enclosing symbol; bad rows
+must not silently disappear through calculator filtering. Duplicate dates or
+ambiguous JSON keys reject. Unknown issuer keys continue to fail explicitly.
+
+Both legacy full-market archives and derived archives use the existing
+bars_by_symbol interface; no new archive schema, threshold, store version,
+placeholder/verify=False exception, correction of historical bytes or alternative
+truth doorway is introduced. Stream one symbol at a time with the existing JSON
+reader moved into the data layer, avoiding a 903MB whole-file object graph and
+cases→research imports. Recompute all6554 real records once to assess actual
+compatibility and load cost before considering any process-local optimization.
+
+This proves consistency with the frozen archive and calculator, not provider
+price authenticity, issuer mapping beyond the stored key/symbol, adjustment
+truth or forecast benefit. Any real record mismatch remains a qualification
+failure; never rewrite the original store to make validation pass. Labels and
+this loader remain evaluation-only and never enter prediction-time imports or
+frozen blind requests.
