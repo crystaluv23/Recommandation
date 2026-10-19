@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：原25缺源范围一次跨所有cold_start根精确key清点（不广扫cache正文），CompanyFacts cache/whole-raw候选由5→24，原20未定位中19属lookup根漏查；GPRE唯一未定位保unknown。全部932命中cache版本/675原件关联保留，25roots及42marketkeys定位但不视为准入；GPRE单GET native managedcache/rawproof采集候选经5temp控制，不重入旧stage/不append/不声称来源就绪。
+
 - 2026-10-20：原40案白名单source-only唯一执行完成（9bfea3bd/plan930439），defaultv6与latestv12各完整720项：262resolved/458gap、15/40达0.8；24非Anchor全0/BMBL8/KGC16/其余14Anchor17，缺源案不删。40BasicInfo160请求47resolved全partial、113unavailable，旧view/683文件/源绑定保持，124终态文件绑定。只读25候选定位5家exactCompanyFacts链，其余保持unknown；0GET/model/apply/LabelStore/fullprepare/global写入，不关闭F2/MVP，下一补原范围来源链。
 
 - 2026-10-20：追真实历史/当前cap循环及v182冻结实物，确认fresh40=Anchor16+Random8+Discovery16、Fast24；旧48仅未经实证的注释/报告声明，原失败只有16Anchor且原件不改。核批准metadata与既有无标签acquisition_scope、v18240绑定及1/1终态；区分offline owner可处理标签容器与blind禁止outcome，未使用/输出标签字段或读取LabelStore/LockedTest。下一白名单原40投影和v6/v12各720独立输入诊断，不以15案替代全范围。

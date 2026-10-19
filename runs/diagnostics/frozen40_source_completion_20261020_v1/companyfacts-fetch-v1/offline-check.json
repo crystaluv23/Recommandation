@@ -1,0 +1,50 @@
+{
+  "scope": "Offline fake opener only in four TemporaryDirectory roots; actual task directory has no attempts or network outputs. Native ManagedHttpTransport/RawDataCache/RequestLedger/SourceBudget/SecEdgarClient executed against fake responses.",
+  "candidate_bindings": {
+    "collector.py": "bffbeb725c24773e667668993a8507229d03ea71f697070c0f1ce651373b5c07",
+    "request-plan.json": "c56032f2fe8019b60f086194c0e9aaeb27c146f8217c675f2043c6572d759a54"
+  },
+  "checks": [
+    {
+      "case": "success",
+      "fake_opener_calls": 1,
+      "attempt_durable_before_fake_open": true,
+      "native_cache_written": true,
+      "native_ledger_status": "fetched",
+      "terminal_reentry_rejected": true,
+      "secret_absent_from_all_outputs": true
+    },
+    {
+      "case": "wrong_cik",
+      "fake_opener_calls": 1,
+      "attempt_durable_before_fake_open": true,
+      "native_cache_written": false,
+      "native_ledger_status": "error",
+      "terminal_reentry_rejected": true,
+      "secret_absent_from_all_outputs": true
+    },
+    {
+      "case": "redirect",
+      "fake_opener_calls": 1,
+      "attempt_durable_before_fake_open": true,
+      "native_cache_written": false,
+      "native_ledger_status": "error",
+      "terminal_reentry_rejected": true,
+      "secret_absent_from_all_outputs": true
+    },
+    {
+      "case": "timeout",
+      "fake_opener_calls": 1,
+      "attempt_durable_before_fake_open": true,
+      "native_cache_written": false,
+      "native_ledger_status": "error",
+      "terminal_reentry_rejected": true,
+      "secret_absent_from_all_outputs": true
+    }
+  ],
+  "actual_GETs": 0,
+  "global_writes": 0,
+  "typed_products": 0,
+  "NoRedirect_returns_None": true,
+  "candidate_code_and_plan_unchanged": true
+}

@@ -1,0 +1,57 @@
+{
+  "scope": "Independent five temporary fake-opener cases, no real GET/oracle append/typed normalization/model/labels; source and candidate real output untouched.",
+  "candidate_bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/collector.py": "f8f9d55fc0f4f83470079e8c8239d9e8e413c56d0e3d3751ee990426bbed0477",
+    "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/request-plan.json": "a3d78051c0b8d9e7be012ce1069032d100794c1646e2c802842383c8282bef62"
+  },
+  "checks": [
+    {
+      "case": "gzip",
+      "fake_GET_calls": 1,
+      "status": "successful",
+      "native_cache_written": true,
+      "secret_absent": true,
+      "terminal_reentry_rejected": true
+    },
+    {
+      "case": "truncated",
+      "fake_GET_calls": 1,
+      "status": "failed",
+      "native_cache_written": false,
+      "secret_absent": true,
+      "terminal_reentry_rejected": true
+    },
+    {
+      "case": "malformed_cik",
+      "fake_GET_calls": 1,
+      "status": "failed",
+      "native_cache_written": false,
+      "secret_absent": true,
+      "terminal_reentry_rejected": true
+    },
+    {
+      "case": "wrong_response_url",
+      "fake_GET_calls": 1,
+      "status": "failed",
+      "native_cache_written": false,
+      "secret_absent": true,
+      "terminal_reentry_rejected": true
+    },
+    {
+      "case": "read_failure",
+      "fake_GET_calls": 1,
+      "status": "failed",
+      "native_cache_written": false,
+      "secret_absent": true,
+      "terminal_reentry_rejected": true
+    }
+  ],
+  "NoRedirect_returns_None": true,
+  "actual_GETs": 0,
+  "actual_task_attempt_artifacts_absent": true,
+  "bounded_conclusion": "No blocker found for exact1GPRE attempt, native cache/raw proof identity and actual clock ordering, sanitized error/header persistence, no automatic redirect/retry and terminal attempt reentry rejection. This is offline wiring, not proof of real response or admission.",
+  "limitations": [
+    "Initial preflight refusal has no attempted GET; durable marker makes any reserved/started/failed/interrupted attempt terminal.",
+    "Collector produces whole-response proof only, not peracc normalized/admitted data or source readiness."
+  ]
+}

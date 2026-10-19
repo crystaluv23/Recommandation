@@ -1,0 +1,62 @@
+{
+  "schema_version": "gpre-companyfacts-single-fetch-v1",
+  "method": "GET",
+  "endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001309402.json",
+  "issuer_cik": "0001309402",
+  "company_id": "cik_0001309402",
+  "timeout_seconds": 30,
+  "max_GET_attempts": 1,
+  "automatic_retries": 0,
+  "redirects_allowed": false,
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/case-identities.json",
+      "sha256": "3ecbd01349c00bbbba554b06bee2824ef08db162affbac0122c62558e90d02e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/local-cache-chain-inventory.json",
+      "sha256": "5bf5a7bbe1c86ef8ca58b7270695eb32b846f64ce306fedaf42f3ed88f1eeb9a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py",
+      "sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py",
+      "sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "125bc938ffc17180d86f1d62d972b2bd2040629da59a73b1495b3ff71487e636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1"
+    }
+  ],
+  "headers_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+    "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e"
+  },
+  "headers_source_entry": "kgc-fy2024-40f-primary",
+  "request_headers": {
+    "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+    "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+    "Accept-Encoding": "identity"
+  },
+  "collector_sha256": "f8f9d55fc0f4f83470079e8c8239d9e8e413c56d0e3d3751ee990426bbed0477",
+  "native_path": [
+    "SecEdgarClient.company_facts",
+    "ManagedHttpTransport",
+    "RawDataCache",
+    "RequestLedger",
+    "SourceBudget(sec_edgar10/s)"
+  ],
+  "scope": "One actual retained CompanyFacts GET only, in this new task-local cache. Output whole raw-response proof only; no typed products/global append/source admission/model/labels/LockedTest/fullprepare. Terminal attempt forbids reentry, including failed or interrupted attempts.",
+  "output_directory": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1",
+  "attempt_accounting": "Durable reservation1 precedes all native work; network_open_calls/GET_attempts remain0 until the opener.open invocation boundary, and HTTP_responses_retained counts returned responses. Pre-opener failures do not count as GETs."
+}

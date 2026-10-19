@@ -91,8 +91,9 @@ v182实际冻结40且绑定当前APPROVED，旧运行完成仍1/1。旧“48”�
 
 原40投影已实际完成；owner读混合清单但仅输出身份/时间/split白名单，execute只stream原件SHA。
 先补原40范围内未覆盖24nonanchor+BMBL财务的来源链，不从3511×日期重选cohort。
-有界local候选25家均保留：5家CompanyFacts exactcache/raw定位（BMBL/LNTH/HITI/RZLV/WWR），
-其余20链在检查根未定位保持unknown；5家wholefiling/root、5家daily cache候选尚未准入。
-下一优先补可定位缓存的现有proof家族、再按实际证据安排有界资料查询；不能重跑已完成stage。
+[新跨根清点](../reports/frozen40-source-completion-preparation-20261020.md)保持25家：一次精确key路径匹配定位24家CompanyFacts cache/raw，
+GPRE仍缺；原20未定位中19是cache根漏查。25root/42market keys有候选，不等准入或年度正文充分。
+GPRE仅1GET采集计划与native managedcache/实际rawproof候选完成，5temp及独立5控制通过，待代码checkpoint后sole executor真实采集。
+另在实现25财务/24market经营统一写入前检查，0globalstore/append/view/matrix/model，不重入任何旧stage。
 不改变lookback/refs或推断news不存在；未恢复旧运行/不触LockedTest。
 原8项用户改动保持；MVP goal active未完成。

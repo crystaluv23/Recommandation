@@ -1,0 +1,69 @@
+{
+  "NoRedirect_returns_None": true,
+  "actual_GETs": 0,
+  "candidate_bindings": {
+    "collector.py": "f8f9d55fc0f4f83470079e8c8239d9e8e413c56d0e3d3751ee990426bbed0477",
+    "request-plan.json": "a3d78051c0b8d9e7be012ce1069032d100794c1646e2c802842383c8282bef62"
+  },
+  "candidate_code_and_plan_unchanged": true,
+  "checks": [
+    {
+      "GET_attempts": 1,
+      "HTTP_responses_retained": 1,
+      "attempt_reservations": 1,
+      "case": "success",
+      "fake_opener_calls": 1,
+      "native_cache_written": true,
+      "native_ledger_status": "fetched",
+      "secret_absent_from_all_outputs": true,
+      "terminal_reentry_rejected": true
+    },
+    {
+      "GET_attempts": 1,
+      "HTTP_responses_retained": 1,
+      "attempt_reservations": 1,
+      "case": "wrong_cik",
+      "fake_opener_calls": 1,
+      "native_cache_written": false,
+      "native_ledger_status": "error",
+      "secret_absent_from_all_outputs": true,
+      "terminal_reentry_rejected": true
+    },
+    {
+      "GET_attempts": 1,
+      "HTTP_responses_retained": 1,
+      "attempt_reservations": 1,
+      "case": "redirect",
+      "fake_opener_calls": 1,
+      "native_cache_written": false,
+      "native_ledger_status": "error",
+      "secret_absent_from_all_outputs": true,
+      "terminal_reentry_rejected": true
+    },
+    {
+      "GET_attempts": 1,
+      "HTTP_responses_retained": 0,
+      "attempt_reservations": 1,
+      "case": "timeout",
+      "fake_opener_calls": 1,
+      "native_cache_written": false,
+      "native_ledger_status": "error",
+      "secret_absent_from_all_outputs": true,
+      "terminal_reentry_rejected": true
+    },
+    {
+      "GET_attempts": 0,
+      "HTTP_responses_retained": 0,
+      "attempt_reservations": 1,
+      "case": "pre_opener_failure",
+      "fake_opener_calls": 0,
+      "native_cache_written": false,
+      "native_ledger_status": "error",
+      "secret_absent_from_all_outputs": true,
+      "terminal_reentry_rejected": true
+    }
+  ],
+  "global_writes": 0,
+  "scope": "Five temporary-directory fake opener cases only. Native managed SEC/cache/ledger/budget/client executed offline; real task output has no attempt artifacts. Previous offline-check.json retained as prior candidate evidence.",
+  "typed_products": 0
+}
