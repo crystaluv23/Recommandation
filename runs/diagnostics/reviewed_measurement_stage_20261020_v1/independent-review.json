@@ -1,0 +1,104 @@
+{
+  "status": "mechanically_completed_original_three_positive_capability_controls_not_passed",
+  "fixed_denominator": 3,
+  "original_must_pass_capability_outcomes": {
+    "m01_expected_full": "not_passed",
+    "m02_expected_partial": "not_passed",
+    "m03_expected_full": "not_passed",
+    "passed": 0,
+    "denominator": 3,
+    "rule": "Original frozen expectations remain unchanged. Context-only retention and mechanical completion do not count as full/partial positive capability success."
+  },
+  "deterministic_execution": {
+    "correct_arithmetic_and_exact_versions": 3,
+    "denominator": 3,
+    "m01_m02": "v3:1-110/100=-0.1, negative retirement fraction",
+    "m03": "actual archived v2:1-90/100=+0.1, positive retirement fraction",
+    "ending_share_distractor": "50/200 would yield +0.75 and was not used. Weighted-average retirement is neither period-end share change nor a stock-direction prediction."
+  },
+  "fresh_model_semantics": {
+    "role53_m01_and_role55_m03": "Both selected the correct exact version with assess_applicability/null scope. Their caution is supported by actual public callable/card: latest comparable weighted-average durations do not guarantee an explicitly requested FY pair or basic-common tag, and actual previous_signal_results was empty. They do not establish the frozen positive scope target, but no invented fact or unsupported closure is found. Do not use hidden fixture parent identity to force a model full answer.",
+    "role56_m01": "Adopts only exact generic measurement=-0.1 and finalizes while preserving the original need; no full answer or wrong numerical fact asserted.",
+    "role58_m03": "Only finalizes and preserves the original need; correct measurement remains in batch but was not adopted as an answer.",
+    "role54_m02_first_answer": "Authored partial weighted-average ownership with period-end/prospective residual; additional financing selection is contextual. First native routing guard rejected shared phrase fy versus fy, a common comparison-period qualifier rather than proof of residual-only facet ownership.",
+    "role57_m02_unique_correction": "Only rewrote the permitted selection_reason to remove the FY comparison. Exact offline original-router/parser replay captured the final failure shared phrase net share using common with remove_terms=[net,share,using,common]. Original _routing_context_only_fallback result matched actual persisted routing selections field-for-field: assess_applicability/null scope, not accepted partial ownership. Shared object/cutoff wording was mistaken for residual-only facets.",
+    "role59_m02": "Legal response to actual no-owner input: adopts exact generic -0.1 evidence, retains the complete compound need, records no need_dispositions rows, and keeps predictive effect unverified. Financing domain_unavailable is not made negative. This does not pass partial narrowing or fresh F7 mirror capability."
+  },
+  "source_and_projection_gap": {
+    "actual_source": "Synthetic legacy CompanyFacts JSON places Basic tag and shares unit in parent objects. Full raw material contains weighted 110/100 or90/100 plus instant ending50/200.",
+    "verified_code_chain": "_sec_facts/_make_sec_fact retains tag and unit internally in _SecFact, but exact_span serializes only the original child row. _fact_evidence retains only document_id/exact_span/timestamp. _numeric_source_observations can copy tag/unit only if already present in that row. Actual Reflect and consumer observations therefore show dated values but no Basic concept identity or input shares unit. Output measurement fraction is a different unit and does not supply that missing input identity.",
+    "oracle_interpretation": "Predeclared full/partial/full remains the unmet acceptance target. Its availability premise exceeded what this producer/model contract actually made verifiable; do not relabel legal uncertainty as model failure or rewrite the fixed denominator."
+  },
+  "actual_consumer_checks": {
+    "m01": {
+      "exact_version": "net_share_retirement_yoy:v3",
+      "measurement_value": -0.10000000000000009,
+      "unit": "fraction",
+      "categorical_state": "negative",
+      "whole_need_retained": true,
+      "actual_disposition_items": 0,
+      "final_posthoc_state_and_disposition_projection_equal": true,
+      "source_observation_parent_tag_unit_absent": true,
+      "consumer_sha256": "0761ace21b75f7bebcb9109c68519b101e0f60cf867ec01ec7d239f288a9a92b"
+    },
+    "m02": {
+      "exact_version": "net_share_retirement_yoy:v3",
+      "measurement_value": -0.10000000000000009,
+      "unit": "fraction",
+      "categorical_state": "negative",
+      "whole_need_retained": true,
+      "actual_disposition_items": 0,
+      "final_posthoc_state_and_disposition_projection_equal": true,
+      "source_observation_parent_tag_unit_absent": true,
+      "consumer_sha256": "f31a28fb28fe3cdc3de5a81e7c129a769c78e93620c54ba965ea71b7a0af6d48"
+    },
+    "m03": {
+      "exact_version": "net_share_retirement_yoy:v2",
+      "measurement_value": 0.09999999999999998,
+      "unit": "fraction",
+      "categorical_state": "positive",
+      "whole_need_retained": true,
+      "actual_disposition_items": 0,
+      "final_posthoc_state_and_disposition_projection_equal": true,
+      "source_observation_parent_tag_unit_absent": true,
+      "consumer_sha256": "10bbe6880e9a3191abdb6f3a5622e7783a65c450d1d63472f0b252209135f9f8"
+    }
+  },
+  "mechanical_completion_and_restore": {
+    "physical_fresh_roles": 7,
+    "typed_routing_corrections": 1,
+    "all_three_native_outcomes_mechanically_accepted": true,
+    "recorded_before_after_maps_equal": true,
+    "recorded_current_map_present_equal": true,
+    "restore_report": {
+      "immutable_files": 68,
+      "exact_equal": true,
+      "case_usage_unchanged": true,
+      "new_dispatches": 0,
+      "new_receipts": 0
+    },
+    "verification_limit": "Final short check read execution_summary and the three actual consumers only. Restore is the driver-recorded before/after map comparison, not another reviewer-triggered resume or full-artifact rehash. Deterministic assembler/posthoc projection is not actual Predictor/Posthoc model execution."
+  },
+  "minimal_follow_up": [
+    "Fix the existing literal ownership guard at the distinction between shared object/period qualifiers and genuinely residual-only facets; preserve negative controls and typed scope, without expanding ownership or altering the frozen batch.",
+    "Prefer existing typed sec-company-facts-document-v1 source normalization, which already carries per-row taxonomy/tag/unit/value/period identity, over putting metadata into prose. Legacy compatibility requires a source-bound typed projection; no Signal-name-based inference.",
+    "If adding canonical operands/basis fields to NumericMeasurement or SignalEvidence is chosen instead, prepare the concrete schema/compatibility/interface decision first; this audit does not authorize that change."
+  ],
+  "not_closed": [
+    "original three positive capability controls",
+    "complete F4/F7 or MVP",
+    "public source admission",
+    "whole-loop execution, prediction accuracy or independent research benefit"
+  ],
+  "reviewer_actions": {
+    "production_resume": 0,
+    "role_dispatch_or_submission": 0,
+    "network_or_external_LLM": 0,
+    "original_or_code_edits": 0,
+    "final_read_scope": "execution_summary plus three consumers; this reserved review is the only new formal-root file"
+  },
+  "bindings": {
+    "execution_summary_sha256": "eccefeebdbde861fd17b4b14e8ada68baca0228d66ef2f5ec3d7ebde0ccfb5bd",
+    "frozen_oracle_sha256": "67a35b52974556a3ba07ea0097a6b6ea6bd520cec9f0541d205c253290a80303"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "bounded_selections": [
+    {
+      "applicability_hypothesis": "Test applicability using this Signal's evidence; the original information need remains unresolved.",
+      "context_tags": [
+        "comparable_financials"
+      ],
+      "expected_role": "coverage",
+      "reason_code": "assess_applicability",
+      "selection_reason": "Retain the model-selected Signal for context only; direct answer ownership did not pass validation.",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "target_need_indices": [
+        0
+      ]
+    },
+    {
+      "applicability_hypothesis": "Financing disclosures within its 730-day window and available by the cutoff may identify future share issuance obligations; action assessment does not guarantee a complete net dilution calculation.",
+      "context_tags": [],
+      "expected_role": "coverage",
+      "reason_code": "combine_evidence",
+      "selection_reason": "Adds evidence on disclosed equity issuance, conversion and warrant actions relevant to prospective dilution.",
+      "signal_ref": "financing_listing_action:v5",
+      "target_need_indices": [
+        0
+      ]
+    }
+  ],
+  "max_llm_signals": 2,
+  "max_signals": 4
+}

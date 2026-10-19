@@ -1,0 +1,479 @@
+{
+  "final_context": {
+    "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
+    "basic_info": {
+      "data_gaps": [],
+      "projection_card_counts": {
+        "available_projections": 0,
+        "deferred_projections": 0,
+        "included_cards": 0
+      },
+      "projection_cards": [],
+      "source_index": []
+    },
+    "cited_signal_evidence": [
+      {
+        "evidence": {
+          "document_id": "[MASKED_COMPANY]_financials",
+          "exact_span": "{\"accn\":\"synthetic-2024\",\"end\":\"2024-12-31\",\"filed\":\"2025-01-20\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":110}",
+          "timestamp": "2025-01-20T12:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "signal_ref": "net_share_retirement_yoy:v3"
+      },
+      {
+        "evidence": {
+          "document_id": "[MASKED_COMPANY]_financials",
+          "exact_span": "{\"accn\":\"synthetic-2023\",\"end\":\"2023-12-31\",\"filed\":\"2024-02-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2023,\"start\":\"2023-01-01\",\"val\":100}",
+          "timestamp": "2025-01-20T12:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 1,
+        "signal_ref": "net_share_retirement_yoy:v3"
+      }
+    ],
+    "computed_metrics": [],
+    "context_contract": {
+      "assembly_blocks": [
+        {
+          "block_type": "basic_info_cards",
+          "provenance": "projection_id"
+        },
+        {
+          "block_type": "computed_anchor",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "computed_metrics",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "document_channel",
+          "provenance": "runtime_pit_disclosure"
+        },
+        {
+          "block_type": "signal_results",
+          "provenance": "signal_ref"
+        },
+        {
+          "block_type": "cited_signal_evidence",
+          "provenance": "signal_evidence_ref"
+        },
+        {
+          "block_type": "state_evolution",
+          "provenance": "per_round_delta"
+        },
+        {
+          "block_type": "research_state",
+          "provenance": "runtime_validated_state"
+        },
+        {
+          "block_type": "analysis_prompt",
+          "provenance": "plan"
+        }
+      ],
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "complete_trajectory_retained_locally": true,
+      "kind": "typed_append_only_assembly",
+      "numeric_decision_inputs_permitted_only_in": [
+        "prediction_baseline",
+        "computed_metrics"
+      ],
+      "presentation_target_exceeded": false,
+      "target_utf8_bytes": 24000
+    },
+    "document_channel": [],
+    "final_research_state": {
+      "contradictions": [],
+      "current_beliefs": [
+        "net_share_retirement_yoy=-0.1"
+      ],
+      "decision": "finalize",
+      "hypotheses": [],
+      "next_information_needs": [
+        "What is net share retirement based on comparable FY 2024 versus FY 2023 weighted-average basic common shares, how did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+      ],
+      "open_questions": [
+        "The predictive contribution of the admitted share-retirement measurement remains unverified."
+      ],
+      "resolved_questions": [],
+      "supporting_evidence": [
+        {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        },
+        {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      ]
+    },
+    "prediction_baseline": {
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "reason": "fewer_than_5_source_market_bars",
+      "status": "unavailable"
+    },
+    "prediction_time": "2025-02-01T00:00:00+00:00",
+    "runtime_termination": {
+      "phase": "prediction_ready",
+      "stop_reason": "finalized",
+      "termination_trigger": "max_signal_rounds"
+    },
+    "signal_rounds": [
+      {
+        "batch": {
+          "results": [
+            {
+              "execution": {
+                "status": "success"
+              },
+              "input_evidence_available_at": [
+                "2025-01-20T12:00:00+00:00",
+                "2025-01-20T12:00:00+00:00"
+              ],
+              "interpretation": {
+                "measurement_context": {
+                  "categorical_value_is_not_stock_direction": true,
+                  "deferred_observation_count": 0,
+                  "numeric_measurement": {
+                    "categorical_state": "negative",
+                    "display": {
+                      "unit": "%",
+                      "value": -10.000000000000009
+                    },
+                    "formula": "1 - current weighted-average shares / prior-year shares",
+                    "numeric_sign": "negative",
+                    "period": {
+                      "end": "2024-12-31",
+                      "start": "2024-01-01"
+                    },
+                    "unit": "fraction",
+                    "value": -0.10000000000000009
+                  },
+                  "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors.",
+                  "source_observations": [
+                    {
+                      "end": "2024-12-31",
+                      "evidence_group": "supporting",
+                      "evidence_index": 0,
+                      "start": "2024-01-01",
+                      "val": 110
+                    },
+                    {
+                      "end": "2023-12-31",
+                      "evidence_group": "supporting",
+                      "evidence_index": 1,
+                      "start": "2023-01-01",
+                      "val": 100
+                    }
+                  ]
+                },
+                "summary": "net_share_retirement_yoy=-0.1"
+              },
+              "research_status": {
+                "admission_key": "50e5b02066976deb89d43f362fcd6284b2716d5f84e5435d132b7948fe412c62",
+                "effect_status": "unverified",
+                "research_targets": [
+                  "surge_direction"
+                ],
+                "technical_status": "admitted"
+              },
+              "signal_ref": "net_share_retirement_yoy:v3",
+              "state": {
+                "confidence": 1.0,
+                "value": "negative"
+              },
+              "status": {
+                "coverage": "sufficient"
+              }
+            },
+            {
+              "execution": {
+                "status": "domain_unavailable"
+              },
+              "input_evidence_available_at": [],
+              "interpretation": {
+                "summary": "domain_unavailable: a normal domain coverage outcome, not a technical execution gap or failure. Visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+              },
+              "research_status": {
+                "admission_key": "666564345869bea25859f2e3e691d57d5b6f55bf91c72fd3a0a4c7e5a8364743",
+                "effect_status": "unverified",
+                "research_targets": [
+                  "surge_direction"
+                ],
+                "technical_status": "admitted"
+              },
+              "signal_ref": "financing_listing_action:v5",
+              "state": {
+                "confidence": 0.0,
+                "value": "unavailable"
+              },
+              "status": {
+                "coverage": "unavailable"
+              }
+            }
+          ],
+          "signal_calls": 2
+        },
+        "selected_signals": [
+          "net_share_retirement_yoy:v3",
+          "financing_listing_action:v5"
+        ]
+      }
+    ],
+    "state_evolution": [
+      {
+        "delta": {
+          "contradictions": {
+            "added": [],
+            "removed": []
+          },
+          "current_beliefs": {
+            "added": [
+              "net_share_retirement_yoy=-0.1"
+            ],
+            "removed": []
+          },
+          "decision": {
+            "from": "continue",
+            "to": "finalize"
+          },
+          "hypotheses": {
+            "added": [],
+            "removed": []
+          },
+          "next_information_needs": {
+            "added": [],
+            "removed": []
+          },
+          "open_questions": {
+            "added": [
+              "The predictive contribution of the admitted share-retirement measurement remains unverified."
+            ],
+            "removed": []
+          },
+          "resolved_questions": {
+            "added": [],
+            "removed": []
+          },
+          "supporting_evidence": {
+            "added": [
+              {
+                "claim": "net_share_retirement_yoy=-0.1",
+                "key": "signal:net_share_retirement_yoy:v3:supporting:0"
+              },
+              {
+                "claim": "net_share_retirement_yoy=-0.1",
+                "key": "signal:net_share_retirement_yoy:v3:supporting:1"
+              }
+            ],
+            "removed_keys": []
+          }
+        },
+        "need_dispositions": {
+          "items": [],
+          "prior_state_hash": "a58b75ede496df0ce9ae75123a94f58b554ebc04f3b116253640e851803e5be2"
+        },
+        "round": 1
+      }
+    ]
+  },
+  "posthoc": {
+    "basic_info_source_index": [],
+    "cited_signal_evidence": [
+      {
+        "evidence": {
+          "document_id": "[MASKED_COMPANY]_financials",
+          "exact_span": "{\"accn\":\"synthetic-2024\",\"end\":\"2024-12-31\",\"filed\":\"2025-01-20\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":110}",
+          "timestamp": "2025-01-20T12:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "signal_ref": "net_share_retirement_yoy:v3"
+      },
+      {
+        "evidence": {
+          "document_id": "[MASKED_COMPANY]_financials",
+          "exact_span": "{\"accn\":\"synthetic-2023\",\"end\":\"2023-12-31\",\"filed\":\"2024-02-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2023,\"start\":\"2023-01-01\",\"val\":100}",
+          "timestamp": "2025-01-20T12:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 1,
+        "signal_ref": "net_share_retirement_yoy:v3"
+      }
+    ],
+    "computed_metrics": [],
+    "context_contract": {
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "presentation_target_exceeded": false,
+      "target_chars": 24000
+    },
+    "data_gaps": [],
+    "final_research_state": {
+      "contradictions": [],
+      "current_beliefs": [
+        "net_share_retirement_yoy=-0.1"
+      ],
+      "decision": "finalize",
+      "hypotheses": [],
+      "next_information_needs": [
+        "What is net share retirement based on comparable FY 2024 versus FY 2023 weighted-average basic common shares, how did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+      ],
+      "open_questions": [
+        "The predictive contribution of the admitted share-retirement measurement remains unverified."
+      ],
+      "resolved_questions": [],
+      "supporting_evidence": [
+        {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        },
+        {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      ]
+    },
+    "prediction_baseline": {
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "reason": "fewer_than_5_source_market_bars",
+      "status": "unavailable"
+    },
+    "prediction_time": "2025-02-01T00:00:00+00:00",
+    "runtime_termination": {
+      "phase": "prediction_ready",
+      "stop_reason": "finalized",
+      "termination_trigger": "max_signal_rounds"
+    },
+    "signal_results": [
+      {
+        "execution": {
+          "status": "success"
+        },
+        "input_evidence_available_at": [
+          "2025-01-20T12:00:00+00:00",
+          "2025-01-20T12:00:00+00:00"
+        ],
+        "interpretation": {
+          "measurement_context": {
+            "categorical_value_is_not_stock_direction": true,
+            "deferred_observation_count": 0,
+            "numeric_measurement": {
+              "categorical_state": "negative",
+              "display": {
+                "unit": "%",
+                "value": -10.000000000000009
+              },
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "numeric_sign": "negative",
+              "period": {
+                "end": "2024-12-31",
+                "start": "2024-01-01"
+              },
+              "unit": "fraction",
+              "value": -0.10000000000000009
+            },
+            "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors.",
+            "source_observations": [
+              {
+                "end": "2024-12-31",
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+                "start": "2024-01-01",
+                "val": 110
+              },
+              {
+                "end": "2023-12-31",
+                "evidence_group": "supporting",
+                "evidence_index": 1,
+                "start": "2023-01-01",
+                "val": 100
+              }
+            ]
+          },
+          "summary": "net_share_retirement_yoy=-0.1"
+        },
+        "measurement": {
+          "formula": "1 - current weighted-average shares / prior-year shares",
+          "period": {
+            "end": "2024-12-31",
+            "start": "2024-01-01"
+          },
+          "unit": "fraction",
+          "value": -0.10000000000000009
+        },
+        "research_status": {
+          "admission_key": "50e5b02066976deb89d43f362fcd6284b2716d5f84e5435d132b7948fe412c62",
+          "effect_status": "unverified",
+          "research_targets": [
+            "surge_direction"
+          ],
+          "technical_status": "admitted"
+        },
+        "signal_id": "net_share_retirement_yoy",
+        "signal_ref": "net_share_retirement_yoy:v3",
+        "state": {
+          "confidence": 1.0,
+          "value": "negative"
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "version": 3
+      },
+      {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        },
+        "input_evidence_available_at": [],
+        "interpretation": {
+          "summary": "domain_unavailable: a normal domain coverage outcome, not a technical execution gap or failure. Visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+        },
+        "research_status": {
+          "admission_key": "666564345869bea25859f2e3e691d57d5b6f55bf91c72fd3a0a4c7e5a8364743",
+          "effect_status": "unverified",
+          "research_targets": [
+            "surge_direction"
+          ],
+          "technical_status": "admitted"
+        },
+        "signal_id": "financing_listing_action",
+        "signal_ref": "financing_listing_action:v5",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 5
+      }
+    ],
+    "state_evolution": [
+      {
+        "need_dispositions": {
+          "items": [],
+          "prior_state_hash": "a58b75ede496df0ce9ae75123a94f58b554ebc04f3b116253640e851803e5be2"
+        },
+        "round": 1
+      }
+    ]
+  }
+}

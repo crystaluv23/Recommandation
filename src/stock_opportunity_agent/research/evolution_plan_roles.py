@@ -1557,6 +1557,7 @@ class LLMSignalRetrievalAgent:
                                             phrase := _shared_distinctive_phrase(
                                                 item["selection_reason"],
                                                 residual_scope,
+                                                target_need=target_need,
                                             )
                                         )
                                     ),
@@ -1817,6 +1818,11 @@ class LLMSignalRetrievalAgent:
                 "are hard applicability rules. routing_answer_need_phrases is stricter: "
                 "answer_need requires its exact phrase in the one targeted need. New "
                 "selector prose cannot create applicability. Use "
+                "routing answer_scope as intended measurement capability, not proof "
+                "that issuer data is available or the need is already answered; "
+                "Reflect must verify the actual executed evidence. A callable that "
+                "selects the latest comparable pair does not thereby support an "
+                "arbitrarily requested period or share basis. Use "
                 "reason_code=answer_need only when the description and "
                 "measurement_scope directly cover the explicit object, period, unit "
                 "and comparison facet under the actual callable contract when known; "

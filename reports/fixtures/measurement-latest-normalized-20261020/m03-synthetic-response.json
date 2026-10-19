@@ -1,0 +1,57 @@
+{
+  "facts": {
+    "us-gaap": {
+      "CommonStockSharesOutstanding": {
+        "units": {
+          "shares": [
+            {
+              "accn": "0000000001-24-000001",
+              "end": "2023-12-31",
+              "filed": "2024-02-01",
+              "form": "10-K",
+              "fp": "FY",
+              "fy": 2023,
+              "val": 200
+            },
+            {
+              "accn": "0000000001-25-000001",
+              "end": "2024-12-31",
+              "filed": "2025-01-20",
+              "form": "10-K",
+              "fp": "FY",
+              "fy": 2024,
+              "val": 50
+            }
+          ]
+        }
+      },
+      "WeightedAverageNumberOfSharesOutstandingBasic": {
+        "units": {
+          "shares": [
+            {
+              "accn": "0000000001-24-000001",
+              "end": "2023-12-31",
+              "filed": "2024-02-01",
+              "form": "10-K",
+              "fp": "FY",
+              "fy": 2023,
+              "start": "2023-01-01",
+              "val": 100
+            },
+            {
+              "accn": "0000000001-25-000001",
+              "end": "2024-12-31",
+              "filed": "2025-01-20",
+              "form": "10-K",
+              "fp": "FY",
+              "fy": 2024,
+              "start": "2024-01-01",
+              "val": 90
+            }
+          ]
+        }
+      }
+    }
+  },
+  "cik": 1
+}

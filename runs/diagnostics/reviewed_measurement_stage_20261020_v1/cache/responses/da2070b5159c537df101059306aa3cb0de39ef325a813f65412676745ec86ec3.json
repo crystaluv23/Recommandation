@@ -1,0 +1,55 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "a9e498077ae39ec7a8102a0efd9478ae94fbd2c9cdde769e811160f02a9ad6df",
+    "operations": [
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "net_share_retirement_yoy=-0.1"
+      },
+      {
+        "op": "replace",
+        "path": "decision",
+        "value": "finalize"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"a9e498077ae39ec7a8102a0efd9478ae94fbd2c9cdde769e811160f02a9ad6df\",\"operations\":[{\"op\":\"append\",\"path\":\"supporting_evidence\",\"value\":{\"kind\":\"signal\",\"signal_ref\":\"net_share_retirement_yoy:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":0,\"claim\":\"net_share_retirement_yoy=-0.1\"}},{\"op\":\"append\",\"path\":\"supporting_evidence\",\"value\":{\"kind\":\"signal\",\"signal_ref\":\"net_share_retirement_yoy:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":1,\"claim\":\"net_share_retirement_yoy=-0.1\"}},{\"op\":\"append\",\"path\":\"current_beliefs\",\"value\":\"net_share_retirement_yoy=-0.1\"},{\"op\":\"replace\",\"path\":\"decision\",\"value\":\"finalize\"}]}",
+  "request_hash": "da2070b5159c537df101059306aa3cb0de39ef325a813f65412676745ec86ec3",
+  "response_id": "local-da2070b5159c537df101059306aa3cb0de39ef325a813f65412676745ec86ec3",
+  "usage": {
+    "accounting_tokens": 29449,
+    "agent_id": "/root/role_56",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "ed3d6b51059b39878133c050136d2624254cb78a231063e252b606cad277afe3",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "edc8b25d30e3b11aaf512ff3e27c329099cabe47cf913d120ca8ebe0e7107845",
+    "request_hash": "da2070b5159c537df101059306aa3cb0de39ef325a813f65412676745ec86ec3",
+    "token_usage": null
+  }
+}

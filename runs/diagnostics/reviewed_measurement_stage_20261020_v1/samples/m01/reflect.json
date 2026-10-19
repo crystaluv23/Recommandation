@@ -1,0 +1,46 @@
+{
+  "execution_mode": "independent_local_role",
+  "metadata": {
+    "need_dispositions": {
+      "items": [],
+      "prior_state_hash": "3366cd42b0f71137009ead0b7efb777ac7b9634d694ca117394e2ba54dc5703c"
+    }
+  },
+  "request_hashes": [
+    "da2070b5159c537df101059306aa3cb0de39ef325a813f65412676745ec86ec3"
+  ],
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "net_share_retirement_yoy=-0.1"
+    ],
+    "decision": "finalize",
+    "hypotheses": [],
+    "next_information_needs": [
+      "What is net share retirement based on comparable FY 2024 versus FY 2023 weighted-average basic common shares, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "net_share_retirement_yoy=-0.1",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "net_share_retirement_yoy:v3"
+      },
+      {
+        "claim": "net_share_retirement_yoy=-0.1",
+        "evidence_group": "supporting",
+        "evidence_index": 1,
+        "kind": "signal",
+        "signal_ref": "net_share_retirement_yoy:v3"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 29449
+  }
+}

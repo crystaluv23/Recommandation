@@ -1,0 +1,31 @@
+{
+  "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac",
+  "company_id": "synthetic_scope_m02",
+  "source_type": "sec_company_facts",
+  "published_at": "2024-02-01T00:00:00+00:00",
+  "available_at": "2024-02-02T00:00:00+00:00",
+  "content": "{\"accession_number\":\"0000000001-24-000001\",\"cik\":\"0000000001\",\"facts\":[{\"description\":null,\"end\":\"2023-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2023,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"CommonStockSharesOutstanding\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":200},{\"description\":null,\"end\":\"2023-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2023,\"frame\":null,\"label\":null,\"start\":\"2023-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":100}],\"filing_date\":\"2024-02-01\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+  "content_hash": "319c314d039a54ac230504353969c32e82f66398a5ccf8b3b9e6a2b75cf01822",
+  "metadata": {
+    "symbol": "FCTM02",
+    "cik": "0000000001",
+    "accession_number": "0000000001-24-000001",
+    "form": "10-K",
+    "source_key": "sec_edgar",
+    "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json",
+    "retrieved_at": "2026-10-20T00:00:00+00:00",
+    "backfill_plan_hash": "synthetic-latest-normalized-engineering-control",
+    "content_scope": "standard_taxonomy_facts_for_accession",
+    "fact_count": 2,
+    "taxonomy_namespaces": [
+      "us-gaap"
+    ],
+    "period_end_from": "2023-01-01",
+    "period_end_through": "2024-12-31",
+    "availability_policy": "next_utc_day_after_companyfacts_filed_date",
+    "retrospective_api_extraction": true,
+    "requires_primary_filing_audit": true,
+    "synthetic": true,
+    "source_scope": "Synthetic engineering control only; no public-source or primary-filing provenance."
+  }
+}

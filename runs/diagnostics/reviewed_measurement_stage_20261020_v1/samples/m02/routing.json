@@ -1,0 +1,37 @@
+{
+  "request_hashes": [
+    "3d026343b27c51f31bdd5934ca3307ab10133a85ff8914fc8f7cb690aa7b24e7",
+    "61fb7c1db9df8934e22ec476a387d72c0eb0034739283c06f59474dae52195cd"
+  ],
+  "selections": [
+    {
+      "applicability_hypothesis": "Test applicability using this Signal's evidence; the original information need remains unresolved.",
+      "context_tags": [
+        "comparable_financials"
+      ],
+      "expected_role": "coverage",
+      "reason_code": "assess_applicability",
+      "selection_reason": "Retain the model-selected Signal for context only; direct answer ownership did not pass validation.",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "target_need_indices": [
+        0
+      ]
+    },
+    {
+      "applicability_hypothesis": "Financing disclosures within its 730-day window and available by the cutoff may identify future share issuance obligations; action assessment does not guarantee a complete net dilution calculation.",
+      "context_tags": [],
+      "expected_role": "coverage",
+      "reason_code": "combine_evidence",
+      "selection_reason": "Adds evidence on disclosed equity issuance, conversion and warrant actions relevant to prospective dilution.",
+      "signal_ref": "financing_listing_action:v5",
+      "target_need_indices": [
+        0
+      ]
+    }
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 2,
+    "tokens": 136184
+  }
+}

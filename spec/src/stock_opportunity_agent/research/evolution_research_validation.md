@@ -1,5 +1,20 @@
 # Evolution Research Validation
 
+## Routing residual facet contrast (2026-10-20)
+
+A partial routing reason must not claim a facet it retains as unresolved.
+For an unambiguous literal compound target, compare the retained clauses with
+the answered clauses before treating shared words as a residual claim. Shared
+objects, periods and source-cutoff qualifiers are not residual-only facets.
+The comparison uses literal clauses and keeps whole-word matching; it does not
+introduce domain-specific stopwords or infer an answer from a keyword match.
+An independent clause containing only a recognized as-of source qualifier is
+global scope, never an answering facet. When literal clauses cannot establish
+both an answered and a retained side, retain the existing conservative overlap
+guard. Genuine retained-facet claims still receive the same indexed typed
+correction and bounded context-only fallback; ownership and canonical schemas
+are unchanged. Offline replay verifies this validator, not fresh model behavior.
+
 ## Requested object and local exclusion scope (2026-10-02)
 
 ### Exact timestamp bounds (2026-10-19)

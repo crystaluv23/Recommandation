@@ -1,0 +1,381 @@
+{
+  "actual_model_version": null,
+  "control_scope": "Latest comparable weighted common-share pair supported by existing callable; actual basis/period must be evidenced. Original fixed-FY/basic controls remain failed.",
+  "learning_hash": "ffe500cc7443a4c286f119c82744b254b2a0393e22b0cc9376f85d82f4937e79",
+  "normalization_provenance": [
+    {
+      "path": "/Users/l/Project/Recommandation/reports/fixtures/measurement-latest-normalized-20261020/m01-synthetic-response.json",
+      "sha256": "28624cd99e02ce3d9d5953f932da403f23d14bcf0f061301f17bbef6c1b61f75"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/fixtures/measurement-latest-normalized-20261020/m02-synthetic-response.json",
+      "sha256": "28624cd99e02ce3d9d5953f932da403f23d14bcf0f061301f17bbef6c1b61f75"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/fixtures/measurement-latest-normalized-20261020/m03-synthetic-response.json",
+      "sha256": "1201b31b9540465f2ba061b31e0207c7ccc1cb88b1500d6153b070be66e5e980"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/fixtures/measurement-latest-normalized-20261020/normalization-proof.json",
+      "sha256": "119ecdb706edba31de5a96b9691bf3e8df42fbab0221ffedb80d2f19d631b2c6"
+    }
+  ],
+  "profile": "synthetic_measurement",
+  "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "registry_refs": [
+    "financing_listing_action:v5",
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "gross_margin_change:v3",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3",
+    "guidance_acceleration:v3",
+    "max_drawdown_1y:v2",
+    "price_momentum_126d:v2",
+    "negative_word_count:v2",
+    "order_confirmation_disclosed:v3",
+    "order_quality:v2",
+    "commercialization_status:v2",
+    "customer_concentration:v2"
+  ],
+  "registry_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals",
+  "registry_version": 12,
+  "sample_snapshots": {
+    "m01": {
+      "learning_hash": "ffe500cc7443a4c286f119c82744b254b2a0393e22b0cc9376f85d82f4937e79",
+      "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+      "registry_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3",
+        "operating_cash_flow_margin:v2",
+        "revenue_acceleration:v2",
+        "revenue_growth_yoy:v3",
+        "guidance_acceleration:v3",
+        "max_drawdown_1y:v2",
+        "price_momentum_126d:v2",
+        "negative_word_count:v2",
+        "order_confirmation_disclosed:v3",
+        "order_quality:v2",
+        "commercialization_status:v2",
+        "customer_concentration:v2"
+      ]
+    },
+    "m02": {
+      "learning_hash": "ffe500cc7443a4c286f119c82744b254b2a0393e22b0cc9376f85d82f4937e79",
+      "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+      "registry_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3",
+        "operating_cash_flow_margin:v2",
+        "revenue_acceleration:v2",
+        "revenue_growth_yoy:v3",
+        "guidance_acceleration:v3",
+        "max_drawdown_1y:v2",
+        "price_momentum_126d:v2",
+        "negative_word_count:v2",
+        "order_confirmation_disclosed:v3",
+        "order_quality:v2",
+        "commercialization_status:v2",
+        "customer_concentration:v2"
+      ]
+    },
+    "m03": {
+      "learning_hash": "df411a31fea3c698ea8326bce1e805f9ca0f50254561e26d0480da4d7c7b416f",
+      "registry_hash": "ab44863e5d7343c5107d1cd1197f2c5bb9573098eb20a110243812fcea897ddb",
+      "registry_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v2",
+        "operating_cash_flow_margin:v2",
+        "revenue_acceleration:v2",
+        "revenue_growth_yoy:v3",
+        "guidance_acceleration:v3",
+        "max_drawdown_1y:v2",
+        "price_momentum_126d:v2",
+        "negative_word_count:v2",
+        "order_confirmation_disclosed:v3",
+        "order_quality:v2",
+        "commercialization_status:v2",
+        "customer_concentration:v2"
+      ]
+    }
+  },
+  "samples": [
+    {
+      "basic_info": {},
+      "company_id": "synthetic_scope_m01",
+      "document_paths": [
+        "/Users/l/Project/Recommandation/reports/fixtures/measurement-latest-normalized-20261020/m01-document-1.json",
+        "/Users/l/Project/Recommandation/reports/fixtures/measurement-latest-normalized-20261020/m01-document-2.json"
+      ],
+      "evaluation_context": {
+        "horizon": "six_calendar_months",
+        "horizon_end": "2025-08-01",
+        "prediction_time": "2025-02-01T00:00:00+00:00"
+      },
+      "identity": {
+        "company_name": "Fixture Issuer M01",
+        "identity_aliases": [
+          "Fixture Issuer M01",
+          "FCTM01",
+          "synthetic_scope_m01"
+        ],
+        "ticker": "FCTM01"
+      },
+      "plan": {
+        "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
+        "basic_info_policy": {
+          "requests": [
+            {
+              "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "orientation.v1.operating_report",
+              "source_types": [
+                "filing"
+              ]
+            },
+            {
+              "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "request_id": "orientation.v1.scoped_news",
+              "source_types": [
+                "news"
+              ]
+            },
+            {
+              "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "orientation.v1.financial_facts",
+              "source_types": [
+                "sec_company_facts"
+              ]
+            },
+            {
+              "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+              "lookback_days": 45,
+              "max_documents": 1,
+              "request_id": "orientation.v1.market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            }
+          ]
+        },
+        "initial_research_skill": "Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs.",
+        "parent_ids": [],
+        "plan_id": "plan_manual_v1",
+        "reflection_skill": "Reflect over the entire Signal batch. Track support, contradiction, resolved questions, concentration risk, and the next smallest set of information needs; finalize only when the surge thesis is decidable."
+      },
+      "prediction_time": "2025-02-01T00:00:00+00:00",
+      "prior_state": {
+        "contradictions": [],
+        "current_beliefs": [],
+        "decision": "continue",
+        "hypotheses": [],
+        "next_information_needs": [
+          "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [],
+        "supporting_evidence": []
+      },
+      "sample_id": "m01",
+      "seeded_needs_not_h_init_output": true,
+      "snapshot_ref": "net_share_retirement_yoy:v3",
+      "synthetic": true
+    },
+    {
+      "basic_info": {},
+      "company_id": "synthetic_scope_m02",
+      "document_paths": [
+        "/Users/l/Project/Recommandation/reports/fixtures/measurement-latest-normalized-20261020/m02-document-1.json",
+        "/Users/l/Project/Recommandation/reports/fixtures/measurement-latest-normalized-20261020/m02-document-2.json"
+      ],
+      "evaluation_context": {
+        "horizon": "six_calendar_months",
+        "horizon_end": "2025-08-01",
+        "prediction_time": "2025-02-01T00:00:00+00:00"
+      },
+      "identity": {
+        "company_name": "Fixture Issuer M02",
+        "identity_aliases": [
+          "Fixture Issuer M02",
+          "FCTM02",
+          "synthetic_scope_m02"
+        ],
+        "ticker": "FCTM02"
+      },
+      "plan": {
+        "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
+        "basic_info_policy": {
+          "requests": [
+            {
+              "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "orientation.v1.operating_report",
+              "source_types": [
+                "filing"
+              ]
+            },
+            {
+              "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "request_id": "orientation.v1.scoped_news",
+              "source_types": [
+                "news"
+              ]
+            },
+            {
+              "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "orientation.v1.financial_facts",
+              "source_types": [
+                "sec_company_facts"
+              ]
+            },
+            {
+              "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+              "lookback_days": 45,
+              "max_documents": 1,
+              "request_id": "orientation.v1.market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            }
+          ]
+        },
+        "initial_research_skill": "Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs.",
+        "parent_ids": [],
+        "plan_id": "plan_manual_v1",
+        "reflection_skill": "Reflect over the entire Signal batch. Track support, contradiction, resolved questions, concentration risk, and the next smallest set of information needs; finalize only when the surge thesis is decidable."
+      },
+      "prediction_time": "2025-02-01T00:00:00+00:00",
+      "prior_state": {
+        "contradictions": [],
+        "current_beliefs": [],
+        "decision": "continue",
+        "hypotheses": [],
+        "next_information_needs": [
+          "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, how did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [],
+        "supporting_evidence": []
+      },
+      "sample_id": "m02",
+      "seeded_needs_not_h_init_output": true,
+      "snapshot_ref": "net_share_retirement_yoy:v3",
+      "synthetic": true
+    },
+    {
+      "basic_info": {},
+      "company_id": "synthetic_scope_m03",
+      "document_paths": [
+        "/Users/l/Project/Recommandation/reports/fixtures/measurement-latest-normalized-20261020/m03-document-1.json",
+        "/Users/l/Project/Recommandation/reports/fixtures/measurement-latest-normalized-20261020/m03-document-2.json"
+      ],
+      "evaluation_context": {
+        "horizon": "six_calendar_months",
+        "horizon_end": "2025-08-01",
+        "prediction_time": "2025-02-01T00:00:00+00:00"
+      },
+      "identity": {
+        "company_name": "Fixture Issuer M03",
+        "identity_aliases": [
+          "Fixture Issuer M03",
+          "FCTM03",
+          "synthetic_scope_m03"
+        ],
+        "ticker": "FCTM03"
+      },
+      "plan": {
+        "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
+        "basic_info_policy": {
+          "requests": [
+            {
+              "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "orientation.v1.operating_report",
+              "source_types": [
+                "filing"
+              ]
+            },
+            {
+              "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "request_id": "orientation.v1.scoped_news",
+              "source_types": [
+                "news"
+              ]
+            },
+            {
+              "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "orientation.v1.financial_facts",
+              "source_types": [
+                "sec_company_facts"
+              ]
+            },
+            {
+              "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+              "lookback_days": 45,
+              "max_documents": 1,
+              "request_id": "orientation.v1.market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            }
+          ]
+        },
+        "initial_research_skill": "Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs.",
+        "parent_ids": [],
+        "plan_id": "plan_manual_v1",
+        "reflection_skill": "Reflect over the entire Signal batch. Track support, contradiction, resolved questions, concentration risk, and the next smallest set of information needs; finalize only when the surge thesis is decidable."
+      },
+      "prediction_time": "2025-02-01T00:00:00+00:00",
+      "prior_state": {
+        "contradictions": [],
+        "current_beliefs": [],
+        "decision": "continue",
+        "hypotheses": [],
+        "next_information_needs": [
+          "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [],
+        "supporting_evidence": []
+      },
+      "sample_id": "m03",
+      "seeded_needs_not_h_init_output": true,
+      "snapshot_ref": "net_share_retirement_yoy:v2",
+      "synthetic": true
+    }
+  ]
+}

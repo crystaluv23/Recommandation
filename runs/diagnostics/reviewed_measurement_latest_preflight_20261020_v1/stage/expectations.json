@@ -1,0 +1,169 @@
+{
+  "downstream_required": [
+    "exact selected version in executed batch",
+    "measurement value/unit/formula/reported period and source evidence preserved",
+    "actual validated need_dispositions and exact prior-state binding persisted",
+    "actual assembler/posthoc deterministic projections retain residual and version",
+    "completed artifacts unchanged on resume with zero new dispatch"
+  ],
+  "fixed_denominator": 3,
+  "global_failures": [
+    "drop an eligible catalog card",
+    "borrow v3 profile/status for v2 or mislabel v2 as ending-share capability",
+    "use ending shares to measure weighted-average retirement",
+    "invent prospective equity issuance or treat not measured as absent",
+    "close the m02 compound need fully from weighted-average evidence alone",
+    "interpret categorical sign as stock-direction prediction",
+    "treat technical failure/no match/not selected as capability pass",
+    "inherit raw answers/receipts/caches from a previous stage",
+    "claim Basic basis or periods without current typed evidence",
+    "treat latest-pair capability as arbitrary period/tag selection support",
+    "erase or relabel predecessor fixed denominator"
+  ],
+  "limits": {
+    "max_case_llm_calls": 8,
+    "max_case_tokens": 512000,
+    "max_llm_signals_per_round": 2,
+    "max_local_calls": 24,
+    "max_request_tokens": 131072,
+    "max_signal_rounds": 1,
+    "max_signals_per_round": 4,
+    "max_structured_corrections": 1
+  },
+  "model_oracle_visibility": "Independent role reads only exact system/user inbox; no oracle/history/network. Host precise model and token/cost unknown.",
+  "predecessor_failed_control": {
+    "denominator": 3,
+    "path": "reports/reviewed-measurement-stage-expectations-20261020.json",
+    "scope_passed": 0,
+    "sha256": "67a35b52974556a3ba07ea0097a6b6ea6bd520cec9f0541d205c253290a80303",
+    "unchanged": true
+  },
+  "profile": "synthetic_measurement",
+  "samples": [
+    {
+      "categorical_value": "negative",
+      "coverage": "sufficient",
+      "current_period": {
+        "end": "2024-12-31",
+        "start": "2024-01-01"
+      },
+      "documents": [
+        {
+          "content_sha256": "319c314d039a54ac230504353969c32e82f66398a5ccf8b3b9e6a2b75cf01822",
+          "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac"
+        },
+        {
+          "content_sha256": "c165b3538b9974137a78fe8e3149630e96f145cdd17aee46a8ad27e8c82c300b",
+          "document_id": "secfacts:0000000001:0000000001-25-000001:c165b3538b997413"
+        }
+      ],
+      "ending_current": 50,
+      "ending_prior": 200,
+      "expected_target_answer_scope": "full",
+      "forbidden_measurement_value": 0.75,
+      "input_measurement_unit": "shares",
+      "measurement_basis_tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "measurement_formula": "1 - current weighted-average shares / prior-year shares",
+      "measurement_unit": "fraction",
+      "measurement_value": -0.1,
+      "must_preserve_residual_facets": [],
+      "must_report_actual_period_and_basis": true,
+      "not_selected_is_not_pass": true,
+      "positive_capability_must_execute": true,
+      "prior_need": "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+      "prior_period": {
+        "end": "2023-12-31",
+        "start": "2023-01-01"
+      },
+      "sample_id": "m01",
+      "target_signal_ref": "net_share_retirement_yoy:v3",
+      "weighted_current": 110,
+      "weighted_prior": 100
+    },
+    {
+      "categorical_value": "negative",
+      "coverage": "sufficient",
+      "current_period": {
+        "end": "2024-12-31",
+        "start": "2024-01-01"
+      },
+      "documents": [
+        {
+          "content_sha256": "319c314d039a54ac230504353969c32e82f66398a5ccf8b3b9e6a2b75cf01822",
+          "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac"
+        },
+        {
+          "content_sha256": "c165b3538b9974137a78fe8e3149630e96f145cdd17aee46a8ad27e8c82c300b",
+          "document_id": "secfacts:0000000001:0000000001-25-000001:c165b3538b997413"
+        }
+      ],
+      "ending_current": 50,
+      "ending_prior": 200,
+      "expected_target_answer_scope": "partial",
+      "forbidden_measurement_value": 0.75,
+      "input_measurement_unit": "shares",
+      "measurement_basis_tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "measurement_formula": "1 - current weighted-average shares / prior-year shares",
+      "measurement_unit": "fraction",
+      "measurement_value": -0.1,
+      "must_preserve_residual_facets": [
+        "period-end common shares change",
+        "prospective net equity dilution"
+      ],
+      "must_report_actual_period_and_basis": true,
+      "not_selected_is_not_pass": true,
+      "positive_capability_must_execute": true,
+      "prior_need": "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, how did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+      "prior_period": {
+        "end": "2023-12-31",
+        "start": "2023-01-01"
+      },
+      "sample_id": "m02",
+      "target_signal_ref": "net_share_retirement_yoy:v3",
+      "weighted_current": 110,
+      "weighted_prior": 100
+    },
+    {
+      "categorical_value": "positive",
+      "coverage": "sufficient",
+      "current_period": {
+        "end": "2024-12-31",
+        "start": "2024-01-01"
+      },
+      "documents": [
+        {
+          "content_sha256": "319c314d039a54ac230504353969c32e82f66398a5ccf8b3b9e6a2b75cf01822",
+          "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac"
+        },
+        {
+          "content_sha256": "3db5cbfd6c9d0cb528da2b258673225e09519937cd008edade7bb3e8ae3e8b24",
+          "document_id": "secfacts:0000000001:0000000001-25-000001:3db5cbfd6c9d0cb5"
+        }
+      ],
+      "ending_current": 50,
+      "ending_prior": 200,
+      "expected_target_answer_scope": "full",
+      "forbidden_measurement_value": 0.75,
+      "input_measurement_unit": "shares",
+      "measurement_basis_tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "measurement_formula": "1 - current weighted-average shares / prior-year shares",
+      "measurement_unit": "fraction",
+      "measurement_value": 0.1,
+      "must_preserve_residual_facets": [],
+      "must_report_actual_period_and_basis": true,
+      "not_selected_is_not_pass": true,
+      "positive_capability_must_execute": true,
+      "prior_need": "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+      "prior_period": {
+        "end": "2023-12-31",
+        "start": "2023-01-01"
+      },
+      "sample_id": "m03",
+      "target_signal_ref": "net_share_retirement_yoy:v2",
+      "weighted_current": 90,
+      "weighted_prior": 100
+    }
+  ],
+  "schema_version": "measurement-scope-independent-expectations-v1",
+  "scope": "New latest-pair capability control with production-normalized synthetic CompanyFacts; distinct from original fixed-FY/basic three-case failures. No public-source/Hinit/Predictor/Mining/fullFastSlow."
+}

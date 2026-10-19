@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "4bb78c1ef448feeea5d8c95d4ce2c6ea46bb0b8723d7b695b2b83d4a181e7454",
+    "operations": [
+      {
+        "op": "replace",
+        "path": "selections[0].selection_reason",
+        "value": "Measures net share retirement using comparable weighted-average basic common share counts when the requested annual pair is the latest eligible duration pair."
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"4bb78c1ef448feeea5d8c95d4ce2c6ea46bb0b8723d7b695b2b83d4a181e7454\",\"operations\":[{\"op\":\"replace\",\"path\":\"selections[0].selection_reason\",\"value\":\"Measures net share retirement using comparable weighted-average basic common share counts when the requested annual pair is the latest eligible duration pair.\"}]}",
+  "request_hash": "61fb7c1db9df8934e22ec476a387d72c0eb0034739283c06f59474dae52195cd",
+  "response_id": "local-61fb7c1db9df8934e22ec476a387d72c0eb0034739283c06f59474dae52195cd",
+  "usage": {
+    "accounting_tokens": 70297,
+    "agent_id": "/root/role_57",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "5a7520d3faf71580b365c2dd589ddab423106e2bab246b69ccd42231d23a0795",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "3e7201119fe087906843234bb623d40b3091019581d5306888f0d157084e8c0b",
+    "request_hash": "61fb7c1db9df8934e22ec476a387d72c0eb0034739283c06f59474dae52195cd",
+    "token_usage": null
+  }
+}

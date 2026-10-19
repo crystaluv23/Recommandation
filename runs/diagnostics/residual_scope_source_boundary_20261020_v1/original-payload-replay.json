@@ -1,0 +1,103 @@
+{
+  "schema_version": "offline-routing-residual-replay-v1",
+  "created_at": "2026-10-19T20:11:17.384271+00:00",
+  "evidence_layer": "offline validator replay, not fresh role obedience or engineering MVP acceptance",
+  "source_stage": "runs/diagnostics/reviewed_measurement_stage_20261020_v1",
+  "original_stage_mutated": false,
+  "source_helper_sha256_before": "1283d2102ea99c692e2fca6b7b0e039734331933b413cb8aa11dbc46b35a4b66",
+  "source_helper_sha256_after": "1283d2102ea99c692e2fca6b7b0e039734331933b413cb8aa11dbc46b35a4b66",
+  "original_inbox_sha256": "e4ad6674bb4272db88388413c50908022ebb62d482d7f01bffe095d4a5dcb613",
+  "original_first_raw_sha256": "f05091ae89e166dd74ed2c71abc8e5c81e41f239a7d88afcf1e726179afcd255",
+  "original_correction_raw_sha256": "3e7201119fe087906843234bb623d40b3091019581d5306888f0d157084e8c0b",
+  "reason_test_constants_byte_exact": true,
+  "correction_replay": "Apply original sole replace to original first raw in memory, then pass resulting full object through native parser with fresh ScriptedRoleCaller. Do not mutate raw/receipt.",
+  "frozen_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "frozen_learning_hash": "ffe500cc7443a4c286f119c82744b254b2a0393e22b0cc9376f85d82f4937e79",
+  "tests": {
+    "selector": "tests.test_evolution_routing_plan_roles",
+    "passed": 88,
+    "elapsed_seconds": 6.181,
+    "new_selector": "tests.test_evolution_routing_plan_roles.RoutingResidualFacetContrastTests",
+    "new_tests": 7,
+    "intermediate_87_pass_limitation": "Earlier 87-pass revision lacked modifier-loss adversarial case; independent review demonstrated false admission. It is not final acceptance evidence."
+  },
+  "results": [
+    {
+      "case": "role54-first-raw",
+      "offline_native_parser_calls": 1,
+      "selection_count": 2,
+      "all_original_non_null_fields_preserved": true,
+      "serialization_boundary": "Existing contextual selection serializer omits null answer_scope/residual_need fields.",
+      "selected_rows": [
+        {
+          "signal_ref": "net_share_retirement_yoy:v3",
+          "reason_code": "answer_need",
+          "selection_reason": "Measures net share retirement from comparable FY 2024 versus FY 2023 weighted-average basic common share counts when these are the latest eligible durations.",
+          "applicability_hypothesis": "Requires same-unit comparable basic common weighted-average counts disclosed by the cutoff; the callable uses latest eligible durations and cannot force a fiscal-year pair.",
+          "expected_role": "primary",
+          "context_tags": [
+            "comparable_financials"
+          ],
+          "target_need_indices": [
+            0
+          ],
+          "answer_scope": "partial",
+          "residual_need": "Using only disclosures available by 2025-02-01T00:00:00+00:00, establish the FY 2024 versus FY 2023 period-end common share change and disclosed prospective net equity dilution."
+        },
+        {
+          "signal_ref": "financing_listing_action:v5",
+          "reason_code": "combine_evidence",
+          "selection_reason": "Adds evidence on disclosed equity issuance, conversion and warrant actions relevant to prospective dilution.",
+          "applicability_hypothesis": "Financing disclosures within its 730-day window and available by the cutoff may identify future share issuance obligations; action assessment does not guarantee a complete net dilution calculation.",
+          "expected_role": "coverage",
+          "context_tags": [],
+          "target_need_indices": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "case": "role57-exact-merged-in-memory",
+      "offline_native_parser_calls": 1,
+      "selection_count": 2,
+      "all_original_non_null_fields_preserved": true,
+      "serialization_boundary": "Existing contextual selection serializer omits null answer_scope/residual_need fields.",
+      "selected_rows": [
+        {
+          "signal_ref": "net_share_retirement_yoy:v3",
+          "reason_code": "answer_need",
+          "selection_reason": "Measures net share retirement using comparable weighted-average basic common share counts when the requested annual pair is the latest eligible duration pair.",
+          "applicability_hypothesis": "Requires same-unit comparable basic common weighted-average counts disclosed by the cutoff; the callable uses latest eligible durations and cannot force a fiscal-year pair.",
+          "expected_role": "primary",
+          "context_tags": [
+            "comparable_financials"
+          ],
+          "target_need_indices": [
+            0
+          ],
+          "answer_scope": "partial",
+          "residual_need": "Using only disclosures available by 2025-02-01T00:00:00+00:00, establish the FY 2024 versus FY 2023 period-end common share change and disclosed prospective net equity dilution."
+        },
+        {
+          "signal_ref": "financing_listing_action:v5",
+          "reason_code": "combine_evidence",
+          "selection_reason": "Adds evidence on disclosed equity issuance, conversion and warrant actions relevant to prospective dilution.",
+          "applicability_hypothesis": "Financing disclosures within its 730-day window and available by the cutoff may identify future share issuance obligations; action assessment does not guarantee a complete net dilution calculation.",
+          "expected_role": "coverage",
+          "context_tags": [],
+          "target_need_indices": [
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "external_llm_calls": 0,
+  "formal_requests_submitted": 0,
+  "limits": [
+    "Replay uses current validator with original immutable outputs; it cannot establish fresh model behavior.",
+    "No canonical schema or ownership permission changed; actual Reflect evidence and semantic scope remain required.",
+    "Original 3-case oracle and observed failures are unchanged."
+  ]
+}

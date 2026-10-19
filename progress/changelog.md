@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：完成冻结9d3ce929的三例measurement native stage，7独立角色/1routing纠错；数值与exactversions3/3正确，但full/partial/full正控0/3。独立审查定位legacy证据父tag/unit丢失及shared对象/期间词被残留guard误杀，实际fallback/no-owner与完整need保留如实存档。唯一恢复68文件全等/0新派发，root重hash；356405逻辑units、host tokens/cost未知，0外部LLM/资料。原oracle/分母不改；另修target对照残留guard及部分modifier丢失反例，136关联/独立4控制通过；既有typed正常化→磁盘恢复→modelview保Basic/Diluted/单位，无canonical变更。新latest支持能力控制仅准备未作答，不宣称F4/F7/MVP关闭。
+
 - 2026-10-19：修复日线四入口 local.date、两层可见性/旧轨迹恢复、critic 最后 wire 白名单、review scope 与 earliest load 的 split proof 覆盖假设，以及 local judge/JEV 和显式禁外部 caller 的旁路。保留原失败与中间过宽 hybrid 拒绝，实际匿名 pending wire/独立反例窄通过；原 250 记录和 5 分母不变，仍未全读 45d、未出新角色答/资料请求。下一步先补 runtime 停止元数据，再冻结生产盲前缀到 durable prediction，读标签前停止；F9/全 ready/loops/MVP 仍 open。
 
 - 2026-10-19：核对 BMBL 原 Massive adjusted=true 请求/响应可精确重现250行历史价格，但未来复权时点证明未建立，market保留unknown不准入。准备三中性样本direct SEC生产stage与独立oracle：客户分散、真实早cut不足、guidance/Q3残留；共享原生产4total/2LLM组合限额、分组执行及NO_SIGNAL_MATCH/all-unavailable确定性终结，无伪造budget耗尽/Reflect处置。1741全量、最终7项接口检查和独立preflight审查通过，尚无新角色回答或能力关闭。最新用户授权允许只读公开资料查询，禁外部LLM继续；冻结SEC stage资料请求仍0，market公开取证另计。

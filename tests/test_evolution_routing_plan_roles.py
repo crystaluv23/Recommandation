@@ -9,7 +9,134 @@ from stock_opportunity_agent.research.evolution_output_validation import (
 from stock_opportunity_agent.research.evolution_research_validation import (
     _reflection_need_transition_contract,
     _reflection_selection_intents,
+    _shared_distinctive_phrase,
 )
+
+
+class RoutingResidualFacetContrastTests(TestCase):
+    TARGET = (
+        "What is net share retirement based on comparable FY 2024 versus FY 2023 "
+        "weighted-average basic common shares, how did period-end common shares "
+        "change, and what prospective net equity dilution is disclosed, using only "
+        "disclosures available by 2025-02-01T00:00:00+00:00?"
+    )
+    RESIDUAL = (
+        "Using only disclosures available by 2025-02-01T00:00:00+00:00, establish "
+        "the FY 2024 versus FY 2023 period-end common share change and disclosed "
+        "prospective net equity dilution."
+    )
+    # Exact reason strings from immutable role 54 and role 57, respectively.
+    REASONS = (
+        "Measures net share retirement from comparable FY 2024 versus FY 2023 "
+        "weighted-average basic common share counts when these are the latest "
+        "eligible durations.",
+        "Measures net share retirement using comparable weighted-average basic "
+        "common share counts when the requested annual pair is the latest "
+        "eligible duration pair.",
+    )
+
+    def _select(self, outputs):
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            caller = ScriptedRoleCaller(outputs)
+            selected = LLMSignalRetrievalAgent(caller).select(
+                (self.TARGET,), registry.freeze(), {},
+            )
+        return selected, caller
+
+    def _row(self, reason):
+        raw = signal_selection("net_share_retirement_yoy:v1")
+        raw["selections"][0].update(
+            selection_reason=reason, answer_scope="partial",
+            residual_need=self.RESIDUAL, context_tags=["comparable_financials"],
+        )
+        return raw
+
+    def test_recorded_reason_variants_keep_partial_ownership(self):
+        for reason in self.REASONS:
+            with self.subTest(reason=reason):
+                self.assertIsNotNone(_shared_distinctive_phrase(reason, self.RESIDUAL))
+                selected, caller = self._select([self._row(reason)])
+                self.assertEqual(len(caller.calls), 1)
+                self.assertEqual(selected.value[0].reason_code, "answer_need")
+                self.assertEqual(selected.value[0].answer_scope, "partial")
+                self.assertEqual(selected.value[0].residual_need, self.RESIDUAL)
+
+    def test_actual_retained_facets_receive_indexed_reason_correction(self):
+        for claim in ("period-end common share change", "prospective net equity dilution"):
+            with self.subTest(claim=claim):
+                bad = self._row(self.REASONS[0] + " Also measures " + claim + ".")
+                good = self._row(self.REASONS[0])
+                selected, caller = self._select([bad, good])
+                self.assertEqual(len(caller.calls), 2)
+                feedback = caller.calls[1]["payload"]["validation_feedback"]
+                self.assertIn("claims a facet retained", feedback["validation_error"])
+                paths = {path for obligation in feedback["obligations"]
+                         for path in obligation["must_change_paths"]}
+                self.assertIn("selections[0].selection_reason", paths)
+                self.assertEqual(selected.value[0].answer_scope, "partial")
+                self.assertEqual(selected.value[0].selection_reason, self.REASONS[0])
+
+    def test_unrepaired_real_claim_retains_context_only_fallback(self):
+        bad = self._row(self.REASONS[0] + " Covers prospective net equity dilution.")
+        selected, caller = self._select([bad, bad])
+        self.assertEqual(len(caller.calls), 2)
+        self.assertEqual(selected.value[0].reason_code, "assess_applicability")
+        self.assertIsNone(selected.value[0].answer_scope)
+        self.assertIsNone(selected.value[0].residual_need)
+        self.assertEqual(selected.value[0].target_need_indices, (0,))
+
+    def test_retained_facet_losing_one_modifier_still_rejects_claim(self):
+        for replacement in ("future", ""):
+            with self.subTest(replacement=replacement):
+                bad = self._row(
+                    self.REASONS[0] + " Also measures prospective net equity dilution."
+                )
+                bad["selections"][0]["residual_need"] = self.RESIDUAL.replace(
+                    "prospective", replacement,
+                )
+                selected, caller = self._select([bad, bad])
+                self.assertEqual(len(caller.calls), 2)
+                self.assertEqual(selected.value[0].reason_code, "assess_applicability")
+                self.assertIsNone(selected.value[0].answer_scope)
+                self.assertIn("claims a facet retained", validation_error(caller.calls[1]))
+
+    def test_common_objects_and_cutoffs_are_not_globally_ignored(self):
+        target = (
+            "What operating cash flow margin is disclosed for FY 2024 versus FY "
+            "2023, and what prospective common share issuance is disclosed, "
+            "using only disclosures available by 2025-02-01?"
+        )
+        residual = "What prospective common share issuance is disclosed by 2025-02-01?"
+        self.assertIsNone(_shared_distinctive_phrase(
+            "Measures operating cash flow margin for FY 2024 versus FY 2023.",
+            residual, target_need=target,
+        ))
+        self.assertIsNotNone(_shared_distinctive_phrase(
+            "Measures prospective common share issuance.", residual, target_need=target,
+        ))
+
+    def test_whole_word_and_clause_boundaries_remain_distinct(self):
+        for reason in (
+            "Measures weighted-average basic shares; prospectivefiction and equitylike remain unknown.",
+            "Measures weighted-average basic shares with a period-ending observation.",
+        ):
+            with self.subTest(reason=reason):
+                self.assertIsNone(_shared_distinctive_phrase(
+                    reason, self.RESIDUAL, target_need=self.TARGET,
+                ))
+        self.assertIsNotNone(_shared_distinctive_phrase(
+            "Measures period-end common shares.", self.RESIDUAL, target_need=self.TARGET,
+        ))
+
+    def test_unsplit_target_keeps_conservative_guard(self):
+        reason = "Covers Tasiast mill restart impact."
+        residual = "What Tasiast mill restart impact remains unknown?"
+        self.assertEqual(
+            _shared_distinctive_phrase(reason, residual, target_need=residual),
+            _shared_distinctive_phrase(reason, residual),
+        )
 
 
 class RoutingPartialResidualTemporalScopeTests(TestCase):

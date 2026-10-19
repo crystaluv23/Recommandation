@@ -1,0 +1,144 @@
+{
+  "request_hashes": [],
+  "signal_round": {
+    "batch": {
+      "document_fingerprints": {
+        "net_share_retirement_yoy:v3": [
+          "synthetic_scope_m01_financials:0d5704901c04b37e3214774ebea00672ef96546b2254d318a2233cd69018093b"
+        ]
+      },
+      "resolutions": [
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 2,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 366,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-01-20T12:00:00+00:00",
+              "content_hash": "0d5704901c04b37e3214774ebea00672ef96546b2254d318a2233cd69018093b",
+              "document_id": "synthetic_scope_m01_financials"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "synthetic_scope_m01_financials"
+                ],
+                "phase": "initial",
+                "request_id": "signal:net_share_retirement_yoy:v3",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "omitted_context_markers": [],
+          "request": {
+            "description": "Measure year-over-year net share retirement, with dilution represented as a negative value.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 2,
+            "minimum_period_span_days": 330,
+            "query": "weighted average shares shares outstanding",
+            "request_id": "signal:net_share_retirement_yoy:v3",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        }
+      ],
+      "results": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "synthetic_scope_m01_financials",
+                "exact_span": "{\"accn\":\"synthetic-2024\",\"end\":\"2024-12-31\",\"filed\":\"2025-01-20\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":110}",
+                "timestamp": "2025-01-20T12:00:00+00:00"
+              },
+              {
+                "document_id": "synthetic_scope_m01_financials",
+                "exact_span": "{\"accn\":\"synthetic-2023\",\"end\":\"2023-12-31\",\"filed\":\"2024-02-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2023,\"start\":\"2023-01-01\",\"val\":100}",
+                "timestamp": "2025-01-20T12:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "net_share_retirement_yoy=-0.1"
+          },
+          "measurement": {
+            "formula": "1 - current weighted-average shares / prior-year shares",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            },
+            "unit": "fraction",
+            "value": -0.10000000000000009
+          },
+          "signal_id": "net_share_retirement_yoy",
+          "state": {
+            "confidence": 1.0,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 3
+        }
+      ],
+      "signal_calls": 1,
+      "skipped_unchanged_refs": []
+    },
+    "information_needs": [
+      "What is net share retirement based on comparable FY 2024 versus FY 2023 weighted-average basic common shares, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+    ],
+    "selected_signals": [
+      "net_share_retirement_yoy:v3"
+    ],
+    "selections": [
+      {
+        "applicability_hypothesis": "Useful if the selected durations and share series match FY 2024 versus FY 2023 basic common shares disclosed by the cutoff; verify those attributes before treating the ratio as the requested measure.",
+        "context_tags": [
+          "comparable_financials"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "selection_reason": "Provides a comparable-period weighted-average-share retirement ratio; the disclosed callable lacks an explicit fiscal-year or basic-common-share selector.",
+        "signal_ref": "net_share_retirement_yoy:v3",
+        "target_need_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 0,
+    "tokens": 0
+  }
+}

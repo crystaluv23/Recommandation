@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest import TestCase
@@ -25,6 +26,60 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SecFinancialSignalTests(TestCase):
+    def test_production_companyfacts_normalization_keeps_actual_share_basis_through_consumers(self):
+        from stock_opportunity_agent.data.backfill import _company_fact_documents
+        from stock_opportunity_agent.research.evolution_research_validation import _signal_batch_model_view
+        from stock_opportunity_agent.signal_library import SignalBatchResult, SignalResult, signal_result_model_view
+
+        basic = "WeightedAverageNumberOfSharesOutstandingBasic"
+        diluted = "WeightedAverageNumberOfDilutedSharesOutstanding"
+        for tag in (basic, diluted):
+            with self.subTest(tag=tag):
+                rows = [_row("2023-01-01", "2023-12-31", 100, "2025-01-20"),
+                        _row("2024-01-01", "2024-12-31", 110, "2025-01-20")]
+                for row in rows:
+                    row["accn"] = "0000000001-25-000001"
+                ending = [_row(None, "2023-12-31", 200, "2025-01-20"),
+                          _row(None, "2024-12-31", 50, "2025-01-20")]
+                for row in ending:
+                    row["accn"] = "0000000001-25-000001"
+                response = {"facts": {"us-gaap": {
+                    tag: {"units": {"shares": rows}},
+                    "CommonStockSharesOutstanding": {"units": {"shares": ending}},
+                }}}
+                documents, counts = _company_fact_documents(response,
+                    item={"cik": "0000000001", "company_id": "issuer_1", "symbol": "FIXTURE",
+                          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000000001.json"},
+                    selection={"period_end_from": "2023-01-01", "period_end_through": "2024-12-31",
+                               "available_at_through": AS_OF.isoformat(),
+                               "taxonomy_allowlist": ["us-gaap"], "form_allowlist": ["10-K"]},
+                    plan_hash="synthetic-test-only", retrieved_at=AS_OF)
+                self.assertEqual(counts["selected_fact_row_count"], 4)
+                self.assertEqual(len(documents), 1)
+                self.assertEqual(documents[0].available_at, datetime(2025, 1, 21, tzinfo=timezone.utc))
+                # Exercise immutable source and canonical-result serialization, not a hand-built view.
+                document = RawInfoDocument.from_dict(json.loads(json.dumps(documents[0].to_dict())))
+                spec = _spec("net_share_retirement_yoy", "financial.net_share_retirement_yoy", 0.02, -0.05)
+                with tempfile.TemporaryDirectory() as directory:
+                    store = RawInfoStore(Path(directory), documents=(document,))
+                    self.assertFalse(store.append(document))
+                    restored = RawInfoStore(Path(directory))
+                    result = SignalExecutor(_snapshot((spec,)), restored).execute_batch(
+                        (spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+                result = SignalResult.from_dict(json.loads(json.dumps(result.to_dict())))
+                view = signal_result_model_view(result)
+                context = view["interpretation"]["measurement_context"]
+                observations = context["source_observations"]
+                self.assertEqual([(r["tag"], r["unit"], r["value"], r["start"], r["end"])
+                                  for r in observations],
+                                 [(tag, "shares", 110, "2024-01-01", "2024-12-31"),
+                                  (tag, "shares", 100, "2023-01-01", "2023-12-31")])
+                self.assertAlmostEqual(context["numeric_measurement"]["value"], -0.1)
+                self.assertTrue(all(item.exact_span in document.content for item in result.supporting_evidence))
+                reflect = _signal_batch_model_view(SignalBatchResult((result,), 1))[0]
+                self.assertEqual(reflect["measurement_context"], context)
+                self.assertEqual(reflect["exact_claim_if_adopted"], result.interpretation)
+
     def test_model_view_keeps_numeric_periods_without_changing_result_or_reflection_claim(self):
         from stock_opportunity_agent.signal_library import signal_result_model_view
         from stock_opportunity_agent.research.evolution_research_validation import _signal_batch_model_view

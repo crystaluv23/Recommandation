@@ -1,0 +1,15 @@
+{
+  "immutable_inventory_files": 68,
+  "root_rehashed_current_all_equal": true,
+  "restore_zero_new_dispatches": true,
+  "original_oracle_unchanged": true,
+  "requests_receipts": {
+    "requests": 7,
+    "inbox": 7,
+    "outbox": 7,
+    "receipts": 7,
+    "cache": 7
+  },
+  "independent_review_sha256": "c62a28300938224c6e7cec1a891dfb4d66a84dbdc1bc61013bb264b11e6e5f2f",
+  "scope": "Root static verification only; no additional resume; no semantic scope pass."
+}

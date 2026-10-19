@@ -1,0 +1,38 @@
+{
+  "recorded_by": "root from acceptance_review completed review message",
+  "reviewer": "/root/acceptance_review",
+  "source_sha256": "1283d2102ea99c692e2fca6b7b0e039734331933b413cb8aa11dbc46b35a4b66",
+  "evidence_layer": "independent offline native parser counterexample review, not fresh production model behavior",
+  "fixed_review_controls": 4,
+  "passed": 4,
+  "cases": [
+    {
+      "id": "original-role54-reason",
+      "native_parser_calls": 1,
+      "reason_code": "answer_need",
+      "answer_scope": "partial"
+    },
+    {
+      "id": "original-role57-reason",
+      "native_parser_calls": 1,
+      "reason_code": "answer_need",
+      "answer_scope": "partial"
+    },
+    {
+      "id": "prospective-replaced-with-future-in-residual",
+      "helper_match": "equity dilution",
+      "native_parser_calls": 2,
+      "reason_code": "assess_applicability",
+      "answer_scope": null
+    },
+    {
+      "id": "prospective-deleted-from-residual",
+      "helper_match": "equity dilution",
+      "native_parser_calls": 2,
+      "reason_code": "assess_applicability",
+      "answer_scope": null
+    }
+  ],
+  "intermediate_failure": "Earlier87-pass variant incorrectly accepted both modifier-loss claims. Reviewer actual probe rejected that implementation; final source was rechecked only on these four fixed controls.",
+  "scope_limit": "No broadened sweep or production dispatch/resume; frozen original raw/receipts/denominator unchanged."
+}

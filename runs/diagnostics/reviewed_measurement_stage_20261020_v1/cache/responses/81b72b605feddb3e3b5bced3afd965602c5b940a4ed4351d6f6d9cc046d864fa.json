@@ -1,0 +1,37 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "selections": [
+      {
+        "answer_scope": null,
+        "applicability_hypothesis": "Useful if the selected durations and share series match FY 2024 versus FY 2023 basic common shares disclosed by the cutoff; verify those attributes before treating the ratio as the requested measure.",
+        "context_tags": [
+          "comparable_financials"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "residual_need": null,
+        "selection_reason": "Provides a comparable-period weighted-average-share retirement ratio; the disclosed callable lacks an explicit fiscal-year or basic-common-share selector.",
+        "signal_ref": "net_share_retirement_yoy:v3",
+        "target_need_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"selections\":[{\"signal_ref\":\"net_share_retirement_yoy:v3\",\"reason_code\":\"assess_applicability\",\"selection_reason\":\"Provides a comparable-period weighted-average-share retirement ratio; the disclosed callable lacks an explicit fiscal-year or basic-common-share selector.\",\"applicability_hypothesis\":\"Useful if the selected durations and share series match FY 2024 versus FY 2023 basic common shares disclosed by the cutoff; verify those attributes before treating the ratio as the requested measure.\",\"expected_role\":\"coverage\",\"target_need_indices\":[0],\"answer_scope\":null,\"residual_need\":null,\"context_tags\":[\"comparable_financials\"]}]}",
+  "request_hash": "81b72b605feddb3e3b5bced3afd965602c5b940a4ed4351d6f6d9cc046d864fa",
+  "response_id": "local-81b72b605feddb3e3b5bced3afd965602c5b940a4ed4351d6f6d9cc046d864fa",
+  "usage": {
+    "accounting_tokens": 65791,
+    "agent_id": "/root/role_53",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "4b26dac317da8702efc417754770f0eb3fb7975bfcfb3e55ef51122cb3691aab",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "d3aa104e97ffb4748573760a2ff46d323150dcf24fa90cf8ff7165720afe4353",
+    "request_hash": "81b72b605feddb3e3b5bced3afd965602c5b940a4ed4351d6f6d9cc046d864fa",
+    "token_usage": null
+  }
+}

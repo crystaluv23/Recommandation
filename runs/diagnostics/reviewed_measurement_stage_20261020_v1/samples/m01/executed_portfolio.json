@@ -1,0 +1,19 @@
+{
+  "bounded_selections": [
+    {
+      "applicability_hypothesis": "Useful if the selected durations and share series match FY 2024 versus FY 2023 basic common shares disclosed by the cutoff; verify those attributes before treating the ratio as the requested measure.",
+      "context_tags": [
+        "comparable_financials"
+      ],
+      "expected_role": "coverage",
+      "reason_code": "assess_applicability",
+      "selection_reason": "Provides a comparable-period weighted-average-share retirement ratio; the disclosed callable lacks an explicit fiscal-year or basic-common-share selector.",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "target_need_indices": [
+        0
+      ]
+    }
+  ],
+  "max_llm_signals": 2,
+  "max_signals": 4
+}

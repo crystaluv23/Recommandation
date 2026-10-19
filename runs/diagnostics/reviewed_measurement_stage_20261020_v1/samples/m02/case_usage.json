@@ -1,0 +1,17 @@
+{
+  "limits": {
+    "max_case_llm_calls": 8,
+    "max_case_tokens": 512000,
+    "max_llm_signals_per_round": 2,
+    "max_request_tokens": 131072,
+    "max_signal_rounds": 1,
+    "max_signals_per_round": 4,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 3,
+    "tokens": 167001
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "e196df76ef9620077d5a20118d0753f1ef1a5e499e97a02c80165087cf6ec332",
+    "operations": [
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "net_share_retirement_yoy=-0.1"
+      },
+      {
+        "op": "append",
+        "path": "open_questions",
+        "value": "The predictive contribution of the admitted share-retirement measurement remains unverified."
+      },
+      {
+        "op": "replace",
+        "path": "decision",
+        "value": "finalize"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"e196df76ef9620077d5a20118d0753f1ef1a5e499e97a02c80165087cf6ec332\",\"operations\":[{\"op\":\"append\",\"path\":\"supporting_evidence\",\"value\":{\"kind\":\"signal\",\"signal_ref\":\"net_share_retirement_yoy:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":0,\"claim\":\"net_share_retirement_yoy=-0.1\"}},{\"op\":\"append\",\"path\":\"supporting_evidence\",\"value\":{\"kind\":\"signal\",\"signal_ref\":\"net_share_retirement_yoy:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":1,\"claim\":\"net_share_retirement_yoy=-0.1\"}},{\"op\":\"append\",\"path\":\"current_beliefs\",\"value\":\"net_share_retirement_yoy=-0.1\"},{\"op\":\"append\",\"path\":\"open_questions\",\"value\":\"The predictive contribution of the admitted share-retirement measurement remains unverified.\"},{\"op\":\"replace\",\"path\":\"decision\",\"value\":\"finalize\"}]}",
+  "request_hash": "0fa4202b62607928a2a716d455dd49381084379c9e9025723a27a1d73eb46be8",
+  "response_id": "local-0fa4202b62607928a2a716d455dd49381084379c9e9025723a27a1d73eb46be8",
+  "usage": {
+    "accounting_tokens": 30817,
+    "agent_id": "/root/role_59",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "600a11a807978822b1309362f0b788110c1c0e917267aa428998ec7ae9104d5d",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "ffd5696763dd8b940b8840a4dfadbc9a6556153177407d405fc263e6d836445f",
+    "request_hash": "0fa4202b62607928a2a716d455dd49381084379c9e9025723a27a1d73eb46be8",
+    "token_usage": null
+  }
+}

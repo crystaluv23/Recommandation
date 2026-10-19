@@ -1,0 +1,1 @@
+{"base_hash":"4bb78c1ef448feeea5d8c95d4ce2c6ea46bb0b8723d7b695b2b83d4a181e7454","operations":[{"op":"replace","path":"selections[0].selection_reason","value":"Measures net share retirement using comparable weighted-average basic common share counts when the requested annual pair is the latest eligible duration pair."}]}

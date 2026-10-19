@@ -1,0 +1,50 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "selections": [
+      {
+        "answer_scope": "partial",
+        "applicability_hypothesis": "Requires same-unit comparable basic common weighted-average counts disclosed by the cutoff; the callable uses latest eligible durations and cannot force a fiscal-year pair.",
+        "context_tags": [
+          "comparable_financials"
+        ],
+        "expected_role": "primary",
+        "reason_code": "answer_need",
+        "residual_need": "Using only disclosures available by 2025-02-01T00:00:00+00:00, establish the FY 2024 versus FY 2023 period-end common share change and disclosed prospective net equity dilution.",
+        "selection_reason": "Measures net share retirement from comparable FY 2024 versus FY 2023 weighted-average basic common share counts when these are the latest eligible durations.",
+        "signal_ref": "net_share_retirement_yoy:v3",
+        "target_need_indices": [
+          0
+        ]
+      },
+      {
+        "answer_scope": null,
+        "applicability_hypothesis": "Financing disclosures within its 730-day window and available by the cutoff may identify future share issuance obligations; action assessment does not guarantee a complete net dilution calculation.",
+        "context_tags": [],
+        "expected_role": "coverage",
+        "reason_code": "combine_evidence",
+        "residual_need": null,
+        "selection_reason": "Adds evidence on disclosed equity issuance, conversion and warrant actions relevant to prospective dilution.",
+        "signal_ref": "financing_listing_action:v5",
+        "target_need_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"selections\":[{\"signal_ref\":\"net_share_retirement_yoy:v3\",\"reason_code\":\"answer_need\",\"selection_reason\":\"Measures net share retirement from comparable FY 2024 versus FY 2023 weighted-average basic common share counts when these are the latest eligible durations.\",\"applicability_hypothesis\":\"Requires same-unit comparable basic common weighted-average counts disclosed by the cutoff; the callable uses latest eligible durations and cannot force a fiscal-year pair.\",\"expected_role\":\"primary\",\"target_need_indices\":[0],\"answer_scope\":\"partial\",\"residual_need\":\"Using only disclosures available by 2025-02-01T00:00:00+00:00, establish the FY 2024 versus FY 2023 period-end common share change and disclosed prospective net equity dilution.\",\"context_tags\":[\"comparable_financials\"]},{\"signal_ref\":\"financing_listing_action:v5\",\"reason_code\":\"combine_evidence\",\"selection_reason\":\"Adds evidence on disclosed equity issuance, conversion and warrant actions relevant to prospective dilution.\",\"applicability_hypothesis\":\"Financing disclosures within its 730-day window and available by the cutoff may identify future share issuance obligations; action assessment does not guarantee a complete net dilution calculation.\",\"expected_role\":\"coverage\",\"target_need_indices\":[0],\"answer_scope\":null,\"residual_need\":null,\"context_tags\":[]}]}",
+  "request_hash": "3d026343b27c51f31bdd5934ca3307ab10133a85ff8914fc8f7cb690aa7b24e7",
+  "response_id": "local-3d026343b27c51f31bdd5934ca3307ab10133a85ff8914fc8f7cb690aa7b24e7",
+  "usage": {
+    "accounting_tokens": 65887,
+    "agent_id": "/root/role_54",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "e4ad6674bb4272db88388413c50908022ebb62d482d7f01bffe095d4a5dcb613",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "f05091ae89e166dd74ed2c71abc8e5c81e41f239a7d88afcf1e726179afcd255",
+    "request_hash": "3d026343b27c51f31bdd5934ca3307ab10133a85ff8914fc8f7cb690aa7b24e7",
+    "token_usage": null
+  }
+}

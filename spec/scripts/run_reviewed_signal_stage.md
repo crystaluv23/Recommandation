@@ -22,6 +22,19 @@ with its declared target and requires a resolved, available deterministic probe
 before freezing. This is fixture qualification, not public source admission or
 permission to force the subsequent selector's choice.
 
+The original frozen FY/basic three-case batch remains an unmet control, not a
+reason to broaden its latest-pair callable. A subsequent separately declared
+control may ask for the latest comparable weighted-average common-share pair
+that the existing version actually selects, with its observed periods and
+basis. It must retain the prior failed denominator and distinguish the new
+question. Existing production CompanyFacts normalization may materialize each
+synthetic accession as an immutable document containing literal per-row tag,
+unit and periods. Preserve raw construction inputs and normalization counts;
+synthetic normalization is not primary-filing or public-source admission.
+Neither the normalizer nor the oracle supplies an answer to routing. Full or
+partial remains an intended capability route; Reflect must independently
+establish the actual measurement and any residual from the current batch.
+
 Before routing create the actual executor and inject its final callable map.
 Original eligibility gates remain: complete snapshot membership does not mean
 every card passes research-context gates. Preflight uses the real resolver and

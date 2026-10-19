@@ -1,0 +1,37 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "selections": [
+      {
+        "answer_scope": null,
+        "applicability_hypothesis": "Disclosures available by the cutoff may support this related measurement; verify that its selected periods and share basis match the requested annual comparison before treating it as an answer.",
+        "context_tags": [
+          "comparable_financials"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "residual_need": null,
+        "selection_reason": "Measures net retirement from comparable weighted-average shares; its latest-period callable does not explicitly select FY 2024 versus FY 2023 or guarantee basic common shares.",
+        "signal_ref": "net_share_retirement_yoy:v2",
+        "target_need_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"selections\":[{\"signal_ref\":\"net_share_retirement_yoy:v2\",\"reason_code\":\"assess_applicability\",\"selection_reason\":\"Measures net retirement from comparable weighted-average shares; its latest-period callable does not explicitly select FY 2024 versus FY 2023 or guarantee basic common shares.\",\"applicability_hypothesis\":\"Disclosures available by the cutoff may support this related measurement; verify that its selected periods and share basis match the requested annual comparison before treating it as an answer.\",\"expected_role\":\"coverage\",\"target_need_indices\":[0],\"answer_scope\":null,\"residual_need\":null,\"context_tags\":[\"comparable_financials\"]}]}",
+  "request_hash": "304c94201212aab3565d06713223a430098ab8a7e1eddfd03ab13e6461d44613",
+  "response_id": "local-304c94201212aab3565d06713223a430098ab8a7e1eddfd03ab13e6461d44613",
+  "usage": {
+    "accounting_tokens": 64929,
+    "agent_id": "/root/role_55",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "7f52176e60d5b54ec55aba81074899c131de9ecfeb6bb78311e3b61f526d916e",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "bfb7c50b68404e4d8880bf6035487d97f5891c1547c964e088d48a3ae19954a8",
+    "request_hash": "304c94201212aab3565d06713223a430098ab8a7e1eddfd03ab13e6461d44613",
+    "token_usage": null
+  }
+}

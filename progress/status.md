@@ -2,16 +2,17 @@
 
 更新：2026-10-20。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)
 尚未收敛；独立收益为后续里程碑、仍未知。生产 LLM 节点由独立 subagent 执行，
-外部 LLM 调用0；只读资料取证已授权，单独计数。新前缀7次独立角色执行，
+外部 LLM 调用0；只读资料取证已授权，单独计数。本批7次独立角色执行，
 0新资料，host tokens/cost未知。
 
 ## 当前验收
 
-本轮 [measurement stage](../reports/reviewed-measurement-stage-20261020.md) 已扩既有
-Signal入口：三个隔离synthetic case、真实v3/v2完整快照与actual executor注入；
-24共享请求/每case512k与8逻辑调用/每请求131072，旧预算不复活。
-12项通过，v3零答预检3inbox/0receipt-cache，重复全hash相同；尚未正式派角色。
-root独立oracle与真实weighted/ending对抗材料冻结，不能当公开来源准入或收益。
+本轮 [measurement stage](../reports/reviewed-measurement-stage-20261020.md) 已实际终态：
+7新角色/1routing纠错，3/3数值及exact版本正确；原full/partial/full正控仍0/3。
+m01/m03合法保守，legacy父tag/unit未公开；m02共享对象/期间词被误判为残留facet，
+纠错后fallback为contextual，无owner。3例完整need保留；未触发fresh F7镜像正控。
+唯一完成恢复68文件全等/0新增派发，root全量重hash确认；356405逻辑units，
+host tokens/cost未知。原oracle/失败分母不改，不关F4/F7或MVP。
 
 此前 [BasicInfo菜单](../reports/basic-info-orientation-menu-20261020.md)及
 [orientation阶段](../reports/reviewed-orientation-stage-20261020.md)窄通过：1proposer+
@@ -61,6 +62,10 @@ root独立oracle与真实weighted/ending对抗材料冻结，不能当公开来�
 
 ## 下一步
 
-完成本轮lint/codecheckpoint后新formal prepare，由root派53+，driver唯一resume。
-不继承preflight答/缓存，不追加24/512k上限；固定3例未选择/技术阻断仍保分母。
-F7局部镜像权限待fresh触发，旧prefix52原件与6行历史状态不动。原8项改动保留。
+residual-only facet guard已在独立代码中修复：88routing、4个独立反例、136关联
+测试通过；原54/57离线partial保真，删改modifier的真残留越权继续拒绝。
+已有production-normalized CompanyFacts→磁盘恢复→executor→modelview保留Basic/Diluted
+与shares身份；未加canonical字段。最新待冻结窄控制按既有latest能力提问，保留
+原0/3失败；零回答预检3inbox/0receipt-cache，15文件重复全等，303bindings及
+实际source views核实。完成codecheckpoint后新formal派60+；尚无新fresh判断。
+F7镜像能力仍待fresh真实触发，原8项用户改动保持。

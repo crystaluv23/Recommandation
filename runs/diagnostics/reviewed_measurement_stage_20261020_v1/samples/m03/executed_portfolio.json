@@ -1,0 +1,19 @@
+{
+  "bounded_selections": [
+    {
+      "applicability_hypothesis": "Disclosures available by the cutoff may support this related measurement; verify that its selected periods and share basis match the requested annual comparison before treating it as an answer.",
+      "context_tags": [
+        "comparable_financials"
+      ],
+      "expected_role": "coverage",
+      "reason_code": "assess_applicability",
+      "selection_reason": "Measures net retirement from comparable weighted-average shares; its latest-period callable does not explicitly select FY 2024 versus FY 2023 or guarantee basic common shares.",
+      "signal_ref": "net_share_retirement_yoy:v2",
+      "target_need_indices": [
+        0
+      ]
+    }
+  ],
+  "max_llm_signals": 2,
+  "max_signals": 4
+}

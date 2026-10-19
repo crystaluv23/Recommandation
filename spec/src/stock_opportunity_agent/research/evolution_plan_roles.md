@@ -20,6 +20,10 @@ Each disposition contains exactly `need_index`, `answer_scope` (`full`, `partial
 or `unanswered`), `residual_need` (null or text), `evidence_refs` (exact
 `signal_ref`/`evidence_group`/`evidence_index` tuples), and `reason`. Routing
 declares intended answer scope; the executed evidence owns the actual claim.
+Routing need matching does not require advance proof that issuer data exists.
+It still requires the callable to be capable of the requested measurement:
+latest-comparable selection is not arbitrary FY or share-tag selection.
+Reflect checks the actual operands/periods before accepting a disposition.
 Measurement coverage is independent of answering a need: partial measurement
 may fully answer a narrow question, sufficient measurement may answer only one
 part of a compound question, and a different period cannot close the target.

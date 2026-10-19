@@ -602,7 +602,13 @@ Available evidence-consuming views carry a runtime-owned `measurement_context` i
 not the stock's forecast direction. For numeric canonical interpretations, exact
 JSON evidence rows with a dated reported value also disclose bounded
 `source_observations` (`evidence_group/index`, raw `start/end/val` or `value`, or dated
-adjusted-close anchors). Reporting-period labels cannot replace actual duration
+adjusted-close anchors). Per-row literal `tag` and `unit` are retained when the
+source owns them, including the existing accession-normalized CompanyFacts
+product. Legacy nested CompanyFacts child rows do not contain their parent
+concept/unit; their observation projection must not guess that identity from a
+Signal name or output fraction. Production normalization is the existing path
+for retaining those source fields without changing canonical result schemas.
+Reporting-period labels cannot replace actual duration
 boundaries; a cumulative duration must not be relabeled as an individual quarter.
 This is a projection of existing validated literals, not a new calculation or
 canonical SignalResult field. Missing/invalid/undated rows stay absent; source

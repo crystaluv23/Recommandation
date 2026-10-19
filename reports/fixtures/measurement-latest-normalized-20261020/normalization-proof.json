@@ -1,0 +1,44 @@
+[
+  {
+    "sample_id": "m01",
+    "normalization_counts": {
+      "raw_fact_row_count": 4,
+      "selected_fact_row_count": 4,
+      "excluded_reason_counts": {}
+    },
+    "document_ids": [
+      "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac",
+      "secfacts:0000000001:0000000001-25-000001:c165b3538b997413"
+    ],
+    "raw_synthetic_response_sha256": "28624cd99e02ce3d9d5953f932da403f23d14bcf0f061301f17bbef6c1b61f75",
+    "legacy_control_inputs_not_modified": true
+  },
+  {
+    "sample_id": "m02",
+    "normalization_counts": {
+      "raw_fact_row_count": 4,
+      "selected_fact_row_count": 4,
+      "excluded_reason_counts": {}
+    },
+    "document_ids": [
+      "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac",
+      "secfacts:0000000001:0000000001-25-000001:c165b3538b997413"
+    ],
+    "raw_synthetic_response_sha256": "28624cd99e02ce3d9d5953f932da403f23d14bcf0f061301f17bbef6c1b61f75",
+    "legacy_control_inputs_not_modified": true
+  },
+  {
+    "sample_id": "m03",
+    "normalization_counts": {
+      "raw_fact_row_count": 4,
+      "selected_fact_row_count": 4,
+      "excluded_reason_counts": {}
+    },
+    "document_ids": [
+      "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac",
+      "secfacts:0000000001:0000000001-25-000001:3db5cbfd6c9d0cb5"
+    ],
+    "raw_synthetic_response_sha256": "1201b31b9540465f2ba061b31e0207c7ccc1cb88b1500d6153b070be66e5e980",
+    "legacy_control_inputs_not_modified": true
+  }
+]

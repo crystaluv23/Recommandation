@@ -1,0 +1,36 @@
+{
+  "actual_model_version": null,
+  "engineering_mvp_closed": false,
+  "external_api_calls": 0,
+  "external_llm_calls": 0,
+  "fixed_denominator": 3,
+  "independent_receipts": 0,
+  "outcomes": [],
+  "pending": [
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/stage/exchange/inbox/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.json",
+      "inbox_sha256": "8defb9eef213ee2b4ad2048f2292c12225b73d3993e45a33a9144185c18e5bd4",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/stage/exchange/outbox/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.txt",
+      "request_hash": "73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c",
+      "sample_id": "m01",
+      "stage": "signal_retrieval_cards"
+    },
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/stage/exchange/inbox/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.json",
+      "inbox_sha256": "ca1a5a006f4efbf1f6f92bd60419246f39e7fa4cb2b2a3f19432d80cdabb666f",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/stage/exchange/outbox/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.txt",
+      "request_hash": "51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b",
+      "sample_id": "m02",
+      "stage": "signal_retrieval_cards"
+    },
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/stage/exchange/inbox/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.json",
+      "inbox_sha256": "f3b16e492284831bffe7da5748e2f9a6610cde68bfa474a9c3d034c8491c5a4e",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/stage/exchange/outbox/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.txt",
+      "request_hash": "f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29",
+      "sample_id": "m03",
+      "stage": "signal_retrieval_cards"
+    }
+  ],
+  "readonly_data_requests": 0
+}

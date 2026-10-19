@@ -1,0 +1,111 @@
+{
+  "manifest_hash": "9843fad70ec3178ebc652e634450d4c84673b2f6402ecf1de9fabc69ded8ff75",
+  "code_and_original_bindings_verified": 303,
+  "normalization_provenance_bindings_verified": 4,
+  "native_target_model_projection_checks": [
+    {
+      "sample_id": "m01",
+      "ref": "net_share_retirement_yoy:v3",
+      "actual_measurement": {
+        "value": -0.10000000000000009,
+        "unit": "fraction",
+        "formula": "1 - current weighted-average shares / prior-year shares",
+        "period": {
+          "end": "2024-12-31",
+          "start": "2024-01-01"
+        }
+      },
+      "source_observations": [
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "start": "2024-01-01",
+          "end": "2024-12-31",
+          "value": 110,
+          "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+          "unit": "shares"
+        },
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "start": "2023-01-01",
+          "end": "2023-12-31",
+          "value": 100,
+          "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+          "unit": "shares"
+        }
+      ]
+    },
+    {
+      "sample_id": "m02",
+      "ref": "net_share_retirement_yoy:v3",
+      "actual_measurement": {
+        "value": -0.10000000000000009,
+        "unit": "fraction",
+        "formula": "1 - current weighted-average shares / prior-year shares",
+        "period": {
+          "end": "2024-12-31",
+          "start": "2024-01-01"
+        }
+      },
+      "source_observations": [
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "start": "2024-01-01",
+          "end": "2024-12-31",
+          "value": 110,
+          "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+          "unit": "shares"
+        },
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "start": "2023-01-01",
+          "end": "2023-12-31",
+          "value": 100,
+          "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+          "unit": "shares"
+        }
+      ]
+    },
+    {
+      "sample_id": "m03",
+      "ref": "net_share_retirement_yoy:v2",
+      "actual_measurement": {
+        "value": 0.09999999999999998,
+        "unit": "fraction",
+        "formula": "1 - current weighted-average shares / prior-year shares",
+        "period": {
+          "end": "2024-12-31",
+          "start": "2024-01-01"
+        }
+      },
+      "source_observations": [
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "start": "2024-01-01",
+          "end": "2024-12-31",
+          "value": 90,
+          "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+          "unit": "shares"
+        },
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "start": "2023-01-01",
+          "end": "2023-12-31",
+          "value": 100,
+          "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+          "unit": "shares"
+        }
+      ]
+    }
+  ],
+  "routing_inbox_count": 3,
+  "eligible_cards_each": 15,
+  "oracle_fields_not_in_inbox": true,
+  "no_answers_receipts_cache": true,
+  "scope": "Root static no-answer preflight; no fresh role execution or semantic capability pass."
+}

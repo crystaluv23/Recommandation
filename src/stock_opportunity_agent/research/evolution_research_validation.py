@@ -3642,6 +3642,7 @@ def _shared_distinctive_phrase(
     right: str,
     *,
     minimum_words: int = 3,
+    target_need: str | None = None,
 ) -> str | None:
     """Return one shared ordered or reordered topic, ignoring routing filler."""
 
@@ -3655,6 +3656,71 @@ def _shared_distinctive_phrase(
 
     left_words = words(left)
     right_words = words(right)
+
+    if target_need is not None:
+        # Contrast literal target clauses before interpreting shared objects or
+        # periods as a residual-only facet. The original conservative check is
+        # retained when the target does not expose an unambiguous split.
+        clauses = tuple(
+            clause.strip()
+            for clause in re.split(r"[;,]\s*(?:(?:and|or)\s+)?", target_need,
+                                   flags=re.IGNORECASE)
+            if clause.strip()
+        )
+        def topic_words(value: str) -> tuple[str, ...]:
+            # A literal year comparison qualifies all facets; its FY/versus
+            # words are not a topic solely because it appears in one clause.
+            value = re.sub(
+                r"\b(?:fy\s*)?(?:19|20)\d{2}\s+(?:versus|vs\.?|to)\s+"
+                r"(?:fy\s*)?(?:19|20)\d{2}\b",
+                " ", value, flags=re.IGNORECASE,
+            )
+            return tuple(token for token in words(value)
+                         if not token.isdigit()
+                         and not _TEMPORAL_TOPIC_TOKEN.fullmatch(token))
+
+        scope_words: set[str] = set()
+        topical_clauses: list[tuple[str, ...]] = []
+        for clause in clauses:
+            bound = _EXPLICIT_AS_OF_BOUND.search(clause) or _SYMBOLIC_AS_OF_BOUND.search(clause)
+            prefix = clause[:bound.start()].strip() if bound else ""
+            if bound and re.fullmatch(
+                r"(?:(?:using|based on|from|with)\s+)?(?:only\s+)?"
+                r"(?:(?:disclosures?|information|data|sources?|evidence)\s+)?"
+                r"(?:(?:available|published|disclosed)\s*)?",
+                prefix, re.IGNORECASE,
+            ) and not clause[bound.end():].strip(" .?!"):
+                scope_words.update(topic_words(clause))
+            else:
+                topical_clauses.append(topic_words(clause))
+        clause_words = [set(clause) - scope_words for clause in topical_clauses]
+        unique_words = [
+            content - set().union(*(other for index, other in enumerate(clause_words)
+                                    if index != own_index))
+            for own_index, content in enumerate(clause_words)
+        ]
+        residual_topics = set(topic_words(right))
+        # Losing one modifier does not remove a retained facet: its other
+        # clause-specific anchors may still be present in the residual.
+        answered = [clause for clause, unique in zip(topical_clauses, unique_words)
+                    if unique and not unique & residual_topics]
+        retained = [clause for clause, unique in zip(topical_clauses, unique_words)
+                    if unique & residual_topics]
+        # Bare comma-separated nouns can be one facet's list rather than
+        # separate questions. They do not establish a safe contrast.
+        if (answered and retained and all(unique_words)
+                and all(len(set(clause)) >= 2 for clause in topical_clauses)):
+            common = set().union(*map(set, answered)) | scope_words
+            distinctive = set().union(*map(set, retained)) - common
+            distinctive_left = " ".join(token for token in left_words if token in distinctive)
+            distinctive_right = " ".join(token for token in right_words if token in distinctive)
+            return (
+                _shared_distinctive_phrase(distinctive_left, distinctive_right)
+                or _shared_distinctive_phrase(
+                    distinctive_left, distinctive_right, minimum_words=2,
+                )
+            )
+
     left_topic_words = tuple(
         token
         for token in left_words

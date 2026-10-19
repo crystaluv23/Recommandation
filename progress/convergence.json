@@ -49,9 +49,15 @@
         "runs/diagnostics/daily_visibility_boundary_20261019_v4/result.json",
         "runs/diagnostics/daily_visibility_boundary_20261019_v4/independent-final-bindings-review.json",
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
-        "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json"
+        "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json",
+        "reports/reviewed-measurement-stage-20261020.md",
+        "runs/diagnostics/residual_scope_source_boundary_20261020_v1/original-payload-replay.json",
+        "runs/diagnostics/residual_scope_source_boundary_20261020_v1/independent-guard-review.json",
+        "runs/diagnostics/residual_scope_source_boundary_20261020_v1/related-tests-final.log",
+        "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/preflight-result.json",
+        "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/root-preflight-review.json"
       ],
-      "remaining": "Declared orientation examples, local negation guard and one actual financing-apply/ownedReflect/full final-consumer prefix passed narrowly. Six-row duplicate residual and selector compact-card measurement definition remain limited. Full48/source/transcript/Slow/newSignal/fullF10/MVP remain open."
+      "remaining": "Original fixed-FY/basic scope controls0/3 remain unmet; latest-only callable limitation explicit. Guard and normalized-source integration pass local counterexamples; new latest-pair control only zero-answer prepared. Full sources/transcripts/F10/Slow/newSignal/actual whole-loop and engineering MVP remain open."
     },
     {
       "id": "feedback_consumption",
@@ -508,10 +514,47 @@
         "runs/diagnostics/reviewed_measurement_preflight_20261020_v3/independent/signal-stage-tests.log"
       ],
       "result": "12offline tests passed; final zero-answer3routing pending/0responses and repeated all-file hashes same. Root inputs probe weighted-0.1/-0.1/+0.1 through real executor. Exact realv2 replaces only target; all other snapshot contents retained. Fresh semantics not exercised; no public-source/Hinit/Predictor/FastSlow/MVP claim."
+    },
+    {
+      "id": "engineering-mvp-measurement-stage-fresh-20261020",
+      "strategy": "fresh_exact_scope_three_synthetic_cases",
+      "failure_families": [
+        "residual_ownership_shared_qualifier_false_positive",
+        "legacy_source_operand_identity_projection",
+        "latest_pair_capability_vs_requested_period"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-measurement-stage-20261020.md",
+        "runs/diagnostics/reviewed_measurement_stage_20261020_v1/execution_summary.json",
+        "runs/diagnostics/reviewed_measurement_stage_20261020_v1/independent-review.json",
+        "runs/diagnostics/reviewed_measurement_stage_20261020_v1/root-final-verification.json"
+      ],
+      "result": "7 actual independent roles/1native routing correction. Arithmetic/exactversions3/3; original scope controls0/3. Conservative m01/m03 and context-only m02 retain full needs. Completed restore68files exact/0new dispatch; no labels/FastSlow/MVP claim."
+    },
+    {
+      "id": "engineering-mvp-residual-scope-source-repair-20261020",
+      "strategy": "target_contrasted_residual_facet_and_typed_source_diagnosis",
+      "failure_families": [
+        "shared_qualifier_false_positive",
+        "partial_clause_modifier_loss_false_admission",
+        "legacy_operand_identity_projection",
+        "latest_pair_not_arbitrary_FY_capability"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-measurement-stage-20261020.md",
+        "runs/diagnostics/residual_scope_source_boundary_20261020_v1/original-payload-replay.json",
+        "runs/diagnostics/residual_scope_source_boundary_20261020_v1/independent-guard-review.json",
+        "runs/diagnostics/residual_scope_source_boundary_20261020_v1/related-tests-final.log",
+        "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/preflight-result.json",
+        "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/root-preflight-review.json"
+      ],
+      "result": "136related tests pass including routing88/source27; independent fixed4 controls pass after rejecting intermediate modifier-loss admission. Original54/57 offline actualv3 preserve partial; existing production normalization/disk reopen/consumer preserve Basic vsDiluted without canonical changes. New latest-pair zero-answer preflight3inbox/0receipts-cache,15files identical,303bindings valid. No fresh role answer/MVP closure."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-measurement-stage-preflight-20261020",
+    "after_iteration": "engineering-mvp-residual-scope-source-repair-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -600,7 +643,17 @@
       "reports/reviewed-measurement-stage-20261020.md",
       "reports/reviewed-measurement-stage-expectations-20261020.json",
       "runs/diagnostics/reviewed_measurement_preflight_20261020_v3/preflight-result.json",
-      "runs/diagnostics/reviewed_measurement_preflight_20261020_v3/independent/signal-stage-tests.log"
+      "runs/diagnostics/reviewed_measurement_preflight_20261020_v3/independent/signal-stage-tests.log",
+      "reports/reviewed-measurement-stage-20261020.md",
+      "runs/diagnostics/reviewed_measurement_stage_20261020_v1/execution_summary.json",
+      "runs/diagnostics/reviewed_measurement_stage_20261020_v1/independent-review.json",
+      "runs/diagnostics/reviewed_measurement_stage_20261020_v1/root-final-verification.json",
+      "reports/reviewed-measurement-stage-20261020.md",
+      "runs/diagnostics/residual_scope_source_boundary_20261020_v1/original-payload-replay.json",
+      "runs/diagnostics/residual_scope_source_boundary_20261020_v1/independent-guard-review.json",
+      "runs/diagnostics/residual_scope_source_boundary_20261020_v1/related-tests-final.log",
+      "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/preflight-result.json",
+      "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/root-preflight-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -631,21 +684,23 @@
       "A residual-only typed correction does not authorize rewriting an existing long mirrored need. Runtime conservatively appended the shorter residual, leaving two representations; preserve actual six-row state rather than claiming five needs or six independent discoveries.",
       "Initial prompt omitted300character bound and repair allowed only disposition fields. Mirror permission alone still let pre-correction restore append prior need; native integration replay exposed this ordering. Only a fully bound invalid row now defers its own restore while remaining rejected.",
       "Exact hash/catalog membership checks missed that the actual selector rebuilt cards without version measurement requirements. Version comparison prose was not an executable guarantee, and a same-name builtin cannot describe a custom override. A callable doc also misstated a default shared threshold.",
-      "A request ceiling passed as the whole native role-step budget also constrained its later typed correction; the new synthetic mode now passes actual remaining case budget and separately enforces per-request131072 before cache/receive. Unknown fixture source also needs early qualification rather than freezing an unavailable supposed positive control."
+      "A request ceiling passed as the whole native role-step budget also constrained its later typed correction; the new synthetic mode now passes actual remaining case budget and separately enforces per-request131072 before cache/receive. Unknown fixture source also needs early qualification rather than freezing an unavailable supposed positive control.",
+      "Raw fixture Basic/shares identity lived only in parent objects and did not reach model observations. Capability descriptions of latest comparable pairs cannot guarantee a requested FY/basic. A shared-topic word overlap constructed from noncontiguous tokens is not proof of residual-only facet ownership; correction and fallback removed legitimate partial ownership.",
+      "The first87-test target-contrast candidate mistook removal of one modifier for removal of the whole facet. Independent native probe prospective->future or deletion still retained equity dilution and exposed false admission; fixed anchors and original reasons were rechecked on four fixed controls. Normalizing source alone cannot change the first router capability contract."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "repair",
-      "strategy": "fresh_exact_scope_three_synthetic_cases",
-      "action": "Checkpoint final candidate then prepare a fresh formal root and dispatch actual isolated native roles through root; sole driver resumes.",
-      "stop": "Case512k/8calls, shared24, request131072; no budget enlargement or root renaming after exhaustion; no labels/full successor.",
-      "question": "Will actual routing distinguish exact weighted-average scope/version and compound residual, and will native Reflect persist that distinction?",
-      "pass": "Fresh exact requests/raw/typedrepair/receipts show target execution and full/partial dispositions preserved through consumers and completed restore.",
-      "fail": "Ending-share substitution, prospective invention, wrong version/metadata, full compound closure or treating skipped/failed target as capability pass.",
-      "on_pass": "Close only declared synthetic native controls and any truly exercised F7 mirror behavior; keep overallMVP/research benefit open.",
-      "on_fail": "Preserve frozen outputs and fixed denominator, diagnose exact family in a separate checkpoint.",
-      "new_evidence": "Final12 tests and zero-answer v3 explicit snapshots/budgets/3pending passed. No new model responses yet.",
-      "distinguishing_variable": "Fresh source/period/unit/version routing and actual disposition consumption, not deterministic probe correctness alone."
+      "kind": "diagnose",
+      "strategy": "fresh_latest_comparable_normalized_scope",
+      "action": "Checkpoint current code/input then prepare one separate formal latest-pair root. Root dispatches new isolated roles60+ only to native inboxes; sole driver resumes. No development answer/cache inheritance.",
+      "stop": "Shared24, case512k/8calls and request131072 remain; no budget enlargement/root rename after exhaustion. No labels/full successor and no repeated original fixed-FY/basic test.",
+      "question": "Do fresh native roles route the supported latest comparable pair, then use actual normalized identity/periods to close only its full or partial scope through durable consumers?",
+      "pass": "All three new predeclared latest-pair positive controls meet source-backed full/partial/full, exact version and residual, current owned dispositions, consumer fidelity and completed restore with0new dispatch.",
+      "fail": "Missing/skipped/technical result is counted as capability pass, true residual claim accepted, wrong basis/period/version, unsupported closure or any declared positive control not passed.",
+      "on_pass": "Close only the new supported-capability controls actually exercised, then identify the next named engineering blocker; original0/3 and overallMVP remain unresolved as documented.",
+      "on_fail": "Preserve all original new/old outputs and denominators; stop unchanged-premise reruns and diagnose the precise remaining connection before any new execution.",
+      "new_evidence": "Original54/57 actual payload replay, independent modifier-loss controls, production normalized-source disk/consumer integration, final136 tests and zero-answer303bindings establish a different satisfiable supported premise.",
+      "distinguishing_variable": "Latest-comparable question aligned with existing callable plus actual per-row source identity; arbitrary FY/basic capability is not claimed."
     }
   },
   "successor_prerequisites": [
