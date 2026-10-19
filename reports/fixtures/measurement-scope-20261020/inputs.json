@@ -1,0 +1,243 @@
+{
+  "profile": "synthetic_measurement",
+  "samples": [
+    {
+      "sample_id": "m01",
+      "company_id": "synthetic_scope_m01",
+      "identity": {
+        "ticker": "FCTM01",
+        "company_name": "Fixture Issuer M01",
+        "identity_aliases": [
+          "Fixture Issuer M01",
+          "FCTM01",
+          "synthetic_scope_m01"
+        ]
+      },
+      "prediction_time": "2025-02-01T00:00:00+00:00",
+      "prior_state": {
+        "hypotheses": [],
+        "current_beliefs": [],
+        "supporting_evidence": [],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "What is net share retirement based on comparable FY 2024 versus FY 2023 weighted-average basic common shares, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+        ],
+        "decision": "continue"
+      },
+      "plan": {
+        "plan_id": "plan_manual_v1",
+        "parent_ids": [],
+        "basic_info_policy": {
+          "requests": [
+            {
+              "request_id": "orientation.v1.operating_report",
+              "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+              "source_types": [
+                "filing"
+              ],
+              "max_documents": 2,
+              "lookback_days": 730
+            },
+            {
+              "request_id": "orientation.v1.scoped_news",
+              "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+              "source_types": [
+                "news"
+              ],
+              "max_documents": 5,
+              "lookback_days": 180
+            },
+            {
+              "request_id": "orientation.v1.financial_facts",
+              "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+              "source_types": [
+                "sec_company_facts"
+              ],
+              "max_documents": 2,
+              "lookback_days": 730
+            },
+            {
+              "request_id": "orientation.v1.market_backbone",
+              "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+              "source_types": [
+                "market_data"
+              ],
+              "max_documents": 1,
+              "lookback_days": 45
+            }
+          ]
+        },
+        "initial_research_skill": "Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs.",
+        "reflection_skill": "Reflect over the entire Signal batch. Track support, contradiction, resolved questions, concentration risk, and the next smallest set of information needs; finalize only when the surge thesis is decidable.",
+        "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction."
+      },
+      "document_paths": [
+        "/Users/l/Project/Recommandation/reports/fixtures/measurement-scope-20261020/m01-document.json"
+      ],
+      "snapshot_ref": "net_share_retirement_yoy:v3",
+      "synthetic": true,
+      "seeded_needs_not_h_init_output": true
+    },
+    {
+      "sample_id": "m02",
+      "company_id": "synthetic_scope_m02",
+      "identity": {
+        "ticker": "FCTM02",
+        "company_name": "Fixture Issuer M02",
+        "identity_aliases": [
+          "Fixture Issuer M02",
+          "FCTM02",
+          "synthetic_scope_m02"
+        ]
+      },
+      "prediction_time": "2025-02-01T00:00:00+00:00",
+      "prior_state": {
+        "hypotheses": [],
+        "current_beliefs": [],
+        "supporting_evidence": [],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "What is net share retirement based on comparable FY 2024 versus FY 2023 weighted-average basic common shares, how did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+        ],
+        "decision": "continue"
+      },
+      "plan": {
+        "plan_id": "plan_manual_v1",
+        "parent_ids": [],
+        "basic_info_policy": {
+          "requests": [
+            {
+              "request_id": "orientation.v1.operating_report",
+              "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+              "source_types": [
+                "filing"
+              ],
+              "max_documents": 2,
+              "lookback_days": 730
+            },
+            {
+              "request_id": "orientation.v1.scoped_news",
+              "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+              "source_types": [
+                "news"
+              ],
+              "max_documents": 5,
+              "lookback_days": 180
+            },
+            {
+              "request_id": "orientation.v1.financial_facts",
+              "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+              "source_types": [
+                "sec_company_facts"
+              ],
+              "max_documents": 2,
+              "lookback_days": 730
+            },
+            {
+              "request_id": "orientation.v1.market_backbone",
+              "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+              "source_types": [
+                "market_data"
+              ],
+              "max_documents": 1,
+              "lookback_days": 45
+            }
+          ]
+        },
+        "initial_research_skill": "Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs.",
+        "reflection_skill": "Reflect over the entire Signal batch. Track support, contradiction, resolved questions, concentration risk, and the next smallest set of information needs; finalize only when the surge thesis is decidable.",
+        "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction."
+      },
+      "document_paths": [
+        "/Users/l/Project/Recommandation/reports/fixtures/measurement-scope-20261020/m02-document.json"
+      ],
+      "snapshot_ref": "net_share_retirement_yoy:v3",
+      "synthetic": true,
+      "seeded_needs_not_h_init_output": true
+    },
+    {
+      "sample_id": "m03",
+      "company_id": "synthetic_scope_m03",
+      "identity": {
+        "ticker": "FCTM03",
+        "company_name": "Fixture Issuer M03",
+        "identity_aliases": [
+          "Fixture Issuer M03",
+          "FCTM03",
+          "synthetic_scope_m03"
+        ]
+      },
+      "prediction_time": "2025-02-01T00:00:00+00:00",
+      "prior_state": {
+        "hypotheses": [],
+        "current_beliefs": [],
+        "supporting_evidence": [],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "What is net share retirement based on comparable FY 2024 versus FY 2023 weighted-average basic common shares, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+        ],
+        "decision": "continue"
+      },
+      "plan": {
+        "plan_id": "plan_manual_v1",
+        "parent_ids": [],
+        "basic_info_policy": {
+          "requests": [
+            {
+              "request_id": "orientation.v1.operating_report",
+              "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+              "source_types": [
+                "filing"
+              ],
+              "max_documents": 2,
+              "lookback_days": 730
+            },
+            {
+              "request_id": "orientation.v1.scoped_news",
+              "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+              "source_types": [
+                "news"
+              ],
+              "max_documents": 5,
+              "lookback_days": 180
+            },
+            {
+              "request_id": "orientation.v1.financial_facts",
+              "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+              "source_types": [
+                "sec_company_facts"
+              ],
+              "max_documents": 2,
+              "lookback_days": 730
+            },
+            {
+              "request_id": "orientation.v1.market_backbone",
+              "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+              "source_types": [
+                "market_data"
+              ],
+              "max_documents": 1,
+              "lookback_days": 45
+            }
+          ]
+        },
+        "initial_research_skill": "Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs.",
+        "reflection_skill": "Reflect over the entire Signal batch. Track support, contradiction, resolved questions, concentration risk, and the next smallest set of information needs; finalize only when the surge thesis is decidable.",
+        "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction."
+      },
+      "document_paths": [
+        "/Users/l/Project/Recommandation/reports/fixtures/measurement-scope-20261020/m03-document.json"
+      ],
+      "snapshot_ref": "net_share_retirement_yoy:v2",
+      "synthetic": true,
+      "seeded_needs_not_h_init_output": true
+    }
+  ],
+  "actual_model_version": null
+}

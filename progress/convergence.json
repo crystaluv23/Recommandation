@@ -492,10 +492,26 @@
         "runs/diagnostics/signal_card_measurement_scope_20261020_v1/focused-final-tests.log"
       ],
       "result": "Independent6 and final119related tests passed. Full1868 has1867pass/1stale description-only prompt assertion; only that test updated then targeted passed, no production code changes after full and no second all-green full claim. Exact scope/core final-map injection verified offline;0fresh calls/Registry/measurement/admission/score changes/historical resumes. OverallF4/MVP open."
+    },
+    {
+      "id": "engineering-mvp-measurement-stage-preflight-20261020",
+      "strategy": "existing_native_signal_stage_synthetic_scope_controls",
+      "failure_families": [
+        "fixture_source_qualification",
+        "step_vs_request_budget_wiring"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-measurement-stage-20261020.md",
+        "reports/reviewed-measurement-stage-expectations-20261020.json",
+        "runs/diagnostics/reviewed_measurement_preflight_20261020_v3/preflight-result.json",
+        "runs/diagnostics/reviewed_measurement_preflight_20261020_v3/independent/signal-stage-tests.log"
+      ],
+      "result": "12offline tests passed; final zero-answer3routing pending/0responses and repeated all-file hashes same. Root inputs probe weighted-0.1/-0.1/+0.1 through real executor. Exact realv2 replaces only target; all other snapshot contents retained. Fresh semantics not exercised; no public-source/Hinit/Predictor/FastSlow/MVP claim."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-signal-card-measurement-scope-20261020",
+    "after_iteration": "engineering-mvp-measurement-stage-preflight-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -580,7 +596,11 @@
       "runs/diagnostics/signal_card_measurement_scope_20261020_v1/independent-current-tests.log",
       "runs/diagnostics/signal_card_measurement_scope_20261020_v1/result.json",
       "runs/diagnostics/signal_card_measurement_scope_20261020_v1/full-tests.log",
-      "runs/diagnostics/signal_card_measurement_scope_20261020_v1/focused-final-tests.log"
+      "runs/diagnostics/signal_card_measurement_scope_20261020_v1/focused-final-tests.log",
+      "reports/reviewed-measurement-stage-20261020.md",
+      "reports/reviewed-measurement-stage-expectations-20261020.json",
+      "runs/diagnostics/reviewed_measurement_preflight_20261020_v3/preflight-result.json",
+      "runs/diagnostics/reviewed_measurement_preflight_20261020_v3/independent/signal-stage-tests.log"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -610,21 +630,22 @@
       "Without-clause recognition alone left ordinary do-not masks swallowing later finite decisions, and singular-only target words missed shares/prices. Keep local direction spans bounded and test both false rejection and false admission, without widening the shared prohibition guard.",
       "A residual-only typed correction does not authorize rewriting an existing long mirrored need. Runtime conservatively appended the shorter residual, leaving two representations; preserve actual six-row state rather than claiming five needs or six independent discoveries.",
       "Initial prompt omitted300character bound and repair allowed only disposition fields. Mirror permission alone still let pre-correction restore append prior need; native integration replay exposed this ordering. Only a fully bound invalid row now defers its own restore while remaining rejected.",
-      "Exact hash/catalog membership checks missed that the actual selector rebuilt cards without version measurement requirements. Version comparison prose was not an executable guarantee, and a same-name builtin cannot describe a custom override. A callable doc also misstated a default shared threshold."
+      "Exact hash/catalog membership checks missed that the actual selector rebuilt cards without version measurement requirements. Version comparison prose was not an executable guarantee, and a same-name builtin cannot describe a custom override. A callable doc also misstated a default shared threshold.",
+      "A request ceiling passed as the whole native role-step budget also constrained its later typed correction; the new synthetic mode now passes actual remaining case budget and separately enforces per-request131072 before cache/receive. Unknown fixture source also needs early qualification rather than freezing an unavailable supposed positive control."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "repair",
-      "strategy": "exact_scope_and_executing_callable_projection",
-      "action": "Verify shared SignalCard/actual selectors/core final-map injection and unchanged behavior; checkpoint before a separately frozen fresh selector stage under current authorization.",
-      "stop": "No full research successor, new calls/data/labels or old frozen resume. Do not rewrite contradictory old version definitions or infer unknown metadata.",
-      "question": "Does each actual eligible card retain exact version source/comparison/period and actual callable override documentation/configured parameters?",
-      "pass": "Native input/override/unknown/financial controls and regression preserve all eligible cards and execution behavior.",
-      "fail": "Source/version/callable substitution, arbitrary parameter exposure, silent truncation, wrong data-availability or measurement claims.",
-      "on_pass": "Freeze the minimal existing bounded Signal-stage adaptation for later actual model behavior.",
-      "on_fail": "Retain the demonstrated producer defect and repair locally without rewriting old artifacts.",
-      "new_evidence": "Native core/override and independent6controls passed; full1867/1868 with1obsolete prompt assertion, then119targeted pass after test-only update. Actual old51 card inventory13 distinct from configs reproduction11; no fresh model behavior.",
-      "distinguishing_variable": "Actual transmitted producer scope and executing map, rather than description/name or hash alone."
+      "strategy": "fresh_exact_scope_three_synthetic_cases",
+      "action": "Checkpoint final candidate then prepare a fresh formal root and dispatch actual isolated native roles through root; sole driver resumes.",
+      "stop": "Case512k/8calls, shared24, request131072; no budget enlargement or root renaming after exhaustion; no labels/full successor.",
+      "question": "Will actual routing distinguish exact weighted-average scope/version and compound residual, and will native Reflect persist that distinction?",
+      "pass": "Fresh exact requests/raw/typedrepair/receipts show target execution and full/partial dispositions preserved through consumers and completed restore.",
+      "fail": "Ending-share substitution, prospective invention, wrong version/metadata, full compound closure or treating skipped/failed target as capability pass.",
+      "on_pass": "Close only declared synthetic native controls and any truly exercised F7 mirror behavior; keep overallMVP/research benefit open.",
+      "on_fail": "Preserve frozen outputs and fixed denominator, diagnose exact family in a separate checkpoint.",
+      "new_evidence": "Final12 tests and zero-answer v3 explicit snapshots/budgets/3pending passed. No new model responses yet.",
+      "distinguishing_variable": "Fresh source/period/unit/version routing and actual disposition consumption, not deterministic probe correctness alone."
     }
   },
   "successor_prerequisites": [

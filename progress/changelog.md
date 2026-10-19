@@ -770,3 +770,5 @@
 - 2026-10-20：修owned partial残留长度纠错的精确镜像权限与前置恢复连接，初始提示明示1–300；仅完整有效ownership/新采用证据/唯一exact镜像授该slot replace并延后同owner恢复，invalid row仍拒，其他need与非法refs仍恢复。原49/50回放保6，明确离线双path同步得5并进入持久化/实际Predictor输入；独立14及225关联通过，0新模型/资料，旧52原件不改；fresh服从、整体F7/MVP仍open。
 
 - 2026-10-20：F4卡共享精确measurement_scope：SignalCard与真实LLM/Jev selector复制完整版本检索政策，core注入最终actual executor map；callable doc/显式消费参数声明与version comparison并列，override不冒builtin、未知不改准入/覆盖，任意fixtures/usage/routing参数不dump。仅更正cash/liability默认阈值文档1→0，执行不变；独立6及最终119关联通过；全量1867/1868，唯一旧prompt字串assert更新后定向通过，未宣称第二次全量绿，0新角色/资料，不关F4/MVP。
+
+- 2026-10-20：复用既有Signal stage新增显式synthetic measurement profile，root固定3case/独立oracle，完整18-version base与真实v2隔离替换/双hash，实际executor先于router注入。24共享/每case512k与8逻辑调用/每request131072分别真实执行，纠正step/request预算混同；12测试及v3零答3inbox恢复全hash相同。源码/输入待checkpoint正式冻结后由root派53+；不继承旧预算/答案，不关F4/F7/MVP或公共来源准入。

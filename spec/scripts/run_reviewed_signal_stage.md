@@ -1,5 +1,54 @@
 # Reviewed source direct Signal stage
 
+## Synthetic measurement profile (2026-10-20)
+
+The optional `--measurement-inputs` mode reuses this pipeline with a separately
+frozen three-case file, profile `synthetic_measurement`. An oracle declaring that
+profile requires the explicit flag; the legacy SEC default remains separate.
+Each case supplies its exact neutral Plan/prior/identity/cutoff, synthetic marker,
+independent serialized `RawInfoDocument` paths and exact snapshot ref. Sources are
+synthetic fixtures, not reviewed public evidence or H_init/Mining output. Never
+copy oracle numeric expectations or verdicts into role requests.
+
+m01/m02 retain the complete base stable snapshot with real net-share v3. m03
+replaces only that definition with its exact archived v2; all other definitions,
+skills and metadata remain. v2's own profile/status is loaded, absent admission
+is unknown, and v3 metadata is not reused. Recompute definition/learning hashes
+using the Registry's canonical formulas. Bind all base files, archived version,
+fixture files, independent oracle, derived snapshots and current code. The three
+stores are isolated; records cannot cross issuer/case boundaries.
+This fixed synthetic control profile rejects fixture source families incompatible
+with its declared target and requires a resolved, available deterministic probe
+before freezing. This is fixture qualification, not public source admission or
+permission to force the subsequent selector's choice.
+
+Before routing create the actual executor and inject its final callable map.
+Original eligibility gates remain: complete snapshot membership does not mean
+every card passes research-context gates. Preflight uses the real resolver and
+deterministic executor without model calls. Real selection is free to choose
+other eligible refs or no match; a skipped target is not capability success.
+
+The new profile freezes 24 shared native requests, 512000 logical reservation
+units and eight logical requests per case, 131072 per request, one native typed
+correction, one Signal round, and the original four-total/two-LLM portfolio caps.
+At `request_ready`, before cache/receive, enforce single and cumulative case
+reservations/calls from exact message bytes plus output reservation. Replaying
+verified cache reconstructs the same logical budget; unique inbox/receipts count
+physical executions. Route/apply/Reflect receive the actual remaining case
+budget, and returned usage is also checked with the existing core accumulator.
+Exhaustion stops this stage with its fixed denominator; no new-root retry or
+ceiling increase. Host actual tokens/cost remain unknown, external LLM/data zero.
+
+The existing owned Reflect retains the bounded portfolio and finalizes at the
+actual one-round trigger. No-match and all-unavailable paths keep their native
+zero-model handling. The final assembler receives the runtime-owned ready phase,
+real stop reason and trigger. Persist exact prior, selected/executed versions,
+actual result/measurement/evidence, usage/request traces, dispositions and final/
+posthoc projections; repeated completed replay must preserve hashes and dispatch
+zero new requests. This stage never calls Predictor, labels, scoring or Fast/Slow.
+
+## Legacy reviewed SEC profile
+
 This bounded stage starts with explicitly seeded, fact-free needs, not a claimed
 H_init output. It uses the complete frozen v182 stable Registry (18 exact
 versions), the admitted two-SEC store and original production routing, retrieval,

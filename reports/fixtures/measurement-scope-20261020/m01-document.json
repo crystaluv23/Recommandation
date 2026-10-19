@@ -1,0 +1,13 @@
+{
+  "document_id": "synthetic_scope_m01_financials",
+  "company_id": "synthetic_scope_m01",
+  "source_type": "financials",
+  "published_at": "2025-01-20T12:00:00+00:00",
+  "available_at": "2025-01-20T12:00:00+00:00",
+  "content": "{\"facts\":{\"us-gaap\":{\"CommonStockSharesOutstanding\":{\"units\":{\"shares\":[{\"accn\":\"synthetic-2023\",\"end\":\"2023-12-31\",\"filed\":\"2024-02-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2023,\"val\":200},{\"accn\":\"synthetic-2024\",\"end\":\"2024-12-31\",\"filed\":\"2025-01-20\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":50}]}},\"WeightedAverageNumberOfSharesOutstandingBasic\":{\"units\":{\"shares\":[{\"accn\":\"synthetic-2023\",\"end\":\"2023-12-31\",\"filed\":\"2024-02-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2023,\"start\":\"2023-01-01\",\"val\":100},{\"accn\":\"synthetic-2024\",\"end\":\"2024-12-31\",\"filed\":\"2025-01-20\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":110}]}}}}}",
+  "content_hash": "0d5704901c04b37e3214774ebea00672ef96546b2254d318a2233cd69018093b",
+  "metadata": {
+    "synthetic": true,
+    "source_scope": "Engineering control only; no public-source provenance claim."
+  }
+}

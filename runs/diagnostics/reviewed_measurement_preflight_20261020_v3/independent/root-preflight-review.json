@@ -1,0 +1,46 @@
+{
+  "manifest_valid": true,
+  "manifest_hash": "012b921e23b8e6df3935757fce4559849228a9341ba746f2c226b372c2342a41",
+  "bindings": 300,
+  "changed_bindings": [],
+  "input_contract_match": true,
+  "oracle_file_sha256": "67a35b52974556a3ba07ea0097a6b6ea6bd520cec9f0541d205c253290a80303",
+  "rows": [
+    {
+      "sample": "m01",
+      "inbox": "81b72b605feddb3e3b5bced3afd965602c5b940a4ed4351d6f6d9cc046d864fa",
+      "cards": 15,
+      "ref": "net_share_retirement_yoy:v3",
+      "registered": "registered",
+      "v2_status": "v3 admitted/unverified",
+      "aliases": [],
+      "oracle_keys": [],
+      "reservation": 65791
+    },
+    {
+      "sample": "m02",
+      "inbox": "3d026343b27c51f31bdd5934ca3307ab10133a85ff8914fc8f7cb690aa7b24e7",
+      "cards": 15,
+      "ref": "net_share_retirement_yoy:v3",
+      "registered": "registered",
+      "v2_status": "v3 admitted/unverified",
+      "aliases": [],
+      "oracle_keys": [],
+      "reservation": 65887
+    },
+    {
+      "sample": "m03",
+      "inbox": "304c94201212aab3565d06713223a430098ab8a7e1eddfd03ab13e6461d44613",
+      "cards": 15,
+      "ref": "net_share_retirement_yoy:v2",
+      "registered": "registered",
+      "v2_status": null,
+      "aliases": [],
+      "oracle_keys": [],
+      "reservation": 64929
+    }
+  ],
+  "outbox_files": [],
+  "receipt_files": [],
+  "cache_files": []
+}

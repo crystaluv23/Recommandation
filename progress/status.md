@@ -7,19 +7,16 @@
 
 ## 当前验收
 
-[BasicInfo 闭合菜单](../reports/basic-info-orientation-menu-20261020.md) 已按既定
-architecture 实现五个固定 semantic action、同编译器 proposer/direct core/default
-门禁及版本绑定；固定内部 recipe 不向 Plan 开放自由 query。历史运输/归档不改。
-operating annual-OR-interim 同池选择年度+最新季度，generic8K/6K不冒充经营资格。
-独立16项/初始data62项、related372项及依赖修复114项通过；首次全量12失败保留，
-旧fixture与实际旧ID依赖已修；最终1835全量/182.698s及prompt-only后330项通过。
-新 ENB 三 SEC-only view 已物化；实际投影17/24 partial含业务正句，其他三类缺源。
-新 [orientation阶段](../reports/reviewed-orientation-stage-20261020.md) 已完成1proposer+
-3H_init原生接受：四首答+唯一p01纠错共5角色，实际h01精确消费accepted Plan。
-p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留；证据提交后
-另批修局部否定scope，204相关测试通过，共享guard及历史冻结不改。
-42文件完成恢复全等/0新派发；独立原材窄审3/3及exactPlan连接通过。
-18引文/15needs保持scope，未关整体F1/F2/F3或后继Signal履约。
+本轮 [measurement stage](../reports/reviewed-measurement-stage-20261020.md) 已扩既有
+Signal入口：三个隔离synthetic case、真实v3/v2完整快照与actual executor注入；
+24共享请求/每case512k与8逻辑调用/每请求131072，旧预算不复活。
+12项通过，v3零答预检3inbox/0receipt-cache，重复全hash相同；尚未正式派角色。
+root独立oracle与真实weighted/ending对抗材料冻结，不能当公开来源准入或收益。
+
+此前 [BasicInfo菜单](../reports/basic-info-orientation-menu-20261020.md)及
+[orientation阶段](../reports/reviewed-orientation-stage-20261020.md)窄通过：1proposer+
+3H_init原生接受，5角色/唯一纠错，exactPlan与42文件恢复；ENB业务实际可见。
+原without禁令误杀在另批修复，旧原答/失败保留，不关整体F1/F2/F3。
 
 ## 最近实际证据
 
@@ -64,7 +61,6 @@ p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留�
 
 ## 下一步
 
-本批局部权限/恢复连接已离线通过；下次真实触发仍须独立核模型是否同步该slot。
-旧prefix52原件及6行历史状态不改，未重入冻结执行。路由card缺weighted-average
-比较/source/period与actual executor已同源披露；下一批冻结最小真实selector阶段，
-不把v3 prose当partial0.5执行保证或称已测错值（实际unavailable无数值）。原8项改动保留。
+完成本轮lint/codecheckpoint后新formal prepare，由root派53+，driver唯一resume。
+不继承preflight答/缓存，不追加24/512k上限；固定3例未选择/技术阻断仍保分母。
+F7局部镜像权限待fresh触发，旧prefix52原件与6行历史状态不动。原8项改动保留。

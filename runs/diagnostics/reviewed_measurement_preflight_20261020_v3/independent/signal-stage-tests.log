@@ -1,0 +1,45 @@
+Offline fixtures; no model/API calls; no LabelStore reads; no production role outputs. Native correction uses one explicitly scripted invalid answer only in TemporaryDirectory.
+HEAD a7d699dbd0b2588ebc2776f74266aad9f4c7fabb
+BEFORE
+{
+  "reports/fixtures/measurement-scope-20261020/inputs.json": "41ee289019c401e3f11d9c492f112463185bbbe0cb5f1d8c2ce88d4790c2e197",
+  "reports/fixtures/measurement-scope-20261020/m01-document.json": "29205b5f423b11e5f7181bb59e4b0c6cd46edcc07452ab6dc965365e4aa1b89a",
+  "reports/fixtures/measurement-scope-20261020/m02-document.json": "1441f218d9bd58e6ae5e8c7ccd84ab27581e3aee08235775a7b4fc58d226d1a1",
+  "reports/fixtures/measurement-scope-20261020/m03-document.json": "dae8b21e03fb3aceb6b8be28234423be4290dc09166de0f797e9afd8bd229373",
+  "reports/reviewed-measurement-stage-expectations-20261020.json": "67a35b52974556a3ba07ea0097a6b6ea6bd520cec9f0541d205c253290a80303",
+  "scripts/run_reviewed_signal_stage.py": "fa623d128b481ecf7a8c6d97174866c50553e9dfde8f47eba55a108b01781def",
+  "spec/scripts/run_reviewed_signal_stage.md": "82b349e32eae3d9306b67782efb020f6b138a95d9fb52e739310eb96482404cb",
+  "tests/test_reviewed_signal_stage.py": "e97e1455e7608591b878b7894bf4f0fefefbe73e5ebe7dd02fe14b4830456901"
+}
+test_measurement_source_and_exact_version_drift_fail_before_requests (tests.test_reviewed_signal_stage.ReviewedMeasurementSignalStageTests.test_measurement_source_and_exact_version_drift_fail_before_requests) ... ok
+test_native_correction_can_exceed_one_request_total_within_case_budget (tests.test_reviewed_signal_stage.ReviewedMeasurementSignalStageTests.test_native_correction_can_exceed_one_request_total_within_case_budget)
+An explicitly scripted invalid answer is not fresh model evidence. ... ok
+test_no_answer_preflight_preserves_actual_map_all_eligible_cards_and_repeated_pending (tests.test_reviewed_signal_stage.ReviewedMeasurementSignalStageTests.test_no_answer_preflight_preserves_actual_map_all_eligible_cards_and_repeated_pending) ... ok
+test_request_hard_ceiling_precedes_cache_read_with_larger_case_budget (tests.test_reviewed_signal_stage.ReviewedMeasurementSignalStageTests.test_request_hard_ceiling_precedes_cache_read_with_larger_case_budget) ... ok
+test_unknown_source_or_version_and_implicit_measurement_mode_are_rejected (tests.test_reviewed_signal_stage.ReviewedMeasurementSignalStageTests.test_unknown_source_or_version_and_implicit_measurement_mode_are_rejected) ... ok
+test_accepted_artifact_replay_retains_original_usage_and_refuses_changed_state (tests.test_reviewed_signal_stage.ReviewedSignalStageTests.test_accepted_artifact_replay_retains_original_usage_and_refuses_changed_state) ... ok
+test_fact_free_priors_have_no_market_or_outcome_fields (tests.test_reviewed_signal_stage.ReviewedSignalStageTests.test_fact_free_priors_have_no_market_or_outcome_fields) ... ok
+test_frozen_prior_projection_and_actual_masked_routing_pending (tests.test_reviewed_signal_stage.ReviewedSignalStageTests.test_frozen_prior_projection_and_actual_masked_routing_pending) ... ok
+test_no_match_downstream_wiring_uses_real_validators_and_consumers (tests.test_reviewed_signal_stage.ReviewedSignalStageTests.test_no_match_downstream_wiring_uses_real_validators_and_consumers) ... ok
+test_real_all_unavailable_finalize_has_no_reflect_call_or_authored_dispositions (tests.test_reviewed_signal_stage.ReviewedSignalStageTests.test_real_all_unavailable_finalize_has_no_reflect_call_or_authored_dispositions) ... ok
+test_real_signal_apply_reaches_pending_with_late_complete_disclosure (tests.test_reviewed_signal_stage.ReviewedSignalStageTests.test_real_signal_apply_reaches_pending_with_late_complete_disclosure) ... ok
+test_shared_production_portfolio_caps_preserve_order (tests.test_reviewed_signal_stage.ReviewedSignalStageTests.test_shared_production_portfolio_caps_preserve_order) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 19.952s
+
+OK
+
+AFTER
+{
+  "reports/fixtures/measurement-scope-20261020/inputs.json": "41ee289019c401e3f11d9c492f112463185bbbe0cb5f1d8c2ce88d4790c2e197",
+  "reports/fixtures/measurement-scope-20261020/m01-document.json": "29205b5f423b11e5f7181bb59e4b0c6cd46edcc07452ab6dc965365e4aa1b89a",
+  "reports/fixtures/measurement-scope-20261020/m02-document.json": "1441f218d9bd58e6ae5e8c7ccd84ab27581e3aee08235775a7b4fc58d226d1a1",
+  "reports/fixtures/measurement-scope-20261020/m03-document.json": "dae8b21e03fb3aceb6b8be28234423be4290dc09166de0f797e9afd8bd229373",
+  "reports/reviewed-measurement-stage-expectations-20261020.json": "67a35b52974556a3ba07ea0097a6b6ea6bd520cec9f0541d205c253290a80303",
+  "scripts/run_reviewed_signal_stage.py": "fa623d128b481ecf7a8c6d97174866c50553e9dfde8f47eba55a108b01781def",
+  "spec/scripts/run_reviewed_signal_stage.md": "82b349e32eae3d9306b67782efb020f6b138a95d9fb52e739310eb96482404cb",
+  "tests/test_reviewed_signal_stage.py": "e97e1455e7608591b878b7894bf4f0fefefbe73e5ebe7dd02fe14b4830456901"
+}
+unchanged=True
+exit_code=0

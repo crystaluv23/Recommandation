@@ -1,0 +1,36 @@
+{
+  "actual_model_version": null,
+  "engineering_mvp_closed": false,
+  "external_api_calls": 0,
+  "external_llm_calls": 0,
+  "fixed_denominator": 3,
+  "independent_receipts": 0,
+  "outcomes": [],
+  "pending": [
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_preflight_20261020_v2/stage/exchange/inbox/81b72b605feddb3e3b5bced3afd965602c5b940a4ed4351d6f6d9cc046d864fa.json",
+      "inbox_sha256": "4b26dac317da8702efc417754770f0eb3fb7975bfcfb3e55ef51122cb3691aab",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_preflight_20261020_v2/stage/exchange/outbox/81b72b605feddb3e3b5bced3afd965602c5b940a4ed4351d6f6d9cc046d864fa.txt",
+      "request_hash": "81b72b605feddb3e3b5bced3afd965602c5b940a4ed4351d6f6d9cc046d864fa",
+      "sample_id": "m01",
+      "stage": "signal_retrieval_cards"
+    },
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_preflight_20261020_v2/stage/exchange/inbox/3d026343b27c51f31bdd5934ca3307ab10133a85ff8914fc8f7cb690aa7b24e7.json",
+      "inbox_sha256": "e4ad6674bb4272db88388413c50908022ebb62d482d7f01bffe095d4a5dcb613",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_preflight_20261020_v2/stage/exchange/outbox/3d026343b27c51f31bdd5934ca3307ab10133a85ff8914fc8f7cb690aa7b24e7.txt",
+      "request_hash": "3d026343b27c51f31bdd5934ca3307ab10133a85ff8914fc8f7cb690aa7b24e7",
+      "sample_id": "m02",
+      "stage": "signal_retrieval_cards"
+    },
+    {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_preflight_20261020_v2/stage/exchange/inbox/304c94201212aab3565d06713223a430098ab8a7e1eddfd03ab13e6461d44613.json",
+      "inbox_sha256": "7f52176e60d5b54ec55aba81074899c131de9ecfeb6bb78311e3b61f526d916e",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_preflight_20261020_v2/stage/exchange/outbox/304c94201212aab3565d06713223a430098ab8a7e1eddfd03ab13e6461d44613.txt",
+      "request_hash": "304c94201212aab3565d06713223a430098ab8a7e1eddfd03ab13e6461d44613",
+      "sample_id": "m03",
+      "stage": "signal_retrieval_cards"
+    }
+  ],
+  "readonly_data_requests": 0
+}

@@ -1,0 +1,126 @@
+{
+  "downstream_required": [
+    "exact selected version in executed batch",
+    "measurement value/unit/formula/reported period and source evidence preserved",
+    "actual validated need_dispositions and exact prior-state binding persisted",
+    "actual assembler/posthoc deterministic projections retain residual and version",
+    "completed artifacts unchanged on resume with zero new dispatch"
+  ],
+  "fixed_denominator": 3,
+  "global_failures": [
+    "drop an eligible catalog card",
+    "borrow v3 profile/status for v2 or mislabel v2 as ending-share capability",
+    "use ending shares to measure weighted-average retirement",
+    "invent prospective equity issuance or treat not measured as absent",
+    "close the m02 compound need fully from weighted-average evidence alone",
+    "interpret categorical sign as stock-direction prediction",
+    "treat technical failure/no match/not selected as capability pass",
+    "inherit raw answers/receipts/caches from a previous stage"
+  ],
+  "limits": {
+    "max_case_llm_calls": 8,
+    "max_case_tokens": 512000,
+    "max_llm_signals_per_round": 2,
+    "max_local_calls": 24,
+    "max_request_tokens": 131072,
+    "max_signal_rounds": 1,
+    "max_signals_per_round": 4,
+    "max_structured_corrections": 1
+  },
+  "model_oracle_visibility": "Independent role reads only exact system/user inbox; no oracle/history/network. Host precise model and token/cost unknown.",
+  "profile": "synthetic_measurement",
+  "samples": [
+    {
+      "categorical_value": "negative",
+      "coverage": "sufficient",
+      "current_period": {
+        "end": "2024-12-31",
+        "start": "2024-01-01"
+      },
+      "document_id": "synthetic_scope_m01_financials",
+      "ending_current": 50,
+      "ending_prior": 200,
+      "expected_target_answer_scope": "full",
+      "forbidden_measurement_value": 0.75,
+      "measurement_formula": "1 - current weighted-average shares / prior-year shares",
+      "measurement_unit": "fraction",
+      "measurement_value": -0.1,
+      "must_preserve_residual_facets": [],
+      "not_selected_is_not_pass": true,
+      "positive_capability_must_execute": true,
+      "prior_need": "What is net share retirement based on comparable FY 2024 versus FY 2023 weighted-average basic common shares, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+      "prior_period": {
+        "end": "2023-12-31",
+        "start": "2023-01-01"
+      },
+      "sample_id": "m01",
+      "source_content_sha256": "0d5704901c04b37e3214774ebea00672ef96546b2254d318a2233cd69018093b",
+      "target_signal_ref": "net_share_retirement_yoy:v3",
+      "weighted_current": 110,
+      "weighted_prior": 100
+    },
+    {
+      "categorical_value": "negative",
+      "coverage": "sufficient",
+      "current_period": {
+        "end": "2024-12-31",
+        "start": "2024-01-01"
+      },
+      "document_id": "synthetic_scope_m02_financials",
+      "ending_current": 50,
+      "ending_prior": 200,
+      "expected_target_answer_scope": "partial",
+      "forbidden_measurement_value": 0.75,
+      "measurement_formula": "1 - current weighted-average shares / prior-year shares",
+      "measurement_unit": "fraction",
+      "measurement_value": -0.1,
+      "must_preserve_residual_facets": [
+        "period-end common shares change",
+        "prospective net equity dilution"
+      ],
+      "not_selected_is_not_pass": true,
+      "positive_capability_must_execute": true,
+      "prior_need": "What is net share retirement based on comparable FY 2024 versus FY 2023 weighted-average basic common shares, how did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+      "prior_period": {
+        "end": "2023-12-31",
+        "start": "2023-01-01"
+      },
+      "sample_id": "m02",
+      "source_content_sha256": "0d5704901c04b37e3214774ebea00672ef96546b2254d318a2233cd69018093b",
+      "target_signal_ref": "net_share_retirement_yoy:v3",
+      "weighted_current": 110,
+      "weighted_prior": 100
+    },
+    {
+      "categorical_value": "positive",
+      "coverage": "sufficient",
+      "current_period": {
+        "end": "2024-12-31",
+        "start": "2024-01-01"
+      },
+      "document_id": "synthetic_scope_m03_financials",
+      "ending_current": 50,
+      "ending_prior": 200,
+      "expected_target_answer_scope": "full",
+      "forbidden_measurement_value": 0.75,
+      "measurement_formula": "1 - current weighted-average shares / prior-year shares",
+      "measurement_unit": "fraction",
+      "measurement_value": 0.1,
+      "must_preserve_residual_facets": [],
+      "not_selected_is_not_pass": true,
+      "positive_capability_must_execute": true,
+      "prior_need": "What is net share retirement based on comparable FY 2024 versus FY 2023 weighted-average basic common shares, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+      "prior_period": {
+        "end": "2023-12-31",
+        "start": "2023-01-01"
+      },
+      "sample_id": "m03",
+      "source_content_sha256": "f4d1f4bdce3d07931d17146bc296cae9c659111dfa528956d9632b37ef10fd73",
+      "target_signal_ref": "net_share_retirement_yoy:v2",
+      "weighted_current": 90,
+      "weighted_prior": 100
+    }
+  ],
+  "schema_version": "measurement-scope-independent-expectations-v1",
+  "scope": "Exact existing Signal routing, deterministic execution, owned Reflect and durable consumer projection; synthetic source only. Not public source admission, H_init, Predictor, Mining or wholeMVP."
+}
