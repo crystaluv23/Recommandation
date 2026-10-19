@@ -27,21 +27,26 @@ fallback、持久化及精确消费者；13 条新请求均由隔离角色实际
 - [旧 v2](../reports/local-role-mvp-stage-acceptance-20261019.md) 固定七分母仍 2 机械通过、
   5 失败，原件/原答/旧结果均保留。新 v3 结果不能改写旧失败，也不能证明所有消费者安全。
 
-最新 1722 项全量离线测试与 92 项 F8 聚焦检查通过；独立审查另验 14 个边界测试和
-10 个共存时间绑定反例。Lint 通过且已亲读 feedback。并发调用数/cache 原答复核两缺陷已修且独立线程/进程/
+最新 1734 项全量离线测试与 110 项来源/control/resolution 聚焦检查通过；F8 另有
+14 个边界测试/10 个独立共存绑定反例，来源 view 有 12 个聚焦及独立隔离反例。
+Lint 通过且已亲读 feedback。并发调用数/cache 原答复核两缺陷已修且独立线程/进程/
 篡改反例通过；只关闭该本地机械边界，完整运行恢复未验证。
 
-## 下一最小批次与输入阻塞
+## 窄来源准入与下一批次
 
-下一步实现[窄来源准入 view](../spec/src/stock_opportunity_agent/data/reviewed_snapshot.md)，
-用真实静态 SEC 正控、污染 news 反例及 transcript unknown 验证实际 store/冻结/恢复。
-保留本批失败，不用提示/季度 regex 掩盖。后续按可信输入→检索阅读→Signal→Reflect
+已实现并实跑[四来源 view](../reports/reviewed-source-snapshot-20261019.md)：2 SEC admitted、
+1 污染 news excluded、1 transcript unknown；窄冻结→生产 loader→worker snapshot→resolver
+恢复均精确保留集合。完整 48 案 prepare 仍缺 16 个 anchor 而失败，未缩分母/要求。
+零新模型调用，原件不变；全库来源可信仍未关闭。下一步核查本地 market 原始请求/响应、
+issuer 与调整时点证明；不足则先做可执行 SEC 检索/Signal stage，不造 baseline。
+保留本批失败。后续按可信输入→检索阅读→Signal→Reflect
 →Slow→后继→恢复推进。
 
 用户已选择[完整公开会议内容时间口径](../reports/transcript-availability-policy-review-20261007.md)，
 owning spec 已同步；[26 份原件清单](../reports/transcript-proof-inventory-20261019.json)
 全部保留，完整公开时间证明仍 0/26。四条旧 preview 不是已验证替换输入，未写 oracle。
-历史新闻旧发布日期对应后来正文的错误家族仍未修复；来源可信验收未通过。
+历史新闻 producer 旧发布日期对应后来正文的家族仍未全局修复；只有本次精确版本在
+reviewed view 排除，完整来源可信验收未通过。
 
 ## 旧运行与未完成能力
 

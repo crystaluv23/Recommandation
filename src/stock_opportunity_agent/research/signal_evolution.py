@@ -2399,7 +2399,7 @@ class SignalCandidateEffectivenessEvaluator:
         ).hexdigest()
         materialized = self._materialize_case_inputs(spec, cases)
 
-        frozen_store = RawInfoStore(documents=self.raw_info_store.documents)
+        frozen_store = self.raw_info_store.snapshot()
         candidate_executor = SignalExecutor(
             FrozenSignalRegistry(
                 version=0,

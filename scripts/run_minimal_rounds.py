@@ -24,7 +24,8 @@ from pathlib import Path
 from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
 from stock_opportunity_agent.cases.label_store import LabelStore
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoOracle, RawInfoStore
-from stock_opportunity_agent.data.resolution import broad_research_data_policy_v1
+from stock_opportunity_agent.data.reviewed_snapshot import open_raw_info_store
+from stock_opportunity_agent.data.resolution import broad_research_data_policy_v1, DataAcquisitionPolicy
 from stock_opportunity_agent.llm import get_model
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_control import (
@@ -108,6 +109,15 @@ def _restore_case(row):
 
 def _verify_inputs(root):
     frozen = _read(root / 'input_manifest.json')
+    reviewed = frozen.get('reviewed_source_snapshot')
+    if reviewed is not None:
+        store = open_raw_info_store(reviewed['root'], reviewed_snapshot=reviewed)
+        if {row['source_path'] for row in frozen['source_files']} != {
+                str(path) for path in (store.root / 'documents').glob('*.json')}:
+            raise ValidationError('reviewed frozen source file membership differs')
+    elif any(not Path(row['source_path']).resolve().is_relative_to(ORACLE.resolve())
+             for row in frozen['source_files']):
+        raise ValidationError('plain frozen sources must belong to the canonical oracle; reviewed binding missing')
     if _hash_file(APPROVED) != frozen['approved_manifest_hash']:
         raise ValidationError('approved input manifest changed')
     if _hash_file(LABELS / 'manifest.json') != frozen['label_manifest_hash']:
@@ -131,18 +141,22 @@ def _development_dataset(frozen):
 
 
 def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Path | None = None,
-            slow_history_from: Path | None = None):
+            slow_history_from: Path | None = None, reviewed_source_snapshot: Path | None = None):
     """Freeze stratified development cases before any model observation."""
     if sum(item is not None for item in (seed_registry, slow_bootstrap_from, slow_history_from)) > 1:
         raise ValidationError('seed, bootstrap and committed history sources are mutually exclusive')
     bootstrap_source = None if slow_bootstrap_from is None else slow_bootstrap_from.resolve()
     history_source = None if slow_history_from is None else slow_history_from.resolve()
     source_root = bootstrap_source or history_source
+    reviewed = _read(reviewed_source_snapshot) if reviewed_source_snapshot is not None else None
+    reviewed_store = None if reviewed is None else open_raw_info_store(reviewed['root'], reviewed_snapshot=reviewed)
     registry_source = ((source_root / 'signals') if source_root is not None
                        else (seed_registry or HISTORY / 'signals')).resolve()
     root.mkdir(parents=True, exist_ok=True)
     if (root / 'input_manifest.json').is_file():
         frozen = _verify_inputs(root)
+        if reviewed is not None and reviewed != frozen.get('reviewed_source_snapshot'):
+            raise ValidationError('requested reviewed source differs from frozen inputs')
         if seed_registry is not None and registry_source != Path(frozen['registry_source']).resolve():
             raise ValidationError('requested Registry seed differs from prepared inputs; use a successor workspace')
         if bootstrap_source is not None and str(bootstrap_source) != frozen.get('slow_bootstrap_source'):
@@ -158,6 +172,8 @@ def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Pat
         raise ValidationError('partial diagnostic Registry exists without frozen inputs; use a successor workspace')
     if history_source is not None:
         source = _verify_inputs(history_source)
+        if reviewed is not None and reviewed != source.get('reviewed_source_snapshot'):
+            raise ValidationError('reviewed source cannot replace inherited history inputs')
         manifest_hash = build_slow_history_manifest(workspace=root, source_workspace=history_source,
             dataset_manifest_hash=source['approved_manifest_hash'])
         manifest = _read(root / 'slow_history' / 'manifest.json')['manifest']
@@ -174,6 +190,8 @@ def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Pat
         return frozen
     if bootstrap_source is not None:
         source = _verify_inputs(bootstrap_source)
+        if reviewed is not None and reviewed != source.get('reviewed_source_snapshot'):
+            raise ValidationError('reviewed source cannot replace inherited bootstrap inputs')
         if EvolutionWorkspace(bootstrap_source).last_completed_round < 1:
             raise ValidationError('diagnostic bootstrap requires committed Fast input')
         shutil.copytree(registry_source, root / 'signals',
@@ -197,11 +215,16 @@ def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Pat
     unproven_sources = {row['document_id']: row for row in review['reviews']
                         if row['verdict'] == 'issuer_identity_unproven'}
     files_by_company = defaultdict(list)
-    for family in sorted(ORACLE.iterdir()):
-        if family.is_dir():
-            for company in sorted(family.iterdir()):
-                if company.is_dir():
-                    files_by_company[company.name].extend(sorted(company.glob('*.json')))
+    if reviewed_store is not None:
+        for source in sorted((reviewed_store.root / 'documents').glob('*.json')):
+            document = RawInfoDocument.from_dict(_read(source))
+            files_by_company[document.company_id].append(source)
+    else:
+        for family in sorted(ORACLE.iterdir()):
+            if family.is_dir():
+                for company in sorted(family.iterdir()):
+                    if company.is_dir():
+                        files_by_company[company.name].extend(sorted(company.glob('*.json')))
     market_cache = {}
     exclusions = []
     baseline_comparisons = []
@@ -277,12 +300,12 @@ def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Pat
                    if len(groups[label]) < targets[label]}
         if missing:
             atomic_write_json(root / 'preparation_failure.json', {'split': split, 'missing': missing,
-                                                                  'exclusions': exclusions})
+                'exclusions': exclusions, 'reviewed_source_snapshot': reviewed})
             raise ValidationError(f'approved source-ready subset insufficient: {split} {missing}')
         selected[split] = [case.to_discovery_dict() for label in EVALUATION_LABELS for case in groups[label]]
     companies = {row['company_id'] for rows in selected.values() for row in rows}
     source_files = []
-    for company_id in sorted(companies):
+    for company_id in sorted(files_by_company if reviewed_store is not None else companies):
         for source in files_by_company[company_id]:
             source_files.append({'source_path': str(source), 'sha256': _hash_file(source)})
     registry_root = root / 'signals'
@@ -302,12 +325,17 @@ def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Pat
         'initial_registry_version': registry.version, 'initial_registry_hash': registry.registry_hash,
         'registry_source': str(registry_source), 'paired_with_v154': False,
     }
+    if reviewed is not None:
+        frozen['reviewed_source_snapshot'] = reviewed
     atomic_write_json(root / 'input_manifest.json', frozen)
     return frozen
 
 
 def run(root, frozen):
     """Execute and resume the actual production cycle, preserving control failures."""
+    reviewed = frozen.get('reviewed_source_snapshot')
+    source_root = ORACLE if reviewed is None else Path(reviewed['root'])
+    store = open_raw_info_store(source_root, reviewed_snapshot=reviewed)
     _load_env()
     workspace = EvolutionWorkspace(root)
     if workspace.last_completed_cycle >= 1:
@@ -320,10 +348,12 @@ def run(root, frozen):
     history_hash = frozen.get('slow_history_manifest_hash')
     cycle_mode = 'slow_bootstrap' if bootstrap_hash is not None else 'fast_then_slow'
     target_plan_rounds = 0 if bootstrap_hash is not None else 1
-    oracle = RawInfoOracle.load_or_create(ORACLE)
+    oracle = RawInfoOracle.load_or_create(source_root)
     contract_path = root / 'run_contract.json'
     if contract_path.exists():
         contract = EvolutionRunContract.from_dict(_read(contract_path)['contract'])
+        if contract.limits.get('reviewed_source_snapshot') != reviewed:
+            raise ValidationError('run reviewed source binding differs from frozen inputs')
         if contract.code_revision != current_code_revision(REPO):
             raise ValidationError('run source revision changed; use a successor workspace')
         if contract.raw_info_inventory_hash != canonical_json_hash(frozen):
@@ -340,6 +370,8 @@ def run(root, frozen):
         limits.update(evaluation=_evaluation().to_dict(), candidates_per_round=2,
                       max_parallel_plans=1, max_structured_corrections=1,
                       plan_rounds_per_signal_cycle=target_plan_rounds)
+        if reviewed is not None:
+            limits['reviewed_source_snapshot'] = reviewed
         # Model registries and exact-request transport own wire settings and cost.
         contract = build_run_contract(
             run_id=root.name, dataset_manifest_path=APPROVED, inventory=None,
@@ -349,7 +381,7 @@ def run(root, frozen):
             priors=_default_priors_dict(), role_aliases={role: 'deepseek-v4-flash' for role in
                 ('judge', 'proposer', 'mining', 'update')}, project_root=REPO,
             limits=limits, max_external_attempts=1200, max_total_cost=100,
-            data_acquisition=broad_research_data_policy_v1(),
+            data_acquisition=broad_research_data_policy_v1() if reviewed is None else DataAcquisitionPolicy(),
             cycle_mode=cycle_mode, slow_bootstrap_manifest_hash=bootstrap_hash,
             slow_history_manifest_hash=history_hash,
         )
@@ -401,8 +433,7 @@ def run(root, frozen):
         ledger=ledger, allow_external=True, acknowledged_contract_hash=contract.contract_hash,
         on_progress=emit,
     )
-    store = RawInfoStore(ORACLE)
-    resolver = _build_evidence_resolver(root, store, contract=contract, allow_data_external=True,
+    resolver = _build_evidence_resolver(root, store, contract=contract, allow_data_external=reviewed is None,
                                         environ=None, cycle_id=cycle['cycle_id'])
     limits = contract.limits
     runtime_limits = RuntimeLimits(**{key: limits[key] for key in (
@@ -470,6 +501,7 @@ def main():
     parser.add_argument('--seed-registry', type=Path, help='Stable Registry directory to freeze into a new diagnostic workspace')
     parser.add_argument('--slow-bootstrap-from', type=Path, help='Reuse a committed Fast diagnostic range without rerunning its cases')
     parser.add_argument('--slow-history-from', type=Path, help='Continue a committed Slow publication in an ordinary Fast/Slow cycle')
+    parser.add_argument('--reviewed-source-snapshot', type=Path, help='Explicit frozen reviewed store binding JSON for new inputs')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--prepare-only', action='store_true')
     mode.add_argument('--run', action='store_true')
@@ -478,7 +510,7 @@ def main():
     root.mkdir(parents=True, exist_ok=True)
     with EvolutionWorkspace.execution_lock_at(root):
         frozen = prepare(root, seed_registry=args.seed_registry, slow_bootstrap_from=args.slow_bootstrap_from,
-                         slow_history_from=args.slow_history_from)
+                         slow_history_from=args.slow_history_from, reviewed_source_snapshot=args.reviewed_source_snapshot)
         print(f'Frozen diagnostic inputs: {canonical_json_hash(frozen)}', flush=True)
         if args.run:
             run(root, frozen)

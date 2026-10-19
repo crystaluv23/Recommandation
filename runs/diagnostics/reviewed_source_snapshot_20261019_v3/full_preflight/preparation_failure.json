@@ -1,0 +1,96 @@
+{
+  "exclusions": [
+    {
+      "case_id": "cik_0001646188:20250530",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "reason": "pit_price_baseline_unavailable",
+      "split": "anchor"
+    }
+  ],
+  "missing": {
+    "10x_plus": 1,
+    "2_3x": 5,
+    "3_10x": 3,
+    "non_surge": 7
+  },
+  "reviewed_source_snapshot": {
+    "manifest_sha256": "718047b39270b0584a5c3fb08a7fb0caf3845f1a3cc6aa5768164c90cec5c7b5",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/snapshot",
+    "store_type": "reviewed"
+  },
+  "split": "anchor"
+}

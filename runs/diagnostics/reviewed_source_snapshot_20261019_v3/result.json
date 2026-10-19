@@ -1,0 +1,412 @@
+{
+  "admitted_document_ids": [
+    "sec:cik_0001830043:000119312525146199",
+    "sec:cik_0001830043:000162828025038861"
+  ],
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_source_snapshot.py",
+      "sha256": "bf482b5b9058644525b03641e41c936b79bb6ee32c5ba6367c1c6d17d35398cc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "7c0765559fc00e22fb4c87fee5968af49bddb33e01d63c7da2cbcab7e36bd118"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "ae4ff81593f2a107b4309c4f7e90362d793c2c4c498f92f6f7de4040b65a3094"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "520384a58c0bb4c5e2dcaad838bc60dbf72f55c022536f54049f109e91e03525"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "64f05159c03e2cd4cf0b9b2587a4b5dd31a68371b4a3e17313bc4d3c7ac173f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_minimal_rounds.py",
+      "sha256": "f4320cf3a6cfea796f144669a0b8ff3ce6b3bc44c466917241a3ef4006b01b6f"
+    }
+  ],
+  "engineering_mvp_closed": false,
+  "excluded_append_rejected": true,
+  "external_api_calls": 0,
+  "full_dataset_readiness_proven": false,
+  "input_manifest_hash": "9352ed0331d9bce6a4379198ea339c6024ab6f129b5a7729ca07fc4b5ab9f411",
+  "legacy_news_original_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/news/cik_0001830043/avnews_82c6cc3e5143825f6225f673.json",
+    "sha256": "c67fae71ac7135a621c36abf302d2eee97ffe6a9ca6d6c11ab53d0ff7715be46"
+  },
+  "legacy_news_temporal_lookup_still_resolves": true,
+  "legacy_original_news_resolution": {
+    "appended_documents": [],
+    "context_spans": [
+      {
+        "available_at": "2025-04-24T17:52:47+00:00",
+        "content_hash": "e3fa9e10193ccb7d57c63d8a3602d521845ddbc7897bee1a1d1e0882663786f6",
+        "document_id": "avnews_82c6cc3e5143825f6225f673",
+        "end": 628,
+        "exact_text": "BMBL Stock Price, News & Analysis\n\nBumble Inc. (BMBL) stock saw a significant 32.57% increase after reporting its Q4 and full-year 2025 results, despite a 9.9% revenue decline and a net loss of $906.6 million. Investors seem to be reacting positively to the company's forward guidance, cost management initiatives, and strategic changes including a workforce reduction and a Tax Receivable Agreement buyout. The article provides a detailed company profile, including its business model, operating metrics, strategic initiatives, and financial highlights, positioning BMBL within the online dating and social connection industry.",
+        "start": 0
+      }
+    ],
+    "coverage": {
+      "context_truncated": false,
+      "contract_satisfied": true,
+      "deduplicated_document_count": 0,
+      "eligible_document_count": 1,
+      "missing_requirements": [],
+      "observed_distinct_period_count": 0,
+      "observed_observation_count": 0,
+      "observed_period_span_days": null,
+      "query_evaluated": false,
+      "query_matched_document_count": null,
+      "query_requested": false,
+      "query_status": "not_requested",
+      "required_source_group_count": 0,
+      "satisfied_source_group_count": 0,
+      "selected_document_count": 1,
+      "selection_truncated": false,
+      "visible_span_count": 1
+    },
+    "data_gap": null,
+    "documents": [
+      {
+        "available_at": "2025-04-24T17:52:47+00:00",
+        "content_hash": "e3fa9e10193ccb7d57c63d8a3602d521845ddbc7897bee1a1d1e0882663786f6",
+        "document_id": "avnews_82c6cc3e5143825f6225f673"
+      }
+    ],
+    "events": [
+      {
+        "details": {
+          "matched_document_ids": [
+            "avnews_82c6cc3e5143825f6225f673"
+          ],
+          "phase": "initial",
+          "request_id": "old-news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "kind": "local_query"
+      }
+    ],
+    "omitted_context_markers": [],
+    "request": {
+      "description": "Read original provider summary",
+      "max_documents": 5,
+      "request_id": "old-news",
+      "source_types": [
+        "news"
+      ]
+    },
+    "status": "resolved"
+  },
+  "minimal_full_preflight": {
+    "failure_artifact": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+      "sha256": "6fbfd93ca427f02f487517dff4d826ee8a3e7df8ec67344c5684c6e0886b9f49"
+    },
+    "reason": "approved source-ready subset insufficient: anchor {'non_surge': 7, '2_3x': 5, '3_10x': 3, '10x_plus': 1}",
+    "status": "full_readiness_rejected"
+  },
+  "narrow_boundary_checks_passed": true,
+  "new_model_responses": 0,
+  "original_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000119312525146199.json",
+      "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000162828025038861.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/news/cik_0001830043/avnews_82c6cc3e5143825f6225f673.json",
+      "sha256": "c67fae71ac7135a621c36abf302d2eee97ffe6a9ca6d6c11ab53d0ff7715be46"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001830043/alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e.json",
+      "sha256": "f23c7887094f0cb484d053e6d04aab37e6f6a98d8e6bd7ad2c73b3ef2d718bc3"
+    }
+  ],
+  "original_records_unchanged": true,
+  "outcomes": [
+    {
+      "available_at": "2025-06-25T12:20:35+00:00",
+      "before_one_second_rejected": true,
+      "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "exact_instant_loaded": true,
+      "exact_replay_added": false,
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 1,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 1,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "document_id": "sec:cik_0001830043:000119312525146199"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "sec:cik_0001830043:000119312525146199"
+              ],
+              "phase": "initial",
+              "request_id": "admitted-0",
+              "source_types": [
+                "filing"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Read scoped SEC filing",
+          "max_documents": 5,
+          "request_id": "admitted-0",
+          "source_types": [
+            "filing"
+          ]
+        },
+        "status": "resolved"
+      },
+      "resolver_original_document_loaded": true,
+      "verdict": "admitted"
+    },
+    {
+      "available_at": "2025-08-07T20:05:33+00:00",
+      "before_one_second_rejected": true,
+      "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "exact_instant_loaded": true,
+      "exact_replay_added": false,
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 2,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 2,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-08-07T20:05:33+00:00",
+            "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+            "document_id": "sec:cik_0001830043:000162828025038861"
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "document_id": "sec:cik_0001830043:000119312525146199"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "sec:cik_0001830043:000162828025038861",
+                "sec:cik_0001830043:000119312525146199"
+              ],
+              "phase": "initial",
+              "request_id": "admitted-1",
+              "source_types": [
+                "filing"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Read scoped SEC filing",
+          "max_documents": 5,
+          "request_id": "admitted-1",
+          "source_types": [
+            "filing"
+          ]
+        },
+        "status": "resolved"
+      },
+      "resolver_original_document_loaded": true,
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "avnews_82c6cc3e5143825f6225f673",
+      "is_gap": true,
+      "negative_company_observation": false,
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+          "provider": null,
+          "reason": "no_matching_documents",
+          "request_id": "review-gap-news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "review-gap-news",
+              "source_types": [
+                "news"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Read scoped original source",
+          "max_documents": 5,
+          "request_id": "review-gap-news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "status": "unresolved"
+      },
+      "verdict": "excluded"
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+      "is_gap": true,
+      "negative_company_observation": false,
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+          "provider": null,
+          "reason": "no_matching_documents",
+          "request_id": "review-gap-earnings_call",
+          "source_types": [
+            "earnings_call"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "review-gap-earnings_call",
+              "source_types": [
+                "earnings_call"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Read scoped original source",
+          "max_documents": 5,
+          "request_id": "review-gap-earnings_call",
+          "source_types": [
+            "earnings_call"
+          ]
+        },
+        "status": "unresolved"
+      },
+      "verdict": "unknown"
+    }
+  ],
+  "reviewed_source_snapshot": {
+    "manifest_sha256": "718047b39270b0584a5c3fb08a7fb0caf3845f1a3cc6aa5768164c90cec5c7b5",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/snapshot",
+    "store_type": "reviewed"
+  },
+  "schema_version": "reviewed-source-snapshot-diagnostic-v1",
+  "signal_semantics_or_prediction_quality_proven": false,
+  "worker_preserves_review_type": true
+}

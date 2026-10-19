@@ -1,0 +1,32 @@
+{
+  "bounded_cycle_or_parallel_plan_executed": false,
+  "engineering_mvp_closed": false,
+  "external_api_calls": 0,
+  "extra_counterexamples": [
+    "untrusted_submissions_domain",
+    "wrong_cik_endpoint",
+    "direct_nested_destination",
+    "symlink_nested_destination",
+    "declared_oracle_root",
+    "missing_binding_before_contract",
+    "missing_manifest",
+    "wrong_root"
+  ],
+  "final_code_bindings_verified": 6,
+  "focused_tests_passed": 12,
+  "full_dataset_frozen": false,
+  "full_prepare_anchor_missing_count": 16,
+  "initial_observed_failures": {
+    "copied_parent_plain_oracle_error": "ValidationError raw info document is stored outside its canonical path",
+    "nested_destination_created": true,
+    "wrong_endpoint_admitted_document_count": 2
+  },
+  "narrow_input_hash_verified": true,
+  "new_model_responses": 0,
+  "original_bindings_verified": 4,
+  "original_records_changed": false,
+  "restored_document_count": 2,
+  "restored_store_type": "ReviewedRawInfoStore",
+  "reviewer": "/root/acceptance_review",
+  "source": "direct read-only messages to root and driver"
+}

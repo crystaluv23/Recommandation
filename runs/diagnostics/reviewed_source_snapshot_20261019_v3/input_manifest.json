@@ -1,0 +1,23 @@
+{
+  "fixed_source_denominator": 4,
+  "full_approved_dataset_freeze": false,
+  "model_calls_authorized": false,
+  "reviewed_source_snapshot": {
+    "manifest_sha256": "718047b39270b0584a5c3fb08a7fb0caf3845f1a3cc6aa5768164c90cec5c7b5",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/snapshot",
+    "store_type": "reviewed"
+  },
+  "schema_version": "narrow-reviewed-source-stage-inputs-v1",
+  "scope": {
+    "acquisition_allowed": false,
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "company_ids": [
+      "cik_0001830043"
+    ],
+    "purpose": "narrow source boundary acceptance; no full cohort or prediction effect claim"
+  },
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/local-trusted-source-review-20261019.json",
+    "sha256": "3563696882aff0b51505c171a27cc35c5807acd18554c4aa902c99dc1d2e9059"
+  }
+}

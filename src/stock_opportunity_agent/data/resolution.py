@@ -1133,6 +1133,9 @@ class EvidenceResolver:
         policy: DataAcquisitionPolicy = DataAcquisitionPolicy(),
         budget: DataAcquisitionBudget | None = None,
     ) -> None:
+        if getattr(store, "acquisition_allowed", True) is False and policy.enabled:
+            from stock_opportunity_agent.data.reviewed_snapshot import ReviewedSourceRejected
+            raise ReviewedSourceRejected("reviewed source snapshot forbids enabled acquisition")
         self.store = store
         self.adapters = tuple(adapters)
         self.policy = policy

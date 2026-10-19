@@ -1,5 +1,11 @@
 # Data / Evidence Resolution
 
+An explicitly reviewed snapshot remains the resolver's sole store, including
+requery and exact `load_documents`. Its read-only admission boundary forbids an
+enabled acquisition policy even when no external execution flag was supplied;
+invalid source input is a typed technical failure, not negative company evidence.
+See [reviewed source snapshots](reviewed_snapshot.md).
+
 ## Status
 
 Implemented

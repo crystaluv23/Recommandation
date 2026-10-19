@@ -28,6 +28,7 @@ from stock_opportunity_agent.data.acquisition import (
     UnavailableProviderAdapter,
 )
 from stock_opportunity_agent.data.raw_info import RawInfoOracle, RawInfoStore
+from stock_opportunity_agent.data.reviewed_snapshot import open_raw_info_store, ReviewedSourceRejected
 from stock_opportunity_agent.data.resolution import (
     aggregate_capability_gaps,
     DataAcquisitionBudget,
@@ -2432,6 +2433,8 @@ def _validate_cycle_execution_request(
 
     if not contract.executable:
         raise ValidationError("legacy_contract_read_only")
+    if contract.limits.get("reviewed_source_snapshot") is not None and contract.data_acquisition.enabled:
+        raise ReviewedSourceRejected("reviewed source contract forbids enabled acquisition")
     if allow_data_external and not contract.data_acquisition.enabled:
         raise ExternalExecutionNotReady(
             "data_acquisition_not_in_contract",
@@ -2715,7 +2718,7 @@ def _run_bounded_evolution_cycle_unlocked(
         environ=environ,
         on_progress=emit,
     )
-    raw_info_store = RawInfoStore(raw_info_root)
+    raw_info_store = open_raw_info_store(raw_info_root, reviewed_snapshot=limits.get("reviewed_source_snapshot"))
     evidence_resolver = _build_evidence_resolver(
         workspace_root,
         raw_info_store,
@@ -2790,7 +2793,7 @@ def _run_bounded_evolution_cycle_unlocked(
             environ=environ,
             on_progress=emit,
         )
-        worker_store = RawInfoStore(raw_info_root)
+        worker_store = open_raw_info_store(raw_info_root, reviewed_snapshot=limits.get("reviewed_source_snapshot"))
         worker_resolver = _build_evidence_resolver(
             workspace_root,
             worker_store,
@@ -3078,6 +3081,8 @@ def _build_evidence_resolver(
     """Build production adapters over the existing cache/ledger/quota boundary."""
 
     configured = contract.data_acquisition
+    if getattr(store, "acquisition_allowed", True) is False and configured.enabled:
+        raise ReviewedSourceRejected("reviewed source contract forbids enabled acquisition")
     effective_policy = (
         configured
         if configured.enabled and allow_data_external

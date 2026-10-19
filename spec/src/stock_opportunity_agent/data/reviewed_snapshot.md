@@ -1,7 +1,7 @@
 # Reviewed historical source snapshot
 
-Status: proposed implementation for the next trusted-input batch; no source
-admission is asserted by this file. This is a narrow local view of reviewed
+Status: implementation contract for the trusted-input batch; source admission
+requires actual proof verification and materialization. This is a narrow local view of reviewed
 documents, not a rewrite of RawInfoDocument or the global oracle.
 
 ## Review and immutable view
@@ -39,6 +39,33 @@ proof, changed admission, extra documents or a widened source root. Refresh
 and restart retain the manifest's original scope. Old completed inputs remain
 unchanged; no old run is resumed with new admission semantics. Global oracle
 growth alone cannot make a new record visible in the frozen view.
+
+`materialize_reviewed_snapshot(review_path, root)` verifies every scoped original
+and retained proof before writing two admitted copies and an immutable manifest.
+Its binding explicitly names `store_type=reviewed`, exact root and manifest hash.
+`open_raw_info_store(root, reviewed_snapshot=binding)` requires that type, root
+and hash even if the marker was removed or renamed; it cannot fall back to a
+plain store. Production contracts retain this binding in
+`limits.reviewed_source_snapshot`; coordinator and parallel workers use the same
+loader. New minimal-round input manifests retain the binding, and preparation,
+verification and runtime use that same view. Reviewed inputs with no explicit
+binding are rejected. Existing plain-store contracts retain their old behavior.
+
+The first proof reader supports only the reviewed static SEC archive body plus
+cached submissions acceptance pair. It checks exact endpoint/body equality,
+issuer/accession/form/primary-document identity and exact accepted/available/
+published instant equality. It never rewrites original availability to match
+proof. Excluded and unknown records remain in the four-record review, outside
+the materialized document set. Snapshot restart rechecks these same originals
+and proofs; additions, missing files, changed scope/root/hash or content reject
+before visibility. Snapshot returns the reviewed store type, never an appendable
+plain in-memory copy. Enabled acquisition policy on this scope is rejected.
+The cached submissions endpoint must be the exact SEC `data.sec.gov/submissions/CIK…json`
+endpoint for the same issuer, in addition to its body identity. Materialization
+resolves symlinks and rejects a destination within the original oracle root
+before any mkdir or write, preserving that append-only oracle's file namespace.
+Every scoped original record must physically belong to that declared oracle
+root; relocating only its identity file cannot weaken the destination guard.
 
 ## Required checks
 
