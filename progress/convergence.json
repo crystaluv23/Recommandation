@@ -407,10 +407,29 @@
         "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/actual-orientation-checks.json"
       ],
       "result": "Fixed1proposer+3H_init narrow semantic and exact consumer scope passed;5physical roles incl1unnecessary p01 correction after system negation false-positive. Three H_init first answers accepted,18quotes/15needs independently audited;42files completedrestore exact0newdispatch.199611 logical reservationunits;hosttokens/cost unknown. No Signal/tail/labels/Fast/Slow/fullMVP closure."
+    },
+    {
+      "id": "engineering-mvp-controller-direction-local-negation-20261020",
+      "strategy": "bounded_local_direction_restraint_mask_preserving_affirmative_decisions",
+      "failure_families": [
+        "controller_direction_prohibition_negation_false_positive",
+        "nested_without_and_later_affirmative_decision_scrub",
+        "simple_plural_direction_target_lexemes"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-orientation-stage-20261020.md",
+        "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-old-tests-complete.log",
+        "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-plural-red.log",
+        "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-related-tests-final.log",
+        "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-related-tests-final-coordination.log",
+        "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-coordination-final-tests.log"
+      ],
+      "result": "After native orientation evidence checkpoint, local H_reflect direction mask admits exact original41 prohibition while retaining nested/independent affirmative controls and singular/plural targets. Original first rejection/correction unchanged;204 related tests passed8.402s. Local deterministic replay, not a fresh role or general natural-language semantic claim. Ordinary coordinated or/nor prohibitions and repeated explicit negative cues remain legal; earlier candidate regressions retained."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-native-orientation-accepted-20261020",
+    "after_iteration": "engineering-mvp-controller-direction-local-negation-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -469,7 +488,13 @@
       "reports/reviewed-orientation-stage-20261020.md",
       "runs/diagnostics/reviewed_orientation_stage_20261020_v1/independent-review.json",
       "runs/diagnostics/reviewed_orientation_stage_20261020_v1/execution_summary.json",
-      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/actual-orientation-checks.json"
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/actual-orientation-checks.json",
+      "reports/reviewed-orientation-stage-20261020.md",
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-old-tests-complete.log",
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-plural-red.log",
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-related-tests-final.log",
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-related-tests-final-coordination.log",
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-coordination-final-tests.log"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -495,21 +520,22 @@
       "Fixed canonical menu routing conflicts with literal available-source membership: existing resolver aliases must be admitted semantically while Plans still copy fixed routes. Old tests also assumed one filing and treated8K as annual/interim fulfillment.",
       "Case-bootstrap resemblance is insufficient: preserve engine proposer prior, core-computed anchor/metrics and exact native read capabilities. Completed-only inventory cannot reject real pending/submitted queues, and a parsed but unsuccessfully persisted Plan cannot authorize a consumer. Single request cap differs from aggregate case budget.",
       "Global event dedup merged identical validation events acrossH_init cases; sample-attributed raw-event sequence is necessary, while unique receipts alone count physical calls.",
-      "A direction regex starts at an earlier collection Decide and crosses a local without-deciding prohibition to a later target word. Successful correction events can be empty, so exact request traces/receipts, not events alone, establish correction count."
+      "A direction regex starts at an earlier collection Decide and crosses a local without-deciding prohibition to a later target word. Successful correction events can be empty, so exact request traces/receipts, not events alone, establish correction count.",
+      "Without-clause recognition alone left ordinary do-not masks swallowing later finite decisions, and singular-only target words missed shares/prices. Keep local direction spans bounded and test both false rejection and false admission, without widening the shared prohibition guard."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "repair",
-      "strategy": "local_controller_without_decision_prohibition_scope",
-      "action": "After evidence checkpoint, add bounded local masking for explicit without deciding/determining/judging/classifying/concluding controller direction prohibitions; preserve original frozen failure and shared guards.",
-      "stop": "No frozen stage edits, no new model calls or larger ceilings; reject affirmative instructions beyond clause boundaries and pseudo-negations.",
-      "question": "Can local explicit without-prohibitions pass while independent affirmative controller decisions remain rejected?",
-      "pass": "Original raw Plan and bounded variants pass through the same validator/proposer boundary; affirmative, contrastive, repeated-verb and not-without/not-only controls reject without unrelated guard regressions.",
-      "fail": "A broad shared exemption hides affirmative direction authority or changes original raw/accepted artifacts.",
-      "on_pass": "Close only this deterministic local negation family and reassess the next substantive MVP dependency.",
-      "on_fail": "Preserve exact counterexample and narrow scope; do not deploy a permissive shared exemption.",
-      "new_evidence": "Actual41 Plan was semantically legal but mechanically rejected; independent exactPlan replay isolates without-clause recognition, and44wholeHreflectpatch consumed one needless call.",
-      "distinguishing_variable": "Local negative clause span versus later independent affirmative decision verb under the same fixed Plan."
+      "kind": "diagnose",
+      "strategy": "bounded_prefix_signal_execution_budget_admission",
+      "action": "After local guard checkpoint, read the actual old prefix reservation/remaining evidence and propose one new bounded native prefix budget; do not resume old256k contract or start fullFast/Slow.",
+      "stop": "No new runner/roles/source or larger old limits before new bounded input/budget freeze.",
+      "question": "What new finite case budget preserves the native predictor/finalization reserve while permitting selected Signalapply and ownedReflect under honest failure accounting?",
+      "pass": "Actual initial/routing/apply request reservations and same native reserve calculation justify a bounded new ceiling, with explicit stop/no-result outcomes and unchanged old failure denominator.",
+      "fail": "Budgets are raised inside oldfreeze, reserve silently removed, source gaps converted to technical success, or model-selected stages claimed executed without requests.",
+      "on_pass": "Prepare the minimal next genuine retrieval/apply/Reflect/Predictor prefix under separately frozen scope.",
+      "on_fail": "Retain technical failure and choose a smaller supported question rather than inflate oldrun.",
+      "new_evidence": "Actual native1+3orientation and bounded local guard regression passed; older prefix source resolved but16547apply exceeded14269 remaining, so it never exercised apply/Reflect model behavior.",
+      "distinguishing_variable": "Same native production budget/reserve rules under a separately frozen sufficient finite case ceiling, rather than merely entering execute_batch or raising oldrun."
     }
   },
   "successor_prerequisites": [

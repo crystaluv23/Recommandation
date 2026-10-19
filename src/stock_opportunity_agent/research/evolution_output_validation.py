@@ -1511,13 +1511,13 @@ _RESEARCH_CONTROLLER_PREDICTION_ONTOLOGY = re.compile(
 
 _RESEARCH_CONTROLLER_DIRECTION_DECISION = re.compile(
     r"\b(?:decid\w*|determin\w*|conclud\w*|classif\w*|judg\w*)\b"
-    r"(?:(?![.!?]).){0,160}\b(?:price|share|stock|market\s+trend|trend|"
+    r"(?:(?![.!?]).){0,160}\b(?:prices?|shares?|stocks?|market\s+trend|trend|"
     r"direction|outlook|outcome)\b(?:(?![.!?]).){0,120}\b(?:likely|rise|fall|"
     r"increase|decrease|continu\w*|revers\w*|upward|downward|up|down)\b|"
     r"\b(?:decid\w*|determin\w*|conclud\w*|classif\w*|judg\w*)\b"
     r"(?:(?![.!?]).){0,160}\b(?:likely|rise|fall|increase|decrease|continu\w*|"
     r"revers\w*|upward|downward|up|down)\b(?:(?![.!?]).){0,120}"
-    r"\b(?:price|share|stock|market\s+trend|trend|direction|outlook|outcome)\b",
+    r"\b(?:prices?|shares?|stocks?|market\s+trend|trend|direction|outlook|outcome)\b",
     re.IGNORECASE,
 )
 
@@ -1618,6 +1618,66 @@ _PLAN_PROHIBITION_GUARD = re.compile(
 )
 
 
+_CONTROLLER_WITHOUT_DECISION = re.compile(
+    r"\bwithout[ \t]+(?:deciding|determining|judging|classifying|concluding)\b",
+    re.IGNORECASE,
+)
+_CONTROLLER_NEGATIVE_CLAUSE_END = re.compile(
+    r"[.!?;\n]|\b(?:but|however|instead|yet|nevertheless|nonetheless|whereas)\b|"
+    r"\b(?:decide|decides|determine|determines|judge|judges|classify|classifies|"
+    r"conclude|concludes)\b",
+    re.IGNORECASE,
+)
+
+
+def _controller_direction_text(text: str) -> str:
+    """Mask only local direction restraints, retaining independent decisions."""
+
+    outer_prohibitions = tuple(_PLAN_PROHIBITION_GUARD.finditer(text))
+    chars = list(text)
+    for restraint in _CONTROLLER_WITHOUT_DECISION.finditer(text):
+        # A nested without-decision can make an outer prohibition require a
+        # direction decision. Do not let either negative erase that instruction.
+        if any(item.start() <= restraint.start() < item.end()
+               for item in outer_prohibitions):
+            continue
+        if re.search(r"\bnot(?:\s+only)?\s*$", text[:restraint.start()], re.IGNORECASE):
+            continue
+        limit = min(len(text), restraint.start() + 300)
+        boundary = _CONTROLLER_NEGATIVE_CLAUSE_END.search(text, restraint.end(), limit)
+        end = boundary.start() if boundary is not None else limit
+        chars[restraint.start():end] = " " * (end - restraint.start())
+    masked = "".join(chars)
+
+    def mask_prohibition(match: re.Match[str]) -> str:
+        clause = match.group()
+        nested = _CONTROLLER_WITHOUT_DECISION.search(clause)
+        retained = [nested.start()] if nested is not None else []
+        verbs = tuple(re.finditer(
+            r"\b(?:decide|decides|determine|determines|judge|judges|classify|"
+            r"classifies|conclude|concludes)\b", clause, re.IGNORECASE,
+        ))
+        for index, verb in enumerate(verbs):
+            prefix = clause[verbs[index - 1].end() if index else 0:verb.start()]
+            explicit_negative = re.search(
+                r"\b(?:do(?:es)?\s+not|never|must\s+not|cannot)\s*$",
+                prefix, re.IGNORECASE,
+            )
+            coordinated_negative = index and re.search(
+                r"\b(?:or|nor)\s*$", prefix, re.IGNORECASE,
+            )
+            if explicit_negative or coordinated_negative:
+                continue
+            if not index and not re.search(r",|\bthen\b", prefix, re.IGNORECASE):
+                continue
+            retained.append(verb.start())
+            break
+        end = min(retained) if retained else len(clause)
+        return " " * end + clause[end:]
+
+    return _PLAN_PROHIBITION_GUARD.sub(mask_prohibition, masked)
+
+
 def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
     """Keep evolvable Plan instructions below the fixed Predictor boundary."""
 
@@ -1655,7 +1715,11 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
             ))
         if (
             field_name == "H_reflect"
-            and _RESEARCH_CONTROLLER_DIRECTION_DECISION.search(scrubbed)
+            and _RESEARCH_CONTROLLER_DIRECTION_DECISION.search(
+                _controller_direction_text(
+                    _RESEARCH_CONTROLLER_ONTOLOGY_GUARD.sub("", text_value)
+                )
+            )
         ):
             issues.append(ValidationIssue(
                 code="controller_decides_price_direction", paths=(field_name,),

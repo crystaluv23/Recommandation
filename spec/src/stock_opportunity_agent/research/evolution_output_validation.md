@@ -41,6 +41,29 @@ rewrite records, Signal materiality, classifications or repair permissions.
   not-only wording does not negate a computation/classification instruction.
   The same prohibition screen applies to H_analyse and controller ontology
   checks. Explicit role restraint is not a forbidden prediction instruction.
+- The H_reflect direction detector additionally recognizes a local `without
+  deciding/determining/judging/classifying/concluding ...` restraint. Only that
+  bounded clause is masked with equal-length spaces before the direction check;
+  it does not exempt the surrounding field or change the shared prohibition or
+  ontology guards. Its scope ends at sentence punctuation, semicolon, newline,
+  affirmative contrast, or a later independent decision verb (including comma
+  `decide ...` and `and then determine ...`). Coordinated direction objects in
+  the same negative clause remain covered. `not without` and `not only without`
+  do not authorize this mask. An outer prohibition containing an inner without
+  decision (for example `Do not continue without deciding ...`) must retain that
+  inner decision for this local direction check instead of disappearing through
+  the shared prohibition scrub. The local direction view also stops an ordinary
+  do-not/never mask before a subsequent independent decision verb, retaining the
+  first negated decision itself under the ordinary mask. An `or/nor` coordinated
+  verb remains in that same prohibition, as does a verb immediately preceded by
+  its own explicit do-not/never/must-not/cannot cue; an affirmative `then` decision
+  does not. This does not alter the
+  shared scrub used by other consumers. Any independent affirmative direction instruction
+  in the same field still fails. This lexical boundary is conservative, not a
+  claim of general natural-language negation understanding. The direction target
+  lexemes include singular/plural price, share and stock forms consistently;
+  plurality does not change decision authority. Existing frozen
+  proposals/first rejections/typed patches are never rewritten by this fix.
 
 - Unique whole JSON literal restoration uses the same exact-text transform and
   snapshot patch permissions as producer-owned numeric text repairs. Validation

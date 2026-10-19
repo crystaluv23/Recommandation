@@ -79,3 +79,25 @@ canonical材料、期间/对象/单位/PIT，未补未来actual或声称缺口�
 这里只关闭声明的1+3例连接/初始状态/恢复子项；仍有局部guard false-positive，
 不关整体F1/F2/F3、Signals履约、完整F10/Slow/完整MVP或收益。下一批只修该确定性
 negation scope错误，不重写本批首拒/纠错/原状态；无需新增模型答来检验纯guard。
+
+## 后续局部 guard 修复（非冻结 stage 重跑）
+
+证据checkpoint e89f20b6之后，owning output-validation spec先明确局部否定scope，
+仅H_reflect方向检测新增等长空格mask。合法without deciding/determining/judging/
+classifying/concluding从句可过；句号/分号/newline/contrast/独立后续finite动词
+不被豁免。not-without/not-only、外层do-not包住innerwithout决策、普通do-not后
+另行then-decide均拒；price/share/stock简单复数与单数一致。共享prohibition regex
+与其他consumer不变，原ontology scrub仍保留；不是一般英语否定语义证明。
+
+旧red日志分别保留实际full-p01误拒、nestedwithout误放与plural两误放；新原生
+proposer回放原41完整答可在首答直接接受、所有authored字段不改。204相关测试
+8.402s通过，独立family与全module另有当前hash日志。本地回放不声称新的模型服从，
+也不将原冻结首拒改成accepted；正式42文件恢复是原冻结代码时取得的证据，
+当前源码变化后不以currentcode重新恢复该旧冻结。
+
+末次负控审查还保留原有合法双禁令：or/nor协调及第二动词自带明确negative cue
+不作为独立肯定决策；该正控修后204相关8.402s通过，之前candidate日志不冒充终版。
+
+本轮最初只围绕without误拒看局部修复，漏测共享prohibition内嵌双重否定、
+后续独立finite和原本合法双禁令，单数target也掩盖了复数漏放。终版同时保留
+误拒/误放/旧合法正控，204相关及独立3+93通过；词法守卫仍有明确有限scope。

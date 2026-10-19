@@ -1,0 +1,35 @@
+{
+  "current_working_source_sha256": {
+    "tests/test_evolution_output_validation.py": "3b0c9cbead30dc12a4bf4bc6392963decfb7dac9712778db1e4b16cfecf92614",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "32000169fdb1135197819e398c6f9fb387ecadf281e3a2234dc51b2c5907ca96"
+  },
+  "source_unchanged_during_test": true,
+  "returncode": 1,
+  "old_source_restored": false,
+  "external_llm_calls": 0,
+  "new_data_requests": 0
+}
+
+FF
+======================================================================
+FAIL: test_affirmative_direction_decisions_survive_local_negative_spans (tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests.test_affirmative_direction_decisions_survive_local_negative_spans) (text='Proceed not without deciding whether shares will rise.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3831, in test_affirmative_direction_decisions_survive_local_negative_spans
+    with self.assertRaises(StructuredValidationError) as caught:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: StructuredValidationError not raised
+
+======================================================================
+FAIL: test_affirmative_direction_decisions_survive_local_negative_spans (tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests.test_affirmative_direction_decisions_survive_local_negative_spans) (text='Without deciding whether prices will fall, decide whether shares will rise.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3831, in test_affirmative_direction_decisions_survive_local_negative_spans
+    with self.assertRaises(StructuredValidationError) as caught:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: StructuredValidationError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.004s
+
+FAILED (failures=2)

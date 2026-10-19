@@ -3778,3 +3778,89 @@ class OwnershipScopeLocalNegationTests(TestCase):
         with self.assertRaises(StructuredValidationError):
             _validate_plan_for_proposer_context(plan_with([mixed, market]),
                 available_source_types=("earnings_call", "filing", "financials", "market_data"))
+
+
+class ControllerDirectionLocalProhibitionTests(TestCase):
+    """Collection-only restraints cannot hide a later affirmative price decision."""
+
+    LIVE_RESTRAINT = (
+        "Decide only the collection action, without deciding price direction, "
+        "market trend, magnitude class, or likely outcome."
+    )
+
+    def _validate(self, reflection_skill):
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _validate_fixed_plan_semantics,
+        )
+        raw = default_information_plan().to_dict()
+        raw["reflection_skill"] = reflection_skill
+        _validate_fixed_plan_semantics(InformationPlan.from_dict(raw))
+
+    def test_collection_only_without_restraints_are_legal(self):
+        texts = (
+            self.LIVE_RESTRAINT,
+            "Continue evidence collection without deciding whether stock is likely to rise.",
+            "Continue evidence collection without determining which market trend is likely.",
+            "Continue evidence collection without judging whether price will rise.",
+            "Continue evidence collection without classifying which price direction is likely.",
+            "Continue evidence collection without concluding that stock will rise.",
+            "Do not decide whether price is likely to rise; decide only whether further evidence is needed.",
+            "Do not decide whether stock will rise or judge whether price will fall.",
+            "Do not decide whether stock will rise and do not judge whether price will fall.",
+        )
+        for text in texts:
+            with self.subTest(text=text):
+                self._validate(text)
+
+    def test_affirmative_direction_decisions_survive_local_negative_spans(self):
+        prefix = "Continue evidence collection without deciding whether price will fall"
+        texts = (
+            "Decide whether stock will rise.",
+            prefix + ", but decide whether stock is likely to rise.",
+            prefix + ", however, decide whether stock is likely to rise.",
+            prefix + ", instead, decide whether stock is likely to rise.",
+            prefix + "; decide whether stock is likely to rise.",
+            prefix + ". Decide whether stock is likely to rise.",
+            prefix + "\nDecide whether stock is likely to rise.",
+            prefix + ", decide whether stock is likely to rise.",
+            prefix + " and then determine whether stock is likely to rise.",
+            "Proceed not without deciding whether stock is likely to rise.",
+            "Do not only decide whether stock will rise.",
+            "Do not continue without deciding whether the stock is likely to rise.",
+            "Proceed not without deciding whether shares will rise.",
+            "Without deciding whether prices will fall, decide whether shares will rise.",
+            "Do not decide whether stock will fall, then decide whether stock will rise.",
+            "Never determine whether prices will fall and then determine whether stocks will rise.",
+        )
+        for text in texts:
+            with self.subTest(text=text):
+                with self.assertRaises(StructuredValidationError) as caught:
+                    self._validate(text)
+                self.assertIn(
+                    ("controller_decides_price_direction", ("H_reflect",)),
+                    [(issue.code, issue.paths) for issue in caught.exception.issues],
+                )
+
+    def test_original_p01_reply_passes_native_proposer_without_rewriting(self):
+        from copy import deepcopy
+
+        root = PROJECT_ROOT / "runs/diagnostics/reviewed_orientation_stage_20261020_v1"
+        raw = json.loads((root / "exchange/outbox/"
+            "570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.txt").read_text())
+        inputs = json.loads((root / "inputs.json").read_text())
+        self.assertTrue(raw["H_reflect"].endswith(self.LIVE_RESTRAINT))
+        before = deepcopy(raw)
+        caller = ScriptedRoleCaller([deepcopy(raw), deepcopy(raw)])
+        accepted = LLMInformationPlanProposer(caller,
+            available_source_types=inputs["proposer_capabilities"]).propose(
+                round_id=1, candidate_index=1, candidate_count=1, proposal_attempt=1,
+                forbidden_plan_ids=(),
+                parents=(InformationPlan.from_dict(inputs["seed_plan"]),),
+                meta_info=(), prior=inputs["proposer_prior"],
+            )
+        self.assertEqual(caller.stages, ["information_plan_propose"])
+        self.assertEqual(accepted.reflection_skill, before["H_reflect"])
+        self.assertEqual(accepted.initial_research_skill, before["H_init"])
+        self.assertEqual(accepted.analysis_prompt, before["H_analyse"])
+        self.assertEqual(accepted.basic_info_policy.to_dict(), before["B"])
+        self.assertEqual(raw, before)

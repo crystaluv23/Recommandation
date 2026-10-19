@@ -1,0 +1,112 @@
+{
+  "head": "e89f20b6b8f2db9d0fb7a783d83f8b31dbb09989",
+  "old_guard_matches_commit": "e89f20b6",
+  "files_sha256": {
+    "tests/test_evolution_output_validation.py": "46d94fe672f8f9a94e0885225e645c8e2852cf738236f1ac64915358cd626842",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "d2b39ac61e0c53924ad4d19fc9d2a11ed2463315b0c8317bae9633097e823ef7",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "ae81af2964e896273bd6828da61b8acc9f0bb816e7bfd9cc7e2c341cbb4c03d3"
+  },
+  "source_unchanged_during_test": true,
+  "returncode": 1,
+  "external_llm_calls": 0,
+  "new_data_requests": 0,
+  "note": "Includes added nested-without control; fixture stock uses the existing direction vocabulary, avoiding unrelated plural expansion."
+}
+
+FEEEEEEE
+======================================================================
+ERROR: test_collection_only_without_restraints_are_legal (tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests.test_collection_only_without_restraints_are_legal) (text='Decide only the collection action, without deciding price direction, market trend, magnitude class, or likely outcome.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3811, in test_collection_only_without_restraints_are_legal
+    self._validate(text)
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3797, in _validate
+    _validate_fixed_plan_semantics(InformationPlan.from_dict(raw))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 1667, in _validate_fixed_plan_semantics
+    raise StructuredValidationError(issues)
+stock_opportunity_agent.models.StructuredValidationError: invalid_field='H_reflect', H_reflect may decide only whether evidence collection should continue or finalize; it cannot decide which price direction, market trend, or outcome is likely
+
+======================================================================
+ERROR: test_collection_only_without_restraints_are_legal (tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests.test_collection_only_without_restraints_are_legal) (text='Continue evidence collection without deciding whether stock is likely to rise.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3811, in test_collection_only_without_restraints_are_legal
+    self._validate(text)
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3797, in _validate
+    _validate_fixed_plan_semantics(InformationPlan.from_dict(raw))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 1667, in _validate_fixed_plan_semantics
+    raise StructuredValidationError(issues)
+stock_opportunity_agent.models.StructuredValidationError: invalid_field='H_reflect', H_reflect may decide only whether evidence collection should continue or finalize; it cannot decide which price direction, market trend, or outcome is likely
+
+======================================================================
+ERROR: test_collection_only_without_restraints_are_legal (tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests.test_collection_only_without_restraints_are_legal) (text='Continue evidence collection without determining which market trend is likely.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3811, in test_collection_only_without_restraints_are_legal
+    self._validate(text)
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3797, in _validate
+    _validate_fixed_plan_semantics(InformationPlan.from_dict(raw))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 1667, in _validate_fixed_plan_semantics
+    raise StructuredValidationError(issues)
+stock_opportunity_agent.models.StructuredValidationError: invalid_field='H_reflect', H_reflect may decide only whether evidence collection should continue or finalize; it cannot decide which price direction, market trend, or outcome is likely
+
+======================================================================
+ERROR: test_collection_only_without_restraints_are_legal (tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests.test_collection_only_without_restraints_are_legal) (text='Continue evidence collection without judging whether price will rise.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3811, in test_collection_only_without_restraints_are_legal
+    self._validate(text)
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3797, in _validate
+    _validate_fixed_plan_semantics(InformationPlan.from_dict(raw))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 1667, in _validate_fixed_plan_semantics
+    raise StructuredValidationError(issues)
+stock_opportunity_agent.models.StructuredValidationError: invalid_field='H_reflect', H_reflect may decide only whether evidence collection should continue or finalize; it cannot decide which price direction, market trend, or outcome is likely
+
+======================================================================
+ERROR: test_collection_only_without_restraints_are_legal (tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests.test_collection_only_without_restraints_are_legal) (text='Continue evidence collection without classifying which price direction is likely.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3811, in test_collection_only_without_restraints_are_legal
+    self._validate(text)
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3797, in _validate
+    _validate_fixed_plan_semantics(InformationPlan.from_dict(raw))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 1667, in _validate_fixed_plan_semantics
+    raise StructuredValidationError(issues)
+stock_opportunity_agent.models.StructuredValidationError: invalid_field='H_reflect', H_reflect may decide only whether evidence collection should continue or finalize; it cannot decide which price direction, market trend, or outcome is likely
+
+======================================================================
+ERROR: test_collection_only_without_restraints_are_legal (tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests.test_collection_only_without_restraints_are_legal) (text='Continue evidence collection without concluding that stock will rise.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3811, in test_collection_only_without_restraints_are_legal
+    self._validate(text)
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3797, in _validate
+    _validate_fixed_plan_semantics(InformationPlan.from_dict(raw))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 1667, in _validate_fixed_plan_semantics
+    raise StructuredValidationError(issues)
+stock_opportunity_agent.models.StructuredValidationError: invalid_field='H_reflect', H_reflect may decide only whether evidence collection should continue or finalize; it cannot decide which price direction, market trend, or outcome is likely
+
+======================================================================
+ERROR: test_original_p01_reply_passes_native_proposer_without_rewriting (tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests.test_original_p01_reply_passes_native_proposer_without_rewriting)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3847, in test_original_p01_reply_passes_native_proposer_without_rewriting
+    available_source_types=inputs["proposer_capabilities"]).propose(
+                                                            ^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 3222, in propose
+    raise CandidateProposalRejected(
+stock_opportunity_agent.research.evolution_core.CandidateProposalRejected: information_plan_propose rejected after one correction: invalid_field='H_reflect', H_reflect may decide only whether evidence collection should continue or finalize; it cannot decide which price direction, market trend, or outcome is likely
+
+======================================================================
+FAIL: test_affirmative_direction_decisions_survive_local_negative_spans (tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests.test_affirmative_direction_decisions_survive_local_negative_spans) (text='Do not continue without deciding whether the stock is likely to rise.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py", line 3829, in test_affirmative_direction_decisions_survive_local_negative_spans
+    with self.assertRaises(StructuredValidationError) as caught:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: StructuredValidationError not raised
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.011s
+
+FAILED (failures=1, errors=7)

@@ -1,0 +1,35 @@
+{
+  "head": "e89f20b6b8f2db9d0fb7a783d83f8b31dbb09989",
+  "files_sha256_before": {
+    "tests/test_evolution_output_validation.py": "3b0c9cbead30dc12a4bf4bc6392963decfb7dac9712778db1e4b16cfecf92614",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "7532abec75df9ff571e97e6433da6860320bf0d46c977070f5402c2e1d14d092",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "ae81af2964e896273bd6828da61b8acc9f0bb816e7bfd9cc7e2c341cbb4c03d3",
+    "runs/diagnostics/reviewed_orientation_stage_20261020_v1/inputs.json": "7cb78181220712d76d57d89c04456a77991b449783e0805b9f3b1d3f00c5cd8f",
+    "runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.txt": "6b462b425896915179c51d62c2528d1a37ba82cb7136de8d7813b6ad2f4eed32"
+  },
+  "files_sha256_after": {
+    "tests/test_evolution_output_validation.py": "3b0c9cbead30dc12a4bf4bc6392963decfb7dac9712778db1e4b16cfecf92614",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "7532abec75df9ff571e97e6433da6860320bf0d46c977070f5402c2e1d14d092",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "ae81af2964e896273bd6828da61b8acc9f0bb816e7bfd9cc7e2c341cbb4c03d3",
+    "runs/diagnostics/reviewed_orientation_stage_20261020_v1/inputs.json": "7cb78181220712d76d57d89c04456a77991b449783e0805b9f3b1d3f00c5cd8f",
+    "runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.txt": "6b462b425896915179c51d62c2528d1a37ba82cb7136de8d7813b6ad2f4eed32"
+  },
+  "source_test_originals_unchanged_during_test": true,
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_evolution_output_validation.ControllerDirectionLocalProhibitionTests",
+    "tests.test_evolution_output_validation"
+  ],
+  "returncode": 0,
+  "external_llm_calls": 0,
+  "new_data_requests": 0,
+  "production_stage_not_resumed": true
+}
+
+................................................................................................
+----------------------------------------------------------------------
+Ran 96 tests in 0.048s
+
+OK

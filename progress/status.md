@@ -15,7 +15,8 @@ operating annual-OR-interim 同池选择年度+最新季度，generic8K/6K不冒
 新 ENB 三 SEC-only view 已物化；实际投影17/24 partial含业务正句，其他三类缺源。
 新 [orientation阶段](../reports/reviewed-orientation-stage-20261020.md) 已完成1proposer+
 3H_init原生接受：四首答+唯一p01纠错共5角色，实际h01精确消费accepted Plan。
-p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留，未热修。
+p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留；证据提交后
+另批修局部否定scope，204相关测试通过，共享guard及历史冻结不改。
 42文件完成恢复全等/0新派发；独立原材窄审3/3及exactPlan连接通过。
 18引文/15needs保持scope，未关整体F1/F2/F3或后继Signal履约。
 
@@ -47,5 +48,5 @@ p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留�
 
 ## 下一步
 
-本批语义/恢复证据提交后，另批修局部方向禁令negation误拒家族。
+局部方向禁令guard修复提交后，先只读核新有界prefix的真实预算方案。
 保留首拒与全部原答，禁止扩大否定豁免、追加本批角色或热改冻结。原8项改动保留。
