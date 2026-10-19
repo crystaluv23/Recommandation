@@ -58,6 +58,68 @@ class PatchCaller:
 
 
 class StatePatchTests(TestCase):
+    def test_state_mode_supports_only_canonical_or_reflect_envelope(self):
+        canonical = ResearchState(next_information_needs=("Retain demand",)).to_dict()
+        state_patch_contract(canonical)
+        envelope = {**canonical, "need_dispositions": []}
+        contract = state_patch_contract(envelope)
+        row = {"need_index": 0, "answer_scope": "unanswered", "residual_need": None,
+               "evidence_refs": [], "reason": "No answer evidence was adopted."}
+        changed = apply_state_patch(envelope, patch(contract,
+            {"op": "append", "path": "need_dispositions", "value": row},
+        ), contract=contract)
+        self.assertEqual(changed["need_dispositions"], [row])
+        self.assertEqual(ResearchState.from_dict(changed).to_dict(), canonical)
+        for invalid in ({**canonical, "unknown": []},
+                        {**envelope, "unknown": []},
+                        {**canonical, "need_dispositions": {}}):
+            with self.subTest(invalid=invalid), self.assertRaises(ValidationError):
+                state_patch_contract(invalid)
+
+    def test_disposition_correction_does_not_grant_other_state_fields(self):
+        row = {"need_index": 0, "answer_scope": "unanswered", "residual_need": None,
+               "evidence_refs": [], "reason": ""}
+        base = {**ResearchState(next_information_needs=("Retain demand",)).to_dict(),
+                "need_dispositions": [row]}
+        contract = state_patch_contract(base, mode="correction", obligations=[
+            obligation("need_dispositions[0].reason"),
+        ])
+        result = apply_state_patch(base, patch(contract,
+            {"op": "replace", "path": "need_dispositions[0].reason", "value": "No answer was adopted."},
+        ), contract=contract)
+        self.assertEqual(result["next_information_needs"], base["next_information_needs"])
+        for operation in (
+            {"op": "replace", "path": "need_dispositions[0].answer_scope", "value": "full"},
+            {"op": "remove", "path": "next_information_needs[0]"},
+            {"op": "replace", "path": "decision", "value": "finalize"},
+        ):
+            with self.subTest(operation=operation), self.assertRaises(ValidationError):
+                apply_state_patch(base, patch(contract, operation), contract=contract)
+
+    def test_cosmetic_restoration_authorizes_exact_returned_slot_only(self):
+        base = {"next_information_needs": ["Unrelated sibling", "Original demand given evidence"]}
+        issue = obligation("next_information_needs[1]", required_action="restore_exactly",
+            prior_state_path="next_information_needs[0]", returned_path="next_information_needs[1]",
+            returned_need=base["next_information_needs"][1], required_need="Original demand",
+            required_need_occurrences=1)
+        contract = state_patch_contract(base, mode="correction", obligations=[issue])
+        result = apply_state_patch(base, patch(contract,
+            {"op": "replace", "path": "next_information_needs[1]", "value": "Original demand"},
+        ), contract=contract)
+        self.assertEqual(result["next_information_needs"], ["Unrelated sibling", "Original demand"])
+        for operation in (
+            {"op": "replace", "path": "next_information_needs[0]", "value": "Original demand"},
+            {"op": "replace", "path": "next_information_needs[1]", "value": "Invented"},
+            {"op": "remove", "path": "next_information_needs[1]"},
+            {"op": "append", "path": "next_information_needs", "value": "Original demand"},
+        ):
+            with self.subTest(operation=operation), self.assertRaises(ValidationError):
+                apply_state_patch(base, patch(contract, operation), contract=contract)
+        stale = state_patch_contract(base, mode="correction", obligations=[
+            {**issue, "returned_need": "Different snapshot"},
+        ])
+        self.assertEqual(stale["allowed_operations"], [])
+
     def test_snapshot_indices_survive_multiple_removals_and_append(self):
         base = {"rows": ["same", "edit", "same", "last"], "keep": {"unchanged": True}}
         contract = state_patch_contract(base, mode="correction", obligations=[

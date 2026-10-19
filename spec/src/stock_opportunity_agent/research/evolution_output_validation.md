@@ -70,6 +70,11 @@ rewrite records, Signal materiality, classifications or repair permissions.
   the proposal is scripted; this does not prove historical research quality.
 - The compact posthoc view retains runtime-computed metric cards from the original
   Predictor packet, so numerical price-shape reasoning remains checkable.
+  It also retains each recorded round's actual `need_dispositions` under
+  `state_evolution`, including the prior-state hash, need occurrence and exact
+  evidence coordinates. Expected Routing scope is not a completed-answer record.
+  Legacy packets without dispositions remain without them; compaction must not
+  manufacture a completion from selections, coverage or narrative text.
   Available compact Signal cards retain producer-owned measurement metadata.
   Unavailable compact cards reapply the Signal Library's status-specific safe
   summary, including legacy missing or unrecognized status as unknown cause.
@@ -112,6 +117,14 @@ recording them under normalized paths. Applicable deterministic fallbacks run be
 mechanical issues even when unrelated issues remain. Exact runtime-issued need
 restoration is mechanical. Each transform is followed by full revalidation;
 unresolved issues and transformed candidates become the next correction base.
+When the owning occurrence validator uniquely identifies an unassigned cosmetic
+replacement of a missing need, `restore_exactly` names its returned path and
+observed text. Restore that exact slot under snapshot-bound permission instead
+of appending a duplicate. Reserved sibling occurrences and ambiguous matches
+are never overwritten; restoration without a returned slot remains count-based.
+If that missing need also has an unresolved cosmetic-edit issue without a unique
+returned counterpart, defer restoration to the scoped model correction; appending
+first must not hide the semantic issue at the next full validation.
 Restoring a changed retained Signal claim is mechanical only when its owning
 validator supplies one distinct previously accepted claim and the exact unchanged
 Signal ref/group/index tuple. Copy only that claim and explicitly named assertions

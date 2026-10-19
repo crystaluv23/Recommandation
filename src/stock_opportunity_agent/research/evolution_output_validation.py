@@ -1094,6 +1094,13 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
         "data_gaps": data_gaps,
         "prediction_baseline": original_context.get("prediction_baseline", {}),
         "computed_metrics": original_context.get("computed_metrics", []),
+        "state_evolution": [
+            {"round": row.get("round"),
+             "need_dispositions": deepcopy(dict(row["need_dispositions"]))}
+            for row in original_context.get("state_evolution", ())
+            if isinstance(row, Mapping)
+            and isinstance(row.get("need_dispositions"), Mapping)
+        ],
     }
     compact["cited_signal_evidence"] = original_context.get("cited_signal_evidence", [])
     compact["context_contract"] = {
@@ -3376,6 +3383,13 @@ def _research_need_transition_fallback(
     issues = [issue for issue in failure.issues if issue.code == "research_need_transition_invalid"]
     if not issues:
         return None
+    if (any(issue.code == "cosmetic_need_update" for issue in failure.issues)
+            and any(issue.repair_context.get("required_action") == "restore_exactly"
+                    and not issue.repair_context.get("returned_path") for issue in issues)):
+        # Without a unique returned counterpart, restoring first could hide
+        # the unresolved cosmetic edit on revalidation. Leave that coupled
+        # semantic frontier for the model's scoped correction.
+        return None
     original = failed_output.get("next_information_needs")
     if not isinstance(original, list) or any(not isinstance(x, str) for x in original):
         return None
@@ -3405,12 +3419,18 @@ def _research_need_transition_fallback(
             returned_index = (
                 int(path_match.group(1)) if path_match is not None else None
             )
-            if action == "replace_with_exact_residual" and returned_index is not None:
+            if returned_index is not None:
                 if (
-                    returned_index < len(needs)
-                    and needs[returned_index] == context.get("returned_need")
+                    returned_index < len(original)
+                    and original[returned_index] == context.get("returned_need")
+                    and returned_index < len(needs)
+                    and needs[returned_index] == original[returned_index]
                 ):
                     needs[returned_index] = required
+                elif action == "restore_exactly":
+                    # Exact restoration authority is bound to the observed
+                    # returned slot; never guess another similar occurrence.
+                    return None
                 elif needs.count(required) < occurrences:
                     # The targeted occurrence is gone; append the exact
                     # residual without consuming a preserved duplicate of

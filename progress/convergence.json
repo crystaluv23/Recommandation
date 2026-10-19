@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "objective": "Fast→Slow→后继Fast实际内容合规、新magnitude技术准入与精确复用、PIT支持的幅度扩展和独立收益",
-  "goal_snapshot": {"status": "none", "checked_at": "2026-10-07T11:24:24Z"},
+  "goal_snapshot": {"status": "none", "checked_at": "2026-10-19T03:09:32Z"},
   "acceptance": [
     {"id": "content_chain", "required_level": "live", "level": "local", "closed": false, "evidence": ["reports/v182-executed-answer-scope-contract-review-20261007.md"], "remaining": "4/48有成对内容报告；Kinross仅部分，44/48尚未完成，6 Signal验证失败"},
     {"id": "feedback_consumption", "required_level": "live", "level": "local", "closed": false, "evidence": ["reports/v182-terminal-slow-and-source-partition-audit-20261007.md"], "remaining": "v182 memory failed；修复离线通过，未进入冻结运行"},
@@ -14,19 +14,19 @@
   ],
   "review": {
     "after_iteration": "v182",
-    "evidence": ["memory/meta/reviews.md", "reports/self-evolution-retrospective-20260927.md"],
-    "blind_spots": ["旧教训被重复阅读但没有改变启动决策；把局部兼容性验证作为完整后继的主要依据", "过晚检查正文历史版本与合同语义，未先区分检索/计算行为和研究假设无效", "旧meta只比较策略文字，诊断可冒充完整后继；改名可绕过停滞，advance与汇总可矛盾"],
+    "evidence": ["memory/meta/reviews.md", "reports/self-evolution-retrospective-20260927.md", "reports/v182-executed-answer-scope-contract-review-20261007.md"],
+    "blind_spots": ["旧教训被重复阅读但没有改变启动决策；把局部兼容性验证作为完整后继的主要依据", "过晚检查正文历史版本与合同语义，未先区分检索/计算行为和研究假设无效", "旧meta只比较策略文字，诊断可冒充完整后继；改名可绕过停滞，advance与汇总可矛盾", "把Routing执行前预期和采纳任意有效证据等同于实际回答；完整validator、fallback与测试共同维护错误合同，后继压缩只携带预选范围"],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "bounded_causal_diagnosis_before_successor",
-      "action": "先治理停滞触发和输入/合同前提；后续仅在合法授权范围内设计有对照的阶段诊断，再决定完整后继",
-      "question": "卡住的是输入/通道/合同/实际消费，还是在正确条件下仍无研究增量？",
-      "pass": "一项命名失败家族在生产构造、反例和适用后继消费上有对应证据；能说明诊断排除了哪个根因",
-      "fail": "仍只获得旧答结构通过、测试数量增加或相同no-pattern；不得转成收益/全链通过",
-      "stop": "前提未满足或两次相同诊断无区分信息时改变假设/范围，控制限制时立即停止目标工作",
-      "on_pass": "依据命名失败家族的实际边界证据评审下一批；完整后继须另形成full_successor决策并满足全部原前提",
-      "on_fail": "保持验收开放，定位首个失败边界并缩小诊断；重复无区分信息时换假设或停止该策略"
+      "kind": "repair",
+      "strategy": "executed_answer_scope_stage_acceptance",
+      "action": "2026-10-19用户单独授权：修正实际回答范围合同，在同一Reflect调用内生成逐need occurrence的实际处置；v182原件只读，最多两个失败样本的新Reflect及原生有限纠错，随后检查保存/重载/后继上下文",
+      "question": "将Routing预期与Reflect实际处置分开后，Q2证据是否仍会被系统强制视为Q3问题已回答？",
+      "pass": "原失败和反例经过生产完整validator/fallback；新真实Reflect原答/纠错保留未回答部分，保存重载后Predictor与反馈上下文不丢实际处置",
+      "fail": "新模型仍无据关闭Q3、typed修复重删未决问题，或后继仍把预期范围当事实；结构通过和脚本旧答不算通过",
+      "stop": "诊断独立上限8物理attempt及$0.25；前提或预算不足停该诊断，不恢复旧goal、不运行完整Fast/Slow、不自动追加同样调用",
+      "on_pass": "只记录回答范围子问题的实际阶段证据，保留content_chain总体、来源PIT、Slow消费与独立收益开放；评审下一阻塞",
+      "on_fail": "保留失败原件，定位新失败边界；先查首次信息丢失/合同冲突，禁止调松validator或人工写结论取得通过"
     }
   },
   "successor_prerequisites": [

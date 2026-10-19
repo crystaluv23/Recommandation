@@ -90,12 +90,28 @@ class ResearchEvidenceQuarantineTests(TestCase):
         raw['current_beliefs'] = ['cash_reserves=20']
         raw['supporting_evidence'] = [{'kind': 'signal', 'signal_ref': 'cash_reserves:v1',
             'claim': 'cash_reserves=20', 'evidence_group': 'supporting', 'evidence_index': 0}]
+        full_disposition = {'need_index': 0, 'answer_scope': 'full', 'residual_need': None,
+            'evidence_refs': [{'signal_ref': 'cash_reserves:v1', 'evidence_group': 'supporting', 'evidence_index': 0}],
+            'reason': 'The cash measurement answers the requested cash position.'}
+        unanswered_disposition = {'need_index': 0, 'answer_scope': 'unanswered', 'residual_need': None,
+            'evidence_refs': [], 'reason': 'The claimed cash evidence failed validation; the cash question remains unanswered.'}
+
+        def correct_actual_scope(call):
+            failed = call['payload']['validation_feedback']['invalid_output']
+            self.assertEqual(failed['supporting_evidence'], [])
+            self.assertEqual(failed['current_beliefs'], [])
+            self.assertEqual(failed['next_information_needs'], [need, need])
+            self.assertEqual(failed['need_dispositions'], [full_disposition])
+            return patch(call['payload']['output_patch_contract'],
+                {'op': 'replace', 'path': 'need_dispositions[0]', 'value': unanswered_disposition})
+
         caller = PatchCaller(lambda call: patch(call['payload']['output_patch_contract'],
             {'op': 'replace', 'path': 'decision', 'value': 'finalize'},
             {'op': 'remove', 'path': 'next_information_needs[0]'},
             {'op': 'remove', 'path': 'next_information_needs[1]'},
             {'op': 'append', 'path': 'current_beliefs', 'value': raw['current_beliefs'][0]},
-            {'op': 'append', 'path': 'supporting_evidence', 'value': raw['supporting_evidence'][0]}))
+            {'op': 'append', 'path': 'supporting_evidence', 'value': raw['supporting_evidence'][0]},
+            {'op': 'append', 'path': 'need_dispositions', 'value': full_disposition}), correct_actual_scope)
         controller = LLMResearchController(caller)
         controller.set_reflection_runtime_context(selections=(SignalSelectionDecision(
             signal_ref='cash_reserves:v1', reason_code='answer_need',
@@ -107,7 +123,9 @@ class ResearchEvidenceQuarantineTests(TestCase):
                 document_id='cash', exact_span='Cash was 10.',
                 timestamp=datetime(2025, 9, 30, tzinfo=timezone.utc)),))
         state = controller.reflect(default_information_plan(), prior, SignalBatchResult((result,), 1)).value
-        self.assertEqual(len(caller.calls), 1)
+        # Numeric evidence quarantine is mechanical; changing actual scope is
+        # the model's correction, never a fabricated fallback disposition.
+        self.assertEqual(len(caller.calls), 2)
         self.assertEqual(state.supporting_evidence, ())
         self.assertEqual(state.current_beliefs, ())
         self.assertEqual(state.next_information_needs, prior.next_information_needs)

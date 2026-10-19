@@ -99,7 +99,7 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   question remain detectable and rejected. "Scheduled" shares the existing
   schedule/plan framing, without removing any future date from persisted text.
 - A partial-answer residual must retain the temporal scope of the need it
-  narrows. When a persisted routing residual dropped the parent need's cutoff,
+  narrows. When an actual Reflect residual dropped the parent need's cutoff,
   the exact required residual representation restores the inherited as-of
   clause onto the residual instead of retaining the already answered parent
   need. When the parent need is validated bounded forward guidance, the as-of
@@ -114,17 +114,15 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   not representable. Realized results, actuals, or how-much/how-many requests
   never inherit that framing, and a parent without its own validated bound or
   framing lends no permissions, so the rule still returns no representation
-  for them. Transition contracts, selection intents, need cutoff restoration,
-  and transition validation derive that representation through one shared rule
-  so the exact string H_reflect is told to write is always acceptable to both
-  the transition and temporal guards.
+  for them. Selection expectations and actual dispositions use the shared bounded
+  representation, but only validated actual dispositions authorize state transitions.
 - A legacy partial-answer residual that no bounded restatement can represent
   under the actual runtime prediction boundary (for example realized facts
   after the cutoff) is invalid routing state, not a removable obligation. The
-  need-transition contract builder fails closed for it before any prompt
-  exists, and transition validation never authorizes deleting the unresolved
-  need: removal must be restored exactly, and no cutoff is fabricated for
-  realized future facts.
+  Routing rejects such state; a historical expectation does not force an actual
+  Reflect residual. Actual disposition validation never authorizes deleting the
+  unresolved need because its residual is invalid, and no cutoff is fabricated
+  for realized future facts.
 - A need correction never carries a blanket dependency on unrelated state. A
   visible-answer or need-transition issue names only its own need path; it
   grants no authority over `current_beliefs` or any other collection. Belief
@@ -144,8 +142,8 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   global text membership. Identical prior needs at different indices are
   distinct occurrences: every untargeted occurrence must be preserved
   byte-for-byte (a retained untargeted duplicate is never mistaken for the
-  target), each targeted occurrence must carry its bounded residual
-  (partial answer) or be removed (full answer), a selection binds every
+  target), each targeted occurrence follows its validated post-execution disposition:
+  preserved for unanswered, bounded residual for partial, removed for full. A selection binds every
   index it lists in `target_need_indices`, and one returned occurrence
   never satisfies two prior occurrences. Satisfying the guard by
   deduplicating prior needs or deleting unselected duplicate copies is
@@ -337,7 +335,57 @@ See the owning [shared arithmetic contract](evolution_output_validation.md#share
 
 When runtime selections bind prior need occurrences, the transition validator
 also runs with no adopted Signal refs. Every prior occurrence then retains its
-exact text and multiplicity. Quarantining the last invalid answer ref cannot
-leave its prior need closed or narrowed. Existing typed restore obligations
-recover the missing need before any semantic correction; no repair invents an
-answer. Calls without runtime selections keep their existing legacy contract.
+exact text and multiplicity. Quarantining the last invalid answer ref invalidates
+its full/partial disposition; typed correction must provide valid evidence or an
+unanswered disposition. No repair invents an answer. Without actual dispositions,
+prior needs are preserved and legacy unindexed routing cannot force progress.
+
+## Executed need dispositions (2026-10-19)
+
+`validate_need_dispositions` validates temporary Reflect metadata and returns canonical
+rows. Each indexed direct-answer target occurrence requires exactly one row containing
+exactly `need_index`, `answer_scope`, `residual_need`, `evidence_refs`, and `reason`.
+Indices are non-boolean integers into the prior snapshot. Unknown targets, duplicates,
+missing rows, invalid scope, blank reasons, and malformed refs produce typed
+`research_need_disposition_invalid` issues at the metadata paths. Full/partial refs
+must be exact, newly adopted in current state, adoptable in the executed batch, and
+owned by that target's direct-answer selection. Full/unanswered has null residual;
+partial has a nonempty, at-most-300-character, genuinely narrower residual bounded
+to its target and prediction time. Unanswered may have no refs or valid refs explaining
+why the target remains unanswered. Coverage and routing scope never determine actual
+completeness.
+
+The complete state validator accepts optional `need_dispositions`. Production Reflect
+supplies the list, including [] when no indexed target exists. Direct legacy callers
+supplying None gain no closure authority and preserve prior need occurrences. Invalid
+dispositions are semantic correction obligations, never mechanically invented rows.
+Transition, stale-resolution and legacy progress checks share actual-answer authority.
+Unanswered targets cannot be newly declared resolved because routing expected an
+answer; partial can resolve narrower subquestions without claiming its remainder is
+answered. Verify original failures, representative variants, duplicate occurrences,
+unavailable/quarantined evidence, and contrary coverage/scope combinations. Literal
+identity is not proof of semantic completeness.
+
+`raw_need_disposition_issues` supplies diagnostic-only feedback when raw state
+normalization has already failed. It reuses disposition schema, ownership,
+residual/PIT, executed tuple existence and availability checks without a current
+state, skipping only the check that requires actual evidence adoption. It returns
+issues only; callers cannot use this diagnostic pass to accept rows or authorize
+need removal. Aggregate these independent issues with the original raw-state
+errors so one native correction can address both. Successful normalization still
+requires the complete adoption and transition validation before acceptance.
+
+For conservative preservation, reserve all exact required occurrences first. A
+missing prior need with a unique cosmetic counterpart among remaining returned
+positions receives `restore_exactly` with that actual `returned_path` and exact
+`returned_need`; the counterpart must not also match another distinct missing prior
+need. Typed repair replaces only that snapshot slot with the exact required need.
+Without an unambiguous slot, restoration remains append-only. Reserved duplicate
+occurrences are never borrowed as write targets, and restoring an identified
+cosmetic copy must not leave the copy behind as a supposedly new question.
+Surplus copies embedding a preserved prior need's complete text remain semantic
+`cosmetic_need_update` failures even after restoration. Ambiguous high-overlap
+matches discovered while the prior occurrence is missing also require semantic
+correction; no fallback guesses which slot to delete or accepts restoration that
+hides that ambiguity. Reserved exact siblings and genuine coordinated facets are
+excluded. This is a narrow consistency rule, not general semantic need deduplication.

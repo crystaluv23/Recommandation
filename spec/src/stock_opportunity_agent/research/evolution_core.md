@@ -1,5 +1,19 @@
 # Evolution Core
 
+## Actual answer-scope provenance (2026-10-19)
+
+Successful Reflect steps may carry `need_dispositions` metadata with a canonical
+`prior_state_hash` and validated `items` (including `prior_need`). Runtime appends
+that metadata to the corresponding ordinary or terminal `state_deltas` entry.
+Trajectory serialization/reload preserves it, and the existing final-context
+`state_evolution` block forwards it unchanged. Compact posthoc and Plan-critic
+case views retain the same actual answer dispositions so Routing's expected
+scope cannot replace what Reflect accepted. Legacy trajectories without this
+metadata remain readable and receive no invented historical dispositions.
+
+This is additive audit metadata, not a ninth permanent ResearchState field,
+an altered completion pointer, or proof that the authored answer is correct.
+
 ## Committed Signal use identity
 
 The shared producer derives v2 learning events from the canonical serialized

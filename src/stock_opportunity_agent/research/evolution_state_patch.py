@@ -132,7 +132,7 @@ def state_patch_contract(
             "hypotheses", "current_beliefs", "supporting_evidence", "contradictions",
             "resolved_questions", "open_questions", "next_information_needs", "decision",
         }
-        if set(base) != fields:
+        if set(base) not in (fields, fields | {"need_dispositions"}):
             raise ValidationError("state patch requires the complete ResearchState snapshot")
         for name, value in base.items():
             if name == "decision":
@@ -153,6 +153,20 @@ def state_patch_contract(
                 *issue.get("must_change_any_of_paths", ()),
                 *issue.get("permitted_dependency_paths", ()),
             )))
+            if (issue.get("required_action") == "restore_exactly"
+                    and issue.get("returned_path") is not None):
+                path = issue["returned_path"]
+                required = issue.get("required_need")
+                if (isinstance(path, str)
+                        and re.fullmatch(r"next_information_needs\[\d+\]", path)
+                        and isinstance(required, str)
+                        and _exists(base, _tokens(path))
+                        and _lookup(base, _tokens(path)) == issue.get("returned_need")):
+                    permission = {"op": "replace", "path": path,
+                                  "descendants": False, "exact_value": required}
+                    if permission not in permissions:
+                        permissions.append(permission)
+                continue
             if issue.get("required_action") == "restore_exactly" or (
                 issue.get("required_action") == "replace_with_exact_residual"
                 and issue.get("returned_path") is None

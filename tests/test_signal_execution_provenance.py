@@ -53,6 +53,34 @@ def result(status, signal_id="fixture_signal"):
 
 
 class SignalExecutionProvenanceTests(TestCase):
+    def test_posthoc_preserves_actual_answer_disposition_and_does_not_infer_legacy(self):
+        recorded = {
+            "round": 1,
+            "delta": {"decision": "finalize"},
+            "need_dispositions": {
+                "prior_state_hash": "a" * 64,
+                "items": [{
+                    "need_index": 0, "prior_need": "Which later-quarter guidance was disclosed?",
+                    "answer_scope": "unanswered", "residual_need": None,
+                    "evidence_refs": [], "reason": "Only the earlier quarter is visible.",
+                }],
+            },
+        }
+        packet = {
+            "state_evolution": [recorded, {"round": 2, "delta": {}}],
+            "signal_rounds": [{"selections": [{"answer_scope": "full"}]}],
+        }
+        original = deepcopy(packet)
+        compact = _compact_posthoc_context(packet)
+        self.assertEqual(compact["state_evolution"], [{
+            "round": 1, "need_dispositions": recorded["need_dispositions"],
+        }])
+        compact["state_evolution"][0]["need_dispositions"]["items"][0]["reason"] = "changed view"
+        self.assertEqual(packet, original)
+        self.assertEqual(_compact_posthoc_context({
+            "signal_rounds": packet["signal_rounds"],
+        })["state_evolution"], [])
+
     def trajectory(self, status):
         trajectory = make_trajectory("opaque_fixture", 1.1, False, None, signal_result=result(status))
         return replace(trajectory, final_context=self.context(trajectory))

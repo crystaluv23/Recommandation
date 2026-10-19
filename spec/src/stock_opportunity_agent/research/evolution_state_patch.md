@@ -8,6 +8,13 @@ whole-object parser, evidence, point-in-time, and transition validators.
 
 ## Contract
 
+`restore_exactly` correction authority distinguishes an absent prior occurrence
+from a validator-identified cosmetic returned occurrence. Only when the validator
+supplies its exact `returned_path` may the patch replace that snapshot slot, and
+only with `required_need`; this does not grant deletion or editing neighboring
+needs. Without a returned slot, restoration retains the exact-text append budget.
+A prior-state index never becomes returned-slot authority.
+
 The runtime issues `structured-state-patch-v1`, a canonical `base_hash`, and
 machine-readable operation permissions. The response is exactly
 `{"base_hash": "<issued hash>", "operations": [...]}`. Operations are `replace`
@@ -40,6 +47,15 @@ members, append new members, and replace `decision`. Previous validated fields
 not mentioned in the delta remain exact. This mechanical permission does not
 authorize research facts: the existing full-state validator still checks source
 tuples, prior evidence identity, quantities, need ownership and PIT boundaries.
+
+State mode accepts exactly the eight canonical ResearchState fields, or those
+same fields plus the transient Reflect list `need_dispositions`. The latter is
+part of the exact patch snapshot and allows ordinary member edits/appends like
+other lists; no arbitrary ninth field is accepted. This envelope does not alter
+ResearchState serialization. Correction mode still derives every disposition
+edit from typed owning-validator paths and never inherits broad state-mode
+permissions. The caller validates the whole envelope before accepting state or
+persisting disposition metadata.
 
 Correction permissions come only from typed validator obligations, including
 explicit dependency paths, operation kinds, exact member-removal metadata, and

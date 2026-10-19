@@ -182,7 +182,7 @@ class RoutingSymbolicCutoffTemporalScopeTests(TestCase):
         action = rule["available_answer_actions"][0]
         self.assertEqual(action["residual_need"], bounded)
         self.assertIn(
-            "replace_with_exact_residual_need", rule["required_transition"]
+            "partial uses its actual bounded residual", rule["required_transition"]
         )
         # The corrected bounded representation is consumable as the next
         # routing target under the same actual date.
@@ -2082,6 +2082,9 @@ class RoutingAndPlanRoleTests(TestCase):
             "open_questions": [],
             "next_information_needs": [],
             "decision": "finalize",
+            "need_dispositions": [{"need_index": 0, "answer_scope": "full", "residual_need": None,
+                "evidence_refs": [{"signal_ref": "guidance_acceleration:v1", "evidence_group": "supporting", "evidence_index": 0}],
+                "reason": "The disclosed guidance increase answers whether management raised guidance."}],
         }
 
         with tempfile.TemporaryDirectory() as directory:
@@ -2110,7 +2113,9 @@ class RoutingAndPlanRoleTests(TestCase):
                 company_id="issuer-1",
                 as_of=as_of,
             )
-            reflected = LLMResearchController(controller_caller).reflect(
+            controller = LLMResearchController(controller_caller)
+            controller.set_reflection_runtime_context(selections=selected.value, must_finalize=False, termination_trigger=None)
+            reflected = controller.reflect(
                 default_information_plan(),
                 ResearchState(
                     hypotheses=("guidance may be accelerating",),
@@ -2163,7 +2168,8 @@ class RoutingAndPlanRoleTests(TestCase):
                 / "v4_reflect_unknown_signal_evidence_index.json"
             ).read_text(encoding="utf-8")
         )
-        invalid_output = fixture["invalid_output"]
+        invalid_output = {**fixture["invalid_output"], "need_dispositions": []}
+        invalid_output["next_information_needs"] = ["confirm sustainability"]
         corrected_output = json.loads(json.dumps(invalid_output))
         corrected_output["supporting_evidence"][1]["evidence_index"] = 0
         timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
@@ -2262,7 +2268,7 @@ class RoutingAndPlanRoleTests(TestCase):
                 / "v5_reflect_malformed_retained_basic_ref.json"
             ).read_text(encoding="utf-8")
         )
-        invalid_output = fixture["invalid_output"]
+        invalid_output = {**fixture["invalid_output"], "need_dispositions": []}
         corrected_output = json.loads(json.dumps(invalid_output))
         corrected_output["supporting_evidence"] = [fixture["prior_evidence_ref"]]
         previous = ResearchState(

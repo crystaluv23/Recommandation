@@ -1430,17 +1430,25 @@ legacy rows omit them. Runtime also derives one compact
 `need_transition_contract.need_rules` row per prior need. Each row contains the exact
 need plus its currently available direct-answer actions, unavailable direct-answer
 refs, and contextual association refs. One routing round permits at most one direct
-answer per target. If reflection adopts an available full answer, it removes that
-exact target; if it adopts an available partial answer, it replaces the target with
-the selector-authored exact residual. Retaining the old target, omitting the required
-residual, substituting a cosmetic >=90%-topic-retention residual, supplying a residual
-whose non-generic topic terms are mostly absent from the selected target, or removing
-an unrelated need is rejected once, including in terminal reflection. A residual is a
-narrowed derivative of its one target, never a different information need copied from
-elsewhere in the same state. Other selection
-reason codes and unavailable results require exact preservation. Runtime never chooses
-the affected need itself. Old committed decisions without scope remain readable
-through the legacy generic transition.
+answer per target. These actions describe prospective routing scope only. The transient
+Reflect patch base includes `need_dispositions: []` in addition to the eight canonical
+ResearchState fields. Every indexed answer target requires exactly one row with
+`need_index`, actual `answer_scope` (`full`, `partial`, or `unanswered`),
+`residual_need`, `evidence_refs` (exact `signal_ref/evidence_group/evidence_index`
+tuples), and a nonblank `reason`. Full/partial must cite newly adopted, available
+evidence from the direct-answer selection owning that target. Partial uses a genuinely
+narrowed residual authored after execution and validated by the existing target/PIT
+bounds. Full/unanswered requires null residual. Unanswered and every untargeted
+occurrence retain exact text and multiplicity; full removes its occurrence; partial
+replaces its occurrence with its validated actual residual. Coverage alone never
+proves semantic completeness. Missing/invalid metadata receives typed correction,
+never an invented fallback disposition. Calls without metadata and legacy unindexed
+selections preserve prior needs conservatively. Immutable historical records remain
+readable without retroactively acquiring actual-answer attestations. Accepted rows
+are carried in step metadata, persisted alongside state deltas, and exposed to the
+actual final-context and reflection consumers; they are not permanent ResearchState
+fields. Quarantining the last cited evidence invalidates its full/partial disposition
+and requires correction before any need can remain closed.
 Selection may use
 `answer_need` only when the card description directly covers at least one explicit
 facet of the need. When a card exposes version-owned
@@ -1454,11 +1462,11 @@ direct-answer checks on otherwise complete selection fields; the correction rece
 all such defects together. Runtime does not insert a default tag into accepted output.
 Correction feedback names
 `invalid_field='next_information_needs'` and provides the prior indexed values; the
-exact targeted field must change through an evidence-supported removal or narrowing,
-but untargeted indexed items remain byte-for-byte.
+targeted field follows the validated actual disposition, while unanswered and
+untargeted indexed items remain byte-for-byte.
 Each transition error carries its own `required_action`: restore an untargeted prior
-need exactly, replace an adopted partial answer with its exact residual, remove an
-adopted full answer, or genuinely narrow a cosmetic target. Correction instructions
+need exactly, replace an actual partial answer with its exact residual, remove an
+actual full answer, or genuinely narrow a cosmetic target. Correction instructions
 must not append one generic remove/narrow directive that contradicts a restore action.
 
 H_init applies the same unresolved-only rule before any Signal call. It must not ask

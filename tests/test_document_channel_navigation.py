@@ -55,7 +55,8 @@ class DocumentChannelNavigationTests(TestCase):
         state = ResearchState(hypotheses=["Fixture."], next_information_needs=["Check project."])
         caller = ScriptedRoleCaller([
             {"inspect_document_catalog": {"cursor": 40}},
-            {"fetch_documents": [{"document_id": "recent"}]}, state.to_dict(),
+            {"fetch_documents": [{"document_id": "recent"}]},
+            {**state.to_dict(), "need_dispositions": []},
         ])
         provider = _DocumentChannelProvider(
             RawInfoStore(documents=sources), company_id="issuer", as_of=AS_OF,

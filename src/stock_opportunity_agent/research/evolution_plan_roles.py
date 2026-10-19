@@ -121,7 +121,8 @@ from stock_opportunity_agent.research.evolution_research_validation import (
     _prediction_date_from_context,
     _reflection_need_transition_contract,
     _reflection_selection_intents,
-    _reject_unrepresentable_partial_selections,
+    raw_need_disposition_issues,
+    validate_need_dispositions,
     _research_state_capacity,
     _routing_residual_facet_candidates,
     _shared_distinctive_phrase,
@@ -360,11 +361,6 @@ class LLMResearchController:
             if self.evaluation_context is not None
             else None
         )
-        _reject_unrepresentable_partial_selections(
-            selections,
-            state.next_information_needs,
-            evaluation_context,
-        )
         if must_finalize and batch.results and all(
             result.value is SignalValue.UNAVAILABLE
             or result.coverage is SignalCoverage.UNAVAILABLE
@@ -378,6 +374,66 @@ class LLMResearchController:
             if self.document_channel is not None
             else self.caller
         )
+        patch_base = {**state.to_dict(), "need_dispositions": []}
+        disposition_metadata: dict[str, Any] | None = None
+
+        def parse_reflected(value: Mapping[str, Any]) -> ResearchState:
+            nonlocal disposition_metadata
+            disposition_metadata = None
+            issues = [
+                ValidationIssue(
+                    code="research_reflect_envelope_invalid", paths=(name,),
+                    message=f"Add required Reflect envelope field {name}",
+                    allowed_repairs=("add",),
+                ) for name in sorted(set(patch_base) - set(value))
+            ] + [
+                ValidationIssue(
+                    code="research_reflect_envelope_invalid", paths=(name,),
+                    message=f"Remove unsupported Reflect envelope field {name}",
+                    allowed_repairs=("remove",),
+                ) for name in sorted(set(value) - set(patch_base))
+            ]
+            if issues:
+                raise StructuredValidationError(issues)
+            try:
+                normalized = _normalize_research_state_output(
+                    {name: value[name] for name in state.to_dict()},
+                    previous_state=state,
+                    evaluation_context=evaluation_context,
+                    computed_metric_cards=(self.computed_metric_cards + tuple(reflect_caller.computed_metric_cards)
+                        if isinstance(reflect_caller, _DocumentChannelCaller) else self.computed_metric_cards),
+                )
+            except StructuredValidationError as error:
+                disposition_issues = raw_need_disposition_issues(
+                    value["need_dispositions"], previous_state=state,
+                    selections=selections, batch=batch,
+                    evaluation_context=evaluation_context,
+                )
+                raise StructuredValidationError((*error.issues, *disposition_issues)) from error
+            reflected_state = _validate_research_state_refs(
+                ResearchState.from_dict(normalized),
+                phase="reflect",
+                previous_state=state,
+                batch=batch,
+                selections=selections,
+                must_finalize=must_finalize,
+                evaluation_context=evaluation_context,
+                need_dispositions=value["need_dispositions"],
+            )
+            dispositions = validate_need_dispositions(
+                value["need_dispositions"], previous_state=state,
+                state=reflected_state, selections=selections, batch=batch,
+                evaluation_context=evaluation_context,
+            )
+            disposition_metadata = {
+                "prior_state_hash": _canonical_hash(state.to_dict()),
+                "items": [
+                    {**row, "prior_need": state.next_information_needs[row["need_index"]]}
+                    for row in dispositions
+                ],
+            }
+            return reflected_state
+
         reflected, usage = _complete_parsed_role(
             reflect_caller,
             stage="research_controller_reflect",
@@ -389,7 +445,7 @@ class LLMResearchController:
                 "identify evidence to adopt, update only the affected judgments, "
                 "then update answered needs and the continue/finalize decision. "
                 "Return only snapshot-bound operations under output_patch_contract. "
-                "Runtime assembles and validates the complete ResearchState and "
+                "Runtime assembles and validates the complete Reflect envelope and "
                 "preserves all untouched fields. Retained Basic Info provenance "
                 "must remain unchanged; only its claim may be restated when needed. "
                 "A new Signal evidence ref must use "
@@ -411,25 +467,34 @@ class LLMResearchController:
                 "state, fraction differences use percentage points, and exact reported "
                 "durations cannot become individual-quarter totals. "
                 "Leave a retained Signal ref's prior claim untouched because its "
-                "backing batch is no longer visible. If you adopt new current-batch "
-                "Signal evidence and continue, narrow or replace answered information "
-                "needs and update resolved/open questions. Keep a need byte-for-byte "
-                "when the batch did not answer it; do not change text merely to show "
-                "motion. Embedding the full old need inside a longer sentence is "
-                "invalid, and a newly resolved question cannot coexist with an exact "
-                "retained same-topic need. Use need_transition_contract as the sole "
-                "need-ownership map. Each need_rules row names the exact prior need, "
-                "available direct-answer actions, unavailable direct-answer refs, and "
-                "context-only refs. Only when you adopt evidence from one listed "
-                "available answer action may you change that exact need. For a full "
-                "action remove the exact need; for a partial action replace it with "
-                "the action's residual_need byte-for-byte. Every rule marked "
-                "preserve_exactly, and every conditional "
-                "rule whose available answer evidence you did not adopt, must retain "
-                "its need byte-for-byte. Unavailable and context-only refs never "
-                "authorize changing a need. "
-                "Deleting another need or returning the targeted need unchanged is "
-                "invalid. Use research_state_capacity as advisory compression guidance: "
+                "backing batch is no longer visible. Routing selection intents and "
+                "need_transition_contract identify the exact owned need occurrences "
+                "and expected scope, not proof that execution answered them. In this "
+                "same response append need_dispositions rows for the selected direct "
+                "need occurrences. Each row has exactly need_index (the zero-based "
+                "prior need occurrence), answer_scope (full, partial, or unanswered), "
+                "residual_need (null except for partial), evidence_refs (exact "
+                "signal_ref/evidence_group/evidence_index tuples), and reason. Judge "
+                "actual scope from the current executed evidence and explain the "
+                "object, period and facets answered or still missing. Evidence refs "
+                "must be exact current-batch tuples actually adopted by the final "
+                "state; Routing expectations do not supply answer evidence. "
+                "Signal measurement coverage does not determine need completion: a "
+                "partial measurement may fully answer a narrow fact question, while "
+                "a sufficient measurement may answer only one part of a compound "
+                "question. An earlier period's facts do not answer a later period's "
+                "question; a forecast already public at prediction_time may answer "
+                "a question about that forecast. Full removes only the exact owned "
+                "need; partial replaces it with the genuinely unanswered residual; "
+                "unanswered preserves it byte-for-byte with residual_need=null. "
+                "Unanswered evidence_refs may be empty or cite valid adopted "
+                "current-batch context explaining a period or scope mismatch; "
+                "those refs do not claim the need was answered and never authorize "
+                "closure. Unavailable, technically failed and "
+                "context-only results cannot authorize completion. Preserve "
+                "unselected occurrences and every unaddressed need; do not silently "
+                "resolve a need or duplicate its full text inside a longer residual. "
+                "Use research_state_capacity as advisory compression guidance: "
                 "prefer staying within each field and combined state target given by "
                 "new_item_capacity, and prefer compact evidence when capacity is "
                 "zero. If reflection_runtime.must_finalize is true, this is the "
@@ -545,23 +610,7 @@ class LLMResearchController:
                 },
                 "evaluation_context": evaluation_context,
             },
-            parser=lambda value: _validate_research_state_refs(
-                ResearchState.from_dict(
-                    _normalize_research_state_output(
-                        value,
-                        previous_state=state,
-                        evaluation_context=evaluation_context,
-                        computed_metric_cards=(self.computed_metric_cards + tuple(reflect_caller.computed_metric_cards)
-                            if isinstance(reflect_caller, _DocumentChannelCaller) else self.computed_metric_cards),
-                    )
-                ),
-                phase="reflect",
-                previous_state=state,
-                batch=batch,
-                selections=selections,
-                must_finalize=must_finalize,
-                evaluation_context=evaluation_context,
-            ),
+            parser=parse_reflected,
             allow_outcomes=False,
             max_output_tokens=ROLE_OUTPUT_TOKEN_LIMITS["controller"],
             max_request_tokens=self.request_token_budget,
@@ -569,13 +618,17 @@ class LLMResearchController:
             correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
             enforce_scoped_correction=True,
             exact_compaction_scope=True,
-            output_patch_base=state.to_dict(),
+            output_patch_base=patch_base,
             patch_corrections=True,
             final_validation_fallback=_research_state_evidence_grounding_fallback,
         )
         if isinstance(reflect_caller, _DocumentChannelCaller) and reflect_caller.computed_metric_cards:
             self.set_computed_metrics([*self.computed_metric_cards, *reflect_caller.computed_metric_cards])
-        return AgentStep(reflected, usage)
+        return AgentStep(
+            reflected, usage,
+            metadata={"need_dispositions": disposition_metadata}
+            if disposition_metadata is not None else {},
+        )
 
 
 def _explicit_signal_need_match_details(
@@ -3158,6 +3211,17 @@ def _proposal_focus_issue(attempt: int, reason: str) -> StructuredValidationErro
     ),))
 
 
+def _need_disposition_evolution(item: Any) -> list[dict[str, Any]]:
+    """Retain accepted scope provenance without inventing legacy decisions."""
+
+    return [
+        {"round": delta.get("round"),
+         "need_dispositions": deepcopy(delta["need_dispositions"])}
+        for delta in getattr(item, "state_deltas", ())
+        if isinstance(delta, Mapping) and "need_dispositions" in delta
+    ]
+
+
 def _plan_critic_trajectory(
     item: Any,
     *,
@@ -3168,6 +3232,7 @@ def _plan_critic_trajectory(
     if is_technical_exclusion_trajectory(item):
         return {
             "case_index": case_index,
+            "state_evolution": _need_disposition_evolution(item),
             "stop_reason": item.stop_reason.value,
             "termination_trigger": (
                 item.termination_trigger.value
@@ -3254,6 +3319,7 @@ def _plan_critic_trajectory(
             ]
         compact_rounds.append(compact_round)
     compact["signal_rounds"] = compact_rounds
+    compact["state_evolution"] = _need_disposition_evolution(item)
     return compact
 
 
@@ -3362,12 +3428,13 @@ class LLMPlanCritic:
             catalog = source_index.catalog_view()
             briefs = source_index.brief_view()
             trajectories_view = [
-                {key: row[key] for key in (
+                {**{key: row[key] for key in (
                     "case_index", "stop_reason", "termination_trigger",
                     "technical_exclusion", "candidate_judgment_feedback", "magnitude_feedback",
                     "recorded_signal_execution_failures",
-                ) if key in row}
-                for row in source_rows
+                ) if key in row},
+                 "state_evolution": _need_disposition_evolution(trajectory)}
+                for row, trajectory in zip(source_rows, trajectories)
             ]
             if self.anonymous_aliases:
                 catalog = _mask_identity_values(catalog, self.anonymous_aliases)
@@ -3401,6 +3468,10 @@ class LLMPlanCritic:
                     "diagnostics and sourced briefs. Read registered original case "
                     "reflections when post-hoc detail and its canonical outcome "
                     "feedback are needed to support an observation. "
+                    "state_evolution records actual accepted need dispositions; "
+                    "Routing's expected answer scope does not establish completion. "
+                    "Distinguish unanswered and partial needs from full answers, "
+                    "and treat authored disposition reasons as claims to review. "
                     "Return only the vertical cross-case and parent-child layer: the "
                     "runtime preserves every original post-hoc case reflection "
                     "separately, so do not rewrite it or present this output as its "

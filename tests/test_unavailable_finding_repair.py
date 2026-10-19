@@ -61,7 +61,12 @@ class UnavailableFindingRepairTests(TestCase):
 
     def reflect(self, value, *, status=SignalExecutionStatus.DOMAIN_UNAVAILABLE,
                 terminal=False, extra_outputs=()):
-        caller = ScriptedRoleCaller([value, *extra_outputs])
+        # These fixtures have no indexed direct-answer selection. The empty
+        # per-call metadata is explicit; it does not authorize any need closure.
+        caller = ScriptedRoleCaller([
+            {**deepcopy(output), "need_dispositions": []}
+            for output in (value, *extra_outputs)
+        ])
         controller = LLMResearchController(caller)
         controller.set_evaluation_context(datetime(2025, 9, 30, tzinfo=timezone.utc))
         controller.reflection_must_finalize = terminal
@@ -122,7 +127,7 @@ class UnavailableFindingRepairTests(TestCase):
         prior_value = self.prior().to_dict()
         prior_value["resolved_questions"].append(self.RESOLUTION)
         prior = ResearchState.from_dict(prior_value)
-        caller = ScriptedRoleCaller([prior_value])
+        caller = ScriptedRoleCaller([{**prior_value, "need_dispositions": []}])
         step = LLMResearchController(caller).reflect(default_information_plan(), prior, self.batch())
         self.assertEqual(step.value, prior)
 

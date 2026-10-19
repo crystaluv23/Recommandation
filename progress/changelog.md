@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-19：按新meta机制选择v182实际回答范围阻塞，先修订 owning specs，再将Routing预期与Reflect实际处置分开；精确need occurrence、证据身份、typed修复、terminal closure及持久化/反馈视图同步。缺失处置仅追加、非法兄弟不扩修复权限；原永久ResearchState保持八字段。新增独立有界阶段入口，冻结两案原输入与生产代码，最多8 attempt/$0.25；本条初始checkpoint尚未发模型请求，局部检查不关闭真实验收。来源版本、Slow消费与独立收益继续开放。
+
 - 2026-10-19：依据复盘重构助手meta：AGENTS从103行缩至70行，行动/验收细则集中到agent-workflow，insights只作经验索引。schema2绑定决策动作与开放验收项，拒绝诊断冒充完整后继、latest advance高于当前证据、改策略名绕过两轮停滞；保留合法停止与已完成目标。先复现旧检查三个误放行反例，再用独立fixture及真实CLI验证；31项测试在bundled/system Python均通过。研究验收、运行历史、前提、旧目标receipt保持原值，未启动实验；本次只关闭本地行政缺陷，下一次真实业务触发效果仍待验证。
 
 - 2026-10-02：完成v167/v168逐环节系统审计及用户批准的Slow技术准入/效果追踪分离设计；验证10个技术排除未作FP/研究归因，96份canonical恢复；隔离修复历史proof policy索引误拒，补齐Fast/Slow事实解释局部权限和首次混合前沿，保留原文/hash/正确兄弟及pending。1399全量、25专项及三份真实响应离线重放通过。新准入/追踪仍仅设计批准、未实现；真实v168 Fast=1/Slow=0，不宣称两个目标入库或幅度收益。

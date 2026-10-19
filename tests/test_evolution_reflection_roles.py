@@ -9,6 +9,13 @@ from stock_opportunity_agent.research.evolution_research_validation import (
 )
 
 
+def actual_disposition(index, scope, *, signal_ref=None, residual=None, reason="The adopted evidence answers the stated scope."):
+    """Build an explicitly authored fixture; never infer actual scope from routing."""
+    return {"need_index": index, "answer_scope": scope, "residual_need": residual,
+            "evidence_refs": ([] if signal_ref is None else [{"signal_ref": signal_ref,
+                "evidence_group": "supporting", "evidence_index": 0}]), "reason": reason}
+
+
 def claim_error(value, *, basic_info=None, previous_state=None, batch=None):
     """Inspect owning rejection before safe programmatic quarantine."""
     try:
@@ -91,14 +98,14 @@ class PartialResidualTemporalScopeTests(TestCase):
             "open_questions": [],
             "next_information_needs": [need],
             "decision": "continue",
+            "need_dispositions": [actual_disposition(0, "partial", signal_ref="guidance_acceleration:v1", residual=need, reason="Production guidance is answered; cost guidance remains.")],
         }
 
     def test_partial_residual_contract_is_satisfiable_and_survives_both_guards(self) -> None:
         previous, selection, batch = self._v117_reflect_inputs()
-        caller = ScriptedRoleCaller(
-            [self._adopting_output(V117_RAW_RESIDUAL),
-             self._adopting_output(V117_BOUNDED_RESIDUAL)]
-        )
+        corrected = self._adopting_output(V117_BOUNDED_RESIDUAL)
+        corrected["need_dispositions"][0]["residual_need"] = V117_RAW_RESIDUAL
+        caller = ScriptedRoleCaller([self._adopting_output(V117_RAW_RESIDUAL), corrected])
         controller = LLMResearchController(caller)
         controller.set_evaluation_context(datetime(2025, 9, 30, tzinfo=timezone.utc))
         controller.set_reflection_runtime_context(
@@ -114,11 +121,8 @@ class PartialResidualTemporalScopeTests(TestCase):
         contract = caller.calls[0]["payload"]["need_transition_contract"]
         action = contract["need_rules"][0]["available_answer_actions"][0]
         self.assertEqual(action["residual_need"], V117_BOUNDED_RESIDUAL)
-        self.assertEqual(
-            contract["need_rules"][0]["required_transition"],
-            "if evidence from this available partial answer is adopted, "
-            "replace_with_exact_residual_need; otherwise preserve_exactly",
-        )
+        self.assertIn("routing scope is expectation only", contract["need_rules"][0]["required_transition"])
+        self.assertEqual(reflected.metadata["need_dispositions"]["items"][0]["residual_need"], V117_BOUNDED_RESIDUAL)
         intents = caller.calls[0]["payload"]["executed_selection_intents"]
         self.assertEqual(intents[0]["residual_need"], V117_BOUNDED_RESIDUAL)
         feedback = validation_error(caller.calls[1])
@@ -167,6 +171,7 @@ class PartialResidualTemporalScopeTests(TestCase):
         output = self._adopting_output("placeholder")
         output["next_information_needs"] = []
         output["decision"] = "finalize"
+        output["need_dispositions"][0]["residual_need"] = legacy.residual_need
         caller = ScriptedRoleCaller([output, output])
         controller = LLMResearchController(caller)
         controller.set_evaluation_context(datetime(2025, 9, 30, tzinfo=timezone.utc))
@@ -178,9 +183,8 @@ class PartialResidualTemporalScopeTests(TestCase):
             controller.reflect(default_information_plan(), previous, batch)
 
         failure = str(context.exception)
-        self.assertIn("cannot be represented within the prediction-time", failure)
-        self.assertIn("Q1 2026", failure)
-        self.assertEqual(len(caller.calls), 0)
+        self.assertIn("Residual", failure)
+        self.assertEqual(len(caller.calls), 2)
 
     def test_unrepresentable_residual_cannot_hide_removal_behind_continue(self) -> None:
         previous, selection, batch = self._v117_reflect_inputs()
@@ -191,6 +195,7 @@ class PartialResidualTemporalScopeTests(TestCase):
         output = self._adopting_output(
             "What competitive threats were disclosed by 2025-09-30?"
         )
+        output["need_dispositions"][0]["residual_need"] = legacy.residual_need
         caller = ScriptedRoleCaller([output, output])
         controller = LLMResearchController(caller)
         controller.set_evaluation_context(datetime(2025, 9, 30, tzinfo=timezone.utc))
@@ -200,9 +205,9 @@ class PartialResidualTemporalScopeTests(TestCase):
 
         with self.assertRaises(ValidationError):
             controller.reflect(default_information_plan(), previous, batch)
-        self.assertEqual(len(caller.calls), 0)
+        self.assertEqual(len(caller.calls), 2)
 
-    def test_contract_builder_fails_closed_for_unrepresentable_residual(self) -> None:
+    def test_routing_expected_residual_does_not_authorize_actual_transition(self) -> None:
         previous, selection, batch = self._v117_reflect_inputs()
         legacy = replace(
             selection,
@@ -210,14 +215,10 @@ class PartialResidualTemporalScopeTests(TestCase):
         )
         context = {"prediction_time": "2025-09-30T00:00:00+00:00"}
 
-        with self.assertRaises(ValidationError) as raised:
-            _reflection_need_transition_contract(
-                previous, (legacy,), batch, evaluation_context=context,
-            )
-
-        self.assertIn(
-            "will not delete the unresolved demand", str(raised.exception)
-        )
+        contract = _reflection_need_transition_contract(previous, (legacy,), batch, evaluation_context=context)
+        rule = contract["need_rules"][0]
+        self.assertIn("routing scope is expectation only", rule["required_transition"])
+        self.assertNotIn("residual_need", rule["available_answer_actions"][0])
 
     def test_unrepresentable_residual_requires_exact_restoration_not_deletion(self) -> None:
         previous, selection, _batch = self._v117_reflect_inputs()
@@ -238,6 +239,7 @@ class PartialResidualTemporalScopeTests(TestCase):
             _targeted_answer_need_transition_errors(
                 previous, removed, (legacy,), adopted, adopted,
                 evaluation_context=context,
+                need_dispositions=[actual_disposition(0, "partial", signal_ref=legacy.signal_ref, residual=legacy.residual_need)],
             ),
             [
                 {
@@ -264,6 +266,7 @@ class PartialResidualTemporalScopeTests(TestCase):
             _targeted_answer_need_transition_errors(
                 previous, retained, (legacy,), adopted, adopted,
                 evaluation_context=context,
+                need_dispositions=[actual_disposition(0, "partial", signal_ref=legacy.signal_ref, residual=legacy.residual_need)],
             ),
             [],
         )
@@ -312,7 +315,7 @@ class PartialResidualTemporalScopeTests(TestCase):
             action = contract["need_rules"][0]["available_answer_actions"][0]
             self.assertEqual(action["residual_need"], corrected_residual)
             self.assertIn(
-                "replace_with_exact_residual_need",
+                "partial uses its actual bounded residual",
                 contract["need_rules"][0]["required_transition"],
             )
 
@@ -957,6 +960,8 @@ class ReflectionRoleAdapterTests(TestCase):
             "Check the remaining mine-disruption risk."
         ]
         corrected_reflection["next_information_needs"] = invalid_reflection["next_information_needs"]
+        invalid_reflection["need_dispositions"] = []
+        corrected_reflection["need_dispositions"] = []
         caller = ScriptedRoleCaller(
             [invalid_reflection, corrected_reflection]
         )
@@ -1013,6 +1018,7 @@ class ReflectionRoleAdapterTests(TestCase):
             open_questions=("Did management change guidance?",),
             next_information_needs=(fixture["previous_need"],),
         )
+        fixture["invalid_reflection"]["need_dispositions"] = []
         caller = ScriptedRoleCaller([fixture["invalid_reflection"]])
 
         reflected = LLMResearchController(caller).reflect(
@@ -1061,11 +1067,10 @@ class ReflectionRoleAdapterTests(TestCase):
         )
         self.assertEqual(
             corrected.value.next_information_needs,
-            (fixture["narrowed_need"],),
+            (fixture["previous_need"],),
         )
-        error = validation_error(cosmetic_caller.calls[1])
-        self.assertIn("cosmetically changed", error)
-        self.assertIn("Keep an unanswered need byte-for-byte", error)
+        self.assertEqual(len(cosmetic_caller.calls), 1)
+        self.assertNotIn(cosmetic["next_information_needs"][0], corrected.value.next_information_needs)
 
         deterministic = SignalResult(
             signal_id="max_drawdown_1y",
@@ -1141,6 +1146,8 @@ class ReflectionRoleAdapterTests(TestCase):
                 ),
             ),
         )
+        fixture["unchanged_output"]["need_dispositions"] = []
+        fixture["cosmetic_correction"]["need_dispositions"] = []
         caller = ScriptedRoleCaller(
             [fixture["unchanged_output"], fixture["cosmetic_correction"]]
         )
@@ -1210,6 +1217,7 @@ class ReflectionRoleAdapterTests(TestCase):
             "resolved_questions": [
                 "Management resolved the production and cost guidance outlook."
             ],
+            "need_dispositions": [],
             "supporting_evidence": [
                 {
                     "claim": "Management reaffirmed 2025 production and cost guidance.",
@@ -1277,6 +1285,7 @@ class ReflectionRoleAdapterTests(TestCase):
             "open_questions": [],
             "resolved_questions": [],
             "supporting_evidence": [evidence_ref],
+            "need_dispositions": [actual_disposition(0, "full", signal_ref="guidance_acceleration:v1")],
         }
         corrected = json.loads(json.dumps(unchanged))
         corrected["next_information_needs"] = [other_need]
@@ -1292,6 +1301,7 @@ class ReflectionRoleAdapterTests(TestCase):
                     ),
                     applicability_hypothesis="Current guidance is visible.",
                     expected_role="primary",
+                    target_need_indices=(0,),
                     context_tags=("mature_operations",),
                 ),
             ),
@@ -1305,18 +1315,11 @@ class ReflectionRoleAdapterTests(TestCase):
             SignalBatchResult(results=(result,), signal_calls=1),
         )
 
-        error = validation_error(caller.calls[1])
-        self.assertIn("reason_code='answer_need'", error)
-        self.assertIn("exact same set", error)
-        self.assertIn("invalid_field='next_information_needs'", error)
-        self.assertIn("next_information_needs[0]", error)
-        self.assertIn(prior_need, error)
-        self.assertIn("next_information_needs[1]", error)
+        self.assertEqual(len(caller.calls), 1)
         self.assertEqual(reflected.value.next_information_needs, (other_need,))
+        self.assertEqual(reflected.metadata["need_dispositions"]["items"][0]["answer_scope"], "full")
         self.assertEqual(
-            caller.calls[0]["payload"]["executed_selection_intents"][0][
-                "selection_reason"
-            ],
+            caller.calls[0]["payload"]["executed_selection_intents"][0]["selection_reason"],
             "Directly answer the production-guidance and cost-outlook need.",
         )
 
@@ -1367,12 +1370,13 @@ class ReflectionRoleAdapterTests(TestCase):
                     "open_questions": [],
                     "resolved_questions": [],
                     "supporting_evidence": [evidence_ref],
+                    "need_dispositions": [actual_disposition(1, "partial", signal_ref="cash_reserves:v1", residual=narrowed_need)],
                 }
                 from tests.test_evolution_state_patch import PatchCaller, patch
                 from stock_opportunity_agent.research.evolution_state_patch import recorded_response_patch
 
                 def initial(request):
-                    return recorded_response_patch(request["payload"]["research_state"], invalid)
+                    return recorded_response_patch({**request["payload"]["research_state"], "need_dispositions": []}, invalid)
 
                 def correction(request):
                     return patch(request["payload"]["output_patch_contract"],
@@ -1406,7 +1410,7 @@ class ReflectionRoleAdapterTests(TestCase):
                 )
 
                 self.assertEqual(len(caller.calls), 1)
-                self.assertEqual(reflected.value.next_information_needs, (unrelated_need,))
+                self.assertEqual(reflected.value.next_information_needs, (narrowed_need, unrelated_need))
                 selection_intent = caller.calls[0]["payload"][
                     "executed_selection_intents"
                 ][0]
@@ -1429,11 +1433,11 @@ class ReflectionRoleAdapterTests(TestCase):
                     ["cash_reserves:v1"],
                 )
                 self.assertIn(
-                    "remove_or_genuinely_narrow",
+                    "partial uses its actual bounded residual",
                     need_rules[1]["required_transition"],
                 )
                 self.assertIn(
-                    "need_transition_contract as the sole need-ownership map",
+                    "Routing expectations do not supply answer evidence",
                     caller.calls[0]["system_prompt"],
                 )
 
@@ -1550,6 +1554,7 @@ class ReflectionRoleAdapterTests(TestCase):
             "next_information_needs": [guidance_need, liquidity_need],
             "open_questions": [guidance_need],
             "resolved_questions": ["The current cash balance is now known."],
+            "need_dispositions": [actual_disposition(1, "unanswered", reason="Guidance is unavailable."), actual_disposition(2, "unanswered", reason="Cash claim has not yet been validated as an answer.")],
             "supporting_evidence": [
                 {
                     "claim": rounded_claim,
@@ -1564,7 +1569,7 @@ class ReflectionRoleAdapterTests(TestCase):
         from stock_opportunity_agent.research.evolution_state_patch import recorded_response_patch
 
         def initial(request):
-            return recorded_response_patch(request["payload"]["research_state"], invalid)
+            return recorded_response_patch({**request["payload"]["research_state"], "need_dispositions": []}, invalid)
 
         def correct(request):
             return patch(request["payload"]["output_patch_contract"],
@@ -1640,7 +1645,7 @@ class ReflectionRoleAdapterTests(TestCase):
             rules[1]["unavailable_answer_signal_refs"],
             ["guidance_acceleration:v1"],
         )
-        self.assertEqual(rules[1]["required_transition"], "preserve_exactly")
+        self.assertIn("unanswered preserves_exactly", rules[1]["required_transition"])
         self.assertEqual(rules[2]["available_answer_signal_refs"], ["cash_reserves:v1"])
         self.assertEqual(rules[2]["context_only_signal_refs"], ["financing_activity:v1"])
         self.assertEqual(
@@ -1653,7 +1658,7 @@ class ReflectionRoleAdapterTests(TestCase):
         self.assertEqual(reflected.value.open_questions, ())
         self.assertEqual(
             reflected.value.next_information_needs,
-            (guidance_need, revenue_need, liquidity_need),
+            (guidance_need, liquidity_need, revenue_need),
         )
 
     def test_v74_reflect_requires_exact_partial_answer_residual(self) -> None:
@@ -1693,6 +1698,7 @@ class ReflectionRoleAdapterTests(TestCase):
             "open_questions": [],
             "resolved_questions": ["The current cash position is known."],
             "supporting_evidence": [evidence_ref],
+            "need_dispositions": [actual_disposition(0, "partial", signal_ref="cash_reserves:v1", residual=residual_need)],
         }
         corrected = json.loads(json.dumps(invalid))
         corrected["next_information_needs"] = [residual_need, unrelated_need]
@@ -1756,6 +1762,7 @@ class ReflectionRoleAdapterTests(TestCase):
             "next_information_needs": [need],
             "open_questions": [],
             "resolved_questions": [],
+            "need_dispositions": [],
             "supporting_evidence": [],
         }
         finalized = json.loads(json.dumps(continuing))
@@ -1888,6 +1895,7 @@ class ReflectionRoleAdapterTests(TestCase):
                 "open_questions": [],
                 "next_information_needs": ["Check a current catalyst."],
                 "decision": "continue",
+                "need_dispositions": [],
             }
 
         exact_caller = ScriptedRoleCaller([reflection(fixture["exact_claim"])])
@@ -1930,11 +1938,11 @@ class ReflectionRoleAdapterTests(TestCase):
             supporting_evidence=(prior_ref,),
             next_information_needs=("Check a separate risk.",),
         )
-        invalid = previous.to_dict()
+        invalid = {**previous.to_dict(), "need_dispositions": []}
         invalid["supporting_evidence"][0]["claim"] = (
             "Management raised guidance materially."
         )
-        corrected = previous.to_dict()
+        corrected = {**previous.to_dict(), "need_dispositions": []}
         caller = ScriptedRoleCaller([invalid, corrected])
 
         reflected = LLMResearchController(caller).reflect(
@@ -3350,13 +3358,13 @@ class RetainedSignalClaimRestorationTests(TestCase):
                 next_information_needs=("Check a separate risk.",))
             self.assertEqual(_validate_research_state_refs(previous, phase="reflect",
                 previous_state=previous, batch=self._visible_batch()), previous)
-            invalid = previous.to_dict()
+            invalid = {**previous.to_dict(), "need_dispositions": []}
             invalid["supporting_evidence"][0]["claim"] = "Management raised guidance."
             failure = claim_error(invalid, previous_state=previous, batch=self._visible_batch())
             issue = next(x for x in failure.issues if x.code == "retained_signal_claim_changed")
             self.assertNotIn("prior_signal_claim", issue.repair_context)
             self.assertIsNone(_research_state_evidence_grounding_fallback(invalid, failure))
-            caller = ScriptedRoleCaller([invalid, previous.to_dict()])
+            caller = ScriptedRoleCaller([invalid, {**previous.to_dict(), "need_dispositions": []}])
             result = LLMResearchController(caller).reflect(default_information_plan(), previous,
                 self._visible_batch())
             self.assertEqual(len(caller.calls), 2)
@@ -3366,7 +3374,7 @@ class RetainedSignalClaimRestorationTests(TestCase):
         previous = ResearchState(hypotheses=("Guidance may matter.",),
             supporting_evidence=(self._ref("Guidance is unchanged."),) * 2,
             next_information_needs=("Check a separate risk.",))
-        invalid = previous.to_dict()
+        invalid = {**previous.to_dict(), "need_dispositions": []}
         for row in invalid["supporting_evidence"]:
             row["claim"] = "Guidance is accelerating."
         caller = ScriptedRoleCaller([invalid])
@@ -3400,7 +3408,7 @@ class RetainedSignalClaimRestorationTests(TestCase):
         previous = ResearchState(hypotheses=("Guidance may matter.",),
             supporting_evidence=(self._ref("Guidance is unchanged."),),
             next_information_needs=("Check a separate risk.",))
-        invalid = previous.to_dict()
+        invalid = {**previous.to_dict(), "need_dispositions": []}
         invalid["supporting_evidence"][0]["claim"] = "Guidance is accelerating."
         caller = ScriptedRoleCaller([invalid])
         result = LLMResearchController(caller).reflect(default_information_plan(), previous,

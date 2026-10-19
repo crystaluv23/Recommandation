@@ -3462,6 +3462,8 @@ def execute_information_plan(
             {
                 "round": len(rounds),
                 "delta": _research_state_delta(state, reflected_state),
+                **({"need_dispositions": deepcopy(reflection_step.metadata["need_dispositions"])}
+                   if "need_dispositions" in reflection_step.metadata else {}),
             }
         )
         state = reflected_state
@@ -3502,7 +3504,11 @@ def execute_information_plan(
             model_usage = _consume_usage(model_usage, exc.usage, limits)
         else:
             model_usage = _consume_model_step(model_usage, closure_step.usage, limits)
-            state_deltas.append({"round": len(rounds), "delta": _research_state_delta(state, closure_step.value)})
+            state_deltas.append({
+                "round": len(rounds), "delta": _research_state_delta(state, closure_step.value),
+                **({"need_dispositions": deepcopy(closure_step.metadata["need_dispositions"])}
+                   if "need_dispositions" in closure_step.metadata else {}),
+            })
             state = closure_step.value
             if state.decision is ResearchDecision.FINALIZE:
                 stop_reason = RuntimeStopReason.FINALIZED

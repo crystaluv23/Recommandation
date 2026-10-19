@@ -2132,6 +2132,9 @@ class ScopedCorrectionProjectionTests(TestCase):
             (selection,),
             {"financing_listing_action:v2"},
             {"financing_listing_action:v2"},
+            need_dispositions=({"need_index": 2, "answer_scope": "partial",
+                "residual_need": residual, "evidence_refs": [{"signal_ref": "financing_listing_action:v2",
+                "evidence_group": "supporting", "evidence_index": 0}]},),
             evaluation_context={"prediction_time": "2025-07-31T00:00:00+00:00"},
         )
         # The targeted occurrence at prior index 2 became the exact residual
@@ -2177,6 +2180,9 @@ class ScopedCorrectionProjectionTests(TestCase):
             (selection,),
             {"financing_listing_action:v2"},
             {"financing_listing_action:v2"},
+            need_dispositions=({"need_index": 1, "answer_scope": "partial",
+                "residual_need": residual, "evidence_refs": [{"signal_ref": "financing_listing_action:v2",
+                "evidence_group": "supporting", "evidence_index": 0}]},),
             evaluation_context={"prediction_time": "2025-07-31T00:00:00+00:00"},
         )
         self.assertEqual(len(errors), 1)
@@ -2202,13 +2208,14 @@ class ScopedCorrectionProjectionTests(TestCase):
 
         context = {"prediction_time": "2025-07-31T00:00:00+00:00"}
 
-        def transition(prior_needs, returned_needs, selection):
+        def transition(prior_needs, returned_needs, selection, actual=()):
             return _targeted_answer_need_transition_errors(
                 SimpleNamespace(next_information_needs=prior_needs),
                 SimpleNamespace(next_information_needs=returned_needs),
                 (selection,),
                 {"financing_listing_action:v2"},
                 {"financing_listing_action:v2"},
+                need_dispositions=actual,
                 evaluation_context=context,
             )
 
@@ -2231,14 +2238,17 @@ class ScopedCorrectionProjectionTests(TestCase):
             answer_scope="full",
             residual_need="",
         )
+        actual_full = ({"need_index": 1, "answer_scope": "full", "residual_need": None,
+            "evidence_refs": [{"signal_ref": "financing_listing_action:v2",
+                "evidence_group": "supporting", "evidence_index": 0}]},)
         # A retained untargeted duplicate is not the target: removing only
         # the targeted occurrence is accepted.
         self.assertEqual(
-            transition(["Catalyst?", "Catalyst?"], ["Catalyst?"], targeted_full),
+            transition(["Catalyst?", "Catalyst?"], ["Catalyst?"], targeted_full, actual_full),
             [],
         )
         # But retaining both occurrences leaves surplus targeted content.
-        errors = transition(["Catalyst?", "Catalyst?"], ["Catalyst?", "Catalyst?"], targeted_full)
+        errors = transition(["Catalyst?", "Catalyst?"], ["Catalyst?", "Catalyst?"], targeted_full, actual_full)
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0]["required_action"], "remove_exact_target")
         self.assertEqual(errors[0]["returned_path"], "next_information_needs[1]")
@@ -2251,16 +2261,20 @@ class ScopedCorrectionProjectionTests(TestCase):
             residual_need="First residual by 2025-07-31.",
         )
         prior = ["First need?", "Keep.", "Second need?", "Keep too."]
+        actual_partial = ({"need_index": 0, "answer_scope": "partial",
+            "residual_need": "First residual by 2025-07-31.", "evidence_refs": [
+                {"signal_ref": "financing_listing_action:v2", "evidence_group": "supporting", "evidence_index": 0}]},)
         self.assertEqual(
             transition(
                 prior,
                 ["First residual by 2025-07-31.", "Keep.",
                  "Second need?", "Keep too."],
                 first,
+                actual_partial,
             ),
             [],
         )
-        errors = transition(prior, prior, first)
+        errors = transition(prior, prior, first, actual_partial)
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0]["prior_state_path"], "next_information_needs[0]")
         # Multiple targeted residuals each carry their own obligation.
@@ -2271,7 +2285,11 @@ class ScopedCorrectionProjectionTests(TestCase):
             answer_scope="partial",
             residual_need="Shared residual by 2025-07-31.",
         )
-        errors = transition(prior, prior, shared)
+        actual_shared = tuple({"need_index": index, "answer_scope": "partial",
+            "residual_need": "Shared residual by 2025-07-31.", "evidence_refs": [
+                {"signal_ref": "financing_listing_action:v2", "evidence_group": "supporting", "evidence_index": 0}]}
+            for index in (0, 2))
+        errors = transition(prior, prior, shared, actual_shared)
         self.assertEqual(len(errors), 2)
         self.assertTrue(
             all(

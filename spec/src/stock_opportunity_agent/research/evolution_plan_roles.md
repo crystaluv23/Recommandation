@@ -1,5 +1,41 @@
 # Evolution Plan Roles
 
+## Executed need dispositions (2026-10-19)
+
+Reflect uses one transient patch envelope: the eight canonical ResearchState
+fields plus `need_dispositions: []`. Its existing model call authors dispositions
+alongside the state delta; ResearchState's permanent schema stays unchanged.
+Each disposition contains exactly `need_index`, `answer_scope` (`full`, `partial`,
+or `unanswered`), `residual_need` (null or text), `evidence_refs` (exact
+`signal_ref`/`evidence_group`/`evidence_index` tuples), and `reason`. Routing
+declares intended answer scope; the executed evidence owns the actual claim.
+Measurement coverage is independent of answering a need: partial measurement
+may fully answer a narrow question, sufficient measurement may answer only one
+part of a compound question, and a different period cannot close the target.
+An unanswered disposition preserves the need exactly. Its evidence refs may be
+empty or cite valid adopted current-batch evidence explaining a period or scope
+mismatch; those refs do not claim the need was answered or authorize closure.
+
+The complete envelope is validated before success; unknown fields are never
+silently discarded. Typed corrections and fallback retain their exact authority.
+Quarantining evidence requires revalidating dispositions and need transitions;
+runtime must not invent a full answer to complete a state. Only after complete
+validation succeeds does the adapter emit bounded `need_dispositions` metadata:
+`prior_state_hash` binds the canonical prior state, and `items` contains validated
+rows with their exact prior need text. Failed intermediate parses emit no accepted
+disposition metadata. No additional model role or call is introduced.
+
+If raw state normalization fails, Reflect aggregates independently decidable
+disposition issues into the same correction feedback. The diagnostic pass checks
+metadata shape, ownership, residual and executed tuple validity without treating
+an invalid state as adopted evidence. It returns issues only, never accepted rows
+or need-transition authority. A corrected envelope still passes the complete
+state, adoption, disposition and transition validators before any metadata is saved.
+
+The final Predictor's existing state-evolution view and compact posthoc/critic
+views retain these actual dispositions, separate from Routing's earlier intent.
+They establish authored provenance, not automatic semantic truth.
+
 ## Admitted measurements and unverified effect
 
 Selector cards disclose frozen `research_status` for admitted versions. Technical
@@ -210,13 +246,13 @@ Signal retrieval, blind prediction, and Plan reflection.
   cutoff alone triggers no dateless producer rejection. Historical residuals
   that reference only years at or before the actual prediction date stay
   accepted and are never reframed as forecasts.
-- Reflection validates persisted legacy selections against the actual runtime
-  prediction boundary before building the H_reflect prompt. A partial answer
-  whose residual need cannot be represented within that boundary is rejected
-  fail-closed without a model call; the unresolved demand is never silently
-  deleted, finalized away, or handed an impossible prompt. Without a runtime
-  evaluation context there is no boundary to enforce, so legacy no-scope
-  behavior is unchanged.
+- Reflection exposes persisted Routing scope as an expectation, not a state
+  transition mandate. A legacy expected residual cannot reject the current
+  Reflect call or authorize deletion before executed evidence is considered.
+  The actual authored disposition and resulting state must both satisfy the
+  runtime prediction boundary; an invalid actual residual never authorizes
+  deletion or completion. Without a runtime evaluation context no date is
+  invented, and missing actual dispositions conservatively preserve the need.
 
 ## Shared stage boundary (2026-10-01)
 

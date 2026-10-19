@@ -7,6 +7,69 @@ from stock_opportunity_agent.research.evolution_core import (
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_actual_dispositions_survive_ordinary_terminal_roundtrip_and_critic(self):
+        from copy import deepcopy
+        from dataclasses import replace
+        from stock_opportunity_agent.artifacts import canonical_json_hash
+        from stock_opportunity_agent.research.evolution_plan_roles import LLMPlanCritic
+        from tests.test_evolution_state_patch import PatchCaller
+
+        class BudgetSelector(OneSignalSelector):
+            calls = 0
+
+            def select(self, *args, **kwargs):
+                self.calls += 1
+                if self.calls == 2:
+                    raise RuntimeBudgetExceeded("No further routing fits")
+                return super().select(*args, **kwargs)
+
+        class MetadataController(OneBatchController):
+            def __init__(self):
+                super().__init__()
+                self.accepted = []
+
+            def set_reflection_runtime_context(self, **context):
+                self.must_finalize = context["must_finalize"]
+
+            def reflect(self, plan, state, batch):
+                # The parser's semantics are exercised with native patches in
+                # test_reflect_disposition_integration. This double exercises
+                # the actual runtime propagation and final consumer boundary.
+                actual = {"prior_state_hash": canonical_json_hash(state.to_dict()),
+                    "items": [] if self.must_finalize else [{
+                        "need_index": 0, "prior_need": state.next_information_needs[0],
+                        "answer_scope": "unanswered", "residual_need": None,
+                        "evidence_refs": [], "reason": "The executed evidence does not answer this need.",
+                    }]}
+                self.accepted.append(deepcopy(actual))
+                return AgentStep(replace(state, decision=(ResearchDecision.FINALIZE
+                    if self.must_finalize else ResearchDecision.CONTINUE)),
+                    AgentUsage(tokens=20), metadata={"need_dispositions": actual})
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry, store = self._registry_and_store(directory)
+            controller = MetadataController()
+            trajectory = execute_information_plan(
+                plan=default_information_plan(), company_id="winner_1", company_basic_source={},
+                prediction_time=NOW, signal_registry=registry.freeze(),
+                signal_executor=SignalExecutor(registry.freeze(), store),
+                controller=controller, signal_agent=BudgetSelector(), predictor=FixedPredictor(),
+                prediction_sink=lambda *args: "pred", ground_truth_provider=lambda _: GroundTruth(2.5),
+            )
+        self.assertEqual(len(controller.accepted), 2)
+        self.assertEqual([row["need_dispositions"] for row in trajectory.state_deltas], controller.accepted)
+        self.assertEqual([row["need_dispositions"] for row in trajectory.final_context["state_evolution"]], controller.accepted)
+        roundtrip = ExecutionTrajectory.from_dict(trajectory.to_dict())
+        self.assertEqual(roundtrip.state_deltas, trajectory.state_deltas)
+        caller = PatchCaller({"reflection_items": [], "selected_reflection_refs": [],
+            "no_findings_reason": "This single case does not establish a reusable plan defect."})
+        reflection = LLMPlanCritic(caller).critique(plan=default_information_plan(),
+            trajectories=(roundtrip,), metrics=make_record("metrics", 0.5, (1.0,)).metrics)
+        self.assertFalse(reflection.no_findings_reason.startswith("plan_critic_validation_failed"))
+        sent = caller.calls[0]["payload"]["trajectories"][0]["state_evolution"]
+        self.assertEqual([row["need_dispositions"] for row in sent], controller.accepted)
+        self.assertIn("actual accepted need dispositions", caller.calls[0]["system_prompt"])
+
     def test_later_routing_budget_stop_closes_paid_state_once_without_stale_need_ownership(self):
         for outcome in ("finalize", "continue", "budget"):
             with self.subTest(outcome=outcome), tempfile.TemporaryDirectory() as directory:

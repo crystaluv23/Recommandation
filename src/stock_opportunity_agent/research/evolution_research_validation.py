@@ -2316,6 +2316,180 @@ def _reflection_selection_intents(
     return rows
 
 
+def validate_need_dispositions(
+    need_dispositions: object,
+    *,
+    previous_state: ResearchState | None,
+    state: ResearchState,
+    selections: tuple[SignalSelectionDecision, ...],
+    batch: SignalBatchResult | None,
+    evaluation_context: Mapping[str, Any] | None = None,
+) -> tuple[dict[str, Any], ...]:
+    """Validate actual answer metadata without inferring semantic completeness.
+
+    Routing supplies occurrence ownership; exact newly adopted evidence supplies
+    provenance. The model still owns the full/partial/unanswered judgment.
+    """
+
+    rows, issues = _collect_need_dispositions(
+        need_dispositions, previous_state=previous_state, state=state,
+        selections=selections, batch=batch, evaluation_context=evaluation_context,
+    )
+    if issues:
+        raise StructuredValidationError(issues)
+    return rows
+
+
+def raw_need_disposition_issues(
+    need_dispositions: object, *, previous_state: ResearchState | None,
+    selections: tuple[SignalSelectionDecision, ...], batch: SignalBatchResult | None,
+    evaluation_context: Mapping[str, Any] | None = None,
+) -> tuple[ValidationIssue, ...]:
+    """Diagnose raw metadata without granting adoption or transition authority."""
+
+    _rows, issues = _collect_need_dispositions(
+        need_dispositions, previous_state=previous_state, state=None,
+        selections=selections, batch=batch, evaluation_context=evaluation_context,
+    )
+    return issues
+
+
+def _collect_need_dispositions(
+    need_dispositions: object, *, previous_state: ResearchState | None,
+    state: ResearchState | None, selections: tuple[SignalSelectionDecision, ...],
+    batch: SignalBatchResult | None,
+    evaluation_context: Mapping[str, Any] | None = None,
+) -> tuple[tuple[dict[str, Any], ...], tuple[ValidationIssue, ...]]:
+    """Retain valid sibling authority while collecting independent row failures."""
+
+    issues: list[ValidationIssue] = []
+
+    def invalid(
+        path: str, message: str, *, repairs: tuple[str, ...] = ("replace", "remove", "add"),
+        context: Mapping[str, Any] | None = None,
+    ) -> None:
+        row_match = re.match(r"need_dispositions\[\d+\]", path)
+        dependencies = (row_match.group(0),) if row_match and row_match.group(0) != path else ()
+        issues.append(ValidationIssue(
+            code="research_need_disposition_invalid", paths=(path,),
+            allowed_repairs=repairs, dependent_paths=dependencies,
+            repair_context={
+                "dependency_allowed_repairs": {name: ["replace", "remove"] for name in dependencies},
+                **dict(context or {}),
+            },
+            message=message + "; author an actual disposition, never infer it from routing scope or measurement coverage",
+        ))
+
+    if not isinstance(need_dispositions, list):
+        invalid("need_dispositions", "Reflect requires a need_dispositions array",
+                repairs=("replace",), context={"invalid_container_paths": ["need_dispositions"]})
+        return (), tuple(issues)
+    prior_needs = previous_state.next_information_needs if previous_state else ()
+    owners: dict[int, set[str]] = {}
+    for selection in selections:
+        if selection.reason_code != "answer_need":
+            continue
+        for index in selection.target_need_indices:
+            if isinstance(index, int) and not isinstance(index, bool) and 0 <= index < len(prior_needs):
+                owners.setdefault(index, set()).add(selection.signal_ref)
+    results = {result.ref: result for result in (batch.results if batch else ())}
+    previous_keys = {
+        _research_evidence_key(item)
+        for item in (previous_state.supporting_evidence if previous_state else ())
+        if isinstance(item, ResearchEvidenceRef)
+    }
+    adopted = {
+        (item.signal_ref, item.evidence_group, item.evidence_index)
+        for item in (state.supporting_evidence if state is not None else ())
+        if isinstance(item, ResearchEvidenceRef) and item.kind == "signal"
+        and _research_evidence_key(item) not in previous_keys
+    }
+    prediction_date = _prediction_date_from_context(evaluation_context)
+    required = {"need_index", "answer_scope", "residual_need", "evidence_refs", "reason"}
+    declared_counts: dict[int, int] = {}
+    for raw in need_dispositions:
+        index = raw.get("need_index") if isinstance(raw, Mapping) else None
+        if isinstance(index, int) and not isinstance(index, bool) and index in owners:
+            declared_counts[index] = declared_counts.get(index, 0) + 1
+    normalized: list[dict[str, Any]] = []
+    for position, raw in enumerate(need_dispositions):
+        issue_count = len(issues)
+        path = f"need_dispositions[{position}]"
+        if not isinstance(raw, Mapping) or set(raw) != required:
+            invalid(path, "Disposition must contain exactly need_index, answer_scope, residual_need, evidence_refs and reason")
+            continue
+        index = raw["need_index"]
+        if not isinstance(index, int) or isinstance(index, bool) or index not in owners:
+            invalid(path, "Disposition need_index must name an indexed direct-answer target in the prior snapshot")
+            continue
+        if declared_counts[index] != 1:
+            invalid(path, "Each prior need occurrence requires exactly one disposition")
+            continue
+        scope = raw["answer_scope"]
+        if scope not in ("full", "partial", "unanswered"):
+            invalid(path + ".answer_scope", "Actual answer_scope must be full, partial or unanswered")
+        reason = raw["reason"]
+        if not isinstance(reason, str) or not reason.strip():
+            invalid(path + ".reason", "Disposition reason must be nonblank text grounded in executed evidence")
+        residual = raw["residual_need"]
+        if scope == "partial":
+            if not isinstance(residual, str) or not residual.strip() or len(residual) > 300:
+                invalid(path + ".residual_need", "Actual partial answer requires a 1-300 character residual")
+            else:
+                prior = prior_needs[index]
+                prior_terms = _normalized_need_content_tokens(prior)
+                residual_terms = _normalized_need_content_tokens(residual)
+                overlap = prior_terms & residual_terms
+                if (residual.strip() == prior or not residual_terms
+                        or len(overlap) / len(residual_terms) < 0.5
+                        or (prior_terms and len(overlap) / len(prior_terms) >= 0.9
+                            and not _coordinated_residual_facet_terms(prior, residual))):
+                    invalid(path + ".residual_need", "Residual must genuinely narrow its own prior need, not repeat it or copy another need")
+                bounded = _bounded_residual_need(residual, prior, prediction_date)
+                if bounded is None or len(bounded) > 300:
+                    invalid(path + ".residual_need", "Residual cannot be represented within its prior prediction-time boundary")
+                else:
+                    residual = bounded
+        elif residual is not None:
+            invalid(path + ".residual_need", "Full and unanswered dispositions require residual_need=null")
+        refs = raw["evidence_refs"]
+        normalized_refs: list[dict[str, Any]] = []
+        if not isinstance(refs, list):
+            invalid(path + ".evidence_refs", "Disposition evidence_refs must be an array")
+        else:
+            if scope in ("full", "partial") and not refs:
+                invalid(path + ".evidence_refs", "Full/partial requires newly adopted exact evidence tuples")
+            ref_keys: set[tuple[str, str, int]] = set()
+            for ref_position, ref in enumerate(refs):
+                ref_path = f"{path}.evidence_refs[{ref_position}]"
+                if not isinstance(ref, Mapping) or set(ref) != {"signal_ref", "evidence_group", "evidence_index"}:
+                    invalid(ref_path, "Evidence ref must contain one exact signal_ref/evidence_group/evidence_index tuple")
+                    continue
+                signal_ref, group, offset = ref["signal_ref"], ref["evidence_group"], ref["evidence_index"]
+                if (not isinstance(signal_ref, str) or signal_ref not in owners[index]
+                        or group not in ("supporting", "counter")
+                        or not isinstance(offset, int) or isinstance(offset, bool) or offset < 0):
+                    invalid(ref_path, "Evidence ref must belong to this target's direct-answer selection with an exact nonnegative index")
+                    continue
+                key = (signal_ref, group, offset)
+                result = results.get(signal_ref)
+                spans = (result.supporting_evidence if group == "supporting" else result.counter_evidence) if result else ()
+                if (key in ref_keys or (state is not None and key not in adopted) or result is None
+                        or not _signal_result_has_adoptable_evidence(result) or offset >= len(spans)):
+                    invalid(ref_path, "Evidence tuple must be unique, available, in the executed batch and newly adopted by current state")
+                ref_keys.add(key)
+                normalized_refs.append(dict(ref))
+        if len(issues) == issue_count:
+            normalized.append({"need_index": index, "answer_scope": scope,
+                               "residual_need": residual, "evidence_refs": normalized_refs,
+                               "reason": reason})
+    missing = sorted(set(owners) - set(declared_counts))
+    for index in missing:
+        invalid("need_dispositions", f"Missing actual disposition for prior need index {index}; append its one row",
+                repairs=("add",), context={"missing_need_indices": [index]})
+    return tuple(normalized), tuple(issues)
+
+
 def _reflection_need_transition_contract(
     state: ResearchState,
     selections: tuple[SignalSelectionDecision, ...],
@@ -2323,12 +2497,9 @@ def _reflection_need_transition_contract(
     *,
     evaluation_context: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Bind each prior need to deterministic routing and result-availability facts."""
+    """Expose expected routing scope without treating it as an executed answer."""
 
     prediction_date = _prediction_date_from_context(evaluation_context)
-    _reject_unrepresentable_partial_selections(
-        selections, state.next_information_needs, evaluation_context,
-    )
     results = {result.ref: result for result in batch.results}
     rules: list[dict[str, Any]] = []
     for index, need in enumerate(state.next_information_needs):
@@ -2366,30 +2537,12 @@ def _reflection_need_transition_contract(
                 else:
                     action["residual_need"] = selection.residual_need
                 available_answer_actions.append(action)
-        if not available_answer_actions:
-            required_transition = "preserve_exactly"
-        elif available_answer_actions[0]["answer_scope"] == "full":
-            required_transition = (
-                "if evidence from this available full answer is adopted, "
-                "remove_exact_need; otherwise preserve_exactly"
-            )
-        elif (
-            available_answer_actions[0]["answer_scope"] == "partial"
-            and not isinstance(
-                available_answer_actions[0].get("residual_need"), str
-            )
-        ):
-            required_transition = "preserve_exactly"
-        elif available_answer_actions[0]["answer_scope"] == "partial":
-            required_transition = (
-                "if evidence from this available partial answer is adopted, "
-                "replace_with_exact_residual_need; otherwise preserve_exactly"
-            )
-        else:
-            required_transition = (
-                "if evidence from an available_answer_signal_ref is adopted, "
-                "remove_or_genuinely_narrow; otherwise preserve_exactly"
-            )
+        indexed_answer = any(item.reason_code == "answer_need" and index in item.target_need_indices for item in selections)
+        required_transition = (
+            "author actual need_disposition from executed evidence: unanswered preserves_exactly; "
+            "full removes this occurrence; partial uses its actual bounded residual; routing scope is expectation only"
+            if indexed_answer else "preserve_exactly"
+        )
         rules.append(
             {
                 "need_index": index,
@@ -2720,6 +2873,7 @@ def _validate_research_state_refs(
     previous_state: ResearchState | None = None,
     batch: SignalBatchResult | None = None,
     selections: tuple[SignalSelectionDecision, ...] = (),
+    need_dispositions: object | None = None,
     must_finalize: bool = False,
     evaluation_context: Mapping[str, Any] | None = None,
 ) -> ResearchState:
@@ -3036,12 +3190,21 @@ def _validate_research_state_refs(
         if batch is not None
         else set()
     )
+    actual_dispositions: tuple[dict[str, Any], ...] = ()
+    if phase == "reflect" and need_dispositions is not None:
+        actual_dispositions, disposition_issues = _collect_need_dispositions(
+            need_dispositions, previous_state=previous_state,
+            state=replace(state, supporting_evidence=tuple(normalized_refs)),
+            selections=selections, batch=batch, evaluation_context=evaluation_context,
+        )
+        structured_issues.extend(disposition_issues)
     targeted_answer_need_errors = _targeted_answer_need_transition_errors(
         previous_state,
         state,
         selections,
         adopted_new_signal_refs,
         available_current_signal_refs,
+        need_dispositions=actual_dispositions,
         evaluation_context=evaluation_context,
     )
     cosmetic_needs = _cosmetically_retained_information_needs(
@@ -3120,10 +3283,9 @@ def _validate_research_state_refs(
     if (
         phase == "reflect"
         and previous_state is not None
-        and state.decision is ResearchDecision.CONTINUE
-        and adopted_new_signal_evidence
     ):
-        if cosmetic_needs:
+        if (cosmetic_needs and state.decision is ResearchDecision.CONTINUE
+                and adopted_new_signal_evidence):
             validation_errors.append(ValidationIssue(
                 code="cosmetic_need_update",
                 paths=tuple(dict.fromkeys(f"next_information_needs[{index}]" for error in cosmetic_needs for index, need in enumerate(state.next_information_needs) if need == error["current_need"])),
@@ -3145,15 +3307,9 @@ def _validate_research_state_refs(
                 # answer evidence. Publish both alternatives, and only mark the
                 # uniquely unsupported resolution as mechanically removable.
                 direct_answer = any(
-                    selection.reason_code == "answer_need"
-                    and selection.signal_ref in adopted_new_signal_refs
-                    and previous_state is not None
-                    and any(
-                        index < len(previous_state.next_information_needs)
-                        and previous_state.next_information_needs[index] == need
-                        for index in selection.target_need_indices
-                    )
-                    for selection in selections
+                    row["answer_scope"] == "full"
+                    and previous_state.next_information_needs[row["need_index"]] == need
+                    for row in actual_dispositions
                 )
                 structured_issues.append(ValidationIssue(
                     code="stale_resolved_need_retained",
@@ -3163,8 +3319,8 @@ def _validate_research_state_refs(
                         "Remove or narrow the answered need, or remove the "
                         "unsupported newly resolved question"
                     ),
-                    paths=(need_path, resolved_path),
-                    path_policy="any",
+                    paths=(need_path, resolved_path) if direct_answer else (resolved_path,),
+                    path_policy="any" if direct_answer else "all",
                     allowed_repairs=("replace", "remove"),
                     repair_context={
                         "retained_need": need,
@@ -3175,41 +3331,6 @@ def _validate_research_state_refs(
                         ),
                     },
                 ))
-        legacy_answer_need_refs = {
-            item.signal_ref
-            for item in selections
-            if item.reason_code == "answer_need" and not item.target_need_indices
-            and item.signal_ref in available_current_signal_refs
-        }
-        if (
-            adopted_new_signal_refs.intersection(legacy_answer_need_refs)
-            and len(state.next_information_needs)
-            == len(previous_state.next_information_needs)
-            and set(state.next_information_needs)
-            == set(previous_state.next_information_needs)
-        ):
-            retained_indexed_items = [
-                {
-                    "path": f"next_information_needs[{index}]",
-                    "value": need,
-                }
-                for index, need in enumerate(previous_state.next_information_needs)
-            ]
-            validation_errors.append(ValidationIssue(
-                code="answered_need_without_progress",
-                paths=tuple(row["path"] for row in retained_indexed_items), path_policy="any",
-                allowed_repairs=("replace", "remove"),
-                dependent_paths=("decision",) if len(state.next_information_needs) == 1 else (),
-                message=("research_controller_reflect adopted evidence from an available "
-                "Signal selected with reason_code='answer_need' but retained the "
-                "exact same set of prior next_information_needs; "
-                "invalid_field='next_information_needs'; "
-                f"retained_indexed_items={retained_indexed_items}. Change the field "
-                "by removing or genuinely narrowing at least one listed item that "
-                "the supplied selection intent and accepted evidence actually "
-                "answered. Preserve every unanswered listed item byte-for-byte; "
-                "runtime will not choose the need or fabricate a resolution"),
-            ))
     if structured_issues or validation_errors:
         raise StructuredValidationError([*validation_errors, *structured_issues])
     if tuple(normalized_refs) == refs:
@@ -3484,6 +3605,14 @@ def _need_transition_validation_issue(
     """
 
     returned_path = error.get("returned_path")
+    if error.get("issue_code") == "cosmetic_need_update":
+        return ValidationIssue(
+            code="cosmetic_need_update", paths=(str(returned_path),),
+            allowed_repairs=("replace", "remove"),
+            message=("A surplus returned need cosmetically repeats an unanswered prior need: "
+                     f"{error}. Preserve required prior occurrences and remove or genuinely narrow only this surplus item"),
+            repair_context={"ambiguous_need_restoration": bool(error.get("ambiguous_need_restoration"))},
+        )
     return ValidationIssue(
         code="research_need_transition_invalid",
         message=(
@@ -3515,13 +3644,14 @@ def _targeted_answer_need_transition_errors(
     adopted_signal_refs: set[str],
     available_signal_refs: set[str],
     *,
+    need_dispositions: Iterable[Mapping[str, Any]] | None = None,
     evaluation_context: Mapping[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
-    """Bind adopted answer evidence to its preselected need occurrence.
+    """Apply validated actual dispositions to owned prior need occurrences.
 
     Validation is occurrence- and multiplicity-aware: every untargeted prior
-    occurrence must be preserved byte-for-byte, each targeted occurrence must
-    carry its bounded residual (partial answer) or be removed (full answer),
+    occurrence must be preserved byte-for-byte, each actually answered occurrence
+    carries its bounded residual (partial) or is removed (full),
     a retained untargeted duplicate never satisfies a targeted occurrence's
     obligation, and one returned occurrence never satisfies two prior
     occurrences. Matching is by exact-text counts, never by global text
@@ -3530,16 +3660,6 @@ def _targeted_answer_need_transition_errors(
     """
 
     if previous is None:
-        return []
-    if not selections:
-        return []
-    if any(
-        selection.reason_code == "answer_need"
-        and selection.signal_ref in adopted_signal_refs
-        and selection.signal_ref in available_signal_refs
-        and not selection.target_need_indices
-        for selection in selections
-    ):
         return []
     prediction_date = _prediction_date_from_context(evaluation_context)
     target_selections: dict[int, list[SignalSelectionDecision]] = {}
@@ -3556,18 +3676,25 @@ def _targeted_answer_need_transition_errors(
         for target_index in selection.target_need_indices:
             target_selections.setdefault(target_index, []).append(selection)
     prior_needs = previous.next_information_needs
+    actual = {row["need_index"]: row for row in (need_dispositions or ())}
     current_needs = list(current.next_information_needs)
     obligations: list[dict[str, Any]] = []
     for index, need in enumerate(prior_needs):
-        if index not in target_selections:
+        disposition = actual.get(index)
+        if (index not in target_selections or disposition is None
+                or disposition.get("answer_scope") not in {"full", "partial"}):
             obligations.append({"kind": "preserve", "need": need})
             continue
         targeted = target_selections[index]
         signal_refs = [item.signal_ref for item in targeted]
-        scoped = targeted[0] if len(targeted) == 1 else None
-        if scoped is not None and scoped.answer_scope == "partial":
+        cited_refs = {ref.get("signal_ref") for ref in disposition.get("evidence_refs", ())}
+        if (not cited_refs or not cited_refs <= set(signal_refs)
+                or not cited_refs <= adopted_signal_refs or not cited_refs <= available_signal_refs):
+            obligations.append({"kind": "preserve", "need": need})
+            continue
+        if disposition["answer_scope"] == "partial":
             required_residual = _bounded_residual_need(
-                scoped.residual_need, need, prediction_date,
+                disposition.get("residual_need"), need, prediction_date,
             )
             if required_residual is None:
                 # An unrepresentable residual cannot authorize removing the
@@ -3612,12 +3739,23 @@ def _targeted_answer_need_transition_errors(
         for text, required in required_counts.items()
         if len(positions.get(text, ())) < required
     }
+    initial_missing = set(shortfall)
     surplus_positions = {
         text: positions[text][required_counts.get(text, 0):]
         for text in positions
         if len(positions[text]) > required_counts.get(text, 0)
     }
     errors: list[dict[str, Any]] = []
+    cosmetic_restorations: dict[str, list[int]] = {}
+    for need in shortfall:
+        prior_tokens = _normalized_need_tokens(need)
+        cosmetic_restorations[need] = [
+            position
+            for candidate, candidate_positions in surplus_positions.items()
+            if candidate != need and prior_tokens
+            and len(prior_tokens & _normalized_need_tokens(candidate)) / len(prior_tokens) >= 0.9
+            for position in candidate_positions
+        ]
     for index, obligation in enumerate(obligations):
         if obligation["kind"] != "preserve":
             continue
@@ -3633,6 +3771,15 @@ def _targeted_answer_need_transition_errors(
             "required_need": need,
             "required_need_occurrences": required_counts.get(need, 1),
         }
+        matches = cosmetic_restorations.get(need, ())
+        if len(matches) == 1 and sum(matches[0] in positions for positions in cosmetic_restorations.values()) == 1:
+            returned_index = matches[0]
+            returned_need = current_needs[returned_index]
+            error.update({"returned_path": f"next_information_needs[{returned_index}]",
+                          "returned_need": returned_need,
+                          "issue": "unanswered prior need was cosmetically changed"})
+            surplus_positions[returned_need].remove(returned_index)
+            cosmetic_restorations[need] = []
         if obligation.get("unrepresentable"):
             error.update(
                 {
@@ -3734,6 +3881,23 @@ def _targeted_answer_need_transition_errors(
                     "returned_need": cosmetic[1],
                 }
             )
+    preserved_needs = {row["need"] for row in obligations if row["kind"] == "preserve"}
+    for candidate, candidate_positions in surplus_positions.items():
+        for need in preserved_needs:
+            tokens = _normalized_need_tokens(need)
+            literal_copy = candidate != need and need in candidate
+            ambiguous = (need in initial_missing and candidate != need and tokens
+                         and len(tokens & _normalized_need_tokens(candidate)) / len(tokens) >= 0.9)
+            if not (literal_copy or ambiguous) or _coordinated_residual_facet_terms(need, candidate):
+                continue
+            for position in candidate_positions:
+                errors.append({
+                    "issue_code": "cosmetic_need_update", "returned_path": f"next_information_needs[{position}]",
+                    "prior_state_path": f"next_information_needs[{prior_needs.index(need)}]",
+                    "value": need, "returned_need": candidate,
+                    "ambiguous_need_restoration": bool(ambiguous and not literal_copy),
+                })
+            break
     return errors
 
 

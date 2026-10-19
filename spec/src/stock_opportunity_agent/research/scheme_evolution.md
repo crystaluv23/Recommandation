@@ -543,12 +543,10 @@ The reflection input carries a compact executed-selection projection with only r
 reason code, reason, and target index, plus a deterministic
 `need_transition_contract`. Its one `need_rules` row per prior need names the exact
 text, available direct-answer refs, unavailable direct-answer refs, and contextual
-association refs. The rule is conditional on actual evidence adoption: if H_reflect
-adds evidence from an available `answer_need` ref, it removes or genuinely narrows
-that exact target; otherwise it preserves the need byte-for-byte. Context-only and
-unavailable refs never authorize a transition. This local projection removes
-applicability prose, roles, and tags already consumed by routing rather than adding a
-second semantic decision.
+association refs. Routing intent identifies ownership, not actual completeness.
+H_reflect evaluates executed evidence before deciding whether that target was answered.
+Context-only and unavailable refs never authorize a transition. This local projection
+removes applicability prose, roles, and tags already consumed by routing.
 
 The current selector contract carries exactly one `target_need_indices` entry for
 `reason_code=answer_need` and classifies `answer_scope=full|partial`. A partial answer
@@ -557,15 +555,22 @@ facets; a full answer carries null residual. Non-answer reasons may carry zero o
 valid association index but carry null answer scope/residual, and the association
 never implies resolution. At most one direct-answer selection may target a given need
 within one routing round; other useful refs use contextual reason codes. Old committed
-selections without these fields remain readable through the prior generic transition.
-After adopting a current scoped answer, H_reflect removes a full target or replaces a
-partial target with the exact persisted residual. Returning the old target, omitting
-the required residual, substituting a cosmetic residual, or deleting an unrelated
-need is invalid in either continuing or terminal reflection. This boundary does not
-guess which need was answered or manufacture a resolution: the selector names the
-scope before execution, local validation and the transition contract use the same
-persisted selection plus current result coverage, and correction preserves every
-untargeted need byte-for-byte.
+selections without these fields remain readable as historical intent.
+These scope/residual fields are prospective expectations and cannot require closing
+a need merely because the Signal produced adoptable evidence. H_reflect's transient
+patch base adds `need_dispositions: []` to the eight ResearchState fields; this is
+per-call metadata, not a permanent ResearchState field. Every indexed `answer_need`
+target occurrence has exactly one disposition with `need_index`, actual
+`answer_scope=full|partial|unanswered`, `residual_need`, `evidence_refs`, and nonblank
+`reason`. Full/partial requires exact newly adopted tuples belonging to that target's
+executed direct-answer selection. Unanswered preserves the exact prior need; full
+removes it; partial replaces it with the actual evidence-driven, PIT-bounded residual
+authored by Reflect, not the pre-execution selector residual. Full/unanswered uses
+null residual. Other prior occurrences retain their exact text and multiplicity.
+Legacy unindexed selections cannot authorize closure. Missing or invalid dispositions
+receive typed correction; runtime never invents a disposition or derives semantic
+completeness from sufficient/partial measurement coverage. Validated dispositions
+travel with accepted step metadata into state evolution and downstream consumers.
 Correction feedback records a per-row action and exact value where applicable:
 `restore_exactly`, `replace_with_exact_residual`, `remove_exact_target`, or
 `remove_or_genuinely_narrow`. It never follows a restore diagnosis with a conflicting

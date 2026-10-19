@@ -2475,6 +2475,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             "The cited filing discusses a historical sale-leaseback, not a current "
             "management-guidance revision."
         )
+        invalid["need_dispositions"] = []
         corrected = json.loads(json.dumps(invalid))
         corrected["current_beliefs"][1] = corrected_claim
         corrected["supporting_evidence"][1]["claim"] = corrected_claim
@@ -4373,7 +4374,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             signal_calls=1,
         )
         same_state = ResearchState.from_dict(state.to_dict())
-        caller = ScriptedRoleCaller([same_state.to_dict()])
+        caller = ScriptedRoleCaller([{**same_state.to_dict(), "need_dispositions": []}])
         controller = LLMResearchController(caller)
         controller.reflect(default_information_plan(), state, batch)
 
@@ -4566,7 +4567,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         caller = ScriptedRoleCaller(
             [
                 {"fetch_documents": [{"document_id": "news-sale"}]},
-                same_state.to_dict(),
+                {**same_state.to_dict(), "need_dispositions": []},
             ]
         )
         controller = LLMResearchController(caller)
@@ -4669,7 +4670,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         caller = ScriptedRoleCaller(
             [
                 {"compute": [{"metric": "price_shape", "params": {"window_days": 180}}]},
-                same_state.to_dict(),
+                {**same_state.to_dict(), "need_dispositions": []},
             ]
         )
         controller = LLMResearchController(caller)
