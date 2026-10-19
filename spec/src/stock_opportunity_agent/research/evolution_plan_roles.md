@@ -1,5 +1,16 @@
 # Evolution Plan Roles
 
+Before Reflect constructs any model request, validate the complete current
+Signal batch through the shared canonical-evidence PIT input guard at the
+actual evaluation instant. A bad serialized result rejects the stage with no
+role dispatch, including forced terminal paths. Critic and routing prior-result
+views apply the same guard when their case cutoff is available. Invalid source
+input is not a candidate/Plan content error and cannot enter typed model-output
+correction. The exact raw result remains local audit evidence.
+Predictor checks existing final-context Signal cards before estimation or
+dispatch, so loading an old context cannot bypass final assembly. Contexts
+containing Signal results require an explicit aware runtime prediction instant.
+
 ## Executed need dispositions (2026-10-19)
 
 Reflect uses one transient patch envelope: the eight canonical ResearchState

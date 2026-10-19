@@ -1,5 +1,14 @@
 # Evolution Output Validation
 
+Posthoc input assembly applies the shared Signal evidence PIT guard. Full raw
+results are checked directly. A compact runtime card must retain its exact
+`input_evidence_available_at` binding and is rechecked against the context's
+actual aware prediction instant before any summary is copied. If an old card
+lacks that binding, reconstruct from its bound full SignalRound artifact where
+available; without that source, refuse new model consumption. Do not invent
+timestamps or update historical archives. Typed technical/PIT rejection occurs
+before model dispatch and does not become a Plan research lesson.
+
 ## Explicit arithmetic relation binding (2026-10-02)
 
 Anchor-percent arithmetic checks bind a target only through the same explicit

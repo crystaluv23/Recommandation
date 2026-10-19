@@ -1,0 +1,565 @@
+{
+  "boundary_checks_passed": true,
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_signal_model_pit_boundary.py",
+      "sha256": "ba438aaaaf4e3bc412f1fd0f56c95090e815f4e1ea92c5b39f30294959690dee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "363eb69e8f0439830290a3042eda31cd84f2c1205aa475f5d5300f302244442a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "c66a1284abab3f02f35736c19d966a9e98fb0ce3d1b87500993c05216dff2f17"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "ae21e220320e997abf478f22f3bfe5857fe47ee1337aea27ee55729d3293d6b5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "61b5e504b3de9cb33f47dd9e653f4d1f438224a5a3c152cc2d072b01a277e8b8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "a9d2ef113e39a723ac1e0c93c8a2173b69b737cb17dd25f86a12fbd421da24eb"
+    }
+  ],
+  "engineering_mvp_closed": false,
+  "external_api_calls": 0,
+  "fixed_sample_denominator": 7,
+  "fresh_model_behavior_revalidated": false,
+  "legal_consumer_outcomes": [
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "plan_r0001_c01",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "plan_r0001_c02",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "q2_only",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "future_forecast",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "partial_numeric",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "terminal_empty_owner",
+      "status": "consumers_verified"
+    }
+  ],
+  "negative": [
+    {
+      "entry": "reflect",
+      "path": "evidence.supporting[0].timestamp",
+      "reason": "evidence timestamp exceeds prediction time",
+      "reason_code": "signal_input_pit",
+      "status": "typed_input_rejected"
+    },
+    {
+      "entry": "final_assembly",
+      "path": "evidence.supporting[0].timestamp",
+      "reason": "evidence timestamp exceeds prediction time",
+      "reason_code": "signal_input_pit",
+      "status": "typed_input_rejected"
+    },
+    {
+      "entry": "posthoc_existing_context",
+      "path": "input_evidence_available_at",
+      "reason": "missing original evidence or runtime time binding",
+      "reason_code": "signal_input_pit",
+      "status": "typed_input_rejected"
+    },
+    {
+      "entry": "critic_full_result",
+      "path": "evidence.supporting[0].timestamp",
+      "reason": "evidence timestamp exceeds prediction time",
+      "reason_code": "signal_input_pit",
+      "status": "typed_input_rejected"
+    },
+    {
+      "entry": "predictor_existing_context",
+      "path": "input_evidence_available_at",
+      "reason": "missing original evidence or runtime time binding",
+      "reason_code": "signal_input_pit",
+      "status": "typed_input_rejected"
+    },
+    {
+      "entry": "posthoc_all_present_clocks",
+      "path": "input_evidence_available_at[0]",
+      "reason": "evidence timestamp exceeds prediction time",
+      "reason_code": "signal_input_pit",
+      "status": "typed_input_rejected"
+    },
+    {
+      "entry": "posthoc_exact_runtime_copy",
+      "path": "input_evidence_available_at",
+      "reason": "runtime binding differs from canonical evidence times",
+      "reason_code": "signal_input_pit",
+      "status": "typed_input_rejected"
+    }
+  ],
+  "negative_new_inbox_count": 0,
+  "new_independent_role_responses": 0,
+  "original_v3_files_unchanged": true,
+  "positive_pending": {
+    "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/signal_model_pit_boundary_20261019_v3/exchange/inbox/452395465d66dca6ff1b5701b593bde31dd84eba44da7f2c95bc7baecd406fc2.json",
+    "inbox_sha256": "50bac2e511725ef936647b5cbf9dd5392a13af09689551024b01c61ea0b3bd80",
+    "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/signal_model_pit_boundary_20261019_v3/exchange/outbox/452395465d66dca6ff1b5701b593bde31dd84eba44da7f2c95bc7baecd406fc2.txt",
+    "request_hash": "452395465d66dca6ff1b5701b593bde31dd84eba44da7f2c95bc7baecd406fc2",
+    "stage": "blind_predictor_predict"
+  },
+  "positive_predictor_status": "pending_original_caller",
+  "prediction_executed": false,
+  "schema_version": "signal-model-pit-boundary-v1",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/220131fcb3f052a7c23f3ebb353449d290c5a1839a6a94ce0cb06961be0e59dd.json",
+      "sha256": "bad3733740801ae8cc464351af53633ba0878dbaf4b2167f8cb58ff0dcdfd1b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/39cb5cfa1203ac18c13e1567bd5400ca6fe3228ed0d8e0e9743893f4f2047032.json",
+      "sha256": "f594a95b4a018053d245b82a20093782fb3af461cc812cceb64b09d19e6a64d9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/48c3c89e4339bc730ae1e3a6bf355d7416369aa4bc65123f8ff8f74f5455640a.json",
+      "sha256": "81e5a43fff6847fba17f3c08b046db59c77de0908c909b521d66d9f38e1488e3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/5c6a9fb04f3c0d0c036ff22cde3f0857bc2444c2a73841c2736c44881f07be3b.json",
+      "sha256": "b999539d66c1c55e529a3f7d4fe93b5ad60f15d1dab9822fcff437b1e23a4079"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/600f7e25ea8a96b09f0960afc7bbc09a23d0178ccd516283321e1d46fd018274.json",
+      "sha256": "42d1b8629fef5d99195ef941c814002ec1dd1f8cd68006be4dac239a7375bb2f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/638fd227e807adee9d02b3edff2e9228ecf485cdcecd9348e36853c29af10368.json",
+      "sha256": "71d32f512ad6ac52dc977db6ddff608fa5cd0468aae99b823348a254b6bc68d6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/6e6288dcce90baf75741c5972b0fd50d1b10029ae5864700134e192d52640e51.json",
+      "sha256": "7288b6a9996c8f3b04361cd000cf54b097ef597b807a308e46c9eadf17095641"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/7f51bd16ce6780b8ed0718b52a5f04761baf51c861700c6885e701a32432e4b7.json",
+      "sha256": "c49df6b2cbff1bf9fa45ad600ad857c4a5d1d2192f4be0d2c1e70282d8691d2e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/a432d3ac1a2c8ab32f852195cc53dd8819192c20aed7745a1f10467b8415640c.json",
+      "sha256": "fb7bf1bd13299c344abfafe1471dcdbc12577d6c22a23f1ab00517a77af304ef"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/bb6c1abbd9c6f1f2661f3f1110c1af1e081138e375a85e0c5ef06f85ab053439.json",
+      "sha256": "acb63e66333a49c5f9016d558ffdd4348fc8e219c5cbb92dcec97abedf702110"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/c33d0d2b4d0d92907c77752291683c42c481785d5ad75c55d95fc62deaeae41a.json",
+      "sha256": "fb8a2b1e98d9b875bfa6133f62821d8c4eb90a1029c71768dc13192dc3f588b9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/e098838ea131e99ebfca41236f631f4d7926b5a11095861dd9a9f9b8660ba1f6.json",
+      "sha256": "758f9d60e4aa9b149a3f9cd8db71986816950dc473500c616d54b12d7e5000c6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/cache/responses/e2dfbd360c40056c96b549fca0235b6996b09eeeadd382f085756535c93cae88.json",
+      "sha256": "9de4c996e012de680732d561bbcbcacf67d413f7b84eeb97df7d8d571b8958c2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/consumers/future_actual.json",
+      "sha256": "4f7e71fafd94238182baae4f19ecd9aadae21db476dc4e0afdcaa367791af4f5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/consumers/future_forecast.json",
+      "sha256": "6dc93477ba88c92d3ad4d7c3b7dc40455cfd3a7bc99b7f2060b58990e4d1f6af"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/consumers/partial_numeric.json",
+      "sha256": "ab8a7f2e1fb8909ba2e00eceeaa51641bdbfa3d81b33cd8d37f7ea6c883aeaca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/consumers/plan_r0001_c01.json",
+      "sha256": "4b122c15590efea27d3e06a173af481c2922a9e68e30d04bf2816afce3171a5f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/consumers/plan_r0001_c02.json",
+      "sha256": "fa29ffeef630c5eeef203974740211956cefddc11a1226a5e31dcfd930722885"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/consumers/q2_only.json",
+      "sha256": "2c596090e73c40f1178de1f232c575ca3c280fcaad030e4febbe3f8decd28eb7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/consumers/terminal_empty_owner.json",
+      "sha256": "8997420224a44ef550efaa9dd49e59667cbb19d549775400b81097217e7a9387"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/contract.json",
+      "sha256": "4b094a1d3fe61d99903edb8c97e41e8ce16b5cc39b2b7111e840bd1bb5c1235d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/contract.json",
+      "sha256": "7faae925eef512952ae7b388521fcfa32cd4e8d5ab79aa692e389c57a487afc8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/220131fcb3f052a7c23f3ebb353449d290c5a1839a6a94ce0cb06961be0e59dd.json",
+      "sha256": "b7587025b1905322dcd5ce2c83d6ab010ff92488cb45cd631218c5bf34d3002c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/39cb5cfa1203ac18c13e1567bd5400ca6fe3228ed0d8e0e9743893f4f2047032.json",
+      "sha256": "04aba889ed40c6c9f51235006665a5437557bb9aba66d11f1a9d34751061dc74"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/48c3c89e4339bc730ae1e3a6bf355d7416369aa4bc65123f8ff8f74f5455640a.json",
+      "sha256": "a7c9f8aac65bb492f47ffc72d357b444c6017f0c0d568a67d7b7599538037dac"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/5c6a9fb04f3c0d0c036ff22cde3f0857bc2444c2a73841c2736c44881f07be3b.json",
+      "sha256": "4e2386be83a7edfaf0c18dcd81f8a1d5ed172b75c45a87c0c4fed6504e81d68b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/600f7e25ea8a96b09f0960afc7bbc09a23d0178ccd516283321e1d46fd018274.json",
+      "sha256": "579b5e0576e85552d355067a0114ff83b5029761bad37534c9d73ace896e8d42"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/638fd227e807adee9d02b3edff2e9228ecf485cdcecd9348e36853c29af10368.json",
+      "sha256": "04b2f3e360bb7600e87bc3f63c39a215163d8e17c0d7f0b91fda8ce283e7b6b8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/6e6288dcce90baf75741c5972b0fd50d1b10029ae5864700134e192d52640e51.json",
+      "sha256": "9aa213145c5be6ab9e7ccddc40f5dbb231d735b643807364c4f9340a3618345f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/7f51bd16ce6780b8ed0718b52a5f04761baf51c861700c6885e701a32432e4b7.json",
+      "sha256": "7ce7178ca1e7228b101ab39e1dac542cafb5ee4720f9c588c71157e8b68d4677"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/a432d3ac1a2c8ab32f852195cc53dd8819192c20aed7745a1f10467b8415640c.json",
+      "sha256": "5a6d36bfefc90722eeb10d2ec5908e8b544516b0692ae67302371a86e034cf6c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/bb6c1abbd9c6f1f2661f3f1110c1af1e081138e375a85e0c5ef06f85ab053439.json",
+      "sha256": "fbc0e45e241d67d90a6827ede4730c105d79dfb4a1bb7660abd17372b70111ca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/c33d0d2b4d0d92907c77752291683c42c481785d5ad75c55d95fc62deaeae41a.json",
+      "sha256": "7f816365451e8f3ff1318e99a3f2f8a6f849a71d7a89b3da2b86ec7a06864d05"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/e098838ea131e99ebfca41236f631f4d7926b5a11095861dd9a9f9b8660ba1f6.json",
+      "sha256": "a8951c9083984ad6b701605bea0390ac1f7cccbca652d26de35352181ef8f6e2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/inbox/e2dfbd360c40056c96b549fca0235b6996b09eeeadd382f085756535c93cae88.json",
+      "sha256": "6e0ba0d5b3115f72dbf622b0d95220a78a3977be4de654f04d495e7704747f43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/220131fcb3f052a7c23f3ebb353449d290c5a1839a6a94ce0cb06961be0e59dd.txt",
+      "sha256": "c61de6e4ad94d5cda4c46b7e69c86359a9882c212e57b6d21c15716ffc3a3da0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/39cb5cfa1203ac18c13e1567bd5400ca6fe3228ed0d8e0e9743893f4f2047032.txt",
+      "sha256": "82ec3b6a27df12260cd1355c2602e06a0b1ab7ca4b0a1e46d1d0dd15d8b4fa95"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/48c3c89e4339bc730ae1e3a6bf355d7416369aa4bc65123f8ff8f74f5455640a.txt",
+      "sha256": "e86b1a671bfa1bafa8af429b0ea863025a9c327bfb9e700793ffb32e2b7bfe9c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/5c6a9fb04f3c0d0c036ff22cde3f0857bc2444c2a73841c2736c44881f07be3b.txt",
+      "sha256": "c9952476dbe47643e04a3df369bc8f300e0ae89dd729106e2c826a46f06eadfd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/600f7e25ea8a96b09f0960afc7bbc09a23d0178ccd516283321e1d46fd018274.txt",
+      "sha256": "375aafa3d8a7347e41bba72e78471bbdefc1ac3feab63e5e833b36459d28ce50"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/638fd227e807adee9d02b3edff2e9228ecf485cdcecd9348e36853c29af10368.txt",
+      "sha256": "e468966e0a6e25b0f629b593ff216d0853120d6d89600764e113267b7f26e00b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/6e6288dcce90baf75741c5972b0fd50d1b10029ae5864700134e192d52640e51.txt",
+      "sha256": "085df8a320e6b794488f1cce3df3ae1d732a50aead89c33f45b52650dc1cacb3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/7f51bd16ce6780b8ed0718b52a5f04761baf51c861700c6885e701a32432e4b7.txt",
+      "sha256": "ac32d824908801c1b47eb39b4b72761e471fdd2e6f5c4d603970d53a219d5676"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/a432d3ac1a2c8ab32f852195cc53dd8819192c20aed7745a1f10467b8415640c.txt",
+      "sha256": "aee9914f2cc51083269cd0d906ca4c6f0a23f5d1deeb329b2e6fe5b0420f0c6b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/bb6c1abbd9c6f1f2661f3f1110c1af1e081138e375a85e0c5ef06f85ab053439.txt",
+      "sha256": "d73d8da60746ed0126eebeede8c27752df0e69b74b517d72323146b8a3d3c5bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/c33d0d2b4d0d92907c77752291683c42c481785d5ad75c55d95fc62deaeae41a.txt",
+      "sha256": "b326b102bd2ddafc917de8f11d794eac0af9bce1bef62e10dfe7c871ac9f1a9e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/e098838ea131e99ebfca41236f631f4d7926b5a11095861dd9a9f9b8660ba1f6.txt",
+      "sha256": "c923417127b25d887a9465b509ccd1fde2a97e9cea8e974550ce45b590abbcf2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/outbox/e2dfbd360c40056c96b549fca0235b6996b09eeeadd382f085756535c93cae88.txt",
+      "sha256": "be0818bf4cffad18b2b9d798e76470af103b4970517b50db9e32c1f2bc4c32ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/220131fcb3f052a7c23f3ebb353449d290c5a1839a6a94ce0cb06961be0e59dd.json",
+      "sha256": "c5a923bbbd48e2506ab3a2abcf78507d9d6931074a3d4c9fcb5d689edf4f1e41"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/39cb5cfa1203ac18c13e1567bd5400ca6fe3228ed0d8e0e9743893f4f2047032.json",
+      "sha256": "3fdf7b699ac69fc5cbae0e6e8a2cbda8af39896d6a5586b407f7a9be92f2b6d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/48c3c89e4339bc730ae1e3a6bf355d7416369aa4bc65123f8ff8f74f5455640a.json",
+      "sha256": "11b8edab96a6325832ee169df6a459f4f0ecafe8577871bffad5d5a805983b40"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/5c6a9fb04f3c0d0c036ff22cde3f0857bc2444c2a73841c2736c44881f07be3b.json",
+      "sha256": "661b4c1d958ca7e2ca7aea145513fdc8c3ab28798b09bbef431b14e5601ce2e8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/600f7e25ea8a96b09f0960afc7bbc09a23d0178ccd516283321e1d46fd018274.json",
+      "sha256": "a18cd1d12e2080110f8961c8ba667c40b5c54ab7d89e45fe85523cf08bbc6572"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/638fd227e807adee9d02b3edff2e9228ecf485cdcecd9348e36853c29af10368.json",
+      "sha256": "3b47c2a93836fc52f0f2328ce678fee0827bdf30e04ec2e228ba36a789528678"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/6e6288dcce90baf75741c5972b0fd50d1b10029ae5864700134e192d52640e51.json",
+      "sha256": "77083ab7d44333ce28adbe7b5b92cb0fb74699f46865aed89877fad8c92ff7d4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/7f51bd16ce6780b8ed0718b52a5f04761baf51c861700c6885e701a32432e4b7.json",
+      "sha256": "e4ba1b8484acfcfb3568081d0e252dd8bc6f52a3ebc2f17503bb0c8ef8960b6a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/a432d3ac1a2c8ab32f852195cc53dd8819192c20aed7745a1f10467b8415640c.json",
+      "sha256": "18e5c0837dd1112bd6f7747b28b2c0e47e6fb17b73cb3b0beaf2e7895e3cab13"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/bb6c1abbd9c6f1f2661f3f1110c1af1e081138e375a85e0c5ef06f85ab053439.json",
+      "sha256": "3a065bbc1e095570f9c06e3eaa0d3897a665ad04661fba7ebfef7d6b9551a645"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/c33d0d2b4d0d92907c77752291683c42c481785d5ad75c55d95fc62deaeae41a.json",
+      "sha256": "0fe1e9bce7f50b4495035e2b2f76d38516d1701dff555d69691f9de05f45e1ac"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/e098838ea131e99ebfca41236f631f4d7926b5a11095861dd9a9f9b8660ba1f6.json",
+      "sha256": "273b24bba911fb5d1a302d4910efd5a2c6b7705a1fc45f53314b9c218b2f7727"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/exchange/receipts/e2dfbd360c40056c96b549fca0235b6996b09eeeadd382f085756535c93cae88.json",
+      "sha256": "4c4734f257e26cf33066f340fbfb3929a039ebb515bfa13ea6cc8a7ec7666be7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/execution_summary.json",
+      "sha256": "84b62688fc4ff6e51143e7d10f6c5af42fce37473531591e7bec456cc7f4e5a8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/expectations.json",
+      "sha256": "0b3209405397f3428c1ce89c7486a77811a3d163434e1e86e8f18eb5503bc843"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/independent-review.json",
+      "sha256": "3f4b3a9cb48ece6587823ecc22619017f6766c24e5a299a550d7bf8a982980be"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/inputs.json",
+      "sha256": "125f7b4c388aa750db66be2b1099e8d8a91db0e95e05bba1008a8edd7fb0b544"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/manifest.json",
+      "sha256": "5dd0ac26e65ec7649ff11cf9e6a0d9966dc7781b1c27d8d393a62bcacce8d344"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/preflight.json",
+      "sha256": "8dcddcd9cbd6971d472ab9459c188f272eefe1262d8d8a293d48df4cc41fcd58"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/progress.json",
+      "sha256": "cdb416ef38dc4c7311c2528c19028ccb8cfca9dab6774e418bbedf19143809ed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/220131fcb3f052a7c23f3ebb353449d290c5a1839a6a94ce0cb06961be0e59dd.json",
+      "sha256": "22e1851ced9fa3ac7f7f0a5ab363f647d269e0f223b3fc9bc66635fa7584dc98"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/39cb5cfa1203ac18c13e1567bd5400ca6fe3228ed0d8e0e9743893f4f2047032.json",
+      "sha256": "4bdad013ff807e28c4e374b50afef1e53256e1ec6ebd11e3893f7b93228585c0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/48c3c89e4339bc730ae1e3a6bf355d7416369aa4bc65123f8ff8f74f5455640a.json",
+      "sha256": "42338ff6a887ca64e67e09e0724d77372383bd2ed812a1575b385d882e9477c5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/5c6a9fb04f3c0d0c036ff22cde3f0857bc2444c2a73841c2736c44881f07be3b.json",
+      "sha256": "e5498a1ad840dd641ff337d3053d50e34c0a5f4c0011f68cea8ee14c659145f0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/600f7e25ea8a96b09f0960afc7bbc09a23d0178ccd516283321e1d46fd018274.json",
+      "sha256": "a9c74f02882672638316df23190df73ff3fa6548ea9e227e67e64cbeb1609798"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/638fd227e807adee9d02b3edff2e9228ecf485cdcecd9348e36853c29af10368.json",
+      "sha256": "f22a49b56d9e715156c65fae3d7b53095845c240c6d3289e6c7504baad213d4c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/6e6288dcce90baf75741c5972b0fd50d1b10029ae5864700134e192d52640e51.json",
+      "sha256": "b6598359766bd7a73300b46cdefad2e535f84cbbced191c2218b31014413feb4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/7f51bd16ce6780b8ed0718b52a5f04761baf51c861700c6885e701a32432e4b7.json",
+      "sha256": "fa09387f84c4acc6665c19976e2c434d8073a4d41b9784883dae28ec678f4ab6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/a432d3ac1a2c8ab32f852195cc53dd8819192c20aed7745a1f10467b8415640c.json",
+      "sha256": "6c3b5958ccb45638251e20d61ce1f168199ee6ca1e2d0055dbe5d76cce1d8c10"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/bb6c1abbd9c6f1f2661f3f1110c1af1e081138e375a85e0c5ef06f85ab053439.json",
+      "sha256": "bebbe990ec6e1ab410b075569d1029e8f2cc026003dee9b32998a1fa5893ae4b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/c33d0d2b4d0d92907c77752291683c42c481785d5ad75c55d95fc62deaeae41a.json",
+      "sha256": "74e3d6f67374eba5c940d974e7d627f67478cf30e85b7962c01ec42a243f202e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/e098838ea131e99ebfca41236f631f4d7926b5a11095861dd9a9f9b8660ba1f6.json",
+      "sha256": "1d97ef05e2828e0edceeaa94e94737f3f9d8956b6d945416793613df689468d2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/requests/e2dfbd360c40056c96b549fca0235b6996b09eeeadd382f085756535c93cae88.json",
+      "sha256": "83b47ce4b1de020898b9094c74ed37bdc18dc8de9bd109e416a1f5e1bc813bd2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/future_actual/initial_reflect.json",
+      "sha256": "94d2a0e79405ad2e174feac9f10dc0519c8f7964980cfdf64cc1e0ebfae139f3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/future_actual/outcome.json",
+      "sha256": "c6ab0a3b037a555768391624a1c43c1b5148a9418267641a75b74c3a2d1f9b12"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/future_actual/terminal_closure.json",
+      "sha256": "44a4d37bc9190bee3e3e7ea0503dbf446062892942dd21c0bb008fa0629a3da1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/future_forecast/initial_reflect.json",
+      "sha256": "84205cb0024728f57e1297c297c5371a64d698032d567dee8794608bf1ad313c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/future_forecast/outcome.json",
+      "sha256": "5ebb395dd2d4c7191d0ce0ceed02ea95540acd8a0e41655356be77e1775870a7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/partial_numeric/initial_reflect.json",
+      "sha256": "7faf57e8f27586169e86d35d2b5de220b0c9823d7bf7e3fb08b382639a26d0d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/partial_numeric/outcome.json",
+      "sha256": "d5dcd7b42bd5fd1ead549bcf005778214ef9a1c39c063fec1de17c6fd8eb0bf6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/partial_numeric/terminal_closure.json",
+      "sha256": "a9b33a7d25e27a81c19342cd5a6fd19db1bab9dbf20f813dfb436d3a0ccecb96"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/plan_r0001_c01/initial_reflect.json",
+      "sha256": "c6c9a92cc1d4697b56dd69c181a0dc40e85bbcf6f1fb73fab860b76fe18d9c57"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/plan_r0001_c01/outcome.json",
+      "sha256": "ae768387c0d73d755d67293a5f0460504af73301b7293b448a4246f105bd874e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/plan_r0001_c01/terminal_closure.json",
+      "sha256": "170d04ff49f693ba42f3725fc6dd9edc26ef294674487ba08d116bd6c0bf5d1e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/plan_r0001_c02/initial_reflect.json",
+      "sha256": "fe7cb8acb61cdb554aa435e4f00a66a8fe384e7983a0b266d1ccb86ce3f55c4f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/plan_r0001_c02/outcome.json",
+      "sha256": "239904029ea6357ff4dc41505b8b57e3fe4d5338483f44056a0698c4a9450b53"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/plan_r0001_c02/terminal_closure.json",
+      "sha256": "b99a0e2e68f91cc182121c89c7a3514438fbc8d281b993cdcc2d5ad8c816f11b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/q2_only/initial_reflect.json",
+      "sha256": "bdbb9833a292e87b80ac7fafe9ceda5a8d18f40e91590d75ac3de9e260874a91"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/q2_only/outcome.json",
+      "sha256": "56ff2f4638c77867df48aaa84b068485da3d21164bc714892ceff8ebc1b7998b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/q2_only/terminal_closure.json",
+      "sha256": "7ad0635104f7808cb30ce83dbfbf2fad35c1726ace57cea66fe37ba74f957a49"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/terminal_empty_owner/outcome.json",
+      "sha256": "36a1afe074ecc6a5da581edd21a7a27418862a8d9e09e07c7948edec4ce08306"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/terminal_empty_owner/terminal_closure.json",
+      "sha256": "c3a224722ba4b7d21f211ee0fba8ba236cde92ae6b2cff368243f934b00e7302"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/unused_external_attempts.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    }
+  ]
+}

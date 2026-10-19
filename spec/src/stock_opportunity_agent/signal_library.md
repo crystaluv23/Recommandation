@@ -1,5 +1,15 @@
 # Signal Library
 
+For PIT model-input qualification, every present clock is checked: complete
+canonical evidence and any runtime `input_evidence_available_at` binding. Adding
+empty evidence cannot hide a late or malformed retained binding. The binding
+must also equal canonical supporting-then-counter timestamps by actual instant,
+including order and repeated rows, whenever both forms are present. A compact
+binding alone is admitted only under the controlled runtime/frozen-artifact
+contract, not as independent evidence of its own authenticity. The binding
+is runtime metadata, not a model-authored credential or proof against arbitrary
+artifact forgery; source/contract integrity remains separately required.
+
 ## Admission/tracking migration: Registry foundation implemented
 
 Technically valid research Signals may enter the callable Registry while effect
@@ -72,6 +82,17 @@ reflection attribution remain separate facts. Candidate work ids remain outside
 the usage ledger until an exact version is promoted and actually selected.
 
 ## Status
+
+### Serialized result model-input PIT boundary (2026-10-19)
+
+Before any existing result enters a case-scoped model view, a shared guard
+checks every canonical supporting/counter evidence timestamp against the actual
+aware prediction instant, using the same temporal rule as F6. A known late or
+unproven timestamp rejects the entire model input with a typed technical/PIT
+reason before dispatch; it never becomes a domain-negative observation or
+model-output correction. Preserve the canonical original, interpretation,
+evidence and failure denominator for audit. This guard does not replace F6's
+literal/input-membership checks or prove historical body-version authenticity.
 
 Started
 

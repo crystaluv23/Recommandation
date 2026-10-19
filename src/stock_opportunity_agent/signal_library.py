@@ -1053,12 +1053,77 @@ UNKNOWN_UNAVAILABLE_SIGNAL_MODEL_SUMMARY = (
 )
 
 
+class SignalModelInputRejected(RuntimeError):
+    """An existing result is unsafe model input, not a repairable model answer."""
+
+    def __init__(self, signal_ref: str, path: str, reason: str) -> None:
+        self.reason_code = "signal_input_pit"
+        self.signal_ref = signal_ref
+        self.path = path
+        self.reason = reason
+        super().__init__(f"signal_input_pit: {signal_ref} {path}: {reason}")
+
+
+def require_signal_result_pit(
+    value: SignalResult | Mapping[str, Any], *, as_of: datetime,
+) -> list[str]:
+    """Check exact evidence times before projecting any existing result prose.
+
+    Compact cards need runtime-copied timestamp binding; an old card without
+    original evidence cannot prove this boundary and is rejected for new use.
+    Canonical artifacts are never changed. F6 still owns complete evidence
+    membership/literal validation and source versions require their own review.
+    """
+    result = value.to_dict() if isinstance(value, SignalResult) else dict(value)
+    owner = str(result.get("signal_ref") or f"{result.get('signal_id')}:v{result.get('version')}")
+    if as_of.tzinfo is None or as_of.utcoffset() is None:
+        raise SignalModelInputRejected(owner, "prediction_time", "aware runtime cutoff required")
+    evidence = result.get("evidence")
+    if isinstance(evidence, Mapping):
+        if any(group not in evidence or not isinstance(evidence[group], (list, tuple))
+               for group in ("supporting", "counter")):
+            raise SignalModelInputRejected(owner, "evidence", "complete supporting/counter arrays are required")
+        rows = [(f"evidence.{group}[{index}].timestamp", item.get("timestamp") if isinstance(item, Mapping) else None)
+                for group in ("supporting", "counter") for index, item in enumerate(evidence[group])]
+    else:
+        if "evidence" in result:
+            raise SignalModelInputRejected(owner, "evidence", "complete supporting/counter arrays are required")
+        rows = []
+    canonical_count = len(rows)
+    if "input_evidence_available_at" in result or not isinstance(evidence, Mapping):
+        binding = result.get("input_evidence_available_at")
+        if not isinstance(binding, list):
+            raise SignalModelInputRejected(owner, "input_evidence_available_at", "missing original evidence or runtime time binding")
+        rows.extend((f"input_evidence_available_at[{index}]", raw) for index, raw in enumerate(binding))
+    times = []
+    instants = []
+    for path, raw in rows:
+        try:
+            timestamp = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+        except ValueError:
+            raise SignalModelInputRejected(owner, path, "evidence timestamp is unproven") from None
+        if timestamp.tzinfo is None or timestamp.utcoffset() is None:
+            raise SignalModelInputRejected(owner, path, "evidence timestamp must be aware")
+        if timestamp > as_of:
+            raise SignalModelInputRejected(owner, path, "evidence timestamp exceeds prediction time")
+        times.append(timestamp.isoformat())
+        instants.append(timestamp)
+    if isinstance(evidence, Mapping) and "input_evidence_available_at" in result:
+        if instants[:canonical_count] != instants[canonical_count:]:
+            raise SignalModelInputRejected(owner, "input_evidence_available_at", "runtime binding differs from canonical evidence times")
+        return times[:canonical_count]
+    return times
+
+
 def signal_result_model_view(
     value: SignalResult | Mapping[str, Any],
+    *, as_of: datetime | None = None,
 ) -> dict[str, Any]:
     """Return a downstream-safe view while preserving the canonical artifact."""
 
     result = value.to_dict() if isinstance(value, SignalResult) else dict(value)
+    if as_of is not None:
+        result["input_evidence_available_at"] = require_signal_result_pit(value, as_of=as_of)
     execution = result.get("execution")
     execution_status = (
         execution.get("status") if isinstance(execution, Mapping) else None

@@ -9684,7 +9684,7 @@ class SignalEvolutionEngine:
             )
             for index, document in enumerate(documents, start=1)
         ]
-        result_view = signal_result_model_view(result)
+        result_view = signal_result_model_view(result, as_of=case.prediction_time)
         for group in ("supporting", "counter"):
             for item in result_view["evidence"][group]:
                 item["document_id"] = document_ref_by_id.get(

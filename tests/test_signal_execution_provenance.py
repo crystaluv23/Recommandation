@@ -266,9 +266,10 @@ class SignalExecutionProvenanceTests(TestCase):
         restored = CaseReflectionEvidence.from_dict(legacy)
         self.assertIsNone(restored.recorded_signal_execution_failures)
         self.assertNotIn("recorded_signal_execution_failures", restored.to_dict())
-        compact = _compact_posthoc_context({"signal_rounds": [{"batch": {"results": [{
+        compact = _compact_posthoc_context({"prediction_time": NOW.isoformat(), "signal_rounds": [{"batch": {"results": [{
             "signal_ref": "fixture_signal:v1", "state": {"value": "unavailable", "confidence": 0},
             "interpretation": {"summary": "Legacy unknown cause."}, "status": {"coverage": "unavailable"},
+            "evidence": {"supporting": [], "counter": []},
         }]}}]})
         self.assertNotIn("execution", compact["signal_results"][0])
         self.assertEqual(compact["signal_results"][0]["interpretation"]["summary"],

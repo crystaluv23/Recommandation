@@ -1178,6 +1178,7 @@ class ReflectionRoleAdapterTests(TestCase):
 
         compact_posthoc = evolution_runtime_module._compact_posthoc_context(
             {
+                "prediction_time": "2025-09-30T00:00:00+00:00",
                 "basic_info": {},
                 "final_research_state": {},
                 "signal_rounds": [

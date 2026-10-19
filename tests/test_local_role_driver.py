@@ -42,7 +42,7 @@ class LocalRoleDriverTests(TestCase):
             proof = json.loads((Path(directory) / "future_forecast.json").read_text())
             self.assertTrue(proof["state_deltas"][0]["need_dispositions"]["items"])
 
-    def test_real_prepare_resume_cli_dispatches_seven_legal_inputs_without_network(self):
+    def test_real_cli_dispatches_valid_priors_and_rejects_fault_before_role(self):
         with tempfile.TemporaryDirectory() as directory:
             batch = Path(directory) / "batch"
             script = str(ROOT / "scripts/run_local_role_acceptance.py")
@@ -51,7 +51,10 @@ class LocalRoleDriverTests(TestCase):
             run = subprocess.run([sys.executable, script, "resume", "--root", str(batch)],
                                  cwd=ROOT, check=True, capture_output=True, text=True)
             result = json.loads(run.stdout)
-            self.assertEqual(len(result["pending"]), 7)
-            self.assertEqual(result["outcomes"], [])
+            self.assertEqual(len(result["pending"]), 6)
+            self.assertEqual(len(result["outcomes"]), 1)
+            self.assertEqual(result["outcomes"][0]["sample_id"], "future_actual")
+            self.assertEqual(result["outcomes"][0]["failure_type"], "SignalModelInputRejected")
+            self.assertEqual(result["outcomes"][0]["request_hashes"], [])
             self.assertEqual(result["external_api_calls"], 0)
             self.assertEqual(json.loads((batch / "unused_external_attempts.json").read_text())["attempts"], [])

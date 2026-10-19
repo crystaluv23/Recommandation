@@ -57,7 +57,8 @@ def prediction():
 
 
 def context(result):
-    return {"signal_rounds": [{"batch": {"results": [result.to_dict()]}}]}
+    return {"prediction_time": AS_OF.isoformat(),
+            "signal_rounds": [{"batch": {"results": [result.to_dict()]}}]}
 
 
 class NumericMeasurementContractTests(TestCase):

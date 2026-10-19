@@ -1,5 +1,15 @@
 # Evolution Core
 
+Final-context construction validates every complete SignalResult against the
+actual prediction instant before producing model-facing summaries, measurements
+or citations. Known bad results reject construction as typed technical/PIT
+input failure; accepted state scope does not override this. Compact result
+cards retain only an ephemeral `input_evidence_available_at` list copied from
+the validated canonical evidence, bound by the existing `signal_ref`. This is
+runtime provenance for subsequent temporal revalidation, not a new canonical
+Signal schema, source-authenticity verdict or trust/signature system. Existing
+completed artifacts remain immutable.
+
 ## Actual answer-scope provenance (2026-10-19)
 
 Successful Reflect steps may carry `need_dispositions` metadata with a canonical

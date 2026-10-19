@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-19：以原 v3 未来 actual 故障先复现 F8，再增加共享 Signal evidence 时间资格守卫；Reflect、final、posthoc、Critic 和直接 Predictor 均 typed 拒绝且负控零 inbox，合法 forecast 保留并进入原 caller 待处理，六合法样本消费者处置保真。compact 卡仅保存 runtime 提取的证据时间；缺原件/binding/cutoff 拒绝新消费，不改旧归档、双空证据政策或失败分母。零新角色答复/外部 API，原 v3 七样本机械结果及语义失败保留；来源正文可信及整个工程 MVP 仍开放，下一批窄 reviewed source view。
+
 - 2026-10-19：冻结 7504d986 的合法 prior v3，13 个独立角色完成七样本；6/7 首答结构通过，partial 唯一 typed evidence 修复后 accepted，F7 七个 scope/residual 和处置传递均经独立审查。F8 仍失败：故意绕过正常 F6 的未来 actual Signal 虽未采入 state，其原 summary 仍出现在 final/posthoc/critic（最初 Reflect 也可见）；正常 F6 确认会拒绝其 timestamp。机械 7/7 不替代消费者 PIT 语义，原 v2 五失败保留。下一批先修 serialized result 的共享模型资格边界，再实际实现已绑定静态 SEC/污染 news/unknown transcript 的窄来源 view；零外部 API，完整 MVP 未关闭。
 
 - 2026-10-19：紧接独立角色 v2 反例修复共享 root 跨线程/进程调用准入，cache 命中先复核 exact inbox/receipt/raw/parsed cache，并以单次 raw buffer 做 hash 和 decode。完整 aware ISO cutoff 贯通 routing/校验/残留/处置/fallback，拒同日稍后和未来来源 timestamp；保留日期与显式 cutoff 合同。driver 改为先过真实 prior 校验，消费者带真实 delta/alias，失败保留 trace。旧反例先失败，1708 全量及最终 114 聚焦检查通过；新实际角色尚待冻结执行，旧 v2 五失败不改。同步 convergence 为工程 MVP 和真实当前 review，独立收益仍 unknown 后置，无完整后继计划。

@@ -66,6 +66,7 @@ from stock_opportunity_agent.signal_library import (
     SIGNAL_CONTEXT_TAGS,
     SIGNAL_EXECUTION_STATUS_INSTRUCTION,
     signal_result_model_view,
+    require_signal_result_pit,
     _thaw_json,
 )
 from stock_opportunity_agent.research.evolution_settings import (
@@ -96,6 +97,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _REALIZED_OUTCOME_INSTRUCTION,
     _context_signal_results,
     _compact_posthoc_context,
+    _require_context_signal_pit,
     _INCREMENTAL_ROLE_INSTRUCTION,
     _emit_runtime_progress,
     _market_data_absence_paths,
@@ -350,6 +352,10 @@ class LLMResearchController:
         state: ResearchState,
         batch: SignalBatchResult,
     ) -> AgentStep[ResearchState]:
+        input_cutoff = _prediction_time_from_context(self.evaluation_context)
+        if input_cutoff is not None:
+            for result in batch.results:
+                require_signal_result_pit(result, as_of=input_cutoff)
         selections = self.reflection_selections
         must_finalize = self.reflection_must_finalize
         termination_trigger = self.reflection_termination_trigger
@@ -738,10 +744,11 @@ def _signal_routing_research_context(
 
 def _signal_routing_result_view(
     value: SignalResult | Mapping[str, Any],
+    *, as_of: datetime | None = None,
 ) -> dict[str, Any]:
     """Return one prior conclusion without evidence literals or provenance."""
 
-    model_view = signal_result_model_view(value)
+    model_view = signal_result_model_view(value, as_of=as_of)
     model_view["interpretation"] = {
         "summary": model_view["interpretation"]["summary"]
     }
@@ -909,7 +916,7 @@ class LLMSignalRetrievalAgent:
             "research_context": research_context,
             "previous_context_tags": list(normalized_prior_tags),
             "previous_signal_results": {
-                ref: _signal_routing_result_view(value)
+                ref: _signal_routing_result_view(value, as_of=_prediction_time_from_context(self.evaluation_context))
                 for ref, value in (prior_signal_results or {}).items()
             },
             "learned_profile_default": "no committed observations",
@@ -1959,6 +1966,7 @@ class LLMBlindPredictor:
     def estimate_prediction_tokens(self, final_context: Mapping[str, Any]) -> int | None:
         """Reserve the same anonymous initial request that predict will send."""
 
+        _require_context_signal_pit(final_context)
         estimator = getattr(self.caller, "estimate_json_request_tokens", None)
         if not callable(estimator):
             return None
@@ -1971,6 +1979,7 @@ class LLMBlindPredictor:
         )
 
     def predict(self, final_context: Mapping[str, Any]) -> AgentStep[BlindPrediction]:
+        _require_context_signal_pit(final_context)
         prediction, usage = _complete_parsed_role(
             self.caller,
             stage="blind_predictor_predict",
@@ -3234,6 +3243,9 @@ def _plan_critic_trajectory(
 ) -> dict[str, Any]:
     """Return the outcome-aware critic view without repeated source context."""
 
+    for round_row in getattr(item, "signal_rounds", ()):
+        for result in round_row.batch.results:
+            require_signal_result_pit(result, as_of=item.prediction_time)
     if is_technical_exclusion_trajectory(item):
         return {
             "case_index": case_index,
@@ -3285,7 +3297,7 @@ def _plan_critic_trajectory(
         for result in raw_results:
             if not isinstance(result, Mapping):
                 continue
-            model_result = signal_result_model_view(result)
+            model_result = signal_result_model_view(result, as_of=item.prediction_time)
             compact_result = {
                 key: model_result[key]
                 for key in (

@@ -4081,12 +4081,13 @@ def _assemble_final_context(
     for round_row in round_rows:
         cards = []
         for result in round_row.batch.results:
-            view = signal_result_model_view(result)
+            view = signal_result_model_view(result, as_of=prediction_time)
             card = {
                 "signal_ref": result.ref,
                 "state": view["state"],
                 "interpretation": view["interpretation"],
                 "status": view["status"],
+                "input_evidence_available_at": view["input_evidence_available_at"],
             }
             if "execution" in view:
                 card["execution"] = view["execution"]

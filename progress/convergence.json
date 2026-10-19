@@ -20,9 +20,11 @@
         "reports/local-role-mvp-stage-acceptance-20261019.md",
         "runs/diagnostics/local_roles_mvp_20261019_v2_consumer_check/independent-review.json",
         "reports/local-role-mvp-v3-stage-acceptance-20261019.md",
-        "runs/diagnostics/local_roles_mvp_20261019_v3/independent-review.json"
+        "runs/diagnostics/local_roles_mvp_20261019_v3/independent-review.json",
+        "reports/signal-model-pit-boundary-20261019.md",
+        "runs/diagnostics/signal_model_pit_boundary_20261019_v3/result.json"
       ],
-      "remaining": "v3 F7冻结七样本accepted scope/residual正确且处置投影精确；F8故障注入future_actual summary仍进入Reflect/final/posthoc/critic，正常F6拒绝但staged消费者缺防线；来源/其余Fast/48案仍未关闭"
+      "remaining": "v3 F7七样本范围与处置保真通过；后续本地F8时间资格五入口typed拒绝、六正控保真且forecast到caller pending，未重验模型行为；来源正文版本/其余Fast/48案仍未关闭"
     },
     {
       "id": "feedback_consumption",
@@ -114,28 +116,42 @@
         "runs/diagnostics/local_roles_mvp_20261019_v3/independent-review.json",
         "runs/diagnostics/local_roles_mvp_20261019_v3/execution_summary.json"
       ]
+    },
+    {
+      "id": "engineering-mvp-signal-input-pit-20261019",
+      "strategy": "saved_result_actual_model_boundary_rejection",
+      "failure_families": [
+        "serialized_result_pit_projection",
+        "missing_compact_evidence_time_binding"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/signal-model-pit-boundary-20261019.md",
+        "runs/diagnostics/signal_model_pit_boundary_20261019_v3/result.json"
+      ]
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-local-roles-v3-20261019",
+    "after_iteration": "engineering-mvp-signal-input-pit-20261019",
     "evidence": [
-      "reports/local-role-mvp-v3-stage-acceptance-20261019.md",
-      "runs/diagnostics/local_roles_mvp_20261019_v3/independent-review.json"
+      "reports/signal-model-pit-boundary-20261019.md",
+      "runs/diagnostics/signal_model_pit_boundary_20261019_v3/result.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
       "将F6正常会拒绝的注入result直接放进SignalRound，却未在后续模型入口建立PIT资格拒绝；stage成功不证明source可信",
-      "恢复后的stage.usage0是cache计费值，不能代替实际独立receipt唯一调用统计"
+      "恢复后的stage.usage0是cache计费值，不能代替实际独立receipt唯一调用统计",
+      "旧compact卡省略证据时间但消费者信任runtime来源；现在必须保留原始时间binding或从full artifact重建，不能推断旧卡资格"
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "repair",
-      "strategy": "qualified_signal_model_views_and_reviewed_input_snapshot",
-      "action": "用v3真实产物在旧实现复现未来summary，再为Reflect及final/posthoc/critic建立共享typed资格拒绝/隔离，保留原审计；随后实现仅两静态SEC admitted、污染news excluded、transcript unknown的sourceview并贯通resolver/freeze/restore",
+      "strategy": "narrow_reviewed_input_snapshot",
+      "action": "本地F8时间边界完成后实现两静态SEC admitted、污染news excluded、transcript unknown的只读sourceview并贯通resolver/freeze/restore，保留原oracle和旧运行",
       "stop": "零外部API；先以最小负控证实0新role派发和真实完整消费者不泄漏；若预期/权限矛盾保留固定失败并换诊断，不完整重跑",
-      "question": "不合格serialized Signal能否在任何模型输入前被typed拒绝或隔离，并且窄reviewed sourceview的未知/排除不再进入真实消费者？",
-      "pass": "旧futureactual在所有实际模型视图拒绝/无事实泄漏且0新角色；合法截止日前forecast及SEC正控仍可用；unknown为gap；新freeze/恢复只读同admitted集合",
-      "fail": "未来summary/measurement/evidence仍流入任一模型视图，或只改flag/测试预期，或view被.documents/load/search/append/refresh/restore绕开",
+      "question": "真实store和新冻结/恢复是否只暴露已审admitted精确文档，且unknown明确为gap？",
+      "pass": "SEC在精确available instant可用、前一秒不可用；污染news/unknown transcript不进入.documents/load/search/refresh/acquisition/snapshot及runtime；恢复重验同一manifest",
+      "fail": "未审文档从任一store接口/全局oracle回流，或unknown被写成研究negative，或只写报告未接真实入口",
       "on_pass": "保存命名输入与模型消费边界证据，再推进检索/Signal真实能力与Slow反馈/Mining/复用；不以局部证据宣称整体MVP完成",
       "on_fail": "保留原件/原答/失败分母，定位首次未检查入口并作更小的反例修复"
     }

@@ -8,7 +8,7 @@ import re
 from calendar import monthrange
 from copy import deepcopy
 from dataclasses import field
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 from difflib import SequenceMatcher
 from typing import Any, Callable, Iterable, Mapping
@@ -33,7 +33,9 @@ from stock_opportunity_agent.research.repair import (
     mechanical_repair_candidate,
     is_mechanical_issue,
 )
-from stock_opportunity_agent.signal_library import signal_result_model_view
+from stock_opportunity_agent.signal_library import (
+    SignalModelInputRejected, signal_result_model_view, require_signal_result_pit,
+)
 from stock_opportunity_agent.research.evolution_state_patch import (
     PATCH_INSTRUCTION,
     _lookup as _patch_lookup,
@@ -1036,9 +1038,28 @@ _UNTRUSTED_DATA_INSTRUCTION = (
 )
 
 
+def _require_context_signal_pit(context: Mapping[str, Any]) -> None:
+    """Recheck persisted full results or runtime cards before new model use."""
+    rows = list(context.get("signal_results", ()))
+    for round_row in context.get("signal_rounds", ()):
+        if isinstance(round_row, Mapping) and isinstance(round_row.get("batch"), Mapping):
+            rows.extend(round_row["batch"].get("results", ()))
+    if not rows:
+        return
+    try:
+        cutoff = datetime.fromisoformat(str(context.get("prediction_time")).replace("Z", "+00:00"))
+    except ValueError:
+        raise SignalModelInputRejected("context", "prediction_time", "aware runtime cutoff required") from None
+    for row in rows:
+        if not isinstance(row, Mapping):
+            raise SignalModelInputRejected("context", "signal_results", "complete result or runtime card required")
+        require_signal_result_pit(row, as_of=cutoff)
+
+
 def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, Any]:
     """Return the fixed post-hoc semantic view without the full Predictor packet."""
 
+    _require_context_signal_pit(original_context)
     basic = original_context.get("basic_info", {})
     source_index: list[dict[str, Any]] = []
     data_gaps: list[dict[str, Any]] = []
