@@ -1,0 +1,148 @@
+{
+  "scope": "Role36 accepted H_init only; material/semantic review against predeclared oracle and actual visible source.",
+  "verdict": "narrow_semantic_pass_with_unverified_hypothesis_language",
+  "continue_after_hinit_semantically_allowed": true,
+  "actual_request_hash": "89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45",
+  "expectations_hash": "d9823605fc8daa3b91d7c2cda21614e82da0ba6a06945b4f35106ddb95e73600",
+  "quote_evidence": [
+    {
+      "projection_id": "projection_28fc757258382ae931247a5b",
+      "claim": "The principal app monetizes subscription purchases and renewals and in-app purchases, including its friends product.",
+      "quote_sha256": "a65779a5c8e9c2ece8a7275542c00737e028ad1316a9e4db187a2001e5a6ea85",
+      "quote_present_in_actual_wire": true,
+      "quote_present_in_frozen_lineage_and_normalized_canonical": true,
+      "canonical_raw_bounding_start": 215523,
+      "canonical_raw_bounding_end": 215895,
+      "available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "projection_id": "projection_f5e5258464d4602a2ffccc9e",
+      "claim": "The issuer warned that workforce-reduction and restructuring costs could exceed expectations or shift periods, and intended benefits could be smaller or slower than anticipated.",
+      "quote_sha256": "23723cb54f8309c203060b1d350f25d9f2710c0b4da7bb1a980a6065e770b605",
+      "quote_present_in_actual_wire": true,
+      "quote_present_in_frozen_lineage_and_normalized_canonical": true,
+      "canonical_raw_bounding_start": 195783,
+      "canonical_raw_bounding_end": 196480,
+      "available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "projection_id": "projection_ef319ab39a183f8a50a94a02",
+      "claim": "For the three months ended June 30, 2025 versus June 30, 2024, revenue fell from $268,615 thousand to $248,229 thousand, selling and marketing expense fell from $67,562 thousand to $32,092 thousand, and product development expense rose from $15,705 thousand to $32,510 thousand.",
+      "quote_sha256": "c6f82d7c07cc0f7c2e0d6bd491bb1fa8b173a07109929f8daee07217a4f0fe15",
+      "quote_present_in_actual_wire": true,
+      "quote_present_in_frozen_lineage_and_normalized_canonical": true,
+      "canonical_raw_bounding_start": 304638,
+      "canonical_raw_bounding_end": 321550,
+      "available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "projection_id": "projection_bf19f797ee166b87f3dbd67f",
+      "claim": "The reported operating loss includes a large impairment loss. Inference: the reported loss alone does not establish recurring cash burn or the economics of a turnaround.",
+      "quote_sha256": "56cb94b4d77e473c157d506817b223904770af143ae0c943a73471b28d2e70cf",
+      "quote_present_in_actual_wire": true,
+      "quote_present_in_frozen_lineage_and_normalized_canonical": true,
+      "canonical_raw_bounding_start": 324451,
+      "canonical_raw_bounding_end": 332019,
+      "available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "projection_id": "projection_d5f65227c7db9101b4c0ccc8",
+      "claim": "The balance sheet shows higher cash than at the preceding year-end alongside long-term debt and a payable under a tax receivable agreement. Inference: liquidity and contractual claims on cash must be assessed together.",
+      "quote_sha256": "b73efd52a45ca80c3269780b9a8e8a03be73ff98bb0efe967cb74d8cfdd6e999",
+      "quote_present_in_actual_wire": true,
+      "quote_present_in_frozen_lineage_and_normalized_canonical": true,
+      "canonical_raw_bounding_start": 249607,
+      "canonical_raw_bounding_end": 280064,
+      "available_at": "2025-08-07T20:05:33+00:00"
+    }
+  ],
+  "facts": {
+    "app_monetization": "Subscription/renewal/in-app purchases including friends product is faithfully paraphrased; principal is not independently proven numerical market ranking.",
+    "reported_quarter": "Three months June30 2025 vs2024; USD thousands; revenue268615→248229, marketing67562→32092, product development15705→32510. No mixing with six-month columns.",
+    "impairment": "Reported operating loss includes impairment; distinguish noncash impairment/earnings from unmeasured recurring cash burn.",
+    "cash_and_claims": "Cash261739k vs204319k at prior yearend, debt and TRA payable shown; does not resolve cash flows or payment terms.",
+    "restructuring_risks": "Quoted cautionary risks, not established failed/successful execution."
+  },
+  "needs": [
+    {
+      "index": 0,
+      "scope": "payer/retention/conversion/app revenue/ARPPU/driver decomposition",
+      "still_unanswered_in_actual_visible_input": true,
+      "basis": "Visible metric definitions are not observed counts or period changes. Ask what was disclosed by cutoff, not future actuals."
+    },
+    {
+      "index": 1,
+      "scope": "restructuring charges/cash/recurring savings/progress/scheduled milestones",
+      "still_unanswered_in_actual_visible_input": true,
+      "basis": "Generic risk paragraph does not quantify plan economics or timing; admitted earlier8K was not in this H_init projection. Do not confuse savings realization with charge schedule."
+    },
+    {
+      "index": 2,
+      "scope": "OCF/capitalized development/debt maturities/covenants/TRA terms/restrictions",
+      "still_unanswered_in_actual_visible_input": true,
+      "basis": "Balance stocks do not answer flow or contractual terms. Actual18/23 projection ends inside changes-in-equity table, before OCF totals."
+    },
+    {
+      "index": 3,
+      "scope": "products/pricing/rollout/observed engagement/monetization/guidance",
+      "still_unanswered_in_actual_visible_input": true,
+      "basis": "Monetization definition and cautionary prospective wording do not give initiative timelines/results or explicit guidance comparison."
+    }
+  ],
+  "inferences": "Turnaround and deterioration alternatives remain explicitly conditional; neither is an established commercial inflection or independent surge benefit.",
+  "language_limitations": [
+    "large expectations gap is not independently evidenced as market mispricing or consensus divergence; retain as unverified hypothesis, not an admitted fact.",
+    "Continued payer erosion is a conditional downside phrase; actual payer erosion is not established by this visible input."
+  ],
+  "actual_visibility": [
+    {
+      "available_projection_count": 23,
+      "effective_context_truncated": true,
+      "omitted_projection_count": 5,
+      "projection_context_truncated": true,
+      "projection_status": "partial_context_budget",
+      "source_context_truncated": true,
+      "visible_projection_count": 18,
+      "request_id": "recent_annual_filing"
+    },
+    {
+      "available_projection_count": 0,
+      "effective_context_truncated": false,
+      "omitted_projection_count": 0,
+      "projection_context_truncated": false,
+      "projection_status": "unavailable",
+      "source_context_truncated": false,
+      "visible_projection_count": 0,
+      "request_id": "recent_company_news"
+    },
+    {
+      "available_projection_count": 0,
+      "effective_context_truncated": false,
+      "omitted_projection_count": 0,
+      "projection_context_truncated": false,
+      "projection_status": "unavailable",
+      "source_context_truncated": false,
+      "visible_projection_count": 0,
+      "request_id": "reported_financial_facts"
+    },
+    {
+      "available_projection_count": 1,
+      "effective_context_truncated": true,
+      "omitted_projection_count": 0,
+      "projection_context_truncated": false,
+      "projection_status": "partial_context_budget",
+      "source_context_truncated": true,
+      "visible_projection_count": 1,
+      "request_id": "recent_market_backbone"
+    }
+  ],
+  "anchor_values_unmodified": true,
+  "identity_PIT_oracle_checks": {
+    "PIT_all_visible_cards_at_or_before_cutoff": true,
+    "anonymous_request": true,
+    "oracle_or_label_content_not_in_request": true,
+    "runtime_anchor_unaltered": true
+  },
+  "full_F2_operating_background_coverage": "open",
+  "overall_prefix_completion": "not_proven; later observer serializer failed after executor return, not a role semantic failure."
+}

@@ -1,0 +1,161 @@
+{
+  "scope": "Independent temporary-copy failed-parent continuation/observer audit only. Exactly two historical original role answers reused; zero fresh model answers. Failed v1 never resumed or edited.",
+  "serializer_six_fields_exact": true,
+  "nonempty_canonical_resolution_preserves_data_gap_and_coverage": true,
+  "results_usage_fingerprints_skips_exact": true,
+  "wrapper_returns_identical_object": true,
+  "empty_skipped_and_tuple_step_supported": true,
+  "parent_source_commit": "1acfd2a4f1cd41c5837206211a911c5f32abc662",
+  "verified_parent_code_file_count": 95,
+  "inherited_request_order": [
+    "89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45",
+    "d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835"
+  ],
+  "inherited_receipts": 2,
+  "undispatched_journal_only": [
+    "8b5a557b060b93bc1dbd7e4fbfa791fd0986179adc81eb4b81591cb7022a17f9"
+  ],
+  "maximum_new_requests": 30,
+  "total_ceiling": 32,
+  "negative_cases": [
+    {
+      "case": "unknown_observer_family",
+      "typed_rejected": true,
+      "error": "unsupported native observation result family: dict"
+    },
+    {
+      "case": "bad_parent_commit:HEAD",
+      "typed_rejected": true,
+      "error": "parent commit must be an exact immutable 40-character SHA"
+    },
+    {
+      "case": "bad_parent_commit:1ACFD2A4",
+      "typed_rejected": true,
+      "error": "parent commit must be an exact immutable 40-character SHA"
+    },
+    {
+      "case": "bad_parent_commit:00000000",
+      "typed_rejected": true,
+      "error": "parent commit is unavailable"
+    },
+    {
+      "case": "parent_exchange/receipts_tamper",
+      "typed_rejected": true,
+      "error": "parent cache differs from verified original response"
+    },
+    {
+      "case": "parent_cache/responses_tamper",
+      "typed_rejected": true,
+      "error": "parent cache differs from verified original response"
+    },
+    {
+      "case": "parent_requests_tamper",
+      "typed_rejected": true,
+      "error": "request journal hash changed"
+    },
+    {
+      "case": "parent_raw_tamper",
+      "typed_rejected": true,
+      "error": "local role response receipt does not bind exact request and raw answer"
+    },
+    {
+      "case": "journal_only_with_orphan_raw_cannot_be_undispatched",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "missing_answered_exchange/receipts",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "missing_answered_exchange/inbox",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "answered_observation_cannot_be_downgraded_to_undispatched",
+      "typed_rejected": true,
+      "error": "parent accepted observations do not bind the exact reused request prefix"
+    },
+    {
+      "case": "rehashed_wrong_parent_code_hash",
+      "typed_rejected": true,
+      "error": "parent commit does not reproduce frozen source"
+    },
+    {
+      "case": "parent_inventory_extra",
+      "typed_rejected": true,
+      "error": "continuation parent immutable inventory changed"
+    },
+    {
+      "case": "parent_inventory_missing",
+      "typed_rejected": true,
+      "error": "continuation parent immutable inventory changed"
+    },
+    {
+      "case": "child_inherited_receipt_byte_tamper",
+      "typed_rejected": true,
+      "error": "original artifact changed: /private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/independent-continuation-pdxcr1w5/child/exchange/receipts/89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45.json"
+    },
+    {
+      "case": "inherited_wrong_order",
+      "typed_rejected": true,
+      "error": "continuation changed an inherited production request"
+    }
+  ],
+  "synthetic_33rd_inbox_rejected": true,
+  "actual_temp_native_child": {
+    "status": "pending_independent_role",
+    "next_stage": "blind_predictor_predict",
+    "next_request_hash": "15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f",
+    "receipts": 2,
+    "six_field_group_recorded": true,
+    "results": [
+      {
+        "signal_ref": "financing_listing_action:v5",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "execution": {
+          "error_code": "signal_partition_budget_blocked",
+          "error_message": "local role request reservation exceeds remaining case budget",
+          "status": "budget_blocked"
+        },
+        "status": {
+          "coverage": "unavailable"
+        }
+      },
+      {
+        "signal_ref": "guidance_acceleration:v3",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "execution": {
+          "error_code": "signal_partition_budget_blocked",
+          "error_message": "local role request reservation exceeds remaining case budget",
+          "status": "budget_blocked"
+        },
+        "status": {
+          "coverage": "unavailable"
+        }
+      }
+    ],
+    "group_usage": {
+      "cost": 0.0,
+      "llm_calls": 0,
+      "tokens": 0
+    },
+    "inherited_observations_and_files_exact": true,
+    "prediction_or_completion_created": false
+  },
+  "original_parent_all_file_bytes_unchanged": true,
+  "network_attempts": 0,
+  "fresh_role_answers": 0,
+  "current_source_bindings": {
+    "scripts/run_reviewed_fast_prefix.py": "56bd746a453c98e45236a5561d270ac69e439b799316a3f75c2be61ec3ac46b0",
+    "spec/scripts/run_reviewed_fast_prefix.md": "a16703608b2703cc7a26ad3607118b53d31c6aa38e738b513cd62487f81bbc74"
+  }
+}

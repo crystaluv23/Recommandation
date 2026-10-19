@@ -1,0 +1,78 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "contradictions": [
+      "For the three months ended June 30, 2025 versus June 30, 2024, revenue fell from $268,615 thousand to $248,229 thousand, selling and marketing expense fell from $67,562 thousand to $32,092 thousand, and product development expense rose from $15,705 thousand to $32,510 thousand.",
+      "The issuer warned that workforce-reduction and restructuring costs could exceed expectations or shift periods, and intended benefits could be smaller or slower than anticipated."
+    ],
+    "current_beliefs": [
+      "The principal app monetizes subscription purchases and renewals and in-app purchases, including its friends product.",
+      "The reported operating loss includes a large impairment loss. Inference: the reported loss alone does not establish recurring cash burn or the economics of a turnaround.",
+      "The balance sheet shows higher cash than at the preceding year-end alongside long-term debt and a payable under a tax receivable agreement. Inference: liquidity and contractual claims on cash must be assessed together."
+    ],
+    "decision": "continue",
+    "hypotheses": [
+      "Inference: a turnaround could support a substantial expectations reset within the six-month evaluation horizon if reduced acquisition spending preserves payer retention and conversion, product investment improves engagement, and restructuring produces credible recurring cash benefits. Continued payer erosion or weak cash conversion would undermine this thesis.",
+      "Inference: lower marketing expenditure could instead mask weakening demand, with product investment and restructuring costs delaying cash recovery. Evidence available at prediction time must distinguish an investable operating inflection from cost reduction accompanying franchise deterioration."
+    ],
+    "next_information_needs": [
+      "What payer counts, retention or conversion trends, app-level revenue and revenue per paying user, and management explanations were disclosed by prediction time for the latest reported periods, distinguishing demand changes, pricing, currency effects and marketing reductions?",
+      "What restructuring charges, cash expenditures, expected recurring savings, implementation progress and timing had been disclosed by prediction time, and which milestones were scheduled within the evaluation horizon?",
+      "What operating cash flow, capitalized development spending, debt maturities and covenants, and tax receivable agreement payment terms were disclosed by prediction time, including restrictions or commitments affecting available cash?",
+      "What product or pricing initiatives, rollout timing, observed engagement or monetization results, and operating guidance had been disclosed by prediction time that could support an expectations change within the evaluation horizon?"
+    ],
+    "open_questions": [
+      "Whether achievable operating improvement can close the large expectations gap within the evaluation horizon remains uncertain; the visible expense shift is compatible with both a successful reset and a deteriorating franchise."
+    ],
+    "resolved_questions": [
+      "The principal app monetizes subscription purchases and renewals and in-app purchases, including its friends product."
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "The principal app monetizes subscription purchases and renewals and in-app purchases, including its friends product.",
+        "exact_text": "\u2022 \u201c[ANON_ID_0004] App Revenue\u201d is revenue derived from purchases or renewals of a [ANON_ID_0004] app or [ANON_ID_0004] For Friends app subscription plan and/or in-app purchases on [ANON_ID_0004] app or [ANON_ID_0004] For Friends app in the relevant period.",
+        "kind": "basic_info",
+        "projection_id": "projection_28fc757258382ae931247a5b"
+      },
+      {
+        "claim": "The issuer warned that workforce-reduction and restructuring costs could exceed expectations or shift periods, and intended benefits could be smaller or slower than anticipated.",
+        "exact_text": "the risk that the costs and charges related to our recently announced plan to implement a global workforce reduction and restructuring of our operations may be greater than anticipated or incurred in different periods than anticipated \u2022 the risk that our restructuring efforts may not generate their intended benefits to the extent or as quickly as anticipated",
+        "kind": "basic_info",
+        "projection_id": "projection_f5e5258464d4602a2ffccc9e"
+      },
+      {
+        "claim": "For the three months ended June 30, 2025 versus June 30, 2024, revenue fell from $268,615 thousand to $248,229 thousand, selling and marketing expense fell from $67,562 thousand to $32,092 thousand, and product development expense rose from $15,705 thousand to $32,510 thousand.",
+        "exact_text": "Condensed Consolidated Statements of Operations (In thousands, except per share information) (Unaudited) Three Months Ended June 30, 2025 Three Months Ended June 30, 2024 Six Months Ended June 30, 2025 Six Months Ended June 30, 2024 Revenue $ 248,229 $ 268,615 $ 495,330 $ 536,390 Operating costs and expenses: Cost of revenue 74,338 80,041 147,691 161,330 Selling and marketing expense 32,092 67,562 91,826 131,179 General and administrative expense 36,146 36,329 57,790 57,185 Product development expense 32,510 15,705 67,014 51,722",
+        "kind": "basic_info",
+        "projection_id": "projection_ef319ab39a183f8a50a94a02"
+      },
+      {
+        "claim": "The reported operating loss includes a large impairment loss. Inference: the reported loss alone does not establish recurring cash burn or the economics of a turnaround.",
+        "exact_text": "Impairment loss 404,855 \u2014 408,486 \u2014 Total operating costs and expenses 586,572 216,661 789,023 435,646 Operating earnings (loss) ( 338,343 ) 51,954 ( 293,693 ) 100,744",
+        "kind": "basic_info",
+        "projection_id": "projection_bf19f797ee166b87f3dbd67f"
+      },
+      {
+        "claim": "The balance sheet shows higher cash than at the preceding year-end alongside long-term debt and a payable under a tax receivable agreement. Inference: liquidity and contractual claims on cash must be assessed together.",
+        "exact_text": "Condensed Consolidated Balance Sheets (In thousands, except share and per share information) (Unaudited) June 30, 2025 December 31, 2024 ASSETS Cash and cash equivalents $ 261,739 $ 204,319 Accounts receivable (net of allowance of $ 128 and $ 103 , respectively) 97,395 99,687 Other current assets 38,933 38,236 Total current assets 398,067 342,242 Right-of-use assets 10,797 11,232 Property and equipment (net of accumulated depreciation of $ 26,847 and $ 21,811 , respectively) 8,615 8,495 Goodwill 1,129,007 1,386,229 Intangible assets, net 588,867 748,906 Deferred tax assets, net 15,495 16,300 Other noncurrent assets 10,647 11,483 Total assets $ 2,161,495 $ 2,524,887 LIABILITIES AND SHAREHOLDERS\u2019 EQUITY Accounts payable $ 8,867 $ 6,609 Deferred revenue 40,837 43,411 Accrued expenses and other current liabilities 65,041 82,800 Current portion of long-term debt, net 5,750 5,750 Total current liabilities 120,495 138,570 Long-term debt, net 609,418 611,346 Deferred tax liabilities, net 253 777 Payable to related parties pursuant to a tax receivable agreement 399,740 400,926",
+        "kind": "basic_info",
+        "projection_id": "projection_d5f65227c7db9101b4c0ccc8"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"contradictions\":[\"For the three months ended June 30, 2025 versus June 30, 2024, revenue fell from $268,615 thousand to $248,229 thousand, selling and marketing expense fell from $67,562 thousand to $32,092 thousand, and product development expense rose from $15,705 thousand to $32,510 thousand.\",\"The issuer warned that workforce-reduction and restructuring costs could exceed expectations or shift periods, and intended benefits could be smaller or slower than anticipated.\"],\"current_beliefs\":[\"The principal app monetizes subscription purchases and renewals and in-app purchases, including its friends product.\",\"The reported operating loss includes a large impairment loss. Inference: the reported loss alone does not establish recurring cash burn or the economics of a turnaround.\",\"The balance sheet shows higher cash than at the preceding year-end alongside long-term debt and a payable under a tax receivable agreement. Inference: liquidity and contractual claims on cash must be assessed together.\"],\"decision\":\"continue\",\"hypotheses\":[\"Inference: a turnaround could support a substantial expectations reset within the six-month evaluation horizon if reduced acquisition spending preserves payer retention and conversion, product investment improves engagement, and restructuring produces credible recurring cash benefits. Continued payer erosion or weak cash conversion would undermine this thesis.\",\"Inference: lower marketing expenditure could instead mask weakening demand, with product investment and restructuring costs delaying cash recovery. Evidence available at prediction time must distinguish an investable operating inflection from cost reduction accompanying franchise deterioration.\"],\"next_information_needs\":[\"What payer counts, retention or conversion trends, app-level revenue and revenue per paying user, and management explanations were disclosed by prediction time for the latest reported periods, distinguishing demand changes, pricing, currency effects and marketing reductions?\",\"What restructuring charges, cash expenditures, expected recurring savings, implementation progress and timing had been disclosed by prediction time, and which milestones were scheduled within the evaluation horizon?\",\"What operating cash flow, capitalized development spending, debt maturities and covenants, and tax receivable agreement payment terms were disclosed by prediction time, including restrictions or commitments affecting available cash?\",\"What product or pricing initiatives, rollout timing, observed engagement or monetization results, and operating guidance had been disclosed by prediction time that could support an expectations change within the evaluation horizon?\"],\"open_questions\":[\"Whether achievable operating improvement can close the large expectations gap within the evaluation horizon remains uncertain; the visible expense shift is compatible with both a successful reset and a deteriorating franchise.\"],\"resolved_questions\":[\"The principal app monetizes subscription purchases and renewals and in-app purchases, including its friends product.\"],\"supporting_evidence\":[{\"claim\":\"The principal app monetizes subscription purchases and renewals and in-app purchases, including its friends product.\",\"exact_text\":\"\u2022 \u201c[ANON_ID_0004] App Revenue\u201d is revenue derived from purchases or renewals of a [ANON_ID_0004] app or [ANON_ID_0004] For Friends app subscription plan and/or in-app purchases on [ANON_ID_0004] app or [ANON_ID_0004] For Friends app in the relevant period.\",\"kind\":\"basic_info\",\"projection_id\":\"projection_28fc757258382ae931247a5b\"},{\"claim\":\"The issuer warned that workforce-reduction and restructuring costs could exceed expectations or shift periods, and intended benefits could be smaller or slower than anticipated.\",\"exact_text\":\"the risk that the costs and charges related to our recently announced plan to implement a global workforce reduction and restructuring of our operations may be greater than anticipated or incurred in different periods than anticipated \u2022 the risk that our restructuring efforts may not generate their intended benefits to the extent or as quickly as anticipated\",\"kind\":\"basic_info\",\"projection_id\":\"projection_f5e5258464d4602a2ffccc9e\"},{\"claim\":\"For the three months ended June 30, 2025 versus June 30, 2024, revenue fell from $268,615 thousand to $248,229 thousand, selling and marketing expense fell from $67,562 thousand to $32,092 thousand, and product development expense rose from $15,705 thousand to $32,510 thousand.\",\"exact_text\":\"Condensed Consolidated Statements of Operations (In thousands, except per share information) (Unaudited) Three Months Ended June 30, 2025 Three Months Ended June 30, 2024 Six Months Ended June 30, 2025 Six Months Ended June 30, 2024 Revenue $ 248,229 $ 268,615 $ 495,330 $ 536,390 Operating costs and expenses: Cost of revenue 74,338 80,041 147,691 161,330 Selling and marketing expense 32,092 67,562 91,826 131,179 General and administrative expense 36,146 36,329 57,790 57,185 Product development expense 32,510 15,705 67,014 51,722\",\"kind\":\"basic_info\",\"projection_id\":\"projection_ef319ab39a183f8a50a94a02\"},{\"claim\":\"The reported operating loss includes a large impairment loss. Inference: the reported loss alone does not establish recurring cash burn or the economics of a turnaround.\",\"exact_text\":\"Impairment loss 404,855 \u2014 408,486 \u2014 Total operating costs and expenses 586,572 216,661 789,023 435,646 Operating earnings (loss) ( 338,343 ) 51,954 ( 293,693 ) 100,744\",\"kind\":\"basic_info\",\"projection_id\":\"projection_bf19f797ee166b87f3dbd67f\"},{\"claim\":\"The balance sheet shows higher cash than at the preceding year-end alongside long-term debt and a payable under a tax receivable agreement. Inference: liquidity and contractual claims on cash must be assessed together.\",\"exact_text\":\"Condensed Consolidated Balance Sheets (In thousands, except share and per share information) (Unaudited) June 30, 2025 December 31, 2024 ASSETS Cash and cash equivalents $ 261,739 $ 204,319 Accounts receivable (net of allowance of $ 128 and $ 103 , respectively) 97,395 99,687 Other current assets 38,933 38,236 Total current assets 398,067 342,242 Right-of-use assets 10,797 11,232 Property and equipment (net of accumulated depreciation of $ 26,847 and $ 21,811 , respectively) 8,615 8,495 Goodwill 1,129,007 1,386,229 Intangible assets, net 588,867 748,906 Deferred tax assets, net 15,495 16,300 Other noncurrent assets 10,647 11,483 Total assets $ 2,161,495 $ 2,524,887 LIABILITIES AND SHAREHOLDERS\u2019 EQUITY Accounts payable $ 8,867 $ 6,609 Deferred revenue 40,837 43,411 Accrued expenses and other current liabilities 65,041 82,800 Current portion of long-term debt, net 5,750 5,750 Total current liabilities 120,495 138,570 Long-term debt, net 609,418 611,346 Deferred tax liabilities, net 253 777 Payable to related parties pursuant to a tax receivable agreement 399,740 400,926\",\"kind\":\"basic_info\",\"projection_id\":\"projection_d5f65227c7db9101b4c0ccc8\"}]}\n",
+  "request_hash": "89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45",
+  "response_id": "local-89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45",
+  "usage": {
+    "accounting_tokens": 61638,
+    "agent_id": "/root/role_36",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "3c04dca7403096e36adce86173cdcd9e021e9ab2b18c61ea0380469f81ab3deb",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "4e54056834d32b18840079d7322e6fd4c3c1c221f902724e07da0448bc703237",
+    "request_hash": "89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45",
+    "token_usage": null
+  }
+}

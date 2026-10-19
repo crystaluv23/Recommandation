@@ -1,0 +1,106 @@
+{
+  "scope": "Only observer serialization, exact failed-parent continuation, journal/response inventory and fixed32 ceiling. Temporary copy uses the two original accepted roles as historical exact responses, never fresh role behavior. No v1 production resume.",
+  "verdict": "narrow_pass",
+  "current_bindings": {
+    "scripts/run_reviewed_fast_prefix.py": "56bd746a453c98e45236a5561d270ac69e439b799316a3f75c2be61ec3ac46b0",
+    "spec/scripts/run_reviewed_fast_prefix.md": "a16703608b2703cc7a26ad3607118b53d31c6aa38e738b513cd62487f81bbc74"
+  },
+  "parent_commit": "1acfd2a4f1cd41c5837206211a911c5f32abc662",
+  "parent_code_files_verified_against_git": 95,
+  "serializer": {
+    "all_six_fields": true,
+    "nonempty_resolution_canonical_data_gap_coverage": true,
+    "results_usage_duplicate_fingerprints_and_skips_preserved": true,
+    "return_identity_unchanged": true,
+    "tuple_agent_step_empty_and_skipped_batch_supported": true,
+    "unsupported_family_rejected": true
+  },
+  "continuation": {
+    "inherited_answered_requests": [
+      "89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45",
+      "d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835"
+    ],
+    "inherited_receipts": 2,
+    "undispatched_journal_only": [
+      "8b5a557b060b93bc1dbd7e4fbfa791fd0986179adc81eb4b81591cb7022a17f9"
+    ],
+    "total_ceiling": 32,
+    "max_new_requests": 30,
+    "synthetic_33rd_request_rejected": true,
+    "copied_old_artifacts_exact": true,
+    "no_old_failure_progress_locks_imported": true,
+    "parent_commit_hash_inventory_receipt_cache_order_negative_checks": 17
+  },
+  "actual_temp_native_reconstruction": {
+    "status": "pending_independent_role",
+    "next_stage": "blind_predictor_predict",
+    "next_request_hash": "15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f",
+    "receipts": 2,
+    "six_field_group_recorded": true,
+    "results": [
+      {
+        "signal_ref": "financing_listing_action:v5",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "execution": {
+          "error_code": "signal_partition_budget_blocked",
+          "error_message": "local role request reservation exceeds remaining case budget",
+          "status": "budget_blocked"
+        },
+        "status": {
+          "coverage": "unavailable"
+        }
+      },
+      {
+        "signal_ref": "guidance_acceleration:v3",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "execution": {
+          "error_code": "signal_partition_budget_blocked",
+          "error_message": "local role request reservation exceeds remaining case budget",
+          "status": "budget_blocked"
+        },
+        "status": {
+          "coverage": "unavailable"
+        }
+      }
+    ],
+    "group_usage": {
+      "cost": 0.0,
+      "llm_calls": 0,
+      "tokens": 0
+    },
+    "inherited_observations_and_files_exact": true,
+    "prediction_or_completion_created": false
+  },
+  "reconstruction_interpretation": "Both Signal results are technical budget_blocked/signal_partition_budget_blocked before apply dispatch. Their unavailable-shaped state is not domain/source absence or negative research evidence. The journal alone did not establish this cause; actual unchanged native execution with inherited answers did. Next pending is Predictor154416..., not an apply model answer. No prediction/sink completed.",
+  "completed_restore": {
+    "synthetic_checkpoint_only": true,
+    "answered": 2,
+    "journal_only": 1,
+    "legal_restore_zero_new_dispatch_or_byte_change": true,
+    "partial_presence_shapes_rejected": 14,
+    "missing_receipt_full_orphan_raw_mismatch_rejected": true,
+    "negative_checks": 17
+  },
+  "v1_all_file_bytes_unchanged": true,
+  "role36_37_historical_reuse_not_new": true,
+  "new_role_answers": 0,
+  "network_attempts": 0,
+  "not_closed": [
+    "Formal v2 has not run or completed.",
+    "Apply and Reflect model behavior remain unexercised in this reconstruction; no manufacturing answer or closure.",
+    "F2 operating coverage, all-source qualification, full MVP/F9 completion and independent benefit remain open.",
+    "Only fixed original parent failure lineage is supported; this is not a generic retry/fork scheduler."
+  ],
+  "artifacts": {
+    "continuation-and-serializer.py": "f955465cc0e3c85e078bc791a17d0f3fd35d452196a376f92fb82e2f2be14ff5",
+    "continuation-and-serializer-results.json": "89b6e8d03fa96b75896c525a252e504c97efc52e28d6e50635fbe245025b2665",
+    "completed-journal-restore.py": "905b2ef774448ee02052cc49e1f6f72bc5a6d3e16d6e88742f760bafd62cff26",
+    "completed-journal-restore-results.json": "6595b37335007ad75d3ad691524df1fd29d88d9b082e625296c3bb006979ef20"
+  }
+}

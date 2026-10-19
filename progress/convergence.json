@@ -264,10 +264,28 @@
         "reservation_vs_ready_phase",
         "multirequest_cache_call_accounting"
       ]
+    },
+    {
+      "id": "engineering-mvp-native-prefix-observer-20261019",
+      "strategy": "actual_result_family_and_failed_prefix_exact_continuation",
+      "failure_families": [
+        "native_observer_return_family",
+        "prepared_journal_vs_actual_dispatch_in_recovery"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-fast-prefix-observer-continuation-20261019.md",
+        "runs/diagnostics/reviewed_fast_prefix_20261019_v1/failure.json",
+        "runs/diagnostics/reviewed_fast_prefix_20261019_v1_independent/hinit-review.json",
+        "runs/diagnostics/reviewed_fast_prefix_20261019_v1_independent/routing-review.json",
+        "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/batch-reconstruction.json",
+        "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/independent-review.json"
+      ],
+      "result": "V1 two fresh first answers independently accepted, then observer serialization failure; original failure retained. Explicit actual-result serializer and exact historical continuation admission/completed journal classification passed19 focused checks and independent counterexamples. No new role or prediction; unchanged total32 includes2 inherited."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-runtime-termination-prefix-preflight-20261019",
+    "after_iteration": "engineering-mvp-native-prefix-observer-20261019",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -286,7 +304,13 @@
       "runs/diagnostics/reviewed_fast_prefix_preflight_20261019_v1/independent/independent-review.json",
       "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/result-fixed.json",
       "runs/diagnostics/runtime_termination_boundary_20261019_v1/cache-budget/independent/independent-review.json",
-      "runs/diagnostics/runtime_termination_boundary_20261019_v1/full-tests-final.log"
+      "runs/diagnostics/runtime_termination_boundary_20261019_v1/full-tests-final.log",
+      "reports/reviewed-fast-prefix-observer-continuation-20261019.md",
+      "runs/diagnostics/reviewed_fast_prefix_20261019_v1/failure.json",
+      "runs/diagnostics/reviewed_fast_prefix_20261019_v1_independent/hinit-review.json",
+      "runs/diagnostics/reviewed_fast_prefix_20261019_v1_independent/routing-review.json",
+      "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/batch-reconstruction.json",
+      "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/independent-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -303,7 +327,8 @@
       "The critic helper retained visibility but the final memory whitelist erased it; inspect actual caller pending messages.",
       "JEV owns judge choices, so any-local-role rejection broke the supported local-proposer/remote-judge hybrid; explicit allow_external=False also requires a guard.",
       "Adding a complete per-case visibility descriptor fixed semantic loss but broke the existing V141 128k/176k actual input envelope; focused single-case wires missed multi-case field repetition. Preserve every descriptor/id through payload-local reversible sharing, not a larger budget.",
-      "Final stop reason/trigger formerly existed only in the post-label trajectory; reservation and actual prediction require distinct runtime-owned phase. Cached multi-request native steps preserve tokens but aggregate zero calls, after which core restores only one; completed checkpoint restore is not interrupted replay equivalence."
+      "Final stop reason/trigger formerly existed only in the post-label trajectory; reservation and actual prediction require distinct runtime-owned phase. Cached multi-request native steps preserve tokens but aggregate zero calls, after which core restores only one; completed checkpoint restore is not interrupted replay equivalence.",
+      "A finalize-only native sink test skipped actual SignalBatchResult, and the observer wrongly assumed to_dict. Parent continuation and completed restoration must distinguish a prepared budget-blocked request journal from an answered role; source-resolved technical budget_blocked is not domain insufficiency."
     ],
     "decision": {
       "acceptance_id": "content_chain",

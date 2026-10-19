@@ -1,0 +1,73 @@
+{
+  "scope": "Role37 routing accepted output only; no apply result/model behavior inferred.",
+  "verdict": "narrow_semantic_pass",
+  "can_proceed_to_execution_semantically": true,
+  "actual_request_hash": "d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835",
+  "actual_receipt_agent": "/root/role_37",
+  "raw_receipt_cache_accepted_identity_verified": true,
+  "full_registry_count": 18,
+  "actual_visible_card_count": 16,
+  "omitted_refs_with_existing_gate": {
+    "customer_concentration:v2": "No version-required customer/client/buyer/offtake/backlog/order/customer-program research phrase in actual needs/context.",
+    "order_quality:v2": "No version-required purchase-order/customer-order/funded-backlog/contract-award/customer-commitment phrase in actual needs/context."
+  },
+  "actual_caps": {
+    "llm_signals": 2,
+    "signals": 4
+  },
+  "selections": [
+    {
+      "answer_scope": "partial",
+      "applicability_hypothesis": "Long-term debt makes maturity-related financing actions relevant; technical admission permits assessment but establishes no predictive benefit.",
+      "context_tags": [
+        "recurring_revenue"
+      ],
+      "expected_role": "primary",
+      "reason_code": "answer_need",
+      "residual_need": "What operating cash flow, capitalized development spending, covenants and tax receivable agreement payment terms were disclosed by prediction time, including restrictions or commitments affecting available cash?",
+      "selection_reason": "Assess disclosed debt maturities and whether they materially change funding runway.",
+      "signal_ref": "financing_listing_action:v5",
+      "target_need_indices": [
+        2
+      ]
+    },
+    {
+      "answer_scope": "partial",
+      "applicability_hypothesis": "A proposed operating turnaround makes management's guidance comparison relevant, subject to disclosures available by prediction time.",
+      "context_tags": [
+        "recurring_revenue"
+      ],
+      "expected_role": "primary",
+      "reason_code": "answer_need",
+      "residual_need": "What product or pricing initiatives, rollout timing, and observed engagement or monetization results had been disclosed by prediction time that could support an expectations change within the evaluation horizon?",
+      "selection_reason": "Evaluate whether disclosed operating guidance materially strengthens the growth path relative to prior guidance.",
+      "signal_ref": "guidance_acceleration:v3",
+      "target_need_indices": [
+        3
+      ]
+    }
+  ],
+  "scope_findings": [
+    "financing_listing_action:v5 covers the explicit debt maturities facet of need[2] under its version-owned exact phrase; residual keeps OCF/capitalized development/covenants/TRA and restrictions. It is an attempt to assess binding/completed capital-structure effects, not evidence that mere debt is a positive catalyst.",
+    "guidance_acceleration:v3 covers guidance facet of need[3]; residual keeps product/pricing/rollout/engagement/monetization. A subsequent result requires explicit prior/current evidence; selection cannot assume a comparator exists.",
+    "Both are routing-time expected partial scope only, with no need disposition or accepted closure. Unselected needs0/1 remain. recurring_revenue tag is compatible with source subscription monetization, not a predictive claim."
+  ],
+  "learning_status": "Actual cards contain learned profiles and admitted technical status with effect unverified; selector does not claim predictive benefit.",
+  "later_harness_failure": "SignalBatchResult serialization failed in observer after executor returned. Not an apply role output failure, not complete prefix; do not resume frozen v1 after code edits.",
+  "bindings": {
+    "runs/diagnostics/reviewed_fast_prefix_20261019_v1/requests/d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835.json": "9514063fb055b9746e671d37872cf40e1fa61d92d87969c494c60c2f7c821da3",
+    "runs/diagnostics/reviewed_fast_prefix_20261019_v1/exchange/outbox/d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835.txt": "d1fd9dc5d733b1f1dc5e6282e42047a970958a3a36b744c2321eb38b95b578a9",
+    "runs/diagnostics/reviewed_fast_prefix_20261019_v1/exchange/receipts/d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835.json": "d4cbb61a5c1ec3a5035a2316d652761d66ff025f97bf37aade5067651658a92d",
+    "runs/diagnostics/reviewed_fast_prefix_20261019_v1/exchange/inbox/d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835.json": "fdc36da98439926bc1b5fe58f375a10cf13727a1c5bcadfb568527c4119199e4",
+    "runs/diagnostics/reviewed_fast_prefix_20261019_v1/cache/responses/d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835.json": "7f7290bae949fc97dfcac934429c05b389e648c824211aace48b0dea802ca528",
+    "runs/diagnostics/reviewed_fast_prefix_20261019_v1/observations/routing_00.json": "bc3f9c4cd1469df8ddaeb006e497a307f7df77bdc7bd24e3d74bb4797b01958b",
+    "runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/spec.json": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1",
+    "runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/skill.md": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a",
+    "runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/spec.json": "27ddc4483007f747f6a0aa7d7618ad2da560151f2d12b51ef8d5847b3c83d400",
+    "runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/skill.md": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833",
+    "runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/spec.json": "30548fdbcb6d1ede05b3c5c703eaafdbaeed117e9ea1aa99a7c0667708b89c32",
+    "runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/spec.json": "b604c5c835f5203be8ef191d03b474698ee26a0c805d46ff1470803c80727d70"
+  },
+  "network_or_external_llm_calls_by_this_review": 0,
+  "engineering_mvp_closed": false
+}

@@ -1,0 +1,4 @@
+{
+  "error": "'SignalBatchResult' object has no attribute 'to_dict'",
+  "error_type": "AttributeError"
+}

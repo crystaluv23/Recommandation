@@ -1,0 +1,34 @@
+{
+  "actual_host_cost": null,
+  "actual_host_tokens": null,
+  "actual_model_version": null,
+  "backend": "independent-subagent",
+  "cost_guard_note": "native accounting guard is not paid authorization; actual host cost unknown",
+  "expectations_hash": "d9823605fc8daa3b91d7c2cda21614e82da0ba6a06945b4f35106ddb95e73600",
+  "external_llm_calls_authorized": 0,
+  "fixed_denominator": 1,
+  "input_hash": "6d55abfb2a526f3d9f66869db2020485b63c11149fd55af1d4ffee13d1838693",
+  "limits": {
+    "max_local_role_calls": 32,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_local_calls": 32,
+  "model_selection": "inherited_host_default_precise_version_unknown",
+  "parallel_jev_decisions": false,
+  "preflight_hash": "3c33c0ddca1ca86e8089265b8737add7cb312e7b28858b853d066d59a99c0eac",
+  "readonly_data_requests_authorized": 0,
+  "runtime_limits": {
+    "finalization_token_reserve": 64000,
+    "max_cost": 20.0,
+    "max_llm_calls": 24,
+    "max_llm_signals_per_round": 2,
+    "max_signal_calls": 4,
+    "max_signal_rounds": 2,
+    "max_signals_per_round": 4,
+    "max_tokens": 256000
+  },
+  "schema_version": "reviewed-native-blind-prefix-v1",
+  "scope": "native execute_information_plan through durable prediction_sink, before outcome read"
+}

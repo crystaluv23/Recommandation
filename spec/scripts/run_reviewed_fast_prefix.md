@@ -54,3 +54,46 @@ All-unavailable/no-match/native finalize may legitimately leave apply or Reflect
 not_exercised. The batch stops before labels: Posthoc/Critic model behavior,
 prediction correctness, full Fast/Slow/readiness and independent benefit remain
 outside scope.
+
+## Observation serialization and bounded failed-prefix continuation
+
+Observers support the actual native result families explicitly: AgentStep keeps
+value (canonical to_dict or tuple of canonical selections), metadata and usage;
+SignalBatchResult keeps its six existing fields using the same batch shape as
+SignalRound serialization. Results and resolutions use their own canonical
+serializers; usage uses AgentUsage fields, fingerprints/skips use arrays. No
+fabricated SignalRound/selection or generic dataclass conversion may rename a
+canonical resolution field. Return the identical original object to the core;
+unknown families reject as technical observer failure. Exercise actual executor
+returns, empty/skipped batches and tuple-valued steps before freeze.
+
+A continuation of the failed observation-only prefix is a new frozen root,
+retaining the same sample denominator, input/oracle/preflight/contract and total
+32-request ceiling. Parent source is verified against its immutable Git commit;
+all current production source/helpers must still match, allowing changes only to
+this diagnostic script and this owning spec. Bind every existing immutable
+parent artifact, including its failure and accepted observations. Verify all old
+answered requests/inboxes/raws/receipts/caches as one complete set before exact-byte copy
+into the child, preserving original agent identity/hash and logical budget usage.
+Copy no old failure/progress/locks into child runtime state; bind their original
+locations as lineage. Existing answers are historical exact reuse, never new
+fresh behavior or a replacement of the parent failure. The child starts with
+those inboxes already counted, hence two inherited requests permit at most30 new
+requests under the original32 ceiling. Do not resume the failed parent in parallel.
+
+The child manifest binds the parent commit/manifest/failure and all inherited
+files. Revalidate those bindings on resume. Before each old answer is reused,
+require the exact original request hash in the accepted prefix order; mismatch
+rejects before exchange dispatch. Accepted value/metadata must also remain
+exact under the existing observation comparison. No role receives continuation
+lineage or acceptance material. Completed restoration remains a checkpoint
+validation, not fresh model execution. This is narrowly an observer repair,
+not a general fork/retry scheduler or permission to alter production prompts,
+budgets, sources or research definitions.
+
+A prepared request journal can exist before the native budget check without any
+inbox/raw/receipt/cache. Preserve and bind such journals separately as
+undispatched attempts; require all four response artifacts absent, never call
+them answered/reused or count them as physical dispatch. Orphaned or incomplete
+response sets still reject. The inherited answered prefix order comes from the
+accepted observations and must match the complete verified response set.

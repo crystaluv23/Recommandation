@@ -1,0 +1,16 @@
+{
+  "actual_host_cost": null,
+  "actual_host_tokens": null,
+  "completed_fast_round": false,
+  "completed_trajectory": false,
+  "engineering_mvp_closed": false,
+  "error": "'SignalBatchResult' object has no attribute 'to_dict'",
+  "error_type": "AttributeError",
+  "external_llm_calls": 0,
+  "fixed_denominator": 1,
+  "independent_receipts": 2,
+  "pending": [],
+  "readonly_data_requests": 0,
+  "sample_id": "s01",
+  "status": "prefix_failed"
+}

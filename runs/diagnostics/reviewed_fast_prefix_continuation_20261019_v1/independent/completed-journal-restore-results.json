@@ -1,0 +1,101 @@
+{
+  "scope": "Temporary completed-checkpoint restore mechanics only. Synthetic checkpoint/result/prediction record, exact historical responses copied for verifier input; not actual completed prefix/model behavior.",
+  "valid_answered_count": 2,
+  "valid_undispatched_journal_count": 1,
+  "legal_journal_restore_no_new_dispatch_or_file_bytes": true,
+  "negative_cases": [
+    {
+      "case": "undispatched_partial_shape_0001",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_0010",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_0011",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_0100",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_0101",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_0110",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_0111",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_1000",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_1001",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_1010",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_1011",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_1100",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_1101",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "undispatched_partial_shape_1110",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "answered_missing_receipt",
+      "typed_rejected": true,
+      "error": "request has partial or orphan response artifacts"
+    },
+    {
+      "case": "orphan_full_response_without_journal",
+      "typed_rejected": true,
+      "error": "request/response inventory contains orphan artifacts"
+    },
+    {
+      "case": "raw_receipt_mismatch",
+      "typed_rejected": true,
+      "error": "local role response receipt does not bind exact request and raw answer"
+    }
+  ],
+  "partial_shapes_checked": 14,
+  "original_v1_all_file_bytes_unchanged": true,
+  "new_model_answers": 0,
+  "network_attempts": 0,
+  "code_bindings": {
+    "scripts/run_reviewed_fast_prefix.py": "56bd746a453c98e45236a5561d270ac69e439b799316a3f75c2be61ec3ac46b0",
+    "spec/scripts/run_reviewed_fast_prefix.md": "a16703608b2703cc7a26ad3607118b53d31c6aa38e738b513cd62487f81bbc74"
+  }
+}

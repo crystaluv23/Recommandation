@@ -6,12 +6,13 @@
 处理；外部 LLM 调用保持零，用户现允许只读公开资料取证。新资料请求单独计数，
 不热加入已冻结输入；未恢复旧目标或完整付费运行。
 
-本批新增 runtime-owned 停止原因披露及 blind-prefix 原生接线，尚无新角色答案。
-实际 Predictor/Posthoc pending 七种终止组合与 typed 拒绝通过；prefix 8 项接线通过，
-正式批次待冻结。多请求缓存预算旧差异已保存并修复 native 逻辑计数，
-18 项聚焦及独立实际 cache/core 反例通过，最终全量 1785 项与 lint 通过；
-实际物理执行仍按唯一回执，未宣称一般中断恢复等价。
-见 [本批报告](../reports/runtime-termination-and-blind-prefix-preflight-20261019.md)。
+正式 blind-prefix v1 已有两条实际隔离首答：H_init 和 routing 窄语义通过，
+但观察器误调 SignalBatchResult.to_dict 后停止，未预测/未读标签。原失败与两答保留。
+已批准仅修观察器并在新 root 精确继承两答；同总32上限含继承2，不增加分母/预算。
+原生重建显示两 selected refs 来源齐备，但技术 budget_blocked，apply 模型未执行；
+不记作 domain 不足。见 [修复与续接报告](../reports/reviewed-fast-prefix-observer-continuation-20261019.md)。
+runtime 停止原因披露及 native cache 逻辑预算前批1785项/lint已过；
+本轮19项定向与独立续接/完成恢复反例通过，正式新root待代码检查点后准备。
 
 前批修复最终 1770 全量通过；首轮 1768/1769 的 critic payload 预算回归及原尺寸
 保留。仅最后 wire 改为同 payload 可逆 profiles，全部字段/IDs 保真，原预算不变。
@@ -80,9 +81,7 @@ availability 时 split proof 漏覆盖最早 consumer 的泛化假设；原 BMBL
 F2 经营背景目标与 generic filing 可执行覆盖脱节仍 open；8-K 本身是合法来源。
 两次 completed resume 的 16 产物完整 before/after hash 不变，零新请求/receipt。
 本批不加 anchor/label，不进 evaluator/Predictor；94 code/2 原文件绑定及嵌套来源
-proof 保持。1744 全量、117 相关检查通过。下一步先补 runtime-owned 停止元数据，
-再冻结 execute_information_plan 到 prediction_sink 的真实盲前缀；读标签前专用边界
-停止，不依赖 observer 注入，不把前缀称为完成 Fast。
+proof 保持；此前1744 全量、117 相关检查通过。当前真实前缀状态见首段。
 
 用户已选择[完整公开会议内容时间口径](../reports/transcript-availability-policy-review-20261007.md)，
 owning spec 已同步；[26 份原件清单](../reports/transcript-proof-inventory-20261019.json)

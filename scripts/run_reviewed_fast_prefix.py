@@ -7,6 +7,9 @@ from dataclasses import asdict
 from datetime import datetime
 import fcntl
 import json
+import hashlib
+import shutil
+import subprocess
 from pathlib import Path
 import socket
 from types import SimpleNamespace
@@ -19,7 +22,7 @@ from stock_opportunity_agent.data.resolution import EvidenceResolver
 from stock_opportunity_agent.llm import get_model
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_core import (
-    EvolutionControlFlow, InformationPlan, RuntimeLimits, default_information_plan,
+    AgentStep, EvolutionControlFlow, InformationPlan, RuntimeLimits, default_information_plan,
     execute_information_plan, project_basic_info_bundle, runtime_termination_view,
 )
 from stock_opportunity_agent.research.evolution_control import _parallel_decision_roles
@@ -27,7 +30,7 @@ from stock_opportunity_agent.research.evolution_plan_roles import LLMResearchCon
 from stock_opportunity_agent.research.evolution_signal_roles import StructuredLLMSignalRunner
 from stock_opportunity_agent.research.evolution_transport import StructuredRoleClient, ExternalAttemptLedger
 from stock_opportunity_agent.research.local_role_exchange import LocalRoleExchange, LocalRoleRequestPending, LocalRoleBudgetExhausted
-from stock_opportunity_agent.signal_library import SignalRegistry, SignalExecutor
+from stock_opportunity_agent.signal_library import SignalRegistry, SignalExecutor, SignalBatchResult
 
 SOURCE_INPUTS = REPO / 'runs/diagnostics/reviewed_market_snapshot_20261019_v4/input_manifest.json'
 LIMITS = RuntimeLimits(max_signal_rounds=2,max_signal_calls=4,max_llm_calls=24,max_tokens=256000,
@@ -54,7 +57,7 @@ def _bootstrap(store, sample):
     return {'bundle':bundle.to_dict(),'model_context':model,'lineage':lineage}
 
 
-def prepare(root: Path, expectations: Path):
+def prepare(root: Path, expectations: Path, *, parent_root: Path | None = None, parent_commit: str | None = None):
     """Freeze exact native inputs and an isolated predeclared acceptance oracle."""
     if root.exists(): raise ValidationError('prefix destination must be new')
     source=read_json(SOURCE_INPUTS)['reviewed_source_snapshot']
@@ -83,6 +86,16 @@ def prepare(root: Path, expectations: Path):
         'code_files':_code_bindings(),'originals':[binding(SOURCE_INPUTS),binding(expectations)],
         'registry_files':[binding(path) for path in sorted(REGISTRY.rglob('*')) if path.is_file()],
         'completed_fast_round':False,'full_dataset_readiness_proven':False}
+    if parent_root is not None or parent_commit is not None:
+        if parent_root is None or parent_commit is None:
+            raise ValidationError('continuation requires parent root and immutable commit')
+        lineage=_validate_parent(parent_root.resolve(),parent_commit,inputs,contract,expected,preflight)
+        for row in lineage['copied_files']:
+            destination=root/row['relative_path']
+            destination.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(row['path'],destination)
+            binding(destination,row['sha256'])
+        manifest['continuation']=lineage
     manifest['manifest_hash']=canonical_json_hash(manifest)
     for name,value in (('inputs',inputs),('expectations',expected),('preflight',preflight),('contract',contract),('manifest',manifest)):
         atomic_write_json(root/(name+'.json'),value)
@@ -94,6 +107,14 @@ def _verify(root):
     if canonical_json_hash(manifest)!=digest: raise ValidationError('prefix manifest changed')
     for row in manifest['code_files']+manifest['originals']+manifest['registry_files']:
         binding(Path(row['path']),row['sha256'])
+    if 'continuation' in manifest:
+        lineage=manifest['continuation']
+        if _immutable_artifacts(Path(lineage['parent_root']))!=lineage['parent_files']:
+            raise ValidationError('continuation parent immutable inventory changed')
+        for row in lineage['parent_files']:
+            binding(Path(row['path']),row['sha256'])
+        for row in lineage['copied_files']:
+            binding(root/row['relative_path'],row['sha256'])
     inputs,contract=read_json(root/'inputs.json'),read_json(root/'contract.json')
     if (canonical_json_hash(contract)!=manifest['contract_hash']
         or canonical_json_hash(inputs)!=contract['input_hash']
@@ -120,20 +141,136 @@ def _value(value):
     return value
 
 
+def _observation_record(result):
+    """Serialize only native observed families without changing canonical names."""
+    if isinstance(result,AgentStep):
+        return {'value':_value(result.value),'metadata':dict(result.metadata),'usage':asdict(result.usage)}
+    if isinstance(result,SignalBatchResult):
+        return {'results':[item.to_dict() for item in result.results],
+            'signal_calls':result.signal_calls,'usage':asdict(result.usage),
+            'resolutions':[item.to_dict() for item in result.resolutions],
+            'document_fingerprints':{ref:list(values) for ref,values in result.document_fingerprints.items()},
+            'skipped_unchanged_refs':list(result.skipped_unchanged_refs)}
+    raise ValidationError('unsupported native observation result family: '+type(result).__name__)
+
+
+class _ContinuationExchange(LocalRoleExchange):
+    """Reject changed inherited requests before authorizing any new dispatch."""
+    def __init__(self,root,*,max_calls,inherited):
+        super().__init__(root,max_calls=max_calls)
+        self.inherited=tuple(inherited)
+        self.position=0
+
+    def receive(self,request,**kwargs):
+        if self.position<len(self.inherited) and canonical_json_hash(request)!=self.inherited[self.position]:
+            raise ValidationError('continuation changed an inherited production request')
+        self.position+=1
+        return super().receive(request,**kwargs)
+
+
+def _validate_parent(parent,commit,inputs,contract,expected,preflight):
+    """Bind the failed parent and verify its exact historical role responses."""
+    if len(commit)!=40 or any(ch not in '0123456789abcdef' for ch in commit):
+        raise ValidationError('parent commit must be an exact immutable 40-character SHA')
+    try:
+        resolved=subprocess.run(['git','rev-parse','--verify',commit+'^{commit}'],
+            cwd=REPO,check=True,capture_output=True,text=True).stdout.strip()
+    except subprocess.CalledProcessError as exc:
+        raise ValidationError('parent commit is unavailable') from exc
+    if resolved!=commit:
+        raise ValidationError('parent commit does not resolve to the exact frozen SHA')
+    manifest=read_json(parent/'manifest.json'); digest=manifest.pop('manifest_hash')
+    if canonical_json_hash(manifest)!=digest:
+        raise ValidationError('parent manifest changed')
+    if (read_json(parent/'inputs.json')!=inputs or read_json(parent/'contract.json')!=contract
+        or read_json(parent/'expectations.json')!=expected or read_json(parent/'preflight.json')!=preflight
+        or canonical_json_hash(contract)!=manifest['contract_hash']):
+        raise ValidationError('continuation must retain exact parent inputs/oracle/limits/contract')
+    failure=read_json(parent/'failure.json')
+    if failure!={'error_type':'AttributeError','error':"'SignalBatchResult' object has no attribute 'to_dict'"}:
+        raise ValidationError('continuation is restricted to the recorded observation failure')
+    allowed={Path(__file__).resolve(),(REPO/'spec/scripts/run_reviewed_fast_prefix.md').resolve()}
+    for row in manifest['code_files']:
+        path=Path(row['path']).resolve()
+        try:
+            relative=path.relative_to(REPO)
+            original=subprocess.run(['git','show',f'{commit}:{relative}'],cwd=REPO,check=True,capture_output=True).stdout
+        except (ValueError,subprocess.CalledProcessError) as exc:
+            raise ValidationError('cannot verify parent source from immutable Git commit') from exc
+        if hashlib.sha256(original).hexdigest()!=row['sha256']:
+            raise ValidationError('parent commit does not reproduce frozen source')
+        if path not in allowed:
+            binding(path,row['sha256'])
+    for row in manifest['originals']+manifest['registry_files']:
+        binding(Path(row['path']),row['sha256'])
+    exchange=LocalRoleExchange(parent/'exchange',max_calls=contract['max_local_calls'])
+    from stock_opportunity_agent.research.evolution_transport import _parse_json_object_envelope
+    answered,undispatched_rows=_request_inventory(parent)
+    hashes=[]; undispatched=[row['request_hash'] for row in undispatched_rows]
+    for record in answered:
+        request=record['request']; request_hash=record['request_hash']
+        reservation=len(json.dumps(request['messages'],ensure_ascii=False,sort_keys=True,
+            separators=(',',':')).encode('utf-8'))+request['max_output_tokens']
+        raw,usage=exchange.receive(request,accounting_tokens=reservation,allow_dispatch=False)
+        parsed,normalization=_parse_json_object_envelope(raw)
+        cached={'request_hash':request_hash,'response_id':'local-'+request_hash,'model':'independent-subagent',
+            'json_output':parsed,'usage':usage,'raw_output':raw,'decision_token_scores':None}
+        if normalization is not None:
+            cached['structured_output_normalization']=normalization
+        if canonical_json_hash(read_json(parent/'cache/responses'/f'{request_hash}.json'))!=canonical_json_hash(cached):
+            raise ValidationError('parent cache differs from verified original response')
+        hashes.append(request_hash)
+    order=[]
+    for path in sorted((parent/'observations').glob('*.json')):
+        for digest_row in read_json(path)['request_hashes']:
+            if digest_row not in order: order.append(digest_row)
+    if set(order)!=set(hashes) or len(order)!=len(hashes):
+        raise ValidationError('parent accepted observations do not bind the exact reused request prefix')
+    parent_files=_immutable_artifacts(parent)
+    copied=[{**row,'relative_path':str(Path(row['path']).relative_to(parent))} for row in parent_files
+            if Path(row['path']).relative_to(parent).parts[0] in {'requests','cache','exchange','observations'}]
+    return {'parent_root':str(parent),'parent_commit':commit,'parent_manifest_hash':digest,
+        'parent_failure':binding(parent/'failure.json'),'parent_files':parent_files,
+        'copied_files':copied,'inherited_request_hashes':order,'inherited_receipts':len(hashes),
+        'undispatched_request_hashes':undispatched,
+        'total_request_ceiling':contract['max_local_calls'],
+        'maximum_new_requests':contract['max_local_calls']-len(hashes),
+        'historical_exact_reuse_not_fresh_model_behavior':True}
+
+
 def _observe(instance, method, name, root, client):
     original=getattr(instance,method); counter=0
     def call(*args,**kwargs):
         nonlocal counter
         position=counter; counter+=1; start=len(client.request_hash_trace)
         result=original(*args,**kwargs)
-        if hasattr(result,'usage') and hasattr(result,'value'):
-            record={'value':_value(result.value),'metadata':dict(result.metadata),'usage':asdict(result.usage)}
-        else:
-            record=result.to_dict()
+        record=_observation_record(result)
         record['request_hashes']=client.request_hash_trace[start:]
         _save_exact(root/'observations'/f'{name}_{position:02}.json',record)
         return result
     setattr(instance,method,call)
+
+
+def _request_inventory(root):
+    """Classify journals separately from complete or forbidden partial dispatches."""
+    answered=[]; undispatched=[]
+    for path in sorted((root/'requests').glob('*.json')):
+        record=read_json(path)
+        request=record.get('request'); digest=record.get('request_hash')
+        if not isinstance(request,dict) or canonical_json_hash(request)!=digest or path.stem!=digest:
+            raise ValidationError('request journal hash changed')
+        present=[(root/directory/(digest+suffix)).is_file() for directory,suffix in (
+            ('exchange/inbox','.json'),('exchange/outbox','.txt'),
+            ('exchange/receipts','.json'),('cache/responses','.json'))]
+        if any(present) and not all(present):
+            raise ValidationError('request has partial or orphan response artifacts')
+        (answered if all(present) else undispatched).append(record)
+    expected={record['request_hash'] for record in answered}
+    for directory,suffix in (('exchange/inbox','json'),('exchange/outbox','txt'),
+                             ('exchange/receipts','json'),('cache/responses','json')):
+        if {path.stem for path in (root/directory).glob('*.'+suffix)}!=expected:
+            raise ValidationError('request/response inventory contains orphan artifacts')
+    return answered,undispatched
 
 
 def _completed_restore(root,manifest_hash,contract):
@@ -142,10 +279,8 @@ def _completed_restore(root,manifest_hash,contract):
         or completion['immutable_artifacts']!=_immutable_artifacts(root)):
         raise ValidationError('completed blind-prefix artifacts changed or missing')
     exchange=LocalRoleExchange(root/'exchange',max_calls=contract['max_local_calls'])
-    for path in sorted((root/'requests').glob('*.json')):
-        record=read_json(path)
-        if canonical_json_hash(record['request'])!=record['request_hash']:
-            raise ValidationError('completed request hash changed')
+    answered,_undispatched=_request_inventory(root)
+    for record in answered:
         exchange.receive(record['request'],accounting_tokens=0,allow_dispatch=False)
     return {**completion['result'],'restored_without_execution':True,'immutable_artifacts_unchanged':True}
 
@@ -154,7 +289,9 @@ def _execute(root,manifest_hash,inputs,contract,store,registry):
     if (root/'completion.json').exists(): return _completed_restore(root,manifest_hash,contract)
     sample=inputs['sample']; expected_preflight=read_json(root/'preflight.json')
     if _bootstrap(store,sample)!=expected_preflight: raise ValidationError('native bootstrap changed')
-    exchange=LocalRoleExchange(root/'exchange',max_calls=contract['max_local_calls'])
+    lineage=read_json(root/'manifest.json').get('continuation',{})
+    exchange=_ContinuationExchange(root/'exchange',max_calls=contract['max_local_calls'],
+        inherited=lineage.get('inherited_request_hashes',()))
     client=StructuredRoleClient(registration=get_model('independent-subagent'),contract=StageContract(contract),
         workspace=root,local_role_exchange=exchange,
         ledger=ExternalAttemptLedger(root/'unused_external_attempts.json',max_attempts=1,max_total_cost=0.01),
@@ -181,7 +318,8 @@ def _execute(root,manifest_hash,inputs,contract,store,registry):
         if saved is None or read_json(root/'prediction.json')!=saved:
             raise ValidationError('ground-truth boundary preceded durable prediction')
         raise BlindPrefixBoundaryReached('durable prediction verified; no ground truth read or returned')
-    result={'fixed_denominator':1,'sample_id':'s01','pending':[], 'external_llm_calls':0,
+    result={'historical_reused_role_responses':len(lineage.get('inherited_request_hashes',())),
+        'fixed_denominator':1,'sample_id':'s01','pending':[], 'external_llm_calls':0,
         'readonly_data_requests':0,'actual_host_tokens':None,'actual_host_cost':None,
         'completed_fast_round':False,'completed_trajectory':False,'engineering_mvp_closed':False}
     try:
@@ -199,6 +337,7 @@ def _execute(root,manifest_hash,inputs,contract,store,registry):
             apply_executed=any((root/'observations').glob('signal_group_*.json')),
             reflect_executed=any((root/'observations').glob('reflect_*.json')))
         result['independent_receipts']=len(list((root/'exchange/receipts').glob('*.json')))
+        result['new_role_receipts']=result['independent_receipts']-result['historical_reused_role_responses']
         completion={'manifest_hash':manifest_hash,'result':result,'immutable_artifacts':_immutable_artifacts(root)}
         completion['completion_hash']=canonical_json_hash(completion)
         atomic_write_json(root/'completion.json',completion)
@@ -213,6 +352,7 @@ def _execute(root,manifest_hash,inputs,contract,store,registry):
         _save_exact(root/'failure.json',failure)
         result.update(status='prefix_failed',**failure)
     result['independent_receipts']=len(list((root/'exchange/receipts').glob('*.json')))
+    result['new_role_receipts']=result['independent_receipts']-result['historical_reused_role_responses']
     atomic_write_json(root/'progress.json',result)
     return result
 
@@ -229,6 +369,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root',type=Path,required=True); parser.add_argument('--expectations',type=Path)
     parser.add_argument('--request-hash'); parser.add_argument('--agent-id')
+    parser.add_argument('--parent-root',type=Path); parser.add_argument('--parent-commit')
     modes=parser.add_mutually_exclusive_group(required=True)
     modes.add_argument('--prepare',action='store_true'); modes.add_argument('--resume',action='store_true')
     modes.add_argument('--submit',action='store_true'); args=parser.parse_args(); root=args.root.resolve()
@@ -236,7 +377,7 @@ def main():
     socket.socket=forbidden
     if args.prepare:
         if args.expectations is None: parser.error('--prepare requires --expectations')
-        value=prepare(root,args.expectations.resolve())
+        value=prepare(root,args.expectations.resolve(),parent_root=args.parent_root,parent_commit=args.parent_commit)
     elif args.submit:
         if not args.request_hash or not args.agent_id: parser.error('--submit requires request hash and actual agent id')
         _digest,_inputs,contract,_store,_registry=_verify(root)
