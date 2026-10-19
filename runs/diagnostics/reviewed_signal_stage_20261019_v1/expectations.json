@@ -1,0 +1,53 @@
+{
+  "engineering_mvp_closed": false,
+  "fixed_denominator": 3,
+  "market_baseline_proven": false,
+  "model_output_hand_authored": false,
+  "samples": [
+    {
+      "allowed_scope": "Only disclosed revenue customer concentration for the stated three/six-month 2025/2024 periods",
+      "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "forbidden_extension": "No implication about app distribution/payment platforms, future concentration, customer count, growth, pricing or all business risks",
+      "full_disclosure_need_closure_requires_accepted_signal_evidence": true,
+      "intended_original_capability": "customer_concentration:v2 production retrieval and LLM apply with explicit diversified-revenue disclosure",
+      "normalized_quote": "During the three and six months ended June 30, 2025 and 2024, there were no customers representing greater than 10% of total revenue.",
+      "raw_end": 773365,
+      "raw_quote": "During the three and six months ended June&#160;30, 2025 and 2024, there were no customers representing greater than 10% of total revenue.",
+      "raw_start": 773227,
+      "sample_id": "s01"
+    },
+    {
+      "deterministic_unavailable_or_no_model_signal_is_allowed": true,
+      "expected_semantics": "Insufficient customer concentration disclosure; retain the original need; do not infer absence of customer dependence",
+      "same_question_as_s01_with_earlier_cutoff": true,
+      "sample_id": "s02",
+      "unavailable_document_id": "sec:cik_0001830043:000162828025038861",
+      "visible_document_ids": [
+        "sec:cik_0001830043:000119312525146199"
+      ]
+    },
+    {
+      "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+      "current_period": "Q2 2025",
+      "current_revenue_guidance_millions_usd": [
+        244,
+        249
+      ],
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "expected_semantics": "Direction and Q3 need remain unresolved. Only actual accepted Signal evidence can permit partial closure of the Q2 numerical part; unavailable/no-evidence cannot supply current values from an audit-side oracle.",
+      "explicit_prior_guidance_visible": false,
+      "f6_categorical_insufficiency_closed_by_this_sample": false,
+      "guidance_categorical_classification": "contract_semantics_unresolved",
+      "neutral_interpreted_as_unchanged_is_failure": true,
+      "q3_guidance_proven": false,
+      "raw_end": 23508,
+      "raw_start": 23242,
+      "sample_id": "s03",
+      "unique_guidance_signal_categorical_answer_required": false
+    }
+  ],
+  "schema_version": "reviewed-direct-signal-independent-expectations-v1",
+  "scope": "Acceptance-side original-source expectations only; never role context or generated model answer",
+  "source_review_scope": "Existing exact 2SEC reviewed view; no new source admission"
+}

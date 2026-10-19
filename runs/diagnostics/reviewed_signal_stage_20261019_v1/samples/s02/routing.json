@@ -1,0 +1,27 @@
+{
+  "request_hashes": [
+    "63a3eba7eb4582057f8b1b5ea93c852df70549182544f955705b3326db133f4e"
+  ],
+  "selections": [
+    {
+      "answer_scope": "partial",
+      "applicability_hypothesis": "The explicit customer concentration question makes this card applicable; its judgment must use only disclosures available by the prediction cutoff.",
+      "context_tags": [
+        "general"
+      ],
+      "expected_role": "primary",
+      "reason_code": "answer_need",
+      "residual_need": "Identify disclosed numerical customer revenue shares for each three- and six-month period ended June 30, 2025 and 2024, using only information available by 2025-07-01T00:00:00+00:00; retain unavailable period figures as unknown.",
+      "selection_reason": "Assess whether reliance on one buyer or program creates excessive business dependence.",
+      "signal_ref": "customer_concentration:v2",
+      "target_need_indices": [
+        0
+      ]
+    }
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 49211
+  }
+}

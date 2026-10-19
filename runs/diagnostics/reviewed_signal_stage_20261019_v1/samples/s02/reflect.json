@@ -1,0 +1,22 @@
+{
+  "execution_mode": "not_called_due_to_production_guard",
+  "metadata": {},
+  "request_hashes": [],
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [],
+    "decision": "finalize",
+    "hypotheses": [],
+    "next_information_needs": [
+      "What does the issuer disclose about revenue customer concentration for the three and six months ended June 30, 2025 and 2024, using only disclosures available by 2025-07-01T00:00:00+00:00?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": []
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 0,
+    "tokens": 0
+  }
+}

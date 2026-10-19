@@ -1,0 +1,23 @@
+{
+  "execution_mode": "not_called_due_to_production_guard",
+  "metadata": {},
+  "request_hashes": [],
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [],
+    "decision": "finalize",
+    "hypotheses": [],
+    "next_information_needs": [
+      "What is the issuer's Q2 2025 revenue guidance, and was it raised or lowered from prior guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+      "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": []
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 0,
+    "tokens": 0
+  }
+}

@@ -3,7 +3,8 @@
 更新：2026-10-19。本轮目标为用户批准的
 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)，**尚未收敛，继续迭代**。
 独立预测收益属于后续里程碑，仍未验证。用户要求生产 LLM 位置由独立 subagent
-处理；本轮外部模型、数据和 web API 调用均为零，未恢复旧目标或完整付费运行。
+处理；外部 LLM 调用保持零，用户现允许只读公开资料取证。新资料请求单独计数，
+不热加入已冻结输入；未恢复旧目标或完整付费运行。
 
 ## 新证据：F7 范围通过，F8 新消费时间边界已修
 
@@ -27,7 +28,8 @@ fallback、持久化及精确消费者；13 条新请求均由隔离角色实际
 - [旧 v2](../reports/local-role-mvp-stage-acceptance-20261019.md) 固定七分母仍 2 机械通过、
   5 失败，原件/原答/旧结果均保留。新 v3 结果不能改写旧失败，也不能证明所有消费者安全。
 
-最新 1734 项全量离线测试与 110 项来源/control/resolution 聚焦检查通过；F8 另有
+最新 1741 项全量离线测试与最终 7 项 stage 接口检查通过；来源/control/resolution
+另有 110 项聚焦检查，F8 有
 14 个边界测试/10 个独立共存绑定反例，来源 view 有 12 个聚焦及独立隔离反例。
 Lint 通过且已亲读 feedback。并发调用数/cache 原答复核两缺陷已修且独立线程/进程/
 篡改反例通过；只关闭该本地机械边界，完整运行恢复未验证。
@@ -44,13 +46,17 @@ issuer 与调整时点证明；不足则先做可执行 SEC 检索/Signal stage�
 
 本地 Massive 原请求/响应与 250 行 normalized 内容已精确重现，但请求/原答均
 `adjusted=true` 且在 cutoff 后取得，复权动作时点证明不足，仍 unknown 不准入
-（[证据](../reports/bmbl-market-input-review-20261019.json)）。正在冻结
-[三样本 direct SEC stage](../spec/scripts/run_reviewed_signal_stage.md)：完整 18 Registry、
-客户分散披露/早时点不足/Q2-Q3 处置边界，所有实际 LLM 节点仍独立 subagent。
-当前仅 prepare/接口测试，无新角色回答；不覆盖 H_init/Predictor 或完整 evaluator。
-stage 驱动已过 1741 项全量与最终 7 项接口检查，独立只读审查允许冻结；尚不是模型
-能力通过。最新授权允许只读公开资料查询，仍禁止外部 LLM API；这份已固定 SEC stage
-自身保持资料请求 0，公开 market 取证另行计数。
+（[证据](../reports/bmbl-market-input-review-20261019.json)）。
+[三样本 direct SEC stage](../reports/reviewed-signal-stage-20261019.md) 已实际完成：
+完整 Registry 18 版本，7 个新隔离角色（3 routing、3 Signal apply、1 Reflect），无纠错。
+晚时点客户收入分散披露 positive/full；早时点不足保留原 need；缺 prior 的 guidance
+不编方向，Q2/Q3 均保留。后两例由生产 all-unavailable 守卫终结、零 Reflect、无伪处置。
+3/3 机械接受并经独立原材/消费者语义审查：此三 need 的检索阅读、customer 正控、
+1 次实际 full Reflect 与 2 次确定性保留、两消费者保真局部通过；不足分类的
+neutral/unavailable 边界仍未决，完整 F8/MVP 未关。完成后真实 resume 检查 56 产物 hash 不变、零新增请求；93 code/200
+original 冻结绑定全符。自身资料请求 0/外部 LLM 0，不覆盖 H_init/BasicInfo 收集、
+Predictor、完整 evaluator、反馈 Slow 或 48 案。公开 market 证据由另一取证批次审查，
+未准入这份固定 SEC 输入。
 
 用户已选择[完整公开会议内容时间口径](../reports/transcript-availability-policy-review-20261007.md)，
 owning spec 已同步；[26 份原件清单](../reports/transcript-proof-inventory-20261019.json)

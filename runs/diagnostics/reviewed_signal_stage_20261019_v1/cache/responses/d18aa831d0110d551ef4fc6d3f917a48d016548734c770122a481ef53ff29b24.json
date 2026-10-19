@@ -1,0 +1,48 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "results": [
+      {
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "exact_text": "During the three and six months ended June 30, 2025 and 2024, there were no customers representing greater than 10% of total revenue.",
+                "projection_id": "projection_78362637d22c4c495d896125"
+              }
+            ]
+          },
+          "interpretation": {
+            "summary": "The disclosed revenue base is diversified across customers: no customer represented greater than 10% of total revenue during the three and six months ended June 30, 2025 and 2024. This supports a positive customer-concentration assessment for the disclosed periods; the visible evidence does not establish future customer mix."
+          },
+          "signal_id": "customer_concentration",
+          "state": {
+            "confidence": 0.93,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 2
+        },
+        "signal_ref": "customer_concentration:v2"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"results\":[{\"result\":{\"evidence\":{\"counter\":[],\"supporting\":[{\"projection_id\":\"projection_78362637d22c4c495d896125\",\"exact_text\":\"During the three and six months ended June 30, 2025 and 2024, there were no customers representing greater than 10% of total revenue.\"}]},\"interpretation\":{\"summary\":\"The disclosed revenue base is diversified across customers: no customer represented greater than 10% of total revenue during the three and six months ended June 30, 2025 and 2024. This supports a positive customer-concentration assessment for the disclosed periods; the visible evidence does not establish future customer mix.\"},\"signal_id\":\"customer_concentration\",\"state\":{\"confidence\":0.93,\"value\":\"positive\"},\"status\":{\"coverage\":\"sufficient\"},\"version\":2},\"signal_ref\":\"customer_concentration:v2\"}]}",
+  "request_hash": "d18aa831d0110d551ef4fc6d3f917a48d016548734c770122a481ef53ff29b24",
+  "response_id": "local-d18aa831d0110d551ef4fc6d3f917a48d016548734c770122a481ef53ff29b24",
+  "usage": {
+    "accounting_tokens": 52266,
+    "agent_id": "/root/role_30",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "f0982eb508a20117ba37292838d5c85a0092088045e424da8827551c06eb70ea",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "c0b584c6a5b94d01d7aa547c11f371f84833f72e720a544a8dd410ed84e9fb3f",
+    "request_hash": "d18aa831d0110d551ef4fc6d3f917a48d016548734c770122a481ef53ff29b24",
+    "token_usage": null
+  }
+}

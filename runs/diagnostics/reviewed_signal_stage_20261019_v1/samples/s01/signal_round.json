@@ -1,0 +1,144 @@
+{
+  "request_hashes": [
+    "d18aa831d0110d551ef4fc6d3f917a48d016548734c770122a481ef53ff29b24"
+  ],
+  "signal_round": {
+    "batch": {
+      "document_fingerprints": {
+        "customer_concentration:v2": [
+          "sec:cik_0001830043:000119312525146199:0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+          "sec:cik_0001830043:000162828025038861:f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3"
+        ]
+      },
+      "resolutions": [
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 2,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 0,
+            "observed_observation_count": 0,
+            "observed_period_span_days": null,
+            "query_evaluated": true,
+            "query_matched_document_count": 2,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 2,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-08-07T20:05:33+00:00",
+              "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+              "document_id": "sec:cik_0001830043:000162828025038861"
+            },
+            {
+              "available_at": "2025-06-25T12:20:35+00:00",
+              "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+              "document_id": "sec:cik_0001830043:000119312525146199"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec:cik_0001830043:000162828025038861",
+                  "sec:cik_0001830043:000119312525146199"
+                ],
+                "phase": "initial",
+                "request_id": "signal:customer_concentration:v2",
+                "source_types": [
+                  "filing",
+                  "earnings_call",
+                  "customer_announcement"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "omitted_context_markers": [],
+          "request": {
+            "description": "Judge whether the growth thesis depends excessively on one customer or one customer program.",
+            "lookback_days": 1095,
+            "max_documents": 10,
+            "query": "customer concentration major customer revenue customer",
+            "request_id": "signal:customer_concentration:v2",
+            "source_types": [
+              "filing",
+              "earnings_call",
+              "customer_announcement"
+            ]
+          },
+          "status": "resolved"
+        }
+      ],
+      "results": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec:cik_0001830043:000162828025038861",
+                "exact_span": "During the three and six months ended June&#160;30, 2025 and 2024, there were no customers representing greater than 10% of total revenue.",
+                "timestamp": "2025-08-07T20:05:33+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "The disclosed revenue base is diversified across customers: no customer represented greater than 10% of total revenue during the three and six months ended June 30, 2025 and 2024. This supports a positive customer-concentration assessment for the disclosed periods; the visible evidence does not establish future customer mix."
+          },
+          "signal_id": "customer_concentration",
+          "state": {
+            "confidence": 0.93,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 2
+        }
+      ],
+      "signal_calls": 1,
+      "skipped_unchanged_refs": []
+    },
+    "information_needs": [
+      "What does the issuer disclose about revenue customer concentration for the three and six months ended June 30, 2025 and 2024, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+    ],
+    "selected_signals": [
+      "customer_concentration:v2"
+    ],
+    "selections": [
+      {
+        "answer_scope": "full",
+        "applicability_hypothesis": "The requested customer concentration disclosures can establish dependence on individual customers or programs; technical admission does not establish predictive benefit.",
+        "context_tags": [
+          "general"
+        ],
+        "expected_role": "primary",
+        "reason_code": "answer_need",
+        "residual_need": null,
+        "selection_reason": "Assess disclosed revenue customer concentration for the three and six months ended June 30, 2025 and 2024 using disclosures available by the prediction cutoff.",
+        "signal_ref": "customer_concentration:v2",
+        "target_need_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 52266
+  }
+}

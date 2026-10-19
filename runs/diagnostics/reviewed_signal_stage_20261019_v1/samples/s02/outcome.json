@@ -1,0 +1,9 @@
+{
+  "checks": {
+    "final_disposition_projection_exact": true,
+    "finalized": true,
+    "posthoc_disposition_projection_exact": true
+  },
+  "sample_id": "s02",
+  "status": "accepted_requires_independent_review"
+}

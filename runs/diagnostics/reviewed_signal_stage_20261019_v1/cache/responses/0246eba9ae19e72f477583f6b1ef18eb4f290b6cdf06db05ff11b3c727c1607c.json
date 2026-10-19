@@ -1,0 +1,43 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "results": [
+      {
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "interpretation": {
+            "summary": "The visible input provides updated second-quarter 2025 revenue and adjusted EBITDA guidance, but no explicit prior guidance level for comparison. References to a revised 2025 outlook and associated impairments do not establish the prior guidance or a directional change in the growth path. The required current-versus-prior guidance comparison is unavailable within the eligible visible input; omitted text remains unknown."
+          },
+          "signal_id": "guidance_acceleration",
+          "state": {
+            "confidence": 0.92,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 3
+        },
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"results\": [{\"result\": {\"evidence\": {\"counter\": [], \"supporting\": []}, \"interpretation\": {\"summary\": \"The visible input provides updated second-quarter 2025 revenue and adjusted EBITDA guidance, but no explicit prior guidance level for comparison. References to a revised 2025 outlook and associated impairments do not establish the prior guidance or a directional change in the growth path. The required current-versus-prior guidance comparison is unavailable within the eligible visible input; omitted text remains unknown.\"}, \"signal_id\": \"guidance_acceleration\", \"state\": {\"confidence\": 0.92, \"value\": \"unavailable\"}, \"status\": {\"coverage\": \"unavailable\"}, \"version\": 3}, \"signal_ref\": \"guidance_acceleration:v3\"}]}",
+  "request_hash": "0246eba9ae19e72f477583f6b1ef18eb4f290b6cdf06db05ff11b3c727c1607c",
+  "response_id": "local-0246eba9ae19e72f477583f6b1ef18eb4f290b6cdf06db05ff11b3c727c1607c",
+  "usage": {
+    "accounting_tokens": 52262,
+    "agent_id": "/root/role_32",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "4125cfdaf4c55f4ce7b2dde85941b7584a4e89f63140935ed54e1f104c3948fa",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "3dd47fd9882c32166f84613beb6259733aa70adaef4e448dfe9b1aed4bb3d357",
+    "request_hash": "0246eba9ae19e72f477583f6b1ef18eb4f290b6cdf06db05ff11b3c727c1607c",
+    "token_usage": null
+  }
+}

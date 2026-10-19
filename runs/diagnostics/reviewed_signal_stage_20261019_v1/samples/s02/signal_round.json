@@ -1,0 +1,131 @@
+{
+  "request_hashes": [
+    "46ac140df39b989d0ccd24df0527340ce93737e66f85b01215f990dccbd73f70"
+  ],
+  "signal_round": {
+    "batch": {
+      "document_fingerprints": {
+        "customer_concentration:v2": [
+          "sec:cik_0001830043:000119312525146199:0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7"
+        ]
+      },
+      "resolutions": [
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 0,
+            "observed_observation_count": 0,
+            "observed_period_span_days": null,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-06-25T12:20:35+00:00",
+              "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+              "document_id": "sec:cik_0001830043:000119312525146199"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec:cik_0001830043:000119312525146199"
+                ],
+                "phase": "initial",
+                "request_id": "signal:customer_concentration:v2",
+                "source_types": [
+                  "filing",
+                  "earnings_call",
+                  "customer_announcement"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "omitted_context_markers": [],
+          "request": {
+            "description": "Judge whether the growth thesis depends excessively on one customer or one customer program.",
+            "lookback_days": 1095,
+            "max_documents": 10,
+            "query": "customer concentration major customer revenue customer",
+            "request_id": "signal:customer_concentration:v2",
+            "source_types": [
+              "filing",
+              "earnings_call",
+              "customer_announcement"
+            ]
+          },
+          "status": "resolved"
+        }
+      ],
+      "results": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          },
+          "interpretation": {
+            "summary": "The eligible visible filing passages concern workforce restructuring, financial outlook and non-GAAP measures. They provide no applicable customer concentration disclosure or complete literal meeting the required customer-related evidence phrases. Customer dependency and diversification therefore cannot be assessed from this bounded input; omitted text remains unknown."
+          },
+          "signal_id": "customer_concentration",
+          "state": {
+            "confidence": 0.99,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 2
+        }
+      ],
+      "signal_calls": 1,
+      "skipped_unchanged_refs": []
+    },
+    "information_needs": [
+      "What does the issuer disclose about revenue customer concentration for the three and six months ended June 30, 2025 and 2024, using only disclosures available by 2025-07-01T00:00:00+00:00?"
+    ],
+    "selected_signals": [
+      "customer_concentration:v2"
+    ],
+    "selections": [
+      {
+        "answer_scope": "partial",
+        "applicability_hypothesis": "The explicit customer concentration question makes this card applicable; its judgment must use only disclosures available by the prediction cutoff.",
+        "context_tags": [
+          "general"
+        ],
+        "expected_role": "primary",
+        "reason_code": "answer_need",
+        "residual_need": "Identify disclosed numerical customer revenue shares for each three- and six-month period ended June 30, 2025 and 2024, using only information available by 2025-07-01T00:00:00+00:00; retain unavailable period figures as unknown.",
+        "selection_reason": "Assess whether reliance on one buyer or program creates excessive business dependence.",
+        "signal_ref": "customer_concentration:v2",
+        "target_need_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 27018
+  }
+}

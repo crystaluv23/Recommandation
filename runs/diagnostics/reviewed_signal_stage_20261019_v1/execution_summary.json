@@ -1,0 +1,39 @@
+{
+  "frozen_code_commit": "cf8cb287",
+  "manifest_hash": "3db9035c8f56105ecc5c4c297217a291b006f1d4b0913e39e0bd50c2da80c4e2",
+  "code_bindings_checked": 93,
+  "original_bindings_checked": 200,
+  "fixed_denominator": 3,
+  "unique_receipts": 7,
+  "logical_request_stages": {
+    "llm_signal_batch_execute": 3,
+    "research_controller_reflect": 1,
+    "signal_retrieval_cards": 3
+  },
+  "native_corrections": 0,
+  "completed_restore": {
+    "pending": [],
+    "artifact_hashes_unchanged": true,
+    "checked_files": 56,
+    "new_inbox": 0,
+    "new_receipt": 0
+  },
+  "mechanical_accepted": 3,
+  "independent_semantic_review": "passed_narrow_3_sample_scope",
+  "external_llm_calls": 0,
+  "readonly_data_requests": 0,
+  "actual_model_version": null,
+  "internal_agent_cost": "unknown",
+  "usage_tokens": "estimates_not_actual_provider_usage",
+  "model_scope": "inherited host default; independent backend identity bound; precise model version unknown",
+  "not_covered": [
+    "H_init",
+    "BasicInfo collection",
+    "Predictor",
+    "feedback/Slow",
+    "full RuntimePlanEvaluator",
+    "48-case cohort",
+    "independent predictive benefit"
+  ],
+  "reviewer": "/root/acceptance_review"
+}

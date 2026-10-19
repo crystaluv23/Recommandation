@@ -1,0 +1,37 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "selections": [
+      {
+        "answer_scope": "partial",
+        "applicability_hypothesis": "The explicit customer concentration question makes this card applicable; its judgment must use only disclosures available by the prediction cutoff.",
+        "context_tags": [
+          "general"
+        ],
+        "expected_role": "primary",
+        "reason_code": "answer_need",
+        "residual_need": "Identify disclosed numerical customer revenue shares for each three- and six-month period ended June 30, 2025 and 2024, using only information available by 2025-07-01T00:00:00+00:00; retain unavailable period figures as unknown.",
+        "selection_reason": "Assess whether reliance on one buyer or program creates excessive business dependence.",
+        "signal_ref": "customer_concentration:v2",
+        "target_need_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"selections\":[{\"signal_ref\":\"customer_concentration:v2\",\"reason_code\":\"answer_need\",\"selection_reason\":\"Assess whether reliance on one buyer or program creates excessive business dependence.\",\"applicability_hypothesis\":\"The explicit customer concentration question makes this card applicable; its judgment must use only disclosures available by the prediction cutoff.\",\"expected_role\":\"primary\",\"target_need_indices\":[0],\"answer_scope\":\"partial\",\"residual_need\":\"Identify disclosed numerical customer revenue shares for each three- and six-month period ended June 30, 2025 and 2024, using only information available by 2025-07-01T00:00:00+00:00; retain unavailable period figures as unknown.\",\"context_tags\":[\"general\"]}]}\n",
+  "request_hash": "63a3eba7eb4582057f8b1b5ea93c852df70549182544f955705b3326db133f4e",
+  "response_id": "local-63a3eba7eb4582057f8b1b5ea93c852df70549182544f955705b3326db133f4e",
+  "usage": {
+    "accounting_tokens": 49211,
+    "agent_id": "/root/role_28",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "3677056a89add6923b05cdbfb9112f320e308ac8bc20f7fa3dac2e60ad0cf6fe",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "753bc800b793ad39784d6a5a356fea41b0c4a92918f08b8bcb3655864baf67c6",
+    "request_hash": "63a3eba7eb4582057f8b1b5ea93c852df70549182544f955705b3326db133f4e",
+    "token_usage": null
+  }
+}

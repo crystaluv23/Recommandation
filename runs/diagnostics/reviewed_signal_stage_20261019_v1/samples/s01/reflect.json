@@ -1,0 +1,56 @@
+{
+  "execution_mode": "independent_local_role",
+  "metadata": {
+    "need_dispositions": {
+      "items": [
+        {
+          "answer_scope": "full",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "customer_concentration:v2"
+            }
+          ],
+          "need_index": 0,
+          "prior_need": "What does the issuer disclose about revenue customer concentration for the three and six months ended June 30, 2025 and 2024, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+          "reason": "The adopted issuer disclosure directly addresses revenue customer concentration for both requested durations in both requested years and was available before the prediction cutoff. It fully answers this narrow disclosure question; it does not establish future customer mix or prediction benefit.",
+          "residual_need": null
+        }
+      ],
+      "prior_state_hash": "0c2661ccbe9d18282af70b9e0bd35fbce430afae10afd11f6054c9ae27638b17"
+    }
+  },
+  "request_hashes": [
+    "a1a1d4592a541da6c18c29f4ed5f737f12fb0f391013ee4207da940026f6c3e8"
+  ],
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "During the three and six months ended June 30, 2025 and 2024, there were no customers representing greater than 10% of total revenue."
+    ],
+    "decision": "finalize",
+    "hypotheses": [],
+    "next_information_needs": [],
+    "open_questions": [
+      "Whether disclosed customer diversification contributes to future stock performance remains unverified."
+    ],
+    "resolved_questions": [
+      "The issuer disclosed the requested revenue customer concentration assessment for all requested periods."
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "During the three and six months ended June 30, 2025 and 2024, there were no customers representing greater than 10% of total revenue.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "customer_concentration:v2"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 28820
+  }
+}

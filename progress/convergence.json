@@ -25,9 +25,13 @@
         "runs/diagnostics/signal_model_pit_boundary_20261019_v3/result.json",
         "reports/reviewed-source-snapshot-20261019.md",
         "runs/diagnostics/reviewed_source_snapshot_20261019_v3/result.json",
-        "runs/diagnostics/reviewed_source_snapshot_20261019_v3/independent-review.json"
+        "runs/diagnostics/reviewed_source_snapshot_20261019_v3/independent-review.json",
+        "reports/reviewed-signal-stage-20261019.md",
+        "runs/diagnostics/reviewed_signal_stage_20261019_v1/progress.json",
+        "runs/diagnostics/reviewed_signal_stage_20261019_v1/execution_summary.json",
+        "runs/diagnostics/reviewed_signal_stage_20261019_v1/independent-review.json"
       ],
-      "remaining": "F7局部范围、F8本地时间守卫及4来源窄view冻结恢复已证；全局来源正文版本/market证明/真实检索Signal与其余Fast/48案仍未关闭，窄view完整prepare缺16 anchor失败"
+      "remaining": "4来源窄view、直接SEC三样本检索阅读/customer正控/1实际Reflect及2守卫保留/两consumer经独立审查窄通过；全局正文版本/market准入、H_init/BasicInfo/Predictor、Slow及其余Fast/48案仍未关闭，完整prepare缺16 anchor失败"
     },
     {
       "id": "feedback_consumption",
@@ -148,14 +152,29 @@
         "runs/diagnostics/reviewed_source_snapshot_20261019_v3/result.json",
         "runs/diagnostics/reviewed_source_snapshot_20261019_v3/independent-review.json"
       ]
+    },
+    {
+      "id": "engineering-mvp-reviewed-signal-stage-20261019",
+      "strategy": "frozen_reviewed_sec_production_routing_apply_reflect",
+      "failure_families": [
+        "guidance_insufficiency_category_contract_unresolved"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-signal-stage-20261019.md",
+        "runs/diagnostics/reviewed_signal_stage_20261019_v1/progress.json",
+        "runs/diagnostics/reviewed_signal_stage_20261019_v1/execution_summary.json",
+        "runs/diagnostics/reviewed_signal_stage_20261019_v1/independent-review.json"
+      ]
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-reviewed-source-snapshot-20261019",
+    "after_iteration": "engineering-mvp-reviewed-signal-stage-20261019",
     "evidence": [
-      "reports/reviewed-source-snapshot-20261019.md",
-      "runs/diagnostics/reviewed_source_snapshot_20261019_v3/result.json",
-      "runs/diagnostics/reviewed_source_snapshot_20261019_v3/independent-review.json"
+      "reports/reviewed-signal-stage-20261019.md",
+      "runs/diagnostics/reviewed_signal_stage_20261019_v1/progress.json",
+      "runs/diagnostics/reviewed_signal_stage_20261019_v1/execution_summary.json",
+      "runs/diagnostics/reviewed_signal_stage_20261019_v1/independent-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -166,15 +185,15 @@
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "repair",
-      "strategy": "review_market_proof_or_execute_sec_signal_stage",
-      "action": "核本地BMBL market原请求响应、issuer和调整时点证明；若可证明则新窄准入并准备生产RuntimePlanEvaluator有界stage，若未知则冻结真实SEC retrieve/read/Signal stage，保持market readiness阻塞，不完整FastSlow运行",
-      "stop": "零外部API；没有market证明保留gap并转可执行SEC stage；不恢复旧运行/不扩大完整cohort",
-      "question": "本地市场原件是否有足够PIT与调整证明，哪个生产入口可在现审定输入上以独立角色实际执行？",
-      "pass": "新阶段原请求由隔离subagent回答并经原parser/纠错/持久化；逐项原材语义及consumer核对，不借fixture或降低readiness宣称通过",
-      "fail": "market证明缺失却写baseline、未知当不存在、跳过readiness或只用确定性tests宣称模型能力",
-      "on_pass": "按冻结角色证据推进检索阅读/Signal真实能力，再反馈与Slow；不以局部证据关闭整个MVP",
-      "on_fail": "保留固定分母/原件和实际失败，选择更小可判定的生产入口"
+      "kind": "diagnose",
+      "strategy": "checkpoint_then_next_actual_production_prerequisite",
+      "action": "三样本独立语义核查通过，保存checkpoint；核market既有PIT合同与证据，仍不足则推进实际BasicInfo收集/H_init有界stage，不填baseline、不开启完整FastSlow",
+      "stop": "外部LLM API零；当前固定SEC stage资料请求零；只读公开资料另行计数；没有真实来源证明保留gap，不恢复旧运行/不缩完整cohort",
+      "question": "受控SEC来源能否在真实routing/retrieve/apply/Reflect后保留正确范围与不足，哪些生产前提仍阻断下一节点？",
+      "pass": "冻结7角色原答经原parser/校验/持久化且独立原材和consumer语义正确；只关闭这3样本定义的局部能力",
+      "fail": "将机械3/3当全部F6/F8/MVP；将无调用的guard当新模型行为；对未决guidance分类或market政策过早关闭",
+      "on_pass": "按独立review形成checkpoint，再推进最小实际生产前提，保持Slow/收益/完整恢复未知",
+      "on_fail": "保留全部原件/失败分母，下一fresh批次修适用错误家族"
     }
   },
   "successor_prerequisites": [

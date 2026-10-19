@@ -1,0 +1,40 @@
+{
+  "reviewer": "/root/acceptance_review",
+  "review_mode": "independent read-only actual original evidence/request/raw/accepted/consumer review; no new model calls",
+  "fixed_denominator": 3,
+  "semantic_samples_passed": 3,
+  "critical_findings": [],
+  "checks": {
+    "all_seven_original_role_answers_reviewed": true,
+    "receipt_cache_raw_identity_hash_and_parse_match": true,
+    "code_bindings": 93,
+    "original_bindings": 200,
+    "frozen_manifest_hash_matches": true,
+    "actual_visible_routing_cards": [
+      16,
+      16,
+      15
+    ],
+    "complete_registry_refs": 18
+  },
+  "samples": {
+    "s01": "customer_concentration:v2 complete later projected window matches SEC raw sentence; positive limited to requested disclosure periods; actual owned terminal full closure and final/posthoc preservation",
+    "s02": "early cutoff exposes only 8-K, unavailable, zero Reflect, original need retained",
+    "s03": "missing prior does not infer raised guidance; unavailable, zero Reflect, both original needs retained; no oracle numeric answer injected; categorical boundary remains predeclared unresolved"
+  },
+  "narrow_closures": [
+    "F4/F5 for these three needs and this reviewed SEC snapshot",
+    "F6 customer-concentration disclosure positive control only",
+    "F7 one actual owned full closure and two deterministic need-preserving terminal paths",
+    "F8 existing final/posthoc disposition and semantic preservation for these three cases"
+  ],
+  "not_closed": [
+    "all Registry cards visible to role",
+    "guidance categorical insufficiency contract",
+    "complete F8",
+    "fresh posthoc/critic/Predictor model behavior",
+    "full engineering MVP",
+    "independent predictive benefit"
+  ],
+  "preflight_correction": "complete 18-version Registry enters existing production routing_required_research_phrases hardgate; actual wire has 16/16/15 cards. Earlier reviewer preflight had not checked each visible card; this correction does not change frozen inputs."
+}

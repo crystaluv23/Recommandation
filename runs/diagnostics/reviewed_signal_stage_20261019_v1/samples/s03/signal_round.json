@@ -1,0 +1,141 @@
+{
+  "request_hashes": [
+    "0246eba9ae19e72f477583f6b1ef18eb4f290b6cdf06db05ff11b3c727c1607c"
+  ],
+  "signal_round": {
+    "batch": {
+      "document_fingerprints": {
+        "guidance_acceleration:v3": [
+          "sec:cik_0001830043:000119312525146199:0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+          "sec:cik_0001830043:000162828025038861:f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3"
+        ]
+      },
+      "resolutions": [
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 2,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 0,
+            "observed_observation_count": 0,
+            "observed_period_span_days": null,
+            "query_evaluated": true,
+            "query_matched_document_count": 2,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 2,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-08-07T20:05:33+00:00",
+              "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+              "document_id": "sec:cik_0001830043:000162828025038861"
+            },
+            {
+              "available_at": "2025-06-25T12:20:35+00:00",
+              "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+              "document_id": "sec:cik_0001830043:000119312525146199"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec:cik_0001830043:000162828025038861",
+                  "sec:cik_0001830043:000119312525146199"
+                ],
+                "phase": "initial",
+                "request_id": "signal:guidance_acceleration:v3",
+                "source_types": [
+                  "earnings_call",
+                  "company_announcement",
+                  "press_release",
+                  "filing"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "omitted_context_markers": [],
+          "request": {
+            "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+            "lookback_days": 365,
+            "max_documents": 10,
+            "query": "guidance outlook forecast raises guidance raised guidance lowers guidance lowered guidance reaffirms guidance reaffirmed guidance updated guidance revised guidance now expects management expects company expects",
+            "request_id": "signal:guidance_acceleration:v3",
+            "source_types": [
+              "earnings_call",
+              "company_announcement",
+              "press_release",
+              "filing"
+            ]
+          },
+          "status": "resolved"
+        }
+      ],
+      "results": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          },
+          "interpretation": {
+            "summary": "The visible input provides updated second-quarter 2025 revenue and adjusted EBITDA guidance, but no explicit prior guidance level for comparison. References to a revised 2025 outlook and associated impairments do not establish the prior guidance or a directional change in the growth path. The required current-versus-prior guidance comparison is unavailable within the eligible visible input; omitted text remains unknown."
+          },
+          "signal_id": "guidance_acceleration",
+          "state": {
+            "confidence": 0.92,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 3
+        }
+      ],
+      "signal_calls": 1,
+      "skipped_unchanged_refs": []
+    },
+    "information_needs": [
+      "What is the issuer's Q2 2025 revenue guidance, and was it raised or lowered from prior guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+      "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+    ],
+    "selected_signals": [
+      "guidance_acceleration:v3"
+    ],
+    "selections": [
+      {
+        "answer_scope": "partial",
+        "applicability_hypothesis": "Disclosures available by the prediction cutoff may support a comparison of Q2 2025 guidance with the prior guidance for that same quarter.",
+        "context_tags": [
+          "general"
+        ],
+        "expected_role": "primary",
+        "reason_code": "answer_need",
+        "residual_need": "What numerical revenue range or point estimate did the issuer guide for Q2 2025, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+        "selection_reason": "Compare management's revised expectations with its prior outlook to assess whether the change strengthens or weakens the growth path.",
+        "signal_ref": "guidance_acceleration:v3",
+        "target_need_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 52262
+  }
+}

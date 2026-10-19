@@ -1,0 +1,226 @@
+{
+  "final_context": {
+    "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
+    "basic_info": {
+      "data_gaps": [],
+      "projection_card_counts": {
+        "available_projections": 0,
+        "deferred_projections": 0,
+        "included_cards": 0
+      },
+      "projection_cards": [],
+      "source_index": []
+    },
+    "cited_signal_evidence": [],
+    "computed_metrics": [],
+    "context_contract": {
+      "assembly_blocks": [
+        {
+          "block_type": "basic_info_cards",
+          "provenance": "projection_id"
+        },
+        {
+          "block_type": "computed_anchor",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "computed_metrics",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "document_channel",
+          "provenance": "runtime_pit_disclosure"
+        },
+        {
+          "block_type": "signal_results",
+          "provenance": "signal_ref"
+        },
+        {
+          "block_type": "cited_signal_evidence",
+          "provenance": "signal_evidence_ref"
+        },
+        {
+          "block_type": "state_evolution",
+          "provenance": "per_round_delta"
+        },
+        {
+          "block_type": "research_state",
+          "provenance": "runtime_validated_state"
+        },
+        {
+          "block_type": "analysis_prompt",
+          "provenance": "plan"
+        }
+      ],
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "complete_trajectory_retained_locally": true,
+      "kind": "typed_append_only_assembly",
+      "numeric_decision_inputs_permitted_only_in": [
+        "prediction_baseline",
+        "computed_metrics"
+      ],
+      "presentation_target_exceeded": false,
+      "target_utf8_bytes": 24000
+    },
+    "document_channel": [],
+    "final_research_state": {
+      "contradictions": [],
+      "current_beliefs": [],
+      "decision": "finalize",
+      "hypotheses": [],
+      "next_information_needs": [
+        "What is the issuer's Q2 2025 revenue guidance, and was it raised or lowered from prior guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+        "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [],
+      "supporting_evidence": []
+    },
+    "prediction_baseline": {
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "reason": "fewer_than_5_source_market_bars",
+      "status": "unavailable"
+    },
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "signal_rounds": [
+      {
+        "batch": {
+          "results": [
+            {
+              "execution": {
+                "status": "domain_unavailable"
+              },
+              "input_evidence_available_at": [],
+              "interpretation": {
+                "summary": "domain_unavailable: a normal domain coverage outcome, not a technical execution gap or failure. Visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+              },
+              "research_status": {
+                "admission_key": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c",
+                "effect_status": "unverified",
+                "research_targets": [
+                  "surge_direction"
+                ],
+                "technical_status": "admitted"
+              },
+              "signal_ref": "guidance_acceleration:v3",
+              "state": {
+                "confidence": 0.92,
+                "value": "unavailable"
+              },
+              "status": {
+                "coverage": "unavailable"
+              }
+            }
+          ],
+          "signal_calls": 1
+        },
+        "selected_signals": [
+          "guidance_acceleration:v3"
+        ]
+      }
+    ],
+    "state_evolution": [
+      {
+        "delta": {
+          "contradictions": {
+            "added": [],
+            "removed": []
+          },
+          "current_beliefs": {
+            "added": [],
+            "removed": []
+          },
+          "decision": {
+            "from": "continue",
+            "to": "finalize"
+          },
+          "hypotheses": {
+            "added": [],
+            "removed": []
+          },
+          "next_information_needs": {
+            "added": [],
+            "removed": []
+          },
+          "open_questions": {
+            "added": [],
+            "removed": []
+          },
+          "resolved_questions": {
+            "added": [],
+            "removed": []
+          },
+          "supporting_evidence": {
+            "added": [],
+            "removed_keys": []
+          }
+        },
+        "round": 1
+      }
+    ]
+  },
+  "posthoc": {
+    "basic_info_source_index": [],
+    "cited_signal_evidence": [],
+    "computed_metrics": [],
+    "context_contract": {
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "presentation_target_exceeded": false,
+      "target_chars": 24000
+    },
+    "data_gaps": [],
+    "final_research_state": {
+      "contradictions": [],
+      "current_beliefs": [],
+      "decision": "finalize",
+      "hypotheses": [],
+      "next_information_needs": [
+        "What is the issuer's Q2 2025 revenue guidance, and was it raised or lowered from prior guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+        "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [],
+      "supporting_evidence": []
+    },
+    "prediction_baseline": {
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "reason": "fewer_than_5_source_market_bars",
+      "status": "unavailable"
+    },
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "signal_results": [
+      {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        },
+        "input_evidence_available_at": [],
+        "interpretation": {
+          "summary": "domain_unavailable: a normal domain coverage outcome, not a technical execution gap or failure. Visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+        },
+        "research_status": {
+          "admission_key": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c",
+          "effect_status": "unverified",
+          "research_targets": [
+            "surge_direction"
+          ],
+          "technical_status": "admitted"
+        },
+        "signal_id": "guidance_acceleration",
+        "signal_ref": "guidance_acceleration:v3",
+        "state": {
+          "confidence": 0.92,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 3
+      }
+    ],
+    "state_evolution": []
+  }
+}

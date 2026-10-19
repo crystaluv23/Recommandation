@@ -1,0 +1,21 @@
+{
+  "bounded_selections": [
+    {
+      "answer_scope": "partial",
+      "applicability_hypothesis": "Disclosures available by the prediction cutoff may support a comparison of Q2 2025 guidance with the prior guidance for that same quarter.",
+      "context_tags": [
+        "general"
+      ],
+      "expected_role": "primary",
+      "reason_code": "answer_need",
+      "residual_need": "What numerical revenue range or point estimate did the issuer guide for Q2 2025, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+      "selection_reason": "Compare management's revised expectations with its prior outlook to assess whether the change strengthens or weakens the growth path.",
+      "signal_ref": "guidance_acceleration:v3",
+      "target_need_indices": [
+        0
+      ]
+    }
+  ],
+  "max_llm_signals": 2,
+  "max_signals": 4
+}

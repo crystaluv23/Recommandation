@@ -1,0 +1,43 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "results": [
+      {
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "interpretation": {
+            "summary": "The eligible visible filing passages concern workforce restructuring, financial outlook and non-GAAP measures. They provide no applicable customer concentration disclosure or complete literal meeting the required customer-related evidence phrases. Customer dependency and diversification therefore cannot be assessed from this bounded input; omitted text remains unknown."
+          },
+          "signal_id": "customer_concentration",
+          "state": {
+            "confidence": 0.99,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 2
+        },
+        "signal_ref": "customer_concentration:v2"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"results\":[{\"result\":{\"evidence\":{\"counter\":[],\"supporting\":[]},\"interpretation\":{\"summary\":\"The eligible visible filing passages concern workforce restructuring, financial outlook and non-GAAP measures. They provide no applicable customer concentration disclosure or complete literal meeting the required customer-related evidence phrases. Customer dependency and diversification therefore cannot be assessed from this bounded input; omitted text remains unknown.\"},\"signal_id\":\"customer_concentration\",\"state\":{\"confidence\":0.99,\"value\":\"unavailable\"},\"status\":{\"coverage\":\"unavailable\"},\"version\":2},\"signal_ref\":\"customer_concentration:v2\"}]}\n",
+  "request_hash": "46ac140df39b989d0ccd24df0527340ce93737e66f85b01215f990dccbd73f70",
+  "response_id": "local-46ac140df39b989d0ccd24df0527340ce93737e66f85b01215f990dccbd73f70",
+  "usage": {
+    "accounting_tokens": 27018,
+    "agent_id": "/root/role_31",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "b4ffd3983ba2af4d1996338cae6330262b5de820461adce175d03c550f3536a4",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "4d7654b948ceb1168092e41abde97dd0359406039944b973a840d2e19924a105",
+    "request_hash": "46ac140df39b989d0ccd24df0527340ce93737e66f85b01215f990dccbd73f70",
+    "token_usage": null
+  }
+}

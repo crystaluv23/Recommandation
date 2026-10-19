@@ -1,0 +1,21 @@
+{
+  "actual_model_version": null,
+  "backend": "independent-subagent",
+  "expectations_hash": "69c428362dce5fbc6661dac01ff73f91378e1e8185c1ac5bc7ef1a3ff1f2f85f",
+  "fixed_denominator": 3,
+  "input_hash": "fdea0cb0db284aeb1470b58b99b228867f5ad6338882d99654c280faf01cdde6",
+  "limits": {
+    "max_llm_signals_per_round": 2,
+    "max_request_tokens": 131072,
+    "max_signal_rounds": 1,
+    "max_signals_per_round": 4,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_external_api_calls": 0,
+  "max_local_calls": 36,
+  "model_selection": "inherited_host_default_precise_version_unknown",
+  "preflight_hash": "a63afa861e2a7a1ac6cbbcb63e903e1c1c27d97dda210baef0a299aa78261325",
+  "schema_version": "reviewed-direct-signal-stage-v1",
+  "scope": "seeded needs -> production routing/retrieval/Signal/Reflect/terminal/final/posthoc; no H_init/Predictor/cohort cycle"
+}
