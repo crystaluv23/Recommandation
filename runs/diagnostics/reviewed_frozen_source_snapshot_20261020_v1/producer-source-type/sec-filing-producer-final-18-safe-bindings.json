@@ -1,0 +1,99 @@
+{
+  "scope": "New8 plus root-selected10 fakeclient adapter regression selectors only. No old stage/FTI original repair or source qualification execution.",
+  "selectors": [
+    "tests.test_sec_filing_source_types",
+    "tests.test_data_resolution.EvidenceResolverTests.test_canonical_cik_routes_company_facts_and_archives_as_of_subset",
+    "tests.test_data_resolution.EvidenceResolverTests.test_source_alias_authorization_matches_signal_request_semantics",
+    "tests.test_data_resolution.EvidenceResolverTests.test_operating_menu_acquisition_append_and_cached_pool_agree",
+    "tests.test_data_resolution.EvidenceResolverTests.test_generic_filing_request_prefers_core_forms_and_skips_failed_body",
+    "tests.test_data_resolution.EvidenceResolverTests.test_sec_history_manifest_recovers_foreign_issuer_generic_filing",
+    "tests.test_data_resolution.EvidenceResolverTests.test_sec_history_scan_deduplicates_accessions_before_body_fetch",
+    "tests.test_data_resolution.EvidenceResolverTests.test_sec_history_page_failure_and_cap_remain_auditable",
+    "tests.test_data_resolution.EvidenceResolverTests.test_truncated_history_without_body_is_coverage_incomplete",
+    "tests.test_data_resolution.EvidenceResolverTests.test_foreign_sec_forms_match_generic_but_not_other_exact_forms",
+    "tests.test_data_resolution.EvidenceResolverTests.test_specific_sec_forms_do_not_substitute_for_each_other"
+  ],
+  "expanded_test_ids": [
+    "tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_actual_produced_records_persist_restart_and_native_qualifier_worker_keep_types",
+    "tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_document_limit_failed_body_fallback_and_accepted_boundary_are_preserved",
+    "tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_first_compatible_requested_generic_alias_keeps_its_priority",
+    "tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_mixed_exact_request_labels_each_actual_form_instead_of_first_type",
+    "tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_no_requested_supported_compatible_alias_never_gets_body_or_invents_source",
+    "tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_original_wrong_first_type_shape_remains_rejected_by_unchanged_qualifier",
+    "tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_reversed_exact_order_has_same_per_form_types_and_source_order",
+    "tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_single_exact_form_filter_still_excludes_other_forms_before_body_get",
+    "tests.test_data_resolution.EvidenceResolverTests.test_canonical_cik_routes_company_facts_and_archives_as_of_subset",
+    "tests.test_data_resolution.EvidenceResolverTests.test_source_alias_authorization_matches_signal_request_semantics",
+    "tests.test_data_resolution.EvidenceResolverTests.test_operating_menu_acquisition_append_and_cached_pool_agree",
+    "tests.test_data_resolution.EvidenceResolverTests.test_generic_filing_request_prefers_core_forms_and_skips_failed_body",
+    "tests.test_data_resolution.EvidenceResolverTests.test_sec_history_manifest_recovers_foreign_issuer_generic_filing",
+    "tests.test_data_resolution.EvidenceResolverTests.test_sec_history_scan_deduplicates_accessions_before_body_fetch",
+    "tests.test_data_resolution.EvidenceResolverTests.test_sec_history_page_failure_and_cap_remain_auditable",
+    "tests.test_data_resolution.EvidenceResolverTests.test_truncated_history_without_body_is_coverage_incomplete",
+    "tests.test_data_resolution.EvidenceResolverTests.test_foreign_sec_forms_match_generic_but_not_other_exact_forms",
+    "tests.test_data_resolution.EvidenceResolverTests.test_specific_sec_forms_do_not_substitute_for_each_other"
+  ],
+  "tripwires": [
+    "minimal.LABELS unreadable and real path open forbidden",
+    "minimal.prepare/_prepare_workspace forbidden",
+    "socket.socket/create_connection forbidden"
+  ],
+  "tripwire_calls": {
+    "labels": 0,
+    "prepare": 0,
+    "socket": 0
+  },
+  "candidate_and_dependency_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sources.md",
+      "sha256": "16882b954126f8622ebd0405e0f8df84495f8dc9eff625d76356619c14411c9d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "a6e54ffdc9eeb69eb381aaed311165bcc35c7e438f135aaf25bbaae31d175904"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_sec_filing_source_types.py",
+      "sha256": "2cad1e0350418c596613292f87d660fa3244426985d749f01c5b3fde7153bdda"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    }
+  ],
+  "candidate_and_dependency_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sources.md",
+      "sha256": "16882b954126f8622ebd0405e0f8df84495f8dc9eff625d76356619c14411c9d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "a6e54ffdc9eeb69eb381aaed311165bcc35c7e438f135aaf25bbaae31d175904"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_sec_filing_source_types.py",
+      "sha256": "2cad1e0350418c596613292f87d660fa3244426985d749f01c5b3fde7153bdda"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    }
+  ],
+  "source_stable": true,
+  "tests_run": 18,
+  "successful": true,
+  "failures": 0,
+  "errors": 0,
+  "log": {
+    "path": "/tmp/sec-filing-producer-final-18-safe.log",
+    "sha256": "80f4c403c2d7f6414f53fdb2abef50803633a071a6b4300851508e6ea35c8793"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/diagnose_reviewed_frozen_source_snapshot.py",
+    "--prepare",
+    "--additional-companyfacts",
+    "runs/diagnostics/frozen40_source_completion_20261020_v1/additional-companyfacts.json"
+  ],
+  "cwd": "/Users/l/Project/Recommandation",
+  "PYTHONPATH": "src:scripts",
+  "code_checkpoint": "3e67e166071c2ca43a00e82e1f6455f4e1fd5a4a",
+  "script_sha256": "b05af2849b3e54563e6041b8c11dff4d96ddce35875b4c19b7d40a2f6e126516",
+  "started_at": "2026-10-19T23:38:46.787334+00:00"
+}

@@ -1,0 +1,188 @@
+{
+  "all_request_associations": [
+    {
+      "cache_key": "1939c27f6874e93bb58772c2",
+      "capability": "financial_statements",
+      "case_id": "cik_0001681459:20250530",
+      "company_id": "cik_0001681459",
+      "cutoff": "2025-05-30T00:00:00+00:00",
+      "endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001681459.json",
+      "family": "companyfacts",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+            "sha256": "eb2fd13e04d3979a23795d2e7c270ec37d148213fed3ebe36ab9c0b4e494bf78"
+          },
+          "capability": "financial_statements",
+          "issuer_matches_case": true,
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_body_canonical_sha256": "f5b3fecd93913445721de800891bb7c17f383759b53c009eca9931f31346d071",
+          "response_cik": "0001681459",
+          "retrieved_at": "2026-09-13T02:13:07.894029+00:00",
+          "sanitized_endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001681459.json",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ]
+          ],
+          "source_key": "sec_edgar",
+          "status": "candidate_not_verified",
+          "whole_raw_comparisons": [
+            {
+              "cache_not_after_old_normalization": true,
+              "document_id": "sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800",
+              "original_binding_unchanged": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+                "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+              },
+              "whole_raw_equals_cache_body": true
+            }
+          ]
+        },
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+            "sha256": "7af2232588b1b4bbd1285362d50f304a526a58c1a2ca6d3cf1c5ed057f594d9a"
+          },
+          "capability": "financial_statements",
+          "issuer_matches_case": true,
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_body_canonical_sha256": "f5b3fecd93913445721de800891bb7c17f383759b53c009eca9931f31346d071",
+          "response_cik": "0001681459",
+          "retrieved_at": "2026-09-13T06:45:14.001031+00:00",
+          "sanitized_endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001681459.json",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ]
+          ],
+          "source_key": "sec_edgar",
+          "status": "candidate_not_verified",
+          "whole_raw_comparisons": [
+            {
+              "cache_not_after_old_normalization": false,
+              "document_id": "sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800",
+              "original_binding_unchanged": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+                "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+              },
+              "whole_raw_equals_cache_body": true
+            }
+          ]
+        },
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v106/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+            "sha256": "d70c3b2cede87a06c62df09d1dff867612d91fb6513d7b03a6d8b8bdb497295e"
+          },
+          "capability": "financial_statements",
+          "issuer_matches_case": true,
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_body_canonical_sha256": "f5b3fecd93913445721de800891bb7c17f383759b53c009eca9931f31346d071",
+          "response_cik": "0001681459",
+          "retrieved_at": "2026-09-18T20:52:53.176434+00:00",
+          "sanitized_endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001681459.json",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ]
+          ],
+          "source_key": "sec_edgar",
+          "status": "candidate_not_verified",
+          "whole_raw_comparisons": [
+            {
+              "cache_not_after_old_normalization": false,
+              "document_id": "sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800",
+              "original_binding_unchanged": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+                "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+              },
+              "whole_raw_equals_cache_body": true
+            }
+          ]
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2026-09-13T02:13:08.044160+00:00",
+          "content_hash": "f5b3fecd93913445721de800891bb7c17f383759b53c009eca9931f31346d071",
+          "document_id": "sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+            "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+          },
+          "published_at": "2026-09-13T02:13:08.044160+00:00",
+          "safe_source_metadata": {
+            "cik": "0001681459",
+            "provider": "sec_edgar"
+          },
+          "source_type": "sec_company_facts_raw_response"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ]
+      ],
+      "source": "sec_edgar",
+      "ticker": "FTI"
+    }
+  ],
+  "case_id": "cik_0001681459:20250530",
+  "company_id": "cik_0001681459",
+  "pair_audit": [
+    {
+      "body_hash": "f5b3fecd93913445721de800891bb7c17f383759b53c009eca9931f31346d071",
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+        "sha256": "eb2fd13e04d3979a23795d2e7c270ec37d148213fed3ebe36ab9c0b4e494bf78"
+      },
+      "cache_retrieved_at": "2026-09-13T02:13:07.894029+00:00",
+      "raw_normalized_at": "2026-09-13T02:13:08.044160+00:00",
+      "rawproof": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+        "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+      },
+      "status": "usable_pair"
+    },
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+        "sha256": "7af2232588b1b4bbd1285362d50f304a526a58c1a2ca6d3cf1c5ed057f594d9a"
+      },
+      "error": "Company Facts request/body/identity/cache-to-raw clock differs",
+      "error_type": "ReviewedSourceRejected",
+      "rawproof": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+        "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+      },
+      "status": "rejected_pair"
+    },
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v106/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+        "sha256": "d70c3b2cede87a06c62df09d1dff867612d91fb6513d7b03a6d8b8bdb497295e"
+      },
+      "error": "Company Facts request/body/identity/cache-to-raw clock differs",
+      "error_type": "ReviewedSourceRejected",
+      "rawproof": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+        "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+      },
+      "status": "rejected_pair"
+    }
+  ],
+  "products": [],
+  "status": "selected"
+}

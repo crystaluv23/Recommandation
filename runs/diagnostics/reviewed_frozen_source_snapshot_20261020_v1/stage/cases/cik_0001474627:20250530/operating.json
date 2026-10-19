@@ -1,0 +1,926 @@
+{
+  "case_id": "cik_0001474627:20250530",
+  "retained_selection": {
+    "case_id": "cik_0001474627:20250530",
+    "company_id": "cik_0001474627",
+    "late_accepted_periodic_exclusions": [],
+    "lookback_lower_filing_date": "2023-05-31",
+    "missing_annual_candidate": false,
+    "missing_interim_candidate": true,
+    "prediction_time": "2025-05-30T00:00:00+00:00",
+    "root_variant_errors": [],
+    "root_variants": [
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "7b1875c5ffd3aeac16b992df403dcb2f51e41ac0908263f778598fbe163c5ea7"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-04T11:34:50.738473+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v41/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "1783bc322055b31ca4b12387f35cd05789d40d592454ae516384fe06d933e5e3"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-25T13:39:26.479665+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v42/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "c142e765e39f5425fa2d390f78bb885553bd011c226ac45798e09bd7853cbdb0"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-25T15:35:15.907258+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v43/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "b10c7c56f21a36647f1755e72d6452951fc237606dd7c005191926ff1312ec8a"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-26T12:00:48.851414+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v44/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "1ad289b886832c2b6eb9a4735f60c440148385630b960bc51cb7d2ad69236011"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-26T12:27:09.242108+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v48/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "0c4da402d1da772c5a9b9d22c4489fb456a8855d84dc4ed7886b25a8c41d3464"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-26T14:27:34.537370+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v49/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "e7f79aaae5e99fe7d774c3ae48dd366d24a04f2c2120f76944f249d8fd5a8cf8"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-26T14:53:26.936663+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v51/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "536276e39d03df0b19a0bb5129a7552b3d08e48fe424b090b93f90a0e2fa76be"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-27T15:43:02.839803+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v52/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "463a748ed03dcbf47cf96860b665c75c952752a1fbbcefdc0fab78af300cbaf3"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-27T15:59:31.909819+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v53/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "7ab109ebef44ae6ac6e6fcf2606ae513bdef191af596621f5c2800e61bd8e68a"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-27T16:31:34.842291+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v54/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "b4208ff93d1c4a75b030297766ff016db2584872e6a497746501b7ab0819d5c0"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T11:50:07.463607+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v55/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "5123d6c93bf3712ef6b1fcf512f858227a4309fd92a948e02b78424e40ce9efb"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T12:21:53.444280+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v56/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "f1383ecd5da9150c9da1765c93e64443b5d630ed1945906c31ee0ad5a42e0748"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T12:29:47.520527+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v57/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "1e8486fa4dea9d6d282b6d58902142655ffca0ceb4fdc0059ba95451f6b029b7"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T12:34:04.248322+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v58/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "f8aae20fabe83d59fc738e7a882814a2c0d47d1358f7778d3507447ac62f487b"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T12:38:11.028154+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v59/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "3f4b8e02517366376847585aaadff2ad8d514895ac6d46717ca38b4d0de53a4c"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T12:44:29.732241+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260830-v76b/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "1a566105bc2252fe81f5c532eb71357e5f8ff0e64dd3bc6d9f1c8588fde0b1fc"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-30T13:02:12.387785+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      }
+    ],
+    "same_accession_conflicts": [],
+    "selected_annual_interim": [
+      {
+        "accepted_at": "2025-04-28T20:01:52+00:00",
+        "accession": "0001213900-25-036055",
+        "body_cache_matches": [
+          {
+            "binding": {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+              "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+            },
+            "original_comparisons": [
+              {
+                "cache_not_after_original_clock": false,
+                "original": {
+                  "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                  "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+                },
+                "whole_body_equal": true
+              }
+            ],
+            "request_identity_exact": true,
+            "retrieved_at": "2026-09-04T11:35:50.680736+00:00",
+            "status": "candidate_not_admitted",
+            "whole_body_sha256": "4d16cc75240ed9f3beca69ad8f0312f3c2331ce94932050dfb9d7fe95921bd20"
+          }
+        ],
+        "candidate_original_document_id": "sec:cik_0001474627:000121390025036055",
+        "content_scope": "unknown_until_whole_original_semantic_review",
+        "exact_missing_GET": null,
+        "existing_same_id_originals": [
+          {
+            "available_at": "2025-04-28T20:01:52+00:00",
+            "binding": {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+              "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+            },
+            "content_hash": "4d16cc75240ed9f3beca69ad8f0312f3c2331ce94932050dfb9d7fe95921bd20",
+            "metadata": {
+              "accession_number": "0001213900-25-036055",
+              "cik": "0001474627",
+              "form": "20-F",
+              "provider": "sec_edgar",
+              "source_url": "https://www.sec.gov/Archives/edgar/data/1474627/000121390025036055/ea0238113-20f_newegg.htm"
+            },
+            "published_at": "2025-04-28T20:01:52+00:00",
+            "source_type": "filing"
+          }
+        ],
+        "filing_date": "2025-04-28",
+        "form": "20-F",
+        "native_body_cache_key": "be64bb88e76ad0ac214b7aa9",
+        "present_in_root_variants": 17,
+        "primary_document": "ea0238113-20f_newegg.htm",
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/1474627/000121390025036055/ea0238113-20f_newegg.htm",
+        "report_period": "2024-12-31",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "7b1875c5ffd3aeac16b992df403dcb2f51e41ac0908263f778598fbe163c5ea7"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v41/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "1783bc322055b31ca4b12387f35cd05789d40d592454ae516384fe06d933e5e3"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v42/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "c142e765e39f5425fa2d390f78bb885553bd011c226ac45798e09bd7853cbdb0"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v43/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "b10c7c56f21a36647f1755e72d6452951fc237606dd7c005191926ff1312ec8a"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v44/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "1ad289b886832c2b6eb9a4735f60c440148385630b960bc51cb7d2ad69236011"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v48/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "0c4da402d1da772c5a9b9d22c4489fb456a8855d84dc4ed7886b25a8c41d3464"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v49/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "e7f79aaae5e99fe7d774c3ae48dd366d24a04f2c2120f76944f249d8fd5a8cf8"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v51/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "536276e39d03df0b19a0bb5129a7552b3d08e48fe424b090b93f90a0e2fa76be"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v52/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "463a748ed03dcbf47cf96860b665c75c952752a1fbbcefdc0fab78af300cbaf3"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v53/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "7ab109ebef44ae6ac6e6fcf2606ae513bdef191af596621f5c2800e61bd8e68a"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v54/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "b4208ff93d1c4a75b030297766ff016db2584872e6a497746501b7ab0819d5c0"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v55/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "5123d6c93bf3712ef6b1fcf512f858227a4309fd92a948e02b78424e40ce9efb"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v56/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "f1383ecd5da9150c9da1765c93e64443b5d630ed1945906c31ee0ad5a42e0748"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v57/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "1e8486fa4dea9d6d282b6d58902142655ffca0ceb4fdc0059ba95451f6b029b7"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v58/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "f8aae20fabe83d59fc738e7a882814a2c0d47d1358f7778d3507447ac62f487b"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v59/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "3f4b8e02517366376847585aaadff2ad8d514895ac6d46717ca38b4d0de53a4c"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260830-v76b/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "1a566105bc2252fe81f5c532eb71357e5f8ff0e64dd3bc6d9f1c8588fde0b1fc"
+          }
+        ],
+        "source_admission": "not_performed"
+      }
+    ],
+    "selection_status": "bounded_root_recent_candidates_only",
+    "split": "discovery",
+    "ticker": "NEGG"
+  },
+  "source_admitted": false,
+  "status": "pending_wholebody_semantic_review",
+  "targets": [
+    {
+      "accepted_at": "2025-04-28T20:01:52+00:00",
+      "accession": "0001213900-25-036055",
+      "body_cache_matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "original_comparisons": [
+            {
+              "cache_not_after_original_clock": false,
+              "original": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              },
+              "whole_body_equal": true
+            }
+          ],
+          "request_identity_exact": true,
+          "retrieved_at": "2026-09-04T11:35:50.680736+00:00",
+          "status": "candidate_not_admitted",
+          "whole_body_sha256": "4d16cc75240ed9f3beca69ad8f0312f3c2331ce94932050dfb9d7fe95921bd20"
+        }
+      ],
+      "body_variants": [
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "7b1875c5ffd3aeac16b992df403dcb2f51e41ac0908263f778598fbe163c5ea7"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v41/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "1783bc322055b31ca4b12387f35cd05789d40d592454ae516384fe06d933e5e3"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v42/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "c142e765e39f5425fa2d390f78bb885553bd011c226ac45798e09bd7853cbdb0"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v43/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "b10c7c56f21a36647f1755e72d6452951fc237606dd7c005191926ff1312ec8a"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v44/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "1ad289b886832c2b6eb9a4735f60c440148385630b960bc51cb7d2ad69236011"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v48/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "0c4da402d1da772c5a9b9d22c4489fb456a8855d84dc4ed7886b25a8c41d3464"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v49/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "e7f79aaae5e99fe7d774c3ae48dd366d24a04f2c2120f76944f249d8fd5a8cf8"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v51/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "536276e39d03df0b19a0bb5129a7552b3d08e48fe424b090b93f90a0e2fa76be"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v52/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "463a748ed03dcbf47cf96860b665c75c952752a1fbbcefdc0fab78af300cbaf3"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v53/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "7ab109ebef44ae6ac6e6fcf2606ae513bdef191af596621f5c2800e61bd8e68a"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v54/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "b4208ff93d1c4a75b030297766ff016db2584872e6a497746501b7ab0819d5c0"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v55/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "5123d6c93bf3712ef6b1fcf512f858227a4309fd92a948e02b78424e40ce9efb"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v56/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "f1383ecd5da9150c9da1765c93e64443b5d630ed1945906c31ee0ad5a42e0748"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v57/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "1e8486fa4dea9d6d282b6d58902142655ffca0ceb4fdc0059ba95451f6b029b7"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v58/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "f8aae20fabe83d59fc738e7a882814a2c0d47d1358f7778d3507447ac62f487b"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v59/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "3f4b8e02517366376847585aaadff2ad8d514895ac6d46717ca38b4d0de53a4c"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+            "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+          },
+          "candidate_canonical_record_hash": "28483aa355b7651418ab72bd68026d1b20cb896f0adc5e10c54dfe04241445d4",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001474627:000121390025036055",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+                "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260830-v76b/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+            "sha256": "1a566105bc2252fe81f5c532eb71357e5f8ff0e64dd3bc6d9f1c8588fde0b1fc"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        }
+      ],
+      "candidate_original_document_id": "sec:cik_0001474627:000121390025036055",
+      "content_scope": "unknown_until_whole_original_semantic_review",
+      "exact_missing_GET": null,
+      "existing_same_id_originals": [
+        {
+          "available_at": "2025-04-28T20:01:52+00:00",
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001474627/sec:cik_0001474627:000121390025036055.json",
+            "sha256": "8454db9de5aa9a87891b15deb0f0fc4564af8aec5d4755cf95a1d45b2d4072eb"
+          },
+          "content_hash": "4d16cc75240ed9f3beca69ad8f0312f3c2331ce94932050dfb9d7fe95921bd20",
+          "metadata": {
+            "accession_number": "0001213900-25-036055",
+            "cik": "0001474627",
+            "form": "20-F",
+            "provider": "sec_edgar",
+            "source_url": "https://www.sec.gov/Archives/edgar/data/1474627/000121390025036055/ea0238113-20f_newegg.htm"
+          },
+          "published_at": "2025-04-28T20:01:52+00:00",
+          "source_type": "filing"
+        }
+      ],
+      "filing_date": "2025-04-28",
+      "form": "20-F",
+      "native_body_cache_key": "be64bb88e76ad0ac214b7aa9",
+      "present_in_root_variants": 17,
+      "primary_document": "ea0238113-20f_newegg.htm",
+      "primary_url": "https://www.sec.gov/Archives/edgar/data/1474627/000121390025036055/ea0238113-20f_newegg.htm",
+      "report_period": "2024-12-31",
+      "root_bindings": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "7b1875c5ffd3aeac16b992df403dcb2f51e41ac0908263f778598fbe163c5ea7"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v41/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "1783bc322055b31ca4b12387f35cd05789d40d592454ae516384fe06d933e5e3"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v42/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "c142e765e39f5425fa2d390f78bb885553bd011c226ac45798e09bd7853cbdb0"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v43/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "b10c7c56f21a36647f1755e72d6452951fc237606dd7c005191926ff1312ec8a"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v44/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "1ad289b886832c2b6eb9a4735f60c440148385630b960bc51cb7d2ad69236011"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v48/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "0c4da402d1da772c5a9b9d22c4489fb456a8855d84dc4ed7886b25a8c41d3464"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v49/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "e7f79aaae5e99fe7d774c3ae48dd366d24a04f2c2120f76944f249d8fd5a8cf8"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v51/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "536276e39d03df0b19a0bb5129a7552b3d08e48fe424b090b93f90a0e2fa76be"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v52/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "463a748ed03dcbf47cf96860b665c75c952752a1fbbcefdc0fab78af300cbaf3"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v53/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "7ab109ebef44ae6ac6e6fcf2606ae513bdef191af596621f5c2800e61bd8e68a"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v54/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "b4208ff93d1c4a75b030297766ff016db2584872e6a497746501b7ab0819d5c0"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v55/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "5123d6c93bf3712ef6b1fcf512f858227a4309fd92a948e02b78424e40ce9efb"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v56/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "f1383ecd5da9150c9da1765c93e64443b5d630ed1945906c31ee0ad5a42e0748"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v57/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "1e8486fa4dea9d6d282b6d58902142655ffca0ceb4fdc0059ba95451f6b029b7"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v58/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "f8aae20fabe83d59fc738e7a882814a2c0d47d1358f7778d3507447ac62f487b"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v59/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "3f4b8e02517366376847585aaadff2ad8d514895ac6d46717ca38b4d0de53a4c"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260830-v76b/cache/data/sec_edgar/filing_documents/c7d2a2ba4eec88d35afaa21c.json",
+          "sha256": "1a566105bc2252fe81f5c532eb71357e5f8ff0e64dd3bc6d9f1c8588fde0b1fc"
+        }
+      ],
+      "source_admission": "not_performed",
+      "wholebody_semantic_review": "pending_not_form_inferred"
+    }
+  ]
+}

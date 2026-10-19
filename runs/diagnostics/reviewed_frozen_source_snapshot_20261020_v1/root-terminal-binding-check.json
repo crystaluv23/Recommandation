@@ -1,0 +1,12 @@
+{
+  "all_acceptances_remain_open": true,
+  "file_count": 969,
+  "financial_families": 25,
+  "market_families": 24,
+  "mismatches": [],
+  "no_prepare_rerun": true,
+  "operating_families": 24,
+  "original40_count": 40,
+  "plan_hash": "1123adb3e1343d9c0008cdf4008e3a3ebdd9dbca43dbf2a3bbff40fe9b14b8e1",
+  "scope": "Root terminal full-file hash and frozen plan verification; not rerun or source admission"
+}

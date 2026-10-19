@@ -1,0 +1,114 @@
+{
+  "expected_products": [
+    {
+      "canonical_record_hash": "e5011273247b444b3b4088647247853775963640d3aaf098238bda0dcdf47d10",
+      "content_hash": "bb941ab18beee0e043fcca6a5e76b67d02266adc9258140415b853e3ada4b6ad",
+      "document_id": "secfacts:0001097362:0001097362-21-000008:bb941ab18beee0e0"
+    },
+    {
+      "canonical_record_hash": "bad1ed84ccfde0adc5fceecd6e5fc5b3712a0dd9950e6212d17dc8b825443bbd",
+      "content_hash": "88f5ac759693a847cb49f7ab0ed65da09a36b5353ccdfd166f93b52fd682fadc",
+      "document_id": "secfacts:0001097362:0001097362-22-000013:88f5ac759693a847"
+    },
+    {
+      "canonical_record_hash": "242cdd54c03fdc0bb52de3a1fc4463f7812755bbfd41faa13ff38cf6239f85b4",
+      "content_hash": "da31fe88c19ccd403159c4938f785a7e8b8feb9e8bde102cd27c04bb07fd2536",
+      "document_id": "secfacts:0001097362:0001097362-23-000013:da31fe88c19ccd40"
+    },
+    {
+      "canonical_record_hash": "959d7302cf808e6ec347e6edcd46fbdcbea885d1b42054cd2ac0c7c1223148da",
+      "content_hash": "51ec15c7e5aeac7f0b8cf2c92afdb41b3284989e0f3e3bff6ea50a260bb5c9b3",
+      "document_id": "secfacts:0001097362:0001097362-24-000007:51ec15c7e5aeac7f"
+    },
+    {
+      "canonical_record_hash": "795492f5d0b4e78d74f4b9822c11e0fcf6514371a0d0cad5ce042625f7104c48",
+      "content_hash": "7f6de852cde544af7b4785c053e57f6b5014f2db46a559c799da7accddbba9da",
+      "document_id": "secfacts:0001097362:0001097362-25-000008:7f6de852cde544af"
+    },
+    {
+      "canonical_record_hash": "867ca3949f1812547ae2db181ff6c632356cd33ae63916bc2cfadf657b124d8a",
+      "content_hash": "4dcc3b7218b6c50f368257000f82377cab8b4fb60fa0b61429e8552bff617cb3",
+      "document_id": "secfacts:0001097362:0001193125-18-047494:4dcc3b7218b6c50f"
+    },
+    {
+      "canonical_record_hash": "9d3089ce6ac7711e365f210c11cf4a8d2b2d3038f8513755af3162d2e79486a1",
+      "content_hash": "7ba10fee33e7155c1528738ec7bc6d7249729f6e990c9d4422c58a80b22439f7",
+      "document_id": "secfacts:0001097362:0001193125-19-041325:7ba10fee33e7155c"
+    },
+    {
+      "canonical_record_hash": "3e507509cdcac4922b9dd6f8dcd57296936e3ee8347a053f51260bc06731b22b",
+      "content_hash": "92c2f733b3f34581d745aabed95abf6a4356e85ad84ffefe89835399ab20e08c",
+      "document_id": "secfacts:0001097362:0001193125-20-035808:92c2f733b3f34581"
+    }
+  ],
+  "item": {
+    "cik": "0001097362",
+    "company_id": "cik_0001097362",
+    "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001097362.json",
+    "symbol": "SLF"
+  },
+  "normalized_at": "2026-10-19T23:38:52.102055+00:00",
+  "normalizer_profile": "sec_companyfacts_filed_next_utc_day_v1",
+  "provenance": {
+    "acquisition_policy_hash": "8b8fbfbd4bf57efe1adcf7a40ee035479d2d07ecaccc601728c0beea6b4ae295",
+    "acquisition_selection": {
+      "available_at_through": "2025-07-31T00:00:00+00:00",
+      "form_allowlist": [
+        "10-K",
+        "10-K/A",
+        "10-Q",
+        "10-Q/A",
+        "20-F",
+        "20-F/A",
+        "40-F",
+        "40-F/A",
+        "6-K",
+        "6-K/A",
+        "8-K",
+        "8-K/A"
+      ],
+      "period_end_from": "0001-01-01",
+      "period_end_through": "2025-07-31",
+      "taxonomy_allowlist": [
+        "dei",
+        "ifrs-full",
+        "srt",
+        "us-gaap"
+      ]
+    }
+  },
+  "raw_response": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001097362/sec_edgar:cik_0001097362:sec_company_facts_raw_response:819a8f001106500074304ba9.json",
+    "sha256": "4638a4f0ec2b9aeb88e01bf01cc0ba4290bea3df07e2572d8d4c87253d356d09"
+  },
+  "schema_version": "sec-companyfacts-normalization-v1",
+  "selection": {
+    "available_at_through": "2025-07-31T00:00:00+00:00",
+    "form_allowlist": [
+      "10-K",
+      "10-K/A",
+      "10-Q",
+      "10-Q/A",
+      "20-F",
+      "20-F/A",
+      "40-F",
+      "40-F/A",
+      "6-K",
+      "6-K/A",
+      "8-K",
+      "8-K/A"
+    ],
+    "period_end_from": "0001-01-01",
+    "period_end_through": "2025-07-31",
+    "taxonomy_allowlist": [
+      "dei",
+      "ifrs-full",
+      "srt",
+      "us-gaap"
+    ]
+  },
+  "source_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/sec_edgar/financial_statements/8e36b671b102c3617aa08404.json",
+    "sha256": "3886664cc2c606de575b192937f4fd0375a8263183abbf3410dfe3200421fcef"
+  }
+}

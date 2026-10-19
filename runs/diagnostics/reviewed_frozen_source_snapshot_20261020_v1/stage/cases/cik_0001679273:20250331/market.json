@@ -1,0 +1,111 @@
+{
+  "case_id": "cik_0001679273:20250331",
+  "request_associations": [
+    {
+      "cache_key": "3e18ebbb0ad1a3a02ce3dfe1",
+      "capability": "price_daily",
+      "case_id": "cik_0001679273:20250331",
+      "company_id": "cik_0001679273",
+      "cutoff": "2025-03-31T00:00:00+00:00",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/LW/range/1/day/2024-02-25/2025-03-30",
+      "family": "market_daily",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v115/cache/data/massive/price_daily/3e18ebbb0ad1a3a02ce3dfe1.json",
+            "sha256": "0839846dbbfecac0ba573bb32880e4c598fb4caccc744e729866375d8489b94f"
+          },
+          "capability": "price_daily",
+          "historical_issuer_split_and_production_reconstruction": "not_verified_or_newly_queried",
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_adjusted": true,
+          "response_bar_count": 131,
+          "response_body_canonical_sha256": "7aba75da0674226f7f929d5aac329e8aa7e908782339183f3213ae3d68819211",
+          "response_status": "OK",
+          "response_symbol": "LW",
+          "retrieved_at": "2026-09-19T08:34:01.937725+00:00",
+          "sanitized_endpoint": "https://api.massive.com/v2/aggs/ticker/LW/range/1/day/2024-02-25/2025-03-30",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "source_key": "massive",
+          "status": "candidate_not_verified"
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2025-03-29T00:00:00+00:00",
+          "content_hash": "3d1b6b6b36d2a1ad12bb491212929da7be75f82469f9dc7b7ed5494c94d984e5",
+          "document_id": "massive:cik_0001679273:market_data:3d1b6b6b36d2a1ad12bb4912",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001679273/massive:cik_0001679273:market_data:3d1b6b6b36d2a1ad12bb4912.json",
+            "sha256": "7e880676de11ee9093d8c0d82355b6fbe9ec28fb0946d277164f120b2d031b2e"
+          },
+          "published_at": "2025-03-29T00:00:00+00:00",
+          "safe_source_metadata": {
+            "end": "2025-03-30",
+            "provider": "massive",
+            "start": "2024-02-25",
+            "symbol": "LW"
+          },
+          "source_type": "market_data"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ],
+        [
+          "adjusted",
+          "true"
+        ],
+        [
+          "limit",
+          "50000"
+        ],
+        [
+          "sort",
+          "asc"
+        ]
+      ],
+      "source": "massive",
+      "ticker": "LW"
+    }
+  ],
+  "source_admitted": false,
+  "status": "unknown_missing_proofs",
+  "variants": [
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v115/cache/data/massive/price_daily/3e18ebbb0ad1a3a02ce3dfe1.json",
+        "sha256": "0839846dbbfecac0ba573bb32880e4c598fb4caccc744e729866375d8489b94f"
+      },
+      "complete_canonical_reconstruction": true,
+      "latest_bar": "2025-03-28",
+      "normalized_at": "2026-09-19T08:34:01.942170+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001679273/massive:cik_0001679273:market_data:3d1b6b6b36d2a1ad12bb4912.json",
+        "sha256": "7e880676de11ee9093d8c0d82355b6fbe9ec28fb0946d277164f120b2d031b2e"
+      },
+      "provider_retrieved_at": "2026-09-19T08:34:01.937725+00:00",
+      "status": "origin_reconstructed_missing_issuer_split_proofs"
+    }
+  ]
+}

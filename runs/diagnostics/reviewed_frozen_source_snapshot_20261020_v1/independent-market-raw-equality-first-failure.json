@@ -1,0 +1,21 @@
+{
+  "scope": "Independent reader rawfield equality failure, no business/materializer execution",
+  "case_id": "cik_0001814215:20250530",
+  "original": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001814215/massive:cik_0001814215:market_data:a3e97dfce3b5b1301f8725f2.json",
+    "sha256": "31769669d533320b6b451da27c83cd9dadce885cdc6fe2551802f2610cba5767"
+  },
+  "cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v107/cache/data/massive/price_daily/43f7d458408af2af31eebf3e.json",
+    "sha256": "b72314c09f0e3f7c6026e835da979e1cd88f16009eb9423928c55e1502f5111f"
+  },
+  "index": 0,
+  "date": "2024-09-18",
+  "field": "volume",
+  "raw_field": "v",
+  "raw_value": 3262.780561,
+  "canonical_value": 3262,
+  "native_rule": "volume=int(float(row[v])); OHLC=float; adjusted_close=close",
+  "native_expected": 3262,
+  "native_caster_matches": true
+}

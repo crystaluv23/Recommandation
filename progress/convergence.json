@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-19T23:00:49Z",
+    "checked_at": "2026-10-19T23:44:49.386006+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "root actual get_goal after unique original40 source-only execution; goal active, no historical experiment resumed"
+    "source": "Root actual get_goal after sole fixed40 preappend diagnosis; goal remains active, no historical experiment resumed"
   },
   "acceptance": [
     {
@@ -102,9 +102,17 @@
         "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/execution-summary.json",
         "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/root-plan-review.json",
         "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/independent-source-consumer-review.json",
-        "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/next-full48-scope-inventory.json"
+        "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/next-full48-scope-inventory.json",
+        "reports/frozen40-source-completion-preparation-20261020.md",
+        "runs/diagnostics/frozen40_source_completion_20261020_v1/local-cache-chain-inventory.json",
+        "runs/diagnostics/frozen40_source_completion_20261020_v1/independent-actual-companyfacts-fetch-review.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/result.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/prepare-summary.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/root-terminal-binding-check.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-operating-collision-review.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-actual-review.json"
       ],
-      "remaining": "Fixed15/v12:254/270inputs,15/15>=0.8,new653docsourceview verified. Alloperatingprojections partial; news15/KGC180dayorder1 gaps andMSannualtime conflict retained. Local source/input readiness only, not correct Signal measurement or fullnative v6 case contract. Trace historical48 inventory vs native40 selection and label-free identity authority without LockedTest widening. Transcript completepublicproofs,freshF7/fullF10/Slow/direction+magnitudeadmission+reuse/wholeloop remainopen;originalFYbasic0/3 unchanged.Independentbenefitlaterunknown."
+      "remaining": "Original40 actualdual720 remains262resolved/458gap eachv6/v12,15/40>=.8. Completepreappend842financialproducts passnativeprofile but4metadata collisions,0newappend/view/matrix. Market23families requireproof/FTIwindowaftercutoff; operatingwholebodyreviewpending andFTIwrongtypeoriginal correctlyrejects. Transcriptcompletepublicproofs,freshF7/fullF10/Slow/direction+magnitudeadmission+reuse/wholeloop open; originalFYbasic0/3 retained. Independentbenefitlaterunknown."
     },
     {
       "id": "feedback_consumption",
@@ -802,10 +810,37 @@
         "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/remaining-source-candidate-inventory.json"
       ],
       "result": "One frozen9bfea3bd/plan930439 source-onlyexecution exit0/248.440s; original40(16Anchor/16Discovery/8Validation) retained,720inputseachv6/v12. Each262resolved/458gaps,15/40>=.8; Anchor14x17+KGC16+BMBL8,all24nonanchor0/18.40BasicInfo160requests:47resolvedallpartial,113unavailable. Independent1742bindings/both720allrequest-ref-sourceCIK/PIT/period/obs/literalspans/all40exactprojectionlineage and653workerrestart verified; root124terminalfiles+old683byteschecked. Sourceownerprepare deserializedboundmixedoriginwhitelistonly; execute/root/revieweronlystreamSHA,nooutcomeuse/LabelStore/LockedTest.0GET/model/apply/fullprepare/globalwrites.25localcandidateinventorylocates5exactCompanyFacts cache/rawchains;20unlocatedwithincheckedrootsunknown,nogeneralabsence/admission. Inputs consumed/preserved correctly but whole-source/F2/MVPnotclosed."
+    },
+    {
+      "id": "engineering-mvp-original40-complete-source-preappend-20261020",
+      "strategy": "full_original40_source_family_preappend_native_diagnosis",
+      "failure_families": [
+        "restricted_cache_roots_hide_existing_proof",
+        "native_source_alias_qualification_mismatch",
+        "additional_receipt_contradictions",
+        "same_content_id_different_provenance_metadata",
+        "supplement_omits_existing_typed_original",
+        "multi_form_source_type_mislabel",
+        "original_market_window_after_cutoff"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/frozen40-source-completion-preparation-20261020.md",
+        "runs/diagnostics/frozen40_source_completion_20261020_v1/local-cache-chain-inventory.json",
+        "runs/diagnostics/frozen40_source_completion_20261020_v1/independent-actual-companyfacts-fetch-review.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/result.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/prepare-summary.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/root-terminal-binding-check.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-operating-collision-review.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-actual-review.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/producer-source-type/sec-filing-producer-final-18-safe-bindings.json",
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/producer-source-type-independent-review.json"
+      ],
+      "result": "Checkpoint3e67e166 soleprepare40.411s/exit0,plan1123adb3,969terminalfiles; fixed40/25financial/24market/24operating.842derived=expected=nativeprofilepass,838no-collision,4GPREmetadata collisions preserved.23marketfamilies242originals reconstructed,FTIsolewindow exceedsMay30cutoff.41operatingtargets31bodycandidates/71mechanicalvariants,wholebodypending.15prototypecollisions:12variants/3originalIDs passas-is afterlookup omission,3variants/FTIinterim originaltype10-k vsproved10-Q rightlyreject.92knownmissingrequests53splits29issuer10primarynot sent.19of20previouslyunlocatedCFchainsfoundcrossroot,onlyGPRE1actualGET thisphase.0append/view/matrix/model/labels/fullprepare,noMVPacceptanceadvance. Independent3964bindingsbeforeafter/969files/842products andallrequestassociationschecked. FTIoriginalwindowendsJuly30/availableJuly31,notjustsame-dayMay30edge. Marketvolumeusesexistingintegercaster,notlosslessrawfraction. Subsequentproducerfix local18safe tests passed,old3e module reproduced mixed/reverse2failures; oldFTIrecord unchanged,futureactual acquisitionpending. Independent13producercontrols/fourforms/genericpriorities/IDs/PIT/nativequalificationpassed; localproducerdefectonly,no sourceadmission."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-original40-dual-registry-source-readiness-20261020",
+    "after_iteration": "engineering-mvp-original40-complete-source-preappend-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -964,7 +999,17 @@
       "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/execution-summary.json",
       "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/independent-actual-consumer-review.json",
       "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/root-final-binding-check.json",
-      "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/remaining-source-candidate-inventory.json"
+      "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/remaining-source-candidate-inventory.json",
+      "reports/frozen40-source-completion-preparation-20261020.md",
+      "runs/diagnostics/frozen40_source_completion_20261020_v1/local-cache-chain-inventory.json",
+      "runs/diagnostics/frozen40_source_completion_20261020_v1/independent-actual-companyfacts-fetch-review.json",
+      "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/result.json",
+      "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/prepare-summary.json",
+      "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/root-terminal-binding-check.json",
+      "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-operating-collision-review.json",
+      "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-actual-review.json",
+      "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/producer-source-type/sec-filing-producer-final-18-safe-bindings.json",
+      "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/producer-source-type-independent-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1008,21 +1053,24 @@
       "A literal parent exhibit link and same-row description mentioning another numbered exhibit did not prove the target index number. Independent rehashed source/receipt/original controls exposed this false admission; independent number-cell and ambiguity checks now retain uncertain null types. Mechanical source-clock equality remains weaker than resolving an independently observed official clock conflict.",
       "A qualified annual source may resolve most soft inputs while missing a narrower180dayrequest: KGC March27 predates April3start forSeptember30. Root briefly extrapolated17/18 toKGC; actual16 was read and corrected before finalreport. Distinguish historical48 source denominator from native40 selection and different exactv6 refs; no inventory through label-bearing splits.",
       "The repeated48 claim came from a comment rather than the capped selection producer or actual frozenmanifest. Experiment-specific zero-access rules were also overread as a global prohibition on authorized offline source-owner metadata projection; the upper blind contract protects research consumers and sealedLockedTest.",
-      "A qualified15-Anchor view passing15/15 did not establish the original40cohort: the real dual720 matrices expose24nonanchor zeros and9missingBMBLfinancial inputs. Local filenames are weaker than exactcache/proof lineage; only5of25chains were located in bounded known roots, which is not global absence. Equalv6/v12input counts also do not establish equal measurements."
+      "A qualified15-Anchor view passing15/15 did not establish the original40cohort: the real dual720 matrices expose24nonanchor zeros and9missingBMBLfinancial inputs. Local filenames are weaker than exactcache/proof lineage; only5of25chains were located in bounded known roots, which is not global absence. Equalv6/v12input counts also do not establish equal measurements.",
+      "A restricted cache-root inventory hid19validCompanyFacts proofchains. Exactrequest-key census across retained roots changed the hypothesis; one realGPREGET supplied the remainingchain, not25newGETs.",
+      "Legal typedSEC aliases were supported by acquisition but qualification requiredfiling; original10-k proof passed after sharedexactformpredicate. Final independent rehashedreceipt controls exposed method/status/counter contradictions absent from positivefixtures.",
+      "Supplemental lookup still omitted4existing exactIDs acrosstyped namespaces. Prototypecollision is not originalfailure:3originals mechanicallypassas-is,whileFTIinterim10-k type conflictswith10-Q proof. Outerloop firstsupportedsource selection is a producer recurrence risk, not a reason to weaken qualification."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "bounded_original40_missing_source_proof_families",
-      "action": "Preserve completed dual720 stage. Within original40, qualify missing24nonanchor sources andBMBLfinancial through existing approved provenance/PIT profiles. Start from exactretained5CompanyFacts cache/rawpairs and locate remaining20chains with explicitbounded roots/identity; use a concreteboundedreadonly acquisition plan when localproof cannot establish inputs. Cover market/operating/financial families withoutcasefiltering or metadata-onlyadmission.",
-      "stop": "No completedstage reentry/hotpatch, fullprepare/model/fullsuccessor or LockedTest. Do not changecohort/refs/lookbacks/contextcaps or infernews/orderabsence. An unlocatedcache is unknown, not proofmissingglobally.",
-      "question": "Which exact missing inputs can be supported by retained complete original/proof chains under current profiles, and which require bounded public-source acquisition?",
-      "pass": "Original40identities/cutoffs fixed; candidateissuer/rawcache/nativecanonical/PIT proof is checked for allproposedsourcefamilies, everyunknown preserved, olddocs untouched and sourcequeries explicitly bounded.",
-      "fail": "Only filename/legacyaggregates/unchecked retrospective body or missingcachematch supports a source, or known clock/issuer/PIT conflicts remain.",
-      "on_pass": "Freeze one separate qualified source-only input/view diagnostic for the same40 and exactRegistry groups; then choose actualnextMVPconsumer based on preservedgaps.",
-      "on_fail": "Retain precisegap; change lookup hypothesis or acquire bounded originalproof rather than reattempt same scan or shrinkscope.",
-      "new_evidence": "Both720groups262resolved/458gap; all24nonanchor outsidefixedview,BMBL9financialmissing. All40havefilenamecandidates but bounded25auditlocatesonly5exactCompanyFacts/rawchains and5filing/root+5dailycandidates,not sourceadmission.",
-      "distinguishing_variable": "Native source reconstruction and complete issuer/time/proof chain at each original cutoff, rather than local file existence, prior15pass or equalversionstatus totals."
+      "strategy": "bounded_remaining_source_proofs_and_producer_identity",
+      "action": "Preserve terminal3e67e166 preparation and all40cases. Multi-form produceralias selection is locally repaired under existingform contract; verify its next realacquisition without rerunning oldstage. Retain FTIwrongtype andGPREmetadata conflicts without overwrite. Use directexact originals for3mechanicallyqualified omittedIDs. Review wholebody operating scope and prepare one separate bounded missingproof acquisition plan from92retained endpoint/query requests; specifyFTIeligible dailywindow separately before acquisition. No oldstage rerun or metadataonly admission.",
+      "stop": "No fullprepare/model/fullsuccessor/LockedTest. No originaltype/clock/ID rewrite, source-policy widening or completedstage reentry. Do not run the old30requestcollector against new92plan. Preserve news/transcriptunknowns and allfixedcases.",
+      "question": "Which remaining source gaps are genuine missing external proofs, originalwindow/type errors, or harmless lookup omissions that can use existing originals as-is?",
+      "pass": "Existingmechanicalqualification preserved with correct per-filing produceralias, allplannedGETs exactbound andbudgeted, wholebody scope reviewed, and conflicting originalrecords remainexplicitlyexcluded.",
+      "fail": "Sourceadequacy still depends on guessedform/clock, overwrittenIDs, incompletebody, postcutoffdailydata or source-based cohortfiltering.",
+      "on_pass": "Freeze a new bounded proofcollection and sourceadmission phase, then separately qualify one complete newsourceview and bothoriginal720inputs; no impliedfullrun authorization.",
+      "on_fail": "Retain preciseunresolved dispositions; repair the responsible producer/proof boundary or prepare a concrete contract decision rather than rerun preparation.",
+      "new_evidence": "All25financialfamilies now reconstructed842products;4metadatacollisions,FTIdailywindow andexactformmislabel distinguish truegaps from19cachelookuplosses and3validomittedoriginals.92exactmissingproofrequests identified,not yetfetched.",
+      "distinguishing_variable": "Native complete records and actualoriginal issuer/form/publictime/canonicalproof at the fixedcutoff, versus a prototype hash difference or filenameabsence."
     }
   },
   "successor_prerequisites": [

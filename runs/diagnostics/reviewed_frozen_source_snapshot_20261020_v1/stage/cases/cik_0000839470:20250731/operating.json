@@ -1,0 +1,345 @@
+{
+  "case_id": "cik_0000839470:20250731",
+  "retained_selection": {
+    "case_id": "cik_0000839470:20250731",
+    "company_id": "cik_0000839470",
+    "late_accepted_periodic_exclusions": [],
+    "lookback_lower_filing_date": "2023-08-01",
+    "missing_annual_candidate": false,
+    "missing_interim_candidate": false,
+    "prediction_time": "2025-07-31T00:00:00+00:00",
+    "root_variant_errors": [],
+    "root_variants": [
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/24889e573ce0088de05560ae.json",
+          "sha256": "e5d1afc3bdcab00f3a2d5dbb1042e574a3d252fe58db2b53f7594bb65456d0ae"
+        },
+        "eligible_periodic_rows": 8,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-21T16:29:12.366589+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      }
+    ],
+    "same_accession_conflicts": [],
+    "selected_annual_interim": [
+      {
+        "accepted_at": "2025-03-20T20:30:47+00:00",
+        "accession": "0001558370-25-003382",
+        "body_cache_matches": [
+          {
+            "binding": {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/8eda09c5e2e9440211383bd4.json",
+              "sha256": "b10836e4f2d65d76db4c471a380224d5a63657353bad570f662fbb7b535072e9"
+            },
+            "original_comparisons": [
+              {
+                "cache_not_after_original_clock": false,
+                "original": {
+                  "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025003382.json",
+                  "sha256": "e919b708fd8e639e1c41eba4c2f8cec39faa12cc2488234de271beeb3138bd38"
+                },
+                "whole_body_equal": true
+              }
+            ],
+            "request_identity_exact": true,
+            "retrieved_at": "2026-08-21T16:29:17.634819+00:00",
+            "status": "candidate_not_admitted",
+            "whole_body_sha256": "3f1da6ee5ec58aa0c337053f922a900fc383a0bb69017b2a659153e563dfc230"
+          }
+        ],
+        "candidate_original_document_id": "sec:cik_0000839470:000155837025003382",
+        "content_scope": "unknown_until_whole_original_semantic_review",
+        "exact_missing_GET": null,
+        "existing_same_id_originals": [
+          {
+            "available_at": "2025-03-20T20:30:47+00:00",
+            "binding": {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025003382.json",
+              "sha256": "e919b708fd8e639e1c41eba4c2f8cec39faa12cc2488234de271beeb3138bd38"
+            },
+            "content_hash": "3f1da6ee5ec58aa0c337053f922a900fc383a0bb69017b2a659153e563dfc230",
+            "metadata": {
+              "accession_number": "0001558370-25-003382",
+              "cik": "0000839470",
+              "form": "10-K",
+              "provider": "sec_edgar",
+              "source_url": "https://www.sec.gov/Archives/edgar/data/839470/000155837025003382/wwr-20241231x10k.htm"
+            },
+            "published_at": "2025-03-20T20:30:47+00:00",
+            "source_type": "filing"
+          }
+        ],
+        "filing_date": "2025-03-20",
+        "form": "10-K",
+        "native_body_cache_key": "8eda09c5e2e9440211383bd4",
+        "present_in_root_variants": 1,
+        "primary_document": "wwr-20241231x10k.htm",
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/839470/000155837025003382/wwr-20241231x10k.htm",
+        "report_period": "2024-12-31",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/24889e573ce0088de05560ae.json",
+            "sha256": "e5d1afc3bdcab00f3a2d5dbb1042e574a3d252fe58db2b53f7594bb65456d0ae"
+          }
+        ],
+        "source_admission": "not_performed"
+      },
+      {
+        "accepted_at": "2025-05-14T20:30:34+00:00",
+        "accession": "0001558370-25-007769",
+        "body_cache_matches": [
+          {
+            "binding": {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/47837a9dc115ec106ab6d6e8.json",
+              "sha256": "a3bd2db4b2b2e2675a3c923add5d11ed5d57a5d8cb0e608bf6c2c776de09af62"
+            },
+            "original_comparisons": [
+              {
+                "cache_not_after_original_clock": false,
+                "original": {
+                  "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025007769.json",
+                  "sha256": "4d3ca6627b0df924bc85985869002d7537fd9d5a76519bb329faaeec22d0484a"
+                },
+                "whole_body_equal": true
+              }
+            ],
+            "request_identity_exact": true,
+            "retrieved_at": "2026-08-21T16:29:15.799282+00:00",
+            "status": "candidate_not_admitted",
+            "whole_body_sha256": "d6750826b631f33f631db9e7beba3750206793626d437c871b9312e5a195d964"
+          }
+        ],
+        "candidate_original_document_id": "sec:cik_0000839470:000155837025007769",
+        "content_scope": "unknown_until_whole_original_semantic_review",
+        "exact_missing_GET": null,
+        "existing_same_id_originals": [
+          {
+            "available_at": "2025-05-14T20:30:34+00:00",
+            "binding": {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025007769.json",
+              "sha256": "4d3ca6627b0df924bc85985869002d7537fd9d5a76519bb329faaeec22d0484a"
+            },
+            "content_hash": "d6750826b631f33f631db9e7beba3750206793626d437c871b9312e5a195d964",
+            "metadata": {
+              "accession_number": "0001558370-25-007769",
+              "cik": "0000839470",
+              "form": "10-Q",
+              "provider": "sec_edgar",
+              "source_url": "https://www.sec.gov/Archives/edgar/data/839470/000155837025007769/wwr-20250331x10q.htm"
+            },
+            "published_at": "2025-05-14T20:30:34+00:00",
+            "source_type": "filing"
+          }
+        ],
+        "filing_date": "2025-05-14",
+        "form": "10-Q",
+        "native_body_cache_key": "47837a9dc115ec106ab6d6e8",
+        "present_in_root_variants": 1,
+        "primary_document": "wwr-20250331x10q.htm",
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/839470/000155837025007769/wwr-20250331x10q.htm",
+        "report_period": "2025-03-31",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/24889e573ce0088de05560ae.json",
+            "sha256": "e5d1afc3bdcab00f3a2d5dbb1042e574a3d252fe58db2b53f7594bb65456d0ae"
+          }
+        ],
+        "source_admission": "not_performed"
+      }
+    ],
+    "selection_status": "bounded_root_recent_candidates_only",
+    "split": "evolution_validation",
+    "ticker": "WWR"
+  },
+  "source_admitted": false,
+  "status": "pending_wholebody_semantic_review",
+  "targets": [
+    {
+      "accepted_at": "2025-03-20T20:30:47+00:00",
+      "accession": "0001558370-25-003382",
+      "body_cache_matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/8eda09c5e2e9440211383bd4.json",
+            "sha256": "b10836e4f2d65d76db4c471a380224d5a63657353bad570f662fbb7b535072e9"
+          },
+          "original_comparisons": [
+            {
+              "cache_not_after_original_clock": false,
+              "original": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025003382.json",
+                "sha256": "e919b708fd8e639e1c41eba4c2f8cec39faa12cc2488234de271beeb3138bd38"
+              },
+              "whole_body_equal": true
+            }
+          ],
+          "request_identity_exact": true,
+          "retrieved_at": "2026-08-21T16:29:17.634819+00:00",
+          "status": "candidate_not_admitted",
+          "whole_body_sha256": "3f1da6ee5ec58aa0c337053f922a900fc383a0bb69017b2a659153e563dfc230"
+        }
+      ],
+      "body_variants": [
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/8eda09c5e2e9440211383bd4.json",
+            "sha256": "b10836e4f2d65d76db4c471a380224d5a63657353bad570f662fbb7b535072e9"
+          },
+          "candidate_canonical_record_hash": "3fadb8dcd19924229efc66300a391a6262fa258694945131cec41a64d8ea2e6c",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025003382.json",
+            "sha256": "e919b708fd8e639e1c41eba4c2f8cec39faa12cc2488234de271beeb3138bd38"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0000839470:000155837025003382",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025003382.json",
+                "sha256": "e919b708fd8e639e1c41eba4c2f8cec39faa12cc2488234de271beeb3138bd38"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/24889e573ce0088de05560ae.json",
+            "sha256": "e5d1afc3bdcab00f3a2d5dbb1042e574a3d252fe58db2b53f7594bb65456d0ae"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        }
+      ],
+      "candidate_original_document_id": "sec:cik_0000839470:000155837025003382",
+      "content_scope": "unknown_until_whole_original_semantic_review",
+      "exact_missing_GET": null,
+      "existing_same_id_originals": [
+        {
+          "available_at": "2025-03-20T20:30:47+00:00",
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025003382.json",
+            "sha256": "e919b708fd8e639e1c41eba4c2f8cec39faa12cc2488234de271beeb3138bd38"
+          },
+          "content_hash": "3f1da6ee5ec58aa0c337053f922a900fc383a0bb69017b2a659153e563dfc230",
+          "metadata": {
+            "accession_number": "0001558370-25-003382",
+            "cik": "0000839470",
+            "form": "10-K",
+            "provider": "sec_edgar",
+            "source_url": "https://www.sec.gov/Archives/edgar/data/839470/000155837025003382/wwr-20241231x10k.htm"
+          },
+          "published_at": "2025-03-20T20:30:47+00:00",
+          "source_type": "filing"
+        }
+      ],
+      "filing_date": "2025-03-20",
+      "form": "10-K",
+      "native_body_cache_key": "8eda09c5e2e9440211383bd4",
+      "present_in_root_variants": 1,
+      "primary_document": "wwr-20241231x10k.htm",
+      "primary_url": "https://www.sec.gov/Archives/edgar/data/839470/000155837025003382/wwr-20241231x10k.htm",
+      "report_period": "2024-12-31",
+      "root_bindings": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/24889e573ce0088de05560ae.json",
+          "sha256": "e5d1afc3bdcab00f3a2d5dbb1042e574a3d252fe58db2b53f7594bb65456d0ae"
+        }
+      ],
+      "source_admission": "not_performed",
+      "wholebody_semantic_review": "pending_not_form_inferred"
+    },
+    {
+      "accepted_at": "2025-05-14T20:30:34+00:00",
+      "accession": "0001558370-25-007769",
+      "body_cache_matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/47837a9dc115ec106ab6d6e8.json",
+            "sha256": "a3bd2db4b2b2e2675a3c923add5d11ed5d57a5d8cb0e608bf6c2c776de09af62"
+          },
+          "original_comparisons": [
+            {
+              "cache_not_after_original_clock": false,
+              "original": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025007769.json",
+                "sha256": "4d3ca6627b0df924bc85985869002d7537fd9d5a76519bb329faaeec22d0484a"
+              },
+              "whole_body_equal": true
+            }
+          ],
+          "request_identity_exact": true,
+          "retrieved_at": "2026-08-21T16:29:15.799282+00:00",
+          "status": "candidate_not_admitted",
+          "whole_body_sha256": "d6750826b631f33f631db9e7beba3750206793626d437c871b9312e5a195d964"
+        }
+      ],
+      "body_variants": [
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/47837a9dc115ec106ab6d6e8.json",
+            "sha256": "a3bd2db4b2b2e2675a3c923add5d11ed5d57a5d8cb0e608bf6c2c776de09af62"
+          },
+          "candidate_canonical_record_hash": "c0638c9915dfc52707309964bba5d40c85d7ca86ff9f401f221a2470396c518e",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025007769.json",
+            "sha256": "4d3ca6627b0df924bc85985869002d7537fd9d5a76519bb329faaeec22d0484a"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0000839470:000155837025007769",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025007769.json",
+                "sha256": "4d3ca6627b0df924bc85985869002d7537fd9d5a76519bb329faaeec22d0484a"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/24889e573ce0088de05560ae.json",
+            "sha256": "e5d1afc3bdcab00f3a2d5dbb1042e574a3d252fe58db2b53f7594bb65456d0ae"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        }
+      ],
+      "candidate_original_document_id": "sec:cik_0000839470:000155837025007769",
+      "content_scope": "unknown_until_whole_original_semantic_review",
+      "exact_missing_GET": null,
+      "existing_same_id_originals": [
+        {
+          "available_at": "2025-05-14T20:30:34+00:00",
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000839470/sec:cik_0000839470:000155837025007769.json",
+            "sha256": "4d3ca6627b0df924bc85985869002d7537fd9d5a76519bb329faaeec22d0484a"
+          },
+          "content_hash": "d6750826b631f33f631db9e7beba3750206793626d437c871b9312e5a195d964",
+          "metadata": {
+            "accession_number": "0001558370-25-007769",
+            "cik": "0000839470",
+            "form": "10-Q",
+            "provider": "sec_edgar",
+            "source_url": "https://www.sec.gov/Archives/edgar/data/839470/000155837025007769/wwr-20250331x10q.htm"
+          },
+          "published_at": "2025-05-14T20:30:34+00:00",
+          "source_type": "filing"
+        }
+      ],
+      "filing_date": "2025-05-14",
+      "form": "10-Q",
+      "native_body_cache_key": "47837a9dc115ec106ab6d6e8",
+      "present_in_root_variants": 1,
+      "primary_document": "wwr-20250331x10q.htm",
+      "primary_url": "https://www.sec.gov/Archives/edgar/data/839470/000155837025007769/wwr-20250331x10q.htm",
+      "report_period": "2025-03-31",
+      "root_bindings": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/24889e573ce0088de05560ae.json",
+          "sha256": "e5d1afc3bdcab00f3a2d5dbb1042e574a3d252fe58db2b53f7594bb65456d0ae"
+        }
+      ],
+      "source_admission": "not_performed",
+      "wholebody_semantic_review": "pending_not_form_inferred"
+    }
+  ]
+}

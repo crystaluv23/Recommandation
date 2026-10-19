@@ -1,0 +1,40 @@
+test_mixed_exact_request_labels_each_actual_form_instead_of_first_type (tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_mixed_exact_request_labels_each_actual_form_instead_of_first_type) ... FAIL
+test_reversed_exact_order_has_same_per_form_types_and_source_order (tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_reversed_exact_order_has_same_per_form_types_and_source_order) ... FAIL
+
+======================================================================
+FAIL: test_mixed_exact_request_labels_each_actual_form_instead_of_first_type (tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_mixed_exact_request_labels_each_actual_form_instead_of_first_type)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_sec_filing_source_types.py", line 84, in test_mixed_exact_request_labels_each_actual_form_instead_of_first_type
+    self.assertEqual([(d.metadata["form"], d.source_type) for d in result.documents], [("10-Q", "10-q"), ("10-K", "10-k")])
+AssertionError: Lists differ: [('10-Q', '10-k'), ('10-K', '10-k')] != [('10-Q', '10-q'), ('10-K', '10-k')]
+
+First differing element 0:
+('10-Q', '10-k')
+('10-Q', '10-q')
+
+- [('10-Q', '10-k'), ('10-K', '10-k')]
+?               ^
+
++ [('10-Q', '10-q'), ('10-K', '10-k')]
+?               ^
+
+
+======================================================================
+FAIL: test_reversed_exact_order_has_same_per_form_types_and_source_order (tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_reversed_exact_order_has_same_per_form_types_and_source_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_sec_filing_source_types.py", line 95, in test_reversed_exact_order_has_same_per_form_types_and_source_order
+    self.assertEqual([d.to_dict() for d in forward.documents], [d.to_dict() for d in backward.documents])
+AssertionError: Lists differ: [{'do[99 chars] '10-k', 'published_at': '2025-05-06T20:00:00+[951 chars]m'}}] != [{'do[99 chars] '10-q', 'published_at': '2025-05-06T20:00:00+[951 chars]m'}}]
+
+First differing element 0:
+{'doc[98 chars] '10-k', 'published_at': '2025-05-06T20:00:00+[397 chars]tm'}}
+{'doc[98 chars] '10-q', 'published_at': '2025-05-06T20:00:00+[397 chars]tm'}}
+
+Diff is 1464 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+FAILED (failures=2)

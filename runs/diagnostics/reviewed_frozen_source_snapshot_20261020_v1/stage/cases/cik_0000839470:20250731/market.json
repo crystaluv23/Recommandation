@@ -1,0 +1,313 @@
+{
+  "case_id": "cik_0000839470:20250731",
+  "request_associations": [
+    {
+      "cache_key": "ad7b9c39786d17830df403d7",
+      "capability": "price_daily",
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/WWR/range/1/day/2025-06-16/2025-07-30",
+      "family": "market_daily",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive/price_daily/ad7b9c39786d17830df403d7.json",
+            "sha256": "d476aa25239ad5094fd2d54a768803a9e1b982c7218e988f056d3949bd0bea02"
+          },
+          "capability": "price_daily",
+          "historical_issuer_split_and_production_reconstruction": "not_verified_or_newly_queried",
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_adjusted": true,
+          "response_bar_count": 31,
+          "response_body_canonical_sha256": "5e9b14c154d5664846d0c9b8a9439c834de0ab7aa8d4cb9615b470c3e71272b0",
+          "response_status": "OK",
+          "response_symbol": "WWR",
+          "retrieved_at": "2026-08-16T09:35:14.758274+00:00",
+          "sanitized_endpoint": "https://api.massive.com/v2/aggs/ticker/WWR/range/1/day/2025-06-16/2025-07-30",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "source_key": "massive",
+          "status": "candidate_not_verified"
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2025-07-31T00:00:00+00:00",
+          "content_hash": "2f17c8d6857eec8073bef326cd4187502e5ddf113f6eec25972ec3ed16145151",
+          "document_id": "massive:cik_0000839470:market_data:2f17c8d6857eec8073bef326",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000839470/massive:cik_0000839470:market_data:2f17c8d6857eec8073bef326.json",
+            "sha256": "96718083e73ff12c5e55497d06c6f00417189ad9b8cdaec84fc171fee871428b"
+          },
+          "published_at": "2025-07-31T00:00:00+00:00",
+          "safe_source_metadata": {
+            "end": "2025-07-30",
+            "provider": "massive",
+            "start": "2025-06-16",
+            "symbol": "WWR"
+          },
+          "source_type": "market_data"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ],
+        [
+          "adjusted",
+          "true"
+        ],
+        [
+          "limit",
+          "50000"
+        ],
+        [
+          "sort",
+          "asc"
+        ]
+      ],
+      "source": "massive",
+      "ticker": "WWR"
+    },
+    {
+      "cache_key": "f8e8eb9acedfcfd08ea5ae34",
+      "capability": "price_daily",
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/WWR/range/1/day/2024-06-26/2025-07-30",
+      "family": "market_daily",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive/price_daily/f8e8eb9acedfcfd08ea5ae34.json",
+            "sha256": "04e3c0839c5da42549f3a63f6106451816e8ea1749c8e5165deafd8a8a02b916"
+          },
+          "capability": "price_daily",
+          "historical_issuer_split_and_production_reconstruction": "not_verified_or_newly_queried",
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_adjusted": true,
+          "response_bar_count": 223,
+          "response_body_canonical_sha256": "38e7d7b12531edade8c1f1161780223b7d3a689eee57e4ec31d7a33493db3291",
+          "response_status": "OK",
+          "response_symbol": "WWR",
+          "retrieved_at": "2026-09-08T13:12:39.442718+00:00",
+          "sanitized_endpoint": "https://api.massive.com/v2/aggs/ticker/WWR/range/1/day/2024-06-26/2025-07-30",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "source_key": "massive",
+          "status": "candidate_not_verified"
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2025-07-31T00:00:00+00:00",
+          "content_hash": "68c8d32520279535c82f84242c3d2c1cc1caf0764b63b70e60b8370800cc35e0",
+          "document_id": "massive:cik_0000839470:market_data:68c8d32520279535c82f8424",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000839470/massive:cik_0000839470:market_data:68c8d32520279535c82f8424.json",
+            "sha256": "f48c0a3a7bf0a53f42c136f5d5018e60ea5e00d7666589e7b7e6cb9a30c08fb6"
+          },
+          "published_at": "2025-07-31T00:00:00+00:00",
+          "safe_source_metadata": {
+            "end": "2025-07-30",
+            "provider": "massive",
+            "start": "2024-06-26",
+            "symbol": "WWR"
+          },
+          "source_type": "market_data"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ],
+        [
+          "adjusted",
+          "true"
+        ],
+        [
+          "limit",
+          "50000"
+        ],
+        [
+          "sort",
+          "asc"
+        ]
+      ],
+      "source": "massive",
+      "ticker": "WWR"
+    },
+    {
+      "cache_key": "e678f76de6c060eb9c1664aa",
+      "capability": "price_daily",
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/WWR/range/1/day/2025-08-01/2025-09-29",
+      "family": "market_daily",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-production-20260822-015342/cache/data/massive/price_daily/e678f76de6c060eb9c1664aa.json",
+            "sha256": "ec2c4313fef58a5d422df5729b518908d59510f97ecfe73c0568232875b260cb"
+          },
+          "capability": "price_daily",
+          "historical_issuer_split_and_production_reconstruction": "not_verified_or_newly_queried",
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_adjusted": true,
+          "response_bar_count": 41,
+          "response_body_canonical_sha256": "e54e45fe4fd744d2334beab593835c35d09cce157204a0b01e1d56dacb111120",
+          "response_status": "OK",
+          "response_symbol": "WWR",
+          "retrieved_at": "2026-08-21T18:41:03.809256+00:00",
+          "sanitized_endpoint": "https://api.massive.com/v2/aggs/ticker/WWR/range/1/day/2025-08-01/2025-09-29",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "source_key": "massive",
+          "status": "candidate_not_verified"
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "content_hash": "8338e0d4ab2ca3098a570fe26a793d6d69750f40d38e2a74e3833e7eb780a783",
+          "document_id": "massive:cik_0000839470:market_data:8338e0d4ab2ca3098a570fe2",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000839470/massive:cik_0000839470:market_data:8338e0d4ab2ca3098a570fe2.json",
+            "sha256": "206d7c07080d75c3800ecb81c78d30907967123ea71908d57dabaea4ae7cae2f"
+          },
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "safe_source_metadata": {
+            "end": "2025-09-29",
+            "provider": "massive",
+            "start": "2025-08-01",
+            "symbol": "WWR"
+          },
+          "source_type": "market_data"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ],
+        [
+          "adjusted",
+          "true"
+        ],
+        [
+          "limit",
+          "50000"
+        ],
+        [
+          "sort",
+          "asc"
+        ]
+      ],
+      "source": "massive",
+      "ticker": "WWR"
+    }
+  ],
+  "source_admitted": false,
+  "status": "unknown_missing_proofs",
+  "variants": [
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive/price_daily/ad7b9c39786d17830df403d7.json",
+        "sha256": "d476aa25239ad5094fd2d54a768803a9e1b982c7218e988f056d3949bd0bea02"
+      },
+      "complete_canonical_reconstruction": true,
+      "latest_bar": "2025-07-30",
+      "normalized_at": "2026-08-16T09:35:14.763245+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000839470/massive:cik_0000839470:market_data:2f17c8d6857eec8073bef326.json",
+        "sha256": "96718083e73ff12c5e55497d06c6f00417189ad9b8cdaec84fc171fee871428b"
+      },
+      "provider_retrieved_at": "2026-08-16T09:35:14.758274+00:00",
+      "status": "origin_reconstructed_missing_issuer_split_proofs"
+    },
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive/price_daily/f8e8eb9acedfcfd08ea5ae34.json",
+        "sha256": "04e3c0839c5da42549f3a63f6106451816e8ea1749c8e5165deafd8a8a02b916"
+      },
+      "complete_canonical_reconstruction": true,
+      "latest_bar": "2025-07-30",
+      "normalized_at": "2026-09-08T13:12:39.446505+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000839470/massive:cik_0000839470:market_data:68c8d32520279535c82f8424.json",
+        "sha256": "f48c0a3a7bf0a53f42c136f5d5018e60ea5e00d7666589e7b7e6cb9a30c08fb6"
+      },
+      "provider_retrieved_at": "2026-09-08T13:12:39.442718+00:00",
+      "status": "origin_reconstructed_missing_issuer_split_proofs"
+    },
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-production-20260822-015342/cache/data/massive/price_daily/e678f76de6c060eb9c1664aa.json",
+        "sha256": "ec2c4313fef58a5d422df5729b518908d59510f97ecfe73c0568232875b260cb"
+      },
+      "error": "daily origin exceeds prediction cutoff",
+      "error_type": "ReviewedSourceRejected",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000839470/massive:cik_0000839470:market_data:8338e0d4ab2ca3098a570fe2.json",
+        "sha256": "206d7c07080d75c3800ecb81c78d30907967123ea71908d57dabaea4ae7cae2f"
+      },
+      "status": "unknown_origin_reconstruction_failed"
+    }
+  ]
+}

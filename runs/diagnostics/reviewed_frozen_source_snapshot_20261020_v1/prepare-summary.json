@@ -1,0 +1,387 @@
+{
+  "GET_attempts": 0,
+  "admission_or_readiness_claim": false,
+  "collisions": 4,
+  "derived_product_count": 842,
+  "expected_product_count": 842,
+  "financial_family_denominator": 25,
+  "fixed_case_denominator": 40,
+  "global_store_constructed": false,
+  "labels_loaded": false,
+  "market_operating_family_denominator": 24,
+  "matrices_executed": false,
+  "missing_proof_request_count": 92,
+  "model_calls": 0,
+  "plan_hash": "1123adb3e1343d9c0008cdf4008e3a3ebdd9dbca43dbf2a3bbff40fe9b14b8e1",
+  "preappend_eligible_product_count": 838,
+  "prepare_inputs_calls": 0,
+  "profile_preverified_product_count": 842,
+  "signal_apply_calls": 0,
+  "source_appends": 0,
+  "sources_and_code_unchanged": true,
+  "status": "completed_preappend_diagnosis",
+  "view_materialized": false,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/result.json",
+    "sha256": "ac71fbcbf40526e04446c0cca25e568d02b0fd9df06ffd28463d03fcc90369ec"
+  },
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/plan.json",
+    "sha256": "0f02083ca6295aef5d0f115745c1fc4cbd070a185058d169521cd840e425cd62"
+  },
+  "plan_canonical_hash_recomputed": "1123adb3e1343d9c0008cdf4008e3a3ebdd9dbca43dbf2a3bbff40fe9b14b8e1",
+  "financial_statuses": {
+    "preappend_eligible": 24,
+    "preappend_collision": 1
+  },
+  "financial_cases": [
+    {
+      "case_id": "cik_0001830043:20250930",
+      "status": "preappend_eligible",
+      "products": 18,
+      "profile_preverified": 18,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0000800457:20250731",
+      "status": "preappend_eligible",
+      "products": 56,
+      "profile_preverified": 56,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001681459:20250530",
+      "status": "preappend_eligible",
+      "products": 35,
+      "profile_preverified": 35,
+      "collision_products": 0,
+      "pair_variants": 3
+    },
+    {
+      "case_id": "cik_0001097362:20250731",
+      "status": "preappend_eligible",
+      "products": 8,
+      "profile_preverified": 8,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001746129:20250731",
+      "status": "preappend_eligible",
+      "products": 27,
+      "profile_preverified": 27,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001679273:20250331",
+      "status": "preappend_eligible",
+      "products": 33,
+      "profile_preverified": 33,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001361658:20250131",
+      "status": "preappend_eligible",
+      "products": 59,
+      "profile_preverified": 59,
+      "collision_products": 0,
+      "pair_variants": 2
+    },
+    {
+      "case_id": "cik_0001421517:20250131",
+      "status": "preappend_eligible",
+      "products": 56,
+      "profile_preverified": 56,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001946703:20250731",
+      "status": "preappend_eligible",
+      "products": 4,
+      "profile_preverified": 4,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0002009312:20250930",
+      "status": "preappend_eligible",
+      "products": 4,
+      "profile_preverified": 4,
+      "collision_products": 0,
+      "pair_variants": 2
+    },
+    {
+      "case_id": "cik_0001065059:20250131",
+      "status": "preappend_eligible",
+      "products": 58,
+      "profile_preverified": 58,
+      "collision_products": 0,
+      "pair_variants": 2
+    },
+    {
+      "case_id": "cik_0000878518:20250930",
+      "status": "preappend_eligible",
+      "products": 8,
+      "profile_preverified": 8,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001438133:20250930",
+      "status": "preappend_eligible",
+      "products": 46,
+      "profile_preverified": 46,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001814215:20250530",
+      "status": "preappend_eligible",
+      "products": 30,
+      "profile_preverified": 30,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001285819:20250930",
+      "status": "preappend_eligible",
+      "products": 59,
+      "profile_preverified": 59,
+      "collision_products": 0,
+      "pair_variants": 3
+    },
+    {
+      "case_id": "cik_0001474627:20250530",
+      "status": "preappend_eligible",
+      "products": 25,
+      "profile_preverified": 25,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001951089:20250530",
+      "status": "preappend_eligible",
+      "products": 2,
+      "profile_preverified": 2,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "status": "preappend_eligible",
+      "products": 39,
+      "profile_preverified": 39,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "status": "preappend_eligible",
+      "products": 6,
+      "profile_preverified": 6,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0000860413:20250930",
+      "status": "preappend_eligible",
+      "products": 57,
+      "profile_preverified": 57,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001309402:20250530",
+      "status": "preappend_collision",
+      "products": 57,
+      "profile_preverified": 57,
+      "collision_products": 4,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001114995:20250331",
+      "status": "preappend_eligible",
+      "products": 36,
+      "profile_preverified": 36,
+      "collision_products": 0,
+      "pair_variants": 2
+    },
+    {
+      "case_id": "cik_0001920294:20250530",
+      "status": "preappend_eligible",
+      "products": 1,
+      "profile_preverified": 1,
+      "collision_products": 0,
+      "pair_variants": 97
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "status": "preappend_eligible",
+      "products": 61,
+      "profile_preverified": 61,
+      "collision_products": 0,
+      "pair_variants": 1
+    },
+    {
+      "case_id": "cik_0001051627:20250930",
+      "status": "preappend_eligible",
+      "products": 57,
+      "profile_preverified": 57,
+      "collision_products": 0,
+      "pair_variants": 1
+    }
+  ],
+  "market": {
+    "families": 24,
+    "statuses": {
+      "unknown_missing_proofs": 23,
+      "unknown_no_reconstructed_origin": 1
+    },
+    "cache_original_pair_variants": 11244,
+    "origin_reconstructed_variants": 959,
+    "variant_failure_reasons": {
+      "daily origin exceeds prediction cutoff": 4,
+      "append or replay differs from the complete derived product": 4794,
+      "daily origin cache is later than normalization": 5487
+    },
+    "distinct_original_documents": 246,
+    "distinct_reconstructed_original_documents": 242,
+    "distinct_daily_request_keys": 41,
+    "native_request_associations": 41,
+    "candidate_pair_variants_are_not_source_count": true,
+    "no_reconstructed_origin_cases": [
+      {
+        "case_id": "cik_0001681459:20250530",
+        "variant_statuses": {
+          "unknown_origin_reconstruction_failed": 1
+        },
+        "errors": {
+          "daily origin exceeds prediction cutoff": 1
+        }
+      }
+    ]
+  },
+  "operating": {
+    "families": 24,
+    "statuses": {
+      "pending_wholebody_semantic_review": 24
+    },
+    "selected_targets": 41,
+    "body_root_variants": 71,
+    "mechanical_statuses": {
+      "mechanical_profile_preverified_semantic_scope_pending": 71
+    },
+    "existing_original_variants": 56,
+    "prototype_variants": 15,
+    "collision_variants": 15,
+    "semantic_scope": "pending; no target admitted",
+    "targets_with_body_cache": 31,
+    "unique_collision_document_ids": [
+      "sec:cik_0001285819:000143774925010216",
+      "sec:cik_0001681459:000168145925000036",
+      "sec:cik_0001681459:000168145925000079",
+      "sec:cik_0002009312:000164117225001168"
+    ]
+  },
+  "missing_requests": {
+    "binding": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/missing-proof-requests.json",
+      "sha256": "6c963ac258134d89c80e9ab12fce397203924f8a5e859542d7fa92ed43e9b286"
+    },
+    "unique_requests": 92,
+    "purposes_by_association": {
+      "all_type_splits": 959,
+      "historical_issuer": 959,
+      "exact_static_primary_body": 10
+    },
+    "association_count": 1928,
+    "endpoints": {
+      "api.massive.com": 82,
+      "www.sec.gov": 10
+    },
+    "unique_requests_by_purpose": {
+      "all_type_splits": 53,
+      "historical_issuer": 29,
+      "exact_static_primary_body": 10
+    }
+  },
+  "source_binding_count": 2773,
+  "code_binding_count": 111,
+  "verified_binding_count": 3853,
+  "financial_collision_products": [
+    {
+      "case_id": "cik_0001309402:20250530",
+      "document_id": "secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79",
+      "candidate": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79.json",
+        "sha256": "88dcb0c51ac4d2c74bb20874678396d9f06f1300906284b3bd3f7a0e28622011"
+      },
+      "matches": [
+        {
+          "canonical_equal": false,
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79.json",
+            "sha256": "959d933f40ae6fd5f0a5e227263923ac6a7f23c34e31a95f92986ec273e66fcb"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "cik_0001309402:20250530",
+      "document_id": "secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268",
+      "candidate": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268.json",
+        "sha256": "52258727ab2e2b7a0701dc0f160b609fae21bba0b434537e5d8eef92bb6a8940"
+      },
+      "matches": [
+        {
+          "canonical_equal": false,
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268.json",
+            "sha256": "bf933c3448c23792e6eec867ea946de401839d70d374ae2c742ece195524865c"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "cik_0001309402:20250530",
+      "document_id": "secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03",
+      "candidate": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03.json",
+        "sha256": "04439ceea8deb80e326b24608aefdc36e6f78cbea831147f4017b0eec1c17acc"
+      },
+      "matches": [
+        {
+          "canonical_equal": false,
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03.json",
+            "sha256": "e45cd385e61a5c0f8057dda6e8fa16058357a7b30924a7f653a359aff10acace"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "cik_0001309402:20250530",
+      "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47",
+      "candidate": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47.json",
+        "sha256": "c4673a4862425ecfda881a5edbbfbcf6619ae890a389e79063a3fb80efa0cc09"
+      },
+      "matches": [
+        {
+          "canonical_equal": false,
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47.json",
+            "sha256": "f7511fb374afaf01a49ce89726d3a66a73080862c364406f55d5ead6900aa03e"
+          }
+        }
+      ]
+    }
+  ],
+  "parent_summary_harness_note": "Initial parent-summary-only invocation used system Python3.9 and failed on types.UnionType import before writing output; rebuilt with project Python. Actual prepare ran once under project Python and exited0; stage unchanged."
+}

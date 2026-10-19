@@ -1,0 +1,306 @@
+{
+  "case_id": "cik_0001285819:20250930",
+  "retained_selection": {
+    "case_id": "cik_0001285819:20250930",
+    "company_id": "cik_0001285819",
+    "late_accepted_periodic_exclusions": [],
+    "lookback_lower_filing_date": "2023-10-01",
+    "missing_annual_candidate": false,
+    "missing_interim_candidate": false,
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "root_variant_errors": [],
+    "root_variants": [
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+          "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+        },
+        "eligible_periodic_rows": 8,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-12T17:54:44.990733+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+          "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+        },
+        "eligible_periodic_rows": 8,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-17T08:53:23.197487+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      }
+    ],
+    "same_accession_conflicts": [],
+    "selected_annual_interim": [
+      {
+        "accepted_at": "2025-03-31T20:28:41+00:00",
+        "accession": "0001437749-25-010216",
+        "body_cache_matches": [
+          {
+            "binding": {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+              "sha256": "afe17fe19387e1101838c753f4d9e09f1aaa1b41edad541bd758344ba8c321d9"
+            },
+            "original_comparisons": [],
+            "request_identity_exact": true,
+            "retrieved_at": "2026-09-12T17:54:46.196796+00:00",
+            "status": "candidate_not_admitted",
+            "whole_body_sha256": "9d0a62aaa6d3337802337d0d5a2cd2e5950a9d4a189828225fc06ded7ec9d226"
+          },
+          {
+            "binding": {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+              "sha256": "84337b7de452c3f3892371d8a7e7ef179f7b1fc204365bd6d0db26c286f2bdc4"
+            },
+            "original_comparisons": [],
+            "request_identity_exact": true,
+            "retrieved_at": "2026-09-17T08:53:26.782670+00:00",
+            "status": "candidate_not_admitted",
+            "whole_body_sha256": "9d0a62aaa6d3337802337d0d5a2cd2e5950a9d4a189828225fc06ded7ec9d226"
+          }
+        ],
+        "candidate_original_document_id": "sec:cik_0001285819:000143774925010216",
+        "content_scope": "unknown_until_whole_original_semantic_review",
+        "exact_missing_GET": null,
+        "existing_same_id_originals": [],
+        "filing_date": "2025-03-31",
+        "form": "10-K",
+        "native_body_cache_key": "f4c36ec0c04bba337c7a6843",
+        "present_in_root_variants": 2,
+        "primary_document": "omer20241231_10k.htm",
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925010216/omer20241231_10k.htm",
+        "report_period": "2024-12-31",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+          }
+        ],
+        "source_admission": "not_performed"
+      },
+      {
+        "accepted_at": "2025-08-14T20:09:35+00:00",
+        "accession": "0001437749-25-026933",
+        "body_cache_matches": [],
+        "candidate_original_document_id": "sec:cik_0001285819:000143774925026933",
+        "content_scope": "unknown_until_whole_original_semantic_review",
+        "exact_missing_GET": {
+          "method": "GET",
+          "url": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925026933/omer20250630_10q.htm"
+        },
+        "existing_same_id_originals": [],
+        "filing_date": "2025-08-14",
+        "form": "10-Q",
+        "native_body_cache_key": "d75693499826a3d8ba5db49b",
+        "present_in_root_variants": 2,
+        "primary_document": "omer20250630_10q.htm",
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925026933/omer20250630_10q.htm",
+        "report_period": "2025-06-30",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+          }
+        ],
+        "source_admission": "not_performed"
+      }
+    ],
+    "selection_status": "bounded_root_recent_candidates_only",
+    "split": "discovery",
+    "ticker": "OMER"
+  },
+  "source_admitted": false,
+  "status": "pending_wholebody_semantic_review",
+  "targets": [
+    {
+      "accepted_at": "2025-03-31T20:28:41+00:00",
+      "accession": "0001437749-25-010216",
+      "body_cache_matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+            "sha256": "afe17fe19387e1101838c753f4d9e09f1aaa1b41edad541bd758344ba8c321d9"
+          },
+          "original_comparisons": [],
+          "request_identity_exact": true,
+          "retrieved_at": "2026-09-12T17:54:46.196796+00:00",
+          "status": "candidate_not_admitted",
+          "whole_body_sha256": "9d0a62aaa6d3337802337d0d5a2cd2e5950a9d4a189828225fc06ded7ec9d226"
+        },
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+            "sha256": "84337b7de452c3f3892371d8a7e7ef179f7b1fc204365bd6d0db26c286f2bdc4"
+          },
+          "original_comparisons": [],
+          "request_identity_exact": true,
+          "retrieved_at": "2026-09-17T08:53:26.782670+00:00",
+          "status": "candidate_not_admitted",
+          "whole_body_sha256": "9d0a62aaa6d3337802337d0d5a2cd2e5950a9d4a189828225fc06ded7ec9d226"
+        }
+      ],
+      "body_variants": [
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+            "sha256": "afe17fe19387e1101838c753f4d9e09f1aaa1b41edad541bd758344ba8c321d9"
+          },
+          "candidate_canonical_record_hash": "70da10464864297f3f9f43e332000eee30c20fdd2510a6980852d3a9f2995c63",
+          "candidate_origin": "native_primary_prototype_no_bound_original",
+          "collision": true,
+          "document_id": "sec:cik_0001285819:000143774925010216",
+          "matches": [
+            {
+              "canonical_equal": false,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001285819/sec:cik_0001285819:000143774925010216.json",
+                "sha256": "2c72e5297b3d8b50d8620a3f915e868c32492c6c5b864489d6857227889f5721"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+            "sha256": "84337b7de452c3f3892371d8a7e7ef179f7b1fc204365bd6d0db26c286f2bdc4"
+          },
+          "candidate_canonical_record_hash": "70da10464864297f3f9f43e332000eee30c20fdd2510a6980852d3a9f2995c63",
+          "candidate_origin": "native_primary_prototype_no_bound_original",
+          "collision": true,
+          "document_id": "sec:cik_0001285819:000143774925010216",
+          "matches": [
+            {
+              "canonical_equal": false,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001285819/sec:cik_0001285819:000143774925010216.json",
+                "sha256": "2c72e5297b3d8b50d8620a3f915e868c32492c6c5b864489d6857227889f5721"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+            "sha256": "afe17fe19387e1101838c753f4d9e09f1aaa1b41edad541bd758344ba8c321d9"
+          },
+          "candidate_canonical_record_hash": "70da10464864297f3f9f43e332000eee30c20fdd2510a6980852d3a9f2995c63",
+          "candidate_origin": "native_primary_prototype_no_bound_original",
+          "collision": true,
+          "document_id": "sec:cik_0001285819:000143774925010216",
+          "matches": [
+            {
+              "canonical_equal": false,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001285819/sec:cik_0001285819:000143774925010216.json",
+                "sha256": "2c72e5297b3d8b50d8620a3f915e868c32492c6c5b864489d6857227889f5721"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        },
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+            "sha256": "84337b7de452c3f3892371d8a7e7ef179f7b1fc204365bd6d0db26c286f2bdc4"
+          },
+          "candidate_canonical_record_hash": "70da10464864297f3f9f43e332000eee30c20fdd2510a6980852d3a9f2995c63",
+          "candidate_origin": "native_primary_prototype_no_bound_original",
+          "collision": true,
+          "document_id": "sec:cik_0001285819:000143774925010216",
+          "matches": [
+            {
+              "canonical_equal": false,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001285819/sec:cik_0001285819:000143774925010216.json",
+                "sha256": "2c72e5297b3d8b50d8620a3f915e868c32492c6c5b864489d6857227889f5721"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        }
+      ],
+      "candidate_original_document_id": "sec:cik_0001285819:000143774925010216",
+      "content_scope": "unknown_until_whole_original_semantic_review",
+      "exact_missing_GET": null,
+      "existing_same_id_originals": [],
+      "filing_date": "2025-03-31",
+      "form": "10-K",
+      "native_body_cache_key": "f4c36ec0c04bba337c7a6843",
+      "present_in_root_variants": 2,
+      "primary_document": "omer20241231_10k.htm",
+      "primary_url": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925010216/omer20241231_10k.htm",
+      "report_period": "2024-12-31",
+      "root_bindings": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+          "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+          "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+        }
+      ],
+      "source_admission": "not_performed",
+      "wholebody_semantic_review": "pending_not_form_inferred"
+    },
+    {
+      "accepted_at": "2025-08-14T20:09:35+00:00",
+      "accession": "0001437749-25-026933",
+      "body_cache_matches": [],
+      "body_variants": [],
+      "candidate_original_document_id": "sec:cik_0001285819:000143774925026933",
+      "content_scope": "unknown_until_whole_original_semantic_review",
+      "exact_missing_GET": {
+        "method": "GET",
+        "url": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925026933/omer20250630_10q.htm"
+      },
+      "existing_same_id_originals": [],
+      "filing_date": "2025-08-14",
+      "form": "10-Q",
+      "native_body_cache_key": "d75693499826a3d8ba5db49b",
+      "present_in_root_variants": 2,
+      "primary_document": "omer20250630_10q.htm",
+      "primary_url": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925026933/omer20250630_10q.htm",
+      "report_period": "2025-06-30",
+      "root_bindings": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+          "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+          "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+        }
+      ],
+      "source_admission": "not_performed",
+      "wholebody_semantic_review": "pending_not_form_inferred"
+    }
+  ]
+}

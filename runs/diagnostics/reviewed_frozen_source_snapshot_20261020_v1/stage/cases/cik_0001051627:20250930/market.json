@@ -1,0 +1,315 @@
+{
+  "case_id": "cik_0001051627:20250930",
+  "request_associations": [
+    {
+      "cache_key": "de05399e0e02d649945565e9",
+      "capability": "price_daily",
+      "case_id": "cik_0001051627:20250930",
+      "company_id": "cik_0001051627",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/AXTI/range/1/day/2024-08-26/2025-09-29",
+      "family": "market_daily",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/massive/price_daily/de05399e0e02d649945565e9.json",
+            "sha256": "18b1c934dc08b47232fa6fa11ae5bb335d2cbd738cda504a9b64a797dd467d02"
+          },
+          "capability": "price_daily",
+          "historical_issuer_split_and_production_reconstruction": "not_verified_or_newly_queried",
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_adjusted": true,
+          "response_bar_count": 255,
+          "response_body_canonical_sha256": "1b4d58df2f13a3b87f74416d5031547638fcae80c562d3de4fd9f3845932db36",
+          "response_status": "OK",
+          "response_symbol": "AXTI",
+          "retrieved_at": "2026-09-21T18:34:13.876980+00:00",
+          "sanitized_endpoint": "https://api.massive.com/v2/aggs/ticker/AXTI/range/1/day/2024-08-26/2025-09-29",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "source_key": "massive",
+          "status": "candidate_not_verified"
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "content_hash": "36b304290c508a4216906320297058a89a0afa1535d77009976df2cab33fff22",
+          "document_id": "massive:cik_0001051627:market_data:36b304290c508a4216906320",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001051627/massive:cik_0001051627:market_data:36b304290c508a4216906320.json",
+            "sha256": "18b69afdf766524d5124e6abcf608934ac5efd6d00b61b04999587826598aec4"
+          },
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "safe_source_metadata": {
+            "end": "2025-09-29",
+            "provider": "massive",
+            "start": "2024-08-26",
+            "symbol": "AXTI"
+          },
+          "source_type": "market_data"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ],
+        [
+          "adjusted",
+          "true"
+        ],
+        [
+          "limit",
+          "50000"
+        ],
+        [
+          "sort",
+          "asc"
+        ]
+      ],
+      "source": "massive",
+      "ticker": "AXTI"
+    },
+    {
+      "cache_key": "9797cd96f3a07f28c82ad3d5",
+      "capability": "price_daily",
+      "case_id": "cik_0001051627:20250930",
+      "company_id": "cik_0001051627",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/AXTI/range/1/day/2025-06-16/2025-07-30",
+      "family": "market_daily",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-fourway-parent-reflection-20260817-v1/cache/data/massive/price_daily/9797cd96f3a07f28c82ad3d5.json",
+            "sha256": "6b231f5d5c62cf6dff5531c223669eb648f8e6748d574fba3a6d5427116a53b2"
+          },
+          "capability": "price_daily",
+          "historical_issuer_split_and_production_reconstruction": "not_verified_or_newly_queried",
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_adjusted": true,
+          "response_bar_count": 31,
+          "response_body_canonical_sha256": "7ceb5b0bee4ea82fb52e64b86f0333abde1945e8f6e06edf0dee53d1cd0a16c6",
+          "response_status": "OK",
+          "response_symbol": "AXTI",
+          "retrieved_at": "2026-08-17T16:54:46.432647+00:00",
+          "sanitized_endpoint": "https://api.massive.com/v2/aggs/ticker/AXTI/range/1/day/2025-06-16/2025-07-30",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "source_key": "massive",
+          "status": "candidate_not_verified"
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2025-07-31T00:00:00+00:00",
+          "content_hash": "3e12b2e7b59b0767b5ad5b489de920aa4f181816c0796bfc1c3f74240708a8e1",
+          "document_id": "massive:cik_0001051627:market_data:3e12b2e7b59b0767b5ad5b48",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001051627/massive:cik_0001051627:market_data:3e12b2e7b59b0767b5ad5b48.json",
+            "sha256": "bbdc8427906c38554e3fde74e94512ce240747e32aaa04b8887afd5c97561281"
+          },
+          "published_at": "2025-07-31T00:00:00+00:00",
+          "safe_source_metadata": {
+            "end": "2025-07-30",
+            "provider": "massive",
+            "start": "2025-06-16",
+            "symbol": "AXTI"
+          },
+          "source_type": "market_data"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ],
+        [
+          "adjusted",
+          "true"
+        ],
+        [
+          "limit",
+          "50000"
+        ],
+        [
+          "sort",
+          "asc"
+        ]
+      ],
+      "source": "massive",
+      "ticker": "AXTI"
+    },
+    {
+      "cache_key": "1fcc7d63a6d328ca5bf76c3d",
+      "capability": "price_daily",
+      "case_id": "cik_0001051627:20250930",
+      "company_id": "cik_0001051627",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/AXTI/range/1/day/2025-08-16/2025-09-29",
+      "family": "market_daily",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-fourway-parent-reflection-20260817-v1/cache/data/massive/price_daily/1fcc7d63a6d328ca5bf76c3d.json",
+            "sha256": "a2608cd9b5d193483ad9cd14d1674551999b21d9fdeef116da22932f732141f3"
+          },
+          "capability": "price_daily",
+          "historical_issuer_split_and_production_reconstruction": "not_verified_or_newly_queried",
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_adjusted": true,
+          "response_bar_count": 30,
+          "response_body_canonical_sha256": "9432353565f4d1856b8201aa4f164fc82db385064f6d9c7e1b51ee55ccd52228",
+          "response_status": "OK",
+          "response_symbol": "AXTI",
+          "retrieved_at": "2026-08-17T16:07:18.322464+00:00",
+          "sanitized_endpoint": "https://api.massive.com/v2/aggs/ticker/AXTI/range/1/day/2025-08-16/2025-09-29",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "source_key": "massive",
+          "status": "candidate_not_verified"
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "content_hash": "a99edcac12a9d6288b2ae38481c71a3027491eee108d952ca474d6b4f3f7cdfa",
+          "document_id": "massive:cik_0001051627:market_data:a99edcac12a9d6288b2ae384",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001051627/massive:cik_0001051627:market_data:a99edcac12a9d6288b2ae384.json",
+            "sha256": "7d448e290490509f9b7da1874b37b052d4c88b08502a35a7f2a400a646fe791f"
+          },
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "safe_source_metadata": {
+            "end": "2025-09-29",
+            "provider": "massive",
+            "start": "2025-08-16",
+            "symbol": "AXTI"
+          },
+          "source_type": "market_data"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ],
+        [
+          "adjusted",
+          "true"
+        ],
+        [
+          "limit",
+          "50000"
+        ],
+        [
+          "sort",
+          "asc"
+        ]
+      ],
+      "source": "massive",
+      "ticker": "AXTI"
+    }
+  ],
+  "source_admitted": false,
+  "status": "unknown_missing_proofs",
+  "variants": [
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/massive/price_daily/de05399e0e02d649945565e9.json",
+        "sha256": "18b1c934dc08b47232fa6fa11ae5bb335d2cbd738cda504a9b64a797dd467d02"
+      },
+      "complete_canonical_reconstruction": true,
+      "latest_bar": "2025-09-29",
+      "normalized_at": "2026-09-21T18:34:13.882489+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001051627/massive:cik_0001051627:market_data:36b304290c508a4216906320.json",
+        "sha256": "18b69afdf766524d5124e6abcf608934ac5efd6d00b61b04999587826598aec4"
+      },
+      "provider_retrieved_at": "2026-09-21T18:34:13.876980+00:00",
+      "status": "origin_reconstructed_missing_issuer_split_proofs"
+    },
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-fourway-parent-reflection-20260817-v1/cache/data/massive/price_daily/9797cd96f3a07f28c82ad3d5.json",
+        "sha256": "6b231f5d5c62cf6dff5531c223669eb648f8e6748d574fba3a6d5427116a53b2"
+      },
+      "complete_canonical_reconstruction": true,
+      "latest_bar": "2025-07-30",
+      "normalized_at": "2026-08-17T16:54:46.436260+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001051627/massive:cik_0001051627:market_data:3e12b2e7b59b0767b5ad5b48.json",
+        "sha256": "bbdc8427906c38554e3fde74e94512ce240747e32aaa04b8887afd5c97561281"
+      },
+      "provider_retrieved_at": "2026-08-17T16:54:46.432647+00:00",
+      "status": "origin_reconstructed_missing_issuer_split_proofs"
+    },
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-fourway-parent-reflection-20260817-v1/cache/data/massive/price_daily/1fcc7d63a6d328ca5bf76c3d.json",
+        "sha256": "a2608cd9b5d193483ad9cd14d1674551999b21d9fdeef116da22932f732141f3"
+      },
+      "complete_canonical_reconstruction": true,
+      "latest_bar": "2025-09-29",
+      "normalized_at": "2026-08-17T16:07:18.326267+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001051627/massive:cik_0001051627:market_data:a99edcac12a9d6288b2ae384.json",
+        "sha256": "7d448e290490509f9b7da1874b37b052d4c88b08502a35a7f2a400a646fe791f"
+      },
+      "provider_retrieved_at": "2026-08-17T16:07:18.322464+00:00",
+      "status": "origin_reconstructed_missing_issuer_split_proofs"
+    }
+  ]
+}

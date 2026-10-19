@@ -1,0 +1,244 @@
+{
+  "case_id": "cik_0001421517:20250131",
+  "retained_selection": {
+    "case_id": "cik_0001421517:20250131",
+    "company_id": "cik_0001421517",
+    "late_accepted_periodic_exclusions": [],
+    "lookback_lower_filing_date": "2023-02-01",
+    "missing_annual_candidate": false,
+    "missing_interim_candidate": false,
+    "prediction_time": "2025-01-31T00:00:00+00:00",
+    "root_variant_errors": [],
+    "root_variants": [
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/eccebf835993c501bef4144e.json",
+          "sha256": "933c0d8db6c874f3e8485b4d5ea277950982b96a18b34ee420e8cc4d1130167d"
+        },
+        "eligible_periodic_rows": 8,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-10-02T12:54:29.683875+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      }
+    ],
+    "same_accession_conflicts": [],
+    "selected_annual_interim": [
+      {
+        "accepted_at": "2024-02-21T21:09:04+00:00",
+        "accession": "0001421517-24-000055",
+        "body_cache_matches": [],
+        "candidate_original_document_id": "sec:cik_0001421517:000142151724000055",
+        "content_scope": "unknown_until_whole_original_semantic_review",
+        "exact_missing_GET": {
+          "method": "GET",
+          "url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000055/erii-20231231.htm"
+        },
+        "existing_same_id_originals": [],
+        "filing_date": "2024-02-21",
+        "form": "10-K",
+        "native_body_cache_key": "3a5d03345c67f4c81959ad44",
+        "present_in_root_variants": 1,
+        "primary_document": "erii-20231231.htm",
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000055/erii-20231231.htm",
+        "report_period": "2023-12-31",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/eccebf835993c501bef4144e.json",
+            "sha256": "933c0d8db6c874f3e8485b4d5ea277950982b96a18b34ee420e8cc4d1130167d"
+          }
+        ],
+        "source_admission": "not_performed"
+      },
+      {
+        "accepted_at": "2024-10-30T20:14:31+00:00",
+        "accession": "0001421517-24-000191",
+        "body_cache_matches": [
+          {
+            "binding": {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/4597b9a68c3069139e381642.json",
+              "sha256": "a0b95a28c35a6c3d27c6ce64342407b04093fa780dae5efcb31503747fe260b6"
+            },
+            "original_comparisons": [
+              {
+                "cache_not_after_original_clock": false,
+                "original": {
+                  "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001421517/sec:cik_0001421517:000142151724000191.json",
+                  "sha256": "d96cffee12cb9c04abe9e8ce38b84626cc1eaf2576a2b89a90ccc3580baee325"
+                },
+                "whole_body_equal": true
+              }
+            ],
+            "request_identity_exact": true,
+            "retrieved_at": "2026-10-02T12:54:33.563869+00:00",
+            "status": "candidate_not_admitted",
+            "whole_body_sha256": "3fddf38310b3adfa737171f797e40a3719e145289e801de1a74c42d42d842522"
+          }
+        ],
+        "candidate_original_document_id": "sec:cik_0001421517:000142151724000191",
+        "content_scope": "unknown_until_whole_original_semantic_review",
+        "exact_missing_GET": null,
+        "existing_same_id_originals": [
+          {
+            "available_at": "2024-10-30T20:14:31+00:00",
+            "binding": {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001421517/sec:cik_0001421517:000142151724000191.json",
+              "sha256": "d96cffee12cb9c04abe9e8ce38b84626cc1eaf2576a2b89a90ccc3580baee325"
+            },
+            "content_hash": "3fddf38310b3adfa737171f797e40a3719e145289e801de1a74c42d42d842522",
+            "metadata": {
+              "accession_number": "0001421517-24-000191",
+              "cik": "0001421517",
+              "form": "10-Q",
+              "provider": "sec_edgar",
+              "source_url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000191/erii-20240930.htm"
+            },
+            "published_at": "2024-10-30T20:14:31+00:00",
+            "source_type": "filing"
+          }
+        ],
+        "filing_date": "2024-10-30",
+        "form": "10-Q",
+        "native_body_cache_key": "4597b9a68c3069139e381642",
+        "present_in_root_variants": 1,
+        "primary_document": "erii-20240930.htm",
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000191/erii-20240930.htm",
+        "report_period": "2024-09-30",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/eccebf835993c501bef4144e.json",
+            "sha256": "933c0d8db6c874f3e8485b4d5ea277950982b96a18b34ee420e8cc4d1130167d"
+          }
+        ],
+        "source_admission": "not_performed"
+      }
+    ],
+    "selection_status": "bounded_root_recent_candidates_only",
+    "split": "discovery",
+    "ticker": "ERII"
+  },
+  "source_admitted": false,
+  "status": "pending_wholebody_semantic_review",
+  "targets": [
+    {
+      "accepted_at": "2024-02-21T21:09:04+00:00",
+      "accession": "0001421517-24-000055",
+      "body_cache_matches": [],
+      "body_variants": [],
+      "candidate_original_document_id": "sec:cik_0001421517:000142151724000055",
+      "content_scope": "unknown_until_whole_original_semantic_review",
+      "exact_missing_GET": {
+        "method": "GET",
+        "url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000055/erii-20231231.htm"
+      },
+      "existing_same_id_originals": [],
+      "filing_date": "2024-02-21",
+      "form": "10-K",
+      "native_body_cache_key": "3a5d03345c67f4c81959ad44",
+      "present_in_root_variants": 1,
+      "primary_document": "erii-20231231.htm",
+      "primary_url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000055/erii-20231231.htm",
+      "report_period": "2023-12-31",
+      "root_bindings": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/eccebf835993c501bef4144e.json",
+          "sha256": "933c0d8db6c874f3e8485b4d5ea277950982b96a18b34ee420e8cc4d1130167d"
+        }
+      ],
+      "source_admission": "not_performed",
+      "wholebody_semantic_review": "pending_not_form_inferred"
+    },
+    {
+      "accepted_at": "2024-10-30T20:14:31+00:00",
+      "accession": "0001421517-24-000191",
+      "body_cache_matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/4597b9a68c3069139e381642.json",
+            "sha256": "a0b95a28c35a6c3d27c6ce64342407b04093fa780dae5efcb31503747fe260b6"
+          },
+          "original_comparisons": [
+            {
+              "cache_not_after_original_clock": false,
+              "original": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001421517/sec:cik_0001421517:000142151724000191.json",
+                "sha256": "d96cffee12cb9c04abe9e8ce38b84626cc1eaf2576a2b89a90ccc3580baee325"
+              },
+              "whole_body_equal": true
+            }
+          ],
+          "request_identity_exact": true,
+          "retrieved_at": "2026-10-02T12:54:33.563869+00:00",
+          "status": "candidate_not_admitted",
+          "whole_body_sha256": "3fddf38310b3adfa737171f797e40a3719e145289e801de1a74c42d42d842522"
+        }
+      ],
+      "body_variants": [
+        {
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/4597b9a68c3069139e381642.json",
+            "sha256": "a0b95a28c35a6c3d27c6ce64342407b04093fa780dae5efcb31503747fe260b6"
+          },
+          "candidate_canonical_record_hash": "d6b1295215830a17478e00b482ae054608263afc4706c34d923042cdb41a5dad",
+          "candidate_origin": "bound_existing_original",
+          "candidate_original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001421517/sec:cik_0001421517:000142151724000191.json",
+            "sha256": "d96cffee12cb9c04abe9e8ce38b84626cc1eaf2576a2b89a90ccc3580baee325"
+          },
+          "collision": false,
+          "document_id": "sec:cik_0001421517:000142151724000191",
+          "matches": [
+            {
+              "canonical_equal": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001421517/sec:cik_0001421517:000142151724000191.json",
+                "sha256": "d96cffee12cb9c04abe9e8ce38b84626cc1eaf2576a2b89a90ccc3580baee325"
+              }
+            }
+          ],
+          "root": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/eccebf835993c501bef4144e.json",
+            "sha256": "933c0d8db6c874f3e8485b4d5ea277950982b96a18b34ee420e8cc4d1130167d"
+          },
+          "status": "mechanical_profile_preverified_semantic_scope_pending"
+        }
+      ],
+      "candidate_original_document_id": "sec:cik_0001421517:000142151724000191",
+      "content_scope": "unknown_until_whole_original_semantic_review",
+      "exact_missing_GET": null,
+      "existing_same_id_originals": [
+        {
+          "available_at": "2024-10-30T20:14:31+00:00",
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001421517/sec:cik_0001421517:000142151724000191.json",
+            "sha256": "d96cffee12cb9c04abe9e8ce38b84626cc1eaf2576a2b89a90ccc3580baee325"
+          },
+          "content_hash": "3fddf38310b3adfa737171f797e40a3719e145289e801de1a74c42d42d842522",
+          "metadata": {
+            "accession_number": "0001421517-24-000191",
+            "cik": "0001421517",
+            "form": "10-Q",
+            "provider": "sec_edgar",
+            "source_url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000191/erii-20240930.htm"
+          },
+          "published_at": "2024-10-30T20:14:31+00:00",
+          "source_type": "filing"
+        }
+      ],
+      "filing_date": "2024-10-30",
+      "form": "10-Q",
+      "native_body_cache_key": "4597b9a68c3069139e381642",
+      "present_in_root_variants": 1,
+      "primary_document": "erii-20240930.htm",
+      "primary_url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000191/erii-20240930.htm",
+      "report_period": "2024-09-30",
+      "root_bindings": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/eccebf835993c501bef4144e.json",
+          "sha256": "933c0d8db6c874f3e8485b4d5ea277950982b96a18b34ee420e8cc4d1130167d"
+        }
+      ],
+      "source_admission": "not_performed",
+      "wholebody_semantic_review": "pending_not_form_inferred"
+    }
+  ]
+}

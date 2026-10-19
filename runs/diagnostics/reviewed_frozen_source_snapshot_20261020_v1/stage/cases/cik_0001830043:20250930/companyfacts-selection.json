@@ -1,0 +1,94 @@
+{
+  "all_request_associations": [
+    {
+      "cache_key": "bc0d2b650af589aaa56f7134",
+      "capability": "financial_statements",
+      "case_id": "cik_0001830043:20250930",
+      "company_id": "cik_0001830043",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001830043.json",
+      "family": "companyfacts",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/bc0d2b650af589aaa56f7134.json",
+            "sha256": "9da3de434f41e1f6033a543e86da5c7fd8dd30f29fed2c4d63ea3472e9f04e55"
+          },
+          "capability": "financial_statements",
+          "issuer_matches_case": true,
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_body_canonical_sha256": "bfcad9057698227542886ea012a6866b659e3d2329d083e82bd8d43cf8e09cb9",
+          "response_cik": "0001830043",
+          "retrieved_at": "2026-08-21T16:26:23.739805+00:00",
+          "sanitized_endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001830043.json",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ]
+          ],
+          "source_key": "sec_edgar",
+          "status": "candidate_not_verified",
+          "whole_raw_comparisons": [
+            {
+              "cache_not_after_old_normalization": true,
+              "document_id": "sec_edgar:cik_0001830043:sec_company_facts_raw_response:bfcad9057698227542886ea0",
+              "original_binding_unchanged": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001830043/sec_edgar:cik_0001830043:sec_company_facts_raw_response:bfcad9057698227542886ea0.json",
+                "sha256": "ff091fdd19867f2f71a85550f4f225d7e38050a862173f32a40b3a0f5a2e9c6f"
+              },
+              "whole_raw_equals_cache_body": true
+            }
+          ]
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2026-08-21T16:26:23.805698+00:00",
+          "content_hash": "bfcad9057698227542886ea012a6866b659e3d2329d083e82bd8d43cf8e09cb9",
+          "document_id": "sec_edgar:cik_0001830043:sec_company_facts_raw_response:bfcad9057698227542886ea0",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001830043/sec_edgar:cik_0001830043:sec_company_facts_raw_response:bfcad9057698227542886ea0.json",
+            "sha256": "ff091fdd19867f2f71a85550f4f225d7e38050a862173f32a40b3a0f5a2e9c6f"
+          },
+          "published_at": "2026-08-21T16:26:23.805698+00:00",
+          "safe_source_metadata": {
+            "cik": "0001830043",
+            "provider": "sec_edgar"
+          },
+          "source_type": "sec_company_facts_raw_response"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ]
+      ],
+      "source": "sec_edgar",
+      "ticker": "BMBL"
+    }
+  ],
+  "case_id": "cik_0001830043:20250930",
+  "company_id": "cik_0001830043",
+  "pair_audit": [
+    {
+      "body_hash": "bfcad9057698227542886ea012a6866b659e3d2329d083e82bd8d43cf8e09cb9",
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/bc0d2b650af589aaa56f7134.json",
+        "sha256": "9da3de434f41e1f6033a543e86da5c7fd8dd30f29fed2c4d63ea3472e9f04e55"
+      },
+      "cache_retrieved_at": "2026-08-21T16:26:23.739805+00:00",
+      "raw_normalized_at": "2026-08-21T16:26:23.805698+00:00",
+      "rawproof": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001830043/sec_edgar:cik_0001830043:sec_company_facts_raw_response:bfcad9057698227542886ea0.json",
+        "sha256": "ff091fdd19867f2f71a85550f4f225d7e38050a862173f32a40b3a0f5a2e9c6f"
+      },
+      "status": "usable_pair"
+    }
+  ],
+  "products": [],
+  "status": "selected"
+}

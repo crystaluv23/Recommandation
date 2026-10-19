@@ -1,0 +1,550 @@
+{
+  "all_request_associations": [
+    {
+      "cache_key": "1939c27f6874e93bb58772c2",
+      "capability": "financial_statements",
+      "case_id": "cik_0001681459:20250530",
+      "company_id": "cik_0001681459",
+      "cutoff": "2025-05-30T00:00:00+00:00",
+      "endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001681459.json",
+      "family": "companyfacts",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+            "sha256": "eb2fd13e04d3979a23795d2e7c270ec37d148213fed3ebe36ab9c0b4e494bf78"
+          },
+          "capability": "financial_statements",
+          "issuer_matches_case": true,
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_body_canonical_sha256": "f5b3fecd93913445721de800891bb7c17f383759b53c009eca9931f31346d071",
+          "response_cik": "0001681459",
+          "retrieved_at": "2026-09-13T02:13:07.894029+00:00",
+          "sanitized_endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001681459.json",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ]
+          ],
+          "source_key": "sec_edgar",
+          "status": "candidate_not_verified",
+          "whole_raw_comparisons": [
+            {
+              "cache_not_after_old_normalization": true,
+              "document_id": "sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800",
+              "original_binding_unchanged": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+                "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+              },
+              "whole_raw_equals_cache_body": true
+            }
+          ]
+        },
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+            "sha256": "7af2232588b1b4bbd1285362d50f304a526a58c1a2ca6d3cf1c5ed057f594d9a"
+          },
+          "capability": "financial_statements",
+          "issuer_matches_case": true,
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_body_canonical_sha256": "f5b3fecd93913445721de800891bb7c17f383759b53c009eca9931f31346d071",
+          "response_cik": "0001681459",
+          "retrieved_at": "2026-09-13T06:45:14.001031+00:00",
+          "sanitized_endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001681459.json",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ]
+          ],
+          "source_key": "sec_edgar",
+          "status": "candidate_not_verified",
+          "whole_raw_comparisons": [
+            {
+              "cache_not_after_old_normalization": false,
+              "document_id": "sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800",
+              "original_binding_unchanged": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+                "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+              },
+              "whole_raw_equals_cache_body": true
+            }
+          ]
+        },
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v106/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+            "sha256": "d70c3b2cede87a06c62df09d1dff867612d91fb6513d7b03a6d8b8bdb497295e"
+          },
+          "capability": "financial_statements",
+          "issuer_matches_case": true,
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_body_canonical_sha256": "f5b3fecd93913445721de800891bb7c17f383759b53c009eca9931f31346d071",
+          "response_cik": "0001681459",
+          "retrieved_at": "2026-09-18T20:52:53.176434+00:00",
+          "sanitized_endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001681459.json",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ]
+          ],
+          "source_key": "sec_edgar",
+          "status": "candidate_not_verified",
+          "whole_raw_comparisons": [
+            {
+              "cache_not_after_old_normalization": false,
+              "document_id": "sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800",
+              "original_binding_unchanged": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+                "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+              },
+              "whole_raw_equals_cache_body": true
+            }
+          ]
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2026-09-13T02:13:08.044160+00:00",
+          "content_hash": "f5b3fecd93913445721de800891bb7c17f383759b53c009eca9931f31346d071",
+          "document_id": "sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+            "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+          },
+          "published_at": "2026-09-13T02:13:08.044160+00:00",
+          "safe_source_metadata": {
+            "cik": "0001681459",
+            "provider": "sec_edgar"
+          },
+          "source_type": "sec_company_facts_raw_response"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ]
+      ],
+      "source": "sec_edgar",
+      "ticker": "FTI"
+    }
+  ],
+  "case_id": "cik_0001681459:20250530",
+  "company_id": "cik_0001681459",
+  "normalization": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/normalization.json",
+    "sha256": "1dfd1a09661a9b0986086c6c2d6f105b87f7f25adfb9d4e6a2660f20a3679118"
+  },
+  "pair_audit": [
+    {
+      "body_hash": "f5b3fecd93913445721de800891bb7c17f383759b53c009eca9931f31346d071",
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+        "sha256": "eb2fd13e04d3979a23795d2e7c270ec37d148213fed3ebe36ab9c0b4e494bf78"
+      },
+      "cache_retrieved_at": "2026-09-13T02:13:07.894029+00:00",
+      "raw_normalized_at": "2026-09-13T02:13:08.044160+00:00",
+      "rawproof": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+        "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+      },
+      "status": "usable_pair"
+    },
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+        "sha256": "7af2232588b1b4bbd1285362d50f304a526a58c1a2ca6d3cf1c5ed057f594d9a"
+      },
+      "error": "Company Facts request/body/identity/cache-to-raw clock differs",
+      "error_type": "ReviewedSourceRejected",
+      "rawproof": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+        "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+      },
+      "status": "rejected_pair"
+    },
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v106/cache/data/sec_edgar/financial_statements/1939c27f6874e93bb58772c2.json",
+        "sha256": "d70c3b2cede87a06c62df09d1dff867612d91fb6513d7b03a6d8b8bdb497295e"
+      },
+      "error": "Company Facts request/body/identity/cache-to-raw clock differs",
+      "error_type": "ReviewedSourceRejected",
+      "rawproof": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001681459/sec_edgar:cik_0001681459:sec_company_facts_raw_response:f5b3fecd93913445721de800.json",
+        "sha256": "01d3d9979e4172225f976ed14cfe3f39a13939a89c83882bfb4c0751df3230fa"
+      },
+      "status": "rejected_pair"
+    }
+  ],
+  "products": [
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001193125-17-247805:6ef6340df74b1cba",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001193125-17-247805:6ef6340df74b1cba.json",
+        "sha256": "1f1fe81e672833e97bf0384b65479b3cbfe2c06d56bf355d27fe49e3a5a819d5"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-17-000013:b755a4e295e65af9",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-17-000013:b755a4e295e65af9.json",
+        "sha256": "28b9580378e98ab12e4fc4d9fb85975ad8147d7dbb59a4486ee0ccf2d8375dea"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-17-000210:1d180f078851ab47",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-17-000210:1d180f078851ab47.json",
+        "sha256": "98c0aff62345034eb71e88202850f335fe40d2a85dde96615eaa46d5c72508c7"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-17-000244:cfe985ca213a5dde",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-17-000244:cfe985ca213a5dde.json",
+        "sha256": "40e4fc5846c503b06e9451bb21d66531eb7287849e2dc0def1f90bff828bfd93"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-17-000258:667d7d71e972335b",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-17-000258:667d7d71e972335b.json",
+        "sha256": "55d809b99de194b4bbe9a3fbed50d79c500d2d65639408f4585399b88086984b"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-18-000049:13ae3ae784304737",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-18-000049:13ae3ae784304737.json",
+        "sha256": "4cd1294b5d6643c94201355f2e58e7fa7678cdae7c3ed4e3604e11a93ae85066"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-18-000056:120d2fab3eeef191",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-18-000056:120d2fab3eeef191.json",
+        "sha256": "120b5f1447d2858d2121f25e7c8e2c4dc12630098deab2da55f7ff3fd74f5176"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-18-000092:685b3181cd9ee82d",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-18-000092:685b3181cd9ee82d.json",
+        "sha256": "b0f73b45971d80a4187b07a641706615d48e8ce909a7bb7ca834fb3cf64b81b1"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-18-000113:4b45c60f30b09105",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-18-000113:4b45c60f30b09105.json",
+        "sha256": "3e811d6e096b4680a373f1c7db174df11d6789e9a5821c77ee2b180ec7c54365"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-19-000011:20f61a5807674159",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-19-000011:20f61a5807674159.json",
+        "sha256": "ccf69406e075cb21fbd488d5dc60d4e0b5d7c72015c698bb016eac6d3f0447cc"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-19-000064:87c00f66a085975a",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-19-000064:87c00f66a085975a.json",
+        "sha256": "8b7ea491a60c120d7f08c974084fcb1920e118f46e0807699828f9c12f580162"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-19-000090:5b3ee92f61970049",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-19-000090:5b3ee92f61970049.json",
+        "sha256": "21ab6882382ad522d0e0f403618fb00e66f793712e02f03a6665fdbcccde81c4"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-19-000104:c80fe30558da2c6c",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-19-000104:c80fe30558da2c6c.json",
+        "sha256": "3262b84753c721fbed12247498568fa9ad15d32790e7c86fde5c577994c702dc"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-20-000004:da9879dc0d56cb71",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-20-000004:da9879dc0d56cb71.json",
+        "sha256": "94b88ad5e236988039c192075090a65d152755d72992539a61998ad111ebbf29"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-20-000083:b7cffd12086b9a32",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-20-000083:b7cffd12086b9a32.json",
+        "sha256": "d6c0f89dc23ef97ec070640c8987bf8a33d027f2215aad4a458799d3504e67cb"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-20-000103:5cf59e3a33be2201",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-20-000103:5cf59e3a33be2201.json",
+        "sha256": "558bc3326fb0161c335d9c3e5d1850b0faae22418e56aacf8cbe1915dc365e8c"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-20-000123:632c3d4493f1da23",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-20-000123:632c3d4493f1da23.json",
+        "sha256": "4130dcba012c129f844d699f88d5a8d9ef01008a252fb2e244c710c9e7be0fa3"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-21-000043:285816cd1fe26fa7",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-21-000043:285816cd1fe26fa7.json",
+        "sha256": "3132f38d379fd65fa68d3be0cff6c6625c0b287f02c4a76d1e610aaf8e89198b"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-21-000064:56ab7ceafd96aa14",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-21-000064:56ab7ceafd96aa14.json",
+        "sha256": "082f162180a97b8708dce42e5af75f8be6292f2b794b3c0e128c9941dc11c4d3"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-21-000080:55ec994d012c87fb",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-21-000080:55ec994d012c87fb.json",
+        "sha256": "a6b830ce7867f6b8457fb5a567efc71607ad23e877de4ba3346c611cda07c115"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-21-000093:c0beaf2923b8f0d3",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-21-000093:c0beaf2923b8f0d3.json",
+        "sha256": "4707e152543f171460b498edb36db825222d6f4a7cacf811993ef3fc3507180d"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-22-000005:920b1cb3210af943",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-22-000005:920b1cb3210af943.json",
+        "sha256": "afc8bf1f10cbb858101d495e937904757684949d472bb364349611237a18b44f"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-22-000043:f7384371fcb41b52",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-22-000043:f7384371fcb41b52.json",
+        "sha256": "13d89d1f89b5daa5ed152a014e3ccfc1ec9201a407711a34bc5f1e5b06fba52f"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-22-000053:db5d200fba4f01e4",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-22-000053:db5d200fba4f01e4.json",
+        "sha256": "96d36b11de6a5bfbe80674313fd64cdea9e4830f98dab99a5395436054a8fa8f"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-22-000059:f53300d5aee536a4",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-22-000059:f53300d5aee536a4.json",
+        "sha256": "2f84327317ccc6cd1d68805154c1a83a3b4c319246beaf8d402899dcdd699322"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-23-000052:04a64ff28949fb1f",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-23-000052:04a64ff28949fb1f.json",
+        "sha256": "3974467145510030e1a46baaa4d3db52ddd83d1b042e3b1dcb997827f32a4830"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-23-000067:3e502b39563be0d8",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-23-000067:3e502b39563be0d8.json",
+        "sha256": "d1042aa7af05e07c8df998f1397aeb76f4177e4a7c68b7d885875b89a7e06767"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-23-000081:73cb64e871a7dc31",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-23-000081:73cb64e871a7dc31.json",
+        "sha256": "7d0886d300d9d999b82ad4e0e4423b83155c2f775db72fa1f50bf176a798a7d9"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-23-000097:964b980b4e73eadd",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-23-000097:964b980b4e73eadd.json",
+        "sha256": "6dd873aeb35f29a8b7f1c3ee5c796cc1a9141c5c2206662833ded0beb595c068"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-24-000070:d64b7d142b878fc3",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-24-000070:d64b7d142b878fc3.json",
+        "sha256": "0e70ee2862586d5753cc8d6f6dad7801d4744b27706e8713823e9849089dc1fb"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-24-000099:4f87a273459e7c12",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-24-000099:4f87a273459e7c12.json",
+        "sha256": "bf6773e99e1f0a98d0de3a4fbee977cb557e583a1a82e0ec3a24b3e60257af8e"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-24-000119:eeb861a2591282d6",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-24-000119:eeb861a2591282d6.json",
+        "sha256": "169cd491a24b29bdd7c2a60589a41773ceb55f4bf78fdbcd77ea0b2556dfb1bf"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-24-000138:a7321921af49818d",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-24-000138:a7321921af49818d.json",
+        "sha256": "1a4056066677cb6368e3c9332bc0d2f3410731e58aa37572db615ca6fc5a9e8a"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-25-000036:18acd21b09ba5beb",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-25-000036:18acd21b09ba5beb.json",
+        "sha256": "b85c80ab067debff154dce91799cc30891a39133dae386d07135b41338d6fa6e"
+      },
+      "profile_preverified": true
+    },
+    {
+      "collision": false,
+      "document_id": "secfacts:0001681459:0001681459-25-000079:338e947f3bfe6822",
+      "matches": [],
+      "product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001681459:20250530/products/secfacts:0001681459:0001681459-25-000079:338e947f3bfe6822.json",
+        "sha256": "2bb459b6510d163928c3f66b4fce6c624010c9aa12ff8ca8317280ae5be0deb3"
+      },
+      "profile_preverified": true
+    }
+  ],
+  "statistics": {
+    "excluded_reason_counts": {
+      "unavailable_by_latest_cutoff": 2264
+    },
+    "raw_fact_row_count": 19022,
+    "selected_fact_row_count": 16758
+  },
+  "status": "preappend_eligible"
+}

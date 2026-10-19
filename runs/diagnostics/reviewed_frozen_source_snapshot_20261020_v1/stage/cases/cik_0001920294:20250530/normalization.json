@@ -1,0 +1,79 @@
+{
+  "expected_products": [
+    {
+      "canonical_record_hash": "8b7f08d8cd46453bc8b1461bd16e14d9d04152b3437c1d7f320e28675ebd752f",
+      "content_hash": "22a1b48c83f89a1ad0ca4752672cf2b6175f888fb8a30a7adb61b156cc1da758",
+      "document_id": "secfacts:0001920294:0000950170-25-057622:22a1b48c83f89a1a"
+    }
+  ],
+  "item": {
+    "cik": "0001920294",
+    "company_id": "cik_0001920294",
+    "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001920294.json",
+    "symbol": "RZLV"
+  },
+  "normalized_at": "2026-10-19T23:39:22.066108+00:00",
+  "normalizer_profile": "sec_companyfacts_filed_next_utc_day_v1",
+  "provenance": {
+    "acquisition_policy_hash": "1dcfcf2d216f68ba3570cc92f7ac3f8e7b4d0dbd6ae54a87f021f01c34f02e9b",
+    "acquisition_selection": {
+      "available_at_through": "2025-05-30T00:00:00+00:00",
+      "form_allowlist": [
+        "10-K",
+        "10-K/A",
+        "10-Q",
+        "10-Q/A",
+        "20-F",
+        "20-F/A",
+        "40-F",
+        "40-F/A",
+        "6-K",
+        "6-K/A",
+        "8-K",
+        "8-K/A"
+      ],
+      "period_end_from": "0001-01-01",
+      "period_end_through": "2025-05-30",
+      "taxonomy_allowlist": [
+        "dei",
+        "ifrs-full",
+        "srt",
+        "us-gaap"
+      ]
+    }
+  },
+  "raw_response": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001920294/sec_edgar:cik_0001920294:sec_company_facts_raw_response:45ea325a7a9d2ef29f406641.json",
+    "sha256": "bdc700ecb2dcee61653a15e5cf7f8c5ddc7f6dfbb37291d24aefe0f6c80b9dc8"
+  },
+  "schema_version": "sec-companyfacts-normalization-v1",
+  "selection": {
+    "available_at_through": "2025-05-30T00:00:00+00:00",
+    "form_allowlist": [
+      "10-K",
+      "10-K/A",
+      "10-Q",
+      "10-Q/A",
+      "20-F",
+      "20-F/A",
+      "40-F",
+      "40-F/A",
+      "6-K",
+      "6-K/A",
+      "8-K",
+      "8-K/A"
+    ],
+    "period_end_from": "0001-01-01",
+    "period_end_through": "2025-05-30",
+    "taxonomy_allowlist": [
+      "dei",
+      "ifrs-full",
+      "srt",
+      "us-gaap"
+    ]
+  },
+  "source_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/352546d4ddcea1679f324b39.json",
+    "sha256": "3221ff3e3988fdb4f9fc040600f0c1b69b036fbaf690a376defe43d936e9f059"
+  }
+}

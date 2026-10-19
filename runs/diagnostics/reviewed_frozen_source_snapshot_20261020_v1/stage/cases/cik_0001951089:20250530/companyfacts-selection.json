@@ -1,0 +1,94 @@
+{
+  "all_request_associations": [
+    {
+      "cache_key": "d2e80d4fdbb8d45c3a8e495d",
+      "capability": "financial_statements",
+      "case_id": "cik_0001951089:20250530",
+      "company_id": "cik_0001951089",
+      "cutoff": "2025-05-30T00:00:00+00:00",
+      "endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001951089.json",
+      "family": "companyfacts",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/sec_edgar/financial_statements/d2e80d4fdbb8d45c3a8e495d.json",
+            "sha256": "6e2a2d2737e49abedaabc69194b9a864c0ff9aa0d80e96e6a565d371a6dd897d"
+          },
+          "capability": "financial_statements",
+          "issuer_matches_case": true,
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_body_canonical_sha256": "8b4f482fe2edcba3d15039159ce48806f122e49fe339dc603f5c7093ee02eed2",
+          "response_cik": "0001951089",
+          "retrieved_at": "2026-09-10T17:45:40.305095+00:00",
+          "sanitized_endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001951089.json",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ]
+          ],
+          "source_key": "sec_edgar",
+          "status": "candidate_not_verified",
+          "whole_raw_comparisons": [
+            {
+              "cache_not_after_old_normalization": true,
+              "document_id": "sec_edgar:cik_0001951089:sec_company_facts_raw_response:8b4f482fe2edcba3d1503915",
+              "original_binding_unchanged": true,
+              "original_record": {
+                "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001951089/sec_edgar:cik_0001951089:sec_company_facts_raw_response:8b4f482fe2edcba3d1503915.json",
+                "sha256": "c3537febad38b8afb67404060d2555c22aff729982d22bff957a4bf2ab883e51"
+              },
+              "whole_raw_equals_cache_body": true
+            }
+          ]
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2026-09-10T17:45:40.325109+00:00",
+          "content_hash": "8b4f482fe2edcba3d15039159ce48806f122e49fe339dc603f5c7093ee02eed2",
+          "document_id": "sec_edgar:cik_0001951089:sec_company_facts_raw_response:8b4f482fe2edcba3d1503915",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001951089/sec_edgar:cik_0001951089:sec_company_facts_raw_response:8b4f482fe2edcba3d1503915.json",
+            "sha256": "c3537febad38b8afb67404060d2555c22aff729982d22bff957a4bf2ab883e51"
+          },
+          "published_at": "2026-09-10T17:45:40.325109+00:00",
+          "safe_source_metadata": {
+            "cik": "0001951089",
+            "provider": "sec_edgar"
+          },
+          "source_type": "sec_company_facts_raw_response"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ]
+      ],
+      "source": "sec_edgar",
+      "ticker": "CRML"
+    }
+  ],
+  "case_id": "cik_0001951089:20250530",
+  "company_id": "cik_0001951089",
+  "pair_audit": [
+    {
+      "body_hash": "8b4f482fe2edcba3d15039159ce48806f122e49fe339dc603f5c7093ee02eed2",
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/sec_edgar/financial_statements/d2e80d4fdbb8d45c3a8e495d.json",
+        "sha256": "6e2a2d2737e49abedaabc69194b9a864c0ff9aa0d80e96e6a565d371a6dd897d"
+      },
+      "cache_retrieved_at": "2026-09-10T17:45:40.305095+00:00",
+      "raw_normalized_at": "2026-09-10T17:45:40.325109+00:00",
+      "rawproof": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001951089/sec_edgar:cik_0001951089:sec_company_facts_raw_response:8b4f482fe2edcba3d1503915.json",
+        "sha256": "c3537febad38b8afb67404060d2555c22aff729982d22bff957a4bf2ab883e51"
+      },
+      "status": "usable_pair"
+    }
+  ],
+  "products": [],
+  "status": "selected"
+}

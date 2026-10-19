@@ -1,0 +1,16 @@
+{
+  "scope": "Isolated HEAD adapter execution through new offline fakeclient tests; working acquisition.py never replaced. Two original per-filing alias failures expected.",
+  "HEAD": "3e67e166071c2ca43a00e82e1f6455f4e1fd5a4a",
+  "historical_acquisition_sha256": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df",
+  "selectors": [
+    "tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_mixed_exact_request_labels_each_actual_form_instead_of_first_type",
+    "tests.test_sec_filing_source_types.SecFilingSourceTypeTests.test_reversed_exact_order_has_same_per_form_types_and_source_order"
+  ],
+  "tests_run": 2,
+  "expected_failures": 2,
+  "errors": 0,
+  "log": {
+    "path": "/tmp/sec-filing-producer-original-two.log",
+    "sha256": "6150a36861a794e6b9ffea27171154d428349a3b4db3b5823c830cd589507547"
+  }
+}

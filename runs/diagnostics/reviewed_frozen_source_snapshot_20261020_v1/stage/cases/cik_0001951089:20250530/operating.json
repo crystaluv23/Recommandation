@@ -1,0 +1,377 @@
+{
+  "case_id": "cik_0001951089:20250530",
+  "retained_selection": {
+    "case_id": "cik_0001951089:20250530",
+    "company_id": "cik_0001951089",
+    "late_accepted_periodic_exclusions": [],
+    "lookback_lower_filing_date": "2023-05-31",
+    "missing_annual_candidate": false,
+    "missing_interim_candidate": true,
+    "prediction_time": "2025-05-30T00:00:00+00:00",
+    "root_variant_errors": [],
+    "root_variants": [
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "3d6fca45c87bcb48d4fe6bbcaa34b31ed4f15d0f9430fbdb518c630936b90326"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-04T11:34:52.488688+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v41/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "9d8d0e51ce0ff72425b83b17c1403ccf41eedb23ec18ab632578773a35a95a6d"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-25T13:39:39.426470+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v42/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "829b4375b0c78256cdc431e1e98eafda3a8de4ebd4f1543def1bcd44d3a094fa"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-25T15:35:17.749054+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v43/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "09b292c0bbdaf6c6d3a348e299c7de0df01d5c49ba59e31ca57f7f91de381716"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-26T12:00:50.569737+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v44/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "fdf56c8cff2631f3c4f9b4f8863f412cadc31dddf180f32cd14fcdf870dfbcd6"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-26T12:27:10.928670+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v48/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "d62bf6ce81a189fad3194ea2209f859f9506de947d3e3aa475d0a2cb21afb857"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-26T14:27:37.330118+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v49/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "76baec086780e81228ef097416014167608a036884b2effacb9f489382c9dfaf"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-26T14:53:29.453268+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v51/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "bc09777f7a1882005803a3b853daeb431d0091824ec0f19eabdb04f937263c5a"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-27T15:43:04.816483+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v52/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "5da0d5ce2053faf7eea0be8bd51e70da34b8db6170e190885dc86233a60e2670"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-27T15:59:33.865845+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v53/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "043395392e112fc638a030d1c8b6fc9c413c902e6ca3d697162625841dd945c3"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-27T16:31:36.824138+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v54/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "1d16ebb73cb16f626d0a79609c115a11e78d0a447ebcee5925cacf4018320bcb"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T11:50:09.468467+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v55/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "f63aba53a65faf9f2a504d0941a6abd0284c80133d75bf3088ed87dd49a6a021"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T12:21:55.474740+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v56/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "afdc0700e27b9d8f91ad21acd4e6b9218ad0d8256c6061999d5769d762fd9afc"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T12:29:49.558187+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v57/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "4ef46ce7f8d07945f4c2167a190d691453d284fab0364611d76eda82aa4fdb1b"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T12:34:06.280829+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v58/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "41181ac0407d674a6617076231b544e3d3a4b3efa92cf46fad870a2844b0f9b7"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T12:38:13.123471+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v59/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "812e69a3b063094a0f0725451dbce7fc56ba16bdeb0e2bbe1917722244522c88"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-28T12:44:31.783048+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260830-v76b/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "027e93f7d7f1dd5ecb4a338bf37cf63a5fa9d7b06553b895a451f13e0b5cdf73"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-30T13:02:14.169557+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      }
+    ],
+    "same_accession_conflicts": [],
+    "selected_annual_interim": [
+      {
+        "accepted_at": "2024-10-30T18:40:53+00:00",
+        "accession": "0001213900-24-092156",
+        "body_cache_matches": [],
+        "candidate_original_document_id": "sec:cik_0001951089:000121390024092156",
+        "content_scope": "unknown_until_whole_original_semantic_review",
+        "exact_missing_GET": {
+          "method": "GET",
+          "url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm"
+        },
+        "existing_same_id_originals": [],
+        "filing_date": "2024-10-30",
+        "form": "20-F",
+        "native_body_cache_key": "293b00dba817b0452060f9bb",
+        "present_in_root_variants": 17,
+        "primary_document": "ea0217031-20f_critical.htm",
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm",
+        "report_period": "2024-06-30",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "3d6fca45c87bcb48d4fe6bbcaa34b31ed4f15d0f9430fbdb518c630936b90326"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v41/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "9d8d0e51ce0ff72425b83b17c1403ccf41eedb23ec18ab632578773a35a95a6d"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v42/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "829b4375b0c78256cdc431e1e98eafda3a8de4ebd4f1543def1bcd44d3a094fa"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v43/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "09b292c0bbdaf6c6d3a348e299c7de0df01d5c49ba59e31ca57f7f91de381716"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v44/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "fdf56c8cff2631f3c4f9b4f8863f412cadc31dddf180f32cd14fcdf870dfbcd6"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v48/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "d62bf6ce81a189fad3194ea2209f859f9506de947d3e3aa475d0a2cb21afb857"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v49/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "76baec086780e81228ef097416014167608a036884b2effacb9f489382c9dfaf"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v51/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "bc09777f7a1882005803a3b853daeb431d0091824ec0f19eabdb04f937263c5a"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v52/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "5da0d5ce2053faf7eea0be8bd51e70da34b8db6170e190885dc86233a60e2670"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v53/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "043395392e112fc638a030d1c8b6fc9c413c902e6ca3d697162625841dd945c3"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v54/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "1d16ebb73cb16f626d0a79609c115a11e78d0a447ebcee5925cacf4018320bcb"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v55/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "f63aba53a65faf9f2a504d0941a6abd0284c80133d75bf3088ed87dd49a6a021"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v56/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "afdc0700e27b9d8f91ad21acd4e6b9218ad0d8256c6061999d5769d762fd9afc"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v57/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "4ef46ce7f8d07945f4c2167a190d691453d284fab0364611d76eda82aa4fdb1b"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v58/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "41181ac0407d674a6617076231b544e3d3a4b3efa92cf46fad870a2844b0f9b7"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v59/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "812e69a3b063094a0f0725451dbce7fc56ba16bdeb0e2bbe1917722244522c88"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260830-v76b/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "027e93f7d7f1dd5ecb4a338bf37cf63a5fa9d7b06553b895a451f13e0b5cdf73"
+          }
+        ],
+        "source_admission": "not_performed"
+      }
+    ],
+    "selection_status": "bounded_root_recent_candidates_only",
+    "split": "discovery",
+    "ticker": "CRML"
+  },
+  "source_admitted": false,
+  "status": "pending_wholebody_semantic_review",
+  "targets": [
+    {
+      "accepted_at": "2024-10-30T18:40:53+00:00",
+      "accession": "0001213900-24-092156",
+      "body_cache_matches": [],
+      "body_variants": [],
+      "candidate_original_document_id": "sec:cik_0001951089:000121390024092156",
+      "content_scope": "unknown_until_whole_original_semantic_review",
+      "exact_missing_GET": {
+        "method": "GET",
+        "url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm"
+      },
+      "existing_same_id_originals": [],
+      "filing_date": "2024-10-30",
+      "form": "20-F",
+      "native_body_cache_key": "293b00dba817b0452060f9bb",
+      "present_in_root_variants": 17,
+      "primary_document": "ea0217031-20f_critical.htm",
+      "primary_url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm",
+      "report_period": "2024-06-30",
+      "root_bindings": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "3d6fca45c87bcb48d4fe6bbcaa34b31ed4f15d0f9430fbdb518c630936b90326"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v41/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "9d8d0e51ce0ff72425b83b17c1403ccf41eedb23ec18ab632578773a35a95a6d"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v42/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "829b4375b0c78256cdc431e1e98eafda3a8de4ebd4f1543def1bcd44d3a094fa"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v43/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "09b292c0bbdaf6c6d3a348e299c7de0df01d5c49ba59e31ca57f7f91de381716"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v44/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "fdf56c8cff2631f3c4f9b4f8863f412cadc31dddf180f32cd14fcdf870dfbcd6"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v48/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "d62bf6ce81a189fad3194ea2209f859f9506de947d3e3aa475d0a2cb21afb857"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v49/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "76baec086780e81228ef097416014167608a036884b2effacb9f489382c9dfaf"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v51/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "bc09777f7a1882005803a3b853daeb431d0091824ec0f19eabdb04f937263c5a"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v52/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "5da0d5ce2053faf7eea0be8bd51e70da34b8db6170e190885dc86233a60e2670"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v53/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "043395392e112fc638a030d1c8b6fc9c413c902e6ca3d697162625841dd945c3"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v54/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "1d16ebb73cb16f626d0a79609c115a11e78d0a447ebcee5925cacf4018320bcb"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v55/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "f63aba53a65faf9f2a504d0941a6abd0284c80133d75bf3088ed87dd49a6a021"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v56/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "afdc0700e27b9d8f91ad21acd4e6b9218ad0d8256c6061999d5769d762fd9afc"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v57/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "4ef46ce7f8d07945f4c2167a190d691453d284fab0364611d76eda82aa4fdb1b"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v58/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "41181ac0407d674a6617076231b544e3d3a4b3efa92cf46fad870a2844b0f9b7"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v59/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "812e69a3b063094a0f0725451dbce7fc56ba16bdeb0e2bbe1917722244522c88"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260830-v76b/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+          "sha256": "027e93f7d7f1dd5ecb4a338bf37cf63a5fa9d7b06553b895a451f13e0b5cdf73"
+        }
+      ],
+      "source_admission": "not_performed",
+      "wholebody_semantic_review": "pending_not_form_inferred"
+    }
+  ]
+}

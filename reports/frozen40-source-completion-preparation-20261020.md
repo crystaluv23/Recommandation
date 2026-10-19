@@ -90,3 +90,78 @@ now require the exact GET/retained-response status and strict singleton counters
 new controls retain a successful positive and reject each conflicting variant.
 The initial independent `/var`-alias temporary harness failed its binding check
 before reaching this boundary; it is preserved separately from the valid probe.
+
+The sole actual preparation ran under checkpoint `3e67e166`, final script
+`b05af2849b3e54563e6041b8c11dff4d96ddce35875b4c19b7d40a2f6e126516`,
+from23:38:46.787 to23:39:27.198UTC:40.411seconds/exit0. The terminal
+[result](../runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/result.json)
+binds plan `1123adb3e1343d9c0008cdf4008e3a3ebdd9dbca43dbf2a3bbff40fe9b14b8e1`
+and preserves40 identities,25 financial and24 market/operating families.
+It must not be rerun, resumed or modified.
+
+All842 financial products equal the complete expected set and passed the native
+profile. Of these,838 have no different existing canonical record;4 GPRE
+products collide with old metadata. Their content, identity and public clocks
+match, but extraction clocks and selection/provenance metadata differ. No old
+record was overwritten or retimed; this remains a later admission question.
+
+Market diagnosis retained246 distinct original windows and11244 cache/original
+pair variants.959 variants exactly reconstructed242 originals.23 families have
+valid origins but lack historical issuer/split proofs; CIK1681459's sole
+original endsJuly30 and is availableJuly31, after its May30UTC cutoff; this is
+not merely a same-day boundary. Invalid clock/body pairings remain in the
+diagnosis, rather than being erased or counted as distinct sources.
+
+The24 operating families retain41 annual/interim targets,31 with body candidates.
+All71 body/root variants passed mechanical qualification, while whole-body
+semantic sufficiency remains pending.56 variants used bound original records;
+15 prototypes encounter existing-ID collisions. Root found at least one exact
+`10-k` original missed by the supplemental table, so these are not evidence that
+the original is unqualified. A separate read-only original/proof review is
+required, without changing this terminal stage or cloning records.
+
+The [direct original review](../runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-operating-collision-review.json)
+then checked all15 variants across4 distinct records.12 variants of3 originals
+pass as-is, with only the prototype's generic source alias differing. The other
+3 variants reference FTI's10-Q accession `0001681459-25-000079`, wrongly stored
+as `10-k`; exact-form qualification correctly rejects it. The producer currently
+chooses the first supported request alias outside the filing loop, which can
+mislabel every result of a mixed-form request. The corrective producer change
+is separate from this frozen diagnostic and cannot rewrite its originals.
+
+The exact missing-proof list has92 unique endpoint/query requests:53 all-type
+splits,29 historical issuer and10 static SEC primary bodies, retaining1928
+associations. None was sent by preparation. There was no global store, append,
+new source view, input matrix, Signal apply, model or label access. The earlier
+dual720 readiness results therefore remain the current actual consumption
+evidence; no source-family admission, overall F2 or MVP closure is claimed.
+
+The [independent actual audit](../runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-actual-review.json)
+verified3964 unique source/code/output bindings before and after, all842 actual
+product records against the complete expected set, all request associations,
+market values/periods and969 terminal files. It did not rerun the materializer.
+Market volume comparisons follow the existing `int(float(provider_volume))`
+contract; provider fractional volume is not preserved losslessly. The first
+reader assertion assumed raw fraction equality and is retained separately;
+production data and that existing conversion were not changed. Root also
+verified all969 terminal file hashes and the canonical plan hash.
+
+After that audit finished, the producer fix was made under a new working
+revision. It uses the shared predicate to choose the first compatible supported
+requested alias separately for each filing, before any body fetch. Existing
+filters, limits, public clocks and IDs are unchanged. Eight new temporary tests
+cover mixed/reversed forms, generic priority, exact-form filtering, no compatible
+alias, failed-body fallback, acceptance boundaries, persisted restart and native
+qualification. Together with10 explicit existing adapter tests,18/18 passed.
+Loading the old `3e67e166` module separately reproduced both original mixed and
+reversed-order failures (2 assertion failures, no errors). The
+[scoped test receipt](../runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/producer-source-type/sec-filing-producer-final-18-safe-bindings.json)
+and old failures are retained. This does not repair the persisted FTI record or
+authorize rerunning the completed source preparation; future real acquisition
+must still demonstrate the corrected producer path.
+The [independent producer review](../runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/producer-source-type-independent-review.json)
+passed13 additional checks over four native forms, reversed ordering, generic
+priorities, single-form filters, no-compatible requests, budgets/fallback and
+direct SEC qualification. Old wrong-form records and early-cutoff inputs still
+reject. This closes the local producer mapping defect, with no additional
+real-source admission or historical-stage replay.

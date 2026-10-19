@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from stock_opportunity_agent.data.filing_orientation import operating_order, OPERATING_REQUEST_ID
+from stock_opportunity_agent.data.filing_orientation import (
+    filing_source_matches_form, operating_order, OPERATING_REQUEST_ID,
+)
 
 import hashlib
 import json
@@ -207,12 +209,15 @@ class SecFilingAdapter:
             eligible = operating_order(eligible, lambda item: item.form.strip().upper(),
                 lambda item: item.accepted_at or _midnight(item.filing_date))
         documents: list[RawInfoDocument] = []
-        source_type = _first_supported(request.source_types, self.source_types)
         failures: list[str] = []
         attempt_limit = min(len(eligible), request.max_documents + 3)
         for filing in eligible[:attempt_limit]:
             if len(documents) >= request.max_documents:
                 break
+            source_type = next((item for item in request.source_types
+                if item in self.source_types and filing_source_matches_form(item, filing.form)), None)
+            if source_type is None:
+                continue
             try:
                 body = self.client.filing_document_text(filing)
             except DataQuotaDeferred:

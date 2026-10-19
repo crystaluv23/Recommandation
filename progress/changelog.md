@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：唯一3e67e166固定40来源prepare40.411s完成，25财务842完整产品/profile过、838无冲突/4GPRE元数据碰撞保留；24market中23家242原件重建但缺proof，FTI窗口7月晚于5月cutoff拒绝；24经营41目标/71机械变体全文仍待核，92精确缺证请求未发。独立3964绑定/842产品/969终态文件全核；4经营旧ID直查区分3原件可用与FTI10-Q误标10-k。再修producer混合form首alias误标，18定向过/旧代码两反例复现；旧原件/stage不改不重入，无append/view/matrix/model/标签/MVP关闭声明。
+
 - 2026-10-20：GPRE唯一真实CompanyFacts GET200/3619984bytes经完整HTTP/cache/raw/clock独立复核，25财务家族均有候选链。修复原生adapter支持10-k等别名、qualification却仅收filing的系统性漏接，保留原件与form/PIT/恢复边界；48安全关联/17独立反例和root16新测试通过。新增固定40案25财务/24market经营prepare-only接口，尚未实际prepare，无append/view/readiness提升声明。
 
 - 2026-10-20：原25缺源范围一次跨所有cold_start根精确key清点（不广扫cache正文），CompanyFacts cache/whole-raw候选由5→24，原20未定位中19属lookup根漏查；GPRE唯一未定位保unknown。全部932命中cache版本/675原件关联保留，25roots及42marketkeys定位但不视为准入；GPRE单GET native managedcache/rawproof采集候选经5temp控制，不重入旧stage/不append/不声称来源就绪。

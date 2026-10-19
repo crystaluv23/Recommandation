@@ -1,0 +1,43 @@
+{
+  "all_request_associations": [
+    {
+      "cache_key": "dba16fe3ea281103d64c3364",
+      "capability": "financial_statements",
+      "case_id": "cik_0001309402:20250530",
+      "company_id": "cik_0001309402",
+      "cutoff": "2025-05-30T00:00:00+00:00",
+      "endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001309402.json",
+      "family": "companyfacts",
+      "matches": [],
+      "original_candidates": [],
+      "params": [
+        [
+          "method",
+          "GET"
+        ]
+      ],
+      "source": "sec_edgar",
+      "ticker": "GPRE"
+    }
+  ],
+  "case_id": "cik_0001309402:20250530",
+  "company_id": "cik_0001309402",
+  "pair_audit": [
+    {
+      "body_hash": "4c7c94253afee62c6a03cc7c3b6e730a1542acc46d04886585e219e3c5070404",
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/cache/data/sec_edgar/financial_statements/dba16fe3ea281103d64c3364.json",
+        "sha256": "02e05b3f33613f698acad65a8565d3bba8a5897d0eab17ae0939736f62f9287e"
+      },
+      "cache_retrieved_at": "2026-10-19T23:17:44.069857+00:00",
+      "raw_normalized_at": "2026-10-19T23:17:44.291228+00:00",
+      "rawproof": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/raw-response-proof.json",
+        "sha256": "81baee446ae7f9d4f58d23b925cd576b2254dd419770823b666ce44ec19ebea6"
+      },
+      "status": "usable_pair"
+    }
+  ],
+  "products": [],
+  "status": "selected"
+}

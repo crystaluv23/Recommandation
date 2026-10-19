@@ -1,0 +1,791 @@
+{
+  "case_id": "cik_0001920294:20250530",
+  "retained_selection": {
+    "case_id": "cik_0001920294:20250530",
+    "company_id": "cik_0001920294",
+    "late_accepted_periodic_exclusions": [],
+    "lookback_lower_filing_date": "2023-05-31",
+    "missing_annual_candidate": false,
+    "missing_interim_candidate": true,
+    "prediction_time": "2025-05-30T00:00:00+00:00",
+    "root_variant_errors": [],
+    "root_variants": [
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "d45187d81b319529e84fab1c8f000482a2007e236b0d3811b49a796f96e6584c"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-08-21T16:29:38.760435+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "0843983f86cd7b7fc96cbc924814349bd9c29299b985635753edbfe65af3a8d1"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-19T12:15:08.798100+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v118/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "48be6ff67ef3950a1bf0c7eeea01e18ef7195c4c4c7fe633dd598ed679848243"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-19T17:15:44.453512+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v119/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "9080edc8c2be77a09d6b01f0e18fcb25747f52cc9ecd9d98df0ad1e4dc7bdb91"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-19T18:30:14.061562+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v120/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "2ca8f6d4d9d2b233fa117cb424a54c97599ffd4055362bf8169530f03eda2bfe"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-19T20:03:02.350073+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v121/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "8959a14d5323b7c302449f333bc6d4d2e3dc6c2c83a03eb79b28f8fd4def391d"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-19T20:50:51.024923+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "f5fe577b3df7fb2cdd71ee7ba7399807d80f059f627100c18adaf8effc31f0a8"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-19T21:30:06.698870+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v123/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "21182695f9542c41f1190a57378e05862a5b1db419d3bb61b8ce8b0e92947b1d"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-19T22:11:32.697913+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v124/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "dc8d57177c3acb08778374e36e959f53500ead467be71e84869ee9f395f11545"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-19T23:08:51.463763+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v125/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "f7ac45fa247c43a8615879f5e89515a7e287a30b8533e9a98526eab9c24d8e74"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-19T23:27:02.034893+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v126/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "f7904216a45b836559e80012b56e78942053abad80b8a2f177560077d4f886d9"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-20T01:45:26.125023+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v127/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "9d371bb5b0ddc753c690ab81f7b1232a9d3fbab74fbe035ba69679b1b1835eee"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-20T03:34:14.463342+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v128/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "0a5da5b254fcf72bab99928ccafb7df0a6ea1852aafa15981ff23825afd8027c"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-20T05:24:44.372699+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v129/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "542ee439dabf6413667056e2ccea894f2ef06c0a377e8efa0812a64eeecc0838"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-20T05:52:44.324156+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "f6e20867588f71d2a265f77018908bf77976f5e1753d87cb16b89310752621f9"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-20T11:29:53.443166+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v131/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "d63743819d66f5179ffb69e562107c5cb22b79df06d9bd135e25970e1eed240e"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-21T11:42:33.286876+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v132/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "62df2c61c51e468909c344f86051d833cf63615bd4443edce330c34daaf23cec"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-21T12:40:33.891331+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v133/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "ccdd09b67a315c2a8dc7ca33613b0fb41db03bb2271b9552aaa6c04cba4390df"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-21T13:05:06.613500+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v134/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "8668ab283ef7ce105f2af11405577004d69ccd96b0a35112a674d37e6af02d5e"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-21T13:24:30.011801+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v135/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "02d59476d70a95099683d907d813776096912cc1ed277992194dd18124bf2d4c"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-21T14:15:21.295120+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v136/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "0376f84f976312ff464df0479670e7c05af16f18a289f9b8caa08b653b7d2b11"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-21T14:47:59.258044+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v137/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "16d5bef895ae12d4164d6e76f6cc9dc243208e00fe57c069422b88458fb2933b"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-21T15:49:45.718074+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "29e1e8a853412b201653fb30513eea656a0962a1e1cdbfee8ebcd9ae6d1c3b30"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-21T16:49:32.908299+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v139/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "49e3b6d46f1d6e732fcd6dfa577b5492c19924a5f7c5488e56ec19e217e68e3f"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-22T02:48:52.435097+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "1dec16cef2aa3b4e64cb4fb4781f5912566b3823c8b84040337035ae60de0e15"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-26T14:00:47.314385+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "4d1c4b5c93a93eb1b926c105948977ce939d7ae593f488c39546c40a1df4f7e9"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-26T15:42:26.409051+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v142/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "a7c2c27110d52b0c8735049ef2a1685e2c06b1926701cc551d80cd1939814468"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-28T12:29:00.035609+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "1600883bb6de75717780a1894f3891d842f0a07b033f14e90f43e531284a15f1"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-28T14:52:12.614152+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v1/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "886574276e880b07fca85834fcaff6f608f70e474489932fae662aaf791aebd2"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-09T02:49:44.527501+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v3/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "ee53f52ce2db72a723ce6e79901e927e18d36a7543477afeb6a93b7e076ce035"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-09T05:04:13.082228+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v5/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "4c475c5853d1001bb3518cbace71564a0b8219f58b127547f247b26ee7dbe7f3"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-09T07:36:37.533008+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v6/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "9805a0dac5c9a60a8c39602c0fab58b65eaebea38058058f0e75ac7772712726"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-09T08:10:32.267310+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v7/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "fab590fd3f5a32d6828e9aa64cf4090a28d21a5314e7d10efb094322f6d6acc3"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-09T13:38:49.385605+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v8/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "7162cc6a990c3cbac0cbe399d08481e5e08ae48f29fc0f8c7d71ceab545d2e82"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-09T15:07:28.308509+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v10/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "054ef06d0e90b1c753c11e0889a70ea39ef5b8ede5cf1fdc2d8e4c934bc73bbe"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-10T02:46:39.050347+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v11/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "d3c11931fba5d4e445b6eb4fc2e2295bc1c05f38c6ecad4b3ad9d0f5aa929702"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-10T03:01:53.077858+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v12/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "6d6e2735189a4e80a3072948b835e42371a5239792f2f0246083531f67895082"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-10T07:03:27.230508+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v15/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "04b4401c7517490f07de50896381afb72278acc0c570e5115e9ec36e253c0b6f"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-10T15:23:52.607676+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "4dd41546bfc541f3f42e94884d20b41dccc29c61aa439d563eab9b5ccbefd11d"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-10T16:33:38.463663+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v18/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "da31e04c64e92c0cbfa9d60821d62da7cf83944e999c43582ae3e82993087726"
+        },
+        "eligible_periodic_rows": 2,
+        "late_accepted_periodic_rows": 0,
+        "retrieved_at": "2026-09-10T19:41:17.011035+00:00",
+        "status": "candidate_root_identity_shape_verified"
+      }
+    ],
+    "same_accession_conflicts": [],
+    "selected_annual_interim": [
+      {
+        "accepted_at": "2025-04-23T23:53:51+00:00",
+        "accession": "0000950170-25-057622",
+        "body_cache_matches": [],
+        "candidate_original_document_id": "sec:cik_0001920294:000095017025057622",
+        "content_scope": "unknown_until_whole_original_semantic_review",
+        "exact_missing_GET": {
+          "method": "GET",
+          "url": "https://www.sec.gov/Archives/edgar/data/1920294/000095017025057622/rzlv-20241231.htm"
+        },
+        "existing_same_id_originals": [],
+        "filing_date": "2025-04-24",
+        "form": "20-F",
+        "native_body_cache_key": "c9b787fdcdb10e1840c2809e",
+        "present_in_root_variants": 40,
+        "primary_document": "rzlv-20241231.htm",
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/1920294/000095017025057622/rzlv-20241231.htm",
+        "report_period": "2024-12-31",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "d45187d81b319529e84fab1c8f000482a2007e236b0d3811b49a796f96e6584c"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "0843983f86cd7b7fc96cbc924814349bd9c29299b985635753edbfe65af3a8d1"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v118/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "48be6ff67ef3950a1bf0c7eeea01e18ef7195c4c4c7fe633dd598ed679848243"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v119/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "9080edc8c2be77a09d6b01f0e18fcb25747f52cc9ecd9d98df0ad1e4dc7bdb91"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v120/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "2ca8f6d4d9d2b233fa117cb424a54c97599ffd4055362bf8169530f03eda2bfe"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v121/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "8959a14d5323b7c302449f333bc6d4d2e3dc6c2c83a03eb79b28f8fd4def391d"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "f5fe577b3df7fb2cdd71ee7ba7399807d80f059f627100c18adaf8effc31f0a8"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v123/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "21182695f9542c41f1190a57378e05862a5b1db419d3bb61b8ce8b0e92947b1d"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v124/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "dc8d57177c3acb08778374e36e959f53500ead467be71e84869ee9f395f11545"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v125/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "f7ac45fa247c43a8615879f5e89515a7e287a30b8533e9a98526eab9c24d8e74"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v126/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "f7904216a45b836559e80012b56e78942053abad80b8a2f177560077d4f886d9"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v127/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "9d371bb5b0ddc753c690ab81f7b1232a9d3fbab74fbe035ba69679b1b1835eee"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v128/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "0a5da5b254fcf72bab99928ccafb7df0a6ea1852aafa15981ff23825afd8027c"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v129/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "542ee439dabf6413667056e2ccea894f2ef06c0a377e8efa0812a64eeecc0838"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "f6e20867588f71d2a265f77018908bf77976f5e1753d87cb16b89310752621f9"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v131/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "d63743819d66f5179ffb69e562107c5cb22b79df06d9bd135e25970e1eed240e"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v132/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "62df2c61c51e468909c344f86051d833cf63615bd4443edce330c34daaf23cec"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v133/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "ccdd09b67a315c2a8dc7ca33613b0fb41db03bb2271b9552aaa6c04cba4390df"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v134/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "8668ab283ef7ce105f2af11405577004d69ccd96b0a35112a674d37e6af02d5e"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v135/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "02d59476d70a95099683d907d813776096912cc1ed277992194dd18124bf2d4c"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v136/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "0376f84f976312ff464df0479670e7c05af16f18a289f9b8caa08b653b7d2b11"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v137/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "16d5bef895ae12d4164d6e76f6cc9dc243208e00fe57c069422b88458fb2933b"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "29e1e8a853412b201653fb30513eea656a0962a1e1cdbfee8ebcd9ae6d1c3b30"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v139/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "49e3b6d46f1d6e732fcd6dfa577b5492c19924a5f7c5488e56ec19e217e68e3f"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "1dec16cef2aa3b4e64cb4fb4781f5912566b3823c8b84040337035ae60de0e15"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "4d1c4b5c93a93eb1b926c105948977ce939d7ae593f488c39546c40a1df4f7e9"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v142/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "a7c2c27110d52b0c8735049ef2a1685e2c06b1926701cc551d80cd1939814468"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "1600883bb6de75717780a1894f3891d842f0a07b033f14e90f43e531284a15f1"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v1/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "886574276e880b07fca85834fcaff6f608f70e474489932fae662aaf791aebd2"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v3/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "ee53f52ce2db72a723ce6e79901e927e18d36a7543477afeb6a93b7e076ce035"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v5/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "4c475c5853d1001bb3518cbace71564a0b8219f58b127547f247b26ee7dbe7f3"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v6/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "9805a0dac5c9a60a8c39602c0fab58b65eaebea38058058f0e75ac7772712726"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v7/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "fab590fd3f5a32d6828e9aa64cf4090a28d21a5314e7d10efb094322f6d6acc3"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v8/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "7162cc6a990c3cbac0cbe399d08481e5e08ae48f29fc0f8c7d71ceab545d2e82"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v10/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "054ef06d0e90b1c753c11e0889a70ea39ef5b8ede5cf1fdc2d8e4c934bc73bbe"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v11/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "d3c11931fba5d4e445b6eb4fc2e2295bc1c05f38c6ecad4b3ad9d0f5aa929702"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v12/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "6d6e2735189a4e80a3072948b835e42371a5239792f2f0246083531f67895082"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v15/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "04b4401c7517490f07de50896381afb72278acc0c570e5115e9ec36e253c0b6f"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "4dd41546bfc541f3f42e94884d20b41dccc29c61aa439d563eab9b5ccbefd11d"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v18/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "da31e04c64e92c0cbfa9d60821d62da7cf83944e999c43582ae3e82993087726"
+          }
+        ],
+        "source_admission": "not_performed"
+      }
+    ],
+    "selection_status": "bounded_root_recent_candidates_only",
+    "split": "evolution_validation",
+    "ticker": "RZLV"
+  },
+  "source_admitted": false,
+  "status": "pending_wholebody_semantic_review",
+  "targets": [
+    {
+      "accepted_at": "2025-04-23T23:53:51+00:00",
+      "accession": "0000950170-25-057622",
+      "body_cache_matches": [],
+      "body_variants": [],
+      "candidate_original_document_id": "sec:cik_0001920294:000095017025057622",
+      "content_scope": "unknown_until_whole_original_semantic_review",
+      "exact_missing_GET": {
+        "method": "GET",
+        "url": "https://www.sec.gov/Archives/edgar/data/1920294/000095017025057622/rzlv-20241231.htm"
+      },
+      "existing_same_id_originals": [],
+      "filing_date": "2025-04-24",
+      "form": "20-F",
+      "native_body_cache_key": "c9b787fdcdb10e1840c2809e",
+      "present_in_root_variants": 40,
+      "primary_document": "rzlv-20241231.htm",
+      "primary_url": "https://www.sec.gov/Archives/edgar/data/1920294/000095017025057622/rzlv-20241231.htm",
+      "report_period": "2024-12-31",
+      "root_bindings": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "d45187d81b319529e84fab1c8f000482a2007e236b0d3811b49a796f96e6584c"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "0843983f86cd7b7fc96cbc924814349bd9c29299b985635753edbfe65af3a8d1"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v118/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "48be6ff67ef3950a1bf0c7eeea01e18ef7195c4c4c7fe633dd598ed679848243"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v119/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "9080edc8c2be77a09d6b01f0e18fcb25747f52cc9ecd9d98df0ad1e4dc7bdb91"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v120/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "2ca8f6d4d9d2b233fa117cb424a54c97599ffd4055362bf8169530f03eda2bfe"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v121/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "8959a14d5323b7c302449f333bc6d4d2e3dc6c2c83a03eb79b28f8fd4def391d"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "f5fe577b3df7fb2cdd71ee7ba7399807d80f059f627100c18adaf8effc31f0a8"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v123/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "21182695f9542c41f1190a57378e05862a5b1db419d3bb61b8ce8b0e92947b1d"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v124/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "dc8d57177c3acb08778374e36e959f53500ead467be71e84869ee9f395f11545"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v125/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "f7ac45fa247c43a8615879f5e89515a7e287a30b8533e9a98526eab9c24d8e74"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v126/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "f7904216a45b836559e80012b56e78942053abad80b8a2f177560077d4f886d9"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v127/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "9d371bb5b0ddc753c690ab81f7b1232a9d3fbab74fbe035ba69679b1b1835eee"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v128/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "0a5da5b254fcf72bab99928ccafb7df0a6ea1852aafa15981ff23825afd8027c"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v129/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "542ee439dabf6413667056e2ccea894f2ef06c0a377e8efa0812a64eeecc0838"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "f6e20867588f71d2a265f77018908bf77976f5e1753d87cb16b89310752621f9"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v131/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "d63743819d66f5179ffb69e562107c5cb22b79df06d9bd135e25970e1eed240e"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v132/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "62df2c61c51e468909c344f86051d833cf63615bd4443edce330c34daaf23cec"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v133/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "ccdd09b67a315c2a8dc7ca33613b0fb41db03bb2271b9552aaa6c04cba4390df"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v134/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "8668ab283ef7ce105f2af11405577004d69ccd96b0a35112a674d37e6af02d5e"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v135/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "02d59476d70a95099683d907d813776096912cc1ed277992194dd18124bf2d4c"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v136/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "0376f84f976312ff464df0479670e7c05af16f18a289f9b8caa08b653b7d2b11"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v137/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "16d5bef895ae12d4164d6e76f6cc9dc243208e00fe57c069422b88458fb2933b"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "29e1e8a853412b201653fb30513eea656a0962a1e1cdbfee8ebcd9ae6d1c3b30"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v139/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "49e3b6d46f1d6e732fcd6dfa577b5492c19924a5f7c5488e56ec19e217e68e3f"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "1dec16cef2aa3b4e64cb4fb4781f5912566b3823c8b84040337035ae60de0e15"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "4d1c4b5c93a93eb1b926c105948977ce939d7ae593f488c39546c40a1df4f7e9"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v142/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "a7c2c27110d52b0c8735049ef2a1685e2c06b1926701cc551d80cd1939814468"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "1600883bb6de75717780a1894f3891d842f0a07b033f14e90f43e531284a15f1"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v1/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "886574276e880b07fca85834fcaff6f608f70e474489932fae662aaf791aebd2"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v3/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "ee53f52ce2db72a723ce6e79901e927e18d36a7543477afeb6a93b7e076ce035"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v5/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "4c475c5853d1001bb3518cbace71564a0b8219f58b127547f247b26ee7dbe7f3"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v6/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "9805a0dac5c9a60a8c39602c0fab58b65eaebea38058058f0e75ac7772712726"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v7/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "fab590fd3f5a32d6828e9aa64cf4090a28d21a5314e7d10efb094322f6d6acc3"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v8/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "7162cc6a990c3cbac0cbe399d08481e5e08ae48f29fc0f8c7d71ceab545d2e82"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v10/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "054ef06d0e90b1c753c11e0889a70ea39ef5b8ede5cf1fdc2d8e4c934bc73bbe"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v11/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "d3c11931fba5d4e445b6eb4fc2e2295bc1c05f38c6ecad4b3ad9d0f5aa929702"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v12/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "6d6e2735189a4e80a3072948b835e42371a5239792f2f0246083531f67895082"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v15/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "04b4401c7517490f07de50896381afb72278acc0c570e5115e9ec36e253c0b6f"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "4dd41546bfc541f3f42e94884d20b41dccc29c61aa439d563eab9b5ccbefd11d"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v18/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+          "sha256": "da31e04c64e92c0cbfa9d60821d62da7cf83944e999c43582ae3e82993087726"
+        }
+      ],
+      "source_admission": "not_performed",
+      "wholebody_semantic_review": "pending_not_form_inferred"
+    }
+  ]
+}

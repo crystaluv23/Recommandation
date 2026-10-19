@@ -38,6 +38,15 @@ Use the source catalog as the canonical free/free-key capability manifest:
   page does not discard filings from other pages. A capped or failed overlapping
   scan remains explicit as `history_truncated`/incomplete coverage rather than
   being reported as proof that no historical filing exists.
+- Each acquired filing selects its source type independently, in request order,
+  from the adapter's supported aliases using the shared
+  [source-versus-form predicate](filing_orientation.md). Generic filing aliases
+  retain their requested priority; exact aliases must match that filing's actual
+  form. A multi-form request must not stamp all bodies with its first type.
+  When no requested supported alias matches, do not fetch the body or fabricate
+  another source type; leave the missing evidence as a gap. Preserve existing
+  requested-form filtering, traversal/document budgets, IDs, acceptance instants
+  and original records. This changes future production, not old persisted bytes.
 - `massive`: U.S. equity daily OHLCV aggregate bars from the keyed Massive REST API.
 - `stooq`: daily historical OHLCV CSV fallback, with `STOOQ_API_KEY` support because the CSV download can require a captcha-issued apikey.
 - `alpha_vantage`: listing status, daily prices, overview, statements, earnings, estimates, symbol and topic news sentiment, transcripts, ETF profile, and selected macro endpoints.

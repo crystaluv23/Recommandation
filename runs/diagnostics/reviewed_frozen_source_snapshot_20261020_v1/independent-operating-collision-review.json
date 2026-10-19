@@ -1,0 +1,392 @@
+{
+  "scope": "Read-only direct original native SEC verifier on exact15 operating collision variants; no _operating/prepare/materialize/store/append/model/GET/labels. Stage unchanged.",
+  "stage_result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/result.json",
+    "sha256": "ac71fbcbf40526e04446c0cca25e568d02b0fd9df06ffd28463d03fcc90369ec"
+  },
+  "code_sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034",
+  "variant_count": 15,
+  "distinct_original_files": 4,
+  "as_is_native_status_counts": {
+    "passed_as_is": 12,
+    "rejected_as_is": 3
+  },
+  "checks": [
+    {
+      "case_id": "cik_0001681459:20250530",
+      "accession": "0001681459-25-000036",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001681459/sec:cik_0001681459:000168145925000036.json",
+        "sha256": "189c4a89176758d3535fd9c669ab620942d42cea7be4eb7261fad48a50ac0d28"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/sec_edgar/filing_documents/d74a9a7672e1b2ab0c8cb18f.json",
+        "sha256": "e11b3bf735b37d5a29434ae05c47dfb6d35d38c64af6c98d4c672125e8339d1c"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/c6a11f13be4381fcd15a5283.json",
+        "sha256": "2a9b0d0a3d30693e4fa3583fc64d0e6553198603186225951dfbca9fca62f8de"
+      }
+    },
+    {
+      "case_id": "cik_0001681459:20250530",
+      "accession": "0001681459-25-000036",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001681459/sec:cik_0001681459:000168145925000036.json",
+        "sha256": "189c4a89176758d3535fd9c669ab620942d42cea7be4eb7261fad48a50ac0d28"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/sec_edgar/filing_documents/d74a9a7672e1b2ab0c8cb18f.json",
+        "sha256": "e11b3bf735b37d5a29434ae05c47dfb6d35d38c64af6c98d4c672125e8339d1c"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/c6a11f13be4381fcd15a5283.json",
+        "sha256": "88214ef00ef87e6915b82c0443c75533ce5b0727d175bdbcc197a75043f75b8f"
+      }
+    },
+    {
+      "case_id": "cik_0001681459:20250530",
+      "accession": "0001681459-25-000036",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001681459/sec:cik_0001681459:000168145925000036.json",
+        "sha256": "189c4a89176758d3535fd9c669ab620942d42cea7be4eb7261fad48a50ac0d28"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/d74a9a7672e1b2ab0c8cb18f.json",
+        "sha256": "ac69830b46f83c3a4aba0569a8bb0baf73b7c27476a0f0f8f034c0513d39d784"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/c6a11f13be4381fcd15a5283.json",
+        "sha256": "2a9b0d0a3d30693e4fa3583fc64d0e6553198603186225951dfbca9fca62f8de"
+      }
+    },
+    {
+      "case_id": "cik_0001681459:20250530",
+      "accession": "0001681459-25-000036",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001681459/sec:cik_0001681459:000168145925000036.json",
+        "sha256": "189c4a89176758d3535fd9c669ab620942d42cea7be4eb7261fad48a50ac0d28"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/d74a9a7672e1b2ab0c8cb18f.json",
+        "sha256": "ac69830b46f83c3a4aba0569a8bb0baf73b7c27476a0f0f8f034c0513d39d784"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/c6a11f13be4381fcd15a5283.json",
+        "sha256": "88214ef00ef87e6915b82c0443c75533ce5b0727d175bdbcc197a75043f75b8f"
+      }
+    },
+    {
+      "case_id": "cik_0001681459:20250530",
+      "accession": "0001681459-25-000036",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001681459/sec:cik_0001681459:000168145925000036.json",
+        "sha256": "189c4a89176758d3535fd9c669ab620942d42cea7be4eb7261fad48a50ac0d28"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/d74a9a7672e1b2ab0c8cb18f.json",
+        "sha256": "7628bcc99998d1f2a3ead016aabc5754ca070b7afe8f2a5fb3a6b73621a27337"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/c6a11f13be4381fcd15a5283.json",
+        "sha256": "2a9b0d0a3d30693e4fa3583fc64d0e6553198603186225951dfbca9fca62f8de"
+      }
+    },
+    {
+      "case_id": "cik_0001681459:20250530",
+      "accession": "0001681459-25-000036",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001681459/sec:cik_0001681459:000168145925000036.json",
+        "sha256": "189c4a89176758d3535fd9c669ab620942d42cea7be4eb7261fad48a50ac0d28"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/d74a9a7672e1b2ab0c8cb18f.json",
+        "sha256": "7628bcc99998d1f2a3ead016aabc5754ca070b7afe8f2a5fb3a6b73621a27337"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/c6a11f13be4381fcd15a5283.json",
+        "sha256": "88214ef00ef87e6915b82c0443c75533ce5b0727d175bdbcc197a75043f75b8f"
+      }
+    },
+    {
+      "case_id": "cik_0001681459:20250530",
+      "accession": "0001681459-25-000079",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001681459/sec:cik_0001681459:000168145925000079.json",
+        "sha256": "6a2a4565359c325504f827d9f56f40cd7aaf93e261eea6eea30fdf325d8cc8fc"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "rejected_as_is",
+      "error": "ReviewedSourceRejected:static SEC source type differs from proved filing form",
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/sec_edgar/filing_documents/d74a9a7672e1b2ab0c8cb18f.json",
+        "sha256": "e11b3bf735b37d5a29434ae05c47dfb6d35d38c64af6c98d4c672125e8339d1c"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/067e8d77ff28f1ad91ed3e82.json",
+        "sha256": "c53a9882a23f04301ff12766f0167e8dcf8279d48818b7bfb32586e0ff9ecb62"
+      }
+    },
+    {
+      "case_id": "cik_0001681459:20250530",
+      "accession": "0001681459-25-000079",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001681459/sec:cik_0001681459:000168145925000079.json",
+        "sha256": "6a2a4565359c325504f827d9f56f40cd7aaf93e261eea6eea30fdf325d8cc8fc"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "rejected_as_is",
+      "error": "ReviewedSourceRejected:static SEC source type differs from proved filing form",
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/d74a9a7672e1b2ab0c8cb18f.json",
+        "sha256": "ac69830b46f83c3a4aba0569a8bb0baf73b7c27476a0f0f8f034c0513d39d784"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/067e8d77ff28f1ad91ed3e82.json",
+        "sha256": "c53a9882a23f04301ff12766f0167e8dcf8279d48818b7bfb32586e0ff9ecb62"
+      }
+    },
+    {
+      "case_id": "cik_0001681459:20250530",
+      "accession": "0001681459-25-000079",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001681459/sec:cik_0001681459:000168145925000079.json",
+        "sha256": "6a2a4565359c325504f827d9f56f40cd7aaf93e261eea6eea30fdf325d8cc8fc"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "rejected_as_is",
+      "error": "ReviewedSourceRejected:static SEC source type differs from proved filing form",
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/d74a9a7672e1b2ab0c8cb18f.json",
+        "sha256": "7628bcc99998d1f2a3ead016aabc5754ca070b7afe8f2a5fb3a6b73621a27337"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/067e8d77ff28f1ad91ed3e82.json",
+        "sha256": "c53a9882a23f04301ff12766f0167e8dcf8279d48818b7bfb32586e0ff9ecb62"
+      }
+    },
+    {
+      "case_id": "cik_0002009312:20250930",
+      "accession": "0001641172-25-001168",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0002009312/sec:cik_0002009312:000164117225001168.json",
+        "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v54/cache/data/sec_edgar/filing_documents/bcb8bed81ec03c2149cc9352.json",
+        "sha256": "47a24f8b8a409d78457a4e3e5350e4f1b7fffdc77c8af2020c6403ca0819a732"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v54/cache/data/sec_edgar/filing_documents/b8669829d14fdaf1a89bbbf6.json",
+        "sha256": "5f26d72d5a787a48adc40db94e10de2dad64feda439d900d3b5db6fd7ae694e3"
+      }
+    },
+    {
+      "case_id": "cik_0002009312:20250930",
+      "accession": "0001641172-25-001168",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0002009312/sec:cik_0002009312:000164117225001168.json",
+        "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v115/cache/data/sec_edgar/filing_documents/bcb8bed81ec03c2149cc9352.json",
+        "sha256": "1ea4fafb7bd34eb04839bb5cf1070960e988665109e39344ef7dca8503e2851a"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v54/cache/data/sec_edgar/filing_documents/b8669829d14fdaf1a89bbbf6.json",
+        "sha256": "5f26d72d5a787a48adc40db94e10de2dad64feda439d900d3b5db6fd7ae694e3"
+      }
+    },
+    {
+      "case_id": "cik_0001285819:20250930",
+      "accession": "0001437749-25-010216",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001285819/sec:cik_0001285819:000143774925010216.json",
+        "sha256": "2c72e5297b3d8b50d8620a3f915e868c32492c6c5b864489d6857227889f5721"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+        "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+        "sha256": "afe17fe19387e1101838c753f4d9e09f1aaa1b41edad541bd758344ba8c321d9"
+      }
+    },
+    {
+      "case_id": "cik_0001285819:20250930",
+      "accession": "0001437749-25-010216",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001285819/sec:cik_0001285819:000143774925010216.json",
+        "sha256": "2c72e5297b3d8b50d8620a3f915e868c32492c6c5b864489d6857227889f5721"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+        "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+        "sha256": "84337b7de452c3f3892371d8a7e7ef179f7b1fc204365bd6d0db26c286f2bdc4"
+      }
+    },
+    {
+      "case_id": "cik_0001285819:20250930",
+      "accession": "0001437749-25-010216",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001285819/sec:cik_0001285819:000143774925010216.json",
+        "sha256": "2c72e5297b3d8b50d8620a3f915e868c32492c6c5b864489d6857227889f5721"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+        "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+        "sha256": "afe17fe19387e1101838c753f4d9e09f1aaa1b41edad541bd758344ba8c321d9"
+      }
+    },
+    {
+      "case_id": "cik_0001285819:20250930",
+      "accession": "0001437749-25-010216",
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0001285819/sec:cik_0001285819:000143774925010216.json",
+        "sha256": "2c72e5297b3d8b50d8620a3f915e868c32492c6c5b864489d6857227889f5721"
+      },
+      "original_type": "10-k",
+      "candidate_origin": "native_primary_prototype_no_bound_original",
+      "supplement_existing_original_count": 0,
+      "body_exact_equal": true,
+      "native_as_is": "passed_as_is",
+      "error": null,
+      "difference_paths_vs_stage_prototype": [
+        ".source_type"
+      ],
+      "root": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+        "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+      },
+      "body_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/f4c36ec0c04bba337c7a6843.json",
+        "sha256": "84337b7de452c3f3892371d8a7e7ef179f7b1fc204365bd6d0db26c286f2bdc4"
+      }
+    }
+  ],
+  "conclusion": "Stage canonical collisions are real differences against generated filing prototypes, but the bound supplement omitted these existing original aliases. Direct original mechanical proof success must not be confused with wholebody semantic review or admission; original files remain untouched."
+}

@@ -1,0 +1,84 @@
+{
+  "expected_products": [
+    {
+      "canonical_record_hash": "eaa083763a68954128e48c581ca60aebd0e4fd9f92242d0a5217dd5f3f87eb85",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_id": "secfacts:0001951089:0001213900-24-092156:7bedee718373189a"
+    },
+    {
+      "canonical_record_hash": "546e08f8e6f9502553b0b55b539440329746ab159c9394c70dc00ec751ccbffc",
+      "content_hash": "1c3850c9cb8ad7393a607480dbe4c84988b2a0141cf48c321900db11e6b00071",
+      "document_id": "secfacts:0001951089:0001213900-25-024970:1c3850c9cb8ad739"
+    }
+  ],
+  "item": {
+    "cik": "0001951089",
+    "company_id": "cik_0001951089",
+    "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001951089.json",
+    "symbol": "CRML"
+  },
+  "normalized_at": "2026-10-19T23:39:01.039467+00:00",
+  "normalizer_profile": "sec_companyfacts_filed_next_utc_day_v1",
+  "provenance": {
+    "acquisition_policy_hash": "1dcfcf2d216f68ba3570cc92f7ac3f8e7b4d0dbd6ae54a87f021f01c34f02e9b",
+    "acquisition_selection": {
+      "available_at_through": "2025-05-30T00:00:00+00:00",
+      "form_allowlist": [
+        "10-K",
+        "10-K/A",
+        "10-Q",
+        "10-Q/A",
+        "20-F",
+        "20-F/A",
+        "40-F",
+        "40-F/A",
+        "6-K",
+        "6-K/A",
+        "8-K",
+        "8-K/A"
+      ],
+      "period_end_from": "0001-01-01",
+      "period_end_through": "2025-05-30",
+      "taxonomy_allowlist": [
+        "dei",
+        "ifrs-full",
+        "srt",
+        "us-gaap"
+      ]
+    }
+  },
+  "raw_response": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001951089/sec_edgar:cik_0001951089:sec_company_facts_raw_response:8b4f482fe2edcba3d1503915.json",
+    "sha256": "c3537febad38b8afb67404060d2555c22aff729982d22bff957a4bf2ab883e51"
+  },
+  "schema_version": "sec-companyfacts-normalization-v1",
+  "selection": {
+    "available_at_through": "2025-05-30T00:00:00+00:00",
+    "form_allowlist": [
+      "10-K",
+      "10-K/A",
+      "10-Q",
+      "10-Q/A",
+      "20-F",
+      "20-F/A",
+      "40-F",
+      "40-F/A",
+      "6-K",
+      "6-K/A",
+      "8-K",
+      "8-K/A"
+    ],
+    "period_end_from": "0001-01-01",
+    "period_end_through": "2025-05-30",
+    "taxonomy_allowlist": [
+      "dei",
+      "ifrs-full",
+      "srt",
+      "us-gaap"
+    ]
+  },
+  "source_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/sec_edgar/financial_statements/d2e80d4fdbb8d45c3a8e495d.json",
+    "sha256": "6e2a2d2737e49abedaabc69194b9a864c0ff9aa0d80e96e6a565d371a6dd897d"
+  }
+}

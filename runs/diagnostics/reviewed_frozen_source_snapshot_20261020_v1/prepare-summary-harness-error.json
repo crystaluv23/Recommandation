@@ -1,0 +1,9 @@
+{
+  "operation": "parent-summary-only",
+  "actual_prepare_affected": false,
+  "command_python": "system python3 (3.9)",
+  "error_type": "ImportError",
+  "error": "cannot import name 'UnionType' from 'types'",
+  "output_written_before_failure": false,
+  "remediation": "Use project compatible Python for parent summary; no prepare reentry."
+}

@@ -1,0 +1,128 @@
+{
+  "scope": "Independent new fakeclient using native SEC arrayparser only; no real GET/globalstore/labels/LockedTest/prepare/oldstage reread/source admission.",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "a6e54ffdc9eeb69eb381aaed311165bcc35c7e438f135aaf25bbaae31d175904"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sources.md",
+      "sha256": "16882b954126f8622ebd0405e0f8df84495f8dc9eff625d76356619c14411c9d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_sec_filing_source_types.py",
+      "sha256": "2cad1e0350418c596613292f87d660fa3244426985d749f01c5b3fde7153bdda"
+    }
+  ],
+  "checks": [
+    {
+      "case": "mixedfour exactforms and reversedrequest order",
+      "passed": true,
+      "types": [
+        "6-k",
+        "8-k",
+        "10-q",
+        "10-k"
+      ]
+    },
+    {
+      "case": "first compatible requestpriority",
+      "request": [
+        "sec_filing",
+        "filing_body",
+        "filing"
+      ],
+      "actual": [
+        "sec_filing",
+        "sec_filing",
+        "sec_filing",
+        "sec_filing"
+      ]
+    },
+    {
+      "case": "first compatible requestpriority",
+      "request": [
+        "filing_body",
+        "sec_filing"
+      ],
+      "actual": [
+        "filing_body",
+        "filing_body",
+        "filing_body",
+        "filing_body"
+      ]
+    },
+    {
+      "case": "first compatible requestpriority",
+      "request": [
+        "10-k",
+        "filing_body",
+        "10-q",
+        "8-k",
+        "6-k"
+      ],
+      "actual": [
+        "filing_body",
+        "filing_body",
+        "filing_body",
+        "10-k"
+      ]
+    },
+    {
+      "case": "single exact filter before body",
+      "alias": "10-k",
+      "body_calls": 1
+    },
+    {
+      "case": "single exact filter before body",
+      "alias": "10-q",
+      "body_calls": 1
+    },
+    {
+      "case": "single exact filter before body",
+      "alias": "8-k",
+      "body_calls": 1
+    },
+    {
+      "case": "single exact filter before body",
+      "alias": "6-k",
+      "body_calls": 1
+    },
+    {
+      "case": "no supported compatiblebody",
+      "request": [
+        "news"
+      ],
+      "body_calls": 0
+    },
+    {
+      "case": "no supported compatiblebody",
+      "request": [
+        "filing_summary",
+        "10-k-summary"
+      ],
+      "body_calls": 0
+    },
+    {
+      "case": "no supported compatiblebody",
+      "request": [
+        "40-f"
+      ],
+      "body_calls": 0
+    },
+    {
+      "case": "maxdocument and failedbody fallback retained",
+      "passed": true
+    },
+    {
+      "case": "producedID/clock/nativequalification and oldwrongtype/PIT reject",
+      "passed": true
+    }
+  ],
+  "all_passed": true,
+  "conclusion": "Future per-filing source selection now matches actual proved form while retaining first compatible requested generic priority, limits/IDs/publicclocks. Old wrongtype originals remain rejected; no persisted original is relabeled.",
+  "limitations": [
+    "Offline producer/nativequalifier wiring only, no fresh model or materialized realsource admission.",
+    "Completed3e67e166 source diagnosis and previous reviews were not reverified or reexecuted under this new revision."
+  ]
+}

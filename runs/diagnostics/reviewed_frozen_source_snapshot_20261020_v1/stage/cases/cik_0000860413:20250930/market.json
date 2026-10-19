@@ -1,0 +1,315 @@
+{
+  "case_id": "cik_0000860413:20250930",
+  "request_associations": [
+    {
+      "cache_key": "f150c1f70c38bac2c24275a4",
+      "capability": "price_daily",
+      "case_id": "cik_0000860413:20250930",
+      "company_id": "cik_0000860413",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/FIBK/range/1/day/2024-12-02/2025-01-30",
+      "family": "market_daily",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-production-20260822-015342/cache/data/massive/price_daily/f150c1f70c38bac2c24275a4.json",
+            "sha256": "046916ff21269e3083a60a4349c3d7d9f9fdcb920992ca104c821f8f8d2fbb8b"
+          },
+          "capability": "price_daily",
+          "historical_issuer_split_and_production_reconstruction": "not_verified_or_newly_queried",
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_adjusted": true,
+          "response_bar_count": 40,
+          "response_body_canonical_sha256": "cf6d8fc089e17205eae49260b2e0581c9a2c39d30ea84178472532b09a1e064e",
+          "response_status": "OK",
+          "response_symbol": "FIBK",
+          "retrieved_at": "2026-08-21T18:41:05.198545+00:00",
+          "sanitized_endpoint": "https://api.massive.com/v2/aggs/ticker/FIBK/range/1/day/2024-12-02/2025-01-30",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "source_key": "massive",
+          "status": "candidate_not_verified"
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2025-01-31T00:00:00+00:00",
+          "content_hash": "18d589b87c914e4a88c2750e41e39a92c0152322045ccd1d0a0ceee12ab71429",
+          "document_id": "massive:cik_0000860413:market_data:18d589b87c914e4a88c2750e",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000860413/massive:cik_0000860413:market_data:18d589b87c914e4a88c2750e.json",
+            "sha256": "12ecef9e12210954dca4053aefa2a29914f78c3ed65b81fd26f91f0767576094"
+          },
+          "published_at": "2025-01-31T00:00:00+00:00",
+          "safe_source_metadata": {
+            "end": "2025-01-30",
+            "provider": "massive",
+            "start": "2024-12-02",
+            "symbol": "FIBK"
+          },
+          "source_type": "market_data"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ],
+        [
+          "adjusted",
+          "true"
+        ],
+        [
+          "limit",
+          "50000"
+        ],
+        [
+          "sort",
+          "asc"
+        ]
+      ],
+      "source": "massive",
+      "ticker": "FIBK"
+    },
+    {
+      "cache_key": "d24e570624a66e56dd7b41d7",
+      "capability": "price_daily",
+      "case_id": "cik_0000860413:20250930",
+      "company_id": "cik_0000860413",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/FIBK/range/1/day/2024-08-26/2025-09-29",
+      "family": "market_daily",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/massive/price_daily/d24e570624a66e56dd7b41d7.json",
+            "sha256": "f7604e1f634980a864504ea2dfd25676eafb0f53ae2bb442baf932a8802dfde4"
+          },
+          "capability": "price_daily",
+          "historical_issuer_split_and_production_reconstruction": "not_verified_or_newly_queried",
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_adjusted": true,
+          "response_bar_count": 255,
+          "response_body_canonical_sha256": "ea5464e3107472d973fdef4da7993c72630e52815320ac5959ec991209fd013b",
+          "response_status": "OK",
+          "response_symbol": "FIBK",
+          "retrieved_at": "2026-09-21T18:36:29.093467+00:00",
+          "sanitized_endpoint": "https://api.massive.com/v2/aggs/ticker/FIBK/range/1/day/2024-08-26/2025-09-29",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "source_key": "massive",
+          "status": "candidate_not_verified"
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "content_hash": "72acb989a37361d35516382a383be5f85f1dff8ec6324d5a3b245aa9eab26770",
+          "document_id": "massive:cik_0000860413:market_data:72acb989a37361d35516382a",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000860413/massive:cik_0000860413:market_data:72acb989a37361d35516382a.json",
+            "sha256": "6d565f3dbd2fc5187e72c3d0a43e263b1fa3f3fa35e21c746960fa450a947346"
+          },
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "safe_source_metadata": {
+            "end": "2025-09-29",
+            "provider": "massive",
+            "start": "2024-08-26",
+            "symbol": "FIBK"
+          },
+          "source_type": "market_data"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ],
+        [
+          "adjusted",
+          "true"
+        ],
+        [
+          "limit",
+          "50000"
+        ],
+        [
+          "sort",
+          "asc"
+        ]
+      ],
+      "source": "massive",
+      "ticker": "FIBK"
+    },
+    {
+      "cache_key": "c57bf163d530241f82b32fc7",
+      "capability": "price_daily",
+      "case_id": "cik_0000860413:20250930",
+      "company_id": "cik_0000860413",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "endpoint": "https://api.massive.com/v2/aggs/ticker/FIBK/range/1/day/2025-08-16/2025-09-29",
+      "family": "market_daily",
+      "matches": [
+        {
+          "binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-fourway-parent-reflection-20260817-v1/cache/data/massive/price_daily/c57bf163d530241f82b32fc7.json",
+            "sha256": "81332e34625e1b84df5d3f0d0abb45e5f04242a0ef223cd011ef90928498037b"
+          },
+          "capability": "price_daily",
+          "historical_issuer_split_and_production_reconstruction": "not_verified_or_newly_queried",
+          "payload_kind": "json",
+          "request_identity_exact": true,
+          "response_adjusted": true,
+          "response_bar_count": 30,
+          "response_body_canonical_sha256": "76bea4d74e6bae8408c32ac85d578634753459a3705d4158c367a41818b8445f",
+          "response_status": "OK",
+          "response_symbol": "FIBK",
+          "retrieved_at": "2026-08-17T16:04:48.612451+00:00",
+          "sanitized_endpoint": "https://api.massive.com/v2/aggs/ticker/FIBK/range/1/day/2025-08-16/2025-09-29",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "source_key": "massive",
+          "status": "candidate_not_verified"
+        }
+      ],
+      "original_candidates": [
+        {
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "content_hash": "f8f588dd6cf284f4f2965c9418b8d25b43f96992301a1c511227763886be5f3a",
+          "document_id": "massive:cik_0000860413:market_data:f8f588dd6cf284f4f2965c94",
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000860413/massive:cik_0000860413:market_data:f8f588dd6cf284f4f2965c94.json",
+            "sha256": "1a54c8b9e9ddb3c8e2872d4491b255e687097a7271091835450d9bb922e69dc3"
+          },
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "safe_source_metadata": {
+            "end": "2025-09-29",
+            "provider": "massive",
+            "start": "2025-08-16",
+            "symbol": "FIBK"
+          },
+          "source_type": "market_data"
+        }
+      ],
+      "params": [
+        [
+          "method",
+          "GET"
+        ],
+        [
+          "adjusted",
+          "true"
+        ],
+        [
+          "limit",
+          "50000"
+        ],
+        [
+          "sort",
+          "asc"
+        ]
+      ],
+      "source": "massive",
+      "ticker": "FIBK"
+    }
+  ],
+  "source_admitted": false,
+  "status": "unknown_missing_proofs",
+  "variants": [
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-production-20260822-015342/cache/data/massive/price_daily/f150c1f70c38bac2c24275a4.json",
+        "sha256": "046916ff21269e3083a60a4349c3d7d9f9fdcb920992ca104c821f8f8d2fbb8b"
+      },
+      "complete_canonical_reconstruction": true,
+      "latest_bar": "2025-01-30",
+      "normalized_at": "2026-08-21T18:41:05.203900+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000860413/massive:cik_0000860413:market_data:18d589b87c914e4a88c2750e.json",
+        "sha256": "12ecef9e12210954dca4053aefa2a29914f78c3ed65b81fd26f91f0767576094"
+      },
+      "provider_retrieved_at": "2026-08-21T18:41:05.198545+00:00",
+      "status": "origin_reconstructed_missing_issuer_split_proofs"
+    },
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/massive/price_daily/d24e570624a66e56dd7b41d7.json",
+        "sha256": "f7604e1f634980a864504ea2dfd25676eafb0f53ae2bb442baf932a8802dfde4"
+      },
+      "complete_canonical_reconstruction": true,
+      "latest_bar": "2025-09-29",
+      "normalized_at": "2026-09-21T18:36:29.098967+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000860413/massive:cik_0000860413:market_data:72acb989a37361d35516382a.json",
+        "sha256": "6d565f3dbd2fc5187e72c3d0a43e263b1fa3f3fa35e21c746960fa450a947346"
+      },
+      "provider_retrieved_at": "2026-09-21T18:36:29.093467+00:00",
+      "status": "origin_reconstructed_missing_issuer_split_proofs"
+    },
+    {
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-fourway-parent-reflection-20260817-v1/cache/data/massive/price_daily/c57bf163d530241f82b32fc7.json",
+        "sha256": "81332e34625e1b84df5d3f0d0abb45e5f04242a0ef223cd011ef90928498037b"
+      },
+      "complete_canonical_reconstruction": true,
+      "latest_bar": "2025-09-29",
+      "normalized_at": "2026-08-17T16:04:48.615571+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000860413/massive:cik_0000860413:market_data:f8f588dd6cf284f4f2965c94.json",
+        "sha256": "1a54c8b9e9ddb3c8e2872d4491b255e687097a7271091835450d9bb922e69dc3"
+      },
+      "provider_retrieved_at": "2026-08-17T16:04:48.612451+00:00",
+      "status": "origin_reconstructed_missing_issuer_split_proofs"
+    }
+  ]
+}
