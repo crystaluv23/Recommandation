@@ -1,0 +1,54 @@
+[
+  {
+    "control": "Customer concentration is weak.",
+    "issues": []
+  },
+  {
+    "control": "Customer concentration is 0%.",
+    "issues": [
+      {
+        "code": "assertion_without_support",
+        "paths": [
+          "current_beliefs[1]"
+        ],
+        "mechanical_action": null
+      }
+    ]
+  },
+  {
+    "control": "Customer concentration is unknown, but customer concentration is weak.",
+    "issues": [
+      {
+        "code": "unavailable_signal_treated_as_finding",
+        "paths": [
+          "current_beliefs[1]"
+        ],
+        "mechanical_action": "remove_unavailable_finding"
+      }
+    ]
+  },
+  {
+    "control": "same-topic success exact adopted claim",
+    "issues": [
+      {
+        "code": "unavailable_signal_treated_as_finding",
+        "paths": [
+          "current_beliefs[1]"
+        ],
+        "mechanical_action": "remove_unavailable_finding"
+      }
+    ]
+  },
+  {
+    "control": "same-topic retained exact BasicInfo claim",
+    "issues": [
+      {
+        "code": "unavailable_signal_treated_as_finding",
+        "paths": [
+          "current_beliefs[1]"
+        ],
+        "mechanical_action": "remove_unavailable_finding"
+      }
+    ]
+  }
+]

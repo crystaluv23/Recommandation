@@ -80,7 +80,33 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   unavailable Signal reference with `mechanical_action=remove_unavailable_finding`.
   This is permission to quarantine that indexed text, never permission to
   invent an answer, resolve a need, change a decision or alter the Signal result.
-  The detection predicate and canonical State schema remain unchanged.
+  The indexed member is the existing atomic repair unit, even if its text mixes
+  several clauses; no automatic sentence splitting, field transfer or semantic
+  preservation of each clause is implied. Coverage-only unknowns belong in
+  open questions/needs, not new beliefs or resolved questions. An honest denial
+  of economic absence does not authorize that field placement.
+
+  Unavailable-topic detection uses the existing whole-word Signal-ID tokens for
+  newly added beliefs/resolutions, without requiring any negation or uncertainty
+  marker. Unsupported positive/negative economic assertions such as a weak
+  measure are not exempt because they omit those markers. Unchanged prior
+  members and questions/needs keep their existing contracts.
+
+  Independent-source projection is lazy: first find actual unavailable-topic
+  matches in new beliefs/resolutions. If none match, this guard returns without
+  projecting unrelated available Signal evidence or adding validation side effects.
+
+  A topic match is not proof that the unavailable result caused the assertion.
+  Exempt only an exact whole claim with independent accepted provenance: a
+  retained prior evidence tuple and its unchanged accepted claim, or a current
+  adoptable Signal's valid exact tuple/index with PIT-proved evidence. For the
+  latter, the claim must equal the referenced raw/model-visible literal or the
+  producer's existing canonical numeric adoption string. Merely naming a ref,
+  copying a substring, inventing a paraphrase or changing a prior claim grants
+  no exemption. Basic Info provenance must be an exact retained prior reference.
+  Complete evidence, quantity, PIT, need-transition and terminal validation still
+  applies; this local exemption grants no new source or State authority and
+  does not change the canonical schema or the remove-only repair contract.
 
 - Shared producer-owned measurement guards run on the fully assembled state,
   with exact text/claim repair paths. These obligations carry source Signal refs;

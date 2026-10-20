@@ -31,6 +31,7 @@ from stock_opportunity_agent.signal_library import (
     SignalCoverage,
     SignalResult,
     SignalValue,
+    SignalModelInputRejected,
     signal_result_model_view,
 )
 from stock_opportunity_agent.research.evolution_output_validation import (
@@ -3322,8 +3323,9 @@ def _validate_research_state_refs(
     )
     unavailable_state_errors = _unavailable_signal_state_errors(
         previous_state,
-        state,
+        replace(state, supporting_evidence=tuple(normalized_refs)),
         batch,
+        evaluation_context=evaluation_context,
     )
     if phase == "reflect" and unavailable_state_errors:
         for error in unavailable_state_errors:
@@ -4234,16 +4236,56 @@ def _stale_resolved_information_needs(
     return stale
 
 
-_UNAVAILABLE_BELIEF_MARKERS = frozenset(
-    "absence absent insufficient lack lacks missing no none not undisclosed unknown "
-    "unavailable without zero".split()
-)
+def _independent_unavailable_topic_claims(
+    previous: ResearchState, current: ResearchState, batch: SignalBatchResult,
+    evaluation_context: Mapping[str, Any] | None,
+) -> set[str]:
+    """Recognize exact accepted claims, never infer support from topic/ref overlap."""
+    retained = {
+        (_research_evidence_key(item), item.claim)
+        for item in previous.supporting_evidence if isinstance(item, ResearchEvidenceRef)
+    }
+    results = {item.ref: item for item in batch.results}
+    claims: set[str] = set()
+    views: dict[str, dict[str, Any]] | None = None
+    instant = _prediction_time_from_context(evaluation_context)
+    for item in current.supporting_evidence:
+        if not isinstance(item, ResearchEvidenceRef):
+            continue
+        if (_research_evidence_key(item), item.claim) in retained:
+            claims.add(item.claim)
+            continue
+        result = results.get(str(item.signal_ref)) if item.kind == "signal" else None
+        if result is None or not _signal_result_has_adoptable_evidence(result) or instant is None:
+            continue
+        spans = result.supporting_evidence if item.evidence_group == "supporting" else result.counter_evidence
+        index = item.evidence_index
+        if type(index) is not int or not 0 <= index < len(spans):
+            continue
+        try:
+            signal_result_model_view(result, as_of=instant)
+        except SignalModelInputRejected:
+            continue
+        if views is None:
+            views = {row["signal_ref"]: row for row in _signal_batch_model_view(batch)}
+        view = views[result.ref]
+        literals = {spans[index].exact_span}
+        visible = view["evidence"][str(item.evidence_group)][index].get("model_evidence_text", "")
+        readable, _runs = _normalized_projection_text(spans[index].exact_span, strip_market_metadata=True)
+        if visible and visible == readable:
+            literals.add(visible)
+        if "exact_claim_if_adopted" in view:
+            literals.add(view["exact_claim_if_adopted"])
+        if item.claim in literals:
+            claims.add(item.claim)
+    return claims
 
 
 def _unavailable_signal_state_errors(
     previous: ResearchState | None,
     current: ResearchState,
     batch: SignalBatchResult | None,
+    *, evaluation_context: Mapping[str, Any] | None = None,
 ) -> list[dict[str, str]]:
     """Reject belief/resolution claims derived from unavailable Signal topics."""
 
@@ -4281,9 +4323,7 @@ def _unavailable_signal_state_errors(
                 )
         for item in new_beliefs:
             tokens = frozenset(re.findall(r"[a-z0-9]+", item.casefold()))
-            if topic_tokens.issubset(tokens) and (
-                tokens & _UNAVAILABLE_BELIEF_MARKERS
-            ):
+            if topic_tokens.issubset(tokens):
                 errors.append(
                     {
                         "field": "current_beliefs",
@@ -4291,4 +4331,9 @@ def _unavailable_signal_state_errors(
                         "text": item,
                     }
                 )
-    return errors
+    if not errors:
+        return []
+    independent_claims = _independent_unavailable_topic_claims(
+        previous, current, batch, evaluation_context
+    )
+    return [row for row in errors if row["text"] not in independent_claims]

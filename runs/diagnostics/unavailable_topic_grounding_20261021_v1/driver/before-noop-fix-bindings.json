@@ -1,0 +1,17 @@
+[
+  {
+    "path": "src/stock_opportunity_agent/research/evolution_research_validation.py",
+    "sha256": "8192e404cc8aab8deb20f52ccc9bf950e131e808e339e9f4259e92267fff9ad6",
+    "copy": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/driver/before-noop-fix-evolution_research_validation.py"
+  },
+  {
+    "path": "spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+    "sha256": "5abfb94b31814c200e05e1f6aa850630097b160577cb28e14f067c4bd1aa5007",
+    "copy": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/driver/before-noop-fix-evolution_research_validation.md"
+  },
+  {
+    "path": "tests/test_unavailable_topic_grounding.py",
+    "sha256": "ceaefcb5c6efc21ac4e98ca80024cb45e70cd4ab52a8ff2364d3a4b0f5d96000",
+    "copy": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/driver/before-noop-fix-test_unavailable_topic_grounding.py"
+  }
+]

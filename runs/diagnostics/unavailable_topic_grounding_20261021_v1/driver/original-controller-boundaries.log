@@ -1,0 +1,44 @@
+[
+  {
+    "text": "Customer concentration is unavailable, so its coverage remains unknown.",
+    "helper_issues": 1,
+    "accepted_unchanged": false,
+    "calls": 1
+  },
+  {
+    "text": "Customer concentration is weak.",
+    "helper_issues": 0,
+    "accepted_unchanged": true,
+    "calls": 1
+  },
+  {
+    "text": "Customer concentration is 0%.",
+    "helper_issues": 0,
+    "accepted_unchanged": false,
+    "calls": 1
+  },
+  {
+    "text": "Customer concentration is unknown, but customer concentration is weak.",
+    "helper_issues": 1,
+    "accepted_unchanged": false,
+    "calls": 1
+  },
+  {
+    "text": "Commercial expansion was disclosed. Customer concentration remains unknown.",
+    "helper_issues": 1,
+    "accepted_unchanged": false,
+    "calls": 1
+  },
+  {
+    "text": "Customer concentration remains unknown; financing has no binding change.",
+    "helper_issues": 1,
+    "accepted_unchanged": false,
+    "calls": 1
+  },
+  {
+    "text": "Customer concentration is unavailable and is not evidence of economic absence.",
+    "helper_issues": 1,
+    "accepted_unchanged": false,
+    "calls": 1
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "archive": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/retained-initial-candidate.tar.gz",
+  "archive_sha256": "04d2250681e1265aadddfb13bb2c60656d4017fec7c793afb8fc81b86ac813fe",
+  "members": [
+    {
+      "original_path": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/driver/before-noop-fix-evolution_research_validation.md",
+      "member": "driver/before-noop-fix-evolution_research_validation.md",
+      "sha256": "5abfb94b31814c200e05e1f6aa850630097b160577cb28e14f067c4bd1aa5007"
+    },
+    {
+      "original_path": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/driver/before-noop-fix-evolution_research_validation.py",
+      "member": "driver/before-noop-fix-evolution_research_validation.py",
+      "sha256": "8192e404cc8aab8deb20f52ccc9bf950e131e808e339e9f4259e92267fff9ad6"
+    },
+    {
+      "original_path": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/driver/before-noop-fix-test_unavailable_topic_grounding.py",
+      "member": "driver/before-noop-fix-test_unavailable_topic_grounding.py",
+      "sha256": "ceaefcb5c6efc21ac4e98ca80024cb45e70cd4ab52a8ff2364d3a4b0f5d96000"
+    },
+    {
+      "original_path": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/pre-connected-evolution_research_validation.md",
+      "member": "pre-connected-evolution_research_validation.md",
+      "sha256": "5abfb94b31814c200e05e1f6aa850630097b160577cb28e14f067c4bd1aa5007"
+    },
+    {
+      "original_path": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/pre-connected-evolution_research_validation.py",
+      "member": "pre-connected-evolution_research_validation.py",
+      "sha256": "8192e404cc8aab8deb20f52ccc9bf950e131e808e339e9f4259e92267fff9ad6"
+    },
+    {
+      "original_path": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/pre-connected-test_unavailable_topic_grounding.py",
+      "member": "pre-connected-test_unavailable_topic_grounding.py",
+      "sha256": "ceaefcb5c6efc21ac4e98ca80024cb45e70cd4ab52a8ff2364d3a4b0f5d96000"
+    },
+    {
+      "original_path": "runs/diagnostics/unavailable_topic_grounding_20261021_v1/driver/original-evolution_research_validation.md",
+      "member": "driver/original-evolution_research_validation.md",
+      "sha256": "5bc822251be3eba08597245b34923b579589ddb4e10801e42f44e0c92c29d12f"
+    }
+  ],
+  "purpose": "Exact initial candidate and original owning spec bytes; copied Markdown retained inside archive so its historical relative links are not interpreted in the diagnostic directory. Originals remain on disk."
+}

@@ -1,0 +1,43 @@
+{
+  "status": "offline candidate, no live model acceptance claimed",
+  "tests": 13,
+  "unique_test_methods": 13,
+  "existing_repair_methods_unchanged": 6,
+  "new_methods": 7,
+  "test_runtime_seconds": 0.023,
+  "passed": true,
+  "bindings": {
+    "src/stock_opportunity_agent/research/evolution_research_validation.py": "8192e404cc8aab8deb20f52ccc9bf950e131e808e339e9f4259e92267fff9ad6",
+    "spec/src/stock_opportunity_agent/research/evolution_research_validation.md": "5abfb94b31814c200e05e1f6aa850630097b160577cb28e14f067c4bd1aa5007",
+    "tests/test_unavailable_topic_grounding.py": "ceaefcb5c6efc21ac4e98ca80024cb45e70cd4ab52a8ff2364d3a4b0f5d96000",
+    "tests/test_unavailable_finding_repair.py": "13632adb56698f71362dfc14b1dae00c26aeb2bf78a679d2754ca2e66f2305f3"
+  },
+  "logs": {
+    "unchanged-six-repair-tests": {
+      "exit_code": 0,
+      "timestamp": "2026-10-20T19:02:14.744Z",
+      "sha256": "cbe66f379afc9d24bd212db0bc628a2ed5db5b6f7e26fc4a05563c117833050d"
+    },
+    "initial-new-fixture-error": {
+      "exit_code": 1,
+      "timestamp": "2026-10-20T19:04:13.310Z",
+      "sha256": "aaae21d15e1ce0211e82c2330a2e98586dfb991244ae92152858be96670b6cac"
+    },
+    "final-thirteen-tests": {
+      "exit_code": 0,
+      "timestamp": "2026-10-20T19:05:31.540Z",
+      "sha256": "92d0a03d26916e814f975838e514f84d19c715166c123ec28f16fe58524a266b"
+    }
+  },
+  "recording": "Exact existing execution stdout/commands; no rerun to create artifacts.",
+  "initial_test_fixture_error": "Imported TestCase caused duplicate execution of the six existing methods; new synthetic unavailable result omitted unavailable coverage. Fixed only new test construction/import; no production change for this error.",
+  "contract_correction": "Raw69 mixed member quarantine was allowed old placement/atomic repair behavior and is still invalid under current placement. Critical-information loss is not established by this deletion alone. Changes fix unsupported qualitative findings accepted without markers and exact independently grounded assertions misattributed to unavailable results.",
+  "changes": "Only research validation predicate + its owning spec + a new test module. Other repair source/spec files and existing mechanical authority/tests are unchanged.",
+  "proof_limits": "No lexical entailment, substring or paraphrase inference. New current evidence uses exact tuple/index + producer PIT + raw/full readable/canonical adoption equality; retained prior proof requires unchanged key/claim. All ordinary source/quantity/need validation remains.",
+  "actual_source_stage_reentry": false,
+  "GETs": 0,
+  "production_models": 0,
+  "labels": 0,
+  "Signal_apply": false,
+  "fullprepare": false
+}

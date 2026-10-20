@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T18:48:16+00:00",
+    "checked_at": "2026-10-20T19:12:21+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal after new fixed F7 three-control terminal review; no budget limit; completed stages stay completed"
+    "source": "Actual root get_goal in current continuation; no budget limit; current work local guard repair and next S5 fixture producer connection, no full successor"
   },
   "acceptance": [
     {
@@ -152,7 +152,12 @@
         "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-review.json",
         "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-command-and-bindings.json",
         "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-review.json",
-        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-audit-initial-error.json"
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-audit-initial-error.json",
+        "reports/unavailable-topic-grounding-20261021.md",
+        "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-result.json",
+        "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-tests.log",
+        "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-final-tests.log",
+        "runs/diagnostics/unavailable_topic_grounding_20261021_v1/independent-final-review.json"
       ],
       "remaining": "Actual deterministic input connection verified for default6/6 and latest9/9 within10, not Signal arithmetic/model semantics or wholeF5. Allfinancial-source membership8/9 and9/9;defaultLLM cashratio latestQ1 stillmissing withgenericselection unchanged.Future named positive fixture producers now explicitly bind CIK; actual old/new CLI2to0 with14enabled,158connected tests pass and independent strict negative/native constructor controls pass; historical failures/Registry bytes stay. Shared S5 execution-contract prompt still omits explicit CIK obligations; fresh model authoring unverified. Source57/4/53 and1780view preserve history; original40 readiness670/720 each is earlier1776-view evidence. BasicInfo partial/newsunknown;newfrozen F7 temporal target3of3 with9fresh roles andexact consumers/restores, original0of1 retained/mirrorunexercised. p01 auxiliary honest uncertainty belief mechanically deleted by unavailable token guard, exact purehelper/typedauthority reproduce; wholeF7 stillopen. F10/Slow/direction+magnitude discovery/admission/exactreuse/fullclosedloop unverified. BURUbaseline/FTItype/MSclock/transcriptpublictimeproof/retrospectivefinancialprimaryaudit limits persist;benefitlaterunknown."
     },
@@ -1037,16 +1042,36 @@
         "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-audit-initial-error.json"
       ],
       "result": "Actual fixed3 target semantics pass3of3 independently: p01 properpartial residual283 retains all7unknown facets, p02 properpartial129 retains terms and postJune30 compliance, p03 full onliteral50.0m revolving/H1 compliance removes onlyownedneed4. Nine fresh independent exactinbox roles69to77, initialReflect/closure/Predictor each3 firstanswers0modelcorrection;535373 logicalunits, hosttokens/costunknown, mirrorunexercised. Exact consumers/17finalcards/versions/periods and each32file completedrestore preserve bytes with0newdispatch; root107currentcode/9request reservations/immutablecomplete checked. Auxiliary p01 mixed453char honest uncertainty belief mechanically removed by topic+negative-marker unavailable guard; exact purehelper and typedauthority reproduce, onlythatdrop explains raw/state delta. p02/p03 no suchdrop. Original0of1 retained, no allraw preservation or wholeF7/FastSlow/MVP/benefit claim,0GET/externalLLMAPI/labels/Signalapply/fullrun. Initial rootaudit equality ignored existing company masking; retained auditfailure corrected without product rerun. Next diagnose uncertainty guard family, not repeat completed controls."
+    },
+    {
+      "id": "engineering-mvp-unavailable-topic-grounding-20261021",
+      "strategy": "exact_independent_grounding_after_actual_unavailable_topic_match",
+      "failure_families": [
+        "marker_blind_unsupported_qualitative_finding",
+        "same_topic_independent_source_false_attribution",
+        "unrelated_batch_eager_projection_regression"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/unavailable-topic-grounding-20261021.md",
+        "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-result.json",
+        "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-tests.log",
+        "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-final-tests.log",
+        "runs/diagnostics/unavailable_topic_grounding_20261021_v1/independent-final-review.json"
+      ],
+      "result": "Corrected prior p01 diagnosis: wrong-field coverage plus existing atomic repair authority explains whole-member deletion; necessary critical loss unproven, sealed audit/history unchanged. Complete old parser/Controller accepts unsupported weak finding but rejects independent exact literal; new predicate fixes both under existing remove-only authority. Initial13/independent28 missed no-unavailable path, root281 found2regressions; lazy actual-topic-match proof fixes without weakening schema or old tests. Final282 connected pass3.064s, five tripwires0, independent final31 controls pass. Local bounded family repaired; no fresh model/GET/real labels/source append/Signal apply/stage reentry/full successor. F7/MVP and independent benefit remain open. Next fix existing CIK fixture authoring obligation at shared and actual independent tests-module input."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-owned-temporal-controls-actual-20261021",
+    "after_iteration": "engineering-mvp-unavailable-topic-grounding-20261021",
     "evidence": [
-      "reports/reviewed-owned-temporal-controls-20261021.md",
-      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-review.json",
-      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-command-and-bindings.json",
-      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-review.json",
-      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-audit-initial-error.json"
+      "reports/unavailable-topic-grounding-20261021.md",
+      "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-result.json",
+      "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-tests.log",
+      "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-final-tests.log",
+      "runs/diagnostics/unavailable_topic_grounding_20261021_v1/independent-final-review.json",
+      "src/stock_opportunity_agent/research/signal_evolution.py",
+      "spec/src/stock_opportunity_agent/data/sec_company_facts.md"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1106,22 +1131,23 @@
       "Source issuer hardening was not followed through shipped capability fixtures and downstream numeric/card fixtures. The new115-test connected check exposes2fail12errors; prior focused successes must not stand for this producer/consumer chain. Default v6 also contains three LLM financial refs: its deterministic denominator is6, not9.",
       "The connected115 repair did not initially cover two runtime positive constructors whose body already declared CIK but metadata omitted it; all-unavailable batches skipped reflection and repeated a scripted ref. Fixing runtime selection would mask the invalid producer. Exact original failures and final158 plus independent native producer controls now distinguish the boundary. Fresh model-authored fixture compliance remains outside this local result.",
       "An oracle with self-declared distinct roots only protected postfreeze relocation; coherently changing oracle and roots before freeze could create another budget group. Root initially advised against fixed roots and missed this distinction. Independent original/native counterexample now contrasts old admission with profile-owned fixed-root rejection; no generic budget mechanism was added. Reflect visibility is prior6quotes plus current results; seventeen bootstrap cards belong to final consumers.",
-      "Checking residual scope, adopted evidence and downstream exactness alone misses auxiliary raw operations deleted by deterministic repair. Actual first answer p01 contains a truthful coverage-only mixed belief; topic subset plus any negative marker misclassifies the explicit negation of economic absence. Native acceptance with0model corrections can include mechanical deletion. Independent raw-to-state delta and exact helper reproduction expose it; target3of3 is scoped separately. Root terminal audit also initially ignored the existing identity mask and was corrected without product rerun."
+      "Checking residual scope, adopted evidence and downstream exactness alone misses auxiliary raw operations deleted by deterministic repair. Actual first answer p01 contains a truthful coverage-only mixed belief; topic subset plus any negative marker misclassifies the explicit negation of economic absence. Native acceptance with0model corrections can include mechanical deletion. Independent raw-to-state delta and exact helper reproduction expose it; target3of3 is scoped separately. Root terminal audit also initially ignored the existing identity mask and was corrected without product rerun.",
+      "Correction to preceding p01 diagnosis: existing field placement and atomic quarantine authorize removal; raw deletion alone did not prove critical information loss. The demonstrated new bugs are marker-free weak acceptance and same-topic exact-source misattribution. Initial13/28 missed the no-unavailable adjacent restoration path; root281 exposed2 eager-projection regressions, final282 and independent31 now cover it. S5 shared execution instructions also never reached the separate tests-materialization request, so only editing that helper would not fix the actual producer."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "unavailable_guard_uncertainty_clause_authority_before_more_live_stages",
-      "action": "Trace the actual p01 mixed uncertainty text through unavailable-topic predicate, typed mechanical removal, accepted state and final consumers. Review owning contract and representative negation/coverage/mixed-clause variants plus true unsupported economic findings. Prepare the minimum spec-first correction preserving strict unavailable evidence and typed authority; verify exact failed raw behavior in temporary native execution, without modifying completed stages or adding production calls during diagnosis.",
-      "stop": "No blanket keyword exemption, invented semantic labels, hidden economic finding inside a disclaimer, weakened source/quantity/need gate, unauthorized typed writes or old-stage reentry. If the guard cannot distinguish a case deterministically, retain uncertainty and identify the actual semantic boundary rather than claim a universal regex proof.",
-      "question": "Does the unavailable-as-finding predicate falsely grant mechanical deletion authority for honest coverage uncertainty and explicit negation, and can that family be distinguished while still rejecting unsupported economic conclusions?",
-      "pass": "Exact original helper and native state delta reproduce false deletion; representative coverage/negation variants are recognized as uncertainty, while genuine unavailable-derived negative/resolved claims remain invalid under a concrete owning-spec/authority correction.",
-      "fail": "The removed statement actually asserts an unsupported finding, or the proposed distinction admits an economic conclusion mixed with a disclaimer or changes unrelated validation authority.",
-      "on_pass": "Implement the scoped deterministic guard/authority repair after updating its owning spec, verify old failure/variants/true-finding counterexamples through native parser/persistence, then return to remaining defaultLLM input and S5 authoring before Slow closedloop work.",
-      "on_fail": "Preserve exact mixed statements and find the first contradictory semantic/contract boundary; do not disable the guard, introduce a blanket negation whitelist or rerun the three completed controls.",
-      "new_evidence": "Predeclared temporal controls now achieve3of3 through fresh role rawanswers and actual consumers, but independent raw-to-accepted inspection finds one453char honest uncertainty operation deleted without a model correction. Purehelper on actual prior/raw and typed remove_unavailable_finding authority accounts exactly for accepted delta; p02/p03 do not have it.",
-      "distinguishing_variable": "Truthful coverage/explicit negation versus an affirmative economic conclusion, evaluated at clause and ownership boundary with identical unavailable Signal input; separately compare validator rejection and allowed mechanical write rather than only final schema acceptance.",
-      "authorization_evidence": "Active user engineeringMVP goal and systemic repair authorization; external LLM APIs prohibited, production nodes independent exact-inbox subagents. Actual get_goal active2026-10-20T18:48:16Z, unlimited goal budget. Diagnosis uses no new model/GET/labels and does not resume old experiments or authorize full successor."
+      "kind": "repair",
+      "strategy": "explicit_existing_fixture_issuer_contract_in_actual_author_inputs",
+      "action": "Update owning spec and shared candidate fixture instructions to expose existing body/metadata CIK binding; deliver the same existing execution contract to actual independent tests-module requests. Check exact composed inputs for v8 author and legacy Mining/Update, preserve stable fixtures and strict consumer, then prepare a separately bounded fresh exact-inbox fixture-authoring check without discovery/labels/promotion.",
+      "stop": "No automatic CIK inference/backfill, weakened issuer/PIT/quantity gate, stable fixture mutation, external LLM API, old-stage reentry or full successor. Stop if actual tests author lacks the accepted spec/source/schema needed to produce a valid fixture.",
+      "question": "Does the actual independent fixture author receive enough existing issuer-identity instructions to produce executable financial positives while preserving correct unavailable and technical-failure semantics?",
+      "pass": "Actual outgoing tests request includes shared body/metadata/company identity obligation and unchanged measurement/schema/source context; native validation accepts explicit valid fixtures and rejects missing/conflicting bindings, including expected-unavailable disguises.",
+      "fail": "Instructions remain only at the spec author or legacy helper, or validation passes only by inserting guessed metadata/weakening consumer or changing expected measurements.",
+      "on_pass": "Freeze a separate bounded fixture-authoring stage and verify fresh exact-inbox subagent output through native candidate validation/staging; do not call it full Mining discovery or successor reuse.",
+      "on_fail": "Repair the first missing producer/input connection using actual payload evidence; preserve old failures and defer fresh stage until that connection is sound.",
+      "new_evidence": "Current guard local family passes root282/independent31 after retained regression repair. Read-only S5 trace shows shared contract lacks CIK text and v8 _materialize_tests_module does not receive execution_semantics at all, while opaque candidate_fixture_N reaches strict body/metadata issuer validation unchanged.",
+      "distinguishing_variable": "Exact tests-author outgoing payload versus earlier spec-author payload; explicit valid versus absent/conflicting body/metadata binding on unchanged numerical/PIT fixtures.",
+      "authorization_evidence": "Active user engineering MVP goal, unlimited goal budget and independent subagent LLM-node policy; public read-only data permitted, no external LLM API. This next action is local producer repair, not full successor or old experiment resume."
     }
   },
   "successor_prerequisites": [

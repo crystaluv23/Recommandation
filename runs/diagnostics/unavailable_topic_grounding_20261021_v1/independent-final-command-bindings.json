@@ -1,0 +1,20 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/unavailable_topic_grounding_20261021_v1/independent-final-probe.py > runs/diagnostics/unavailable_topic_grounding_20261021_v1/independent-final.log 2>&1",
+  "exit_code": 0,
+  "controls": 31,
+  "artifacts": {
+    "independent-final-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/unavailable_topic_grounding_20261021_v1/independent-final-probe.py",
+      "sha256": "c6b01d1cd25730b375f24518eaf3d224833507d92d8806cba28cae44cc5f8334"
+    },
+    "independent-final.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/unavailable_topic_grounding_20261021_v1/independent-final.log",
+      "sha256": "e7013c24af718eae5c60448f5a6140bcef0dfd17d743f3cbff36fb4766f3a760"
+    },
+    "independent-final-review.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/unavailable_topic_grounding_20261021_v1/independent-final-review.json",
+      "sha256": "6f95831a1032b4a624eed8b4757d0da5d6ef3d6bcee63b2b9c5baa10a530e717"
+    }
+  },
+  "no_product_execution": true
+}

@@ -1,0 +1,2 @@
+{"synthetic_appended_belief_on_actual_frozen_seed": "Operating cash flow margin is weak.", "complete_state_parser": "accepted", "new_evidence_added": false}
+{"synthetic_appended_belief_on_actual_frozen_seed": "Operating cash flow margin is 0%.", "complete_state_parser": "rejected", "issues": ["assertion_without_support"]}

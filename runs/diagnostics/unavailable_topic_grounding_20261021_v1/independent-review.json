@@ -1,0 +1,562 @@
+{
+  "verdict": "PASS_bounded_guard_family",
+  "controls": 28,
+  "rows": [
+    {
+      "control": "original_weak_full_parser",
+      "old": {
+        "accepted": true,
+        "state": {
+          "hypotheses": [
+            "A new product may change expectations."
+          ],
+          "current_beliefs": [
+            "The issuer disclosed domestic expansion.",
+            "Customer concentration is weak."
+          ],
+          "supporting_evidence": [
+            {
+              "kind": "basic_info",
+              "claim": "The issuer disclosed domestic expansion.",
+              "projection_id": "prior-expansion",
+              "exact_text": "The issuer disclosed domestic expansion."
+            }
+          ],
+          "contradictions": [],
+          "resolved_questions": [],
+          "open_questions": [],
+          "next_information_needs": [
+            "What next product milestone was disclosed by prediction time?"
+          ],
+          "decision": "continue"
+        }
+      },
+      "current": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      },
+      "native_single_call_exact_prior": true
+    },
+    {
+      "control": "original_independent_exact_literal",
+      "old": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      },
+      "current": {
+        "accepted": true,
+        "state": {
+          "hypotheses": [
+            "A new product may change expectations."
+          ],
+          "current_beliefs": [
+            "The issuer disclosed domestic expansion.",
+            "Customer concentration was not strong during the reported period."
+          ],
+          "supporting_evidence": [
+            {
+              "kind": "basic_info",
+              "claim": "The issuer disclosed domestic expansion.",
+              "projection_id": "prior-expansion",
+              "exact_text": "The issuer disclosed domestic expansion."
+            },
+            {
+              "kind": "signal",
+              "claim": "Customer concentration was not strong during the reported period.",
+              "signal_ref": "customer_concentration:v2",
+              "evidence_group": "supporting",
+              "evidence_index": 0
+            }
+          ],
+          "contradictions": [],
+          "resolved_questions": [],
+          "open_questions": [],
+          "next_information_needs": [
+            "What next product milestone was disclosed by prediction time?"
+          ],
+          "decision": "continue"
+        }
+      },
+      "native_single_call_preserved": true
+    },
+    {
+      "control": "unsupported_atomic_member",
+      "text": "Customer concentration is strong.",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      },
+      "native_single_call_exact_prior": true
+    },
+    {
+      "control": "unsupported_atomic_member",
+      "text": "Customer concentration is zero.",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      },
+      "native_single_call_exact_prior": true
+    },
+    {
+      "control": "unsupported_atomic_member",
+      "text": "Customer concentration is unknown, not evidence of economic absence. Customer concentration is weak.",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      },
+      "native_single_call_exact_prior": true
+    },
+    {
+      "control": "unsupported_atomic_member",
+      "text": "Customer concentration is weak. Operating cash flow is unknown, not absent.",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      },
+      "native_single_call_exact_prior": true
+    },
+    {
+      "control": "unsupported_atomic_member",
+      "text": "Historical financing remains context; customer concentration is weak despite no economic absence conclusion.",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      },
+      "native_single_call_exact_prior": true
+    },
+    {
+      "control": "zero_percent_complete_quantity_gate",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding",
+          "assertion_without_support"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "unknown_is_not_resolution",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "resolved_questions[0]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "correct_question_and_need_placement",
+      "accepted": true
+    },
+    {
+      "control": "cross_topic_no_global_disclaimer_exemption",
+      "errors": [
+        {
+          "field": "current_beliefs",
+          "signal_ref": "customer_concentration:v1",
+          "text": "Customer concentration is weak. Operating cash flow is unknown, not absent."
+        },
+        {
+          "field": "current_beliefs",
+          "signal_ref": "operating_cash_flow:v1",
+          "text": "Customer concentration is weak. Operating cash flow is unknown, not absent."
+        }
+      ]
+    },
+    {
+      "control": "prior_exact_basic_info",
+      "accepted": true
+    },
+    {
+      "control": "prior_changed_claim_basic_info",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "prior_exact_signal",
+      "accepted": true
+    },
+    {
+      "control": "prior_changed_claim_signal",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding",
+          "retained_signal_claim_changed"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "exact_current_raw_or_complete_readable",
+      "raw": "Customer concentration was weak during the reported period.",
+      "accepted": true
+    },
+    {
+      "control": "exact_current_raw_or_complete_readable",
+      "raw": "Customer <b>concentration</b> was weak during the reported period.",
+      "accepted": true
+    },
+    {
+      "control": "ref_membership_only",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding",
+          "signal_reference_unknown"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "wrong_group",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding",
+          "signal_evidence_coordinate_invalid"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "wrong_index",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding",
+          "signal_evidence_coordinate_invalid"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "substring",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "paraphrase",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "future_source",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "bounded_prefix_or_omission_is_not_exact",
+      "limit": 30,
+      "visible": "Customer concentration was wea",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "bounded_prefix_or_omission_is_not_exact",
+      "limit": 1000,
+      "visible": "Customer concentration was weak during the reported period. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additi ...[bounded evidence text omitted]... onal independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative. Additional independent source narrative.",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "canonical_numeric_exact_adoption",
+      "accepted": true
+    },
+    {
+      "control": "canonical_numeric_free_paraphrase_rejected",
+      "result": {
+        "accepted": false,
+        "issue_codes": [
+          "unavailable_signal_treated_as_finding"
+        ],
+        "unavailable_obligations": [
+          {
+            "paths": [
+              "current_beliefs[1]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "mechanical": true
+          }
+        ]
+      }
+    },
+    {
+      "control": "whole_word_no_substring_topic",
+      "accepted_by_topic_guard": true
+    }
+  ],
+  "source_before": {
+    "src/stock_opportunity_agent/research/evolution_research_validation.py": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "8192e404cc8aab8deb20f52ccc9bf950e131e808e339e9f4259e92267fff9ad6"
+    },
+    "spec/src/stock_opportunity_agent/research/evolution_research_validation.md": {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "sha256": "5abfb94b31814c200e05e1f6aa850630097b160577cb28e14f067c4bd1aa5007"
+    },
+    "tests/test_unavailable_topic_grounding.py": {
+      "path": "/Users/l/Project/Recommandation/tests/test_unavailable_topic_grounding.py",
+      "sha256": "ceaefcb5c6efc21ac4e98ca80024cb45e70cd4ab52a8ff2364d3a4b0f5d96000"
+    }
+  },
+  "old_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/unavailable_topic_grounding_20261021_v1/driver/original-evolution_research_validation.py",
+    "sha256": "1283d2102ea99c692e2fca6b7b0e039734331933b413cb8aa11dbc46b35a4b66"
+  },
+  "probe": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/unavailable_topic_grounding_20261021_v1/independent-probe.py",
+    "sha256": "91b9581479d213d22cf5759bcecc78fee4b42a65f1cdf279d334f56b3d394182"
+  },
+  "limits": [
+    "All fixtures synthetic; no fresh model behavior or actual stage/source admission tested.",
+    "Atomic indexed member remains repair unit: mixed invalid text may be wholly removed under existing authority.",
+    "Previous p01 clause-preservation defect claim is withdrawn: existing coverage placement and mechanical authorization explain deletion; true fixed bugs are weak false acceptance and exact-source false attribution.",
+    "Whole-word Signal-ID token matching is literal, without synonym/stemming completeness or general semantic proof.",
+    "No whole F7/MVP or independent benefit closure; original stage evidence remains untouched."
+  ]
+}

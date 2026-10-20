@@ -1,0 +1,27 @@
+{
+  "initial_command": "PYTHONPATH=.:src:scripts:tests /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-tests.py > runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-tests.log 2>&1",
+  "initial_exit": 1,
+  "initial_tests": 281,
+  "initial_errors": 2,
+  "final_command": "PYTHONPATH=.:src:scripts:tests /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-tests.py > runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-final-tests.log 2>&1",
+  "final_exit": 0,
+  "final_tests": 282,
+  "final_seconds": 3.064,
+  "tripwires": {
+    "network": 0,
+    "subprocess": 0,
+    "labels": 0,
+    "persistent_append": 0,
+    "full_prepare": 0
+  },
+  "bindings": {
+    "src/stock_opportunity_agent/research/evolution_research_validation.py": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f",
+    "spec/src/stock_opportunity_agent/research/evolution_research_validation.md": "595444a271fcfc4d9a7fac672db85827298bad3b05bf2d2f6392a1e23d9170b3",
+    "tests/test_unavailable_topic_grounding.py": "e5a4ac45b9f6c9596f031c03f5ea95780195c552b7f378eaec89d339d30e74a1",
+    "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-tests.py": "e64fdfa9fcc41e2a34b50cb5850427f3bfc22171e63fe0594bd2b72ac2f55129",
+    "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-tests.log": "92976d73cf7f7dc2c9aa0886326f7e943581bc508e54604ae8c2fd1d5f376366",
+    "runs/diagnostics/unavailable_topic_grounding_20261021_v1/root-connected-final-tests.log": "656e6f760779b125cfd629a1e5e31c02499f7518009372960810fae22db4cc22",
+    "runs/diagnostics/unavailable_topic_grounding_20261021_v1/independent-final-review.json": "6f95831a1032b4a624eed8b4757d0da5d6ef3d6bcee63b2b9c5baa10a530e717"
+  },
+  "limits": "Synthetic connected checks, no fresh production request or actual stage reentry; full F7/MVP remains open."
+}

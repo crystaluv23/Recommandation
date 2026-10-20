@@ -110,3 +110,26 @@ actual mixed statement, representative clause/negation variants and true
 unavailable-as-economic-finding counterexamples. Preserve existing source,
 quantity, need-transition and typed-repair authority. Completed three controls
 remain completed; no full successor is justified by this narrow3/3 result.
+
+
+## Contract follow-up: correction to the auxiliary diagnosis
+
+Subsequent owning-contract review corrects the preceding auxiliary description.
+The Reflect prompt, runtime/state specs and existing BAD test deliberately place
+coverage-only unknowns in questions/needs, not newly asserted beliefs or resolved
+questions. The raw453-character member contains a wrong-field coverage diagnosis,
+and the existing contract authorizes removing that entire invalid atomic member.
+Its financing facts, neutral/unverified qualifications and residual uncertainties
+remain in accepted evidence, Signal interpretation/status and needs. Calling this
+alone a proven economic-absence misclassification or necessary critical-content
+loss was premature. The raw/state difference and target3/3 findings stay intact;
+the sealed independent audit is not rewritten.
+
+The follow-up does identify separate actual validator defects using synthetic
+statements through the complete native parser/Controller: an unsupported weak
+finding without a negation marker can survive, while an independently accepted
+exact source claim can be blamed on an unavailable result of the same topic.
+A numeric0% example is rejected by the existing quantity guard and must not be
+reported as a full-parser acceptance. The next fix targets those two demonstrated
+boundaries, retaining field placement and the existing atomic mechanical repair
+contract rather than introducing clause rewriting or extra author calls.

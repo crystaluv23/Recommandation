@@ -1,0 +1,23 @@
+{
+  "selectors": [
+    "tests.test_unavailable_finding_repair",
+    "tests.test_unavailable_topic_grounding",
+    "tests.test_evolution_output_validation.NeedTransitionDuplicateRestorationTests.test_drifted_partial_correction_recovers_without_row_replacement",
+    "tests.test_evolution_output_validation.NeedTransitionDuplicateRestorationTests.test_feedback_carries_occurrence_counts_and_restores_multiplicity"
+  ],
+  "tests_run": 16,
+  "failures": 0,
+  "errors": 0,
+  "success": true,
+  "elapsed_seconds": 0.16540933400392532,
+  "before": {
+    "src/stock_opportunity_agent/research/evolution_research_validation.py": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f",
+    "spec/src/stock_opportunity_agent/research/evolution_research_validation.md": "595444a271fcfc4d9a7fac672db85827298bad3b05bf2d2f6392a1e23d9170b3",
+    "tests/test_unavailable_topic_grounding.py": "e5a4ac45b9f6c9596f031c03f5ea95780195c552b7f378eaec89d339d30e74a1"
+  },
+  "after": {
+    "src/stock_opportunity_agent/research/evolution_research_validation.py": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f",
+    "spec/src/stock_opportunity_agent/research/evolution_research_validation.md": "595444a271fcfc4d9a7fac672db85827298bad3b05bf2d2f6392a1e23d9170b3",
+    "tests/test_unavailable_topic_grounding.py": "e5a4ac45b9f6c9596f031c03f5ea95780195c552b7f378eaec89d339d30e74a1"
+  }
+}

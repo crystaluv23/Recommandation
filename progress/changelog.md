@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：更正前轮p01混合belief删除归因：coverage错placement及既有atomic权限足以解释，必要内容丢失未证，不重写原audit。另以完整parser/Controller证实weak无marker误接与独立exact来源被同topic unavailable误归因，spec-first修检测与精确provenance，保wholeword/量/PIT/need及remove-only单调用。初13/独立28过后root281暴露2个无unavailable批次的eager投影回归，原候选/红保留，改实际topic命中后惰性proof，新增no-op三变体，最终282关联全过/五tripwire0。无新模型/GET/labels/业务写入/旧stage重入，整体F7/MVP仍open；下一shared CIK合同及真正tests作者输入，非只改spec作者提示。
+
 - 2026-10-21：新预冻F7三控制实际partial/partial/full目标3/3，role69–77九首答/0模型纠错，535373逻辑预留；283/129字残项完整保terms+postJune30状态，full仅移need4。真实state→closure→17卡/版本→Predictor/sink及各32files唯一restore保真/0新派发，107currentcode终核过。独立原材料/原答复核同时发现p01诚实unknown混合belief被topic+negative-marker guard机械误删453字，精确helper/typed权限复现，原raw非全persist，列新待修而非掩盖；p02/p03无此差异。root初审误将既有身份mask当state不等，修audit期望且保原失败，未重跑产品。0GET/外部LLMAPI/labels/Signalapply，原0/1与未触发mirror保留，不关闭整体F7/MVP；下一unknown误删家族，禁止已完成阶段重入。
 
 - 2026-10-21：F7新三控制ownspec先行，capture1780 profile按263d16核原plan/116历史code，prefix按ddeae204，当前code另freeze；原问题/部分变体/充分答案仅改sampleID/need4。私有oracle按actual Reflect六既有引文+两Signal/四counter核充分性，17卡仅后继可见；partial/partial/full不以unanswered替代。独立发现coherent oracle+root改名可重置18请求，改固定三个目的地、原候选误接保留、新拒在seed/write前；每case6/512k合计18/1536k不互借。原12+新5安全检查17/17/root复核过，d15b3355下三root唯一prepare各16.675/16.465/16.733s均exit0，107code/7938original各manifest、8045unique全绑定及精确输入差异核过；独立24预审过，尚0新角色，不关闭F7原0/1或整体MVP。

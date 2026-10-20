@@ -1,0 +1,28 @@
+{
+  "original_bindings": {
+    "src/stock_opportunity_agent/research/evolution_research_validation.py": "1283d2102ea99c692e2fca6b7b0e039734331933b413cb8aa11dbc46b35a4b66",
+    "spec/src/stock_opportunity_agent/research/evolution_research_validation.md": "5bc822251be3eba08597245b34923b579589ddb4e10801e42f44e0c92c29d12f",
+    "tests/test_unavailable_finding_repair.py": "13632adb56698f71362dfc14b1dae00c26aeb2bf78a679d2754ca2e66f2305f3"
+  },
+  "original_HEAD": "06b574e48b350bd083997b574f263716a9ec43dc",
+  "logs": {
+    "original-controller-boundaries": {
+      "exit_code": 0,
+      "timestamp": "2026-10-20T18:55:08.877Z"
+    },
+    "original-full-parser-grounding": {
+      "exit_code": 0,
+      "timestamp": "2026-10-20T18:56:27.872Z"
+    },
+    "original-actual-seed-parser": {
+      "exit_code": 0,
+      "timestamp": "2026-10-20T18:58:04.476Z"
+    }
+  },
+  "p01_raw69_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/exchange/outbox/9f4457f05a0e152651f74f83acd44b669fd718a7a15c17bc1c537f32b19ae317.txt",
+    "sha256": "cdabaf0e1aeb05e8fe3df82182f7bad9284a4f005090696e89931e569c8f55e1"
+  },
+  "scope_correction": "The raw69 whole-member quarantine was authorized by its old contract; coverage-only text in current_beliefs is invalid placement. No necessary loss of critical meaning is established by this deletion alone. The demonstrated defects are marker-blind unsupported nonnumeric findings and misattribution despite independent exact source grounding.",
+  "preservation": "These stdout/commands are the original prior executions; no business stage or test replay to save logs."
+}

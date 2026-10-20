@@ -1,0 +1,23 @@
+status: 1
+
+Pre-push lint feedback
+timestamp_utc: 2026-10-20T19:13:23Z
+repo: /Users/l/Project/Recommandation
+command: scripts/lint_repo.sh
+
+Repository lint
+root: /Users/l/Project/Recommandation
+
+PASS: required meta and lint files exist
+Meta check: PASS (administrative only; not live/learning/benefit acceptance)
+PASS: meta records and convergence review are consistent (administrative only)
+PASS: .githooks/pre-push is executable
+PASS: scripts/lint_repo.sh is executable
+PASS: git core.hooksPath is .githooks
+PASS: no merge conflict markers
+PASS: no trailing whitespace
+PASS: no hand-written outcome label constants
+FAIL: broken local markdown link in runs/diagnostics/unavailable_topic_grounding_20261021_v1/driver/original-evolution_research_validation.md -> evolution_output_validation.md
+FAIL: broken local markdown link in runs/diagnostics/unavailable_topic_grounding_20261021_v1/driver/original-evolution_research_validation.md -> evolution_output_validation.md
+
+Lint result: FAIL (2 issue(s))

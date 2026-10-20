@@ -1,0 +1,11 @@
+test_all_unavailable_causes_preserve_prior_state_without_paid_correction (tests.test_unavailable_finding_repair.UnavailableFindingRepairTests.test_all_unavailable_causes_preserve_prior_state_without_paid_correction) ... ok
+test_available_topic_and_unchanged_prior_findings_are_not_quarantined (tests.test_unavailable_finding_repair.UnavailableFindingRepairTests.test_available_topic_and_unchanged_prior_findings_are_not_quarantined) ... ok
+test_duplicate_members_share_one_snapshot_and_keep_valid_siblings (tests.test_unavailable_finding_repair.UnavailableFindingRepairTests.test_duplicate_members_share_one_snapshot_and_keep_valid_siblings) ... ok
+test_full_parser_does_not_accept_a_separate_future_information_failure (tests.test_unavailable_finding_repair.UnavailableFindingRepairTests.test_full_parser_does_not_accept_a_separate_future_information_failure) ... ok
+test_quarantine_requires_exact_typed_member_and_remove_authority (tests.test_unavailable_finding_repair.UnavailableFindingRepairTests.test_quarantine_requires_exact_typed_member_and_remove_authority) ... ok
+test_terminal_decision_is_model_authored_and_survives_exact_quarantine (tests.test_unavailable_finding_repair.UnavailableFindingRepairTests.test_terminal_decision_is_model_authored_and_survives_exact_quarantine) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.008s
+
+OK

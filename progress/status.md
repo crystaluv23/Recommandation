@@ -43,7 +43,9 @@ v6确定性6/6、v12确定性9/9选typedQ1，现金parser latest由2023末到202
   预冻完整语义0/1：残项漏披露期后covenant compliance，未宣称未来合规仍不能通过。mirror not_exercised。
 - [fresh F7三控制](../reports/reviewed-owned-temporal-controls-20261021.md)：预冻原问题/部分变体/充分答案，实际proper partial/partial/full目标3/3；
   role69–77各首答接受、0模型纠错，原0–3needs/17后继cards/版本及实际Predictor/sink保真；各32files restore全等/0新派发。
-  p01一条453字诚实unknown混合belief被unavailable词集guard机械误删，已精确复现；原操作非全保留，整体F7仍open。
+  p01一条混合belief含错placement的coverage诊断，按既有契约整成员隔离；前轮直接称unknown误判过早，事实/残项仍留。
+  [unavailable主题归因修复](../reports/unavailable-topic-grounding-20261021.md)阻断无依据weak判断，保独立exact来源；原子机械权限不改。
+  初281关联暴露无unavailable仍投影的2回归，改实际topic命中后惰性证明，最终282全过/五类tripwire0；整体F7仍open。
   原0/1不改；所有mirror not_exercised，17cards仅最终/Predictor可见，Reflect只见6原引文+当前batch。
 - [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)：apply neutral→Reflect partial→Predictor/sink实际连接，
   7新角色/1纠错、52文件恢复；仍6行needs含长短镜像，不等于整体F4/F6/F7或完整F9。
@@ -69,6 +71,7 @@ FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍un
 源capture、F7旧stage和新input-only检查均保持完成、不重入；选文修复已完成独立终态审查。
 issuer fixture生产者局部修复已过真实CLI与158关联检查，旧Registry字节/失败保留；默认LLM选文剩余缺口另保留。
 新F7三控制已完成独立终态审查：目标3/3、9角色及3次唯一完成恢复；不重入、不以本批关闭整体F7。
-下一核unavailable guard的unknown/否定/混合句误删家族，先spec再修并保真实负向反例；不改冻结产物或追加追成功调用。
-默认LLM选文、fresh S5身份义务与Slow发现/准入/后继使用仍待验。
+unavailable局部修复关联检查已过，不改冻结产物；新模型行为和mirror触发仍未验。
+下一补shared candidate的既有CIK样本义务并接真正独立tests作者payload；严格consumer不放宽。
+默认LLM选文、fresh S5创作与Slow发现/准入/后继使用仍待验。
 LLM节点继续exact inbox独立subagent；0外部LLM API。不恢复旧运行或启动完整后继，不以0.8/输入resolved替代测量或MVP关闭。
