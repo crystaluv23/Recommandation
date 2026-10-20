@@ -1,0 +1,30 @@
+{
+  "selectors": [
+    "tests.test_candidate_fixture_authoring_contract",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_controller_mining_dispatch_stages_materialized_candidate",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_uses_one_induction_call_and_local_holdout_gate",
+    "tests.test_signal_evolution_engine.DualLoopTests.test_v147_materialization_modules_reuse_accepted_siblings",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_unavailable_does_not_hide_technical_failure",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_failure_reports_pre_execution_coverage_gap",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_candidate_identity_guard_preserves_ticker_case",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_update_contract_preserves_complete_retrieval_and_rejects_empty_diff"
+  ],
+  "tests_run": 14,
+  "failures": 0,
+  "errors": 0,
+  "success": true,
+  "seconds": 0.6360090000089258,
+  "tripwire_calls": [],
+  "before": {
+    "src/stock_opportunity_agent/research/signal_evolution.py": "3f3723a2008d8e2aa1e2f30d5fff03d76e10e55595833f909a46aafe0bdd99ca",
+    "spec/src/stock_opportunity_agent/research/signal_evolution.md": "e8eb9604cf3819b9c0d8f64adb1d09a5b87790ef26ea5406e3aeb4eaff5ca459",
+    "tests/test_candidate_fixture_authoring_contract.py": "a57fb998ef54c7d7d9725cd08f4aa81323b84cb963ff78810f7c6a6516346eed",
+    "tests/test_signal_evolution_engine.py": "08a8520c2810fe0aabe9f427ef5ecc812e25127f948c4aa0eb62dc06cdbd2f36"
+  },
+  "after": {
+    "src/stock_opportunity_agent/research/signal_evolution.py": "3f3723a2008d8e2aa1e2f30d5fff03d76e10e55595833f909a46aafe0bdd99ca",
+    "spec/src/stock_opportunity_agent/research/signal_evolution.md": "e8eb9604cf3819b9c0d8f64adb1d09a5b87790ef26ea5406e3aeb4eaff5ca459",
+    "tests/test_candidate_fixture_authoring_contract.py": "a57fb998ef54c7d7d9725cd08f4aa81323b84cb963ff78810f7c6a6516346eed",
+    "tests/test_signal_evolution_engine.py": "08a8520c2810fe0aabe9f427ef5ecc812e25127f948c4aa0eb62dc06cdbd2f36"
+  }
+}

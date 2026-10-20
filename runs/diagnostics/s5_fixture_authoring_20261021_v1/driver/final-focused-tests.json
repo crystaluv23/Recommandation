@@ -1,0 +1,27 @@
+{
+  "selectors": [
+    "tests.test_candidate_fixture_authoring_contract",
+    "tests.test_signal_evolution_engine.DualLoopTests.test_v147_materialization_modules_reuse_accepted_siblings",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_unavailable_does_not_hide_technical_failure",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_failure_reports_pre_execution_coverage_gap",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_candidate_identity_guard_preserves_ticker_case"
+  ],
+  "tests_run": 10,
+  "failures": 1,
+  "errors": 0,
+  "success": false,
+  "seconds": 0.21123199979774654,
+  "tripwire_calls": [],
+  "before": {
+    "src/stock_opportunity_agent/research/signal_evolution.py": "7f220b8a452610281e9f910e85396f6385f4427d9d371968057fea3db1dbd521",
+    "spec/src/stock_opportunity_agent/research/signal_evolution.md": "fa34e1c3d69a36d076fee4685706af46797a25bc8f6fd33680363d5e47d1294a",
+    "tests/test_candidate_fixture_authoring_contract.py": "3b82d375fce2563be309ca26e99eb64bf1caefc8074f2b1f04bc67993683641b",
+    "tests/test_signal_evolution_engine.py": "63f7189848bf108cc02d55410eb1ceb7aaaf4a6fa6bc640f4176fb6b9b60322b"
+  },
+  "after": {
+    "src/stock_opportunity_agent/research/signal_evolution.py": "7f220b8a452610281e9f910e85396f6385f4427d9d371968057fea3db1dbd521",
+    "spec/src/stock_opportunity_agent/research/signal_evolution.md": "fa34e1c3d69a36d076fee4685706af46797a25bc8f6fd33680363d5e47d1294a",
+    "tests/test_candidate_fixture_authoring_contract.py": "3b82d375fce2563be309ca26e99eb64bf1caefc8074f2b1f04bc67993683641b",
+    "tests/test_signal_evolution_engine.py": "63f7189848bf108cc02d55410eb1ceb7aaaf4a6fa6bc640f4176fb6b9b60322b"
+  }
+}

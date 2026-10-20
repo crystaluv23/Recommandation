@@ -1,0 +1,30 @@
+test_controller_mining_dispatch_stages_materialized_candidate (tests.test_signal_evolution_engine.SignalEvolutionTests.test_controller_mining_dispatch_stages_materialized_candidate) ... FAIL
+test_signal_update_uses_one_induction_call_and_local_holdout_gate (tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_uses_one_induction_call_and_local_holdout_gate) ... FAIL
+
+======================================================================
+FAIL: test_controller_mining_dispatch_stages_materialized_candidate (tests.test_signal_evolution_engine.SignalEvolutionTests.test_controller_mining_dispatch_stages_materialized_candidate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_evolution_engine.py", line 1038, in test_controller_mining_dispatch_stages_materialized_candidate
+    self.assertTrue(output["candidate_refs"])
+AssertionError: () is not true
+
+======================================================================
+FAIL: test_signal_update_uses_one_induction_call_and_local_holdout_gate (tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_uses_one_induction_call_and_local_holdout_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_evolution_engine.py", line 5949, in test_signal_update_uses_one_induction_call_and_local_holdout_gate
+    self.assertEqual(result.promoted, (updated.ref,))
+AssertionError: Tuples differ: () != ('revenue_growth_yoy:v2',)
+
+Second tuple contains 1 additional elements.
+First extra element 0:
+'revenue_growth_yoy:v2'
+
+- ()
++ ('revenue_growth_yoy:v2',)
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.381s
+
+FAILED (failures=2)

@@ -1,0 +1,11 @@
+{
+  "changed_source_functions": [
+    "SignalEvolutionEngine._materialize_tests_module",
+    "SignalEvolutionEngine._candidate_arguments_schema",
+    "signal_candidate_execution_contract"
+  ],
+  "exact_named_fixture_metadata_only": true,
+  "spec_after_candidate_section_unchanged_including_existing_dirty_tail": true,
+  "no_consumer_changes": true,
+  "no_fresh_model_authoring_or_real_registry_publication": true
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+    "sha256": "c1379ffd2973ee444f490e7c1333bb5bf5cf6acca98c798c1d1afd00f3711d10",
+    "copy": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-literal-disclosure-signal_evolution.py"
+  },
+  {
+    "path": "spec/src/stock_opportunity_agent/research/signal_evolution.md",
+    "sha256": "b3024c99f849c386337daf86bba5786437c32a63b61b0e07c972cba9adfc984e",
+    "copy": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-literal-disclosure-signal_evolution.md"
+  },
+  {
+    "path": "tests/test_candidate_fixture_authoring_contract.py",
+    "sha256": "1e92b71039122fc6aca258218727ac1e435999d25296e1ea371bdd9e82a419c2",
+    "copy": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-literal-disclosure-test_candidate_fixture_authoring_contract.py"
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "initial_command": "PYTHONPATH=.:src:scripts:tests /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 runs/diagnostics/s5_fixture_authoring_20261021_v1/root-connected-tests.py > runs/diagnostics/s5_fixture_authoring_20261021_v1/root-connected-tests.log 2>&1",
+  "initial_exit": 1,
+  "initial_tests": 66,
+  "initial_failures": 2,
+  "final_command": "PYTHONPATH=.:src:scripts:tests /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 runs/diagnostics/s5_fixture_authoring_20261021_v1/root-connected-tests.py > runs/diagnostics/s5_fixture_authoring_20261021_v1/root-connected-final-tests.log 2>&1",
+  "final_exit": 0,
+  "final_tests": 66,
+  "final_seconds": 1.113,
+  "tripwires": {
+    "network": 0,
+    "subprocess": 0,
+    "labels": 0,
+    "persistent_append": 0,
+    "full_prepare": 0
+  },
+  "bindings": {
+    "src/stock_opportunity_agent/research/signal_evolution.py": "3f3723a2008d8e2aa1e2f30d5fff03d76e10e55595833f909a46aafe0bdd99ca",
+    "spec/src/stock_opportunity_agent/research/signal_evolution.md": "e8eb9604cf3819b9c0d8f64adb1d09a5b87790ef26ea5406e3aeb4eaff5ca459",
+    "tests/test_signal_evolution_engine.py": "08a8520c2810fe0aabe9f427ef5ecc812e25127f948c4aa0eb62dc06cdbd2f36",
+    "tests/test_candidate_fixture_authoring_contract.py": "a57fb998ef54c7d7d9725cd08f4aa81323b84cb963ff78810f7c6a6516346eed",
+    "runs/diagnostics/s5_fixture_authoring_20261021_v1/root-connected-tests.py": "6b80a697f15a81503bea5fe496de444b52d924ebb3fe260fe1160503e4aecc2d",
+    "runs/diagnostics/s5_fixture_authoring_20261021_v1/root-connected-tests.log": "14ffaaf898aa9b551f2b2ea07fca5ba4f509ae96a465e1ab1cb631bbd15f2133",
+    "runs/diagnostics/s5_fixture_authoring_20261021_v1/root-connected-final-tests.log": "a5d818ec7a8f7d50d3366de4fac2352b0aadc3b0294bc322baddec53e43626d3",
+    "runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final-review.json": "f3940733ef26ed5ad635a709db21b37e3dd937cfb9c98ae8787613664793e5a5"
+  },
+  "limits": "Synthetic scoped local validation; fresh authoring and whole S5/MVP remain open."
+}

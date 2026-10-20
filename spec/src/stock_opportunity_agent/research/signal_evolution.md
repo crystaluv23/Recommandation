@@ -667,6 +667,37 @@ executor's interpretation summary, so an unavailable result cannot conceal
 whether the skill actually ran. Technical execution
 failure never passes a fixture merely because expected is unavailable.
 
+The same shared fixture execution contract must reach the actual tests-author
+module, not only the preceding spec-author call or the H3/E2 candidate view.
+For either supported Company Facts body schema, fixture authors supply an
+explicit body CIK. The default `candidate_fixture_N` company is an opaque alias
+and therefore also requires document `metadata.cik` with the same synthetic
+issuer. A canonical `cik_##########` fixture company must match the body CIK
+and any supplied metadata CIK. Provider CIK accepts a positive integer or a
+plain 1–10 digit string, never bool, float or an issuer inferred from alias
+characters. Use synthetic identity without copying masked Discovery identity;
+preserve literal values, tags, units, periods, filed dates and expected values.
+
+The candidate argument view describes the existing document `content` string
+and optional `metadata` object. The tests-author payload also receives that same
+tests-array schema, including fixture name, as-of, expected value and document
+structure, without copying the unrelated whole spec schema. Metadata is not
+required for every source type. Fixture content must already be a string before
+raw-document construction; non-string values are rejected as invalid fixture
+inputs, never coerced with `str` or automatically JSON-serialized. This applies
+even when expected is unavailable. Valid string bytes and their existing JSON,
+empty-source and unavailable semantics remain unchanged;
+For deterministic Company Facts, every fact row retains its canonical JSON
+literal in content. Serializing the whole financial body with
+`json.dumps(sort_keys=True, separators=(',', ':'))` satisfies the existing
+literal-span requirement; another body format must still contain those exact
+canonical fact-row literals. Other source types are not required to be JSON.
+Company Facts issuer requirements remain owned by its existing consumer.
+Missing/conflicting issuer bindings stay technical failures even when expected
+is unavailable. No validator, auditor or helper fills an omitted identity.
+Update still copies stable fixtures byte-for-byte; this authoring disclosure
+does not migrate published fixtures, change PIT or alter measurements.
+
 
 ## Readable Mining history work units
 

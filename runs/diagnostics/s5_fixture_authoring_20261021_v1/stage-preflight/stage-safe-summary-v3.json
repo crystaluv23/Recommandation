@@ -1,0 +1,17 @@
+{
+  "status": "offline_preflight_v3_passed_not_fresh",
+  "tests": 18,
+  "formal_stage_prepared": false,
+  "production_requests": 0,
+  "external_llm_api_calls": 0,
+  "GET": 0,
+  "labels": 0,
+  "real_registry_publications": 0,
+  "bindings": {
+    "scripts/run_reviewed_fixture_author_stage.py": "9d4bbfd7e05ac80759eab9011b6b86e1001d979b85cf1eeb9050c653c5255ba2",
+    "spec/scripts/run_reviewed_fixture_author_stage.md": "ae95857c6e0496dd02af518fdc59333edb5fbdfadac0c99acfd05c2f2354b062",
+    "tests/test_reviewed_fixture_author_stage.py": "cdf0e810923731730d14da868bd7ae299a02119f7a7e6e5dccb30a9b7019bf53"
+  },
+  "change_from_v2": "Only public fixed-sample requirements and ownspec clarify one complete document containing both corresponding fact rows per schema fixture. No private answer or expected measurement transmitted; oracle, guard, production schema unchanged.",
+  "limits": "Offline module wiring only; fresh independent authoring, whole S5, Mining, publication, reuse and MVP remain unverified."
+}

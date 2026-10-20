@@ -1,0 +1,11 @@
+{
+  "changed_source_functions": [
+    "SignalEvolutionEngine._materialize_tests_module",
+    "SignalEvolutionEngine._candidate_arguments_schema",
+    "signal_candidate_execution_contract"
+  ],
+  "complete_spec_tail_unchanged": true,
+  "spec_tail_sha256": "30c3ac4e891c469b611284fb724a64850de0ba0439cecfec34d8a521462727b4",
+  "existing_test_only_explicit_metadata": true,
+  "fresh_model_compliance_not_tested": true
+}

@@ -1,0 +1,14 @@
+{
+  "selector": "tests.test_candidate_fixture_authoring_contract.CandidateFixtureAuthoringContractTests.test_nonstring_content_is_invalid_even_when_expected_unavailable",
+  "tests_run": 1,
+  "failures": 24,
+  "errors": 0,
+  "before": {
+    "src/stock_opportunity_agent/research/signal_evolution.py": "af3c4bf5f5624087ac900b2218161466cffdb8ab817b9829f19172c9f4059a8d",
+    "tests/test_candidate_fixture_authoring_contract.py": "1e92b71039122fc6aca258218727ac1e435999d25296e1ea371bdd9e82a419c2"
+  },
+  "after": {
+    "src/stock_opportunity_agent/research/signal_evolution.py": "af3c4bf5f5624087ac900b2218161466cffdb8ab817b9829f19172c9f4059a8d",
+    "tests/test_candidate_fixture_authoring_contract.py": "1e92b71039122fc6aca258218727ac1e435999d25296e1ea371bdd9e82a419c2"
+  }
+}

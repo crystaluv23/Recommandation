@@ -1,0 +1,39 @@
+test_controller_mining_dispatch_stages_materialized_candidate (tests.test_signal_evolution_engine.SignalEvolutionTests.test_controller_mining_dispatch_stages_materialized_candidate) ... FAIL
+test_signal_update_uses_one_induction_call_and_local_holdout_gate (tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_uses_one_induction_call_and_local_holdout_gate) ... ERROR
+
+======================================================================
+ERROR: test_signal_update_uses_one_induction_call_and_local_holdout_gate (tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_uses_one_induction_call_and_local_holdout_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_evolution_engine.py", line 5947, in test_signal_update_uses_one_induction_call_and_local_holdout_gate
+    result = engine.run_cycle(cycle_id=1, input_snapshot=snapshot)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/original-signal_evolution.py", line 3811, in run_cycle
+    validation = self._validate_cycle(input_snapshot, cycle_id=cycle_id)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/original-signal_evolution.py", line 5014, in _validate_cycle
+    validator_hash = self._technical_validator_hash()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/original-signal_evolution.py", line 5116, in _technical_validator_hash
+    "executor_source": hashlib.sha256((Path(__file__).parent.parent / "signal_library.py").read_bytes()).hexdigest(),
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1019, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/signal_library.py'
+
+======================================================================
+FAIL: test_controller_mining_dispatch_stages_materialized_candidate (tests.test_signal_evolution_engine.SignalEvolutionTests.test_controller_mining_dispatch_stages_materialized_candidate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_evolution_engine.py", line 1038, in test_controller_mining_dispatch_stages_materialized_candidate
+    self.assertTrue(output["candidate_refs"])
+AssertionError: () is not true
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.283s
+
+FAILED (failures=1, errors=1)

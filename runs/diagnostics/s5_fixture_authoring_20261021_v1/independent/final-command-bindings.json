@@ -1,0 +1,40 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final-probe.py > runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final.log 2>&1",
+  "exit_code": 0,
+  "controls": 22,
+  "artifacts": {
+    "final-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final-probe.py",
+      "sha256": "012db2c4653c75753d7e42e12b59ea12633633b5917b0c607d92312f9bc1b180"
+    },
+    "final-first-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final-first-probe.py",
+      "sha256": "ac20cf2c21bf8fee635b9e420e44ab9dbf417d9c22a110eb4d6d2d3c73f7e72b"
+    },
+    "final-first.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final-first.log",
+      "sha256": "1cd39b019213b751414d6a9f1e18b43a0e55a9e620ebef7beed9d9d88d661523"
+    },
+    "final.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final.log",
+      "sha256": "c8f28b57f1086667035496b4dd0dd505ab9161353090871cfe5e9c82472af3ef"
+    },
+    "final-review.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final-review.json",
+      "sha256": "f3940733ef26ed5ad635a709db21b37e3dd937cfb9c98ae8787613664793e5a5"
+    },
+    "original-af3c-signal_evolution.py.txt": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/original-af3c-signal_evolution.py.txt",
+      "sha256": "af3c4bf5f5624087ac900b2218161466cffdb8ab817b9829f19172c9f4059a8d"
+    },
+    "original-content-shape-bindings.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/original-content-shape-bindings.json",
+      "sha256": "96fbe63ce4fdc1f3d075241bbe367dcf35bbda35a48c433f6afa8f8014b16b1d"
+    },
+    "content-shape-probe.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/content-shape-probe.json",
+      "sha256": "a7891c089036fed348abaa1924f3efa74a91f8d10e6ca4d17a670ab8108018be"
+    }
+  },
+  "original_harness_failure_preserved": true
+}

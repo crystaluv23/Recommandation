@@ -1,0 +1,22 @@
+[
+  {
+    "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+    "sha256": "af3c4bf5f5624087ac900b2218161466cffdb8ab817b9829f19172c9f4059a8d",
+    "copy": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-content-shape-signal_evolution.py"
+  },
+  {
+    "path": "spec/src/stock_opportunity_agent/research/signal_evolution.md",
+    "sha256": "76372aa78548fee3ab732a5c344b14cad52d9057635cb932ad768aa412a70f0d",
+    "copy": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-content-shape-signal_evolution.md"
+  },
+  {
+    "path": "tests/test_candidate_fixture_authoring_contract.py",
+    "sha256": "dc8d6f98eb208862bafb0bade636c5319989e52c8798b0fd3a03fde4f73c860f",
+    "copy": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-content-shape-test_candidate_fixture_authoring_contract.py"
+  },
+  {
+    "path": "tests/test_signal_evolution_engine.py",
+    "sha256": "63f7189848bf108cc02d55410eb1ceb7aaaf4a6fa6bc640f4176fb6b9b60322b",
+    "copy": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-content-shape-test_signal_evolution_engine.py"
+  }
+]

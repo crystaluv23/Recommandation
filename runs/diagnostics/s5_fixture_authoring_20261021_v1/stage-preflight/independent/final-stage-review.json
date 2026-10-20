@@ -1,0 +1,264 @@
+{
+  "first_attempt_note": "Initial precondition rejected previous fa11/e85 hashes after owner public requirements clarification; no fixtures ran on that attempt. Original script/log are preserved. Second attempt misread NumericMeasurement serialized period keys; corrected to actual measurement.period.start/end without changing period expectations. Final run binds owner final9d4b/ae95.",
+  "verdict": "PASS_bounded_stage_preflight_after_literal_carrier_fix",
+  "controls": 14,
+  "rows": [
+    {
+      "control": "native_pending_original_receipt_stage_load_restore",
+      "status": "module_completed_requires_independent_review",
+      "logical_reservation": 14241,
+      "physical_fixture_receipts": 1,
+      "restore_all_files_equal": true,
+      "restored_files": 20,
+      "raw_sha256": "9a8f36d3a9c07e5ce349ccf7990f2a7a6437ef8611a115ef56cd567d747168aa",
+      "request_hash": "43da6b7ff4e4c9f1696da47cebb9b3182d6bad66e594ff1a073b013494f25963",
+      "actual_loaded_candidate": {
+        "loaded_tests": [
+          {
+            "as_of": "2025-03-01T00:00:00+00:00",
+            "documents": [
+              {
+                "available_at": "2025-02-16T00:00:00+00:00",
+                "content": "{\"cik\":1,\"facts\":{\"us-gaap\":{\"Revenues\":{\"units\":{\"USD\":[{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"val\":120},{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"val\":150}]}}}}}",
+                "document_id": "independent-legacy",
+                "metadata": {
+                  "cik": 1
+                },
+                "published_at": "2025-02-16T00:00:00+00:00",
+                "source_type": "financials"
+              }
+            ],
+            "expected": "positive",
+            "name": "independent legacy"
+          },
+          {
+            "as_of": "2025-03-01T00:00:00+00:00",
+            "documents": [
+              {
+                "available_at": "2025-02-16T00:00:00+00:00",
+                "content": "{\"cik\":1,\"facts\":[{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":120},{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}],\"filing_date\":\"2025-02-15\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+                "document_id": "independent-typed",
+                "metadata": {
+                  "cik": 1
+                },
+                "published_at": "2025-02-16T00:00:00+00:00",
+                "source_type": "financials"
+              }
+            ],
+            "expected": "positive",
+            "name": "independent typed"
+          }
+        ],
+        "results": [
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": [
+                {
+                  "document_id": "author-0-0",
+                  "exact_span": "{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"val\":150}",
+                  "timestamp": "2025-02-16T00:00:00+00:00"
+                },
+                {
+                  "document_id": "author-0-0",
+                  "exact_span": "{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"val\":120}",
+                  "timestamp": "2025-02-16T00:00:00+00:00"
+                }
+              ]
+            },
+            "execution": {
+              "status": "success"
+            },
+            "interpretation": {
+              "summary": "revenue_growth_yoy=0.25"
+            },
+            "measurement": {
+              "formula": "current / comparable prior-year revenue - 1",
+              "period": {
+                "end": "2024-12-31",
+                "start": "2024-01-01"
+              },
+              "unit": "fraction",
+              "value": 0.25
+            },
+            "signal_id": "fixture_author_revenue_growth",
+            "state": {
+              "confidence": 1.0,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "version": 1
+          },
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": [
+                {
+                  "document_id": "author-1-0",
+                  "exact_span": "{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}",
+                  "timestamp": "2025-02-16T00:00:00+00:00"
+                },
+                {
+                  "document_id": "author-1-0",
+                  "exact_span": "{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":120}",
+                  "timestamp": "2025-02-16T00:00:00+00:00"
+                }
+              ]
+            },
+            "execution": {
+              "status": "success"
+            },
+            "interpretation": {
+              "summary": "revenue_growth_yoy=0.25"
+            },
+            "measurement": {
+              "formula": "current / comparable prior-year revenue - 1",
+              "period": {
+                "end": "2024-12-31",
+                "start": "2024-01-01"
+              },
+              "unit": "fraction",
+              "value": 0.25
+            },
+            "signal_id": "fixture_author_revenue_growth",
+            "state": {
+              "confidence": 1.0,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "version": 1
+          }
+        ],
+        "schemas": [
+          "legacy",
+          "typed"
+        ],
+        "signal_ref": "fixture_author_revenue_growth:v1"
+      },
+      "drift_restore_rejected": "fixture-author terminal artifact drift"
+    },
+    {
+      "control": "same_original_dead_literal_carrier_new_reject",
+      "status": "terminal_failed",
+      "logical_reservation": 14241,
+      "physical_fixture_receipts": 1,
+      "restore_all_files_equal": true,
+      "restored_files": 19,
+      "raw_sha256": "61e728f931f83d7c420c5c7de9c09fbcb58c2dea9e196929c7377d312d00766f",
+      "request_hash": "1fc3ba90f00fbfd903dbe57b99cab3c22c55338ca51c4d42a38a7f45836c8533",
+      "error": "two-schema synthetic positive control incomplete"
+    },
+    {
+      "control": "same_ratio_alternative_executed_basis_not_supplied",
+      "status": "terminal_failed",
+      "logical_reservation": 14241,
+      "physical_fixture_receipts": 1,
+      "restore_all_files_equal": true,
+      "restored_files": 19,
+      "raw_sha256": "be3bf01497c25bef606d201acc57607df4db05cc39b50b8c262430fc3e2dfd8d",
+      "request_hash": "bf07b9bc7129e1c6835db53d85930acee1d503d945b5b494b3273d90eec322bc",
+      "error": "two-schema synthetic positive control incomplete"
+    },
+    {
+      "control": "one_mixed_schema_fixture_cannot_supply_two",
+      "status": "terminal_failed",
+      "logical_reservation": 14241,
+      "physical_fixture_receipts": 1,
+      "restore_all_files_equal": true,
+      "restored_files": 19,
+      "raw_sha256": "0aa69e0ca2fd3cb079c5115d4cb9967d208ee75071eefef76c252d4d7314f313",
+      "request_hash": "9377d21d087e4c5e1e54b75ca62237308ff154d5c4dd126ca7553c4161b407a6",
+      "error": "two-schema synthetic positive control incomplete"
+    },
+    {
+      "control": "issuer_mismatch_cannot_be_positive",
+      "status": "terminal_failed",
+      "logical_reservation": 14241,
+      "physical_fixture_receipts": 1,
+      "restore_all_files_equal": true,
+      "restored_files": 16,
+      "raw_sha256": "07c1b9fcf3196e1483fa443c54f0ca75a079733dc85cc99871d3bb97e7a95016",
+      "request_hash": "d4228d5e63caa65fe7109b309e076b6cda8ab7eaf66532d0997169f47e57e415",
+      "error": "contract validation rejected the materialized candidate: fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+    },
+    {
+      "control": "invalid_first_json_terminal_no_retry",
+      "status": "terminal_failed",
+      "logical_reservation": 14241,
+      "physical_fixture_receipts": 1,
+      "restore_all_files_equal": true,
+      "restored_files": 15,
+      "raw_sha256": "e58c7312b8635005ac8a304dfe3f0f98accba3c52fa77e00cd1f7563cc22c0e1",
+      "request_hash": "83f668e70b978bd42280599af98e83a7c465f39de4edf9efff0a50d3a391c1db",
+      "error": "tests module call failed: ValidationError: fixture-author first JSON format rejected"
+    },
+    {
+      "control": "fixed_root_rename_before_creation",
+      "rejected": true
+    },
+    {
+      "control": "contract_coherent_rehash_drift_pre_dispatch",
+      "rejected": "fixture-author frozen contract changed"
+    },
+    {
+      "control": "inputs_coherent_rehash_drift_pre_dispatch",
+      "rejected": "fixture-author fixed input definition changed"
+    },
+    {
+      "control": "code_coherent_rehash_drift_pre_dispatch",
+      "rejected": "fixture-author code/source changed"
+    },
+    {
+      "control": "correction_stage",
+      "rejected": "fixture-author stage/correction/output drift"
+    },
+    {
+      "control": "oversize",
+      "rejected": "fixture-author request/total ceiling exhausted"
+    },
+    {
+      "control": "output4001",
+      "rejected": "fixture-author stage/correction/output drift"
+    },
+    {
+      "control": "second_request_no_borrowed_budget",
+      "rejected": "fixture-author request/total ceiling exhausted"
+    }
+  ],
+  "sources": {
+    "scripts/run_reviewed_fixture_author_stage.py": {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_fixture_author_stage.py",
+      "sha256": "9d4bbfd7e05ac80759eab9011b6b86e1001d979b85cf1eeb9050c653c5255ba2"
+    },
+    "spec/scripts/run_reviewed_fixture_author_stage.md": {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_fixture_author_stage.md",
+      "sha256": "ae95857c6e0496dd02af518fdc59333edb5fbdfadac0c99acfd05c2f2354b062"
+    },
+    "tests/test_reviewed_fixture_author_stage.py": {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_fixture_author_stage.py",
+      "sha256": "cdf0e810923731730d14da868bd7ae299a02119f7a7e6e5dccb30a9b7019bf53"
+    }
+  },
+  "probe": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-probe.py",
+    "sha256": "ded018cbc7b5c85acc6b9765a2fe2adee6dcf46bb7dd1f68638ebd7f3fc9f4c4"
+  },
+  "original_stage_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/original-stage/run_reviewed_fixture_author_stage.py",
+    "sha256": "770715c059840387eb334e95a97bd11b69910f113e4edee3369eb9e4f7943878"
+  },
+  "old_counterexample": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/literal-carrier-results.json",
+    "sha256": "52cb76e721c2ca09409db695c46d5a53db3b51b9214185be4c3932b1e6f8dff8"
+  },
+  "scope": [
+    "Temporary patched fixed root is an explicitly offline test fixture; no formal root prepare/dispatch/submit/resume occurred.",
+    "All answers are independently scripted probes, not model behavior; no real GET/labels/published Registry/global source write.",
+    "Original dead-carrier failure preserved; native ratio itself was valid0.25, the fixed issue was exact supplied operand-row qualification.",
+    "Fresh S5 remains untested until formally frozen exact-inbox role; this stage is not full Mining/publication/independent gain."
+  ]
+}

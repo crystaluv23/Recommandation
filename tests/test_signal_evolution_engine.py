@@ -915,6 +915,7 @@ class SignalEvolutionTests(TestCase):
                                         {
                                             "source_type": "financials",
                                             "content": growth,
+                                            "metadata": {"cik": "0000000001"},
                                         }
                                     ],
                                 }
@@ -992,6 +993,7 @@ class SignalEvolutionTests(TestCase):
                     document_id=f"ctl_facts_{index}",
                     company_id=case.company_id,
                     source_type="financials",
+                    metadata={"cik": "0000000001"},
                     published_at=NOW,
                     available_at=NOW,
                     content=sec_company_facts_content(
@@ -5848,6 +5850,7 @@ class SignalEvolutionTests(TestCase):
                         document_id=f"{case.company_id}:financial:{index}",
                         company_id=case.company_id,
                         source_type="financials",
+                        metadata={"cik": "0000000001"},
                         published_at=NOW,
                         available_at=NOW,
                         content=sec_company_facts_content(
@@ -8439,7 +8442,8 @@ class DualLoopTests(TestCase):
                                 "expected": "positive",
                                 "as_of": "2025-02-01T00:00:00+00:00",
                                 "documents": [
-                                    {"source_type": "financials", "content": growth}
+                                    {"source_type": "financials", "content": growth,
+                                     "metadata": {"cik": "0000000001"}}
                                 ],
                             }
                         ]

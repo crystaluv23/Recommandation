@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-probe.py", line 12, in <module>
+    for p,h in expected.items():assert sha(R/p)==h
+                                       ^^^^^^^^^^^
+AssertionError

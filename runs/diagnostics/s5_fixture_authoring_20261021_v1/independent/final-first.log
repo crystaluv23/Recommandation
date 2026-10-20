@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final-probe.py", line 59, in <module>
+    try:engine._validate_update_candidate_for_role(spec.ref,candidate,('spec.parameters.positive_min',))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py", line 3607, in _validate_update_candidate_for_role
+    updated, skill, tests = validate_signal_update_candidate(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py", line 3488, in validate_signal_update_candidate
+    raise ValidationError(
+stock_opportunity_agent.models.ValidationError: Signal Update changed_paths contains unknown path: spec.parameters.positive_min
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final-probe.py", line 60, in <module>
+    except ValidationError as error:assert 'opaque company has no explicit issuer binding' in str(error);reason=str(error)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

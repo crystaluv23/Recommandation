@@ -249,7 +249,24 @@ def signal_candidate_execution_contract() -> dict[str, Any]:
                 "Non-unavailable fixtures must satisfy the same retrieval coverage "
                 "as production, with literal source evidence and point-in-time dates. "
                 "Missing-input fixtures may expect unavailable; technical failures "
-                "are not successful unavailable measurements. Every fixture's "
+                "are not successful unavailable measurements. For either supported "
+                "Company Facts JSON body schema, explicitly supply body cik. The "
+                "default fixture company candidate_fixture_N is opaque, so also "
+                "supply document metadata.cik matching that body issuer. A canonical "
+                "cik_########## fixture company must match body cik and any supplied "
+                "metadata.cik. CIK is a positive integer or plain 1-10 digit string, "
+                "never bool/float or an identity inferred from alias characters. "
+                "Use a consistent synthetic issuer without recovering masked "
+                "Discovery identity; preserve source values, tags, units, periods, "
+                "filed dates and expected values. content is a string (serialize "
+                "financial JSON). For deterministic Company Facts, each fact row "
+                "must retain its canonical JSON literal in content: serialize the "
+                "whole financial body with json.dumps(sort_keys=True, "
+                "separators=(',', ':')), or preserve the same canonical fact-row "
+                "literals inside another body format. Other source types need not "
+                "be JSON. metadata is an optional object, not a universal "
+                "requirement for nonfinancial sources. No consumer fills missing "
+                "issuer bindings. Every fixture's "
                 "expected value must agree with the skill's own documented "
                 "applicability boundaries: a lookalike the skill scores neutral "
                 "must not be expected unavailable, and a documented "
@@ -1447,6 +1464,9 @@ class SignalCandidateValidator:
         for document_index, raw_document in enumerate(documents_data):
             if not isinstance(raw_document, Mapping):
                 raise ValidationError("fixture document must be an object")
+            content = raw_document["content"]
+            if not isinstance(content, str):
+                raise ValidationError("fixture document content must be a string")
             published_at = datetime.fromisoformat(
                 str(
                     raw_document.get(
@@ -1473,7 +1493,7 @@ class SignalCandidateValidator:
                     source_type=source_type,
                     published_at=published_at,
                     available_at=available_at,
-                    content=str(raw_document["content"]),
+                    content=content,
                     metadata=dict(raw_document.get("metadata", {})),
                 )
             )
@@ -7164,6 +7184,8 @@ class SignalEvolutionEngine:
                     "candidate": dict(candidate),
                     "spec": accepted["spec"],
                     "skill": accepted.get("skill"),
+                    "execution_semantics": signal_candidate_execution_contract(),
+                    "tests_schema": self._candidate_arguments_schema(clone=False)["properties"]["tests"],
                     "cited_evidence": self._masked_controller_evidence_excerpts(
                         candidate, evidence
                     ),
@@ -10237,6 +10259,16 @@ class SignalEvolutionEngine:
                                 "minItems": 1,
                                 "items": {
                                     "type": "object",
+                                    "properties": {
+                                        "content": {
+                                            "type": "string",
+                                            "description": "Literal source text; serialize financial JSON as a string.",
+                                        },
+                                        "metadata": {
+                                            "type": "object",
+                                            "description": "Optional source metadata; Company Facts under an opaque fixture company requires explicit matching cik.",
+                                        },
+                                    },
                                     "required": [
                                         "document_id",
                                         "source_type",

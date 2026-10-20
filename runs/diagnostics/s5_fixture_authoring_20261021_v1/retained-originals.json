@@ -1,0 +1,82 @@
+{
+  "archive": "runs/diagnostics/s5_fixture_authoring_20261021_v1/retained-originals.tar.gz",
+  "sha256": "18c4aa282690faeea0e1e79d5e8ae48b26f997e552e27f7e9ab5a688538aa553",
+  "members": [
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-content-shape-signal_evolution.md",
+      "member": "driver/before-content-shape-signal_evolution.md",
+      "sha256": "76372aa78548fee3ab732a5c344b14cad52d9057635cb932ad768aa412a70f0d"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-content-shape-signal_evolution.py",
+      "member": "driver/before-content-shape-signal_evolution.py",
+      "sha256": "af3c4bf5f5624087ac900b2218161466cffdb8ab817b9829f19172c9f4059a8d"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-content-shape-test_candidate_fixture_authoring_contract.py",
+      "member": "driver/before-content-shape-test_candidate_fixture_authoring_contract.py",
+      "sha256": "dc8d6f98eb208862bafb0bade636c5319989e52c8798b0fd3a03fde4f73c860f"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-content-shape-test_signal_evolution_engine.py",
+      "member": "driver/before-content-shape-test_signal_evolution_engine.py",
+      "sha256": "63f7189848bf108cc02d55410eb1ceb7aaaf4a6fa6bc640f4176fb6b9b60322b"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-literal-disclosure-signal_evolution.md",
+      "member": "driver/before-literal-disclosure-signal_evolution.md",
+      "sha256": "b3024c99f849c386337daf86bba5786437c32a63b61b0e07c972cba9adfc984e"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-literal-disclosure-signal_evolution.py",
+      "member": "driver/before-literal-disclosure-signal_evolution.py",
+      "sha256": "c1379ffd2973ee444f490e7c1333bb5bf5cf6acca98c798c1d1afd00f3711d10"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/before-literal-disclosure-test_candidate_fixture_authoring_contract.py",
+      "member": "driver/before-literal-disclosure-test_candidate_fixture_authoring_contract.py",
+      "sha256": "1e92b71039122fc6aca258218727ac1e435999d25296e1ea371bdd9e82a419c2"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/original-signal_evolution.md",
+      "member": "driver/original-signal_evolution.md",
+      "sha256": "67fa907dfce49da15e19c0ae0a09ac4977a3c9adc75760ae1124ddd35dfbdc1c"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/original-signal_evolution.py",
+      "member": "driver/original-signal_evolution.py",
+      "sha256": "64f05159c03e2cd4cf0b9b2587a4b5dd31a68371b4a3e17313bc4d3c7ac173f9"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/original-test_signal_evolution_engine.py",
+      "member": "driver/original-test_signal_evolution_engine.py",
+      "sha256": "8f548964b8d983001e1fa689fdbb0e0852a4f44056d86eadf7960bd98f0c38a6"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/original-af3c-signal_evolution.py.txt",
+      "member": "independent/original-af3c-signal_evolution.py.txt",
+      "sha256": "af3c4bf5f5624087ac900b2218161466cffdb8ab817b9829f19172c9f4059a8d"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/original-stage/run_reviewed_fixture_author_stage.md",
+      "member": "stage-preflight/original-stage/run_reviewed_fixture_author_stage.md",
+      "sha256": "388aa9d19b61a6ae61334457d0a1a7bb67979e5b513cdb408c91e52639e1137a"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/original-stage/run_reviewed_fixture_author_stage.py",
+      "member": "stage-preflight/original-stage/run_reviewed_fixture_author_stage.py",
+      "sha256": "770715c059840387eb334e95a97bd11b69910f113e4edee3369eb9e4f7943878"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/original-stage/test_reviewed_fixture_author_stage.py",
+      "member": "stage-preflight/original-stage/test_reviewed_fixture_author_stage.py",
+      "sha256": "3473b096d0678a1a28f4bc4ebf23ec4af12932c425d18dcaa3943666fbeffcf5"
+    },
+    {
+      "original_path": "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/original-content-shape-tests.log",
+      "member": "driver/original-content-shape-tests.log",
+      "sha256": "46b8cfbb358c3f4dd2c722c292c4267513099b022237b20d38d5a20f52a783b3"
+    }
+  ],
+  "purpose": "Exact pre-fix source/spec/test bytes and original private stage before independent false admission; originals remain local, extract in diagnostic root for replay."
+}

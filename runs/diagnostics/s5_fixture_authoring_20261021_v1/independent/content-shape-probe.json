@@ -1,0 +1,47 @@
+{
+  "source_sha256": "af3c4bf5f5624087ac900b2218161466cffdb8ab817b9829f19172c9f4059a8d",
+  "fixture": {
+    "name": "independent synthetic growth",
+    "as_of": "2025-02-10T00:00:00+00:00",
+    "expected": "positive",
+    "documents": [
+      {
+        "document_id": "synthetic-source",
+        "source_type": "financials",
+        "published_at": "2025-02-04T00:00:00+00:00",
+        "available_at": "2025-02-04T00:00:00+00:00",
+        "metadata": {
+          "cik": "0987654321"
+        },
+        "content": "{\"cik\":987654321,\"facts\":{\"us-gaap\":{\"Revenues\":{\"units\":{\"USD\":[{\"accn\":\"synthetic-a\",\"end\":\"2023-12-31\",\"filed\":\"2024-02-02\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"val\":100},{\"accn\":\"synthetic-b\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-03\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"val\":125}]}}}}}"
+      }
+    ]
+  },
+  "rows": {
+    "positive": {
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": []
+    },
+    "content_object_expected_unavailable": {
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": []
+    },
+    "missing_metadata_expected_unavailable": {
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+      ]
+    },
+    "missing_body_cik_expected_unavailable": {
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+      ]
+    }
+  },
+  "scope": "temporary Registry and native deterministic fixture validation only; no production stage/network/model/labels"
+}

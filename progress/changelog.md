@@ -1,5 +1,9 @@
 # Changelog
 
+- 2026-10-21：单次原生S5 tests作者runner/ownspec按固定独立root与1请求/131072逻辑预留/4000output/0纠错实现，隔离candidate Registry、两完整schema synthetic原件及实际native load/恢复。初16safe遗漏dead JSON载体可替实际facts字面量，独立旧770控制实际accepted但ratio本身正确；仅私有oracle改实际fact-row+selected evidence归属，并对每schema独立执行，拒同ratio其他basis。最终root18safe及独立14完整控通过；公开完整单文档样本条件、合法CIK表示保留，未改生产parser/作者原答。正式prepare/fresh模型尚0，所有历史/原红/审查harness错保留，不关S5/Mining/发布/复用/MVP。
+
+- 2026-10-21：S5 spec-first补既有CIK/canonical fact-literal义务，shared execution语义与现有tests schema真正进入独立tests作者；metadata不全源强制，Update旧fixtures不迁移。独立发现object content被str变伪JSON、expected unavailable仍成功，保af3原接受反例，现构造前拒非string；两schema24旧红与22独立控过，parser/数值/PIT不改。root66发现两个旧Slow正控缺metadata，exactHEAD隔离同2fail且nativeissuer错明示，补具名producer3行后66全过/五tripwire0；原158漏此路径，旧失败及harness错误保留。尚0fresh作者/GET/labels/真实发布；新单次诊断16safe过、独立actual-row/dead-literal载体反例待修，整体S5/MVP open。
+
 - 2026-10-21：更正前轮p01混合belief删除归因：coverage错placement及既有atomic权限足以解释，必要内容丢失未证，不重写原audit。另以完整parser/Controller证实weak无marker误接与独立exact来源被同topic unavailable误归因，spec-first修检测与精确provenance，保wholeword/量/PIT/need及remove-only单调用。初13/独立28过后root281暴露2个无unavailable批次的eager投影回归，原候选/红保留，改实际topic命中后惰性proof，新增no-op三变体，最终282关联全过/五tripwire0。无新模型/GET/labels/业务写入/旧stage重入，整体F7/MVP仍open；下一shared CIK合同及真正tests作者输入，非只改spec作者提示。
 
 - 2026-10-21：新预冻F7三控制实际partial/partial/full目标3/3，role69–77九首答/0模型纠错，535373逻辑预留；283/129字残项完整保terms+postJune30状态，full仅移need4。真实state→closure→17卡/版本→Predictor/sink及各32files唯一restore保真/0新派发，107currentcode终核过。独立原材料/原答复核同时发现p01诚实unknown混合belief被topic+negative-marker guard机械误删453字，精确helper/typed权限复现，原raw非全persist，列新待修而非掩盖；p02/p03无此差异。root初审误将既有身份mask当state不等，修audit期望且保原失败，未重跑产品。0GET/外部LLMAPI/labels/Signalapply，原0/1与未触发mirror保留，不关闭整体F7/MVP；下一unknown误删家族，禁止已完成阶段重入。

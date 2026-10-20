@@ -1,0 +1,15 @@
+{
+  "source": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+    "sha256": "af3c4bf5f5624087ac900b2218161466cffdb8ab817b9829f19172c9f4059a8d"
+  },
+  "saved_original": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/original-af3c-signal_evolution.py.txt",
+    "sha256": "af3c4bf5f5624087ac900b2218161466cffdb8ab817b9829f19172c9f4059a8d"
+  },
+  "counterexample": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/content-shape-probe.json",
+    "sha256": "a7891c089036fed348abaa1924f3efa74a91f8d10e6ca4d17a670ab8108018be"
+  },
+  "proven_path": "_execute_fixture \u2192 content=str(dict) \u2192 RawInfoDocument.create \u2192 SignalExecutor.execute_batch \u2192 _sec_facts json.loads fails/skip \u2192 domain_unavailable accepted as authored unavailable"
+}

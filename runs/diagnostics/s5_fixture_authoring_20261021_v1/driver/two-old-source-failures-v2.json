@@ -1,0 +1,51 @@
+{
+  "selectors": [
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_controller_mining_dispatch_stages_materialized_candidate",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_uses_one_induction_call_and_local_holdout_gate"
+  ],
+  "old_source_path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/original-signal_evolution.py",
+  "old_source_sha256": "64f05159c03e2cd4cf0b9b2587a4b5dd31a68371b4a3e17313bc4d3c7ac173f9",
+  "bound_old_engine": true,
+  "dependencies": "current checkout; test engine and shared contract bound to saved HEAD source",
+  "tests_run": 2,
+  "failures": 2,
+  "errors": 0,
+  "actual_native_issuer_failures": [
+    {
+      "signal_ref": "fixture_controller_runway:v1",
+      "status": "validation_failed",
+      "error_code": "deterministic_result_validation_failed",
+      "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+    },
+    {
+      "signal_ref": "fixture_controller_runway:v1",
+      "status": "validation_failed",
+      "error_code": "deterministic_result_validation_failed",
+      "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v1",
+      "status": "validation_failed",
+      "error_code": "deterministic_result_validation_failed",
+      "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v1",
+      "status": "validation_failed",
+      "error_code": "deterministic_result_validation_failed",
+      "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v1",
+      "status": "validation_failed",
+      "error_code": "deterministic_result_validation_failed",
+      "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v1",
+      "status": "validation_failed",
+      "error_code": "deterministic_result_validation_failed",
+      "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+    }
+  ]
+}

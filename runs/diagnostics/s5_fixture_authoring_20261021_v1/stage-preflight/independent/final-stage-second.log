@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-probe.py", line 49, in <module>
+    run('native_pending_original_receipt_stage_load_restore',json.dumps(answer),True)
+  File "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-probe.py", line 42, in run
+    loaded=s.read(root/'loaded-candidate.json');assert loaded['loaded_tests']==json.loads(answer_text)['tests'] and loaded['schemas']==['legacy','typed'];assert all(x['measurement']['value']==.25 and x['measurement']['period_start']=='2024-01-01' and x['measurement']['period_end']=='2024-12-31' for x in loaded['results']);record['actual_loaded_candidate']=loaded
+                                                                                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-probe.py", line 42, in <genexpr>
+    loaded=s.read(root/'loaded-candidate.json');assert loaded['loaded_tests']==json.loads(answer_text)['tests'] and loaded['schemas']==['legacy','typed'];assert all(x['measurement']['value']==.25 and x['measurement']['period_start']=='2024-01-01' and x['measurement']['period_end']=='2024-12-31' for x in loaded['results']);record['actual_loaded_candidate']=loaded
+                                                                                                                                                                                                        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+KeyError: 'period_start'

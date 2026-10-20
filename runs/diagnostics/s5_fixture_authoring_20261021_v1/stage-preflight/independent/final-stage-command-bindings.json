@@ -1,0 +1,49 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-probe.py > runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage.log 2>&1",
+  "exit_code": 0,
+  "controls": 14,
+  "artifacts": {
+    "literal-carrier-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/literal-carrier-probe.py",
+      "sha256": "29cd618576315c6ef965940f9983ea4ed4dcba5a56a610e70b7725deac84e79c"
+    },
+    "literal-carrier-first.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/literal-carrier-first.log",
+      "sha256": "284ec0f822cc64ebb8fcdb3d64ceaad1424acad7c45571e00e6612ad05430e25"
+    },
+    "literal-carrier-results.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/literal-carrier-results.json",
+      "sha256": "52cb76e721c2ca09409db695c46d5a53db3b51b9214185be4c3932b1e6f8dff8"
+    },
+    "final-stage-first-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-first-probe.py",
+      "sha256": "07e05694e01548ff15fc8dd0b4948f12ad890bbf04ce804f64bb4b6e59ece8a8"
+    },
+    "final-stage-first.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-first.log",
+      "sha256": "c2fa9f56a0f456905c2635fa6bdb566c3840e7ef7ed62b59209c9b46fae6fafc"
+    },
+    "final-stage-second-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-second-probe.py",
+      "sha256": "f83fc6dfa727742a423c8f98092efd7f82686d8d7a32631b52280ca6f19fce85"
+    },
+    "final-stage-second.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-second.log",
+      "sha256": "c24bcbcb23a2328de37291c2ebf2b77f1449cce0154e6c5410709f4824a7265d"
+    },
+    "final-stage-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-probe.py",
+      "sha256": "ded018cbc7b5c85acc6b9765a2fe2adee6dcf46bb7dd1f68638ebd7f3fc9f4c4"
+    },
+    "final-stage.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage.log",
+      "sha256": "d868a8c4ae06f625ef3618533a206b2513b5805528bea521a3f8b6634b79c805"
+    },
+    "final-stage-review.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-review.json",
+      "sha256": "b89754bd20b6dd579bae4b97d0d3a3063691ef142dbc276ad17a231c8e3d47ad"
+    }
+  },
+  "harness_failures_distinct_from_product_counterexample": true,
+  "formal_stage_called": false
+}

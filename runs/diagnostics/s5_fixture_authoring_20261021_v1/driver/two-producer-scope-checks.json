@@ -1,0 +1,8 @@
+{
+  "exact_three_metadata_lines_only_since_prior_stable_test": true,
+  "old_source_matches_exact_12b693a8_blob": true,
+  "old_source_sha256": "64f05159c03e2cd4cf0b9b2587a4b5dd31a68371b4a3e17313bc4d3c7ac173f9",
+  "current_test_sha256": "08a8520c2810fe0aabe9f427ef5ecc812e25127f948c4aa0eb62dc06cdbd2f36",
+  "baseline_limit": "Saved old engine/shared contract; other dependencies are current checkout. First relative-path harness error retained separately.",
+  "earlier_158_coverage_limit": "The two named legacy/controller Slow positive producer paths were not selected; prior green did not cover them."
+}
