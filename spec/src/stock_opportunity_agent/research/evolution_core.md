@@ -271,6 +271,18 @@ taxonomy/tag/unit group, preserve all alternatives at the latest period end,
 including different duration starts and conflicting values, together with the
 nearest earlier comparable period for each latest duration. Budget selection
 admits or omits that complete group, never just one conflicting alternative.
+The same complete-alternative obligation applies to the legacy nested `units`
+records: do not deduplicate solely by period end or silently select the last
+filed value. Retain every latest-end duration/conflict alternative and all
+alternatives at each latest duration's nearest earlier comparable end, using
+the existing comparability predicate. Compare parsed dates, including equivalent
+basic/extended ISO spellings, without rewriting literals. Reported legacy rows
+use the UTC availability day and omit invalid/future ends or filed dates and
+invalid starts (including start after end), retaining partial disclosure.
+Preserve raw spans, offset cursors,
+whole-group budget selection and partial/omission disclosures. This changes
+neither query/group ranking nor the typed-array producer, and establishes no
+new QoQ/YoY or source-revision precedence policy.
 Invalid rows and excluded or omitted records keep the view partial. Unsupported
 array schemas retain the existing generic text path. Exact record offsets must
 survive braces, quotes, and escapes in string values. This is a source-format

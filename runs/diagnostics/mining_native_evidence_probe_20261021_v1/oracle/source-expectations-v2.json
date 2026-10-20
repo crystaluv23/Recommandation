@@ -1,0 +1,224 @@
+{
+  "status": "pre-execution source-only oracle; failures are diagnostic, not required all-green acceptance",
+  "original_native_context_evidence_limit": "Previously persisted native manifest has aggregate us-gaap/USD operating cash-flow coverage7/8. It does not bind this document to a successful context output. Original0671 has explicit us-gaap rows and all visible producer prerequisites; native context nonempty and actual selected spans must be observed first. If absent, stop attribution before claiming value/val caused a failure.",
+  "controls": [
+    {
+      "id": "O1-original-selection",
+      "inputs": "exact-inputs.json/case_original; approved1780 view unchanged",
+      "request": {
+        "source_families": [
+          "sec_company_facts"
+        ],
+        "query": null,
+        "max_documents": 1
+      },
+      "static_expected": "RawInfoStore documents are sorted by document_id. For case008 financial no-query, first selected is original0671; excluded IDs/count should be actual native output. Do not infer latest-first or that original0671 is recent.",
+      "separate_observation": "Record actual document order and identities before examining facts. The oracle does not execute this request."
+    },
+    {
+      "id": "O2-original-context-and-projection",
+      "inputs": "already-selected unchanged original0671; direct document path is controlled selection, not autonomous retrieval",
+      "request": {
+        "context_max_content_chars": 12000,
+        "context_query": null,
+        "native_steps": [
+          "read actual _company_facts_context output",
+          "project_facts_from_documents([original])"
+        ]
+      },
+      "expected_source_operands": {
+        "taxonomy": "us-gaap",
+        "concept": "NetCashProvidedByUsedInOperatingActivities",
+        "unit": "USD",
+        "latest": {
+          "locator": "/facts/119",
+          "start": "2011-01-01",
+          "end": "2011-06-30",
+          "value": 9506313
+        },
+        "comparable_prior": {
+          "locator": "/facts/118",
+          "start": "2010-01-01",
+          "end": "2010-06-30",
+          "value": 4342261
+        }
+      },
+      "context_expected_if_included": "Exact whole spans/offsets from exact-inputs; producer orders later end before prior. Original rows contain value, not val. Record whether both survived full-entry12000-char context projection; do not assume presence from raw-file rows alone.",
+      "current_bound_code_prediction": "For every context record from this typed original, _facts_from_document checks val and skips value-only spans; if context is nonempty yet EvidenceFacts0, the field-adapter break is isolated. If context empty, that is a separate earlier frontier.",
+      "semantic_limit": "The arithmetic ratio is possible only for a uniquely selected compatible pair; no research Signal or freshness conclusion. Do not handcraft EvidenceFact from oracle to manufacture passage."
+    },
+    {
+      "id": "L1-legacy-val-positive",
+      "inputs": [
+        "probe-a-older only"
+      ],
+      "request": {
+        "native_steps": [
+          "project_facts_from_documents",
+          "build_same_concept_relations",
+          "compute_statistic latest_over_comparable_prior",
+          "compute_statistic latest_minus_comparable_prior"
+        ]
+      },
+      "source_expected": {
+        "facts": 2,
+        "concept": "NetCashProvidedByUsedInOperatingActivities",
+        "unit": "USD",
+        "latest": {
+          "start": "2024-01-01",
+          "end": "2024-06-30",
+          "value": "120"
+        },
+        "prior": {
+          "start": "2023-01-01",
+          "end": "2023-06-30",
+          "value": "100"
+        },
+        "ratio": "1.200000",
+        "difference": "20.000000"
+      },
+      "control_meaning": "Small known legacy val branch, not real research material or proof typed originals work."
+    },
+    {
+      "id": "T1-small-typed-value",
+      "inputs": [
+        "probe-typed-value only"
+      ],
+      "request": {
+        "context_max_content_chars": 12000,
+        "context_query": null,
+        "native_steps": [
+          "_company_facts_context",
+          "project_facts_from_documents"
+        ]
+      },
+      "source_expected": "Exactly two small us-gaap/USD same-duration original-to-this-synthetic-document rows, same120/100 periods as L1; no field-size or namespace ambiguity. Native context should expose both value rows; bound adapter predicts0facts because it requires val. Failure is the diagnostic point."
+    },
+    {
+      "id": "R1-role-unit-conflict",
+      "inputs": [
+        "probe-typed-dual only"
+      ],
+      "why_dual_key": "Both value and val are explicitly synthetic diagnostic keys. It reaches typed context and the val-only adapter without altering any original source or importing a handwritten EvidenceFact.",
+      "source_expected": {
+        "typed_records": 7,
+        "USD": {
+          "latest_end": "2024-06-30",
+          "latest_halfyear_alternatives": [
+            120,
+            121
+          ],
+          "latest_quarter": 60,
+          "prior_halfyear": 100,
+          "prior_quarter": 50
+        },
+        "EUR": {
+          "latest_halfyear": 900,
+          "prior_halfyear": 800
+        }
+      },
+      "semantic_expectation": [
+        "All same-end alternatives and units remain inspectable; USD120 and121 have identical periods and conflict. No unique canonical USD current halfyear value is established by this source alone.",
+        "A quarter60 must not be called a prior to halfyear120 merely because it is record index1; both share end2024-06-30.",
+        "EUR900/800 is a distinct currency pair, ratio1.125000. Currency alternatives must never be overwritten into USD grouping or used as one same-unit period comparison.",
+        "A numeric helper accepting a cross-unit or incompatible-duration pair yields a generic arithmetic result; economic comparability/measurement sufficiency is not established. No new must-reject policy is imposed. The current compute contract permits supplied-order arithmetic on two finite numeric facts from one case, including legitimate USD/shares normalization."
+      ],
+      "bound_code_prediction": "Typed context retains latest-end rows0/1/2 USD plus nearest comparable earlier-end rows3/4, and EURrows5/6. Existing adapter labels USD120 latest and all later USD rows comparable_prior; last-write relation builder may select USD50 as prior, producing2.400000 with120 if computed. This is an expected diagnostic mismatch, not the semantic oracle answer. Exact actual order and refs must be captured rather than substituted from this text."
+    },
+    {
+      "id": "P1-document-selection-and-PIT",
+      "inputs": [
+        "probe-a-older",
+        "probe-b-newer",
+        "probe-c-future"
+      ],
+      "request": [
+        {
+          "source_families": [
+            "sec_company_facts"
+          ],
+          "query": null,
+          "max_documents": 1
+        },
+        {
+          "source_families": [
+            "sec_company_facts"
+          ],
+          "query": "Operating Cash Flow",
+          "max_documents": 1
+        }
+      ],
+      "expected": "At synthetic cutoff2024-08-02, future document probe-c-future is excluded by availability. Eligible older/newer have identical content and equal query overlap; both no-query ID-order and current query tie-break select probe-a-older. Preserve excluded_by_limits separately from PIT exclusions; source record is not latest-first."
+    },
+    {
+      "id": "P2-row-PIT",
+      "inputs": [
+        "probe-typed-pit only"
+      ],
+      "request": {
+        "context_max_content_chars": 12000,
+        "context_query": null,
+        "native_steps": [
+          "_company_facts_context",
+          "project_facts_from_documents"
+        ]
+      },
+      "source_expected": "Document cutoff2024-08-02: period-end2024-09-30/value999 excluded; row filed2024-08-03/value444 excluded; valid120/100 rows remain in context. value-only adapter still predicts0facts; judge row-PIT on context separately so adapter failure does not hide it."
+    }
+  ],
+  "required_capture": [
+    "Frozen source-view and code binding, original file/content SHA before/after",
+    "Each selection request, actual selected/order/excluded docs and PIT cutoff",
+    "Context shape, omitted_concept_count/partial, whole exact spans and offsets",
+    "Actual facts, refs, periods, units, values, record_selection and relations, including zero output",
+    "Actual helper exceptions/output and first-failure frontier; never hand-insert facts or relation refs"
+  ],
+  "stop": "No model or old-stage entry. Preserve first actual result; a diagnosed failure does not authorize an automatic fix-and-rerun or full Mining. Model role input never includes this oracle.",
+  "bindings": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1"
+    },
+    {
+      "path": "src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395"
+    },
+    {
+      "path": "runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/static-inventory.json",
+      "sha256": "9be1e6776429ef5d8d77c5cbdfbf7f2c5ce7e37447fea2ca043d5cdfb504f3b4"
+    },
+    {
+      "path": "runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/preflight-diagnosis.json",
+      "sha256": "95fcbbf5d5f6882af78903f6cabec7f700bf0e42f004cc32489ccd067cf24d82"
+    }
+  ],
+  "exact_inputs_sha256": "9e7b5674c344dd26043d1978a0b62b56d6badb1bb878427720434dd2d9f77e63",
+  "pre_execution_alignment": {
+    "timing": "Wording and execution-scope alignment before any actual probe result; oracle author executed0native helpers/constructors/models/GET.",
+    "preserved_v1": {
+      "path": "runs/diagnostics/mining_native_evidence_probe_20261021_v1/oracle/source-expectations.json",
+      "sha256": "582216c604898340658a75423c41f52f5ebfc5f68b74b52576836ad732cffb2a"
+    },
+    "preserved_exact_inputs": {
+      "path": "runs/diagnostics/mining_native_evidence_probe_20261021_v1/oracle/exact-inputs.json",
+      "sha256": "9e7b5674c344dd26043d1978a0b62b56d6badb1bb878427720434dd2d9f77e63"
+    },
+    "fixed_scope": "The existing7controls, exactly1approved original document0671 and6clearly synthetic temporary documents. No dev8 expansion, no0674, no new source or research cohort.",
+    "allowed_pure_arithmetic_observations": [
+      "L1 legacy120/100 ratio1.200000 and difference20.000000.",
+      "R1 native actual same-concept pair arithmetic in supplied operand order; the bound code prediction remains USD120/50 ->2.400000 if that is the actual native pair. Capture actual refs/roles first.",
+      "R1 EUR900/800 ->1.125000 with the frozen same-unit, same-duration pair, provided native facts actually retain those operands."
+    ],
+    "not_signal_execution": true,
+    "policy_boundary": "Generic compute arithmetic is not an economic sufficiency or comparability guard. No new rejection obligation is introduced. Same-concept relation period comparability is independently assessed under its existing obligation, retaining original units/periods/alternatives.",
+    "unchanged": "All original input bytes, numerical expectations,7control identities and source-only/zero-result status remain unchanged. No product code, source bytes or previous oracle is modified."
+  }
+}

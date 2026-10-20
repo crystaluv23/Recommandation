@@ -1,0 +1,198 @@
+{
+  "status": "BOUNDED_NONNAMESPACE_CONTROLS_PASS_FAMILY_OPEN",
+  "independent_controls": {
+    "before_date_fix": {
+      "passed": 4,
+      "total": 7,
+      "failed": [
+        "calendar_formats",
+        "same_calendar_spelling_positive",
+        "same_calendar_spelling_conflict"
+      ]
+    },
+    "current": {
+      "passed": 7,
+      "total": 7,
+      "names": [
+        "calendar_formats",
+        "same_calendar_spelling_positive",
+        "same_calendar_spelling_conflict",
+        "duration_not_defaulted_by_unique_pair",
+        "currency_not_defaulted_by_unique_pair",
+        "typed_namespaces_do_not_merge",
+        "unique_latest_doc_remains_capable"
+      ]
+    }
+  },
+  "code_bindings": [
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9",
+      "current_sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9",
+      "unchanged": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b",
+      "current_sha256": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b",
+      "unchanged": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1",
+      "current_sha256": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1",
+      "unchanged": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2",
+      "current_sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2",
+      "unchanged": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348",
+      "current_sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348",
+      "unchanged": true
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_core.md",
+      "sha256": "600cdcb22081c4b4ba20b10edb330a6a649db4f22cb8a7ca0901c944375f568d",
+      "current_sha256": "600cdcb22081c4b4ba20b10edb330a6a649db4f22cb8a7ca0901c944375f568d",
+      "unchanged": true
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "a564bb3c9f21d2b9d3aa79d9f00a1407b5c45a92c94199bf93745317d3e8375f",
+      "current_sha256": "9becac2b120bed4d16967a159c916291f6e8059dbe82eaf6b90cce1a82677b59",
+      "unchanged": false
+    },
+    {
+      "path": "tests/test_mining_fact_semantics.py",
+      "sha256": "233e43401010ae3d906af6165792e0d3cf5e636c101e52fa9059f674b51600b1",
+      "current_sha256": "233e43401010ae3d906af6165792e0d3cf5e636c101e52fa9059f674b51600b1",
+      "unchanged": true
+    }
+  ],
+  "binding_scope_note": "Five product source files match the exact tested candidate. Any current owning-spec drift is disclosed separately below, not treated as executed product evidence.",
+  "static_checks": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "definition": "EvidenceFact",
+      "ast_equal_to_HEAD": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "definition": "_opaque_ref",
+      "ast_equal_to_HEAD": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "definition": "compute_statistic",
+      "ast_equal_to_HEAD": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "definition": "_company_fact_periods_comparable",
+      "ast_equal_to_HEAD": true
+    }
+  ],
+  "confirmed": [
+    "Calendar identity and ordering use parsed dates internally; source period strings and literal spans remain unchanged.",
+    "Equivalent calendar spellings/numeric spellings yield one 1.2 pair; conflicting same-calendar values remain visible and suppress the pair/scalar.",
+    "Quarter/EUR automatic pairs remain inspectable while concept-only closure/replay refuse to default duration/currency when the complete current basis is ambiguous.",
+    "Typed taxonomy alternatives remain separate automatic pairs and do not silently choose a scalar.",
+    "A coherent newest document remains capable (1.2) rather than wholesale abstention across documents.",
+    "Controller statically rebuilds only current same_concept_period_pair index after fact accumulation; ledger/explicit arithmetic are not deleted by that replacement.",
+    "Controller summary, closure and replay now call the same unique latest/pair selectors instead of record-role last-write selection."
+  ],
+  "open": [
+    {
+      "id": "legacy_namespace_falsepair",
+      "blocking": true,
+      "counterexample": "One legacy document: namespace-a.Metric USD end2024 val120 only; namespace-b.Metric USD end2023 val100 only. Leaf EvidenceFact spans omit taxonomy, so current builder can falsely pair across namespaces.",
+      "decision": "User taxonomy-field versus explicit original-source namespace-index decision pending; no namespace inference from label, guessed us-gaap or empty namespace is justified."
+    },
+    {
+      "id": "h1_len_records_arrival_gate",
+      "blocking_for_family_close": true,
+      "status": "Not installed or exercised by these seven controls; raw-record presence must not be promoted to unique economic basis availability."
+    }
+  ],
+  "harness_correction": {
+    "invalid_prior_artifacts": [
+      "counter-date-variants-original-results.json",
+      "counter-date-variants-original.log"
+    ],
+    "cause": "Changing package.__path__ alone left eager-imported product modules in sys.modules. That old-snapshot 7/7 used current modules and is not old-source evidence.",
+    "correction": "Fixed harness clears all five tested module cache entries, imports them explicitly, verifies each actual __file__ parent and exact SHA before/after execution. Corrected old 4/7 and current 7/7 artifacts are separately retained.",
+    "scope": "This establishes the five tested module locations; no claim that all transitive package dependencies were isolated from HEAD."
+  },
+  "execution_scope": "Synthetic local projector/builder/closure/replay controls in memory. No real-stage reentry, Engine, Signal execution, model/API/GET, real labels, or global/source append. Readonly AST/hash sealing imports no product.",
+  "limits": [
+    "No fresh Mining/model behavior or independent research gain established.",
+    "Generic compute remains the existing arithmetic contract; differing units/durations alone are not redefined as prohibited arithmetic.",
+    "Writer/root associated test counts are supporting external evidence, not a substitute for these seven independent controls.",
+    "Original native probe and prior completed stages remain immutable; no claim of whole-family, H1, Mining or MVP closure."
+  ],
+  "reproduction_commands": [
+    "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. python3.12 /Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter_basis.py --module-root /Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-before-date-modules --output /Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-date-original-verified-results.json",
+    "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. python3.12 /Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter_basis.py --module-root /Users/l/Project/Recommandation/src/stock_opportunity_agent/research --output /Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-nonnamespace-final-results.json"
+  ],
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter_basis.py",
+      "sha256": "ad0f26963c73c80786e8341dfc61d98e1234e91e1752b4af52c95f68769081d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-date-original-verified-results.json",
+      "sha256": "1c0a75c2d73c0c58b68647fa587f5a0ea019ec399757f15c0280466ddc77df5a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-date-original-verified.log",
+      "sha256": "4c65c10f810f37371db32b874666a249faff182c9328e8118eb28464781423b0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-nonnamespace-final-results.json",
+      "sha256": "0e0a6ba7ef249cb27e951c27f1ee32f21ba3460c7429400c3b9f57023c04a8e3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-nonnamespace-final.log",
+      "sha256": "6a71bd951753f6a5a2320805faa8f2c9cbdbfaefdd76e13f404179830d15943b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-before-date-bindings.json",
+      "sha256": "4eec60f544a79535cb848a3ed7fb3e08dd39143e401ea9dd83a51d5ca7d9e7e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-before-date-results.json",
+      "sha256": "b9fe5b6fd792a1a751ad7dcb67d5e01d9b84752613ec2d2961fffa61ed2ee017"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-before-date.log",
+      "sha256": "380091e9d65162c0e429c7f9f94c745904a77d2d526963ae7e0cdaacb95878dc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-date-variants-original-results.json",
+      "sha256": "48041b60e8e316e0c940938539d1934b1ac8a60e2f97de2790141bfc3330315c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-date-variants-original.log",
+      "sha256": "6a71bd951753f6a5a2320805faa8f2c9cbdbfaefdd76e13f404179830d15943b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-before-import-fix-probe.py.txt",
+      "sha256": "66d81cb07afdcb8fe30149f85ad6711f77bc5b23d2da1f98ce31acdc9c2be50e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/code-review-build.py",
+      "sha256": "9f6ab64c52e28ca7784d46dbaf03638d8571b1b7541c1550e695e395b7ae2ada"
+    }
+  ],
+  "owning_spec_drift_explanation": {
+    "owner": "root",
+    "meaning": "After focused-v3, root added six lines declaring legacy same-document namespace falsepair open and blocking next native Mining pending user taxonomy-field versus source-index decision. Product execution code was not hot-modified; no test rerun required for that limitation-only declaration.",
+    "summary_spec_hash": "a564bb3c9f21d2b9d3aa79d9f00a1407b5c45a92c94199bf93745317d3e8375f",
+    "current_spec_hash": "9becac2b120bed4d16967a159c916291f6e8059dbe82eaf6b90cce1a82677b59"
+  }
+}

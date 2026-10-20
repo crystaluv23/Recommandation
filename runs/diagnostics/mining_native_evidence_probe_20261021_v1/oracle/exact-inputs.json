@@ -1,0 +1,433 @@
+{
+  "scope": "Input bytes and source-only expected semantics. No native helper, constructor, Signal, model, GET or real-stage execution by oracle author.",
+  "case_original": {
+    "case_ref": "case-008",
+    "company_id": "cik_0000800457",
+    "prediction_time": "2025-07-31T00:00:00+00:00",
+    "labels": "none; company/cutoff from approved frozen dev8 only"
+  },
+  "case_synthetic": {
+    "case_ref": "probe-case",
+    "company_id": "probe-issuer",
+    "prediction_time": "2024-08-02T00:00:00+00:00",
+    "labels": "none; diagnostic fixture, not approved research cohort"
+  },
+  "original": {
+    "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+    "file_sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+    "document_id": "secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+    "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+    "source_type": "sec_company_facts",
+    "available_at": "2011-08-10T00:00:00+00:00",
+    "published_at": "2011-08-09T00:00:00+00:00",
+    "filing_date": "2011-08-09",
+    "metadata_taxonomies": [
+      "dei",
+      "us-gaap"
+    ],
+    "source_unchanged": true,
+    "rows": [
+      {
+        "locator": "/facts/118",
+        "offset_start": 57043,
+        "offset_end": 57546,
+        "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2010-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":4342261}",
+        "span_sha256": "1ba26ebb8ecab8c367dd2178646fd045340e71df36591e4cd551e42bed8eee86",
+        "whole_row": {
+          "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+          "end": "2010-06-30",
+          "fiscal_period": "Q2",
+          "fiscal_year": 2011,
+          "frame": null,
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "start": "2010-01-01",
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 4342261
+        }
+      },
+      {
+        "locator": "/facts/119",
+        "offset_start": 57547,
+        "offset_end": 58050,
+        "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2011-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9506313}",
+        "span_sha256": "4ddbe4f40edfc3364932f8b81df96eccb4c6f8fb5ce5b419d0d0c7d573140544",
+        "whole_row": {
+          "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+          "end": "2011-06-30",
+          "fiscal_period": "Q2",
+          "fiscal_year": 2011,
+          "frame": null,
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "start": "2011-01-01",
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 9506313
+        }
+      },
+      {
+        "locator": "/facts/21",
+        "offset_start": 11179,
+        "offset_end": 11587,
+        "exact_span": "{\"description\":\"The total amount of expense recognized during the period for future policy benefits, claims and claims adjustment costs, and for selling, general and administrative costs.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Benefits, Losses and Expenses\",\"start\":\"2010-01-01\",\"tag\":\"BenefitsLossesAndExpenses\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":197229788}",
+        "span_sha256": "fc9ef3905fc701eca7c9b9987fcdc23c53343ee64b9f54be8cd0467db85dd8bb",
+        "whole_row": {
+          "description": "The total amount of expense recognized during the period for future policy benefits, claims and claims adjustment costs, and for selling, general and administrative costs.",
+          "end": "2010-06-30",
+          "fiscal_period": "Q2",
+          "fiscal_year": 2011,
+          "frame": null,
+          "label": "Benefits, Losses and Expenses",
+          "start": "2010-01-01",
+          "tag": "BenefitsLossesAndExpenses",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 197229788
+        }
+      },
+      {
+        "locator": "/facts/22",
+        "offset_start": 11588,
+        "offset_end": 12001,
+        "exact_span": "{\"description\":\"The total amount of expense recognized during the period for future policy benefits, claims and claims adjustment costs, and for selling, general and administrative costs.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2010Q2\",\"label\":\"Benefits, Losses and Expenses\",\"start\":\"2010-04-01\",\"tag\":\"BenefitsLossesAndExpenses\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":99654478}",
+        "span_sha256": "2df48a8ac5c942a7f279c621df5e9295396cf305fe38126d32eaedeb23821a66",
+        "whole_row": {
+          "description": "The total amount of expense recognized during the period for future policy benefits, claims and claims adjustment costs, and for selling, general and administrative costs.",
+          "end": "2010-06-30",
+          "fiscal_period": "Q2",
+          "fiscal_year": 2011,
+          "frame": "CY2010Q2",
+          "label": "Benefits, Losses and Expenses",
+          "start": "2010-04-01",
+          "tag": "BenefitsLossesAndExpenses",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 99654478
+        }
+      }
+    ]
+  },
+  "synthetic_controls": [
+    {
+      "purpose": "legacy val positive and query tie older",
+      "synthetic_only": true,
+      "document": {
+        "document_id": "probe-a-older",
+        "company_id": "probe-issuer",
+        "source_type": "sec_company_facts",
+        "published_at": "2024-08-01T00:00:00+00:00",
+        "available_at": "2024-08-01T00:00:00+00:00",
+        "content": "{\"facts\":{\"us-gaap\":{\"NetCashProvidedByUsedInOperatingActivities\":{\"label\":\"Operating Cash Flow\",\"units\":{\"USD\":[{\"end\":\"2023-06-30\",\"filed\":\"2024-08-01\",\"start\":\"2023-01-01\",\"val\":100},{\"end\":\"2024-06-30\",\"filed\":\"2024-08-01\",\"start\":\"2024-01-01\",\"val\":120}]}}}}}",
+        "content_hash": "cc2add2c03774ab0d99c06c1686a880c10a7c460686716b99d224c4b0c695d64",
+        "metadata": {
+          "diagnostic_synthetic": true
+        }
+      },
+      "payload": {
+        "facts": {
+          "us-gaap": {
+            "NetCashProvidedByUsedInOperatingActivities": {
+              "label": "Operating Cash Flow",
+              "units": {
+                "USD": [
+                  {
+                    "start": "2023-01-01",
+                    "end": "2023-06-30",
+                    "val": 100,
+                    "filed": "2024-08-01"
+                  },
+                  {
+                    "start": "2024-01-01",
+                    "end": "2024-06-30",
+                    "val": 120,
+                    "filed": "2024-08-01"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "purpose": "same content/overlap, later availability; selection only",
+      "synthetic_only": true,
+      "document": {
+        "document_id": "probe-b-newer",
+        "company_id": "probe-issuer",
+        "source_type": "sec_company_facts",
+        "published_at": "2024-08-01T00:00:00+00:00",
+        "available_at": "2024-08-02T00:00:00+00:00",
+        "content": "{\"facts\":{\"us-gaap\":{\"NetCashProvidedByUsedInOperatingActivities\":{\"label\":\"Operating Cash Flow\",\"units\":{\"USD\":[{\"end\":\"2023-06-30\",\"filed\":\"2024-08-01\",\"start\":\"2023-01-01\",\"val\":100},{\"end\":\"2024-06-30\",\"filed\":\"2024-08-01\",\"start\":\"2024-01-01\",\"val\":120}]}}}}}",
+        "content_hash": "cc2add2c03774ab0d99c06c1686a880c10a7c460686716b99d224c4b0c695d64",
+        "metadata": {
+          "diagnostic_synthetic": true
+        }
+      },
+      "payload": {
+        "facts": {
+          "us-gaap": {
+            "NetCashProvidedByUsedInOperatingActivities": {
+              "label": "Operating Cash Flow",
+              "units": {
+                "USD": [
+                  {
+                    "start": "2023-01-01",
+                    "end": "2023-06-30",
+                    "val": 100,
+                    "filed": "2024-08-01"
+                  },
+                  {
+                    "start": "2024-01-01",
+                    "end": "2024-06-30",
+                    "val": 120,
+                    "filed": "2024-08-01"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "purpose": "document availability PIT exclusion",
+      "synthetic_only": true,
+      "document": {
+        "document_id": "probe-c-future",
+        "company_id": "probe-issuer",
+        "source_type": "sec_company_facts",
+        "published_at": "2024-08-01T00:00:00+00:00",
+        "available_at": "2024-08-03T00:00:00+00:00",
+        "content": "{\"facts\":{\"us-gaap\":{\"NetCashProvidedByUsedInOperatingActivities\":{\"label\":\"Operating Cash Flow\",\"units\":{\"USD\":[{\"end\":\"2023-06-30\",\"filed\":\"2024-08-01\",\"start\":\"2023-01-01\",\"val\":100},{\"end\":\"2024-06-30\",\"filed\":\"2024-08-01\",\"start\":\"2024-01-01\",\"val\":120}]}}}}}",
+        "content_hash": "cc2add2c03774ab0d99c06c1686a880c10a7c460686716b99d224c4b0c695d64",
+        "metadata": {
+          "diagnostic_synthetic": true
+        }
+      },
+      "payload": {
+        "facts": {
+          "us-gaap": {
+            "NetCashProvidedByUsedInOperatingActivities": {
+              "label": "Operating Cash Flow",
+              "units": {
+                "USD": [
+                  {
+                    "start": "2023-01-01",
+                    "end": "2023-06-30",
+                    "val": 100,
+                    "filed": "2024-08-01"
+                  },
+                  {
+                    "start": "2024-01-01",
+                    "end": "2024-06-30",
+                    "val": 120,
+                    "filed": "2024-08-01"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "purpose": "small typed value-only branch isolation",
+      "synthetic_only": true,
+      "document": {
+        "document_id": "probe-typed-value",
+        "company_id": "probe-issuer",
+        "source_type": "sec_company_facts",
+        "published_at": "2024-08-01T00:00:00+00:00",
+        "available_at": "2024-08-02T00:00:00+00:00",
+        "content": "{\"facts\":[{\"end\":\"2023-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2023-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":120}],\"filing_date\":\"2024-08-01\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+        "content_hash": "6b9b59be83ae9e88454b1da5b9498000e4f67a42e052b891c00757ed68f9948f",
+        "metadata": {
+          "diagnostic_synthetic": true
+        }
+      },
+      "payload": {
+        "schema_version": "sec-company-facts-document-v1",
+        "filing_date": "2024-08-01",
+        "facts": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2023-01-01",
+            "end": "2023-06-30",
+            "value": 100
+          },
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2024-01-01",
+            "end": "2024-06-30",
+            "value": 120
+          }
+        ]
+      }
+    },
+    {
+      "purpose": "explicit synthetic dual-key bypass to inspect existing role/pair behavior without modifying source",
+      "synthetic_only": true,
+      "document": {
+        "document_id": "probe-typed-dual",
+        "company_id": "probe-issuer",
+        "source_type": "sec_company_facts",
+        "published_at": "2024-08-01T00:00:00+00:00",
+        "available_at": "2024-08-02T00:00:00+00:00",
+        "content": "{\"facts\":[{\"end\":\"2024-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"val\":120,\"value\":120},{\"end\":\"2024-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2024-04-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"val\":60,\"value\":60},{\"end\":\"2024-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"val\":121,\"value\":121},{\"end\":\"2023-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2023-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"val\":100,\"value\":100},{\"end\":\"2023-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2023-04-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"val\":50,\"value\":50},{\"end\":\"2024-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"EUR\",\"val\":900,\"value\":900},{\"end\":\"2023-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2023-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"EUR\",\"val\":800,\"value\":800}],\"filing_date\":\"2024-08-01\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+        "content_hash": "dcf7ba9d2b643d74912b5077d99495b9e61ed1cbdde9b5ac00edde7c78ab6945",
+        "metadata": {
+          "diagnostic_synthetic": true
+        }
+      },
+      "payload": {
+        "schema_version": "sec-company-facts-document-v1",
+        "filing_date": "2024-08-01",
+        "facts": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2024-01-01",
+            "end": "2024-06-30",
+            "value": 120,
+            "val": 120
+          },
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 60,
+            "val": 60
+          },
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2024-01-01",
+            "end": "2024-06-30",
+            "value": 121,
+            "val": 121
+          },
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2023-01-01",
+            "end": "2023-06-30",
+            "value": 100,
+            "val": 100
+          },
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2023-04-01",
+            "end": "2023-06-30",
+            "value": 50,
+            "val": 50
+          },
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "EUR",
+            "start": "2024-01-01",
+            "end": "2024-06-30",
+            "value": 900,
+            "val": 900
+          },
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "EUR",
+            "start": "2023-01-01",
+            "end": "2023-06-30",
+            "value": 800,
+            "val": 800
+          }
+        ]
+      }
+    },
+    {
+      "purpose": "typed context future period and future filed row exclusion",
+      "synthetic_only": true,
+      "document": {
+        "document_id": "probe-typed-pit",
+        "company_id": "probe-issuer",
+        "source_type": "sec_company_facts",
+        "published_at": "2024-08-01T00:00:00+00:00",
+        "available_at": "2024-08-02T00:00:00+00:00",
+        "content": "{\"facts\":[{\"end\":\"2023-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2023-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-06-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":120},{\"end\":\"2024-09-30\",\"label\":\"Operating Cash Flow\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":999},{\"end\":\"2024-06-30\",\"filed\":\"2024-08-03\",\"label\":\"Operating Cash Flow\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":444}],\"filing_date\":\"2024-08-01\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+        "content_hash": "74c9fdc2001385c4b7b2574dba49ab78250c4b1662b19308cd5a574a9f5b1a9d",
+        "metadata": {
+          "diagnostic_synthetic": true
+        }
+      },
+      "payload": {
+        "schema_version": "sec-company-facts-document-v1",
+        "filing_date": "2024-08-01",
+        "facts": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2023-01-01",
+            "end": "2023-06-30",
+            "value": 100
+          },
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2024-01-01",
+            "end": "2024-06-30",
+            "value": 120
+          },
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 999
+          },
+          {
+            "taxonomy": "us-gaap",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "label": "Operating Cash Flow",
+            "unit": "USD",
+            "start": "2024-01-01",
+            "end": "2024-06-30",
+            "value": 444,
+            "filed": "2024-08-03"
+          }
+        ]
+      }
+    }
+  ],
+  "constraints": [
+    "Use synthetic documents only in a separate temporary/in-memory diagnostic collection, never append them to approved1780 or use as research evidence.",
+    "Never rewrite original source body to add val, trim its facts, or change its dates/taxonomy. The dual-key document is invented from scratch and explicitly synthetic.",
+    "The original2011 document is a shape/selection witness; no freshness or new candidate sufficiency is claimed."
+  ]
+}

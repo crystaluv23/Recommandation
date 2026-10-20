@@ -1,0 +1,40 @@
+{
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-mining_agent_tools.py"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-mining_controller.py"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "bffe40af047b810d2efdf5c2178b475b73e8c3f4fb90ef37ac5676ada4a32a13",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-mining_closure.py"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "84febd7d707f5f850bb9f3f1570e40058dcc8129244dc52c8d7e5fd67367f00c",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-mining_replay.py"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-evolution_core.py"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_core.md",
+      "sha256": "2d9c3fc3bed43c72c3de7fb48b919d8b37a6d7a89dd3337c883f67e11735fd39",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-evolution_core.md"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "c8f85be907f0627a6639eaacf4052779a939b98266d71e6507f394f7127361a8",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-signal_mining_agent.md"
+    }
+  ],
+  "scope": "Pre-repair original bytes; completed native probe remains sealed and will not rerun."
+}

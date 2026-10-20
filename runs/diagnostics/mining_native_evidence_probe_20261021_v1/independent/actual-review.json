@@ -1,0 +1,155 @@
+{
+  "status": "CONFIRMED_three_distinct_frontiers; no_capability_pass",
+  "actual_controls": {
+    "O1": {
+      "candidate_count": 56,
+      "selected_document": "secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "cap_excluded": 55,
+      "finding": "No-query native ID order selected an old2011 original, not latest. This is independent of fact adaptation."
+    },
+    "O2": {
+      "context_records": 19,
+      "facts": 0,
+      "context_partial": true,
+      "omitted_concepts": 91,
+      "actual_OCF_literals_survived": true,
+      "finding": "Unchanged typed value-only source reached a nonempty native context, but the val-only projector emitted no EvidenceFacts. Confirmed producer-consumer field adaptation defect, not evidence absence."
+    },
+    "L1": {
+      "context_records": 2,
+      "facts": 2,
+      "ratio": "1.200000",
+      "difference": "20.000000",
+      "meaning": "Legacy val branch works on a unique synthetic same-duration pair."
+    },
+    "T1": {
+      "context_records": 2,
+      "facts": 0,
+      "meaning": "Small isolated typed value-only control reproduces the adaptation gap without context budget pressure."
+    },
+    "R1": {
+      "synthetic_only": true,
+      "context_records": 7,
+      "facts": 7,
+      "relations": 2,
+      "USD_operands": [
+        {
+          "value": "120",
+          "unit": "USD",
+          "period": {
+            "end": "2024-06-30",
+            "start": "2024-01-01"
+          }
+        },
+        {
+          "value": "50",
+          "unit": "USD",
+          "period": {
+            "end": "2023-06-30",
+            "start": "2023-04-01"
+          }
+        }
+      ],
+      "USD_ratio": "2.400000",
+      "USD_difference": "70.000000",
+      "EUR_ratio": "1.125000",
+      "EUR_difference": "100.000000",
+      "finding": "Index-derived roles mark current same-end quarter60/conflicting halfyear121 as prior; last-write builder picks prior quarter50 against current halfyear120. This is not a valid comparable-period pair under the existing pair-builder contract. USD120vs121 remains an unresolved same-period conflict.",
+      "arithmetic_limit": "The numbers are mathematically correct for supplied refs. Generic arithmetic is not newly required to reject every differing unit/duration; valid economic basis must be established separately."
+    },
+    "P1": {
+      "older_selected_both_no_query_and_equal_query_tie": true,
+      "newer_cap_excluded": true,
+      "future_availability_excluded": true
+    },
+    "P2": {
+      "context_valid_rows": 2,
+      "future_end_and_future_filed_rows_excluded": true,
+      "facts": 0
+    }
+  },
+  "why_old_focused_tests_missed": "tests/test_mining_agent_tools.py FACTS_CONTENT uses nested units.val and one unique current/prior pair per concept/unit. Its same-concept and arithmetic tests do not traverse typed facts[].value or multiple same-end duration/conflict alternatives. Passing them therefore did not cover the actual typed producer\u2192Mining projection\u2192relation connection.",
+  "integrity": {
+    "frozen_source_code_bindings_before_after_current_exact": 4135,
+    "observation_sha256": "0472edbe90bc4b0a6876aedde9328ba0ea281efe3328c9c15db0fa814380c228",
+    "sealed_execution_files_current_exact": 3,
+    "total_files_including_seal": 4,
+    "forbidden_call_counters": {}
+  },
+  "unknown_and_limits": [
+    "No native helper or probe was rerun; only persisted artifacts, source literals, stdlib arithmetic and streaming hashes were inspected.",
+    "Real0671 produced no facts, so it did not itself produce the wrong pair. R1 is explicitly synthetic dual-key isolation, not a rewritten real document.",
+    "Full context remains partial; material not selected/projected is unknown. ID order is observed, but no new source-selection policy is adopted.",
+    "Cross-document last-write behavior remains a static concern, not exercised by these seven controls.",
+    "No repair, new comparison policy, actual model behavior, Signal execution, full Mining, admission, future reuse or research benefit is established."
+  ],
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/result.json": "bc5e9263a071691a30546d9d595e05d941aacae0aeafa8655e2fad0d7e887871",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/observations.json": "0472edbe90bc4b0a6876aedde9328ba0ea281efe3328c9c15db0fa814380c228",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/completed-files.json": "2b06a96555177a84df077fdc45698e29eca92f38607ff31450ac6e4c6d7e0720",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/execution-start.json": "a50656f950bd00e491467ac5e0acafc740de4a64de9160e2d07576a1c3daf941",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/plan.json": "3e3416fd3f1fe830d1ece62ba9769e508c166f605ee4226c4a91e6d8c20f006e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/oracle/exact-inputs.json": "9e7b5674c344dd26043d1978a0b62b56d6badb1bb878427720434dd2d9f77e63",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/oracle/source-expectations-v2.json": "27e5b72f16f710d9d04dfb242d4a281e4ca3c939b6a521e059c7511b0e1f3355",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0672.json": "be256b45d9eb2368673a24e39c1aa572a88eacb963818215145ff15154e56b77",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0673.json": "b8cceadb8512b186e332110ac7dda0568f1970b66955ab4044a52fb46144c24b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0674.json": "6f7c133162f95ee42b379130961c9ee18a22dfc8600ab971ba856316422eea45",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0675.json": "62777b2c9d5eeeca60ac838210e158505084cc17a27d725f270515f8763b8bfb",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0676.json": "86051df6cff705ce65de8b8640dd182869b6231f2ceacd8ce5c66ed4c206f804",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0677.json": "3ddaea82d6cdff793c93909e3f4ae026b69121f94dbd28dae34a1c35bb9114ae",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0678.json": "e0d170c0810b559bf08ba5dd336246cd6a60d414ec789f33aba6851b3fcce938",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0679.json": "5a19263d595288810f3b7a6ab2101b196970d3a9d3e003d1246c1f8619438525",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0680.json": "9d0fefa3b697707813347b993c904a6a5e9e91271efe80e83a9e335a22d43196",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0681.json": "54ada6e52047a6c47f104ed3156ede0a7ca0e093c57fd961ec4e666b7a37274d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0682.json": "ca6a7a0216b6cbd40daa2e848a5761c545048a47921a2f6aa0525dca2b78e969",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0683.json": "27671e5379983892283d284a966905b7db2dc9e8138bf2d2f9aacedd9b89d0a4",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0684.json": "002fc4fb1dabfef8414e6d34ee68facf275242bf5c1d3536cd422b8c8c26b604",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0685.json": "79165c183a93bb93165c962985ceb3160c057a83a1dbe81ad9db31169299d8c8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0686.json": "edbb83c06dcfb366ca746e3bdc5735d1436738d2ede4af79affeb55e4fdb80b5",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0687.json": "5e0f381308337a71752b4c6767d632159f99635d73acc8560e80428731004e4f",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0688.json": "45c88901c36c8801a177d0aac0fa1f366c36e831a9cc1d97f910bb34dd24ceac",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0689.json": "0df3599e262d670d831b5fb7fccfe4bacaf5721724aef122a82b4c6a9ea2a3d6",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0690.json": "ed75ffa0b05bae49a24885f4e91a306658aac7d50a26363225840ae51a59528b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0691.json": "a34a6e21a4250dd1b91cfa4f981172e170ef5348c79e09e9d5ff94fe28fdae39",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0692.json": "fad58205c45b293ccd85526bc25a5b3115577ab15af49f81e868f1424f385787",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0693.json": "e133e2c263a165677e98446f0d13897d6a9b9796501f5f0e45c0a6051fa9cdf9",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0694.json": "e7c5aa59627a473258c40f50ca59685b9a64d460a5e7b59439e3ab9c4ca483bf",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0695.json": "bd3392e8289dcdc27830bf601f9476425a73ac6fcdb0cab1a7c56fbf6e28a137",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0696.json": "9c7242602c6616240e7849c4c4b38bff246e9a40d5d4b3e21ca21a7febd54e7d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0697.json": "23a15d8604da063c584dfcfeb2f3bd6cdc50c4dc1a05637bbf8c2873e130f9cf",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0698.json": "8df55ad731853b3353f24cd9b09e7a92cf0172049017c19e1aab27e4c8925481",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0699.json": "b579700ebadecbdd5731cd8d1188dd98c09140ce89feaee3311ce9ec38aa15f1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0700.json": "3241a656e56f3c0271528afdf6a0ddc2a6201a67142da6688c2d947107154937",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0701.json": "8055e7b554e197af4c965a8a4e6d1a69b50afb43497f558893a7bd6a9a4e49f3",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0702.json": "7e17f696cb4418cc5a52adb1c821b5a16ec89951cdcf55232082e296e6aa42f1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0703.json": "1bb1d0ea74066e863a5f66f12e595c64ea7f088ebe83ae6739f42e97ef428d4c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0704.json": "0a77584849902607ef1e2f3b99204a288ecccdd2dc068bb355f257027caa873b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0705.json": "d04216dfffe482877e6d318ea174125d5e3fcc71db05fc54f90238f904a5a344",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0706.json": "9afa1afa6387968509af51b7943d481e820c718542866c56a0b97e5af541796f",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0707.json": "d7337c996a9c70a1b432415f747f59c8b3d999bc7e8ef43dab017545b5d9461d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0708.json": "b97670b06308188d2ed783f4e42a8fd9a396400cc37699f1436ed73e8e8c61a1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0709.json": "3d4b7278b22dbffff2b7c690dc0e20d017de4afc87c3ed53dbfa66b85b9e9b8e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0710.json": "6a2ef4b6f3753e16b43f01356ab1f8e8ee533a4a26c9db1e54b67e70daa7d94b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0711.json": "3e06466c70691bc3e9fa1eaa4ff31489a7d0eaf799a656663667a59657dfb0a1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0712.json": "137bea0997c6c160b5fdb91b1105053acd2807449c11643fe07ef8ef0fbd54a4",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0713.json": "46cc139bcf483a648f4c32ee4e92f65f747d234e570506f8eb1f7383f1a13d15",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0714.json": "5f8c4d1f069b89ffb3078a5e325361b816b034bb1861ef462e2c0ba27dfb0be5",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0715.json": "d19c6bce7e15db6ef6dda967d25158498cacf91c3e764c5965e0620dd6f8d7ca",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0716.json": "90e5c422e5421520ec097174985a40b870c9901ea524145f59e8d98d4152d49e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0717.json": "76fb15d1e0684fd597b2a644a6e9d1e89ba64d3488d8478bb315d51bef2e81c3",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0718.json": "cf02aab6061a82e5cd00a78bac741ca0187edd6f3a6085cd3171cf9a84e1867b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0719.json": "b645167e0a7a57c0ae9f1f2bc5143f1ae764b71f6293ea7253ede224123d5f7a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0720.json": "7e2dd5710373165c3b67e7cb65323a0d38b1d37a4b431b4ea44eacc63b37a7e9",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0721.json": "0c6c6ca60cd9bd243a919a0368af72e4e9ca6ab6a316bfcebec5fdff9b71526b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0722.json": "b99adb54d0941a8069f75c2505ac5f9079756bacd08398436e9d188a09dab9ba",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0723.json": "d84b24859380e0b9e3db1268bd75700cab6c4f9a93300d764b7a62a34eebdb70",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0724.json": "2efa4ae1eb6ce0e5ea0c483047e54416f4c77159a61d79b092f56004d9138520",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0725.json": "bc4fc2249a08df5056832dc8b670f1199321adb53d907168844183ddbd4b029e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0726.json": "dd9a4c6699c4e857f9fbc5653ae222481bbcba4b05eb17cb3e3f4a721b8ed2b8",
+    "/Users/l/Project/Recommandation/tests/test_mining_agent_tools.py": "7aa28140c40adc3f33b076f5558d0bb4f50e2e97bf5bea4d8b36b2442e7cbed5",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/independent/actual-review.py": "103ff5a008c052caefa6fcb0e567ce5996173e17202643be5cde35c3c032b8b9"
+  }
+}

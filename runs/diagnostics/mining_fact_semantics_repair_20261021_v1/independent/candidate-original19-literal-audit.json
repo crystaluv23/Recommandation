@@ -1,0 +1,593 @@
+{
+  "source_file": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+  "source_before_sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+  "source_after_sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+  "expected_source_sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+  "native_fact_count": 19,
+  "all_checks_pass": true,
+  "facts": [
+    {
+      "fact": {
+        "fact_ref": "fact-bd2af6c321b14317",
+        "case_ref": "literal-audit-only",
+        "concept": "NetCashProvidedByUsedInOperatingActivities",
+        "unit": "USD",
+        "period": {
+          "start": "2011-01-01",
+          "end": "2011-06-30"
+        },
+        "value": "9506313",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2011-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9506313}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Net Cash Provided by (Used in) Operating Activities"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "4ddbe4f40edfc3364932f8b81df96eccb4c6f8fb5ce5b419d0d0c7d573140544"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-2fe96fedb12b17f3",
+        "case_ref": "literal-audit-only",
+        "concept": "NetCashProvidedByUsedInOperatingActivities",
+        "unit": "USD",
+        "period": {
+          "start": "2010-01-01",
+          "end": "2010-06-30"
+        },
+        "value": "4342261",
+        "record_selection": "comparable_prior",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2010-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":4342261}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Net Cash Provided by (Used in) Operating Activities"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "1ba26ebb8ecab8c367dd2178646fd045340e71df36591e4cd551e42bed8eee86"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-0f11d14de6d5517e",
+        "case_ref": "literal-audit-only",
+        "concept": "Revenues",
+        "unit": "USD",
+        "period": {
+          "start": "2011-01-01",
+          "end": "2011-06-30"
+        },
+        "value": "228637940",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2011-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":228637940}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Revenues"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "4d06a8d9955c937c2aa41c9f8f344b0e4b89ceb6e43915a74895896b825e20da"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-40c4107d52e4afc5",
+        "case_ref": "literal-audit-only",
+        "concept": "Revenues",
+        "unit": "USD",
+        "period": {
+          "start": "2011-04-01",
+          "end": "2011-06-30"
+        },
+        "value": "117054498",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2011-04-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":117054498}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Revenues"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "0442e62d92003684e4d2d1234b753f135672d90952400050796b04df31884a19"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-b563afda8663cf34",
+        "case_ref": "literal-audit-only",
+        "concept": "Revenues",
+        "unit": "USD",
+        "period": {
+          "start": "2010-01-01",
+          "end": "2010-06-30"
+        },
+        "value": "199376202",
+        "record_selection": "comparable_prior",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2010-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":199376202}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Revenues"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "f5944b2d2ea0ed06e82808211db2ea14fc283530be84294cca673c3439688ae3"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-f5c1ca1be470b26b",
+        "case_ref": "literal-audit-only",
+        "concept": "Revenues",
+        "unit": "USD",
+        "period": {
+          "start": "2010-04-01",
+          "end": "2010-06-30"
+        },
+        "value": "101525354",
+        "record_selection": "comparable_prior",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2010Q2\",\"label\":\"Revenues\",\"start\":\"2010-04-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":101525354}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Revenues"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "a7f4acb6972b8d47b1eee02733f0661b042a236535416e88e733180bf2c7a108"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-002aeb3afb644a58",
+        "case_ref": "literal-audit-only",
+        "concept": "NetIncomeLoss",
+        "unit": "USD",
+        "period": {
+          "start": "2011-01-01",
+          "end": "2011-06-30"
+        },
+        "value": "511947",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Income (Loss) Attributable to Parent\",\"start\":\"2011-01-01\",\"tag\":\"NetIncomeLoss\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":511947}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Net Income (Loss) Attributable to Parent"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "ced21c49f7e4a6f9f018fccd1aaba4465c20ea09947fecde8761ee19c49e140f"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-cf5ff3838ae80886",
+        "case_ref": "literal-audit-only",
+        "concept": "NetIncomeLoss",
+        "unit": "USD",
+        "period": {
+          "start": "2011-04-01",
+          "end": "2011-06-30"
+        },
+        "value": "-1693989",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Income (Loss) Attributable to Parent\",\"start\":\"2011-04-01\",\"tag\":\"NetIncomeLoss\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-1693989}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Net Income (Loss) Attributable to Parent"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "4be7142fcbcb50e4ab6493d5af92bd762b296a4077fcecf87004d0f91af17746"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-92dc318be5b8cfb0",
+        "case_ref": "literal-audit-only",
+        "concept": "NetIncomeLoss",
+        "unit": "USD",
+        "period": {
+          "start": "2010-01-01",
+          "end": "2010-06-30"
+        },
+        "value": "1974486",
+        "record_selection": "comparable_prior",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Income (Loss) Attributable to Parent\",\"start\":\"2010-01-01\",\"tag\":\"NetIncomeLoss\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":1974486}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Net Income (Loss) Attributable to Parent"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "fef0bf26a79d340fa4f3f19c175b46c95510611f7badb6d89a0979ba7adf0e92"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-6fe4cd1b1f5a26fd",
+        "case_ref": "literal-audit-only",
+        "concept": "NetIncomeLoss",
+        "unit": "USD",
+        "period": {
+          "start": "2010-04-01",
+          "end": "2010-06-30"
+        },
+        "value": "1739728",
+        "record_selection": "comparable_prior",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2010Q2\",\"label\":\"Net Income (Loss) Attributable to Parent\",\"start\":\"2010-04-01\",\"tag\":\"NetIncomeLoss\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":1739728}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Net Income (Loss) Attributable to Parent"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "e009dc37dbf0ff972893b35ea51152a454cfd08d094db106cc8ed18b874a6391"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-48f67b300e914e28",
+        "case_ref": "literal-audit-only",
+        "concept": "StockholdersEquity",
+        "unit": "USD",
+        "period": {
+          "end": "2011-06-30"
+        },
+        "value": "382667790",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Total of all stockholders' equity (deficit) items, net of receivables from officers, directors, owners, and affiliates of the entity which are attributable to the parent. The amount of the economic entity's stockholders' equity attributable to the parent excludes the amount of stockholders' equity which is allocable to that ownership interest in subsidiary equity which is not attributable to the parent (noncontrolling interest, minority interest). This excludes temporary equity and is sometimes called permanent equity.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2011Q2I\",\"label\":\"Stockholders' Equity Attributable to Parent\",\"start\":null,\"tag\":\"StockholdersEquity\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":382667790}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Stockholders' Equity Attributable to Parent"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "97a4a0a0da9e9d3f31abf8ddb2f40236afa149923ef757121f37e9dc68af9cf2"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-1d3868d14a218463",
+        "case_ref": "literal-audit-only",
+        "concept": "StockholdersEquity",
+        "unit": "USD",
+        "period": {
+          "end": "2010-12-31"
+        },
+        "value": "380102810",
+        "record_selection": "comparable_prior",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Total of all stockholders' equity (deficit) items, net of receivables from officers, directors, owners, and affiliates of the entity which are attributable to the parent. The amount of the economic entity's stockholders' equity attributable to the parent excludes the amount of stockholders' equity which is allocable to that ownership interest in subsidiary equity which is not attributable to the parent (noncontrolling interest, minority interest). This excludes temporary equity and is sometimes called permanent equity.\",\"end\":\"2010-12-31\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Stockholders' Equity Attributable to Parent\",\"start\":null,\"tag\":\"StockholdersEquity\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":380102810}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Stockholders' Equity Attributable to Parent"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "c3346785d846bb290fd9282204feb3cebdd22dbfb38752cec058c185b844168e"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-3aac4a537589e24c",
+        "case_ref": "literal-audit-only",
+        "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+        "unit": "USD",
+        "period": {
+          "start": "2010-01-01",
+          "end": "2010-06-30"
+        },
+        "value": "390737",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"The cash outflow associated with the acquisition of long-lived, physical assets that are used in the normal conduct of business to produce goods and services and not intended for resale; includes cash outflows to pay for construction of self-constructed assets.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Payments to Acquire Property, Plant, and Equipment\",\"start\":\"2010-01-01\",\"tag\":\"PaymentsToAcquirePropertyPlantAndEquipment\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":390737}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Payments to Acquire Property, Plant, and Equipment"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "e875e1ae1e58fd2d5356a3899b31b8b9eef31c061cff52ff89b3518209fb8b8c"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-b7a0c7864c34221e",
+        "case_ref": "literal-audit-only",
+        "concept": "UnearnedPremiums",
+        "unit": "USD",
+        "period": {
+          "end": "2011-06-30"
+        },
+        "value": "335637737",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Carrying amount of premiums written on insurance contracts that have not been earned as of the balance sheet date.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2011Q2I\",\"label\":\"Unearned Premiums\",\"start\":null,\"tag\":\"UnearnedPremiums\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":335637737}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Unearned Premiums"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "262a029b95989b6700dd4f09951fb93f703bfd93928d889b05aafadacb5a554b"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-f9c06c2e2272cf20",
+        "case_ref": "literal-audit-only",
+        "concept": "UnearnedPremiums",
+        "unit": "USD",
+        "period": {
+          "end": "2010-12-31"
+        },
+        "value": "297272161",
+        "record_selection": "comparable_prior",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Carrying amount of premiums written on insurance contracts that have not been earned as of the balance sheet date.\",\"end\":\"2010-12-31\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Unearned Premiums\",\"start\":null,\"tag\":\"UnearnedPremiums\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":297272161}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Unearned Premiums"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "bf7ef4b576ef36d37e36ae1fc3bfe3b8c80aec913715dc08ceca8d8bf80cc1fe"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-55b82c8b46cf7f6d",
+        "case_ref": "literal-audit-only",
+        "concept": "TreasuryStockValue",
+        "unit": "USD",
+        "period": {
+          "end": "2011-06-30"
+        },
+        "value": "9924438",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"The amount allocated to treasury stock. Treasury stock is common and preferred shares of an entity that were issued, repurchased by the entity, and are held in its treasury.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2011Q2I\",\"label\":\"Treasury Stock, Value\",\"start\":null,\"tag\":\"TreasuryStockValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9924438}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Treasury Stock, Value"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "85c7959884c78035ebbdd618e13e48e1ed89600c62835d7b12880599feb130d1"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-f0de5c93ef71b39d",
+        "case_ref": "literal-audit-only",
+        "concept": "TreasuryStockValue",
+        "unit": "USD",
+        "period": {
+          "end": "2010-12-31"
+        },
+        "value": "9249933",
+        "record_selection": "comparable_prior",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"The amount allocated to treasury stock. Treasury stock is common and preferred shares of an entity that were issued, repurchased by the entity, and are held in its treasury.\",\"end\":\"2010-12-31\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Treasury Stock, Value\",\"start\":null,\"tag\":\"TreasuryStockValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9249933}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Treasury Stock, Value"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "c54c3b3e7a3dc5cb03fa706405335f69fd3304e147ae1054cdcecab2b9e9045c"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-10f187d445252fda",
+        "case_ref": "literal-audit-only",
+        "concept": "SubordinatedDebt",
+        "unit": "USD",
+        "period": {
+          "end": "2011-06-30"
+        },
+        "value": "20465000",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Including the current and noncurrent portions, carrying value as of the balance sheet date of subordinated debt (with initial maturities beyond one year or beyond the operating cycle if longer). Subordinated debt places a lender in a lien position behind debt having a higher priority of repayment in liquidation of the entity's assets.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2011Q2I\",\"label\":\"Subordinated Debt\",\"start\":null,\"tag\":\"SubordinatedDebt\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":20465000}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Subordinated Debt"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "7088eac04a85b7ebcd73d2248d0d21d9b822a4bbae3ba99032b7d557ab70ec90"
+    },
+    {
+      "fact": {
+        "fact_ref": "fact-f6dc4de493e7dad3",
+        "case_ref": "literal-audit-only",
+        "concept": "SubordinatedDebt",
+        "unit": "USD",
+        "period": {
+          "end": "2010-12-31"
+        },
+        "value": "20465000",
+        "record_selection": "comparable_prior",
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "exact_span": "{\"description\":\"Including the current and noncurrent portions, carrying value as of the balance sheet date of subordinated debt (with initial maturities beyond one year or beyond the operating cycle if longer). Subordinated debt places a lender in a lien position behind debt having a higher priority of repayment in liquidation of the entity's assets.\",\"end\":\"2010-12-31\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Subordinated Debt\",\"start\":null,\"tag\":\"SubordinatedDebt\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":20465000}",
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "source_display_name": "Subordinated Debt"
+      },
+      "checks": {
+        "whole_literal_in_original": true,
+        "value": true,
+        "concept": true,
+        "unit": true,
+        "period": true,
+        "document_ref": true,
+        "source_content_hash": true,
+        "available_at": true,
+        "source_scope": true
+      },
+      "whole_span_sha256": "15bb1e802259bbabc3205b7ec88f211e0d9ceffa85bd8ed8695e59ebc066cd53"
+    }
+  ],
+  "audit_script_sha256": "e521036c403f5ea6a33912684be0a735567bba8843ee73657f04a8faa092a047",
+  "scope": "One direct read-only native document projection; no model, Signal, network, research label or old-stage entry."
+}

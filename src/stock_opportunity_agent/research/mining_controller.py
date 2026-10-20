@@ -43,6 +43,8 @@ from stock_opportunity_agent.research.mining_agent_tools import (
     FetchResult,
     build_case_co_occurrence_relations,
     build_same_concept_relations,
+    _unique_latest_fact,
+    _unique_period_pair,
     compute_statistic,
     fetch_case_evidence,
     narrative_catalog,
@@ -1025,6 +1027,8 @@ class LabelAwareMiningController:
                 ),
             )
         }
+        self._relations = {ref: relation for ref, relation in self._relations.items()
+                           if relation.kind != "same_concept_period_pair"}
         self._relations.update(new_relations)
         narrative_events = [
             event
@@ -1320,26 +1324,22 @@ class LabelAwareMiningController:
                 concept_facts = [
                     fact for fact in facts if fact.concept == concept
                 ]
+                latest, prior, unresolved = {}, {}, {}
+                for case_ref in sorted(group_refs):
+                    case_facts = [fact for fact in concept_facts if fact.case_ref == case_ref]
+                    current = _unique_latest_fact(case_facts)
+                    pair = _unique_period_pair(case_facts)
+                    if current is not None:
+                        latest[case_ref] = {"value": current.value, "fact_ref": current.fact_ref}
+                    if pair is not None:
+                        prior[case_ref] = {"value": pair[1].value, "fact_ref": pair[1].fact_ref}
+                    elif case_facts:
+                        unresolved[case_ref] = ("latest basis is not unique across available units/periods/values"
+                            if current is None else "no unique document-local comparable prior")
                 by_concept[concept] = {
-                    "available_cases": sorted(
-                        {fact.case_ref for fact in concept_facts}
-                    ),
-                    "latest": {
-                        fact.case_ref: {
-                            "value": fact.value,
-                            "fact_ref": fact.fact_ref,
-                        }
-                        for fact in concept_facts
-                        if fact.record_selection == "latest"
-                    },
-                    "comparable_prior": {
-                        fact.case_ref: {
-                            "value": fact.value,
-                            "fact_ref": fact.fact_ref,
-                        }
-                        for fact in concept_facts
-                        if fact.record_selection == "comparable_prior"
-                    },
+                    "available_cases": sorted({fact.case_ref for fact in concept_facts}),
+                    "latest": latest, "comparable_prior": prior,
+                    "unresolved_basis_cases": unresolved,
                 }
             rows[group] = {"case_count": len(group_refs), "concepts": by_concept}
         return rows

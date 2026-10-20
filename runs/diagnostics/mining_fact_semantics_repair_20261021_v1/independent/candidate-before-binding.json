@@ -1,0 +1,27 @@
+{
+  "script_sha256": "be6957b855fc9c79e3e534b8894345137de60a47d1588ae2946d7bc4c3ebb40f",
+  "summary_path": "runs/diagnostics/mining_fact_semantics_20261021_v1/driver/focused-v3-summary.json",
+  "summary_sha256": "b26fb4fafc633712d07315f3ee139221d57955fe8dcc06a1c9534d81a151e42a",
+  "modules": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "content": "{\"facts\": {\"namespace-a\": {\"Metric\": {\"units\": {\"USD\": [{\"end\": \"2024-06-30\", \"val\": 120}]}}}, \"namespace-b\": {\"Metric\": {\"units\": {\"USD\": [{\"end\": \"2023-06-30\", \"val\": 100}]}}}}}",
+  "expected_automatic_relation_count": 0,
+  "facts": [
+    {
+      "available_at": "2024-08-02T00:00:00+00:00",
+      "case_ref": "synthetic",
+      "concept": "Metric",
+      "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+      "document_ref": "document-namespace-control-only",
+      "exact_span": "{\"end\": \"2024-06-30\", \"val\": 120}",
+      "fact_ref": "fact-82c8d0d89727166f",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "unit": "USD",
+      "value": "120"
+    },
+    {
+      "available_at": "2024-08-02T00:00:00+00:00",
+      "case_ref": "synthetic",
+      "concept": "Metric",
+      "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+      "document_ref": "document-namespace-control-only",
+      "exact_span": "{\"end\": \"2023-06-30\", \"val\": 100}",
+      "fact_ref": "fact-50642375b0247e29",
+      "period": {
+        "end": "2023-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "unit": "USD",
+      "value": "100"
+    }
+  ],
+  "module_sha_after": "83a3f6a9dee1e672b35328b0a30acb0c478392ca0ef308c7833e66fd0e21ef45",
+  "module_sha_before": "83a3f6a9dee1e672b35328b0a30acb0c478392ca0ef308c7833e66fd0e21ef45",
+  "namespace_separation_pass": false,
+  "relations": [
+    {
+      "case_ref": "synthetic",
+      "fact_refs": [
+        "fact-82c8d0d89727166f",
+        "fact-50642375b0247e29"
+      ],
+      "kind": "same_concept_period_pair",
+      "relation_ref": "relation-a4165f218a195169",
+      "rule": null,
+      "value": null
+    }
+  ],
+  "scope": "synthetic namespaces only; no real source changed"
+}

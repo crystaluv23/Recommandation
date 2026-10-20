@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：唯一7控nativeMining探针确认原0671 context19→facts0及typed小控2→0，legacy正控ratio1.2；R1仅synthetic证半年/季度错自动pair，算术正确；4135绑定/终态4文件独立全等。随后spec-first修value/val、legacy同end/UTC-PIT、parsed日期角色/basis、唯一doc-local pair、Controller当前派生索引及summary/closure/replay；原0671修后19facts逐literal全真，102关联/独立21×2及日期7控过。保原红/旧unit丢冲突期待/日期候选3红/import污染假绿，泛型compute权限不改。legacy taxonomy丢失另有实际错pair，H1 rowcount仍不等有效pair：两项open，具体可选字段/原文索引方案待用户设计选择，未改schema/启动Mining/外部LLMAPI/GET/标签/全跑，不关闭全MVP。
+
 - 2026-10-21：方向/magnitude正控前置只读审查绑定14代码/spec及4来源：批准dev8共240财务doc/83629原始row均value、0val，现Mining投影却只取val；目录7of8概念不证明EvidenceFact可达。另分开无query旧文顺序/query升序tie及index派prior的期间歧义，两实际反例只证同end不同duration，不报已执行错关系或同duration冲突。12函数有horizon/terms真实参数化空间，不据数量断言无新测量；幅度axis/sampling仍须原合同。0helper/model/GET/全跑，下一冻结最小原生fetch/read探针，前置失败即停。
 
 - 2026-10-21：assigned阶段封存提交后，spec-first以单一纯声明补初始Controller system/native row_rationale/精确错误的嵌套非空array[str]义务；严格list/strip谓词、partial sibling/sink/hash、顶层only机械wrap与纠错权限保持，Legacy H1字节同。81关联全过/0network或LabelStore；独立旧新三实际作者路径、11坏shape仍拒、3合法数组保原字及mixed sibling原sink保真。旧7方法13断言红是披露/错误期待，非13unsafe accepts；当前无fresh角色/旧stage重入，不以声明证明模型服从。下一查原生Mining能力正控材料可达性，不完整重跑。

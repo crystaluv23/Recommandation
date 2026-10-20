@@ -1,0 +1,17 @@
+{
+  "source_before": {
+    "evolution_core.py": "12f8340bc2c5d77a66ce69e28e091ab85db580dba527dfc7f18eb0b3c2ecd203",
+    "mining_agent_tools.py": "83a3f6a9dee1e672b35328b0a30acb0c478392ca0ef308c7833e66fd0e21ef45",
+    "mining_controller.py": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1",
+    "mining_closure.py": "f05d97b3878ed7ca7079e68e387d8f6db588d31ad7bb033fe2c9b985785a0e4e",
+    "mining_replay.py": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+  },
+  "source_after": {
+    "evolution_core.py": "12f8340bc2c5d77a66ce69e28e091ab85db580dba527dfc7f18eb0b3c2ecd203",
+    "mining_agent_tools.py": "83a3f6a9dee1e672b35328b0a30acb0c478392ca0ef308c7833e66fd0e21ef45",
+    "mining_controller.py": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1",
+    "mining_closure.py": "f05d97b3878ed7ca7079e68e387d8f6db588d31ad7bb033fe2c9b985785a0e4e",
+    "mining_replay.py": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+  },
+  "snapshot_origin": "Direct candidate file bytes before date repair; not final or committed."
+}

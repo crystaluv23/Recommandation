@@ -1,0 +1,32 @@
+test_equal_numeric_spelling_duplicates_are_not_conflicts_or_new_observations (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_equal_numeric_spelling_duplicates_are_not_conflicts_or_new_observations) ... ok
+test_exact_original0671_context_records_reach_native_facts (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_exact_original0671_context_records_reach_native_facts) ... ok
+test_legacy_latest_alternatives_are_not_deduplicated_by_end (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_legacy_latest_alternatives_are_not_deduplicated_by_end) ... FAIL
+test_native_refetch_invalidates_current_auto_pair_but_not_ledger_or_explicit_compute (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_native_refetch_invalidates_current_auto_pair_but_not_ledger_or_explicit_compute) ... ok
+test_no_implicit_cross_document_pair_but_explicit_compute_remains_legal (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_no_implicit_cross_document_pair_but_explicit_compute_remains_legal) ... ok
+test_prior_nearest_comparable_and_conflict_do_not_fall_back_to_older (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_prior_nearest_comparable_and_conflict_do_not_fall_back_to_older) ... ok
+test_schema_specific_value_never_falls_back_to_other_key (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_schema_specific_value_never_falls_back_to_other_key) ... ok
+test_simple_legacy_pair_keeps_normal_source_periods_and_literal (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_simple_legacy_pair_keeps_normal_source_periods_and_literal) ... ok
+test_summary_closure_and_replay_preserve_ambiguous_source_denominator (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_summary_closure_and_replay_preserve_ambiguous_source_denominator) ... ok
+test_typed_namespaces_separate_when_proved_in_exact_span (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_typed_namespaces_separate_when_proved_in_exact_span) ... ok
+test_valid_local_quarter_and_eur_pairs_survive_halfyear_conflict (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_valid_local_quarter_and_eur_pairs_survive_halfyear_conflict) ... FAIL
+
+======================================================================
+FAIL: test_legacy_latest_alternatives_are_not_deduplicated_by_end (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_legacy_latest_alternatives_are_not_deduplicated_by_end)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_fact_semantics.py", line 97, in test_legacy_latest_alternatives_are_not_deduplicated_by_end
+    self.assertEqual(sum(f.record_selection == 'latest' for f in projected), 5)
+AssertionError: 4 != 5
+
+======================================================================
+FAIL: test_valid_local_quarter_and_eur_pairs_survive_halfyear_conflict (tests.test_mining_fact_semantics.MiningFactSemanticsTests.test_valid_local_quarter_and_eur_pairs_survive_halfyear_conflict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_fact_semantics.py", line 104, in test_valid_local_quarter_and_eur_pairs_survive_halfyear_conflict
+    self.assertEqual(sum(f.record_selection == 'latest' for f in projected), 5)
+AssertionError: 4 != 5
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.012s
+
+FAILED (failures=2)

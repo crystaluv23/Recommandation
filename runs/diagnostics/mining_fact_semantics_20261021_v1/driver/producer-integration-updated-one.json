@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_company_facts_context_preserves_semantics_offsets_and_periods",
+    "-v"
+  ],
+  "exit_code": 0,
+  "test_sha256": "aade9d7c05877a22a8ab4062a66c9416be02d634dad3451a554ebeb8279208b5",
+  "change": "Retain both same-end alternatives plus prior; unchanged original source body, PIT and offset assertions."
+}

@@ -1,0 +1,48 @@
+{
+  "status": "PASS_bounded_static_preexecution_review; NO_NATIVE_HELPER_EXECUTED",
+  "source_proof": {
+    "original_file_body_identity_exact": true,
+    "four_whole_row_literals_and_character_offsets_exact": true,
+    "value_only_real_rows_unchanged": true,
+    "six_synthetic_documents_body_hash_exact_and_explicitly_separate": true
+  },
+  "contract_alignment": {
+    "exact_seven_controls_script_spec_v2": true,
+    "real_fetch_scope": "case008/sec_company_facts/no-query/cap1 only; O2 independently binds direct0671 and reports whether selected.",
+    "projection_frontier": "Record native context before EvidenceFacts. Only nonempty value-only context plus zero facts supports the val-only adaptation explanation; empty context remains an earlier unknown gate.",
+    "period_frontier": "R1 dual-key is an explicit synthetic bypass for index-based prior-role behavior. It cannot establish an actual typed source already produced an invalid relation.",
+    "arithmetic": "L1/R1 ratio and difference use only actual builder-produced refs. Finite output does not establish period/currency comparability, and cross-unit arithmetic is not automatically a policy violation.",
+    "cross_document_boundary": "No cross-document order reversal is executed in the fixed seven controls. The static last-write concern remains unexercised; do not claim this probe measured or repaired it."
+  },
+  "safety_static_review": {
+    "fixed_source_code_plan_script_checks_before_exclusive_marker": true,
+    "source_only_three_attribute_case_carrier": true,
+    "real_1780_reviewed_store_for_original_fetch": true,
+    "synthetic_documents_only_collection_no_append": true,
+    "persistent_store_labels_network_model_Signal_fullprepare_forbidden": true,
+    "only_empty_memory_parent_init_allowed_for_reviewed_subclass": true,
+    "first_failure_and_source_drift_saved_no_retry": true,
+    "bytecode_disabled_before_product_imports": true,
+    "execution_directory_absent_at_review": true
+  },
+  "limits": [
+    "Only stdlib parsing, hashing and AST syntax validation ran. No product import, native helper, probe execution, Store, Signal, model/API/GET, label or approved mixed case envelope accessed by this reviewer.",
+    "Four source-code bindings and directly named original/oracle/spec/plan were independently hashed. All4135 transitive bindings were not redundantly rehashed here; the runner must check all before its marker and preserve before/after.",
+    "Source row literals and manifest qualification do not prove native context inclusion or source0671 measurement success; those remain actual diagnostic observations.",
+    "Expected mismatches are findings, not an all-green capability criterion. Do not modify source/oracle or rerun a completed/failed execution to obtain passage.",
+    "No complete EvolutionCase/Engine, full Mining, fresh model behavior, prior comparison-policy change, new Signal or research benefit is established."
+  ],
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/probe.py": "00c34ffab06a28c0f6dafa7e3d4e8367b6e06eae939d24cd001676a12a7614a3",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/plan.json": "3e3416fd3f1fe830d1ece62ba9769e508c166f605ee4226c4a91e6d8c20f006e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/spec.md": "87ad38320f69fee93c178e49c5cbc0d17c9f50011b43a80ce0748d33a4d9d344",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/oracle/exact-inputs.json": "9e7b5674c344dd26043d1978a0b62b56d6badb1bb878427720434dd2d9f77e63",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/oracle/source-expectations-v2.json": "27e5b72f16f710d9d04dfb242d4a281e4ca3c939b6a521e059c7511b0e1f3355",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py": "907c12e3d8fb010ae6c1606d3b494db6bf90750c3718f9135a61896f25f8e45b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_native_evidence_probe_20261021_v1/independent/preflight-review.py": "54a6929457c6ac49f0991e351f7d6e57a7d0950037e1b5fcf64f75693293f71a"
+  }
+}

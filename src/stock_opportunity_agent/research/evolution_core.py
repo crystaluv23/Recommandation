@@ -6782,7 +6782,7 @@ def _company_facts_context(
     leaf_span_cursors: dict[str, int] = {}
 
     query_terms = _h3_content_terms(query or "", exclude_generic=True)
-    cutoff = document.available_at.date()
+    cutoff = utc_day_of_instant(document.available_at)
     candidates: list[tuple[tuple[Any, ...], dict[str, Any], bool]] = []
     for taxonomy, concepts in facts.items():
         if not isinstance(concepts, Mapping):
@@ -6801,7 +6801,7 @@ def _company_facts_context(
                 if not isinstance(raw_records, list):
                     continue
                 matched_records: list[
-                    tuple[str, str, Mapping[str, Any], dict[str, Any]]
+                    tuple[date, date, Mapping[str, Any], dict[str, Any]]
                 ] = []
                 ambiguous = False
                 for record in raw_records:
@@ -6816,11 +6816,17 @@ def _company_facts_context(
                     start, end, exact_span = occurrences[occurrence_index]
                     leaf_span_cursors[record_hash] = occurrence_index + 1
                     filed = _optional_iso_date(record.get("filed"))
-                    if filed is not None and filed > cutoff:
+                    period = _optional_iso_date(record.get("end"))
+                    period_start = _optional_iso_date(record.get("start"))
+                    if (
+                        period is None or period > cutoff
+                        or (record.get("start") is not None
+                            and (period_start is None or period_start > period))
+                        or ("filed" in record and (filed is None or filed > cutoff))
+                    ):
                         ambiguous = True
                         continue
-                    period = str(record.get("end") or record.get("start") or "")
-                    filed_key = str(record.get("filed") or "")
+                    filed_key = filed or date.min
                     matched_records.append(
                         (
                             period,
@@ -6837,27 +6843,21 @@ def _company_facts_context(
                     key=lambda item: (item[0], item[1], item[3]["start"]),
                     reverse=True,
                 )
-                distinct_records: list[
-                    tuple[str, str, Mapping[str, Any], dict[str, Any]]
-                ] = []
-                seen_periods: set[str] = set()
-                for matched in matched_records:
-                    period, _filed, _record, record_view = matched
-                    period_key = period or f"offset:{record_view['start']}"
-                    if period_key in seen_periods:
-                        continue
-                    seen_periods.add(period_key)
-                    distinct_records.append(matched)
-                if not distinct_records:
+                if not matched_records:
                     continue
-                latest = distinct_records[0]
-                selected_records = [latest]
-                for candidate_record in distinct_records[1:]:
-                    if _company_fact_periods_comparable(
-                        latest[2], candidate_record[2]
-                    ):
-                        selected_records.append(candidate_record)
-                        break
+                latest_period = matched_records[0][0]
+                latest = [item for item in matched_records if item[0] == latest_period]
+                selected_offsets = {item[3]["start"] for item in latest}
+                for current in latest:
+                    comparable = [item for item in matched_records
+                                  if item[0] < latest_period
+                                  and _company_fact_periods_comparable(current[2], item[2])]
+                    if comparable:
+                        prior_period = max(item[0] for item in comparable)
+                        selected_offsets.update(item[3]["start"] for item in comparable
+                                                if item[0] == prior_period)
+                selected_records = [item for item in matched_records
+                                    if item[3]["start"] in selected_offsets]
                 selected_periods = [item[3] for item in selected_records]
                 entry = {
                     "taxonomy": str(taxonomy),
@@ -6888,7 +6888,7 @@ def _company_facts_context(
                     str(unit),
                 )
                 candidates.append(
-                    (score, entry, ambiguous or len(matched_records) > 2)
+                    (score, entry, ambiguous or len(selected_records) < len(matched_records))
                 )
     if not candidates:
         return {

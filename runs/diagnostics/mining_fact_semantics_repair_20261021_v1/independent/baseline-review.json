@@ -1,0 +1,99 @@
+{
+  "status": "independent baseline frozen; candidate recheck pending stable writer handoff",
+  "baseline_head": "1a2e7f87a56561a3356af89a5a476a5a07d7683a",
+  "script_sha256": "be6957b855fc9c79e3e534b8894345137de60a47d1588ae2946d7bc4c3ebb40f",
+  "tests_per_mode": 21,
+  "baseline_primary": {
+    "failures": 16,
+    "errors": 0
+  },
+  "baseline_synthetic_dual_key": {
+    "failures": 12,
+    "errors": 0
+  },
+  "interpretation": [
+    "Primary mode exercises original typed value/legacy val. Dual-key mode adds matching val only to newly authored synthetic typed rows, isolating downstream pairing and consumer bugs from the upstream field gate. Original0671 bytes remain untouched in both modes.",
+    "Old baseline source overlay was git show HEAD, equal to worktree at capture; no candidate implementation was read to derive expectations.",
+    "Source-specific assertions use whole literal/span bindings and existing duration comparability, doc-local identities and uniqueness; no cross-doc authority, default currency/duration, new period rule or generic compute economic rejection.",
+    "Controller control uses real constructor and _execute native fetch/compute/read action methods, no scripted model answer. It preserves a valid docA local pair, historical ledger receipt and explicit generic computation while detecting cross-doc operand stitching.",
+    "This does not claim OS interruption recovery or a loaded historical relation-cache migration test. Current completed stages and actual research labels are not read.",
+    "Initial ROOT-path setup error and action-call signature harness error, plus pre-isolation baseline, are preserved separately and excluded from final same-byte comparison."
+  ],
+  "scope": {
+    "product_writes": 0,
+    "model_calls": 0,
+    "network_calls": 0,
+    "research_label_reads": 0,
+    "old_stage_reentry": 0,
+    "Signal_execution": 0,
+    "synthetic_dummy_ground_truth": "1.0 only to satisfy real EvolutionCase/Controller constructor; not read from research data"
+  },
+  "next": "Use exact script SHA and both identical commands without baseline overlay only after candidate stable; preserve all first candidate failures before further diagnosis. Do not show test answers to writer.",
+  "files": [
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-binding.json",
+      "sha256": "e4fb3952fb8e6be379b64d1ba19a887ae39120134e9b5567a427cb3516bddb6f",
+      "bytes": 1697
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-command.log",
+      "sha256": "5ef3eb86013f5237c83333f08622487f9596038c02cc291b99998dc9f9554dd1",
+      "bytes": 12508
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-dual-key-command.log",
+      "sha256": "6758b22dffef5a5fb4da2420ad1fbb92e7eb9aba7e8cccd7e7ff53dfe1894402",
+      "bytes": 11715
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-dual-key-results.json",
+      "sha256": "d21c084ae2957fd52c498b1322633e7194e4a34caf116bc9f825f5baebe72578",
+      "bytes": 11007
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-results.json",
+      "sha256": "1e363f192025120959c1bca68c7a53a28ad4c93b6744a9a1ab248266837c4695",
+      "bytes": 10880
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py",
+      "sha256": "be6957b855fc9c79e3e534b8894345137de60a47d1588ae2946d7bc4c3ebb40f",
+      "bytes": 15694
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/initial-action-signature-command.log",
+      "sha256": "4da731293b5d734883c1b74455787d9f9ceb1150ecb000b25866a96a1a318caf",
+      "bytes": 14602
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/initial-action-signature-results.json",
+      "sha256": "572b379adb46efb2ec04052202929f5296982cc95252e72e637553e86e9ef7d2",
+      "bytes": 12951
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/initial-action-signature-script.py.txt",
+      "sha256": "f8ba780c988a0a631b2107b713aae84d532f678efeb005b5b6bdd00bf20b1dec",
+      "bytes": 15286
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/initial-harness-root-path-error.log",
+      "sha256": "e326aebbb46080f6f935cb30a0cf02844a96453378a1e0a0e4ee8f933f6660d4",
+      "bytes": 933
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/pre-isolation-mode-baseline-command.log",
+      "sha256": "d5064bfb19d23d915e5f1f3ceb3f7cced21cdd5e70dda4ddbd6199668a60d21b",
+      "bytes": 12508
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/pre-isolation-mode-baseline-results.json",
+      "sha256": "1122b7ca272c3cbee0366497ad39313ece1ac9a2f81cab41bfa5e4cd29fb4d1e",
+      "bytes": 10849
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/pre-isolation-mode-script.py.txt",
+      "sha256": "351ac1b8819132ddb8c0e5b3bc7d1ec1e62a6691ae92790423d06381dae7e748",
+      "bytes": 15387
+    }
+  ]
+}

@@ -25,6 +25,8 @@ from stock_opportunity_agent.research.evolution_core import (
 from stock_opportunity_agent.research.mining_agent_tools import (
     EvidenceFact,
     project_facts_from_documents,
+    _unique_latest_fact,
+    _unique_period_pair,
 )
 
 _H1_STAGES = frozenset(
@@ -127,7 +129,7 @@ def measure_arrival(
     """Measure per-hypothesis input arrival over the frozen cohort."""
 
     documents_by_company = _documents_by_company(store)
-    facts_by_case: dict[str, dict[str, dict[str, EvidenceFact]]] = {}
+    facts_by_case: dict[str, dict[str, list[EvidenceFact]]] = {}
     docs_by_case: dict[str, tuple[RawInfoDocument, ...]] = {}
     for case in cohort:
         documents = tuple(
@@ -136,16 +138,16 @@ def measure_arrival(
             if document.available_at <= case.prediction_time
         )
         docs_by_case[case.case_id] = documents
-        concepts: dict[str, dict[str, EvidenceFact]] = {}
+        concepts: dict[str, list[EvidenceFact]] = {}
         for fact in project_facts_from_documents(documents, case_ref=case.case_id):
-            concepts.setdefault(fact.concept, {})[fact.record_selection] = fact
+            concepts.setdefault(fact.concept, []).append(fact)
         facts_by_case[case.case_id] = concepts
     concept_catalog = sorted(
         {
             (fact.concept, fact.source_display_name)
             for case_concepts in facts_by_case.values()
             for role_facts in case_concepts.values()
-            for fact in role_facts.values()
+            for fact in role_facts
         }
     )
 
@@ -169,7 +171,8 @@ def measure_arrival(
                 for token in needles
                 if len(token) >= 6
             ):
-                concept_inputs.append(concept)
+                if concept not in concept_inputs:
+                    concept_inputs.append(concept)
         family_rows = []
         for family in family_inputs:
             cases_with = sum(
@@ -194,10 +197,10 @@ def measure_arrival(
         for concept in concept_inputs:
             latest = comparable = 0
             for case_id in case_ids:
-                roles = facts_by_case[case_id].get(concept, {})
-                if "latest" in roles:
+                facts = facts_by_case[case_id].get(concept, [])
+                if _unique_latest_fact(facts) is not None:
                     latest += 1
-                if "latest" in roles and "comparable_prior" in roles:
+                if _unique_period_pair(facts) is not None:
                     comparable += 1
             concept_rows.append(
                 {

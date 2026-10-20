@@ -1,0 +1,79 @@
+"""Seal the bounded synthetic counterreview without importing product modules."""
+import ast
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+ROOT = Path('/Users/l/Project/Recommandation')
+HERE = Path(__file__).resolve().parent
+sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+read = lambda p: json.loads(p.read_text())
+summary = read(ROOT/'runs/diagnostics/mining_fact_semantics_20261021_v1/driver/focused-v3-summary.json')
+current = read(HERE/'counter-nonnamespace-final-results.json')
+original = read(HERE/'counter-date-original-verified-results.json')
+for binding in summary['bindings']:
+    assert sha(ROOT/binding['path']) == binding['sha256'], binding
+for path, digest in current['module_source_bindings'].items():
+    assert sha(Path(path)) == digest, path
+assert current['actual_loaded_paths_verified'] and original['actual_loaded_paths_verified']
+assert sum(r['pass'] for r in current['checks'].values()) == 7
+assert sum(r['pass'] for r in original['checks'].values()) == 4
+
+def node(text, name):
+    return next(n for n in ast.parse(text).body if isinstance(n, (ast.FunctionDef, ast.ClassDef)) and n.name == name)
+
+def unchanged(path, name):
+    old = subprocess.check_output(['git', 'show', 'HEAD:'+path], cwd=ROOT, text=True)
+    new = (ROOT/path).read_text()
+    assert ast.dump(node(old, name), include_attributes=False) == ast.dump(node(new, name), include_attributes=False)
+    return {'path': path, 'definition': name, 'ast_equal_to_HEAD': True}
+
+unchanged_checks = [unchanged('src/stock_opportunity_agent/research/mining_agent_tools.py', name)
+                    for name in ('EvidenceFact', '_opaque_ref', 'compute_statistic')]
+unchanged_checks.append(unchanged('src/stock_opportunity_agent/research/evolution_core.py', '_company_fact_periods_comparable'))
+files = ['counter_basis.py', 'counter-date-original-verified-results.json', 'counter-date-original-verified.log',
+         'counter-nonnamespace-final-results.json', 'counter-nonnamespace-final.log',
+         'counter-before-date-bindings.json', 'counter-before-date-results.json', 'counter-before-date.log',
+         'counter-date-variants-original-results.json', 'counter-date-variants-original.log',
+         'counter-before-import-fix-probe.py.txt', 'code-review-build.py']
+review = {
+  'status': 'BOUNDED_NONNAMESPACE_CONTROLS_PASS_FAMILY_OPEN',
+  'independent_controls': {'before_date_fix': {'passed':4,'total':7,'failed':[k for k,v in original['checks'].items() if not v['pass']]},
+                           'current': {'passed':7,'total':7,'names':list(current['checks'])}},
+  'code_bindings': summary['bindings'],
+  'static_checks': unchanged_checks,
+  'confirmed': [
+    'Calendar identity and ordering use parsed dates internally; source period strings and literal spans remain unchanged.',
+    'Equivalent calendar spellings/numeric spellings yield one 1.2 pair; conflicting same-calendar values remain visible and suppress the pair/scalar.',
+    'Quarter/EUR automatic pairs remain inspectable while concept-only closure/replay refuse to default duration/currency when the complete current basis is ambiguous.',
+    'Typed taxonomy alternatives remain separate automatic pairs and do not silently choose a scalar.',
+    'A coherent newest document remains capable (1.2) rather than wholesale abstention across documents.',
+    'Controller statically rebuilds only current same_concept_period_pair index after fact accumulation; ledger/explicit arithmetic are not deleted by that replacement.',
+    'Controller summary, closure and replay now call the same unique latest/pair selectors instead of record-role last-write selection.'
+  ],
+  'open': [
+    {'id':'legacy_namespace_falsepair','blocking':True,
+     'counterexample':'One legacy document: namespace-a.Metric USD end2024 val120 only; namespace-b.Metric USD end2023 val100 only. Leaf EvidenceFact spans omit taxonomy, so current builder can falsely pair across namespaces.',
+     'decision':'User taxonomy-field versus explicit original-source namespace-index decision pending; no namespace inference from label, guessed us-gaap or empty namespace is justified.'},
+    {'id':'h1_len_records_arrival_gate','blocking_for_family_close':True,
+     'status':'Not installed or exercised by these seven controls; raw-record presence must not be promoted to unique economic basis availability.'}
+  ],
+  'harness_correction': {
+    'invalid_prior_artifacts':['counter-date-variants-original-results.json','counter-date-variants-original.log'],
+    'cause':'Changing package.__path__ alone left eager-imported product modules in sys.modules. That old-snapshot 7/7 used current modules and is not old-source evidence.',
+    'correction':'Fixed harness clears all five tested module cache entries, imports them explicitly, verifies each actual __file__ parent and exact SHA before/after execution. Corrected old 4/7 and current 7/7 artifacts are separately retained.',
+    'scope':'This establishes the five tested module locations; no claim that all transitive package dependencies were isolated from HEAD.'
+  },
+  'execution_scope':'Synthetic local projector/builder/closure/replay controls in memory. No real-stage reentry, Engine, Signal execution, model/API/GET, real labels, or global/source append. Readonly AST/hash sealing imports no product.',
+  'limits':['No fresh Mining/model behavior or independent research gain established.',
+            'Generic compute remains the existing arithmetic contract; differing units/durations alone are not redefined as prohibited arithmetic.',
+            'Writer/root associated test counts are supporting external evidence, not a substitute for these seven independent controls.',
+            'Original native probe and prior completed stages remain immutable; no claim of whole-family, H1, Mining or MVP closure.'],
+  'reproduction_commands': [
+    'PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. python3.12 '+str(HERE/'counter_basis.py')+' --module-root '+str(HERE/'counter-before-date-modules')+' --output '+str(HERE/'counter-date-original-verified-results.json'),
+    'PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. python3.12 '+str(HERE/'counter_basis.py')+' --module-root '+str(ROOT/'src/stock_opportunity_agent/research')+' --output '+str(HERE/'counter-nonnamespace-final-results.json')],
+  'evidence_bindings': [{'path':str(HERE/name),'sha256':sha(HERE/name)} for name in files]
+}
+(HERE/'code-review.json').write_text(json.dumps(review, ensure_ascii=False, indent=2)+'\n')
+print(json.dumps({'status':review['status'], 'review_sha256':sha(HERE/'code-review.json'), 'passed':7, 'total':7, 'product_modules_imported':False}))

@@ -1,0 +1,23 @@
+{
+  "reason": "Historical spec snapshots retain their original relative links; lossless archives avoid treating snapshots as live repository documents. No raw snapshot or baseline proof was edited.",
+  "records": [
+    {
+      "original_path": "runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-evolution_core.md",
+      "lossless_archive": "runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-evolution_core.md.gz",
+      "original_sha256": "2d9c3fc3bed43c72c3de7fb48b919d8b37a6d7a89dd3337c883f67e11735fd39",
+      "archive_sha256": "7a8c2ff4a4c0fcb05db6667068aa486c047ff73ba81b27f3931edec31769f24b",
+      "original_bytes": 23858,
+      "decompressed_bytes_equal": true,
+      "original_retained_locally": true
+    },
+    {
+      "original_path": "runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-signal_mining_agent.md",
+      "lossless_archive": "runs/diagnostics/mining_fact_semantics_20261021_v1/driver/before-signal_mining_agent.md.gz",
+      "original_sha256": "c8f85be907f0627a6639eaacf4052779a939b98266d71e6507f394f7127361a8",
+      "archive_sha256": "f8b1766581f185d18a702d89f7fe609a44d426b8bc5ab10b92a3db967e7f3045",
+      "original_bytes": 37115,
+      "decompressed_bytes_equal": true,
+      "original_retained_locally": true
+    }
+  ]
+}

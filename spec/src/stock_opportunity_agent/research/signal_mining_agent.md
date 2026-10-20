@@ -77,6 +77,44 @@ corrections and validates the assembled action before any tool executes.
   documents at different cutoffs therefore retain separate case observations;
   fetch replay within the same case reuses identity. Historical ledger refs and
   authored artifacts remain original rather than rehashed in place.
+  Fact projection reads `value` only for the exact typed accession schema and
+  `val` only for legacy nested records, without fallback between the fields or
+  rewriting source rows. Roles derive from actual period end within the
+  projected group, not record index: every latest-end alternative stays latest.
+  Date ordering and basis identity use parsed dates, never lexicographic raw
+  date spellings. Fact fields, source literals and unchanged identities remain
+  preserved.
+- Automatic same-concept pairs are scoped to case/concept/unit/document and
+  content hash. A known taxonomy in a typed exact span further separates the
+  group; a legacy leaf span does not establish a taxonomy and none is invented.
+  Within that scope, each latest current period has at most one nearest earlier
+  period satisfying the existing comparable-duration predicate. Conflicting
+  values at either operand period prevent that pair; they do not remove an
+  independent unambiguous duration or currency pair. Equivalent duplicate
+  operands may share one deterministic citation without counting new evidence.
+  No automatic pair stitches different documents or chooses a currency,
+  duration, amendment or source revision. Explicit arithmetic and case-local
+  co-occurrence retain their existing cross-document permissions.
+  Current derived same-concept relations are recomputed after each fetch and
+  stale automatic relations removed when their basis changes. Historical ledger
+  entries and already requested arithmetic are never rewritten.
+  Controller group scalars and the local closure/replay consumers reuse one
+  private unique-basis selector rather than dictionary last-write. A scalar is
+  filled only when the available latest fact or document-local pair is uniquely
+  established; ambiguous alternatives remain in the complete fact directory,
+  with a brief working-view ambiguity disclosure. Closure numeric consumption
+  requires finite values and finite derived ratios; nonfinite/overflow inputs
+  remain unavailable rather than negative evidence. H1 measurable coverage must
+  eventually use the same unique-pair proof, not record count (its connection
+  remains pending with the legacy namespace decision). No new Fact field or public
+  tool/measurement schema is introduced. Diagnostic arrival is not admission or
+  proof of an economic comparison, source priority or prediction benefit.
+  The current candidate still lacks legacy namespace provenance: a same-document
+  two-namespace counterexample can produce a false pair. This is an open design
+  and implementation gate, not a supported ambiguity resolution. Further native
+  Mining capability acceptance stays blocked until the explicit taxonomy-field
+  versus original-document-index decision is implemented and independently
+  verified; local tests excluding that counterexample cannot close this family.
 - Relation nodes are constructed only by deterministic code within three
   bounded scopes: same-concept record pairs under the existing
   comparable-period rule; numerator/denominator pairs computed only when

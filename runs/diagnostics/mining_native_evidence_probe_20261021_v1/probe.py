@@ -1,0 +1,251 @@
+"""One frozen label-free native evidence diagnostic, never a Mining/Signal run."""
+from __future__ import annotations
+import argparse
+from contextlib import ExitStack, contextmanager
+from dataclasses import asdict
+from datetime import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import socket
+import ssl
+import subprocess
+import sys
+sys.dont_write_bytecode = True
+import traceback
+from types import SimpleNamespace
+from unittest.mock import patch
+
+from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
+from stock_opportunity_agent.cases.label_store import LabelStore
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.reviewed_snapshot import open_raw_info_store
+from stock_opportunity_agent.research.evolution_core import _company_facts_context
+from stock_opportunity_agent.research.mining_agent_tools import (
+    fetch_case_evidence, project_facts_from_documents, build_same_concept_relations, compute_statistic,
+)
+from stock_opportunity_agent.research.evolution_transport import StructuredRoleClient
+from stock_opportunity_agent.signal_library import SignalExecutor, SignalRegistry
+
+ROOT = Path(__file__).resolve().parent
+PLAN = ROOT / 'plan.json'
+EXECUTION = ROOT / 'execution'
+REPO = ROOT.parents[2]
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def read(path):
+    return json.loads(Path(path).read_text())
+
+
+def doc_view(document):
+    return {'document_id': document.document_id, 'company_id': document.company_id,
+        'available_at': document.available_at.isoformat(), 'source_type': document.source_type,
+        'content_hash': document.content_hash, 'canonical_record_hash': canonical_json_hash(document.to_dict())}
+
+
+def projection(document, case_ref):
+    context = _company_facts_context(document, max_content_chars=12000, query=None)
+    facts = project_facts_from_documents((document,), case_ref=case_ref)
+    records = [record for group in (context or {}).get('concepts', ()) for record in group.get('records', ())]
+    shapes = []
+    for record in records:
+        span = record.get('exact_span', '')
+        parsed = json.loads(span) if span else None
+        shapes.append({'record': record, 'literal_in_original': span in document.content if span else False,
+            'has_value': isinstance(parsed, dict) and 'value' in parsed,
+            'has_val': isinstance(parsed, dict) and 'val' in parsed})
+    if context is None:
+        classification = 'unsupported_or_unparsed_context'
+    elif not records:
+        classification = 'context_has_no_projected_record; not attributed_to_val_gate'
+    elif not facts and all(row['has_value'] and not row['has_val'] for row in shapes):
+        classification = 'nonempty_value_only_context_zero_evidence_facts'
+    else:
+        classification = 'native_context_and_fact_outputs_recorded_separately'
+    return {'document': doc_view(document), 'context': context, 'context_record_count': len(records),
+        'record_shapes': shapes, 'facts': [asdict(fact) for fact in facts], 'fact_count': len(facts),
+        'classification': classification}
+
+
+def fetch_view(store, case, case_ref, query):
+    original_order = tuple(store.documents)
+    candidates = [doc for doc in original_order if doc.company_id == case.company_id
+        and doc.available_at <= case.prediction_time
+        and doc.source_type == 'sec_company_facts']
+    terms = sorted(set(re.findall(r'[a-z0-9]+', (query or '').lower())))
+    ranking = [{'document': doc_view(doc), 'query_term_overlap': sum(term in set(re.findall(r'[a-z0-9]+', doc.content.lower())) for term in terms)}
+        for doc in candidates]
+    result = fetch_case_evidence(store, case, case_ref=case_ref,
+        source_families=('sec_company_facts',), query=query, max_documents=1)
+    return {'query': query, 'candidate_order_before_query': ranking,
+        'actual_request': dict(result.request), 'selected_documents': [doc_view(doc) for doc in result.documents],
+        'excluded_by_limits': list(result.excluded_by_limits), 'facts': [asdict(f) for f in result.facts],
+        'fact_count': len(result.facts), 'query_coverage': dict(result.query_coverage),
+        'unread_same_source': result.unread_same_source,
+        'excluded_by_pit': [doc_view(doc) for doc in original_order if doc.company_id == case.company_id
+            and doc.source_type == 'sec_company_facts' and doc.available_at > case.prediction_time]}
+
+
+def relations_view(documents, case_ref):
+    facts = project_facts_from_documents(documents, case_ref=case_ref)
+    relations = build_same_concept_relations(facts)
+    by_ref = {fact.fact_ref: fact for fact in facts}
+    return {'document_order': [doc.document_id for doc in documents],
+        'facts': [asdict(fact) for fact in facts], 'relations': [asdict(row) for row in relations],
+        'operand_details': [[asdict(by_ref[ref]) for ref in row.fact_refs] for row in relations],
+        'arithmetic': [{'relation_ref': relation.relation_ref, 'rule': rule,
+            'output': asdict(compute_statistic(rule, relation.fact_refs, facts=facts))}
+            for relation in relations for rule in ('latest_over_comparable_prior', 'latest_minus_comparable_prior')],
+        'interpretation': 'Arithmetic only on actual native builder refs; period/currency economic comparability remains separate/unknown when ambiguous.'}
+
+
+@contextmanager
+def bounded_operations():
+    """Allow only reviewed memory-parent initialization and writes to execution."""
+    active = [True]
+    counts = {}
+    def forbidden(name):
+        def call(*args, **kwargs):
+            counts[name] = counts.get(name, 0) + 1
+            raise RuntimeError('forbidden operation: ' + name)
+        return call
+    def audit(event, args):
+        if not active[0]:
+            return
+        if event.startswith('socket.') or event in {'subprocess.Popen', 'os.system', 'os.posix_spawn'}:
+            raise RuntimeError('network/subprocess forbidden')
+        paths = []
+        if event == 'open':
+            path, mode, flags = args
+            if isinstance(path, (str, bytes, os.PathLike)):
+                text = os.fsdecode(path)
+                if 'locked_test' in text.lower() or Path(text).name in {'labels.jsonl', 'label_manifest.json'}:
+                    raise RuntimeError('labels/LockedTest forbidden')
+                if (isinstance(mode, str) and any(c in mode for c in 'wax+')) or (
+                    isinstance(flags, int) and flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC)):
+                    paths = [path]
+        elif event in {'os.mkdir', 'os.remove', 'os.rmdir', 'os.chmod', 'os.utime', 'os.truncate'}:
+            paths = [args[0]]
+        elif event in {'os.rename', 'os.link', 'os.symlink'}:
+            paths = list(args[:2])
+        for path in paths:
+            if isinstance(path, int) or not Path(os.fsdecode(path)).resolve().is_relative_to(EXECUTION.resolve()):
+                raise RuntimeError('write outside exclusive probe execution directory')
+    original_init = RawInfoStore.__init__
+    def memory_parent(self, root=None, documents=()):
+        if root is not None or tuple(documents):
+            raise RuntimeError('persistent/seeded RawInfoStore forbidden')
+        return original_init(self)
+    sys.addaudithook(audit)
+    previous = sys.dont_write_bytecode
+    sys.dont_write_bytecode = True
+    try:
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(RawInfoStore, '__init__', memory_parent))
+            for owner, name in ((RawInfoStore, 'append'), (LabelStore, '__init__'), (LabelStore, 'load'),
+                (LabelStore, 'record'), (LabelStore, 'ground_truth'), (SignalExecutor, 'execute_batch'),
+                (SignalExecutor, 'prepare_inputs'), (SignalRegistry, 'freeze'), (SignalRegistry, 'audit_capabilities'),
+                (StructuredRoleClient, 'complete_json'), (socket, 'socket'), (socket, 'create_connection')):
+                stack.enter_context(patch.object(owner, name, forbidden(owner.__name__ + '.' + name)))
+            yield counts
+    finally:
+        active[0] = False
+        sys.dont_write_bytecode = previous
+
+
+def execute(expected_plan_sha, expected_script_sha, expected_revision):
+    """Execute exactly once after independently supplied frozen identities agree."""
+    if sha(PLAN) != expected_plan_sha or sha(__file__) != expected_script_sha:
+        raise RuntimeError('frozen plan/script mismatch before marker')
+    if subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=REPO, text=True).strip() != expected_revision:
+        raise RuntimeError('frozen revision mismatch before marker')
+    plan = read(PLAN)
+    if plan['output_root'] != str(ROOT.resolve()) or plan['execution_root'] != str(EXECUTION.resolve()):
+        raise RuntimeError('fixed probe destination mismatch')
+    before = {}
+    for row in plan['bindings']:
+        actual = sha(row['path'])
+        if actual != row['sha256']:
+            raise RuntimeError('frozen input/code drift: ' + row['path'])
+        before[row['path']] = actual
+    if EXECUTION.exists():
+        raise RuntimeError('probe execution already started; no reentry')
+    EXECUTION.mkdir()
+    (EXECUTION / 'execution-start.json').open('x').write(json.dumps({'expected_revision': expected_revision,
+        'plan_sha256': expected_plan_sha, 'script_sha256': expected_script_sha}) + '\n')
+    observations = {}
+    try:
+        with bounded_operations() as counts:
+            store = open_raw_info_store(plan['reviewed_binding']['root'], reviewed_snapshot=plan['reviewed_binding'])
+            if len(store.documents) != 1780:
+                raise RuntimeError('qualified source population changed')
+            inputs = read(plan['exact_inputs']['path'])
+            expected = read(plan['expectations']['path'])
+            def case_view(metadata):
+                return SimpleNamespace(case_id=metadata['case_ref'], company_id=metadata['company_id'],
+                    prediction_time=datetime.fromisoformat(metadata['prediction_time']))
+            original_case, synthetic_case = case_view(inputs['case_original']), case_view(inputs['case_synthetic'])
+            observations['interface'] = 'SimpleNamespace company_id/prediction_time/case_id only; not Engine or full EvolutionCase, no outcomes.'
+            observations['actual_snapshot_count'] = len(store.documents)
+            observations['frozen_expectations'] = expected
+            selected = fetch_view(store, original_case, inputs['case_original']['case_ref'], None)
+            observations['O1-original-selection'] = selected
+            original = next(doc for doc in store.documents if doc.document_id == inputs['original']['document_id'])
+            if original.content_hash != inputs['original']['content_hash']:
+                raise RuntimeError('exact original content identity changed')
+            for witness in inputs['original']['rows']:
+                span = original.content[witness['offset_start']:witness['offset_end']]
+                if span != witness['exact_span'] or hashlib.sha256(span.encode()).hexdigest() != witness['span_sha256']:
+                    raise RuntimeError('original full literal/offset drift')
+            observations['O2-original-context-and-projection'] = {
+                'matches_actual_selected': [doc['document_id'] for doc in selected['selected_documents']] == [original.document_id],
+                'direct_control_is_not_autonomous_retrieval': True,
+                'output': projection(original, inputs['case_original']['case_ref'])}
+            synthetic = {row['document']['document_id']: RawInfoDocument.from_dict(row['document'])
+                for row in inputs['synthetic_controls']}
+            older, newer, future = (synthetic[name] for name in ('probe-a-older', 'probe-b-newer', 'probe-c-future'))
+            observations['L1-legacy-val-positive'] = {'projection': projection(older, 'probe-case'),
+                'relations_and_arithmetic': relations_view((older,), 'probe-case')}
+            observations['T1-small-typed-value'] = projection(synthetic['probe-typed-value'], 'probe-case')
+            observations['R1-role-unit-conflict'] = {'scope': 'synthetic dual-key branch bypass only; no real typed source altered',
+                'projection': projection(synthetic['probe-typed-dual'], 'probe-case'),
+                'relations_and_arithmetic': relations_view((synthetic['probe-typed-dual'],), 'probe-case')}
+            collection = SimpleNamespace(documents=(older, newer, future))
+            observations['P1-document-selection-and-PIT'] = {
+                'scope': 'explicit synthetic documents-only collection; no real RawInfoStore append',
+                'no_query': fetch_view(collection, synthetic_case, 'probe-case', None),
+                'query_tie': fetch_view(collection, synthetic_case, 'probe-case', 'Operating Cash Flow')}
+            observations['P2-row-PIT'] = projection(synthetic['probe-typed-pit'], 'probe-case')
+            after = {path: sha(path) for path in before}
+            observations.update(source_bindings_before=before, source_bindings_after=after,
+                all_frozen_bytes_unchanged=before == after, forbidden_calls=counts,
+                conclusion='Native observations only; zero facts never establishes no material. No fresh Mining or Signal capability verified.')
+            atomic_write_json(EXECUTION / 'observations.json', observations)
+            if before != after:
+                raise RuntimeError('frozen source/code changed during probe')
+            atomic_write_json(EXECUTION / 'result.json', {'status': 'completed_native_diagnostic_not_capability_pass',
+                'observations_sha256': sha(EXECUTION / 'observations.json'), 'forbidden_calls': counts})
+    except Exception as error:
+        atomic_write_json(EXECUTION / 'partial-observations.json', observations)
+        atomic_write_json(EXECUTION / 'failure.json', {'status': 'technical_failure_terminal_no_retry',
+            'error_type': type(error).__name__, 'message': str(error), 'traceback': traceback.format_exc(),
+            'source_bindings_current': {path: sha(path) for path in before}})
+    files = {p.relative_to(EXECUTION).as_posix(): sha(p) for p in sorted(EXECUTION.rglob('*')) if p.is_file()}
+    (EXECUTION / 'completed-files.json').open('x').write(json.dumps(files, indent=2, sort_keys=True) + '\n')
+    return read(EXECUTION / ('failure.json' if (EXECUTION / 'failure.json').exists() else 'result.json'))
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--execute', action='store_true', required=True)
+    parser.add_argument('--expected-plan-sha', required=True)
+    parser.add_argument('--expected-script-sha', required=True)
+    parser.add_argument('--expected-revision', required=True)
+    args = parser.parse_args()
+    print(json.dumps(execute(args.expected_plan_sha, args.expected_script_sha, args.expected_revision), sort_keys=True))

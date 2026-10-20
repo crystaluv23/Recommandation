@@ -1,0 +1,189 @@
+test_PIT_document_and_typed_rows (__main__.Semantics.test_PIT_document_and_typed_rows) ... ok
+test_all_same_end_are_latest (__main__.Semantics.test_all_same_end_are_latest) ... FAIL
+test_ambiguous_summary_does_not_overwrite_currency (__main__.Semantics.test_ambiguous_summary_does_not_overwrite_currency) ... FAIL
+test_closure_conflict_unavailable (__main__.Semantics.test_closure_conflict_unavailable) ... FAIL
+test_closure_currency_unavailable (__main__.Semantics.test_closure_currency_unavailable) ... FAIL
+test_controller_new_doc_retains_local_pair_no_cross_doc_stitching (__main__.Semantics.test_controller_new_doc_retains_local_pair_no_cross_doc_stitching) ... FAIL
+test_duration_pairs_not_index_pairs (__main__.Semantics.test_duration_pairs_not_index_pairs) ... FAIL
+test_fetch_repeat_idempotent_and_read_lineage (__main__.Semantics.test_fetch_repeat_idempotent_and_read_lineage) ... ok
+test_generic_USD_over_shares_still_allowed (__main__.Semantics.test_generic_USD_over_shares_still_allowed) ... ok
+test_legacy_same_end_alternatives_not_erased (__main__.Semantics.test_legacy_same_end_alternatives_not_erased) ... FAIL
+test_legacy_val_unchanged (__main__.Semantics.test_legacy_val_unchanged) ... ok
+test_multiple_units_have_separate_pairs (__main__.Semantics.test_multiple_units_have_separate_pairs) ... ok
+test_no_cross_document_operand_stitching (__main__.Semantics.test_no_cross_document_operand_stitching) ... ok
+test_order_permutation_and_doc_local_roles (__main__.Semantics.test_order_permutation_and_doc_local_roles) ... FAIL
+test_original0671_direct_readonly (__main__.Semantics.test_original0671_direct_readonly) ... FAIL
+test_replay_requires_actual_comparable_pair (__main__.Semantics.test_replay_requires_actual_comparable_pair) ... FAIL
+test_same_end_only_is_not_prior (__main__.Semantics.test_same_end_only_is_not_prior) ... FAIL
+test_same_period_conflict_retained_unresolved (__main__.Semantics.test_same_period_conflict_retained_unresolved) ... FAIL
+test_single_instant_pair (__main__.Semantics.test_single_instant_pair) ... ok
+test_typed_value_whole_literal (__main__.Semantics.test_typed_value_whole_literal) ... ok
+test_unique_summary_and_closure (__main__.Semantics.test_unique_summary_and_closure) ... ok
+
+======================================================================
+FAIL: test_all_same_end_are_latest (__main__.Semantics.test_all_same_end_are_latest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 121, in test_all_same_end_are_latest
+    self.assertTrue(all(f.record_selection=='latest' for f in fs if f.period['end']=='2025-06-30'))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_ambiguous_summary_does_not_overwrite_currency (__main__.Semantics.test_ambiguous_summary_does_not_overwrite_currency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 181, in test_ambiguous_summary_does_not_overwrite_currency
+    self.assertNotIn('one-case',summary['latest'])
+AssertionError: 'one-case' unexpectedly found in {'one-case': {'value': '900', 'fact_ref': 'fact-20328d85bdad8416'}}
+
+======================================================================
+FAIL: test_closure_conflict_unavailable (__main__.Semantics.test_closure_conflict_unavailable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 187, in test_closure_conflict_unavailable
+    self.assertFalse(result['available'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_closure_currency_unavailable (__main__.Semantics.test_closure_currency_unavailable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 192, in test_closure_currency_unavailable
+    self.assertFalse(result['available'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_controller_new_doc_retains_local_pair_no_cross_doc_stitching (__main__.Semantics.test_controller_new_doc_retains_local_pair_no_cross_doc_stitching)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 213, in test_controller_new_doc_retains_local_pair_no_cross_doc_stitching
+    self.assertEqual(index[rel.fact_refs[0]].document_ref,index[rel.fact_refs[1]].document_ref)
+AssertionError: 'document-second' != 'document-first'
+- document-second
++ document-first
+
+
+======================================================================
+FAIL: test_duration_pairs_not_index_pairs (__main__.Semantics.test_duration_pairs_not_index_pairs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 126, in test_duration_pairs_not_index_pairs
+    self.assertEqual(sorted((x[3],x[5]) for x in pairs),[('150','100'),('75','50')])
+AssertionError: Lists differ: [('150', '50')] != [('150', '100'), ('75', '50')]
+
+First differing element 0:
+('150', '50')
+('150', '100')
+
+Second list contains 1 additional elements.
+First extra element 1:
+('75', '50')
+
+- [('150', '50')]
++ [('150', '100'), ('75', '50')]
+
+======================================================================
+FAIL: test_legacy_same_end_alternatives_not_erased (__main__.Semantics.test_legacy_same_end_alternatives_not_erased)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 134, in test_legacy_same_end_alternatives_not_erased
+    self.assertEqual({f.value for f in fs},{'150','151','75','100'})
+AssertionError: Items in the second set but not the first:
+'150'
+'151'
+'100'
+
+======================================================================
+FAIL: test_order_permutation_and_doc_local_roles (__main__.Semantics.test_order_permutation_and_doc_local_roles)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 157, in test_order_permutation_and_doc_local_roles
+    self.assertEqual(pair_signature(fs),pair_signature(list(reversed(fs))))
+AssertionError: Lists differ: [('document-doc-b', 'USD', (('end', '2025-06-30'), ('star[78 chars]90')] != [('document-doc-a', 'USD', (('end', '2024-06-30'), ('star[78 chars]80')]
+
+First differing element 0:
+('document-doc-b', 'USD', (('end', '2025-06-30'), ('star[77 chars]'90')
+('document-doc-a', 'USD', (('end', '2024-06-30'), ('star[77 chars]'80')
+
+- [('document-doc-b',
+?                 ^
+
++ [('document-doc-a',
+?                 ^
+
+    'USD',
+-   (('end', '2025-06-30'), ('start', '2025-01-01')),
+-   '120',
+    (('end', '2024-06-30'), ('start', '2024-01-01')),
++   '100',
++   (('end', '2023-06-30'), ('start', '2023-01-01')),
+-   '90')]
+?    ^
+
++   '80')]
+?    ^
+
+
+======================================================================
+FAIL: test_original0671_direct_readonly (__main__.Semantics.test_original0671_direct_readonly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 104, in test_original0671_direct_readonly
+    self.assertEqual({f.value for f in cash},{'9506313','4342261'})
+AssertionError: Items in the second set but not the first:
+'9506313'
+'4342261'
+
+======================================================================
+FAIL: test_replay_requires_actual_comparable_pair (__main__.Semantics.test_replay_requires_actual_comparable_pair)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 198, in test_replay_requires_actual_comparable_pair
+    self.assertEqual(inputs[0]['cases_with_comparable_pair'],0)
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_same_end_only_is_not_prior (__main__.Semantics.test_same_end_only_is_not_prior)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 144, in test_same_end_only_is_not_prior
+    self.assertEqual(build_same_concept_relations(fs),())
+AssertionError: Tuples differ: (EvidenceRelation(relation_ref='relation-2[153 chars]ne),) != ()
+
+First tuple contains 1 additional elements.
+First extra element 0:
+EvidenceRelation(relation_ref='relation-221970428a16f692', kind='same_concept_period_pair', fact_refs=('fact-8528f7a73f1b6f0a', 'fact-cdd8fe18633a8860'), case_ref='one-case', rule=None, value=None)
+
++ ()
+- (EvidenceRelation(relation_ref='relation-221970428a16f692',
+-                   kind='same_concept_period_pair',
+-                   fact_refs=('fact-8528f7a73f1b6f0a', 'fact-cdd8fe18633a8860'),
+-                   case_ref='one-case',
+-                   rule=None,
+-                   value=None),)
+
+======================================================================
+FAIL: test_same_period_conflict_retained_unresolved (__main__.Semantics.test_same_period_conflict_retained_unresolved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py", line 130, in test_same_period_conflict_retained_unresolved
+    self.assertEqual(len(fs),3);self.assertEqual(build_same_concept_relations(fs),())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (EvidenceRelation(relation_ref='relation-5[153 chars]ne),) != ()
+
+First tuple contains 1 additional elements.
+First extra element 0:
+EvidenceRelation(relation_ref='relation-5dbb09f9dfab1342', kind='same_concept_period_pair', fact_refs=('fact-80357c698c9a6e5a', 'fact-08db2ebaf7f3e99c'), case_ref='one-case', rule=None, value=None)
+
++ ()
+- (EvidenceRelation(relation_ref='relation-5dbb09f9dfab1342',
+-                   kind='same_concept_period_pair',
+-                   fact_refs=('fact-80357c698c9a6e5a', 'fact-08db2ebaf7f3e99c'),
+-                   case_ref='one-case',
+-                   rule=None,
+-                   value=None),)
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.008s
+
+FAILED (failures=12)

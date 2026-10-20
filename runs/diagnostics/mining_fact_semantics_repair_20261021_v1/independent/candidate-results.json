@@ -1,0 +1,160 @@
+{
+  "test_sha256": "be6957b855fc9c79e3e534b8894345137de60a47d1588ae2946d7bc4c3ebb40f",
+  "baseline_overlay": null,
+  "synthetic_dual_key": false,
+  "tests": 21,
+  "failures": 0,
+  "errors": 0,
+  "records": [
+    {
+      "test": "__main__.Semantics.test_PIT_document_and_typed_rows",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_all_same_end_are_latest",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_ambiguous_summary_does_not_overwrite_currency",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_closure_conflict_unavailable",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_closure_currency_unavailable",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_controller_new_doc_retains_local_pair_no_cross_doc_stitching",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_duration_pairs_not_index_pairs",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_fetch_repeat_idempotent_and_read_lineage",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_generic_USD_over_shares_still_allowed",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_legacy_same_end_alternatives_not_erased",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_legacy_val_unchanged",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_multiple_units_have_separate_pairs",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_no_cross_document_operand_stitching",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_order_permutation_and_doc_local_roles",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_original0671_direct_readonly",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_replay_requires_actual_comparable_pair",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_same_end_only_is_not_prior",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_same_period_conflict_retained_unresolved",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_single_instant_pair",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_typed_value_whole_literal",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_unique_summary_and_closure",
+      "status": "PASS"
+    }
+  ],
+  "source_before_sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+  "source_after_sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+  "product_bindings": {
+    "mining_agent_tools": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b"
+    },
+    "mining_controller": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1"
+    },
+    "mining_closure": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2"
+    },
+    "mining_replay": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+    },
+    "evolution_core": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+    }
+  },
+  "observations": {
+    "original0671": {
+      "facts": 19,
+      "cash": [
+        {
+          "fact_ref": "fact-b1e58034c14f75ea",
+          "case_ref": "one-case",
+          "concept": "NetCashProvidedByUsedInOperatingActivities",
+          "unit": "USD",
+          "period": {
+            "start": "2011-01-01",
+            "end": "2011-06-30"
+          },
+          "value": "9506313",
+          "record_selection": "latest",
+          "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+          "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2011-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9506313}",
+          "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+          "available_at": "2011-08-10T00:00:00+00:00",
+          "source_display_name": "Net Cash Provided by (Used in) Operating Activities"
+        },
+        {
+          "fact_ref": "fact-7eaf60b596e855de",
+          "case_ref": "one-case",
+          "concept": "NetCashProvidedByUsedInOperatingActivities",
+          "unit": "USD",
+          "period": {
+            "start": "2010-01-01",
+            "end": "2010-06-30"
+          },
+          "value": "4342261",
+          "record_selection": "comparable_prior",
+          "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+          "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2010-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":4342261}",
+          "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+          "available_at": "2011-08-10T00:00:00+00:00",
+          "source_display_name": "Net Cash Provided by (Used in) Operating Activities"
+        }
+      ]
+    }
+  },
+  "scope": "Synthetic local native helpers/real Controller action path; no model call, network, research labels, old-stage entry, Signal execution or product write."
+}

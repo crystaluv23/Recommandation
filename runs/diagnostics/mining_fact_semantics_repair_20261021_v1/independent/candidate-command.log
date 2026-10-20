@@ -1,0 +1,26 @@
+test_PIT_document_and_typed_rows (__main__.Semantics.test_PIT_document_and_typed_rows) ... ok
+test_all_same_end_are_latest (__main__.Semantics.test_all_same_end_are_latest) ... ok
+test_ambiguous_summary_does_not_overwrite_currency (__main__.Semantics.test_ambiguous_summary_does_not_overwrite_currency) ... ok
+test_closure_conflict_unavailable (__main__.Semantics.test_closure_conflict_unavailable) ... ok
+test_closure_currency_unavailable (__main__.Semantics.test_closure_currency_unavailable) ... ok
+test_controller_new_doc_retains_local_pair_no_cross_doc_stitching (__main__.Semantics.test_controller_new_doc_retains_local_pair_no_cross_doc_stitching) ... ok
+test_duration_pairs_not_index_pairs (__main__.Semantics.test_duration_pairs_not_index_pairs) ... ok
+test_fetch_repeat_idempotent_and_read_lineage (__main__.Semantics.test_fetch_repeat_idempotent_and_read_lineage) ... ok
+test_generic_USD_over_shares_still_allowed (__main__.Semantics.test_generic_USD_over_shares_still_allowed) ... ok
+test_legacy_same_end_alternatives_not_erased (__main__.Semantics.test_legacy_same_end_alternatives_not_erased) ... ok
+test_legacy_val_unchanged (__main__.Semantics.test_legacy_val_unchanged) ... ok
+test_multiple_units_have_separate_pairs (__main__.Semantics.test_multiple_units_have_separate_pairs) ... ok
+test_no_cross_document_operand_stitching (__main__.Semantics.test_no_cross_document_operand_stitching) ... ok
+test_order_permutation_and_doc_local_roles (__main__.Semantics.test_order_permutation_and_doc_local_roles) ... ok
+test_original0671_direct_readonly (__main__.Semantics.test_original0671_direct_readonly) ... ok
+test_replay_requires_actual_comparable_pair (__main__.Semantics.test_replay_requires_actual_comparable_pair) ... ok
+test_same_end_only_is_not_prior (__main__.Semantics.test_same_end_only_is_not_prior) ... ok
+test_same_period_conflict_retained_unresolved (__main__.Semantics.test_same_period_conflict_retained_unresolved) ... ok
+test_single_instant_pair (__main__.Semantics.test_single_instant_pair) ... ok
+test_typed_value_whole_literal (__main__.Semantics.test_typed_value_whole_literal) ... ok
+test_unique_summary_and_closure (__main__.Semantics.test_unique_summary_and_closure) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.008s
+
+OK

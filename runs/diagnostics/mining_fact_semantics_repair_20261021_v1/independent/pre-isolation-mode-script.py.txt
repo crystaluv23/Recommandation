@@ -1,0 +1,250 @@
+"""Independent source-semantic controls; synthetic local tools, no models/network.
+
+Optional baseline overlay loads the exact saved HEAD modules. Test bytes remain
+identical for baseline and candidate. No src/spec/tests or research run is edited.
+"""
+from __future__ import annotations
+import argparse
+import dataclasses
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import socket
+import sys
+import unittest
+
+ARGS=argparse.ArgumentParser()
+ARGS.add_argument('--baseline-dir')
+ARGS.add_argument('--result',required=True)
+OPTS=ARGS.parse_args()
+ROOT=Path(__file__).resolve().parents[4]
+sys.path.insert(0,str(ROOT/'src'))
+import stock_opportunity_agent.research as research_package
+if OPTS.baseline_dir:
+    research_package.__path__.insert(0,str(Path(OPTS.baseline_dir).resolve()))
+
+def forbidden(*args,**kwargs):
+    raise AssertionError('network/model forbidden in independent deterministic controls')
+socket.create_connection=forbidden
+socket.socket.connect=forbidden
+from stock_opportunity_agent.data.raw_info import RawInfoDocument,RawInfoStore
+from stock_opportunity_agent.research.evolution_core import EvolutionCase,GroundTruth
+from stock_opportunity_agent.research.mining_agent_tools import (
+    project_facts_from_documents,build_same_concept_relations,compute_statistic,
+    fetch_case_evidence,
+)
+from stock_opportunity_agent.research.mining_controller import LabelAwareMiningController
+from stock_opportunity_agent.research.mining_closure import execute_measurement
+from stock_opportunity_agent.research.mining_replay import measure_arrival
+
+TAG='NetCashProvidedByUsedInOperatingActivities'
+NOW=datetime(2025,8,2,tzinfo=timezone.utc)
+CASE=EvolutionCase('independent-issuer',NOW,{},GroundTruth(1.0),'independent-case')
+ORIGINAL=ROOT/'runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json'
+ORIGINAL_SHA='ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31'
+OBS={}
+
+def row(value,start='2025-01-01',end='2025-06-30',unit='USD',**extra):
+    return {'taxonomy':'us-gaap','tag':TAG,'label':'Operating Cash Flow','unit':unit,
+            'start':start,'end':end,'value':value,**extra}
+
+def doc(rows,ident='independent-doc',*,legacy=False,marker='',available=NOW):
+    if legacy:
+        units={}
+        for item in rows:
+            converted={k:v for k,v in item.items() if k in ('start','end','filed') and v is not None}
+            converted['val']=item['value']
+            units.setdefault(item['unit'],[]).append(converted)
+        payload={'probe_marker':marker,'facts':{'us-gaap':{TAG:{'label':'Operating Cash Flow','units':units}}}}
+    else:
+        payload={'schema_version':'sec-company-facts-document-v1','filing_date':'2025-08-01',
+                 'facts':rows,'probe_marker':marker}
+    return RawInfoDocument.create(document_id=ident,company_id=CASE.company_id,
+        source_type='sec_company_facts',published_at=datetime(2025,8,1,tzinfo=timezone.utc),
+        available_at=available,content=json.dumps(payload,sort_keys=True,separators=(',',':')))
+
+def projected(*documents):
+    return project_facts_from_documents(documents,case_ref='one-case')
+
+def pair_signature(facts):
+    index={f.fact_ref:f for f in facts}
+    return sorted((index[r.fact_refs[0]].document_ref,index[r.fact_refs[0]].unit,
+                   tuple(sorted((index[r.fact_refs[0]].period or {}).items())),index[r.fact_refs[0]].value,
+                   tuple(sorted((index[r.fact_refs[1]].period or {}).items())),index[r.fact_refs[1]].value)
+                  for r in build_same_concept_relations(facts))
+
+def controller(store):
+    return LabelAwareMiningController(store=store,model=type('NeverModel',(),{'next_action':forbidden})(),
+        case_pairs=[('one-case',CASE)],measurable_evidence_manifest={},signal_catalog=[],
+        seed='discovery',label_map={'one-case':'control'})
+
+def action(c,query):
+    return c._execute('fetch_evidence',{'action':'fetch_evidence','rationale':['synthetic deterministic probe'],
+        'case_refs':['one-case'],'source_families':['sec_company_facts'],
+        'query':query,'max_documents':1})
+
+class Semantics(unittest.TestCase):
+    def test_typed_value_whole_literal(self):
+        d=doc([row('000.2500'),row('0.1250','2024-01-01','2024-06-30')])
+        fs=projected(d);self.assertEqual(len(fs),2)
+        for f in fs:
+            self.assertIn(f.exact_span,d.content);self.assertEqual(f.content_hash,d.content_hash)
+            self.assertEqual(json.loads(f.exact_span)['value'],f.value)
+        self.assertEqual({f.value for f in fs},{'000.2500','0.1250'})
+
+    def test_original0671_direct_readonly(self):
+        before=ORIGINAL.read_bytes();self.assertEqual(hashlib.sha256(before).hexdigest(),ORIGINAL_SHA)
+        original=RawInfoDocument.from_dict(json.loads(before));fs=projected(original)
+        cash=[f for f in fs if f.concept==TAG and f.unit=='USD']
+        OBS['original0671']={'facts':len(fs),'cash':[dataclasses.asdict(f) for f in cash]}
+        self.assertEqual({f.value for f in cash},{'9506313','4342261'})
+        for f in cash:
+            self.assertIn(f.exact_span,original.content)
+            self.assertEqual(json.loads(f.exact_span)['value'],int(f.value))
+        self.assertEqual(ORIGINAL.read_bytes(),before)
+
+    def test_legacy_val_unchanged(self):
+        d=doc([row(150),row(100,'2024-01-01','2024-06-30')],legacy=True)
+        fs=projected(d);self.assertEqual(len(fs),2)
+        self.assertEqual({json.loads(f.exact_span)['val'] for f in fs},{150,100})
+        pairs=build_same_concept_relations(fs);self.assertEqual(len(pairs),1)
+        rel=compute_statistic('latest_over_comparable_prior',pairs[0].fact_refs,facts=fs)
+        self.assertEqual(rel.value,'1.500000')
+
+    def test_all_same_end_are_latest(self):
+        fs=projected(doc([row(150),row(75,'2025-04-01'),row(100,'2024-01-01','2024-06-30')]))
+        self.assertEqual(len(fs),3)
+        self.assertTrue(all(f.record_selection=='latest' for f in fs if f.period['end']=='2025-06-30'))
+
+    def test_duration_pairs_not_index_pairs(self):
+        fs=projected(doc([row(150),row(75,'2025-04-01'),row(100,'2024-01-01','2024-06-30'),row(50,'2024-04-01','2024-06-30')]))
+        pairs=pair_signature(fs)
+        self.assertEqual(sorted((x[3],x[5]) for x in pairs),[('150','100'),('75','50')])
+
+    def test_same_period_conflict_retained_unresolved(self):
+        fs=projected(doc([row(150),row(151),row(100,'2024-01-01','2024-06-30')]))
+        self.assertEqual(len(fs),3);self.assertEqual(build_same_concept_relations(fs),())
+
+    def test_legacy_same_end_alternatives_not_erased(self):
+        fs=projected(doc([row(150),row(151),row(75,'2025-04-01'),row(100,'2024-01-01','2024-06-30')],legacy=True))
+        self.assertEqual({f.value for f in fs},{'150','151','75','100'})
+        self.assertTrue(all(f.record_selection=='latest' for f in fs if f.period['end']=='2025-06-30'))
+
+    def test_multiple_units_have_separate_pairs(self):
+        fs=projected(doc([row(150),row(100,'2024-01-01','2024-06-30'),row(900,unit='EUR'),row(800,'2024-01-01','2024-06-30',unit='EUR')]))
+        pairs=pair_signature(fs)
+        self.assertEqual(sorted((x[1],x[3],x[5]) for x in pairs),[('EUR','900','800'),('USD','150','100')])
+
+    def test_same_end_only_is_not_prior(self):
+        fs=projected(doc([row(150),row(75,'2025-04-01')]))
+        self.assertEqual(build_same_concept_relations(fs),())
+
+    def test_no_cross_document_operand_stitching(self):
+        a=doc([row(100,'2024-01-01','2024-06-30'),row(80,'2023-01-01','2023-06-30')],'doc-a')
+        b=doc([row(150),row(110,'2024-01-01','2024-06-30')],'doc-b')
+        fs=projected(a,b);index={f.fact_ref:f for f in fs}
+        for pair in build_same_concept_relations(fs):
+            self.assertEqual(index[pair.fact_refs[0]].document_ref,index[pair.fact_refs[1]].document_ref)
+
+    def test_order_permutation_and_doc_local_roles(self):
+        a=doc([row(80,'2023-01-01','2023-06-30'),row(100,'2024-01-01','2024-06-30')],'doc-a')
+        b=doc([row(120),row(90,'2024-01-01','2024-06-30')],'doc-b')
+        fs=projected(a,b);self.assertEqual(len(fs),4)
+        self.assertEqual(pair_signature(fs),pair_signature(list(reversed(fs))))
+        for document in ('document-doc-a','document-doc-b'):
+            own=[f for f in fs if f.document_ref==document]
+            latest_end=max(f.period['end'] for f in own)
+            self.assertTrue(all(f.record_selection=='latest' for f in own if f.period['end']==latest_end))
+
+    def test_PIT_document_and_typed_rows(self):
+        d=doc([row(150),row(100,'2024-01-01','2024-06-30'),row(999,end='2025-09-30'),row(444,filed='2025-08-03')])
+        future=doc([row(777)],'future',available=datetime(2025,8,3,tzinfo=timezone.utc))
+        result=fetch_case_evidence(RawInfoStore(documents=[d,future]),CASE,source_families=['sec_company_facts'],max_documents=10,case_ref='one-case')
+        self.assertEqual([x.document_id for x in result.documents],['independent-doc'])
+        self.assertEqual({f.value for f in result.facts},{'150','100'})
+
+    def test_unique_summary_and_closure(self):
+        d=doc([row(150),row(100,'2024-01-01','2024-06-30')]);s=RawInfoStore(documents=[d]);c=controller(s);action(c,None)
+        summary=c._group_summary([TAG])['control']['concepts'][TAG]
+        self.assertIn('one-case',summary['latest'])
+        self.assertEqual(summary['latest']['one-case']['value'],'150')
+        result=execute_measurement({'kind':'concept_ratio_at_least','concept':TAG,'threshold':1.4},s,CASE)
+        self.assertTrue(result['available']);self.assertEqual(result['value'],1.5)
+
+    def test_ambiguous_summary_does_not_overwrite_currency(self):
+        d=doc([row(150),row(100,'2024-01-01','2024-06-30'),row(900,unit='EUR'),row(800,'2024-01-01','2024-06-30',unit='EUR')]);c=controller(RawInfoStore(documents=[d]));action(c,None)
+        summary=c._group_summary([TAG])['control']['concepts'][TAG]
+        self.assertNotIn('one-case',summary['latest'])
+        self.assertEqual(len(c._facts),4)
+
+    def test_closure_conflict_unavailable(self):
+        d=doc([row(150),row(151),row(100,'2024-01-01','2024-06-30')])
+        result=execute_measurement({'kind':'concept_ratio_at_least','concept':TAG,'threshold':1.4},RawInfoStore(documents=[d]),CASE)
+        self.assertFalse(result['available'])
+
+    def test_closure_currency_unavailable(self):
+        d=doc([row(150),row(100,'2024-01-01','2024-06-30'),row(900,unit='EUR'),row(800,'2024-01-01','2024-06-30',unit='EUR')])
+        result=execute_measurement({'kind':'concept_latest_at_least','concept':TAG,'threshold':100},RawInfoStore(documents=[d]),CASE)
+        self.assertFalse(result['available'])
+
+    def test_replay_requires_actual_comparable_pair(self):
+        d=doc([row(150),row(75,'2025-04-01')])
+        result=measure_arrival(RawInfoStore(documents=[d]),[CASE],[{'proposal_ref':'synthetic','measurement':{'observable':TAG},'retrieval_intent':{'source_types':['sec_company_facts']}}])
+        inputs=result['hypotheses'][0]['concept_inputs'];self.assertEqual(len(inputs),1)
+        self.assertEqual(inputs[0]['cases_with_comparable_pair'],0)
+
+    def test_controller_new_doc_retains_local_pair_no_cross_doc_stitching(self):
+        a=doc([row(150),row(100,'2024-01-01','2024-06-30')],'first',marker='initialmarker')
+        b=doc([row(151)],'second',marker='latermarker')
+        c=controller(RawInfoStore(documents=[a,b]));action(c,'initialmarker')
+        auto=[r for r in c._relations.values() if r.kind=='same_concept_period_pair'];self.assertEqual(len(auto),1)
+        old=auto[0].relation_ref;receipt=json.dumps(c.ledger.entries[0].to_dict(),sort_keys=True)
+        c._execute('compute_statistic',{'action':'compute_statistic','rationale':['generic synthetic arithmetic'],'rule':'latest_over_comparable_prior','fact_refs':list(auto[0].fact_refs)})
+        computed=c._last_action_result['relation_ref']
+        action(c,'latermarker')
+        self.assertIn(old,c._relations)
+        index=c._facts
+        for rel in c._relations.values():
+            if rel.kind=='same_concept_period_pair':
+                self.assertEqual(index[rel.fact_refs[0]].document_ref,index[rel.fact_refs[1]].document_ref)
+        self.assertIn(computed,c._relations)
+        self.assertEqual(json.dumps(c.ledger.entries[0].to_dict(),sort_keys=True),receipt)
+        self.assertIn(old,c.ledger.evidence_refs())
+        self.assertEqual(len(c._facts),3)
+
+    def test_fetch_repeat_idempotent_and_read_lineage(self):
+        d=doc([row(150),row(100,'2024-01-01','2024-06-30')]);c=controller(RawInfoStore(documents=[d]));action(c,None)
+        before=set(c._facts);action(c,None);self.assertEqual(set(c._facts),before);self.assertEqual(len(before),2)
+        ref=sorted(before)[0];c._execute('read_span',{'action':'read_span','rationale':['verify literal'],'fact_ref':ref})
+        read=c._last_action_result;self.assertEqual(read['case_refs'],['one-case']);self.assertEqual(read['content_hash'],d.content_hash)
+        self.assertEqual(read['document_ref'],'document-independent-doc')
+
+    def test_generic_USD_over_shares_still_allowed(self):
+        fs=projected(doc([row(150),row(30,unit='shares')]))
+        byunit={f.unit:f for f in fs};self.assertEqual(set(byunit),{'USD','shares'})
+        result=compute_statistic('latest_over_latest',[byunit['USD'].fact_ref,byunit['shares'].fact_ref],facts=fs)
+        self.assertEqual(result.value,'5.000000')
+
+    def test_single_instant_pair(self):
+        fs=projected(doc([row(150,None),row(100,None,'2024-06-30')]))
+        self.assertEqual(len(build_same_concept_relations(fs)),1)
+
+class Results(unittest.TextTestResult):
+    def __init__(self,*args,**kwargs):super().__init__(*args,**kwargs);self.records=[]
+    def addSuccess(self,test):super().addSuccess(test);self.records.append({'test':test.id(),'status':'PASS'})
+    def addFailure(self,test,err):super().addFailure(test,err);self.records.append({'test':test.id(),'status':'FAIL','detail':self._exc_info_to_string(err,test)})
+    def addError(self,test,err):super().addError(test,err);self.records.append({'test':test.id(),'status':'ERROR','detail':self._exc_info_to_string(err,test)})
+
+if __name__=='__main__':
+    before=hashlib.sha256(ORIGINAL.read_bytes()).hexdigest()
+    result=unittest.TextTestRunner(verbosity=2,resultclass=Results).run(unittest.defaultTestLoader.loadTestsFromTestCase(Semantics))
+    bindings={}
+    for name in ('mining_agent_tools','mining_controller','mining_closure','mining_replay','evolution_core'):
+        module=sys.modules['stock_opportunity_agent.research.'+name];p=Path(module.__file__)
+        bindings[name]={'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
+    Path(OPTS.result).write_text(json.dumps({'test_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'baseline_overlay':OPTS.baseline_dir,'tests':result.testsRun,'failures':len(result.failures),'errors':len(result.errors),
+        'records':result.records,'source_before_sha256':before,'source_after_sha256':hashlib.sha256(ORIGINAL.read_bytes()).hexdigest(),
+        'product_bindings':bindings,'observations':OBS,'scope':'Synthetic local native helpers/real Controller action path; no model call, network, research labels, old-stage entry, Signal execution or product write.'},ensure_ascii=False,indent=2)+'\n')
+    sys.exit(0 if result.wasSuccessful() else 1)

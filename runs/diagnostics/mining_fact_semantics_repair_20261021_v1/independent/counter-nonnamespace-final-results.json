@@ -1,0 +1,103 @@
+{
+  "checks": {
+    "calendar_formats": {
+      "pass": true,
+      "observed": {
+        "roles": [
+          [
+            "120",
+            {
+              "end": "2025-06-30"
+            },
+            "latest"
+          ],
+          [
+            "100",
+            {
+              "end": "20250101"
+            },
+            "comparable_prior"
+          ]
+        ]
+      }
+    },
+    "same_calendar_spelling_positive": {
+      "pass": true,
+      "observed": {
+        "closure": {
+          "available": true,
+          "positive_evidence": true,
+          "value": 1.2
+        }
+      }
+    },
+    "same_calendar_spelling_conflict": {
+      "pass": true,
+      "observed": {
+        "closure": {
+          "available": false,
+          "positive_evidence": false
+        }
+      }
+    },
+    "duration_not_defaulted_by_unique_pair": {
+      "pass": true,
+      "observed": {
+        "closure": {
+          "available": false,
+          "positive_evidence": false
+        },
+        "coverage": {
+          "concept": "OperatingCashFlowCounter",
+          "cases_with_latest": 0,
+          "cases_with_comparable_pair": 0,
+          "pair_coverage": 0.0
+        }
+      }
+    },
+    "currency_not_defaulted_by_unique_pair": {
+      "pass": true,
+      "observed": {
+        "closure": {
+          "available": false,
+          "positive_evidence": false
+        },
+        "coverage": {
+          "concept": "OperatingCashFlowCounter",
+          "cases_with_latest": 0,
+          "cases_with_comparable_pair": 0,
+          "pair_coverage": 0.0
+        }
+      }
+    },
+    "typed_namespaces_do_not_merge": {
+      "pass": true,
+      "observed": {
+        "relations": 2,
+        "closure": {
+          "available": false,
+          "positive_evidence": false
+        }
+      }
+    },
+    "unique_latest_doc_remains_capable": {
+      "pass": true,
+      "observed": {
+        "closure": {
+          "available": true,
+          "positive_evidence": true,
+          "value": 1.2
+        }
+      }
+    }
+  },
+  "module_source_bindings": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+  },
+  "actual_loaded_paths_verified": true,
+  "scope": "Synthetic local projector/closure/replay helpers only; no Engine, model/API, source/global append, real labels, Signal or stage execution."
+}

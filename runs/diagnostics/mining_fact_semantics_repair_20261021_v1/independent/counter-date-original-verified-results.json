@@ -1,0 +1,78 @@
+{
+  "checks": {
+    "calendar_formats": {
+      "pass": false,
+      "error": "[('120', {'end': '2025-06-30'}, 'comparable_prior'), ('100', {'end': '20250101'}, 'latest')]",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter_basis.py\", line 155, in <module>\n    checks[function.__name__] = {'pass': True, 'observed': function()}\n                                                           ^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter_basis.py\", line 77, in calendar_formats\n    assert len(current) == 1 and current[0].value == '120', [(f.value, f.period, f.record_selection) for f in facts]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: [('120', {'end': '2025-06-30'}, 'comparable_prior'), ('100', {'end': '20250101'}, 'latest')]\n"
+    },
+    "same_calendar_spelling_positive": {
+      "pass": false,
+      "error": "{'available': True, 'positive_evidence': False, 'value': 1.0}",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter_basis.py\", line 155, in <module>\n    checks[function.__name__] = {'pass': True, 'observed': function()}\n                                                           ^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter_basis.py\", line 95, in same_calendar_spelling_positive\n    assert value['available'] is True and value['value'] == 1.2, value\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'available': True, 'positive_evidence': False, 'value': 1.0}\n"
+    },
+    "same_calendar_spelling_conflict": {
+      "pass": false,
+      "error": "Same actual-period conflicting values cannot become separate pairs.",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter_basis.py\", line 155, in <module>\n    checks[function.__name__] = {'pass': True, 'observed': function()}\n                                                           ^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter_basis.py\", line 104, in same_calendar_spelling_conflict\n    assert not build_same_concept_relations(facts), 'Same actual-period conflicting values cannot become separate pairs.'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Same actual-period conflicting values cannot become separate pairs.\n"
+    },
+    "duration_not_defaulted_by_unique_pair": {
+      "pass": true,
+      "observed": {
+        "closure": {
+          "available": false,
+          "positive_evidence": false
+        },
+        "coverage": {
+          "concept": "OperatingCashFlowCounter",
+          "cases_with_latest": 0,
+          "cases_with_comparable_pair": 0,
+          "pair_coverage": 0.0
+        }
+      }
+    },
+    "currency_not_defaulted_by_unique_pair": {
+      "pass": true,
+      "observed": {
+        "closure": {
+          "available": false,
+          "positive_evidence": false
+        },
+        "coverage": {
+          "concept": "OperatingCashFlowCounter",
+          "cases_with_latest": 0,
+          "cases_with_comparable_pair": 0,
+          "pair_coverage": 0.0
+        }
+      }
+    },
+    "typed_namespaces_do_not_merge": {
+      "pass": true,
+      "observed": {
+        "relations": 2,
+        "closure": {
+          "available": false,
+          "positive_evidence": false
+        }
+      }
+    },
+    "unique_latest_doc_remains_capable": {
+      "pass": true,
+      "observed": {
+        "closure": {
+          "available": true,
+          "positive_evidence": true,
+          "value": 1.2
+        }
+      }
+    }
+  },
+  "module_source_bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-before-date-modules/evolution_core.py": "12f8340bc2c5d77a66ce69e28e091ab85db580dba527dfc7f18eb0b3c2ecd203",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-before-date-modules/mining_agent_tools.py": "83a3f6a9dee1e672b35328b0a30acb0c478392ca0ef308c7833e66fd0e21ef45",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-before-date-modules/mining_controller.py": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-before-date-modules/mining_closure.py": "f05d97b3878ed7ca7079e68e387d8f6db588d31ad7bb033fe2c9b985785a0e4e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/counter-before-date-modules/mining_replay.py": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+  },
+  "actual_loaded_paths_verified": true,
+  "scope": "Synthetic local projector/closure/replay helpers only; no Engine, model/API, source/global append, real labels, Signal or stage execution."
+}

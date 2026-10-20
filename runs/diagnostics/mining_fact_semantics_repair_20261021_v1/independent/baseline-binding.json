@@ -1,0 +1,36 @@
+{
+  "head": "1a2e7f87a56561a3356af89a5a476a5a07d7683a",
+  "mode": "git show exact HEAD source overlay; no rewrite",
+  "modules": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "git_head_sha256": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be",
+      "worktree_sha256_at_capture": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be",
+      "worktree_equal": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_controller.py",
+      "git_head_sha256": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9",
+      "worktree_sha256_at_capture": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9",
+      "worktree_equal": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_closure.py",
+      "git_head_sha256": "bffe40af047b810d2efdf5c2178b475b73e8c3f4fb90ef37ac5676ada4a32a13",
+      "worktree_sha256_at_capture": "bffe40af047b810d2efdf5c2178b475b73e8c3f4fb90ef37ac5676ada4a32a13",
+      "worktree_equal": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_replay.py",
+      "git_head_sha256": "84febd7d707f5f850bb9f3f1570e40058dcc8129244dc52c8d7e5fd67367f00c",
+      "worktree_sha256_at_capture": "84febd7d707f5f850bb9f3f1570e40058dcc8129244dc52c8d7e5fd67367f00c",
+      "worktree_equal": true
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "git_head_sha256": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1",
+      "worktree_sha256_at_capture": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1",
+      "worktree_equal": true
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_mining_fact_semantics",
+    "-v"
+  ],
+  "exit_code": 0,
+  "created_at": "2026-10-20T23:16:51.145235+00:00",
+  "bindings": [
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_core.md",
+      "sha256": "600cdcb22081c4b4ba20b10edb330a6a649db4f22cb8a7ca0901c944375f568d"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "a564bb3c9f21d2b9d3aa79d9f00a1407b5c45a92c94199bf93745317d3e8375f"
+    },
+    {
+      "path": "tests/test_mining_fact_semantics.py",
+      "sha256": "233e43401010ae3d906af6165792e0d3cf5e636c101e52fa9059f674b51600b1"
+    }
+  ],
+  "limits": "No namespace decision; H1 manifest connection remains pending. No stage reentry, model, network, LabelStore or Signal execution."
+}

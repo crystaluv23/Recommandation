@@ -1,0 +1,140 @@
+{
+  "test_sha256": "f8ba780c988a0a631b2107b713aae84d532f678efeb005b5b6bdd00bf20b1dec",
+  "baseline_overlay": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-modules",
+  "tests": 21,
+  "failures": 12,
+  "errors": 4,
+  "records": [
+    {
+      "test": "__main__.Semantics.test_PIT_document_and_typed_rows",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 165, in test_PIT_document_and_typed_rows\n    self.assertEqual({f.value for f in result.facts},{'150','100'})\nAssertionError: Items in the second set but not the first:\n'150'\n'100'\n"
+    },
+    {
+      "test": "__main__.Semantics.test_all_same_end_are_latest",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 117, in test_all_same_end_are_latest\n    self.assertEqual(len(fs),3)\nAssertionError: 0 != 3\n"
+    },
+    {
+      "test": "__main__.Semantics.test_ambiguous_summary_does_not_overwrite_currency",
+      "status": "ERROR",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 175, in test_ambiguous_summary_does_not_overwrite_currency\n    d=doc([row(150),row(100,'2024-01-01','2024-06-30'),row(900,unit='EUR'),row(800,'2024-01-01','2024-06-30',unit='EUR')]);c=controller(RawInfoStore(documents=[d]));action(c,None)\n                                                                                                                                                                     ^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 83, in action\n    return c._execute({'action':'fetch_evidence','rationale':['synthetic deterministic probe'],\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: LabelAwareMiningController._execute() missing 1 required positional argument: 'raw'\n"
+    },
+    {
+      "test": "__main__.Semantics.test_closure_conflict_unavailable",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_closure_currency_unavailable",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_controller_new_doc_retains_local_pair_no_cross_doc_stitching",
+      "status": "ERROR",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 199, in test_controller_new_doc_retains_local_pair_no_cross_doc_stitching\n    c=controller(RawInfoStore(documents=[a,b]));action(c,'initialmarker')\n                                                ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 83, in action\n    return c._execute({'action':'fetch_evidence','rationale':['synthetic deterministic probe'],\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: LabelAwareMiningController._execute() missing 1 required positional argument: 'raw'\n"
+    },
+    {
+      "test": "__main__.Semantics.test_duration_pairs_not_index_pairs",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 123, in test_duration_pairs_not_index_pairs\n    self.assertEqual(sorted((x[3],x[5]) for x in pairs),[('150','100'),('75','50')])\nAssertionError: Lists differ: [] != [('150', '100'), ('75', '50')]\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n('150', '100')\n\n- []\n+ [('150', '100'), ('75', '50')]\n"
+    },
+    {
+      "test": "__main__.Semantics.test_fetch_repeat_idempotent_and_read_lineage",
+      "status": "ERROR",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 216, in test_fetch_repeat_idempotent_and_read_lineage\n    d=doc([row(150),row(100,'2024-01-01','2024-06-30')]);c=controller(RawInfoStore(documents=[d]));action(c,None)\n                                                                                                   ^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 83, in action\n    return c._execute({'action':'fetch_evidence','rationale':['synthetic deterministic probe'],\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: LabelAwareMiningController._execute() missing 1 required positional argument: 'raw'\n"
+    },
+    {
+      "test": "__main__.Semantics.test_generic_USD_over_shares_still_allowed",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 224, in test_generic_USD_over_shares_still_allowed\n    byunit={f.unit:f for f in fs};self.assertEqual(set(byunit),{'USD','shares'})\n                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Items in the second set but not the first:\n'USD'\n'shares'\n"
+    },
+    {
+      "test": "__main__.Semantics.test_legacy_same_end_alternatives_not_erased",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 131, in test_legacy_same_end_alternatives_not_erased\n    self.assertEqual({f.value for f in fs},{'150','151','75','100'})\nAssertionError: Items in the second set but not the first:\n'150'\n'151'\n'100'\n"
+    },
+    {
+      "test": "__main__.Semantics.test_legacy_val_unchanged",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_multiple_units_have_separate_pairs",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 137, in test_multiple_units_have_separate_pairs\n    self.assertEqual(sorted((x[1],x[3],x[5]) for x in pairs),[('EUR','900','800'),('USD','150','100')])\nAssertionError: Lists differ: [] != [('EUR', '900', '800'), ('USD', '150', '100')]\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n('EUR', '900', '800')\n\n- []\n+ [('EUR', '900', '800'), ('USD', '150', '100')]\n"
+    },
+    {
+      "test": "__main__.Semantics.test_no_cross_document_operand_stitching",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_order_permutation_and_doc_local_roles",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 153, in test_order_permutation_and_doc_local_roles\n    fs=projected(a,b);self.assertEqual(len(fs),4)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 0 != 4\n"
+    },
+    {
+      "test": "__main__.Semantics.test_original0671_direct_readonly",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 101, in test_original0671_direct_readonly\n    self.assertEqual({f.value for f in cash},{'9506313','4342261'})\nAssertionError: Items in the second set but not the first:\n'4342261'\n'9506313'\n"
+    },
+    {
+      "test": "__main__.Semantics.test_replay_requires_actual_comparable_pair",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 193, in test_replay_requires_actual_comparable_pair\n    inputs=result['hypotheses'][0]['concept_inputs'];self.assertEqual(len(inputs),1)\n                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 0 != 1\n"
+    },
+    {
+      "test": "__main__.Semantics.test_same_end_only_is_not_prior",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.Semantics.test_same_period_conflict_retained_unresolved",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 127, in test_same_period_conflict_retained_unresolved\n    self.assertEqual(len(fs),3);self.assertEqual(build_same_concept_relations(fs),())\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 0 != 3\n"
+    },
+    {
+      "test": "__main__.Semantics.test_single_instant_pair",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 230, in test_single_instant_pair\n    self.assertEqual(len(build_same_concept_relations(fs)),1)\nAssertionError: 0 != 1\n"
+    },
+    {
+      "test": "__main__.Semantics.test_typed_value_whole_literal",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 90, in test_typed_value_whole_literal\n    fs=projected(d);self.assertEqual(len(fs),2)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 0 != 2\n"
+    },
+    {
+      "test": "__main__.Semantics.test_unique_summary_and_closure",
+      "status": "ERROR",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 168, in test_unique_summary_and_closure\n    d=doc([row(150),row(100,'2024-01-01','2024-06-30')]);s=RawInfoStore(documents=[d]);c=controller(s);action(c,None)\n                                                                                                       ^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py\", line 83, in action\n    return c._execute({'action':'fetch_evidence','rationale':['synthetic deterministic probe'],\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: LabelAwareMiningController._execute() missing 1 required positional argument: 'raw'\n"
+    }
+  ],
+  "source_before_sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+  "source_after_sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+  "product_bindings": {
+    "mining_agent_tools": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be"
+    },
+    "mining_controller": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9"
+    },
+    "mining_closure": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-modules/mining_closure.py",
+      "sha256": "bffe40af047b810d2efdf5c2178b475b73e8c3f4fb90ef37ac5676ada4a32a13"
+    },
+    "mining_replay": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-modules/mining_replay.py",
+      "sha256": "84febd7d707f5f850bb9f3f1570e40058dcc8129244dc52c8d7e5fd67367f00c"
+    },
+    "evolution_core": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1"
+    }
+  },
+  "observations": {
+    "original0671": {
+      "facts": 0,
+      "cash": []
+    }
+  },
+  "scope": "Synthetic local native helpers/real Controller action path; no model call, network, research labels, old-stage entry, Signal execution or product write."
+}

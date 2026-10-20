@@ -11,6 +11,7 @@ path is structurally reachable before any live shadow cycle.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable, Mapping, Sequence
@@ -24,6 +25,8 @@ from stock_opportunity_agent.research.evolution_core import (
 from stock_opportunity_agent.research.mining_agent_tools import (
     fetch_case_evidence,
     project_facts_from_documents,
+    _unique_latest_fact,
+    _unique_period_pair,
 )
 
 SCENARIOS = (
@@ -685,25 +688,30 @@ def execute_measurement(
     )
     facts = {}
     for fact in project_facts_from_documents(documents, case_ref=ref):
-        facts.setdefault(fact.concept, {})[fact.record_selection] = fact
+        facts.setdefault(fact.concept, []).append(fact)
     kind = str(execution.get("kind", ""))
 
+    selected_latest = {concept: _unique_latest_fact(rows) for concept, rows in facts.items()}
+    selected_pairs = {concept: _unique_period_pair(rows) for concept, rows in facts.items()}
+
     def latest(concept: str) -> float | None:
-        roles = facts.get(concept, {})
-        if "latest" not in roles:
+        fact = selected_latest.get(concept)
+        if fact is None:
             return None
         try:
-            return float(roles["latest"].value)
-        except ValueError:
+            value = float(fact.value)
+            return value if math.isfinite(value) else None
+        except (ValueError, OverflowError):
             return None
 
     def comparable(concept: str) -> float | None:
-        roles = facts.get(concept, {})
-        if "comparable_prior" not in roles:
+        pair = selected_pairs.get(concept)
+        if pair is None:
             return None
         try:
-            return float(roles["comparable_prior"].value)
-        except ValueError:
+            value = float(pair[1].value)
+            return value if math.isfinite(value) else None
+        except (ValueError, OverflowError):
             return None
 
     if kind == "concept_latest_at_least":
@@ -727,6 +735,8 @@ def execute_measurement(
         if value is None or prior in (None, 0.0):
             return {"available": False, "positive_evidence": False}
         ratio = value / prior
+        if not math.isfinite(ratio):
+            return {"available": False, "positive_evidence": False}
         return {
             "available": True,
             "positive_evidence": ratio >= float(execution["threshold"]),
@@ -738,13 +748,15 @@ def execute_measurement(
         values = []
         for concept, threshold in zip(concepts, thresholds):
             value = latest(concept)
-            if value is None or value < threshold:
+            if value is None:
+                return {"available": False, "positive_evidence": False}
+            if value < threshold:
                 return {"available": True, "positive_evidence": False}
             values.append(value)
         documents_by_concept = {
-            concept: facts[concept]["latest"].document_ref
+            concept: selected_latest[concept].document_ref
             for concept in concepts
-            if concept in facts and "latest" in facts[concept]
+            if selected_latest.get(concept) is not None
         }
         refs = [documents_by_concept.get(concept) for concept in concepts]
         joint = all(item is not None for item in refs) and len(set(refs)) == len(refs)

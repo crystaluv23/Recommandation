@@ -1,0 +1,15 @@
+test_company_facts_context_preserves_semantics_offsets_and_periods (tests.test_signal_evolution_engine.SignalEvolutionTests.test_company_facts_context_preserves_semantics_offsets_and_periods) ... ok
+test_company_facts_context_marks_bounded_omissions_partial (tests.test_signal_evolution_engine.SignalEvolutionTests.test_company_facts_context_marks_bounded_omissions_partial) ... ok
+test_queryless_company_facts_prefers_comparable_operating_concepts (tests.test_signal_evolution_engine.SignalEvolutionTests.test_queryless_company_facts_prefers_comparable_operating_concepts) ... ok
+test_company_facts_identity_masking_drops_nonliteral_records (tests.test_signal_evolution_engine.SignalEvolutionTests.test_company_facts_identity_masking_drops_nonliteral_records) ... ok
+test_exploration_company_facts_citations_stay_inside_one_record (tests.test_signal_evolution_engine.SignalEvolutionTests.test_exploration_company_facts_citations_stay_inside_one_record) ... ok
+test_exploration_literal_view_drops_model_authored_summary (tests.test_signal_evolution_engine.SignalEvolutionTests.test_exploration_literal_view_drops_model_authored_summary) ... ok
+test_exploration_literal_view_preserves_long_comparable_records (tests.test_signal_evolution_engine.SignalEvolutionTests.test_exploration_literal_view_preserves_long_comparable_records) ... ok
+test_exploration_literal_view_omits_ambiguous_structured_semantics (tests.test_signal_evolution_engine.SignalEvolutionTests.test_exploration_literal_view_omits_ambiguous_structured_semantics) ... ok
+test_h1_payload_receives_value_free_measurable_evidence_manifest (tests.test_signal_evolution_engine.SignalEvolutionTests.test_h1_payload_receives_value_free_measurable_evidence_manifest) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.051s
+
+OK
+{"tests_run": 9, "failures": 0, "errors": 0, "forbidden_calls": 0}

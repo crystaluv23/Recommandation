@@ -260,9 +260,17 @@
       "evidence": [
         "reports/v182-terminal-slow-and-source-partition-audit-20261007.json",
         "runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/preflight-diagnosis.json",
-        "runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/static-inventory.json"
+        "runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/static-inventory.json",
+        "reports/mining-native-fact-semantics-20261021.md",
+        "runs/diagnostics/mining_native_evidence_probe_20261021_v1/plan.json",
+        "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/result.json",
+        "runs/diagnostics/mining_native_evidence_probe_20261021_v1/independent/actual-review.json",
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-independent-review.json",
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/associated-tests.log",
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/producer-integration-final-tests.log",
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json"
       ],
-      "remaining": "No fresh direction/magnitude Mining→faithfulimplementation→technicalpublication→exactsuccessor positivecontrol yet. Source-only dev8 inventory240financialdocs/83629originalrows(value-only) contradicts Mining adapterval-only path;native factcounts remain unmeasured. Separate documentselection/order,typedrow projection,and latest/prior duration/unit/PIT assignment before roles;source examples show sameend/differentduration,not observedwrongrelation or sameperiodconflict. Twelve registered functions constrain arbitrarynewformulas but horizon/terms parameters can altermeasurement;not semantic exhaustion. Magnitude axis/sampling sufficiency unknown;direction labels cannot substitute. Next one frozen deterministic nativeprobe,zeroLLM/GET/labels/oldstageentry;fullS3-S8 and benefit remain unknown."
+      "remaining": "Local source-to-fact candidate now19originalfacts/literalfaithful and102associated+42independent controls pass, but legacy namespace falsepair and H1 comparable-recordcount remainopen. Optionaltaxonomy field versusexplicit originalnamespaceindex decision pending. Selection/longreading, crossdocumentrevisionauthority, and realdirection/magnitude Mining→implementation→admission→exactsuccessor use stillunverified;wholeloop/benefitunknown."
     },
     {
       "id": "independent_benefit",
@@ -1347,10 +1355,30 @@
         "runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/final-review.json"
       ],
       "result": "55ec6245 child7f39f03f branches from original first Controller frontier with265pending/0staged,603908 accepted memory/six originals/full identical userwire;only system native7d task assignment changes. Shared native index/constructor/sink extraction verified plus221 associated tests. Sole prepare15.759s;fresh85 selects correct7d repair_dependency/[] but row rationale string rejected,no unit. Fresh86 permitted ordinary no-patch continuation uses array and original sink saves exactly one assigned unit;264other pending exact. Independent source/raw/cache/receipt/unit/base/result review passes corrected1of1, firstnative0of1;oldfreechoice target0of1 permanent.2responses185245logical reservation,0newsource/Reflect/GET/externalLLMAPI/Signal/publication. Parent272 and copied223/code178 exact at execution;child247+completion soleterminalreopen exact/0runtime entrances,pointers0/0. Proves assigned technical repair-route intent persistence,not autonomous allneeds/implementedrepair/wholeS1S2/benefit. Repeated firstrow scalar failure is an initial nested authoring-contract disclosure gap:top-level array stated,row fields untyped,validator correctly strict. No completedstage reentry or answer coaching. Subsequent local declaration alignment uses one pure constant in initialsystem/native rowcontract/error,81 associated tests pass and independent old/current3authoringpaths/11invalidshapes/3validarrays/mixedsiblingoriginalsink pass. Existing strict predicate/rowstate/partial/persistence/wrap/permissions unchanged;LegacyH1 alreadytyped/nochange. Old7methods/13newassertionfailures reflect missing disclosure/errorwording,not unsafe accepts. No fresh response after declaration fix and no completedstage reentry;executioncode55ec remains distinct from this later local repair."
+    },
+    {
+      "id": "engineering-mvp-native-mining-fact-probe-20261021",
+      "strategy": "native_mining_source_shape_and_positive_control_reachability",
+      "failure_families": [
+        "typed_value_rows_lost_at_legacy_val_adapter",
+        "index_roles_and_period_alternatives_silently_overwritten"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/mining-native-fact-semantics-20261021.md",
+        "runs/diagnostics/mining_native_evidence_probe_20261021_v1/plan.json",
+        "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/result.json",
+        "runs/diagnostics/mining_native_evidence_probe_20261021_v1/independent/actual-review.json",
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-independent-review.json",
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/associated-tests.log",
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/producer-integration-final-tests.log",
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json"
+      ],
+      "result": "Sole frozen native7control probe on1a2e7f87 completed;4135 bindings before/after/current independently exact,terminal4files sealed,0LLM/GET/Signal/labels/sourcewrites/oldstage reentry. O1 selects2011first of56/PITeligible undercap1;O2 unchanged0671 context19 includes2completeOCF operands butFacts0;T1/P2context2/Facts0 isolatesactual value-versus-val adapterloss. L1legacyval2facts/halfyearpair ratio1.2 survives. R1explicit synthetic dualkey7facts only:USDhalfyear120/quarter50 auto pair violatesexistingcomparability;2.4arithmeticcorrect,EUR900/8001.125valid. P1futuredocexcluded/P2futureend+filedexcluded. No actualtypedwrongpair or crossdocexecutionclaim. Earlierlegacy-only2periodtests missedactualproducer shape andsameendalternatives;legacyproducerdedup isadditional staticseam. RepairneededbeforefreshMining;notnewcandidate/wholeMVP progress. Subsequent spec-first localcandidate reaches19originalfacts with wholeliteral audit,102associated tests and independent21x2 controls pass;parsed-date variants now7pass after3candidate failures and a preserved import-harness falsegreen. Sharedlegacyproducer/periodroles/currentderivedrelations/Controller summary/closure/replay repairedwithoutgenericcompute policy changes. Notfullfamilyclosed:legacy namespaceprovenance is erased inFact shape and actualsynthetic two-namespacefalsepair remains;H1rowcount stilloverstates comparableinputs. Concrete optionaltaxonomyfield versusoriginaldocumentindex design awaitsuser;nofreshMining/wholeloop."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-assigned-technical-feedback-route-20261021",
+    "after_iteration": "engineering-mvp-native-mining-fact-probe-20261021",
     "evidence": [
       "reports/imported-slow-method-feedback-20261021.md",
       "runs/diagnostics/assigned_slow_target_20261021_v1/stage/manifest.json",
@@ -1364,7 +1392,15 @@
       "runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/old-before-results.json",
       "runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/final-review.json",
       "runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/preflight-diagnosis.json",
-      "runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/static-inventory.json"
+      "runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/static-inventory.json",
+      "reports/mining-native-fact-semantics-20261021.md",
+      "runs/diagnostics/mining_native_evidence_probe_20261021_v1/plan.json",
+      "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/result.json",
+      "runs/diagnostics/mining_native_evidence_probe_20261021_v1/independent/actual-review.json",
+      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-independent-review.json",
+      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/associated-tests.log",
+      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/producer-integration-final-tests.log",
+      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1446,19 +1482,16 @@
       "Controller firstrow rationale string was rejected despite valid route semantics; normal no-output_patch_contract branch explicitly allows choosing one admissible action, so its continuation is not a field-preserving typedpatch. It contains only action/issue, not rejectedbody; do not secretly inject earlierresponse or claim exactfield repair. Actualcorrectedaction keptsamealternate need but authorednewrationales withinexistingnativecontract.",
       "Header→freshreflection→H1payload arrival and originalFastneed→alternateaction→sink are distinct chains. Their coexistence does not prove the new lesson caused that action or a downstream Plan was implemented. Technicalcontrol remains unattempted; no newmagnitude/benefit claim follows.",
       "The assigned-task fix retained the original authoring prompt to isolate selection. Two separate first answers then used valid top-level rationale arrays but nested scalar rationales;the initial prompt only enumerated row names and native contract omitted row types. Existing mechanics tests checked validator rejection and bounded continuation,not whether the original outgoing request disclosed the nested obligation. Corrected1of1 does not close initial authoring;make the existing array requirement explicit before the next real consumer,without wrapping scalars or rerunning this completedstage.",
-      "The F5 typed facts-array repair reached model projection but Mining has a separate consumer requiring parsed[val],while real approved source rows use value. Native value-free manifest uses the shared readable projection and counts records>=2 as comparable;it can therefore advertise concepts absent from actual Mining facts or overstate pair certainty. Source presence,default selection order and fact-role assignment need separate probes. Do not fix the val name alone and then label every retained second latest-end alternative a comparable prior;actual duration examples and fixed source identities must survive. This is a static seam diagnosis,not an observed native zero-fact or wrong-relation result."
+      "The F5 typed facts-array repair reached model projection but Mining has a separate consumer requiring parsed[val],while real approved source rows use value. Native value-free manifest uses the shared readable projection and counts records>=2 as comparable;it can therefore advertise concepts absent from actual Mining facts or overstate pair certainty. Source presence,default selection order and fact-role assignment need separate probes. Do not fix the val name alone and then label every retained second latest-end alternative a comparable prior;actual duration examples and fixed source identities must survive. This is a static seam diagnosis,not an observed native zero-fact or wrong-relation result.",
+      "The frozen native probe now isolates actual value-only context19 to zero Mining facts, not absence of materials. Legacy two-record fixtures bypassed producer shape and made positional roles appear correct;source-only diagnosis is superseded by native evidence,while real typed wrongpairs remain unexecuted. Legacy producer end-only dedup and downstream role dictionaries require the same family repair,not a one-line value fallback.",
+      "Parsed dates must drive both chronological order and basis identity:correcting max alone leaves calendar-equivalent spellings split. An independent old-snapshot harness also accidentally retained preloadedcurrentmodules;actual module __file__/hash proof is necessary. Legacy row literals erase namespace even within one document,so doc-local pairing cannot close semantic identity without provenance field or explicit original-document index. H1 counts>=2 isanother unchecked consumer and not pairproof."
     ],
     "decision": {
       "acceptance_id": "new_magnitude_reuse",
-      "kind": "diagnose",
-      "strategy": "native_mining_source_shape_and_positive_control_reachability",
-      "action": "Before new Mining roles,bind approved dev8/qualified1780/Registry18 and the actual native measurable manifest. Inspect concrete structured source shape through projection and mining EvidenceFact extraction,period/currency/conflict roles and actual registered implementation range. Prepare then perform only the smallest deterministic native fetch/read probe needed to distinguish material absence from producer/consumer shape loss;zero LLM,GET,global labels,oldstage reentry or fullsuccessor. Preserve source-only expectations outside actors.",
-      "stop": "No new model/GET/fullrun/source mutation,cohort substitution,handwrittenSignal,label-derivedfeature,unapproved period policy,semantic fallback or claim that an exhausted finite search proves no possible factor. If exact source/scope/PIT authority is missing,stop that probe at the missing prerequisite.",
-      "question": "Can the native Mining evidence and materialization interfaces actually reach and faithfully represent an answerable distinct direction/magnitude capability control within current authorized source and case scope?",
-      "pass": "Exact approved/PIT source facts or narratives survive native fetch/read with object,unit,period,conflicts and provenance intact,and at least one concrete legal implementation path for a distinct supported measurement can be predeclared without using outcomes as features.",
-      "fail": "Measurable catalog advertises source values lost by native extraction,latest/conflict rows become fabricated comparable priors,required source evidence is absent,or the needed measurement has no supported faithful implementation interface.",
-      "on_pass": "Freeze a finite independently reviewed positive-control module stage using current declared row contract;fresh exact-inbox agents author rather than receive a Signal,then verify implementation/admission/exact successor use in order. This is not permission for a full successor or a benefit claim.",
-      "on_fail": "Bind the earliest concrete source/adapter/implementation failure and repair the applicable family in dependency order or prepare a substantive capability decision;do not spend model calls diagnosing a known missing producer link."
+      "kind": "human_decision",
+      "strategy": "explicit_namespace_provenance_before_mining_capability",
+      "action": "User design choice requested:optional EvidenceFact taxonomy sourcedfromexistingcontext(recommended),or explicit original-document namespaceindex passedtoeverypair/selectionconsumer. Concrete options and legacy syntheticfalsepair in reports/mining-native-fact-semantics-20261021.md;do notinferanswerfromtimeout. Nonnamespace localrepair verified,notfamilyclosure. Afterchoice,implement provenance and sharedH1 comparablepair coverage in spec order,then independentcontrol beforefreshMining.",
+      "stop": "No field/interface change before answer,no namespaceguess/hiddenmetadata/defaultcurrency/duration/sourcepriority,no new nativeMining/fullsuccessor or benefitclaim while knownfalsepair/H1gate remains. Oldstages/source/failuredenominatorsremainimmutable."
     }
   },
   "successor_prerequisites": [

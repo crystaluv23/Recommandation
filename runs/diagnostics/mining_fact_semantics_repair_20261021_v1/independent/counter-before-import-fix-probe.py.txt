@@ -1,0 +1,154 @@
+"""Independent synthetic controls for calendar roles and concept-only basis."""
+from pathlib import Path
+from types import SimpleNamespace
+from datetime import date, datetime, timezone
+import argparse
+import hashlib
+import json
+import sys
+import traceback
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--module-root', type=Path, required=True)
+parser.add_argument('--output', type=Path, required=True)
+args = parser.parse_args()
+sys.dont_write_bytecode = True
+import stock_opportunity_agent.research as package
+package.__path__.insert(0, str(args.module_root.resolve()))
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.research.mining_agent_tools import project_facts_from_documents, build_same_concept_relations
+from stock_opportunity_agent.research.mining_closure import execute_measurement
+from stock_opportunity_agent.research.mining_replay import measure_arrival
+
+NOW = datetime(2025, 8, 2, tzinfo=timezone.utc)
+CASE = SimpleNamespace(case_id='counter-case', company_id='counter-issuer', prediction_time=NOW)
+TAG = 'OperatingCashFlowCounter'
+
+
+def row(value, end, start=None, unit='USD', taxonomy='us-gaap', tag=TAG):
+    out = {'taxonomy': taxonomy, 'tag': tag, 'unit': unit, 'end': end, 'value': value}
+    if start is not None:
+        out['start'] = start
+    return out
+
+
+def document(rows, ident='counter-doc'):
+    return RawInfoDocument.create(document_id=ident, company_id=CASE.company_id,
+        source_type='sec_company_facts', published_at=NOW, available_at=NOW,
+        content=json.dumps({'schema_version': 'sec-company-facts-document-v1',
+                            'filing_date': '2025-08-01', 'facts': rows}, sort_keys=True, separators=(',', ':')))
+
+
+def project(*docs):
+    return project_facts_from_documents(docs, case_ref=CASE.case_id)
+
+
+def closure(docs, *, kind='concept_ratio_at_least'):
+    return execute_measurement({'kind': kind, 'concept': TAG, 'threshold': 1.1}, RawInfoStore(documents=docs), CASE)
+
+
+def arrival(docs):
+    result = measure_arrival(RawInfoStore(documents=docs), [CASE],
+        [{'proposal_ref': 'counter', 'measurement': {'observable': TAG}, 'retrieval_intent': {}}])
+    assert result['cohort_case_count'] == 1 and len(result['hypotheses']) == 1
+    concepts = result['hypotheses'][0]['concept_inputs']
+    assert len(concepts) == 1, 'Do not silently drop known raw concept when unique basis is unresolved.'
+    return concepts[0]
+
+
+def calendar_formats():
+    rows = [row(120, '2025-06-30'), row(100, '20250101')]
+    # Explicit synthetic dual-key branch permits the exact same calendar
+    # control to reach the former val-only adapter; no real row is rewritten.
+    for item in rows:
+        item['val'] = item['value']
+    doc = document(rows)
+    facts = project(doc)
+    current = [f for f in facts if f.record_selection == 'latest']
+    assert len(current) == 1 and current[0].value == '120', [(f.value, f.period, f.record_selection) for f in facts]
+    relations = build_same_concept_relations(facts)
+    assert len(relations) == 1
+    by_ref = {f.fact_ref: f for f in facts}
+    pair = [by_ref[ref] for ref in relations[0].fact_refs]
+    assert date.fromisoformat(pair[0].period['end']) > date.fromisoformat(pair[1].period['end'])
+    assert [f.value for f in pair] == ['120', '100']
+    return {'roles': [(f.value, f.period, f.record_selection) for f in facts]}
+
+
+
+def same_calendar_spelling_positive():
+    doc = document([row(120, '2025-06-30', '2025-01-01'), row(120.0, '20250630', '20250101'),
+                    row(100, '2024-06-30', '2024-01-01')])
+    facts = project(doc)
+    assert len(facts) == 3
+    assert len(build_same_concept_relations(facts)) == 1
+    value = closure((doc,))
+    assert value['available'] is True and value['value'] == 1.2, value
+    return {'closure': value}
+
+
+def same_calendar_spelling_conflict():
+    doc = document([row(120, '2025-06-30', '2025-01-01'), row(121, '20250630', '20250101'),
+                    row(100, '2024-06-30', '2024-01-01')])
+    facts = project(doc)
+    assert len(facts) == 3
+    assert not build_same_concept_relations(facts), 'Same actual-period conflicting values cannot become separate pairs.'
+    value = closure((doc,))
+    assert value['available'] is False, value
+    return {'closure': value}
+
+
+def duration_not_defaulted_by_unique_pair():
+    doc = document([row(120, '2025-06-30', '2025-01-01'), row(60, '2025-06-30', '2025-04-01'),
+                    row(50, '2024-06-30', '2024-04-01')])
+    facts = project(doc)
+    assert len(build_same_concept_relations(facts)) == 1, 'The valid quarter pair may remain inspectable.'
+    value = closure((doc,)); assert value['available'] is False, value
+    coverage = arrival((doc,)); assert coverage['cases_with_latest'] == coverage['cases_with_comparable_pair'] == 0, coverage
+    return {'closure': value, 'coverage': coverage}
+
+
+def currency_not_defaulted_by_unique_pair():
+    doc = document([row(120, '2025-06-30', '2025-01-01'), row(90, '2025-06-30', '2025-01-01', unit='EUR'),
+                    row(80, '2024-06-30', '2024-01-01', unit='EUR')])
+    facts = project(doc); assert len(build_same_concept_relations(facts)) == 1
+    value = closure((doc,)); assert value['available'] is False, value
+    coverage = arrival((doc,)); assert coverage['cases_with_latest'] == coverage['cases_with_comparable_pair'] == 0
+    return {'closure': value, 'coverage': coverage}
+
+
+def typed_namespaces_do_not_merge():
+    doc = document([row(120, '2025-06-30', '2025-01-01'), row(100, '2024-06-30', '2024-01-01'),
+                    row(300, '2025-06-30', '2025-01-01', taxonomy='other-taxonomy'),
+                    row(100, '2024-06-30', '2024-01-01', taxonomy='other-taxonomy')])
+    facts = project(doc); relations = build_same_concept_relations(facts)
+    assert len(relations) == 2
+    by_ref = {f.fact_ref: f for f in facts}
+    for relation in relations:
+        assert len({json.loads(by_ref[ref].exact_span)['taxonomy'] for ref in relation.fact_refs}) == 1
+    value = closure((doc,)); assert value['available'] is False, value
+    return {'relations': len(relations), 'closure': value}
+
+
+def unique_latest_doc_remains_capable():
+    older = document([row(100, '2024-06-30', '2024-01-01'), row(90, '2023-06-30', '2023-01-01')], 'counter-older')
+    newer = document([row(120, '2025-06-30', '2025-01-01'), row(100, '2024-06-30', '2024-01-01')], 'counter-newer')
+    value = closure((older, newer))
+    assert value['available'] is True and value['value'] == 1.2, value
+    return {'closure': value}
+
+
+checks = {}
+for function in (calendar_formats, same_calendar_spelling_positive, same_calendar_spelling_conflict,
+                 duration_not_defaulted_by_unique_pair, currency_not_defaulted_by_unique_pair,
+                 typed_namespaces_do_not_merge, unique_latest_doc_remains_capable):
+    try:
+        checks[function.__name__] = {'pass': True, 'observed': function()}
+    except Exception as error:
+        checks[function.__name__] = {'pass': False, 'error': str(error), 'traceback': traceback.format_exc()}
+bindings = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in args.module_root.glob('*.py')}
+report = {'checks': checks, 'module_source_bindings': bindings,
+          'scope': 'Synthetic local projector/closure/replay helpers only; no Engine, model/API, source/global append, real labels, Signal or stage execution.'}
+args.output.write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps({'passed': sum(r['pass'] for r in checks.values()), 'total': len(checks),
+                  'failed': [name for name, r in checks.items() if not r['pass']]}))

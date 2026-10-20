@@ -20,6 +20,8 @@ import json
 import math
 import re
 from dataclasses import dataclass, field
+from datetime import date
+from decimal import Decimal, InvalidOperation
 from typing import Iterable, Mapping, Sequence
 
 from stock_opportunity_agent.data.disclosure import document_card
@@ -28,7 +30,9 @@ from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_core import (
     EvolutionCase,
     _company_facts_context,
+    _company_fact_periods_comparable,
     _evidence_source_family,
+    _optional_iso_date,
     _query_relevant_excerpt,
 )
 
@@ -140,9 +144,22 @@ def _facts_from_document(
     )
     if context is None:
         return ()
+    payload = json.loads(document.content)
+    value_key = ("value" if payload.get("schema_version") == "sec-company-facts-document-v1" else "val")
     facts: list[EvidenceFact] = []
     for concept in context["concepts"]:
-        for record_index, record in enumerate(concept.get("records", ())):
+        records = tuple(concept.get("records", ()))
+        parsed_records = []
+        for record in records:
+            try:
+                parsed = json.loads(str(record.get("exact_span", "")))
+            except json.JSONDecodeError:
+                continue
+            if isinstance(parsed, Mapping):
+                parsed_records.append(parsed)
+        latest_end = max((_optional_iso_date(row.get("end")) or date.min
+                          for row in parsed_records), default=date.min)
+        for record in records:
             span = str(record.get("exact_span", ""))
             if not span:
                 continue
@@ -150,7 +167,7 @@ def _facts_from_document(
                 parsed = json.loads(span)
             except json.JSONDecodeError:
                 continue
-            if not isinstance(parsed, Mapping) or "val" not in parsed:
+            if not isinstance(parsed, Mapping) or value_key not in parsed:
                 continue
             period = {
                 key: str(parsed[key])
@@ -172,9 +189,9 @@ def _facts_from_document(
                     concept=str(concept["concept"]),
                     unit=str(concept["unit"]),
                     period=period or None,
-                    value=str(parsed["val"]),
+                    value=str(parsed[value_key]),
                     record_selection=(
-                        "latest" if record_index == 0 else "comparable_prior"
+                        "latest" if _optional_iso_date(parsed.get("end")) == latest_end else "comparable_prior"
                     ),
                     document_ref=f"document-{document.document_id}",
                     exact_span=span,
@@ -215,32 +232,108 @@ def project_facts_from_documents(
     return tuple(facts)
 
 
+def _fact_period(fact: EvidenceFact) -> dict[str, str] | None:
+    """Read an explicit valid period without inventing a comparison basis."""
+    if not isinstance(fact.period, Mapping):
+        return None
+    try:
+        end = date.fromisoformat(fact.period["end"])
+        start = date.fromisoformat(fact.period["start"]) if "start" in fact.period else None
+    except (KeyError, TypeError, ValueError):
+        return None
+    if start is not None and start > end:
+        return None
+    return {"end": end.isoformat(), **({"start": start.isoformat()} if start is not None else {})}
+
+
+def _fact_taxonomy(fact: EvidenceFact) -> str:
+    """Typed whole rows prove a namespace; legacy leaf spans do not."""
+    try:
+        row = json.loads(fact.exact_span)
+    except (TypeError, ValueError):
+        return ""
+    value = row.get("taxonomy") if isinstance(row, Mapping) else None
+    return value if isinstance(value, str) else ""
+
+
+def _fact_value_key(fact: EvidenceFact) -> tuple[str, object]:
+    """Compare numeric spellings exactly, preserving every original value/span."""
+    try:
+        value = Decimal(fact.value)
+        if value.is_finite():
+            return ("number", value)
+    except (InvalidOperation, TypeError, ValueError):
+        pass
+    return ("literal", fact.value)
+
+
+def _fact_basis(fact: EvidenceFact) -> tuple[object, ...]:
+    period = _fact_period(fact) or {}
+    return (fact.case_ref, fact.concept, fact.unit, _fact_taxonomy(fact),
+            period.get("start"), period.get("end"), _fact_value_key(fact))
+
+
+def _unique_latest_fact(facts: Sequence[EvidenceFact]) -> EvidenceFact | None:
+    """Return a scalar only when all current unit/duration/value bases agree."""
+    if not facts or any(_fact_period(fact) is None for fact in facts):
+        return None
+    if len({(fact.case_ref, fact.concept, fact.unit, _fact_taxonomy(fact)) for fact in facts}) != 1:
+        return None
+    latest_end = max(_fact_period(fact)["end"] for fact in facts)
+    latest = [fact for fact in facts if _fact_period(fact)["end"] == latest_end]
+    if len({_fact_basis(fact) for fact in latest}) != 1:
+        return None
+    return min(latest, key=lambda fact: fact.fact_ref)
+
+
+def _unique_period_pair(facts: Sequence[EvidenceFact]) -> tuple[EvidenceFact, EvidenceFact] | None:
+    """Require one current basis before looking for a unique local prior."""
+    latest = _unique_latest_fact(facts)
+    if latest is None:
+        return None
+    by_ref = {fact.fact_ref: fact for fact in facts}
+    pairs = [tuple(by_ref[ref] for ref in relation.fact_refs)
+             for relation in build_same_concept_relations(facts)]
+    pairs = [pair for pair in pairs if _fact_basis(pair[0]) == _fact_basis(latest)]
+    if not pairs or len({(_fact_basis(pair[0]), _fact_basis(pair[1])) for pair in pairs}) != 1:
+        return None
+    return min(pairs, key=lambda pair: (pair[0].fact_ref, pair[1].fact_ref))
+
+
 def build_same_concept_relations(
     facts: Sequence[EvidenceFact],
 ) -> tuple[EvidenceRelation, ...]:
-    """Pair each concept's latest record with its comparable prior."""
-
-    grouped: dict[tuple[str, str, str], dict[str, EvidenceFact]] = {}
+    """Build at most one unambiguous nearest local pair per current period."""
+    grouped: dict[tuple[str, ...], list[EvidenceFact]] = {}
     for fact in facts:
-        grouped.setdefault(
-            (fact.case_ref, fact.concept, fact.unit), {}
-        )[fact.record_selection] = fact
-    relations: list[EvidenceRelation] = []
-    for (case_ref, _concept, _unit), roles in sorted(grouped.items()):
-        latest = roles.get("latest")
-        prior = roles.get("comparable_prior")
-        if latest is None or prior is None:
+        key = (fact.case_ref, fact.concept, fact.unit, fact.document_ref,
+               fact.content_hash, _fact_taxonomy(fact))
+        grouped.setdefault(key, []).append(fact)
+    relations = []
+    for key, group in sorted(grouped.items()):
+        if not key[3] or not key[4] or any(_fact_period(fact) is None for fact in group):
             continue
-        relations.append(
-            EvidenceRelation(
-                relation_ref="relation-" + _opaque_ref(
-                    "same_concept", latest.fact_ref, prior.fact_ref
-                ),
-                kind="same_concept_period_pair",
-                fact_refs=(latest.fact_ref, prior.fact_ref),
-                case_ref=case_ref,
-            )
-        )
+        latest_end = max(_fact_period(fact)["end"] for fact in group)
+        periods: dict[tuple[str | None, str], list[EvidenceFact]] = {}
+        for fact in group:
+            periods.setdefault((_fact_period(fact).get("start"), _fact_period(fact)["end"]), []).append(fact)
+        for period, alternatives in sorted(periods.items(), key=lambda item: str(item[0])):
+            if period[1] != latest_end or len({_fact_value_key(fact) for fact in alternatives}) != 1:
+                continue
+            current = min(alternatives, key=lambda fact: fact.fact_ref)
+            prior = [fact for fact in group if _fact_period(fact)["end"] < latest_end
+                     and _company_fact_periods_comparable(current.period, fact.period)]
+            if not prior:
+                continue
+            prior_end = max(_fact_period(fact)["end"] for fact in prior)
+            prior = [fact for fact in prior if _fact_period(fact)["end"] == prior_end]
+            if len({_fact_basis(fact) for fact in prior}) != 1:
+                continue
+            previous = min(prior, key=lambda fact: fact.fact_ref)
+            relations.append(EvidenceRelation(
+                relation_ref="relation-" + _opaque_ref("same_concept", current.fact_ref, previous.fact_ref),
+                kind="same_concept_period_pair", fact_refs=(current.fact_ref, previous.fact_ref),
+                case_ref=current.case_ref))
     return tuple(relations)
 
 

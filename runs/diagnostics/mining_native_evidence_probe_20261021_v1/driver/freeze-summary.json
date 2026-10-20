@@ -1,0 +1,10 @@
+{
+  "control_count": 7,
+  "execution_directory_exists": false,
+  "native_helper_calls": 0,
+  "native_probe_executions": 0,
+  "plan_sha256": "3e3416fd3f1fe830d1ece62ba9769e508c166f605ee4226c4a91e6d8c20f006e",
+  "script_sha256": "00c34ffab06a28c0f6dafa7e3d4e8367b6e06eae939d24cd001676a12a7614a3",
+  "source_binding_count": 4135,
+  "spec_sha256": "87ad38320f69fee93c178e49c5cbc0d17c9f50011b43a80ce0748d33a4d9d344"
+}

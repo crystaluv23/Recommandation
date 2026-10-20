@@ -2280,8 +2280,12 @@ class SignalEvolutionTests(TestCase):
         self.assertEqual(revenue["taxonomy"], "us-gaap")
         self.assertEqual(revenue["label"], "Revenue from customers")
         self.assertEqual(revenue["unit"], "USD")
-        self.assertEqual(len(revenue["records"]), 2)
-        self.assertIn('"val":101', revenue["records"][0]["exact_span"])
+        self.assertEqual(len(revenue["records"]), 3)
+        self.assertEqual(
+            [(row["end"], row["val"]) for row in
+             (json.loads(record["exact_span"]) for record in revenue["records"])],
+            [("2025-06-30", 101), ("2025-06-30", 100), ("2025-03-31", 100)],
+        )
         self.assertNotIn('"filed":"2025-10-15"', json.dumps(view))
         operating_income = concepts["OperatingIncomeLoss"]
         self.assertEqual(len(operating_income["records"]), 2)

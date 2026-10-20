@@ -1,0 +1,146 @@
+{
+  "verdict": "PASS for existing non-namespace controls only; namespace/H1 remain explicit pending",
+  "script_sha256": "be6957b855fc9c79e3e534b8894345137de60a47d1588ae2946d7bc4c3ebb40f",
+  "baseline_head": "1a2e7f87a56561a3356af89a5a476a5a07d7683a",
+  "comparison": [
+    {
+      "file": "baseline-results.json",
+      "tests": 21,
+      "failures": 16,
+      "errors": 0,
+      "test_sha256": "be6957b855fc9c79e3e534b8894345137de60a47d1588ae2946d7bc4c3ebb40f"
+    },
+    {
+      "file": "baseline-dual-key-results.json",
+      "tests": 21,
+      "failures": 12,
+      "errors": 0,
+      "test_sha256": "be6957b855fc9c79e3e534b8894345137de60a47d1588ae2946d7bc4c3ebb40f"
+    },
+    {
+      "file": "candidate-results.json",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "test_sha256": "be6957b855fc9c79e3e534b8894345137de60a47d1588ae2946d7bc4c3ebb40f"
+    },
+    {
+      "file": "candidate-dual-key-results.json",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "test_sha256": "be6957b855fc9c79e3e534b8894345137de60a47d1588ae2946d7bc4c3ebb40f"
+    }
+  ],
+  "original0671": {
+    "facts": 19,
+    "all_whole_literal_value_concept_unit_period_document_hash_availability_case_checks_pass": true,
+    "audit_sha256": "9a113c81eefbe9a2ae74e6594cc442f6b4f801e86f3fc1831fbff37556982b69",
+    "source_before_after_equal": true
+  },
+  "consumer_paths_verified": [
+    {
+      "path": "mining_controller.py:_execute(fetch_evidence/compute_statistic/read_span), _group_summary",
+      "evidence": "Real constructor and native _execute actions on synthetic in-memory sources: fetch, repeat/idempotency, generic compute, raw fact read, local pair retained after adding current-only second document, no cross-document pair; historical receipt/explicit arithmetic retained. Scalar USD/EUR ambiguity not overwritten."
+    },
+    {
+      "path": "mining_closure.py:execute_measurement",
+      "evidence": "Actual native measurement function called for unique ratio and ambiguous same-period/currency controls; source retains lists and shared _unique_latest_fact/_unique_period_pair selects operands."
+    },
+    {
+      "path": "mining_replay.py:measure_arrival",
+      "evidence": "Actual native replay measurement called with synthetic same-end alternatives; pair count0, rather than existence of two role keys. No historical replay or source research label was loaded."
+    },
+    {
+      "path": "mining_agent_tools.py:projection/build_same_concept_relations/compute_statistic",
+      "evidence": "Typed value, legacy val, literal strings, latest-end alternatives, comparable duration branches, conflicts, unit separation, input permutation, instant pairs and PIT exercised. Generic USD/shares remains5.000000, not rejected on economic grounds."
+    }
+  ],
+  "code_review_notes": [
+    "Automatic same-concept relation refresh now replaces current derived same-concept entries before update; immutable ledger receipts and explicit compute are retained. The action control covers no-cross-document stitching and retained local pair, but is not a historical cached-relation restoration test.",
+    "Legacy source context keeps same-end alternatives and shared existing period comparability; raw document bodies unchanged.",
+    "No writer tests or expected answers were read to derive this script; old failures and script bytes were frozen before candidate review."
+  ],
+  "pending_and_limits": [
+    "Legacy namespace is not reliable in EvidenceFact leaf spans; the separate namespace/interface decision and counterexample remain pending, outside these42 passing invocations.",
+    "H1 measurable-manifest counting connection remains pending and was not exercised by this script.",
+    "No new Mining measurement, model obedience, publication, successor exact-version reuse, full Slow or predictive gain is established.",
+    "No OS interruption recovery or formal completed-stage restoration was exercised.",
+    "Synthetic dual-key mode is a labeled isolation fixture; no source original was modified."
+  ],
+  "scope": {
+    "network": 0,
+    "model_calls": 0,
+    "research_labels": 0,
+    "Signal_execution": 0,
+    "old_stage_reentry": 0,
+    "product_modifications_by_reviewer": 0,
+    "synthetic_ground_truth": "Only fixed1.0 constructor dummy; no original research outcome reads."
+  },
+  "preserved_harness_errors": [
+    "initial-harness-root-path-error.log",
+    "initial-action-signature-command.log",
+    "initial-action-signature-results.json",
+    "initial-action-signature-script.py.txt",
+    "pre-isolation-mode-baseline-results.json",
+    "pre-isolation-mode-script.py.txt"
+  ],
+  "candidate_bindings": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+    }
+  ],
+  "all_writer_summary_bindings_match": true,
+  "all_before_after_bindings_match": true,
+  "evidence_files": [
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-results.json",
+      "sha256": "1e363f192025120959c1bca68c7a53a28ad4c93b6744a9a1ab248266837c4695"
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-dual-key-results.json",
+      "sha256": "d21c084ae2957fd52c498b1322633e7194e4a34caf116bc9f825f5baebe72578"
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-results.json",
+      "sha256": "35de2ad19ad73195f67ea5cd7de4b441e262d8cca693bb046558335297ae3ccf"
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-dual-key-results.json",
+      "sha256": "fb921b119d31b0e32ee040d4112cd5f9fa5e328fb860a4382f8344378107a905"
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-original19-literal-audit.json",
+      "sha256": "9a113c81eefbe9a2ae74e6594cc442f6b4f801e86f3fc1831fbff37556982b69"
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/check_semantics.py",
+      "sha256": "be6957b855fc9c79e3e534b8894345137de60a47d1588ae2946d7bc4c3ebb40f"
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/audit_original_literals.py",
+      "sha256": "e521036c403f5ea6a33912684be0a735567bba8843ee73657f04a8faa092a047"
+    },
+    {
+      "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-before-binding.json",
+      "sha256": "3eb73a195143917ca639407b53ce13930cd10470a0f7204bed3cd1206e7f3d23"
+    }
+  ]
+}

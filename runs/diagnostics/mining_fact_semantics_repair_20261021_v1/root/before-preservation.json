@@ -1,0 +1,19 @@
+{
+  "revision": "1a2e7f87a56561a3356af89a5a476a5a07d7683a",
+  "unchanged_required": {
+    "runs/cold_start/minimal_rounds_v151/fast_summary.json": "441c565efda31b60453837ce8d405a951bcc19f6c8691604a3abc18710475c77",
+    "runs/cold_start/minimal_rounds_v151/fast_trajectories.json": "4734ab1a71ee3c20231e38a860e8176bdc4976816c8019d674cd887b144dd140",
+    "runs/cold_start/minimal_rounds_v182_integrated/cycle_state.json": "5619ac234153d2946c4d186e18a04043d4bf7e0739ae75859a6c91180fb00bf6",
+    "runs/cold_start/minimal_rounds_v182_integrated/state.json": "e2cb3bbef7bfcfa62c4a1c218c181ac49796e6ebbd94851224ddbe1ed8dc2de9",
+    "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/completed-files.json": "2b06a96555177a84df077fdc45698e29eca92f38607ff31450ac6e4c6d7e0720",
+    "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/execution-start.json": "a50656f950bd00e491467ac5e0acafc740de4a64de9160e2d07576a1c3daf941",
+    "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/observations.json": "0472edbe90bc4b0a6876aedde9328ba0ea281efe3328c9c15db0fa814380c228",
+    "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/result.json": "bc5e9263a071691a30546d9d595e05d941aacae0aeafa8655e2fad0d7e887871",
+    "spec/architecture.md": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1",
+    "spec/src/stock_opportunity_agent/memory/knowledge.md": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba",
+    "spec/src/stock_opportunity_agent/research/evolution_control.md": "6551ca4ccffe2aaedb72d967d1905a40bd214206d93f794f3b73720c89222c83",
+    "spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b",
+    "spec/src/stock_opportunity_agent/research/plan_evolution.md": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e",
+    "spec/src/stock_opportunity_agent/research/signal_evolution.md": "b1d0009516ede8d40c673e64bbe15dc0a509dd4113d959e859a8f64a84a5d715"
+  }
+}
