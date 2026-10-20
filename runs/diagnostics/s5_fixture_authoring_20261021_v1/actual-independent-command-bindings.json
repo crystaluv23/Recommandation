@@ -1,0 +1,20 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-probe.py > runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-first.log 2>&1",
+  "exit_code": 0,
+  "artifacts": {
+    "actual-independent-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-probe.py",
+      "sha256": "0ae85d4312c9d2f8a13225e21efce10794adab91e6c5a12b6894456568c951ce"
+    },
+    "actual-independent-first.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-first.log",
+      "sha256": "e30f9bdc85ddaf4328fb7ddbc25ebf295c8d62f13de7447b021eb6baad039cc9"
+    },
+    "actual-independent-review.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-review.json",
+      "sha256": "6d120fc27d5072fb59a63326048267cfeb857bda6529a9def30194b4fc0ecb7a"
+    }
+  },
+  "pure_read_only": true,
+  "first_attempt_passed": true
+}

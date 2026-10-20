@@ -1,0 +1,129 @@
+{
+  "loaded_tests": [
+    {
+      "as_of": "2025-03-01T00:00:00+00:00",
+      "company_id": "cik_0000000001",
+      "documents": [
+        {
+          "available_at": "2025-02-16T00:00:00+00:00",
+          "content": "{\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":120},{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}],\"filing_date\":\"2025-02-15\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+          "document_id": "typed_revenue_2025_02_15",
+          "metadata": {
+            "cik": "0000000001"
+          },
+          "published_at": "2025-02-16T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "positive",
+      "name": "typed_sec_company_facts_revenue_growth_25_percent"
+    },
+    {
+      "as_of": "2025-03-01T00:00:00+00:00",
+      "company_id": "cik_0000000001",
+      "documents": [
+        {
+          "available_at": "2025-02-16T00:00:00+00:00",
+          "content": "{\"cik\":\"0000000001\",\"facts\":{\"us-gaap\":{\"Revenues\":{\"units\":{\"USD\":[{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"val\":120},{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"val\":150}]}}}}}",
+          "document_id": "legacy_revenue_2025_02_15",
+          "metadata": {
+            "cik": "0000000001"
+          },
+          "published_at": "2025-02-16T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "positive",
+      "name": "legacy_sec_company_facts_revenue_growth_25_percent"
+    }
+  ],
+  "results": [
+    {
+      "evidence": {
+        "counter": [],
+        "supporting": [
+          {
+            "document_id": "author-0-0",
+            "exact_span": "{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}",
+            "timestamp": "2025-02-16T00:00:00+00:00"
+          },
+          {
+            "document_id": "author-0-0",
+            "exact_span": "{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":120}",
+            "timestamp": "2025-02-16T00:00:00+00:00"
+          }
+        ]
+      },
+      "execution": {
+        "status": "success"
+      },
+      "interpretation": {
+        "summary": "revenue_growth_yoy=0.25"
+      },
+      "measurement": {
+        "formula": "current / comparable prior-year revenue - 1",
+        "period": {
+          "end": "2024-12-31",
+          "start": "2024-01-01"
+        },
+        "unit": "fraction",
+        "value": 0.25
+      },
+      "signal_id": "fixture_author_revenue_growth",
+      "state": {
+        "confidence": 1.0,
+        "value": "positive"
+      },
+      "status": {
+        "coverage": "sufficient"
+      },
+      "version": 1
+    },
+    {
+      "evidence": {
+        "counter": [],
+        "supporting": [
+          {
+            "document_id": "author-1-0",
+            "exact_span": "{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"val\":150}",
+            "timestamp": "2025-02-16T00:00:00+00:00"
+          },
+          {
+            "document_id": "author-1-0",
+            "exact_span": "{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"val\":120}",
+            "timestamp": "2025-02-16T00:00:00+00:00"
+          }
+        ]
+      },
+      "execution": {
+        "status": "success"
+      },
+      "interpretation": {
+        "summary": "revenue_growth_yoy=0.25"
+      },
+      "measurement": {
+        "formula": "current / comparable prior-year revenue - 1",
+        "period": {
+          "end": "2024-12-31",
+          "start": "2024-01-01"
+        },
+        "unit": "fraction",
+        "value": 0.25
+      },
+      "signal_id": "fixture_author_revenue_growth",
+      "state": {
+        "confidence": 1.0,
+        "value": "positive"
+      },
+      "status": {
+        "coverage": "sufficient"
+      },
+      "version": 1
+    }
+  ],
+  "schemas": [
+    "legacy",
+    "typed"
+  ],
+  "signal_ref": "fixture_author_revenue_growth:v1"
+}

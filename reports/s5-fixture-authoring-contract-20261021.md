@@ -92,3 +92,44 @@ publication, effect, successor reuse or complete S5/MVP. The default LLM
 cash-ratio retrieval gap and whole Fast/Slow feedback loop remain open. No
 external LLM API, real-label read, public-source acquisition, real Registry
 publication or completed-stage reentry is authorized by this local repair.
+
+## Actual first answer and completed restore
+
+Fresh independent `role_78` read only the native inbox and wrote one original
+JSON answer. There was one request/receipt, no model correction and no fixture
+rewriting. The actual request contained the shared semantics, tests schema and
+six short source excerpts; private expectations and the expected 0.25 outcome
+were absent from its wire.
+
+The unchanged native validator accepted both authored schema fixtures, then the
+isolated candidate was saved and read back. The
+[independent actual review](../runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-review.json)
+passes the fixed **2/2 schema controls**. Each complete document preserves its
+two supplied canonical fact rows, synthetic body/company/metadata CIK,
+USD values 120/150, filed/public/cutoff boundaries and 2024 annual measurement
+duration. Persisted native results are successful positive measurements of
+0.25, with evidence limited to the actual corresponding operands. Original
+raw tests, parsed cache, staged tests and loaded tests agree exactly. The
+`mining:controller` origin describes the reused staging API; no full Mining
+controller or cycle ran.
+
+The logical reservation is 14241 of 131072; actual host tokens/cost remain
+unknown. External LLM API, GET, real labels and stable publication remain zero.
+Root and independent audits verify all 177 frozen code bindings. One actual
+[completed restore](../runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-completed-restore.json)
+preserves all 20 stage files byte-for-byte and dispatches no new role. This is
+completed-state recovery, not proof of operating-system interruption recovery.
+
+Root's initial audit misread the saved nested result and persisted tests wrapper;
+both audit-only failures and the correction are retained. They caused no stage
+rerun or product alteration, and all 20 files still match the restore map.
+One additional diagnostic limitation remains explicit: its private oracle uses
+exact timestamp-string equality, so equivalent `Z`/offset spellings have not
+been accepted as a capability control. This actual answer uses the supplied
+`+00:00` representation and is unaffected. Frozen code/products are not changed
+to conceal that untested boundary.
+
+This closes only the bounded fresh tests-author control and its exact local
+consumer connection. General new-spec/implementation generation, Mining,
+technical publication, successor reuse, full S5/MVP and independent benefit
+remain open.

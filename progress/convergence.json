@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T19:24:45+00:00",
+    "checked_at": "2026-10-20T19:35:10+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal in current continuation; unlimited goal; local S5 producer fix, no full successor"
+    "source": "Actual root get_goal after first-answer fixture stage and independent actual review; no budget limit; full MVP remains open"
   },
   "acceptance": [
     {
@@ -162,7 +162,12 @@
         "runs/diagnostics/s5_fixture_authoring_20261021_v1/root-connected-result.json",
         "runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/final-review.json",
         "runs/diagnostics/s5_fixture_authoring_20261021_v1/independent/content-shape-probe.json",
-        "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/two-old-source-failures-v2.json"
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/driver/two-old-source-failures-v2.json",
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/root-actual-result.json",
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-completed-restore.json",
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-review.json",
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-command-bindings.json",
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/initial-error-root-actual-audit.json"
       ],
       "remaining": "Actual deterministic input connection verified for default6/6 and latest9/9 within10, not Signal arithmetic/model semantics or wholeF5. Allfinancial-source membership8/9 and9/9;defaultLLM cashratio latestQ1 stillmissing withgenericselection unchanged.Future named positive fixture producers now explicitly bind CIK; actual old/new CLI2to0 with14enabled,158connected tests pass and independent strict negative/native constructor controls pass; historical failures/Registry bytes stay. Shared S5 execution-contract prompt still omits explicit CIK obligations; fresh model authoring unverified. Source57/4/53 and1780view preserve history; original40 readiness670/720 each is earlier1776-view evidence. BasicInfo partial/newsunknown;newfrozen F7 temporal target3of3 with9fresh roles andexact consumers/restores, original0of1 retained/mirrorunexercised. p01 auxiliary honest uncertainty belief mechanically deleted by unavailable token guard, exact purehelper/typedauthority reproduce; wholeF7 stillopen. F10/Slow/direction+magnitude discovery/admission/exactreuse/fullclosedloop unverified. BURUbaseline/FTItype/MSclock/transcriptpublictimeproof/retrospectivefinancialprimaryaudit limits persist;benefitlaterunknown."
     },
@@ -1099,16 +1104,35 @@
         "runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/literal-carrier-results.json"
       ],
       "result": "Module-only stage fixed-root one-request budget and no-retry transport connected. Initial16 safe controls missed actual facts versus unrelated JSON literal carrier; old770 native result accepted fixed counterexample at correct0.25. Private oracle now binds canonical facts entries and selected evidence/source to supplied rows, separately executes each schema complete doc, rejects deadcarrier/same-ratio otherbasis while valid CIK representations survive. Public complete-document condition explicit. Root final18safe pass0.629s and independent14controls pass with raw/receipt/native stage/load/terminal-restore. Exact originals and harness failures retained. No formalprepare/freshrole/GET/labels/stablepublication or wholeS5/Mining/MVP closure."
+    },
+    {
+      "id": "engineering-mvp-s5-fixture-author-actual-20261021",
+      "strategy": "one_frozen_native_fixture_author_first_answer",
+      "failure_families": [
+        "fixture_author_contract_not_forwarded"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/s5-fixture-authoring-contract-20261021.md",
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/root-actual-result.json",
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-completed-restore.json",
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-review.json",
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-command-bindings.json",
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/initial-error-root-actual-audit.json"
+      ],
+      "result": "Actual one fresh exact-inbox role78 first answer accepted0correction, two schema fixed controls independently pass2of2. Actual native strict validator/isolated staging/load preserve raw/cache/staged/loaded tests; literal USD120/150 operands, canonical syntheticCIK, publication cutoff and2024duration give0.25 positive under unchanged seed parameters.177frozen codebindings verified,20stagefiles unique completedrestore equal/0newdispatch;14241logical reservation, hostcostunknown. Root initial audit wrongly assumed flat saved result then bare tests list; both corrected read-only and20sealedfiles unchanged. No externalLLMAPI/GET/real labels/stablepublication/fullMining/newmeasurementimplementation/reuse/fullS5/MVP/benefit. Private stage exacttimestamp-string comparison remains an untested equivalent-Z/offset boundary, unaffected current+00controls, no frozen hotfix. Next diagnose actual defaultLLM57to10 source selection/read access before broader Slow work."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-s5-fixture-stage-preflight-20261021",
+    "after_iteration": "engineering-mvp-s5-fixture-author-actual-20261021",
     "evidence": [
       "reports/s5-fixture-authoring-contract-20261021.md",
-      "runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/root-stage-safe-final-tests.log",
-      "runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-review.json",
-      "runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/final-stage-command-bindings.json",
-      "runs/diagnostics/s5_fixture_authoring_20261021_v1/stage-preflight/independent/literal-carrier-results.json"
+      "runs/diagnostics/s5_fixture_authoring_20261021_v1/root-actual-result.json",
+      "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-completed-restore.json",
+      "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-review.json",
+      "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-command-bindings.json",
+      "runs/diagnostics/s5_fixture_authoring_20261021_v1/initial-error-root-actual-audit.json",
+      "reports/gpre-readable-period-selection-20261021.md"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1170,22 +1194,23 @@
       "An oracle with self-declared distinct roots only protected postfreeze relocation; coherently changing oracle and roots before freeze could create another budget group. Root initially advised against fixed roots and missed this distinction. Independent original/native counterexample now contrasts old admission with profile-owned fixed-root rejection; no generic budget mechanism was added. Reflect visibility is prior6quotes plus current results; seventeen bootstrap cards belong to final consumers.",
       "Checking residual scope, adopted evidence and downstream exactness alone misses auxiliary raw operations deleted by deterministic repair. Actual first answer p01 contains a truthful coverage-only mixed belief; topic subset plus any negative marker misclassifies the explicit negation of economic absence. Native acceptance with0model corrections can include mechanical deletion. Independent raw-to-state delta and exact helper reproduction expose it; target3of3 is scoped separately. Root terminal audit also initially ignored the existing identity mask and was corrected without product rerun.",
       "Correction to preceding p01 diagnosis: existing field placement and atomic quarantine authorize removal; raw deletion alone did not prove critical information loss. The demonstrated new bugs are marker-free weak acceptance and same-topic exact-source misattribution. Initial13/28 missed the no-unavailable adjacent restoration path; root281 exposed2 eager-projection regressions, final282 and independent31 now cover it. S5 shared execution instructions also never reached the separate tests-materialization request, so only editing that helper would not fix the actual producer.",
-      "Shared authoring text only reached spec/legacy roles, not the independent tests author; even new schema field documentation required explicit tests_schema forwarding. str(dict) converted an invalid fixture shape to parse-skip/unavailable, so instruction presence was weaker than consumer enforcement. Prior158 numeric/runtime selectors missed two Slow producers still omitting metadata; current66 covers them. A private stage oracle accepted supplied fact literals in an unrelated JSON carrier while executable rows lacked source fields, so whole-body substring and same-ratio success are weaker than actual row lineage."
+      "Shared authoring text only reached spec/legacy roles, not the independent tests author; even new schema field documentation required explicit tests_schema forwarding. str(dict) converted an invalid fixture shape to parse-skip/unavailable, so instruction presence was weaker than consumer enforcement. Prior158 numeric/runtime selectors missed two Slow producers still omitting metadata; current66 covers them. A private stage oracle accepted supplied fact literals in an unrelated JSON carrier while executable rows lacked source fields, so whole-body substring and same-ratio success are weaker than actual row lineage.",
+      "Actual first answer obeys explicit shared fixture semantics/schema and both supplied schemas, but accepted known spec/hand-frozen synthetic facts prove tests-author behavior only. Root twice assumed saved data shape instead of inspecting it (nested state, tests wrapper); correction was read-only with all20 sealed bytes unchanged. Diagnostic timestamp-string equality may reject equivalent instants; current exact+00success cannot close that family. Default cash_ratio LLM receives only ten frequency-ranked docs, no tool to retrieve unselectedQ1, so source existence and resolved status do not prove model access."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "one_frozen_native_fixture_author_first_answer",
-      "action": "After committing code, formally prepare the unique fixed module-only root, verify all frozen bindings and actual anonymous native tests-author inbox, dispatch one fresh exact-inbox independent subagent, then inspect unchanged raw response through native validation/staging/load and exact completed restore; preserve first-answer failure without retries.",
-      "stop": "Exactly one production request,4000 output,131072 logical reservation,zero correction/semantic retry. Any input/code drift or insufficient author contract stops before dispatch. A failed first answer is terminal; no old-root reentry, real labels, public GET, stable publication or full successor.",
-      "question": "Can a fresh independent tests author, given actual accepted spec/shared contract/schema and frozen synthetic source facts, author valid faithful fixtures for both supported Company Facts schemas?",
-      "pass": "One first answer accepted by unchanged strict native validator, isolated staged/loaded fixtures match raw, both schema controls execute using exact original operands at expected period, independent review confirms lineage and completed restore preserves all artifacts without new dispatch.",
-      "fail": "First format/shape/semantic answer rejected, either schema missing or wrong operands/source/PIT/issuer accepted, or downstream records differ from raw/loaded fixtures.",
-      "on_pass": "Close only this bounded fresh fixture-authoring control; continue default LLM input and Slow discovery/admission/exactreuse prerequisites, not claim full S5 or MVP.",
-      "on_fail": "Retain fixed denominator and raw failure, classify first mismatch against frozen input/contract; repair applicable family separately without repeating the completed stage until success.",
-      "new_evidence": "Source contract/content family root66 and independent22 pass. Final stage root18 and independent14 pass after an actual accepted dead-carrier counterexample was corrected. Fresh model obedience remains the missing next evidence layer.",
-      "distinguishing_variable": "Fresh independently generated native response rather than scripted fixture output; strict validator and private original-row oracle evaluated separately, then exact stored consumer artifacts.",
-      "authorization_evidence": "Active engineering MVP user goal with independent subagents for LLM nodes; unlimited goal budget, no external LLM API. This explicit new bounded module-only diagnostic permits one internal-role request, no publication/full successor or old experiment resume."
+      "strategy": "default_llm_financial_source_selection_and_access_before_model",
+      "action": "Use the completed qualified GPRE view and actual default_v6 cash_to_current_liabilities_ratio:v1 request/skill to bind the57eligible/10selected pool, exact latest concept/period/unit witnesses and ranking causes. Trace actual StructuredLLMSignalRunner payload/read capabilities for unselected sources. Compare bounded generic selection counterexamples without changing old Registry, executing model/ratio, appending sources or reading labels.",
+      "stop": "No hardcoded Signal/company/schema bypass, prose parsed as an invented measurement contract, silent switch to v12, rewritten published skill, global ranking change or new LLM role before evidence identifies a necessary producer/read fix. Completed S5/F7/source stages remain immutable; no full successor.",
+      "question": "Is the default LLM financial gap caused by unavailable qualifying source data, selection under the10-doc cap, or a reading channel that can already reach the omitted latest source?",
+      "pass": "Exact qualified source contains both needed latest concepts at legal issuer/period/unit/PIT and actual ranking excludes it; outgoing role/read channels prove whether it can recover the omitted source. Representative long-old-text/keyword/dominance controls distinguish the producer/read cause without using an output score.",
+      "fail": "Latest qualified source lacks a required concept/period or actual supported read channel already exposes it; the previous typed-Q1 membership flag alone overstates a measurement gap.",
+      "on_pass": "Prepare the smallest spec-first repair at the first failing selection/read boundary, preserving generic source types and bounded budgets, then validate actual current-payload consumption before a fresh Signal apply.",
+      "on_fail": "Keep honest specific input/readability gap and inspect the real available measurement basis; do not hardcode a newer document or declare model failure without an actual call.",
+      "new_evidence": "Fresh fixture author first answer passes2schema native controls and completedrestore; broader Slow capability remains open. Actual default cash_ratio has57matched eligible/10selected all older; generic query count ranks before availability, LLM has no deterministic callable-owned selector and native runner only projects selected docs. Old published skill accession-prefix identity wording is a separate unexecuted risk.",
+      "distinguishing_variable": "All qualified eligible source facts versus exact selected and model-visible documents, with fixed ref/version/query/cap and no model output; actual recovery channel existence is checked separately from local retention.",
+      "authorization_evidence": "Active user engineering MVP goal, public read-only sources permitted, externalLLMAPI prohibited; this next step is local read-only diagnosis with no new role/GET/label/publication or full successor. No old experiment resume."
     }
   },
   "successor_prerequisites": [

@@ -1,0 +1,15 @@
+{
+  "candidate_ref": "fixture_author_revenue_growth:v1",
+  "external_llm_api_calls": 0,
+  "host_cost": null,
+  "host_tokens": null,
+  "labels_read": 0,
+  "loaded_candidate": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/loaded-candidate.json",
+    "sha256": "b09497cec165d005cdc95dd49c54ce52d5e31bd973273d2e12f8623d315c790c"
+  },
+  "logical_reservation": 14241,
+  "module_only": true,
+  "stable_publications": 0,
+  "status": "module_completed_requires_independent_review"
+}

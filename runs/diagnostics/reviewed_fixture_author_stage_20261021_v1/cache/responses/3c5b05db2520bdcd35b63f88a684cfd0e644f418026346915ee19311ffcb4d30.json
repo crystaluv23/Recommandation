@@ -1,0 +1,58 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "tests": [
+      {
+        "as_of": "2025-03-01T00:00:00+00:00",
+        "company_id": "cik_0000000001",
+        "documents": [
+          {
+            "available_at": "2025-02-16T00:00:00+00:00",
+            "content": "{\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":120},{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}],\"filing_date\":\"2025-02-15\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+            "document_id": "typed_revenue_2025_02_15",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "published_at": "2025-02-16T00:00:00+00:00",
+            "source_type": "financials"
+          }
+        ],
+        "expected": "positive",
+        "name": "typed_sec_company_facts_revenue_growth_25_percent"
+      },
+      {
+        "as_of": "2025-03-01T00:00:00+00:00",
+        "company_id": "cik_0000000001",
+        "documents": [
+          {
+            "available_at": "2025-02-16T00:00:00+00:00",
+            "content": "{\"cik\":\"0000000001\",\"facts\":{\"us-gaap\":{\"Revenues\":{\"units\":{\"USD\":[{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"val\":120},{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"val\":150}]}}}}}",
+            "document_id": "legacy_revenue_2025_02_15",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "published_at": "2025-02-16T00:00:00+00:00",
+            "source_type": "financials"
+          }
+        ],
+        "expected": "positive",
+        "name": "legacy_sec_company_facts_revenue_growth_25_percent"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"tests\":[{\"name\":\"typed_sec_company_facts_revenue_growth_25_percent\",\"company_id\":\"cik_0000000001\",\"as_of\":\"2025-03-01T00:00:00+00:00\",\"expected\":\"positive\",\"documents\":[{\"document_id\":\"typed_revenue_2025_02_15\",\"source_type\":\"financials\",\"published_at\":\"2025-02-16T00:00:00+00:00\",\"available_at\":\"2025-02-16T00:00:00+00:00\",\"metadata\":{\"cik\":\"0000000001\"},\"content\":\"{\\\"cik\\\":\\\"0000000001\\\",\\\"facts\\\":[{\\\"end\\\":\\\"2023-12-31\\\",\\\"filed\\\":\\\"2025-02-15\\\",\\\"form\\\":\\\"10-K\\\",\\\"start\\\":\\\"2023-01-01\\\",\\\"tag\\\":\\\"Revenues\\\",\\\"taxonomy\\\":\\\"us-gaap\\\",\\\"unit\\\":\\\"USD\\\",\\\"value\\\":120},{\\\"end\\\":\\\"2024-12-31\\\",\\\"filed\\\":\\\"2025-02-15\\\",\\\"form\\\":\\\"10-K\\\",\\\"start\\\":\\\"2024-01-01\\\",\\\"tag\\\":\\\"Revenues\\\",\\\"taxonomy\\\":\\\"us-gaap\\\",\\\"unit\\\":\\\"USD\\\",\\\"value\\\":150}],\\\"filing_date\\\":\\\"2025-02-15\\\",\\\"form\\\":\\\"10-K\\\",\\\"schema_version\\\":\\\"sec-company-facts-document-v1\\\"}\"}]},{\"name\":\"legacy_sec_company_facts_revenue_growth_25_percent\",\"company_id\":\"cik_0000000001\",\"as_of\":\"2025-03-01T00:00:00+00:00\",\"expected\":\"positive\",\"documents\":[{\"document_id\":\"legacy_revenue_2025_02_15\",\"source_type\":\"financials\",\"published_at\":\"2025-02-16T00:00:00+00:00\",\"available_at\":\"2025-02-16T00:00:00+00:00\",\"metadata\":{\"cik\":\"0000000001\"},\"content\":\"{\\\"cik\\\":\\\"0000000001\\\",\\\"facts\\\":{\\\"us-gaap\\\":{\\\"Revenues\\\":{\\\"units\\\":{\\\"USD\\\":[{\\\"end\\\":\\\"2023-12-31\\\",\\\"filed\\\":\\\"2025-02-15\\\",\\\"form\\\":\\\"10-K\\\",\\\"start\\\":\\\"2023-01-01\\\",\\\"val\\\":120},{\\\"end\\\":\\\"2024-12-31\\\",\\\"filed\\\":\\\"2025-02-15\\\",\\\"form\\\":\\\"10-K\\\",\\\"start\\\":\\\"2024-01-01\\\",\\\"val\\\":150}]}}}}}\"}]}]}\n",
+  "request_hash": "3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30",
+  "response_id": "local-3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30",
+  "usage": {
+    "accounting_tokens": 14241,
+    "agent_id": "/root/role_78",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "99aba2421c2ff47be01b93fa30426dcd22fa724c3e6ddd6ce660616a3d555134",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "e13d33245349b5286c87f5de37b3928f2a1e37b73d5c1446a39e82ea1c39a962",
+    "request_hash": "3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30",
+    "token_usage": null
+  }
+}

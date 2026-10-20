@@ -1,0 +1,16 @@
+{
+  "errors": [
+    {
+      "tool_output_chunk_id": "16d654",
+      "observed": "KeyError: value",
+      "cause": "Audit assumed flat result.value; actual saved result uses result.state.value."
+    },
+    {
+      "tool_output_chunk_id": "ba37b3",
+      "observed": "AssertionError at raw/staged equality",
+      "cause": "Audit compared raw tests list with persisted tests JSON wrapper object instead of its tests field."
+    }
+  ],
+  "product_effect": "First audit used two native Registry getters solely to load existing staged tests; later audits only read JSON. All20 sealed stage files are exactly the completed-restore after map. No product repairs, validator or stage rerun.",
+  "correction": "Inspected saved structures; compare native result.state and persisted tests.tests directly."
+}

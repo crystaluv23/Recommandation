@@ -1,0 +1,38 @@
+{
+  "request_hash": "3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30",
+  "agent_id": "/root/role_78",
+  "raw_output_sha256": "e13d33245349b5286c87f5de37b3928f2a1e37b73d5c1446a39e82ea1c39a962",
+  "inbox_sha256": "99aba2421c2ff47be01b93fa30426dcd22fa724c3e6ddd6ce660616a3d555134",
+  "manifest_hash": "cadf061d99611e3dff7564f8357536a0d97b2f7f836a30643d0bf3f320b90f8e",
+  "code_files_verified": 177,
+  "first_answers": 1,
+  "model_corrections": 0,
+  "receipts": 1,
+  "raw_staged_loaded_tests_equal": true,
+  "control_denominator": 2,
+  "actual_values": [
+    0.25,
+    0.25
+  ],
+  "actual_periods": [
+    {
+      "end": "2024-12-31",
+      "start": "2024-01-01"
+    },
+    {
+      "end": "2024-12-31",
+      "start": "2024-01-01"
+    }
+  ],
+  "logical_reservation": 14241,
+  "host_tokens": null,
+  "host_cost": null,
+  "external_llm_api_calls": 0,
+  "GETs": 0,
+  "real_labels": 0,
+  "stable_publications": 0,
+  "completed_restore": "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-completed-restore.json",
+  "stage_files_still_exact": 20,
+  "known_limit": "Private diagnostic oracle checks exact timestamp strings; equivalent Z/offset input has not been validated. Actual frozen answer uses exact supplied +00:00 timestamps. No frozen code/artifacts changed.",
+  "scope": "Accepted known spec and synthetic materials; tests-author module only, not discovery/new measurement implementation/admission/publication/reuse/full S5 or MVP."
+}

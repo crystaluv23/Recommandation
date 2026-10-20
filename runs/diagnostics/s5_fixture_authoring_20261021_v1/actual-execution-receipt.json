@@ -1,0 +1,30 @@
+{
+  "code_checkpoint": "c81c1986cc2a05bc6605fce234ae671acfb35fd0",
+  "input_checkpoint": "073309b8",
+  "calls": [
+    {
+      "operation": "initial resume",
+      "exit_code": 0,
+      "tool_output_chunk_id": "9423f8",
+      "status": "pending_independent_role"
+    },
+    {
+      "operation": "submit",
+      "exit_code": 0,
+      "tool_output_chunk_id": "a4e1ca",
+      "agent_id": "/root/role_78"
+    },
+    {
+      "operation": "accepted resume",
+      "exit_code": 0,
+      "tool_output_chunk_id": "38e1a9",
+      "status": "module_completed_requires_independent_review"
+    }
+  ],
+  "command_prefix": "PYTHONPATH=.:src:scripts:tests /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/run_reviewed_fixture_author_stage.py --root runs/diagnostics/reviewed_fixture_author_stage_20261021_v1",
+  "request_hash": "3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30",
+  "external_llm_api_calls": 0,
+  "model_first_answers": 1,
+  "model_corrections": 0,
+  "completed_restore_evidence": "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-completed-restore.json"
+}

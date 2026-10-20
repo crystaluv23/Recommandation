@@ -32,7 +32,9 @@ v6确定性6/6、v12确定性9/9选typedQ1，现金parser latest由2023末到202
 独立发现object content经str变伪JSON而冒充unavailable成功，现构造前拒非string，不自动补值；22独立控过。
 root66另暴露两个旧Slow正控漏metadata，旧HEAD同2fail；仅具名producer补3行后66全过/五tripwire0。
 fresh authoring仍未验；单次诊断actual-row与非facts载体混淆已修，18safe/14独立预审过。
-c81c1986下唯一prepare exit0，cadf061d manifest全绑定核过，尚0inbox/角色；下一首次原生pending派发。
+c81c1986/cadf061d下fresh role78唯一首答0纠错，native双schema正控2/2，14241逻辑预留；原答→cache→候选→load全等。
+177冻结binding/20files唯一完成restore保真、0新派发；仅测试作者模块，非Mining/新测量实现/发布/复用或全S5。
+诊断oracle等价Z/offset字符串边界未验，实际+00输入不受影响，完成阶段不重入。
 
 ## 已有局部证据与限制
 
@@ -66,7 +68,7 @@ c81c1986下唯一prepare exit0，cadf061d manifest全绑定核过，尚0inbox/�
 26 transcript完整公开内容时间证明仍0；按用户已选口径取已核实完整公开内容时间，原记录/旧实验保留。
 历史news污染排除/unknown不表示无事件，所有失败分母及身份屏蔽保持。
 [采集版本ID](../reports/companyfacts-capture-identity-20261021.md)已真实准入4版本；旧recipe/ID及去重保持。
-确定性最新输入已接通；默认LLM cash_ratio选文、fresh S5样本创作仍缺，不用17/18替代语义。
+确定性最新输入已接通；默认LLM cash_ratio选文仍缺，S5已具双schema fresh fixture局部证据，不用17/18替代语义。
 FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍unknown，不猜时区。
 旧v182权威Fast/Slow=1/1完成不可重启；memory失败processed0/pending3518未改作成功。
 新方向/magnitude Mining正控、忠实实现/准入、后继精确复用、完整反馈消费/闭环及独立收益均未验证。
@@ -78,5 +80,6 @@ issuer fixture生产者局部修复已过真实CLI与158关联检查，旧Regist
 新F7三控制已完成独立终态审查：目标3/3、9角色及3次唯一完成恢复；不重入、不以本批关闭整体F7。
 unavailable局部修复关联检查已过，不改冻结产物；新模型行为和mirror触发仍未验。
 S5作者既有身份/literal/schema义务已接，非string content漏门已修；严格issuer/测量/PIT不放宽。
-下一提交冻结有界单次fresh作者验证（1请求/131072逻辑预留/4000output/0纠错）；默认LLM选文与Slow发现/准入/后继使用仍待验。
+fresh S5测试作者固定控制已独立审过2/2、20files恢复完成，不重入；新测量定义/实现生成仍未验。
+下一诊断默认LLM cash_ratio的57→10选文及未选资料可读性，保持旧版本/原始顺序失败证据；Slow发现/准入/后继使用仍待验。
 LLM节点继续exact inbox独立subagent；0外部LLM API。不恢复旧运行或启动完整后继，不以0.8/输入resolved替代测量或MVP关闭。

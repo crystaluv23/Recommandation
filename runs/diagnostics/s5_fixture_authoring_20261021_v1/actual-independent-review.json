@@ -1,0 +1,132 @@
+{
+  "verdict": "PASS_actual_first_answer_two_schema_fixture_authoring",
+  "fixed_schema_denominator": 2,
+  "schema_passes": 2,
+  "cases": [
+    {
+      "schema": "typed",
+      "passed": true,
+      "model_document_id": "typed_revenue_2025_02_15",
+      "diagnostic_executor_document_id": "author-0-0",
+      "issuer": "0000000001",
+      "source_type": "financials",
+      "unit": "USD",
+      "values": [
+        120,
+        150
+      ],
+      "filed": "2025-02-15",
+      "published_and_available": "2025-02-16T00:00:00+00:00",
+      "cutoff": "2025-03-01T00:00:00+00:00",
+      "actual_fact_literals": [
+        "{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":120}",
+        "{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}"
+      ],
+      "measurement": {
+        "formula": "current / comparable prior-year revenue - 1",
+        "period": {
+          "end": "2024-12-31",
+          "start": "2024-01-01"
+        },
+        "unit": "fraction",
+        "value": 0.25
+      },
+      "classification": {
+        "confidence": 1.0,
+        "value": "positive"
+      }
+    },
+    {
+      "schema": "legacy",
+      "passed": true,
+      "model_document_id": "legacy_revenue_2025_02_15",
+      "diagnostic_executor_document_id": "author-1-0",
+      "issuer": "0000000001",
+      "source_type": "financials",
+      "unit": "USD",
+      "values": [
+        120,
+        150
+      ],
+      "filed": "2025-02-15",
+      "published_and_available": "2025-02-16T00:00:00+00:00",
+      "cutoff": "2025-03-01T00:00:00+00:00",
+      "actual_fact_literals": [
+        "{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"val\":120}",
+        "{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"val\":150}"
+      ],
+      "measurement": {
+        "formula": "current / comparable prior-year revenue - 1",
+        "period": {
+          "end": "2024-12-31",
+          "start": "2024-01-01"
+        },
+        "unit": "fraction",
+        "value": 0.25
+      },
+      "classification": {
+        "confidence": 1.0,
+        "value": "positive"
+      }
+    }
+  ],
+  "request_hash": "3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30",
+  "receipt": {
+    "agent_id": "/root/role_78",
+    "inbox_sha256": "99aba2421c2ff47be01b93fa30426dcd22fa724c3e6ddd6ce660616a3d555134",
+    "raw_output_sha256": "e13d33245349b5286c87f5de37b3928f2a1e37b73d5c1446a39e82ea1c39a962",
+    "request_hash": "3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30"
+  },
+  "first_answers": 1,
+  "model_corrections": 0,
+  "mechanical_fixture_rewrites": false,
+  "logical_reservation": 14241,
+  "host_tokens": null,
+  "host_cost": null,
+  "frozen_bindings_verified": 177,
+  "completion_artifacts_verified": 16,
+  "whole_stage_files_verified_against_root_restore": 20,
+  "request_schema_and_six_excerpt_content_exact": true,
+  "private_expected_outcome_not_in_wire": true,
+  "raw_cached_parsed_staged_loaded_tests_exact": true,
+  "native_results_are_actual_persisted_not_reexecuted": true,
+  "seed_formula_parameters_unchanged": true,
+  "only_isolated_candidate_no_stable_publication": true,
+  "restore": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-completed-restore.json",
+    "sha256": "8f4fa5304fde2e304dbf51b3535c0cdec47b3797d948ebc93fae2763408a6baf"
+  },
+  "source_bindings": {
+    "manifest.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/manifest.json",
+      "sha256": "aa8e3b90bea07cc55da020a7dae9dddc5f5e360ac684808f34828fe6ec86cfc5"
+    },
+    "inputs.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/inputs.json",
+      "sha256": "cefe1ae2cb166466fc011d0f4f35ae8c78d2e53d651e726622a461f4ff026b6e"
+    },
+    "expectations.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/expectations.json",
+      "sha256": "f6c8c5d8807586f54b09e44be029d9d157d8888f5b9790fd499d84c800336285"
+    },
+    "completion.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/completion.json",
+      "sha256": "71b2c24196928cb4cc22e64675c181b7d536e416c2c6f2a8a5de7afb83ad60c4"
+    },
+    "loaded-candidate.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/loaded-candidate.json",
+      "sha256": "b09497cec165d005cdc95dd49c54ce52d5e31bd973273d2e12f8623d315c790c"
+    }
+  },
+  "probe": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-probe.py",
+    "sha256": "0ae85d4312c9d2f8a13225e21efce10794adab91e6c5a12b6894456568c951ce"
+  },
+  "limitations": [
+    "One fresh exact-inbox role78 with synthetic facts; not full Mining/controller, new measurement implementation, stable publication, subsequent reuse, whole S5/MVP or independent benefit.",
+    "Strict timestamp-string equality in this diagnostic can reject equivalent Z/offset spellings; actual +00:00 inputs match, so this case is unaffected. No equivalent-timezone capability was tested or claimed.",
+    "Two successful native persisted results are independently audited by source facts/arithmetic/period/units; no validator/Signal execution/Store or formal resume was rerun.",
+    "Root performed one completed restore; this read-only comparison is not a second restore and does not establish OS-crash recovery.",
+    "A candidate origin string mining:controller identifies the reused staging API, not proof a full Mining cycle was executed."
+  ]
+}

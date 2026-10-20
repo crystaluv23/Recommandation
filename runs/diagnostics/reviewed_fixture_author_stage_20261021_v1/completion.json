@@ -1,0 +1,85 @@
+{
+  "artifacts": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/cache/responses/3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30.json",
+      "sha256": "0233ce7da9a7e6a2558f88f86b0a9f46fa847102cca8f315474992283aa2b684"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/contract.json",
+      "sha256": "6e1b8e575de9cf7e92cbc86ef66a6ba7a7aaad2c4abf2f2966d5be58d461db31"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/exchange/contract.json",
+      "sha256": "c77beab9a557fa92ad9d6ce40c0ebe6d45f6edd8177968de5b3239156b415549"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/exchange/inbox/3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30.json",
+      "sha256": "99aba2421c2ff47be01b93fa30426dcd22fa724c3e6ddd6ce660616a3d555134"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/exchange/outbox/3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30.txt",
+      "sha256": "e13d33245349b5286c87f5de37b3928f2a1e37b73d5c1446a39e82ea1c39a962"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/exchange/receipts/3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30.json",
+      "sha256": "2bd340d3de80731a4e98ecf9921bba9d604b4388c417d6acdd5b09e5733cd007"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/expectations.json",
+      "sha256": "f6c8c5d8807586f54b09e44be029d9d157d8888f5b9790fd499d84c800336285"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/inputs.json",
+      "sha256": "cefe1ae2cb166466fc011d0f4f35ae8c78d2e53d651e726622a461f4ff026b6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/isolated/candidates/financial/fixture_author_revenue_growth/v1/candidate.json",
+      "sha256": "5b3c6028070ea4482aa35bad031614c61df0662edad6aa26395ec9957d071452"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/isolated/candidates/financial/fixture_author_revenue_growth/v1/spec.json",
+      "sha256": "26953bbac7573b8a51125ad52bcd16950d92239194f9dcdef6e765388edd604f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/isolated/candidates/financial/fixture_author_revenue_growth/v1/tests.json",
+      "sha256": "c6d63ea2f3388c418dd01fd367ad754a957a9bbc295b11160edee5ad1f8ac040"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/isolated/signals/registry.json",
+      "sha256": "4b8894d57dfa621e534ef4eb25263e8f00254cbcb4327f1f98796314ac279dde"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/loaded-candidate.json",
+      "sha256": "b09497cec165d005cdc95dd49c54ce52d5e31bd973273d2e12f8623d315c790c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/manifest.json",
+      "sha256": "aa8e3b90bea07cc55da020a7dae9dddc5f5e360ac684808f34828fe6ec86cfc5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/requests/3c5b05db2520bdcd35b63f88a684cfd0e644f418026346915ee19311ffcb4d30.json",
+      "sha256": "f95954967e1be7305ab23d8d146a8ab2bfbc7082b4078b4b8af6293a22778a17"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/unused_external_attempts.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    }
+  ],
+  "manifest_hash": "cadf061d99611e3dff7564f8357536a0d97b2f7f836a30643d0bf3f320b90f8e",
+  "result": {
+    "candidate_ref": "fixture_author_revenue_growth:v1",
+    "external_llm_api_calls": 0,
+    "host_cost": null,
+    "host_tokens": null,
+    "labels_read": 0,
+    "loaded_candidate": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/loaded-candidate.json",
+      "sha256": "b09497cec165d005cdc95dd49c54ce52d5e31bd973273d2e12f8623d315c790c"
+    },
+    "logical_reservation": 14241,
+    "module_only": true,
+    "stable_publications": 0,
+    "status": "module_completed_requires_independent_review"
+  },
+  "seal": "e71d176194f10240db6e6b759d70c0be3ce360aee3cc08042cdb0a4da9c30c7a"
+}

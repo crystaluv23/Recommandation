@@ -1,0 +1,54 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Measure the latest point-in-time year-over-year revenue growth."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "financial.revenue_growth_yoy",
+    "type": "deterministic"
+  },
+  "modality": "structured",
+  "parameters": {
+    "negative_max": 0.0,
+    "positive_min": 0.2,
+    "routing_answer_need_phrases": [
+      "revenue growth",
+      "year-over-year revenue",
+      "year over year revenue",
+      "yoy revenue"
+    ]
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "Latest period versus prior-year comparable period.",
+    "minimum_distinct_periods": 2,
+    "minimum_period_span_days": 330,
+    "query_terms": [
+      "revenue",
+      "sales"
+    ],
+    "source_types": [
+      "financials"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "fixture_author_revenue_growth",
+  "version": 1
+}

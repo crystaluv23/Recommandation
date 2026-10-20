@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：c81c1986/cadf061d唯一prepare并freeze073309b8后，fresh role78 exactinbox唯一首答0纠错，原生tests作者→validator→隔离candidate→load实际双schema正控2/2。两组USD120/150→0.25fraction/2024duration与CIK/PIT/4事实literal/实际证据逐项独立核过；原答/cache/staged/loaded全等，177codebindings与20files唯一completed restore保真/0新派发，14241逻辑预留/host成本未知。root两次审计shape误读保留，未改产品/重跑；诊断oracle等价Z/offset边界未验，实际+00通过不外推。0外部LLMAPI/GET/real labels/稳定发布；关闭仅本bounded fixture作者控制，Mining/新测量实现/复用/全S5/MVP open，下一默认LLM选文入口诊断。
+
 - 2026-10-21：单次原生S5 tests作者runner/ownspec按固定独立root与1请求/131072逻辑预留/4000output/0纠错实现，隔离candidate Registry、两完整schema synthetic原件及实际native load/恢复。初16safe遗漏dead JSON载体可替实际facts字面量，独立旧770控制实际accepted但ratio本身正确；仅私有oracle改实际fact-row+selected evidence归属，并对每schema独立执行，拒同ratio其他basis。最终root18safe及独立14完整控通过；公开完整单文档样本条件、合法CIK表示保留，未改生产parser/作者原答。正式prepare/fresh模型尚0，所有历史/原红/审查harness错保留，不关S5/Mining/发布/复用/MVP。
 
 - 2026-10-21：S5 spec-first补既有CIK/canonical fact-literal义务，shared execution语义与现有tests schema真正进入独立tests作者；metadata不全源强制，Update旧fixtures不迁移。独立发现object content被str变伪JSON、expected unavailable仍成功，保af3原接受反例，现构造前拒非string；两schema24旧红与22独立控过，parser/数值/PIT不改。root66发现两个旧Slow正控缺metadata，exactHEAD隔离同2fail且nativeissuer错明示，补具名producer3行后66全过/五tripwire0；原158漏此路径，旧失败及harness错误保留。尚0fresh作者/GET/labels/真实发布；新单次诊断16safe过、独立actual-row/dead-literal载体反例待修，整体S5/MVP open。
