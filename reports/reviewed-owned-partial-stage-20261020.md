@@ -1,7 +1,7 @@
 # Bounded owned-partial Reflect and Predictor stage
 
-2026-10-20. The new single-case stage is implemented and independently reviewed,
-but no formal prepare or fresh role has run at this boundary. It tests a known
+2026-10-20. The new single-case stage is implemented and independently reviewed.
+At the initial prefreeze boundary no formal prepare or fresh role had run. It tests a known
 historical accepted prior/batch through fresh Reflect, durable reread, native
 final assembly and fresh Predictor/sink. It cannot establish a fresh F6 result,
 whole F7/F9, a completed Fast round or engineering MVP convergence.
@@ -38,3 +38,19 @@ failures. Original9809788 candidate and its9 green tests remain preserved as
 evidence of why the empty fixture missed the constructor boundary. No test or
 scripted typed response is described as fresh model behavior. Actual behavior,
 raw/correction fidelity and completed restore remain to be tested after freeze.
+
+The first formal prepare under0b26a640 failed before creating its stage root or
+plan: its source loader passed a JSON string path to a Path-only shared reader.
+The source loader had been stubbed in the earlier tests, and the limited native
+budget/constructor review did not cover that metadata entry. Original failure,
+command,1.669s/exit1 and b417 source are retained; zero roles were dispatched.
+The owning adapter now normalizes both serialized strings and Path objects at
+one local read boundary. Independent exact-b417 probes reject at the plan path,
+and after fixing only that call still reject at the review path, proving the
+family rather than a single-line patch. The new full temporary source chain and
+pretransport drift controls pass; root's12 safe tests pass with all tripwires0.
+Root additionally reads the actual completed source metadata and verifies all
+5979 returned bindings in2.868s without Store/model/label/network operations.
+The [source-read review](../runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/source-read-final-review.json)
+confirms no other adapter AST changed. This repair does not erase the failed
+prepare or prove fresh role behavior; the same sample, oracle and budget remain.

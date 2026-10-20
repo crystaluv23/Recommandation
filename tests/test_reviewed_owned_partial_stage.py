@@ -190,6 +190,48 @@ class ReviewedOwnedPartialStageTests(TestCase):
         with patch.object(stage,'_run',side_effect=AssertionError('relocation must reject before transport')):
             with self.assertRaises(ValidationError):stage.resume(copy)
 
+    def source_metadata_chain(self):
+        parent=self.source.parent;proof=parent/'raw-proof.json';self.write(proof,{'source':'temporary raw evidence'})
+        plan=parent/'plan.json';plan_binding=self.write(plan,{'plan_hash':'temporary-plan',
+            'source_bindings':[stage.binding(proof)],'code_bindings':[]})
+        oracle=parent/'oracle.json';self.write(oracle,{'oracle_id':'temporary-metadata-only'})
+        review=parent/'source-review.json';review_binding=self.write(review,{'oracle_identity':stage.binding(oracle),'records':[]})
+        view_root=parent/'snapshot';view_root.mkdir()
+        marker=self.write(view_root/'reviewed_snapshot.json',{'temporary_metadata_only':True})
+        view={'root':str(view_root),'store_type':'reviewed','manifest_sha256':marker['sha256']}
+        self.write(parent/'input_manifest.json',{'plan':plan_binding,'source_review':review_binding,'reviewed_source_snapshot':view})
+        self.write(self.source,{'status':'completed','fixed_cases':40,'per_group_inputs':720,'labels':False,'models':0,'GETs':0,
+            'plan_hash':'temporary-plan','reviewed_source_snapshot':view,'source_review':review_binding})
+        expected=json.loads(self.oracle.read_text());expected['bindings']['completed_source_result']=stage.binding(self.source)
+        self.write(self.oracle,expected)
+        return view,plan,review,proof
+
+    def test_real_source_metadata_reader_accepts_serialized_plan_and_review_paths(self):
+        view,plan,review,proof=self.source_metadata_chain()
+        self.assertIsInstance(json.loads((self.source.parent/'input_manifest.json').read_text())['plan']['path'],str)
+        self.assertIsInstance(json.loads(self.source.read_text())['source_review']['path'],str)
+        actual,bindings=stage._source(self.source)
+        self.assertEqual(actual,view)
+        for path in (plan,review,proof):self.assertIn(stage.binding(path),bindings)
+        stage._check(bindings)
+        self.assertEqual(stage.read(str(plan)),json.loads(plan.read_text()))
+        self.assertEqual(stage.read(review),json.loads(review.read_text()))
+
+    def test_real_serialized_source_chain_freezes_and_drift_rejects_before_transport(self):
+        view,plan,review,proof=self.source_metadata_chain();root=self.base/'real-chain-stage'
+        # Only source admission is a temporary fixture; _source and read are real.
+        with patch.object(stage,'SEED',self.seed),patch.object(stage,'_seed',return_value=(deepcopy(self.sample),[])), \
+                patch.object(stage,'_preflight',return_value={'temporary_admission_only':True}), \
+                patch.object(stage.prefix,'_code_bindings',return_value=[stage.binding(self.code)]):
+            stage.prepare(root,self.oracle,str(self.source),'a'*40)
+        self.assertFalse((root/'exchange').exists())
+        for path in (plan,review,proof):
+            with self.subTest(path=path.name):
+                original=path.read_bytes();path.write_bytes(original+b' ')
+                with patch.object(stage,'_run',side_effect=AssertionError('must reject before transport')):
+                    with self.assertRaisesRegex(ValidationError,'bound stage source/code changed'):stage.resume(root)
+                path.write_bytes(original)
+
     def test_terminal_failure_cannot_restart_or_replace_ceiling(self):
         for index,error in enumerate((ValidationError('offline fixture terminal fault'),RuntimeBudgetExceeded('frozen budget'))):
             root=self.prepare('failure'+str(index))

@@ -26,7 +26,12 @@ or future material. The new roles receive only their actual model-facing inbox.
 Bind the completed source result/input manifest/plan, all its frozen source and
 code bindings, current view/review/proofs, full historical seed provenance,
 Registry version files, current native source, directly reused scripts and this
-owning spec. Validate the prior and owned portfolio before dispatch, and verify
+owning spec. Serialized binding paths are JSON strings; this diagnostic's
+single `read(path)` boundary converts both strings and Path values to Path
+before delegating to the shared reader. Read the actual input-manifest→plan
+and result→source-review chain through that boundary, retaining exact hash
+checks before transport. Mocked source loaders do not verify this connection.
+Validate the prior and owned portfolio before dispatch, and verify
 historical batch evidence exists exactly in current admitted PIT originals.
 The independent oracle has fixed_denominator1/sample_id p01 and stays separate
 from model input. It must supply limits equal to the frozen contract below;

@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py", line 319, in <module>
+    if __name__=='__main__': main()
+                             ^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py", line 309, in main
+    value=prepare(args.root,args.expectations,args.source_result,args.seed_commit)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py", line 158, in prepare
+    sample,old_files=_seed(seed_commit);view,source_files=_source(Path(source_result).resolve())
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py", line 116, in _source
+    plan=read(inputs['plan']['path']); view=result['reviewed_source_snapshot']
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/diagnose_executed_answer_scope.py", line 52, in read_json
+    value = json.loads(path.read_text(encoding="utf-8"))
+                       ^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'read_text'

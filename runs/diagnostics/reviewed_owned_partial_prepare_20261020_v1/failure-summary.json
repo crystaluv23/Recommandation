@@ -1,0 +1,38 @@
+{
+  "status": "prepare_failed_before_formal_root_creation",
+  "head": "0b26a6409e570f0fc1f4e25fded6c82ecc6fa6cd",
+  "launch_script_sha256": "b417da2c5150f5486c78745198b889a768ada308eaf695410133dd9c265239b7",
+  "oracle_sha256": "e5569e23a250ac0ac7e792459b9a0856b086f4d841e8842abc44e433235eae2f",
+  "failure_type": "AttributeError",
+  "failure_message": "'str' object has no attribute 'read_text'",
+  "failure_site": "run_reviewed_owned_partial_stage._source plan=read(inputs[plan][path])",
+  "formal_root_exists": false,
+  "artifacts": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_prepare_20261020_v1/command.json",
+      "sha256": "89dade264127d5d4888601108ebbddf81d76346b37901b4188ae39521ac4d4c4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_prepare_20261020_v1/exit.json",
+      "sha256": "efb2355393131847b148dd5e895b3c46f09cc72ca7802c06b3dfc052e9977952"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_prepare_20261020_v1/pid.json",
+      "sha256": "54f40e94b3546b2cc5b1130158be38fd9e0e294f6c4dff3611a5024886dc4e19"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_prepare_20261020_v1/prepare.log",
+      "sha256": "0d5c9033d95b27c934e333e189b401d2e63d56709c4248609decd4ee59b00aeb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_prepare_20261020_v1/session.json",
+      "sha256": "2215c0c43273865c4a61079f29a2c4f2a5315dd46849e57b60b614b26a8afcd1"
+    }
+  ],
+  "GETs": 0,
+  "models": 0,
+  "labels_loaded": false,
+  "Signal_apply": 0,
+  "retries": 0,
+  "frozen_code_modified_by_executor": false
+}

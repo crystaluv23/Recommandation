@@ -1,0 +1,21 @@
+{
+  "scope": "Read-only actual metadata chain and all returned source bindings, not formal prepare or Store qualification",
+  "source_result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/result.json",
+    "sha256": "e712f77a96278f2f1f41e63131ccee87714e2db487c82789c719daf8728e5dd4"
+  },
+  "script": {
+    "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+    "sha256": "877578e8f17fa98cc11a7e41d71b3cae6a46fcac3300bd6bc07fa779178ecfaf"
+  },
+  "view": {
+    "manifest_sha256": "de1f3b439e91af3681d0003093018f1929f9ec80680636376e08a22b4ea96bbd",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/snapshot",
+    "store_type": "reviewed"
+  },
+  "checked_bindings": 5979,
+  "wall_seconds": 2.8677700418047607,
+  "forbidden_operation_counts": {},
+  "formal_prepare": false,
+  "fresh_models": 0
+}

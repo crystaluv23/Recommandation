@@ -1,0 +1,66 @@
+{
+  "verdict": "PASS_bounded_serialized_read_repair_no_remaining_concrete_blocker",
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "877578e8f17fa98cc11a7e41d71b3cae6a46fcac3300bd6bc07fa779178ecfaf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "f34eddf40f5e0e7242082e9d3c629ec96461b706a726536670f8df7fc8f4662f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py",
+      "sha256": "4176a996dd16aa3488bbe6f314eb4c71e8433da9ba3c50755bf6134b2c0f1a82"
+    }
+  ],
+  "actual_failure": {
+    "summary": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_prepare_20261020_v1/failure-summary.json",
+      "sha256": "31ad28cd1be3271b468521816ed2a68a14ff05d02062ef58062ad3497700e67d"
+    },
+    "log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_prepare_20261020_v1/prepare.log",
+      "sha256": "0d5c9033d95b27c934e333e189b401d2e63d56709c4248609decd4ee59b00aeb"
+    },
+    "meaning": "Actual b417 formal prepare exited1 before formal root creation; plan binding path was JSON str passed to Path-only prefix reader. Review path is the same later boundary. No model, GET or label access."
+  },
+  "prior_review_limit_and_miss": "The earlier PASS covered native budget, BasicInfo constructor and bounded static checks; its stubbed _source did not test this actual serialized metadata chain. It did not establish successful formal prepare. Both reviewer and implementation tests missed this interface defect. Earlier evidence and review are preserved without rewriting.",
+  "independent_controls": {
+    "original_b417": "Exact archived _source function with original read alias raises str.read_text at serialized plan path; converting only plan proves the same remaining failure at serialized review path.",
+    "fixed_full_source_chain": "Unmocked _source and read load all real temporary JSON result→input_manifest→plan/review→nested proof/snapshot bindings; _check verifies full resulting bindings.",
+    "public_entry": "Both Path and str source_result arguments pass temporary public prepare with real _source/read. Only historical seed qualification and source-view preflight are stubbed; no actual store is opened. Both creates zero exchange; changed plan/review/proof reject on frozen verify.",
+    "no_regression": "Complete module AST is equal to archived b417 after removing only old read alias/new read wrapper. Budget, canonical BasicInfo, seed whitelist, native parser/persistence/restore functions unchanged, so the prior actual native budget and17-card results remain applicable without rerunning them."
+  },
+  "evidence": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/source-read-boundary-probe.py",
+      "sha256": "10b289c7685270d8095631b8e049fedaeedfbe103db8a0c02484eb8869a428db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/source-read-boundary.log",
+      "sha256": "c78eeb8dcdd8109d58d31cf325fcfad6ab0795ebacc7a3e788c206551d22183d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/source-read-boundary-results.json",
+      "sha256": "c78eeb8dcdd8109d58d31cf325fcfad6ab0795ebacc7a3e788c206551d22183d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/independent-review.json",
+      "sha256": "3d70f0234c65eb89bd3a191cca4e4a0b2838d211d856aaf54c377e0b66e52b96"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/native-budget-results.json",
+      "sha256": "dff942a42d6db2fdacdbef4d7278f12aa23d17e83ad1402bfe89de3572f6e807"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/basic-info-final-results.json",
+      "sha256": "a9972eaacd77eda9fade5b9102761a494599538574b4b9b939751796be15697b"
+    }
+  ],
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/source-read-boundary-probe.py",
+  "limits": [
+    "No actual formal prepare/retry, real reviewed-store open, model, GET, LabelStore, Signal apply or source mutation in this audit.",
+    "This closes the demonstrated serialized read interface error locally. Actual formal plan/input freeze and fresh role semantics remain separate evidence; no overall F7/F9/MVP claim."
+  ]
+}

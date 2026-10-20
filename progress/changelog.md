@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：单样本b417正式prepare1.669s/exit1，plan/root前因serialized字符串路径传Path-only helper失败、0角色；旧10safe把_source stub掉漏此链，原失败/源码保留。先补spec再统一本诊断read→Path边界，旧plan与review两处独立红；不stub的Temp完整来源链/漂移与root12safe通过，真实来源5979绑定核过。独立AST核除reader无变化、原预算/17cards修复保持；未重试prepare/改预期/派角色，下一同1case/预算新checkpoint冻结。
+
 - 2026-10-20：新增单历史seed的fresh Reflect/Predictor诊断及spec，最多6角色/512000case/131072request，不称新F6。派发前抓到旧final-BasicInfo进bootstrap导致17→0，改用canonical preflight后17条全文/ID/可见性精确保留；空fixture9绿旧检查与源码保留。native纠错反例92778+93709旧单请求额度误当step失败、修后两条通过；192778单条仍receive前拒。root10safe及独立原生/盲界预审通过，0正式prepare/模型/GET/labels；下一独立冻结后看fresh实际行为。
 
 - 2026-10-20：冻结c9ad66e8唯一原40来源消费1253.520s/exit0；1123原生append/canonical回读（853新增/270既有），旧15640global字节/658审查行保持、新1776doc view。双Registry各670/720resolved、40/40达原0.8，对旧262/720各增408；50gap=40news+3订单+6momentum+1drawdown，BURU基线仍缺。40BasicInfo119resolved均partial/41unavailable、593遗漏标记保留。独立全3344冻结/297采集终态/1440输入及40投影核验过；首审旧字段harness错误原log保留，不是产品失败。snapshot/reopen相等不冒称OS恢复；0新GET/model/apply/labels/fullprepare，6unknown/最新GPREQ1/MVP仍open。下一单样本fresh Reflect与Predictor消费，不重入来源stage。

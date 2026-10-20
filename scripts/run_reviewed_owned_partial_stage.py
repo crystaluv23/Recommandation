@@ -39,7 +39,11 @@ VIEW_DOCUMENTS = 1776
 LIMITS = {'max_request_tokens':131072,'max_case_tokens':512000,'max_case_llm_calls':6,
     'max_structured_corrections':1,'structured_reasoning_token_reserve':0,'finalization_reserve':64000}
 EXCLUDED = {'progress.json','completion.json','.stage.lock','exchange/.dispatch.lock'}
-read = prefix.read_json
+
+
+def read(path):
+    """Read JSON from a Path or a serialized binding's string path."""
+    return prefix.read_json(Path(path))
 
 
 def binding(path):

@@ -910,7 +910,10 @@
       "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/input-gap-details.json",
       "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json",
       "reports/reviewed-owned-partial-stage-20261020.md",
-      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/independent-review.json"
+      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/independent-review.json",
+      "runs/diagnostics/reviewed_owned_partial_prepare_20261020_v1/failure-summary.json",
+      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/source-read-final-review.json",
+      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/root-actual-source-read-boundary.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -960,13 +963,14 @@
       "Supplemental lookup still omitted4existing exactIDs acrosstyped namespaces. Prototypecollision is not originalfailure:3originals mechanicallypassas-is,whileFTIinterim10-k type conflictswith10-Q proof. Outerloop firstsupportedsource selection is a producer recurrence risk, not a reason to weaken qualification.",
       "Successful primary-body GETs do not guarantee operating content: two actual40F wrappers require literal incorporated reports. Source-review byte binding must designate the actual decoded body, not merely any proof artifact. Requested400days and151retained daily observations are distinct coverage facts.",
       "The fixed0.8 input fraction can pass all40 while BURU lacks a market baseline, GPRE lacks known latestQ1 and every resolved BasicInfo projection is partial. Reaching the administrative readiness threshold cannot erase semantic/source gaps or authorize a full successor. A completed native snapshot/reopen guard is not OS interruption recovery.",
-      "The new bounded adapter initially reused final-context BasicInfo as bootstrap input:17cards silently became0 in the native constructor, and empty-BasicInfo tests missed the loss. Frozen canonical bootstrap preserves17; anonymous wire tokens are not canonical input. Reusing a per-request token limit as the whole native invocation budget also excluded otherwise legal correction pairs; a real186487-unit native two-request counterexample now distinguishes the layers."
+      "The new bounded adapter initially reused final-context BasicInfo as bootstrap input:17cards silently became0 in the native constructor, and empty-BasicInfo tests missed the loss. Frozen canonical bootstrap preserves17; anonymous wire tokens are not canonical input. Reusing a per-request token limit as the whole native invocation budget also excluded otherwise legal correction pairs; a real186487-unit native two-request counterexample now distinguishes the layers.",
+      "The bounded adapter initial source loader passed serialized str paths to a Path-only reader. Mocked _source tests and native budget/assembler probes did not cover real metadata entry; first formalprepare failed before plan/root creation. One local reader normalizes strings/Path; exact old plan and review failures plus real5979-binding read chain now verify the family, without changing sample/oracle/budget or erasing first failure."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
       "strategy": "single_historical_seed_fresh_reflect_and_predictor_consumption",
-      "action": "Prepare one separately frozen label-free F7 stage using explicit historical accepted prior/Plan/selections/batch and whitelisted BasicInfo/baseline only; fresh native Reflect, optional one terminal closure, persisted reread/finalcontext and fresh Predictor/durable sink. Every actual LLM node uses exactinbox isolatedsubagent starting role66; max6requests,512000case logicalreservations,131072perrequest and one native correction. No new data/Signalapply/labels/oldrunresume/fullsuccessor. Source-only completedstage never reenters.",
+      "action": "The initial formalprepare failed before plan/root creation and dispatched0roles. Preserve it; after scoped reader-boundary repair, independent exact-old/temp-chain controls and actual5979-binding source read, freeze the same one-case stage once under the new checkpoint. Prepare one separately frozen label-free F7 stage using explicit historical accepted prior/Plan/selections/batch and whitelisted BasicInfo/baseline only; fresh native Reflect, optional one terminal closure, persisted reread/finalcontext and fresh Predictor/durable sink. Every actual LLM node uses exactinbox isolatedsubagent starting role66; max6requests,512000case logicalreservations,131072perrequest and one native correction. No new data/Signalapply/labels/oldrunresume/fullsuccessor. Source-only completedstage never reenters.",
       "stop": "Stop on source/code/provenance drift,budget ceiling,unknown/missingbindings,semantic need loss or duplicate residual; preserve failed denominator. No induced overlong answer,no newroot retry to chase typedrepair,no oracle/oldprediction/raw49/raw50 in roles. Identitypolicydecision remains pending,not inferred from silence.",
       "question": "Does current native Reflect faithfully retain all unsupported facets of a known partially answered need, and do the durable finalcontext and actual fresh Predictor consume the identical accepted state/dispositions?",
       "pass": "Unowned needs retained by occurrence, historicalbatch unsupported facets remain explicit without duplicate mirrors; accepted state/metadata survive reread, actual Predictor input and sink; completedrestore hashes unchanged and0newdispatch. If firstanswer valid, typedmirrorbranch explicitly not_exercised.",

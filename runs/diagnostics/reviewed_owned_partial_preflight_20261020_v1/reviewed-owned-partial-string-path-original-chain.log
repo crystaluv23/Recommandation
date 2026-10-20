@@ -1,0 +1,39 @@
+test_real_source_metadata_reader_accepts_serialized_plan_and_review_paths (tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_real_source_metadata_reader_accepts_serialized_plan_and_review_paths) ... ERROR
+test_real_serialized_source_chain_freezes_and_drift_rejects_before_transport (tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_real_serialized_source_chain_freezes_and_drift_rejects_before_transport) ... ERROR
+
+======================================================================
+ERROR: test_real_source_metadata_reader_accepts_serialized_plan_and_review_paths (tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_real_source_metadata_reader_accepts_serialized_plan_and_review_paths)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py", line 213, in test_real_source_metadata_reader_accepts_serialized_plan_and_review_paths
+    actual,bindings=stage._source(self.source)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py", line 116, in _source
+    plan=read(inputs['plan']['path']); view=result['reviewed_source_snapshot']
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/diagnose_executed_answer_scope.py", line 52, in read_json
+    value = json.loads(path.read_text(encoding="utf-8"))
+                       ^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'read_text'
+
+======================================================================
+ERROR: test_real_serialized_source_chain_freezes_and_drift_rejects_before_transport (tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_real_serialized_source_chain_freezes_and_drift_rejects_before_transport)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py", line 226, in test_real_serialized_source_chain_freezes_and_drift_rejects_before_transport
+    stage.prepare(root,self.oracle,str(self.source),'a'*40)
+  File "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py", line 158, in prepare
+    sample,old_files=_seed(seed_commit);view,source_files=_source(Path(source_result).resolve())
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py", line 116, in _source
+    plan=read(inputs['plan']['path']); view=result['reviewed_source_snapshot']
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/diagnose_executed_answer_scope.py", line 52, in read_json
+    value = json.loads(path.read_text(encoding="utf-8"))
+                       ^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'read_text'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.012s
+
+FAILED (errors=2)

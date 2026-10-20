@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/run_reviewed_owned_partial_stage.py",
+    "--prepare",
+    "--root",
+    "runs/diagnostics/reviewed_owned_partial_stage_20261020_v1",
+    "--expectations",
+    "reports/reviewed-owned-partial-expectations-20261020.json",
+    "--source-result",
+    "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/result.json",
+    "--seed-commit",
+    "ddeae204566d2d9f9cce29de1ab535902ef46bd5"
+  ],
+  "cwd": "/Users/l/Project/Recommandation",
+  "PYTHONPATH": ".:src:scripts",
+  "head": "0b26a6409e570f0fc1f4e25fded6c82ecc6fa6cd",
+  "started_at_utc": "2026-10-20T01:34:23.947447+00:00",
+  "formal_root_absent_before_launch": true
+}

@@ -1,0 +1,51 @@
+{
+  "source_bindings_all_serialized_strings": true,
+  "original_failures": [
+    {
+      "where": "serialized plan path",
+      "type": "AttributeError",
+      "message": "'str' object has no attribute 'read_text'"
+    },
+    {
+      "where": "serialized review path after only plan conversion",
+      "type": "AttributeError",
+      "message": "'str' object has no attribute 'read_text'"
+    }
+  ],
+  "public_temp_prepare": [
+    {
+      "source_argument": "Path",
+      "status": "accepted_temp_metadata_chain",
+      "frozen_plan_review_proof_drift_rejected": true,
+      "exchange_exists": false
+    },
+    {
+      "source_argument": "str",
+      "status": "accepted_temp_metadata_chain",
+      "frozen_plan_review_proof_drift_rejected": true,
+      "exchange_exists": false
+    }
+  ],
+  "status": "PASS_bounded_read_boundary",
+  "old_source_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/formal-prepare-string-path-failure-candidate.py",
+    "sha256": "b417da2c5150f5486c78745198b889a768ada308eaf695410133dd9c265239b7"
+  },
+  "new_code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "877578e8f17fa98cc11a7e41d71b3cae6a46fcac3300bd6bc07fa779178ecfaf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "f34eddf40f5e0e7242082e9d3c629ec96461b706a726536670f8df7fc8f4662f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py",
+      "sha256": "4176a996dd16aa3488bbe6f314eb4c71e8433da9ba3c50755bf6134b2c0f1a82"
+    }
+  ],
+  "unchanged_module_AST_except_read_boundary": true,
+  "unchanged_budget_and_BasicInfo_AST": true,
+  "limits": "Temporary metadata only. _seed and _preflight qualification intentionally stubbed, but _source/read not stubbed. No actual source-store open, formal prepare, model, GET, labels or production-stage mutation. Does not establish fresh-model behavior or complete source admission."
+}
