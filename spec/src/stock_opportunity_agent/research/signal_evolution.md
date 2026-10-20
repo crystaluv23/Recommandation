@@ -440,7 +440,19 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   pre-cutoff documents each hypothesis track run: recurring Company Facts
   concepts are enumerated through the shared SEC structured selector with a
   bounded projection budget, price-series and narrative families are counted
-  by case, and no record values, identities, or labels are exposed. A technical H1 failure is
+  by case, and no record values, identities, or labels are exposed.
+  `cases_with_comparable_records` counts cases with at least one unambiguous
+  latest-period/nearest-earlier-comparable pair inside one projected source
+  taxonomy/concept/unit group. It reuses the automatic relation's private row
+  selector and exact schema value field, not record count. It does not select
+  a unique concept-level measurement, combine documents, currencies or duration
+  alternatives, or resolve conflicting operands. Other valid durations in the
+  same group may establish existence while a conflicting duration keeps the
+  concept scalar unknown. The original 12k source projection, recurring-two-case
+  filter, concept limit, cohort denominator, PIT and ordering remain unchanged.
+  Omitted groups or absent manifest membership are bounded coverage, not proof
+  that no source or comparable input exists; tool reading must establish that.
+  A technical H1 failure is
   never semantic exhaustion and remains eligible after recovery under the
   existing attempt and cost ceilings. H1's complete runtime need set is the union
   of Fast `signal_need_items[*].need_ref` values, ordinary capability-backlog

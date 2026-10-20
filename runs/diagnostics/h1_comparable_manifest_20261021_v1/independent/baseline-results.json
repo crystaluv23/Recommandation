@@ -1,0 +1,491 @@
+{
+  "tests": 12,
+  "failures": 3,
+  "errors": 0,
+  "records": [
+    {
+      "test": "__main__.H1Catalog.test_PIT_future_doc_cannot_supply_prior",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.H1Catalog.test_all_current_branches_conflicted",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/check_h1_catalog.py\", line 89, in test_all_current_branches_conflicted\n    for legacy in (False,True):self.assertEqual(counts(manifest([rows],legacy=legacy)),{('us-gaap','USD'):(2,0)})\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {('us-gaap', 'USD'): (2, 2)} != {('us-gaap', 'USD'): (2, 0)}\n- {('us-gaap', 'USD'): (2, 2)}\n?                          ^\n\n+ {('us-gaap', 'USD'): (2, 0)}\n?                          ^\n\n"
+    },
+    {
+      "test": "__main__.H1Catalog.test_available_pair_does_not_require_nonzero_ratio_denominator",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.H1Catalog.test_bounded_projection_and_value_free_output",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.H1Catalog.test_nearest_prior_conflict_no_fallback_to_older",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/check_h1_catalog.py\", line 93, in test_nearest_prior_conflict_no_fallback_to_older\n    self.assertEqual(counts(manifest([rows])),{('us-gaap','USD'):(2,0)})\nAssertionError: {('us-gaap', 'USD'): (2, 2)} != {('us-gaap', 'USD'): (2, 0)}\n- {('us-gaap', 'USD'): (2, 2)}\n?                          ^\n\n+ {('us-gaap', 'USD'): (2, 0)}\n?                          ^\n\n"
+    },
+    {
+      "test": "__main__.H1Catalog.test_no_cross_document_pair",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.H1Catalog.test_no_cross_namespace_or_unit_pair",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.H1Catalog.test_numeric_spellings_not_conflicting_values",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.H1Catalog.test_one_conflicted_branch_other_valid_remains_capability",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.H1Catalog.test_same_end_two_durations_is_not_pair",
+      "status": "FAIL",
+      "detail": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/check_h1_catalog.py\", line 77, in test_same_end_two_durations_is_not_pair\n    for legacy in (False,True):self.assertEqual(counts(manifest([rows],legacy=legacy)),{('us-gaap','USD'):(2,0)})\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {('us-gaap', 'USD'): (2, 2)} != {('us-gaap', 'USD'): (2, 0)}\n- {('us-gaap', 'USD'): (2, 2)}\n?                          ^\n\n+ {('us-gaap', 'USD'): (2, 0)}\n?                          ^\n\n"
+    },
+    {
+      "test": "__main__.H1Catalog.test_two_valid_duration_pairs_count_each_case_once",
+      "status": "PASS"
+    },
+    {
+      "test": "__main__.H1Catalog.test_unique_typed_and_legacy_pair",
+      "status": "PASS"
+    }
+  ],
+  "script_sha256": "5e509f224fc0a57ad62d5aeaef295bd9e90b4e933ef7a8a4a6df920622f0e8d3",
+  "baseline": true,
+  "actual_callable_bindings": {
+    "H1_unbound_method": {
+      "function": "SignalEvolutionEngine._h1_measurable_evidence_manifest",
+      "file": "/Users/l/Project/Recommandation/runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-modules/signal_evolution.py",
+      "file_sha256": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395"
+    },
+    "actual_context_selector_global": {
+      "function": "_company_facts_context",
+      "file": "/Users/l/Project/Recommandation/runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-modules/evolution_core.py",
+      "file_sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+    },
+    "actual_typed_context_selector": {
+      "function": "_typed_company_facts_context",
+      "file": "/Users/l/Project/Recommandation/runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-modules/evolution_core.py",
+      "file_sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+    }
+  },
+  "observations": {
+    "0": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 0
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-1-1",
+        "h1-doc-2-0",
+        "h1-doc-2-1"
+      ]
+    },
+    "1": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "2": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "3": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "4": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "5": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "6": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 0
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-1-1",
+        "h1-doc-2-0",
+        "h1-doc-2-1"
+      ]
+    },
+    "7": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "namespace-a",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 0
+          },
+          {
+            "taxonomy": "namespace-b",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 0
+          },
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "EUR",
+            "case_count": 2,
+            "cases_with_comparable_records": 0
+          },
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "GBP",
+            "case_count": 2,
+            "cases_with_comparable_records": 0
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "8": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "namespace-a",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 0
+          },
+          {
+            "taxonomy": "namespace-b",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 0
+          },
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "EUR",
+            "case_count": 2,
+            "cases_with_comparable_records": 0
+          },
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "GBP",
+            "case_count": 2,
+            "cases_with_comparable_records": 0
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "9": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "10": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "11": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "12": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "13": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "14": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    },
+    "15": {
+      "manifest": {
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "cohort_case_count": 2,
+        "structured_financial_concepts": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Operating Cash Flow",
+            "unit": "USD",
+            "case_count": 2,
+            "cases_with_comparable_records": 2
+          }
+        ],
+        "pre_cutoff_price_series_cases": 0,
+        "narrative_source_families": [],
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+      },
+      "doc_ids": [
+        "h1-doc-1-0",
+        "h1-doc-2-0"
+      ]
+    }
+  },
+  "scope": "Unbound native H1 method + minimal self.raw_info_store; two synthetic cases per control. No Engine/Workspace instance, labels/GroundTruth, model/role, network, fullstage, Signal or old-stage entry. Not fresh-role behavior proof."
+}

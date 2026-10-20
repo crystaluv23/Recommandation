@@ -1130,7 +1130,10 @@ class SignalRoleAdapterTests(TestCase):
 
         system_prompt = str(caller.calls[0]["system_prompt"])
         self.assertIn("measurable_evidence_manifest", system_prompt)
-        self.assertIn("latest-plus-comparable record pairs", system_prompt)
+        self.assertIn("cases_with_comparable_records counts cases with at least one valid local pair", system_prompt)
+        self.assertIn("does not guarantee a unique measurement or every duration or currency", system_prompt)
+        self.assertIn("projection omissions and absent manifest families do not prove source absence", system_prompt)
+        self.assertIn("confirm each required operand through evidence reading", system_prompt)
         payload = caller.calls[0]["payload"]
         self.assertEqual(
             payload["measurable_evidence_manifest"], manifest

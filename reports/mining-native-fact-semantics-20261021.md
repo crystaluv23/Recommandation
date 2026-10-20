@@ -135,3 +135,47 @@ native Mining stage, new role, Signal implementation/publication, or successor
 experiment is authorized by these local results. The pending namespace choice
 must be implemented and verified before claiming this source-to-Mining gate
 closed.
+
+## H1 catalog follow-up
+
+The H1 count repair was completed separately from the pending Fact taxonomy
+decision. H1 already has the original context's taxonomy/concept/unit grouping,
+so its source-metadata count does not need a new Fact field or a second
+provenance channel. A private row-index selector now serves both automatic
+relations and H1. It proves existence of at least one unambiguous latest-period
+and nearest earlier comparable pair within that projected document group.
+Multiple durations can contain a valid pair without establishing a default
+concept-level measurement. The catalog still retains its original recurring
+two-case filter, 12k projection, 24-concept limit, case denominator and ranking
+algorithm. Controller modality admission is unchanged.
+
+The outgoing H1 authoring prompt and coverage note no longer claim that every
+listed concept already provides a pair, or that absent bounded catalog
+membership proves no source exists. The payload/request construction was
+tested locally; there was no fresh model response under that prompt.
+
+- 205 associated checks passed with network and research LabelStore guards
+  untriggered. The first run retained an obsolete phrase assertion; only that
+  unit expectation changed to check the explicit count/uniqueness/omission
+  obligations. The first failure remains in the diagnostic record.
+- [Independent H1 controls](../runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/candidate-independent-review.json)
+  passed 12/12 using the same test bytes that produced three failures on
+  revision `113d6a6a`. A separate independent review confirmed nine exact
+  relation-output/ID equivalence controls and ten temporary H1 controls.
+- [One actual native H1 observation](../runs/diagnostics/h1_comparable_manifest_20261021_v1/root/native/result.json)
+  used the unchanged qualified 1,780-document view and the original eight
+  label-free development case metadata records. It called the production
+  method through a minimal receiver, with no Engine, role, FactGraph, source
+  append, LabelStore, GET or old-stage entry. All 1,789 bound files were
+  unchanged before and after.
+- [Independent actual review](../runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/actual-native-review.json)
+  found the same 24 catalog keys, order and counts as the previously saved
+  catalog; only the coverage explanation changed. There is **no observed
+  coverage increase on this dev8 view**. The counterexamples establish the
+  corrected rule; the real-data observation establishes the deterministic
+  connection and preservation.
+
+This supersedes only the H1 record-count pending item above. Legacy Fact
+namespace ambiguity, model consumption, direction/magnitude discovery and
+implementation/admission/successor reuse remain unresolved. The schema choice
+has not been inferred from silence and no further Mining capability stage ran.

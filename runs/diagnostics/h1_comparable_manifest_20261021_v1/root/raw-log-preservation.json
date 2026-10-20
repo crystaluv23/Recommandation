@@ -1,0 +1,21 @@
+{
+  "reason": "Retain exact initial failures including terminal trailing blanks without treating them as maintained text. No raw response, expectation or old failure changed.",
+  "rows": [
+    {
+      "original_path": "runs/diagnostics/h1_measurable_period_coverage_20261021_v1/driver/before-focused.log",
+      "original_sha256": "27d227e26180a04b59d3f8f7f081d1ae67ab66045fa51e674e131e10fded6dfa",
+      "lossless_archive": "runs/diagnostics/h1_measurable_period_coverage_20261021_v1/driver/before-focused.log.gz",
+      "archive_sha256": "d420656767141117447c31107810a037d4025cd30cf9ba4be8fcf9ec17e5ace1",
+      "decompressed_equals_original": true,
+      "original_retained_locally": true
+    },
+    {
+      "original_path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/initial-lint.log",
+      "original_sha256": "2255cb5ab446f4bba3a28cfd20c57b19e4fc6e27c3adf7f71d4fe35df2181b99",
+      "lossless_archive": "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/initial-lint.log.gz",
+      "archive_sha256": "538115f182c9497d31bdb0c4adb2629617c9990adbf9e6fc8bb700e9713bd0b0",
+      "decompressed_equals_original": true,
+      "original_retained_locally": true
+    }
+  ]
+}

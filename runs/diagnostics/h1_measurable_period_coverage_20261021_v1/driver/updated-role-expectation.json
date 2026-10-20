@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_evolution_signal_role_adapters.SignalRoleAdapterTests.test_signal_h1_prompt_anchors_measurements_to_evidence_manifest",
+    "-v"
+  ],
+  "exit_code": 0,
+  "test_sha256": "377d6bf10c0b651601bf37fcbed42ddbcfaf468b19cb91d336d34838437a6cc0",
+  "change": "Replace only obsolete pair-universality phrase assertion; preserve manifest anchor and exact payload equality."
+}

@@ -232,18 +232,21 @@ def project_facts_from_documents(
     return tuple(facts)
 
 
-def _fact_period(fact: EvidenceFact) -> dict[str, str] | None:
-    """Read an explicit valid period without inventing a comparison basis."""
-    if not isinstance(fact.period, Mapping):
-        return None
+def _company_fact_period(row: Mapping[str, object]) -> dict[str, str] | None:
+    """Read calendar identity without rewriting any source period literal."""
     try:
-        end = date.fromisoformat(fact.period["end"])
-        start = date.fromisoformat(fact.period["start"]) if "start" in fact.period else None
+        end = date.fromisoformat(row["end"])
+        start = date.fromisoformat(row["start"]) if row.get("start") is not None else None
     except (KeyError, TypeError, ValueError):
         return None
     if start is not None and start > end:
         return None
     return {"end": end.isoformat(), **({"start": start.isoformat()} if start is not None else {})}
+
+
+def _fact_period(fact: EvidenceFact) -> dict[str, str] | None:
+    """Read an explicit valid period without inventing a comparison basis."""
+    return _company_fact_period(fact.period) if isinstance(fact.period, Mapping) else None
 
 
 def _fact_taxonomy(fact: EvidenceFact) -> str:
@@ -256,15 +259,58 @@ def _fact_taxonomy(fact: EvidenceFact) -> str:
     return value if isinstance(value, str) else ""
 
 
-def _fact_value_key(fact: EvidenceFact) -> tuple[str, object]:
-    """Compare numeric spellings exactly, preserving every original value/span."""
+def _company_fact_value_key(value: object) -> tuple[str, object]:
+    """Compare source numeric spellings without converting the source value."""
     try:
-        value = Decimal(fact.value)
-        if value.is_finite():
-            return ("number", value)
+        number = Decimal(str(value))
+        if number.is_finite():
+            return ("number", number)
     except (InvalidOperation, TypeError, ValueError):
         pass
-    return ("literal", fact.value)
+    return ("literal", str(value))
+
+
+def _fact_value_key(fact: EvidenceFact) -> tuple[str, object]:
+    """Compare numeric spellings exactly, preserving every original value/span."""
+    return _company_fact_value_key(fact.value)
+
+
+def _company_fact_period_pair_indices(
+    records: Sequence[Mapping[str, object]], *, value_key: str,
+) -> tuple[tuple[int, int], ...]:
+    """Find unambiguous local pairs inside one caller-proven source group.
+
+    The caller supplies one taxonomy/concept/unit/document group and the exact
+    producer value key. Returned indices keep source rows and references intact;
+    existence does not establish a unique concept-level measurement.
+    """
+    if not records or any(value_key not in record for record in records):
+        return ()
+    periods = [_company_fact_period(record) for record in records]
+    if any(period is None for period in periods):
+        return ()
+    values = [_company_fact_value_key(record[value_key]) for record in records]
+    latest_end = max(period["end"] for period in periods)
+    grouped: dict[tuple[str | None, str], list[int]] = {}
+    for index, period in enumerate(periods):
+        grouped.setdefault((period.get("start"), period["end"]), []).append(index)
+    pairs = []
+    for period, indices in sorted(grouped.items(), key=lambda item: str(item[0])):
+        if period[1] != latest_end or len({values[index] for index in indices}) != 1:
+            continue
+        current = indices[0]
+        prior = [index for index, item in enumerate(periods)
+                 if item["end"] < latest_end
+                 and _company_fact_periods_comparable(records[current], records[index])]
+        if not prior:
+            continue
+        prior_end = max(periods[index]["end"] for index in prior)
+        prior = [index for index in prior if periods[index]["end"] == prior_end]
+        bases = {(periods[index].get("start"), periods[index]["end"], values[index])
+                 for index in prior}
+        if len(bases) == 1:
+            pairs.append((current, prior[0]))
+    return tuple(pairs)
 
 
 def _fact_basis(fact: EvidenceFact) -> tuple[object, ...]:
@@ -311,25 +357,12 @@ def build_same_concept_relations(
         grouped.setdefault(key, []).append(fact)
     relations = []
     for key, group in sorted(grouped.items()):
-        if not key[3] or not key[4] or any(_fact_period(fact) is None for fact in group):
+        if not key[3] or not key[4]:
             continue
-        latest_end = max(_fact_period(fact)["end"] for fact in group)
-        periods: dict[tuple[str | None, str], list[EvidenceFact]] = {}
-        for fact in group:
-            periods.setdefault((_fact_period(fact).get("start"), _fact_period(fact)["end"]), []).append(fact)
-        for period, alternatives in sorted(periods.items(), key=lambda item: str(item[0])):
-            if period[1] != latest_end or len({_fact_value_key(fact) for fact in alternatives}) != 1:
-                continue
-            current = min(alternatives, key=lambda fact: fact.fact_ref)
-            prior = [fact for fact in group if _fact_period(fact)["end"] < latest_end
-                     and _company_fact_periods_comparable(current.period, fact.period)]
-            if not prior:
-                continue
-            prior_end = max(_fact_period(fact)["end"] for fact in prior)
-            prior = [fact for fact in prior if _fact_period(fact)["end"] == prior_end]
-            if len({_fact_basis(fact) for fact in prior}) != 1:
-                continue
-            previous = min(prior, key=lambda fact: fact.fact_ref)
+        group = sorted(group, key=lambda fact: fact.fact_ref)
+        records = [{**(fact.period or {}), "value": fact.value} for fact in group]
+        for current_index, prior_index in _company_fact_period_pair_indices(records, value_key="value"):
+            current, previous = group[current_index], group[prior_index]
             relations.append(EvidenceRelation(
                 relation_ref="relation-" + _opaque_ref("same_concept", current.fact_ref, previous.fact_ref),
                 kind="same_concept_period_pair", fact_refs=(current.fact_ref, previous.fact_ref),

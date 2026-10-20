@@ -1,0 +1,31 @@
+{
+  "writer_summary": "runs/diagnostics/h1_measurable_period_coverage_20261021_v1/driver/focused-final-v2-summary.json",
+  "writer_summary_sha256": "e1d822c7259e92d7d6653a476f82988175ab71e89b25c1833dc5182c3a7bf4d8",
+  "bindings": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "31da7d34a0e065de7144bcaaf2b4bfff94e7b187852cb14b01c3d52b444b8cc8"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "56ce642aea2a2330310ee283b0af18da3edaae38a365d7a5724ce5d727ad0b89"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "a921cf913b221eeb0cd01a7c90d1ee825247cea1d3e50f5ce9b9747ef49d6adb"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "aa2d19783ed081854e1eb47b91514625bd161b7b5efa7672ca44ecd0a88dc5bd"
+    },
+    {
+      "path": "tests/test_h1_measurable_period_coverage.py",
+      "sha256": "9f2214ba9a410c6768c01452a548221087ea29959d9d4b238f5da854956757f4"
+    }
+  ],
+  "test_sha256": "5e509f224fc0a57ad62d5aeaef295bd9e90b4e933ef7a8a4a6df920622f0e8d3"
+}

@@ -1,0 +1,19 @@
+{
+  "head": "113d6a6a897b8375ba84a6a1479c62050d584d71",
+  "modules": [
+    {
+      "module": "evolution_core",
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "snapshot": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-modules/evolution_core.py",
+      "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9",
+      "worktree_equal_at_capture": true
+    },
+    {
+      "module": "signal_evolution",
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "snapshot": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-modules/signal_evolution.py",
+      "sha256": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395",
+      "worktree_equal_at_capture": true
+    }
+  ]
+}

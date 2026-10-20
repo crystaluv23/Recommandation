@@ -1,0 +1,25 @@
+{
+  "revision": "113d6a6a897b8375ba84a6a1479c62050d584d71",
+  "bindings": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "4abcf50e9831364afa838526de7c54958f9cdddca0f4d88f46c95b5ba31a5d24"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "b1d0009516ede8d40c673e64bbe15dc0a509dd4113d959e859a8f64a84a5d715"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "9becac2b120bed4d16967a159c916291f6e8059dbe82eaf6b90cce1a82677b59"
+    }
+  ]
+}

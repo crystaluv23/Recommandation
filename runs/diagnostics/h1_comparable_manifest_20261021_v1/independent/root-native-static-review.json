@@ -1,0 +1,20 @@
+{
+  "status": "PASS_STATIC_PREEXECUTION",
+  "script_sha256": "6c9d2dae7c22db66ab099954c658646166ad3a96e3d57ed7ccbec17863fb8a75",
+  "plan_sha256": "7e52a97d8d33a914678f43e613040a3bce919085ad01b6901a7fbeb63d9d775a",
+  "binding_count": 1789,
+  "output_existed_at_review": false,
+  "native_or_product_helpers_called_by_reviewer": 0,
+  "confirmed": [
+    "Only frozen static-inventory.dev8 case_id/case_ref/cutoff metadata enters the label-free namespace. Eight cases fixed; no cohort reselection.",
+    "Exactly one textual unbound H1 production method call; SimpleNamespace receiver, no Engine construction. Qualified reader binds exact reviewed snapshot and verifies recursive source qualification.",
+    "Frozen bindings/script verified before output creation. Existing output forbids reentry; after started marker any exception saves terminal failure.",
+    "Guarded network, LabelStore init/load/ground_truth, StructuredRoleClient, Signal execute_batch and RawInfoStore append; output remains confined to new native directory.",
+    "Old manifest is read from retained inventory, not rerun; code produces both catalogs for later keyed interpretation."
+  ],
+  "interpretation_limits": [
+    "1789 direct bindings are snapshot/code/inventory records; recursive proof validation remains native reviewed-reader responsibility, not a claim that reviewer rehashed every original proof.",
+    "Compare old/new rows by taxonomy/concept/source_display_name/unit, not list index. Ranking and 24-row cap can change membership; old contexts may predate producer repair.",
+    "Existing structured modality availability remains separate from catalog pair counts. No claim of LLM catalog consumption, unique scalar selection, legacy Fact namespace repair, fresh Mining or research gain."
+  ]
+}

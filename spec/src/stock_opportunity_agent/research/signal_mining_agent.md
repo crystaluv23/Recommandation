@@ -104,9 +104,13 @@ corrections and validates the assembled action before any tool executes.
   established; ambiguous alternatives remain in the complete fact directory,
   with a brief working-view ambiguity disclosure. Closure numeric consumption
   requires finite values and finite derived ratios; nonfinite/overflow inputs
-  remain unavailable rather than negative evidence. H1 measurable coverage must
-  eventually use the same unique-pair proof, not record count (its connection
-  remains pending with the legacy namespace decision). No new Fact field or public
+  remain unavailable rather than negative evidence. H1 measurable coverage
+  reuses the same private row-pair selector within its existing source-proven
+  taxonomy/concept/unit group: its count means at least one valid local pair,
+  not a selected unique concept-level measurement. A valid duration can count
+  despite another unresolved duration; concept-only scalars still require one
+  unique basis. Projection omissions remain partial coverage, never source
+  absence. No new Fact field or public
   tool/measurement schema is introduced. Diagnostic arrival is not admission or
   proof of an economic comparison, source priority or prediction benefit.
   The current candidate still lacks legacy namespace provenance: a same-document

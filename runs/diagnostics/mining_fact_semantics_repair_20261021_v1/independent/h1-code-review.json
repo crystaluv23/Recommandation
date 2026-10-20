@@ -1,0 +1,47 @@
+{
+  "status": "PASS_BOUNDED_H1_EXISTENCE_AND_FACT_REFACTOR_CONTROLS",
+  "source_bindings": {
+    "src/stock_opportunity_agent/research/mining_agent_tools.py": "31da7d34a0e065de7144bcaaf2b4bfff94e7b187852cb14b01c3d52b444b8cc8",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "56ce642aea2a2330310ee283b0af18da3edaae38a365d7a5724ce5d727ad0b89",
+    "src/stock_opportunity_agent/research/evolution_signal_roles.py": "a921cf913b221eeb0cd01a7c90d1ee825247cea1d3e50f5ce9b9747ef49d6adb"
+  },
+  "counts": {
+    "exact_pre_refactor_fact_relation_comparisons": 9,
+    "synthetic_native_unbound_H1_controls": 10
+  },
+  "old_tools_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/h1_measurable_period_coverage_20261021_v1/driver/before-mining_agent_tools.py",
+    "sha256": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b"
+  },
+  "confirmed": [
+    "Each legal Fact group gives identical ordered relation records/refs under saved f922 builder and current shared-row-helper builder.",
+    "H1 counts existence in producer-proven taxonomy/concept/unit/document context group; valid quarter pair remains counted despite an unmatched half-year current basis.",
+    "Same-end-only records, conflicting operands, cross-namespace/doc/unit records and future-filed rows do not manufacture comparable-case counts.",
+    "Equivalent duplicates/calendar spellings preserve capability without counting a case twice; nearest-prior conflict cannot be hidden by choosing an older substitute.",
+    "Catalog row output remains value-free with unchanged cohort-count/case-count bounds."
+  ],
+  "actual_source_call_design": {
+    "allowed_shape": "Root sole call of SignalEvolutionEngine._h1_measurable_evidence_manifest(SimpleNamespace(raw_info_store=qualified1780readonlystore), fixed_case_pairs). Cases expose only original case_ref, issuer from case_id, and original aware cutoff; no Engine/EvolutionCase construction or outcome field needed.",
+    "comparison": "Use exact frozen label-free dev8 whitelist and same qualified view/caps. Compare old/current catalog by taxonomy/concept/display-name/unit, not index. Counts must obey comparable<=case_count<=8. Ranking changes may move rows across 24-entry cap; omission is not source absence. If saved old actual predates context/PIT repair, changes cannot all be attributed to replacement of len(records).",
+    "not_executed_by_reviewer": true,
+    "does_not_prove": "LLM sees/obeys new catalog, fresh Mining, scalar measurement correctness or research gain."
+  },
+  "open": [
+    "Legacy EvidenceFact leaf spans still lack namespace; same-document cross-namespace falsepair remains blocked pending user design decision. H1 grouping fixes no such public Fact provenance loss."
+  ],
+  "scope": "Synthetic local in-memory documents and label-free unbound method only. No Engine/RawInfoStore constructor, actual-source run, real labels, model/API/GET, Signal/stage execution or source write.",
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/h1-counter-review.py",
+      "sha256": "9a5c81cd789a019364876fe59e54384ce2214fc5bfd9e8becf2fa4a16d58b5a0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/h1-counter-review.log",
+      "sha256": "c157be831965fef1b5c97e2a4579d6a843a7da1fbd03da2aa8e75070c715f1bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/h1-counter-results.json",
+      "sha256": "1289377c3e5a884771988a0addfe1a91c4a5bc8bf9188b6763bc19e853accd45"
+    }
+  ]
+}

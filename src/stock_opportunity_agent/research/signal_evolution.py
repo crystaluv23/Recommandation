@@ -100,6 +100,7 @@ from stock_opportunity_agent.research.evolution_settings import (
     ROLE_OUTPUT_TOKEN_LIMITS,
 )
 from stock_opportunity_agent.research.mining_agent_tools import (
+    _company_fact_period_pair_indices,
     derive_attribute_vocabulary,
     strip_document_artifacts,
 )
@@ -9549,6 +9550,10 @@ class SignalEvolutionEngine:
                         query=None,
                     )
                     if context is not None:
+                        value_key = (
+                            "value" if json.loads(document.content).get("schema_version")
+                            == "sec-company-facts-document-v1" else "val"
+                        )
                         for concept in context["concepts"]:
                             key = (
                                 str(concept["taxonomy"]),
@@ -9559,10 +9564,10 @@ class SignalEvolutionEngine:
                             if not key[1]:
                                 continue
                             concept_cases.setdefault(key, set()).add(case_ref)
-                            if len(concept.get("records", ())) >= 2:
-                                comparable_cases.setdefault(key, set()).add(
-                                    case_ref
-                                )
+                            records = [json.loads(record["exact_span"])
+                                       for record in concept.get("records", ())]
+                            if _company_fact_period_pair_indices(records, value_key=value_key):
+                                comparable_cases.setdefault(key, set()).add(case_ref)
                         continue
                 narrative_cases.setdefault(document.source_type, set()).add(
                     case_ref
@@ -9602,8 +9607,10 @@ class SignalEvolutionEngine:
             ],
             "coverage_note": (
                 "Runtime-owned, value-free coverage of this cohort's "
-                "point-in-time documents. A measurement input outside these "
-                "families has no in-window source in this cohort."
+                "point-in-time documents. Comparable-record counts establish "
+                "group-local pair existence, not a unique measurement. Projection "
+                "omissions or absent families do not establish source absence; "
+                "confirm required inputs through bounded evidence reading."
             ),
         }
 

@@ -268,9 +268,16 @@
         "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-independent-review.json",
         "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/associated-tests.log",
         "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/producer-integration-final-tests.log",
-        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json"
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json",
+        "reports/mining-native-fact-semantics-20261021.md",
+        "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/candidate-independent-review.json",
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/h1-code-review.json",
+        "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/native/result.json",
+        "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/actual-native-review.json",
+        "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/final-associated-tests.log",
+        "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/user-delta-preservation.json"
       ],
-      "remaining": "Local source-to-fact candidate now19originalfacts/literalfaithful and102associated+42independent controls pass, but legacy namespace falsepair and H1 comparable-recordcount remainopen. Optionaltaxonomy field versusexplicit originalnamespaceindex decision pending. Selection/longreading, crossdocumentrevisionauthority, and realdirection/magnitude Mining→implementation→admission→exactsuccessor use stillunverified;wholeloop/benefitunknown."
+      "remaining": "Source-to-fact localcandidate andH1catalog gate repaired with scoped controls/actualvaluefreecatalog preservation,notfreshMining. LegacyFactnamespace ambiguity stillopen,optionaltaxonomyfield versusoriginalnamespaceindex awaitsuserchoice. H1 actualdev8catalog24rows/countunchanged,notcapabilitygain. Source selection/longreading,crossdocumentrevisionauthority,and realdirection/magnitude Mining→implementation→admission→exactsuccessor use remainunverified;wholeloop/benefitunknown."
     },
     {
       "id": "independent_benefit",
@@ -1375,10 +1382,29 @@
         "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json"
       ],
       "result": "Sole frozen native7control probe on1a2e7f87 completed;4135 bindings before/after/current independently exact,terminal4files sealed,0LLM/GET/Signal/labels/sourcewrites/oldstage reentry. O1 selects2011first of56/PITeligible undercap1;O2 unchanged0671 context19 includes2completeOCF operands butFacts0;T1/P2context2/Facts0 isolatesactual value-versus-val adapterloss. L1legacyval2facts/halfyearpair ratio1.2 survives. R1explicit synthetic dualkey7facts only:USDhalfyear120/quarter50 auto pair violatesexistingcomparability;2.4arithmeticcorrect,EUR900/8001.125valid. P1futuredocexcluded/P2futureend+filedexcluded. No actualtypedwrongpair or crossdocexecutionclaim. Earlierlegacy-only2periodtests missedactualproducer shape andsameendalternatives;legacyproducerdedup isadditional staticseam. RepairneededbeforefreshMining;notnewcandidate/wholeMVP progress. Subsequent spec-first localcandidate reaches19originalfacts with wholeliteral audit,102associated tests and independent21x2 controls pass;parsed-date variants now7pass after3candidate failures and a preserved import-harness falsegreen. Sharedlegacyproducer/periodroles/currentderivedrelations/Controller summary/closure/replay repairedwithoutgenericcompute policy changes. Notfullfamilyclosed:legacy namespaceprovenance is erased inFact shape and actualsynthetic two-namespacefalsepair remains;H1rowcount stilloverstates comparableinputs. Concrete optionaltaxonomyfield versusoriginaldocumentindex design awaitsuser;nofreshMining/wholeloop."
+    },
+    {
+      "id": "engineering-mvp-h1-period-pair-catalog-20261021",
+      "strategy": "source_group_comparable_pair_existence_without_fact_schema_change",
+      "failure_families": [
+        "h1_record_count_advertises_comparability_without_period_or_conflict_proof",
+        "bounded_catalog_omission_misstated_as_source_absence"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/mining-native-fact-semantics-20261021.md",
+        "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/candidate-independent-review.json",
+        "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/h1-code-review.json",
+        "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/native/result.json",
+        "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/actual-native-review.json",
+        "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/final-associated-tests.log",
+        "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/user-delta-preservation.json"
+      ],
+      "result": "H1 has taxonomy inoriginalcontext,so itslenrecords gate canberepaired independently ofpendingFactschema. Sharedprivaterow-indexselector provesgroup-local latest/nearestcomparable operand uniqueness;H1counts existentialpair,notuniqueconceptscalar/defaultduration. No allcohortFactGraph/publicschema/modality/cap/sampling/scorechange.205associated tests pass with0network/researchLabelStore;oneoldphraseassert updatedtoexplicitcount/uniqueness/omissionobligations,originalredretained. Independent12 controls pass vs3oldfail;specific9relationoutput/ID equivalence and10syntheticH1controls pass. Sole actualH1 unboundmethod usesoriginaldev8metadata/qualified1780,1789before-after/current bindings exact,24rows/order/count unchanged,onlycoverage_notecorrected;observedcoveragegain0.0Engine/LLM/GET/LabelStore/oldstageentry. Proveslocal deterministiccatalog correctness/preservation,notfreshroleconsumption,newmeasurement or wholeMVP. LegacyFactnamespace falsepair remains pendinguserchoice;originaluserExperience suffix preserved/task-onlyspecindex."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-native-mining-fact-probe-20261021",
+    "after_iteration": "engineering-mvp-h1-period-pair-catalog-20261021",
     "evidence": [
       "reports/imported-slow-method-feedback-20261021.md",
       "runs/diagnostics/assigned_slow_target_20261021_v1/stage/manifest.json",
@@ -1400,7 +1426,14 @@
       "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-independent-review.json",
       "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/associated-tests.log",
       "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/producer-integration-final-tests.log",
-      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json"
+      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json",
+      "reports/mining-native-fact-semantics-20261021.md",
+      "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/candidate-independent-review.json",
+      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/h1-code-review.json",
+      "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/native/result.json",
+      "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/actual-native-review.json",
+      "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/final-associated-tests.log",
+      "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/user-delta-preservation.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1484,14 +1517,15 @@
       "The assigned-task fix retained the original authoring prompt to isolate selection. Two separate first answers then used valid top-level rationale arrays but nested scalar rationales;the initial prompt only enumerated row names and native contract omitted row types. Existing mechanics tests checked validator rejection and bounded continuation,not whether the original outgoing request disclosed the nested obligation. Corrected1of1 does not close initial authoring;make the existing array requirement explicit before the next real consumer,without wrapping scalars or rerunning this completedstage.",
       "The F5 typed facts-array repair reached model projection but Mining has a separate consumer requiring parsed[val],while real approved source rows use value. Native value-free manifest uses the shared readable projection and counts records>=2 as comparable;it can therefore advertise concepts absent from actual Mining facts or overstate pair certainty. Source presence,default selection order and fact-role assignment need separate probes. Do not fix the val name alone and then label every retained second latest-end alternative a comparable prior;actual duration examples and fixed source identities must survive. This is a static seam diagnosis,not an observed native zero-fact or wrong-relation result.",
       "The frozen native probe now isolates actual value-only context19 to zero Mining facts, not absence of materials. Legacy two-record fixtures bypassed producer shape and made positional roles appear correct;source-only diagnosis is superseded by native evidence,while real typed wrongpairs remain unexecuted. Legacy producer end-only dedup and downstream role dictionaries require the same family repair,not a one-line value fallback.",
-      "Parsed dates must drive both chronological order and basis identity:correcting max alone leaves calendar-equivalent spellings split. An independent old-snapshot harness also accidentally retained preloadedcurrentmodules;actual module __file__/hash proof is necessary. Legacy row literals erase namespace even within one document,so doc-local pairing cannot close semantic identity without provenance field or explicit original-document index. H1 counts>=2 isanother unchecked consumer and not pairproof."
+      "Parsed dates must drive both chronological order and basis identity:correcting max alone leaves calendar-equivalent spellings split. An independent old-snapshot harness also accidentally retained preloadedcurrentmodules;actual module __file__/hash proof is necessary. Legacy row literals erase namespace even within one document,so doc-local pairing cannot close semantic identity without provenance field or explicit original-document index. H1 counts>=2 isanother unchecked consumer and not pairproof.",
+      "H1 already retains taxonomy in its original context,so coupling its recordcount repair to a pendingFactschema choice was unnecessarily blocking independent authorized work. Catalog comparability is existence of one unambiguous periodpair,notunique wholeconcept measurement;requiring the latter would wrongly narrow direction/magnitude input capability. Shared rowselector prevents divergent arithmetic/period criteria without materializing the full EvidenceGraph. Actualnative dev8 counts unchanged;do not turn counterexample repair into measuredcoveragegain or modelcompliance."
     ],
     "decision": {
       "acceptance_id": "new_magnitude_reuse",
       "kind": "human_decision",
       "strategy": "explicit_namespace_provenance_before_mining_capability",
-      "action": "User design choice requested:optional EvidenceFact taxonomy sourcedfromexistingcontext(recommended),or explicit original-document namespaceindex passedtoeverypair/selectionconsumer. Concrete options and legacy syntheticfalsepair in reports/mining-native-fact-semantics-20261021.md;do notinferanswerfromtimeout. Nonnamespace localrepair verified,notfamilyclosure. Afterchoice,implement provenance and sharedH1 comparablepair coverage in spec order,then independentcontrol beforefreshMining.",
-      "stop": "No field/interface change before answer,no namespaceguess/hiddenmetadata/defaultcurrency/duration/sourcepriority,no new nativeMining/fullsuccessor or benefitclaim while knownfalsepair/H1gate remains. Oldstages/source/failuredenominatorsremainimmutable."
+      "action": "H1context-level comparablecount is now independently repaired/verified withoutnewFactschema. Outstanding userchoice remains optional EvidenceFact taxonomy from existingcontext(recommended) versusexplicitoriginal-document namespaceindex. Implementselected provenance in spec order and verify knownsame-doc crossnamespacefalsepair plus downstreambefore nextnativeMiningcapabilitystage. Preserve unchangedactualdev8catalog counts and donotclaimcoveragegain.",
+      "stop": "Do notinferananswerfromtimeout;no newFactfield/interface beforechoice,namespacedefault/hiddenmetadata/defaultcurrency/duration/sourcepriority. No freshnativeMining/fullsuccessor orbenefitclaim while knownFactnamespacefalsepair remains;oldstages/source/failuredenominatorsimmutable."
     }
   },
   "successor_prerequisites": [

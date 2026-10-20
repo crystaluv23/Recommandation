@@ -1,0 +1,151 @@
+{
+  "purpose": "Correct loading-path wording without rewriting frozen reports, script, results or baseline.",
+  "corrected_report": {
+    "path": "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-independent-review.json",
+    "sha256": "d8d8a27e210e051500213efbc23006095e3c77018195629da3f95bf5eccb2ffc"
+  },
+  "correction": "Baseline was a mixed-path load: mining_agent_tools, mining_controller and evolution_core were preloaded from repo src; mining_closure and mining_replay loaded from baseline overlay. Every recorded baseline module SHA equals the exact old1a2e7f87HEAD snapshot, so baseline version proof is valid. It is not a fully isolated overlay import proof. Candidate modules all loaded from current repo src and matched the stable before/after bindings. No tests rerun for this wording correction.",
+  "evidence": [
+    {
+      "result": "baseline-results.json",
+      "modules": [
+        {
+          "module": "mining_agent_tools",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+          "sha256": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be",
+          "matches_old_head": true
+        },
+        {
+          "module": "mining_controller",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+          "sha256": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9",
+          "matches_old_head": true
+        },
+        {
+          "module": "mining_closure",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-modules/mining_closure.py",
+          "sha256": "bffe40af047b810d2efdf5c2178b475b73e8c3f4fb90ef37ac5676ada4a32a13",
+          "matches_old_head": true
+        },
+        {
+          "module": "mining_replay",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-modules/mining_replay.py",
+          "sha256": "84febd7d707f5f850bb9f3f1570e40058dcc8129244dc52c8d7e5fd67367f00c",
+          "matches_old_head": true
+        },
+        {
+          "module": "evolution_core",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+          "sha256": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1",
+          "matches_old_head": true
+        }
+      ]
+    },
+    {
+      "result": "baseline-dual-key-results.json",
+      "modules": [
+        {
+          "module": "mining_agent_tools",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+          "sha256": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be",
+          "matches_old_head": true
+        },
+        {
+          "module": "mining_controller",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+          "sha256": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9",
+          "matches_old_head": true
+        },
+        {
+          "module": "mining_closure",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-modules/mining_closure.py",
+          "sha256": "bffe40af047b810d2efdf5c2178b475b73e8c3f4fb90ef37ac5676ada4a32a13",
+          "matches_old_head": true
+        },
+        {
+          "module": "mining_replay",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/baseline-modules/mining_replay.py",
+          "sha256": "84febd7d707f5f850bb9f3f1570e40058dcc8129244dc52c8d7e5fd67367f00c",
+          "matches_old_head": true
+        },
+        {
+          "module": "evolution_core",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+          "sha256": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1",
+          "matches_old_head": true
+        }
+      ]
+    },
+    {
+      "result": "candidate-results.json",
+      "modules": [
+        {
+          "module": "mining_agent_tools",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+          "sha256": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b",
+          "matches_old_head": false
+        },
+        {
+          "module": "mining_controller",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+          "sha256": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1",
+          "matches_old_head": false
+        },
+        {
+          "module": "mining_closure",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py",
+          "sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2",
+          "matches_old_head": false
+        },
+        {
+          "module": "mining_replay",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py",
+          "sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348",
+          "matches_old_head": false
+        },
+        {
+          "module": "evolution_core",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+          "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9",
+          "matches_old_head": false
+        }
+      ]
+    },
+    {
+      "result": "candidate-dual-key-results.json",
+      "modules": [
+        {
+          "module": "mining_agent_tools",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+          "sha256": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b",
+          "matches_old_head": false
+        },
+        {
+          "module": "mining_controller",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+          "sha256": "08b01326988212f865b2161cb1a9ecd7b35ee742904df2f3dfd7401e62f58aa1",
+          "matches_old_head": false
+        },
+        {
+          "module": "mining_closure",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py",
+          "sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2",
+          "matches_old_head": false
+        },
+        {
+          "module": "mining_replay",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py",
+          "sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348",
+          "matches_old_head": false
+        },
+        {
+          "module": "evolution_core",
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+          "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9",
+          "matches_old_head": false
+        }
+      ]
+    }
+  ],
+  "limits": "Do not reuse the overlay import recipe as isolation proof after repo src changes without clearing/preventing preload. The recorded module SHA, not requested overlay option, proves the versions actually executed."
+}

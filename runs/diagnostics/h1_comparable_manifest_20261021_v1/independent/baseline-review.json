@@ -1,0 +1,46 @@
+{
+  "status": "Frozen independent source-semantic group; actual native old len-gate3FAIL/0ERROR; candidate pending",
+  "field_semantics": "Within each case already-projected document and one taxonomy/concept/unit entry, existence of at least one valid latest-period/nearest-earlier-comparable unconflicted operand pair contributes that case once. Several duration branches may qualify. This does not choose a default branch or establish a concept-only scalar measurement.",
+  "owning_evidence": [
+    "spec/src/stock_opportunity_agent/research/evolution_signal_roles.md:manifest counts cohort cases holding a latest-plus-comparable record pair; value-free capability catalog.",
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md:manifest membership necessary never sufficient; actually reachable source path after tool execution.",
+    "signal_evolution.py:_h1_measurable_evidence_manifest docstring and current use: cohort pre-cutoff coverage, ranking, H1 fingerprint/payload and Controller manifest; not execution/admission.",
+    "mining_agent_tools.py:113d6a6a builder is doc/hash-local, at most one pair per current period, can contain several valid duration pairs. _unique_period_pair is the separate scalar consumer, not catalog-existence predicate."
+  ],
+  "correct_shared_fix_boundary": "Factor existing doc-local period/value-conflict selection into a private row/index helper. Context caller already supplies taxonomy/concept/unit/document group and whole row operands; graph builder uses the same selector on facts within its own identity group. H1 counts bool(selected_pairs), not bool(_unique_period_pair) and not len(records)>=2. No FactGraph construction, schema field, canonical period/currency default, new caps or research denominators needed.",
+  "counterexample_boundaries": [
+    "Same-end different durations without earlier end do not form a pair.",
+    "Multiple legal duration pairs count one case; conflict in one branch does not erase a different legal branch.",
+    "Conflicts on every current branch or the nearest prior branch yield no eligible pair; no arbitrary conflict resolution or fallback to an older prior.",
+    "Documents, namespaces and currencies cannot supply one operand each to assemble catalog capability.",
+    "Zero prior does not eliminate comparable-record capability: difference remains possible even if a later ratio cannot divide by zero.",
+    "PIT and bounded projection stay upstream; omitted records are not silently added or treated as evidence of absence.",
+    "Numeric-equivalent spellings preserve all literals and need not become an economic conflict."
+  ],
+  "entry_scope": "Actual SignalEvolutionEngine._h1_measurable_evidence_manifest unbound method, minimal SimpleNamespace(raw_info_store=real in-memory RawInfoStore), two synthetic company/time-only cases per control. No Engine or workspace instance; no GroundTruth or research labels; no model/freshrole/fullstage/old-stage/network/Signal.",
+  "baseline_loading": "Saved113d6a6a native core loaded by explicit module spec, then saved native engine module; asserted unbound H1 and actual context-selector global code filenames both point at exact old snapshots. Actual SHA recorded in result. Other transitive imports are not claimed to be an isolated whole old Engine.",
+  "script_sha256": "5e509f224fc0a57ad62d5aeaef295bd9e90b4e933ef7a8a4a6df920622f0e8d3",
+  "baseline_head": "113d6a6a897b8375ba84a6a1479c62050d584d71",
+  "tests": 12,
+  "failures": 3,
+  "errors": 0,
+  "files": [
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/check_h1_catalog.py",
+      "sha256": "5e509f224fc0a57ad62d5aeaef295bd9e90b4e933ef7a8a4a6df920622f0e8d3"
+    },
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-results.json",
+      "sha256": "477df6ad8b1d54831ae779f68b5c9969f4d529fc0a4ab397b37fc9bde4754a36"
+    },
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-command.log",
+      "sha256": "34fc5ed2cbb0faf825e26b185ef9d516895420d4d6df195134a43968c4494c72"
+    },
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-binding.json",
+      "sha256": "77fa3b673439071fa0b1e67488caea4f4a5dec7194537d3046d0365f00ea9f58"
+    }
+  ],
+  "next": "After writer stable handoff, run exact same script without --baseline and preserve first candidate result; independently record actual callable/helper files and before/after source SHA. No test-expectation edits to make candidate pass."
+}

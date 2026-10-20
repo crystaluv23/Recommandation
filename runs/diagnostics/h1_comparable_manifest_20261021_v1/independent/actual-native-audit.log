@@ -1,0 +1,1 @@
+{"status": "PASS_ACTUAL_SINGLE_NATIVE_DETERMINISTIC_CATALOG_CONNECTION_NO_OBSERVED_COUNT_GAIN", "review_sha256": "a4112076b855121bf267f2311129c0eaed84e8e9e8f3e8503e5d341861c5b172", "bindings": 1789, "metadata": 8, "rows": 24, "changed_counts": 0}

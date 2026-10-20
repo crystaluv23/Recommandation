@@ -90,7 +90,9 @@ R1仅synthetic dual-key证半年120/季度50错自动pair（算术2.4正确）�
 PIT两未来row排除有效；spec-first局部候选已修producer→facts→pair→summary/closure/replay，原0671现在19facts逐literal/period/unit/hash核真。
 102关联及独立21×2控制通过；日期独立7控通过（首候选raw字序/身份3失败及一次import污染假绿均保留，不计旧版证据），0网络/真实LabelStore。
 旧unit期待任取同日101已改为完整保101/100及prior100，原红保留。非有限测量不伪negative，显式USD/shares算术权限不变。
-旧格式leaf丢taxonomy的真实synthetic反例仍会被错配，H1 comparable计数仍只数row：本错误家族未关闭、不进下一Mining能力stage。
+[H1计数后续修复](../reports/mining-native-fact-semantics-20261021.md)：原context已知taxonomy，现与自动关系共享row-level期间/冲突判定，统计组内有效pair存在性；多duration能力不缩为唯一scalar。
+205关联、独立12及另9等价+10H1控通过；原len gate3红及旧phrase unit期待保留。实际仅一次H1 unbound方法读原dev8/qualified1780，1789绑定保真，24项/顺序/计数全同，仅覆盖说明变更，观察覆盖增益0。
+未构造Engine/新FactGraph/角色/标签/GET/旧stage；新prompt仅本地request构造验证，不称模型消费。旧格式Fact leaf丢taxonomy的真实错配仍open、不进下一Mining能力stage。
 可选taxonomy字段与原文索引具体方案已提交用户选择，未答前不默改schema/interface；已完成旧probe保持封存。
 12函数有真实参数化空间；方向/magnitude新测量能力与闭环仍open，不用完整Mining找前置错误。
 LLM阅读接口方案待设计决策；两财务期间定义需具体政策/新版本，不能由当前计算结果倒推答案。

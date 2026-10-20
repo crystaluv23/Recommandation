@@ -1,0 +1,34 @@
+{
+  "status": "PASS_ACTUAL_SINGLE_NATIVE_DETERMINISTIC_CATALOG_CONNECTION_NO_OBSERVED_COUNT_GAIN",
+  "bindings_verified_current": 1789,
+  "actual_metadata_count": 8,
+  "catalog_comparison": {
+    "key_fields": [
+      "taxonomy",
+      "concept",
+      "source_display_name",
+      "unit"
+    ],
+    "members": 24,
+    "same_members": true,
+    "same_order": true,
+    "all_case_and_comparable_counts_unchanged": true,
+    "only_top_level_change": "coverage_note",
+    "narrative_and_price_counts_unchanged": true
+  },
+  "privacy": "Runtime receiver used label-free case_id/ref/cutoff whitelist; no issuer/ref in value-free output catalog. Local audit metadata intentionally retains authorized identity fields; no outcome-bearing inputs or LabelStore were opened by this audit.",
+  "evidence": {
+    "script_sha256": "6c9d2dae7c22db66ab099954c658646166ad3a96e3d57ed7ccbec17863fb8a75",
+    "plan_sha256": "7e52a97d8d33a914678f43e613040a3bce919085ad01b6901a7fbeb63d9d775a",
+    "result_sha256": "1f4f0ad73852cc9e6416599923cda300a414f83ba4145f597430c3af86ff971f",
+    "started_sha256": "a597f9ec25752d1e3f89c894716bb8ffdc8ea823839c26356a401124c401f625",
+    "audit_sha256": "696a0dcb4a1f3d4d33486c0cc7d54cec28ac0d1e6751692885273368c949b4b1"
+  },
+  "scope": "This audit uses only stdlib JSON/hash reads. No helper, Store/Engine constructor, role, model, GET, Signal, source write or native rerun. Native script records forbidden_calls=0 and exactly one unbound call in reviewed source.",
+  "limits": [
+    "Actual dev8 catalog membership and all counts did not increase; synthetic counters establish repaired distinctions, not an observed corpus capability gain.",
+    "No fresh LLM catalog consumption, complete Mining, unique scalar measurement or independent research benefit is established.",
+    "Legacy EvidenceFact namespace falsepair remains open pending explicit user design decision.",
+    "1789 direct frozen records remain exact; recursive source qualification was performed by existing native reviewed reader, not independently rebuilt here."
+  ]
+}

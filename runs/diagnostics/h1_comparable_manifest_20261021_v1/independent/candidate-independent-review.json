@@ -1,0 +1,147 @@
+{
+  "verdict": "PASS for H1 comparable-record capability count; not full Mining or legacy FactGraph namespace closure",
+  "field_semantics": "Per case already-projected doc and taxonomy/concept/unit group, at least one valid latest-period/nearest-earlier-comparable unconflicted pair counts the case once. Multiple duration branches remain available; catalog presence does not choose a default scalar or guarantee requested-measurement sufficiency.",
+  "comparison": {
+    "same_script_sha256": "5e509f224fc0a57ad62d5aeaef295bd9e90b4e933ef7a8a4a6df920622f0e8d3",
+    "old113d6a6a": {
+      "tests": 12,
+      "failures": 3,
+      "errors": 0
+    },
+    "candidate": {
+      "tests": 12,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "verified_boundaries": [
+    "Two lawful duration branches count one case, not two and not0 for lack of unique scalar.",
+    "One conflicted current branch does not erase a separate valid branch; entirely conflicted current or nearest prior does not create a pair.",
+    "Same-end alternative durations alone do not create a prior.",
+    "No pair is assembled across documents, taxonomy groups or units; typed and legacy source contexts retain the grouping.",
+    "Zero denominator remains comparable-record capability; ratio-specific arithmetic admissibility belongs to the requested calculation.",
+    "PIT future documents do not supply a prior; whole-entry bounded projection is retained.",
+    "No record values, identities or outcome labels enter H1 capability output."
+  ],
+  "actual_entry": "Actual unbound SignalEvolutionEngine._h1_measurable_evidence_manifest with minimal self.raw_info_store and2synthetic company/time-only cases per control. No Engine/Workspace construction and no GroundTruth/labels; not a fresh role or full stage.",
+  "implementation_read_review": {
+    "shared_private_helper": "_company_fact_period_pair_indices",
+    "H1_calls": [
+      "_company_fact_period_pair_indices",
+      "_company_facts_context",
+      "len",
+      "set",
+      "sorted",
+      "str"
+    ],
+    "automatic_builder_calls": [
+      "EvidenceRelation",
+      "_company_fact_period_pair_indices",
+      "_fact_taxonomy",
+      "_opaque_ref",
+      "sorted",
+      "tuple"
+    ],
+    "H1_constructs_FactGraph": false,
+    "H1_uses_scalar_uniqueness_gate": false,
+    "note": "The helper factors the existing document-local period/value-conflict rule. Source caller retains taxonomy/concept/unit grouping; graph caller retains its own identity grouping. No new research period/currency choice or graph construction is needed for H1."
+  },
+  "actual_callable_bindings": {
+    "H1_unbound_method": {
+      "function": "SignalEvolutionEngine._h1_measurable_evidence_manifest",
+      "file": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "file_sha256": "56ce642aea2a2330310ee283b0af18da3edaae38a365d7a5724ce5d727ad0b89"
+    },
+    "actual_context_selector_global": {
+      "function": "_company_facts_context",
+      "file": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "file_sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+    },
+    "actual_typed_context_selector": {
+      "function": "_typed_company_facts_context",
+      "file": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "file_sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+    }
+  },
+  "source_before_after": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "before_sha256": "31da7d34a0e065de7144bcaaf2b4bfff94e7b187852cb14b01c3d52b444b8cc8",
+      "after_sha256": "31da7d34a0e065de7144bcaaf2b4bfff94e7b187852cb14b01c3d52b444b8cc8"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "before_sha256": "56ce642aea2a2330310ee283b0af18da3edaae38a365d7a5724ce5d727ad0b89",
+      "after_sha256": "56ce642aea2a2330310ee283b0af18da3edaae38a365d7a5724ce5d727ad0b89"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "before_sha256": "a921cf913b221eeb0cd01a7c90d1ee825247cea1d3e50f5ce9b9747ef49d6adb",
+      "after_sha256": "a921cf913b221eeb0cd01a7c90d1ee825247cea1d3e50f5ce9b9747ef49d6adb"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "before_sha256": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08",
+      "after_sha256": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "before_sha256": "aa2d19783ed081854e1eb47b91514625bd161b7b5efa7672ca44ecd0a88dc5bd",
+      "after_sha256": "aa2d19783ed081854e1eb47b91514625bd161b7b5efa7672ca44ecd0a88dc5bd"
+    },
+    {
+      "path": "tests/test_h1_measurable_period_coverage.py",
+      "before_sha256": "9f2214ba9a410c6768c01452a548221087ea29959d9d4b238f5da854956757f4",
+      "after_sha256": "9f2214ba9a410c6768c01452a548221087ea29959d9d4b238f5da854956757f4"
+    }
+  ],
+  "core_binding": {
+    "path": "src/stock_opportunity_agent/research/evolution_core.py",
+    "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+  },
+  "pending_and_limits": [
+    "Legacy EvidenceFact namespace/schema decision remains separately pending; H1 has original context taxonomy and this pass does not resolve that graph issue.",
+    "No fresh model/role obedience, new reusable measurement, publication, successor consumption, full Slow or predictive gain is established.",
+    "Capability count applies only to actually bounded projected records; it does not prove complete original-source coverage or absence.",
+    "No writer test contents or expected answers were read; only focused-summary file hashes were checked."
+  ],
+  "scope": {
+    "product_writes_by_reviewer": 0,
+    "Engine_Workspace_instances": 0,
+    "research_labels_GroundTruth": 0,
+    "network": 0,
+    "model_roles": 0,
+    "Signal_execution": 0,
+    "old_stage_reentry": 0
+  },
+  "evidence_files": [
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/check_h1_catalog.py",
+      "sha256": "5e509f224fc0a57ad62d5aeaef295bd9e90b4e933ef7a8a4a6df920622f0e8d3"
+    },
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-results.json",
+      "sha256": "477df6ad8b1d54831ae779f68b5c9969f4d529fc0a4ab397b37fc9bde4754a36"
+    },
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-command.log",
+      "sha256": "34fc5ed2cbb0faf825e26b185ef9d516895420d4d6df195134a43968c4494c72"
+    },
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/baseline-review.json",
+      "sha256": "10c99093f3e977f95865f0cce53aa108ac953d8e008151ba3c073c4748c6f190"
+    },
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/candidate-results.json",
+      "sha256": "5a35bfbcb8e715315c5aee0e454fcb39edc4c384ca25342d9d7a7cbdae48a1ab"
+    },
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/candidate-command.log",
+      "sha256": "1ae8ee93ed1dbeb0433affb067ac892780413145acc5279cc5175f7e77065e56"
+    },
+    {
+      "path": "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/candidate-before-binding.json",
+      "sha256": "933206a629608564eeb40a494d4f8aa273509f2639685ee59e03d9c6b3c0a814"
+    }
+  ]
+}

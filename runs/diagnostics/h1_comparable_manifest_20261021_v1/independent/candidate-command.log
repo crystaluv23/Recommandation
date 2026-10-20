@@ -1,0 +1,17 @@
+test_PIT_future_doc_cannot_supply_prior (__main__.H1Catalog.test_PIT_future_doc_cannot_supply_prior) ... ok
+test_all_current_branches_conflicted (__main__.H1Catalog.test_all_current_branches_conflicted) ... ok
+test_available_pair_does_not_require_nonzero_ratio_denominator (__main__.H1Catalog.test_available_pair_does_not_require_nonzero_ratio_denominator) ... ok
+test_bounded_projection_and_value_free_output (__main__.H1Catalog.test_bounded_projection_and_value_free_output) ... ok
+test_nearest_prior_conflict_no_fallback_to_older (__main__.H1Catalog.test_nearest_prior_conflict_no_fallback_to_older) ... ok
+test_no_cross_document_pair (__main__.H1Catalog.test_no_cross_document_pair) ... ok
+test_no_cross_namespace_or_unit_pair (__main__.H1Catalog.test_no_cross_namespace_or_unit_pair) ... ok
+test_numeric_spellings_not_conflicting_values (__main__.H1Catalog.test_numeric_spellings_not_conflicting_values) ... ok
+test_one_conflicted_branch_other_valid_remains_capability (__main__.H1Catalog.test_one_conflicted_branch_other_valid_remains_capability) ... ok
+test_same_end_two_durations_is_not_pair (__main__.H1Catalog.test_same_end_two_durations_is_not_pair) ... ok
+test_two_valid_duration_pairs_count_each_case_once (__main__.H1Catalog.test_two_valid_duration_pairs_count_each_case_once) ... ok
+test_unique_typed_and_legacy_pair (__main__.H1Catalog.test_unique_typed_and_legacy_pair) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.003s
+
+OK

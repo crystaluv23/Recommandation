@@ -1,0 +1,166 @@
+{
+  "fact_pair_equivalence": {
+    "instant": {
+      "pair_count": 1,
+      "exact_relation_fields_order_equal": true
+    },
+    "duration_one_pair": {
+      "pair_count": 1,
+      "exact_relation_fields_order_equal": true
+    },
+    "current_conflict": {
+      "pair_count": 0,
+      "exact_relation_fields_order_equal": true
+    },
+    "nearest_prior_conflict_no_older_substitute": {
+      "pair_count": 0,
+      "exact_relation_fields_order_equal": true
+    },
+    "calendar_numeric_duplicates": {
+      "pair_count": 1,
+      "exact_relation_fields_order_equal": true
+    },
+    "currencies": {
+      "pair_count": 2,
+      "exact_relation_fields_order_equal": true
+    },
+    "typed_namespaces": {
+      "pair_count": 2,
+      "exact_relation_fields_order_equal": true
+    },
+    "doc_local": {
+      "pair_count": 0,
+      "exact_relation_fields_order_equal": true
+    },
+    "source_order_reversed": {
+      "pair_count": 1,
+      "exact_relation_fields_order_equal": true
+    }
+  },
+  "h1_catalog_controls": {
+    "same_end_no_prior": [
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 0
+      }
+    ],
+    "current_conflict": [
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 0
+      }
+    ],
+    "valid_quarter_amid_unmatched_halfyear": [
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 2
+      }
+    ],
+    "namespace_no_stitch": [
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 0
+      },
+      {
+        "taxonomy": "ns-b",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 0
+      }
+    ],
+    "document_no_stitch": [
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 0
+      }
+    ],
+    "unit_no_stitch": [
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "EUR",
+        "case_count": 2,
+        "cases_with_comparable_records": 0
+      },
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 0
+      }
+    ],
+    "equivalent_duplicates_count_cases_once": [
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 2
+      }
+    ],
+    "instant_positive": [
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 2
+      }
+    ],
+    "nearest_prior_conflict": [
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 0
+      }
+    ],
+    "future_prior_does_not_help": [
+      {
+        "taxonomy": "ns-a",
+        "concept": "IndependentOperatingCashFlow",
+        "source_display_name": "",
+        "unit": "USD",
+        "case_count": 2,
+        "cases_with_comparable_records": 0
+      }
+    ]
+  },
+  "source_bindings": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py": "31da7d34a0e065de7144bcaaf2b4bfff94e7b187852cb14b01c3d52b444b8cc8",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "56ce642aea2a2330310ee283b0af18da3edaae38a365d7a5724ce5d727ad0b89",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9",
+    "/Users/l/Project/Recommandation/runs/diagnostics/h1_measurable_period_coverage_20261021_v1/driver/before-mining_agent_tools.py": "f922cb684a0370ae006402ecf32b0799089bf5064294bd7e318e967e4126854b"
+  },
+  "product_source_unchanged_during_run": true,
+  "scope": "Only synthetic documents + label-free SimpleNamespace unbound H1 method; no Engine/store constructor, actual-source run, model, GET, Signal, LabelStore or stage."
+}

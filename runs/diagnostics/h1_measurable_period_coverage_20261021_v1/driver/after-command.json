@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_h1_measurable_period_coverage",
+    "tests.test_mining_fact_semantics",
+    "-v"
+  ],
+  "exit_code": 0
+}
