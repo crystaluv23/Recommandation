@@ -1,0 +1,85 @@
+{
+  "schema_version": "independent-bounded-assembler-review-v1",
+  "source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/assemble_source_bundle.py",
+    "sha256": "de376fab2ad2a13f8ca5613c69cf0eefc7eaaaed40a3cfe569c860383b854324"
+  },
+  "stage": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/result.json",
+    "sha256": "ac71fbcbf40526e04446c0cca25e568d02b0fd9df06ffd28463d03fcc90369ec"
+  },
+  "operating_semantic_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/operating-content-review.json",
+    "sha256": "15da9a9f261910663a2502a58c9b20a7a85fb8a97e0ca7acb5dd2f1b7b7617e4"
+  },
+  "reviewed_shape": {
+    "financial_families": 25,
+    "financial_products": 842,
+    "expected_product_count_from_terminal_result": 842,
+    "collision_count": 4,
+    "eligible_financial": 838,
+    "GPRE_full_set_size": 57,
+    "GPRE_normalization": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/normalization.json",
+      "sha256": "ec8b8004b33fb651bf7d0c1ce4b026751267fdab1a2705e177a9bafed8488dc1"
+    },
+    "operating_qualified_existing_original_targets": 29,
+    "market_reconstructed_variants": 959,
+    "market_original_paths": 242,
+    "market_unique_IDs": 242
+  },
+  "market_binding_AST_probe": {
+    "source_lines": [
+      111,
+      114
+    ],
+    "checks": [
+      {
+        "case": "none",
+        "rejected": false,
+        "native_bound_reads": 0,
+        "empty_without_read": true
+      },
+      {
+        "case": "valid",
+        "rejected": false,
+        "native_bound_reads": 1,
+        "empty_without_read": false
+      },
+      {
+        "case": "missing",
+        "rejected": true,
+        "native_bound_reads": 1,
+        "empty_without_read": false
+      },
+      {
+        "case": "badsha",
+        "rejected": true,
+        "native_bound_reads": 1,
+        "empty_without_read": false
+      },
+      {
+        "case": "wrongpath_validsha",
+        "rejected": true,
+        "native_bound_reads": 1,
+        "empty_without_read": false
+      }
+    ]
+  },
+  "fragment_merge_AST_probe": {
+    "generator_fragments": 2,
+    "parsed_bound_once_each": true,
+    "additional_market_products_preserved": 2,
+    "candidate_callback_count": 2,
+    "full_assembler_executed": false
+  },
+  "existing_original_dedup_AST": "originals = list({(b['path'], b['sha256']): b for b in originals}.values())",
+  "source_unchanged": true,
+  "conclusion": "Empty-market-record and fragment-reread families fixed. Explicit None alone takes empty path; missing/bad-SHA/wrong-path non-None bindings reject. Actual frozen source shapes remain consistent.",
+  "limits": [
+    "Only exact market-binding/fragment AST blocks executed against TemporaryDirectory data; no full assembler/prepare/execute/store/GET/model/labels.",
+    "842/29/242 shapes and GPRE57 member count read, not repeated native full product/source validation or admission measurement.",
+    "No claim about95 collection outcome, new body semantics, final bundle qualification/appends or actual both720 input consumers.",
+    "Initial temp probe assertion used unresolved macOS temp paths against resolved bindings; corrected only the comparison to resolve paths. Candidate assembler was unchanged."
+  ]
+}

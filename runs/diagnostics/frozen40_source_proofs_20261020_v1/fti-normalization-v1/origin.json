@@ -1,0 +1,17 @@
+{
+  "cache": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "sha256": "f4788773be94acbf0b7abfda5cfa446afa1b428a9d8129d8879d0dcdd6665d13"
+  },
+  "case": {
+    "case_id": "cik_0001681459:20250530",
+    "company_id": "cik_0001681459",
+    "prediction_time": "2025-05-30T00:00:00+00:00",
+    "split": "discovery",
+    "ticker": "FTI"
+  },
+  "original_record": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/candidate.json",
+    "sha256": "2ae4900ab07a4ef47940ce5672a8d4af8161bd1f4698d599e71d9f7f24efdac1"
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "name": "proof-037",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2025-03-14T20:13:13+00:00",
+        "accession_number": "0001558370-25-003004",
+        "case_id": "cik_0001051627:20250930",
+        "form": "10-K",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/13260563b80196a412507f59.json",
+            "sha256": "3d0e2aa8fc9cf9d90d3516811b725443e25d3c81abf48b6f4303e9bb6e021fec"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1051627/000155837025003004/axti-20241231x10k.htm",
+    "filing": {
+      "accepted_at": "2025-03-14T20:13:13+00:00",
+      "accession_number": "0001558370-25-003004",
+      "cik": "0001051627",
+      "filing_date": "2025-03-14",
+      "form": "10-K",
+      "primary_document": "axti-20241231x10k.htm",
+      "report_date": "2024-12-31",
+      "retrieved_at": "2026-10-20T00:05:54.554149+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1051627/000155837025003004/axti-20241231x10k.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-037",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-037-receipt-snapshot.json",
+    "sha256": "548744c7149f8979c21eec69a271a2b07886e0e4d53dfa1c76e1172cb1906829"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-037.response.raw",
+    "sha256": "0a2ffdd4cf4799e4070d33bcfe047dabe9b902fce2dd300800cfe9e6fc44187e"
+  },
+  "decoded_body_sha256": "11b6289ea3b8e9fe733687b2f28949919cadf2a2503f51ac2994b1db21d6a3fc",
+  "decoded_characters": 4443154,
+  "visible_characters": 440930,
+  "visible_text_sha256": "ab04e01be0a6e6694fd59b6f0b8c09ff36b0ab48399fe94524c44863edc0e9b6",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 358852,
+    "raw_decoded_end": 378363,
+    "text": "Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 Form 10-K (Mark One) \u2612 ANNUAL REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the fiscal year ended December 31 , 2024 OR \u2610 TRANSITION REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the transition period from to Commission file number: 000-24085 AXT, INC. (Exact name of registrant as specified in its charter) Delaware 94-3031310 (State or other jurisdiction of incorporation or organization) (I.R.S. Employer Identification No.) 4281 Technology Drive , Fremont , California 94538 (Address of principal executive offices) (Zip Code) Registrant\u2019s telephone number, including area code: ( 510 ) 438-4700 Securities registered pursuant to Section 12(b) of the Act: Title of each class: Trading Symbol Name of each exchange on which registered: Common Stock, $0.001 par value AXTI The NASDAQ Stock Market LLC Securities registered pursuant to Section 12(g) of the Act: None Indicate by checkmark if the registrant is a well-known seasoned issuer, as defined in Rule 405 of the Securities Act \u25fb Yes \u2327 No Indicate by checkmark if the registrant is not required to file reports pursuant to Section 13 or Section 15(d) of the Act. \u25fb Yes \u2327 No Indica"
+  },
+  "tail": {
+    "visible_start": 440080,
+    "visible_end": 440930,
+    "raw_decoded_start": 4417960,
+    "raw_decoded_end": 4442850,
+    "text": "all that said attorney-in-fact and agent, or their or his or her substitutes, shall do or cause to be done by virtue hereof. Pursuant to the requirements of the Securities Exchange Act of 1934, this report has been signed below by the following persons on behalf of the registrant and in the capacities and on the dates indicated. Signature Title Date /s/ MORRIS S. YOUNG Chief Executive Officer and Chairman of the Board of Directors March 14, 2025 Morris S. Young (Principal Executive Officer) /s/ GARY L. FISCHER Chief Financial Officer and Corporate Secretary March 14, 2025 Gary L. Fischer (Principal Financial Officer and Principal Accounting Officer) /s/ JESSE CHEN Lead Independent Director March 14, 2025 Jesse Chen /s/ DAVID C. CHANG Director March 14, 2025 David C. Chang /s/ Christine Russell Director March 14, 2025 Christine Russell 119"
+  },
+  "closing_html": true,
+  "section_locators": {
+    "business": [
+      {
+        "visible_start": 4861,
+        "visible_end": 5711,
+        "raw_decoded_start": 393838,
+        "raw_decoded_end": 413900,
+        "text": "Item 1. Business 3 Item 1A. Risk Factors 18 Item 1B. Unresolved Staff Comments 45 Item 1C. Cybersecurity 45 Item 2. Properties 47 Item 3. Legal Proceedings 47 Item 4. Mine Safety Disclosures 48 PART II Item 5. Market for Registrant\u2019s Common Equity, Related Stockholder Matters and Issuer Purchases of Equity Securities 49 Item 6. Reserved 51 Item 7. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 51 Item 7A. Quantitative and Qualitative Disclosures About Market Risk 67 Item 8. Consolidated Financial Statements and Supplementary Data 69 Item 9. Changes in and Disagreements with Accountants on Accounting and Financial Disclosure 69 Item 9A. Controls and Procedures 69 Item 9B. Other Information 70 Item 9C. Disclosure Regarding Foreign Jurisdictions that Prevent Inspections 70 PART III Item 10. Directors, E"
+      },
+      {
+        "visible_start": 12035,
+        "visible_end": 12885,
+        "raw_decoded_start": 432424,
+        "raw_decoded_end": 434327,
+        "text": "Item 1. Business AXT is a worldwide materials science company that develops and produces high-performance compound and single element semiconductor substrates, also known as wafers. Two of our consolidated subsidiaries produce and sell certain raw materials some of which are used in our substrate manufacturing process and some of which are sold to other companies. Our substrate wafers are used when a typical silicon substrate wafer cannot meet the performance requirements of a semiconductor or optoelectronic device. The dominant substrates used in producing semiconductor chips and other electronic circuits are made from silicon. However, certain chips may become too hot or perform their function too slowly if silicon is used as the base material. In addition, optoelectronic applications, such as LED lighting and chip-based lasers, do not "
+      }
+    ],
+    "mda": [
+      {
+        "visible_start": 5203,
+        "visible_end": 6053,
+        "raw_decoded_start": 404685,
+        "raw_decoded_end": 420604,
+        "text": "Item 7. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 51 Item 7A. Quantitative and Qualitative Disclosures About Market Risk 67 Item 8. Consolidated Financial Statements and Supplementary Data 69 Item 9. Changes in and Disagreements with Accountants on Accounting and Financial Disclosure 69 Item 9A. Controls and Procedures 69 Item 9B. Other Information 70 Item 9C. Disclosure Regarding Foreign Jurisdictions that Prevent Inspections 70 PART III Item 10. Directors, Executive Officers and Corporate Governance 71 Item 11. Executive Compensation 71 Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters 71 Item 13. Certain Relationships and Related Transactions and Director Independence 71 Item 14. Principal Accountant Fees and Services 71 PART IV Item 15. E"
+      },
+      {
+        "visible_start": 214442,
+        "visible_end": 215292,
+        "raw_decoded_start": 895192,
+        "raw_decoded_end": 897418,
+        "text": "Item 7. Management\u2019s Discussion and Analysis of Financial Condit ion and Results of Operations In addition to historical information, the following discussion contains forward-looking statements that are subject to risks and uncertainties. Actual results may differ substantially from those referred to herein due to a number of factors, including but not limited to risks described in the section entitled Item 1A. \u201cRisk Factors\u201d and elsewhere in this Annual Report on Form 10-K. This discussion should be read in conjunction with our consolidated financial statements and related notes included elsewhere in this Form 10-K. Critical Accounting Policies and Estimates We prepare our consolidated financial statements in accordance with accounting principles generally accepted in the United States of America (\u201cU.S. GAAP\u201d). Accordingly, we make esti"
+      }
+    ],
+    "risks": [
+      {
+        "visible_start": 4880,
+        "visible_end": 5730,
+        "raw_decoded_start": 394885,
+        "raw_decoded_end": 413900,
+        "text": "Item 1A. Risk Factors 18 Item 1B. Unresolved Staff Comments 45 Item 1C. Cybersecurity 45 Item 2. Properties 47 Item 3. Legal Proceedings 47 Item 4. Mine Safety Disclosures 48 PART II Item 5. Market for Registrant\u2019s Common Equity, Related Stockholder Matters and Issuer Purchases of Equity Securities 49 Item 6. Reserved 51 Item 7. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 51 Item 7A. Quantitative and Qualitative Disclosures About Market Risk 67 Item 8. Consolidated Financial Statements and Supplementary Data 69 Item 9. Changes in and Disagreements with Accountants on Accounting and Financial Disclosure 69 Item 9A. Controls and Procedures 69 Item 9B. Other Information 70 Item 9C. Disclosure Regarding Foreign Jurisdictions that Prevent Inspections 70 PART III Item 10. Directors, Executive Officers a"
+      },
+      {
+        "visible_start": 78946,
+        "visible_end": 79796,
+        "raw_decoded_start": 598961,
+        "raw_decoded_end": 600684,
+        "text": "Item 1A. Risk Factors for further information on risks attendant to our foreign operations and dependence. Available Information Our principal executive offices are located at 4281 Technology Drive, Fremont, CA 94538, and our main telephone number at this address is (510) 438-4700. Our Internet website address is www.axt.com. Our website address is given solely for informational purposes; we do not intend, by this reference, that our website should be deemed to be part of this Annual Report on Form 10-K or to incorporate the information available at our website address into this Annual Report on Form 10-K. We file electronically with the SEC our annual reports on Form 10-K, quarterly reports on Form 10-Q, current reports on Form 8-K, and amendments to those reports filed or furnished pursuant to Section 13(a) or 15(d) of the Securities Ex"
+      },
+      {
+        "visible_start": 80084,
+        "visible_end": 80934,
+        "raw_decoded_start": 600901,
+        "raw_decoded_end": 608231,
+        "text": "Item 1A. Risk Factors For ease of reference, we have divided these risks and uncertainties into the following general categories: I. Summary Risk Factors; II. Risks Related to Our Business and Operations; III. Risks Related to International Aspects of Our Business; IV. Risks Related to Our Financial Results and Capital Structure; V. Risks Related to Our Intellectual Property; and VI. Risks Related to Compliance, Environmental Regulations and Other Legal Matters. 18 Table of Contents I. Summary Risk Factors \u25cf Global economic and political conditions, including trade tariffs, import-export restrictions, and other restrictions, may have a negative impact on our business and financial results. \u25cf We are subject to a number of unique legal and operational risks associated with our corporate structure. \u25cf The PRC central government may intervene "
+      },
+      {
+        "visible_start": 235969,
+        "visible_end": 236819,
+        "raw_decoded_start": 927443,
+        "raw_decoded_end": 963427,
+        "text": "Item 1A. Risk Factors \u2013 Risks Related to International Aspects of Our Business. Operating Results We manufacture all of our products in the People\u2019s Republic of China (PRC or China), which generally has favorable costs for facilities and labor compared with comparable facilities in the United States, Europe or Japan. Our supply chain includes partial ownership of raw material companies in China (joint ventures). We believe this supply chain arrangement provides us with pricing advantages, reliable supply and enhanced sourcing lead-times for key raw materials which are central to our final manufactured products. Revenue Years Ended Dec. 31 2023 to 2024 2022 to 2023 Increase Increase 2024 2023 2022 (Decrease) % Change (Decrease) % Change Product Type: Substrates $ 67,748 $ 47,466 $ 111,094 $ 20,282 42.7 % $ (63,628) (57.3) % Raw materials a"
+      }
+    ],
+    "statements": [
+      {
+        "visible_start": 162182,
+        "visible_end": 163032,
+        "raw_decoded_start": 750432,
+        "raw_decoded_end": 751961,
+        "text": "consolidated statements of operations. We are subject to foreign exchange gains and losses that may materially impact our consolidated statements of operations. For example, in 2024, 2023 and 2022, we incurred foreign exchange gains of $91,000, $169,000 and $1.6 million, respectively. The functional currency of our companies in China is the Chinese renminbi, the local currency. We can incur foreign exchange gains or losses when we pay dollars to one of our China-based companies or a third-party supplier in China. Similarly, if a company in China pays renminbi into one of our bank accounts transacting in dollars the renminbi will be converted to dollars and we can incur a foreign exchange gain or loss. Hedging renminbi will be considered in the future but it is complicated by the number of companies involved, the diversity of transactions "
+      },
+      {
+        "visible_start": 162304,
+        "visible_end": 163154,
+        "raw_decoded_start": 750800,
+        "raw_decoded_end": 752696,
+        "text": "consolidated statements of operations. For example, in 2024, 2023 and 2022, we incurred foreign exchange gains of $91,000, $169,000 and $1.6 million, respectively. The functional currency of our companies in China is the Chinese renminbi, the local currency. We can incur foreign exchange gains or losses when we pay dollars to one of our China-based companies or a third-party supplier in China. Similarly, if a company in China pays renminbi into one of our bank accounts transacting in dollars the renminbi will be converted to dollars and we can incur a foreign exchange gain or loss. Hedging renminbi will be considered in the future but it is complicated by the number of companies involved, the diversity of transactions and restrictions imposed by the banking system in China. Sales to Japanese customers are denominated in Japanese yen. This"
+      },
+      {
+        "visible_start": 429311,
+        "visible_end": 430161,
+        "raw_decoded_start": 4315061,
+        "raw_decoded_end": 4316620,
+        "text": "consolidated balance sheets. This classification is due to the existence of certain contingencies that could result in potential redemption at the fixed purchase price as described below. We currently do not believe that this is probable thus no amortization of the issuance costs has been recorded. Pursuant to the Capital Investment Agreements with the Investors, each Investor has the right to require AXT to redeem any or all Tongmei shares held by such Investor at the original purchase price paid by such Investor, without interest, in the event the IPO fails to pass the audit of the Shanghai Stock Exchange, is not approved by the Chinese Securities Regulatory Commission (\u201cCSRC\u201d) or Tongmei cancels the IPO application. The aggregate redemption amount is approximately $ 49 million, subject to the foreign exchange rate variable at time of r"
+      }
+    ],
+    "segments": [],
+    "units": [
+      {
+        "visible_start": 238827,
+        "visible_end": 239677,
+        "raw_decoded_start": 1006105,
+        "raw_decoded_end": 1082547,
+        "text": "in thousands) China $ 56,119 $ 39,778 $ 55,414 $ 16,341 41.1 % $ (15,636) (28.2) % % of total revenue 56 % 53 % 39 % Taiwan 14,098 8,651 28,780 5,447 63.0 % (20,129) (69.9) % % of total revenue 14 % 11 % 21 % Japan 4,979 4,641 11,724 338 7.3 % (7,083) (60.4) % % of total revenue 5 % 6 % 8 % Asia Pacific (excluding China, Taiwan and Japan) 2,818 3,814 4,188 (996) (26.1) % (374) (8.9) % % of total revenue 3 % 5 % 3 % Europe (primarily Germany) 13,766 12,315 20,592 1,451 11.8 % (8,277) (40.2) % % of total revenue 14 % 16 % 15 % North America (primarily the United States) 7,581 6,596 20,420 985 14.9 % (13,824) (67.7) % % of total revenue 8 % 9 % 14 % Total revenue $ 99,361 $ 75,795 $ 141,118 $ 23,566 31.1 % $ (65,323) (46.3) % Sales to customers located outside of North America represented approximately 92%, 90% and 86% of our revenue during "
+      },
+      {
+        "visible_start": 243127,
+        "visible_end": 243977,
+        "raw_decoded_start": 1108958,
+        "raw_decoded_end": 1142850,
+        "text": "in thousands) Gross profit $ 23,836 $ 13,318 $ 52,121 $ 10,518 79.0 % $ (38,803) (74.4) % Gross Profit % 24.0 % 17.6 % 36.9 % Gross profit increased $10.5 million in 2024 as compared to 2023. Gross margin in 2024 was 24.0% as compared to 17.6% in 2023. The increase in gross profit is attributed to higher revenue resulting in fixed costs being spread over more units and a favorable change in product mix. Gross profit decreased $38.8 million in 2023 as compared to 2022. Gross margin in 2023 was 17.6% as compared to 36.9% in 2022. The decrease in gross profit is attributed to lower revenue resulting in fixed costs being spread over less units and an unfavorable change in product mix. Selling, General and Administrative Expenses 2023 to 2024 2022 to 2023 Years Ended Dec. 31 Increase Increase 2024 2023 2022 (Decrease) % Change (Decrease) % Cha"
+      },
+      {
+        "visible_start": 431064,
+        "visible_end": 431914,
+        "raw_decoded_start": 4317836,
+        "raw_decoded_end": 4331695,
+        "text": "in thousands): Balance as of January 1, 2023 $ 44,846 Investment in subsidiary with redeemable noncontrolling interest 155 Equity issuance costs incurred ( 880 ) Stock-based compensation attributable to redeemable noncontrolling interests 52 Net income attributable to redeemable noncontrolling interests ( 920 ) Effect of foreign currency translation on redeemable noncontrolling interests ( 1,260 ) Effect of foreign currency translation attributable to redeemable noncontrolling interests ( 330 ) Balance as of December 31, 2023 41,663 Equity issuance costs incurred ( 992 ) Stock-based compensation attributable to redeemable noncontrolling interests 34 Net loss attributable to redeemable noncontrolling interests ( 509 ) Effect of foreign currency translation on redeemable noncontrolling interests ( 1,311 ) Effect of foreign currency translat"
+      }
+    ]
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

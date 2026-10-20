@@ -29,15 +29,28 @@ binds the original case, both frozen Registry groups and all four market Signal
 definitions. Their existing400-day retrieval means2024-04-25 through2025-05-29
 at the May30UTC cutoff. Direct exact-key checks in83 already-located daily-cache
 directories found no candidate. The old July window is not trimmed or retimed.
-One new daily GET is proposed; its actual latest bar and retrieval clocks must
-determine any later issuer/split proof requests.
+One new daily GET was included in the95 batch. It returned151 actual bars from
+2024-10-21 through2025-05-29 inside the requested400-day interval; this is not
+400 days of complete daily coverage. The existing native adapter normalized it
+at the actual2026-10-20T00:27:28.233611UTC clock, after the actual cache clock,
+with May30UTC availability. Complete canonical reconstruction passed. Its
+separate issuer/split requests are derived from that actual latest bar and
+provider/normalization clocks; no global append or source admission occurred.
+An initial local harness used a nonexistent write helper and failed before its
+start marker or normalization. The original script/log are preserved; replacing
+that helper completed the already-authorized normalization without another GET.
 
 The [HITI link check](../runs/diagnostics/frozen40_source_proofs_20261020_v1/hiti-literal-exhibit-local-check.json)
 independently applies the native parent-index parser to the retained original.
 It proves literal same-accession links to AIF99.3 and MD&A99.2. Cover prose gives
 different numbers; the conflict remains explicit. Exact-key checks in80 known
 SEC filing-cache directories found no candidate for either link. The two whole
-exhibit bodies require actual collection and content review.
+exhibit bodies were retained by the95 collector and reviewed for whole AIF/MD&A
+scope. Their actual parent HTTP response is still required by the existing
+profile. The AIF's literal January29,2024 date conflicts with its FY2024 content
+and parent January29,2025 acceptance; the text, dates and internal/index exhibit
+number discrepancy remain visible, with no inferred correction of individual
+fact dates.
 
 The [GPRE evidence](../runs/diagnostics/frozen40_source_proofs_20261020_v1/decision-evidence.json)
 shows that the existing contract permits53 collision-free products while
@@ -67,6 +80,50 @@ canonical hash
 `7899aae9a3ea6cbd0301ce14794bf8d1a2563d88e20cfd3c240056b24711321b`.
 Its collector hash is
 `d4f928abaecff1a0fb36754fed5becb5f1f5f1c20d9a94dec47f6ab0ca771551`.
-Actual execution remains pending final independent review and root checkpoint.
+Following independent review and root checkpoint `8a01eb96`, the sole driver
+started the actual frozen collector at2026-10-20T00:09:01UTC (PID87950,
+session16816). It terminated at00:25:32UTC/exit0:95 reservations, opens and
+retained HTTP responses;94 received and1 retained nonempty split ledger
+unsupported by the current profile. There were0 retries, redirects or host
+failures. The frozen plan, source bindings and collector code remain unchanged.
+The [independent terminal audit](../runs/diagnostics/frozen40_source_proofs_20261020_v1/terminal-independent-review.json)
+checked all95 raw/cache/ledger chains and83 market records, the original92/1928
+scope and actual source/code hashes. The rolling60-second Massive peak was5;
+SEC's one-second peak was1. The unsupported response is BURU's actual nonempty
+split ledger. Zero unrelated operations is supported by this bounded program
+and its artifacts, not by a machine-wide network/process audit.
 No global append, source view, input matrix, Signal apply, model, label or
 LockedTest operation is authorized by successful HTTP collection alone.
+
+## Explicit source consumer preparation
+
+The new [consumer contract](../spec/scripts/diagnose_reviewed_frozen_source_completion.md)
+preserves all842 financial-product,24 market-family and41 operating-target
+dispositions. Its separate freeze and single execution will verify the complete
+batch before any append, preserve original records, materialize a new view and
+run both original720 input matrices plus40 BasicInfo projections. It has not
+been prepared or executed on actual data.
+
+Independent temporary counterexample testing found that its first semantic-review
+branch accepted a submissions JSON artifact as the reviewed body carrier. The
+original reader and failure are retained. The repaired branch accepts only the
+profile's actual managed body or retained HTTP raw body, decodes that carrier
+and compares its complete content/hash to the candidate. Eleven temporary tests
+passed, and independent replay accepts the real-body positive control while
+rejecting the original wrong-root counterexample. This closes that local
+connection defect; it does not prove actual source admission or research reading.
+
+Already retained SEC responses are being reviewed individually against their
+immutable receipt snapshots and native caches. Report scope and selected-section
+fact reading remain separate. A one-off explicit bundle assembler will consume
+terminal95 evidence and independently authored semantic fragments; it cannot
+append, materialize a view or execute a model. GPRE's four conflicting IDs and
+FTI's persisted wrong filing type remain excluded under the current contract.
+
+The separate seven-request supplemental plan is prepared, not executed:
+two actual FTI issuer/split proofs, the HITI parent response, and the literal
+TGB/SLF AIF and MD&A bodies. Its file SHA256 is
+`8252e2c299a52c474020c7c07fd83dc791db3fb2a3b7d04fdfc2a29a2c79a239`.
+The95 batch has finished; native code remains frozen through any supplemental
+execution. TGB's observed index-order/footnote rejection is diagnosed against
+actual source rows; a fix belongs after that source freeze, not inside it.

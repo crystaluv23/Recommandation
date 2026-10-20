@@ -1,0 +1,42 @@
+{
+  "receipt_name": "proof-076",
+  "issuer": "Omeros Corporation",
+  "period": "2025-06-30",
+  "content_scope": "complete_interim_operating_report",
+  "qualified_content_scope_only": true,
+  "reason": "Actual June30 interim financial statements, clinical-stage biopharmaceutical/therapeutic-program overview, MD&A, cash-flow and current risk/legal updates through August14 signatures inspected. Annual-risk references remain external/unread. Amounts generally in thousands with share/per-share exceptions; three/six-month flows are not balance-sheet instants.",
+  "review_read_scope": "selected_sections_partial_facts",
+  "manual_windows": [
+    {
+      "visible_start": 18036,
+      "text": "biopharmaceutical company committed to discovering, developing, and commercializing small-molecule and protein therapeutics for large-market as well as orphan indications targeting immunologic diseases, including complement-mediated diseases and cancers related to dysfunction of the immune system, as well as addictive and compulsive disorders. Our clinical-stage development programs include: narsoplimab, our antibody targeting mannan-binding lectin-associated serine protease 2 (\u201cMASP-2\u201d), the effector enzyme of the lectin pathway of complement; OMS1029, our long-acting antibody targeting MASP-2; zaltenibart, also known as OMS906, our antibody targeting mannan-binding lectin-associated serine protease-3 (\u201cMASP-3\u201d), the key activator of the alternative pathway of complement; and OMS527, our phosphodiesterase 7 (\u201cPDE7\u201d) inhibitor program. Cl"
+    },
+    {
+      "visible_start": 99443,
+      "text": "ITEM 2. MANAGEMENT \u2019 S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS The following discussion and analysis of our financial condition and results of operations should be read in conjunction with the unaudited condensed consolidated financial statements and notes thereto included elsewhere in this Quarterly Report on Form 10 \u2011 Q and with our audited financial statements and the notes thereto included in our Annual Report on Form 10-K for the year ended December 31, 2024, which was filed with the SEC on March 31, 2025. In addition, you should read the section entitled \u201c Risk Factors \u201d and the disclaimers regarding forward-looking statements included herein and in our Annual Report on Form 10-K for the year ended December 31, 2024, for a discussion of important factors that could cause our results to differ materia"
+    },
+    {
+      "visible_start": 100390,
+      "text": "Overview We are a clinical-stage biopharmaceutical company committed to discovering, developing, and commercializing first-in-class small-molecule and protein therapeutics for large-market as well as orphan indications targeting immunologic diseases, including complement-mediated diseases and cancers related to dysfunction of the immune system, as well as addictive and compulsive disorders. Complement Inhibitor Programs The complement system plays a role in the body\u2019s inflammatory response and becomes activated as a result of tissue damage or trauma or microbial pathogen invasion. Inappropriate or uncontrolled activation of the complement system can cause diseases characterized by serious tissue injury. Three main pathways can activate the complement system: classical, lectin, and alternative. We are focused on development of therapeutics"
+    },
+    {
+      "visible_start": 12238,
+      "text": "In thousands, except share and per share data) (unaudited) \u200b Three Months Ended Six Months Ended \u200b June 30, June 30, \u200b 2025 2024 2025 2024 \u200b \u200b \u200b \u200b \u200b Costs and expenses: \u200b \u200b Research and development $ 22,009 $ 45,349 $ 45,855 $ 72,119 Selling, general and administrative 10,345 13,808 21,468 26,072 Total costs and expenses 32,354 59,157 67,323 98,191 Loss from operations ( 32,354 ) ( 59,157 ) ( 67,323 ) ( 98,191 ) Interest expense ( 15 ) ( 9,215 ) ( 3,669 ) ( 17,446 ) Interest and other income 1,241 3,247 2,363 6,662 Loss on early extinguishment of 2026 convertible senior notes ( 2,968 ) \u2014 ( 2,968 ) \u2014 Gain on change in fair value of financial instruments 8,207 \u2014 8,142 \u2014 Net loss from continuing operations ( 25,889 ) ( 65,125 ) ( 63,455 ) ( 108,975 ) Net income from discontinued operations, net of tax 465 9,084 4,571 15,750 Net loss $ ( 25,4"
+    },
+    {
+      "visible_start": 138631,
+      "text": "In thousands) Selected cash flow data \u200b \u200b Cash provided by (used in): \u200b \u200b Operating activities $ (57,779 ) $ (87,765 ) Investing activities $ 59,838 $ 11,225 Financing activities $ (3,555 ) $ 71,555 21 Table of Contents Operating Activities. Net cash used in operating activities for the six months ended June 30, 2025 decreased by $30.0 million as compared to the same period in 2024, driven primarily by a $34.3 million decrease in net loss and a $9.2 million increase in accounts payable, partially offset by $13.8 million of non-cash items, which is primarily comprised of pass-through royalties from Rayner and a gain on change in fair value of financial instruments. \u200b Investing Activities. Cash flows provided by investing activities primarily reflects cash used to purchase short-term investments and proceeds from the sale of those investmen"
+    },
+    {
+      "visible_start": 147158,
+      "text": "PART II \u2014 OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS From time to time, in the ordinary course of business, we may be involved in various claims, lawsuits and other proceedings. As of the date of filing of this Quarterly Report on Form 10-Q, we were not involved in any material legal proceedings. ITEM 1A. RISK FACTORS We operate in an environment that involves a number of risks and uncertainties. Before making an investment decision you should carefully consider the risks described in Part I, Item 1A, \u201cRisk Factors\u201d of our Annual Report on Form 10-K for the year ended December 31, 2024, as filed with the SEC on March 31, 2025. In assessing the risk factors set forth in our Annual Report on Form 10-K for the year ended December 31, 2024, you should also refer to the other information included therein and in this Quarterly Report on Form 1"
+    }
+  ],
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-076.response.raw",
+    "sha256": "64c71a24ea674cb5257400a97a0d47e2274907682c44bb5af50eb4b3030019c6"
+  },
+  "decoded_content_sha256": "3f6be5d0da2f8ffe638f09b5c9460493c198548cd591eb3b2a1dde3cfb693c26",
+  "source_admission": false,
+  "candidate_pending_native_binding": true
+}

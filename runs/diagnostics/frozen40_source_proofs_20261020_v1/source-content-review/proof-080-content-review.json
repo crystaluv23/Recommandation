@@ -1,0 +1,42 @@
+{
+  "receipt_name": "proof-080",
+  "issuer": "Critical Metals Corp.",
+  "period": "2024-06-30",
+  "content_scope": "complete_annual_operating_report",
+  "qualified_content_scope_only": true,
+  "reason": "Actual Item4 critical-metals mine-development/Wolfsberg business and Item5 operating/financial review, project risks, audited annual financial statements/segment notes and coherent final subsequent-events note inspected. Business Combination predecessor/successor entity scope is explicit and must remain distinct; Euro/US-dollar functional currencies are not an automatic single statement unit.",
+  "review_read_scope": "selected_sections_partial_facts",
+  "manual_windows": [
+    {
+      "visible_start": 151702,
+      "text": "Item 4. Information on the Company. A. History and Development of the Company We are a leading mining development company focused on critical metals and minerals and producing strategic products essential to electrification and next generation technologies for Europe and its Western world partners. Our primary strategy is to acquire, explore and develop unique and permitted critical metals mining assets that we expect will benefit from robust regulatory tailwinds in both Europe and North America and long-term secular trends for next generation technology in environmental, commercial and government applications. At the closing of our Business Combination, our efforts were solely focused on the development of our wholly owned Wolfsberg Lithium Project (the \u201c Wolfsberg Project \u201d) located in Carinthia, Austria, which is approximately 270 kilo"
+    },
+    {
+      "visible_start": 157826,
+      "text": "Business Overview BUSINESS Unless otherwise indicated or the context otherwise requires, references in this section \u201cwe,\u201d \u201cus,\u201d \u201cour,\u201d and other similar terms refer to European Lithium AT (Investments) Limited and its subsidiaries prior to the Business Combination and refer to the Company (including European Lithium AT (Investments) Limited) and its subsidiaries immediately following the consummation of the Business Combination. Overview We are a mining development company focused on critical metals and minerals and producing strategic products essential to electrification and next generation technologies for Europe and its Western world partners. Our primary strategy is to acquire, explore and develop unique and permitted critical metals mining assets that we expect will benefit from robust regulatory tailwinds in both Europe and North A"
+    },
+    {
+      "visible_start": 226758,
+      "text": "Item 5. Operating and Financial Review and Prospects You should read the following discussion and analysis of our financial condition and results of operations together with the historical audited annual consolidated financial statements and the related notes included elsewhere in this Annual Report. Some of the information contained in this discussion and analysis or set forth elsewhere in this Annual Report, including information with respect to our plans and strategy for our business and related financing, includes forward-looking statements that involve risks and uncertainties. As a result of many factors, including those factors set forth in the section entitled Item 3.D. \u201cRisk Factors\u201d of this Annual Report, our actual results could differ materially from the results described in or implied by the forward-looking statements containe"
+    },
+    {
+      "visible_start": 272011,
+      "text": "ch permits a reasonable assumption of the existence of reserves. Determining of functional currency Based on the primary indicators in IAS 21 The Effects of Change in Foreign Exchange Rates, the Euro and US Dollar has been determined as the functional currency of various entities within the Group, because the Euro and US Dollar is the currency that mainly influences labour, material and other costs of providing goods or services, and is the currency in which the majority of these costs are denominated and settled. Effects of changes in foreign exchange rates on the consolidation of the financial statements are recorded in other comprehensive income and carried in the form of a cumulative translation adjustment in the accumulated other comprehensive income section of the Statement of financial position of the Group. The presentation curren"
+    },
+    {
+      "visible_start": 408218,
+      "text": "Consolidated Statements of Cash Flows F-6 Notes to the Consolidated Financial Statements F-7 F- 1 REPORT OF INDEPENDENT REGISTERED PUBLIC ACCOUNTING FIRM To the Shareholders and Board of Directors of Critical Metals Corp. Opinion on the Financial Statements We have audited the accompanying consolidated financial positions of Critical Metals Corp. (the \u201cCompany\u201d) as of June 30, 2024 and 2023, the related consolidated statements of comprehensive income, changes in equity and cash flows for each of the two years in the period ended , and the related notes (collectively referred to as the \u201cfinancial statements\u201d). In our opinion, the financial statements present fairly, in all material respects, the financial position of the Company as of June 30, 2024 and 2023, and the results of its operations and its cash flows for each of the two years in "
+    },
+    {
+      "visible_start": 455055,
+      "text": "Operating segments are reported in a manner consistent with the internal reporting provided to the Board of Directors who is responsible for making strategic decisions. 3. SEGMENT INFORMATION IFRS 8 Operating Segments requires operating segments to be identified on the basis of internal reports that are regularly reviewed by the Chief Operating Decision Maker ( CODM ) to make decisions about resources to be allocated to the segment and assess its performance, and for which discrete financial information is available. In the case of the Group the CODM are the executive management team and all information reported to the CODM is based on the consolidated results of the Group as one operating segment, as the Group\u2019s activities relate to mineral exploration. Accordingly, the Group has only one reportable segment and the results are the same a"
+    }
+  ],
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-080.response.raw",
+    "sha256": "06e739f8515241f5b469516a16a783f87c037ae7d270e3112731cf4ac48f2c31"
+  },
+  "decoded_content_sha256": "034dd6c1e90d95ba9b19885ac86a9ce9e6e87b16deedfff8032c6dea7256304f",
+  "source_admission": false,
+  "candidate_pending_native_binding": true
+}

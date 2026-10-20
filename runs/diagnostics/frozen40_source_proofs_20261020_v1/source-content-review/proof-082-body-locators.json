@@ -1,0 +1,88 @@
+{
+  "name": "proof-082",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2025-02-12T23:40:36+00:00",
+        "accession_number": "0001097362-25-000008",
+        "case_id": "cik_0001097362:20250731",
+        "form": "40-F",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/sec_edgar/filing_documents/34c8f197a3ee4a99b63e2eaf.json",
+            "sha256": "33bd7cc70771fe42e0340e9a9b5cbeb2d795795cd46fd36676e213e181f53ae6"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/slf-20241231.htm",
+    "filing": {
+      "accepted_at": "2025-02-12T23:40:36+00:00",
+      "accession_number": "0001097362-25-000008",
+      "cik": "0001097362",
+      "filing_date": "2025-02-13",
+      "form": "40-F",
+      "primary_document": "slf-20241231.htm",
+      "report_date": "2024-12-31",
+      "retrieved_at": "2026-10-20T00:05:54.691998+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/slf-20241231.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-082",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-082-receipt-snapshot.json",
+    "sha256": "ac9a4528c06b409b59f1a0091d35bb582e80386eb940d13f96768c4acb73bfa9"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-082.response.raw",
+    "sha256": "a0e1a2bd3884b38d4fbb7ac85866df3107607a9b10a0c97d71c9a83e36d07027"
+  },
+  "decoded_body_sha256": "94d8526dfe8ef2327369474bb45ccf1d02a18178110c629488be9a0af0bb3ae3",
+  "decoded_characters": 1782444,
+  "visible_characters": 12156,
+  "visible_text_sha256": "cc79616173c15c76c68047e3fbd02faa3e95b8be3e54f1ae103b7bfada13d75b",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 1705157,
+    "raw_decoded_end": 1720246,
+    "text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 Form 40-F \u2610 REGISTRATION STATEMENT PURSUANT TO SECTION 12 OF THE SECURITIES EXCHANGE ACT OF 1934 OR \u2612 ANNUAL REPORT PURSUANT TO SECTION 13(a) OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the fiscal year ended December 31 , 2024 Commission File Number 001-15014 Sun Life Financial Inc. (Exact name of Registrant as specified in its charter) Canada (Province or other jurisdiction of incorporation or organization) 52411 (Primary Standard Industrial Classification Code Number (if applicable)) Not Applicable (I.R.S. Employer Identification Number (if applicable)) 1 York Street, 31 st Floor , Toronto , Ontario , Canada M5J 0B6 ( 416 ) 979-9966 (Address and telephone number of Registrant\u2019s principal executive offices) Sun Life Assurance Company of Canada \u2013 U.S. Operations Holdings, Inc. One Sun Life Executive Park Wellesley Hills , Massachusetts 02481 ( 781 ) 237-6030 (Name, address (including zip code) and telephone number (including area code) of agent for service in the United States) Securities registered or to be registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common Shares SLF New York Stock Exchange Securities registered or "
+  },
+  "tail": {
+    "visible_start": 11306,
+    "visible_end": 12156,
+    "raw_decoded_start": 1773177,
+    "raw_decoded_end": 1781344,
+    "text": "lidated Annual Financial Statements for the year ended December 31, 2024 99.3 Annual Information Form dated February 12, 2025 for the year ended December 31, 2024 99.4 Certifications required by Rule 13a-14(a) or Rule 15d-14(a), pursuant to Section 302 of the Sarbanes-Oxley Act of 2002 99.5 Certifications required by Rule 13a-14(b) or Rule 15d-14(b) and Section 1350 of Chapter 63 of Title 18 of United States Code, pursuant to Section 906 of the Sarbanes-Oxley Act of 2002 99.6 Consent of Independent Registered Public Accounting Firm (PCAOB ID No. 0 1208 ) 99.7 Consent of Appointed Actuary 99.8 Sun Life Financial Code of Conduct (incorporated by reference to Exhibit 99.1 of the Company\u2019s Form 6-K filed on October 15, 2024) 101 Interactive Data File 104 Cover Page Interactive Data File (formatted as Inline XBRL and contained in Exhibit 101)."
+  },
+  "closing_html": true,
+  "section_locators": {
+    "business": [],
+    "mda": [
+      {
+        "visible_start": 5119,
+        "visible_end": 5969,
+        "raw_decoded_start": 1748432,
+        "raw_decoded_end": 1751261,
+        "text": "Management\u2019s Discussion and Analysis for the year ended December 31, 2024 (the \u201c 2024 Annual MD&A \u201d) is incorporated by reference herein. A copy of the Company\u2019s 2024 Annual MD&A is attached hereto as Exhibit 99.1 . Management\u2019s Annual Report on Internal Control Over Financial Reporting The information under the heading \u201cAccounting and Control Matters \u2013 Disclosure Controls and Procedures \u2013 Management\u2019s Report on Internal Control over Financial Reporting\u201d in the Company\u2019s 2024 Annual MD&A and the information in the management report titled \u201cFinancial Reporting Responsibilities\u201d, attached to the Company\u2019s annual consolidated financial statements for the year ended December 31, 2024 (the \u201c 2024 Annual Financial Statements\u201d ) is incorporated by reference herein. A copy of the Company\u2019s 2024 Annual MD&A is attached hereto as Exhibit 99.1 . A c"
+      },
+      {
+        "visible_start": 11222,
+        "visible_end": 12072,
+        "raw_decoded_start": 1772094,
+        "raw_decoded_end": 1781344,
+        "text": "Management\u2019s Discussion and Analysis for the year ended December 31, 2024 99.2 Consolidated Annual Financial Statements for the year ended December 31, 2024 99.3 Annual Information Form dated February 12, 2025 for the year ended December 31, 2024 99.4 Certifications required by Rule 13a-14(a) or Rule 15d-14(a), pursuant to Section 302 of the Sarbanes-Oxley Act of 2002 99.5 Certifications required by Rule 13a-14(b) or Rule 15d-14(b) and Section 1350 of Chapter 63 of Title 18 of United States Code, pursuant to Section 906 of the Sarbanes-Oxley Act of 2002 99.6 Consent of Independent Registered Public Accounting Firm (PCAOB ID No. 0 1208 ) 99.7 Consent of Appointed Actuary 99.8 Sun Life Financial Code of Conduct (incorporated by reference to Exhibit 99.1 of the Company\u2019s Form 6-K filed on October 15, 2024) 101 Interactive Data File 104 Cover"
+      }
+    ],
+    "risks": [],
+    "statements": [],
+    "segments": [],
+    "units": []
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

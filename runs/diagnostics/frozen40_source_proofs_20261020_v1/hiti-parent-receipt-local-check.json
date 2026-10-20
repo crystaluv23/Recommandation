@@ -1,0 +1,51 @@
+{
+  "scope": "Only six already located source fetch receipt files; no claim about all possible history",
+  "target_url": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm",
+  "receipt_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v2/results.json",
+      "sha256": "696e0121d387fc0e12b2f7df13a78655294404297b9e81f909da79f79c820147",
+      "endpoint_count": 2,
+      "exact_parent_matches": 0,
+      "hiti_urls": []
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v3/results.json",
+      "sha256": "50152176b1e936fb702b6addaa49465ddaba766b06b59c9c4d05e4de926b31d3",
+      "endpoint_count": 2,
+      "exact_parent_matches": 0,
+      "hiti_urls": []
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/results.json",
+      "sha256": "000b2e6fb8e4d1f71fc57d424843397c2377b4fc8a63026f379125b070bdb072",
+      "endpoint_count": 4,
+      "exact_parent_matches": 0,
+      "hiti_urls": []
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/fetch-v1/results.json",
+      "sha256": "da54ba197b58b3f42d16182670f133f764a95a238be7da9f32137b535bdc166e",
+      "endpoint_count": 3,
+      "exact_parent_matches": 0,
+      "hiti_urls": []
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/results.json",
+      "sha256": "8865be321f337392dd6503bb5fcd0b25af56017eb6b6e4b63714e5d1b59efe77",
+      "endpoint_count": 2,
+      "exact_parent_matches": 0,
+      "hiti_urls": []
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+      "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f",
+      "endpoint_count": 16,
+      "exact_parent_matches": 0,
+      "hiti_urls": []
+    }
+  ],
+  "actual_parent_receipt_found": false,
+  "live95_plan_changed": false,
+  "new_GETs": 0
+}

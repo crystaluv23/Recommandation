@@ -1,0 +1,27 @@
+{
+  "schema_version": "completion-consumer-original-counterexample-v1",
+  "source": {
+    "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+    "sha256": "9880bcff7292556d588b7136c5cd30d11886da628de1f93b535ecf15fb66ae95"
+  },
+  "preserved_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-consumer-original-reader.py.txt",
+    "sha256": "9880bcff7292556d588b7136c5cd30d11886da628de1f93b535ecf15fb66ae95"
+  },
+  "temporary_native_fixture": "tests.test_frozen_source_completion.FrozenSourceCompletionTests.setUp; SecResponseFixture native proofs",
+  "positive_control": {
+    "unchanged_semantic_body_binding": "sec_static_archive_body_response.raw_response",
+    "actual_qualified_documents": 1
+  },
+  "single_variable_counterexample": {
+    "change": "semantic.records[0].body_binding = candidate.proofs[kind=sec_submissions_root].artifact; rehash only semantic artifact",
+    "other_documents_targets_proofs_unchanged": true,
+    "actual_qualified_documents": 1,
+    "expected": "reject semantic body/source binding mismatch",
+    "outcome": "false_accept"
+  },
+  "limits": [
+    "No real collection, source store, prepare/execute, network, labels or model calls.",
+    "Native source proof remains valid; defect is semantic-read source carrier binding, not forged SEC body or a wholegraph-auth claim."
+  ]
+}

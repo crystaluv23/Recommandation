@@ -1,0 +1,257 @@
+{
+  "schema_version": "tgb-native-exhibit-index-boundary-v1",
+  "scope": "Read-only actual TGB proof059 root/body/receipt plus native parser-only temporary strings. No GET/store/prepare/append/materialize/source edit. No repeat exhibit semantic review.",
+  "native_reader": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+    "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+  },
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/request-plan.json",
+    "sha256": "0c96abd8ae201b36eb50e2cb22974ada8975284be9dc9c4cc4ae5b2496a5b05f"
+  },
+  "receipt_observed": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/results.json",
+    "sha256_at_read": "a9fd3147fc97d72a790f90ab026067c463dd873e8edf2fe37cc8d2b0929c1afe",
+    "collection_terminal_at_read": false,
+    "note": "Collection was still running; this is an entry snapshot, not a promised final results hash. Exact raw/cache bindings remain explicit."
+  },
+  "actual_receipt_entry": {
+    "name": "proof-059",
+    "method": "GET",
+    "url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm",
+    "response_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm",
+    "status": "http_response_retained",
+    "http_status": 200,
+    "started_at_utc": "2026-10-20T00:19:25.472097+00:00",
+    "retrieved_at_utc": "2026-10-20T00:19:26.360481+00:00",
+    "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+    "raw_sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0",
+    "bytes": 13125
+  },
+  "content_encoding": "gzip",
+  "raw_body": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+    "sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0"
+  },
+  "native_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/489da305a72163a6cbbc1838.json",
+    "sha256": "ced851a1f0592da2aea172c5c2b9d827680733acbf7f751c1c5288b8f63539f8"
+  },
+  "native_cache_whole_body_equals_decoded_HTTP": true,
+  "decoded_body_sha256": "c00f5c0cd55b3be30c6b7ada10e9a7dd7620bb73597434beb4a719611d7f3d6e",
+  "decoded_body_characters": 89563,
+  "issuer_cik": "0000878518",
+  "parent_accession": "0001062993-25-006514",
+  "parent_form": "40-F",
+  "parent_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm",
+  "root_target_bindings": [
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v57/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+        "sha256": "0acb531b537bf64aa88bc547acd29c5bab7d8e67517f2f0cb6280910124a0921"
+      },
+      "source_cik": "0000878518",
+      "exact_target_fields": {
+        "accessionNumber": "0001062993-25-006514",
+        "form": "40-F",
+        "primaryDocument": "form40f.htm",
+        "filingDate": "2025-03-28",
+        "reportDate": "2024-12-31",
+        "acceptanceDateTime": "2025-03-28T21:08:05.000Z"
+      }
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v59/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+        "sha256": "fd2dda6fbaebbd89174b5817223395de813567a8dd87e06e0d4eb225d1bbacd1"
+      },
+      "source_cik": "0000878518",
+      "exact_target_fields": {
+        "accessionNumber": "0001062993-25-006514",
+        "form": "40-F",
+        "primaryDocument": "form40f.htm",
+        "filingDate": "2025-03-28",
+        "reportDate": "2024-12-31",
+        "acceptanceDateTime": "2025-03-28T21:08:05.000Z"
+      }
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v92/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+        "sha256": "201e9098c7f68a3b03a6d45c8cd3822881f6dab1f03f83cb25e6f087a875c622"
+      },
+      "source_cik": "0000878518",
+      "exact_target_fields": {
+        "accessionNumber": "0001062993-25-006514",
+        "form": "40-F",
+        "primaryDocument": "form40f.htm",
+        "filingDate": "2025-03-28",
+        "reportDate": "2024-12-31",
+        "acceptanceDateTime": "2025-03-28T21:08:05.000Z"
+      }
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v112/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+        "sha256": "9b9f1829946ee37cd8cb257b223545c461c8d76bdaaf9a2f616024299c26cbd6"
+      },
+      "source_cik": "0000878518",
+      "exact_target_fields": {
+        "accessionNumber": "0001062993-25-006514",
+        "form": "40-F",
+        "primaryDocument": "form40f.htm",
+        "filingDate": "2025-03-28",
+        "reportDate": "2024-12-31",
+        "acceptanceDateTime": "2025-03-28T21:08:05.000Z"
+      }
+    }
+  ],
+  "actual_index_rows": [
+    {
+      "code": "99.1",
+      "cells": [
+        "Annual Information Form of the Company for the year ended December 31, 2024 (the \"AIF\")",
+        "99.1"
+      ],
+      "literal_hrefs": [
+        "exhibit99-1.htm",
+        "exhibit99-1.htm"
+      ],
+      "target_endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+      "native_code_proved": false
+    },
+    {
+      "code": "99.1",
+      "cells": [
+        "99.1(1)",
+        "Annual Information Form of the Company for the year ended December 31, 2024"
+      ],
+      "literal_hrefs": [
+        "exhibit99-1.htm",
+        "exhibit99-1.htm"
+      ],
+      "target_endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+      "native_code_proved": false
+    },
+    {
+      "code": "99.3",
+      "cells": [
+        "Management's Discussion and Analysis of the Company for the year ended December 31, 2024 (the \"MD&A\")",
+        "99.3"
+      ],
+      "literal_hrefs": [
+        "exhibit99-3.htm",
+        "exhibit99-3.htm"
+      ],
+      "target_endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+      "native_code_proved": false
+    },
+    {
+      "code": "99.3",
+      "cells": [
+        "99.3(1)",
+        "Management's discussion and analysis of financial condition and results of operations for the year ended December 31, 2024"
+      ],
+      "literal_hrefs": [
+        "exhibit99-3.htm",
+        "exhibit99-3.htm"
+      ],
+      "target_endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+      "native_code_proved": false
+    }
+  ],
+  "actual_raw_row_fragments": [
+    {
+      "raw_start": 34608,
+      "raw_end": 35480,
+      "html": "<tr>\n                    <td style=\"width: 73%; vertical-align: top; border-right: 0.75pt solid #000000; border-bottom: 0.75pt solid #000000; padding-right: 5.03pt; padding-left: 5.03pt; border-top: 0.75pt solid #000000; text-align: justify;\"><span style=\"font-size: 10pt;\"><span style=\"font-family: Times New Roman,Times,serif;\"><a href=\"exhibit99-1.htm\">Annual Information Form of the Company for the year ended December 31, 2024 (the \"<b>AIF</b>\")</a></span></span></td>\n                    <td style=\"border-left: 0.75pt solid #000000; width: 21%; vertical-align: top; border-bottom: 0.75pt solid #000000; padding-right: 5.03pt; padding-left: 5.03pt; border-top: 0.75pt solid #000000; text-align: center;\"><span style=\"font-size: 10pt;\"><span style=\"font-family: Times New Roman,Times,serif;\"><a href=\"exhibit99-1.htm\">99.1</a></span></span></td>\n                </tr>"
+    },
+    {
+      "raw_start": 36532,
+      "raw_end": 37348,
+      "html": "<tr>\n                    <td style=\"width: 73%; padding-right: 5.03pt; padding-left: 5.03pt; vertical-align: top; border-top: 0.75pt solid #000000; border-right: 0.75pt solid #000000; text-align: justify;\"><span style=\"font-size: 10pt;\"><span style=\"font-family: Times New Roman,Times,serif;\"><a href=\"exhibit99-3.htm\">Management's Discussion and Analysis of the Company for the year ended December 31, 2024 (the \"<b>MD&amp;A</b>\")</a></span></span></td>\n                    <td style=\"width: 21%; padding-right: 5.03pt; padding-left: 5.03pt; vertical-align: top; border-top: 0.75pt solid #000000; border-left: 0.75pt solid #000000; text-align: center;\"><span style=\"font-size: 10pt;\"><span style=\"font-family: Times New Roman,Times,serif;\"><a href=\"exhibit99-3.htm\">99.3</a></span></span></td>\n                </tr>"
+    },
+    {
+      "raw_start": 74565,
+      "raw_end": 75176,
+      "html": "<tr>\n                    <td style=\"width: 12%; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; text-align: center;\"><span style=\"font-size: 10pt;\"><span style=\"font-family: Times New Roman,Times,serif;\"><a href=\"exhibit99-1.htm\">99.1<sup>(1)</sup></a></span></span></td>\n                    <td style=\"margin-top: 0pt; margin-bottom: 0pt; text-align: justify;\"><span style=\"font-size: 10pt;\"><span style=\"font-family: Times New Roman,Times,serif;\"><a href=\"exhibit99-1.htm\">Annual Information Form of the Company for the year ended December 31, 2024</a></span></span></td>\n                </tr>"
+    },
+    {
+      "raw_start": 76237,
+      "raw_end": 76895,
+      "html": "<tr>\n                    <td style=\"width: 12%; padding-right: 5.4pt; padding-left: 5.4pt; vertical-align: top; text-align: center;\"><span style=\"font-size: 10pt;\"><span style=\"font-family: Times New Roman,Times,serif;\"><a href=\"exhibit99-3.htm\">99.3<sup>(1)</sup></a></span></span></td>\n                    <td style=\"margin-top: 0pt; margin-bottom: 0pt; text-align: justify;\"><span style=\"font-size: 10pt;\"><span style=\"font-family: Times New Roman,Times,serif;\"><a href=\"exhibit99-3.htm\">Management's discussion and analysis of financial condition and results of operations for the year ended December 31, 2024</a></span></span></td>\n                </tr>"
+    }
+  ],
+  "native_minimal_fixture_checks": [
+    {
+      "case": "ordinary_number_first_positive",
+      "html": "<table><tr><td>99.1</td><td><a href=\"aif.htm\">Annual information form</a></td></tr></table>",
+      "claimed": "99.1",
+      "native_result": true,
+      "expected_current_result": true
+    },
+    {
+      "case": "description_first_false_reject",
+      "html": "<table><tr><td><a href=\"aif.htm\">Annual information form</a></td><td><a href=\"aif.htm\">99.1</a></td></tr></table>",
+      "claimed": "99.1",
+      "native_result": false,
+      "expected_current_result": false
+    },
+    {
+      "case": "numeric_sup_footnote_false_reject",
+      "html": "<table><tr><td><a href=\"aif.htm\">99.1<sup>(1)</sup></a></td><td><a href=\"aif.htm\">Annual information form</a></td></tr></table>",
+      "claimed": "99.1",
+      "native_result": false,
+      "expected_current_result": false
+    },
+    {
+      "case": "prior_description_crossreference_wrongcode_negative",
+      "html": "<table><tr><td>99.1</td><td><a href=\"aif.htm\">Annual information form; see Exhibit99.2 for financials</a></td></tr></table>",
+      "claimed": "99.2",
+      "native_result": false,
+      "expected_current_result": false
+    },
+    {
+      "case": "prior_description_crossreference_rightcode_positive",
+      "html": "<table><tr><td>99.1</td><td><a href=\"aif.htm\">Annual information form; see Exhibit99.2 for financials</a></td></tr></table>",
+      "claimed": "99.1",
+      "native_result": true,
+      "expected_current_result": true
+    },
+    {
+      "case": "multiple_unique_links_negative",
+      "html": "<table><tr><td>99.1</td><td><a href=\"aif.htm\">AIF</a><a href=\"mda.htm\">MDA</a></td></tr></table>",
+      "claimed": "99.1",
+      "native_result": false,
+      "expected_current_result": false
+    },
+    {
+      "case": "multiple_standalone_codes_negative",
+      "html": "<table><tr><td>99.1</td><td>99.2</td><td><a href=\"aif.htm\">AIF</a></td></tr></table>",
+      "claimed": "99.1",
+      "native_result": false,
+      "expected_current_result": false
+    }
+  ],
+  "actual_HITI_wrong_number_control": {
+    "body_cache": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/292e64a32568298c937907f6.json",
+      "sha256": "10eb3c457bb076495393575dec6ac612ee9c7174b6608205b0fb7ce756e00bee"
+    },
+    "parent_url": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm",
+    "literal_target": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-annualinformationform.htm",
+    "right_index_code99_3": true,
+    "wrong_cover_prose_code99_1": false
+  },
+  "cause": "Current code requires first nonempty cell to be the full code; description-first literal unique-code rows are skipped. Numeric superscript footnote text is flattened into99.1(1)/99.3(1), failing the complete-cell code regex. Duplicated anchors resolve to one unique URL and are not the cause.",
+  "minimal_proposal": [
+    "After95 terminal and explicit source-change permission, update owning spec first. Accept one independent complete code cell anywhere in the same row, not just the first nonempty cell. Require exactly one unique resolved linked URL in that row, equal to the actual target; duplicate anchors to that same literal URL are harmless.",
+    "Retain explicit superscript/numeric-footnote markup provenance in cell parsing. Remove only proven numeric note markers such as<sup>(1)</sup> (or conservative equally explicit numeric footnote markup) before full-cell code matching; arbitrary suffix prose, ranges and multiple codes remain unproved.",
+    "Keep whole-cell optional Exhibit-prefix code grammar, unique number-cell requirement, conflicting target-row/code rejection and null when unproved. Never scan description crossreferences for the claimed code, derive it from filenames or accept multiple target URLs/codes.",
+    "Test actual TGB description-first and annotated rows, equivalent whitespace/nested-markup variants, sameURL duplicate anchors, numeric-note versus arbitrary/non-numeric superscript, multiple code/link and conflicting-row negatives, actual HITI right99.3/wrong99.1 plus prior crossreference99.2 negative. Other CIK/parent accession/form/acceptance/body guards stay unchanged."
+  ],
+  "limits": [
+    "No source qualification/admission, appendix download or content-sufficiency conclusion. The source-time policy is unchanged.",
+    "Current native helper false negatives reproduced; a future candidate implementation is not yet present or validated."
+  ]
+}

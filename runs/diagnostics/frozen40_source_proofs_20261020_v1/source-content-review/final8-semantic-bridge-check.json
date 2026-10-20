@@ -1,0 +1,42 @@
+{
+  "source_fragments": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/source-final-candidate-fragments.json",
+    "sha256": "112c2b093bc7a0b9076db640050a44acb22ce697531c469b2d764d6efc740488"
+  },
+  "thin_consumer_source_sha256": "676455d4c565a7e0c7838d4703aae65778134546fe7bdbe96fcab4c60d000f3f",
+  "checks": [
+    {
+      "document_id": "sec:cik_0001361658:000136165824000007",
+      "semantic_body_target_verifier": "passed"
+    },
+    {
+      "document_id": "sec:cik_0001438133:000143813325000157",
+      "semantic_body_target_verifier": "passed"
+    },
+    {
+      "document_id": "sec:cik_0000860413:000086041325000022",
+      "semantic_body_target_verifier": "passed"
+    },
+    {
+      "document_id": "sec:cik_0001051627:000155837025003004",
+      "semantic_body_target_verifier": "passed"
+    },
+    {
+      "document_id": "sec:cik_0001920294:000095017025057622",
+      "semantic_body_target_verifier": "passed"
+    },
+    {
+      "document_id": "sec:cik_0001421517:000142151724000055",
+      "semantic_body_target_verifier": "passed"
+    },
+    {
+      "document_id": "sec:cik_0001285819:000143774925026933",
+      "semantic_body_target_verifier": "passed"
+    },
+    {
+      "document_id": "sec:cik_0001951089:000121390024092156",
+      "semantic_body_target_verifier": "passed"
+    }
+  ],
+  "scope": "Only _semantic exact body/target bridge; no _load_bundle/prepare/execute/store/global write."
+}

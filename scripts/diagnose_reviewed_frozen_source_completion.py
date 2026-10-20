@@ -1,0 +1,308 @@
+"""Freeze an explicit qualified source batch, then append and consume a new fixed40 view once."""
+from __future__ import annotations
+
+import argparse
+from copy import deepcopy
+from datetime import datetime, timezone
+import json
+import os
+from pathlib import Path
+from types import SimpleNamespace
+
+import diagnose_reviewed_anchor_financial_snapshot as financial
+import diagnose_reviewed_frozen_case_inputs as frozen
+import diagnose_reviewed_frozen_source_snapshot as preappend
+from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore, content_sha256
+from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
+from stock_opportunity_agent.data.reviewed_snapshot import (
+    ReviewedSourceRejected, _read_bound, _sec_response_text, _verify_sec_document, _verify_sec_response_document,
+    _verify_market_document, _verify_companyfacts_document, materialize_reviewed_snapshot, open_raw_info_store,
+)
+from stock_opportunity_agent.research.basic_info_orientation import compile_basic_info_requests
+from stock_opportunity_agent.research.evolution_control import _build_evidence_resolver
+from stock_opportunity_agent.research.evolution_core import default_information_plan, project_basic_info_bundle
+from stock_opportunity_agent.signal_library import SignalExecutor
+
+SPEC = Path(__file__).resolve().parents[1] / 'spec/scripts/diagnose_reviewed_frozen_source_completion.md'
+_binding, _read, _check = frozen._stream_binding, financial._read, preappend._check
+AUTHORITIES = {'projection': preappend.FIXED_SHA['projection'], 'original40_plan': preappend.COHORT_PLAN_SHA,
+    'base_inputs': preappend.FIXED_SHA['base'], 'preappend_result': 'ac71fbcbf40526e04446c0cca25e568d02b0fd9df06ffd28463d03fcc90369ec',
+    'operating_review': '15da9a9f261910663a2502a58c9b20a7a85fb8a97e0ca7acb5dd2f1b7b7617e4'}
+
+
+def _target_key(family, case_id, member='*'):
+    return '|'.join((family, case_id, member))
+
+
+def _targets(stage):
+    """Retain complete financial members and operating targets plus all market cases."""
+    targets = {}
+    for case in stage['outcomes']['financial']:
+        normalization = _read_bound(case['normalization'])[1]
+        expected = {row['document_id']: row for row in normalization['expected_products']}
+        products = {row['document_id']: row for row in case['products']}
+        if (len(expected) != len(normalization['expected_products']) or len(products) != len(case['products'])
+                or set(products) != set(expected)):
+            raise ReviewedSourceRejected('financial full expected-product membership differs')
+        for document_id, product in products.items():
+            record = RawInfoDocument.from_dict(_read_bound(product['product'])[1])
+            if (record.document_id != document_id or canonical_json_hash(record.to_dict()) != expected[document_id]['canonical_record_hash']):
+                raise ReviewedSourceRejected('preappend full financial canonical record differs')
+            targets[_target_key('financial', case['case_id'], document_id)] = {
+                'case_id': case['case_id'], 'product': product, 'normalization': case['normalization']}
+    for case in stage['outcomes']['market']:
+        targets[_target_key('market', case['case_id'])] = {'case_id': case['case_id'], 'retained_variants': case['variants']}
+    for case in stage['outcomes']['operating']:
+        for target in case['targets']:
+            key = _target_key('operating', case['case_id'], target['accession'])
+            if key in targets:
+                raise ReviewedSourceRejected('duplicate operating target')
+            targets[key] = {'case_id': case['case_id'], 'retained_target': target}
+    return targets
+
+
+def _semantic(candidate, document, case_id, read_bound=_read_bound):
+    """Require the independently read same body/target, not a candidate's own flag."""
+    review = read_bound(candidate['semantic_review'])[1]
+    selector = candidate['semantic_target']
+    if (selector['case_id'] != case_id or selector['accession'] != document.metadata['accession_number']
+            or selector.get('document_id', document.document_id) != document.document_id):
+        raise ReviewedSourceRejected('semantic target identity differs')
+    if 'targets' in review:
+        rows = [r for r in review['targets'] if r['case_id'] == case_id and r['accession'] == selector['accession']]
+        if (len(rows) != 1 or rows[0]['source_record_disposition'] != 'content_qualified_existing_original_candidate'
+                or rows[0]['content_scope_verdict'] not in {'complete_annual_operating_report', 'complete_interim_operating_report'}):
+            raise ReviewedSourceRejected('existing report content/record remains unknown')
+        row = rows[0]
+        originals = [v['candidate_original_record'] for v in row['stage_body_variants'] if v.get('candidate_original_record')]
+        originals.extend(v['original'] for v in row['additional_actual_original_as_is_reviews'] if v['as_is_native_verifier'] == 'passed_as_is')
+        if (document.content_hash not in {g['content_sha256'] for g in row['body_groups']}
+                or not any(canonical_json_hash(read_bound(b)[1]) == canonical_json_hash(document.to_dict()) for b in originals)):
+            raise ReviewedSourceRejected('semantic body/original differs')
+    else:
+        rows = [r for r in review['records'] if r['case_id'] == case_id and r['accession'] == selector['accession']
+                and r['document_id'] == document.document_id and r['content_hash'] == document.content_hash]
+        if (len(rows) != 1 or rows[0].get('qualified') is not True
+                or rows[0]['content_scope'] not in {'complete_annual_operating_report', 'complete_interim_operating_report', 'whole_annual_AIF', 'whole_annual_MDA'}
+                or not rows[0].get('reason') or not rows[0].get('review_read_scope')):
+            raise ReviewedSourceRejected('new body semantic scope/source binding differs')
+        managed = candidate['proof_profile'] == 'sec_archive_acceptance_v1'
+        bodies = [p for p in candidate['proofs'] if p['kind'] == (
+            'sec_static_archive_body' if managed else 'sec_static_archive_body_response')]
+        if len(bodies) != 1 or rows[0]['body_binding'] != bodies[0]['artifact' if managed else 'raw_response']:
+            raise ReviewedSourceRejected('semantic binding is not the proved whole body carrier')
+        proof = bodies[0]
+        artifact = read_bound(proof['artifact'])[1]
+        content = artifact['body'] if managed else _sec_response_text(proof, artifact, document.metadata['source_url'], {})
+        if not isinstance(content, str) or content != document.content or content_sha256(content) != rows[0]['content_hash']:
+            raise ReviewedSourceRejected('semantic whole body/content hash differs')
+
+
+def _qualify(candidates, targets, dispositions, cases, oracle_root, additional_market_products=()):
+    """Validate the entire explicit batch before any global append."""
+    if set(dispositions) != set(targets):
+        raise ReviewedSourceRejected('fixed target disposition denominator differs')
+    by_case = {row['case_id']: row for row in cases}
+    documents, memo, payload_memo, raw_memo, decoded, links = {}, {}, {}, {}, {}, {key: set() for key in targets}
+    market_original_hashes = {}
+    def read_bound(binding):
+        key = (str(Path(binding['path']).resolve()), binding['sha256'])
+        if key not in decoded: decoded[key] = _read_bound(binding)
+        return decoded[key]
+    for candidate in candidates:
+        document = RawInfoDocument.from_dict(read_bound(candidate['document'])[1])
+        if (document.document_id in documents or not candidate.get('reason') or not candidate['target_keys']
+                or len(candidate['target_keys']) != len(set(candidate['target_keys']))):
+            raise ReviewedSourceRejected('duplicate candidate ID or empty reason/target')
+        selected = [targets[key] for key in candidate['target_keys']]
+        case_ids = {target['case_id'] for target in selected}
+        if len(case_ids) != 1:
+            raise ReviewedSourceRejected('candidate crosses original case cutoff')
+        case_id = next(iter(case_ids)); case = by_case[case_id]
+        if document.company_id != case['company_id']:
+            raise ReviewedSourceRejected('candidate issuer differs from case')
+        proofs = {p['kind']: (p, read_bound(p['artifact'])[1]) for p in candidate['proofs']}
+        if len(proofs) != len(candidate['proofs']):
+            raise ReviewedSourceRejected('duplicate proof kind')
+        profile, cutoff = candidate['proof_profile'], frozen._aware(case['prediction_time'])
+        row = {'reviewed_available_at': document.available_at.isoformat()}
+        families = {key.split('|', 1)[0] for key in candidate['target_keys']}
+        if profile == 'sec_companyfacts_filed_next_utc_day_v1' and families == {'financial'}:
+            if len(selected) != 1 or selected[0]['product']['collision'] or not selected[0]['product']['profile_preverified']:
+                raise ReviewedSourceRejected('conflicting/unqualified financial target remains unknown')
+            financial._require_same_record(document, RawInfoDocument.from_dict(read_bound(selected[0]['product']['product'])[1]))
+            if proofs['sec_companyfacts_normalization'][0]['artifact'] != selected[0]['normalization']:
+                raise ReviewedSourceRejected('financial normalization/full-set binding differs')
+            _verify_companyfacts_document(document, row, proofs, cutoff, memo)
+        elif profile == 'massive_daily_no_post_cutoff_split_v1' and families == {'market'}:
+            _verify_market_document(document, row, proofs, cutoff)
+            origin = proofs['massive_daily_origin'][0]['artifact']
+            preappend._market_origin(case, {'endpoint': proofs['massive_daily_origin'][1]['endpoint']},
+                {'binding': origin}, {'original_record': candidate['document']})
+            if case_id not in market_original_hashes:
+                originals = {(str(Path(v['original_record']['path']).resolve()), v['original_record']['sha256']): v['original_record']
+                    for t in selected for v in t['retained_variants']}
+                market_original_hashes[case_id] = {canonical_json_hash(read_bound(b)[1]) for b in originals.values()}
+            candidate_hash = canonical_json_hash(document.to_dict())
+            if candidate_hash not in market_original_hashes[case_id]:
+                from datetime import timedelta
+                if (candidate['document'] not in additional_market_products or document.company_id != 'cik_0001681459'
+                        or document.metadata['start'] != (cutoff.date()-timedelta(days=400)).isoformat()
+                        or document.metadata['end'] != (cutoff.date()-timedelta(days=1)).isoformat()):
+                    raise ReviewedSourceRejected('market record is neither exact original nor explicit FTI400-day product')
+        elif profile in {'sec_archive_acceptance_v1', 'sec_filing_response_acceptance_v1', 'sec_filing_exhibit_response_v1'} and families == {'operating'}:
+            if any(t['retained_target']['accession'] != document.metadata['accession_number'] for t in selected):
+                raise ReviewedSourceRejected('operating target accession differs')
+            _semantic(candidate, document, case_id, read_bound)
+            if profile == 'sec_archive_acceptance_v1': _verify_sec_document(document, row, proofs, cutoff)
+            else: _verify_sec_response_document(document, row, proofs, cutoff, payload_memo, raw_memo,
+                exhibit=profile == 'sec_filing_exhibit_response_v1')
+        else:
+            raise ReviewedSourceRejected('unsupported source profile/target family')
+        # Direct ID-path inventory only: never instantiate the global store during freeze.
+        for path in oracle_root.glob('*/' + document.company_id + '/' + document.document_id + '.json'):
+            financial._require_same_record(RawInfoDocument.from_dict(_read(path)), document)
+        documents[document.document_id] = document
+        for key in candidate['target_keys']: links[key].add(document.document_id)
+    for key, disposition in dispositions.items():
+        if (not disposition.get('reason') or len(disposition['candidate_ids']) != len(set(disposition['candidate_ids']))
+                or set(disposition['candidate_ids']) != links[key]):
+            raise ReviewedSourceRejected('target candidate links/disposition differ')
+    return documents
+
+
+def _load_bundle(binding, output):
+    bundle = _read_bound(binding)[1]
+    if bundle['schema_version'] != 'frozen40-source-completion-bundle-v1': raise ReviewedSourceRejected('bundle schema differs')
+    if any(bundle[name]['sha256'] != sha for name,sha in AUTHORITIES.items()):
+        raise ReviewedSourceRejected('fixed source authority binding differs')
+    authorities = {name: _read_bound(bundle[name])[1] for name in ('projection','original40_plan','base_inputs','preappend_result','operating_review','collection_plan','collection_results')}
+    projection, original, base, stage = (authorities[n] for n in ('projection','original40_plan','base_inputs','preappend_result'))
+    frozen._validate_projection(projection)
+    if (original['projection'] != bundle['projection'] or canonical_json_hash({k:v for k,v in original.items() if k!='plan_hash'}) != original['plan_hash']
+            or stage['status'] != 'completed_preappend_diagnosis' or stage['derived_product_count'] != 842):
+        raise ReviewedSourceRejected('original scope/preappend authority differs')
+    collection, receipts = authorities['collection_plan'], authorities['collection_results']
+    names = [r['name'] for r in collection['requests']]
+    if (canonical_json_hash({k:v for k,v in collection.items() if k!='plan_hash'}) != collection['plan_hash']
+            or len(names)!=95 or len(set(names))!=95 or receipts['terminal'] is not True or receipts['plan_hash']!=collection['plan_hash']
+            or set(r['name'] for r in receipts['dispositions'])!=set(names) or len(receipts['dispositions'])!=95):
+        raise ReviewedSourceRejected('terminal collection95 denominator differs')
+    review = _read_bound(base['source_review'])[1]
+    if len(review['records'])!=658 or sum(r['verdict']=='admitted' for r in review['records'])!=653:
+        raise ReviewedSourceRejected('base653/658 differs')
+    root=Path(review['oracle_identity']['path']).resolve().parent
+    for protected in (root,Path(base['reviewed_source_snapshot']['root']).resolve(),Path(bundle['preappend_result']['path']).resolve().parent):
+        if output.is_relative_to(protected) or protected.is_relative_to(output): raise ReviewedSourceRejected('output overlaps retained source root')
+    targets=_targets(stage)
+    if (sum(k.startswith('financial|') for k in targets)!=842 or sum(k.startswith('market|') for k in targets)!=24
+            or sum(k.startswith('operating|') for k in targets)!=41): raise ReviewedSourceRejected('family denominators differ')
+    documents=_qualify(bundle['candidates'],targets,bundle['target_dispositions'],projection['cases'],root,bundle.get('additional_market_products',()))
+    if set(documents) & {row['document_id'] for row in review['records']}:
+        raise ReviewedSourceRejected('new candidates duplicate preserved base review IDs')
+    data=list(preappend._find_bindings(bundle))+list(preappend._find_bindings(review))+financial._tree(base['reviewed_source_snapshot']['root'])
+    for case in stage['outcomes']['financial']:
+        data += [case['normalization'],*[p['product'] for p in case['products']]]
+        normalization=_read_bound(case['normalization'])[1];data += [normalization['source_cache'],normalization['raw_response']]
+    groups=original['groups']; snapshots={}
+    if [g['name'] for g in groups]!=['default_v6','latest_v12']: raise ReviewedSourceRejected('two exact Registry groups differ')
+    for group in groups: snapshots[group['name']],bindings=frozen._snapshot(group,output);data+=bindings
+    data=preappend._bindings(data);_check(data)
+    return bundle,projection,review,root,documents,groups,data
+
+
+def prepare(bundle_path, output):
+    """Freeze only, without stores, append, views, consumers or acquisition."""
+    output=Path(output).resolve()
+    with preappend._prepare_only():
+        if output.exists(): raise ReviewedSourceRejected('new freeze output required')
+        binding=_binding(bundle_path);bundle,projection,review,root,documents,groups,data=_load_bundle(binding,output)
+        code=preappend._bindings([*frozen._code_bindings(),_binding(__file__),_binding(SPEC)])
+        plan={'schema_version':'frozen40-source-completion-plan-v1','bundle':binding,'source_bindings':data,'code_bindings':code,
+            'qualified_ids':sorted(documents),'oracle_identity':review['oracle_identity'],'groups':groups,
+            'output':str(output),'fixed_cases':40,'per_group_inputs':720,'basic_info_cases':40,
+            'network_allowed':False,'models_allowed':False,'labels_allowed':False,'apply_allowed':False,'full_prepare_allowed':False}
+        plan['plan_hash']=canonical_json_hash(plan)
+        atomic_write_json(output/'plan.json',plan)
+        return plan
+
+
+def _verified_plan(output, expected):
+    plan=_read(output/'plan.json')
+    if (plan['schema_version']!='frozen40-source-completion-plan-v1' or plan['plan_hash']!=expected
+            or canonical_json_hash({k:v for k,v in plan.items() if k!='plan_hash'})!=expected or plan['output']!=str(output)
+            or any(plan[k] is not False for k in ('network_allowed','models_allowed','labels_allowed','apply_allowed','full_prepare_allowed'))):
+        raise ReviewedSourceRejected('frozen plan scope/hash differs')
+    _check(plan['source_bindings']+plan['code_bindings'])
+    loaded=_load_bundle(plan['bundle'],output)
+    if sorted(loaded[4])!=plan['qualified_ids']: raise ReviewedSourceRejected('qualified full-ID batch differs')
+    return plan,loaded
+
+
+def _consume(output, view, projection, groups):
+    store=open_raw_info_store(view['root'],reviewed_snapshot=view);worker=store.snapshot()
+    resolver=_build_evidence_resolver(output/'runtime',worker,contract=SimpleNamespace(data_acquisition=DataAcquisitionPolicy()),allow_data_external=False,environ={},cycle_id=1)
+    executors={g['name']:SignalExecutor(frozen._snapshot(g,output)[0],worker,resolver=resolver) for g in groups}
+    summaries={g['name']:[] for g in groups}
+    for case in projection['cases']:
+        cutoff=frozen._aware(case['prediction_time']);company=case['company_id'];identity=projection['identities'][company]
+        bundle=resolver.resolve_basic_info(compile_basic_info_requests(default_information_plan().basic_info_policy),company_id=company,identity=identity,as_of=cutoff)
+        model,lineage=project_basic_info_bundle(bundle)
+        atomic_write_json(output/'basic-info'/(case['case_id']+'.json'),{'case':case,'bundle':bundle.to_dict(),'model':model,'lineage':lineage})
+        for group in groups:
+            resolutions=executors[group['name']].prepare_inputs(tuple(group['refs']),company_id=company,as_of=cutoff,identity=identity)
+            ready=sum(r.status=='resolved' for r in resolutions)
+            summary={'case_id':case['case_id'],'resolved':ready,'denominator':18,'fraction':ready/18,'meets_existing_0_8':ready/18>=.8}
+            atomic_write_json(output/group['name']/(case['case_id']+'.json'),{'case':case,'registry':group,'summary':summary,
+                'exact_signal_input_resolutions':[{'signal_ref':ref,'resolution':r.to_dict()} for ref,r in zip(group['refs'],resolutions,strict=True)]})
+            summaries[group['name']].append(summary)
+    restored=open_raw_info_store(view['root'],reviewed_snapshot=view)
+    if (not financial._same_document_set(worker.documents,restored.documents)
+            or not financial._same_document_set(worker.documents,store.documents)
+            or type(worker) is not type(restored)):
+        raise ReviewedSourceRejected('worker/restart canonical membership differs')
+    return summaries
+
+
+def execute(output, expected_plan_hash):
+    """Append and inspect one reviewed source-only freeze; any attempt is terminal."""
+    output=Path(output).resolve()
+    with frozen._source_only():
+        with (output/'execution-start.json').open('x') as handle:
+            json.dump({'plan_hash':expected_plan_hash,'started_at':datetime.now(timezone.utc).isoformat()},handle);handle.flush();os.fsync(handle.fileno())
+        try:
+            plan,loaded=_verified_plan(output,expected_plan_hash)
+            bundle,projection,old_review,root,documents,groups,_=loaded
+            before=financial._tree(root);atomic_write_json(output/'global-originals-before.json',before)
+            store=RawInfoStore(root);receipts=[];rows=[];expected=[]
+            for candidate in bundle['candidates']:
+                document=documents[RawInfoDocument.from_dict(_read_bound(candidate['document'])[1]).document_id]
+                inserted=store.append(document);financial._require_same_record(store.load(document.document_id),document)
+                original=_binding(root/document.source_type/document.company_id/(document.document_id+'.json'));expected.append(original['path'])
+                receipt={'document_id':document.document_id,'inserted':inserted,'original_record':original,'canonical_load_equal':True};receipts.append(receipt)
+                atomic_write_json(output/'append-receipts'/(document.document_id+'.json'),receipt)
+                rows.append({'document_id':document.document_id,'company_id':document.company_id,'content_hash':document.content_hash,
+                    'original_record':original,'verdict':'admitted','reviewed_available_at':document.available_at.isoformat(),
+                    **{k:candidate[k] for k in ('proof_profile','proofs','reason')},**{k:candidate[k] for k in ('semantic_review','semantic_target') if k in candidate}})
+            review=deepcopy(old_review);review.pop('manifest_hash',None);review['records'].extend(rows)
+            review['scope'].update(company_ids=sorted(projection['identities']),as_of=max(frozen._aware(c['prediction_time']) for c in projection['cases']).isoformat())
+            review['manifest_hash']=canonical_json_hash(review);review_path=output/'source-review.json';atomic_write_json(review_path,review)
+            view=materialize_reviewed_snapshot(review_path,output/'snapshot');summaries=_consume(output,view,projection,groups)
+            _verified_plan(output,expected_plan_hash);additions=financial._check_global(before,root,expected)
+            result={'status':'completed','plan_hash':plan['plan_hash'],'fixed_cases':40,'per_group_inputs':720,'basic_info_cases':40,
+                'source_review':_binding(review_path),'reviewed_source_snapshot':view,'groups':summaries,'append_receipts':receipts,
+                'target_dispositions':bundle['target_dispositions'],'old_review_rows_preserved':review['records'][:len(old_review['records'])]==old_review['records'],
+                'old_global_hashes_preserved':True,'global_additions':additions,'worker_restart_equal':True,
+                'GETs':0,'models':0,'labels':False,'Signal_apply':False,'fullprepare':False,'MVP_closed':False}
+            atomic_write_json(output/'input_manifest.json',{'plan':_binding(output/'plan.json'),'source_review':result['source_review'],'reviewed_source_snapshot':view,'projection':bundle['projection'],'groups':groups})
+            atomic_write_json(output/'result.json',result);return result
+        except Exception as error:
+            atomic_write_json(output/'failure.json',{'terminal':True,'retry_allowed':False,'error_type':type(error).__name__});raise
+
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__);action=parser.add_mutually_exclusive_group(required=True)
+    action.add_argument('--prepare',type=Path,metavar='BUNDLE');action.add_argument('--execute',action='store_true');parser.add_argument('--output',type=Path,required=True);parser.add_argument('--expected-plan-hash')
+    args=parser.parse_args()
+    prepare(args.prepare,args.output) if args.prepare else execute(args.output,args.expected_plan_hash)

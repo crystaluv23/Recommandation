@@ -1,0 +1,63 @@
+{
+  "receipt_name": "proof-082",
+  "issuer": "Sun Life Financial Inc.",
+  "period": "2024-12-31",
+  "form": "40-F",
+  "verdict": "unknown_operating_content_scope",
+  "qualified": false,
+  "reason": "Actual primary is a cover/governance/incorporation wrapper; annual MD&A, financial statements and AIF are external literal attachments rather than substantive inline operating chapters.",
+  "review_read_scope": "selected_sections_partial_facts",
+  "manual_windows": [
+    {
+      "visible_start": 4800,
+      "text": "40.10D-1(b). \u2610 INCORPORATION BY REFERENCE The following information is incorporated by reference in this annual report on Form 40-F: Disclosure Controls and Procedures The information under the heading \u201cAccounting and Control Matters \u2013 Disclosure Controls and Procedures\u201d in Sun Life Financial Inc.\u2019s (the \u201c Company \u201d) Management\u2019s Discussion and Analysis for the year ended December 31, 2024 (the \u201c 2024 Annual MD&A \u201d) is incorporated by reference herein. A copy of the Company\u2019s 2024 Annual MD&A is attached hereto as Exhibit 99.1 . Management\u2019s Annual Report on Internal Control Over Financial Reporting The information under the heading \u201cAccounting and Control Matters \u2013 Disclosure Controls and Procedures \u2013 Management\u2019s Report on Internal Control over Financial Reporting\u201d in the Company\u2019s 2024 Annual MD&A and the information in the management "
+    },
+    {
+      "visible_start": 10800,
+      "text": "nd has duly caused this annual report to be signed on its behalf by the undersigned, thereto duly authorized. Sun Life Financial Inc. By: /s/ Melissa J. Kennedy Melissa J. Kennedy Executive Vice-President, Chief Legal & Public Policy Officer Dated: February 12, 2025 EXHIBITS : 97.1 Clawback Policy (incorporated by reference to Exhibit 97.1 of the Company\u2019s Annual Report on Form 40-F filed February 7, 2024) 99.1 Annual Management\u2019s Discussion and Analysis for the year ended December 31, 2024 99.2 Consolidated Annual Financial Statements for the year ended December 31, 2024 99.3 Annual Information Form dated February 12, 2025 for the year ended December 31, 2024 99.4 Certifications required by Rule 13a-14(a) or Rule 15d-14(a), pursuant to Section 302 of the Sarbanes-Oxley Act of 2002 99.5 Certifications required by Rule 13a-14(b) or Rule 15"
+    }
+  ],
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-082.response.raw",
+    "sha256": "a0e1a2bd3884b38d4fbb7ac85866df3107607a9b10a0c97d71c9a83e36d07027"
+  },
+  "literal_attachments": [
+    {
+      "literal_href": "a2024q4slfmdalive.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/a2024q4slfmdalive.htm",
+      "number_cell": "99.1",
+      "row_cells": [
+        "99.1",
+        "",
+        "Annual Management\u2019s Discussion and Analysis for the year ended December 31, 2024"
+      ],
+      "native_code_proved": true,
+      "not_retrieved_or_reviewed": true
+    },
+    {
+      "literal_href": "slf-20241231_d2.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/slf-20241231_d2.htm",
+      "number_cell": "99.2",
+      "row_cells": [
+        "99.2",
+        "",
+        "Consolidated Annual Financial Statements for the year ended December 31, 2024"
+      ],
+      "native_code_proved": true,
+      "not_retrieved_or_reviewed": true
+    },
+    {
+      "literal_href": "annualaifmasterlivemasterq.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/annualaifmasterlivemasterq.htm",
+      "number_cell": "99.3",
+      "row_cells": [
+        "99.3",
+        "",
+        "Annual Information Form dated February 12, 2025 for the year ended December 31, 2024"
+      ],
+      "native_code_proved": true,
+      "not_retrieved_or_reviewed": true
+    }
+  ],
+  "new_admissions": 0
+}

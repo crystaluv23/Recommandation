@@ -1,0 +1,184 @@
+{
+  "name": "proof-072",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2024-02-21T21:09:04+00:00",
+        "accession_number": "0001421517-24-000055",
+        "case_id": "cik_0001421517:20250131",
+        "form": "10-K",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/eccebf835993c501bef4144e.json",
+            "sha256": "933c0d8db6c874f3e8485b4d5ea277950982b96a18b34ee420e8cc4d1130167d"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000055/erii-20231231.htm",
+    "filing": {
+      "accepted_at": "2024-02-21T21:09:04+00:00",
+      "accession_number": "0001421517-24-000055",
+      "cik": "0001421517",
+      "filing_date": "2024-02-21",
+      "form": "10-K",
+      "primary_document": "erii-20231231.htm",
+      "report_date": "2023-12-31",
+      "retrieved_at": "2026-10-20T00:05:54.663404+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000055/erii-20231231.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-072",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-072-receipt-snapshot.json",
+    "sha256": "7b34fac4e0ec0c008d5797da522b69dd7b0e8f1491657683181315f876d1e39b"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-072.response.raw",
+    "sha256": "ce585ff39b37659c43cdc939de60ee863830dfe91e9a6a5e07a693c24181c2f3"
+  },
+  "decoded_body_sha256": "f1181c85c9f0b824933bc9e7dd1e9660013af3974364be6433a9531d26110148",
+  "decoded_characters": 5256237,
+  "visible_characters": 298246,
+  "visible_text_sha256": "5079d1cd94377b8d312bb131e225af218f3ced61de5ec9197e7f96aed6cb4d54",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 149459,
+    "raw_decoded_end": 181241,
+    "text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington D.C. 20549 Form 10-K (Mark One) \u2612 ANNUAL REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the fiscal year ended December 31 , 2023 or \u2610 TRANSITION REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the transition period from _____ to _____ Commission File Number: 001-34112 Energy Recovery, Inc. (Exact Name of Registrant as Specified in its Charter) Delaware 01-0616867 (State or Other Jurisdiction of Incorporation) (I.R.S. Employer Identification No.) 1717 Doolittle Drive San Leandro , California 94577 (Address of Principal Executive Offices) (Zip Code) ( 510 ) 483-7370 (Registrant\u2019s telephone number, including area code) Securities registered pursuant to Section 12(b) of the Securities Exchange Act of 1934: Title of each class Trading Symbol Name of each exchange on which registered Common Stock, $0.001 par value ERII Nasdaq Stock Market Securities registered pursuant to Section 12(g) of the Act: None Indicate by check mark whether the registrant is a well-known seasoned issuer, as defined in Rule 405 of the Securities Act. Yes \u2611 No \u2610 Indicate by check mark if the registrant is not required to file reports pursuant to Section 13 or Section 15(d) of the Act. "
+  },
+  "tail": {
+    "visible_start": 297396,
+    "visible_end": 298246,
+    "raw_decoded_start": 5205601,
+    "raw_decoded_end": 5256025,
+    "text": "wing persons on behalf of the Registrant and in the capacities and on the dates indicated. Signature Title Date /s/ DAVID W. MOON Director, and President and Chief Executive Officer February 21, 2024 David W. Moon (Principal Executive Officer) /s/ JOSHUA BALLARD Chief Financial Officer February 21, 2024 Joshua Ballard (Principal Financial and Accounting Officer) /s/ PAMELA TONDREAU Chairperson of the Board, Director February 21, 2024 Pamela Tondreau /s/ ALEXANDER J. BUEHLER Director February 21, 2024 Alexander J. Buehler /s/ JOAN K. CHOW Director February 21, 2024 Joan K. Chow /s/ ARVE HANSTVEIT Director February 21, 2024 Arve Hanstveit /s/ ROBERT YU LANG MAO Director February 21, 2024 Robert Yu Lang Mao /s/ COLIN R. SABOL Director February 21, 2024 Colin R. Sabol Table of Contents Energy Recovery, Inc. | 2023 Form 10-K Annual Report | 85"
+  },
+  "closing_html": true,
+  "section_locators": {
+    "business": [
+      {
+        "visible_start": 4310,
+        "visible_end": 5160,
+        "raw_decoded_start": 218359,
+        "raw_decoded_end": 256235,
+        "text": "Item 1 Business 1 Item 1A Risk Factors 13 Item 1B Unresolved Staff Comments 25 Item 1C Cybersecurity 25 Item 2 Properties 27 Item 3 Legal Proceedings 27 Item 4 Mine Safety Disclosures 27 PART II Item 5 Market for Registrant\u2019s Common Equity, Related Stockholder Matters and Issuer Purchases of Equity Securities 28 Item 6 [Reserved] 29 Item 7 Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 30 Item 7A Quantitative and Qualitative Disclosures About Market Risk 40 Item 8 Financial Statements and Supplementary Data 41 Item 9 Changes in and Disagreements with Accountants on Accounting and Financial Disclosure 79 Item 9A Controls and Procedures 79 Item 9B Other Information 80 Item 9C Disclosure Regarding Foreign Jurisdictions that Prevent Inspections 80 PART III Item 10 Directors, Executive Officers and Corpor"
+      },
+      {
+        "visible_start": 17628,
+        "visible_end": 18478,
+        "raw_decoded_start": 414848,
+        "raw_decoded_end": 421866,
+        "text": "Business Overview Energy Recovery, Inc. (the \u201cCompany\u201d, \u201cEnergy Recovery\u201d, \u201cwe\u201d, \u201cour\u201d and \u201cus\u201d) is a trusted global leader in energy efficiency technology. We design and manufacture reliable, high-performanc e solutions that provide cost savings through improved energy efficiency in commercial and industrial processes, with applications across several industries . With a strong foundation in the desalination industry, we have delivered transformative solutions that help our customers optimize their operations and reduce their energy consumption for more than 30 years. We believe that our customers do not have to sacrifice quality and cost savings for sustainability; and we are committed to developing solutions that drive long-term value from a technical, financial, and environmental perspective. We have been incorporated in the state of "
+      }
+    ],
+    "mda": [
+      {
+        "visible_start": 4645,
+        "visible_end": 5495,
+        "raw_decoded_start": 238974,
+        "raw_decoded_end": 268362,
+        "text": "Item 7 Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 30 Item 7A Quantitative and Qualitative Disclosures About Market Risk 40 Item 8 Financial Statements and Supplementary Data 41 Item 9 Changes in and Disagreements with Accountants on Accounting and Financial Disclosure 79 Item 9A Controls and Procedures 79 Item 9B Other Information 80 Item 9C Disclosure Regarding Foreign Jurisdictions that Prevent Inspections 80 PART III Item 10 Directors, Executive Officers and Corporate Governance 81 Item 11 Executive Compensation 81 Item 12 Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters 81 Item 13 Certain Relationships and Related Transactions and Director Independence 82 Item 14 Principal Accounting Fees and Services 82 PART IV Item 15 Exhibits and Financial Stat"
+      },
+      {
+        "visible_start": 143309,
+        "visible_end": 144159,
+        "raw_decoded_start": 1587181,
+        "raw_decoded_end": 1592730,
+        "text": "Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations The following Management Discussion and Analysis of Financial Condition and Results of Operations is intended to help the reader understand our results of operations and financial condition. It should be read in conjunction with the Consolidated Financial Statements and related Notes included in Part II, Item 8, \u201cFinancial Statements and Supplementary Data,\u201d in this Annual Report on Form 10-K. Overview Our reportable operating segments consist of the Water and Emerging Technologies segments. These segments are based on the industries in which the technology solutions are sold, the type of energy recovery device or other technology sold and the related solution and service or, in the case of emerging technologies, where revenues from new and/or potential "
+      },
+      {
+        "visible_start": 143409,
+        "visible_end": 144259,
+        "raw_decoded_start": 1588022,
+        "raw_decoded_end": 1593487,
+        "text": "Management Discussion and Analysis of Financial Condition and Results of Operations is intended to help the reader understand our results of operations and financial condition. It should be read in conjunction with the Consolidated Financial Statements and related Notes included in Part II, Item 8, \u201cFinancial Statements and Supplementary Data,\u201d in this Annual Report on Form 10-K. Overview Our reportable operating segments consist of the Water and Emerging Technologies segments. These segments are based on the industries in which the technology solutions are sold, the type of energy recovery device or other technology sold and the related solution and service or, in the case of emerging technologies, where revenues from new and/or potential devices utilizing our pressure exchanger technology can be brought to market. Other factors for dete"
+      }
+    ],
+    "risks": [
+      {
+        "visible_start": 4328,
+        "visible_end": 5178,
+        "raw_decoded_start": 220518,
+        "raw_decoded_end": 256949,
+        "text": "Item 1A Risk Factors 13 Item 1B Unresolved Staff Comments 25 Item 1C Cybersecurity 25 Item 2 Properties 27 Item 3 Legal Proceedings 27 Item 4 Mine Safety Disclosures 27 PART II Item 5 Market for Registrant\u2019s Common Equity, Related Stockholder Matters and Issuer Purchases of Equity Securities 28 Item 6 [Reserved] 29 Item 7 Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 30 Item 7A Quantitative and Qualitative Disclosures About Market Risk 40 Item 8 Financial Statements and Supplementary Data 41 Item 9 Changes in and Disagreements with Accountants on Accounting and Financial Disclosure 79 Item 9A Controls and Procedures 79 Item 9B Other Information 80 Item 9C Disclosure Regarding Foreign Jurisdictions that Prevent Inspections 80 PART III Item 10 Directors, Executive Officers and Corporate Governance 81 "
+      }
+    ],
+    "statements": [
+      {
+        "visible_start": 181035,
+        "visible_end": 181885,
+        "raw_decoded_start": 2197773,
+        "raw_decoded_end": 2213093,
+        "text": "Consolidated Balance Sheets. These investments are subject to interest rate fluctuations and decrease in market value to the extent interest rates increase, which occurred during the year ended December 31, 2023 . To minimize the exposure due to adverse shifts in interest rates, we maintain investments with a weighted average maturity of approximately nine months . As of December 31, 2023 , a hypothetical 1% increase in interest rates would have resulted in a less than $0.3 million decrease in the fair value of our investments in marketable debt instruments as of such date. Table of Contents Energy Recovery, Inc. | 2023 Form 10-K Annual Report | 40 Item 8 \u2014 Financial Statements and Supplementary Data Page No. Reports of Independent Registered Public Accounting Firm (PCAOB ID No. 34 ) 42 Consolidated Financial Statements: Consolidated Bala"
+      },
+      {
+        "visible_start": 181868,
+        "visible_end": 182718,
+        "raw_decoded_start": 2213066,
+        "raw_decoded_end": 2228785,
+        "text": "Consolidated Balance Sheets \u2014 December 31, 2023 and 2022 45 Consolidated Statements of Operations \u2014 Years ended December 31, 2023, 2022 and 2021 46 Consolidated Statements of Comprehensive Income \u2014 Years ended December 31, 2023, 2022 and 2021 47 Consolidated Statements of Stockholders\u2019 Equity \u2014 Years ended December 31, 2023, 2022 and 2021 48 Consolidated Statements of Cash Flows \u2014 Years ended December 31, 2023, 2022 and 2021 49 Notes to Consolidated Financial Statements 50 Table of Contents Energy Recovery, Inc. | 2023 Form 10-K Annual Report | 41 REPORT OF INDEPENDENT REGISTERED PUBLIC ACCOUNTING FIRM To the stockholders and the Board of Directors of Energy Recovery, Inc. Opinion on the Financial Statements We have audited the accompanying consolidated balance sheets of Energy Recovery, Inc. and subsidiaries (the \u201cCompany\u201d) as of Decembe"
+      },
+      {
+        "visible_start": 258698,
+        "visible_end": 259548,
+        "raw_decoded_start": 4133452,
+        "raw_decoded_end": 4183906,
+        "text": "Consolidated Balance Sheets. December 31, 2023 2022 (In thousands) Deferred tax assets: Net operating loss carry forwards $ 547 $ 702 Amortization of research and experimental expenditures 6,079 3,605 Accruals and reserves 4,857 4,320 Operating lease liabilities 2,870 3,199 Research and development, and foreign tax credit carry forwards 7,609 9,642 Acquired intangibles 157 321 Other \u2014 66 Total deferred tax assets 22,119 21,855 Valuation allowance ( 4,600 ) ( 4,185 ) Total deferred tax assets, net of valuation allowance 17,519 17,670 Deferred tax liabilities: Depreciation on property and equipment ( 2,545 ) ( 2,646 ) Right of use asset ( 2,473 ) ( 2,809 ) Other ( 10 ) \u2014 Goodwill ( 2,167 ) ( 1,952 ) Total deferred tax liabilities ( 7,195 ) ( 7,407 ) Net deferred tax asset $ 10,324 $ 10,263 In asserting the recoverability of deferred tax ass"
+      }
+    ],
+    "segments": [
+      {
+        "visible_start": 143816,
+        "visible_end": 144666,
+        "raw_decoded_start": 1590545,
+        "raw_decoded_end": 1596050,
+        "text": "operating segments consist of the Water and Emerging Technologies segments. These segments are based on the industries in which the technology solutions are sold, the type of energy recovery device or other technology sold and the related solution and service or, in the case of emerging technologies, where revenues from new and/or potential devices utilizing our pressure exchanger technology can be brought to market. Other factors for determining the reportable operating segments include the manner in which management evaluates the performance of the Company combined with the nature of the individual business activities. In addition, our corporate operating expenses include expenditures in support of the water and emerging technologies segments, as well as R&D expenditures applicable to potential future industry verticals, or enabling tec"
+      },
+      {
+        "visible_start": 144282,
+        "visible_end": 145132,
+        "raw_decoded_start": 1593353,
+        "raw_decoded_end": 1599848,
+        "text": "operating segments include the manner in which management evaluates the performance of the Company combined with the nature of the individual business activities. In addition, our corporate operating expenses include expenditures in support of the water and emerging technologies segments, as well as R&D expenditures applicable to potential future industry verticals, or enabling technologies that could benefit either or both existing business units. Highlights, Economic Conditions, Challenges, and Risks We released our fourth annual Sustainability Report (formally referred to as our Environmental, Social, and Governance (\u201cESG\u201d) report), which details our efforts to accelerate the environmental sustainability of our customers\u2019 operations and enhance the management of sustainability issues in our own operations. Our Sustainability Report rep"
+      },
+      {
+        "visible_start": 266222,
+        "visible_end": 267072,
+        "raw_decoded_start": 4298532,
+        "raw_decoded_end": 4349543,
+        "text": "operating segments . Assets and liabilities are reviewed at the consolidated level by the CODM and are not attributed to the segments. The CODM allocates resources to, and assesses the performance of, each operating segment using information about its revenue and operating income . The following table presents a summary of the Company\u2019s financial information by segment and corporate operating expenses. Year Ended December 31, 2023 Year Ended December 31, 2022 Year Ended December 31, 2021 Water Emerging Technologies Total Water Emerging Technologies Total Water Emerging Technologies Total (In thousands) Revenue $ 127,725 $ 624 $ 128,349 $ 125,428 $ 163 $ 125,591 $ 103,851 $ 53 $ 103,904 Cost of revenue 40,290 980 41,270 38,158 77 38,235 32,670 \u2014 32,670 Gross profit (loss) 87,435 ( 356 ) 87,079 87,270 86 87,356 71,181 53 71,234 Operating ex"
+      }
+    ],
+    "units": [
+      {
+        "visible_start": 150594,
+        "visible_end": 151444,
+        "raw_decoded_start": 1662054,
+        "raw_decoded_end": 1728953,
+        "text": "In thousands, except percentages) Megaproject $ 83,665 65% $ 81,888 65% $ 1,777 2% Original equipment manufacturer 25,995 20% 28,858 23% (2,863) (10%) Aftermarket 18,689 15% 14,845 12% 3,844 26% Total revenue $ 128,349 100% $ 125,591 100% $ 2,758 2% Table of Contents Energy Recovery, Inc. | 2023 Form 10-K Annual Report | 31 Revenue Attributable to Primary Geographical Markets by Segments. Years Ended December 31, 2023 2022 Water Emerging Technologies Total Water Emerging Technologies Total Middle East and Africa $ 76,437 $ 177 $ 76,614 $ 86,227 $ 94 $ 86,321 Asia 30,500 \u2014 30,500 24,777 \u2014 24,777 Americas 15,048 153 15,201 8,544 34 8,578 Europe 5,740 294 6,034 5,880 35 5,915 Total revenue $ 127,725 $ 624 $ 128,349 $ 125,428 $ 163 $ 125,591 The Megaproject (\u201c MPD \u201d) channel has been the main driver of our long-term growth as revenue from thi"
+      },
+      {
+        "visible_start": 155065,
+        "visible_end": 155915,
+        "raw_decoded_start": 1809808,
+        "raw_decoded_end": 1829058,
+        "text": "In thousands, except percentages) Gross profit and gross margin $ 87,079 67.8% $ 87,356 69.6% $ (277) (0.3%) The decrease in gross profit for the year ended December 31, 2023 , as compared to the prior year, was due primarily to lower gross margin, partially offset by an increase in revenue. The decrease in gross margin during the year ended December 31, 2023 , as compared to the prior year, was due primarily to higher manufacturing costs , partially offset by changes in product mix, and lower freight and tariff s . Table of Contents Energy Recovery, Inc. | 2023 Form 10-K Annual Report | 33 Operating Expenses The total material changes of general and administrative (\u201cG&A\u201d), sales and marketing (\u201cS&M\u201d) and research and development (\u201cR&D\u201d) operating expen ses for the year ended December 31, 2023 , as compared the prior yea r, are discussed "
+      },
+      {
+        "visible_start": 283350,
+        "visible_end": 284200,
+        "raw_decoded_start": 4907063,
+        "raw_decoded_end": 4923908,
+        "text": "In thousands) (In years) Stock options $ 5,267 0.8 RSUs 14,769 2.3 Total unamortized compensation costs, net of adjusted forfeitures $ 20,036 Table of Contents ENERGY RECOVERY, INC. NOTES TO CONSOLIDATED FINANCIAL STATEMENTS Energy Recovery, Inc. | 2023 Form 10-K Annual Report | 78 Item 9 \u2014 Changes in and Disagreements with Accountants on Accounting and Financial Disclosure None. Item 9A \u2014 Controls and Procedures Evaluation of Disclosure Controls and Procedures Our management has evaluated, with the participation of our Chief Executive Officer and Chief Financial Officer, the effectiveness of our disclosure controls and procedures (as defined in Rules 13a-15(e) and 15d-15(e) under the Securities Exchange Act of 1934, or \u201cExchange Act\u201d) as of the end of the period covered by this Annual Report on Form 10-K. Based on that evaluation, our Ch"
+      }
+    ]
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

@@ -1,0 +1,240 @@
+{
+  "all_original92_rows_and1928_associations_exact": true,
+  "audit_actions": {
+    "LabelStore": 0,
+    "global_appends": 0,
+    "model": 0,
+    "network_GET": 0,
+    "prepare": 0,
+    "production_src_or_spec_edits": 0,
+    "store_construction": 0
+  },
+  "binding_conflicts": [],
+  "binding_end_mismatches": [],
+  "binding_mismatches": [],
+  "checks": {
+    "83 unique market records": 1,
+    "95 counters GET_attempts": 1,
+    "95 counters HTTP_responses_retained": 1,
+    "95 counters attempt_reservations": 1,
+    "95 counters max_GET_attempts": 1,
+    "95 counters network_open_calls": 1,
+    "95 fetched ledger": 1,
+    "95 row denominators": 1,
+    "95 unique exact endpoints queries": 1,
+    "SEC received status": 12,
+    "all frozen and output binding hashes": 1,
+    "all responses retained": 95,
+    "all95 planned GET": 1,
+    "aware reservation response order": 95,
+    "complete provider page status": 83,
+    "decoded proof exact path hash": 83,
+    "decoded proof exact text and JSON": 83,
+    "disposition identity": 95,
+    "encoding unique": 95,
+    "frozen hashes stable audit end": 1,
+    "historical latest event": 2,
+    "historical retained count": 2,
+    "issuer object result": 29,
+    "ledger exact cache request identity": 95,
+    "market compatible receipt identity": 83,
+    "market raw HTTP binding": 83,
+    "market record exact name set": 1,
+    "native actual retrieval order": 95,
+    "native cache bound hash": 95,
+    "native cache exact path digest": 95,
+    "native cache request identity": 95,
+    "native decoded whole body exact": 95,
+    "no credential query fields": 95,
+    "no extra decoded JSON file": 1,
+    "no extra native cache file": 1,
+    "no extra retained raw file": 1,
+    "ordered names one to one": 1,
+    "original request prefix": 92,
+    "original92 associations1928": 1,
+    "original92 exact rows": 1,
+    "per host chronological requests": 2,
+    "plan canonical hash": 1,
+    "raw exact bytes hash length": 95,
+    "raw exact output path": 95,
+    "receipt GET identity status": 95,
+    "received status": 82,
+    "reported no labels admission": 1,
+    "result plan binding": 1,
+    "rolling actual reservation start quota massive": 1,
+    "rolling actual reservation start quota sec_edgar": 1,
+    "rolling native ledger quota massive": 1,
+    "rolling native ledger quota sec_edgar": 1,
+    "sanitized header names": 95,
+    "splits array result": 53,
+    "terminal completed": 1,
+    "terminal packet stable audit end": 1,
+    "transport bounds": 1,
+    "unsupported explicit disposition": 1,
+    "zero reported automatic_retries": 1,
+    "zero reported global_appends": 1,
+    "zero reported models": 1,
+    "zero reported redirects_followed": 1
+  },
+  "counts": {
+    "additional": 3,
+    "code_binding_rows": 102,
+    "decoded_market_records": 83,
+    "distinct_rehashed_paths_including_outputs": 639,
+    "historical_network_entries": {
+      "massive": 1256,
+      "sec_edgar": 4778
+    },
+    "kind_counts": {
+      "additional_daily_origin": 1,
+      "additional_exhibit": 2,
+      "all_type_splits": 53,
+      "exact_static_primary_body": 10,
+      "historical_issuer": 29
+    },
+    "ledger_fetched": 95,
+    "native_caches": 95,
+    "original_associations": 1928,
+    "original_requests": 92,
+    "planned": 95,
+    "raw_receipts": 95,
+    "received": 94,
+    "source_binding_rows": 533,
+    "source_counts": {
+      "massive": 83,
+      "sec_edgar": 12
+    },
+    "unsupported": 1
+  },
+  "errors": [],
+  "evidence_limits": [
+    "Request started_at is the persisted pre-opener boundary; an exact socket-open timestamp and historical intermediate fsync states are not recoverable from the terminal receipt. Collector source writes reservations and open-count updates before calling opener; final clocks are consistent with that order.",
+    "NoRedirect handler returns None; final receipts all have response_url equal to exact planned URL, 95 opens/95 retained responses/95 native fetched rows and no extra retained raw/cache files. This is artifact and code evidence, not independent wire capture.",
+    "global_appends=0/models=0/labels_loaded=false are terminal counters corroborated by bounded collector code, whose only writes target the new output. This audit did not load labels, construct any RawInfoStore, read the full global oracle before/after, or monitor unrelated processes; it does not prove machine-wide absence of external activity.",
+    "All 635 frozen source/code binding rows were independently rehashed at audit start and end; this does not extend source trust or admission, body semantics, issuer identity, split compatibility, or downstream readiness.",
+    "All 95 HTTP200 acquisitions are retained; BURU nonempty split ledger remains unsupported by the present empty-ledger profile and candidate-only. Other source semantic dispositions remain for their owning reviews."
+  ],
+  "finished_at_utc": "2026-10-20T00:25:32.135678+00:00",
+  "frozen_bindings_canonical_sha256": "ee7858a5b5b6b560f663a0c7d845e519311100cef2f36ebad95813067f25cb31",
+  "initial_audit_check_correction": {
+    "artifact": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/terminal-independent-review-initial-check.json",
+      "sha256": "08f9162e099bc15a294144dfdc7285404c7e6d2471506bf0474cf12d9ef90cf7"
+    },
+    "explanation": "Initial local audit incorrectly compared quota latest_native_event with only fetched/error events. Quota latest_native_event includes cache_hit. Corrected to the latest event of all statuses; preserved initial result. Rolling checks still use fetched/error only."
+  },
+  "input_bindings": {
+    "execution_start": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/execution-start.json",
+      "sha256": "cae6bb5fd08b358755aca6284b50f0ed2a87b01b9c1ec4db826c44bed42e10f5"
+    },
+    "ledger": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/native-ledger.jsonl",
+      "sha256": "e48b5697e0f05de9a9816ca2d7605f37475c4954d6300c38ff0788aa8f2913eb"
+    },
+    "market_records": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/market-request-records.json",
+      "sha256": "427ce5067ea038916d50744beab39f54fad8116b16e79dddd28c116fac1c1ffc"
+    },
+    "plan": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/request-plan.json",
+      "sha256": "0c96abd8ae201b36eb50e2cb22974ada8975284be9dc9c4cc4ae5b2496a5b05f"
+    },
+    "results": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/results.json",
+      "sha256": "a873794947eb6907d14c74ea7db4127459ec4968b6cb8397eb67e25fc4b77b51"
+    }
+  },
+  "per_call_correspondence_canonical_sha256": "c09def2b19a70c7dbed7b05d8624382ee5f5f4239c0f6697ce88234fbc3c1d31",
+  "plan_hash": "7899aae9a3ea6cbd0301ce14794bf8d1a2563d88e20cfd3c240056b24711321b",
+  "reviewed_at_utc": "2026-10-20T00:29:48.954342+00:00",
+  "rolling": {
+    "massive": {
+      "limit": 5,
+      "native_completion_ledger_clock": {
+        "current_count": 83,
+        "maximum_inclusive_count_at_new_start": 5,
+        "prior_count": 1286,
+        "prior_overlapping_first_new_window": 0,
+        "window_seconds": 60,
+        "witness_utc": "2026-10-20T00:09:08.011333+00:00"
+      },
+      "reservation_start_clock": {
+        "current_count": 83,
+        "maximum_inclusive_count_at_new_start": 5,
+        "prior_count": 1286,
+        "prior_overlapping_first_new_window": 0,
+        "window_seconds": 60,
+        "witness_utc": "2026-10-20T00:09:06.869028+00:00"
+      }
+    },
+    "sec_edgar": {
+      "limit": 10,
+      "native_completion_ledger_clock": {
+        "current_count": 12,
+        "maximum_inclusive_count_at_new_start": 1,
+        "prior_count": 4778,
+        "prior_overlapping_first_new_window": 0,
+        "window_seconds": 1,
+        "witness_utc": "2026-10-20T00:11:06.891615+00:00"
+      },
+      "reservation_start_clock": {
+        "current_count": 12,
+        "maximum_inclusive_count_at_new_start": 1,
+        "prior_count": 4778,
+        "prior_overlapping_first_new_window": 0,
+        "window_seconds": 1,
+        "witness_utc": "2026-10-20T00:11:05.881503+00:00"
+      }
+    }
+  },
+  "scope": "independent local read-only terminal acquisition audit; no admission or consumer execution",
+  "unsupported": [
+    {
+      "case_ids": [
+        "cik_0001814215:20250530"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "kind": "all_type_splits",
+      "name": "proof-003",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/massive/corporate_actions/6890ea16f570cb7b01b3cf02.json",
+        "sha256": "09f17b61fe3bca724a7df39f5ae1be5629181da5f3c7c60a44588d98bf67688a"
+      },
+      "query": {
+        "execution_date.gte": "2025-05-30",
+        "execution_date.lte": "2026-09-18",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "BURU"
+      },
+      "raw_response": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-003.response.raw",
+        "sha256": "05783a96aa538cf9045d84991d48d93caa1d4dac7e0322b70b08ad29d8b6db4c"
+      },
+      "result_count": 2,
+      "results": [
+        {
+          "adjustment_type": "reverse_split",
+          "execution_date": "2026-03-02",
+          "historical_adjustment_factor": 199.6,
+          "id": "E0d0e28f823752dd80328819a6e15985f83d50093228765b1f657214203850f89",
+          "split_from": 4.99,
+          "split_to": 1.0,
+          "ticker": "BURU"
+        },
+        {
+          "adjustment_type": "reverse_split",
+          "execution_date": "2026-09-02",
+          "historical_adjustment_factor": 40.0,
+          "id": "Eab765781569d547ea9e03ddfd4de51087ca39628c7a505c7dcef145e0ad103dd",
+          "split_from": 40.0,
+          "split_to": 1.0,
+          "ticker": "BURU"
+        }
+      ],
+      "source_admission": false
+    }
+  ],
+  "verdict": "pass"
+}

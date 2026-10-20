@@ -1,0 +1,77 @@
+{
+  "automatic_retries": 0,
+  "redirects_followed": 0,
+  "requests": [
+    {
+      "bytes": 331431,
+      "headers_omitted": [],
+      "http_status": 200,
+      "method": "GET",
+      "name": "proof-072",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-072.response.raw",
+      "raw_sha256": "ce585ff39b37659c43cdc939de60ee863830dfe91e9a6a5e07a693c24181c2f3",
+      "response_headers": {
+        "Accept-Ranges": "bytes",
+        "Connection": "Transfer-Encoding",
+        "Content-Encoding": "gzip",
+        "Content-Type": "text/html",
+        "Date": "Tue, 20 Oct 2026 00:22:21 GMT",
+        "Last-Modified": "Wed, 21 Feb 2024 21:18:15 GMT",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "x-amz-id-2": "WkUpFrpS84LlKchPZn2lTOGvsrTApbre44NYUs6h/DEljZdqGaF84BuYxTGUIAjevU2xrLaBUFezQ0HWKsy3KBuzXPao8Eus",
+        "x-amz-meta-mode": "33188",
+        "x-amz-replication-status": "COMPLETED",
+        "x-amz-request-id": "V49M0B870TJKZAAF",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-version-id": "t.eRIcntZc2OAigYpFNF7UBTyZ05X3az"
+      },
+      "response_url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000055/erii-20231231.htm",
+      "retrieved_at_utc": "2026-10-20T00:22:21.692989+00:00",
+      "started_at_utc": "2026-10-20T00:22:20.704272+00:00",
+      "status": "http_response_retained",
+      "url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000055/erii-20231231.htm"
+    }
+  ],
+  "plan_hash": "7899aae9a3ea6cbd0301ce14794bf8d1a2563d88e20cfd3c240056b24711321b",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2024-02-21T21:09:04+00:00",
+        "accession_number": "0001421517-24-000055",
+        "case_id": "cik_0001421517:20250131",
+        "form": "10-K",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/eccebf835993c501bef4144e.json",
+            "sha256": "933c0d8db6c874f3e8485b4d5ea277950982b96a18b34ee420e8cc4d1130167d"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000055/erii-20231231.htm",
+    "filing": {
+      "accepted_at": "2024-02-21T21:09:04+00:00",
+      "accession_number": "0001421517-24-000055",
+      "cik": "0001421517",
+      "filing_date": "2024-02-21",
+      "form": "10-K",
+      "primary_document": "erii-20231231.htm",
+      "report_date": "2023-12-31",
+      "retrieved_at": "2026-10-20T00:05:54.663404+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1421517/000142151724000055/erii-20231231.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-072",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "capture_scope": "Exact stable single request snapshot while wholecollection may still evolve; no terminalbatch assertion."
+}

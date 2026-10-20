@@ -1,0 +1,1627 @@
+[
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-000",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-19",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-000.response.raw",
+      "sha256": "0be5e6d32d047ae3df4603b6a687f02015c3f14aeaedaf61404a0efdbd771951"
+    },
+    "raw_response": "responses/proof-000.response.json",
+    "retrieved_at": "2026-10-20T00:09:03.216931+00:00",
+    "sha256": "0be5e6d32d047ae3df4603b6a687f02015c3f14aeaedaf61404a0efdbd771951"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-001",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-05-30",
+      "execution_date.lte": "2026-08-17",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "GPRE"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-001.response.raw",
+      "sha256": "ce7900e9615cfd51fadf662d25455469e12846ed71e0e464e911ff579b562e6a"
+    },
+    "raw_response": "responses/proof-001.response.json",
+    "retrieved_at": "2026-10-20T00:09:04.454201+00:00",
+    "sha256": "ce7900e9615cfd51fadf662d25455469e12846ed71e0e464e911ff579b562e6a"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-002",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-21",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-002.response.raw",
+      "sha256": "7bf32a6870e69fcb2271f20ac51984c703100e5c561236d8f2c5f1b8f5430802"
+    },
+    "raw_response": "responses/proof-002.response.json",
+    "retrieved_at": "2026-10-20T00:09:05.632574+00:00",
+    "sha256": "7bf32a6870e69fcb2271f20ac51984c703100e5c561236d8f2c5f1b8f5430802"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-003",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-05-30",
+      "execution_date.lte": "2026-09-18",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "BURU"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-003.response.raw",
+      "sha256": "05783a96aa538cf9045d84991d48d93caa1d4dac7e0322b70b08ad29d8b6db4c"
+    },
+    "raw_response": "responses/proof-003.response.json",
+    "retrieved_at": "2026-10-20T00:09:06.782174+00:00",
+    "sha256": "05783a96aa538cf9045d84991d48d93caa1d4dac7e0322b70b08ad29d8b6db4c"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-004",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-09-19",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "BSVN"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-004.response.raw",
+      "sha256": "77e5afe0f836d9eba3d6073e7b650ae88aa4f34953b29b17505ea660d69cfed8"
+    },
+    "raw_response": "responses/proof-004.response.json",
+    "retrieved_at": "2026-10-20T00:09:08.010245+00:00",
+    "sha256": "77e5afe0f836d9eba3d6073e7b650ae88aa4f34953b29b17505ea660d69cfed8"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-005",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-19",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "ERII"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-005.response.raw",
+      "sha256": "8cbb1f236f7fb8ca5419ce381e38afd8f6fd6246a6a5bc99410d846776b058b7"
+    },
+    "raw_response": "responses/proof-005.response.json",
+    "retrieved_at": "2026-10-20T00:10:04.494155+00:00",
+    "sha256": "8cbb1f236f7fb8ca5419ce381e38afd8f6fd6246a6a5bc99410d846776b058b7"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/RZLV",
+    "http_status": 200,
+    "name": "proof-006",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-03-28"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-006.response.raw",
+      "sha256": "893e4bf0ca3956f3dbd6ad3b89011a1297947792e0bdeddf49ab40e22690a3b4"
+    },
+    "raw_response": "responses/proof-006.response.json",
+    "retrieved_at": "2026-10-20T00:10:05.978634+00:00",
+    "sha256": "893e4bf0ca3956f3dbd6ad3b89011a1297947792e0bdeddf49ab40e22690a3b4"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/DGICA",
+    "http_status": 200,
+    "name": "proof-007",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-007.response.raw",
+      "sha256": "b14be6f9da34ac2c93471581be53f6429d5881b08044c4cb9a1958113db3899e"
+    },
+    "raw_response": "responses/proof-007.response.json",
+    "retrieved_at": "2026-10-20T00:10:07.238766+00:00",
+    "sha256": "b14be6f9da34ac2c93471581be53f6429d5881b08044c4cb9a1958113db3899e"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-008",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-09-17",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "TGB"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-008.response.raw",
+      "sha256": "5a9192e2535dd56e9977627fdbcd660d97aa2d5aedbced9ff4a733c8e55ee5d7"
+    },
+    "raw_response": "responses/proof-008.response.json",
+    "retrieved_at": "2026-10-20T00:10:08.486255+00:00",
+    "sha256": "5a9192e2535dd56e9977627fdbcd660d97aa2d5aedbced9ff4a733c8e55ee5d7"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/NEGG",
+    "http_status": 200,
+    "name": "proof-009",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-05-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-009.response.raw",
+      "sha256": "4e743591b45c689e08a6715f3796ea2d379e1d59e82352f9159b9af9a4ec7f1b"
+    },
+    "raw_response": "responses/proof-009.response.json",
+    "retrieved_at": "2026-10-20T00:10:09.724066+00:00",
+    "sha256": "4e743591b45c689e08a6715f3796ea2d379e1d59e82352f9159b9af9a4ec7f1b"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-010",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-10-02",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "PI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-010.response.raw",
+      "sha256": "07794a9eb9b74ab32a78ed7ece610d58e20d43b5d2e6951c441de5b9e1a59de1"
+    },
+    "raw_response": "responses/proof-010.response.json",
+    "retrieved_at": "2026-10-20T00:11:05.790371+00:00",
+    "sha256": "07794a9eb9b74ab32a78ed7ece610d58e20d43b5d2e6951c441de5b9e1a59de1"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-012",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-09-18",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "DGICA"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-012.response.raw",
+      "sha256": "8e2edb4b6ce2fbe6f94effb19cb9e7834fb210bd6d32e9ffb94efec06c7ed5ec"
+    },
+    "raw_response": "responses/proof-012.response.json",
+    "retrieved_at": "2026-10-20T00:11:08.085490+00:00",
+    "sha256": "8e2edb4b6ce2fbe6f94effb19cb9e7834fb210bd6d32e9ffb94efec06c7ed5ec"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/BSVN",
+    "http_status": 200,
+    "name": "proof-013",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-013.response.raw",
+      "sha256": "3372addf805ff911b523e4494551d3643042942929e746348da33aa4a6fc4da9"
+    },
+    "raw_response": "responses/proof-013.response.json",
+    "retrieved_at": "2026-10-20T00:11:09.270423+00:00",
+    "sha256": "3372addf805ff911b523e4494551d3643042942929e746348da33aa4a6fc4da9"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-014",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-09-08",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "LNTH"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-014.response.raw",
+      "sha256": "a3eb56501d5ef91aa7c8f74d3dbfc367784c05c00021b1836b32b444b2e1b55f"
+    },
+    "raw_response": "responses/proof-014.response.json",
+    "retrieved_at": "2026-10-20T00:11:10.439042+00:00",
+    "sha256": "a3eb56501d5ef91aa7c8f74d3dbfc367784c05c00021b1836b32b444b2e1b55f"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-015",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-08-21",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "FIBK"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-015.response.raw",
+      "sha256": "9f616514d2577762c2aa523e7e4ef080bd636bd51ad1f00b806dea8d670d8453"
+    },
+    "raw_response": "responses/proof-015.response.json",
+    "retrieved_at": "2026-10-20T00:11:11.686971+00:00",
+    "sha256": "9f616514d2577762c2aa523e7e4ef080bd636bd51ad1f00b806dea8d670d8453"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-016",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-12",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-016.response.raw",
+      "sha256": "e22ca01699b693f6eb634034c7ded235af6c3072bd21bac4b4e51f24c68a706c"
+    },
+    "raw_response": "responses/proof-016.response.json",
+    "retrieved_at": "2026-10-20T00:12:07.112240+00:00",
+    "sha256": "e22ca01699b693f6eb634034c7ded235af6c3072bd21bac4b4e51f24c68a706c"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-017",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "WWR"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-017.response.raw",
+      "sha256": "84e4fd61a242f070b3edb0eda738312ae0d8d3a06ba19dcb7a2ba0e23ad1f7c5"
+    },
+    "raw_response": "responses/proof-017.response.json",
+    "retrieved_at": "2026-10-20T00:12:09.310501+00:00",
+    "sha256": "84e4fd61a242f070b3edb0eda738312ae0d8d3a06ba19dcb7a2ba0e23ad1f7c5"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/PI",
+    "http_status": 200,
+    "name": "proof-018",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-03-28"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-018.response.raw",
+      "sha256": "7c2cb6acd4e0ec936cb4f5c9430956b52e78d937af10d65c9d9d57811481db2f"
+    },
+    "raw_response": "responses/proof-018.response.json",
+    "retrieved_at": "2026-10-20T00:12:10.490238+00:00",
+    "sha256": "7c2cb6acd4e0ec936cb4f5c9430956b52e78d937af10d65c9d9d57811481db2f"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-019",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-09-18",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "AGH"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-019.response.raw",
+      "sha256": "0fd5a35a658d94217bca80e2d2bf38ccd6a6c1561658d5272301f2e35a80833e"
+    },
+    "raw_response": "responses/proof-019.response.json",
+    "retrieved_at": "2026-10-20T00:12:11.633031+00:00",
+    "sha256": "0fd5a35a658d94217bca80e2d2bf38ccd6a6c1561658d5272301f2e35a80833e"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-020",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-09-18",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "SLF"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-020.response.raw",
+      "sha256": "6b199a77203ed121ec37fdcde3d0b3de1a03daf1de5993e043445d36ef9ad417"
+    },
+    "raw_response": "responses/proof-020.response.json",
+    "retrieved_at": "2026-10-20T00:12:12.991097+00:00",
+    "sha256": "6b199a77203ed121ec37fdcde3d0b3de1a03daf1de5993e043445d36ef9ad417"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-021",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "LNTH"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-021.response.raw",
+      "sha256": "c0e1d301d47368bae55d8d48bd100e6e19600052fd23ef3ddae90c5115ee020f"
+    },
+    "raw_response": "responses/proof-021.response.json",
+    "retrieved_at": "2026-10-20T00:13:08.518413+00:00",
+    "sha256": "c0e1d301d47368bae55d8d48bd100e6e19600052fd23ef3ddae90c5115ee020f"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-022",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-28",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-022.response.raw",
+      "sha256": "57ecf4759ac6ac9e878c7c86877a3ba9243a0c9b4649bab28ba5a5ed948c96ed"
+    },
+    "raw_response": "responses/proof-022.response.json",
+    "retrieved_at": "2026-10-20T00:13:10.570466+00:00",
+    "sha256": "57ecf4759ac6ac9e878c7c86877a3ba9243a0c9b4649bab28ba5a5ed948c96ed"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/LNTH",
+    "http_status": 200,
+    "name": "proof-023",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-03-28"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-023.response.raw",
+      "sha256": "523d97c4ac8c8888a57e34805ce004c1c7f8f62e4743a354b6cbda2016c72318"
+    },
+    "raw_response": "responses/proof-023.response.json",
+    "retrieved_at": "2026-10-20T00:13:11.780546+00:00",
+    "sha256": "523d97c4ac8c8888a57e34805ce004c1c7f8f62e4743a354b6cbda2016c72318"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/TGB",
+    "http_status": 200,
+    "name": "proof-026",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-05-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-026.response.raw",
+      "sha256": "2b07e79ce5d10f748ce8bf28bd45f7c6a991d535b0aa4c2d40c72a7585d7cffd"
+    },
+    "raw_response": "responses/proof-026.response.json",
+    "retrieved_at": "2026-10-20T00:13:15.193051+00:00",
+    "sha256": "2b07e79ce5d10f748ce8bf28bd45f7c6a991d535b0aa4c2d40c72a7585d7cffd"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-027",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-11",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-027.response.raw",
+      "sha256": "9e41faf7da2952e3262fd31775e6f1e753714e5e8135917a324ea4e49a02c8eb"
+    },
+    "raw_response": "responses/proof-027.response.json",
+    "retrieved_at": "2026-10-20T00:13:16.511839+00:00",
+    "sha256": "9e41faf7da2952e3262fd31775e6f1e753714e5e8135917a324ea4e49a02c8eb"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/RZLV",
+    "http_status": 200,
+    "name": "proof-028",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-05-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-028.response.raw",
+      "sha256": "ffb6f1334f524020fb27d9d5979c9288908ff31eb27fafb33d59998eb7698777"
+    },
+    "raw_response": "responses/proof-028.response.json",
+    "retrieved_at": "2026-10-20T00:14:10.177065+00:00",
+    "sha256": "ffb6f1334f524020fb27d9d5979c9288908ff31eb27fafb33d59998eb7698777"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/LW",
+    "http_status": 200,
+    "name": "proof-029",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-03-28"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-029.response.raw",
+      "sha256": "b45b4d8f67c1e9faeca6cd6b90eea3b95c951bbd60e686cd87c6f4158877f362"
+    },
+    "raw_response": "responses/proof-029.response.json",
+    "retrieved_at": "2026-10-20T00:14:11.918497+00:00",
+    "sha256": "b45b4d8f67c1e9faeca6cd6b90eea3b95c951bbd60e686cd87c6f4158877f362"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/TGB",
+    "http_status": 200,
+    "name": "proof-030",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-030.response.raw",
+      "sha256": "d82a100effae9263f1a142f71ee3c7f7f65020196237d4c3c9a58ea51dc9077a"
+    },
+    "raw_response": "responses/proof-030.response.json",
+    "retrieved_at": "2026-10-20T00:14:13.272597+00:00",
+    "sha256": "d82a100effae9263f1a142f71ee3c7f7f65020196237d4c3c9a58ea51dc9077a"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/CRML",
+    "http_status": 200,
+    "name": "proof-031",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-05-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-031.response.raw",
+      "sha256": "a25c9aa75cfd7cf727ed24d149bea75a1ebb564b4ee60858e74a4286784b8101"
+    },
+    "raw_response": "responses/proof-031.response.json",
+    "retrieved_at": "2026-10-20T00:14:16.531147+00:00",
+    "sha256": "a25c9aa75cfd7cf727ed24d149bea75a1ebb564b4ee60858e74a4286784b8101"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-032",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-09-19",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "LW"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-032.response.raw",
+      "sha256": "a68c6258cc6c927ad80f4cee50aea848a506af169989383b0e51bd605d65fc56"
+    },
+    "raw_response": "responses/proof-032.response.json",
+    "retrieved_at": "2026-10-20T00:14:17.742898+00:00",
+    "sha256": "a68c6258cc6c927ad80f4cee50aea848a506af169989383b0e51bd605d65fc56"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-033",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-08-21",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "RZLV"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-033.response.raw",
+      "sha256": "e18ec807387870f7537ce41a281794198aa3a070165aac20afa90773430ecca7"
+    },
+    "raw_response": "responses/proof-033.response.json",
+    "retrieved_at": "2026-10-20T00:15:11.482390+00:00",
+    "sha256": "e18ec807387870f7537ce41a281794198aa3a070165aac20afa90773430ecca7"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-034",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-05-30",
+      "execution_date.lte": "2026-09-10",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "NEGG"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-034.response.raw",
+      "sha256": "9cf0e47e7d7e9a508f2b821304ac81af3f0507e3f941d9e6cc8e89b3aadb0e2b"
+    },
+    "raw_response": "responses/proof-034.response.json",
+    "retrieved_at": "2026-10-20T00:15:13.163621+00:00",
+    "sha256": "9cf0e47e7d7e9a508f2b821304ac81af3f0507e3f941d9e6cc8e89b3aadb0e2b"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-035",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-09-08",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "WWR"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-035.response.raw",
+      "sha256": "c587127b59fa44b19d151306c4609fff8ea5f599f8fb22721f8bd4fc91aecf1d"
+    },
+    "raw_response": "responses/proof-035.response.json",
+    "retrieved_at": "2026-10-20T00:15:14.539759+00:00",
+    "sha256": "c587127b59fa44b19d151306c4609fff8ea5f599f8fb22721f8bd4fc91aecf1d"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-036",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-10-01",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "PI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-036.response.raw",
+      "sha256": "e26d954223c8c036dc380767c1b987ffb96feaac1cd10682fa294452dba3a30e"
+    },
+    "raw_response": "responses/proof-036.response.json",
+    "retrieved_at": "2026-10-20T00:15:17.881726+00:00",
+    "sha256": "e26d954223c8c036dc380767c1b987ffb96feaac1cd10682fa294452dba3a30e"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/HITI",
+    "http_status": 200,
+    "name": "proof-038",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-01-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-038.response.raw",
+      "sha256": "7d6252c3f4e752a2dc4888dd667d34b2b7d48f274fb62367d7fbd2066d707b8c"
+    },
+    "raw_response": "responses/proof-038.response.json",
+    "retrieved_at": "2026-10-20T00:15:20.367531+00:00",
+    "sha256": "7d6252c3f4e752a2dc4888dd667d34b2b7d48f274fb62367d7fbd2066d707b8c"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-039",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-09-21",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "FIBK"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-039.response.raw",
+      "sha256": "7d0710bb90776afa7d5b9d3c5c9eab49052c3940b1b8548c3753a859a0cdc44f"
+    },
+    "raw_response": "responses/proof-039.response.json",
+    "retrieved_at": "2026-10-20T00:16:12.765052+00:00",
+    "sha256": "7d0710bb90776afa7d5b9d3c5c9eab49052c3940b1b8548c3753a859a0cdc44f"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-040",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-040.response.raw",
+      "sha256": "39be2e1ebd9e8650ee74c92b910c786ae3039f4e32d1655498e1f096b301b5bc"
+    },
+    "raw_response": "responses/proof-040.response.json",
+    "retrieved_at": "2026-10-20T00:16:14.384079+00:00",
+    "sha256": "39be2e1ebd9e8650ee74c92b910c786ae3039f4e32d1655498e1f096b301b5bc"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-041",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-09-19",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "OMER"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-041.response.raw",
+      "sha256": "069f8eb65063c366b284653e3c98fe9fdc29837e43f7ccc85982fb3314357da6"
+    },
+    "raw_response": "responses/proof-041.response.json",
+    "retrieved_at": "2026-10-20T00:16:15.754878+00:00",
+    "sha256": "069f8eb65063c366b284653e3c98fe9fdc29837e43f7ccc85982fb3314357da6"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-042",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-08-17",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "AXTI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-042.response.raw",
+      "sha256": "89f9e25090289841ec15bc5e65c93c5dd2a7a7cfe162bb973c4db4e3549899e7"
+    },
+    "raw_response": "responses/proof-042.response.json",
+    "retrieved_at": "2026-10-20T00:16:19.086846+00:00",
+    "sha256": "89f9e25090289841ec15bc5e65c93c5dd2a7a7cfe162bb973c4db4e3549899e7"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-043",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-05-30",
+      "execution_date.lte": "2026-09-11",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "CRML"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-043.response.raw",
+      "sha256": "e5e8cb0cb4e03e699f7fc78c210b5704050d6641b35da919806bcd3f2719c626"
+    },
+    "raw_response": "responses/proof-043.response.json",
+    "retrieved_at": "2026-10-20T00:16:21.601396+00:00",
+    "sha256": "e5e8cb0cb4e03e699f7fc78c210b5704050d6641b35da919806bcd3f2719c626"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-044",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-08-17",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "AXTI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-044.response.raw",
+      "sha256": "412b4a1f8b14901b571457dbd3241f42c2029ad77230cc2323068054280ed738"
+    },
+    "raw_response": "responses/proof-044.response.json",
+    "retrieved_at": "2026-10-20T00:17:14.071518+00:00",
+    "sha256": "412b4a1f8b14901b571457dbd3241f42c2029ad77230cc2323068054280ed738"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/GPRE",
+    "http_status": 200,
+    "name": "proof-045",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-05-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-045.response.raw",
+      "sha256": "22ba71bd6eff57f0dbb0b46c5f7a95534e9065b547f96974d32b8d18ed155338"
+    },
+    "raw_response": "responses/proof-045.response.json",
+    "retrieved_at": "2026-10-20T00:17:15.659549+00:00",
+    "sha256": "22ba71bd6eff57f0dbb0b46c5f7a95534e9065b547f96974d32b8d18ed155338"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-046",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-05-30",
+      "execution_date.lte": "2026-09-21",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "GPRE"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-046.response.raw",
+      "sha256": "e0151f6b4923b5da024695b2473e0e2817fd45987913444e34f17e40e380d241"
+    },
+    "raw_response": "responses/proof-046.response.json",
+    "retrieved_at": "2026-10-20T00:17:16.971086+00:00",
+    "sha256": "e0151f6b4923b5da024695b2473e0e2817fd45987913444e34f17e40e380d241"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-047",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-10-06",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "PI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-047.response.raw",
+      "sha256": "1e02c91cecd0df32bcbc04080a7fbf5086f58d3b480fbc9b9757c19b18c2e925"
+    },
+    "raw_response": "responses/proof-047.response.json",
+    "retrieved_at": "2026-10-20T00:17:20.290535+00:00",
+    "sha256": "1e02c91cecd0df32bcbc04080a7fbf5086f58d3b480fbc9b9757c19b18c2e925"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-048",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-08-17",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "FIBK"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-048.response.raw",
+      "sha256": "e83e1d474213458fd67d1bbaa1e5ba8c097f44c17c4295e93529f6d11e9d892d"
+    },
+    "raw_response": "responses/proof-048.response.json",
+    "retrieved_at": "2026-10-20T00:17:22.823722+00:00",
+    "sha256": "e83e1d474213458fd67d1bbaa1e5ba8c097f44c17c4295e93529f6d11e9d892d"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-049",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-10-02",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-049.response.raw",
+      "sha256": "86c9f7e850138030c0e8dd04c461834f372cdebf1d9c11ba1707d4fd8c352410"
+    },
+    "raw_response": "responses/proof-049.response.json",
+    "retrieved_at": "2026-10-20T00:18:15.308477+00:00",
+    "sha256": "86c9f7e850138030c0e8dd04c461834f372cdebf1d9c11ba1707d4fd8c352410"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-050",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-08-21",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "PI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-050.response.raw",
+      "sha256": "bb24fe79eff3ecc5b19bdd2121f6a60136925a64f1c03f294018478bdf21fdac"
+    },
+    "raw_response": "responses/proof-050.response.json",
+    "retrieved_at": "2026-10-20T00:18:16.969969+00:00",
+    "sha256": "bb24fe79eff3ecc5b19bdd2121f6a60136925a64f1c03f294018478bdf21fdac"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/WWR",
+    "http_status": 200,
+    "name": "proof-051",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-051.response.raw",
+      "sha256": "5142e0b7ded1db68dc29258ff57cc726247a79d6d1762b6773233c87c1f5be70"
+    },
+    "raw_response": "responses/proof-051.response.json",
+    "retrieved_at": "2026-10-20T00:18:18.452474+00:00",
+    "sha256": "5142e0b7ded1db68dc29258ff57cc726247a79d6d1762b6773233c87c1f5be70"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-052",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-26",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-052.response.raw",
+      "sha256": "a0c7725cc46fe2601cb843bc3502fde2f4f77dc994aa072b196ecf69d8e7c269"
+    },
+    "raw_response": "responses/proof-052.response.json",
+    "retrieved_at": "2026-10-20T00:18:21.545530+00:00",
+    "sha256": "a0c7725cc46fe2601cb843bc3502fde2f4f77dc994aa072b196ecf69d8e7c269"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-053",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-20",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-053.response.raw",
+      "sha256": "eebe80bc0a7d52f7a6d5e1ede0a9ddb908c445be7d7edd4499fc3fc7bc601ed6"
+    },
+    "raw_response": "responses/proof-053.response.json",
+    "retrieved_at": "2026-10-20T00:18:24.149923+00:00",
+    "sha256": "eebe80bc0a7d52f7a6d5e1ede0a9ddb908c445be7d7edd4499fc3fc7bc601ed6"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/BURU",
+    "http_status": 200,
+    "name": "proof-054",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-05-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-054.response.raw",
+      "sha256": "225b34a9dddf194dd46c7911b50cceb05d7d252d54ee9c015d89e619ff87b4f5"
+    },
+    "raw_response": "responses/proof-054.response.json",
+    "retrieved_at": "2026-10-20T00:19:16.697086+00:00",
+    "sha256": "225b34a9dddf194dd46c7911b50cceb05d7d252d54ee9c015d89e619ff87b4f5"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/AXTI",
+    "http_status": 200,
+    "name": "proof-055",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-055.response.raw",
+      "sha256": "44a139ddae5b7854a011887b4b356b0fd3aebddaf9c1bf6e88ac1ec49ce84b40"
+    },
+    "raw_response": "responses/proof-055.response.json",
+    "retrieved_at": "2026-10-20T00:19:18.320334+00:00",
+    "sha256": "44a139ddae5b7854a011887b4b356b0fd3aebddaf9c1bf6e88ac1ec49ce84b40"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/FIBK",
+    "http_status": 200,
+    "name": "proof-056",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-01-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-056.response.raw",
+      "sha256": "f960805e67fbf890cd9226922dee32356f79acd6d49f5fa3286efe05ef647c9f"
+    },
+    "raw_response": "responses/proof-056.response.json",
+    "retrieved_at": "2026-10-20T00:19:19.737122+00:00",
+    "sha256": "f960805e67fbf890cd9226922dee32356f79acd6d49f5fa3286efe05ef647c9f"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-057",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-09-13",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "TNDM"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-057.response.raw",
+      "sha256": "ef83c0fc55abf9569eb3e8f87b998065787e79ba0600643f2099252cd9ea79f1"
+    },
+    "raw_response": "responses/proof-057.response.json",
+    "retrieved_at": "2026-10-20T00:19:22.766367+00:00",
+    "sha256": "ef83c0fc55abf9569eb3e8f87b998065787e79ba0600643f2099252cd9ea79f1"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-058",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-10-06",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-058.response.raw",
+      "sha256": "be1a76eb18a9a4c0af4f45ba3f5b1cf575b6e83353757d79faffda41f84ebfa0"
+    },
+    "raw_response": "responses/proof-058.response.json",
+    "retrieved_at": "2026-10-20T00:19:25.372754+00:00",
+    "sha256": "be1a76eb18a9a4c0af4f45ba3f5b1cf575b6e83353757d79faffda41f84ebfa0"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-060",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-09-21",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "AXTI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-060.response.raw",
+      "sha256": "7f0fc3390768b1300612231426e53e636df1968b4ddc7074a91e4cee54355f64"
+    },
+    "raw_response": "responses/proof-060.response.json",
+    "retrieved_at": "2026-10-20T00:20:18.040135+00:00",
+    "sha256": "7f0fc3390768b1300612231426e53e636df1968b4ddc7074a91e4cee54355f64"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/WBUY",
+    "http_status": 200,
+    "name": "proof-061",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-061.response.raw",
+      "sha256": "f24807d656ee6700b891066806bac40aa1739961d2c0d245be9d4aaa18874c05"
+    },
+    "raw_response": "responses/proof-061.response.json",
+    "retrieved_at": "2026-10-20T00:20:19.655683+00:00",
+    "sha256": "f24807d656ee6700b891066806bac40aa1739961d2c0d245be9d4aaa18874c05"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/TNDM",
+    "http_status": 200,
+    "name": "proof-062",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-062.response.raw",
+      "sha256": "ed54ef4adda378920ccd255b0cca5a4ae9872180dfa9f44ea82c3d8fd7d8dde2"
+    },
+    "raw_response": "responses/proof-062.response.json",
+    "retrieved_at": "2026-10-20T00:20:21.013569+00:00",
+    "sha256": "ed54ef4adda378920ccd255b0cca5a4ae9872180dfa9f44ea82c3d8fd7d8dde2"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/SLF",
+    "http_status": 200,
+    "name": "proof-063",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-063.response.raw",
+      "sha256": "abf43edcaa63779e953587a16c78dee8b7b2a1a315a7dc02792d16e7c29c524a"
+    },
+    "raw_response": "responses/proof-063.response.json",
+    "retrieved_at": "2026-10-20T00:20:24.097409+00:00",
+    "sha256": "abf43edcaa63779e953587a16c78dee8b7b2a1a315a7dc02792d16e7c29c524a"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/AGH",
+    "http_status": 200,
+    "name": "proof-064",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-064.response.raw",
+      "sha256": "187e426b4492194c59ca90c38a009ec0ede1c42e918cea44417afc5d42232f4b"
+    },
+    "raw_response": "responses/proof-064.response.json",
+    "retrieved_at": "2026-10-20T00:20:26.723540+00:00",
+    "sha256": "187e426b4492194c59ca90c38a009ec0ede1c42e918cea44417afc5d42232f4b"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-065",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-09-28",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "AGH"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-065.response.raw",
+      "sha256": "d1b893617260a3cbc93700ecd38b0dc49c598f464c4220f05d20d0ab76ffa95a"
+    },
+    "raw_response": "responses/proof-065.response.json",
+    "retrieved_at": "2026-10-20T00:21:19.314220+00:00",
+    "sha256": "d1b893617260a3cbc93700ecd38b0dc49c598f464c4220f05d20d0ab76ffa95a"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-066",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-10",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-066.response.raw",
+      "sha256": "967e37da9b31a861d0b0d8b468568aca26a8b6be2a1c9ffae102be173d2c6ffa"
+    },
+    "raw_response": "responses/proof-066.response.json",
+    "retrieved_at": "2026-10-20T00:21:20.857907+00:00",
+    "sha256": "967e37da9b31a861d0b0d8b468568aca26a8b6be2a1c9ffae102be173d2c6ffa"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-068",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-09-09",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "RZLV"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-068.response.raw",
+      "sha256": "9cf2bd5bdcdcdaacffcf888eb19cff977aa9945ef646369fc6b63c4d419efc76"
+    },
+    "raw_response": "responses/proof-068.response.json",
+    "retrieved_at": "2026-10-20T00:21:23.330081+00:00",
+    "sha256": "9cf2bd5bdcdcdaacffcf888eb19cff977aa9945ef646369fc6b63c4d419efc76"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-069",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-08",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-069.response.raw",
+      "sha256": "42571aac4a341e56612550cdb7486d59844fe07a25c7f8b59f4257a1a9b1929f"
+    },
+    "raw_response": "responses/proof-069.response.json",
+    "retrieved_at": "2026-10-20T00:21:25.308269+00:00",
+    "sha256": "42571aac4a341e56612550cdb7486d59844fe07a25c7f8b59f4257a1a9b1929f"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-070",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-05-30",
+      "execution_date.lte": "2026-09-18",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "TGB"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-070.response.raw",
+      "sha256": "fa27d6a19075389cf74ac7916a9fd26d02071085fecf28650dc41449b08bcec4"
+    },
+    "raw_response": "responses/proof-070.response.json",
+    "retrieved_at": "2026-10-20T00:21:27.949590+00:00",
+    "sha256": "fa27d6a19075389cf74ac7916a9fd26d02071085fecf28650dc41449b08bcec4"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-071",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-09-13",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "AGH"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-071.response.raw",
+      "sha256": "e4e47f32d3f18cb78eeaf3593327ac5eab15a348940832d44d6a6549477831f7"
+    },
+    "raw_response": "responses/proof-071.response.json",
+    "retrieved_at": "2026-10-20T00:22:20.598866+00:00",
+    "sha256": "e4e47f32d3f18cb78eeaf3593327ac5eab15a348940832d44d6a6549477831f7"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/TNL",
+    "http_status": 200,
+    "name": "proof-073",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-01-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-073.response.raw",
+      "sha256": "881fad8eee68b5617130c8dd36a54911367dcaeebf250da2b04a429745ebe432"
+    },
+    "raw_response": "responses/proof-073.response.json",
+    "retrieved_at": "2026-10-20T00:22:23.042111+00:00",
+    "sha256": "881fad8eee68b5617130c8dd36a54911367dcaeebf250da2b04a429745ebe432"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/LEU",
+    "http_status": 200,
+    "name": "proof-074",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-01-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-074.response.raw",
+      "sha256": "f76b46a7b0457fe780a436a84610accc4435ab42ffaf8717663b5335b0f061a0"
+    },
+    "raw_response": "responses/proof-074.response.json",
+    "retrieved_at": "2026-10-20T00:22:24.601209+00:00",
+    "sha256": "f76b46a7b0457fe780a436a84610accc4435ab42ffaf8717663b5335b0f061a0"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/FIBK",
+    "http_status": 200,
+    "name": "proof-075",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-075.response.raw",
+      "sha256": "70d7d89f13ffb19914f58dd74759eed97bc78b12f92632c7aa52bdff4042d7d3"
+    },
+    "raw_response": "responses/proof-075.response.json",
+    "retrieved_at": "2026-10-20T00:22:26.643596+00:00",
+    "sha256": "70d7d89f13ffb19914f58dd74759eed97bc78b12f92632c7aa52bdff4042d7d3"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-077",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-19",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "LEU"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-077.response.raw",
+      "sha256": "2587cb9e789a7387f4a4ec12ee61a8312ce758fff67ff56f57a6042f24c16e29"
+    },
+    "raw_response": "responses/proof-077.response.json",
+    "retrieved_at": "2026-10-20T00:22:29.173825+00:00",
+    "sha256": "2587cb9e789a7387f4a4ec12ee61a8312ce758fff67ff56f57a6042f24c16e29"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/AXTI",
+    "http_status": 200,
+    "name": "proof-078",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-078.response.raw",
+      "sha256": "67ee8ecadf1ea829841d7ed7410e248d3a39f00aaabd8a6e8132c75e9f35e181"
+    },
+    "raw_response": "responses/proof-078.response.json",
+    "retrieved_at": "2026-10-20T00:23:21.905585+00:00",
+    "sha256": "67ee8ecadf1ea829841d7ed7410e248d3a39f00aaabd8a6e8132c75e9f35e181"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-079",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-19",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "TNL"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-079.response.raw",
+      "sha256": "9613d9bb890b960ee037052b0b44d5ba365ec038f6d41c266bb782af3617b2c0"
+    },
+    "raw_response": "responses/proof-079.response.json",
+    "retrieved_at": "2026-10-20T00:23:24.262533+00:00",
+    "sha256": "9613d9bb890b960ee037052b0b44d5ba365ec038f6d41c266bb782af3617b2c0"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-081",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-09",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-081.response.raw",
+      "sha256": "11acb9e7c0a88124f3cd2d39829f20980a6e03845909cc22c294f14fdf344283"
+    },
+    "raw_response": "responses/proof-081.response.json",
+    "retrieved_at": "2026-10-20T00:23:26.717462+00:00",
+    "sha256": "11acb9e7c0a88124f3cd2d39829f20980a6e03845909cc22c294f14fdf344283"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/AGH",
+    "http_status": 200,
+    "name": "proof-083",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-03-28"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-083.response.raw",
+      "sha256": "790fe5cfbc55d13f6566ddb3e640b3743277c192a690d46967c726c4e1e87c8d"
+    },
+    "raw_response": "responses/proof-083.response.json",
+    "retrieved_at": "2026-10-20T00:23:29.155434+00:00",
+    "sha256": "790fe5cfbc55d13f6566ddb3e640b3743277c192a690d46967c726c4e1e87c8d"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-084",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-10-01",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-084.response.raw",
+      "sha256": "434b4b8b5cc262ef34306acc8cd40807fa8a8c91e7f9ed32b649e072f68c1c53"
+    },
+    "raw_response": "responses/proof-084.response.json",
+    "retrieved_at": "2026-10-20T00:23:30.399670+00:00",
+    "sha256": "434b4b8b5cc262ef34306acc8cd40807fa8a8c91e7f9ed32b649e072f68c1c53"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-085",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-09-19",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "WBUY"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-085.response.raw",
+      "sha256": "351c7ec5bcf9d2935d9a36da6b6945a88fb347c3d36ad7275befb94bf1fe50f6"
+    },
+    "raw_response": "responses/proof-085.response.json",
+    "retrieved_at": "2026-10-20T00:24:23.254343+00:00",
+    "sha256": "351c7ec5bcf9d2935d9a36da6b6945a88fb347c3d36ad7275befb94bf1fe50f6"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/OMER",
+    "http_status": 200,
+    "name": "proof-086",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-086.response.raw",
+      "sha256": "8e3066f87d01c8e81b82e4bb356de1af7176ef95b881505d3b69a7b041976086"
+    },
+    "raw_response": "responses/proof-086.response.json",
+    "retrieved_at": "2026-10-20T00:24:25.537736+00:00",
+    "sha256": "8e3066f87d01c8e81b82e4bb356de1af7176ef95b881505d3b69a7b041976086"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/ERII",
+    "http_status": 200,
+    "name": "proof-087",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-01-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-087.response.raw",
+      "sha256": "bfe444ed484bbdcb4fc375b3680bd14a86fbe10f3e2b121361b33c5f7eb3dcbe"
+    },
+    "raw_response": "responses/proof-087.response.json",
+    "retrieved_at": "2026-10-20T00:24:27.980779+00:00",
+    "sha256": "bfe444ed484bbdcb4fc375b3680bd14a86fbe10f3e2b121361b33c5f7eb3dcbe"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/AGH",
+    "http_status": 200,
+    "name": "proof-088",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-088.response.raw",
+      "sha256": "e51e291fafed35371d2cdb3d9aec9e3c2d9c31d7b18574c6863e8b0709066d19"
+    },
+    "raw_response": "responses/proof-088.response.json",
+    "retrieved_at": "2026-10-20T00:24:30.406951+00:00",
+    "sha256": "e51e291fafed35371d2cdb3d9aec9e3c2d9c31d7b18574c6863e8b0709066d19"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-089",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-23",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-089.response.raw",
+      "sha256": "6c91157f90a3695560481af2c76891bb493ea6482efa50b5a066ceb3203d20e2"
+    },
+    "raw_response": "responses/proof-089.response.json",
+    "retrieved_at": "2026-10-20T00:24:31.569343+00:00",
+    "sha256": "6c91157f90a3695560481af2c76891bb493ea6482efa50b5a066ceb3203d20e2"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-090",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-01-31",
+      "execution_date.lte": "2026-09-22",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "HITI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-090.response.raw",
+      "sha256": "beba7b31991c4cc17c78a0eb63ba97fe0f0cf419335b2181a0d1e461f4d604e3"
+    },
+    "raw_response": "responses/proof-090.response.json",
+    "retrieved_at": "2026-10-20T00:25:24.525078+00:00",
+    "sha256": "beba7b31991c4cc17c78a0eb63ba97fe0f0cf419335b2181a0d1e461f4d604e3"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "proof-091",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-05-30",
+      "execution_date.lte": "2026-08-17",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "RZLV"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-091.response.raw",
+      "sha256": "5072a930ef757d7a30d6ff6f89c6ea46202745bb4e334c6e7e1d5f787c672583"
+    },
+    "raw_response": "responses/proof-091.response.json",
+    "retrieved_at": "2026-10-20T00:25:26.873439+00:00",
+    "sha256": "5072a930ef757d7a30d6ff6f89c6ea46202745bb4e334c6e7e1d5f787c672583"
+  },
+  {
+    "endpoint": "https://api.massive.com/v2/aggs/ticker/FTI/range/1/day/2024-04-25/2025-05-29",
+    "http_status": 200,
+    "name": "proof-092",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "adjusted": "true",
+      "limit": "50000",
+      "sort": "asc"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-092.response.raw",
+      "sha256": "f882386335c8b333d0b858c8c737fbd2a41202b407e3488ce985499fac291004"
+    },
+    "raw_response": "responses/proof-092.response.json",
+    "retrieved_at": "2026-10-20T00:25:29.631019+00:00",
+    "sha256": "f882386335c8b333d0b858c8c737fbd2a41202b407e3488ce985499fac291004"
+  }
+]

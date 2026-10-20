@@ -1,0 +1,81 @@
+{
+  "automatic_retries": 0,
+  "redirects_followed": 0,
+  "requests": [
+    {
+      "bytes": 239613,
+      "headers_omitted": [],
+      "http_status": 200,
+      "method": "GET",
+      "name": "proof-011",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-011.response.raw",
+      "raw_sha256": "d1e4fe7222379a0aa3fa2286e0582a953ce75320886890b937c7e759aa1c57b3",
+      "response_headers": {
+        "Accept-Ranges": "bytes",
+        "Connection": "Transfer-Encoding",
+        "Content-Encoding": "gzip",
+        "Content-Type": "text/html",
+        "Date": "Tue, 20 Oct 2026 00:11:06 GMT",
+        "Last-Modified": "Wed, 21 Feb 2024 14:59:48 GMT",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "x-amz-id-2": "39iYBlRWKsvynKJaEecrS2nQPBN81DHpZB3iXF3G52GDrXOP7nxUfCVtXpvZ0xtVkNpRpUnA8Yc=",
+        "x-amz-meta-mode": "33188",
+        "x-amz-replication-status": "COMPLETED",
+        "x-amz-request-id": "4116H9XE9NAN2FCM",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-version-id": "zpph_VOdkybz5LdueunT_lOnUwt5RMyc"
+      },
+      "response_url": "https://www.sec.gov/Archives/edgar/data/1361658/000136165824000007/tnl-20231231.htm",
+      "retrieved_at_utc": "2026-10-20T00:11:06.888507+00:00",
+      "started_at_utc": "2026-10-20T00:11:05.881503+00:00",
+      "status": "http_response_retained",
+      "url": "https://www.sec.gov/Archives/edgar/data/1361658/000136165824000007/tnl-20231231.htm"
+    }
+  ],
+  "plan_hash": "7899aae9a3ea6cbd0301ce14794bf8d1a2563d88e20cfd3c240056b24711321b",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2024-02-21T14:58:37+00:00",
+        "accession_number": "0001361658-24-000007",
+        "case_id": "cik_0001361658:20250131",
+        "form": "10-K",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v73/cache/data/sec_edgar/filing_documents/abdb01c0f15090ccb85ac2e2.json",
+            "sha256": "e054499360bfd1732307f2a4f4dd6ecdad7f20995d6e0d885cb6b270276c9a1e"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v114/cache/data/sec_edgar/filing_documents/abdb01c0f15090ccb85ac2e2.json",
+            "sha256": "834433a78a2e8580ee03d7f59d2b1c2e03a856850420234f17f90fa693ed2dd1"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1361658/000136165824000007/tnl-20231231.htm",
+    "filing": {
+      "accepted_at": "2024-02-21T14:58:37+00:00",
+      "accession_number": "0001361658-24-000007",
+      "cik": "0001361658",
+      "filing_date": "2024-02-21",
+      "form": "10-K",
+      "primary_document": "tnl-20231231.htm",
+      "report_date": "2023-12-31",
+      "retrieved_at": "2026-10-20T00:05:54.466180+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1361658/000136165824000007/tnl-20231231.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-011",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "capture_scope": "Exact stable single request snapshot while wholecollection may still evolve; no terminalbatch assertion."
+}

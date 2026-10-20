@@ -1,0 +1,71 @@
+{
+  "observed_at_utc": "2026-10-20T00:26:29.337318+00:00",
+  "collector_head": "8a01eb965ba17cbf0e51aed53d5080b14d766585",
+  "exit": {
+    "command": [
+      "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "runs/diagnostics/frozen40_source_proofs_20261020_v1/collector.py",
+      "--execute",
+      "--plan",
+      "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/request-plan.json",
+      "--expected-plan-sha",
+      "0c96abd8ae201b36eb50e2cb22974ada8975284be9dc9c4cc4ae5b2496a5b05f"
+    ],
+    "cwd": "/Users/l/Project/Recommandation",
+    "PYTHONPATH": "src:scripts",
+    "checkpoint": "8a01eb965ba17cbf0e51aed53d5080b14d766585",
+    "started_at": "2026-10-20T00:09:01.600597+00:00",
+    "exit_code": 0,
+    "finished_at": "2026-10-20T00:25:32.161451+00:00"
+  },
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/request-plan.json",
+    "sha256": "0c96abd8ae201b36eb50e2cb22974ada8975284be9dc9c4cc4ae5b2496a5b05f"
+  },
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/results.json",
+    "sha256": "a873794947eb6907d14c74ea7db4127459ec4968b6cb8397eb67e25fc4b77b51"
+  },
+  "terminal_bindings": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/collection-terminal-bindings.json",
+    "sha256": "ab775332a2e551f0f28d04bf21479c9e8e313384e7ade4c100e7bdccdbda9b3a"
+  },
+  "terminal_files": 277,
+  "external_source_bindings": 533,
+  "code_bindings": 102,
+  "all_frozen_bindings_current_equal": true,
+  "terminal": true,
+  "status": "completed",
+  "counts": {
+    "GET_attempts": 95,
+    "network_open_calls": 95,
+    "HTTP_responses_retained": 95,
+    "attempt_reservations": 95,
+    "automatic_retries": 0,
+    "redirects_followed": 0
+  },
+  "disposition_counts": {
+    "received": 94,
+    "received_unsupported_nonempty_split_ledger": 1
+  },
+  "source_counts": {
+    "massive": 83,
+    "sec_edgar": 12
+  },
+  "kind_counts": {
+    "all_type_splits": 53,
+    "historical_issuer": 29,
+    "exact_static_primary_body": 10,
+    "additional_daily_origin": 1,
+    "additional_exhibit": 2
+  },
+  "original_unique_requests": 92,
+  "original_associations": 1928,
+  "source_admission": false,
+  "global_appends": 0,
+  "models": 0,
+  "labels_loaded": false,
+  "fullprepare": false,
+  "cost_unknown": true,
+  "never_reentered": true
+}

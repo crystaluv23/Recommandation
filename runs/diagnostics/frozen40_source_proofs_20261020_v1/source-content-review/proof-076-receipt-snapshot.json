@@ -1,0 +1,86 @@
+{
+  "automatic_retries": 0,
+  "redirects_followed": 0,
+  "requests": [
+    {
+      "bytes": 110133,
+      "headers_omitted": [],
+      "http_status": 200,
+      "method": "GET",
+      "name": "proof-076",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-076.response.raw",
+      "raw_sha256": "64c71a24ea674cb5257400a97a0d47e2274907682c44bb5af50eb4b3030019c6",
+      "response_headers": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-cache, no-store, no-transform, proxy-revalidate",
+        "Connection": "Transfer-Encoding",
+        "Content-Encoding": "gzip",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        "Content-Type": "text/html",
+        "Date": "Tue, 20 Oct 2026 00:22:27 GMT",
+        "Last-Modified": "Thu, 14 Aug 2025 20:17:24 GMT",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+        "Pragma": "no-cache",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "x-amz-id-2": "SZ89/Q1eStwD4sgsvTktRlmLfy2QZj0bMw5VUtK0+z9s1bxStsClNmehmG9ziJBQo+I/rkzB8ew=",
+        "x-amz-meta-mode": "33188",
+        "x-amz-replication-status": "COMPLETED",
+        "x-amz-request-id": "432T03TXPYZ5N3TY",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-version-id": "oEDQ21_eSR8v5R3d9.Leho7HmMHVbBaQ"
+      },
+      "response_url": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925026933/omer20250630_10q.htm",
+      "retrieved_at_utc": "2026-10-20T00:22:27.918101+00:00",
+      "started_at_utc": "2026-10-20T00:22:26.746195+00:00",
+      "status": "http_response_retained",
+      "url": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925026933/omer20250630_10q.htm"
+    }
+  ],
+  "plan_hash": "7899aae9a3ea6cbd0301ce14794bf8d1a2563d88e20cfd3c240056b24711321b",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2025-08-14T20:09:35+00:00",
+        "accession_number": "0001437749-25-026933",
+        "case_id": "cik_0001285819:20250930",
+        "form": "10-Q",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925026933/omer20250630_10q.htm",
+    "filing": {
+      "accepted_at": "2025-08-14T20:09:35+00:00",
+      "accession_number": "0001437749-25-026933",
+      "cik": "0001285819",
+      "filing_date": "2025-08-14",
+      "form": "10-Q",
+      "primary_document": "omer20250630_10q.htm",
+      "report_date": "2025-06-30",
+      "retrieved_at": "2026-10-20T00:05:54.675582+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925026933/omer20250630_10q.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-076",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "capture_scope": "Exact stable single request snapshot while wholecollection may still evolve; no terminalbatch assertion."
+}

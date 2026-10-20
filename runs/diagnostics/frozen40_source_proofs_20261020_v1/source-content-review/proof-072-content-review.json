@@ -1,0 +1,42 @@
+{
+  "receipt_name": "proof-072",
+  "issuer": "Energy Recovery, Inc.",
+  "period": "2023-12-31",
+  "content_scope": "complete_annual_operating_report",
+  "qualified_content_scope_only": true,
+  "reason": "Actual energy-efficiency/pressure-exchanger business, Water and Emerging Technologies segments, Water-market risks, annual MD&A/financial notes and February21 2024 signatures inspected. Comparative selected dollar tables are in thousands, with percentages separate.",
+  "review_read_scope": "selected_sections_partial_facts",
+  "manual_windows": [
+    {
+      "visible_start": 17628,
+      "text": "Business Overview Energy Recovery, Inc. (the \u201cCompany\u201d, \u201cEnergy Recovery\u201d, \u201cwe\u201d, \u201cour\u201d and \u201cus\u201d) is a trusted global leader in energy efficiency technology. We design and manufacture reliable, high-performanc e solutions that provide cost savings through improved energy efficiency in commercial and industrial processes, with applications across several industries . With a strong foundation in the desalination industry, we have delivered transformative solutions that help our customers optimize their operations and reduce their energy consumption for more than 30 years. We believe that our customers do not have to sacrifice quality and cost savings for sustainability; and we are committed to developing solutions that drive long-term value from a technical, financial, and environmental perspective. We have been incorporated in the state of "
+    },
+    {
+      "visible_start": 22980,
+      "text": "Pressure Exchanger Technology Our pressure exchanger technology platform is at the heart of many of our solutions. It is designed to efficiently capture and transfer pressure energy, making commercial and industrial processes more efficient and environmentally sustainable, thereby lowering costs, saving energy, and minimizing emissions. This versatile technology is applicable to a wide range of industries that utilize pressurized fluids, including liquids and gas, and is ideal for a wide range of pressure ratings. Our pressure exchanger technology acts like a fluid piston, efficiently transferring energy between high- and low-pressure liquid and/ or gas through continuously rotating ducts. Key to the operation of a pressure exchanger is the micron-level clearances between the rotor and the pressure exchanger\u2019s stationary components, inclu"
+    },
+    {
+      "visible_start": 67964,
+      "text": "Water Segment Our Water segment revenues largely depend on the construction of new large-scale desalination plants and the retrofit of existing desalination plants, and as a result, our operating results have historically experienced, and may continue to experience, significant variability due to volatility in capital spending, availability of project financing, project timing, execution and other factors affecting the broader water desalination industry. We currently derive the majority of our Water segment revenues from sales of energy recovery products and services used in newly constructed, large-scale desalination plants and the retrofit of existing desalination plants, particularly in dry or drought-ridden regions of the world. The demand for our products used in the Water segment may decrease if the construction of these large-scal"
+    },
+    {
+      "visible_start": 143309,
+      "text": "Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations The following Management Discussion and Analysis of Financial Condition and Results of Operations is intended to help the reader understand our results of operations and financial condition. It should be read in conjunction with the Consolidated Financial Statements and related Notes included in Part II, Item 8, \u201cFinancial Statements and Supplementary Data,\u201d in this Annual Report on Form 10-K. Overview Our reportable operating segments consist of the Water and Emerging Technologies segments. These segments are based on the industries in which the technology solutions are sold, the type of energy recovery device or other technology sold and the related solution and service or, in the case of emerging technologies, where revenues from new and/or potential "
+    },
+    {
+      "visible_start": 143816,
+      "text": "operating segments consist of the Water and Emerging Technologies segments. These segments are based on the industries in which the technology solutions are sold, the type of energy recovery device or other technology sold and the related solution and service or, in the case of emerging technologies, where revenues from new and/or potential devices utilizing our pressure exchanger technology can be brought to market. Other factors for determining the reportable operating segments include the manner in which management evaluates the performance of the Company combined with the nature of the individual business activities. In addition, our corporate operating expenses include expenditures in support of the water and emerging technologies segments, as well as R&D expenditures applicable to potential future industry verticals, or enabling tec"
+    },
+    {
+      "visible_start": 150594,
+      "text": "In thousands, except percentages) Megaproject $ 83,665 65% $ 81,888 65% $ 1,777 2% Original equipment manufacturer 25,995 20% 28,858 23% (2,863) (10%) Aftermarket 18,689 15% 14,845 12% 3,844 26% Total revenue $ 128,349 100% $ 125,591 100% $ 2,758 2% Table of Contents Energy Recovery, Inc. | 2023 Form 10-K Annual Report | 31 Revenue Attributable to Primary Geographical Markets by Segments. Years Ended December 31, 2023 2022 Water Emerging Technologies Total Water Emerging Technologies Total Middle East and Africa $ 76,437 $ 177 $ 76,614 $ 86,227 $ 94 $ 86,321 Asia 30,500 \u2014 30,500 24,777 \u2014 24,777 Americas 15,048 153 15,201 8,544 34 8,578 Europe 5,740 294 6,034 5,880 35 5,915 Total revenue $ 127,725 $ 624 $ 128,349 $ 125,428 $ 163 $ 125,591 The Megaproject (\u201c MPD \u201d) channel has been the main driver of our long-term growth as revenue from thi"
+    }
+  ],
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-072.response.raw",
+    "sha256": "ce585ff39b37659c43cdc939de60ee863830dfe91e9a6a5e07a693c24181c2f3"
+  },
+  "decoded_content_sha256": "f1181c85c9f0b824933bc9e7dd1e9660013af3974364be6433a9531d26110148",
+  "source_admission": false,
+  "candidate_pending_native_binding": true
+}

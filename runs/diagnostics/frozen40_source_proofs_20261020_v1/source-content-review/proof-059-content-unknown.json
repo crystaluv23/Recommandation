@@ -1,0 +1,94 @@
+{
+  "receipt_name": "proof-059",
+  "issuer": "Taseko Mines Limited",
+  "period": "2024-12-31",
+  "form": "40-F",
+  "verdict": "unknown_operating_content_scope",
+  "qualified": false,
+  "reason": "Retained primary is a wrapper with annual documents incorporated by reference; inspected cover/document table/exhibit index do not contain substantive annual operating chapters.",
+  "review_read_scope": "selected_sections_partial_facts",
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-059-receipt-snapshot.json",
+    "sha256": "2f82e6c4a8d7c3fcff3e8127271cf42ea47f0839d71960e857f567be95ba39a5"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+    "sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0"
+  },
+  "literal_attachments": [
+    {
+      "href": "exhibit99-1.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+      "row_cells": [
+        "Annual Information Form of the Company for the year ended December 31, 2024 (the \"AIF\")",
+        "99.1"
+      ],
+      "observed_exhibit_code": "99.1",
+      "role_from_literal_description": "AIF",
+      "native_code_proved": false,
+      "not_retrieved_or_reviewed": true
+    },
+    {
+      "href": "exhibit99-2.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-2.htm",
+      "row_cells": [
+        "Audited consolidated financial statements of the Company for the years ended December 31, 2024 and 2023, including the reports of independent registered public accounting firm with respect thereto (the \"Audited Financial Statements\")",
+        "99.2"
+      ],
+      "observed_exhibit_code": "99.2",
+      "role_from_literal_description": "audited_financial_statements",
+      "native_code_proved": false,
+      "not_retrieved_or_reviewed": true
+    },
+    {
+      "href": "exhibit99-3.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+      "row_cells": [
+        "Management's Discussion and Analysis of the Company for the year ended December 31, 2024 (the \"MD&A\")",
+        "99.3"
+      ],
+      "observed_exhibit_code": "99.3",
+      "role_from_literal_description": "MDA",
+      "native_code_proved": false,
+      "not_retrieved_or_reviewed": true
+    },
+    {
+      "href": "exhibit99-1.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+      "row_cells": [
+        "99.1(1)",
+        "Annual Information Form of the Company for the year ended December 31, 2024"
+      ],
+      "observed_exhibit_code": "99.1",
+      "role_from_literal_description": "AIF",
+      "native_code_proved": false,
+      "not_retrieved_or_reviewed": true
+    },
+    {
+      "href": "exhibit99-2.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-2.htm",
+      "row_cells": [
+        "99.2(1)",
+        "Audited consolidated balance sheets as of December 31, 2024 and 2023 and the consolidated statements of comprehensive income, changes in equity, and cash flows for the years ended December 31, 2024 and 2023, including the notes thereto and reports of the Company's independent registered public accounting firm thereon and on the effectiveness of the Company's internal control over financial reporting as of December 31, 2024"
+      ],
+      "observed_exhibit_code": "99.2",
+      "role_from_literal_description": "audited_financial_statements",
+      "native_code_proved": false,
+      "not_retrieved_or_reviewed": true
+    },
+    {
+      "href": "exhibit99-3.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+      "row_cells": [
+        "99.3(1)",
+        "Management's discussion and analysis of financial condition and results of operations for the year ended December 31, 2024"
+      ],
+      "observed_exhibit_code": "99.3",
+      "role_from_literal_description": "MDA",
+      "native_code_proved": false,
+      "not_retrieved_or_reviewed": true
+    }
+  ],
+  "native_code_limit": "Description-first rows and numbered cells with footnote(1) are not accepted by current strict index-code parser; preserve literal links separately from native code qualification.",
+  "new_admissions": 0
+}

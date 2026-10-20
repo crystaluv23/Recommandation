@@ -1,0 +1,94 @@
+{
+  "automatic_retries": 0,
+  "redirects_followed": 0,
+  "requests": [
+    {
+      "bytes": 13125,
+      "headers_omitted": [],
+      "http_status": 200,
+      "method": "GET",
+      "name": "proof-059",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+      "raw_sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0",
+      "response_headers": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-cache, no-store, no-transform, proxy-revalidate",
+        "Connection": "close",
+        "Content-Encoding": "gzip",
+        "Content-Length": "13125",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        "Content-Type": "text/html",
+        "Date": "Tue, 20 Oct 2026 00:19:26 GMT",
+        "Last-Modified": "Fri, 28 Mar 2025 21:08:34 GMT",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+        "Pragma": "no-cache",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Vary": "Accept-Encoding",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "x-amz-id-2": "X76XlMUp1/bVm7UqVSlyCRCgEiEBmI4h2hki9vDeyv0lAjwTZSRoM/nCv0CAG6XgsM0zFvU94OM=",
+        "x-amz-meta-mode": "33188",
+        "x-amz-replication-status": "COMPLETED",
+        "x-amz-request-id": "KR0BXB8W9X8277DY",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-version-id": "X92sV1aTi4LXWIKsPyk928qHXOEkCpSP"
+      },
+      "response_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm",
+      "retrieved_at_utc": "2026-10-20T00:19:26.360481+00:00",
+      "started_at_utc": "2026-10-20T00:19:25.472097+00:00",
+      "status": "http_response_retained",
+      "url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm"
+    }
+  ],
+  "plan_hash": "7899aae9a3ea6cbd0301ce14794bf8d1a2563d88e20cfd3c240056b24711321b",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2025-03-28T21:08:05+00:00",
+        "accession_number": "0001062993-25-006514",
+        "case_id": "cik_0000878518:20250930",
+        "form": "40-F",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v57/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "0acb531b537bf64aa88bc547acd29c5bab7d8e67517f2f0cb6280910124a0921"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v59/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "fd2dda6fbaebbd89174b5817223395de813567a8dd87e06e0d4eb225d1bbacd1"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v92/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "201e9098c7f68a3b03a6d45c8cd3822881f6dab1f03f83cb25e6f087a875c622"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v112/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "9b9f1829946ee37cd8cb257b223545c461c8d76bdaaf9a2f616024299c26cbd6"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm",
+    "filing": {
+      "accepted_at": "2025-03-28T21:08:05+00:00",
+      "accession_number": "0001062993-25-006514",
+      "cik": "0000878518",
+      "filing_date": "2025-03-28",
+      "form": "40-F",
+      "primary_document": "form40f.htm",
+      "report_date": "2024-12-31",
+      "retrieved_at": "2026-10-20T00:05:54.625266+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-059",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "capture_scope": "Exact stable single request snapshot while wholecollection may still evolve; no terminalbatch assertion."
+}

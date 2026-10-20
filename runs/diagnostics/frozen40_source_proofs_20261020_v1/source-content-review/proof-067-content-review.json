@@ -1,0 +1,42 @@
+{
+  "receipt_name": "proof-067",
+  "issuer": "Rezolve AI plc",
+  "period": "2024-12-31",
+  "content_scope": "complete_annual_operating_report",
+  "qualified_content_scope_only": true,
+  "reason": "Actual Item4 company history/business/product discussion including Brain Commerce and merchant platform, Item5 operating/financial review, risks, audited statements and April23 signatures inspected. The document separately includes GroupBy combined statements: do not merge that entity or its periods/units with Rezolve.",
+  "review_read_scope": "selected_sections_partial_facts",
+  "manual_windows": [
+    {
+      "visible_start": 139105,
+      "text": "axes. Item 4 . Information on the Company The purpose of this standard is to provide information about the company\u2019s business operations, the products it makes or the services it provides, and the factors that affect the business. The standard also is intended to provide information regarding the adequacy and suitability of the company\u2019s properties, plants and equipment, as well as its plans for future increases or decreases in such capacity. A. His tory and development of the company. Rezolve was incorporated in England and Wales as a private limited company on January 5, 2023 under the name Rezolve Group Limited with company number 14573691 and changed its name on June 5, 2023 to Rezolve AI Limited. Rezolve Limited was incorporated in England and Wales as a private limited company on September 11, 2015 under the name Soul Seeker Limited"
+    },
+    {
+      "visible_start": 143459,
+      "text": "Brain Commerce, powered by our proprietary Large Language Model (LLM) brainpowa, transforms the online shopping experience. By surpassing traditional site search and product discovery tools, Brain Commerce improves conversion rates, increases average order value (AOV), and reduces cart abandonment. Its Conversational Commerce capabilities support both speech and text inputs, with instant translation across 96 languages, making it a truly global solution. Comprehensive AI Solutions Rezolve AI\u2019s suite of solutions includes: \u2022 AI-Powered Site Search & Discovery: Revolutionizing product discovery with advanced AI algorithms trained on vast datasets. Leveraging Google Vertex AI Search for Commerce, we deliver personalized, high-quality search experiences at scale, using shopping history and data insights to boost conversions while reducing IT "
+    },
+    {
+      "visible_start": 160274,
+      "text": "Our platform provides the following key benefits to merchants: 1. eCommerce-Specific AI Platform and Suite\u2014 Brain Commerce allows customers, either online or instore, to ask, via voice or text and in any of 96 languages, any question of a merchant\u2019s product catalogue and customer support knowledge base using conversational prompts and immediately be recommended the most appropriate products and answers. They will also be able to see product comparisons, reviews, and pricing information all in one place 2. Instant Checkout. Rezolve\u2019s Brain Checkout allows websites to convert passive browsers into actors or buyers with one click directly from the product detail pages on merchant websites. Our Brain Checkout offering includes Buy Now, our commerce solution, and Act Now, our engagement solution. This capability bypasses traditional web checko"
+    },
+    {
+      "visible_start": 194870,
+      "text": " 39 Item 5 . Operating and Financial Review and Prospects You should read the following discussion of our operating and financial review and prospects together with our consolidated financial statements included in Item 18 in this annual report. The following discussion and analysis contain forward-looking statements that involve risks, uncertainties and assumptions. Our actual results may differ materially from those anticipated in these forward-looking statements as a result of factors, including, but not limited to, those under Item 3. D \u201cRisk Factors\u201d and elsewhere in this annual report. In this section, the \"Company\", \u201cwe,\u201d \u201cus,\u201d \u201cour\u201d and \u201cRezolve\u201d refer to Rezolve Limited and its subsidiaries prior to the consummation of the Pre-Closing Demerger and to Rezolve AI plc (f.k.a. Rezolve AI Limited) and its subsidiaries following the co"
+    },
+    {
+      "visible_start": 206263,
+      "text": "consolidated statements of operations for the years ended December 31, 2024 and December 31, 2023: Year ended December 31, 2024 2023 Revenue $ 187,788 $ 145,051 Operating expenses Cost of revenue 34,053 34,791 Sales and marketing expenses 6,285,446 6,731,254 General and administrative expenses 131,430,412 17,986,528 Other operating expenses 255,412 1,156,316 Depreciation and amortization expenses 225,251 242,436 Total operating expenses $ 138,230,574 $ 26,151,325 Operating loss (138,042,786 ) (26,006,274 ) Other (expense)/income Interest expense (10,557,714 ) (4,791,782 ) Gain/(loss) on derivatives 19,001,681 \u2014 Gain/(loss) on extinguishment (44,332,819 ) \u2014 Other non-operating income (expense), net 1,329,781 125,366 Total other expenses, net $ (34,559,071 ) $ (4,666,416 ) Loss before taxes (172,601,857 ) (30,672,690 ) Income tax expense (4"
+    },
+    {
+      "visible_start": 399800,
+      "text": "tements of Cash Flows for the Years ended December 31, 2024 and December 31, 2023 F- 7 Notes to the Consolidated Financial Statements F- 8 GROUPBY INC. Combined Consolidated Financial Statements As of and for the years ended December 31, 2024 and 2023 Independent Auditor's Report F- 42 Combined Consolidated Statement of Financial Position F- 44 Combined Consolidated Statements of Loss and Comprehensive Loss F- 45 Combined Consolidated Statements of Changes in Stockholders\u2019 Deficit F- 46 Combined Consolidated Statements of Cash Flows F- 47 Notes to Combined Consolidated Financial Statements F- 48 F- 1 REPORT OF INDEPENDENT R EGISTERED PUBLIC ACCOUNTING FIRM To the Board of Directors and Stockholders of Rezolve AI plc and Subsidiaries Opinion on the Financial Statements We have audited the accompanying consolidated balance sheets of Rezolve"
+    }
+  ],
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-067.response.raw",
+    "sha256": "5e90e38ca4da60ae190223a3dba4f2462d0cc2759c1a16148216dff1faa75fff"
+  },
+  "decoded_content_sha256": "010fc7578d60c9b3f6d4ad47f3fefaa3cf5e98a9235d2907697e4fa37368d624",
+  "source_admission": false,
+  "candidate_pending_native_binding": true
+}

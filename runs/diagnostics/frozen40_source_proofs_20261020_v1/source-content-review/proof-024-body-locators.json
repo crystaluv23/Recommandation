@@ -1,0 +1,183 @@
+{
+  "name": "proof-024",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2025-08-06T20:23:50+00:00",
+        "accession_number": "0001438133-25-000157",
+        "case_id": "cik_0001438133:20250930",
+        "form": "10-Q",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/5d06634a0bdf604115251530.json",
+            "sha256": "d597e97babd52606468c0dbfe4dad8debcbd3e288d52932e750e657295b1b4b5"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1438133/000143813325000157/tndm-20250630.htm",
+    "filing": {
+      "accepted_at": "2025-08-06T20:23:50+00:00",
+      "accession_number": "0001438133-25-000157",
+      "cik": "0001438133",
+      "filing_date": "2025-08-06",
+      "form": "10-Q",
+      "primary_document": "tndm-20250630.htm",
+      "report_date": "2025-06-30",
+      "retrieved_at": "2026-10-20T00:05:54.512301+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813325000157/tndm-20250630.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-024",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-024-receipt-snapshot.json",
+    "sha256": "53d1181dae8c86ee7619331e59cfc7f197c39fac6812fe94ce4a56e00f9a7cf0"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-024.response.raw",
+    "sha256": "2a57f168a238907e6f058e187850308cbf77d819ff937a907edf5b9d404209f7"
+  },
+  "decoded_body_sha256": "d5b42a6a14a4da3824c54b84308722cfc3e4d6e2edc5a693e256da48db6ed34b",
+  "decoded_characters": 1534551,
+  "visible_characters": 308078,
+  "visible_text_sha256": "8088fbf43516830a9c209349034bc404c4645579c03ad11414ca15e96abf4a9e",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 128809,
+    "raw_decoded_end": 140050,
+    "text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 ____________________________________________________________________________________________ FORM 10-Q _____________________________________________________________________________________________ \u2612 QUARTERLY REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the Quarterly Period Ended June 30, 2025 OR \u2610 TRANSITION REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the Transition Period from to Commission File Number 001-36189 _____________________________________________________________________________________________ Tandem Diabetes Care, Inc. (Exact name of registrant as specified in its charter) _____________________________________________________________________________________________ Delaware 20-4327508 (State or other jurisdiction of incorporation or organization) (I.R.S. Employer Identification No.) 12400 High Bluff Drive 92130 San Diego, California (Zip Code) (Address of principal executive offices) ( 858 ) 366-6900 (Registrant\u2019s telephone number, including area code) Securities registered pursuant to Section 12(b) of the Act: Title of Each Class Trading Symbol(s) Name of Exchange on Which Registered Common Stock, par value $0.001 per sh"
+  },
+  "tail": {
+    "visible_start": 307228,
+    "visible_end": 308078,
+    "raw_decoded_start": 1528802,
+    "raw_decoded_end": 1534405,
+    "text": " of that section. Such certification will not be deemed to be incorporated by reference into any filing under the Securities Act of 1933 or the Securities Exchange Act of 1934, except to the extent that the registrant specifically incorporates it by reference. 73 SIGNATURES Pursuant to the requirements of the Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned thereunto duly authorized. Tandem Diabetes Care, Inc. Dated: August 6, 2025 By: /s/ John F. Sheridan John F. Sheridan President and Chief Executive Officer (on behalf of the registrant and as the registrant\u2019s Principal Executive Officer) Dated: August 6, 2025 By: /s/ Leigh A. Vosseller Leigh A. Vosseller Executive Vice President, Chief Financial Officer and Treasurer (Principal Financial and Accounting Officer) 74"
+  },
+  "closing_html": true,
+  "section_locators": {
+    "business": [],
+    "mda": [
+      {
+        "visible_start": 3659,
+        "visible_end": 4509,
+        "raw_decoded_start": 155673,
+        "raw_decoded_end": 176951,
+        "text": "Item 2 Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 24 Item 3 Quantitative and Qualitative Disclosures About Market Risk 35 Item 4 Controls and Procedures 35 Part II Other Information 36 Item 1 Legal Proceedings 36 Item 1A Risk Factors 36 Item 2 Unregistered Sales of Equity Securities and Use of Proceeds 72 Item 5 Other Information 72 Item 6 Exhibits 73 PART I. FINANCIAL INFORMATION Item 1. Financial Statements. TANDEM DIABETES CARE, INC. CONDENSED CONSOLIDATED BALANCE SHEETS (In thousands, except par value) June 30, December 31, 2025 2024 Assets (Unaudited) (Note 1) Current assets: Cash and cash equivalents $ 64,112 $ 69,234 Short-term investments 251,249 369,095 Accounts receivable, net 128,443 114,585 Inventories 142,573 149,612 Prepaid and other current assets 28,440 21,965 Total current assets"
+      },
+      {
+        "visible_start": 79253,
+        "visible_end": 80103,
+        "raw_decoded_start": 1031860,
+        "raw_decoded_end": 1034459,
+        "text": "Item 2. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations. You should read the following discussion and analysis together with our financial statements and related notes in Part I, Item 1 of this Quarterly Report on Form 10-Q for the quarter ended June 30, 2025 (Quarterly Report). This Quarterly Report contains forward-looking statements within the meaning of the federal securities laws, which statements are subject to considerable risks and uncertainties. These forward-looking statements are intended to qualify for the safe harbor from liability established by the Private Securities Litigation Reform Act of 1995. All statements included or incorporated by reference in this Quarterly Report, other than statements of historical fact, are forward-looking statements. You can identify forward-looking statem"
+      },
+      {
+        "visible_start": 120336,
+        "visible_end": 121186,
+        "raw_decoded_start": 1205908,
+        "raw_decoded_end": 1207843,
+        "text": "Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations \u2013 Critical Accounting Policies Involving Management Estimates and Assumptions,\u201d included in our Annual Report on Form 10-K for the year ended December 31, 2024. 34 Item 3. Quantitative and Qualitative Disclosures about Market Risk. There were no material changes to our quantitative and qualitative disclosures about market risk during the six months ended June 30, 2025 contained in Part II, Item 7A of our Annual Report on Form 10-K for the fiscal year ended December 31, 2024, other than our entry into foreign currency forward contracts to mitigate the impact of foreign currency exchange rate fluctuations on the portions of our revenue and operating expenses that are denominated in currencies other than the U.S. dollar. See Note 9 in Part I, Item 1 of this"
+      },
+      {
+        "visible_start": 131415,
+        "visible_end": 132265,
+        "raw_decoded_start": 1230759,
+        "raw_decoded_end": 1233758,
+        "text": "Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations of this Quarterly Report. The risk factors set forth below marked with an asterisk (*) next to the title did not appear as separate risk factors in, or contain changes to the similarly titled risk factor included in, Part I, Item 1A of our Annual Report on Form 10-K for the year ended December 31, 2024. Risks Related to Our Business and Our Industry We have incurred significant operating losses since inception and cannot assure you that we will achieve sustained profitability.* Since our inception in January 2006, we have incurred a significant net loss. As of June 30, 2025, we had an accumulated deficit of $1.2 billion. To date, we have funded our operations primarily through cash collected from product sales, private and public offerings of our equity "
+      }
+    ],
+    "risks": [
+      {
+        "visible_start": 3915,
+        "visible_end": 4765,
+        "raw_decoded_start": 160831,
+        "raw_decoded_end": 186758,
+        "text": "Item 1A Risk Factors 36 Item 2 Unregistered Sales of Equity Securities and Use of Proceeds 72 Item 5 Other Information 72 Item 6 Exhibits 73 PART I. FINANCIAL INFORMATION Item 1. Financial Statements. TANDEM DIABETES CARE, INC. CONDENSED CONSOLIDATED BALANCE SHEETS (In thousands, except par value) June 30, December 31, 2025 2024 Assets (Unaudited) (Note 1) Current assets: Cash and cash equivalents $ 64,112 $ 69,234 Short-term investments 251,249 369,095 Accounts receivable, net 128,443 114,585 Inventories 142,573 149,612 Prepaid and other current assets 28,440 21,965 Total current assets 614,817 724,491 Property and equipment, net 77,513 78,150 Operating lease right-of-use assets 98,436 85,306 Equity method investments 67,628 74,545 Other long-term assets 17,342 5,166 Total assets $ 875,736 $ 967,658 Liabilities and Stockholders\u2019 Equity C"
+      },
+      {
+        "visible_start": 123669,
+        "visible_end": 124519,
+        "raw_decoded_start": 1212812,
+        "raw_decoded_end": 1214766,
+        "text": "Item 1A. Risk Factors. Below is a summary of material factors that make an investment in our securities speculative or risky. Importantly, this summary does not address all of the risks that we face. Additional discussion of the risks summarized in this risk factor summary, as well as other risks that we face, can be found below immediately after this summary, and should be carefully considered, together with other information in this Quarterly Report and the Annual Report, before making investment decisions regarding our securities. Risks Related to Our Business and Industry \u2022 We have incurred significant operating losses since inception and cannot assure you that we will achieve sustained profitability. \u2022 We currently rely on sales of insulin pump products to generate a significant portion of our revenue, and any factors that negatively"
+      }
+    ],
+    "statements": [
+      {
+        "visible_start": 3120,
+        "visible_end": 3970,
+        "raw_decoded_start": 151264,
+        "raw_decoded_end": 162098,
+        "text": "Condensed Consolidated Balance Sheets at June 30, 2025 (Unaudited) and December 31, 2024 1 Condensed Consolidated Statements of Operations and Comprehensive Loss for the Three and Six Months Ended June 30, 2025 and 2024 (Unaudited) 2 Condensed Consolidated Statements of Stockholders\u2019 Equity for the Three and Six Months Ended June 30, 2025 and 2024 (Unaudited) 3 Condensed Consolidated Statements of Cash Flows for the Six Months Ended June 30, 2025 and 2024 (Unaudited) 5 Notes to Unaudited Condensed Consolidated Financial Statements 6 Item 2 Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 24 Item 3 Quantitative and Qualitative Disclosures About Market Risk 35 Item 4 Controls and Procedures 35 Part II Other Information 36 Item 1 Legal Proceedings 36 Item 1A Risk Factors 36 Item 2 Unregistered Sales of Eq"
+      },
+      {
+        "visible_start": 11641,
+        "visible_end": 12491,
+        "raw_decoded_start": 474437,
+        "raw_decoded_end": 496789,
+        "text": "CONDENSED CONSOLIDATED STATEMENTS OF CASH FLOWS (Unaudited) (In thousands) Six Months Ended June 30, 2025 2024 Operating Activities Net loss $ ( 182,956 ) $ ( 73,529 ) Adjustments to reconcile net loss to net cash provided by (used in) operating activities: Depreciation and amortization expense 8,678 8,151 Amortization of debt issuance costs 970 1,085 Provision for expected credit losses 3,577 3,723 Operating lease and other impairment charges 6,697 2,000 Accretion (amortization) of discount or premium on short-term investments ( 1,780 ) 348 Loss from equity method investments 6,917 \u2014 Stock-based compensation expense 51,130 46,936 Loss on extinguishment of debt \u2014 1,268 Acquired in-process research and development expenses 75,217 \u2014 Other 424 335 Changes in operating assets and liabilities: Accounts receivable, net ( 13,516 ) 2,862 Inventor"
+      },
+      {
+        "visible_start": 18341,
+        "visible_end": 19191,
+        "raw_decoded_start": 554581,
+        "raw_decoded_end": 558066,
+        "text": "condensed consolidated statements of operations, and in accumulated other comprehensive income (loss) in the stockholders\u2019 equity section of the Company\u2019s condensed consolidated balance sheets. Foreign exchange gains or losses resulting from balances denominated in a currency other than the functional currency are recognized in interest income and other, net in the Company\u2019s condensed consolidated statements of operations. 2. Summary of Significant Accounting Policies There have been no material changes to the Company\u2019s significant accounting policies during the six months ended June 30, 2025, as compared to those disclosed in the Annual Report, except for the addition of the accounting policy related to derivatives and hedging activities, which is included herein. 6 Use of Estimates The preparation of the condensed consolidated financial"
+      },
+      {
+        "visible_start": 75218,
+        "visible_end": 76068,
+        "raw_decoded_start": 1023061,
+        "raw_decoded_end": 1025897,
+        "text": "condensed consolidated statements of operations in acquired in-process research and development expenses (IPR&D). In January 2025, the Company entered into a revised agreement that removed contingent liabilities previously included in the Original Transaction. Under the revised term, the Company agreed to pay CHF 68 million, consisting of a CHF 40 million payment made in January 2025 and a final payment of CHF 28 million due in October 2025. All other payment obligations in the Original Transaction were removed. The total amount of CHF 68 million was recognized as acquired IPR&D in the Company\u2019s condensed consolidated statement of operations and comprehensive loss. As of June 30, 2025, the remaining CHF 28 million was recorded as a short-term accrued liability for $ 35.2 million on the Company\u2019s condensed consolidated balance sheet. 14. C"
+      }
+    ],
+    "segments": [
+      {
+        "visible_start": 70092,
+        "visible_end": 70942,
+        "raw_decoded_start": 981394,
+        "raw_decoded_end": 983182,
+        "text": "Operating segments are identified as components of an enterprise about which discrete financial information is available for evaluation by the chief operating decision-maker (CODM) in making decisions regarding resource allocation and assessing performance. The Company is organized based on its current product portfolio, which consists primarily of insulin pumps, single-use insulin cartridges and infusion sets for the storage and delivery of insulin. The Company views its operations and manages its business as one reporting segment because key operating decisions and resource allocations are made by the CODM using consolidated financial data. Accordingly, the Company is organized as a single operating segment and therefore a single reportable segment: Insulin Pumps and Supplies. The Company\u2019s CODM is the Chief Executive Officer (CEO), who"
+      }
+    ],
+    "units": [
+      {
+        "visible_start": 4182,
+        "visible_end": 5032,
+        "raw_decoded_start": 165960,
+        "raw_decoded_end": 196635,
+        "text": "In thousands, except par value) June 30, December 31, 2025 2024 Assets (Unaudited) (Note 1) Current assets: Cash and cash equivalents $ 64,112 $ 69,234 Short-term investments 251,249 369,095 Accounts receivable, net 128,443 114,585 Inventories 142,573 149,612 Prepaid and other current assets 28,440 21,965 Total current assets 614,817 724,491 Property and equipment, net 77,513 78,150 Operating lease right-of-use assets 98,436 85,306 Equity method investments 67,628 74,545 Other long-term assets 17,342 5,166 Total assets $ 875,736 $ 967,658 Liabilities and Stockholders\u2019 Equity Current liabilities: Accounts payable $ 55,838 $ 44,730 Accrued expenses 13,764 18,170 Employee-related liabilities 51,691 64,128 Current portion of convertible senior notes, net \u2014 40,670 Operating lease liabilities 19,888 18,208 Deferred revenue 10,516 11,831 Other c"
+      },
+      {
+        "visible_start": 7862,
+        "visible_end": 8712,
+        "raw_decoded_start": 299398,
+        "raw_decoded_end": 341046,
+        "text": "In thousands) Three Months Ended June 30, 2025 Common Stock Additional Paid-in Capital Accumulated Other Comprehensive Income (Loss) Accumulated Deficit Total Stockholders\u2019 Equity Shares Amount Balance at March 31, 2025 66,568 $ 67 $ 1,333,531 $ 75 $ ( 1,178,381 ) $ 155,292 Exercise of stock options 10 \u2014 171 \u2014 \u2014 171 Vesting of restricted stock units, net of shares withheld for taxes 502 1 ( 6,320 ) \u2014 \u2014 ( 6,319 ) Issuance of common stock for Employee Stock Purchase Plan 451 \u2014 7,194 \u2014 \u2014 7,194 Stock-based compensation expense \u2014 \u2014 25,675 \u2014 \u2014 25,675 Unrealized loss on short-term investments \u2014 \u2014 \u2014 ( 98 ) \u2014 ( 98 ) Unrealized loss on cash flow hedges \u2014 \u2014 \u2014 ( 612 ) \u2014 ( 612 ) Foreign currency translation gains \u2014 \u2014 \u2014 4,380 \u2014 4,380 Net loss \u2014 \u2014 \u2014 \u2014 ( 52,400 ) ( 52,400 ) Balance at June 30, 2025 67,531 $ 68 $ 1,360,251 $ 3,745 $ ( 1,230,781 ) $ 133,28"
+      },
+      {
+        "visible_start": 11702,
+        "visible_end": 12552,
+        "raw_decoded_start": 474805,
+        "raw_decoded_end": 498663,
+        "text": "In thousands) Six Months Ended June 30, 2025 2024 Operating Activities Net loss $ ( 182,956 ) $ ( 73,529 ) Adjustments to reconcile net loss to net cash provided by (used in) operating activities: Depreciation and amortization expense 8,678 8,151 Amortization of debt issuance costs 970 1,085 Provision for expected credit losses 3,577 3,723 Operating lease and other impairment charges 6,697 2,000 Accretion (amortization) of discount or premium on short-term investments ( 1,780 ) 348 Loss from equity method investments 6,917 \u2014 Stock-based compensation expense 51,130 46,936 Loss on extinguishment of debt \u2014 1,268 Acquired in-process research and development expenses 75,217 \u2014 Other 424 335 Changes in operating assets and liabilities: Accounts receivable, net ( 13,516 ) 2,862 Inventories 12,058 ( 5,157 ) Prepaid and other current assets ( 2,348"
+      },
+      {
+        "visible_start": 114670,
+        "visible_end": 115520,
+        "raw_decoded_start": 1184258,
+        "raw_decoded_end": 1193512,
+        "text": "in thousands): Six Months Ended June 30, 2025 2024 Net cash provided by (used in): Operating activities $ (27,774) $ (13,271) Investing activities 67,316 (8,596) Financing activities (44,401) 10,584 Effect of foreign exchange rate changes on cash (263) 112 Net increase (decrease) in cash and cash equivalents $ (5,122) $ (11,171) Operating Activities . Net cash used in operating activities was $27.8 million for the six months ended June 30, 2025, compared to $13.3 million used in the same period in 2024. For the six months ended June 30, 2025, net loss was $183.0 million, net non-cash adjustments were $151.8 million, and the change in working capital balances was an increase of $3.4 million. For the six months ended June 30, 2024, net loss was $73.5 million, net non-cash adjustments were $63.8 million and the change in working capital bala"
+      }
+    ]
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

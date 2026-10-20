@@ -1,0 +1,1 @@
+{"reader": "scripts/diagnose_reviewed_frozen_source_completion.py", "checks": [{"name": "body_raw_positive", "accepted": true}, {"name": "wrong_sec_submissions_root_artifact_as_semantic_body", "accepted": false, "error": "semantic binding is not the proved whole body carrier"}]}

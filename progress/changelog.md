@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：冻结8a01eb96唯一95资料GET实际完成，95reserved/open/retained、94received+1非空拆股清单暂不支持，0重试/重定向/技术失败，原绑定不变。10新SEC主文8份完整经营报告、TGB/SLF两wrapper保unknown；真实附件链接及HITI文内日期/编号冲突保留。新增整批source consumer保842/24/41目标；独立反例暴露语义审查可误绑submissions JSON，修为实际正文载体/完整content/hash核验，11temp及原反例复验过。FTI实际151bars按原400日请求规范化且canonical重构过，未准入/append；启动harness缺方法错误发生在marker前、原脚本/log保留。下一仅独立7项缺证及新整批准入/双720消费，不重入旧阶段，不关闭MVP。
+
 - 2026-10-20：完成固定24经营案/41目标/31正文的材料范围审查，30完整annual/interim scope、29合格原件候选；FTI错type与HITI wrapper+FS不足分别保留。独立抽查6正文/HITI编号正反例；定位真实AIF99.3/MD&A99.2链接并保封面冲突。核FTI既有400day窗口及83目录精确key无匹配，新增95GET候选（原92关联不变+FTI1/HITI2）经8离线控制；尚未实际取证/准入/矩阵/模型，GPRE新ID设计等待用户决策。
 
 - 2026-10-20：唯一3e67e166固定40来源prepare40.411s完成，25财务842完整产品/profile过、838无冲突/4GPRE元数据碰撞保留；24market中23家242原件重建但缺proof，FTI窗口7月晚于5月cutoff拒绝；24经营41目标/71机械变体全文仍待核，92精确缺证请求未发。独立3964绑定/842产品/969终态文件全核；4经营旧ID直查区分3原件可用与FTI10-Q误标10-k。再修producer混合form首alias误标，18定向过/旧代码两反例复现；旧原件/stage不改不重入，无append/view/matrix/model/标签/MVP关闭声明。

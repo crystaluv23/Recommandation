@@ -1,0 +1,82 @@
+{
+  "automatic_retries": 0,
+  "redirects_followed": 0,
+  "requests": [
+    {
+      "bytes": 367342,
+      "headers_omitted": [],
+      "http_status": 200,
+      "method": "GET",
+      "name": "proof-037",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-037.response.raw",
+      "raw_sha256": "0a2ffdd4cf4799e4070d33bcfe047dabe9b902fce2dd300800cfe9e6fc44187e",
+      "response_headers": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-cache, no-store, no-transform, proxy-revalidate",
+        "Connection": "Transfer-Encoding",
+        "Content-Encoding": "gzip",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        "Content-Type": "text/html",
+        "Date": "Tue, 20 Oct 2026 00:15:18 GMT",
+        "Last-Modified": "Fri, 14 Mar 2025 20:13:52 GMT",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+        "Pragma": "no-cache",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "x-amz-id-2": "dLGV913y7BdSMC4FI6g6hBp6y3vB1uKs5tf56FgPFI+ZWI2xosEFcEmB7+0xMVmmAaT1ylGZcnA=",
+        "x-amz-meta-mode": "33188",
+        "x-amz-replication-status": "COMPLETED",
+        "x-amz-request-id": "W94WA4591RFWG3HC",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-version-id": "Im3tVdvQcvjI4onyhb0sjwvtIud29ZNv"
+      },
+      "response_url": "https://www.sec.gov/Archives/edgar/data/1051627/000155837025003004/axti-20241231x10k.htm",
+      "retrieved_at_utc": "2026-10-20T00:15:19.123558+00:00",
+      "started_at_utc": "2026-10-20T00:15:17.975926+00:00",
+      "status": "http_response_retained",
+      "url": "https://www.sec.gov/Archives/edgar/data/1051627/000155837025003004/axti-20241231x10k.htm"
+    }
+  ],
+  "plan_hash": "7899aae9a3ea6cbd0301ce14794bf8d1a2563d88e20cfd3c240056b24711321b",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2025-03-14T20:13:13+00:00",
+        "accession_number": "0001558370-25-003004",
+        "case_id": "cik_0001051627:20250930",
+        "form": "10-K",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/13260563b80196a412507f59.json",
+            "sha256": "3d0e2aa8fc9cf9d90d3516811b725443e25d3c81abf48b6f4303e9bb6e021fec"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1051627/000155837025003004/axti-20241231x10k.htm",
+    "filing": {
+      "accepted_at": "2025-03-14T20:13:13+00:00",
+      "accession_number": "0001558370-25-003004",
+      "cik": "0001051627",
+      "filing_date": "2025-03-14",
+      "form": "10-K",
+      "primary_document": "axti-20241231x10k.htm",
+      "report_date": "2024-12-31",
+      "retrieved_at": "2026-10-20T00:05:54.554149+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1051627/000155837025003004/axti-20241231x10k.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-037",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "capture_scope": "Exact stable single request snapshot while wholecollection may still evolve; no terminalbatch assertion."
+}

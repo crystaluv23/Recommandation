@@ -1,0 +1,208 @@
+{
+  "name": "proof-093",
+  "source_request": {
+    "associations": [
+      {
+        "authority": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/hiti-literal-exhibit-local-check.json",
+          "sha256": "9241e0a7922d26a46cc13c14eead68d1b618a65ce7bdf9e05785acedb046d615"
+        },
+        "literal_parent": {
+          "cache_key": "e94c58c44def0c9421c11880",
+          "description_role": "AIF",
+          "direct_paths_checked": [
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v41/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v42/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v43/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v44/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v48/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v49/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v51/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v52/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v53/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v54/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v55/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v56/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v57/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v58/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v59/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260830-v76b/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v118/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v119/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v120/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v121/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v123/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v124/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v125/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v126/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v127/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v128/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v129/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v131/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v132/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v133/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v134/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v135/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v136/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v137/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v139/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v142/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v1/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v3/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v5/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v6/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v7/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v8/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v10/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v11/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v12/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v15/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v17/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v18/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v21-repair-acceptance/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v54/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v57/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v59/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v61/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v66/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v73/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v81/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v92/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v96/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v97/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v105/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v111/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v112/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v114/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v115/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+            "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json"
+          ],
+          "document_role": "incorporated_exhibit",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-annualinformationform.htm",
+          "future_body_content_review_required": true,
+          "literal_href": "hiti-annualinformationform.htm",
+          "matches": [],
+          "method": "GET",
+          "parent_accepted_at": "2025-01-29T21:04:40+00:00",
+          "parent_accession": "0001628280-25-002990",
+          "parent_cik": "0001847409",
+          "parent_company_id": "cik_0001847409",
+          "parent_form": "40-F",
+          "parent_original": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001847409/sec:cik_0001847409:000162828025002990.json",
+            "sha256": "84dace48eef26671dde3bcdab88d0780a6300b485da81c591a79d33336858476"
+          },
+          "parent_root_proofs": [
+            {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+              "sha256": "19c04f69bb2672b223cd2645959d5682b28b3a1d3b43c99ac469679e2ddb52d1"
+            },
+            {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v8/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+              "sha256": "a1dae78cedaba07ebb89e42fb6971caea5b302a29e091e6b47178c154fdba3c0"
+            },
+            {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+              "sha256": "3ca860117772e7842f1225d95e3e005f844fbec579162ad42e5e859a8817baa7"
+            },
+            {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v17/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+              "sha256": "fa5fdcea419d170c7f2afcc43b333a8135e416b7e949a59d366ffb95ade1c042"
+            },
+            {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v18/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+              "sha256": "342e7615af3d4e612775aec93c8df44eb6f30381dd67cc256d93eaed1f6f9ab1"
+            },
+            {
+              "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v21-repair-acceptance/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+              "sha256": "e0296cfb0038211ba1382cc250fa3012199b2d2e28a59a536ad3c91f25c24a9a"
+            }
+          ],
+          "parent_url": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm",
+          "proved_index_code": "99.3",
+          "query": {}
+        },
+        "purpose": "additional_exhibit"
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-annualinformationform.htm",
+    "kind": "additional_exhibit",
+    "name": "proof-093",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-093-receipt-snapshot.json",
+    "sha256": "3aa480c46d88af76752cf4c2f987ac9496caaec8b1a25a5195dedec9746976a2"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-093.response.raw",
+    "sha256": "d1e6724b46b6db1837bda8eb4331d5faec1c4cacacb251145e59fcf55b689e3f"
+  },
+  "decoded_body_sha256": "f146fafff7e5bd4d242b0cabe9fff916ce2eb87bc5e85473e8f4ffe65524267c",
+  "decoded_characters": 1225885,
+  "visible_characters": 417394,
+  "visible_text_sha256": "c7ef68bd6b9aa2447fccb5b7b65535318d1f44d13fe06e3ec4503a3d369b85bf",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 17,
+    "raw_decoded_end": 30921,
+    "text": "EX-99.3 3 hiti-annualinformationform.htm EX-99.3 Exhibit 99.1 HIGH TIDE INC. Annual Information Form For the Fiscal Year Ended October 31, 2024 Dated: January 29, 2024 TABLE OF CONTENTS ANNUAL INFORMATION FORM 1 GLOSSARY OF TERMS 1 MARKET AND INDUSTRY DATA 8 CAUTIONARY NOTE REGARDING FORWARD-LOOKING INFORMATION 8 CAUTIONARY NOTE REGARDING FUTURE ORIENTED FINANCIAL INFORMATION 11 NOTE TO U.S. READERS REGARDING DIFFERENCES BETWEEN UNITED STATES AND CANADIAN REPORTING PRACTICES 11 CERTAIN DOCUMENTS INCORPORATED BY REFERENCE 11 CORPORATE STRUCTURE 13 GENERAL DEVELOPMENT OF THE BUSINESS 15 DESCRIPTION OF THE BUSINESS 21 REGULATORY OVERVIEW 27 U.S. CANNABIS-RELATED ACTIVITIES DISCLOSURE 33 RISK FACTORS 48 DIVIDENDS AND DISTRIBUTIONS 48 DESCRIPTION OF CAPITAL STRUCTURE 48 MARKET FOR SECURITIES 49 ESCROWED SECURITIES AND SECURITIES SUBJECT TO CONTRACTUAL RESTRICTIONS ON TRANSFER 51 DIRECTORS AND OFFICERS 51 PROMOTERS 56 LEGAL PROCEEDINGS AND REGULATORY ACTIONS 56 INTEREST OF MANAGEMENT AND OTHERS IN MATERIAL TRANSACTIONS 57 TRANSFER AGENTS AND REGISTRARS 57 MATERIAL CONTRACTS 57 INTERESTS OF EXPERTS 57 AUDIT COMMITTEE 58 ADDITIONAL INFORMATION 59 SCHEDULE \u201cA\u201d NON-EXHAUSTIVE LIST OF RISK FACTORS A- 1 SCHEDULE \u201cB\u201d HIGH TIDE INC. STATEMENT OF EXECUTIVE COMPENSATION (FOR THE YEAR ENDED OCTOB"
+  },
+  "tail": {
+    "visible_start": 416544,
+    "visible_end": 417394,
+    "raw_decoded_start": 1223377,
+    "raw_decoded_end": 1225719,
+    "text": "nhance their understanding of auditing, accounting, regulatory and industry issues applicable to the Corporation. New Committee members shall be provided with an orientation program to educate them on the Corporation\u2019s business, their responsibilities and the Corporation\u2019s financial reporting and accounting practices. G. Review of This Charter The Committee shall review and reassess annually the adequacy of this Charter and recommend any proposed changes to the Board. H. Evaluation of Committee The Committee is responsible for developing and conducting an annual self-assessment of its performance. The Committee shall report to the full Board on the results of its assessment each year and shall make any appropriate recommendations to further enhance the Committee\u2019s performance. This Charter was approved by the Board on June 21, 2021. C - 7"
+  },
+  "closing_html": false,
+  "section_locators": {
+    "business": [],
+    "mda": [
+      {
+        "visible_start": 43770,
+        "visible_end": 44620,
+        "raw_decoded_start": 203781,
+        "raw_decoded_end": 206244,
+        "text": "management\u2019s discussion and analysis of the Corporation for the Annual Financial Statements. Any statement contained in this Annual Information Form or in a document incorporated or deemed to be incorporated by reference herein shall be deemed to be modified or superseded, for purposes of this Annual Information Form, to the extent that a statement contained herein or in any other subsequently filed document which also is or is deemed to be incorporated by reference herein modifies or supersedes such statement. The modifying or superseding statement need not state that it has modified or superseded a 12 prior statement or include any other information set forth in the document that it modifies or supersedes. The making of a modifying or superseding statement shall not be deemed an admission for any purposes that the modified or superseded"
+      },
+      {
+        "visible_start": 214424,
+        "visible_end": 215274,
+        "raw_decoded_start": 750092,
+        "raw_decoded_end": 751792,
+        "text": "management\u2019s discussion and analysis for the financial year ended December 31, 2019, and (iii) the certification of the foregoing filings as required by Applicable Securities Laws (the foregoing, collectively, the \u201c Outstanding 3 Sixty Filings \u201d). On October 8, 2020, the Ontario Securities Commission issued an order (the \u201c 3 Sixty Partial Revocation Order \u201d) partially revoking its failure-to-file cease trade order, solely to permit trades in securities of 3 Sixty that are necessary for and are in connection with a private placement to be undertaken by 3 Sixty for aggregate gross proceeds of up to $6,750,000 and in order to raise the funds necessary to complete and file the Outstanding 3 Sixty Filings and fund certain expenses outlined in the 3 Sixty Partial Revocation Order. The FFCTO was lifted subsequent to Mr. Kaushal\u2019s resignation fro"
+      },
+      {
+        "visible_start": 405440,
+        "visible_end": 406290,
+        "raw_decoded_start": 1196823,
+        "raw_decoded_end": 1198323,
+        "text": "management\u2019s discussion and analysis of financial condition and results of operations of the Corporation with management and the internal auditors, and the independent auditors, together with the independent auditors\u2019 review thereof pursuant to professional standards and procedures for conducting such reviews, as established by IFRS and applicable securities laws. In connection with the quarterly reviews, the Committee shall inquire about and review with management and the independent auditors any significant risks or exposures faced by the Corporation and discuss with management the steps taken to minimize such risk or exposure. D. Other Financial Information Review and discuss with management, where appropriate, financial information contained in any prospectuses, annual information forms and Form 40-F, annual reports to shareholders, m"
+      }
+    ],
+    "risks": [],
+    "statements": [],
+    "segments": [],
+    "units": []
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

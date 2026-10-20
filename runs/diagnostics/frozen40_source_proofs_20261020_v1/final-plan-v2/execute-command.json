@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "runs/diagnostics/frozen40_source_proofs_20261020_v1/collector.py",
+    "--execute",
+    "--plan",
+    "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/request-plan.json",
+    "--expected-plan-sha",
+    "0c96abd8ae201b36eb50e2cb22974ada8975284be9dc9c4cc4ae5b2496a5b05f"
+  ],
+  "cwd": "/Users/l/Project/Recommandation",
+  "PYTHONPATH": "src:scripts",
+  "checkpoint": "8a01eb965ba17cbf0e51aed53d5080b14d766585",
+  "started_at": "2026-10-20T00:09:01.600597+00:00"
+}

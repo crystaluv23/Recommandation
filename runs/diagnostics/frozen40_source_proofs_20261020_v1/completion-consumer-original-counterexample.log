@@ -1,0 +1,1 @@
+{"reader": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-consumer-original-reader.py.txt", "checks": [{"name": "body_raw_positive", "accepted": true}, {"name": "wrong_sec_submissions_root_artifact_as_semantic_body", "accepted": true, "error": null}]}

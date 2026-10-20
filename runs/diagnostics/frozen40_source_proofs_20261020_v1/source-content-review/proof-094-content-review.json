@@ -1,0 +1,45 @@
+{
+  "receipt_name": "proof-094",
+  "issuer": "High Tide Inc.",
+  "period": "2024-10-31",
+  "content_scope": "whole_annual_MDA",
+  "qualified_content_scope_only": true,
+  "source_qualification": "unknown_missing_parent_primary_response",
+  "candidate_document_id": null,
+  "reason": "Actual HighTide annual MD&A contains CannaCabana operating narrative, comparative FY2024/FY2023 and Q4 operating/financial tables, changed segment scope, liquidity/debt maturity discussion, risks/FOFI cautions and coherent32-page end. Amounts in thousands of Canadian dollars with share/per-share/otherwise-stated exceptions; quarter/year flow periods remain distinct.",
+  "review_read_scope": "selected_sections_partial_facts",
+  "manual_windows": [
+    {
+      "visible_start": 0,
+      "text": "EX-99.2 2 hiti-exhibit992mda.htm EX-99.2 Exhibit 99.2 Management\u2019s Discussion & Analysis For the years ended October 31, 2024 and 2023 High Tide Inc. Management's Discussion and Analysis For the years ended October 31, 2024 and 2023 (In thousands of Canadian dollars, except share and per share amounts or otherwise stated) Established consumer brands of High Tide Inc. 2 High Tide Inc. Management's Discussion and Analysis For the years ended October 31, 2024 and 2023 (In thousands of Canadian dollars, except share and per share amounts or otherwise stated) About this MD&A: This management\u2019s discussion and analysis (this \u201cMD&A\u201d) of High Tide Inc. (\u201cHigh Tide\u201d, \u201cwe\u201d, \u201cour\u201d or the \u201cCompany\u201d) for the years ended October 31, 2024 and 2023 is dated January 29, 2025. This MD&A should be read in conjunction with the audited consolidated financial s"
+    },
+    {
+      "visible_start": 4460,
+      "text": "Management's Discussion and Analysis For the years ended October 31, 2024 and 2023 (In thousands of Canadian dollars, except share and per share amounts or otherwise stated) Corporate update: Through its Canna Cabana brand, High Tide is the largest cannabis retailer in Canada and the second-largest globally by store count with 191 current operating locations. During calendar 2024, the Company reached the high end of its communicated target to add 20-30 locations. The Company's objective is to add another 20-30 locations during calendar 2025, while generating positive free cash flow, as was the case in the prior year. The Company reiterates its long-term goal to reach 300 locations across Canada. The Company\u2019s Cabana Club loyalty program continues to expand at a rapid pace across Canada, currently exceeding 1.72 million members, which is u"
+    },
+    {
+      "visible_start": 7636,
+      "text": "Management's Discussion and Analysis For the years ended October 31, 2024 and 2023 (In thousands of Canadian dollars, except share and per share amounts or otherwise stated) Select financial highlights and operating performance: Three months ended October 31 Year Ended October 31 2024 2023 Change 2024 2023 Change $ $ \u2206 $ $ \u2206 Free cash flow (i) 5,908 5,687 4 % 21,991 6,940 217 % Net cash provided by operating activities 9,652 9,637 \u2014 % 35,546 20,661 72 % Revenue 138,295 127,105 9 % 522,306 487,669 7 % Gross profit 35,755 32,984 8 % 142,502 131,314 9 % Gross profit margin (ii) 26% 26% \u2014 % 27% 27% \u2014 % Total operating expenses (38,586) (67,188) 43 % (137,499) (172,739) 20 % Operating expenses as a % of revenue 28% 53% (25) % 26% 35% (9) % Income (loss) from operations (2,832) (34,204) 92 % 5,003 (41,425) 112 % Adjusted EBITDA (iii) 8,245 8,36"
+    },
+    {
+      "visible_start": 28042,
+      "text": "operating segments: 1. Bricks and mortar operations which includes the Company\u2019s Canadian bricks and mortar locations, inclusive of the Canadian warehouse which supports the distribution of accessories and other items to the Canadian stores. In addition, corporate overhead has been allocated to the reporting segment. 2. E-commerce operations which include the Company\u2019s US and international subsidiaries. In addition, corporate overhead has been allocated to the reporting segment. Corporate costs are allocated to each segment based on percentage of revenue. These reporting segments of the Company have been identified because they are segments: (a) that engage in business activities from which revenues are earned and expenses are incurred; (b) whose operating results are regularly reviewed by the Company\u2019s chief operating decision maker, ide"
+    },
+    {
+      "visible_start": 63140,
+      "text": "liquidity risk going forward will require some or all of the following: the ability to continue generate positive cash flows from operations and to secure capital or credit facilities on reasonable terms. Maturities of the Company\u2019s financial liabilities are as follows: Contractual Cash Flows Less than one year 1-3 years 4-5 years Greater than 5 years $ $ $ $ $ Accounts payable and accrued liabilities 23,809 23,809 - - - Notes payable 14,039 13,974 - - 65 Interest bearing loans and borrowings 12,891 12,891 - - - Secured Debentures 10,000 - - 10,000 - Undiscounted lease obligations 46,421 11,913 18,870 11,174 4,464 Balance, October 31, 2024 107,160 62,587 18,870 21,174 4,529 Interest rate risk Interest rate risk is the risk that the fair value of future cash flows of a financial instrument will fluctuate because of changes in market intere"
+    },
+    {
+      "visible_start": 89021,
+      "text": "Financial Instruments\u201d in this MD&A. Additional risk factors that can cause results to differ materially from those expressed in forward-looking statements in this MD&A are discussed in greater detail in the \u201cNon-Exhaustive List of Risk Factors\u201d section in Schedule A to our current annual information form, and elsewhere in this MD&A, as such factors may be further updated from time to time in our periodic filings, available at www.sedarplus.com and www.sec.gov, which risk factors are incorporated herein by reference. Cautionary note regarding FOFI: This MD&A, and documents incorporated by reference herein, may contain FOFI within the meaning of Applicable Securities Laws and analogous U.S. securities Laws, about prospective results of operations, financial position or cash flows, based on assumptions 29 High Tide Inc. Management's Discuss"
+    }
+  ],
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-094.response.raw",
+    "sha256": "c03f2dbdecb332469ff61818439a15a7a473a2c0371ff52eb5f6c7f5b54c73f0"
+  },
+  "decoded_content_sha256": "b0d8bc58260364203e5feeae5cb7ccb78292597a739f735ba95cc2d5a9d81abd",
+  "raw_carrier_note": "Retained SEC DOCUMENT/TEXT wrapper ends after closing HTML; closing_html_at_absolute_EOF=false is not body truncation.",
+  "parent_link_note": "Parent index/prose/exhibit numbering conflicts remain; source proof still needs an actual parent HTTP receipt, not a fabricated receipt around old managedcache.",
+  "source_admission": false
+}

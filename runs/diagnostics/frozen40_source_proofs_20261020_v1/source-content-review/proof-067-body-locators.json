@@ -1,0 +1,325 @@
+{
+  "name": "proof-067",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2025-04-23T23:53:51+00:00",
+        "accession_number": "0000950170-25-057622",
+        "case_id": "cik_0001920294:20250530",
+        "form": "20-F",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "d45187d81b319529e84fab1c8f000482a2007e236b0d3811b49a796f96e6584c"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "0843983f86cd7b7fc96cbc924814349bd9c29299b985635753edbfe65af3a8d1"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v118/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "48be6ff67ef3950a1bf0c7eeea01e18ef7195c4c4c7fe633dd598ed679848243"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v119/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "9080edc8c2be77a09d6b01f0e18fcb25747f52cc9ecd9d98df0ad1e4dc7bdb91"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v120/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "2ca8f6d4d9d2b233fa117cb424a54c97599ffd4055362bf8169530f03eda2bfe"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v121/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "8959a14d5323b7c302449f333bc6d4d2e3dc6c2c83a03eb79b28f8fd4def391d"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "f5fe577b3df7fb2cdd71ee7ba7399807d80f059f627100c18adaf8effc31f0a8"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v123/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "21182695f9542c41f1190a57378e05862a5b1db419d3bb61b8ce8b0e92947b1d"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v124/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "dc8d57177c3acb08778374e36e959f53500ead467be71e84869ee9f395f11545"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v125/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "f7ac45fa247c43a8615879f5e89515a7e287a30b8533e9a98526eab9c24d8e74"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v126/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "f7904216a45b836559e80012b56e78942053abad80b8a2f177560077d4f886d9"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v127/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "9d371bb5b0ddc753c690ab81f7b1232a9d3fbab74fbe035ba69679b1b1835eee"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v128/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "0a5da5b254fcf72bab99928ccafb7df0a6ea1852aafa15981ff23825afd8027c"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v129/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "542ee439dabf6413667056e2ccea894f2ef06c0a377e8efa0812a64eeecc0838"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "f6e20867588f71d2a265f77018908bf77976f5e1753d87cb16b89310752621f9"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v131/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "d63743819d66f5179ffb69e562107c5cb22b79df06d9bd135e25970e1eed240e"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v132/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "62df2c61c51e468909c344f86051d833cf63615bd4443edce330c34daaf23cec"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v133/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "ccdd09b67a315c2a8dc7ca33613b0fb41db03bb2271b9552aaa6c04cba4390df"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v134/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "8668ab283ef7ce105f2af11405577004d69ccd96b0a35112a674d37e6af02d5e"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v135/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "02d59476d70a95099683d907d813776096912cc1ed277992194dd18124bf2d4c"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v136/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "0376f84f976312ff464df0479670e7c05af16f18a289f9b8caa08b653b7d2b11"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v137/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "16d5bef895ae12d4164d6e76f6cc9dc243208e00fe57c069422b88458fb2933b"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "29e1e8a853412b201653fb30513eea656a0962a1e1cdbfee8ebcd9ae6d1c3b30"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v139/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "49e3b6d46f1d6e732fcd6dfa577b5492c19924a5f7c5488e56ec19e217e68e3f"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "1dec16cef2aa3b4e64cb4fb4781f5912566b3823c8b84040337035ae60de0e15"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "4d1c4b5c93a93eb1b926c105948977ce939d7ae593f488c39546c40a1df4f7e9"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v142/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "a7c2c27110d52b0c8735049ef2a1685e2c06b1926701cc551d80cd1939814468"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "1600883bb6de75717780a1894f3891d842f0a07b033f14e90f43e531284a15f1"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v1/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "886574276e880b07fca85834fcaff6f608f70e474489932fae662aaf791aebd2"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v3/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "ee53f52ce2db72a723ce6e79901e927e18d36a7543477afeb6a93b7e076ce035"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v5/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "4c475c5853d1001bb3518cbace71564a0b8219f58b127547f247b26ee7dbe7f3"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v6/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "9805a0dac5c9a60a8c39602c0fab58b65eaebea38058058f0e75ac7772712726"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v7/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "fab590fd3f5a32d6828e9aa64cf4090a28d21a5314e7d10efb094322f6d6acc3"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v8/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "7162cc6a990c3cbac0cbe399d08481e5e08ae48f29fc0f8c7d71ceab545d2e82"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v10/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "054ef06d0e90b1c753c11e0889a70ea39ef5b8ede5cf1fdc2d8e4c934bc73bbe"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v11/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "d3c11931fba5d4e445b6eb4fc2e2295bc1c05f38c6ecad4b3ad9d0f5aa929702"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v12/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "6d6e2735189a4e80a3072948b835e42371a5239792f2f0246083531f67895082"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v15/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "04b4401c7517490f07de50896381afb72278acc0c570e5115e9ec36e253c0b6f"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "4dd41546bfc541f3f42e94884d20b41dccc29c61aa439d563eab9b5ccbefd11d"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v18/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+            "sha256": "da31e04c64e92c0cbfa9d60821d62da7cf83944e999c43582ae3e82993087726"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1920294/000095017025057622/rzlv-20241231.htm",
+    "filing": {
+      "accepted_at": "2025-04-23T23:53:51+00:00",
+      "accession_number": "0000950170-25-057622",
+      "cik": "0001920294",
+      "filing_date": "2025-04-24",
+      "form": "20-F",
+      "primary_document": "rzlv-20241231.htm",
+      "report_date": "2024-12-31",
+      "retrieved_at": "2026-10-20T00:05:54.649222+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1920294/000095017025057622/rzlv-20241231.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-067",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-067-receipt-snapshot.json",
+    "sha256": "880f2552af7403e07b74225a7834d6b9697944559c81d30d1d448a0e63e0a131"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-067.response.raw",
+    "sha256": "5e90e38ca4da60ae190223a3dba4f2462d0cc2759c1a16148216dff1faa75fff"
+  },
+  "decoded_body_sha256": "010fc7578d60c9b3f6d4ad47f3fefaa3cf5e98a9235d2907697e4fa37368d624",
+  "decoded_characters": 5779195,
+  "visible_characters": 618033,
+  "visible_text_sha256": "40506ef412b3740fd6c1abad9e6e5c57cc46f48b73923320d3aa4de253445bd0",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 168270,
+    "raw_decoded_end": 196069,
+    "text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 20-F (Mark One) \u2610 REGISTRATION STATEMENT PURSUANT TO SECTION 12(b) OR (g) OF THE SECURITIES EXCHANGE ACT OF 1934 OR \u2612 ANNUAL REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the fiscal year ended December 31 , 2024 OR \u2610 TRANSITION REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the transition period from to OR \u2610 SHELL COMPANY REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of event requiring this shell company report Commission File Number 001-42254 Rezolve AI plc (formerly Rezolve AI Limited) (Exact name of Registrant as specified in its charter) Not applicable (Translation of Registrant\u2019s name into English) United Kingdom (Jurisdiction of incorporation or organization) 21 Sackville Street London , W1S 3DN United Kingdom (Address of principal executive offices) Daniel M. Wagner Tel.: + 44 204 625 9700 investors@rezolve.com 21 Sackville Street London , W1S 3DN United Kingdom (Name, Telephone, E-mail and/or Facsimile number and Address of Company Contact Person) Securities registered or to be registered, pursuant to Section 12(b) of the Act Title of each class Trading Symbol(s) Name of each exchange on wh"
+  },
+  "tail": {
+    "visible_start": 617183,
+    "visible_end": 618033,
+    "raw_decoded_start": 5761171,
+    "raw_decoded_end": 5778947,
+    "text": "ted Pro Forma Condensed Combined Financial Statements of Rezolve. 15.2* Consent of MNP LLP . 15.3* Consent of Grassi & Co., CPAs, P.C. 97* Compensation Recovery Policy. 101.INS* Inline XBRL Instance Document \u2013 the instance document does not appear in the Interactive Data File because XBRL tags are embedded within the Inline XBRL document. 101.SCH* Inline XBRL Taxonomy Extension Schema with Embedded Linkbase Documents 104* Cover Page Interactive Data File (embedded within the Inline XBRL document) * Filed herewith. ** Furnished herewith. 70 SIGNATURES The registrant hereby certifies that it meets all of the requirements for filing on Form 20-F and that it has duly caused and authorized the undersigned to sign this annual report on its behalf. Rezolve AI plc Date: April 23, 2025 By: /s/ Daniel Wagner Daniel Wagner Chief Executive Officer 71"
+  },
+  "closing_html": true,
+  "section_locators": {
+    "business": [
+      {
+        "visible_start": 5320,
+        "visible_end": 6170,
+        "raw_decoded_start": 236005,
+        "raw_decoded_end": 257074,
+        "text": "Item 4. Information on the Company 25 Item 4A. Unresolved Staff Comments 39 Item 5. Operating and Financial Review and Prospects 40 Item 6. Directors, Senior Management and Employees 57 Item 7. Major Shareholders and Related Party Transactions 64 Item 8. Financial Information 67 Item 9. The Offer and Listing 67 Item 10. Additional Information 67 Item 11. Quantitative and Qualitative Disclosures About Market Risk 77 Item 12. Description of Securities Other than Equity Securities 77 PART II 81 Item 13. Defaults, Dividend Arrearages and Delinquencies 81 Item 14. Material Modifications to the Rights of Security Holders and Use of Proceeds 81 Item 15. Controls and Procedures 81 Item 16. [Reserved]. 82 Item 16A. Audit Committee Financial Expert 82 Item 16B. Code of Ethics 82 Item 16C. Principal Accountant Fees and Services 82 Item 16D. Exemptio"
+      },
+      {
+        "visible_start": 256464,
+        "visible_end": 257314,
+        "raw_decoded_start": 1310062,
+        "raw_decoded_end": 1314178,
+        "text": "Item 4. Information on the Company-B. Business Overview \u201d and \u201c Item 4. Information on the Company-B. Business Overview-Intellectual Property .\u201d D. Trend information . Please refer to \u201cItem 4.B\u2014Business Overview\u2014Industry Overview and Trends.\u201d E. Critical Accounting Estimates. The Rezolve AI plc and Subsidiaries Consolidated Financial Statements are prepared in conformity with U.S. generally accepted accounting principles. In preparing the Rezolve AI plc and Subsidiaries Consolidated Financial Statements, we make assumptions, judgments and estimates that can have a significant impact on amounts reported in the Rezolve AI plc and Subsidiaries Consolidated Financial Statements. We base our assumptions, judgments and estimates on historical experience and various other factors that we believe to be reasonable under the circumstances. Actual r"
+      },
+      {
+        "visible_start": 256502,
+        "visible_end": 257352,
+        "raw_decoded_start": 1310062,
+        "raw_decoded_end": 1314178,
+        "text": "Business Overview \u201d and \u201c Item 4. Information on the Company-B. Business Overview-Intellectual Property .\u201d D. Trend information . Please refer to \u201cItem 4.B\u2014Business Overview\u2014Industry Overview and Trends.\u201d E. Critical Accounting Estimates. The Rezolve AI plc and Subsidiaries Consolidated Financial Statements are prepared in conformity with U.S. generally accepted accounting principles. In preparing the Rezolve AI plc and Subsidiaries Consolidated Financial Statements, we make assumptions, judgments and estimates that can have a significant impact on amounts reported in the Rezolve AI plc and Subsidiaries Consolidated Financial Statements. We base our assumptions, judgments and estimates on historical experience and various other factors that we believe to be reasonable under the circumstances. Actual results could differ materially from th"
+      },
+      {
+        "visible_start": 256658,
+        "visible_end": 257508,
+        "raw_decoded_start": 1312385,
+        "raw_decoded_end": 1315060,
+        "text": "Business Overview\u2014Industry Overview and Trends.\u201d E. Critical Accounting Estimates. The Rezolve AI plc and Subsidiaries Consolidated Financial Statements are prepared in conformity with U.S. generally accepted accounting principles. In preparing the Rezolve AI plc and Subsidiaries Consolidated Financial Statements, we make assumptions, judgments and estimates that can have a significant impact on amounts reported in the Rezolve AI plc and Subsidiaries Consolidated Financial Statements. We base our assumptions, judgments and estimates on historical experience and various other factors that we believe to be reasonable under the circumstances. Actual results could differ materially from these estimates under different assumptions or conditions. We regularly reevaluate our assumptions, judgments and estimates. Critical accounting estimates are"
+      }
+    ],
+    "mda": [
+      {
+        "visible_start": 5396,
+        "visible_end": 6246,
+        "raw_decoded_start": 238079,
+        "raw_decoded_end": 258159,
+        "text": "Item 5. Operating and Financial Review and Prospects 40 Item 6. Directors, Senior Management and Employees 57 Item 7. Major Shareholders and Related Party Transactions 64 Item 8. Financial Information 67 Item 9. The Offer and Listing 67 Item 10. Additional Information 67 Item 11. Quantitative and Qualitative Disclosures About Market Risk 77 Item 12. Description of Securities Other than Equity Securities 77 PART II 81 Item 13. Defaults, Dividend Arrearages and Delinquencies 81 Item 14. Material Modifications to the Rights of Security Holders and Use of Proceeds 81 Item 15. Controls and Procedures 81 Item 16. [Reserved]. 82 Item 16A. Audit Committee Financial Expert 82 Item 16B. Code of Ethics 82 Item 16C. Principal Accountant Fees and Services 82 Item 16D. Exemptions from the Listing Standards for Audit Committees 82 Item 16E. Purchases of"
+      },
+      {
+        "visible_start": 18909,
+        "visible_end": 19759,
+        "raw_decoded_start": 335809,
+        "raw_decoded_end": 337858,
+        "text": "Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations,\u201d before you decide to purchase Ordinary Shares or Warrants. If any of the following risks actually occur, our business, financial condition and operating results could be materially and adversely affected. In that case, the market price of the Ordinary Shares and Warrants could decline and you may lose all or a part of your investment. The risks discussed below are not the only risks we face. Additional risks or uncertainties not currently known to us, or that we currently deem immaterial, may also have a material adverse effect on our business, financial condition and operating results. See \u201cCautionary Note Regarding Forward-Looking Statements.\u201d Risks Related to Our Business and Industry Rezolve has generated limited revenues from existing channels and"
+      }
+    ],
+    "risks": [],
+    "statements": [
+      {
+        "visible_start": 206263,
+        "visible_end": 207113,
+        "raw_decoded_start": 788472,
+        "raw_decoded_end": 843399,
+        "text": "consolidated statements of operations for the years ended December 31, 2024 and December 31, 2023: Year ended December 31, 2024 2023 Revenue $ 187,788 $ 145,051 Operating expenses Cost of revenue 34,053 34,791 Sales and marketing expenses 6,285,446 6,731,254 General and administrative expenses 131,430,412 17,986,528 Other operating expenses 255,412 1,156,316 Depreciation and amortization expenses 225,251 242,436 Total operating expenses $ 138,230,574 $ 26,151,325 Operating loss (138,042,786 ) (26,006,274 ) Other (expense)/income Interest expense (10,557,714 ) (4,791,782 ) Gain/(loss) on derivatives 19,001,681 \u2014 Gain/(loss) on extinguishment (44,332,819 ) \u2014 Other non-operating income (expense), net 1,329,781 125,366 Total other expenses, net $ (34,559,071 ) $ (4,666,416 ) Loss before taxes (172,601,857 ) (30,672,690 ) Income tax expense (4"
+      },
+      {
+        "visible_start": 399430,
+        "visible_end": 400280,
+        "raw_decoded_start": 1822369,
+        "raw_decoded_end": 1835262,
+        "text": "Consolidated Balance Sheets as of December 31, 2024 and 2023 F- 3 Consolidated Statements of Operations for the Years ended December 31, 2024 and 2023 F- 4 Consolidated Statement of Comprehensive Loss for the Years ended December 31, 2024 and 2023 F- 5 Consolidated Statements of Stockholders\u2019 Deficit for the Years ended December 31, 2024 and 2023 F- 6 Consolidated Statements of Cash Flows for the Years ended December 31, 2024 and December 31, 2023 F- 7 Notes to the Consolidated Financial Statements F- 8 GROUPBY INC. Combined Consolidated Financial Statements As of and for the years ended December 31, 2024 and 2023 Independent Auditor's Report F- 42 Combined Consolidated Statement of Financial Position F- 44 Combined Consolidated Statements of Loss and Comprehensive Loss F- 45 Combined Consolidated Statements of Changes in Stockholders\u2019 De"
+      },
+      {
+        "visible_start": 444264,
+        "visible_end": 445114,
+        "raw_decoded_start": 2867461,
+        "raw_decoded_end": 2871888,
+        "text": "consolidated statements of operations includes IT expenses, legal and professional expenses, payroll expenses and consultancy charges (see note 12). The CODM does not review segment assets at a different level or category than those disclosed in the consolidated balance sheet. 2.17. Research and development credits Credits for research and development activities relate to government incentives on qualifying research and development expenditures in the United Kingdom. These refundable credits are recognized within other non-operating income when they are filed with the government authorities and there is no uncertainty on the realization of the credits until they are refundable. 2.18. Share-based compensation The Company measures the cost of share-based awards granted to employees, non-employees and directors based on the grant-date fair v"
+      }
+    ],
+    "segments": [
+      {
+        "visible_start": 442856,
+        "visible_end": 443706,
+        "raw_decoded_start": 2858819,
+        "raw_decoded_end": 2864275,
+        "text": "Operating segments Operating segments are defined as components of an entity for which separate financial information is available and that is regularly reviewed by the Chief Operating Decision Maker (\u201cCODM\u201d) in deciding how to allocate resources to an individual segment and in assessing performance. The Group\u2019s Chief Executive Officer is the Company\u2019s CODM. The CODM reviews financial information presented on a consolidated basis for purposes of making operating decisions, allocating resources, and evaluating financial performance. The Company has determined that it operates as one operating segment. As the Company operates as one operating segment, financial data provided in the consolidated financial statements, including total revenues of $ 187,788 (2023: $ 145,051 ), total operating expenses of $ 138,230,574 (2023: $ 26,151,325 ), con"
+      },
+      {
+        "visible_start": 442875,
+        "visible_end": 443725,
+        "raw_decoded_start": 2859111,
+        "raw_decoded_end": 2864275,
+        "text": "Operating segments are defined as components of an entity for which separate financial information is available and that is regularly reviewed by the Chief Operating Decision Maker (\u201cCODM\u201d) in deciding how to allocate resources to an individual segment and in assessing performance. The Group\u2019s Chief Executive Officer is the Company\u2019s CODM. The CODM reviews financial information presented on a consolidated basis for purposes of making operating decisions, allocating resources, and evaluating financial performance. The Company has determined that it operates as one operating segment. As the Company operates as one operating segment, financial data provided in the consolidated financial statements, including total revenues of $ 187,788 (2023: $ 145,051 ), total operating expenses of $ 138,230,574 (2023: $ 26,151,325 ), consolidated net loss "
+      },
+      {
+        "visible_start": 464038,
+        "visible_end": 464888,
+        "raw_decoded_start": 3025571,
+        "raw_decoded_end": 3026699,
+        "text": "reportable segments. Required disclosures include, on an annual and interim basis, significant segment expenses that are regularly provided to the chief operating decision maker (\u201cCODM\u201d) and included within each reported measure of segment profit or loss, an amount for other segment items (which is the difference between segment revenue less segment expenses and less segment profit or loss) and a description of its composition, the title and position of the CODM, and an explanation of how the CODM uses the reported measure(s) of segment profit or loss in assessing segment performance and deciding how to allocate resources. The standard also permits disclosure of more than one measure of segment profit. ASU 2023-07 is effective for fiscal years beginning after December 15, 2023, and interim periods within fiscal years beginning after Decem"
+      }
+    ],
+    "units": [
+      {
+        "visible_start": 514684,
+        "visible_end": 515534,
+        "raw_decoded_start": 3522487,
+        "raw_decoded_end": 3576086,
+        "text": "In millions) Outstanding as of December 31, 2023 10,612,649 \u00a3 0.0001 Issued 13,611,563 \u00a3 0.0001 Exercised \u2014 \u2014 Cancelled/Forfeited ( 587,296 ) \u2014 Outstanding as of December 31, 2024 23,636,916 \u00a3 0.0001 6.1 $ 3.8 Vested and exercisable 17,559,511 \u00a3 0.0001 4.7 Vested and expected to vest 23,636,916 \u00a3 0.0001 6.1 $ 3.8 The weighted-average grant date fair-value per share of the options granted during the year December 31, 2024 and December 31, 2023 was $ 5.10 and $ 0.61 , respectively. The total fair value of the options that vested during the year ended December 31, 2024 and December 31, 2023 was $ 68.8 million and $ 8,725,218 , respectively. As of December 31,2024, the Company had $ 6.1 million of unrecognized share-based compensation expense related to share options. This cost is expected to be recognized over a weighted-average period of 3 "
+      }
+    ]
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

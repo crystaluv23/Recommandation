@@ -1,0 +1,45 @@
+{
+  "receipt_name": "proof-093",
+  "issuer": "High Tide Inc.",
+  "period": "2024-10-31",
+  "content_scope": "whole_annual_AIF",
+  "qualified_content_scope_only": true,
+  "source_qualification": "unknown_missing_parent_primary_response",
+  "candidate_document_id": null,
+  "reason": "Actual HighTide AIF contains development history, cannabis retail/accessories business, detailed risks and governance/charter appendices throughC7. Fiscal year endedOct31,2024 is explicit. Literal AIF Date Jan29,2024 conflicts with that fiscal period and parentJan29,2025 acceptance; do not silently amend the text or infer a corrected fact-asof date.",
+  "review_read_scope": "selected_sections_partial_facts",
+  "manual_windows": [
+    {
+      "visible_start": 0,
+      "text": "EX-99.3 3 hiti-annualinformationform.htm EX-99.3 Exhibit 99.1 HIGH TIDE INC. Annual Information Form For the Fiscal Year Ended October 31, 2024 Dated: January 29, 2024 TABLE OF CONTENTS ANNUAL INFORMATION FORM 1 GLOSSARY OF TERMS 1 MARKET AND INDUSTRY DATA 8 CAUTIONARY NOTE REGARDING FORWARD-LOOKING INFORMATION 8 CAUTIONARY NOTE REGARDING FUTURE ORIENTED FINANCIAL INFORMATION 11 NOTE TO U.S. READERS REGARDING DIFFERENCES BETWEEN UNITED STATES AND CANADIAN REPORTING PRACTICES 11 CERTAIN DOCUMENTS INCORPORATED BY REFERENCE 11 CORPORATE STRUCTURE 13 GENERAL DEVELOPMENT OF THE BUSINESS 15 DESCRIPTION OF THE BUSINESS 21 REGULATORY OVERVIEW 27 U.S. CANNABIS-RELATED ACTIVITIES DISCLOSURE 33 RISK FACTORS 48 DIVIDENDS AND DISTRIBUTIONS 48 DESCRIPTION OF CAPITAL STRUCTURE 48 MARKET FOR SECURITIES 49 ESCROWED SECURITIES AND SECURITIES SUBJECT TO CON"
+    },
+    {
+      "visible_start": 1380,
+      "text": "ORM This Annual Information Form (as defined below) is dated as of January 29, 2024 (the \u201c AIF Date \u201d), and unless otherwise indicated, the information contained herein is dated as of the last day of the most recently completed financial year of High Tide Inc. ended October 31, 2024 (the \u201c Fiscal Year-End Date \u201d). In this Annual Information Form, unless otherwise indicated or if the context otherwise requires, (i) \u201c High Tide \u201d means High Tide Inc., and where the context so requires, includes its predecessors, (ii) the \u201c Corporation \u201d, \u201c we \u201d, \u201c us \u201d and \u201c our \u201d means, collectively, High Tide and its Subsidiaries (as defined below), together with their respective predecessors (where the context so requires), (iii) \u201c Material Adverse Effect \u201d means a material adverse effect on the Business (as defined below), the properties, assets, liabil"
+    },
+    {
+      "visible_start": 49349,
+      "text": "GENERAL DEVELOPMENT OF THE BUSINESS The following is a description of the general development of the Business during the last three financial years ended October 31, 2022, 2023 and 2024: Developments during the Financial Year ended October 31, 2022 \u2022 November 29, 2021: the Corporation acquired an 80% equity interest in NuLeaf (the \u201c NuLeaf Closing \u201d). The acquisition was completed pursuant to the terms of a plan of merger agreement dated November 29, 2021 between High Tide Inc., Nuleaf Acquisition Corp., Bo Shirley, as member representative and NuLeaf (the \u201c NuLeaf Acquisition Agreement \u201d). Pursuant to the terms of the NuLeaf Acquisition Agreement, the Corporation acquired an 80% interest in NuLeaf for US$31,243,000 and acquired a three-year option to acquire the remaining 20% interest in NuLeaf at any time (the \u201c NuLeaf Acquisition \u201d). C"
+    },
+    {
+      "visible_start": 75632,
+      "text": "DESCRIPTION OF THE BUSINESS General The Corporation is an Alberta-based, retail-focused cannabis company enhanced by the manufacturing and distribution of consumption accessories. As at the AIF Date, the Corporation is one of the largest cannabis retailers in Canada, with 191 operating retail cannabis locations (including jointly-owned store locations) across Canada. As a vertically-integrated company, the Corporation is engaged in the Canadian cannabis market through a portfolio of Subsidiaries. The Corporation was incorporated under the ABCA on February 8, 2018, under the name \u201cHigh Tide Ventures Inc.\u201d. Effective October 4, 2018, the Corporation amended its articles of incorporation and changed its name to \u201cHigh Tide Inc.\u201d Since its inception, the Corporation has grown, both organically and via strategic acquisitions (including its acqu"
+    },
+    {
+      "visible_start": 95048,
+      "text": "Canna Cabana, Meta Growth, Fastendr\u2122, Grasscity Entities, Smoke Cartel, FABCBD, Daily High Club, Dankstop, Blessed, and NuLeaf have been an important part of the operation of the Corporation, and trademarks and other intellectual property rights continue to be essential to maintain the success and competitive position of the Corporation. The Corporation\u2019s portfolio of registered trademarks and designs continue to be valuable assets that distinguish the Corporation\u2019s brand and reinforce customers\u2019 positive perception of its products and stores. As such, the Corporation has devoted, and expects to continue to devote, significant resources to the protection of its intellectual property rights, through, among other things, trade secrets, technical know-how and proprietary information. The Corporation will continue to seek protection of its in"
+    },
+    {
+      "visible_start": 347889,
+      "text": "Risk Factors \u2013 Cash Flow from Operations \u201d. The Market Price of the Common Shares is Volatile and May Not Accurately Reflect the Long\u2010Term Value of the Corporation Securities markets have a high level of price and volume volatility, and the market price of securities of many companies has experienced substantial volatility in the past. This volatility may affect the ability of holders of Common Shares to sell their securities at an advantageous price. Market price fluctuations in the Common Shares may be due to the Corporation\u2019s operating results failing to meet expectations of securities analysts or investors in any period, downward revision in securities analysts\u2019 estimates, adverse changes in general market conditions or economic trends, acquisitions, dispositions or other material public announcements by the A - 22 Corporation or its "
+    }
+  ],
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-093.response.raw",
+    "sha256": "d1e6724b46b6db1837bda8eb4331d5faec1c4cacacb251145e59fcf55b689e3f"
+  },
+  "decoded_content_sha256": "f146fafff7e5bd4d242b0cabe9fff916ce2eb87bc5e85473e8f4ffe65524267c",
+  "raw_carrier_note": "Retained SEC DOCUMENT/TEXT wrapper ends after closing HTML; closing_html_at_absolute_EOF=false is not body truncation.",
+  "parent_link_note": "Parent index/prose/exhibit numbering conflicts remain; source proof still needs an actual parent HTTP receipt, not a fabricated receipt around old managedcache.",
+  "source_admission": false
+}

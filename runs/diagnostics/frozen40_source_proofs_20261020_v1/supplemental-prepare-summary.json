@@ -1,0 +1,34 @@
+{
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/request-plan.json",
+    "sha256": "8252e2c299a52c474020c7c07fd83dc791db3fb2a3b7d04fdfc2a29a2c79a239"
+  },
+  "plan_hash": "3071110b573f0af4e68be924b7a0884877d35959192edb884d9dd8eead56d99e",
+  "requests": 7,
+  "source_bindings": 858,
+  "code_bindings": 106,
+  "code_spec_test": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/collect_frozen40_supplemental_source_proofs.py",
+      "sha256": "3572de21dad9e301f9ab06126df3c35d4969c9c4c3483ce407d43985cccc1744"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/collect_frozen40_supplemental_source_proofs.md",
+      "sha256": "c39803b87bbfb3762e1f97419954fd5e4ec40de56092e10c1c1d5e75ce5782ec"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen40_supplemental_source_proofs.py",
+      "sha256": "1c43327e556e79d437ec5ce0f5ae2db6da040f75141cdc1e5f5a4189dce36d83"
+    }
+  ],
+  "offline_tests": {
+    "command": "PYTHONPATH=src:scripts /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest discover -s tests -p test_frozen40_supplemental_source_proofs.py -v",
+    "tests": 3,
+    "passed": 3,
+    "seconds": 0.029,
+    "origin_requests_mocked_only_in_transport_fixtures": true
+  },
+  "new_GETs": 0,
+  "collection_exists": false,
+  "not_yet_authorized_to_execute": true
+}

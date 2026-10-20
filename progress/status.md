@@ -2,7 +2,7 @@
 
 更新：2026-10-20。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)
 尚未收敛；独立收益为后续里程碑、仍未知。生产 LLM 节点由独立 subagent 执行，
-外部 LLM 调用0；只读资料取证已授权，单独计数。本批45有界取证GET（30行情+15SEC），
+外部 LLM 调用0；只读资料取证已授权，单独计数。已完成140有界取证GET（113行情+27SEC），
 规范web查阅另列；0新生产LLM节点，host tokens/cost及资料API成本未测量。
 
 ## 当前验收
@@ -89,6 +89,9 @@ v182实际冻结40且绑定当前APPROVED，旧运行完成仍1/1。旧“48”�
 24经营家族41目标/31有body、71机械变体通过但全文未核；15碰撞变体中3原件可原样验证，FTI季报误标10-k拒绝。
 19漏查cache已定位，GPRE另1真实GET证据完整；10-k别名漏接/receipt矛盾已修，安全测试/独立反例通过。
 混合form producer局部修复/18测试+13独立反例过；[新内容/取证](../reports/frozen40-source-proofs-20261020.md)：30经营正文scope确认，29原件候选。
-FTI400day新窗口/HITI两literal附件精确cache未定位；原92+新增3的95GET计划已备、8离线测试过，实际未启动。
+FTI400day新窗口/HITI两literal附件精确cache未定位；原92+新增3的95GET经独立审查/8a01eb96冻结后，
+00:09–00:25UTC唯一PID87950/exit0完成95reserved/open/retained，94received+1非空split不支持，0技术失败/重试/重定向。
+冻结绑定未变，独立终态审计中；10新primary里8完整经营正文、TGB/SLF wrapper及其真实附件单列。新整批consumer保842/24/41目标，
+独立发现并修复语义审查可误绑submissions JSON的旁路，11temp测试/原反例复验过；未实际prepare/append/view/matrix。
 GPRE采集版本ID设计待用户决策；未答前不实施，53subset仍明确缺最新Q1。
 不改变lookback/refs或推断news不存在；未恢复旧运行/不触LockedTest。

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/normalize.py", line 16, in <module>
+    driver.financial._write(root / 'normalization-start.json', {'started_at_utc': datetime.now(timezone.utc).isoformat()})
+    ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'diagnose_reviewed_anchor_financial_snapshot' has no attribute '_write'

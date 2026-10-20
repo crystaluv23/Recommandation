@@ -1,0 +1,35 @@
+{
+  "schema_version": "bounded-completion-consumer-fixed-review-v1",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+      "sha256": "676455d4c565a7e0c7838d4703aae65778134546fe7bdbe96fcab4c60d000f3f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_completion.md",
+      "sha256": "1c2dada4e062b258106a5853dbb462eec2d73c7dd7fd0b0fe1f0aa154c8794f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen_source_completion.py",
+      "sha256": "faed040eeefc6d9dd10d05c3826a49d25da4f95d2ad253bcc6dd156826a3f5ce"
+    }
+  ],
+  "fixed_original_counterexample": {
+    "reader": "scripts/diagnose_reviewed_frozen_source_completion.py",
+    "checks": [
+      {
+        "name": "body_raw_positive",
+        "accepted": true
+      },
+      {
+        "name": "wrong_sec_submissions_root_artifact_as_semantic_body",
+        "accepted": false,
+        "error": "semantic binding is not the proved whole body carrier"
+      }
+    ]
+  },
+  "result": "Original semantic-body-carrier bypass closed in bounded replay; native body positive preserved.",
+  "original_failure": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-consumer-original-counterexample.json",
+  "scope": "Temporary native fixture only. No real prepare/execute/store/GET; running95collector untouched.",
+  "other_static_connections": "Fixed target bidirectional links, financial full expected sets/collision guards and pre-store full batch verification retained; old/current views not materialized by reviewer."
+}

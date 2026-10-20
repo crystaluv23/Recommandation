@@ -1,0 +1,80 @@
+{
+  "scope": "Only new9 temporary fixture tests. Native source proof, subset/fullsets and temp worker/restart/two18-ref consumers; no real prepare/execution/global append. Terminal failure test patches preflight to fail before any store opens.",
+  "selectors": [
+    "tests.test_frozen_source_completion"
+  ],
+  "expanded_test_ids": [
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_cross_case_and_proof_drift_fail_on_next_qualification_not_memo_reused",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_financial_subset_keeps_complete_expected_set_and_explicit_unknown_member",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_native_proof_qualified_record_materializes_worker_and_restart_without_relabel",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_preflight_failure_records_terminal_attempt_without_opening_any_store",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_same_id_different_canonical_global_record_is_rejected_before_append",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_semantic_flags_cannot_substitute_for_exact_case_body_original_and_source_binding",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_temp_native_two_registry_input_consumers_keep_every_ref_and_partial_basic_info",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_unknown_unpersisted_targets_stay_dispositions_not_fake_originals",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_wrong_exact_type_native_identity_and_early_cutoff_still_reject"
+  ],
+  "tripwires": [
+    "minimal.LABELS unreadable and real path open forbidden",
+    "minimal.prepare/_prepare_workspace forbidden",
+    "socket.socket/create_connection forbidden"
+  ],
+  "tripwire_calls": {
+    "labels": 0,
+    "prepare": 0,
+    "socket": 0
+  },
+  "candidate_and_dependency_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_completion.md",
+      "sha256": "6ed163d88fa9c924b7f2e4f073f83e0e0b8969b2c72bbbf145b86dc3f977c578"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+      "sha256": "9880bcff7292556d588b7136c5cd30d11886da628de1f93b535ecf15fb66ae95"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen_source_completion.py",
+      "sha256": "86bc3c91827bab3cb1d138f7be1dfd5c793e5409fa54f002c54b185320f50912"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    }
+  ],
+  "candidate_and_dependency_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_completion.md",
+      "sha256": "6ed163d88fa9c924b7f2e4f073f83e0e0b8969b2c72bbbf145b86dc3f977c578"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+      "sha256": "9880bcff7292556d588b7136c5cd30d11886da628de1f93b535ecf15fb66ae95"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen_source_completion.py",
+      "sha256": "86bc3c91827bab3cb1d138f7be1dfd5c793e5409fa54f002c54b185320f50912"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    }
+  ],
+  "source_stable": true,
+  "tests_run": 9,
+  "successful": true,
+  "failures": 0,
+  "errors": 0,
+  "log": {
+    "path": "/tmp/frozen-source-completion-final-9-safe.log",
+    "sha256": "c2b440fd89f89adb6e8ec0821feb3442d36a8b89e653712a8c088b2fcd3ef821"
+  }
+}

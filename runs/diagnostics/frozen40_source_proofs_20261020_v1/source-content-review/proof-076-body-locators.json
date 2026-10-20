@@ -1,0 +1,158 @@
+{
+  "name": "proof-076",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2025-08-14T20:09:35+00:00",
+        "accession_number": "0001437749-25-026933",
+        "case_id": "cik_0001285819:20250930",
+        "form": "10-Q",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v91/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+            "sha256": "c365933936038c4bbb5a4b38a7fc410034383d3efd0cae52a80c0596ab7a00c1"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925026933/omer20250630_10q.htm",
+    "filing": {
+      "accepted_at": "2025-08-14T20:09:35+00:00",
+      "accession_number": "0001437749-25-026933",
+      "cik": "0001285819",
+      "filing_date": "2025-08-14",
+      "form": "10-Q",
+      "primary_document": "omer20250630_10q.htm",
+      "report_date": "2025-06-30",
+      "retrieved_at": "2026-10-20T00:05:54.675582+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1285819/000143774925026933/omer20250630_10q.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-076",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-076-receipt-snapshot.json",
+    "sha256": "3f71a842356c994bf1dc17b23ef7ac1295960fc530f1195ff3bd597d7c467349"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-076.response.raw",
+    "sha256": "64c71a24ea674cb5257400a97a0d47e2274907682c44bb5af50eb4b3030019c6"
+  },
+  "decoded_body_sha256": "3f6be5d0da2f8ffe638f09b5c9460493c198548cd591eb3b2a1dde3cfb693c26",
+  "decoded_characters": 1554412,
+  "visible_characters": 152399,
+  "visible_text_sha256": "54c20a55dd55eb63e1aff0ef59f42d3adf6a677ef22340289c3fa5e201f4bde5",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 154725,
+    "raw_decoded_end": 167289,
+    "text": "Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 10-Q (Mark One) \u2612 QUARTERLY REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 \u200b For the quarterly period ended June 30, 2025 or \u2610 TRANSITION REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 \u200b For the transition period from to Commission file number: 001-34475 OMEROS CORPORATION (Exact name of registrant as specified in its charter) Washington 91-1663741 (State or other jurisdiction of incorporation or organization) (I.R.S. Employer Identification Number) \u200b \u200b 201 Elliott Avenue West Seattle , Washington 98119 (Address of principal executive offices) (Zip Code) ( 206 ) 676-5000 (Registrant \u2019 s telephone number, including area code) \u200b Securities registered pursuant to Section 12(b) of the Securities Exchange Act of 1934: (Title of each class) (Trading symbol) (Name of each exchange on which registered) Common Stock, par value $0.01 per share OMER The Nasdaq Stock Market LLC \u200b Table of Contents Indicate by check mark whether the registrant (1) has filed all reports required to be filed by Section 13 or 15(d) of the Securities Exchange Act of 1934 during the preceding 12 months (or for such shorter period that the registrant was requir"
+  },
+  "tail": {
+    "visible_start": 151549,
+    "visible_end": 152399,
+    "raw_decoded_start": 1548299,
+    "raw_decoded_end": 1554261,
+    "text": "Q are not deemed filed with the SEC and are not to be incorporated by reference into any filing of Omeros Corporation under the Securities Act or the Exchange Act, whether made before or after the date of this Quarterly Report on Form 10-Q, irrespective of any general incorporation language contained in such filing. \u200b 25 Table of Contents SIGNATURES Pursuant to the requirements of the Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned thereunto duly authorized. \u200b OMEROS CORPORATION \u200b \u200b Dated: August 14, 2025 /s/ Gregory A. Demopulos \u200b Gregory A. Demopulos, M.D. \u200b President, Chief Executive Officer and Chairman of the Board of Directors \u200b \u200b Dated: August 14, 2025 /s/ David J. Borges \u200b David J. Borges \u200b Vice President, Finance, Chief Accounting Officer and Treasurer \u200b 26"
+  },
+  "closing_html": true,
+  "section_locators": {
+    "business": [],
+    "mda": [
+      {
+        "visible_start": 8156,
+        "visible_end": 9006,
+        "raw_decoded_start": 187159,
+        "raw_decoded_end": 188485,
+        "text": "Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and in our other filings with the U.S. Securities and Exchange Commission (the \u201cSEC\u201d). Given these risks, uncertainties and other factors, actual results or anticipated developments may not be realized or, even if substantially realized, may not have the expected consequences to or effects on our company, business or operations. Accordingly, you should not place undue reliance on these forward-looking statements, which represent our estimates and assumptions only as of the date of the filing of this Quarterly Report on Form 10-Q. You should read this Quarterly Report on Form 10-Q completely and with the understanding that our actual results in subsequent periods may differ materially from current expectations. Except as required by applicable law, we as"
+      },
+      {
+        "visible_start": 9640,
+        "visible_end": 10490,
+        "raw_decoded_start": 195505,
+        "raw_decoded_end": 215315,
+        "text": "Item 2. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 16 Item 3. Quantitative and Qualitative Disclosures About Market Risk 23 Item 4. Controls and Procedures 23 Part II \u2014 Other Information 24 Item 1. Legal Proceedings 24 Item 1A. Risk Factors 24 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 24 Item 3. Default Upon Senior Securities 24 Item 4. Mine Safety Disclosures 24 Item 5. Other Information 24 Item 6. Exhibits 25 Signatures 26 \u200b Table of Contents PART I \u2014 FINANCIAL INFORMATION ITEM 1. FINANCIAL STATEMENTS OMEROS CORPORATION CONDENSED CONSOLIDATED BALANCE SHEETS (In thousands, except share and per share data) (unaudited) \u200b June 30, December 31, \u200b 2025 2024 Assets \u200b \u200b Current assets: \u200b \u200b Cash and cash equivalents $ 1,904 $ 3,400 Short-term investments 26,840 86,732 OMIDRIA c"
+      },
+      {
+        "visible_start": 142496,
+        "visible_end": 143346,
+        "raw_decoded_start": 1520380,
+        "raw_decoded_end": 1523415,
+        "text": "Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d included in our Annual Report on Form 10-K for the year ended December 31, 2024, which was filed with the SEC on March 31, 2025 except as what we have disclosed in the notes to our financial statements regarding embedded derivatives. For further details see \u201cNote 2 \u2014 Significant Accounting Policies\u201d in the Notes to the Condensed Consolidated Financial Statements included elsewhere in this Quarterly Report on Form 10-Q. ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK Our exposure to market risk is primarily confined to our investment securities, debt instruments and embedded derivatives. Cash, Cash Equivalents and Short-Term Investments The primary objective of our investment activities is to preserve our capital to fund operations, an"
+      }
+    ],
+    "risks": [
+      {
+        "visible_start": 9902,
+        "visible_end": 10752,
+        "raw_decoded_start": 198863,
+        "raw_decoded_end": 225688,
+        "text": "Item 1A. Risk Factors 24 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 24 Item 3. Default Upon Senior Securities 24 Item 4. Mine Safety Disclosures 24 Item 5. Other Information 24 Item 6. Exhibits 25 Signatures 26 \u200b Table of Contents PART I \u2014 FINANCIAL INFORMATION ITEM 1. FINANCIAL STATEMENTS OMEROS CORPORATION CONDENSED CONSOLIDATED BALANCE SHEETS (In thousands, except share and per share data) (unaudited) \u200b June 30, December 31, \u200b 2025 2024 Assets \u200b \u200b Current assets: \u200b \u200b Cash and cash equivalents $ 1,904 $ 3,400 Short-term investments 26,840 86,732 OMIDRIA contract royalty asset 28,221 29,083 Receivables 6,276 7,739 Prepaid expense and other assets 6,406 7,166 Total current assets 69,647 134,120 OMIDRIA contract royalty asset, non-current 114,735 124,266 Right of use assets 12,894 14,961 Property and equipment, net"
+      },
+      {
+        "visible_start": 147457,
+        "visible_end": 148307,
+        "raw_decoded_start": 1530382,
+        "raw_decoded_end": 1531675,
+        "text": "ITEM 1A. RISK FACTORS We operate in an environment that involves a number of risks and uncertainties. Before making an investment decision you should carefully consider the risks described in Part I, Item 1A, \u201cRisk Factors\u201d of our Annual Report on Form 10-K for the year ended December 31, 2024, as filed with the SEC on March 31, 2025. In assessing the risk factors set forth in our Annual Report on Form 10-K for the year ended December 31, 2024, you should also refer to the other information included therein and in this Quarterly Report on Form 10-Q. In addition, we may be adversely affected by risks that we currently deem to be immaterial or by other risks that are not currently known to us. Due to these risks and uncertainties, known and unknown, our past financial results may not be a reliable indicator of future performance and histori"
+      }
+    ],
+    "statements": [
+      {
+        "visible_start": 9344,
+        "visible_end": 10194,
+        "raw_decoded_start": 192435,
+        "raw_decoded_end": 204711,
+        "text": "Condensed Consolidated Balance Sheets 5 \u200b Condensed Consolidated Statements of Operations and Comprehensive Loss 6 \u200b Condensed Consolidated Statements of Stockholders\u2019 Equity (Deficit) 7 \u200b Condensed Consolidated Statements of Cash Flows 8 \u200b Notes to Condensed Consolidated Financial Statements 9 Item 2. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 16 Item 3. Quantitative and Qualitative Disclosures About Market Risk 23 Item 4. Controls and Procedures 23 Part II \u2014 Other Information 24 Item 1. Legal Proceedings 24 Item 1A. Risk Factors 24 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 24 Item 3. Default Upon Senior Securities 24 Item 4. Mine Safety Disclosures 24 Item 5. Other Information 24 Item 6. Exhibits 25 Signatures 26 \u200b Table of Contents PART I \u2014 FINANCIAL INFORMATION ITEM "
+      },
+      {
+        "visible_start": 9386,
+        "visible_end": 10236,
+        "raw_decoded_start": 193057,
+        "raw_decoded_end": 205017,
+        "text": "Condensed Consolidated Statements of Operations and Comprehensive Loss 6 \u200b Condensed Consolidated Statements of Stockholders\u2019 Equity (Deficit) 7 \u200b Condensed Consolidated Statements of Cash Flows 8 \u200b Notes to Condensed Consolidated Financial Statements 9 Item 2. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 16 Item 3. Quantitative and Qualitative Disclosures About Market Risk 23 Item 4. Controls and Procedures 23 Part II \u2014 Other Information 24 Item 1. Legal Proceedings 24 Item 1A. Risk Factors 24 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 24 Item 3. Default Upon Senior Securities 24 Item 4. Mine Safety Disclosures 24 Item 5. Other Information 24 Item 6. Exhibits 25 Signatures 26 \u200b Table of Contents PART I \u2014 FINANCIAL INFORMATION ITEM 1. FINANCIAL STATEMENTS OMEROS CORPORATION"
+      },
+      {
+        "visible_start": 118499,
+        "visible_end": 119349,
+        "raw_decoded_start": 1297810,
+        "raw_decoded_end": 1299199,
+        "text": "condensed consolidated statements of operations and comprehensive loss. We currently earn royalties from Rayner on all U.S. based sales through December 31, 2031 at a royalty rate of 30%. Our royalty rate would be reduced to 10% upon the occurrence of certain events described in the Asset Purchase Agreement, including during any specific period in which OMIDRIA is no longer eligible for separate payment (i.e., becomes included in the packaged payment rate for the surgical procedure) under Medicare Part B, or in certain circumstances involving entry of generic competition for OMIDRIA. We continue to earn royalties until the expiration or termination of the last issued and unexpired U.S. patent, which we expect to occur no earlier than 2035. Pursuant to legislation enacted in late 2022, we also expect separate payment for OMIDRIA under Medi"
+      }
+    ],
+    "segments": [],
+    "units": [
+      {
+        "visible_start": 10276,
+        "visible_end": 11126,
+        "raw_decoded_start": 205488,
+        "raw_decoded_end": 247341,
+        "text": "In thousands, except share and per share data) (unaudited) \u200b June 30, December 31, \u200b 2025 2024 Assets \u200b \u200b Current assets: \u200b \u200b Cash and cash equivalents $ 1,904 $ 3,400 Short-term investments 26,840 86,732 OMIDRIA contract royalty asset 28,221 29,083 Receivables 6,276 7,739 Prepaid expense and other assets 6,406 7,166 Total current assets 69,647 134,120 OMIDRIA contract royalty asset, non-current 114,735 124,266 Right of use assets 12,894 14,961 Property and equipment, net 2,239 2,678 Restricted investments 1,054 1,054 Total assets $ 200,569 $ 277,079 \u200b \u200b \u200b Liabilities and shareholders\u2019 deficit Current liabilities: Accounts payable $ 8,838 $ 5,905 Accrued expenses 26,277 26,005 OMIDRIA royalty obligation 19,596 20,645 Convertible senior notes, net 17,017 \u2014 Term debt \u2014 21,000 Share-settled liability 7,627 \u2014 Lease liabilities 6,148 5,971 Tot"
+      },
+      {
+        "visible_start": 12238,
+        "visible_end": 13088,
+        "raw_decoded_start": 274778,
+        "raw_decoded_end": 319722,
+        "text": "In thousands, except share and per share data) (unaudited) \u200b Three Months Ended Six Months Ended \u200b June 30, June 30, \u200b 2025 2024 2025 2024 \u200b \u200b \u200b \u200b \u200b Costs and expenses: \u200b \u200b Research and development $ 22,009 $ 45,349 $ 45,855 $ 72,119 Selling, general and administrative 10,345 13,808 21,468 26,072 Total costs and expenses 32,354 59,157 67,323 98,191 Loss from operations ( 32,354 ) ( 59,157 ) ( 67,323 ) ( 98,191 ) Interest expense ( 15 ) ( 9,215 ) ( 3,669 ) ( 17,446 ) Interest and other income 1,241 3,247 2,363 6,662 Loss on early extinguishment of 2026 convertible senior notes ( 2,968 ) \u2014 ( 2,968 ) \u2014 Gain on change in fair value of financial instruments 8,207 \u2014 8,142 \u2014 Net loss from continuing operations ( 25,889 ) ( 65,125 ) ( 63,455 ) ( 108,975 ) Net income from discontinued operations, net of tax 465 9,084 4,571 15,750 Net loss $ ( 25,4"
+      },
+      {
+        "visible_start": 138631,
+        "visible_end": 139481,
+        "raw_decoded_start": 1505731,
+        "raw_decoded_end": 1513751,
+        "text": "In thousands) Selected cash flow data \u200b \u200b Cash provided by (used in): \u200b \u200b Operating activities $ (57,779 ) $ (87,765 ) Investing activities $ 59,838 $ 11,225 Financing activities $ (3,555 ) $ 71,555 21 Table of Contents Operating Activities. Net cash used in operating activities for the six months ended June 30, 2025 decreased by $30.0 million as compared to the same period in 2024, driven primarily by a $34.3 million decrease in net loss and a $9.2 million increase in accounts payable, partially offset by $13.8 million of non-cash items, which is primarily comprised of pass-through royalties from Rayner and a gain on change in fair value of financial instruments. \u200b Investing Activities. Cash flows provided by investing activities primarily reflects cash used to purchase short-term investments and proceeds from the sale of those investmen"
+      }
+    ]
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

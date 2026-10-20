@@ -1,0 +1,196 @@
+{
+  "schema_version": "bounded-supplemental-independent-review-v1",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/collect_frozen40_supplemental_source_proofs.py",
+      "sha256": "3572de21dad9e301f9ab06126df3c35d4969c9c4c3483ce407d43985cccc1744"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/collect_frozen40_supplemental_source_proofs.md",
+      "sha256": "c39803b87bbfb3762e1f97419954fd5e4ec40de56092e10c1c1d5e75ce5782ec"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/request-plan.json",
+      "sha256": "8252e2c299a52c474020c7c07fd83dc791db3fb2a3b7d04fdfc2a29a2c79a239"
+    }
+  ],
+  "actual_origin_bindings": {
+    "cache": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+      "sha256": "f4788773be94acbf0b7abfda5cfa446afa1b428a9d8129d8879d0dcdd6665d13"
+    },
+    "case": {
+      "case_id": "cik_0001681459:20250530",
+      "company_id": "cik_0001681459",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "split": "discovery",
+      "ticker": "FTI"
+    },
+    "original_record": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/candidate.json",
+      "sha256": "2ae4900ab07a4ef47940ce5672a8d4af8161bd1f4698d599e71d9f7f24efdac1"
+    }
+  },
+  "actual_plan_requests": [
+    {
+      "associations": [
+        {
+          "endpoint": "https://api.massive.com/v3/reference/tickers/FTI",
+          "purpose": "historical_issuer",
+          "query": {
+            "date": "2025-05-29"
+          }
+        }
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/FTI",
+      "kind": "historical_issuer",
+      "name": "supplement-001",
+      "query": {
+        "date": "2025-05-29"
+      },
+      "source": "massive"
+    },
+    {
+      "associations": [
+        {
+          "endpoint": "https://api.massive.com/stocks/v1/splits",
+          "purpose": "all_type_splits",
+          "query": {
+            "execution_date.gte": "2025-05-30",
+            "execution_date.lte": "2026-10-20",
+            "limit": "1000",
+            "sort": "execution_date.asc",
+            "ticker": "FTI"
+          }
+        }
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "kind": "all_type_splits",
+      "name": "supplement-002",
+      "query": {
+        "execution_date.gte": "2025-05-30",
+        "execution_date.lte": "2026-10-20",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "FTI"
+      },
+      "source": "massive"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-003",
+      "query": {},
+      "source": "sec_edgar"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-004",
+      "query": {},
+      "source": "sec_edgar"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-005",
+      "query": {},
+      "source": "sec_edgar"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/annualaifmasterlivemasterq.htm",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-006",
+      "query": {},
+      "source": "sec_edgar"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/a2024q4slfmdalive.htm",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-007",
+      "query": {},
+      "source": "sec_edgar"
+    }
+  ],
+  "actual_plan_source_binding_count": 858,
+  "actual_plan_code_binding_count": 106,
+  "checks": [
+    {
+      "name": "actual_FTI_full_native_reconstruction",
+      "passed": true,
+      "bar_count": 151,
+      "first": "2024-10-21",
+      "last": "2025-05-29",
+      "requested_start": "2024-04-25",
+      "requested_end": "2025-05-29",
+      "normalized_at": "2026-10-20T00:27:28.233611+00:00",
+      "cache_retrieved_at": "2026-10-20T00:25:29.635804+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "native_derived_requests": [
+        {
+          "purpose": "historical_issuer",
+          "endpoint": "https://api.massive.com/v3/reference/tickers/FTI",
+          "query": {
+            "date": "2025-05-29"
+          }
+        },
+        {
+          "purpose": "all_type_splits",
+          "endpoint": "https://api.massive.com/stocks/v1/splits",
+          "query": {
+            "ticker": "FTI",
+            "execution_date.gte": "2025-05-30",
+            "execution_date.lte": "2026-10-20",
+            "sort": "execution_date.asc",
+            "limit": "1000"
+          }
+        }
+      ]
+    },
+    {
+      "name": "actual_origin_wrong_case_issuer_rejected",
+      "passed": true
+    },
+    {
+      "name": "actual_origin_early_cutoff_rejected",
+      "passed": true
+    },
+    {
+      "name": "rehashed_actual_origin_pre_cache_normalization_rejected",
+      "passed": true
+    },
+    {
+      "name": "success_native_plumbing_pacing_no_reentry",
+      "passed": true,
+      "opens": 7,
+      "waited_seconds": 60.019999980926514
+    },
+    {
+      "name": "secret_native_plumbing_pacing_no_reentry",
+      "passed": true,
+      "opens": 6,
+      "waited_seconds": 60.019999980926514
+    },
+    {
+      "name": "source_drift_rejected_before_output_open",
+      "passed": true
+    },
+    {
+      "name": "code_drift_rejected_before_output_open",
+      "passed": true
+    },
+    {
+      "name": "url_drift_rejected_before_output_open",
+      "passed": true
+    }
+  ],
+  "all_passed": true,
+  "blocking_findings": [],
+  "limits": [
+    "400-day request is not 400-day observed coverage: actual151bars begin2024-10-21.",
+    "ActualFTI native reconstruction does not qualify issuer/split basis before the two real responses exist.",
+    "First positive fixture failed from uncanonicalized macOS /var versus /private/var path alias in reviewer fixture; preserved logs are excluded as product failures.",
+    "Temporary transport fixtures trim binding lists and add a synthetic historical ledger; no claim of independently rehashing all858 actual source bindings.",
+    "0actualGET/Store/prepare/globalappend/Labels/model; actual supplemental collection remains absent."
+  ]
+}

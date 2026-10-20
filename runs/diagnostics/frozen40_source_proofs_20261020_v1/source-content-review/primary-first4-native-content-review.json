@@ -1,0 +1,110 @@
+{
+  "schema_version": "source-content-review-exact-candidates-v1",
+  "records": [
+    {
+      "case_id": "cik_0001361658:20250131",
+      "accession": "0001361658-24-000007",
+      "document_id": "sec:cik_0001361658:000136165824000007",
+      "content_hash": "c63861c6291a0e621fd7317fbf37407378087fff96e537db826fdbc30ea4a5a2",
+      "content_scope": "complete_annual_operating_report",
+      "qualified": true,
+      "reason": "Travel + Leisure Co. FY2023 actual Business/MD&A, two operating segments, annual financial statement notes and February21 signatures inspected. Amount/transaction units vary by table.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-011.response.raw",
+        "sha256": "d1e4fe7222379a0aa3fa2286e0582a953ce75320886890b937c7e759aa1c57b3"
+      },
+      "source_receipt": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-011-receipt-snapshot.json",
+        "sha256": "6da78476fe8a5659daf54a813ee35070f753816d8b5495553883b395cfd65c62"
+      },
+      "body_locators": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-011-body-locators.json",
+        "sha256": "1cb6dc1d9fbce820f7c4e9f6d7b09598d5740dbec51a84b18d3f20c251f4d47b"
+      },
+      "native_profile_verified": true,
+      "source_admitted": false
+    },
+    {
+      "case_id": "cik_0001438133:20250930",
+      "accession": "0001438133-25-000157",
+      "document_id": "sec:cik_0001438133:000143813325000157",
+      "content_hash": "d5b42a6a14a4da3824c54b84308722cfc3e4d6e2edc5a693e256da48db6ed34b",
+      "content_scope": "complete_interim_operating_report",
+      "qualified": true,
+      "reason": "Tandem Diabetes Care June30 2025 actual interim statements/MD&A, segment disclosure, extensive current risks and August6 signatures inspected. Three/six-month flows and balance-sheet instants stay distinct; inspected amounts in thousands.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-024.response.raw",
+        "sha256": "2a57f168a238907e6f058e187850308cbf77d819ff937a907edf5b9d404209f7"
+      },
+      "source_receipt": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-024-receipt-snapshot.json",
+        "sha256": "53d1181dae8c86ee7619331e59cfc7f197c39fac6812fe94ce4a56e00f9a7cf0"
+      },
+      "body_locators": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-024-body-locators.json",
+        "sha256": "37f4eb9de87573d62b4c4a4e73e412f6f1105b1b9ee83e48c28a44ebeff0821f"
+      },
+      "native_profile_verified": true,
+      "source_admitted": false
+    },
+    {
+      "case_id": "cik_0000860413:20250930",
+      "accession": "0000860413-25-000022",
+      "document_id": "sec:cik_0000860413:000086041325000022",
+      "content_hash": "edc9f18edce80fd5d08c8eb1f0a0acf9a81c16dc8e673cd9f2f908b02ccb3144",
+      "content_scope": "complete_annual_operating_report",
+      "qualified": true,
+      "reason": "First Interstate BancSystem FY2024 actual community-bank Business, risks, MD&A interest/operating results, financial notes and February28 signatures inspected; inspected dollar tables are in millions with declared share/per-share exceptions.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-025.response.raw",
+        "sha256": "e50f23581a5370e2db08a21377fa9f65f8e85ac8d7632617f8f22b248e5590e7"
+      },
+      "source_receipt": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-025-receipt-snapshot.json",
+        "sha256": "3aa14aa56b8195a6d42440fa464e954780602d8dd2851763c126464479614d68"
+      },
+      "body_locators": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-025-body-locators.json",
+        "sha256": "921365ae4cb5ad9bf3ea4887b74923dccb2d4001f60942dc3c487f4d87e19558"
+      },
+      "native_profile_verified": true,
+      "source_admitted": false
+    },
+    {
+      "case_id": "cik_0001051627:20250930",
+      "accession": "0001558370-25-003004",
+      "document_id": "sec:cik_0001051627:000155837025003004",
+      "content_hash": "11b6289ea3b8e9fe733687b2f28949919cadf2a2503f51ac2994b1db21d6a3fc",
+      "content_scope": "complete_annual_operating_report",
+      "qualified": true,
+      "reason": "AXT FY2024 actual Business at12035 describes semiconductor substrates and subsidiaries, substantive risks80084/MD&A214442 and comparative revenue/gross-margin tables, with March14 signatures. Inspected dollar tables in thousands; not a universal report unit.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-037.response.raw",
+        "sha256": "0a2ffdd4cf4799e4070d33bcfe047dabe9b902fce2dd300800cfe9e6fc44187e"
+      },
+      "source_receipt": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-037-receipt-snapshot.json",
+        "sha256": "548744c7149f8979c21eec69a271a2b07886e0e4d53dfa1c76e1172cb1906829"
+      },
+      "body_locators": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-037-body-locators.json",
+        "sha256": "9d7244c35c1ae77094c80da71c4452b4977d4a66cfce29b769744061647c38ca"
+      },
+      "native_profile_verified": true,
+      "source_admitted": false
+    }
+  ],
+  "projection_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/case-identities.json",
+    "sha256": "3ecbd01349c00bbbba554b06bee2824ef08db162affbac0122c62558e90d02e9"
+  },
+  "limits": [
+    "Manual selected-section source-scope review, not complete fact audit or model reading.",
+    "Candidate files only; no store/append/view/prepare/GET/model/labels.",
+    "Availability preserves exact retained root accepted_at; current fetch clock remains separate in receipt/cache."
+  ]
+}

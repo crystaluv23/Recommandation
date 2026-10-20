@@ -1,0 +1,225 @@
+{
+  "name": "proof-080",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2024-10-30T18:40:53+00:00",
+        "accession_number": "0001213900-24-092156",
+        "case_id": "cik_0001951089:20250530",
+        "form": "20-F",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "3d6fca45c87bcb48d4fe6bbcaa34b31ed4f15d0f9430fbdb518c630936b90326"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v41/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "9d8d0e51ce0ff72425b83b17c1403ccf41eedb23ec18ab632578773a35a95a6d"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260825-v42/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "829b4375b0c78256cdc431e1e98eafda3a8de4ebd4f1543def1bcd44d3a094fa"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v43/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "09b292c0bbdaf6c6d3a348e299c7de0df01d5c49ba59e31ca57f7f91de381716"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v44/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "fdf56c8cff2631f3c4f9b4f8863f412cadc31dddf180f32cd14fcdf870dfbcd6"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v48/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "d62bf6ce81a189fad3194ea2209f859f9506de947d3e3aa475d0a2cb21afb857"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260826-v49/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "76baec086780e81228ef097416014167608a036884b2effacb9f489382c9dfaf"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v51/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "bc09777f7a1882005803a3b853daeb431d0091824ec0f19eabdb04f937263c5a"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260827-v52/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "5da0d5ce2053faf7eea0be8bd51e70da34b8db6170e190885dc86233a60e2670"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v53/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "043395392e112fc638a030d1c8b6fc9c413c902e6ca3d697162625841dd945c3"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v54/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "1d16ebb73cb16f626d0a79609c115a11e78d0a447ebcee5925cacf4018320bcb"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v55/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "f63aba53a65faf9f2a504d0941a6abd0284c80133d75bf3088ed87dd49a6a021"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v56/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "afdc0700e27b9d8f91ad21acd4e6b9218ad0d8256c6061999d5769d762fd9afc"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v57/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "4ef46ce7f8d07945f4c2167a190d691453d284fab0364611d76eda82aa4fdb1b"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v58/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "41181ac0407d674a6617076231b544e3d3a4b3efa92cf46fad870a2844b0f9b7"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260828-v59/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "812e69a3b063094a0f0725451dbce7fc56ba16bdeb0e2bbe1917722244522c88"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-slow-bootstrap-20260830-v76b/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+            "sha256": "027e93f7d7f1dd5ecb4a338bf37cf63a5fa9d7b06553b895a451f13e0b5cdf73"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm",
+    "filing": {
+      "accepted_at": "2024-10-30T18:40:53+00:00",
+      "accession_number": "0001213900-24-092156",
+      "cik": "0001951089",
+      "filing_date": "2024-10-30",
+      "form": "20-F",
+      "primary_document": "ea0217031-20f_critical.htm",
+      "report_date": "2024-06-30",
+      "retrieved_at": "2026-10-20T00:05:54.687364+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-080",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-080-receipt-snapshot.json",
+    "sha256": "f4444119913c2c953f7fea57d6065d2523a41055be74f4ec42a5496413956abb"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-080.response.raw",
+    "sha256": "06e739f8515241f5b469516a16a783f87c037ae7d270e3112731cf4ac48f2c31"
+  },
+  "decoded_body_sha256": "034dd6c1e90d95ba9b19885ac86a9ce9e6e87b16deedfff8032c6dea7256304f",
+  "decoded_characters": 2018271,
+  "visible_characters": 515233,
+  "visible_text_sha256": "067b42f2f2939936cd6892f5ea5c689dad06e585eb8a1f4aaa02de1a2b3b7a38",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 1957,
+    "raw_decoded_end": 15931,
+    "text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 20-F (Mark One) \u2610 REGISTRATION STATEMENT PURSUANT TO SECTION 12(b) OR 12(g) OF THE SECURITIES EXCHANGE ACT OF 1934 OR \u2612 ANNUAL REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the fiscal year ended June 30 , 2024 OR \u2610 TRANSITION REPORT PURSUANT TO SECTION 13 OR 15(D) OF THE SECURITIES EXCHANGE ACT OF 1934 OR \u2610 SHELL COMPANY REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Commission File Number: 001-41973 Critical Metals Corp. (Exact name of Registrant as specified in its charter) Not applicable British Virgin Islands (Translation of Registrant\u2019s name into English) (Jurisdiction of incorporation or organization) c/o Maples Corporate Services (BVI) Limited Kingston Chambers , PO Box 173 , Road Town Tortola , British Virgin Islands (Address of principal executive offices) Copy to: Corporation Service Company 251 Little Falls Drive Wilmington , Delaware 19808 Telephone: (302) 636-5400 (Name, Telephone, Email and/or Facsimile number and Address of Company Contact Person) Securities registered or to be registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Ordinary shares, pa"
+  },
+  "tail": {
+    "visible_start": 514383,
+    "visible_end": 515233,
+    "raw_decoded_start": 1839554,
+    "raw_decoded_end": 1841767,
+    "text": "Capital Raise. If CRML does not deliver the Deferred Payment by the 90th day following the capital raising transaction, CRML shall incur a penalty of $ 10,000 per day, payable in USD, which penalty shall be added to the deferred payment amount until paid by CRML. If CRML does not consummate a capital raising transaction by 31 December 2024, CRML shall owe the revised amount of $ 3,500,000 and such amount shall incur interest at a 10 % annual rate (which interest shall begin on the Commitment Fee Put Date and continue until such revised amount is paid). No other matters or circumstances have arisen since the end of the financial year which significantly altered or may significantly alter the operations of the Company, the results of those operations or the state of affairs of the Company in financial years subsequent to 30 June 2024. F- 35"
+  },
+  "closing_html": true,
+  "section_locators": {
+    "business": [
+      {
+        "visible_start": 5747,
+        "visible_end": 6597,
+        "raw_decoded_start": 35496,
+        "raw_decoded_end": 42839,
+        "text": "ITEM 4. INFORMATION ON THE COMPANY 29 A. HISTORY AND DEVELOPMENT OF THE COMPANY 29 B. BUSINESS OVERVIEW 31 C. ORGANIZATIONAL STRUCTURE 49 D. PROPERTY, PLANT AND EQUIPMENT 49 ITEM 4A. UNRESOLVED STAFF COMMENTS 49 ITEM 5. OPERATING AND FINANCIAL REVIEW AND PROSPECTS 49 A. Components of Our Results of Operations 54 B. RESULTS OF OPERATIONS 56 C. LIQUIDITY AND CAPITAL RESOURCES 57 D. RESEARCH AND DEVELOPMENT, PATENTS AND LICENSES, ETC. 60 E. TREND INFORMATION 60 F. OFF-BALANCE SHEET ARRANGEMENTS 60 G. CRITICAL ACCOUNTING ESTIMATES 60 ITEM 6. DIRECTORS, SENIOR MANAGEMENT AND EMPLOYEES 68 A. DIRECTORS AND SENIOR MANAGEMENT 68 B. COMPENSATION OF DIRECTORS AND EXECUTIVE OFFICERS 69 C. BOARD PRACTICES 70 D. EMPLOYEES 72 E. SHARE OWNERSHIP 72 ITEM 7. MAJOR SHAREHOLDERS AND RELATED PARTY TRANSACTIONS 72 A. MAJOR SHAREHOLDERS 72 B. RELATED PARTY TRAN"
+      },
+      {
+        "visible_start": 151702,
+        "visible_end": 152552,
+        "raw_decoded_start": 336658,
+        "raw_decoded_end": 338640,
+        "text": "Item 4. Information on the Company. A. History and Development of the Company We are a leading mining development company focused on critical metals and minerals and producing strategic products essential to electrification and next generation technologies for Europe and its Western world partners. Our primary strategy is to acquire, explore and develop unique and permitted critical metals mining assets that we expect will benefit from robust regulatory tailwinds in both Europe and North America and long-term secular trends for next generation technology in environmental, commercial and government applications. At the closing of our Business Combination, our efforts were solely focused on the development of our wholly owned Wolfsberg Lithium Project (the \u201c Wolfsberg Project \u201d) located in Carinthia, Austria, which is approximately 270 kilo"
+      },
+      {
+        "visible_start": 157826,
+        "visible_end": 158676,
+        "raw_decoded_start": 348392,
+        "raw_decoded_end": 350964,
+        "text": "Business Overview BUSINESS Unless otherwise indicated or the context otherwise requires, references in this section \u201cwe,\u201d \u201cus,\u201d \u201cour,\u201d and other similar terms refer to European Lithium AT (Investments) Limited and its subsidiaries prior to the Business Combination and refer to the Company (including European Lithium AT (Investments) Limited) and its subsidiaries immediately following the consummation of the Business Combination. Overview We are a mining development company focused on critical metals and minerals and producing strategic products essential to electrification and next generation technologies for Europe and its Western world partners. Our primary strategy is to acquire, explore and develop unique and permitted critical metals mining assets that we expect will benefit from robust regulatory tailwinds in both Europe and North A"
+      },
+      {
+        "visible_start": 336673,
+        "visible_end": 337523,
+        "raw_decoded_start": 817993,
+        "raw_decoded_end": 821106,
+        "text": "Item 4. Information on the Company\u201d and \u201cPart I, Item 7. Major Shareholders and Related Party Transactions\u2013B. Related Party Transactions.\u201d D. Exchange Controls There are currently no currency control restrictions on remittances of dividends on our ordinary shares, proceeds from the sale of the ordinary shares or interest or other payments to non-resident shareholders. E. Taxation MATERIAL U.S. FEDERAL INCOME TAX CONSIDERATIONS The following discussion is a summary of certain material U.S. federal income tax considerations to U.S. Holders (as defined below) of the ownership and disposition of the Company\u2019s ordinary shares and Publix Warrants. This discussion applies only to U.S. Holders that hold the ordinary shares and Public Warrants, as the case may be, as \u201ccapital assets\u201d within the meaning of Section 1221 of the Code (generally, prope"
+      }
+    ],
+    "mda": [
+      {
+        "visible_start": 5959,
+        "visible_end": 6809,
+        "raw_decoded_start": 37430,
+        "raw_decoded_end": 44786,
+        "text": "ITEM 5. OPERATING AND FINANCIAL REVIEW AND PROSPECTS 49 A. Components of Our Results of Operations 54 B. RESULTS OF OPERATIONS 56 C. LIQUIDITY AND CAPITAL RESOURCES 57 D. RESEARCH AND DEVELOPMENT, PATENTS AND LICENSES, ETC. 60 E. TREND INFORMATION 60 F. OFF-BALANCE SHEET ARRANGEMENTS 60 G. CRITICAL ACCOUNTING ESTIMATES 60 ITEM 6. DIRECTORS, SENIOR MANAGEMENT AND EMPLOYEES 68 A. DIRECTORS AND SENIOR MANAGEMENT 68 B. COMPENSATION OF DIRECTORS AND EXECUTIVE OFFICERS 69 C. BOARD PRACTICES 70 D. EMPLOYEES 72 E. SHARE OWNERSHIP 72 ITEM 7. MAJOR SHAREHOLDERS AND RELATED PARTY TRANSACTIONS 72 A. MAJOR SHAREHOLDERS 72 B. RELATED PARTY TRANSACTIONS 73 C. INTERESTS OF EXPERTS AND COUNSEL 75 ITEM 8. FINANCIAL INFORMATION 75 A. CONSOLIDATED STATEMENTS AND OTHER FINANCIAL INFORMATION 75 B. SIGNIFICANT CHANGES 75 ITEM 9. THE OFFER AND LISTING 75 A. OFFE"
+      },
+      {
+        "visible_start": 226758,
+        "visible_end": 227608,
+        "raw_decoded_start": 488590,
+        "raw_decoded_end": 489743,
+        "text": "Item 5. Operating and Financial Review and Prospects You should read the following discussion and analysis of our financial condition and results of operations together with the historical audited annual consolidated financial statements and the related notes included elsewhere in this Annual Report. Some of the information contained in this discussion and analysis or set forth elsewhere in this Annual Report, including information with respect to our plans and strategy for our business and related financing, includes forward-looking statements that involve risks and uncertainties. As a result of many factors, including those factors set forth in the section entitled Item 3.D. \u201cRisk Factors\u201d of this Annual Report, our actual results could differ materially from the results described in or implied by the forward-looking statements containe"
+      }
+    ],
+    "risks": [],
+    "statements": [
+      {
+        "visible_start": 408119,
+        "visible_end": 408969,
+        "raw_decoded_start": 999249,
+        "raw_decoded_end": 1003426,
+        "text": "Consolidated Statements of Financial Position F-4 Consolidated Statements of Changes in Equity F-5 Consolidated Statements of Cash Flows F-6 Notes to the Consolidated Financial Statements F-7 F- 1 REPORT OF INDEPENDENT REGISTERED PUBLIC ACCOUNTING FIRM To the Shareholders and Board of Directors of Critical Metals Corp. Opinion on the Financial Statements We have audited the accompanying consolidated financial positions of Critical Metals Corp. (the \u201cCompany\u201d) as of June 30, 2024 and 2023, the related consolidated statements of comprehensive income, changes in equity and cash flows for each of the two years in the period ended , and the related notes (collectively referred to as the \u201cfinancial statements\u201d). In our opinion, the financial statements present fairly, in all material respects, the financial position of the Company as of June 30"
+      },
+      {
+        "visible_start": 408218,
+        "visible_end": 409068,
+        "raw_decoded_start": 1000068,
+        "raw_decoded_end": 1003426,
+        "text": "Consolidated Statements of Cash Flows F-6 Notes to the Consolidated Financial Statements F-7 F- 1 REPORT OF INDEPENDENT REGISTERED PUBLIC ACCOUNTING FIRM To the Shareholders and Board of Directors of Critical Metals Corp. Opinion on the Financial Statements We have audited the accompanying consolidated financial positions of Critical Metals Corp. (the \u201cCompany\u201d) as of June 30, 2024 and 2023, the related consolidated statements of comprehensive income, changes in equity and cash flows for each of the two years in the period ended , and the related notes (collectively referred to as the \u201cfinancial statements\u201d). In our opinion, the financial statements present fairly, in all material respects, the financial position of the Company as of June 30, 2024 and 2023, and the results of its operations and its cash flows for each of the two years in "
+      },
+      {
+        "visible_start": 418856,
+        "visible_end": 419706,
+        "raw_decoded_start": 1168033,
+        "raw_decoded_end": 1171381,
+        "text": "Consolidated Statements of Cash Flows is to be read in conjunction with the Notes to the Consolidated Financial Statements. F- 6 CRITICAL METALS CORP NOTES TO THE CONSOLIDATED FINANCIAL STATEMENTS FOR THE YEARS ENDED 30 JUNE 2024 AND 2023 1. CORPORATE INFORMATION The financial report of Critical Metals Corp ( CRML or the Company ), and its wholly owned entities as disclosed in Note 31 (the Group ) for the years ended 30 June 2024 and 30 June 2023 was authorised for issue in accordance with a resolution of the directors on 29 October 2024. On 26 October 2022, European Lithium Ltd ( EUR ) announced that it has entered into a business combination agreement with Sizzle Acquisition Corp., a US special purpose acquisition company listed on NASDAQ (NASDAQ:SZZL) ( Sizzle ), pursuant to which EUR will effectively sell down its shareholding in Euro"
+      }
+    ],
+    "segments": [
+      {
+        "visible_start": 455055,
+        "visible_end": 455905,
+        "raw_decoded_start": 1289539,
+        "raw_decoded_end": 1291644,
+        "text": "Operating segments are reported in a manner consistent with the internal reporting provided to the Board of Directors who is responsible for making strategic decisions. 3. SEGMENT INFORMATION IFRS 8 Operating Segments requires operating segments to be identified on the basis of internal reports that are regularly reviewed by the Chief Operating Decision Maker ( CODM ) to make decisions about resources to be allocated to the segment and assess its performance, and for which discrete financial information is available. In the case of the Group the CODM are the executive management team and all information reported to the CODM is based on the consolidated results of the Group as one operating segment, as the Group\u2019s activities relate to mineral exploration. Accordingly, the Group has only one reportable segment and the results are the same a"
+      },
+      {
+        "visible_start": 455254,
+        "visible_end": 456104,
+        "raw_decoded_start": 1290586,
+        "raw_decoded_end": 1294027,
+        "text": "Operating Segments requires operating segments to be identified on the basis of internal reports that are regularly reviewed by the Chief Operating Decision Maker ( CODM ) to make decisions about resources to be allocated to the segment and assess its performance, and for which discrete financial information is available. In the case of the Group the CODM are the executive management team and all information reported to the CODM is based on the consolidated results of the Group as one operating segment, as the Group\u2019s activities relate to mineral exploration. Accordingly, the Group has only one reportable segment and the results are the same as the Group results. F- 14 CRITICAL METALS CORP NOTES TO THE CONSOLIDATED FINANCIAL STATEMENTS FOR THE YEARS ENDED 30 JUNE 2024 AND 2023 a) Segment assets The total of non-current assets other than f"
+      },
+      {
+        "visible_start": 455282,
+        "visible_end": 456132,
+        "raw_decoded_start": 1290615,
+        "raw_decoded_end": 1294027,
+        "text": "operating segments to be identified on the basis of internal reports that are regularly reviewed by the Chief Operating Decision Maker ( CODM ) to make decisions about resources to be allocated to the segment and assess its performance, and for which discrete financial information is available. In the case of the Group the CODM are the executive management team and all information reported to the CODM is based on the consolidated results of the Group as one operating segment, as the Group\u2019s activities relate to mineral exploration. Accordingly, the Group has only one reportable segment and the results are the same as the Group results. F- 14 CRITICAL METALS CORP NOTES TO THE CONSOLIDATED FINANCIAL STATEMENTS FOR THE YEARS ENDED 30 JUNE 2024 AND 2023 a) Segment assets The total of non-current assets other than financial instruments and def"
+      }
+    ],
+    "units": []
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

@@ -1,0 +1,108 @@
+{
+  "name": "proof-059",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2025-03-28T21:08:05+00:00",
+        "accession_number": "0001062993-25-006514",
+        "case_id": "cik_0000878518:20250930",
+        "form": "40-F",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v57/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "0acb531b537bf64aa88bc547acd29c5bab7d8e67517f2f0cb6280910124a0921"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v59/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "fd2dda6fbaebbd89174b5817223395de813567a8dd87e06e0d4eb225d1bbacd1"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v92/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "201e9098c7f68a3b03a6d45c8cd3822881f6dab1f03f83cb25e6f087a875c622"
+          },
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v112/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "9b9f1829946ee37cd8cb257b223545c461c8d76bdaaf9a2f616024299c26cbd6"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm",
+    "filing": {
+      "accepted_at": "2025-03-28T21:08:05+00:00",
+      "accession_number": "0001062993-25-006514",
+      "cik": "0000878518",
+      "filing_date": "2025-03-28",
+      "form": "40-F",
+      "primary_document": "form40f.htm",
+      "report_date": "2024-12-31",
+      "retrieved_at": "2026-10-20T00:05:54.625266+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-059",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-059-receipt-snapshot.json",
+    "sha256": "2f82e6c4a8d7c3fcff3e8127271cf42ea47f0839d71960e857f567be95ba39a5"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+    "sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0"
+  },
+  "decoded_body_sha256": "c00f5c0cd55b3be30c6b7ada10e9a7dd7620bb73597434beb4a719611d7f3d6e",
+  "decoded_characters": 89563,
+  "visible_characters": 27457,
+  "visible_text_sha256": "43719d737aa359097e99b94f2e262a1894e9d35e2bdf6536c6596017cde0e9be",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 2780,
+    "raw_decoded_end": 20528,
+    "text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 40-F \u2610 REGISTRATION STATEMENT PURSUANT TO SECTION 12 OF THE SECURITIES EXCHANGE ACT OF 1934 OR \u2612 ANNUAL REPORT PURSUANT TO SECTION 13(a) OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the fiscal year ended December 31 , 2024 Commission File Number: 001-31965 TASEKO MINES LIMITED (Exact name of Registrant as specified in its charter) British Columbia 1040 Not Applicable (Province or Other Jurisdiction of Incorporation or Organization) (Primary Standard Industrial Classification Code) (I.R.S. Employer Identification No.) 12 th Floor - 1040 West Georgia Street Vancouver , British Columbia Canada V6E 4H1 ( 778 ) 373-4533 (Address and telephone number of Registrant's principal executive offices) Corporation Service Company Suite 400 , 2711 Centerville Road Wilmington , Delaware 19808 ( 800 ) 927-9800 (Name, address (including zip code) and telephone number (including area code) of agent for service in the United States) Securities registered or to be registered pursuant to section 12(b) of the Act: Title Of Each Class Name Of Each Exchange On Which Registered Common Shares, no par value NYSE American Securities registered or to be registered pursuant to Section 12(g) of the Act: None Securities for which"
+  },
+  "tail": {
+    "visible_start": 26607,
+    "visible_end": 27457,
+    "raw_decoded_start": 79690,
+    "raw_decoded_end": 89299,
+    "text": "e Sarbanes-Oxley Act of 2002 99.8 (1) Consent of KPMG LLP 99.9 (1) Consent of Richard Weymark, P. Eng., MBA 99.10 (1) Consent of Richard Tremblay, P. Eng., MBA 99.11 (1) Consent of Robert Rotzinger, P. Eng. 101.INS Inline XBRL Instance Document\u2013the instance document does not appear in the Interactive Data File as its XBRL tags are embedded within the Inline XBRL document 101.SCH Inline XBRL Taxonomy Extension Schema Document 101.CAL Inline XBRL Taxonomy Extension Calculation Linkbase Document 101.DEF Inline XBRL Taxonomy Extension Definition Linkbase Document 101.LAB Inline XBRL Taxonomy Extension Label Linkbase Document 101.PRE Inline XBRL Taxonomy Extension Presentation Linkbase Document 104 Cover Page Interactive Data File (formatted as Inline XBRL and contained in Exhibit 101) (1) Filed as an exhibit to this Annual Report on Form 40-F"
+  },
+  "closing_html": true,
+  "section_locators": {
+    "business": [],
+    "mda": [
+      {
+        "visible_start": 5071,
+        "visible_end": 5921,
+        "raw_decoded_start": 36851,
+        "raw_decoded_end": 38520,
+        "text": "Management's Discussion and Analysis of the Company for the year ended December 31, 2024 (the \" MD&A \") 99.3 CAUTIONARY NOTE TO UNITED STATES INVESTORS CONCERNING ESTIMATES OF RESERVES AND MEASURED, INDICATED AND INFERRED RESOURCES As a British Columbia corporation and a \"reporting issuer\" under Canadian securities laws, the Company is required to provide disclosure regarding its mineral properties in accordance with Canadian National Instrument 43-101 Standards of Disclosure for Mineral Projects (\" NI 43-101 \"). NI 43-101 is a rule developed by the Canadian Securities Administrators that establishes standards for all public disclosure an issuer makes of scientific and technical information concerning mineral projects. In accordance with NI 43-101, the Company uses the terms mineral reserves and resources as they are defined in accordance"
+      },
+      {
+        "visible_start": 25791,
+        "visible_end": 26641,
+        "raw_decoded_start": 76728,
+        "raw_decoded_end": 80213,
+        "text": "Management's discussion and analysis of financial condition and results of operations for the year ended December 31, 2024 99.4 (1) Certification of Chief Executive Officer pursuant to Rule 13a-14(a) of the Exchange Act, as adopted pursuant to Section 302 of the Sarbanes-Oxley Act of 2002 99.5 (1) Certification of Chief Financial Officer pursuant to Rule 13a-14(a) of the Exchange Act, as adopted pursuant to Section 302 of the Sarbanes-Oxley Act of 2002 99.6 (1) Certification of Chief Executive Officer pursuant to Rule 13a-14(b) of the Exchange Act and 18 U.S.C. Section 1350, as adopted pursuant to Section 906 of the Sarbanes-Oxley Act of 2002 99.7 (1) Certification of Chief Financial Officer pursuant to Rule 13a-14(b) of the Exchange Act and 18 U.S.C. Section 1350, as adopted pursuant to Section 906 of the Sarbanes-Oxley Act of 2002 99.8 "
+      }
+    ],
+    "risks": [],
+    "statements": [
+      {
+        "visible_start": 25363,
+        "visible_end": 26213,
+        "raw_decoded_start": 75749,
+        "raw_decoded_end": 78335,
+        "text": "consolidated balance sheets as of December 31, 2024 and 2023 and the consolidated statements of comprehensive income, changes in equity, and cash flows for the years ended December 31, 2024 and 2023, including the notes thereto and reports of the Company's independent registered public accounting firm thereon and on the effectiveness of the Company's internal control over financial reporting as of December 31, 2024 99.3 (1) Management's discussion and analysis of financial condition and results of operations for the year ended December 31, 2024 99.4 (1) Certification of Chief Executive Officer pursuant to Rule 13a-14(a) of the Exchange Act, as adopted pursuant to Section 302 of the Sarbanes-Oxley Act of 2002 99.5 (1) Certification of Chief Financial Officer pursuant to Rule 13a-14(a) of the Exchange Act, as adopted pursuant to Section 302"
+      }
+    ],
+    "segments": [],
+    "units": []
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

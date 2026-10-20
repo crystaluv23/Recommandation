@@ -1,0 +1,205 @@
+{
+  "name": "proof-025",
+  "source_request": {
+    "associations": [
+      {
+        "accepted_at": "2025-02-28T22:31:22+00:00",
+        "accession_number": "0000860413-25-000022",
+        "case_id": "cik_0000860413:20250930",
+        "form": "10-K",
+        "purpose": "exact_static_primary_body",
+        "root_bindings": [
+          {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/3154a5ccef31cceaddb284a7.json",
+            "sha256": "91011ab47d51b8e1c7dfb57968aeb168e88b951387270db29b4aaee5df2eb0a5"
+          }
+        ]
+      }
+    ],
+    "disposition": "planned_GET",
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/860413/000086041325000022/fibk-20241231.htm",
+    "filing": {
+      "accepted_at": "2025-02-28T22:31:22+00:00",
+      "accession_number": "0000860413-25-000022",
+      "cik": "0000860413",
+      "filing_date": "2025-02-28",
+      "form": "10-K",
+      "primary_document": "fibk-20241231.htm",
+      "report_date": "2024-12-31",
+      "retrieved_at": "2026-10-20T00:05:54.515452+00:00",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/860413/000086041325000022/fibk-20241231.htm"
+    },
+    "kind": "exact_static_primary_body",
+    "name": "proof-025",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-025-receipt-snapshot.json",
+    "sha256": "3aa14aa56b8195a6d42440fa464e954780602d8dd2851763c126464479614d68"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-025.response.raw",
+    "sha256": "e50f23581a5370e2db08a21377fa9f65f8e85ac8d7632617f8f22b248e5590e7"
+  },
+  "decoded_body_sha256": "edc9f18edce80fd5d08c8eb1f0a0acf9a81c16dc8e673cd9f2f908b02ccb3144",
+  "decoded_characters": 5277456,
+  "visible_characters": 538561,
+  "visible_text_sha256": "bea8b16e8b31223a257fb51ed858a0eb1690520aa7389eaab8f8ed67d08c1920",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 647853,
+    "raw_decoded_end": 663660,
+    "text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington D.C. 20549 FORM 10-K (Mark One) \u2611 Annual Report Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 For the fiscal year ended December 31 , 2024 or \u2610 Transition Report Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 For the transition period from to . Commission File Number: 001-34653 FIRST INTERSTATE BANCSYSTEM, INC. (Exact name of registrant as specified in its charter) Delaware 81-0331430 (State or other jurisdiction of incorporation or organization) (IRS Employer Identification No.) 401 North 31st Street Billings, MT 59101 (Address of principal executive offices) (zip code) ( 406 ) 255-5311 (Registrant\u2019s telephone number, including area code) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of exchange on which registered Common stock, $0.00001 par value FIBK NASDAQ Securities registered pursuant to Section 12(g) of the Act: None (Title of class) Indicate by check mark if the registrant is a well-known seasoned issuer, as defined in Rule 405 of the Securities Act. \u00fe Yes o No Indicate by check mark if the registrant is not required to file reports pursuant to Section 13 or Section 15(d) of the Act. o Yes \u00fe No Indicate by ch"
+  },
+  "tail": {
+    "visible_start": 537711,
+    "visible_end": 538561,
+    "raw_decoded_start": 5263093,
+    "raw_decoded_end": 5277310,
+    "text": ". JAHNKE February 28, 2025 David L. Jahnke, Director Date /s/ DENNIS L. JOHNSON February 28, 2025 Dennis L. Johnson, Director Date /s/ STEPHEN M. LACY February 28, 2025 Stephen M. Lacy, Director Date /s/ PATRICIA L. MOSS February 28, 2025 Patricia L. Moss, Director Date /s/ JOYCE A. PHILLIPS February 28, 2025 Joyce A. Phillips, Director Date /s/ DANIEL A. RYKHUS February 28, 2025 Daniel A. Rykhus, Director Date /s/ JAMES R. SCOTT February 28, 2025 James R. Scott, Director Date /s/ JONATHAN R. SCOTT February 28, 2025 Jonathan R. Scott, Director Date /s/ JAMES A. REUTER February 28, 2025 James A. Reuter President, Chief Executive Officer and Director (Principal executive officer) Date /s/ MARCY D. MUTCH February 28, 2025 Marcy D. Mutch Executive Vice President and Chief Financial Officer (Principal financial and accounting officer) Date 134"
+  },
+  "closing_html": true,
+  "section_locators": {
+    "business": [
+      {
+        "visible_start": 4407,
+        "visible_end": 5257,
+        "raw_decoded_start": 678918,
+        "raw_decoded_end": 699960,
+        "text": "Item 1 Business 2 Item 1A Risk Factors 15 Item 1B Unresolved Staff Comments 31 Item 1C Cybersecurity 32 Item 2 Properties 33 Item 3 Legal Proceedings 34 Item 4 Mine Safety Disclosure 34 PART II Item 5 Market for Registrant\u2019s Common Equity, Related Stockholder Matters and Issuer Purchases of Equity Securities 34 Item 6 Reserved 35 Item 7 Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 36 Item 7A Quantitative and Qualitative Disclosures About Market Risk 59 Item 8 Financial Statements and Supplementary Data 60 Item 9 Changes in and Disagreements with Accountants on Accounting and Financial Disclosure 60 Item 9A Controls and Procedures 61 Item 9B Other Information 63 Item 9C Disclosure Regarding Foreign Jurisdictions that Prevent Inspections 63 PART III Item 10 Directors, Executive Officers and Corporate"
+      },
+      {
+        "visible_start": 13703,
+        "visible_end": 14553,
+        "raw_decoded_start": 743045,
+        "raw_decoded_end": 745224,
+        "text": "Item 1. Business Our Company We are a financial and bank holding company focused on community banking. Since our incorporation in Montana in 1971, we have grown both organically and through strategic acquisitions. We operate 300 banking offices, including branches and detached drive-up facilities, in communities across 14 states\u2014Arizona, Colorado, Idaho, Iowa, Kansas, Minnesota, Missouri, Montana, Nebraska, North Dakota, Oregon, South Dakota, Washington, and Wyoming. Through our bank subsidiary, First Interstate Bank, we deliver a comprehensive range of banking products and services\u2014including online and mobile banking\u2014to individuals, businesses, government entities, and others throughout our market areas. 2 Table of Contents We are proud to provide lending opportunities to clients that participate in a wide variety of industries, includin"
+      }
+    ],
+    "mda": [
+      {
+        "visible_start": 4739,
+        "visible_end": 5589,
+        "raw_decoded_start": 690252,
+        "raw_decoded_end": 706722,
+        "text": "Item 7 Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 36 Item 7A Quantitative and Qualitative Disclosures About Market Risk 59 Item 8 Financial Statements and Supplementary Data 60 Item 9 Changes in and Disagreements with Accountants on Accounting and Financial Disclosure 60 Item 9A Controls and Procedures 61 Item 9B Other Information 63 Item 9C Disclosure Regarding Foreign Jurisdictions that Prevent Inspections 63 PART III Item 10 Directors, Executive Officers and Corporate Governance. 63 Item 11 Executive Compensation 63 Item 12 Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters 63 Item 13 Certain Relationships and Related Transactions and Director Independence 63 Item 14 Principal Accountant Fees and Services 64 PART IV Item 15 Exhibits and Financial Sta"
+      },
+      {
+        "visible_start": 92701,
+        "visible_end": 93551,
+        "raw_decoded_start": 914708,
+        "raw_decoded_end": 917551,
+        "text": "Item 7. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations. In addition, many of our borrowers operate in industries that are directly or indirectly impacted by changes in commodity prices, such as agriculture and livestock businesses, as well as businesses indirectly impacted by commodities prices, such as businesses that transport commodities or manufacture equipment used in production of commodities. Changes in commodity products prices depend on local, regional, and global events or conditions that affect supply and demand for the relevant commodity. Deterioration in economic conditions or in the real estate market could result in increased delinquencies and foreclosures and could have an adverse effect on the collateral value for many of these loans and on the repayment ability of many of our borrow"
+      },
+      {
+        "visible_start": 182143,
+        "visible_end": 182993,
+        "raw_decoded_start": 1058587,
+        "raw_decoded_end": 1064940,
+        "text": "Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations \u2014 Capital Resources and Liquidity\u201d included herein. Sales of Unregistered Securities There were no sales of equity securities by us during the year ended December 31, 2024 that were not registered under the Securities Act. Purchases of Equity Securities by the Issuer and Affiliated Purchasers The following table provides information with respect to purchases made by or on behalf of us or any \u201caffiliated purchasers\u201d (as defined in Rule 10b-18(a)(3) under the Exchange Act), of our common stock during the three months ended December 31, 2024. Total Number of Maximum Number Shares Purchased as Part of Shares That May Total Number of Average Price of Publicly Announced Yet Be Purchased Under Period Shares Purchased (1) Paid Per Share Plans or Programs the Pla"
+      },
+      {
+        "visible_start": 185052,
+        "visible_end": 185902,
+        "raw_decoded_start": 1091045,
+        "raw_decoded_end": 1092613,
+        "text": "Item 7. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations The following discussion and analysis should be read in conjunction with the consolidated financial statements and related notes included elsewhere in this Annual Report on Form 10-K for the year ended December 31, 2024. We make statements in this section that are forward-looking statements within the meaning of the federal securities laws. All of such forward-looking statements are expressly qualified by reference to the cautionary statements provided under the caption \u201cCautionary Note Regarding Forward-Looking Statements\u201d included on page 1 in Part I of this report. Furthermore, a number of known and unknown factors may cause our actual results, performance or achievements to differ materially from those expressed or implied by the following di"
+      }
+    ],
+    "risks": [
+      {
+        "visible_start": 4425,
+        "visible_end": 5275,
+        "raw_decoded_start": 680081,
+        "raw_decoded_end": 700666,
+        "text": "Item 1A Risk Factors 15 Item 1B Unresolved Staff Comments 31 Item 1C Cybersecurity 32 Item 2 Properties 33 Item 3 Legal Proceedings 34 Item 4 Mine Safety Disclosure 34 PART II Item 5 Market for Registrant\u2019s Common Equity, Related Stockholder Matters and Issuer Purchases of Equity Securities 34 Item 6 Reserved 35 Item 7 Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 36 Item 7A Quantitative and Qualitative Disclosures About Market Risk 59 Item 8 Financial Statements and Supplementary Data 60 Item 9 Changes in and Disagreements with Accountants on Accounting and Financial Disclosure 60 Item 9A Controls and Procedures 61 Item 9B Other Information 63 Item 9C Disclosure Regarding Foreign Jurisdictions that Prevent Inspections 63 PART III Item 10 Directors, Executive Officers and Corporate Governance. 63 It"
+      },
+      {
+        "visible_start": 74053,
+        "visible_end": 74903,
+        "raw_decoded_start": 889188,
+        "raw_decoded_end": 890727,
+        "text": "Item 1A. Risk Factors Like other financial institutions and bank holding companies, the success of our business is subject to a number of risks and uncertainties, many of which are outside of our control. The material risks and uncertainties of which we are currently aware are set forth below under headings that are provided for convenience and intended to organize the risks and uncertainties into related categories to improve readability for investors; no inference should be drawn, however, that the placement of a risk factor under a particular category means it is not applicable to another category of risks or that it may be more or less material than another risk factor. Regardless, if any of the events or circumstances described below actually occur, our business, financial condition, and results of operations could be harmed. These r"
+      }
+    ],
+    "statements": [
+      {
+        "visible_start": 5668,
+        "visible_end": 6518,
+        "raw_decoded_start": 708723,
+        "raw_decoded_end": 720335,
+        "text": "Consolidated Balance Sheets 68 Consolidated Statements of Income 69 Consolidated Statements of Comprehensive Income (Loss) 70 Consolidated Statements of Stockholders' Equity 71 Consolidated Statements of Cash Flows 72 Notes to Consolidated Financial Statements 74 Exhibits 131 Item 16 Form 10-K Summary 133 Table of Contents PART I Cautionary Note Regarding Forward-Looking Statements When we refer to \u201cwe,\u201d \u201cour,\u201d \u201cus,\u201d \u201cFirst Interstate,\u201d or the \u201cCompany\u201d in this report, we mean First Interstate BancSystem, Inc. and our consolidated subsidiaries, including our wholly-owned subsidiary, First Interstate Bank, unless the context indicates that we refer only to the parent company, First Interstate BancSystem, Inc. When we refer to the \u201cBank\u201d or \u201cFIB\u201d in this report, we mean only First Interstate Bank. This report contains \u201cforward-looking state"
+      },
+      {
+        "visible_start": 216712,
+        "visible_end": 217562,
+        "raw_decoded_start": 1244094,
+        "raw_decoded_end": 1258296,
+        "text": "consolidated statements of income $ 821.6 $ 878.8 $ 942.6 Interest rate spread 2.46 % 2.66 % 3.23 % Net interest margin 3.02 3.12 3.33 Net FTE interest margin (non-GAAP) (3) 3.04 3.14 3.36 Cost of funds, including noninterest-bearing demand deposits (4) 1.83 1.46 0.29 (1) Average loan balances include mortgage loans held for sale and non-accrual loans. Interest income on loans includes amortization of deferred loan fees net of deferred loan costs of $3.4 million, $1.3 million, and $7.5 million during 2024, 2023, and 2022, respectively. (2) Management believes fully taxable equivalent, or FTE, interest income is useful to investors in evaluating the Company\u2019s performance as a comparison of the returns between a tax-free investment and a taxable alternative. The Company adjusts interest income and average rates for tax exempt loans and secu"
+      },
+      {
+        "visible_start": 274419,
+        "visible_end": 275269,
+        "raw_decoded_start": 1847735,
+        "raw_decoded_end": 1850733,
+        "text": "Consolidated Statements of Cash Flows,\u201d included in Part IV, Item 15 of this report. The Company had deposits without a stated maturity of $20,125.1 million and time deposits of $2,658.5 million, due in one year or less in addition to time deposits due in more than one year of $232.0 million as of December 31, 2024. For additional details in regard to the Company\u2019s deposits see \u201cNotes to Consolidated Financial Statements\u2014Deposits\u201d included in Part IV, Item 15 of this report. As of December 31, 2024, the Company had securities sold under repurchase agreements of $523.9 million due in one year or less as the agreements with our client counterparties mature on the next banking day. As of December 31, 2024, the Company had $1,567.5 million of FHLB borrowings due in less than one year, $99.1 million of fixed-to-floating rate subordinated notes"
+      },
+      {
+        "visible_start": 514600,
+        "visible_end": 515450,
+        "raw_decoded_start": 5053014,
+        "raw_decoded_end": 5078681,
+        "text": "consolidated balance sheets, and are segregated by the level of the valuation inputs within the fair value hierarchy that are utilized to measure fair value, are as follows: ` Fair Value Measurements at Reporting Date Using As of December 31, 2024 Carrying Amount Estimated Fair Value Quoted Prices in Active Markets for Identical Assets (Level 1) Significant Other Observable Inputs (Level 2) Significant Unobservable Inputs (Level 3) Financial assets: Cash and cash equivalents $ 896.6 $ 896.6 $ 896.6 $ \u2014 $ \u2014 Investment debt securities held-to-maturity 2,687.5 2,358.6 \u2014 2,358.6 \u2014 Accrued interest receivable 116.8 116.8 \u2014 116.8 \u2014 Mortgage servicing rights, net 25.7 35.4 \u2014 35.4 \u2014 Net loans held for investment 17,640.8 17,154.7 \u2014 \u2014 17,154.7 Total financial assets $ 21,367.4 $ 20,562.1 $ 896.6 $ 2,510.8 $ 17,154.7 Financial liabilities: Total de"
+      }
+    ],
+    "segments": [
+      {
+        "visible_start": 378530,
+        "visible_end": 379380,
+        "raw_decoded_start": 2518175,
+        "raw_decoded_end": 2520115,
+        "text": "operating segments. It also requires that public companies report certain information about their products and services, the geographic areas in which they operate, and their major clients. The Company has identified one reporting unit and one operating segment, community banking, which encompasses commercial and consumer banking services to serve a similar base of clients utilizing company-wide offerings of similar products and services managed through similar processes and platforms offered to individuals, businesses, municipalities and other entities. The Company\u2019s chief operating decision maker (\u201cCODM\u201d) is its Chief Executive Officer who is charged with management of the Company and is responsible for the evaluation of operating performance and decision making about the allocation of resources to operating segments. 83 Table of Conten"
+      },
+      {
+        "visible_start": 379342,
+        "visible_end": 380192,
+        "raw_decoded_start": 2518711,
+        "raw_decoded_end": 2522561,
+        "text": "operating segments. 83 Table of Contents FIRST INTERSTATE BANCSYSTEM, INC. AND SUBSIDIARIES NOTES TO CONSOLIDATED FINANCIAL STATEMENTS (Dollars in millions, except share and per share data) The CODM regularly assesses performance of the single operating and reporting segment and decides how to allocate resources based on net income calculated on the same basis as is net income reported in the Company\u2019s consolidated statements of income. The CODM is also regularly provided with expense information at a level consistent with that disclosed in the Company\u2019s consolidated statements of income. Our principal expenses include: (i) interest expense on deposit accounts and other borrowings; (ii) salaries and employee benefits; (iii) information technology and communication costs primarily associated with maintaining loan and deposit functions; (iv"
+      },
+      {
+        "visible_start": 522183,
+        "visible_end": 523033,
+        "raw_decoded_start": 5169852,
+        "raw_decoded_end": 5171663,
+        "text": "operating segments; however, it does require that an entity that has single reportable segment provide all the disclosures required by the amendments in this update. The amendments in this update are effective for fiscal years beginning after December 15, 2023, and interim periods within fiscal years beginning after December 15, 2024. A public entity should apply the amendments in this update retrospectively to all prior periods presented in the consolidated financial statements. The Company currently has one reportable operating segment, Community Banking. The amendments in this ASU did not impact the Company\u2019s consolidated financial statements and did not have a significant impact to the disclosures. ASU 2023-09, \u201c Income Taxes (Topic 740): Improvements to Income Tax Disclosures \u201d In December 2023, the FASB issued ASU 2023-09, Income Ta"
+      }
+    ],
+    "units": [
+      {
+        "visible_start": 214891,
+        "visible_end": 215741,
+        "raw_decoded_start": 1158689,
+        "raw_decoded_end": 1199586,
+        "text": "Dollars in millions) Average Balance Interest (2) Average Rate Average Balance Interest (2) Average Rate Average Balance Interest (2) Average Rate Interest earning assets: Loans (1) $ 18,182.0 $ 1,028.2 5.66 % $ 18,299.6 $ 986.0 5.39 % $ 16,802.2 $ 797.2 4.74 % Investment securities Taxable 8,261.5 243.5 2.95 9,173.1 269.1 2.93 9,729.8 213.9 2.20 Tax-exempt 186.5 3.4 1.82 199.7 3.9 1.95 243.6 5.0 2.05 Investment in FHLB and FRB stock 178.8 11.8 6.60 207.5 12.4 5.98 116.6 4.8 4.12 Interest-bearing deposits in banks 422.5 22.2 5.25 303.0 15.7 5.18 1,432.8 8.7 0.61 Federal funds sold 0.1 \u2014 \u2014 0.5 \u2014 \u2014 0.5 \u2014 \u2014 Total interest-earning assets 27,231.4 1,309.1 4.81 28,183.4 1,287.1 4.57 28,325.5 1,029.6 3.63 Noninterest-earning assets 2,825.0 2,951.1 2,804.2 Total assets $ 30,056.4 $ 31,134.5 $ 31,129.7 Interest-bearing liabilities: Demand deposits"
+      },
+      {
+        "visible_start": 218663,
+        "visible_end": 219513,
+        "raw_decoded_start": 1265362,
+        "raw_decoded_end": 1313420,
+        "text": "Dollars in millions) Volume Rate Net Volume Rate Net Volume Rate Net Interest earning assets: Loans (1) $ (6.3) $ 48.5 $ 42.2 $ 71.0 $ 117.8 $ 188.8 $ 308.6 $ 57.4 $ 366.0 Investment Securities (1) (26.9) 0.8 (26.1) (13.2) 67.3 54.1 61.9 83.1 145.0 Investment in FHLB and FRB Stock (1.7) 1.1 (0.6) 3.7 3.9 7.6 1.2 2.6 3.8 Interest bearing deposits in banks 6.2 0.3 6.5 (6.9) 13.9 7.0 (0.7) 6.8 6.1 Total change (28.7) 50.7 22.0 54.6 202.9 257.5 371.0 149.9 520.9 Interest bearing liabilities: Demand deposits (2.4) 13.0 10.6 (2.1) 33.6 31.5 1.2 12.7 13.9 Savings deposits (3.1) 42.1 39.0 (2.1) 99.8 97.7 1.2 21.8 23.0 Time deposits 6.0 27.7 33.7 5.6 59.5 65.1 2.7 0.6 3.3 Repurchase agreements (1.7) 2.0 0.3 (0.4) 4.3 3.9 \u2014 2.1 2.1 Other borrowed funds (4.3) (6.1) (10.4) 78.3 40.2 118.5 \u2014 15.3 15.3 Long-term debt 6.4 (0.4) 6.0 (0.1) (0.1) (0.2) 0.5"
+      },
+      {
+        "visible_start": 524769,
+        "visible_end": 525619,
+        "raw_decoded_start": 5174691,
+        "raw_decoded_end": 5176920,
+        "text": "Dollars in millions, except share and per share data) ASU 2024-03, \u201c Income Statement\u2014Reporting Comprehensive Income\u2014Expense Disaggregation Disclosures (Subtopic 220-40): Disaggregation of income statement expenses \u201d In November 2024, the FASB issued ASU 2024-03, Income Statement\u2014Reporting Comprehensive Income\u2014Expense Disaggregation Disclosures (Subtopic 220-40): Disaggregation of income statement expenses that require public business entities to disclose additional information about specific expense categories in the notes to financial statements at interim and annual reporting periods. The amendments in this Update do not change or remove current expense disclosure requirements. The amendments in this Update are effective for annual reporting periods beginning after December 15, 2026, and interim reporting periods beginning after Decemb"
+      }
+    ]
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

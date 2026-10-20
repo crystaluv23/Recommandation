@@ -1,0 +1,39 @@
+{
+  "requests": [
+    {
+      "authority": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/hiti-literal-exhibit-local-check.json",
+        "sha256": "9241e0a7922d26a46cc13c14eead68d1b618a65ce7bdf9e05785acedb046d615"
+      },
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm"
+    },
+    {
+      "authority": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/tgb-exhibit-index-native-boundary.json",
+        "sha256": "62ee54c2e03f6045b4575e51ec0463109f2f1ac945a146b05700bed4d4047ecc"
+      },
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm"
+    },
+    {
+      "authority": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/tgb-exhibit-index-native-boundary.json",
+        "sha256": "62ee54c2e03f6045b4575e51ec0463109f2f1ac945a146b05700bed4d4047ecc"
+      },
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm"
+    },
+    {
+      "authority": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-082-content-unknown.json",
+        "sha256": "1e024139d1817cf0ac42fe8634b2f92835ca0f2b898c0119c08e1153bf228c35"
+      },
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/annualaifmasterlivemasterq.htm"
+    },
+    {
+      "authority": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-082-content-unknown.json",
+        "sha256": "1e024139d1817cf0ac42fe8634b2f92835ca0f2b898c0119c08e1153bf228c35"
+      },
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/a2024q4slfmdalive.htm"
+    }
+  ]
+}
