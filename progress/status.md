@@ -30,9 +30,7 @@ MSannual时间冲突仍unknown/excluded，未改时区或财务政策；news/ord
 额外全原件消费gate仍14/15（ONDS默认cap1），独立127obs需求实际选181长窗。
 [经营来源](../reports/anchor-operating-source-readiness-20261020.md)原27保分母，
 26proof pass/24经营正文准入/3unknown；13经营投影均partial_context_budget。
-新本地KGC/MS11原件+22cache候选未找到漏选periodic组合；精确KGC40F/MSQ1
-正文已取见新proof批，旧view仍不改，MSQ2晚于cutoff。旧MS archive可native完整重建原11:59Z记录，
-与新API15:59Z冲突仍保留，不识别原writer或猜时区修正。
+KGC40F/MSQ1已补；旧MS archive可重建11:59Z，与新API15:59Z冲突仍unknown，不猜时区。
 
 [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md)新控制3/3窄通过，
 6隔离角色/0typed纠错，63文件恢复全等。原fixed-FY/basic0/3保留，F7镜像fresh
@@ -45,11 +43,8 @@ MSannual时间冲突仍unknown/excluded，未改时区或财务政策；news/ord
 
 ## 最近实际证据
 
-- [F4测量scope](../reports/signal-card-measurement-scope-20261020.md)：shared projection
-  接SignalCard与真实LLM/Jev卡，core注入actual executor最终override map；无注入/
-  无声明明确unknown，不dump任意参数或改Registry。独立6/最终关联119通过；全量
-  1867/1868，唯一旧prompt字串断言已更新后定向通过，未声称第二次全量绿。
-  0新模型/资料；旧v3 prose与partial0.5实际契约并列，fresh行为待验。
+- [F4测量scope](../reports/signal-card-measurement-scope-20261020.md)：实际selector卡和override已接，
+  独立6/关联119过；全量1867/1868的旧prompt断言后定向通过，无第二次全量绿。fresh行为待验。
 
 - [F7残留镜像纠错](../reports/owned-partial-residual-mirror-20261020.md)：初始提示明示
   1–300字；仅有效owned partial的唯一exact镜像获indexed replace权限，同owner
@@ -60,16 +55,13 @@ MSannual时间冲突仍unknown/excluded，未改时区或财务政策；news/ord
   52文件恢复全等、0标签。6行needs含同一长短残留，两个deterministic unavailable，
   terminalReflect确定性终结无新模型；最终窄语义/完整final消费独立通过，
   不等于整体F4/F6/F7或MVP通过。
-- [盲预测前缀](../reports/reviewed-fast-prefix-acceptance-20261019.md)：单例真实
-  H_init/路由/Predictor三角色（前两答精确继承），0纠错，预测先durable再停标签前；
-  两Signal technical budget_blocked、apply/Reflect模型未执行，4needs保留。
-  32文件恢复全等；原v1观察器失败保留，完整F9仍open。
+- [盲预测前缀](../reports/reviewed-fast-prefix-acceptance-20261019.md)：三原生角色/0纠错、标签前预测落盘；
+  两Signal budget_blocked、apply/Reflect模型未执行，4needs保留，完整F9仍open。
 - [native Posthoc](../reports/reviewed-posthoc-stage-20261020.md)：首答来源关联拒绝，
   唯一typed纠错恰删两refs，最终2items独立窄审1/1；0fallback，19文件恢复全等。
   未提交Fast反馈、未发布Slow来源或消费，不等于完整F10。
-- [LabelStore](../reports/label-store-admission-20261020.md)：真实archive/hash/合同/
-  calculator/6554全记录重算单门通过；原18误放保留。1806全量为该批证据；
-  不证明provider价条/issuer真实性；1835全量及prompt-only330项属于此前菜单批证据。
+- [LabelStore](../reports/label-store-admission-20261020.md)：archive/hash/合同/calculator6554记录过，
+  原18误放保留；该批1806全量不证明provider价格/issuer真实性，本轮不读标签。
 - [来源/日线与可见性](../reports/daily-market-consumer-boundaries-20261019.md)：
   BMBL两SEC+market250窄准入、UTC与实际消费者摘要修复；全部窗口未必已读。
 - [Signal窄批次](../reports/reviewed-signal-stage-20261019.md)及
@@ -96,5 +88,7 @@ v182实际冻结40且绑定当前APPROVED，旧运行完成仍1/1。旧“48”�
 23market家族242原件重建、1家原日线越cutoff；92缺证请求=53splits+29issuer+10primary，未发出。
 24经营家族41目标/31有body、71机械变体通过但全文未核；15碰撞变体中3原件可原样验证，FTI季报误标10-k拒绝。
 19漏查cache已定位，GPRE另1真实GET证据完整；10-k别名漏接/receipt矛盾已修，安全测试/独立反例通过。
-混合form producer局部修复/18测试+13独立反例过；下一核4旧记录/经营全文与FTI合格窗口、冻结缺证计划。
+混合form producer局部修复/18测试+13独立反例过；[新内容/取证](../reports/frozen40-source-proofs-20261020.md)：30经营正文scope确认，29原件候选。
+FTI400day新窗口/HITI两literal附件精确cache未定位；原92+新增3的95GET计划已备、8离线测试过，实际未启动。
+GPRE采集版本ID设计待用户决策；未答前不实施，53subset仍明确缺最新Q1。
 不改变lookback/refs或推断news不存在；未恢复旧运行/不触LockedTest。

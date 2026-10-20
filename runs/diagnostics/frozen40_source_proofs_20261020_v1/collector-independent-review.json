@@ -1,0 +1,86 @@
+{
+  "schema_version": "bounded-collector-independent-review-v1",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/collector.py",
+      "sha256": "d4f928abaecff1a0fb36754fed5becb5f1f5f1c20d9a94dec47f6ab0ca771551"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/request-plan.json",
+      "sha256": "0c96abd8ae201b36eb50e2cb22974ada8975284be9dc9c4cc4ae5b2496a5b05f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/collect_frozen40_source_proofs.md",
+      "sha256": "bab34c9c82687342cd922719d9889ff450fb807740dc83410594777a9c668558"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen40_source_proofs.py",
+      "sha256": "7ceb5b89181372378f348a7ba1eb2625f4796202b63b5fa789a5e3a46481ec37"
+    }
+  ],
+  "actual_plan": {
+    "request_count": 95,
+    "original_requests": 92,
+    "original_associations": 1928,
+    "additional_requests": 3,
+    "all_planned_GET": true
+  },
+  "checks": [
+    {
+      "name": "success_gzip_native_profile_receipts_historical_pacing",
+      "passed": true,
+      "opens": 6,
+      "waited_seconds": 60.019999980926514,
+      "status": "completed",
+      "reentry_rejected_immutable": true
+    },
+    {
+      "name": "gzip_secret",
+      "passed": true,
+      "opens": 4,
+      "waited_seconds": 0,
+      "status": "completed_with_host_failures",
+      "reentry_rejected_immutable": true
+    },
+    {
+      "name": "escaped_secret",
+      "passed": true,
+      "opens": 4,
+      "waited_seconds": 0,
+      "status": "completed_with_host_failures",
+      "reentry_rejected_immutable": true
+    },
+    {
+      "name": "transport_secret",
+      "passed": true,
+      "opens": 4,
+      "waited_seconds": 0,
+      "status": "completed_with_host_failures",
+      "reentry_rejected_immutable": true
+    },
+    {
+      "name": "http429",
+      "passed": true,
+      "opens": 4,
+      "waited_seconds": 0,
+      "status": "completed_with_host_failures",
+      "reentry_rejected_immutable": true
+    },
+    {
+      "name": "sec_failure",
+      "passed": true,
+      "opens": 4,
+      "waited_seconds": 0,
+      "status": "completed_with_host_failures",
+      "reentry_rejected_immutable": true
+    }
+  ],
+  "all_passed": true,
+  "blocking_findings": [],
+  "limits": [
+    "Fake-opener transport/cache/receipt/host-stop evidence only; zero real GETs or actual frozen collection.",
+    "No source admission, value correctness, complete semantic reading, matrix, model or research benefit claim.",
+    "Prior usage scope is only explicitly bound ledgers and old attempt timestamps; no worldwide account quota proof."
+  ],
+  "actual_collection_absent_before_after": true
+}

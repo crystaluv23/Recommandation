@@ -1,0 +1,27 @@
+{"name": "proof-000", "source": "massive", "status": "received", "actual_GET_attempts": 1}
+{"name": "proof-001", "source": "massive", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 3}
+{"name": "proof-003", "source": "massive", "status": "received", "actual_GET_attempts": 4}
+{"name": "proof-004", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 5}
+{"name": "proof-005", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 6}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "credential_echo"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-004", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 3}
+{"name": "proof-005", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 4}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "credential_echo"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-004", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 3}
+{"name": "proof-005", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 4}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "transport"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-004", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 3}
+{"name": "proof-005", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 4}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "http_or_response_identity"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-004", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 3}
+{"name": "proof-005", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 4}
+{"name": "proof-000", "source": "massive", "status": "received", "actual_GET_attempts": 1}
+{"name": "proof-001", "source": "massive", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-002", "source": "sec_edgar", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "transport"}
+{"name": "proof-003", "source": "massive", "status": "received", "actual_GET_attempts": 4}
+{"path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/collector-independent-review.json", "sha256": "bdc14cb179899b1eaf96bac46a91b1b31a6b09fff9390565a448656551d4e7ce", "checks": 6, "all_passed": true}

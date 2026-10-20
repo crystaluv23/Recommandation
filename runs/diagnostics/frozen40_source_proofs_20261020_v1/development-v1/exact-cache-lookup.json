@@ -1,0 +1,996 @@
+{
+  "absence_is_limited_to_checked_exact_paths": true,
+  "direct_path_checks": 20418,
+  "market_proof_requests": 82,
+  "no_filename_census": true,
+  "requests": [
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "113664e4bc5d342b0f0e03b4",
+        "corporate_actions": "b13d01899d09a3aa2e08752a",
+        "price_daily": "e38dfe04cd820b98de809fa0"
+      },
+      "matches": [],
+      "name": "proof-000",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "7204ae8675f5105026f7325a",
+        "corporate_actions": "4b59af26d04b1d6034c339e4",
+        "price_daily": "dfa4294da4d66c2ee7237fc8"
+      },
+      "matches": [],
+      "name": "proof-001",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "2d0cdea1942a13bfc351fea7",
+        "corporate_actions": "057829d83230e79ab2c87999",
+        "price_daily": "bcac9668819f99c7f92c5499"
+      },
+      "matches": [],
+      "name": "proof-002",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "af93dcf62dc42d3122259064",
+        "corporate_actions": "6890ea16f570cb7b01b3cf02",
+        "price_daily": "bc4197f2d5d51e01999dd1e6"
+      },
+      "matches": [],
+      "name": "proof-003",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "ab9e79dbc114bcc09cd39691",
+        "corporate_actions": "e79372fbe29dbe25700fe723",
+        "price_daily": "45a896d8117e2cc643054391"
+      },
+      "matches": [],
+      "name": "proof-004",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "ff897e1c7a3928d00320af04",
+        "corporate_actions": "24308e806b44c5e1ed1a2a02",
+        "price_daily": "94f8e7680cad51b9516ccdc2"
+      },
+      "matches": [],
+      "name": "proof-005",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "09b202cecf48d1a462ea6197",
+        "corporate_actions": "1591b4746da55b94d3bcfc6b",
+        "price_daily": "e4d72e462e966d4c1b312ac7"
+      },
+      "matches": [],
+      "name": "proof-006",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "5591c3570ee03eef8a94984a",
+        "corporate_actions": "f5aacd33156ad7be613d5614",
+        "price_daily": "586d53cd4430342a9164fc63"
+      },
+      "matches": [],
+      "name": "proof-007",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "43b51e970e76f5e68a9eaa9a",
+        "corporate_actions": "4356e48b63302a2e8f040762",
+        "price_daily": "a5f4c8e2ffe9ad2000c47c02"
+      },
+      "matches": [],
+      "name": "proof-008",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "b88cd14357d13e404c95a2e6",
+        "corporate_actions": "6a7aefdb6246ebfbf71cd32a",
+        "price_daily": "713209550ecf5351bce0d4ce"
+      },
+      "matches": [],
+      "name": "proof-009",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "5abc3b5307bcb906e0a7c824",
+        "corporate_actions": "655813d9599e38d86977dab4",
+        "price_daily": "99ab3418a13d0aa91ac0f72c"
+      },
+      "matches": [],
+      "name": "proof-010",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "3e76e0ef8b1878c19c3da929",
+        "corporate_actions": "8d41b709db2353dfc0032a0e",
+        "price_daily": "4ddad3e42c32f86e812b6ebc"
+      },
+      "matches": [],
+      "name": "proof-012",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "3e0e19696b7a18eb1856cc31",
+        "corporate_actions": "87c051d3e0b7c2e80cb4f62f",
+        "price_daily": "aa2481b5cb93339c976cfdc3"
+      },
+      "matches": [],
+      "name": "proof-013",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "4e02854cd9dd5402926d7aa0",
+        "corporate_actions": "2da1d906c239773ca689c017",
+        "price_daily": "d4b93d32470276188ef763ec"
+      },
+      "matches": [],
+      "name": "proof-014",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "08bed2035c0f39d4e42e9050",
+        "corporate_actions": "4576792ed5b7b907ac419579",
+        "price_daily": "b9bf31d76d1b1dc84d5f4699"
+      },
+      "matches": [],
+      "name": "proof-015",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "b22d36598489b56d49ae895f",
+        "corporate_actions": "c05ead4f6515e68e3eb63394",
+        "price_daily": "8e5b3e00844416ad4f617927"
+      },
+      "matches": [],
+      "name": "proof-016",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "2041e8616788abb2be44fdf5",
+        "corporate_actions": "93a6f925d875527551fb6436",
+        "price_daily": "0cea31fa70de704d90c89cf0"
+      },
+      "matches": [],
+      "name": "proof-017",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "eabafc349d11d517d30881a3",
+        "corporate_actions": "6cb592dbe8b01d48472c4395",
+        "price_daily": "d785e25b8ffc7faf0abd9efe"
+      },
+      "matches": [],
+      "name": "proof-018",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "3a99228802c3fae71d738332",
+        "corporate_actions": "84a59852a13c4aaaca790a13",
+        "price_daily": "239576be5cf2511d9b5819c8"
+      },
+      "matches": [],
+      "name": "proof-019",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "9d4bf100772ec75073b051e2",
+        "corporate_actions": "c2a3b556e6f48d3113ae165a",
+        "price_daily": "8ad24a671bcc81cd7dc0f52f"
+      },
+      "matches": [],
+      "name": "proof-020",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "1e995de4f2fdbde35edcb55c",
+        "corporate_actions": "3a9d0a4cb2ae3a03ebcfe48f",
+        "price_daily": "a690dd2c314e410c7e04f944"
+      },
+      "matches": [],
+      "name": "proof-021",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "555d04d3da92e80d7c752a57",
+        "corporate_actions": "c7fdd08e3d06a4c9bbb56083",
+        "price_daily": "a9f786cc0ae7a401cfc6a50c"
+      },
+      "matches": [],
+      "name": "proof-022",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "c4cfdfe997d84b0fd1527ebe",
+        "corporate_actions": "ca45c257e43ef6733c9e1740",
+        "price_daily": "49ba3b32e6f405644039ddb9"
+      },
+      "matches": [],
+      "name": "proof-023",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "3a1bf063e301c57a1b710874",
+        "corporate_actions": "bb4a217164167b8fb3b42b03",
+        "price_daily": "312599385d5904818fe3e610"
+      },
+      "matches": [],
+      "name": "proof-026",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "c8a7ca140ac73e86e9a0a4b6",
+        "corporate_actions": "5dee0559d868ba6203637d62",
+        "price_daily": "a1ab995f7380b3b6bf1bd51a"
+      },
+      "matches": [],
+      "name": "proof-027",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "6450d7858cd6e212ce895bb8",
+        "corporate_actions": "2f22082101123916bcf9661d",
+        "price_daily": "dc6c206fc180ddfea9d7c41c"
+      },
+      "matches": [],
+      "name": "proof-028",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "197f799fdcda60e2f9c59b6b",
+        "corporate_actions": "f1df832f8542757aed8108d8",
+        "price_daily": "80a7282dbe5e3be94a6215b3"
+      },
+      "matches": [],
+      "name": "proof-029",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "084abdf98c15be426941de6e",
+        "corporate_actions": "d612929e2232d1e5184e8ae7",
+        "price_daily": "8c2c0d6198a2211a11192379"
+      },
+      "matches": [],
+      "name": "proof-030",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "a141c5fbdc30beef779a2995",
+        "corporate_actions": "41ce14fd3a800f9322b9fb00",
+        "price_daily": "9ad31c66a81a602060887a62"
+      },
+      "matches": [],
+      "name": "proof-031",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "c0c611d71e2b6e0345f98a52",
+        "corporate_actions": "cd7c016611637701c2344bb1",
+        "price_daily": "26df07832da9d9828c081f8f"
+      },
+      "matches": [],
+      "name": "proof-032",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "f185eaf2723b3d1e25cc8bf4",
+        "corporate_actions": "1bedb5bc41195454cc2164f5",
+        "price_daily": "01fa9e0cbe92d3d32ff0c09a"
+      },
+      "matches": [],
+      "name": "proof-033",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "14b6cca75b1cc477507ff707",
+        "corporate_actions": "3e5c66f2a57cdceeceed0350",
+        "price_daily": "8b9c881991f4b34f5f65d63f"
+      },
+      "matches": [],
+      "name": "proof-034",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "20a3b94fbfdb188973aad82f",
+        "corporate_actions": "b1cd473080cd312d6b9ee1ec",
+        "price_daily": "5fa541124a06fe76b93f62f0"
+      },
+      "matches": [],
+      "name": "proof-035",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "fc7e271fe77550cc6c708b53",
+        "corporate_actions": "20c4db8e245250c02829e9ab",
+        "price_daily": "265ec5211277f10e3b68b22d"
+      },
+      "matches": [],
+      "name": "proof-036",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "52c80e0b92a09bf0cf9a518f",
+        "corporate_actions": "288f5482e5cf1fa1f7219b2b",
+        "price_daily": "2382fba01c9c13176897593b"
+      },
+      "matches": [],
+      "name": "proof-038",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "47c01f6a21ad35707e8e1477",
+        "corporate_actions": "6c9759572c3581f2bf361219",
+        "price_daily": "5be0a85f5048fc8c2eb7d311"
+      },
+      "matches": [],
+      "name": "proof-039",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "bee723d203251735d7c00892",
+        "corporate_actions": "fd381bceacae9f379bb10096",
+        "price_daily": "9d3da1e8f84ddf0d778c55b7"
+      },
+      "matches": [],
+      "name": "proof-040",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "3dc9b475182dd6800dbc6aa0",
+        "corporate_actions": "ebb635a962b3dc411b042aa1",
+        "price_daily": "72e8cdd98ffbbce8132450e7"
+      },
+      "matches": [],
+      "name": "proof-041",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "cde904e631a328e83242a249",
+        "corporate_actions": "da9cbbfe7ae024f4c308bb4e",
+        "price_daily": "1dbac85166f0de720bac41b3"
+      },
+      "matches": [],
+      "name": "proof-042",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "25bf439fc9f5b495d776fd6f",
+        "corporate_actions": "91c53375378c81d5f9b0fe95",
+        "price_daily": "f293fe34c2bd4a4bb2e3f7c6"
+      },
+      "matches": [],
+      "name": "proof-043",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "7d8e6a0844564e1defa197d9",
+        "corporate_actions": "849d94b68158165e6879b919",
+        "price_daily": "48dc39cacc91e0aa016fb5d6"
+      },
+      "matches": [],
+      "name": "proof-044",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "9f02b447c9e1bc4b4de6a92b",
+        "corporate_actions": "f555ce84b6c1a76c8abccbd1",
+        "price_daily": "84b2672dfe3bf2744737f37d"
+      },
+      "matches": [],
+      "name": "proof-045",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "e04ad2407ed381282a6dd783",
+        "corporate_actions": "b8e66cd05aba13d99f28abb2",
+        "price_daily": "02536dc8c456420a99783816"
+      },
+      "matches": [],
+      "name": "proof-046",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "fad40adb5c4abc149a325fa6",
+        "corporate_actions": "c48bf03a270caa203b2b7a52",
+        "price_daily": "a5a74de99e1107d5c5018c36"
+      },
+      "matches": [],
+      "name": "proof-047",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "306a85fbd8c4b2d5b94294e6",
+        "corporate_actions": "a983950441aa56df23c29229",
+        "price_daily": "e3e8177ebea1df74d80be80a"
+      },
+      "matches": [],
+      "name": "proof-048",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "6ea4fbcc8858d57740d0c0de",
+        "corporate_actions": "66ede83dcdc8df2b37330d0b",
+        "price_daily": "28d62b692848e2e195c62cb9"
+      },
+      "matches": [],
+      "name": "proof-049",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "192739b1f75cc2ecdb8b531c",
+        "corporate_actions": "d3d56d8151a83a0fcc63b3de",
+        "price_daily": "631966b18f7fa4931cf86cb5"
+      },
+      "matches": [],
+      "name": "proof-050",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "f2925de5be3b9a7ee91f881d",
+        "corporate_actions": "ae8b0cecfaf880f86f447eb7",
+        "price_daily": "9b0be7d7fb80bec2a1bf1580"
+      },
+      "matches": [],
+      "name": "proof-051",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "14a91a00db20e6a3a0e1d792",
+        "corporate_actions": "ac2d06fc203fe668906a1e3f",
+        "price_daily": "f572a515573d6927910240f4"
+      },
+      "matches": [],
+      "name": "proof-052",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "0aef6ff202e49093e5b7ac6e",
+        "corporate_actions": "ddb4de9b291afca0fb371eda",
+        "price_daily": "f2a3d6bfc537b6e34d92dd67"
+      },
+      "matches": [],
+      "name": "proof-053",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "f1121575eb031d2c58947ff2",
+        "corporate_actions": "67f5bc60844ea76b15126837",
+        "price_daily": "fdb53a6af8a3cdc4e3f38d8b"
+      },
+      "matches": [],
+      "name": "proof-054",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "4802ba2397c006e38be0801a",
+        "corporate_actions": "fd93ac24daf0f276cbe63e38",
+        "price_daily": "e3b27a42812d8fdb99146e95"
+      },
+      "matches": [],
+      "name": "proof-055",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "2bcbc8f1e6c64c112bf4d1fd",
+        "corporate_actions": "f84fa5ec74313524d39eecc2",
+        "price_daily": "5128416e56d6506d6863d6e6"
+      },
+      "matches": [],
+      "name": "proof-056",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "34c60d088411cacc16f34bf3",
+        "corporate_actions": "124afb647f63fe6a2ddfd108",
+        "price_daily": "796dfa931edbdbd517e66a05"
+      },
+      "matches": [],
+      "name": "proof-057",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "a2dc2a7e1ae7d0568b6db65f",
+        "corporate_actions": "d73a189ee586a23265c4c68d",
+        "price_daily": "2d079be3f7d89d4ee7ec76f1"
+      },
+      "matches": [],
+      "name": "proof-058",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "966f5ffad3f0bc9c575cef8c",
+        "corporate_actions": "47f3ab0478d39a525b977b2d",
+        "price_daily": "00bd32c1ce2e88589742b38c"
+      },
+      "matches": [],
+      "name": "proof-060",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "6ec7d528bec8d4b7b8c7e2e9",
+        "corporate_actions": "c0354ab92987dc70a3a0eea7",
+        "price_daily": "91433c620201e0d783b7aee9"
+      },
+      "matches": [],
+      "name": "proof-061",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "9b18533923c7c3ed596b3d86",
+        "corporate_actions": "3e89ffb812bc84d014f78869",
+        "price_daily": "c2a8ed7d9b8d85b4d96fbebc"
+      },
+      "matches": [],
+      "name": "proof-062",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "237db1493420e0024b8b2327",
+        "corporate_actions": "2945b478732370c5ecba2508",
+        "price_daily": "d24a3afed4dce90dbe942b59"
+      },
+      "matches": [],
+      "name": "proof-063",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "24cd9baf6d2eae4d13acd65b",
+        "corporate_actions": "a44f5d7a91af3580327121aa",
+        "price_daily": "ee86d6cf761172409dda553e"
+      },
+      "matches": [],
+      "name": "proof-064",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "48f60443bc6207efb8a2feb3",
+        "corporate_actions": "f2614e5c4b418ad31e038287",
+        "price_daily": "64043c17da91f3db30196c3f"
+      },
+      "matches": [],
+      "name": "proof-065",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "4573b05eadf03ce42fdaed06",
+        "corporate_actions": "e3e294c4f20c5f2d6f154f22",
+        "price_daily": "546e9aeabca49c3a03f8cf42"
+      },
+      "matches": [],
+      "name": "proof-066",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "bedd5462eb78584bae7e636d",
+        "corporate_actions": "2e28c33a5117c4f5968cf047",
+        "price_daily": "32cbd1a447bfd65946ec7b5f"
+      },
+      "matches": [],
+      "name": "proof-068",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "b7204cf44a4407b513ebe29b",
+        "corporate_actions": "2c56ec083d9b0b4b855ec5ef",
+        "price_daily": "40eeeb124be621b013b2c398"
+      },
+      "matches": [],
+      "name": "proof-069",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "34a82661577bd818c14e078d",
+        "corporate_actions": "3acc42b786adc4c33b74d457",
+        "price_daily": "4a7374b04d978a31c40be0e6"
+      },
+      "matches": [],
+      "name": "proof-070",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "a25601d3e3af7428b60228cc",
+        "corporate_actions": "fcbbf0460cc346194587203a",
+        "price_daily": "8b7cdb7077ce8fa323a50fcc"
+      },
+      "matches": [],
+      "name": "proof-071",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "177031838cef621bb3637c39",
+        "corporate_actions": "5d001f9f69f735fe067c2645",
+        "price_daily": "4b155b56ed4764d5a03e7e25"
+      },
+      "matches": [],
+      "name": "proof-073",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "3ec48453144bc165abcb49b9",
+        "corporate_actions": "46258951d1427e66b1ff4ecc",
+        "price_daily": "14e16438972bc4daa6907f4e"
+      },
+      "matches": [],
+      "name": "proof-074",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "992b3d831959c7a9b083e039",
+        "corporate_actions": "cc8393a56b1a3c2fd40018a7",
+        "price_daily": "8a0566f783082557cdccc92a"
+      },
+      "matches": [],
+      "name": "proof-075",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "2e9d330820ffbc442bb881e0",
+        "corporate_actions": "a0e585b9f5efa1a6429a3d8f",
+        "price_daily": "85ad7b9402f49fd7ae459be6"
+      },
+      "matches": [],
+      "name": "proof-077",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "51b5a08c9fa73b3ec04baaf8",
+        "corporate_actions": "573fcf3ee3fd68e7e0d6805a",
+        "price_daily": "23d2fbff919ae911a938b073"
+      },
+      "matches": [],
+      "name": "proof-078",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "bdcc1a95b4cc0b13860d5e94",
+        "corporate_actions": "b945f3ac9090730a2e85612f",
+        "price_daily": "b1ca8c22f92ec5fdfad98bc6"
+      },
+      "matches": [],
+      "name": "proof-079",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "3774a43bfbfb08a98371490d",
+        "corporate_actions": "864eef36543dc83f0d449e78",
+        "price_daily": "0c175355a231b2671f8524e5"
+      },
+      "matches": [],
+      "name": "proof-081",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "0536d0842db1a3d304e26193",
+        "corporate_actions": "1a4035854dcba06f174614a0",
+        "price_daily": "107e114fab47f1d37cb2b6b0"
+      },
+      "matches": [],
+      "name": "proof-083",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "7c34f1b41cf5eae2b3dac6f9",
+        "corporate_actions": "6dca98cb30940e9ccb6aa3ea",
+        "price_daily": "f6167c7bae06187b1c5837c8"
+      },
+      "matches": [],
+      "name": "proof-084",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "3e13b9fa92b206f16670a02a",
+        "corporate_actions": "bd10769ae254dcb71ebef1b0",
+        "price_daily": "cf023bda18171d7d5a5fb60e"
+      },
+      "matches": [],
+      "name": "proof-085",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "0d5c78832317ca914417141c",
+        "corporate_actions": "e6164bb6f8c064472cf6d822",
+        "price_daily": "408f7ec9a149423284611c51"
+      },
+      "matches": [],
+      "name": "proof-086",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "b736ffc5744bc259bde78b36",
+        "corporate_actions": "839de9ca6be94624267b07f0",
+        "price_daily": "472ff493f2c6068b3f104fcd"
+      },
+      "matches": [],
+      "name": "proof-087",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "c134a8e34630907cc2bc9983",
+        "corporate_actions": "7dc3f88867477da031c2f3a5",
+        "price_daily": "d19c54ae02ab3e9c7d250135"
+      },
+      "matches": [],
+      "name": "proof-088",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "2a83b7241bb900bf5e7cee22",
+        "corporate_actions": "e54d837f37b835f10f47b87d",
+        "price_daily": "11319200d28b6b932042ff19"
+      },
+      "matches": [],
+      "name": "proof-089",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "af2560fd6d3f0a2050b06050",
+        "corporate_actions": "da659b25cf6e97b3f53d3154",
+        "price_daily": "5189c13cb8a68cb14e13d361"
+      },
+      "matches": [],
+      "name": "proof-090",
+      "reused_HTTP_proof": false
+    },
+    {
+      "direct_paths_checked": 249,
+      "exact_keys": {
+        "company_profile": "5c11bc6e9f443babf4cbcf61",
+        "corporate_actions": "def1fe26250dd6715d052b48",
+        "price_daily": "3a92a749d782fc2664b40ead"
+      },
+      "matches": [],
+      "name": "proof-091",
+      "reused_HTTP_proof": false
+    }
+  ],
+  "root_scope": [
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-fourway-parent-reflection-20260817-v1/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-production-20260822-015342/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v118/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v119/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v120/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v121/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v123/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v124/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v125/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v127/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v128/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v129/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v131/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v132/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v133/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v134/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v135/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v136/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v137/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v139/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v142/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v1/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v3/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v4/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v5/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v6/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v7/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v8/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v10/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v11/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v12/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v14/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v15/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v17/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v18/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v21-repair-acceptance/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v23-slow-recovery/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v64/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v69/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v73/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v92/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260918-v99/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v105/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v107/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v111/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v112/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v114/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v115/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v159_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v160_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v161_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v162_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v163_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v164_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v175_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v176_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cache/data/massive",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/data/massive"
+  ],
+  "roots": 83
+}

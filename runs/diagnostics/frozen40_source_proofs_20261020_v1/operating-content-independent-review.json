@@ -1,0 +1,126 @@
+{
+  "schema_version": "bounded-operating-content-independent-review-v1",
+  "report_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/operating-content-review.json",
+    "sha256": "15da9a9f261910663a2502a58c9b20a7a85fb8a97e0ca7acb5dd2f1b7b7617e4"
+  },
+  "extractor_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/extract_operating_content.py",
+    "sha256": "82902a6c715a26e51cc1cc4552743e7aa530f61a57edd0b875417bed7b08491c"
+  },
+  "native_markup_binding": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/markup.py",
+    "sha256": "6142b661e74dd16c9d08358478817cb35b3668cfb2c2b13182a3ffd0f2e555d8"
+  },
+  "read_body_count": 6,
+  "body_checks": [
+    {
+      "ticker": "DGICA",
+      "company_case": "cik_0000800457:20250731",
+      "period": "2024-12-31",
+      "form": "10-K",
+      "accession": "0001140361-25-007891",
+      "body_cache_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v105/cache/data/sec_edgar/filing_documents/038521b46d821ecc92215b98.json",
+        "sha256": "ae9ab3c02e881dc8c72d70f399da583476f1ed836a034205cbc158303c29e72d"
+      },
+      "body_content_sha256": "ce5ea5e28112e40567a81f5f6f716a86210e47662f07276164988b5e6ff8f9e9",
+      "independent_observation": "Substantive Business at visible5958 identifies Donegal P&C operations in21states; annual MD&A at173741."
+    },
+    {
+      "ticker": "FTI",
+      "company_case": "cik_0001681459:20250530",
+      "period": "2025-03-31",
+      "form": "10-Q",
+      "accession": "0001681459-25-000079",
+      "body_cache_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v84/cache/data/sec_edgar/filing_documents/067e8d77ff28f1ad91ed3e82.json",
+        "sha256": "c53a9882a23f04301ff12766f0167e8dcf8279d48818b7bfb32586e0ff9ecb62"
+      },
+      "body_content_sha256": "a49fc47a923f3605d81f12f4e41db6294e0290e039a0567e26ee56844b5399ea",
+      "independent_observation": "Q1 TechnipFMC actual10-Q head and Business Outlook at65952, including offshore/MiddleEast and technology discussion; oldwrongtype remains unresolved separately."
+    },
+    {
+      "ticker": "WBUY",
+      "company_case": "cik_0001946703:20250731",
+      "period": "2024-12-31",
+      "form": "20-F",
+      "accession": "0001213900-25-033933",
+      "body_cache_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v66/cache/data/sec_edgar/filing_documents/df28188b59550d44a0342ab0.json",
+        "sha256": "70ed2942ea4b14b49c6cec7f12e107c0bd1fcc6fb596caa732cda2162b3bb57d"
+      },
+      "body_content_sha256": "bd2b4276a7c5e4d267f5ec556fb0d2510e255da1b36dc9c52aa5289112db3562",
+      "independent_observation": "WBUY firstautomatic business locator11173 is cross-reference; manual123195 reaches actual Item4/4.B grocery/travel business."
+    },
+    {
+      "ticker": "NEGG",
+      "company_case": "cik_0001474627:20250530",
+      "period": "2024-12-31",
+      "form": "20-F",
+      "accession": "0001213900-25-036055",
+      "body_cache_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/be64bb88e76ad0ac214b7aa9.json",
+        "sha256": "c190d1ccc2dd10da11f55a1f7dfa46f03bfda178e067a63b4dce7398fd6ebd72"
+      },
+      "body_content_sha256": "4d16cc75240ed9f3beca69ad8f0312f3c2331ce94932050dfb9d7fe95921bd20",
+      "independent_observation": "NEGG actual Item4 business and Item5 at217207; Direct/Marketplace operating discussion inspected."
+    },
+    {
+      "ticker": "HITI",
+      "company_case": "cik_0001847409:20250131",
+      "period": "2024-10-31",
+      "form": "40-F",
+      "accession": "0001628280-25-002990",
+      "body_cache_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/292e64a32568298c937907f6.json",
+        "sha256": "10eb3c457bb076495393575dec6ac612ee9c7174b6608205b0fb7ce756e00bee"
+      },
+      "body_content_sha256": "79238d60b706d16033f1896df07848f9d7286cff486ca770faff21fe478ea511",
+      "independent_observation": "HighTide40-F wrapper embeds auditedFS, while actual AIF/MD&A operating bytes remain external/unread; cover/index numbering conflict preserved."
+    },
+    {
+      "ticker": "GPRE",
+      "company_case": "cik_0001309402:20250530",
+      "period": "2025-03-31",
+      "form": "10-Q",
+      "accession": "0001309402-25-000089",
+      "body_cache_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/cee558295adecce297e3e0a7.json",
+        "sha256": "544617685101ba6f88afe373aceec2e4b9867a87cc2c1756fd47b2048355927d"
+      },
+      "body_content_sha256": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+      "independent_observation": "GreenPlains Q1 actual MD&A78288 and business/segments around83000; first risk3219 is TOC, later150400 is real risk chapter."
+    }
+  ],
+  "hiti_native_code_controls": [
+    {
+      "literal_href": "hiti-annualinformationform.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-annualinformationform.htm",
+      "raw_anchor_start": 398098,
+      "raw_anchor_end": 398369,
+      "correct_claim": "99.3",
+      "correct_claim_accepted": true,
+      "wrong_claim": "99.1",
+      "wrong_claim_accepted": false
+    },
+    {
+      "literal_href": "hiti-exhibit992mda.htm",
+      "resolved_url": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-exhibit992mda.htm",
+      "raw_anchor_start": 399515,
+      "raw_anchor_end": 399767,
+      "correct_claim": "99.2",
+      "correct_claim_accepted": true,
+      "wrong_claim": "99.3",
+      "wrong_claim_accepted": false
+    }
+  ],
+  "conclusion": "No new blocker found within six actual bodies and HITI literal-link controls; sampled substantive text supports reported source scopes.",
+  "limits": [
+    "Automatic headings can be TOC or cross-references; those hits alone are not substantive source proof.",
+    "selected_sections_partial_facts describes reviewer reading scope; it is not a new source-body hard gate.",
+    "HITI external AIF/MD&A contents were not retrieved or reviewed; cover/index conflict remains.",
+    "Not a new full31-body semantic audit, source admission, BasicInfo whole-text consumption, Signal readiness or model-behavior proof.",
+    "No GET/model/store write or oldstage modification."
+  ]
+}

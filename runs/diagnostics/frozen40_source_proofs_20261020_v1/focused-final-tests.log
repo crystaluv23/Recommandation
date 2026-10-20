@@ -1,0 +1,46 @@
+{"name": "proof-000", "source": "massive", "status": "received", "actual_GET_attempts": 1}
+{"name": "proof-001", "source": "massive", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 3}
+{"name": "proof-003", "source": "massive", "status": "received", "actual_GET_attempts": 4}
+{"name": "proof-004", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 5}
+{"name": "proof-005", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 6}
+{"name": "proof-001", "source": "massive", "status": "received", "actual_GET_attempts": 1}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-000", "source": "massive", "status": "received", "actual_GET_attempts": 1}
+{"name": "proof-001", "source": "massive", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 3}
+{"name": "proof-000", "source": "massive", "status": "received", "actual_GET_attempts": 1}
+{"name": "proof-001", "source": "massive", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 3}
+{"name": "proof-000", "source": "massive", "status": "received", "actual_GET_attempts": 1}
+{"name": "proof-001", "source": "massive", "status": "received_unsupported_nonempty_split_ledger", "actual_GET_attempts": 2}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 3}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "ReviewedSourceRejected", "failure_stage": "provider_or_page_shape"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "http_or_response_identity"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "transport"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "credential_echo"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "credential_echo"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "credential_echo"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "transport"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+{"name": "proof-000", "source": "massive", "status": "failed_typed", "error_type": "DataSourceError", "failure_stage": "transport"}
+{"name": "proof-002", "source": "sec_edgar", "status": "received", "actual_GET_attempts": 2}
+test_additional_daily_is_separate_and_never_invents_issuer_or_split_requests (test_frozen40_source_proofs.Frozen40ProofCollectorTests.test_additional_daily_is_separate_and_never_invents_issuer_or_split_requests) ... ok
+test_exact_retained_http_proof_reuses_no_GET_without_dropping_request (test_frozen40_source_proofs.Frozen40ProofCollectorTests.test_exact_retained_http_proof_reuses_no_GET_without_dropping_request) ... ok
+test_known_native_usage_paces_before_first_attempt_without_reset (test_frozen40_source_proofs.Frozen40ProofCollectorTests.test_known_native_usage_paces_before_first_attempt_without_reset) ... ok
+test_native_success_gzip_exact_source_records_and_terminal_no_reentry (test_frozen40_source_proofs.Frozen40ProofCollectorTests.test_native_success_gzip_exact_source_records_and_terminal_no_reentry) ... ok
+test_nonempty_splits_are_retained_unsupported_and_do_not_stop_other_requests (test_frozen40_source_proofs.Frozen40ProofCollectorTests.test_nonempty_splits_are_retained_unsupported_and_do_not_stop_other_requests) ... ok
+test_plan_tamper_and_request_whitelist_reject_before_any_collection (test_frozen40_source_proofs.Frozen40ProofCollectorTests.test_plan_tamper_and_request_whitelist_reject_before_any_collection) ... ok
+test_provider_page_http_and_transport_failure_stop_only_their_host (test_frozen40_source_proofs.Frozen40ProofCollectorTests.test_provider_page_http_and_transport_failure_stop_only_their_host) ... ok
+test_secret_echo_is_never_persisted_and_host_stops (test_frozen40_source_proofs.Frozen40ProofCollectorTests.test_secret_echo_is_never_persisted_and_host_stops) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.562s
+
+OK

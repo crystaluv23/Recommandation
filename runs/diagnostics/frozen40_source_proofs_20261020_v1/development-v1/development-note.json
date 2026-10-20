@@ -1,0 +1,24 @@
+{
+  "status": "superseded_development_only",
+  "actual_GET_attempts": 0,
+  "collection_directory_existed": false,
+  "reason": "Before first execution, add promised decoded credential-echo and transport-exception sanitization guards. Source associations and original92 unchanged.",
+  "files": [
+    {
+      "name": "collector.py",
+      "sha256": "eb8e4ab5f0114cb75998351b6bafd6e3f47b1f6e4bb7d05897f4260deb5a90fc"
+    },
+    {
+      "name": "exact-cache-lookup.json",
+      "sha256": "27aa44ecae07e9ee6f702042ef3800022bc36f3f643615ce63358c42b9ee9e20"
+    },
+    {
+      "name": "quota-state.json",
+      "sha256": "6c4ad1033006fd2543dffaf63235a24fdef0f45f8b83d1e0d133fa4ea1eb409d"
+    },
+    {
+      "name": "request-plan.json",
+      "sha256": "52113a31504fd4b2ecf19366be06b48e5a1933bae0b0905ee742d3798daf35f9"
+    }
+  ]
+}

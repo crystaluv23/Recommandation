@@ -1,0 +1,12 @@
+{
+  "massive": {
+    "latest_native_event": "2026-10-06T21:29:31.009622+00:00",
+    "native_currently_allowed": true,
+    "retained_native_network_entries": 1256
+  },
+  "sec_edgar": {
+    "latest_native_event": "2026-10-01T10:24:39.054346+00:00",
+    "native_currently_allowed": true,
+    "retained_native_network_entries": 4778
+  }
+}

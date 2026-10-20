@@ -1,0 +1,61 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_frozen40_source_proofs.py",
+    "-v"
+  ],
+  "PYTHONPATH": "src:scripts",
+  "started_at": "2026-10-20T00:06:09.113104+00:00",
+  "finished_at": "2026-10-20T00:06:09.933573+00:00",
+  "exit_code": 0,
+  "before": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/collector.py",
+      "sha256": "d4f928abaecff1a0fb36754fed5becb5f1f5f1c20d9a94dec47f6ab0ca771551"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/collect_frozen40_source_proofs.md",
+      "sha256": "bab34c9c82687342cd922719d9889ff450fb807740dc83410594777a9c668558"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen40_source_proofs.py",
+      "sha256": "7ceb5b89181372378f348a7ba1eb2625f4796202b63b5fa789a5e3a46481ec37"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/request-plan.json",
+      "sha256": "0c96abd8ae201b36eb50e2cb22974ada8975284be9dc9c4cc4ae5b2496a5b05f"
+    }
+  ],
+  "after": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/collector.py",
+      "sha256": "d4f928abaecff1a0fb36754fed5becb5f1f5f1c20d9a94dec47f6ab0ca771551"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/collect_frozen40_source_proofs.md",
+      "sha256": "bab34c9c82687342cd922719d9889ff450fb807740dc83410594777a9c668558"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen40_source_proofs.py",
+      "sha256": "7ceb5b89181372378f348a7ba1eb2625f4796202b63b5fa789a5e3a46481ec37"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/request-plan.json",
+      "sha256": "0c96abd8ae201b36eb50e2cb22974ada8975284be9dc9c4cc4ae5b2496a5b05f"
+    }
+  ],
+  "same": true,
+  "plan_canonical": "7899aae9a3ea6cbd0301ce14794bf8d1a2563d88e20cfd3c240056b24711321b",
+  "original_unique_requests": 92,
+  "original_associations": 1928,
+  "additional_unique_requests": 3,
+  "max_GET_attempts": 95,
+  "scope": "8 offline methods with native managedcache/ledger/budget and fake opener; no actual GET, source admission or global append",
+  "collection_exists": false
+}

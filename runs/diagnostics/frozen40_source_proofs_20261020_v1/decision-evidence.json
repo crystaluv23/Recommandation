@@ -1,0 +1,452 @@
+{
+  "scope": "Read-only existing policy/profile/normalizer/store and exact57GPRE savedproducts+4oldoriginals; no materializer/GET/store/append/model/labels/schema/policy/code changes.",
+  "source_result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/result.json",
+    "sha256": "ac71fbcbf40526e04446c0cca25e568d02b0fd9df06ffd28463d03fcc90369ec"
+  },
+  "normalization": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/normalization.json",
+    "sha256": "ec8b8004b33fb651bf7d0c1ce4b026751267fdab1a2705e177a9bafed8488dc1"
+  },
+  "source_cohort": {
+    "case_id": "cik_0001309402:20250530",
+    "fixed_cases": 40,
+    "financial_families": 25,
+    "complete_GPRE_expected_set": 57,
+    "collision_count": 4,
+    "noncolliding_subset": 53
+  },
+  "contract_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_companyfacts_profile.md",
+      "sha256": "a91763bf23d75049ac58a6afcdf707e0038636751281df3d547c73f872b687fd",
+      "lines": "56-75",
+      "meaning": "date.min comparative selection; complete all expected set; each admittedrecord exact full canonical; explicit subset permitted."
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sec_company_facts.md",
+      "sha256": "acac01e4ba79291d9f32a660ebe0a4db48e24e81011bbe389f633f28b9d4efb2",
+      "lines": "27-38",
+      "meaning": "existing secfacts accession/bodycontent-version IDs; acquisition full comparative selection/backfill keeps old planmetadata; no provenance revision namespace."
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/raw_info.md",
+      "sha256": "70a13a1a637d395aa44db2e47d1e2475e3eee718d2543cf21d61fc0821c883b6",
+      "lines": "46-55",
+      "meaning": "append-only original identity/wholecanonical checks; no overwrite or movingnamespace to redefine ID."
+    }
+  ],
+  "implementation_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "125bc938ffc17180d86f1d62d972b2bd2040629da59a73b1495b3ff71487e636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+    }
+  ],
+  "collisions": [
+    {
+      "document_id": "secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79",
+      "old_original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79.json",
+        "sha256": "959d933f40ae6fd5f0a5e227263923ac6a7f23c34e31a95f92986ec273e66fcb"
+      },
+      "new_product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79.json",
+        "sha256": "88dcb0c51ac4d2c74bb20874678396d9f06f1300906284b3bd3f7a0e28622011"
+      },
+      "body_public_clock_identity_equal": true,
+      "metadata_difference_keys": [
+        "acquisition_policy_hash",
+        "acquisition_selection",
+        "backfill_plan_hash",
+        "period_end_from",
+        "period_end_through",
+        "retrieved_at"
+      ],
+      "old_metadata": {
+        "acquisition_policy_hash": null,
+        "acquisition_selection": null,
+        "backfill_plan_hash": "e8f86b50e8066bf3671ad085f428dc30fc14d013a881d01b04c752ef2c380bf6",
+        "period_end_from": "2022-01-27",
+        "period_end_through": "2025-09-30",
+        "retrieved_at": "2026-09-21T03:20:25.061490+00:00"
+      },
+      "new_metadata": {
+        "acquisition_policy_hash": "1dcfcf2d216f68ba3570cc92f7ac3f8e7b4d0dbd6ae54a87f021f01c34f02e9b",
+        "acquisition_selection": {
+          "available_at_through": "2025-05-30T00:00:00+00:00",
+          "form_allowlist": [
+            "10-K",
+            "10-K/A",
+            "10-Q",
+            "10-Q/A",
+            "20-F",
+            "20-F/A",
+            "40-F",
+            "40-F/A",
+            "6-K",
+            "6-K/A",
+            "8-K",
+            "8-K/A"
+          ],
+          "period_end_from": "0001-01-01",
+          "period_end_through": "2025-05-30",
+          "taxonomy_allowlist": [
+            "dei",
+            "ifrs-full",
+            "srt",
+            "us-gaap"
+          ]
+        },
+        "backfill_plan_hash": null,
+        "period_end_from": "0001-01-01",
+        "period_end_through": "2025-05-30",
+        "retrieved_at": "2026-10-19T23:39:18.274567+00:00"
+      }
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268",
+      "old_original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268.json",
+        "sha256": "bf933c3448c23792e6eec867ea946de401839d70d374ae2c742ece195524865c"
+      },
+      "new_product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268.json",
+        "sha256": "52258727ab2e2b7a0701dc0f160b609fae21bba0b434537e5d8eef92bb6a8940"
+      },
+      "body_public_clock_identity_equal": true,
+      "metadata_difference_keys": [
+        "acquisition_policy_hash",
+        "acquisition_selection",
+        "backfill_plan_hash",
+        "period_end_from",
+        "period_end_through",
+        "retrieved_at"
+      ],
+      "old_metadata": {
+        "acquisition_policy_hash": null,
+        "acquisition_selection": null,
+        "backfill_plan_hash": "e8f86b50e8066bf3671ad085f428dc30fc14d013a881d01b04c752ef2c380bf6",
+        "period_end_from": "2022-01-27",
+        "period_end_through": "2025-09-30",
+        "retrieved_at": "2026-09-21T03:20:25.061490+00:00"
+      },
+      "new_metadata": {
+        "acquisition_policy_hash": "1dcfcf2d216f68ba3570cc92f7ac3f8e7b4d0dbd6ae54a87f021f01c34f02e9b",
+        "acquisition_selection": {
+          "available_at_through": "2025-05-30T00:00:00+00:00",
+          "form_allowlist": [
+            "10-K",
+            "10-K/A",
+            "10-Q",
+            "10-Q/A",
+            "20-F",
+            "20-F/A",
+            "40-F",
+            "40-F/A",
+            "6-K",
+            "6-K/A",
+            "8-K",
+            "8-K/A"
+          ],
+          "period_end_from": "0001-01-01",
+          "period_end_through": "2025-05-30",
+          "taxonomy_allowlist": [
+            "dei",
+            "ifrs-full",
+            "srt",
+            "us-gaap"
+          ]
+        },
+        "backfill_plan_hash": null,
+        "period_end_from": "0001-01-01",
+        "period_end_through": "2025-05-30",
+        "retrieved_at": "2026-10-19T23:39:18.274567+00:00"
+      }
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03",
+      "old_original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03.json",
+        "sha256": "e45cd385e61a5c0f8057dda6e8fa16058357a7b30924a7f653a359aff10acace"
+      },
+      "new_product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03.json",
+        "sha256": "04439ceea8deb80e326b24608aefdc36e6f78cbea831147f4017b0eec1c17acc"
+      },
+      "body_public_clock_identity_equal": true,
+      "metadata_difference_keys": [
+        "acquisition_policy_hash",
+        "acquisition_selection",
+        "backfill_plan_hash",
+        "period_end_from",
+        "period_end_through",
+        "retrieved_at"
+      ],
+      "old_metadata": {
+        "acquisition_policy_hash": null,
+        "acquisition_selection": null,
+        "backfill_plan_hash": "e8f86b50e8066bf3671ad085f428dc30fc14d013a881d01b04c752ef2c380bf6",
+        "period_end_from": "2022-01-27",
+        "period_end_through": "2025-09-30",
+        "retrieved_at": "2026-09-21T03:20:25.061490+00:00"
+      },
+      "new_metadata": {
+        "acquisition_policy_hash": "1dcfcf2d216f68ba3570cc92f7ac3f8e7b4d0dbd6ae54a87f021f01c34f02e9b",
+        "acquisition_selection": {
+          "available_at_through": "2025-05-30T00:00:00+00:00",
+          "form_allowlist": [
+            "10-K",
+            "10-K/A",
+            "10-Q",
+            "10-Q/A",
+            "20-F",
+            "20-F/A",
+            "40-F",
+            "40-F/A",
+            "6-K",
+            "6-K/A",
+            "8-K",
+            "8-K/A"
+          ],
+          "period_end_from": "0001-01-01",
+          "period_end_through": "2025-05-30",
+          "taxonomy_allowlist": [
+            "dei",
+            "ifrs-full",
+            "srt",
+            "us-gaap"
+          ]
+        },
+        "backfill_plan_hash": null,
+        "period_end_from": "0001-01-01",
+        "period_end_through": "2025-05-30",
+        "retrieved_at": "2026-10-19T23:39:18.274567+00:00"
+      }
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47",
+      "old_original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47.json",
+        "sha256": "f7511fb374afaf01a49ce89726d3a66a73080862c364406f55d5ead6900aa03e"
+      },
+      "new_product": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47.json",
+        "sha256": "c4673a4862425ecfda881a5edbbfbcf6619ae890a389e79063a3fb80efa0cc09"
+      },
+      "body_public_clock_identity_equal": true,
+      "metadata_difference_keys": [
+        "acquisition_policy_hash",
+        "acquisition_selection",
+        "backfill_plan_hash",
+        "period_end_from",
+        "period_end_through",
+        "retrieved_at"
+      ],
+      "old_metadata": {
+        "acquisition_policy_hash": null,
+        "acquisition_selection": null,
+        "backfill_plan_hash": "e8f86b50e8066bf3671ad085f428dc30fc14d013a881d01b04c752ef2c380bf6",
+        "period_end_from": "2022-01-27",
+        "period_end_through": "2025-09-30",
+        "retrieved_at": "2026-09-21T03:20:25.061490+00:00"
+      },
+      "new_metadata": {
+        "acquisition_policy_hash": "1dcfcf2d216f68ba3570cc92f7ac3f8e7b4d0dbd6ae54a87f021f01c34f02e9b",
+        "acquisition_selection": {
+          "available_at_through": "2025-05-30T00:00:00+00:00",
+          "form_allowlist": [
+            "10-K",
+            "10-K/A",
+            "10-Q",
+            "10-Q/A",
+            "20-F",
+            "20-F/A",
+            "40-F",
+            "40-F/A",
+            "6-K",
+            "6-K/A",
+            "8-K",
+            "8-K/A"
+          ],
+          "period_end_from": "0001-01-01",
+          "period_end_through": "2025-05-30",
+          "taxonomy_allowlist": [
+            "dei",
+            "ifrs-full",
+            "srt",
+            "us-gaap"
+          ]
+        },
+        "backfill_plan_hash": null,
+        "period_end_from": "0001-01-01",
+        "period_end_through": "2025-05-30",
+        "retrieved_at": "2026-10-19T23:39:18.274567+00:00"
+      }
+    }
+  ],
+  "existing_route": {
+    "allowed": "Existing reviewedCompanyFacts profile explicitly allows an admitted subset. Keep normalization and all57expected entries unchanged, retain all4collision dispositions/evidence, append/qualify only exact53noncolliding products in a separately authorized/frozen newbatch. Preserve original40/25 denominators and GPREstatus as partial collision, not complete familypass.",
+    "no_schema_or_policy_change_required_for_subset": true,
+    "not_executed": true,
+    "required_honesty": "The four blockednewcanonical records remain blocked; oldsameID bytes are not rewritten or substituted under the newnormalization. No successfulsourcefraction or modelrun may call the missingQ1 facts nonexistent."
+  },
+  "no_existing_full57_bypass": {
+    "contentversion": "secfacts IDs are actualbody-content hashes; retrieval/provenance/selection metadata is outside bodyhash. Newcontent can naturallycreate a newID, but changing metadata or source namespace does not make this samebody a second authorizedoriginal.",
+    "namespace": "Globalstore exact-ID uniqueness and reviewed originalcanonical comparisons disallow a second differingrecord in anothernamespace; source_type relabeling is not a version mechanism.",
+    "native_refetch": "RawInfoStore._resolve_replay(idempotent_refetch=True) mayreturnFalse on sameID/company/content and preserveoldcanonicalbytes. That doesnotinstall the newmetadata and cannot satisfy currentprofile reconstruction; canonicalappend/readbackstillfails for these4.",
+    "if_all57_required": "A different content/provenance identity design or a separately specified legacy-backfill proof/admission interface would be an explicit further decision/change; not implicitly allowed by this diagnostic. No need to make it merely to allow the existing53subset."
+  },
+  "latest_period_risks": [
+    {
+      "tag": "CashAndCashEquivalentsAtCarryingValue",
+      "complete57_latest": {
+        "end": "2025-03-31",
+        "start": null,
+        "unit": "USD",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+      },
+      "subset53_latest": {
+        "end": "2024-12-31",
+        "start": null,
+        "unit": "USD",
+        "available_at": "2025-02-08T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+      }
+    },
+    {
+      "tag": "LiabilitiesCurrent",
+      "complete57_latest": {
+        "end": "2025-03-31",
+        "start": null,
+        "unit": "USD",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+      },
+      "subset53_latest": {
+        "end": "2024-12-31",
+        "start": null,
+        "unit": "USD",
+        "available_at": "2025-02-08T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+      }
+    },
+    {
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "complete57_latest": {
+        "end": "2025-03-31",
+        "start": "2025-01-01",
+        "unit": "USD",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+      },
+      "subset53_latest": {
+        "end": "2024-12-31",
+        "start": "2024-01-01",
+        "unit": "USD",
+        "available_at": "2025-02-08T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+      }
+    },
+    {
+      "tag": "GrossProfit",
+      "complete57_latest": {
+        "end": "2025-03-31",
+        "start": "2025-01-01",
+        "unit": "USD",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+      },
+      "subset53_latest": {
+        "end": "2024-12-31",
+        "start": "2024-01-01",
+        "unit": "USD",
+        "available_at": "2025-02-08T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+      }
+    },
+    {
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "complete57_latest": {
+        "end": "2025-03-31",
+        "start": "2025-01-01",
+        "unit": "USD",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+      },
+      "subset53_latest": {
+        "end": "2024-12-31",
+        "start": "2024-01-01",
+        "unit": "USD",
+        "available_at": "2025-02-08T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+      }
+    },
+    {
+      "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "complete57_latest": {
+        "end": "2025-03-31",
+        "start": "2025-01-01",
+        "unit": "shares",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+      },
+      "subset53_latest": {
+        "end": "2024-12-31",
+        "start": "2024-01-01",
+        "unit": "shares",
+        "available_at": "2025-02-08T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+      }
+    },
+    {
+      "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "complete57_latest": {
+        "end": "2025-03-31",
+        "start": "2025-01-01",
+        "unit": "shares",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+      },
+      "subset53_latest": {
+        "end": "2024-12-31",
+        "start": "2024-01-01",
+        "unit": "shares",
+        "available_at": "2025-02-08T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+      }
+    },
+    {
+      "tag": "EntityCommonStockSharesOutstanding",
+      "complete57_latest": {
+        "end": "2025-05-05",
+        "start": null,
+        "unit": "shares",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+      },
+      "subset53_latest": {
+        "end": "2025-02-04",
+        "start": null,
+        "unit": "shares",
+        "available_at": "2025-02-08T00:00:00+00:00",
+        "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+      }
+    }
+  ],
+  "dependency_limits": [
+    "The subset retains FY2024 and older comparativefacts, but currentMay30 case knowsa blockedMay09available Q1 filing. Corecash/liabilities/revenue/OCF/grossprofit/weightedshares end regresses fromMar31,2025 toDec31,2024; endingEntitysharesfromMay05toFeb04.",
+    "Subset may support explicitly annual/historical measurements; it is not evidence that a latestquarter need or wholeGPREfamily is answered. Signal-specific semanticperiod checks and source omission visibility remain to beverified; no numerical Signal execution here.",
+    "A sourcecoverage fraction can still pass with olderperiods; that doesnotclose latest/comparable-period measurement or forecastbenefit.",
+    "Complete expectedset57 is retained even if only53rows are explicitlyadmitted. Do notedit expectedproducts to53, drop4failures fromcounts, alter cutoff, or let partialadmission imply allmaterializedproductsread."
+  ],
+  "conclusion": "Currentcontract provides a legal explicit53-product subset route without schema/policydecision, with4collisions unresolved. It doesnotprovide an automatic same-ID metadata replacement/full57route or establish complete latestfinancials; no MVP closure."
+}

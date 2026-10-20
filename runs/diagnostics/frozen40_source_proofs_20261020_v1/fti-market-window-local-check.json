@@ -1,0 +1,293 @@
+{
+  "cache_directories_checked": [
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-fourway-parent-reflection-20260817-v1/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-production-20260822-015342/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v118/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v119/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v120/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v121/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v123/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v124/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v125/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v127/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v128/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v129/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v131/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v132/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v133/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v134/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v135/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v136/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v137/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v139/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v142/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v1/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v3/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v4/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v5/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v6/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v7/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v8/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v10/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v11/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v12/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v14/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v15/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v17/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v18/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v21-repair-acceptance/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v23-slow-recovery/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v64/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v69/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v73/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v92/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260918-v99/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v105/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v107/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v111/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v112/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v114/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v115/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v159_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v160_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v161_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v162_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v163_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v164_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v175_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v176_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cache/data/massive/price_daily",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/data/massive/price_daily"
+  ],
+  "case": {
+    "case_id": "cik_0001681459:20250530",
+    "company_id": "cik_0001681459",
+    "prediction_time": "2025-05-30T00:00:00+00:00",
+    "split": "discovery",
+    "ticker": "FTI"
+  },
+  "conclusion": "exact_cache_unlocated_in_checked_roots",
+  "definitions": [
+    {
+      "raw_retrieval": {
+        "lookback_days": 400,
+        "query_terms": [
+          "adjusted close",
+          "price history"
+        ],
+        "source_types": [
+          "market_data"
+        ]
+      },
+      "registry_group": "default_v6",
+      "signal_id": "max_drawdown_1y",
+      "spec": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/market/max_drawdown_1y/versions/v1/spec.json",
+        "sha256": "46d0b7b6f79e4a1319d2e82b333e17c8b597b0fe2ca37526dea286e7a1d0449e"
+      },
+      "version": 1
+    },
+    {
+      "raw_retrieval": {
+        "lookback_days": 400,
+        "minimum_observations": 127,
+        "query_terms": [
+          "adjusted close",
+          "price history"
+        ],
+        "source_types": [
+          "market_data"
+        ]
+      },
+      "registry_group": "default_v6",
+      "signal_id": "price_momentum_126d",
+      "spec": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/market/price_momentum_126d/versions/v1/spec.json",
+        "sha256": "298186290b11e7f49faa0808515d6d96bd96fb756410494ef4347d33099a0df3"
+      },
+      "version": 1
+    },
+    {
+      "raw_retrieval": {
+        "lookback_days": 400,
+        "query_terms": [
+          "adjusted close",
+          "price history"
+        ],
+        "source_types": [
+          "market_data"
+        ]
+      },
+      "registry_group": "latest_v12",
+      "signal_id": "max_drawdown_1y",
+      "spec": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/versions/v2/spec.json",
+        "sha256": "98bd4cbc4aaf1b7fca8bfaa8d14f0167da52f4a3cd94e9caa09b3bdec1536786"
+      },
+      "version": 2
+    },
+    {
+      "raw_retrieval": {
+        "lookback_days": 400,
+        "minimum_observations": 127,
+        "query_terms": [
+          "adjusted close",
+          "price history"
+        ],
+        "source_types": [
+          "market_data"
+        ]
+      },
+      "registry_group": "latest_v12",
+      "signal_id": "price_momentum_126d",
+      "spec": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v2/spec.json",
+        "sha256": "5fdc0c057e2c419f84b81ce8f384768c6c138b28e47e24851aeed6164c7c8d1b"
+      },
+      "version": 2
+    }
+  ],
+  "direct_paths_checked": [
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-fourway-parent-reflection-20260817-v1/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-production-20260822-015342/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v118/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v119/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v120/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v121/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v123/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v124/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v125/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v127/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v128/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v129/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v131/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v132/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v133/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v134/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v135/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v136/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260921-v137/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v139/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v140/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v142/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v1/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v3/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v4/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v5/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v6/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v7/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260909-v8/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v10/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v11/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v12/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v14/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260910-v15/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v16/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v17/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v18/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v21-repair-acceptance/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v23-slow-recovery/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v64/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v69/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v73/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v92/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260918-v99/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v105/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v107/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v111/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v112/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v114/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v115/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v159_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v160_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v161_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v162_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v163_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v164_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v175_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v176_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json"
+  ],
+  "global_store_or_append": false,
+  "inputs": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/local-cache-chain-inventory.json",
+      "sha256": "5bf5a7bbe1c86ef8ca58b7270695eb32b846f64ce306fedaf42f3ed88f1eeb9a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/plan.json",
+      "sha256": "20ee4d2f386a237fbeacfedfbe32dbd0406310166cb5f7b4f48014e391645696"
+    }
+  ],
+  "labels_or_mixed_manifest_read": false,
+  "lookback_days": 400,
+  "matches": [],
+  "models": 0,
+  "native_date_bounds": {
+    "end": "2025-05-29",
+    "start": "2024-04-25"
+  },
+  "network_requests": 0,
+  "next_step": "Verify each retained exact response, or freeze one new daily GET; derive issuer/latest-bar and split-interval proofs from its actual result before qualification.",
+  "no_original_trimming_or_retiming": true,
+  "request": {
+    "cache_key": "5015e346ebf9b81579a04cf4",
+    "endpoint": "https://api.massive.com/v2/aggs/ticker/FTI/range/1/day/2024-04-25/2025-05-29",
+    "method": "GET",
+    "query": {
+      "adjusted": "true",
+      "limit": "50000",
+      "sort": "asc"
+    }
+  },
+  "scope": "Original FTI identity/cutoff and both exact Registry market definitions; bounded direct-path cache check only."
+}
