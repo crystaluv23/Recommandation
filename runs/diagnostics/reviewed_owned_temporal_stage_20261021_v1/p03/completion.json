@@ -1,0 +1,137 @@
+{
+  "completion_hash": "fac52f44fa3e8212e5a6b016ddab72fd6f554812a7252c9b0630afd2279f134c",
+  "immutable_artifacts": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/cache/responses/3068a46f1a454f81ba314b118a0181542d09748b8b0297309771ca2f0ab4c895.json",
+      "sha256": "8bc4b62a2bb28b02b90c7c92d9925c342aa07e0b0ae6f76fd90e51d5feab8964"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/cache/responses/a10c38504db0eb16667a3a011ae319063a7aec08309fae716d96c9989b0dce57.json",
+      "sha256": "02a7fe254bae253843a2c278314a4dda45a65d96a4ef90e280155c6648636e05"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/cache/responses/ca994929bfd74c84d0fd8a2ce9d70578656098b95f9cdc0cc488e5620d4901d2.json",
+      "sha256": "438bcaacad71fcdcf8ee1aee70313ba695338ed34ad87672915e7f958782728c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/closure-usage.json",
+      "sha256": "4685adc06db123c529286208a1f7c5df5381c0ae4e1eca200a8f5c38a642d2e0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/closure.json",
+      "sha256": "6f39932ad09676ab74e82f0fb13f8abc7e37f4bd48eebe06fda66020423a69b5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/contract.json",
+      "sha256": "187251c44f2e008d8cecb084bdd629246a713374a50b3fbd26b700bab442ba38"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/exchange/contract.json",
+      "sha256": "71e37f2cbca2702e8978becb16970eaf17d8e0ed4c0a74dc7347a5f0aa4ad6c9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/exchange/inbox/3068a46f1a454f81ba314b118a0181542d09748b8b0297309771ca2f0ab4c895.json",
+      "sha256": "c32cd2375c1f8ed2aff406ce2b556247f26fe4c4d368070351d6d4e7ab96f3f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/exchange/inbox/a10c38504db0eb16667a3a011ae319063a7aec08309fae716d96c9989b0dce57.json",
+      "sha256": "d463d9eaede3d6e9026169989b25e2b6afd98d6daf7fbddfd6a56dfb161634cb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/exchange/inbox/ca994929bfd74c84d0fd8a2ce9d70578656098b95f9cdc0cc488e5620d4901d2.json",
+      "sha256": "94542992a627e2268ca47ae000a800ee29a838c7aab9e03df5e1250693f6deec"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/exchange/outbox/3068a46f1a454f81ba314b118a0181542d09748b8b0297309771ca2f0ab4c895.txt",
+      "sha256": "530ca083e9e231afeb961e393e3177267a34065bcf0d8f806ab02301b85ddbe7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/exchange/outbox/a10c38504db0eb16667a3a011ae319063a7aec08309fae716d96c9989b0dce57.txt",
+      "sha256": "907a3bbd93cf4881876c49866d46c612279dbedd451b4748365ade158b638c42"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/exchange/outbox/ca994929bfd74c84d0fd8a2ce9d70578656098b95f9cdc0cc488e5620d4901d2.txt",
+      "sha256": "d6eda79d1045fb309ec027cdf7c089929a6262a3699032aca63adeee77402072"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/exchange/receipts/3068a46f1a454f81ba314b118a0181542d09748b8b0297309771ca2f0ab4c895.json",
+      "sha256": "e618c7e935cfbc1253e8c24f71a209cc3fabdf862ffc05a3570f003f16dee8b9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/exchange/receipts/a10c38504db0eb16667a3a011ae319063a7aec08309fae716d96c9989b0dce57.json",
+      "sha256": "7c99d638ec68c1be2dd78ba742c09afbc97dbaf6685a17f393d6373c9adecec3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/exchange/receipts/ca994929bfd74c84d0fd8a2ce9d70578656098b95f9cdc0cc488e5620d4901d2.json",
+      "sha256": "5b835ba7df6e1d33fc424486092d90a321bfc0607a3953bbd9d467f63ef4fc2e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/expectations.json",
+      "sha256": "35fea3512cc63d8ee4724a785abc2347b3cccc4c42bc7a1539892b7fd23c7f06"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/final-context.json",
+      "sha256": "0b6c935d46325166b02d63116de4d7627bdd188122499d97984c6177d889dc8b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/inputs.json",
+      "sha256": "ae67b232f49915783a7f7d90121159e7ce4c125c52371776bd72b8148ad569b3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/manifest.json",
+      "sha256": "f94dfcc59fd1d583bcebe00d9f0ab2917f425cd7d994893f89a3355b0a00a18e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/prediction.json",
+      "sha256": "9eedda019aac73d3b622630c198cbd71cc19c15dd00d4edc2beffaa1261a1ef2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/preflight.json",
+      "sha256": "290a7f5611093caf024fd7945eb49e9b32f92513343357c4f594d4bba4095502"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/reflect-usage.json",
+      "sha256": "352a416f74c6de5c7f9f9a8122af548100f5423fc071e5ad2c5aab8daccde75a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/reflect.json",
+      "sha256": "ff77aa74fe008e2bb00a4de3ad13f4770dbdb2bcae0f323eb522eb6fa1e84e9a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/requests/3068a46f1a454f81ba314b118a0181542d09748b8b0297309771ca2f0ab4c895.json",
+      "sha256": "7c4b78914a14842229dae641c4cff575b6bd3350b8fc969c1202b2f3b5833c88"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/requests/a10c38504db0eb16667a3a011ae319063a7aec08309fae716d96c9989b0dce57.json",
+      "sha256": "343069b0ff23b7b4cebb43d235955b75fd3c412e4818df0a179424917a9a2d32"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/requests/ca994929bfd74c84d0fd8a2ce9d70578656098b95f9cdc0cc488e5620d4901d2.json",
+      "sha256": "baaf25912f8bab9b717d6a61bc718f63d420132d532199c1cf132f2235af56e4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/unused_external_attempts.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    }
+  ],
+  "manifest_hash": "ccdbdee02e91f9c6b619c3b84858dac4d98075e8e3dafae8c9f661cbc5f4eaf5",
+  "result": {
+    "actual_host_cost": null,
+    "actual_host_tokens": null,
+    "engineering_mvp_closed": false,
+    "external_api_calls": 0,
+    "fixed_denominator": 3,
+    "historical_seed_not_new_F6": true,
+    "independent_receipts": 3,
+    "labels_read": 0,
+    "logical_reservation": 176910,
+    "mirror_correction_branch": "not_exercised",
+    "new_Signal_apply": 0,
+    "prediction_ref": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/prediction.json",
+      "sha256": "9eedda019aac73d3b622630c198cbd71cc19c15dd00d4edc2beffaa1261a1ef2"
+    },
+    "sample_id": "p03",
+    "status": "prediction_persisted_requires_independent_review"
+  }
+}

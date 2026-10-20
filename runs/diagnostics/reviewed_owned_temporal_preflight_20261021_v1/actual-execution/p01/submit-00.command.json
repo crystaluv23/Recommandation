@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/run_reviewed_owned_partial_stage.py",
+    "--root",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01",
+    "--submit",
+    "--request-hash",
+    "9f4457f05a0e152651f74f83acd44b669fd718a7a15c17bc1c537f32b19ae317",
+    "--agent-id",
+    "/root/role_69"
+  ],
+  "cwd": "/Users/l/Project/Recommandation"
+}

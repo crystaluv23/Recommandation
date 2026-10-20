@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T18:28:01+00:00",
+    "checked_at": "2026-10-20T18:48:16+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal at bounded F7 three-control execution freeze; no budget limit; no old-stage resume"
+    "source": "Actual root get_goal after new fixed F7 three-control terminal review; no budget limit; completed stages stay completed"
   },
   "acceptance": [
     {
@@ -147,9 +147,14 @@
         "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/safe-summary.json",
         "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-review.json",
         "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-prepare/summary.json",
-        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-frozen-input-review.json"
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-frozen-input-review.json",
+        "reports/reviewed-owned-temporal-controls-20261021.md",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-review.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-command-and-bindings.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-review.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-audit-initial-error.json"
       ],
-      "remaining": "Actual deterministic input connection verified for default6/6 and latest9/9 within10, not Signal arithmetic/model semantics or wholeF5. Allfinancial-source membership8/9 and9/9;defaultLLM cashratio latestQ1 stillmissing withgenericselection unchanged.Future named positive fixture producers now explicitly bind CIK; actual old/new CLI2to0 with14enabled,158connected tests pass and independent strict negative/native constructor controls pass; historical failures/Registry bytes stay. Shared S5 execution-contract prompt still omits explicit CIK obligations; fresh model authoring unverified. Source57/4/53 and1780view preserve history; original40 readiness670/720 each is earlier1776-view evidence. BasicInfo partial/newsunknown;F7prompt17safe but originalfresh0/1/mirrorunexercised remain. F10/Slow/direction+magnitude discovery/admission/exactreuse/fullclosedloop unverified. BURUbaseline/FTItype/MSclock/transcriptpublictimeproof/retrospectivefinancialprimaryaudit limits persist;benefitlaterunknown."
+      "remaining": "Actual deterministic input connection verified for default6/6 and latest9/9 within10, not Signal arithmetic/model semantics or wholeF5. Allfinancial-source membership8/9 and9/9;defaultLLM cashratio latestQ1 stillmissing withgenericselection unchanged.Future named positive fixture producers now explicitly bind CIK; actual old/new CLI2to0 with14enabled,158connected tests pass and independent strict negative/native constructor controls pass; historical failures/Registry bytes stay. Shared S5 execution-contract prompt still omits explicit CIK obligations; fresh model authoring unverified. Source57/4/53 and1780view preserve history; original40 readiness670/720 each is earlier1776-view evidence. BasicInfo partial/newsunknown;newfrozen F7 temporal target3of3 with9fresh roles andexact consumers/restores, original0of1 retained/mirrorunexercised. p01 auxiliary honest uncertainty belief mechanically deleted by unavailable token guard, exact purehelper/typedauthority reproduce; wholeF7 stillopen. F10/Slow/direction+magnitude discovery/admission/exactreuse/fullclosedloop unverified. BURUbaseline/FTItype/MSclock/transcriptpublictimeproof/retrospectivefinancialprimaryaudit limits persist;benefitlaterunknown."
     },
     {
       "id": "feedback_consumption",
@@ -1015,18 +1020,33 @@
         "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-frozen-input-review.json"
       ],
       "result": "Spec-first bounded source profile preserves original failed umbrella plus partial/full variations. Oracle sees actual Reflect prior6quotes+2Signals, not all17bootstrapcards; properpartial/partial/full required, private268char feasibility only. Initial oracle/root coherent rename admitted a fresh budget group; fixed diagnostic destinations now reject before seed/write, original red retained.17safe/root and24independent controls pass. Under d15b3355 three unique serial prepares16.675/16.465/16.733s exit0, code107/original7938 each, all8045 unique bindings and exact sample delta checked; historical source plan+116code verified separately at263d16/prefixddeae204. No fresh request/model/GET/labels/Signal/fullrun, original0of1 and fullMVP open. Next exact-inbox independent fresh roles with fixed18request/1536000total and no borrowed limits."
+    },
+    {
+      "id": "engineering-mvp-owned-temporal-controls-actual-20261021",
+      "strategy": "fresh_f7_frozen_temporal_controls_exact_inbox",
+      "failure_families": [
+        "residual_static_dynamic_facet_loss",
+        "coverage_uncertainty_misclassified_as_economic_finding"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-owned-temporal-controls-20261021.md",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-review.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-command-and-bindings.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-review.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-audit-initial-error.json"
+      ],
+      "result": "Actual fixed3 target semantics pass3of3 independently: p01 properpartial residual283 retains all7unknown facets, p02 properpartial129 retains terms and postJune30 compliance, p03 full onliteral50.0m revolving/H1 compliance removes onlyownedneed4. Nine fresh independent exactinbox roles69to77, initialReflect/closure/Predictor each3 firstanswers0modelcorrection;535373 logicalunits, hosttokens/costunknown, mirrorunexercised. Exact consumers/17finalcards/versions/periods and each32file completedrestore preserve bytes with0newdispatch; root107currentcode/9request reservations/immutablecomplete checked. Auxiliary p01 mixed453char honest uncertainty belief mechanically removed by topic+negative-marker unavailable guard; exact purehelper and typedauthority reproduce, onlythatdrop explains raw/state delta. p02/p03 no suchdrop. Original0of1 retained, no allraw preservation or wholeF7/FastSlow/MVP/benefit claim,0GET/externalLLMAPI/labels/Signalapply/fullrun. Initial rootaudit equality ignored existing company masking; retained auditfailure corrected without product rerun. Next diagnose uncertainty guard family, not repeat completed controls."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-owned-temporal-controls-frozen-20261021",
+    "after_iteration": "engineering-mvp-owned-temporal-controls-actual-20261021",
     "evidence": [
       "reports/reviewed-owned-temporal-controls-20261021.md",
-      "runs/diagnostics/owned_partial_three_controls_20261021_v1/expectations.json",
-      "runs/diagnostics/owned_partial_three_controls_20261021_v1/oracle-review.json",
-      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/safe-summary.json",
-      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-review.json",
-      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-prepare/summary.json",
-      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-frozen-input-review.json"
+      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-review.json",
+      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-command-and-bindings.json",
+      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-review.json",
+      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-audit-initial-error.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1085,22 +1105,23 @@
       "Fullpool/subset equality alone made the first candidate fail closed on a feasible one-doc basis when optional filling altered dominance, or lose a necessary nonoperand witness. Capability counterexamples require safe filling/bounded witness-preserving reduction as well as rejection.",
       "Source issuer hardening was not followed through shipped capability fixtures and downstream numeric/card fixtures. The new115-test connected check exposes2fail12errors; prior focused successes must not stand for this producer/consumer chain. Default v6 also contains three LLM financial refs: its deterministic denominator is6, not9.",
       "The connected115 repair did not initially cover two runtime positive constructors whose body already declared CIK but metadata omitted it; all-unavailable batches skipped reflection and repeated a scripted ref. Fixing runtime selection would mask the invalid producer. Exact original failures and final158 plus independent native producer controls now distinguish the boundary. Fresh model-authored fixture compliance remains outside this local result.",
-      "An oracle with self-declared distinct roots only protected postfreeze relocation; coherently changing oracle and roots before freeze could create another budget group. Root initially advised against fixed roots and missed this distinction. Independent original/native counterexample now contrasts old admission with profile-owned fixed-root rejection; no generic budget mechanism was added. Reflect visibility is prior6quotes plus current results; seventeen bootstrap cards belong to final consumers."
+      "An oracle with self-declared distinct roots only protected postfreeze relocation; coherently changing oracle and roots before freeze could create another budget group. Root initially advised against fixed roots and missed this distinction. Independent original/native counterexample now contrasts old admission with profile-owned fixed-root rejection; no generic budget mechanism was added. Reflect visibility is prior6quotes plus current results; seventeen bootstrap cards belong to final consumers.",
+      "Checking residual scope, adopted evidence and downstream exactness alone misses auxiliary raw operations deleted by deterministic repair. Actual first answer p01 contains a truthful coverage-only mixed belief; topic subset plus any negative marker misclassifies the explicit negation of economic absence. Native acceptance with0model corrections can include mechanical deletion. Independent raw-to-state delta and exact helper reproduction expose it; target3of3 is scoped separately. Root terminal audit also initially ignored the existing identity mask and was corrected without product rerun."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "fresh_f7_frozen_temporal_controls_exact_inbox",
-      "action": "Execute the three already frozen new controls serially using independent fork-none subagents and only exact native inboxes. Preserve native raw first answers and any single typed correction, optional one closure, accepted state/dispositions, final context, actual Predictor request/sink and completed restoration. Judge partial/partial/full semantics independently against the predeclared oracle; safe unanswered is separate from capability. Do not alter frozen code/inputs/oracle, induce corrections or reenter old completed stages.",
-      "stop": "Each fixedcase stops on terminal failure or its6request/512000unit ceiling; perrequest131072 and finalizationreserve64000 stay. Three controls total18/1536000 without borrowing/newroots. Stop on input/code drift, control-plane or source authority failure; no externalLLMAPI/GET/labels/newSignalapply/fullsuccessor.",
-      "question": "Does the repaired prompt preserve every unsupported static and time-varying facet while adopting actual known evidence, and close the sufficiently answered narrow question through persisted state and real Predictor consumption?",
-      "pass": "Frozen p01/p02 achieve grounded properpartial with complete residuals, p03 achieves grounded full and removes only ownedneed4; untargeted needs/provenance/17 finalcards persist through actual consumers and bounded completed restore. First/corrected/final results reported independently.",
-      "fail": "Any accepted answer loses a required facet, overextends H1 coverage, treats domainunavailable as negative, fails a normal capability control or changes consumer meaning; mechanical execution alone is not a semantic pass.",
-      "on_pass": "Record the bounded F7 family evidence with its three-case scope and mirror branch disposition, then address remaining input/S5/Slow discovery-admission-reuse blockers before any fullloop run.",
-      "on_fail": "Preserve original and new complete denominators/raw answers, locate the first source/prompt/validator/consumer loss using the fixed contrasts; do not add repeated calls or change expected answers until a separate justified repair boundary.",
-      "new_evidence": "Three actual prepared stages and8045verifiedunique bindings, independent source adequacy/private feasible residual and24gatecontrols make fresh stage behavior interpretable; earlier mirror/prompt tests and old0of1 cannot establish new compliance.",
-      "distinguishing_variable": "Original282char broad question versus142char temporal partial and148char full-answer control with identical historical source/prior/portfolio/results and only controlled need4/sampleID changes.",
-      "authorization_evidence": "User active engineeringMVP goal, explicit independent-subagent replacement for LLM API nodes, and previously frozen percase bounded stages; external LLM API calls remain0. Actual get_goal active2026-10-20T18:28:01Z, no token budget. This is not a full successor or restoration of old experiments."
+      "strategy": "unavailable_guard_uncertainty_clause_authority_before_more_live_stages",
+      "action": "Trace the actual p01 mixed uncertainty text through unavailable-topic predicate, typed mechanical removal, accepted state and final consumers. Review owning contract and representative negation/coverage/mixed-clause variants plus true unsupported economic findings. Prepare the minimum spec-first correction preserving strict unavailable evidence and typed authority; verify exact failed raw behavior in temporary native execution, without modifying completed stages or adding production calls during diagnosis.",
+      "stop": "No blanket keyword exemption, invented semantic labels, hidden economic finding inside a disclaimer, weakened source/quantity/need gate, unauthorized typed writes or old-stage reentry. If the guard cannot distinguish a case deterministically, retain uncertainty and identify the actual semantic boundary rather than claim a universal regex proof.",
+      "question": "Does the unavailable-as-finding predicate falsely grant mechanical deletion authority for honest coverage uncertainty and explicit negation, and can that family be distinguished while still rejecting unsupported economic conclusions?",
+      "pass": "Exact original helper and native state delta reproduce false deletion; representative coverage/negation variants are recognized as uncertainty, while genuine unavailable-derived negative/resolved claims remain invalid under a concrete owning-spec/authority correction.",
+      "fail": "The removed statement actually asserts an unsupported finding, or the proposed distinction admits an economic conclusion mixed with a disclaimer or changes unrelated validation authority.",
+      "on_pass": "Implement the scoped deterministic guard/authority repair after updating its owning spec, verify old failure/variants/true-finding counterexamples through native parser/persistence, then return to remaining defaultLLM input and S5 authoring before Slow closedloop work.",
+      "on_fail": "Preserve exact mixed statements and find the first contradictory semantic/contract boundary; do not disable the guard, introduce a blanket negation whitelist or rerun the three completed controls.",
+      "new_evidence": "Predeclared temporal controls now achieve3of3 through fresh role rawanswers and actual consumers, but independent raw-to-accepted inspection finds one453char honest uncertainty operation deleted without a model correction. Purehelper on actual prior/raw and typed remove_unavailable_finding authority accounts exactly for accepted delta; p02/p03 do not have it.",
+      "distinguishing_variable": "Truthful coverage/explicit negation versus an affirmative economic conclusion, evaluated at clause and ownership boundary with identical unavailable Signal input; separately compare validator rejection and allowed mechanical write rather than only final schema acceptance.",
+      "authorization_evidence": "Active user engineeringMVP goal and systemic repair authorization; external LLM APIs prohibited, production nodes independent exact-inbox subagents. Actual get_goal active2026-10-20T18:48:16Z, unlimited goal budget. Diagnosis uses no new model/GET/labels and does not resume old experiments or authorize full successor."
     }
   },
   "successor_prerequisites": [

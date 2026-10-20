@@ -1,0 +1,19 @@
+{
+  "fixed_denominator": 3,
+  "sample_id": "p02",
+  "external_api_calls": 0,
+  "labels_read": 0,
+  "new_Signal_apply": 0,
+  "historical_seed_not_new_F6": true,
+  "actual_host_tokens": null,
+  "actual_host_cost": null,
+  "engineering_mvp_closed": false,
+  "status": "pending_independent_role",
+  "pending": {
+    "stage": "research_controller_reflect",
+    "request_hash": "b2831d87c3cfe7ed82f3ec3ea20a84bc3c8d093d6ac83c7958433b456880260d",
+    "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/exchange/inbox/b2831d87c3cfe7ed82f3ec3ea20a84bc3c8d093d6ac83c7958433b456880260d.json",
+    "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/exchange/outbox/b2831d87c3cfe7ed82f3ec3ea20a84bc3c8d093d6ac83c7958433b456880260d.txt",
+    "inbox_sha256": "09a41bff2eb8020fb50d4ab378c8fd5d9127d77da3cfd48b0b8f6bce86b8d03d"
+  }
+}

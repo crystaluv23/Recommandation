@@ -3,7 +3,7 @@
 更新：2026-10-21。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛；
 独立预测收益为后续里程碑、未知。生产 LLM 节点使用独立 subagent，外部 LLM API 调用0。
 只读资料取证已授权：累计147 GET（115行情、32SEC）；规范web查阅另列。
-当前来源批次0新生产LLM节点，host tokens/cost及资料API成本未测量。
+新F7三控制使用9个独立生产角色、0模型纠错；535373逻辑预留，host tokens/cost及资料API成本未测量。
 
 ## 当前验收
 
@@ -41,8 +41,10 @@ v6确定性6/6、v12确定性9/9选typedQ1，现金parser latest由2023末到202
   225关联测试/独立14项过，旧49/50仍6行，离线同步后5行进入持久化/Predictor；fresh触发仍待验。
 - [fresh F7→Predictor](../reports/reviewed-owned-partial-stage-20261020.md)：3独立首答/0纠错、17cards及32文件restore保真；
   预冻完整语义0/1：残项漏披露期后covenant compliance，未宣称未来合规仍不能通过。mirror not_exercised。
-- [F7 facets提示修复](../reports/reflect-facet-scope-20261021.md)：保静态属性/动态状态/覆盖期与公开日区别、已有unanswered保原need路径；
-  17安全测试通过，validator/typed权限未变；fresh语义未验，旧0/1保持。
+- [fresh F7三控制](../reports/reviewed-owned-temporal-controls-20261021.md)：预冻原问题/部分变体/充分答案，实际proper partial/partial/full目标3/3；
+  role69–77各首答接受、0模型纠错，原0–3needs/17后继cards/版本及实际Predictor/sink保真；各32files restore全等/0新派发。
+  p01一条453字诚实unknown混合belief被unavailable词集guard机械误删，已精确复现；原操作非全保留，整体F7仍open。
+  原0/1不改；所有mirror not_exercised，17cards仅最终/Predictor可见，Reflect只见6原引文+当前batch。
 - [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)：apply neutral→Reflect partial→Predictor/sink实际连接，
   7新角色/1纠错、52文件恢复；仍6行needs含长短镜像，不等于整体F4/F6/F7或完整F9。
 - [native Posthoc](../reports/reviewed-posthoc-stage-20261020.md)：首答拒、唯一typed纠错后2items窄审通过，19文件恢复；
@@ -66,8 +68,7 @@ FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍un
 
 源capture、F7旧stage和新input-only检查均保持完成、不重入；选文修复已完成独立终态审查。
 issuer fixture生产者局部修复已过真实CLI与158关联检查，旧Registry字节/失败保留；默认LLM选文剩余缺口另保留。
-[F7三控制适配](../reports/reviewed-owned-temporal-controls-20261021.md)及私有oracle已就绪，17安全测试通过；独立审发现同步改oracle/目录可复设额度，已固定三root并加拒绝反例。
-d15b3355下三root各唯一prepare16.675/16.465/16.733s均exit0，8045唯一绑定及精确sample差异核过、尚0新角色。
-下一独立exact-inbox角色串行验收固定三控制；Reflect可见6既有引文+2Signal，17卡仅后继可见。
-原0/1与未触发mirror保留，unanswered安全保留不替代有答案能力通过；不以输入检查替代模型行为。
+新F7三控制已完成独立终态审查：目标3/3、9角色及3次唯一完成恢复；不重入、不以本批关闭整体F7。
+下一核unavailable guard的unknown/否定/混合句误删家族，先spec再修并保真实负向反例；不改冻结产物或追加追成功调用。
+默认LLM选文、fresh S5身份义务与Slow发现/准入/后继使用仍待验。
 LLM节点继续exact inbox独立subagent；0外部LLM API。不恢复旧运行或启动完整后继，不以0.8/输入resolved替代测量或MVP关闭。

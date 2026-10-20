@@ -1,0 +1,6 @@
+{
+  "audit_only_error": "Initial audit incorrectly required canonical closure.state to equal identity-masked final state byte for byte.",
+  "assertion_failed": "final_research_state == closure.state",
+  "observed_only_difference": "retained BasicInfo exact_text index4 maps company name to existing MASKED_COMPANY sentinel",
+  "correction": "Verify retained six refs against the original native masked refs, new Signal refs exactly, and all other state fields exactly; no product rerun or stage changes."
+}

@@ -1,0 +1,20 @@
+{
+  "actual_host_cost": null,
+  "actual_host_tokens": null,
+  "engineering_mvp_closed": false,
+  "external_api_calls": 0,
+  "fixed_denominator": 3,
+  "historical_seed_not_new_F6": true,
+  "independent_receipts": 3,
+  "labels_read": 0,
+  "logical_reservation": 181364,
+  "mirror_correction_branch": "not_exercised",
+  "new_Signal_apply": 0,
+  "prediction_ref": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/prediction.json",
+    "sha256": "69c98455d51e83df22c23108a525f9e24b5804c0b941f464041fb8755c8b939b"
+  },
+  "sample_id": "p01",
+  "status": "prediction_persisted_requires_independent_review",
+  "restored_without_execution": true
+}

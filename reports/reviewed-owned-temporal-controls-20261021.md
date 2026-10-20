@@ -54,7 +54,59 @@ input freezing, not fresh semantic behavior.
 
 The [bounded independent preflight review](../runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-review.json)
 checks24 negative/positive controls and native legal partial/partial/full
-representations. Next execute each new case serially with exact-inbox
-independent subagents and judge the original answers against the frozen oracle.
+representations. The actual cases were then executed serially with fresh exact-inbox independent
+subagents, as recorded below.
 No GET, external LLM API, Signal apply, labels or full successor is involved.
 Whole F7/Fast/Slow/MVP and independent benefit remain open.
+
+
+## Actual semantic results and remaining guard defect
+
+Roles69–77 each consumed only their own fresh native inbox. Every case has one
+initial Reflect, one bounded terminal closure and one Predictor first answer;
+no model correction or induced error occurred. The fixed three-case oracle
+passes3/3 in the [independent actual review](../runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-review.json):
+
+| Control | Actual disposition | Preserved consumer meaning |
+| --- | --- | --- |
+| p01 original umbrella | proper partial,283-character residual | All seven unknown facets remain, including terms and compliance after June30; five needs |
+| p02 shorter temporal need | proper partial,129-character residual | Known H1 compliance adopted; terms and later compliance stay separate unknowns; five needs |
+| p03 sufficient period | full, no residual | Actual$50.0million revolving availability and H1 compliance answer the exact question; only need4 removed |
+
+Closures change only decision to finalize. Seventeen original BasicInfo cards,
+partial/omission metadata, exact financing:v5/OCF:v2 results and periods/units
+survive native final assembly, actual anonymous Predictor requests and durable
+prediction sinks. Historical neutral financing is not a directional catalyst;
+OCF domain_unavailable is not economic absence. No prediction class was set by
+the oracle, no labels or score were read, and no accuracy claim is made.
+
+The [root terminal review](../runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-terminal-review.json)
+checks nine requests/receipts,107 current code bindings and sealed completion
+artifacts. Each unique completed restore preserves all32 local files exactly
+and dispatches0 roles. Reservations are181364/177099/176910, total535373 of
+1536000; these logical units are not measured host tokens/cost. External LLM
+API/GET/labels/new Signal apply remain0. All mirror branches are not_exercised.
+Original failed control0/1 is retained; this is a separate fixed3 denominator,
+not a full F7/Fast/Slow or general OS-crash recovery closure.
+
+There is one material auxiliary difference between raw and accepted p01 output.
+Its453-character mixed belief honestly states insufficient visible OCF evidence
+and explicitly denies interpreting it as economic absence. The existing
+unavailable-topic guard classifies it through topic-token membership plus a
+negative marker, and typed mechanical authority deletes the whole belief.
+The independent pure-helper reproduction proves that removing precisely this
+one operation accounts for the accepted-state difference; p02/p03 have no such
+drop. The target residual/evidence semantics pass, but all-raw-operation fidelity
+and whole-F7 correctness do not. Frozen products were not edited to hide this.
+
+The root's first terminal audit also incorrectly demanded byte equality between
+canonical closure refs and the already identity-masked final state. The existing
+company-name masking was the only difference. The original audit assertion and
+corrected expected comparison are retained; no product rerun or stage mutation
+followed this audit-only error.
+
+Next diagnose and repair the unavailable/uncertainty guard family with the
+actual mixed statement, representative clause/negation variants and true
+unavailable-as-economic-finding counterexamples. Preserve existing source,
+quantity, need-transition and typed-repair authority. Completed three controls
+remain completed; no full successor is justified by this narrow3/3 result.

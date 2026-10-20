@@ -1,0 +1,27 @@
+{
+  "verdict": "PASS_three_actual_five_file_freezes_only",
+  "stages": [
+    {
+      "sample_id": "p01",
+      "manifest_hash": "7d7f06ca17ce9ff8c57f1a868f7a3d37e43ade8c6245ad67c56dfffbd6117f90",
+      "contract_hash": "faa719b23e57df12c8963b27e2ea25b7ee6538a696bc1c2d2176e3b870ef378b",
+      "input_hash": "117a777608b01f1faecf3ef8d6e20288697d9c4e5c47c01c717cdaad21d58735"
+    },
+    {
+      "sample_id": "p02",
+      "manifest_hash": "23f6410b7d3fc7bba07b5a7f07b68aff3e85bfa96c37a0d02965fa258f08838a",
+      "contract_hash": "1a202406077ffe38d6cb32d8379d884025cebb77649a004a05bed4173afb3c89",
+      "input_hash": "965a4d565b99ff64b29632406868b85aaef0bf133378f4b56eb45e3f435591d7"
+    },
+    {
+      "sample_id": "p03",
+      "manifest_hash": "ccdbdee02e91f9c6b619c3b84858dac4d98075e8e3dafae8c9f661cbc5f4eaf5",
+      "contract_hash": "6768ec662f0ff756dc62e8f07c7db1f470b8c6b84c412d0cd0089a234c6c393b",
+      "input_hash": "9446e2ff6a63442e7c4fa93b63272b77beb7295ce94e97aacc31612ae4ce7296"
+    }
+  ],
+  "review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/frozen-input-independent-review.json",
+    "sha256": "c91de6621c86835990a28c5ba4922e433da0a70af3e0491070ca13689813f307"
+  }
+}

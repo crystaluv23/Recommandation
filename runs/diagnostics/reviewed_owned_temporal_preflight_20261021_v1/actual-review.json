@@ -1,0 +1,725 @@
+{
+  "scope": "actual terminal cases only; file reads + pure native parser/validator/assembler; no Store/network/models/labels/resume",
+  "oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/owned_partial_three_controls_20261021_v1/expectations.json",
+    "sha256": "a5d5d3049ce6efaa1bc2609824d277ed29d55e074160bd4c89d97617097714d8"
+  },
+  "cases": {
+    "p01": {
+      "target_semantic_verdict": "PASS_proper_partial",
+      "fixed_case_denominator": 1,
+      "manifest_hash": "7d7f06ca17ce9ff8c57f1a868f7a3d37e43ade8c6245ad67c56dfffbd6117f90",
+      "code_files_current_verified": 107,
+      "immutable_verified": 28,
+      "restore": {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-execution/p01/completed-restore-review.json",
+          "sha256": "8d98351f3687a2665b87ca73eff97f08670299fac7340b6a6ae82ff5ae3a0d97"
+        },
+        "all_current_before_after_sha_equal": true,
+        "files": 32,
+        "new_dispatches": 0
+      },
+      "trace": [
+        {
+          "request_hash": "8a83a4badbdd1ba8a429c13ea8d04e71e6cf921689992a2ee8af1433a30f8b67",
+          "stage": "blind_predictor_predict",
+          "receipt": {
+            "agent_id": "/root/role_71",
+            "inbox_sha256": "d4f5d94f67470fb7112324e58029f6d21820e1446dec7b4ad4863acbfb8e431b",
+            "raw_output_sha256": "5492725c97d3e0b0b8f39c581ce10180bd12202e7c15cac12fa02e9fc083eb3a",
+            "request_hash": "8a83a4badbdd1ba8a429c13ea8d04e71e6cf921689992a2ee8af1433a30f8b67"
+          },
+          "logical_reservation": 71213
+        },
+        {
+          "request_hash": "9f4457f05a0e152651f74f83acd44b669fd718a7a15c17bc1c537f32b19ae317",
+          "stage": "research_controller_reflect",
+          "receipt": {
+            "agent_id": "/root/role_69",
+            "inbox_sha256": "d1beed4ecd3773e2c9b28d276799846a6a5ad8a68aa803397c3b35e479fdd131",
+            "raw_output_sha256": "cdabaf0e1aeb05e8fe3df82182f7bad9284a4f005090696e89931e569c8f55e1",
+            "request_hash": "9f4457f05a0e152651f74f83acd44b669fd718a7a15c17bc1c537f32b19ae317"
+          },
+          "logical_reservation": 54828
+        },
+        {
+          "request_hash": "bb6f6a1e63c06aec53ac39fd49e5cde0888497df474d02fa1bdc3341648a7958",
+          "stage": "research_controller_reflect",
+          "receipt": {
+            "agent_id": "/root/role_70",
+            "inbox_sha256": "1c8abcda2c46a0f611c3728a19b14d2e6eea5f1348d16d80e5ff555b62f0eacc",
+            "raw_output_sha256": "47ecd9b6e546227700f19300dc1424387db82dd3ae3cb51032569dafcc73d9cc",
+            "request_hash": "bb6f6a1e63c06aec53ac39fd49e5cde0888497df474d02fa1bdc3341648a7958"
+          },
+          "logical_reservation": 55323
+        }
+      ],
+      "first_answers": 3,
+      "model_corrections": 0,
+      "logical_reservation": 181364,
+      "reflect_raw_operations": 5,
+      "residual": "By prediction time, what annual/subsequent disclosures established operating cash flow, capex, debt balances/maturities, covenant terms and compliance after June 30, 2025, tax-related cash obligations and prospective equity dilution? Direct annual-report coverage remains unverified.",
+      "reason": "Executed evidence establishes historical treasury-share retirement, repurchase-program availability and covenant compliance through June 30, 2025. It does not establish prospective equity dilution, covenant terms or compliance after that observation period through prediction time. Operating cash flow, capital expenditure, debt balances and maturities, tax-related cash obligations and direct annual-report coverage remain unresolved. The disclosure availability date does not extend the observed covenant period. The unavailable cash-flow-margin result supplies no answer evidence. Continue collection of cutoff-available disclosures addressing these residual facets and the preserved operating questions.",
+      "prior_0_3_exact_occurrences": true,
+      "need_count": 5,
+      "adopted_evidence": [
+        {
+          "reference": {
+            "kind": "signal",
+            "signal_ref": "financing_listing_action:v5",
+            "evidence_group": "counter",
+            "evidence_index": 2,
+            "claim": "There were no share repurchases during the three months ended June 30, 2025 and 2024. As of June 30, 2025, all treasury shares were retired, and a total of $ 50.1 million remained available for repurchase under the repurchase program."
+          },
+          "original_evidence": {
+            "document_id": "sec:cik_0001830043:000162828025038861",
+            "exact_span": "There were <ix:nonFraction unitRef=\"shares\" contextRef=\"c-96\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodShares\" format=\"ixt:fixed-zero\" scale=\"0\" id=\"f-550\"><ix:nonFraction unitRef=\"shares\" contextRef=\"c-97\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodShares\" format=\"ixt:fixed-zero\" scale=\"0\" id=\"f-551\">no</ix:nonFraction></ix:nonFraction> share repurchases during the three months ended June&#160;30, 2025 and 2024. As of June&#160;30, 2025, all treasury shares were retired, and a total of $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-90\" decimals=\"-5\" name=\"us-gaap:StockRepurchaseProgramRemainingAuthorizedRepurchaseAmount1\" scale=\"6\" id=\"f-552\">50.1</ix:nonFraction> million remained available for repurchase under the repurchase program.",
+            "timestamp": "2025-08-07T20:05:33+00:00"
+          }
+        },
+        {
+          "reference": {
+            "kind": "signal",
+            "signal_ref": "financing_listing_action:v5",
+            "evidence_group": "counter",
+            "evidence_index": 3,
+            "claim": "As of June 30, 2025, amounts available under the Revolving Credit Facility were $ 50.0 million. As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants."
+          },
+          "original_evidence": {
+            "document_id": "sec:cik_0001830043:000162828025038861",
+            "exact_span": "As of June&#160;30, 2025, amounts available under the Revolving Credit Facility were $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-232\" decimals=\"-5\" name=\"us-gaap:LineOfCreditFacilityRemainingBorrowingCapacity\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-872\">50.0</ix:nonFraction>&#160;million. As of June&#160;30, 2025, and at all times during the six months ended June&#160;30, 2025, the Company was in compliance with the financial debt covenants.",
+            "timestamp": "2025-08-07T20:05:33+00:00"
+          }
+        }
+      ],
+      "source_body": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0001.json",
+        "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+      },
+      "closure_empty_owner_decision_only": true,
+      "pure_native_reassembly_equals_final_wire_and_sink": true,
+      "basic_info_cards": 17,
+      "basic_info_visibility": [
+        {
+          "available_projection_count": 23,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "illar Two minimum taxes and valuation allowance recorded against certain deferred tax assets arising in the cu",
+            "gn markets, primarily in the United Kingdom and the European Union. For the three months ended June&#160;30, 2",
+            "and certain outstanding Class B Units were reclassified into a new class of limited partnership interests that",
+            "vable agreement liability remeasurement (benefit) expense, impairment loss, and restructuring costs. Adjusted ",
+            "ts, furniture and fixtures, developed technology, user base, white label contracts, trademarks and other defin",
+            "their Unruh Act claims in the Superior Court of the State of California for the County of Riverside, this time",
+            "31, 2021, quarterly installment payments on the Incremental Term Loan Facility are no longer required for the ",
+            "tter comparison of our performance across periods. We believe Adjusted EBITDA provides visibility to the under"
+          ],
+          "omitted_projection_count": 7,
+          "projection_context_truncated": true,
+          "projection_ids": [
+            "projection_f8d7793d8a50c9c91d62edc1",
+            "projection_d84bdae2cd1041d8970aaed9",
+            "projection_72c7dd5608b151dc514a11f5",
+            "projection_1a176aa5c11237ff05bbd475",
+            "projection_bc120412c765a8ad3d6afeba",
+            "projection_13e6480ddb0d6ae44577f7ea",
+            "projection_c363263f9720e19bd29d557f",
+            "projection_857e47898275a58b1c86dc0a",
+            "projection_661ec66810d9066226619755",
+            "projection_fd3d1caf13ac99d7a6654456",
+            "projection_f5e5258464d4602a2ffccc9e",
+            "projection_11e722831b03f2831c1c8d2d",
+            "projection_907da1a0881fb4891fdeaaf7",
+            "projection_53f0208217c26e1d3d9b97e2",
+            "projection_d5f66354c516bb7a572fd8b4",
+            "projection_7da50e986ef20021090aa4f8"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.operating_report",
+          "source_context_truncated": true,
+          "source_types": [
+            "filing"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 16
+        },
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "confidence": {
+          "level": "medium"
+        },
+        "is_surge": false,
+        "key_reasons": [
+          "At the 2025-09-30T00:00:00+00:00 forecast boundary, the supplied five-day mean adjusted-close baseline is 6.494 and the doubling threshold is 12.988. The defined outcome requires a five-consecutive-trading-day mean at or above that threshold within the next six calendar months. The strongest operating evidence favors continued contraction: the interim report available August 7 describes lower quarterly revenue and fewer paying users than in the corresponding prior-year quarter, despite higher total average revenue per paying user.",
+          "The shift from paid acquisition toward organic and brand investment offers a plausible turnaround mechanism, but management explicitly warned that membership cleanup and reduced performance marketing could depress revenue and paying users in the short term. Inference: continued erosion in the paying base is currently better supported than an expectation-changing operating acceleration during the forecast horizon.",
+          "The June workforce reduction is a substantive restructuring action that could improve economic capture if savings exceed lost revenue. However, the supplied disclosure also warns of higher or differently timed charges and benefits arriving less fully or quickly than anticipated. Combined with the observed operating contraction, this makes a sustained doubling less compelling than continued turnaround uncertainty; the judgment does not depend on demanding a guaranteed outcome or an explicit price target.",
+          "The computed price card labels the 180-trading-session window as range-bound and reports a -16.6667% return from 7.56 on January 10, 2025 to 6.3 on September 29, 2025. This historical window provides no affirmative trend confirmation of the turnaround and is distinct from the six-calendar-month forecast horizon. Historical repurchases, retirement of treasury shares, and covenant compliance through June 30 do not independently establish a prospective repricing catalyst."
+        ],
+        "magnitude": null,
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "Restructuring and improved organic acquisition could still change expectations sharply. The packet does not establish cohort retention, payer conversion, product-launch timing, savings realization or their evolution through prediction time, so the unfavorable operating interpretation remains uncertain.",
+          "Cash and management's twelve-month resource assessment describe conditions reported for June 30, 2025; disclosure availability in August does not establish that those conditions persisted through September 30. Subsequent debt, cash-flow, tax-obligation and dilution evidence remains incomplete.",
+          "The operating_cash_flow_margin result is domain_unavailable: visible evidence was insufficient for a canonical measurement. It is neither a technical failure nor evidence of absent cash generation. The admitted financing Signal has unverified predictive effect, and its neutral categorical state is not a stock-direction forecast.",
+          "Collection ended at max_signal_rounds with unresolved information needs. Finalization does not establish complete research coverage, and omitted source context could contain material qualifying evidence."
+        ]
+      },
+      "mirror": "not_exercised",
+      "ancillary_mechanical_belief_drop": {
+        "errors": [
+          {
+            "field": "current_beliefs",
+            "signal_ref": "operating_cash_flow_margin:v2",
+            "text": "Historical share retirement, revolver availability and covenant compliance provide capital-structure context; they do not establish prospective net dilution or a directional financing catalyst. The admitted financing measurement has unverified predictive effect. Insufficient visible evidence for operating cash flow margin leaves self-funding capacity unresolved; this domain coverage outcome is not a technical failure or evidence of economic absence."
+          }
+        ],
+        "typed_mechanical_issues": [
+          {
+            "code": "unavailable_signal_treated_as_finding",
+            "paths": [
+              "current_beliefs[3]"
+            ],
+            "allowed_repairs": [
+              "remove"
+            ],
+            "repair_context": {
+              "mechanical_action": "remove_unavailable_finding",
+              "unavailable_finding_field": "current_beliefs",
+              "unavailable_finding_text": "Historical share retirement, revolver availability and covenant compliance provide capital-structure context; they do not establish prospective net dilution or a directional financing catalyst. The admitted financing measurement has unverified predictive effect. Insufficient visible evidence for operating cash flow margin leaves self-funding capacity unresolved; this domain coverage outcome is not a technical failure or evidence of economic absence.",
+              "unavailable_signal_ref": "operating_cash_flow_margin:v2"
+            }
+          }
+        ],
+        "raw_minus_identified_drop_equals_accepted": true,
+        "semantic_interpretation": "False positive: explicit unresolved coverage and negation of economic absence is removed by topic-token + marker matching without negation semantics."
+      },
+      "bindings": {
+        "manifest.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/manifest.json",
+          "sha256": "f1f464b08b1045cde709251634b385850561152b7ead06ad13e52b1e3be3b311"
+        },
+        "inputs.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/inputs.json",
+          "sha256": "0ecd6698c687e815a3dbc54f908756f58db6226b1b118f3a7cb468a9196dce39"
+        },
+        "reflect.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/reflect.json",
+          "sha256": "b3f656019336b3c828898523221a7cd7aa82780034f9a8f765a2c8c3f31d3065"
+        },
+        "closure.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/closure.json",
+          "sha256": "8b20df9eb2a2c77dcaca82681873c3838bd0ce55204a060ff63be58597bb27a3"
+        },
+        "final-context.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/final-context.json",
+          "sha256": "772688413dc63bff61d3ffc4240893be6e5aea315cf9931d49355462da73d68f"
+        },
+        "prediction.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/prediction.json",
+          "sha256": "69c98455d51e83df22c23108a525f9e24b5804c0b941f464041fb8755c8b939b"
+        },
+        "completion.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/completion.json",
+          "sha256": "3c4f30fe96ccc31a9ec949194221e6bca1bf0017849e2a567a7f3804faacaef1"
+        }
+      }
+    },
+    "p02": {
+      "target_semantic_verdict": "PASS_proper_partial",
+      "fixed_case_denominator": 1,
+      "manifest_hash": "23f6410b7d3fc7bba07b5a7f07b68aff3e85bfa96c37a0d02965fa258f08838a",
+      "code_files_current_verified": 107,
+      "immutable_verified": 28,
+      "restore": {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-execution/p02/completed-restore-review.json",
+          "sha256": "63883c9b9677a6fce8e965594a16732090e96df6c9b19379981a30fff921128d"
+        },
+        "all_current_before_after_sha_equal": true,
+        "files": 32,
+        "new_dispatches": 0
+      },
+      "trace": [
+        {
+          "request_hash": "02c089d62bc728b75435a2ab20ae65dedcde185501f8d26afa2b507155641571",
+          "stage": "blind_predictor_predict",
+          "receipt": {
+            "agent_id": "/root/role_74",
+            "inbox_sha256": "a9033a367acf62743d355373c065b3288d1dc433f2cc189754c081e74310ab67",
+            "raw_output_sha256": "de121257fafc3d8788ec41caae35490cdcfab880cadca863b0cee3cb9a4efcbc",
+            "request_hash": "02c089d62bc728b75435a2ab20ae65dedcde185501f8d26afa2b507155641571"
+          },
+          "logical_reservation": 68469
+        },
+        {
+          "request_hash": "1164e0102da613e09a7d47228c3a0618183a504bfd8e3ddb4197701f4e0d0e7f",
+          "stage": "research_controller_reflect",
+          "receipt": {
+            "agent_id": "/root/role_73",
+            "inbox_sha256": "12d07134399c47ebb6e16e3dc087408a45a4dec5e9805ba7908845e733c341be",
+            "raw_output_sha256": "843a7fedae3e004bb0589b48a64c55e67bdfac67579dc5b57bbb00c44d18af0d",
+            "request_hash": "1164e0102da613e09a7d47228c3a0618183a504bfd8e3ddb4197701f4e0d0e7f"
+          },
+          "logical_reservation": 54222
+        },
+        {
+          "request_hash": "b2831d87c3cfe7ed82f3ec3ea20a84bc3c8d093d6ac83c7958433b456880260d",
+          "stage": "research_controller_reflect",
+          "receipt": {
+            "agent_id": "/root/role_72",
+            "inbox_sha256": "09a41bff2eb8020fb50d4ab378c8fd5d9127d77da3cfd48b0b8f6bce86b8d03d",
+            "raw_output_sha256": "7b13278e2b51b2f347543f7939bc5fc485f88e12cf4df8b3e3777bf9b4286f51",
+            "request_hash": "b2831d87c3cfe7ed82f3ec3ea20a84bc3c8d093d6ac83c7958433b456880260d"
+          },
+          "logical_reservation": 54408
+        }
+      ],
+      "first_answers": 3,
+      "model_corrections": 0,
+      "logical_reservation": 177099,
+      "reflect_raw_operations": 4,
+      "residual": "By prediction time, what financial covenant terms had been disclosed, and what compliance after June 30, 2025 had been disclosed?",
+      "reason": "The adopted disclosure establishes financial debt covenant compliance as of June 30, 2025 and throughout the six months then ended. It does not provide the covenant terms or compliance after that period through prediction time; its later public availability does not extend observation coverage. The neutral financing result supplies historical context without establishing a directional catalyst or prediction benefit. The unavailable cash-flow measurement supplies no answer to the missing covenant facets.",
+      "prior_0_3_exact_occurrences": true,
+      "need_count": 5,
+      "adopted_evidence": [
+        {
+          "reference": {
+            "kind": "signal",
+            "signal_ref": "financing_listing_action:v5",
+            "evidence_group": "counter",
+            "evidence_index": 3,
+            "claim": "As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants."
+          },
+          "original_evidence": {
+            "document_id": "sec:cik_0001830043:000162828025038861",
+            "exact_span": "As of June&#160;30, 2025, amounts available under the Revolving Credit Facility were $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-232\" decimals=\"-5\" name=\"us-gaap:LineOfCreditFacilityRemainingBorrowingCapacity\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-872\">50.0</ix:nonFraction>&#160;million. As of June&#160;30, 2025, and at all times during the six months ended June&#160;30, 2025, the Company was in compliance with the financial debt covenants.",
+            "timestamp": "2025-08-07T20:05:33+00:00"
+          }
+        }
+      ],
+      "source_body": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0001.json",
+        "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+      },
+      "closure_empty_owner_decision_only": true,
+      "pure_native_reassembly_equals_final_wire_and_sink": true,
+      "basic_info_cards": 17,
+      "basic_info_visibility": [
+        {
+          "available_projection_count": 23,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "illar Two minimum taxes and valuation allowance recorded against certain deferred tax assets arising in the cu",
+            "gn markets, primarily in the United Kingdom and the European Union. For the three months ended June&#160;30, 2",
+            "and certain outstanding Class B Units were reclassified into a new class of limited partnership interests that",
+            "vable agreement liability remeasurement (benefit) expense, impairment loss, and restructuring costs. Adjusted ",
+            "ts, furniture and fixtures, developed technology, user base, white label contracts, trademarks and other defin",
+            "their Unruh Act claims in the Superior Court of the State of California for the County of Riverside, this time",
+            "31, 2021, quarterly installment payments on the Incremental Term Loan Facility are no longer required for the ",
+            "tter comparison of our performance across periods. We believe Adjusted EBITDA provides visibility to the under"
+          ],
+          "omitted_projection_count": 7,
+          "projection_context_truncated": true,
+          "projection_ids": [
+            "projection_f8d7793d8a50c9c91d62edc1",
+            "projection_d84bdae2cd1041d8970aaed9",
+            "projection_72c7dd5608b151dc514a11f5",
+            "projection_1a176aa5c11237ff05bbd475",
+            "projection_bc120412c765a8ad3d6afeba",
+            "projection_13e6480ddb0d6ae44577f7ea",
+            "projection_c363263f9720e19bd29d557f",
+            "projection_857e47898275a58b1c86dc0a",
+            "projection_661ec66810d9066226619755",
+            "projection_fd3d1caf13ac99d7a6654456",
+            "projection_f5e5258464d4602a2ffccc9e",
+            "projection_11e722831b03f2831c1c8d2d",
+            "projection_907da1a0881fb4891fdeaaf7",
+            "projection_53f0208217c26e1d3d9b97e2",
+            "projection_d5f66354c516bb7a572fd8b4",
+            "projection_7da50e986ef20021090aa4f8"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.operating_report",
+          "source_context_truncated": true,
+          "source_types": [
+            "filing"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 16
+        },
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "confidence": {
+          "level": "medium"
+        },
+        "is_surge": false,
+        "key_reasons": [
+          "The operating evidence available before the 2025-09-30T00:00:00+00:00 forecast boundary shows contraction rather than expectation-changing acceleration: revenue for the three months ended June 30, 2025 was $248.2 million versus $268.6 million a year earlier, and Total Paying Users were 3,777.2 thousand versus 4,138.6 thousand. Total ARPPU of $21.69 versus $21.37 did not prevent lower reported revenue. This supports continued demand or acquisition pressure as the stronger explanation for the visible results.",
+          "The disclosed shift toward organic acquisition and product quality, together with the June 2025 announcement of approximately 240 workforce reductions representing approximately 30% of employees, provides a plausible turnaround mechanism. However, management explicitly warned of near-term revenue and payer pressure and uncertain restructuring benefits. Inference: deterioration absorbing savings currently has stronger observable support than a rapid operating reassessment sufficient for the defined six-calendar-month price doubling.",
+          "Liquidity provides some support for executing the turnaround: the August 7 disclosure reported $261.7 million of cash at June 30 and management's then-current assessment of sufficient resources for the next twelve months. Covenant compliance was established through June 30 only. The successful financing Signal measured neutral historical capital-structure actions; its categorical state is not a share-price forecast and its predictive effect remains unverified.",
+          "The supplied price baseline is available: mean adjusted close 6.494, with a doubling threshold of 12.988 for the maximum five-consecutive-trading-day mean inside the forecast horizon. The computed 180-trading-session card reports a -16.6667% return from 7.56 on January 10, 2025 to 6.3 on September 29, 2025 and a range label. This historical market evidence supplies no positive trend confirmation and is secondary to the operating contraction."
+        ],
+        "magnitude": null,
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "Visible disclosures do not establish retention, organic acquisition or payer-conversion progress through prediction time; a turnaround could be developing outside the supplied coverage.",
+          "The size of announced staffing reductions could materially change costs, but realized savings, cash charges, implementation timing and effects on product delivery remain unresolved. A favorable surprise could support repricing despite the current negative judgment.",
+          "The operating_cash_flow_margin Signal returned domain_unavailable, a normal coverage outcome rather than technical failure or evidence of absent cash generation.",
+          "Source context is partial and collection ended at the maximum Signal rounds with unresolved information needs. Finalization does not establish that those questions were answered; June financial observations and management assessments are not verified September conditions."
+        ]
+      },
+      "mirror": "not_exercised",
+      "ancillary_mechanical_belief_drop": {
+        "errors": [],
+        "typed_mechanical_issues": [],
+        "raw_minus_identified_drop_equals_accepted": true,
+        "semantic_interpretation": "No such ancillary drop in this case."
+      },
+      "bindings": {
+        "manifest.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/manifest.json",
+          "sha256": "852970c50097feef22fcc1074340fa2dd0faa63a4a7d683e3c974df090f639ea"
+        },
+        "inputs.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/inputs.json",
+          "sha256": "7f12571c1d0dc894fb669753dcbc21d72eddaf0c5d1db08827393776e703fda9"
+        },
+        "reflect.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/reflect.json",
+          "sha256": "a2d945df7469b31988b44f8decf493984d1a30862fd4559da42044aab2e4971d"
+        },
+        "closure.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/closure.json",
+          "sha256": "015663f36227ba8968ae2eb908b4d53b829665779871ffd1fe62bd81372545ea"
+        },
+        "final-context.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/final-context.json",
+          "sha256": "cde96594fe5fc2b2503c77b28561d9d78f247ff9691e946ac9693e4d90ce934b"
+        },
+        "prediction.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/prediction.json",
+          "sha256": "dde3aa5e3002618888ba67d8e23c2d7292464b42d120b812af571bf4ad61d263"
+        },
+        "completion.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/completion.json",
+          "sha256": "c59739b7f5e336411c1fb979ce5446c6da192396b62c7a35eb5e139722054272"
+        }
+      }
+    },
+    "p03": {
+      "target_semantic_verdict": "PASS_full",
+      "fixed_case_denominator": 1,
+      "manifest_hash": "ccdbdee02e91f9c6b619c3b84858dac4d98075e8e3dafae8c9f661cbc5f4eaf5",
+      "code_files_current_verified": 107,
+      "immutable_verified": 28,
+      "restore": {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-execution/p03/completed-restore-review.json",
+          "sha256": "a4b45c3bec05e5d97168b21b49d22be69da254197712df49f91508784a382bdd"
+        },
+        "all_current_before_after_sha_equal": true,
+        "files": 32,
+        "new_dispatches": 0
+      },
+      "trace": [
+        {
+          "request_hash": "3068a46f1a454f81ba314b118a0181542d09748b8b0297309771ca2f0ab4c895",
+          "stage": "research_controller_reflect",
+          "receipt": {
+            "agent_id": "/root/role_76",
+            "inbox_sha256": "c32cd2375c1f8ed2aff406ce2b556247f26fe4c4d368070351d6d4e7ab96f3f9",
+            "raw_output_sha256": "530ca083e9e231afeb961e393e3177267a34065bcf0d8f806ab02301b85ddbe7",
+            "request_hash": "3068a46f1a454f81ba314b118a0181542d09748b8b0297309771ca2f0ab4c895"
+          },
+          "logical_reservation": 53830
+        },
+        {
+          "request_hash": "a10c38504db0eb16667a3a011ae319063a7aec08309fae716d96c9989b0dce57",
+          "stage": "research_controller_reflect",
+          "receipt": {
+            "agent_id": "/root/role_75",
+            "inbox_sha256": "d463d9eaede3d6e9026169989b25e2b6afd98d6daf7fbddfd6a56dfb161634cb",
+            "raw_output_sha256": "907a3bbd93cf4881876c49866d46c612279dbedd451b4748365ade158b638c42",
+            "request_hash": "a10c38504db0eb16667a3a011ae319063a7aec08309fae716d96c9989b0dce57"
+          },
+          "logical_reservation": 54426
+        },
+        {
+          "request_hash": "ca994929bfd74c84d0fd8a2ce9d70578656098b95f9cdc0cc488e5620d4901d2",
+          "stage": "blind_predictor_predict",
+          "receipt": {
+            "agent_id": "/root/role_77",
+            "inbox_sha256": "94542992a627e2268ca47ae000a800ee29a838c7aab9e03df5e1250693f6deec",
+            "raw_output_sha256": "d6eda79d1045fb309ec027cdf7c089929a6262a3699032aca63adeee77402072",
+            "request_hash": "ca994929bfd74c84d0fd8a2ce9d70578656098b95f9cdc0cc488e5620d4901d2"
+          },
+          "logical_reservation": 68654
+        }
+      ],
+      "first_answers": 3,
+      "model_corrections": 0,
+      "logical_reservation": 176910,
+      "reflect_raw_operations": 4,
+      "residual": null,
+      "reason": "The executed evidence directly states revolving credit availability at the requested reporting date and covenant compliance throughout the requested six-month period, and was public before prediction time. Both requested facets are answered despite partial Signal measurement coverage. The routing residual concerns additional unrequested financial topics and is not adopted. These historical liquidity facts do not establish a directional catalyst or prediction benefit; technical admission leaves effect unverified. The separate cash-flow Signal is domain_unavailable, which neither supplies cash-flow evidence nor creates a technical failure, and does not limit completion of this narrow need.",
+      "prior_0_3_exact_occurrences": true,
+      "need_count": 4,
+      "adopted_evidence": [
+        {
+          "reference": {
+            "kind": "signal",
+            "signal_ref": "financing_listing_action:v5",
+            "evidence_group": "counter",
+            "evidence_index": 3,
+            "claim": "As of June 30, 2025, amounts available under the Revolving Credit Facility were $ 50.0 million. As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants."
+          },
+          "original_evidence": {
+            "document_id": "sec:cik_0001830043:000162828025038861",
+            "exact_span": "As of June&#160;30, 2025, amounts available under the Revolving Credit Facility were $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-232\" decimals=\"-5\" name=\"us-gaap:LineOfCreditFacilityRemainingBorrowingCapacity\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-872\">50.0</ix:nonFraction>&#160;million. As of June&#160;30, 2025, and at all times during the six months ended June&#160;30, 2025, the Company was in compliance with the financial debt covenants.",
+            "timestamp": "2025-08-07T20:05:33+00:00"
+          }
+        }
+      ],
+      "source_body": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0001.json",
+        "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+      },
+      "closure_empty_owner_decision_only": true,
+      "pure_native_reassembly_equals_final_wire_and_sink": true,
+      "basic_info_cards": 17,
+      "basic_info_visibility": [
+        {
+          "available_projection_count": 23,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "illar Two minimum taxes and valuation allowance recorded against certain deferred tax assets arising in the cu",
+            "gn markets, primarily in the United Kingdom and the European Union. For the three months ended June&#160;30, 2",
+            "and certain outstanding Class B Units were reclassified into a new class of limited partnership interests that",
+            "vable agreement liability remeasurement (benefit) expense, impairment loss, and restructuring costs. Adjusted ",
+            "ts, furniture and fixtures, developed technology, user base, white label contracts, trademarks and other defin",
+            "their Unruh Act claims in the Superior Court of the State of California for the County of Riverside, this time",
+            "31, 2021, quarterly installment payments on the Incremental Term Loan Facility are no longer required for the ",
+            "tter comparison of our performance across periods. We believe Adjusted EBITDA provides visibility to the under"
+          ],
+          "omitted_projection_count": 7,
+          "projection_context_truncated": true,
+          "projection_ids": [
+            "projection_f8d7793d8a50c9c91d62edc1",
+            "projection_d84bdae2cd1041d8970aaed9",
+            "projection_72c7dd5608b151dc514a11f5",
+            "projection_1a176aa5c11237ff05bbd475",
+            "projection_bc120412c765a8ad3d6afeba",
+            "projection_13e6480ddb0d6ae44577f7ea",
+            "projection_c363263f9720e19bd29d557f",
+            "projection_857e47898275a58b1c86dc0a",
+            "projection_661ec66810d9066226619755",
+            "projection_fd3d1caf13ac99d7a6654456",
+            "projection_f5e5258464d4602a2ffccc9e",
+            "projection_11e722831b03f2831c1c8d2d",
+            "projection_907da1a0881fb4891fdeaaf7",
+            "projection_53f0208217c26e1d3d9b97e2",
+            "projection_d5f66354c516bb7a572fd8b4",
+            "projection_7da50e986ef20021090aa4f8"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.operating_report",
+          "source_context_truncated": true,
+          "source_types": [
+            "filing"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 16
+        },
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ],
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "confidence": {
+          "level": "medium"
+        },
+        "is_surge": false,
+        "key_reasons": [
+          "The August 7, 2025 disclosure supplies contrary operating evidence: for the three months ended June 30, revenue was $248.2 million versus $268.6 million a year earlier, and Total Paying Users were 3,777.2 thousand versus 4,138.6 thousand. Total ARPPU of $21.69 versus $21.37 did not prevent revenue contraction. This favors continuing demand or acquisition pressure over an established expectation-changing acceleration.",
+          "The disclosed move toward organic acquisition and the June announcement of an approximately 30% workforce reduction provide a potential turnaround mechanism. Inference: improved member quality and lower costs could support equity repricing. However, management explicitly warned of pressure on paying users and revenue and uncertain restructuring benefits; against the observed contraction, the supplied evidence does not make a doubling within the six-month horizon a compelling opportunity candidate.",
+          "Historical liquidity provides room to pursue that turnaround rather than evidence of its success: cash was $261.7 million and revolving availability was $50.0 million as of June 30, with covenant compliance during the six months then ended. The successfully executed financing Signal is categorically neutral; its measurement admission and unverified effect do not establish stock-direction benefit.",
+          "At the exact forecast boundary of 2025-09-30T00:00:00+00:00, the supplied baseline is 6.494 and the required five-trading-day mean threshold is 12.988 over the following six calendar months. The negative judgment rests on deteriorating operating evidence and execution risk, not on the mechanical distance between that baseline and its doubling threshold."
+        ],
+        "magnitude": null,
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The disclosed operating and liquidity observations are historical, available August 7, and do not establish that those conditions persisted unchanged at prediction time. Source context is partial.",
+          "Retention, organic acquisition, payer conversion, product launch timing, realized savings and restructuring cash charges remain unresolved. Favorable evidence on these could materially change the judgment; a complete valuation bridge or explicit future price target is not required.",
+          "operating_cash_flow_margin:v2 returned domain_unavailable: visible evidence did not support a canonical measurement. This is a coverage limitation, not a technical failure or evidence of absent operating cash flow.",
+          "Collection ended at max_signal_rounds despite the controller finalizing. Finalization does not resolve the remaining information needs, and historical repurchases do not establish future buyback activity."
+        ]
+      },
+      "mirror": "not_exercised",
+      "ancillary_mechanical_belief_drop": {
+        "errors": [],
+        "typed_mechanical_issues": [],
+        "raw_minus_identified_drop_equals_accepted": true,
+        "semantic_interpretation": "No such ancillary drop in this case."
+      },
+      "bindings": {
+        "manifest.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/manifest.json",
+          "sha256": "f94dfcc59fd1d583bcebe00d9f0ab2917f425cd7d994893f89a3355b0a00a18e"
+        },
+        "inputs.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/inputs.json",
+          "sha256": "ae67b232f49915783a7f7d90121159e7ce4c125c52371776bd72b8148ad569b3"
+        },
+        "reflect.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/reflect.json",
+          "sha256": "ff77aa74fe008e2bb00a4de3ad13f4770dbdb2bcae0f323eb522eb6fa1e84e9a"
+        },
+        "closure.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/closure.json",
+          "sha256": "6f39932ad09676ab74e82f0fb13f8abc7e37f4bd48eebe06fda66020423a69b5"
+        },
+        "final-context.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/final-context.json",
+          "sha256": "0b6c935d46325166b02d63116de4d7627bdd188122499d97984c6177d889dc8b"
+        },
+        "prediction.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/prediction.json",
+          "sha256": "9eedda019aac73d3b622630c198cbd71cc19c15dd00d4edc2beffaa1261a1ef2"
+        },
+        "completion.json": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/completion.json",
+          "sha256": "f4b80a3d63411f2ae0e2496877a1eb78211baace53aab6f1a6f1c1d0b6131f07"
+        }
+      }
+    }
+  },
+  "harness_notes": [
+    "Exploratory reads corrected a missing hyphen in completed-restore-review filename and result version key; no product execution or passing conclusion came from those reads."
+  ],
+  "semantic_assessments": {
+    "p01": {
+      "passed": true,
+      "scope": "Proper partial, not unanswered fallback. Two historical financing spans answer bounded context while all seven umbrella residual facets remain explicit.",
+      "retained_facets": [
+        "operating cash flow",
+        "capex",
+        "debt balances and maturities",
+        "covenant terms AND compliance after June 30 through prediction time",
+        "tax-related cash obligations",
+        "prospective equity dilution",
+        "direct annual-report coverage unverified"
+      ],
+      "period_and_units": "June 30/H1 observations, $50.1 million repurchase authorization distinct from $50.0 million revolving availability. Historical retirement does not answer prospective dilution."
+    },
+    "p02": {
+      "passed": true,
+      "scope": "H1 compliance is answered; financial covenant terms and compliance after June 30 through cutoff remain separate unknowns. Later public availability is expressly not extended observation coverage.",
+      "residual_not_old_umbrella": true
+    },
+    "p03": {
+      "passed": true,
+      "scope": "Requested revolver availability at June 30 ($50.0 million) and compliance during the six months then ended are literally established by counter[3]. Full resolves only that narrow need, without requiring unrequested covenant terms or post-June coverage.",
+      "prior_routing_partial_not_actual_coverage_ceiling": true
+    },
+    "prediction_consumers": {
+      "scope": "All three unlikely/medium/null first answers distinguish historical disclosures from cutoff conditions and neutral financing state from stock direction. OCF domain unavailability is retained as coverage, not economic absence or technical failure. No accuracy/benefit conclusion or labels used."
+    },
+    "auxiliary_p01": {
+      "target_semantic_pass_independent": true,
+      "open_defect": "Token-set unavailable-topic guard removes an honest mixed belief containing insufficiency plus negation of economic absence; helper reproduced exact raw text, typed mechanical remove authority, and exact accepted difference. No model correction repairs or authors this deletion."
+    }
+  },
+  "completed_target_cases": [
+    "p01",
+    "p02",
+    "p03"
+  ],
+  "target_passes_over_fixed_denominator": {
+    "passed": 3,
+    "fixed_denominator": 3
+  },
+  "physical_fresh_roles": 9,
+  "total_logical_reservation": 535373,
+  "audit_bindings": {
+    "script": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-probe.py",
+      "sha256": "0f72e455183427ba0d7d14c397c7f2d4bcee4ee97c20382c997f9940a2d45592"
+    }
+  },
+  "limitations": [
+    "Target case semantic pass is separate from ancillary belief-drop defect; no whole F7/MVP closure.",
+    "Historical seed Signal batch is not fresh F6; no new Signal application.",
+    "Raw operations are not all persisted in p01: one mechanically removed belief is explicitly accounted for.",
+    "17 cards are final/Predictor-visible, not Reflect-visible. Source context remains partial with omissions.",
+    "Mirror correction not exercised; no accuracy, independent gain or host token/cost claim.",
+    "Snapshot/reopen and exact completed restore do not establish OS-crash recovery.",
+    "Old fresh p01 semantic 0/1 remains unchanged; these new controls retain their fixed denominator3."
+  ]
+}

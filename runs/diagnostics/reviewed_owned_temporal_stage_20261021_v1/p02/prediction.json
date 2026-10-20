@@ -1,0 +1,600 @@
+{
+  "company_id": "cik_0001830043",
+  "final_context": {
+    "analysis_prompt": "Organize source-backed evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor under the fixed H_P prior. Group evidence by commercial mechanism, milestone timing, economic capture, financing and execution dependencies, and counter-evidence. Weight direct, contemporaneous, object-matched disclosures above unsupported narrative while distinguishing disclosed facts, inference, and missing evidence. Compare each mechanism with its strongest supported alternative and identify whether unresolved dependencies limit interpretation. Keep historical market measurements in their exact supplied windows without inventing price-proof gates or treating the magnitude research purpose as evidence for a larger class. Preserve quantities and event identities; project construction cost, contract consideration, revenue, backlog, financing proceeds, and capacity are distinct attributes, and repeated attributes of one event are corroboration. Signal admission with unverified effect permits measurement use only and does not establish predictive benefit. Summarize evidence strength, contradictions, coverage gaps, and uncertainty for the fixed Predictor shell. Do not compute probabilities, classify the final Signal or magnitude, alter the horizon, labels or four-way judgment, or generate a prediction; final candidate_judgment and conditional magnitude classification remain the fixed shell's responsibility.",
+    "basic_info": {
+      "data_gaps": [],
+      "projection_card_counts": {
+        "available_projections": 17,
+        "deferred_projections": 0,
+        "included_cards": 17
+      },
+      "projection_cards": [
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "ce through product innovation, including increased use of artificial intelligence in our product and in the optimization of our operations, modernizing our technology to better deliver product innovation, and evolving our revenue strategy to ensure we deliver value at every step of our members\u2019 journey. To align with these priorities, we have strategically shifted away from paid member acquisition and performance marketing in favor of brand and organic investment. As we address these areas of focus, our member growth and success in attracting new members, member engagement and monetization may be negatively impacted. In addition, efforts to improve the health of our membership base, including the removal of bad actors from our apps and strategically reducing paid performance marketing for member acquisition, may adversely affect revenue and paying users in the short term. Furthermore, if we do not successfully implement our new strategy, our business, financial condition and results of operations could be materially adversely affected. See also \u201cIf we fail to retain existing users or add new users, or if our users decrease their level of engagement with our products or do not convert to paying users, our revenue, financial results and business may be significantly harmed\u201d and \u201cWe are subject to certain risks as a mission-based company\u201d in Part I, \u201cItem 1A\u2014Risk Factors\u2014Risks Related to Our Brands, Products and Operations\u201d of our 2024 Form 10-K. Macroeconomic Conditions Macroeconomic conditions, including the conflicts in Eastern Europe and the Middle East, slower growth or economic recession, changes to fiscal, monetary, and trade policy, including the recent introduction of higher tariffs by the U.S. government, and fluctuations in foreign currency exchange rates have impacted and may continue to impact our results of operations, as well as our members who face greater pressure on disposable income. We continuous",
+          "projection_id": "projection_f8d7793d8a50c9c91d62edc1",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, DC 20549 _______________________ FORM 10-Q _______________________ (Mark One) x QUARTERLY REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the quarterly period ended June 30, 2025 OR o TRANSITION REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the transition period from __________ to __________ Commission File Number: 001-40054 [MASKED_COMPANY]. (Exact Name of Registrant as Specified in its Charter) _______________________ Delaware 85-3604367 (State or other jurisdiction of incorporation or organization) (I.R.S. Employer Identification No.) 1105 West 41st Street Austin , Texas 78756 (Address of principal executive offices) (Zip Code) Registrant\u2019s telephone number, including area code: ( 512 ) 696-1409 _______________________ Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Class A common stock, par value $0.01 per share [MASKED_COMPANY] The Nasdaq Stock Market LLC Indicate by check mark whether the registrant (1) has filed all reports required to be filed by Section 13 or 15(d) of the Securities Exchange Act of 1934 during the preceding 12 months (or for such shorter period that the registrant was required to file such reports), and (2) has been subject to such filing requirements for the past 90 days. Yes x No o Indicate by check mark whether the registrant has submitted electronically every Interactive Data File required to be submitted pursuant to Rule 405 of Regulation S-T (\u00a7232.405 of this chapter) during the preceding 12 months (or for such shorter period that the registrant was required to submit such files). Yes x No o Indicate by check mark whether the registrant is a large accelerated filer, an accelerated filer, a non-accelerated filer, smaller reporting company, or an emerging growth company. See the definitions of \u201clarge",
+          "projection_id": "projection_d84bdae2cd1041d8970aaed9",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "ough third parties, such as Apple App Store or Google Play Store, and offset related fees \u2022 our ability to attract, hire and retain a highly qualified and diverse workforce, or maintain our corporate culture, including as such factors may be impacted by our global workforce reductions and efforts to restructure our operations \u2022 our ability to maintain the value and reputation of our brands \u2022 risks relating to changes to our existing brands and products, or the introduction or acquisition of new brands or products \u2022 risks relating to certain of our international operations, including geopolitical conditions and successful expansion into new markets \u2022 the impact of data security breaches or cyber attacks on our systems and the costs of remediation related to any such incidents \u2022 challenges with properly managing the use of artificial intelligence \u2022 our ability to obtain, maintain, protect and enforce intellectual property rights and successfully defend against claims of infringement, misappropriation or other violations of third-party intellectual property \u2022 our ability to comply with complex and evolving U.S. and international laws and regulations relating to our business, including data privacy laws \u2022 our substantial indebtedness \u2022 control of us by Blackstone and our Founder (each, as defined below) \u2022 the outsized voting rights of Blackstone and our Founder \u2022 the risk that we may experience impairments to our goodwill and intangible assets as a result of a number of factors, some of which are beyond our control \u2022 risks relating to the market price volatility of our Class A common stock, which could limit our ability to make acquisitions and retain key personnel and employees, and result in dilution if our stock-based compensation programs issue increased numbers of shares because of a depressed stock price or could result in increased cash compensation expense in the event t",
+          "projection_id": "projection_72c7dd5608b151dc514a11f5",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "t reached $ 9.5 million in spend, the Company will be required to pay for the difference between the sum of fees already incurred and the minimum commitment. As of June 30, 2025, the minimum commitment remaining with this third-party was $ 4.3 million. In addition, the Company is committed to pay a total of approximately $ 12.4 million over a period of 36 months beginning October 2024 to another third-party related to cloud services. At the end of the 36 months, or upon early termination, any unused consumption capacity will expire unless a renewal agreement is executed. As of June 30, 2025, the total commitment fee remaining with this third-party was $ 9.0 million. 30 Item 2. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations. You should read the following discussion and analysis of the financial condition and results of operations of [MASKED_COMPANY]. in conjunction with our unaudited condensed consolidated financial statements and related notes included elsewhere in Part I, \u201cItem 1 \u2013 Financial Statements (Unaudited).\u201d This discussion contains forward-looking statements that involve risks and uncertainties about our business and operations. Our actual results could differ materially from those discussed in the forward-looking statements. Factors that could cause or contribute to these differences include, without limitation, those discussed in this Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations and those identified under \u201cSpecial Note Regarding Forward-Looking Statements\u201d herein and Part I, \u201cItem 1A\u2014Risk Factors\" in our 2024 Form 10-K. Overview We provide online dating and social networking applications through free, subscription and in-app purchases of products servicing North America, Europe and various other countries around the world. [MASKED_COMPANY] operates a family of apps, including [MASKED_COMPANY], [MASKED_COMPANY] For Friends, Badoo, and Geneva.",
+          "projection_id": "projection_1a176aa5c11237ff05bbd475",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "es as one operating segment with revenue primarily derived in the form of recurring subscriptions and in-app purchases. The Company\u2019s CODM is the Chief Executive Officer. The CODM assesses performance of the operating segment and decides how to allocate resources based on revenue, operating earnings (loss), and net earnings (loss) presented on a consolidated basis. Furthermore, the CODM reviews and utilizes functional expenses (cost of revenue, sales and marketing, general and administrative, and product development) at the consolidated level to manage the Company's operations. There are no segment managers who are held accountable for operations and operating results below the consolidated level. Accordingly, the Company reports as one segment and all required segment financial information can be found in the consolidated statements of operations. Revenue by major geographic region is based upon the location of the customers who receive the Company's services. The information below summarizes revenue by geographic area, based on customer location (in thousands): Three Months Ended June 30, 2025 Three Months Ended June 30, 2024 Six Months Ended June 30, 2025 Six Months Ended June 30, 2024 United States $ 109,891 44 % $ 131,670 49 % $ 225,081 45 % $ 265,063 49 % Rest of the world 138,338 56 % 136,945 51 % 270,249 55 % 271,327 51 % Total $ 248,229 100 % $ 268,615 100 % $ 495,330 100 % $ 536,390 100 % The United States is the only country with revenues of 10% or more of the Company's total revenue for the three and six months ended June 30, 2025 and 2024. As the Company operates its business under one segment, there is no difference between its segment assets and the total consolidated assets. The information below summarizes property and equipment, net by geographic area (in thousands): June 30, 2025 December 31, 2024 United Kingdom $ 3,210 $ 3,472 United State",
+          "projection_id": "projection_bc120412c765a8ad3d6afeba",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "fluctuations in foreign currency exchange rates have impacted and may continue to impact our results of operations, as well as our members who face greater pressure on disposable income. We continuously monitor the direct and indirect impacts of these circumstances on our business and financial results. For additional information, see \u201cRisk Factors\u2014General Risk Factors\u2014We are exposed to changes in the global macroeconomic environment beyond our control, which may adversely affect consumer discretionary spending, demand for our products and services, our expenses, and our ability to execute strategic plans.\u201d in Part I, \u201cItem 1A\u2014Risk Factors\u201d of our 2024 Form 10-K. Factors Affecting the Comparability of Our Results of Operations As a result of a number of factors, our historical results of operations may not be comparable from period to period or going forward. Set forth below is a brief discussion of the key factors impacting the comparability of our results of operations. Share Repurchase Program We have a share repurchase program whereby our Board of Directors has authorized us to repurchase up to $450.0 million in Class A common stock . During the six months ended June 30, 2025, we repurchased 4.7 million shares of Class A common stock for $28.7 million, excluding excise tax obligations. During the six months ended June 30, 2024, we repurchased 5.3 million shares of Class A common stock and 2.0 million Common Units for $84.4 million, excluding excise tax obligations. There were no share repurchases during the three months ended June 30, 2025 and 2024. As of June 30, 2025, a total of $50.1 million remained available for repurchase under the repurchase program. 33 For additional information, see Note 2, Summary of Selected Significant Accounting Policies \u2014Share Repurchase Program , Note 13, Related Party Transactions \u2014 Share Repurchase , to our unaudited condensed consolidated financial statem",
+          "projection_id": "projection_13e6480ddb0d6ae44577f7ea",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "The accompanying notes are an integral part of these unaudited condensed consolidated financial statements. 12 [MASKED_COMPANY]. Notes to Unaudited Condensed Consolidated Financial Statements Note 1 - Organization and Basis of Presentation Company Overview [MASKED_COMPANY].\u2019s main operations are providing online dating and social networking applications through subscription and in-app purchases of products servicing North America, Europe and various other countries around the world. [MASKED_COMPANY]. provides these services through websites and applications that it owns and operates. [MASKED_COMPANY]. (the \u201cCompany\u201d or \u201c[MASKED_COMPANY]\u201d) was incorporated as a Delaware corporation on October 5, 2020 for the purpose of facilitating an initial public offering (\u201cIPO\u201d) and other related transactions in order to operate the business of Buzz Holdings L.P. (\u201c[MASKED_COMPANY] Holdings\u201d) and its subsidiaries. Prior to the IPO and the Reorganization Transactions, [MASKED_COMPANY] Holdings L.P. (\u201c[MASKED_COMPANY] Holdings\u201d), a Delaware limited partnership, was formed primarily as a vehicle to finance the acquisition (the \u201cSponsor Acquisition\u201d) of a majority stake in Worldwide Vision Limited by a group of investment funds managed by Blackstone Inc. (\u201cBlackstone\u201d or our \u201cSponsor\u201d). As [MASKED_COMPANY] Holdings did not have any previous operations, Worldwide Vision Limited, a Bermuda exempted limited company, is viewed as the predecessor to [MASKED_COMPANY] Holdings and its consolidated subsidiaries. On February 16, 2021, the Company completed its IPO and used the proceeds from the issuance to redeem shares of Class A common stock and purchase limited partnership interests of [MASKED_COMPANY] Holdings (\u201cCommon Units\u201d) from entities affiliated with our Sponsor. In connection with the IPO, the organizational structure was converted to an umbrella partnership-C-Corporation with [MASKED_COMPANY]. becoming the general partner of [MASKED_COMPANY] Holdings. The Reorganizatio",
+          "projection_id": "projection_c363263f9720e19bd29d557f",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "e cash flow conversion useful and a discussion of the material risks and limitations of these measures, please see \u201cNon-GAAP Financial Measures.\u201d Key Operating and Financial Metrics We regularly review a number of metrics, including the following key operating and financial metrics, to evaluate our business, measure our performance, identify trends in our business, prepare financial projections and make strategic decisions. We believe these non-GAAP and operational measures are useful in evaluating our performance, in addition to our financial results prepared in accordance with GAAP. See \u201cNon-GAAP Financial Measures\u201d for additional information on non-GAAP financial measures and a reconciliation to the most comparable GAAP measures. The following metrics were calculated excluding paying users and revenue generated from Official, advertising and partnerships or affiliates. As of June 30, 2025, Geneva had not generated any revenue, and therefore, is excluded from our key operating metrics. (In thousands, except ARPPU) Three Months Ended June 30, 2025 Three Months Ended June 30, 2024 Six Months Ended June 30, 2025 Six Months Ended June 30, 2024 [MASKED_COMPANY] App Paying Users 2,499.8 2,817.2 2,604.1 2,773.6 Badoo App and Other Paying Users 1,277.4 1,321.4 1,291.9 1,307.9 Total Paying Users 3,777.2 4,138.6 3,896.0 4,081.5 [MASKED_COMPANY] App Average Revenue per Paying User $ 26.85 $ 25.79 $ 25.81 $ 26.06 Badoo App and Other Average Revenue per Paying User $ 11.57 $ 11.93 $ 11.14 $ 12.14 Total Average Revenue per Paying User $ 21.69 $ 21.37 $ 20.94 $ 21.60 (In thousands, except per share data and percentages) Three Months Ended June 30, 2025 Three Months Ended June 30, 2024 Six Months Ended June 30, 2025 Six Months Ended June 30, 2024 Condensed Consolidated Statements of Operations Data: Revenue $ 248,229 $ 268,",
+          "projection_id": "projection_857e47898275a58b1c86dc0a",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-06-25T12:20:35+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000119312525146199",
+          "exact_text": "his Item 7.01, including Exhibit 99.1, shall not be deemed \u201cfiled\u201d for purposes of Section 18 of the Securities Exchange Act of 1934, as amended (the \u201cExchange Act\u201d) or otherwise subject to the liabilities under that Section and shall not be deemed to be incorporated by reference into any filings under the Securities Act of 1933, as amended, or the Exchange Act. Forward-Looking Statements This current report on Form 8-K contains \u201cforward-looking statements\u201d within the meaning of the Private Securities Litigation Reform Act of 1995. These forward-looking statements reflect the Company\u2019s current views with respect to, among other things: its operations, including the plan to implement a global workforce reduction and restructuring of the Company\u2019s operations and the plan\u2019s expected impact; its financial performance; its industry and its business. Forward-looking statements include all statements that are not historical facts. In some cases, you can identify these forward-looking statements by the use of words such as \u201coutlook,\u201d \u201cbelieve(s),\u201d \u201cexpect(s),\u201d \u201cpotential,\u201d \u201ccontinue(s),\u201d \u201cmay,\u201d \u201cwill,\u201d \u201cshould,\u201d \u201ccould,\u201d \u201cwould,\u201d \u201cseek(s),\u201d \u201cpredict(s),\u201d \u201cintend(s),\u201d \u201ctrends,\u201d \u201cplan(s),\u201d \u201cestimate(s),\u201d \u201canticipate(s),\u201d \u201cprojection,\u201d \u201cwill likely result\u201d and or the negative version of these words or other comparable words of a future or forward-looking nature. Such forward-looking statements are subject to various risks and uncertainties. Accordingly, there are or will be important factors that could cause actual outcomes or results to differ materially from those indicated in these statements. These factors include but are not limited to those described under \u201cItem 1A. Risk Factors&#822",
+          "projection_id": "projection_661ec66810d9066226619755",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-06-25T12:20:35+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000119312525146199",
+          "exact_text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): June 23, 2025 [MASKED_COMPANY]. (Exact name of Registrant as Specified in Its Charter) Delaware 001-40054 85-3604367 (State or Other Jurisdiction of Incorporation) (Commission File Number) (IRS Employer Identification No.) 1105 West 41st Street Austin , Texas 78756 (Address of Principal Executive Offices) (Zip Code) Registrant\u2019s Telephone Number, Including Area Code: 512 696-1409 Not Applicable (Former Name or Former Address, if Changed Since Last Report) Check the appropriate box below if the Form 8-K filing is intended to simultaneously satisfy the filing obligation of the registrant under any of the following provisions: \u2610 Written communications pursuant to Rule 425 under the Securities Act (17 CFR 230.425) \u2610 Soliciting material pursuant to Rule 14a-12 under the Exchange Act (17 CFR 240.14a-12) \u2610 Pre-commencement communications pursuant to Rule 14d-2(b) under the Exchange Act (17 CFR 240.14d-2(b)) \u2610 Pre-commencement communications pursuant to Rule 13e-4(c) under the Exchange Act (17 CFR 240.13e-4(c)) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Class A common stock, par value $0.01 per share [MASKED_COMPANY] The Nasdaq Stock Market LLC Indicate by check mark whether the registrant is an emerging growth company as defined in Rule 405 of the Securities Act of 1933 (\u00a7 230.405 of this chapter) or Rule 12b-2 of the Securities Exchange Act of 1934 (\u00a7 240.12b-2 of this chapter). Emerging growth compa",
+          "projection_id": "projection_fd3d1caf13ac99d7a6654456",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "rketing approach, innovations across AI, product and technology and its other investments). Forward-looking statements include all statements that are not historical facts. In some cases, you can identify these forward-looking statements by the use of words such as \u201coutlook,\u201d \u201cbelieve(s),\u201d \u201cexpect(s),\u201d \u201cpotential,\u201d \u201ccontinue(s),\u201d \u201cmay,\u201d \u201cwill,\u201d \u201cshould,\u201d \u201ccould,\u201d \u201cwould,\u201d \u201cseek(s),\u201d \u201cpredict(s),\u201d \u201cintend(s),\u201d \u201ctrends,\u201d \u201cplan(s),\u201d \u201cestimate(s),\u201d \u201canticipate(s),\u201d \u201cprojection,\u201d \u201cwill likely result\u201d and or the negative version of these words or other comparable words of a future or forward-looking nature. Such forward-looking statements are subject to various risks and uncertainties. Accordingly, there are or will be important factors that could cause actual outcomes or results to differ materially from those indicated in these statements. These factors include, but are not limited to, the following: \u2022 the risk that the costs and charges related to our recently announced plan to implement a global workforce reduction and restructuring of our operations may be greater than anticipated or incurred in different periods than anticipated \u2022 the risk that our restructuring efforts may not generate their intended benefits to the extent or as quickly as anticipated \u2022 our ability to retain existing members or attract new members and to convert members to paying users (including as a result of shifts in strategy) \u2022 competition and changes in the competitive landscape of our market \u2022 our ability to distribute our dating products through third parties, such as Apple App Store or Google Play Store, and offset related fees \u2022 our ability to attract, hire and retain a highly qualified and diverse workforce, or maintain our corp",
+          "projection_id": "projection_f5e5258464d4602a2ffccc9e",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "le in the second quarter of 2025. 43 Liquidity and Capital Resources Overview As of June 30, 2025, we had $261.7 million of cash and cash equivalents, an increase of $57.4 million from December 31, 2024. Our principal sources of liquidity are our cash and cash equivalents and cash generated from operations. Our primary uses of liquidity are operating expenses and capital expenditures, acquisition of businesses, funding of our debt obligations, partnership tax distributions, paying income taxes and obligations under our tax receivable agreement and effectuating share repurchases as discussed below. Based on current conditions, we believe that we have sufficient financial resources to fund our activities and execute our business plans during the next twelve months. We have a share repurchase program of up to $450.0 million of our outstanding Class A common stock with repurchases under the program to be made on a discretionary basis from time to time, subject to general business and market conditions and other investment opportunities, through open market purchases or other means, including privately negotiated transactions. During the six months ended June 30, 2025, we repurchased 4.7 million shares of Class A common stock for $28.7 million, excluding excise tax obligations. During the six months ended June 30, 2024, we repurchased 5.3 million shares of Class A common stock and 2.0 million Common Units for $84.4 million, excluding excise tax obligations. There were no share repurchases during the three months ended June 30, 2025 and 2024. As of June 30, 2025, all treasury shares were retired, and a total of $50.1 million remained available for repurchase under the repurchase program. In June 2025, we announced our decision to reduce our global workforce by approximately 240 roles, representing approximately 30% of our employees, as we realign our operating structure to optimize execution on our strategic priorities. As a result, we expect",
+          "projection_id": "projection_11e722831b03f2831c1c8d2d",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "ution if our stock-based compensation programs issue increased numbers of shares because of a depressed stock price or could result in increased cash compensation expense in the event that we shift the mix of incentive compensation in favor of cash-based awards over equity-based awards \u2022 changes in business or macroeconomic conditions, including the impact of lower consumer confidence in our business or in the online dating industry generally, recessionary conditions, increased unemployment rates, stagnant or declining wages, changes in inflation or interest rates, geopolitical events (such as trade wars), political unrest, armed conflicts, including conflicts in Eastern Europe and the Middle East, widespread health emergencies or pandemics and measures taken in response, extreme weather events or natural disasters 1 Table of Contents \u2022 foreign currency exchange rate fluctuations For more information regarding these and other risks and uncertainties that we face, see Part I, \u201cItem 1A\u2014Risk Factors\u201d of our Annual Report on Form 10-K for the year ended December 31, 2024 (\u201c2024 Form 10-K\u201d). These factors should not be construed as exhaustive and we caution you that the important factors referenced above may not contain all of the factors that are important to you. [MASKED_COMPANY]. undertakes no obligation to publicly update or review any forward-looking statements, whether as a result of new information, future developments or otherwise, except as required by law. Website and Social Media Disclosure We use our websites (www.[MASKED_COMPANY].com and ir.[MASKED_COMPANY].com) and at times our corporate X account (formerly known as Twitter) (@[MASKED_COMPANY]) and LinkedIn (www.linkedin.com/company/[MASKED_COMPANY]) to distribute company information. The information we post through these channels may be deemed material. Accordingly, investors should monitor these channels, in addition to following our press releases, Securities and Exchange Commission (the",
+          "projection_id": "projection_907da1a0881fb4891fdeaaf7",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "d in-app purchases of products servicing North America, Europe and various other countries around the world. [MASKED_COMPANY] operates a family of apps, including [MASKED_COMPANY], [MASKED_COMPANY] For Friends, Badoo, and Geneva. [MASKED_COMPANY] app, launched in 2014, is one of the first dating apps built with women at the center, where women make the first move. [MASKED_COMPANY] app is a leader in the online dating sector across several countries, including the United States, the United Kingdom, Australia and Canada. Badoo app, launched in 2006, was one of the pioneers of web and mobile free-to-use dating products. Badoo app\u2019s focus is to make finding meaningful connections easy, fun and accessible for a mainstream global audience. Badoo app continues to be a market leader in several countries in Europe and Latin America. Building on the BFF mode in [MASKED_COMPANY] app, in July 2023 we officially launched a standalone [MASKED_COMPANY] For Friends app. [MASKED_COMPANY] For Friends app is a friendship app where people in all stages of life can meet people nearby and create meaningful platonic connections. In July 2024, we acquired Geneva, through which we aim to expand the [MASKED_COMPANY] For Friends experience from one-to-one connections to groups and communities to serve the many ways people seek friendships. As part of our strategic priorities, we decided to discontinue our operation of the Fruitz and Official apps. During the second quarter, we shut down the Official app. In June 2025, we entered into an agreement with a third-party to sell our subsidiary, Flashgap SAS (popularly known as Fruitz app). The sale was completed in July 2025. Quarter ended June 30, 2025 Consolidated Results For the three months ended June 30, 2025 and 2024, we generated: \u2022 Total revenue of $248.2 million and $268.6 million, respectively; \u2022 [MASKED_COMPANY] App Revenue of $201.4 million and $218.0 million, respectively; \u2022 Badoo App and Other Revenue of $46.8 million and $50.6 million, respectively; \u2022 Net loss was $367.0 million, or (147.8)%",
+          "projection_id": "projection_53f0208217c26e1d3d9b97e2",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "st rate swaps is estimated using a combined income and market-based valuation methodology based on Level 2 inputs, including forward interest rate yield curves obtained from independent pricing services. Derivative assets are included in \u201cOther noncurrent assets\u201d as of June 30, 2025 and December 31, 2024 in the accompanying unaudited condensed consolidated balance sheets. As of June 30, 2025, there is a contingent consideration arrangement, consisting of an earn-out payment to former shareholders of Worldwide Vision Limited of up to $ 150.0 million. The Company determined the fair value of the contingent earn-out liability by using a probability-weighted analysis and, if the arrangement is long-term in nature, applying a discount rate that captures the risks associated with the duration of the obligation. The number of scenarios in the probability-weighted analyses vary; generally, more scenarios are prepared for longer duration and more complex arrangements. As of June 30, 2025 and December 31, 2024, the fair value of the contingent earn-out liability reflected a risk-free rate of 4.1 % and 4.2 %, respectively. The Company\u2019s contingent earn-out liability is measured at fair value on a recurring basis using significant unobservable inputs (Level 3). As of June 30, 2025 and December 31, 2024, the contingent earn-out liability was $ 2.0 million and $ 2.6 million, respectively, which is included in \u201cAccrued expenses and other current liabilities\u201d in the accompanying unaudited condensed consolidated balance sheets. The Company classified contingent earn-out arrangements as liabilities at the time of the acquisition, as they will be settled in cash, and remeasures the fair values of the contingent earn-out liabilities each reporting period thereafter until settled. The fair value of the contingent earn-out liabilities are sensitive to changes in the stock price, discount rates and the timing of the future p",
+          "projection_id": "projection_d5f66354c516bb7a572fd8b4",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_text": "nsation) and other employee related costs, impairment of capitalized aggregator costs associated with breakage revenue and restructuring charges. Expenses relating to member care functions such as member support, moderators and other auxiliary costs associated with providing services to members such as fraud prevention are also included within cost of revenue. Selling and marketing expense Selling and marketing expense consists primarily of brand marketing, digital and social media spend, field marketing, restructuring charges, compensation expense (including stock-based compensation) and other employee-related costs for personnel engaged in sales and marketing functions. General and administrative expense General and administrative expense consists primarily of compensation (including stock-based compensation) and other employee-related costs for personnel engaged in executive management, finance, legal, tax and human resources. General and administrative expense also consists of transaction costs, changes in fair value of contingent earn-out liability, expenses associated with facilities, information technology, external professional services, legal costs, settlement of legal claims and accruals for future legal obligations that are deemed probable and estimable, restructuring charges and other administrative expenses. Product development expense Product development expense consists primarily of compensation (including stock-based compensation) and other employee-related costs for personnel engaged in the design, development, testing and enhancement of product offerings and related technology, as well as restructuring charges. 35 Depreciation and amortization expense Depreciation and amortization expense is primarily related to computer equipment, leasehold improvements, furniture and fixtures, developed technology, user base, white label contracts, trademarks and other definite-lived intangible assets. Impairment loss Impairment loss relates to impairment charges",
+          "projection_id": "projection_7da50e986ef20021090aa4f8",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "document_id": "massive:[MASKED_COMPANY]:market_data:c48ddf33f63755eb0e12623e",
+          "exact_text": "{\"adjusted_close\":6.37,\"as_of_date\":\"2025-08-18\",\"close\":6.37,\"high\":6.385,\"low\":6.067,\"open\":6.27, \"volume\":3705720},{\"adjusted_close\":6.38,\"as_of_date\":\"2025-08-19\",\"close\":6.38,\"high\":6.478,\"low\":6.285,\"open\":6.44, \"volume\":2838240},{\"adjusted_close\":6.52,\"as_of_date\":\"2025-08-20\",\"close\":6.52,\"high\":6.58,\"low\":6.26,\"open\":6.4, \"volume\":6512878},{\"adjusted_close\":6.44,\"as_of_date\":\"2025-08-21\",\"close\":6.44,\"high\":6.46,\"low\":6.255,\"open\":6.46, \"volume\":2886700},{\"adjusted_close\":6.36,\"as_of_date\":\"2025-08-22\",\"close\":6.36,\"high\":6.615,\"low\":6.345,\"open\":6.45, \"volume\":4011414},{\"adjusted_close\":6.41,\"as_of_date\":\"2025-08-25\",\"close\":6.41,\"high\":6.555,\"low\":6.35,\"open\":6.48, \"volume\":3722881},{\"adjusted_close\":6.45,\"as_of_date\":\"2025-08-26\",\"close\":6.45,\"high\":6.51,\"low\":6.295,\"open\":6.42, \"volume\":3016200},{\"adjusted_close\":6.29,\"as_of_date\":\"2025-08-27\",\"close\":6.29,\"high\":6.49,\"low\":6.265,\"open\":6.37, \"volume\":3041251},{\"adjusted_close\":6.33,\"as_of_date\":\"2025-08-28\",\"close\":6.33,\"high\":6.4563,\"low\":6.265,\"open\":6.32, \"volume\":2723494}",
+          "projection_id": "projection_e885fe196b2d87d88a643882",
+          "request_id": "orientation.v1.market_backbone",
+          "truncated": false
+        }
+      ],
+      "source_index": [
+        {
+          "available_projection_count": 23,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "illar Two minimum taxes and valuation allowance recorded against certain deferred tax assets arising in the cu",
+            "gn markets, primarily in the United Kingdom and the European Union. For the three months ended June&#160;30, 2",
+            "and certain outstanding Class B Units were reclassified into a new class of limited partnership interests that",
+            "vable agreement liability remeasurement (benefit) expense, impairment loss, and restructuring costs. Adjusted ",
+            "ts, furniture and fixtures, developed technology, user base, white label contracts, trademarks and other defin",
+            "their Unruh Act claims in the Superior Court of the State of California for the County of Riverside, this time",
+            "31, 2021, quarterly installment payments on the Incremental Term Loan Facility are no longer required for the ",
+            "tter comparison of our performance across periods. We believe Adjusted EBITDA provides visibility to the under"
+          ],
+          "omitted_projection_count": 7,
+          "projection_context_truncated": true,
+          "projection_ids": [
+            "projection_f8d7793d8a50c9c91d62edc1",
+            "projection_d84bdae2cd1041d8970aaed9",
+            "projection_72c7dd5608b151dc514a11f5",
+            "projection_1a176aa5c11237ff05bbd475",
+            "projection_bc120412c765a8ad3d6afeba",
+            "projection_13e6480ddb0d6ae44577f7ea",
+            "projection_c363263f9720e19bd29d557f",
+            "projection_857e47898275a58b1c86dc0a",
+            "projection_661ec66810d9066226619755",
+            "projection_fd3d1caf13ac99d7a6654456",
+            "projection_f5e5258464d4602a2ffccc9e",
+            "projection_11e722831b03f2831c1c8d2d",
+            "projection_907da1a0881fb4891fdeaaf7",
+            "projection_53f0208217c26e1d3d9b97e2",
+            "projection_d5f66354c516bb7a572fd8b4",
+            "projection_7da50e986ef20021090aa4f8"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.operating_report",
+          "source_context_truncated": true,
+          "source_types": [
+            "filing"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 16
+        },
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+            "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+            "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e885fe196b2d87d88a643882"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ]
+    },
+    "cited_signal_evidence": [
+      {
+        "evidence": {
+          "document_id": "sec:[MASKED_COMPANY]:000162828025038861",
+          "exact_span": "As of June&#160;30, 2025, amounts available under the Revolving Credit Facility were $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-232\" decimals=\"-5\" name=\"us-gaap:LineOfCreditFacilityRemainingBorrowingCapacity\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-872\">50.0</ix:nonFraction>&#160;million. As of June&#160;30, 2025, and at all times during the six months ended June&#160;30, 2025, the Company was in compliance with the financial debt covenants.",
+          "timestamp": "2025-08-07T20:05:33+00:00"
+        },
+        "evidence_group": "counter",
+        "evidence_index": 3,
+        "signal_ref": "financing_listing_action:v5"
+      }
+    ],
+    "computed_metrics": [
+      {
+        "as_of": "2025-09-30T00:00:00+00:00",
+        "labels": {
+          "trend": "range"
+        },
+        "literal_refs": [
+          {
+            "adjusted_close": 7.56,
+            "as_of_date": "2025-01-10"
+          },
+          {
+            "adjusted_close": 6.3,
+            "as_of_date": "2025-09-29"
+          }
+        ],
+        "metric": "price_shape",
+        "params": {
+          "window_days": 180
+        },
+        "schema_version": "computed-metric-card-v1",
+        "values": {
+          "daily_volatility_pct": 5.1013,
+          "first_close": 7.56,
+          "high": 8.64,
+          "last_close": 6.3,
+          "low": 3.65,
+          "max_drawdown_pct": -57.7546,
+          "return_pct": -16.6667,
+          "window_trading_days": 180
+        }
+      }
+    ],
+    "context_contract": {
+      "assembly_blocks": [
+        {
+          "block_type": "basic_info_cards",
+          "provenance": "projection_id"
+        },
+        {
+          "block_type": "computed_anchor",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "computed_metrics",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "document_channel",
+          "provenance": "runtime_pit_disclosure"
+        },
+        {
+          "block_type": "signal_results",
+          "provenance": "signal_ref"
+        },
+        {
+          "block_type": "cited_signal_evidence",
+          "provenance": "signal_evidence_ref"
+        },
+        {
+          "block_type": "state_evolution",
+          "provenance": "per_round_delta"
+        },
+        {
+          "block_type": "research_state",
+          "provenance": "runtime_validated_state"
+        },
+        {
+          "block_type": "analysis_prompt",
+          "provenance": "plan"
+        }
+      ],
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "complete_trajectory_retained_locally": true,
+      "kind": "typed_append_only_assembly",
+      "numeric_decision_inputs_permitted_only_in": [
+        "prediction_baseline",
+        "computed_metrics"
+      ],
+      "presentation_target_exceeded": true,
+      "target_utf8_bytes": 24000
+    },
+    "document_channel": [],
+    "final_research_state": {
+      "contradictions": [
+        "For the three months ended June 30, 2025 and 2024, respectively, total revenue was $248.2 million and $268.6 million.",
+        "For the three months ended June 30, 2025 and 2024, respectively, Total Paying Users were 3,777.2 and 4,138.6 (in thousands), while Total Average Revenue per Paying User was $21.69 and $21.37.",
+        "Management warned that restructuring costs could exceed expectations or fall in different periods, and that intended benefits might arrive less fully or less quickly than anticipated."
+      ],
+      "current_beliefs": [
+        "Management disclosed a shift away from paid member acquisition and performance marketing toward brand and organic investment, while warning of short-term pressure on revenue and paying users.",
+        "As of June 30, 2025, cash and cash equivalents were $261.7 million; management believed available resources sufficient for its business plans during the next twelve months, based on conditions then.",
+        "In June 2025, management announced a global workforce reduction of approximately 240 roles, representing approximately 30% of employees.",
+        "As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants."
+      ],
+      "decision": "finalize",
+      "hypotheses": [
+        "Inference: an organic-acquisition and product-quality turnaround could change expectations within the six-month horizon if retention and payer conversion stabilize while monetization holds. No delivery schedule is visible; continued deterioration in retained paying cohorts would weaken this mechanism.",
+        "Inference: workforce restructuring could protect cash generation and support a reassessment within the horizon if savings arrive before revenue erosion absorbs them. Timing remains unestablished; delayed savings, excess cash charges or impaired product delivery would weaken this mechanism.",
+        "Inference: reported contraction may reflect persistent demand weakness rather than a temporary acquisition reset, preventing a durable operating reassessment within the horizon. Sustained organic cohort growth and cash generation after restructuring costs would weaken this explanation."
+      ],
+      "next_information_needs": [
+        "By prediction time, what cohort retention, engagement, organic acquisition and payer-conversion evidence had been disclosed that distinguishes deliberate removal of low-quality users from persistent underlying demand deterioration?",
+        "What product or monetization milestones, launch schedules and measurable adoption tests had been disclosed by prediction time that could change expectations within the forecast horizon, beyond general strategic intentions?",
+        "By prediction time, what savings estimates, implementation timetable, cash restructuring charges and realized progress had been disclosed, and what evidence showed that reduced staffing could preserve product delivery and member safety?",
+        "What available disclosures explain the payer and monetization trends through pricing, mix, churn and geographic or app-level differences, including whether monetization improvement came at the expense of retention?",
+        "By prediction time, what financial covenant terms had been disclosed, and what compliance after June 30, 2025 had been disclosed?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [
+        "The business monetizes online dating and social networking through subscriptions and in-app purchases. The visible interim report supplies operating evidence; references to annual filings do not establish that annual-report content was reviewed."
+      ],
+      "supporting_evidence": [
+        {
+          "claim": "Management disclosed a shift away from paid member acquisition and performance marketing toward brand and organic investment, while warning of short-term pressure on revenue and paying users.",
+          "exact_text": "To align with these priorities, we have strategically shifted away from paid member acquisition and performance marketing in favor of brand and organic investment. As we address these areas of focus, our member growth and success in attracting new members, member engagement and monetization may be negatively impacted. In addition, efforts to improve the health of our membership base, including the removal of bad actors from our apps and strategically reducing paid performance marketing for member acquisition, may adversely affect revenue and paying users in the short term.",
+          "kind": "basic_info",
+          "projection_id": "projection_f8d7793d8a50c9c91d62edc1"
+        },
+        {
+          "claim": "As of June 30, 2025, cash and cash equivalents were $261.7 million; management believed available resources sufficient for its business plans during the next twelve months, based on conditions then.",
+          "exact_text": "As of June 30, 2025, we had $261.7 million of cash and cash equivalents, an increase of $57.4 million from December 31, 2024. Our principal sources of liquidity are our cash and cash equivalents and cash generated from operations. Our primary uses of liquidity are operating expenses and capital expenditures, acquisition of businesses, funding of our debt obligations, partnership tax distributions, paying income taxes and obligations under our tax receivable agreement and effectuating share repurchases as discussed below. Based on current conditions, we believe that we have sufficient financial resources to fund our activities and execute our business plans during the next twelve months.",
+          "kind": "basic_info",
+          "projection_id": "projection_11e722831b03f2831c1c8d2d"
+        },
+        {
+          "claim": "In June 2025, management announced a global workforce reduction of approximately 240 roles, representing approximately 30% of employees.",
+          "exact_text": "In June 2025, we announced our decision to reduce our global workforce by approximately 240 roles, representing approximately 30% of our employees, as we realign our operating structure to optimize execution on our strategic priorities.",
+          "kind": "basic_info",
+          "projection_id": "projection_11e722831b03f2831c1c8d2d"
+        },
+        {
+          "claim": "For the three months ended June 30, 2025 and 2024, respectively, total revenue was $248.2 million and $268.6 million.",
+          "exact_text": "For the three months ended June 30, 2025 and 2024, we generated: \u2022 Total revenue of $248.2 million and $268.6 million, respectively;",
+          "kind": "basic_info",
+          "projection_id": "projection_53f0208217c26e1d3d9b97e2"
+        },
+        {
+          "claim": "For the three months ended June 30, 2025 and 2024, respectively, Total Paying Users were 3,777.2 and 4,138.6 (in thousands), while Total Average Revenue per Paying User was $21.69 and $21.37.",
+          "exact_text": "(In thousands, except ARPPU) Three Months Ended June 30, 2025 Three Months Ended June 30, 2024 Six Months Ended June 30, 2025 Six Months Ended June 30, 2024 [MASKED_COMPANY] App Paying Users 2,499.8 2,817.2 2,604.1 2,773.6 Badoo App and Other Paying Users 1,277.4 1,321.4 1,291.9 1,307.9 Total Paying Users 3,777.2 4,138.6 3,896.0 4,081.5 [MASKED_COMPANY] App Average Revenue per Paying User $ 26.85 $ 25.79 $ 25.81 $ 26.06 Badoo App and Other Average Revenue per Paying User $ 11.57 $ 11.93 $ 11.14 $ 12.14 Total Average Revenue per Paying User $ 21.69 $ 21.37 $ 20.94 $ 21.60",
+          "kind": "basic_info",
+          "projection_id": "projection_857e47898275a58b1c86dc0a"
+        },
+        {
+          "claim": "Management warned that restructuring costs could exceed expectations or fall in different periods, and that intended benefits might arrive less fully or less quickly than anticipated.",
+          "exact_text": "the risk that the costs and charges related to our recently announced plan to implement a global workforce reduction and restructuring of our operations may be greater than anticipated or incurred in different periods than anticipated \u2022 the risk that our restructuring efforts may not generate their intended benefits to the extent or as quickly as anticipated",
+          "kind": "basic_info",
+          "projection_id": "projection_f5e5258464d4602a2ffccc9e"
+        },
+        {
+          "claim": "As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants.",
+          "evidence_group": "counter",
+          "evidence_index": 3,
+          "kind": "signal",
+          "signal_ref": "financing_listing_action:v5"
+        }
+      ]
+    },
+    "prediction_baseline": {
+      "doubling_threshold": 12.988,
+      "mean_adjusted_close": 6.494,
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "recent_close": 6.3,
+      "recent_close_date": "2025-09-29",
+      "status": "available",
+      "trading_dates": [
+        "2025-09-23",
+        "2025-09-24",
+        "2025-09-25",
+        "2025-09-26",
+        "2025-09-29"
+      ]
+    },
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "runtime_termination": {
+      "phase": "prediction_ready",
+      "stop_reason": "finalized",
+      "termination_trigger": "max_signal_rounds"
+    },
+    "signal_rounds": [
+      {
+        "batch": {
+          "results": [
+            {
+              "execution": {
+                "status": "success"
+              },
+              "input_evidence_available_at": [
+                "2025-08-07T20:05:33+00:00",
+                "2025-08-07T20:05:33+00:00",
+                "2025-08-07T20:05:33+00:00",
+                "2025-08-07T20:05:33+00:00"
+              ],
+              "interpretation": {
+                "measurement_context": {
+                  "categorical_value_is_not_stock_direction": true
+                },
+                "summary": "Neutral capital-structure facts: the issuer completed first-half 2025 share repurchases of 4.7 million shares for $28.7 million, excluding excise tax obligations, and repaid $2.9 million under its Original Term Loan. All treasury shares were retired by June 30, with no second-quarter repurchases. These historical actions document repayment and share retirement, but the cited spans do not establish a prospective net-dilution change or a within-horizon change in runway, distress, or tradability relevant to the fixed surge target. Revolving credit availability and covenant compliance describe the existing position rather than an independently established directional catalyst. Additional evidence may exist in omitted text."
+              },
+              "research_status": {
+                "admission_key": "666564345869bea25859f2e3e691d57d5b6f55bf91c72fd3a0a4c7e5a8364743",
+                "effect_status": "unverified",
+                "research_targets": [
+                  "surge_direction"
+                ],
+                "technical_status": "admitted"
+              },
+              "signal_ref": "financing_listing_action:v5",
+              "state": {
+                "confidence": 0.93,
+                "value": "neutral"
+              },
+              "status": {
+                "coverage": "partial"
+              }
+            },
+            {
+              "execution": {
+                "status": "domain_unavailable"
+              },
+              "input_evidence_available_at": [],
+              "interpretation": {
+                "summary": "domain_unavailable: a normal domain coverage outcome, not a technical execution gap or failure. Visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+              },
+              "signal_ref": "operating_cash_flow_margin:v2",
+              "state": {
+                "confidence": 0.0,
+                "value": "unavailable"
+              },
+              "status": {
+                "coverage": "unavailable"
+              }
+            }
+          ],
+          "signal_calls": 2
+        },
+        "selected_signals": [
+          "financing_listing_action:v5",
+          "operating_cash_flow_margin:v2"
+        ]
+      }
+    ],
+    "state_evolution": [
+      {
+        "delta": {
+          "contradictions": {
+            "added": [],
+            "removed": []
+          },
+          "current_beliefs": {
+            "added": [
+              "As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants."
+            ],
+            "removed": []
+          },
+          "hypotheses": {
+            "added": [],
+            "removed": []
+          },
+          "next_information_needs": {
+            "added": [
+              "By prediction time, what financial covenant terms had been disclosed, and what compliance after June 30, 2025 had been disclosed?"
+            ],
+            "removed": [
+              "By prediction time, what financial covenant terms and compliance through the six months ended June 30, 2025 and afterwards had been disclosed?"
+            ]
+          },
+          "open_questions": {
+            "added": [],
+            "removed": []
+          },
+          "resolved_questions": {
+            "added": [],
+            "removed": []
+          },
+          "supporting_evidence": {
+            "added": [
+              {
+                "claim": "As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants.",
+                "key": "signal:financing_listing_action:v5:counter:3"
+              }
+            ],
+            "removed_keys": []
+          }
+        },
+        "need_dispositions": {
+          "items": [
+            {
+              "answer_scope": "partial",
+              "evidence_refs": [
+                {
+                  "evidence_group": "counter",
+                  "evidence_index": 3,
+                  "signal_ref": "financing_listing_action:v5"
+                }
+              ],
+              "need_index": 4,
+              "prior_need": "By prediction time, what financial covenant terms and compliance through the six months ended June 30, 2025 and afterwards had been disclosed?",
+              "reason": "The adopted disclosure establishes financial debt covenant compliance as of June 30, 2025 and throughout the six months then ended. It does not provide the covenant terms or compliance after that period through prediction time; its later public availability does not extend observation coverage. The neutral financing result supplies historical context without establishing a directional catalyst or prediction benefit. The unavailable cash-flow measurement supplies no answer to the missing covenant facets.",
+              "residual_need": "By prediction time, what financial covenant terms had been disclosed, and what compliance after June 30, 2025 had been disclosed?"
+            }
+          ],
+          "prior_state_hash": "0759a59688fe0c469ede53bcb11675fa5f54d886424d184ef8e486aa8e7dfd18"
+        },
+        "round": 1
+      },
+      {
+        "delta": {
+          "contradictions": {
+            "added": [],
+            "removed": []
+          },
+          "current_beliefs": {
+            "added": [],
+            "removed": []
+          },
+          "decision": {
+            "from": "continue",
+            "to": "finalize"
+          },
+          "hypotheses": {
+            "added": [],
+            "removed": []
+          },
+          "next_information_needs": {
+            "added": [],
+            "removed": []
+          },
+          "open_questions": {
+            "added": [],
+            "removed": []
+          },
+          "resolved_questions": {
+            "added": [],
+            "removed": []
+          },
+          "supporting_evidence": {
+            "added": [],
+            "removed_keys": []
+          }
+        },
+        "need_dispositions": {
+          "items": [],
+          "prior_state_hash": "36c08c5de1f5095e3efab7c1a4d960176734f415776136c6d339678c35987766"
+        },
+        "round": 1
+      }
+    ]
+  },
+  "prediction": {
+    "candidate_judgment": "unlikely",
+    "confidence": {
+      "level": "medium"
+    },
+    "is_surge": false,
+    "key_reasons": [
+      "The operating evidence available before the 2025-09-30T00:00:00+00:00 forecast boundary shows contraction rather than expectation-changing acceleration: revenue for the three months ended June 30, 2025 was $248.2 million versus $268.6 million a year earlier, and Total Paying Users were 3,777.2 thousand versus 4,138.6 thousand. Total ARPPU of $21.69 versus $21.37 did not prevent lower reported revenue. This supports continued demand or acquisition pressure as the stronger explanation for the visible results.",
+      "The disclosed shift toward organic acquisition and product quality, together with the June 2025 announcement of approximately 240 workforce reductions representing approximately 30% of employees, provides a plausible turnaround mechanism. However, management explicitly warned of near-term revenue and payer pressure and uncertain restructuring benefits. Inference: deterioration absorbing savings currently has stronger observable support than a rapid operating reassessment sufficient for the defined six-calendar-month price doubling.",
+      "Liquidity provides some support for executing the turnaround: the August 7 disclosure reported $261.7 million of cash at June 30 and management's then-current assessment of sufficient resources for the next twelve months. Covenant compliance was established through June 30 only. The successful financing Signal measured neutral historical capital-structure actions; its categorical state is not a share-price forecast and its predictive effect remains unverified.",
+      "The supplied price baseline is available: mean adjusted close 6.494, with a doubling threshold of 12.988 for the maximum five-consecutive-trading-day mean inside the forecast horizon. The computed 180-trading-session card reports a -16.6667% return from 7.56 on January 10, 2025 to 6.3 on September 29, 2025 and a range label. This historical market evidence supplies no positive trend confirmation and is secondary to the operating contraction."
+    ],
+    "magnitude": null,
+    "session_id": "anonymous-session-id",
+    "uncertainties": [
+      "Visible disclosures do not establish retention, organic acquisition or payer-conversion progress through prediction time; a turnaround could be developing outside the supplied coverage.",
+      "The size of announced staffing reductions could materially change costs, but realized savings, cash charges, implementation timing and effects on product delivery remain unresolved. A favorable surprise could support repricing despite the current negative judgment.",
+      "The operating_cash_flow_margin Signal returned domain_unavailable, a normal coverage outcome rather than technical failure or evidence of absent cash generation.",
+      "Source context is partial and collection ended at the maximum Signal rounds with unresolved information needs. Finalization does not establish that those questions were answered; June financial observations and management assessments are not verified September conditions."
+    ]
+  },
+  "prediction_time": "2025-09-30T00:00:00+00:00"
+}

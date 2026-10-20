@@ -1,0 +1,23 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-probe.py p01 p02 p03 > runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-final.log 2>&1",
+  "exit_code": 0,
+  "artifacts": {
+    "actual-audit-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-probe.py",
+      "sha256": "0f72e455183427ba0d7d14c397c7f2d4bcee4ee97c20382c997f9940a2d45592"
+    },
+    "actual-audit-first.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-first.log",
+      "sha256": "da7cdd1071df8eb81ae13efea3639ac3f8131d6ac3124c15e3832dc8ce133f39"
+    },
+    "actual-audit-final.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-audit-final.log",
+      "sha256": "1da341fcceb78cf0fc441f18062da03277c6facb3693e82d30cd0abb81abf51b"
+    },
+    "actual-review.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-review.json",
+      "sha256": "ca4d05173f622222fd459f32a1def369ff8fff85868ab62a6ee952c26f0c1dd5"
+    }
+  },
+  "no_product_execution": true
+}

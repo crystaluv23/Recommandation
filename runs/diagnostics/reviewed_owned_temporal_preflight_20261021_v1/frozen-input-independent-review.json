@@ -1,0 +1,139 @@
+{
+  "verdict": "PASS_three_actual_five_file_freezes_only",
+  "fixed_denominator": 3,
+  "stages": [
+    {
+      "sample_id": "p01",
+      "manifest_hash": "7d7f06ca17ce9ff8c57f1a868f7a3d37e43ade8c6245ad67c56dfffbd6117f90",
+      "contract_hash": "faa719b23e57df12c8963b27e2ea25b7ee6538a696bc1c2d2176e3b870ef378b",
+      "input_hash": "117a777608b01f1faecf3ef8d6e20288697d9c4e5c47c01c717cdaad21d58735",
+      "preflight_hash": "7d35e5174a96fe2dfcdb0eef8db84572140724293d2826212ab49afd2234c123",
+      "five_files": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/inputs.json",
+          "sha256": "0ecd6698c687e815a3dbc54f908756f58db6226b1b118f3a7cb468a9196dce39"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/expectations.json",
+          "sha256": "35fea3512cc63d8ee4724a785abc2347b3cccc4c42bc7a1539892b7fd23c7f06"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/contract.json",
+          "sha256": "ea4f046098b7eade5ffd59f7cd6c337ed9749fbf1bbd3a3128132fcc3152ffe0"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/manifest.json",
+          "sha256": "f1f464b08b1045cde709251634b385850561152b7ead06ad13e52b1e3be3b311"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01/preflight.json",
+          "sha256": "a82cc01dfa67f0ca81d3d8b876ddb6d6d2e4a7257e3250910202d1d8ae70b502"
+        }
+      ],
+      "sample_exact_except_ID_and_owned_need4": true,
+      "prior_needs0_3_occurrences_preserved": true,
+      "source_documents": 1780,
+      "bootstrap_cards_for_final_Predictor": 17,
+      "historical_batch_not_fresh_F6": true
+    },
+    {
+      "sample_id": "p02",
+      "manifest_hash": "23f6410b7d3fc7bba07b5a7f07b68aff3e85bfa96c37a0d02965fa258f08838a",
+      "contract_hash": "1a202406077ffe38d6cb32d8379d884025cebb77649a004a05bed4173afb3c89",
+      "input_hash": "965a4d565b99ff64b29632406868b85aaef0bf133378f4b56eb45e3f435591d7",
+      "preflight_hash": "4487a4074377c1e3887b2f35dbb3e2eb968fb6eacb9ef54d6e9af689375207fd",
+      "five_files": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/inputs.json",
+          "sha256": "7f12571c1d0dc894fb669753dcbc21d72eddaf0c5d1db08827393776e703fda9"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/expectations.json",
+          "sha256": "35fea3512cc63d8ee4724a785abc2347b3cccc4c42bc7a1539892b7fd23c7f06"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/contract.json",
+          "sha256": "a628a514734e38bd9b0c30d40146090db6cf2b7e391d054fda8c301e5c91c182"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/manifest.json",
+          "sha256": "852970c50097feef22fcc1074340fa2dd0faa63a4a7d683e3c974df090f639ea"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02/preflight.json",
+          "sha256": "9a148635ce22ddca7bf06111fd02bc3b7b0b2cf071af560a0b96421239cd955f"
+        }
+      ],
+      "sample_exact_except_ID_and_owned_need4": true,
+      "prior_needs0_3_occurrences_preserved": true,
+      "source_documents": 1780,
+      "bootstrap_cards_for_final_Predictor": 17,
+      "historical_batch_not_fresh_F6": true
+    },
+    {
+      "sample_id": "p03",
+      "manifest_hash": "ccdbdee02e91f9c6b619c3b84858dac4d98075e8e3dafae8c9f661cbc5f4eaf5",
+      "contract_hash": "6768ec662f0ff756dc62e8f07c7db1f470b8c6b84c412d0cd0089a234c6c393b",
+      "input_hash": "9446e2ff6a63442e7c4fa93b63272b77beb7295ce94e97aacc31612ae4ce7296",
+      "preflight_hash": "0cedd700b664e38e56ff7d8dad5c6d51859441c9bd45b6a5ffac8b7034be37cc",
+      "five_files": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/inputs.json",
+          "sha256": "ae67b232f49915783a7f7d90121159e7ce4c125c52371776bd72b8148ad569b3"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/expectations.json",
+          "sha256": "35fea3512cc63d8ee4724a785abc2347b3cccc4c42bc7a1539892b7fd23c7f06"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/contract.json",
+          "sha256": "187251c44f2e008d8cecb084bdd629246a713374a50b3fbd26b700bab442ba38"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/manifest.json",
+          "sha256": "f94dfcc59fd1d583bcebe00d9f0ab2917f425cd7d994893f89a3355b0a00a18e"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03/preflight.json",
+          "sha256": "290a7f5611093caf024fd7945eb49e9b32f92513343357c4f594d4bba4095502"
+        }
+      ],
+      "sample_exact_except_ID_and_owned_need4": true,
+      "prior_needs0_3_occurrences_preserved": true,
+      "source_documents": 1780,
+      "bootstrap_cards_for_final_Predictor": 17,
+      "historical_batch_not_fresh_F6": true
+    }
+  ],
+  "current_code_files": 107,
+  "historical_code_files": 116,
+  "original_bindings_per_stage": 7938,
+  "source_commit": "263d16ab18b8712f91a11c121b125f951dbbb05f",
+  "seed_commit": "ddeae204566d2d9f9cce29de1ab535902ef46bd5",
+  "all_three_share_exact_originals_and_current_code": true,
+  "percase_calls_tokens": [
+    6,
+    512000
+  ],
+  "aggregate_calls_tokens": [
+    18,
+    1536000
+  ],
+  "no_requests_exchange_or_roles": true,
+  "oracle_or_private_witness_absent_from_inputs": true,
+  "limits": [
+    "This is a short structural/canonical/sample audit. Root separately performs the one complete unique-source/current-code SHA inventory check; this audit does not duplicate it.",
+    "17 canonical bootstrap cards are preserved for finalcontext/Predictor, not claimed all visible to Reflect. Actual pending anonymity/wire remains a later check.",
+    "No fresh model behavior or semantic outcome yet; p01/p02 require properpartial, p03 requires full, old0/1 remains failed. No direct role dispatch, Store, prepare, resume, GET, labels or code modification."
+  ],
+  "audit_script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/frozen-input-independent-probe.py",
+    "sha256": "ddd793cc26fd479786837d62c3d66d7833f1dc86bc24af69607a8328cd745ac4"
+  },
+  "audit_log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/frozen-input-independent-probe.log",
+    "sha256": "8ae35b30776cc966ce07d9208fbcf1f25c2a48e7ce111762920c156a0374ec24"
+  },
+  "audit_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 /Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/frozen-input-independent-probe.py > /Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/frozen-input-independent-probe.log 2>&1",
+  "audit_exit_code": 0
+}
