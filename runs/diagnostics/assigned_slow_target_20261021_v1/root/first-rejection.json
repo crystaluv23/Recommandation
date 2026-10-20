@@ -1,0 +1,23 @@
+{
+  "first_request": "515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e",
+  "first_target_selected": true,
+  "first_row_rationale_type": "str",
+  "native_error": {
+    "action": "record_need_dispositions",
+    "issue": "no need-disposition progress: need_dispositions issues: row[0] rationale must be non-empty strings"
+  },
+  "ordinary_native_continuation_not_field_patch": true,
+  "no_accepted_unit_yet": true,
+  "reservations": {
+    "515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e": {
+      "family": "regular",
+      "reservation": 92533
+    },
+    "d36d4277ad83f95e2aeb4867ffba206b3c6c175666f85fe8c627950c3ad172c0": {
+      "family": "correction",
+      "reservation": 92712
+    }
+  },
+  "corrective_pending": "d36d4277ad83f95e2aeb4867ffba206b3c6c175666f85fe8c627950c3ad172c0",
+  "scope": "Preserved first rejection; no answer coaching, oracle injection or budget increase."
+}

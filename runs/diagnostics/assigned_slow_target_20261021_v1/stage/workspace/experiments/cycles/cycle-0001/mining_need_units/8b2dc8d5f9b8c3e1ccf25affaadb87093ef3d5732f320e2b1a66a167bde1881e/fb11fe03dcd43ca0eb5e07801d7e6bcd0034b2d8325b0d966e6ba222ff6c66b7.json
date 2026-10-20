@@ -1,0 +1,25 @@
+{
+  "accepted_rows": [
+    {
+      "disposition": "repair_dependency",
+      "need_refs": [
+        "reflection-7d08d205fe330564"
+      ],
+      "rationale": [
+        "The disclosed need concerns validation failures in financing_listing_action:v5, guidance_acceleration:v3 and order_confirmation_disclosed:v2, which impaired evidence delivery rather than defining a new economic measurement.",
+        "Diagnose the exact versioned requests, original answers, validation and correction results, persisted statuses and downstream consumption before repairing the failing execution dependency.",
+        "All three cases remained scored with no technical exclusion; preserve that case-level denominator separately from individual Signal failures, and do not infer causation or research improvement from completion.",
+        "The specific validation causes and successful recovery remain unestablished; this stages a repair route only and leaves other needs pending."
+      ],
+      "signal_refs": []
+    }
+  ],
+  "axis_id": "surge_direction",
+  "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+  "base_hash": "25c45c0c801f27f5c0aa394752234c38484039befe27548e15465b35ac845319",
+  "invalid_rows": [],
+  "pending_count": 264,
+  "result_hash": "fb11fe03dcd43ca0eb5e07801d7e6bcd0034b2d8325b0d966e6ba222ff6c66b7",
+  "schema_version": "mining-need-disposition-unit-v1",
+  "seed": "hypothesis"
+}

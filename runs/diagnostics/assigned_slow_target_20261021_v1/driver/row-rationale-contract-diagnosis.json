@@ -1,0 +1,232 @@
+{
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json",
+      "sha256": "f20fbbe47e5e16a31e2cbd11400d7a7ab239d39d8964438f02375e720b62a304"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/receipts/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json",
+      "sha256": "810e03b5b529b493077a20232ae1d44663a6cb1ff63cc7333ffbe06e37602f70"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/outbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.txt",
+      "sha256": "0c0b32fa64b67e2fb8449c23e7b38c7919ce7bb4b2bd9cefaba68377cee9db65"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/stage/exchange/inbox/515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e.json",
+      "sha256": "01383576f6cef761d98690dbfe6fdf0d9679221bfc4332ba02dc629aa9bdbc24"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/stage/exchange/receipts/515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e.json",
+      "sha256": "6459a5a83bfcefdd5503eaf361dcb67575663dc2599c779208038ede2b77c9e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/stage/exchange/outbox/515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e.txt",
+      "sha256": "6cf35d055a749d3635f31bcbcaeedf9927bdefacb580f75c596c9f8146555ad4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "c4bba21b5ec197a4f99fb2cefb5e8b2256dfc72dc92c9feffd47f455c4ddb917"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "48bc084ca33c095f0ecc0e93404b4d17eb580f1364defa758a8375fd7c93d4a6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/repair.py",
+      "sha256": "c36d52e01313318019eb1c73f1ae60a2d338f6b7dbb921782c626e6889b955ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "558cee902d54738f196dfbac3eeb2fa1f81ad226a9032eb0ffb15a5655826f6d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_assigned_slow_target_stage.py",
+      "sha256": "a9a1d9e0ecca0ce48f1fe4e7f5248770b6a0aa2b2a70cd00870def6be7a4cdda"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_assigned_slow_target_stage.md",
+      "sha256": "7b2a269cc5e0c7b811a81f5fa4bdc2dc47fedfa06281c9e5f9999249e5f59959"
+    }
+  ],
+  "contract_chain": [
+    {
+      "finding": "Initial prompt explicitly requires assembled-action/top-level rationale non-empty array, then lists each need row fields but does not independently declare nested rationale type.",
+      "lines": "32-33,113-125,237-239",
+      "path": "src/stock_opportunity_agent/research/mining_role_model.py"
+    },
+    {
+      "finding": "Initial need_disposition_contract exposes state/ref/count/disposition permissions, no row field types or item schema.",
+      "lines": "553-560",
+      "path": "src/stock_opportunity_agent/research/mining_controller.py"
+    },
+    {
+      "finding": "Runtime requires exact row keys and rationale non-empty list of nonblank strings. Scalar is rejected before accepted row, so progress remains absent for that row.",
+      "lines": "1572-1619",
+      "path": "src/stock_opportunity_agent/research/mining_controller.py"
+    },
+    {
+      "finding": "Independent row errors are returned in no-progress InvalidMiningAction; this uses the normal full-action continuation, not a row-specific output_patch_contract. Successful valid siblings still persist.",
+      "lines": "1738-1758",
+      "path": "src/stock_opportunity_agent/research/mining_controller.py"
+    },
+    {
+      "finding": "Only top-level action rationale scalar wrapping is mechanical. No row-specific wrapping applies; automatically extending it would change repair authority and is not required for the proposed disclosure fix.",
+      "lines": "641-654",
+      "path": "src/stock_opportunity_agent/research/repair.py"
+    },
+    {
+      "finding": "Owning spec states rationale-array action grammar and existing row validator/independent progress; explicit nested author-facing schema is not sent in initial Controller view.",
+      "lines": "34-54,418-424",
+      "path": "spec/src/stock_opportunity_agent/research/signal_mining_agent.md"
+    }
+  ],
+  "judgment": {
+    "attribution": "Authoring contract has a concrete missing nested-type disclosure. The general action instruction could suggest arrays, but it is not an explicit per-row declaration. Therefore do not classify these outputs solely as ignoring an unambiguous row-specific instruction.",
+    "causal_limit": "No controlled fresh prompt variant has been executed. Two matching errors support the producer/validator seam; they do not prove why either role chose a scalar.",
+    "not_changed": "Current85/86 execution and old target outcome remain under their existing contracts; no prompt patch or retry is authorized by this diagnosis.",
+    "observed": "Both independent first answers honored top-level array and used a scalar only in nested rationale. Native rejection is contract-consistent."
+  },
+  "minimal_proposal": {
+    "bounded_view_option": "Use one private row-field description shared with initial need_disposition_contract (required exact keys/types/item constraints); system references this row contract. Reuse existing schema semantics, no new canonical field, validator framework or route gate. If two sentences in shared prompt suffice, avoid a new helper solely for bookkeeping.",
+    "future_fresh_evidence": "Only a separately authorized frozen stage can establish first-answer adherence after shared disclosure repair. Current stage is completed/pending under old frozen contract; never rerun its correct prefix to seek green.",
+    "owner_spec": "spec/src/stock_opportunity_agent/research/signal_mining_agent.md, incremental action shape and record_need_dispositions clauses",
+    "shared_producer": "State explicitly in shared _MINING_CONTROLLER_PROMPT: top-level action.rationale AND every need_dispositions[i].rationale must be non-empty arrays of nonblank strings; one sentence is still a one-element array. Name need_refs/ signal_refs as arrays and disposition as enum string. No example disposition/answer for a case.",
+    "test_scope": [
+      "Actual MiningAgentRoleModel outgoing initial payload/system contains explicit nested rationale shape; not just static source text.",
+      "Native record_need_dispositions valid list[str] row writes original unit; scalar/empty/list empty-string/number/nested-array rows reject without silently accepting.",
+      "Top-level list + nested scalar counterexample remains rejected; mixed valid+invalid siblings preserve valid progress and pending remainder.",
+      "Existing top-level mechanical scalar wrapping remains unchanged; do not expand repair behavior implicitly.",
+      "Ordinary initial and native correction/terminal paths preserve exact ref/base permissions and original one-correction ceiling."
+    ],
+    "unchanged": [
+      "Current strict row validator, native one-correction budget",
+      "Independent sibling acceptance and pending state",
+      "Need ownership/ref/base_hash/source/PIT/budget guards",
+      "No automatic author text/route, no forced scalar conversion or stage-only patch",
+      "Terminal actions carrying need_dispositions follow the same row contract"
+    ]
+  },
+  "observations": [
+    {
+      "actual_initial_row_contract": {
+        "allowed_need_refs": [
+          "need-4b93ad0c64951433d189814c",
+          "need-0d28df3db1d1cafb1d729fa1",
+          "need-5b761a30837ccac0e94a3cf3",
+          "need-40d9f2c7e605c99ce5c415f0",
+          "need-b4ae0566f8e6a8805c791b0e",
+          "need-41703b08583da066c7f04b31",
+          "need-4d108858b0c348fdaae96c6c",
+          "need-ea78c9bb7af7b72f39fa6f9f",
+          "need-951081ec686829d6af4f7a3e",
+          "need-df614fe6c80e3cd306ad229c",
+          "need-d005b83fab9230fb4e0dad92",
+          "need-c519c3fdb61ba9ebda8d2f73",
+          "reflection-7d08d205fe330564",
+          "reflection-fca3541d11777b98",
+          "reflection-3dedae2c55384599",
+          "reflection-68eeb8eb36ca95db",
+          "reflection-4be8cbb1c3803a50",
+          "reflection-f416b998d80a8019"
+        ],
+        "base_hash": "25c45c0c801f27f5c0aa394752234c38484039befe27548e15465b35ac845319",
+        "dispositions": [
+          "deferred_measurement",
+          "fast_plan_action",
+          "new_measurement",
+          "not_testable",
+          "repair_dependency",
+          "update_existing"
+        ],
+        "pending_count": 265,
+        "staged_count": 0
+      },
+      "agent_id": "/root/slow_feedback_role83",
+      "case": "v1_unassigned",
+      "first_raw_sha256": "0c0b32fa64b67e2fb8449c23e7b38c7919ce7bb4b2bd9cefaba68377cee9db65",
+      "need_disposition_row_types": [
+        {
+          "disposition": "str",
+          "need_refs": "list",
+          "rationale": "str",
+          "signal_refs": "list"
+        }
+      ],
+      "request_hash": "41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af",
+      "system_rationale_excerpts": [
+        "one JSON object and no non-JSON text. Return exactly one JSON object with keys action and rationale plus the action's own fields. rationale is a non-empty array of short strings. When last_invalid_action is present, fix the reported issue by choosing one admissible acti",
+        "turn exactly one JSON object with keys action and rationale plus the action's own fields. rationale is a non-empty array of short strings. When last_invalid_action is present, fix the reported issue by choosing one admissible action. You are the bounded decision core of",
+        "rict paired benefit is unproved; never fabricate support. Every assembled action requires rationale as a non-empty array of short strings. Allowed actions and their required fields: inspect_manifest {}; inspect_catalog {}; fetch_evidence {case_refs, source_families, max",
+        " originals within its byte cap. Use record_need_dispositions {base_hash,need_dispositions,rationale} with the issued need_disposition_contract.base_hash and only allowed_need_refs. Each successful action must handle at least one new need. Valid independent rows are save",
+        "dency, not_testable, fast_plan_action); each row is {need_refs, disposition, signal_refs, rationale} where only update_existing cites exactly one existing signal ref and every other disposition cites none. Need source_scope distinguishes original case examples from curr",
+        "emaining budgets shown in the view. Named remaining counters and exhaustion claims in any rationale or coverage note must match the current runtime budget. Light/browse exhaustion does not exhaust heavy actions; available heavy budget does not oblige a candidate. For a "
+      ],
+      "top_level_rationale_type": "list",
+      "transport_output_contract": {
+        "type": "json_object"
+      }
+    },
+    {
+      "actual_initial_row_contract": {
+        "allowed_need_refs": [
+          "need-4b93ad0c64951433d189814c",
+          "need-0d28df3db1d1cafb1d729fa1",
+          "need-5b761a30837ccac0e94a3cf3",
+          "need-40d9f2c7e605c99ce5c415f0",
+          "need-b4ae0566f8e6a8805c791b0e",
+          "need-41703b08583da066c7f04b31",
+          "need-4d108858b0c348fdaae96c6c",
+          "need-ea78c9bb7af7b72f39fa6f9f",
+          "need-951081ec686829d6af4f7a3e",
+          "need-df614fe6c80e3cd306ad229c",
+          "need-d005b83fab9230fb4e0dad92",
+          "need-c519c3fdb61ba9ebda8d2f73",
+          "reflection-7d08d205fe330564",
+          "reflection-fca3541d11777b98",
+          "reflection-3dedae2c55384599",
+          "reflection-68eeb8eb36ca95db",
+          "reflection-4be8cbb1c3803a50",
+          "reflection-f416b998d80a8019"
+        ],
+        "base_hash": "25c45c0c801f27f5c0aa394752234c38484039befe27548e15465b35ac845319",
+        "dispositions": [
+          "deferred_measurement",
+          "fast_plan_action",
+          "new_measurement",
+          "not_testable",
+          "repair_dependency",
+          "update_existing"
+        ],
+        "pending_count": 265,
+        "staged_count": 0
+      },
+      "agent_id": "/root/exact_role_85",
+      "case": "child_assigned",
+      "first_raw_sha256": "6cf35d055a749d3635f31bcbcaeedf9927bdefacb580f75c596c9f8146555ad4",
+      "need_disposition_row_types": [
+        {
+          "disposition": "str",
+          "need_refs": "list",
+          "rationale": "str",
+          "signal_refs": "list"
+        }
+      ],
+      "request_hash": "515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e",
+      "system_rationale_excerpts": [
+        "one JSON object and no non-JSON text. Return exactly one JSON object with keys action and rationale plus the action's own fields. rationale is a non-empty array of short strings. When last_invalid_action is present, fix the reported issue by choosing one admissible acti",
+        "turn exactly one JSON object with keys action and rationale plus the action's own fields. rationale is a non-empty array of short strings. When last_invalid_action is present, fix the reported issue by choosing one admissible action. You are the bounded decision core of",
+        "rict paired benefit is unproved; never fabricate support. Every assembled action requires rationale as a non-empty array of short strings. Allowed actions and their required fields: inspect_manifest {}; inspect_catalog {}; fetch_evidence {case_refs, source_families, max",
+        " originals within its byte cap. Use record_need_dispositions {base_hash,need_dispositions,rationale} with the issued need_disposition_contract.base_hash and only allowed_need_refs. Each successful action must handle at least one new need. Valid independent rows are save",
+        "dency, not_testable, fast_plan_action); each row is {need_refs, disposition, signal_refs, rationale} where only update_existing cites exactly one existing signal ref and every other disposition cites none. Need source_scope distinguishes original case examples from curr",
+        "emaining budgets shown in the view. Named remaining counters and exhaustion claims in any rationale or coverage note must match the current runtime budget. Light/browse exhaustion does not exhaust heavy actions; available heavy budget does not oblige a candidate. For a "
+      ],
+      "top_level_rationale_type": "list",
+      "transport_output_contract": {
+        "type": "json_object"
+      }
+    }
+  ],
+  "revision": "55ec6245178631094bb8b43d91f67362ff234b96",
+  "scope": "Read-only current frozen inputs/source. Only first v1 and first85 raw read; no86 raw read, role message, runtime construction, model, query, source modification or old-stage reentry."
+}

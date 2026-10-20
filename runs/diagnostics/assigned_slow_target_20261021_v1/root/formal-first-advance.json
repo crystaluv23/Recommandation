@@ -1,0 +1,12 @@
+{
+  "result": {
+    "status": "pending",
+    "stage": "mining_controller_step",
+    "request_hash": "515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e",
+    "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/stage/exchange/inbox/515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e.json",
+    "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/stage/exchange/outbox/515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e.txt",
+    "inbox_sha256": "01383576f6cef761d98690dbfe6fdf0d9679221bfc4332ba02dc629aa9bdbc24"
+  },
+  "seconds": 15.908622207818553,
+  "scope": "First native advance to exact pending inbox only, no answer supplied."
+}

@@ -78,9 +78,11 @@ header完整进入真实反思；Reflect首答接受3ep/3lesson，processed3/pen
 Controller首答另选68e... Plan-action但row rationale string被拒；允许的一次无patch原生续步仍选该项，array合法后原sink保存1unit，pending264。
 预冻技术repair target7d...未选择，仍0/1/pending，不能用合法别项替代。阶段提示只暴露同页未指派目标，是验收任务选择缺口，不自动归模型违规。
 唯一终态reopen272封存文件+completion全等/0新构造模型；stage完成但Controller partial/round-cycle0/0，不是完整Slow/S1-S2或OS恢复。
-当前修复把验收任务明确指派给原native target（只给ref，不送答案/改来源/换简单样本）；新Controller-only阶段复用封存反思前缀，保全265 backlog。
-共享原生constructor/sink/index提取后，唯一临时真实Engine→request_ready预检15.848s：完整首userwire与旧前沿canonical相等，0dispatch/0source或Reflect重跑。
-221关联测试全过/0network或LabelStore.load，候选代码稳定、独立审查中；正式新stage尚未prepare，审后冻结最多3个Controller响应的新预算，旧stage不重入、不完整重跑。
+新assigned child在55ec6245后唯一prepare15.759s，manifest7f39f03f；原265/0staged、603908memory/六原件及完整首userwire保持，仅system指派原7d ref、不送答案。
+fresh85首答选对repair_dependency/[]但row rationale string拒；fresh86一次原生无patch续步array合法，原sink保存唯一7d unit/其余264pending。独立原材料终审纠后1/1、首答0/1；旧v1的0/1不改。
+2响应/185245逻辑预留/0source或Reflect重跑/0外部LLMAPI；178代码/223副本/父272保真，子247files+completion唯一terminal reopen全同/0runtime入口。业务指针仍0/0。
+221关联测试全过；只证明明确任务→有据repair-route intent→原sink，不证明修复实施、全S1/S2或收益。
+重复row类型拒已定位初始合同未明示嵌套rationale数组（顶层有声明），不能直接归模型无视指令；下一补共享authoring合同，保严格validator/旧失败/纠错权限，不重入已完成stage。
 LLM阅读接口方案待设计决策；两财务期间定义需具体政策/新版本，不能由当前计算结果倒推答案。
 完整反馈消费、新方向/magnitude Mining→忠实实现→准入发布→后继精确使用、完整恢复及双环均未验证。
 旧v182权威Fast/Slow=1/1完成不恢复；memory失败processed0/pending3518不改成功。不启动完整后继，整体MVP保持open。

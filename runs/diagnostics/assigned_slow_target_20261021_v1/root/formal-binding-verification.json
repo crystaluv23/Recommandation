@@ -1,0 +1,10 @@
+{
+  "manifest_hash": "7f39f03f28dfa9e2c276fccf57793f53f7b8e62a1b01e51ecc0fc9326d4aa267",
+  "code_bindings": 178,
+  "copies": 223,
+  "full_user_exact": true,
+  "dual_contract_exact": true,
+  "accepted_memory_hash": "603908b96acf91a90bc39f3ad0e0950bfd1282d0d3bc272970962e37334e67d0",
+  "responses": 0,
+  "scope": "Read-only pre-dispatch formal binding check; no runtime construction or new invocation."
+}

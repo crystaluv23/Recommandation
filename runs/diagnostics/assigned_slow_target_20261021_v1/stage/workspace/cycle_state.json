@@ -1,0 +1,19 @@
+{
+  "active_cycle": {
+    "completed_plan_rounds": 0,
+    "cycle_id": 1,
+    "cycle_mode": "slow_only",
+    "input_signal_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+    "input_signal_registry_version": 12,
+    "phase": "slow_loop",
+    "start_round": 0,
+    "target_plan_rounds": 0
+  },
+  "current_signal_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "current_signal_registry_version": 12,
+  "initial_signal_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "initial_signal_registry_version": 12,
+  "last_completed_cycle": 0,
+  "run_contract_hash": "aeba1818d76bcd7dba28644447907b994a5517c35661f30a27b693ee6e93d776",
+  "schema_version": "dual-loop-cycle-state-v2"
+}

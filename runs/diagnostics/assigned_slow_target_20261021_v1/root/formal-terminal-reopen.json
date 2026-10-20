@@ -1,0 +1,28 @@
+{
+  "status": "PASS_exact_completed_module_reopen",
+  "result": {
+    "complete_S1_S2": false,
+    "completed_cycle": 0,
+    "completed_round": 0,
+    "status": "native_need_unit_saved_semantics_unreviewed",
+    "target_need_ref": "reflection-7d08d205fe330564"
+  },
+  "sealed_files": 247,
+  "completion": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/stage/completion.json",
+    "sha256": "0a6e63362379b8e2aa3f7b9f7a9d98c4d2dd49e0a89ad9e62f9d724246e8c2fd"
+  },
+  "seconds": 0.15792083297856152,
+  "before_after_exact": true,
+  "forbidden_entrances": {
+    "construct": 0,
+    "verify": 0,
+    "role_receive": 0,
+    "client_model": 0,
+    "engine": 0,
+    "labels": 0,
+    "signal": 0
+  },
+  "parent_272_bytes_unchanged": true,
+  "scope": "Sole terminal reopen; no live runtime/source/model reconstruction. Not OS crash recovery or completed Slow."
+}

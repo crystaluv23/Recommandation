@@ -1,0 +1,11 @@
+{
+  "result": {
+    "status": "native_need_unit_saved_semantics_unreviewed",
+    "target_need_ref": "reflection-7d08d205fe330564",
+    "complete_S1_S2": false,
+    "completed_round": 0,
+    "completed_cycle": 0
+  },
+  "seconds": 16.10322124999948,
+  "scope": "Native consumption after the one allowed continuation; stop at first original sink or terminal failure."
+}

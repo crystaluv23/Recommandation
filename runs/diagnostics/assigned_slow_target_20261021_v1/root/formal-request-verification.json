@@ -1,0 +1,13 @@
+{
+  "request_hash": "515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e",
+  "exact_inbox_journal_messages": true,
+  "full_user_equals_frozen_frontier": true,
+  "reservations": {
+    "515b1e5b48b0c1ffbe036da03e93a3a0d6e96c4664fc6bb0fb538ee99b0a674e": {
+      "family": "regular",
+      "reservation": 92533
+    }
+  },
+  "raw_or_receipt": 0,
+  "scope": "Read-only exact pending request verification; no expected answer supplied to actor."
+}

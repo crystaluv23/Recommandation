@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：55ec6245后assigned child唯一prepare15.759s/manifest7f39f03f，完整265/0staged/六原件/603908 memory及首userwire保持，仅ref指派。fresh85选对技术target但row rationale string原生拒；fresh86一次无patch续步后原sink存唯一7d repair_dependency/[]，其余264pending。独立纠后1of1/首答0of1，旧v1 0of1永保；2响应185245预留/0source或Reflect/外部LLMAPI/GET。父272/178代码/223副本保真，子247+completion唯一terminal reopen全等且0runtime入口/业务指针0of0。仅repair意图分流与持久化；未实施修复或关闭全S1/S2。重复格式失败另定位初始嵌套row合同未声明数组，下一最小authoring合同修复，不热改/重入当前stage。
+
 - 2026-10-21：为原技术target的明确任务指派提取原生Controller constructor/sink及完整comparison memory index，生产axis算法保持；新Controller-only child从首请求前265pending/0staged分支，原603908反思/六原件和旧0of1保留，不重跑source/Reflect、不送答案。唯一实际临时preflight15.848s通过真实Engine到request_ready，完整首userwire与封存前沿canonical同，0dispatch、4代码/spec/test绑定保真；221关联测试全过/0network或LabelStore.load，正式阶段尚未prepare，独立审查后冻结最多3响应独立预算。仅验收输入连接，不关S1/S2或MVP。
 
 - 2026-10-21：6ad836fa后正式bounded Slow反馈stage fullD4493，6fresh exact-inbox角色/1Controller原生纠错/301117逻辑预留/外部LLMAPI0。新header自主选读→反思首答3ep3lesson接受/processed3-pending4490→实际H1读取6完整原件与brief/精确603908memory；独立原材料语义过，旧failed0/3518保留。Controller首答另选同页Plan-action且row rationale类型拒；无patch原生有限续步同选该项、array合法后原sink保存1unit/remaining264of265。预冻技术repair target未处置0of1保持，提示仅暴露同页却未指派目标，不能归模型违规或以别项替代。272封存文件唯一reopen全等/0新构造调用，round-cycle0/0、Controller partial；不是完整S1/S2/Plan实施/收益。下一修验收任务指派与目标的对应，不改旧结果或全量重跑。

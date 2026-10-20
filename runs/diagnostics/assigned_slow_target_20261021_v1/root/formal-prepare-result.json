@@ -1,0 +1,10 @@
+{
+  "revision": "55ec6245178631094bb8b43d91f67362ff234b96",
+  "result": {
+    "status": "prepared_not_dispatched",
+    "manifest_hash": "7f39f03f28dfa9e2c276fccf57793f53f7b8e62a1b01e51ecc0fc9326d4aa267",
+    "target_need_ref": "reflection-7d08d205fe330564"
+  },
+  "seconds": 15.759431540966034,
+  "scope": "Sole formal prepare, no response or dispatch. Any first failure remains terminal; no retry."
+}

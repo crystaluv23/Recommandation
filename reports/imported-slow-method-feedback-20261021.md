@@ -197,3 +197,52 @@ autonomous retrieval or whole-Engine-prefix execution. No formal child is yet
 prepared. Associated tests pass221/221 with zero network or LabelStore loads
 and unchanged bindings. Independent counterexample review precedes code
 checkpoint and its separate frozen3-response budget.
+
+## Actual assigned-target control
+
+After checkpoint `55ec6245178631094bb8b43d91f67362ff234b96`,the sole formal
+prepare takes15.759s and freezes [manifest7f39f03f…](../runs/diagnostics/assigned_slow_target_20261021_v1/stage/manifest.json).
+Independent pre-dispatch review verifies178 code bindings,3 direct authorities,
+223 copied originals,the parent272-file seal,identical dual contracts and
+complete native user equality. Only the explicit ref assignment changes the
+native system envelope. No expected disposition or old answer enters the actor.
+
+Fresh fork_none role85 selects the assigned original `reflection-7d08d205fe330564`
+and proposes `repair_dependency` with empty Signal refs. Its row rationale is a
+string,so native validation rejects it without any unit write. One permitted
+ordinary native continuation—not a field-preserving patch—is answered by a
+different fresh exact-inbox role86. It selects the same target with valid array
+rationales. The shared original production sink writes exactly one
+[unchanged native unit](../runs/diagnostics/assigned_slow_target_20261021_v1/stage/workspace/experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/fb11fe03dcd43ca0eb5e07801d7e6bcd0034b2d8325b0d966e6ba222ff6c66b7.json).
+The stage immediately stops;the other264 pending refs exactly retain their
+original order. No additional candidate,seed,source selection,Reflect or model
+request runs after the sink. Two responses reserve185245 of393216 logical
+units;host tokens/fees remain unknown. External LLM API and new GET remain0.
+
+The [independent actual review](../runs/diagnostics/assigned_slow_target_20261021_v1/independent/actual-stage-review.json)
+passes this explicitly assigned target1/1 **after correction**,with native first
+pass0/1. It independently checks original materials,raw/cache/receipt/inbox
+identity,unchanged accepted rows,the native base/result formulas and exact
+pending partition. The content identifies technical evidence-delivery failure,
+preserves scored-case inclusion and unknown underlying cause,and does not
+invent economic absence,new measurement,successful repair or research benefit.
+The previous free-choice stage's target0/1 remains unchanged. This control does
+not establish autonomous backlog selection,all-needs processing,new lesson
+causation,executed dependency repair,whole S1/S2 or a complete Slow cycle.
+
+The [sole terminal reopen](../runs/diagnostics/assigned_slow_target_20261021_v1/root/formal-terminal-reopen.json)
+verifies247 sealed files plus completion unchanged;construct/verify/role/client/
+Engine/labels/Signal entrances all remain0. Round/cycle pointers remain0/0.
+This is completed-module byte verification,not OS crash recovery.
+
+The repeated shape rejection has a separate proven input-contract gap:
+[actual authoring diagnosis](../runs/diagnostics/assigned_slow_target_20261021_v1/driver/row-rationale-contract-diagnosis.json)
+shows both first answers used arrays for top-level rationale but strings inside
+need rows. The original prompt explicitly typed the top level and only named
+the nested field;the native contract omitted its row type,and the rejection
+text said only “non-empty strings.” Strict validation is correct. This stage
+deliberately kept that initial prompt while isolating task assignment,so it
+does not close initial row-authoring compliance. The next local repair should
+make the existing nested array obligation explicit before another consumer,
+without scalar wrapping,weaker validation,extra corrections or completed-stage
+reentry. A prompt declaration by itself will not prove fresh model compliance.

@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T21:11:02+00:00",
+    "checked_at": "2026-10-20T22:37:52.027714+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal during bounded historical materialization work; full MVP remains open and unbudgeted, no full successor."
+    "source": "Actual root get_goal during assigned-target control:active,unbudgeted,full engineering MVP open;no full successor."
   },
   "acceptance": [
     {
@@ -238,9 +238,15 @@
         "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-completed-verification.json",
         "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-initial-review.json",
         "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-reflection-raw-review.json",
-        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-review.json"
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-review.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/stage/manifest.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/stage/completion.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/stage/controller-boundary.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/independent/actual-stage-review.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/root/formal-terminal-reopen.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/driver/row-rationale-contract-diagnosis.json"
       ],
-      "remaining": "Boundedactual native read→freshacceptedReflect→currentH1payload proven:headerfullcause,3processed/4490pending of4493,6newmemoryoriginals/briefs. AlternateoriginalPlan-action reachesnative durable sink after1rowtype rejection/nativecontinuation,264pending of265. Frozen7d technicaldependencycontrol notselected0of1 remainspending; pageexposure notassignment. Need explicit originaltask assignment before another frozenstage, then correcttargetroute and actualdownstreamwork. FullS1/S2/quota+technicaldetailadapter/newcapability/wholeloop unverified. Oldhistoryfailed0/3518 and allfixedfailures remain; no benefit."
+      "remaining": "Explicit assigned7d technical control corrected1of1/nativefirst0of1 and original sink/pendingpartition proven in standalone child;oldv1 unassigned0of1 retained. Accepted prefix/header→reflection→H1 visibility separately proven,not causal Plan change. Repeated nested rationale schema-disclosure gap needs minimal initial prompt/contract alignment; no scalar wrapping or extra repair permission. WholeS1/S2 incl ordinaryquota/technicaldetails adapter and actual dependency repair/Plan work remain unverified,as do new Mining→admission→exact successor use/fullloop. Old3518failedmemory remains0processed;no independentgain."
     },
     {
       "id": "new_magnitude_reuse",
@@ -1313,53 +1319,36 @@
         "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-review.json"
       ],
       "result": "Formal6ad836fa nativeEngine stage manifest3a4a0e30/fullD4493;6fresh fork_none roles,3source+Reflectfirst+Controllerfirst+oneallowed no-patch invalid-action continuation,301117logicalreservation/1048576,0externalLLMAPI/Signal/acquisition/labels. Header independentlyselected and fullstatus/cause/provenance in actualReflect;firstReflect3ep3lesson accepted/processed3pending4490, oldfailed0/3518 unchanged; independentoriginalsemantic and exactcache/persistence pass. Actual currentfactory consumes6full memoryoriginals/6briefs/exact603908memoryhash plus8dev/4-4labels/no check/priorfootprints. Controlled page259/full265 has frozen7d technicaltarget first but no assignedtask. FirstController chooses alternate68e FastPlan action,rationale string rejected; next native no-patch continuation permits choosing admissibleaction, fresh84 again68e withvalidarray. Originalsave_need_unit persists1supported Planintent/pending264;7d remains pending, frozenpositive0of1nottriggered, no substitution. Stopsimmediately atfirstoriginalsink. Soleterminalreopen272sealed+completion=273 byteidentical/0newconstruct/model/Signal/labels/network; completedpointers0/0/controllerpartial. Confirms boundedrealread/reflection/payload andalternateintent persistence, not wholeS1/S2/newcapability/Planimplementation/researchgain. Selectiongap belongs to stage taskmeasurement design, no proved modelnoncompliance. All raw/rejected/corrected/partial results remain."
+    },
+    {
+      "id": "engineering-mvp-assigned-technical-feedback-route-20261021",
+      "strategy": "explicit_native_target_assignment_with_reused_accepted_frontier",
+      "failure_families": [
+        "nested_need_rationale_array_not_disclosed_in_initial_authoring_contract"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/imported-slow-method-feedback-20261021.md",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/stage/manifest.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/stage/completion.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/stage/controller-boundary.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/independent/actual-stage-review.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/root/formal-terminal-reopen.json",
+        "runs/diagnostics/assigned_slow_target_20261021_v1/driver/row-rationale-contract-diagnosis.json"
+      ],
+      "result": "55ec6245 child7f39f03f branches from original first Controller frontier with265pending/0staged,603908 accepted memory/six originals/full identical userwire;only system native7d task assignment changes. Shared native index/constructor/sink extraction verified plus221 associated tests. Sole prepare15.759s;fresh85 selects correct7d repair_dependency/[] but row rationale string rejected,no unit. Fresh86 permitted ordinary no-patch continuation uses array and original sink saves exactly one assigned unit;264other pending exact. Independent source/raw/cache/receipt/unit/base/result review passes corrected1of1, firstnative0of1;oldfreechoice target0of1 permanent.2responses185245logical reservation,0newsource/Reflect/GET/externalLLMAPI/Signal/publication. Parent272 and copied223/code178 exact at execution;child247+completion soleterminalreopen exact/0runtime entrances,pointers0/0. Proves assigned technical repair-route intent persistence,not autonomous allneeds/implementedrepair/wholeS1S2/benefit. Repeated firstrow scalar failure is an initial nested authoring-contract disclosure gap:top-level array stated,row fields untyped,validator correctly strict. No completedstage reentry or answer coaching."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-bounded-feedback-consumption-20261021",
+    "after_iteration": "engineering-mvp-assigned-technical-feedback-route-20261021",
     "evidence": [
-      "reports/historical-registry-definition-reading-20261021.md",
-      "runs/diagnostics/current_financial_apply_20261021_v1/driver/next-slow-boundary-review.json",
-      "runs/diagnostics/slow_history_import_boundary_20261021_v1/result.json",
-      "runs/diagnostics/slow_history_import_boundary_20261021_v1/direct-fixture-result.json",
-      "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-preflight.json",
-      "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-independent-review.json",
-      "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/pointer-counterexample.json",
-      "runs/diagnostics/slow_history_import_boundary_20261021_v1/root/connected-final-result.json",
-      "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair-review.json",
-      "runs/diagnostics/reviewed_slow_history_export_20261021_v1/stage/failure.json",
-      "runs/diagnostics/reviewed_slow_history_export_20261021_v1/actual-failure-review.json",
-      "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-preflight-review.json",
-      "runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/result.json",
-      "runs/diagnostics/reviewed_slow_history_export_20261021_v2/completed-byte-verification.json",
-      "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/preflight-oracle.json",
-      "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/readability-preflight.json",
-      "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-actual-review.json",
-      "runs/diagnostics/imported_feedback_readability_20261021_v1/result.json",
-      "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json",
       "reports/imported-slow-method-feedback-20261021.md",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/driver/legacy-prior-summary.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/final-review.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-result.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-final-result.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/actual-source/result.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/driver/named-producer-final-summary.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-repaired-result.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/result.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-final-review.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-actual-header-read-review.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2-freeze.json",
-      "reports/imported-slow-method-feedback-20261021.md",
-      "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/manifest.json",
-      "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/completion.json",
-      "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/controller-boundary.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-reflection-inbox-check.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-controller-inbox-check.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-completed-verification.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-initial-review.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-reflection-raw-review.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-review.json"
+      "runs/diagnostics/assigned_slow_target_20261021_v1/stage/manifest.json",
+      "runs/diagnostics/assigned_slow_target_20261021_v1/stage/completion.json",
+      "runs/diagnostics/assigned_slow_target_20261021_v1/stage/controller-boundary.json",
+      "runs/diagnostics/assigned_slow_target_20261021_v1/independent/actual-stage-review.json",
+      "runs/diagnostics/assigned_slow_target_20261021_v1/root/formal-terminal-reopen.json",
+      "runs/diagnostics/assigned_slow_target_20261021_v1/driver/row-rationale-contract-diagnosis.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1439,19 +1428,20 @@
       "Pre-answer source oracle initially copied temp destination and demanded oldpending counts absent from the adopted scoped header. Source-only v2 corrects formalroot/omission rule and separates original detailed errorfrontiers from the visible Controller brief: require supported repairdependency route, never unseen projectiondetails or manufactured rootcause. No role answer was seen.",
       "Controlled native page exposure is not task assignment. Stage stopped afterfirstunit while prompt allowed anyof6pageitems; a semantically legitimate alternate Plan-action cannot satisfy predeclared technicalrepair target. Preserve0of1 and pending; nextstage must assign originalnative target explicitly without its answer or a replacement need.",
       "Controller firstrow rationale string was rejected despite valid route semantics; normal no-output_patch_contract branch explicitly allows choosing one admissible action, so its continuation is not a field-preserving typedpatch. It contains only action/issue, not rejectedbody; do not secretly inject earlierresponse or claim exactfield repair. Actualcorrectedaction keptsamealternate need but authorednewrationales withinexistingnativecontract.",
-      "Header→freshreflection→H1payload arrival and originalFastneed→alternateaction→sink are distinct chains. Their coexistence does not prove the new lesson caused that action or a downstream Plan was implemented. Technicalcontrol remains unattempted; no newmagnitude/benefit claim follows."
+      "Header→freshreflection→H1payload arrival and originalFastneed→alternateaction→sink are distinct chains. Their coexistence does not prove the new lesson caused that action or a downstream Plan was implemented. Technicalcontrol remains unattempted; no newmagnitude/benefit claim follows.",
+      "The assigned-task fix retained the original authoring prompt to isolate selection. Two separate first answers then used valid top-level rationale arrays but nested scalar rationales;the initial prompt only enumerated row names and native contract omitted row types. Existing mechanics tests checked validator rejection and bounded continuation,not whether the original outgoing request disclosed the nested obligation. Corrected1of1 does not close initial authoring;make the existing array requirement explicit before the next real consumer,without wrapping scalars or rerunning this completedstage."
     ],
     "decision": {
       "acceptance_id": "feedback_consumption",
       "kind": "repair",
-      "strategy": "explicit_native_target_assignment_in_new_bounded_stage",
-      "action": "Before any further role, read owning stage/runtime specs and minimally clarify a new separately frozen bounded stage task envelope: assign its exact native-prepared original technical need_ref for inspection/disposition while retaining fullbacklog, originalsource/versions, native factory/sink and independent expectedroute outside everyinbox. Preserve completedv1 and target0of1. Test legacy behavior, missing/drift/forgedtarget, actual assignment-visible envelope with no expectedanswer, and native budget/producer/consumer continuity. Do not change product need-selection policy or handwrite a disposition.",
-      "stop": "No reentry of completedv1, oracle/result edits, easier replacementneed, signal/source/period/permission/budget expansion, parentauthoredanswer, externalLLMAPI or fullsuccessor. A material uppercontract tradeoff requires concrete userdecision; simple stage taskassignment is an implementation detail, not a new policy.",
-      "question": "Can a reviewed stage make the original predeclared target an explicit runtime-bound task while preserving the same original evidence, complete native backlog and independent disposition judgment?",
-      "pass": "Before answers, exact Controller request explicitly assigns native-generated7d target and retains its sourcehash/fullbacklog. No expectedroute, engineeringerrorbody ororacle enters through the envelope. Existing behavior and budget/sourcecounterexamples hold.",
-      "fail": "Taskstillunderspecified, inventedtarget orexpectedanswer supplied, originalpopulation compressed/replaced, runtimeauthority widened, or budget/native sink connection broken.",
-      "on_pass": "Freeze a new stage and finite budget under activegoal; fresh exact-inbox roles test the sameoriginal technicaltarget. Report initial/corrected/finalfailure and preserve v1 target0of1. Do not infer autonomousallneedsprocessing or wholeS1/S2 from an assigned-control pass.",
-      "on_fail": "Retain specific contract/producer/consumer evidence and revise the stage design or request only substantive unresolvedpolicy decisions; do not keep rerunning the free-choice firstunit strategy."
+      "strategy": "align_nested_need_rationale_authoring_contract",
+      "action": "Make the existing nonempty list[str] rationale obligation explicit in the shared initial need-row authoring contract and precise error text,covering actual Controller request and affected legacy role declarations. Preserve native row/partial sibling validation,persistence and existing no-patch continuation authority. Spec first;minimal code and actual request/validator/correction/terminal counterexamples. Keep the completed assignedchild and both original first failures unchanged.",
+      "stop": "No completedstage reentry,scalar wrapping,weaker validator,oracle/newanswer injection,new API/GET,budget expansion or fullsuccessor. Do not claim fresh compliance from prompt text or local tests.",
+      "question": "Does every affected original outgoing need-row request explicitly disclose the validator-required nested rationale array,with native rejection and valid sibling persistence unchanged?",
+      "pass": "Native initial requests expose a nonempty array of nonempty strings for each row rationale;one-sentence rows still require one element. Scalar/empty/nested invalid rows reject,valid rows persist unchanged,and normal/terminal/correction paths share the declared existing type.",
+      "fail": "Only top-level rationale is typed,actual outgoing request misses the declaration,new wrapping weakens validation,or persistence/partial sibling/correction semantics change.",
+      "on_pass": "Keep local repair separate from fresh role evidence. Use the corrected authoring contract at the next independently frozen necessary consumer control without reentering this completed child;continue fullMVP prerequisites.",
+      "on_fail": "Retain concrete failing actual request/validator evidence and repair the responsible producer seam;do not add role retries or substitute an easier need."
     }
   },
   "successor_prerequisites": [
