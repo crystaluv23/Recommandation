@@ -1,0 +1,33 @@
+{
+  "status": "CONFIRMED_native_producer_reader_only_not_full_Engine_or_model_consumption",
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/actual-source/probe.py": "c1b823615d246c5da57cc0c14215c55f5c39bf3e79130be565cb9c8d91880425",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/actual-source/execution-start.json": "5742d6b79db534d077275e228449727686fc330a153cb021f544c774bcd2e1be",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/actual-source/result.json": "b4ce340b9439ebe23f9f4b4942077cae08f7a40db194d4ef53dc94782c3b0f08",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/actual-source/command.log": "90894bbe181acdf7023947d52e39cdb29330b11ca098e28f47c61273a3fbb76b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/completed-files.json": "af51a017053d258b15b2bda7defcf73bbd86bf76c11b790e2fa2d4bff927352c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_memory.json": "e056b9a626138c7f6e17a90291a3da33dfb3b5176d98a2701688a6e94ceafe87",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_input.json": "82bc8f5f11f1f9694aa6c583a7ecf6107d42d7e5a57c0546335c7afa6ab2d69c"
+  },
+  "actual_rows": 3532,
+  "new_header_bytes": 2312,
+  "original_complete_reader_entry_bytes": 847013,
+  "previous_scope_broader_entry_size": 847019,
+  "size_note": "Reader-entry serialization includes visible_to. Removing H1 from the complete summary changes entry bytes; the bound raw source remains unchanged.",
+  "old_original_summary_deferred": true,
+  "old_summary_H1_hidden": true,
+  "new_header_H1_and_reflection_included": true,
+  "raw_status": "failed",
+  "processed_count": 0,
+  "pending_count": 3518,
+  "actual_included_source_count": 3,
+  "included_source_H1_scope_verified": true,
+  "source_SHA_inputhash_projection_identity_and_status_cause_bound": true,
+  "all228_files_current_equal_seal": true,
+  "source_not_modified": true,
+  "limits": [
+    "No full Engine, Slow stage, model, role, Signal or source re-execution was performed by this audit.",
+    "The actual source probe is restricted producer/catalog/reader evidence. It does not prove the newly proposed stage constructor or downstream Controller path works.",
+    "No retrospective outcome values are copied to this review."
+  ]
+}

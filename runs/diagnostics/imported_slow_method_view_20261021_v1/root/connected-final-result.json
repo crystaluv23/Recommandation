@@ -1,0 +1,31 @@
+{
+  "tests": 198,
+  "failures": 8,
+  "errors": 1,
+  "passed": false,
+  "selectors": [
+    "tests.test_imported_slow_method_memory",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests",
+    "tests.test_slow_reflection_source_partitions",
+    "tests.test_structured_reflection_roles",
+    "tests.test_imported_signal_feedback",
+    "tests.test_signal_tracking",
+    "tests.test_magnitude_slow_wiring",
+    "tests.test_reflection_inference_contract"
+  ],
+  "tripwires": {
+    "network": 0,
+    "label_store_load": 0
+  },
+  "seconds": 19.415189124876633,
+  "bindings_before": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+    "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py": "be27cd4e9b0ae55590b4bbaf8a576e73fb2d7b748e11fe4a3f40c6e1c8ac41f6"
+  },
+  "bindings_after": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+    "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py": "be27cd4e9b0ae55590b4bbaf8a576e73fb2d7b748e11fe4a3f40c6e1c8ac41f6"
+  },
+  "bytes_unchanged": true,
+  "scope": "Associated synthetic/native local tests; no fresh model behavior or full S1/S2 acceptance."
+}

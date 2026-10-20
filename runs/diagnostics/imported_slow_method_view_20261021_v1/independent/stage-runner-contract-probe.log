@@ -1,0 +1,1 @@
+{"scope": "native temporary importer only; not a stage or Engine run", "root_contract_only_native_failure": "imported learning events require a frozen run contract", "same_contract_in_actual_workspace_positive": true, "Signal": 0, "models": 0, "GET": 0, "real_labels": 0}

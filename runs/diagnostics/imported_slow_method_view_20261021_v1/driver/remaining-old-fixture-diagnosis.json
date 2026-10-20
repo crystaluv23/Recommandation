@@ -1,0 +1,223 @@
+{
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_evolution_engine.py",
+      "sha256": "08a8520c2810fe0aabe9f427ef5ecc812e25127f948c4aa0eb62dc06cdbd2f36"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_imported_signal_feedback.py",
+      "sha256": "daff774ff7ff667803922dd09bb7a2bd72d482acbd1af8ce397975d59f8119b8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/scheme_evolution_test_support.py",
+      "sha256": "9caf193e3098ce159b914ac1df598e3cd3aa6e13485315965bbc9510dca6cef9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/root/run_original_failures.py",
+      "sha256": "7a3bc0b83d04ebcd3ca992666b7d2c0c5e7038053ce1c90a17493496e7f2d759"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/root/original-failed-selectors-result.json",
+      "sha256": "b6bc616ae4a1714472f56c3b83fc06346abbc4054e5718f992536646806b8db6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/root/original-failed-selectors.log",
+      "sha256": "577067aae57e1d4de1a87162e3d1987c16336b11d41232852a893f793d68ff73"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-final-result.json",
+      "sha256": "ed869413a5677011dec5c87d8ad1ee5b1f2781544e45fab57bb12069a1c9d3f5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/original-single-selector-layout-probe.py",
+      "sha256": "ab1387b9f8945a0e1d2e8ccf959c04878c2a7d91c7a1bb605a82484762668537"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/original-single-selector-layout-result.json",
+      "sha256": "3f310df3cec4d7d04a0062888d1ae02374f8d2522e1e470f85c7b773d43b72cd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/original-single-selector-layout.log",
+      "sha256": "58fd7ceee9ede9d8dd40020afb288a0c5785c2b1055067e6a40592db740a8dbc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/remaining-old-fixture-inventory.py",
+      "sha256": "95737f5b448536e131aee4ff531bb88ce7ee7cf2b2b95406ba67d02e6e72135c"
+    }
+  ],
+  "causality": {
+    "limitation": "Other selector-specific downstream symptoms (including repeated unknown/executed ref) are not individually proven solely caused by metadata. A future authorized metadata-only patch plus the same nine selectors must establish that; do not change assertions or core if any persist.",
+    "native_confirmed": "Saved top-three actionable-target old native result contains validation_failed with exact explicit-issuer-binding error.",
+    "static_all_nine": "All nine failed selectors consume named helper-body positives with opaque company aliases and absent metadata; strict source binder requires explicit metadata for opaque companies."
+  },
+  "current_source_sha256": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+  "minimal_proposal": {
+    "addition": {
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    "body_identity": "Existing helper already serializes body cik=1 canonically.",
+    "engine_methods": 8,
+    "engine_sites": 9,
+    "files": [
+      "tests/test_signal_evolution_engine.py",
+      "tests/test_imported_signal_feedback.py"
+    ],
+    "imported_methods": 1,
+    "imported_sites": 1,
+    "named_positive_constructor_sites": 10,
+    "unchanged": [
+      "Body bytes/values/tags/units/periods/clocks",
+      "Assertions/expected outcomes",
+      "Generic helpers",
+      "Released fixtures/Registry",
+      "Strict production issuer/PIT/measurement gates",
+      "Unrelated prose fixture"
+    ]
+  },
+  "old_baseline": {
+    "corrected_nine_non_regression_outcomes": {
+      "errors": 1,
+      "failures": 8
+    },
+    "corrected_single_selector": {
+      "errors": 0,
+      "failures": 1,
+      "tests": 1,
+      "tripwires": {
+        "LabelStore": 0,
+        "network": 0
+      }
+    },
+    "initial_imported_selector_error": "Temporary __file__ layout omitted relative signal_library.py; retained unchanged, not a product error.",
+    "initial_ten": {
+      "errors": 2,
+      "failures": 7,
+      "passed": 1
+    },
+    "module_sha256": "3f3723a2008d8e2aa1e2f30d5fff03d76e10e55595833f909a46aafe0bdd99ca",
+    "separate_real_candidate_regression": "Legacy authored prior brief passed old module, failed initial candidate; fixed by scoped legacy compatibility and now passes."
+  },
+  "producer_inventory": [
+    {
+      "company_id_expression": "case.company_id",
+      "content_producer": "sec_company_facts_content",
+      "document_id_expression": "f'update-source-{index}'",
+      "file": "tests/test_imported_signal_feedback.py",
+      "line": 265,
+      "metadata_declared": false,
+      "method": "test_update_payload_and_suppression_share_committed_feedback_scope",
+      "proposed_repair": "Add metadata={cik: 0000000001} only; retain all original content bytes and assertions."
+    },
+    {
+      "company_id_expression": "case.company_id",
+      "content_producer": "sec_company_facts_content",
+      "document_id_expression": "f'portfolio_financial_{index}'",
+      "file": "tests/test_signal_evolution_engine.py",
+      "line": 5398,
+      "metadata_declared": false,
+      "method": "test_signal_update_processes_top_three_actionable_targets",
+      "proposed_repair": "Add metadata={cik: 0000000001} only; retain all original content bytes and assertions."
+    },
+    {
+      "company_id_expression": "case.company_id",
+      "content_producer": "sec_company_facts_content",
+      "document_id_expression": "f'work_financial_{index}'",
+      "file": "tests/test_signal_evolution_engine.py",
+      "line": 5575,
+      "metadata_declared": false,
+      "method": "test_signal_update_suppresses_exact_work_but_retries_relevant_new_input",
+      "proposed_repair": "Add metadata={cik: 0000000001} only; retain all original content bytes and assertions."
+    },
+    {
+      "company_id_expression": "'other_issuer'",
+      "content_producer": "'Unrelated issuer revenue disclosure.'",
+      "document_id_expression": "'unrelated_work_document'",
+      "file": "tests/test_signal_evolution_engine.py",
+      "line": 5665,
+      "metadata_declared": false,
+      "method": "test_signal_update_suppresses_exact_work_but_retries_relevant_new_input",
+      "proposed_repair": "No change: unrelated prose is not a numerical positive."
+    },
+    {
+      "company_id_expression": "cases[0].company_id",
+      "content_producer": "sec_company_facts_content",
+      "document_id_expression": "'relevant_work_document'",
+      "file": "tests/test_signal_evolution_engine.py",
+      "line": 5694,
+      "metadata_declared": false,
+      "method": "test_signal_update_suppresses_exact_work_but_retries_relevant_new_input",
+      "proposed_repair": "Add metadata={cik: 0000000001} only; retain all original content bytes and assertions."
+    },
+    {
+      "company_id_expression": "case.company_id",
+      "content_producer": "sec_company_facts_content",
+      "document_id_expression": "f'tier_financial_{index}'",
+      "file": "tests/test_signal_evolution_engine.py",
+      "line": 6189,
+      "metadata_declared": false,
+      "method": "test_paired_effectiveness_tiers_a_directional_tie_into_provisional",
+      "proposed_repair": "Add metadata={cik: 0000000001} only; retain all original content bytes and assertions."
+    },
+    {
+      "company_id_expression": "case.company_id",
+      "content_producer": "sec_company_facts_content",
+      "document_id_expression": "f'paired_financial_{index}'",
+      "file": "tests/test_signal_evolution_engine.py",
+      "line": 6508,
+      "metadata_declared": false,
+      "method": "test_paired_effectiveness_rejects_an_identical_update",
+      "proposed_repair": "Add metadata={cik: 0000000001} only; retain all original content bytes and assertions."
+    },
+    {
+      "company_id_expression": "company_id",
+      "content_producer": "sec_company_facts_content",
+      "document_id_expression": "f'acquired-{company_id}'",
+      "file": "tests/test_signal_evolution_engine.py",
+      "line": 6557,
+      "metadata_declared": false,
+      "method": "test_paired_effectiveness_materializes_both_arms_before_freeze",
+      "proposed_repair": "Add metadata={cik: 0000000001} only; retain all original content bytes and assertions."
+    },
+    {
+      "company_id_expression": "case.company_id",
+      "content_producer": "sec_company_facts_content",
+      "document_id_expression": "f'independent_financial_{index}'",
+      "file": "tests/test_signal_evolution_engine.py",
+      "line": 6679,
+      "metadata_declared": false,
+      "method": "test_effectiveness_excludes_induction_and_marks_sparse_support_provisional",
+      "proposed_repair": "Add metadata={cik: 0000000001} only; retain all original content bytes and assertions."
+    },
+    {
+      "company_id_expression": "case.company_id",
+      "content_producer": "sec_company_facts_content",
+      "document_id_expression": "f'reuse-financial-{index}'",
+      "file": "tests/test_signal_evolution_engine.py",
+      "line": 6761,
+      "metadata_declared": false,
+      "method": "test_update_reuses_provisional_vnext_on_a_new_check_identity",
+      "proposed_repair": "Add metadata={cik: 0000000001} only; retain all original content bytes and assertions."
+    },
+    {
+      "company_id_expression": "case.company_id",
+      "content_producer": "sec_company_facts_content",
+      "document_id_expression": "f'effectiveness_financial_{index}'",
+      "file": "tests/test_signal_evolution_engine.py",
+      "line": 6904,
+      "metadata_declared": false,
+      "method": "test_slow_loop_validates_and_auto_promotes_exact_batch_idempotently",
+      "proposed_repair": "Add metadata={cik: 0000000001} only; retain all original content bytes and assertions."
+    }
+  ],
+  "scope": "Read-only static named-producer diagnosis plus preserved native old-module evidence; no new test run, Signal, source/test edits, labels, network or stage operation."
+}

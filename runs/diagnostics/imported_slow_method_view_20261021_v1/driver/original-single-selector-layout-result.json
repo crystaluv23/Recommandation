@@ -1,0 +1,20 @@
+{
+  "errors": [],
+  "failures": [
+    {
+      "selector": "tests.test_imported_signal_feedback.ImportedSignalFeedbackTests.test_update_payload_and_suppression_share_committed_feedback_scope",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/tests/test_imported_signal_feedback.py\", line 279, in test_update_payload_and_suppression_share_committed_feedback_scope\n    self.assertEqual(first[\"audit\"][\"disposition\"], \"no_change\")\nAssertionError: 'defer' != 'no_change'\n- defer\n+ no_change\n\n"
+    }
+  ],
+  "original_executor_sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb",
+  "original_module_sha256": "3f3723a2008d8e2aa1e2f30d5fff03d76e10e55595833f909a46aafe0bdd99ca",
+  "revision": "7f3a01d9b8216e6a61d8f61969abf89c9c10a9c4",
+  "scope": "One original selector, canonical import name and correct temporary package paths. Exact original module/executor bytes; remaining imports are current unchanged dependencies. No working-tree source or test writes.",
+  "selector": "tests.test_imported_signal_feedback.ImportedSignalFeedbackTests.test_update_payload_and_suppression_share_committed_feedback_scope",
+  "temporary_original_module_sha256": "3f3723a2008d8e2aa1e2f30d5fff03d76e10e55595833f909a46aafe0bdd99ca",
+  "tests": 1,
+  "tripwires": {
+    "LabelStore": 0,
+    "network": 0
+  }
+}

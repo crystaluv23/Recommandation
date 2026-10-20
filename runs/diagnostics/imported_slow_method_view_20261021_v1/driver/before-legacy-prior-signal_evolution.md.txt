@@ -1,0 +1,880 @@
+# Signal and Dual-Loop Evolution
+
+Mining receives the same committed Experience performance overlays as the next
+Fast proposer. Its Signal/Experience cards expose shared usage context and
+observational performance; all original-source reads remain unchanged. Candidate
+usage context is validated against actually disclosed Experience refs, then
+preserved deterministically inside the materialized Signal parameters. It does
+not change admission, research labels or causal-effect status.
+
+## Technical admission and independent effect observations
+
+The 2026-10-02 user decision admits technically valid direction and magnitude
+Signals for Fast use with explicitly unverified effect. Admission and effect
+records must be separate; the magnitude Fast-consumption check follows admission.
+New Slow decisions authorize publication from complete technical validation, not
+paired/provisional effect disposition. Historical gate descriptions below apply
+only to frozen records and old staged transition recovery.
+No frozen run or historical accepted/rejected record is rewritten.
+The default `SlowLoopResult.magnitude_contribution` states only that independent
+Fast-consumption effect has not been assessed. It must not claim that current
+admission is governed by directional effect gates. Existing explicit historical
+reasons are retained on read; only an absent default receives current wording.
+See [the approved lifecycle design](../../../../reports/slow-signal-system-design-20261002.md).
+
+The candidate loop persists a `signal-candidate-admission-v1`; it performs no
+paired effect calls before publication. Accepted technical records may be reused only for exact candidate,
+input Registry, validator/model policy and targets. Semantic/behavior duplicates
+inside the current batch are technical rejections. All original valid modules
+and legacy effect records remain immutable. Previously committed provisional
+residents are rechecked technically in bounded batches, preserving original
+generation/induction exclusions; pooled effect promotion is no longer an active
+decision path. New versions inherit their prior measurement's declared research
+purposes, but never inherit supported effect.
+
+Effect starts at `pending_use`, never invented zero counts. Standalone paired
+measurements retain their own full cohort/source/model identity and are
+stored as `signal-candidate-effect-observation-v1` in a separate namespace.
+`accepted`/`disposition` inside their legacy measurement payload describes that
+measurement, not Registry admission. Lack of gain, sparse samples or a failed
+effect observation cannot change a valid technical decision. These studies are
+independent of the admission loop; their provider/budget interruption cannot
+prevent technical publication. Provider/control flow in required technical work
+still propagates. New cycles never write
+fake promoted effects or rewrite old v2/v3 records. Historical effect and admission
+source units remain separately discoverable for Slow feedback.
+Committed-use tracking derives target observations from committed local/imported
+learning events and provides cutoff-bound source summaries to reflection/H3/E2/Update.
+H1 cannot read outcome groups. Independent benefit studies remain a separate
+frontier; observed use and admission alone are not validated benefit.
+Importing or projecting a committed `slow_input` must preserve its source
+disclosure scope, intersected with the current kind-specific ceiling. Namespacing
+and nesting do not grant additional roles: target observations remain limited to
+reflection/H3/E2/Update at every generation. Missing target scope, unknown roles
+or a widened target scope in a consumer catalog fail closed. Historical artifacts
+and their hashes remain unchanged; only the derived role-scoped view changes.
+Slow usage, target summaries and Update use one contract-bound import selection
+alongside the local Fast pointer. Dual-loop Fast profile freezing uses that same
+selection at the cycle-start local cutoff, including on partial-cycle restart.
+A zero-Fast successor must consume exact committed imports without changing its
+own pointer; unrelated source-ledger rows and pending local events are excluded.
+Update's routing profile and target summaries share this selection, and their
+combined identity enters its work fingerprint. A previous no-change decision
+cannot suppress new committed feedback merely because its induction inputs match.
+
+Provider projections preserve source identity before anonymizing prose: hash each
+original backlog source ref before masking its row, and retain an opaque
+source-case ref when the case owner is known. Repeated origins map consistently;
+different origins must not collapse through a common masked placeholder. Typed
+retrospective case ids use the same deterministic opaque projection in Fast meta,
+reflection feedback and Slow source views. Local canonical evidence is unchanged.
+
+Expose the effectiveness counter contract from its owning implementation to
+reflection and all downstream Slow method views: available excludes UNAVAILABLE,
+decisive includes only POSITIVE/NEGATIVE, and neutral availability is not a
+technical failure. Execution failures exclude SUCCESS and DOMAIN_UNAVAILABLE.
+Paired comparison uses a shared frozen case pool; each arm retains its own
+decisive subset. Historical model rationales never override these definitions.
+
+When a Mining track fails locally, emit `signal_mining_track_failed` immediately
+with its track, failure stage, error type and reason, before continuing a safe
+sibling track. The terminal audit retains the same failure. A long-running E
+track must not hide an earlier H1 input-budget or validation failure until commit.
+
+## V8 Slow Round self-evolution contract
+
+Cross-round same-case comparisons are runtime-derived committed feedback units,
+under the owning `cross_round_reflection` contract. The Slow entry reflection
+reserves one pending comparison slot when possible, binds validated episodes to
+the `cross_round` layer, and preserves unknown causes and technical diagnostics.
+The complete Fast experience index plus paired sources and completed cross-round
+episodes reach the production controller locally. Selected originals and method
+memory are retained in actual requests; a bounded brief is never the whole
+authorized pool. Restart and imported history preserve observation identities.
+
+Controller Mining persists immutable accepted need-disposition deltas under the
+cycle's `mining_need_units/`, bound to backlog, axis, seed and prior/result state
+hashes. These are staged diagnostic units, not cycle commit pointers. The seed
+audit retains full complete rows, staged rows and pending refs separately rather
+than only counts. The existing Update target-ordering consumer reads catalog-
+validated `update_existing` rows from complete controller and multi-axis ledgers
+as well as historical H1 audits; no staged row implies capability resolution.
+Controller seed status derives from its actual terminal kind: candidate and
+supported no-pattern are completed, technical failure is failed, and budget or
+evidence deferral is deferred. Axis/multi-axis summaries retain mixed partial
+completion instead of marking every finished invocation completed. Update may
+consume an independently completed seed's full validated intents even when a
+sibling fails, but never partial/staged intents or technical-failure rows.
+Magnitude mining assessment derives the same status from legacy seed terminal
+metadata when available; old artifacts remain unchanged. Without a validated
+target candidate or a completed target track, technical termination is not an
+assessed research result. Observed fetch/read coverage remains separately
+auditable and does not prove successful conclusion or research gain.
+
+The engine freezes `slow_input.json`, then appends or reuses one
+`slow_memory.json`, then seals `slow_experiments.json` before staging validation.
+All three artifacts are cycle-scoped, immutable, canonical-hash linked, and may
+read only source artifacts reachable from committed Fast/Slow pointers. Raw
+Signal usage events retain exact `signal_ref`; efficacy uses deduplicated
+observation identity and does not infer causal credit from reflections.
+For `slow_only`, the first target cycle also projects every namespaced artifact
+listed by the validated Slow-history manifest from its local imported copy. The
+source namespace is part of each feedback ref, and the source committed Slow
+cutoff is carried into `slow_input.json`; importing only the Registry while
+silently dropping committed search/validation outcomes is invalid.
+The imported Fast meta/backlog snapshot is a separate input from Slow method
+memory and Signal learning events. H1 must receive the original Fast reflection
+actions and unresolved needs even after multiple zero-Fast history imports.
+Legacy monolithic validation/result files are projected as complete H, E,
+Update, candidate and transition work units, each retaining the immutable source
+artifact hash and JSON locator. A file larger than the role budget is never
+string-truncated or treated as one permanently unreadable feedback unit.
+
+Imported `slow_memory.json` also exposes an additive complete
+`imported-slow-method-memory-header-v1` unit. It uses the explicit header-only
+mode of `project_slow_method_memory` under the existing 32KB ceiling; default
+local entry projection is unchanged. The header retains status, full cause and
+opaque full original-memory hash, and explicitly excludes processing vectors,
+read directories and authored bodies. Their content, counts and membership
+hashes remain in the original summary; no derived empty array claims they were
+read or absent. Authored bodies remain separate existing native complete units,
+not a second alias registry.
+The original summary, refs and source bytes remain unchanged. The new unit binds
+the source artifact SHA, JSON locator and projection identity. Its summary
+identity is provenance, not a fabricated original-read handle. If even the
+complete header/provenance cannot fit, expose a small explicit deferred unit
+and original identity; never clip a field or turn the failure into an empty
+successful view. Missing/contradictory legacy memory identity remains unreviewed.
+Reading or reflecting on a header processes only that new ref, not its source
+summary or any nested feedback. A later import carries the same projection
+identity/ref without creating another independent observation or reuse credit.
+
+Permissions follow the fields actually disclosed. The original complete summary
+includes processing/read vectors and inherits their complete bound closure.
+A method header inherits only actual included/processed/cited source closure;
+when there was no actual read it conservatively uses the requested-source
+closure. A missing/empty proof omits the new header rather than treating it as
+all-role evidence. Subsequent prior/method views use that same disclosed-field
+closure. Known hidden or contradictory sources fail closed; legacy units with
+no bound source manifest retain their old scope and are not silently discarded.
+A hidden source cannot leak through a status/error, count, membership hash or
+body; an opaque whole-source hash remains provenance, not a membership handle.
+The normal catalog/reader, reflection/task payloads, persistence and reopen
+retain this distinction between header coverage and original-source coverage.
+Budgets, prior windows and canonical memory schemas remain unchanged.
+
+Magnitude learning tasks from locally committed Fast rounds enter this same
+source view as `magnitude_feedback` units: one row per committed Plan whose
+meta reflection authentically carries `magnitude_diagnostics`, under a stable
+`magnitude:<plan_id>` ref, visible to every Slow source role, and labeled
+diagnostic-only (no promotion gate reads them). Legacy Plans without the
+diagnostics contribute no row — never a zero-valued substitute — and rebased
+imported-history entries (reserved negative round ids) are not locally
+committed feedback. H1 dispositions these units through the existing runtime
+action contract unchanged: magnitude judgment policy, evidence weighting, and
+class calibration are `fast_plan_action`; a need for a prediction-time
+measurable fact, normalization, or applicability condition routes to ordinary
+Mining/Update. The committed `slow_loop_result.json` carries an explicit
+`magnitude_contribution` block; under the first-version directional gates it
+must state `assessed: false` with the reason, and claiming an unmeasured
+magnitude gain in any report is invalid.
+
+The entry reflection is one bounded logical job over complete selected feedback
+units plus historical pending units. To prevent an old backlog from starving
+cross-cycle learning, complete unprocessed units owned by the immediately prior
+locally committed cycle form a deterministic recent frontier ahead of older
+pending rows. The units from that frontier which fit the ordinary whole-entry
+budget are runtime-required for this reflection read; a model-requested
+replacement may add other supplied refs but cannot evict them. Oversized or
+remaining units stay pending, so recency reservation neither truncates entries
+nor discards history. No pending feedback means zero model calls and a `reused`
+memory delta. Successful coverage alone advances
+`processed_feedback_refs`; omitted or failed units remain pending. Raw episodes,
+specific reflections, and evidence-linked method lessons coexist append-only.
+Challenges qualify prior lessons through explicit refs and never overwrite them.
+The default work unit contains at most three complete feedback units under the
+reflector's 5000-token output budget; input byte fit alone cannot justify a larger
+output obligation. Lesson slots are bounded by selected units (maximum four),
+and the prompt requests concise complete findings with specific conditions and
+limitations. This is a work-unit limit, not truncation of originals: remaining
+units keep their stable pending refs for later cycles. Explicit limit overrides
+remain part of the frozen configuration and require output-capacity validation.
+When the default complete-entry view defers sources, the role may make one typed
+opaque-ref selection. Runtime validates scope and budget, combines that selection
+with the runtime-required recent frontier, resolves the combined complete-entry
+view, and keeps every unselected ref pending; the final role call cannot request
+again. The selector receives the required refs as runtime-owned context but does
+not own or restate their inclusion. Selection and final request hashes are both
+retained in the cycle audit.
+Reflection output persists only each selected unit's top-level `feedback_ref`.
+An out-of-scope Slow locator nested under exactly one selected unit is
+deterministically rewritten to that owner ref, with the mapping retained in role
+audit metadata and persisted under
+`slow_memory.model_view_manifest.canonicalized_nested_refs`, with the provider
+response unchanged; ambiguous or absent locators still fail. The persisted map
+may point only to feedback refs processed by that memory delta. The adapter
+aggregates every remaining invalid episode and lesson
+row plus all omitted selected feedback refs into one correction frontier instead
+of consuming one retry per malformed, out-of-scope, or uncovered ref.
+The coverage obligation reports unused episode slots. When none remain, adding a
+new row is not authorized: the correction must merge the omitted ref into an
+existing supplied slot. A last deterministic catch may combine an otherwise-valid
+overflow row with one valid episode without changing its authored meaning or
+citations; it cannot synthesize missing reflection content.
+
+Every cycle reserves one H batch when actionable and one independent E1/E2
+batch. H failure, no hypothesis, or rejection cannot cancel E. E1 sees only PIT
+development evidence; H1/H3/E2/Update receive role-scoped memory views through
+one bounded source resolver. In addition to the complete raw-source view, the
+derived method-memory projection has its own fixed byte ceiling. It selects
+complete episode and lesson entries in deterministic newest-cycle-first,
+episode/lesson-interleaved order, retains every full entry in immutable storage,
+and records included/deferred refs plus source memory hashes. It never embeds
+unbounded whole `slow_memory.json` deltas in a role request.
+When an entry has an authored `brief` and `kind`, the working view keeps that
+brief, scope, limitations and all reference relationships and replaces only its
+long `reflection`/`guidance` body with an opaque original read handle. Legacy
+entries retain their exact old text. The same role-scoped source resolver and
+optional source selection expose the full immutable original entry by that
+handle; feedback references and processed/pending accounting are unchanged.
+The Slow reflector's own prior-memory input uses the same authored brief view
+over the existing last-three-delta window. A separate bounded original-read
+selection resolves those memory handles before reflection; these reads do not
+mark any feedback unit processed or create another research population.
+New authored lesson records also validate lower-level support on persistence;
+reserved-but-unused slots and self/sibling support cycles are invalid. The
+additional guard applies to the new brief/kind format; legacy archives retain
+their historical serialization and are not silently rewritten or re-certified.
+Fast-to-Slow H1 memory follows the same boundary: initial `meta_info` is a
+32KB brief view with a 16KB source catalog. Approved Fast reflection originals
+are registered in the existing scoped Slow resolver and read only when its
+selector requests them, under a separate 48KB budget. Full FIFO serialization
+is reserved for archive hashes and local audits, never the H1 prompt.
+The source selection request has a separate 32KB complete-envelope UTF-8
+ceiling, including its directory and membership metadata. Omission counts are
+explicit; an oversized preview falls back to its opaque handle and complete
+read size, never truncated text. H1 audit adds both Fast and Slow source-read
+usage and request refs exactly once, including suppressed and rejected H1 work.
+If a successful selector requests a view that the whole-entry resolver rejects,
+the rejection retains that selector's usage and exact request refs; a read
+budget failure cannot erase an already completed selection call.
+The reflection-action backlog projection uses authored briefs and original item
+handles for new structured entries, rather than replaying compatibility detail
+strings. Its complete entries and audit metadata have a separate 32KB ceiling;
+legacy text remains exact when selected, and omitted entries remain archived.
+
+A preflight finding that one H request still cannot fit its frozen per-request
+ceiling is an isolated, zero-call H technical failure, not proof that the run's
+global attempt/cost budget is exhausted. It is persisted in H audit and the
+independent E path continues. Actual transport/client failures and exhausted
+run-wide budgets remain control flow and propagate unchanged. Each H1/H3
+logical job, E1 microbatch, E2 comparison, Update target and
+candidate-validation state is retained as a distinct experiment attempt,
+including no candidate and technical failure. A
+model-backed attempt carries the ordered exact request hashes for its initial
+request and every bounded correction; `usage_ref` points at the terminal request
+while `request_refs` preserves the complete call chain. Pipeline summaries
+cannot substitute for these work-granular attempts.
+
+One frozen sampling manifest supplies issuer-disjoint dev/check identities to
+H, E, Update, and effectiveness evaluation. The default check cohort holds 16
+cases (`validation_cases_per_class` 8, effectiveness `case_limit` 16): a
+one-shot majority gate at n=16 separates a 60%-accurate signal from noise
+about as well as any affordable single cycle can (0.72 vs 0.40 pass rate),
+These historical gate statistics explain frozen evaluation records;
+new admission uses executable contract validation. Future independent studies
+may accumulate observations across cycles without gating candidate publication. Missing evidence does not
+substitute another case. Candidate authoring and semantic review finish
+before candidate hash and shared check corpus freeze. Validation adds
+definition-to-implementation consistency, independent
+supporting/counter/unavailable fixtures, and semantic duplicate checks
+without weakening existing gates.
+
+`SlowLoopValidation` and `SlowLoopResult` bind the input, memory, experiment,
+and sampling hashes. A result separately reports new candidate, validated new,
+promoted new, and updated counts. Only committed promotions of new Signal ids
+count toward `min_new_signals_per_cycle`.
+
+## Purpose
+
+Own Signal-learning aggregation, candidate validation/effectiveness, Slow
+Update and Mining, and the finite dual-loop coordinator. It depends on
+`evolution_core.py` and `plan_evolution.py`.
+
+## Invariants
+
+- Technical admission governs new production publication for all research targets
+  and vNext. Fixtures, PIT, lineage, semantics and uniqueness remain hard checks.
+  Effects start unverified; availability, decisiveness, directional recall and
+  paired gain are independent observations, never candidate admission floors.
+  Legacy provisional records remain immutable and may enter bounded technical
+  revalidation; their former pooled promotion engine is removed.
+- The production mining entry is capability-dispatched: with a frozen v8
+  sampling manifest and a mining model exposing a JSON role caller, the
+  LabelAwareMiningController (Seeds A and B) mines and its grounded
+  candidates are materialized through module-staged bounded model calls —
+  spec first, skill for narrative predicates second, tests last — where an
+  accepted module is cached across retries so a failing stage never
+  re-renders valid siblings. After staging, the unchanged contract
+  validator and independent admission judge them; effect observations follow use. H/E role-protocol models keep their
+  tracks for read-only replay, and manifest-free workspaces keep the v7
+  cadence. Every outgoing controller model view carries the composed Fast
+  reflection memory — the masked bounded `meta_info` brief view plus the
+  paid `meta_memory_disclosures` originals read for the cycle — so the
+  mining loop actually consumes the experience the runtime paid to read;
+  a composition that drops them is a wiring defect, not an accepted
+  economy. Materialized fixtures must agree with their own skill's
+  documented applicability boundaries: a lookalike the skill scores
+  neutral must not be expected unavailable.
+- Every Slow cycle runs bounded Signal Mining independently of whether the
+  committed Fast boundary contains a new Signal need. H1 may use identity-masked,
+  outcome-aware Fast meta-memory to propose error-driven measurements; the
+  Exploration path independently extracts label-hidden point-in-time signatures
+  and reveals the frozen positive/control labels only in E2. Fast demand augments
+  this search but never gates it. A grounded `no_measurable_pattern` result is a
+  semantic mining outcome, distinct from skipped work or technical failure.
+  Slow sampling remains owned by the Discovery split and permutes the whole
+  population afresh each cycle from a seed that includes the cycle id: a case
+  may serve a mining role in one cycle and an evaluation role in any other,
+  and within each cycle dev and check stay issuer-disjoint and label-balanced.
+  Independent evaluation hygiene is enforced per candidate: a
+  candidate is never evaluated on its proposal cycle's dev cohort (recorded as
+  its immutable `generation_case_ids`) or on any case it was already evaluated
+  on, so pooled paired evidence counts each case at most once and never scores
+  a case the frozen spec was authored against. Residual cross-cycle label
+  diffusion through masked reflection text is accepted and bounded by the
+  provisional elimination rule. A separate identity-only
+  inventory covers all approved non-Locked-Test development splits so a Fast
+  backlog row originating from an Anchor case can still resolve its source owner
+  and receive scoped brand masking. This inventory exposes neither outcomes nor
+  evidence, and Locked Test is never loaded for identity masking.
+- Update uses the same side-effect-free candidate checks during model correction
+  and staging. Deterministic candidates may omit the optional null skill; LLM
+  candidates still require a complete skill. Target identity, vNext and immutable
+  definition constraints remain mandatory and visible in the request contract.
+  Known deterministic description-concept token alternatives are owned by one
+  shared table and disclosed in both Update and Mining candidate contracts.
+  The validator uses that same table as a bounded mislabel screen, not proof of
+  semantic truth. Correct cash-burn formula wording (negative operating cash
+  flow divided by cash balance) is an admitted alternative to naming cash burn;
+  no exact incidental word such as "rate" is required. The runtime never adds
+  keywords to a model's description to make a candidate pass. Actual callable
+  formula documentation and immutable fixture checks remain separately required.
+  The liquidity-runway function likewise admits cash runway measured in months,
+  the wording used by its callable documentation and frozen seed definition.
+  Cash balance alone, a different runway concept, or missing month units remain
+  outside this bounded description screen; the formula/fixtures still govern
+  measurement validity. Update cannot change that frozen definition to satisfy
+  an inconsistent keyword requirement.
+  The role adapter may resolve a model-selected case/document/content-bound
+  source span ref to its complete local literal before source validation.
+  Canonical case diagnostics retain the original `document_ref,exact_span`
+  schema; HTML readability projection and compact wire references cannot weaken
+  point-in-time checks, replace source values or infer a research conclusion.
+  The candidate schema exposes the complete version-owned retrieval policy rather
+  than the legacy singular query alias. Update requests include a runtime-built
+  complete vNext template copied from the stable spec, skill, and immutable
+  non-empty executable fixtures plus the exact allowed `changed_paths`
+  vocabulary. Candidate output preserves those fixtures byte-for-byte because
+  tests are not a model-editable path. Candidate fixture execution uses the
+  Registry audit's point-in-time defaults: when `published_at` is omitted,
+  `available_at` is authoritative before falling back to the fixture `as_of`.
+  Candidate retrieval fields overlay that
+  baseline before parsing; omitted optional fields are therefore preserved.
+  `changed_paths` must exactly match the effective mutable spec/skill differences.
+  Candidate/diff correction may edit both coupled fields while preserving every
+  unrelated decision field. Version and fixture changes are not substantive
+  Signal changes and cannot create a staged candidate.
+  No effective mutable change emits a typed shared validation obligation with
+  the coupled disposition/candidate/diff/rationale correction authority. A
+  complete corrected decision still passes both role and staging validators;
+  case evidence stays fixed and a non-update cannot stage any candidate.
+  The bounded correction path executes deterministic candidates against the
+  immutable stable fixtures and reports all fixture failures as one candidate
+  obligation. Soft-signal fixtures are not executed inside parsing because their
+  provider usage must remain explicitly metered; they retain the normal staged
+  validation boundary.
+- Registry transitions remain version-bound and auditable.
+- Slow-loop results and cycle completion preserve existing recovery semantics.
+  If Mining or Update raises a locally handled validation failure, the engine
+  emits a typed `slow_pipeline_failed` progress event with pipeline, error type,
+  message, and usage before continuing the independent sibling pipeline. The
+  failure remains in the durable validation audit; continuing Update must never
+  make an earlier Mining failure invisible or look like the first Slow action.
+  The same isolation boundary catches unforeseen ordinary exceptions without
+  enumerating incident-specific corner cases: the affected memory or pipeline
+  becomes a typed fail-closed result, consumes no unprocessed feedback, produces
+  no candidate, and cannot promote a Signal, while an independent sibling may
+  continue. Control-flow pauses, explicit client transport failures, process
+  interrupts, and other `BaseException` states are never swallowed; they
+  propagate so the frozen workspace can be resumed under its original budget
+  and contract.
+- The module never imports the `scheme_evolution.py` compatibility facade.
+- H1 runtime fields are deterministic and cycle-bound. The committed audit
+  stores the structured conclusion and an input fingerprint so a later cycle
+  can distinguish changed evidence or search strategy from identical work.
+  An identical prior `no_testable_hypothesis` or exhausted structured recovery
+  suppresses the same H1 work; changed demand, visible capability, Registry,
+  applicability inventory, visible Fast meta-memory, limits, contract, or model
+  identity creates new work. H1 fingerprints the exact masked `meta_info` view
+  it receives so new reflection cannot be suppressed by an older empty result.
+  The fingerprint also includes the exact relevant point-in-time Raw Info
+  identities, masked backlog, stable Registry, role protocol, model work
+  identity, and the cycle's `measurable_evidence_manifest`, while excluding
+  cycle and proposal ids. The manifest is rebuilt from the selected cohort's
+  pre-cutoff documents each hypothesis track run: recurring Company Facts
+  concepts are enumerated through the shared SEC structured selector with a
+  bounded projection budget, price-series and narrative families are counted
+  by case, and no record values, identities, or labels are exposed. A technical H1 failure is
+  never semantic exhaustion and remains eligible after recovery under the
+  existing attempt and cost ceilings. H1's complete runtime need set is the union
+  of Fast `signal_need_items[*].need_ref` values, ordinary capability-backlog
+  `items[*].request_id` values, and stable controller-derived action refs from
+  retained vertical reflection. Reflection actions come only from explicit
+  misleading-signal, repeated-failure, missing-information, and next-exploration
+  fields. H1 classifies each action honestly: Signal-scoped work uses
+  `new_measurement`, `deferred_measurement`, `update_existing`,
+  `repair_dependency`, or an intrinsically
+  justified `not_testable`; a retrieval, analysis, or prediction-policy action
+  uses `fast_plan_action`. That last disposition is valid only for a projected
+  reflection action because the same original reflection already flows directly
+  through meta-memory to the next Fast proposer. Ordinary Signal/capability needs
+  cannot be diverted out of Slow with it.
+  The bounded projection records available/projected/omitted counts and orders
+  explicit next explorations before diagnostic fields so a field-order cap cannot
+  silently discard every proposed action. Reflection presence never forces a
+  fabricated factor: when H1 has no honest new measurement, the independent
+  E1/E2 positive/control comparison remains the Slow discovery path.
+  Ordinary backlog rows must not be dropped merely because they are provider,
+  retrieval, or existing-Signal coverage gaps.
+  The role adapter may use deterministic compact need aliases on the wire, but
+  committed H1 audit always restores the original need refs and includes the
+  local alias map. Thus downstream H2/H3 audit and Fast-to-Slow provenance never
+  depend on model-facing transport identifiers.
+- Exploration extraction runs in bounded microbatches keyed by stable case refs.
+  A failed microbatch cannot discard valid sibling signatures or become a
+  domain observation. The full frozen E1 cohort, failed refs, and usage remain
+  visible; E2 runs only if both fixed groups still meet the configured grounded
+  evidence floor, without replacing validation cases.
+  E2 receives only the runtime-selected grounded induction signatures. A
+  semantic zero-candidate result records its limited reason and exactly those
+  considered refs; unrelated E1 pool members and holdout cases remain absent.
+  E2 decisions describe repeated cross-case patterns rather than case-by-case
+  acceptance. A model response containing only per-case rejection rows is a
+  correctable output-shape failure, not a technical claim that mining found a
+  candidate and not a locally invented semantic result. Locally checkable claims
+  about the supplied cohort, including whether any selected case is unlabeled,
+  must match the actual E2 payload before an empty result is persisted. The same
+  runtime-owned label map is persisted as separate positive/control ref arrays.
+  Free-text rationale cannot restate a case ref together with a group label;
+  this prevents an otherwise plausible sentence from assigning one case to the
+  wrong or both groups, without relying on natural-language parsing or
+  incident-specific case ids. Canonical case-scoped gap citations are exempt
+  because they make no label assignment.
+  The same
+  guard rejects rationale or observable-difference claims about sector,
+  industry, business model, market-cap class, geography, or listing venue when
+  that attribute vocabulary is absent from the literal source-owned signatures;
+  bounded correction preserves the decision/no-candidate intent while removing
+  or grounding only the unsupported claim.
+  A rationale that names a concrete missing, absent, truncated, partial, or
+  unavailable source input is grounded only when it is a canonical
+  `[case_ref] <verbatim evidence_gaps item>` citation from the selected E2
+  signatures. An uncited or paraphrased source-gap assertion is a correctable
+  semantic failure. A generic insufficiency conclusion that does not claim a
+  particular absent input does not require such a citation.
+  After bounded model correction, E1 may quarantine invalid observations while
+  preserving independently validated observations and sibling signatures. It
+  never clips or invents source text. Quarantine reasons remain technical audit
+  metadata, including when a case has no surviving observations; they are not
+  evidence that the source or measured condition is absent.
+  E2 never receives E1's model-authored summaries as evidence. The controller
+  replaces them with a deterministic literal-only view before labels are
+  revealed; the original summaries remain in E1 audit only. For an observation
+  that maps unambiguously to a supplied SEC Company Facts record, this view keeps
+  the source-owned taxonomy, concept, label, and unit beside the literal span and
+  deterministically adds the other supplied period for that concept when the
+  selected span identifies exactly one record. This bounded companion is source
+  projection, not a model-authored observation. Its literal may exceed 240
+  characters, just like a directly cited E1 record; the existing source-packet
+  budget and twelve-observation view ceiling bound it. Projection must not
+  discard a valid companion solely because of an obsolete per-literal maximum.
+  The recurring inventory ranks distinct cases with
+  two visible records before overall case coverage, then uses the existing
+  queryless Company Facts concept priority to break ties. Repeated documents
+  for one case never increase coverage, and a later document can supply a pair
+  missing from an earlier document. The inventory supplies optional comparison
+  context rather than mandatory observation slots. User decision on 2026-09-13:
+  queryless E1 chooses up to six observations by relevance to the fixed surge
+  research target, with no forced financial pair or source mix. Selected financial
+  records retain source-owned concept, unit, periods and exact spans, including
+  the existing E2 companion-record projection. Unselected financial facts are
+  not extraction failures. Bounded recovery removes invalid observations only;
+  it does not replace valid business evidence with controller-chosen financial
+  records or narrative. Generic filing cover/legal boilerplate remains invalid.
+  Queryless filing windows rank distinct substantive terms rather than repetition;
+  all registered filing aliases use the same source-family rule.
+  Source-owned SEC Company Facts context retains each concept's original
+  `label` as metric semantics; the transport guard distinguishes this exact path
+  from retrospective outcome labels. A runtime budget exception during E1 is
+  propagated unchanged to the cycle controller and is never converted into an
+  E1 validation failure or masked by a missing exception binding.
+  Queryless E1 considers the resolver's exact available source-type catalog; it
+  must not discard filings or transcripts through plural aliases that do not
+  exist in that catalog. Its bounded evidence selector prefers the most recent
+  document from a previously unseen semantic source family before selecting a
+  second document from the same family. This keeps filing, transcript, news,
+  Company-Facts/financial, and market evidence complementary without increasing
+  the document ceiling. Within a queryless Company Facts document, the bounded
+  projection ranks recent members of a frozen catalog of broadly comparable
+  operating, balance-sheet, investment, and capital-structure concepts ahead of
+  stale or arbitrary concepts, then uses deterministic tie-breakers. Exploration
+  receives a larger bounded projection than query-directed H3. Queryless filing
+  windows deterministically prefer substantive business, results, liquidity,
+  risk, and outlook language over cover-page boilerplate; queryless JSON windows
+  start at a complete record boundary.
+  This changes evidence projection only: it does not define a Signal or use
+  labels. Query-directed H2/H3 ranking retains its query-coverage semantics.
+  E2 rationale never restates aggregate positive/control group counts in free
+  text. The controller persists the exact group refs and counts separately, so
+  forbidding this redundant model-authored statistic prevents a plausible but
+  incorrect count from surviving structured validation.
+- Update evidence packets separate label-free source observations from the
+  locally computed outcome relation. Model diagnostics must cite a supplied
+  document ref and literal span for every fact before an update draft can be
+  considered; source facts are stored as literals without a model-authored
+  claim. Mining decisions persist the runtime-derived positive/control sample
+  basis used for their statistical association.
+- Mining anonymizes persisted meta reflections, backlog prose, and prior Slow
+  work before assembling the guarded model context. Persisted originals remain
+  unchanged; the outgoing identity guard remains mandatory.
+  One- and two-character ticker aliases require an explicit dollar, ticker,
+  symbol, or exchange marker in prose; standalone letters and quarter notation
+  are not issuer identities. Full company names remain masked.
+  Candidate validation uses the same case-preserving strict matchers as outgoing
+  contexts: an ordinary lowercase word must not become an uppercase ticker merely
+  because the complete candidate was case-folded. Full names retain case-insensitive
+  matching; explicit ticker and symbol markers retain their existing treatment.
+  Exploration first applies expanded identity masking for its one local case and
+  then the strict aggregate guard. This masks a natural one-token brand derived
+  from a formal legal name without teaching an aggregate role to treat ordinary
+  one-token vocabulary as identities. All Slow contexts (meta, profiles,
+  H3/Exploration source projections, and Update packets) consume the strict
+  aggregate inventory without deriving new first-word brands. Local case masking
+  keeps its own alias expansion. Repeated
+  identical inventories reuse a bounded compiled-matcher cache; literal source
+  checks and final identity scans remain in place.
+- Ordinary Fast-to-Slow demand comes from the final unresolved needs of every
+  trajectory in committed Plan records, with stable need refs, exact source
+  round/fingerprint provenance, and the real terminal reason. Technical Signal
+  execution failures are separate diagnostics and never domain learning.
+  Mining receives the complete retained, masked meta FIFO; blind extraction,
+  Signal execution, and prediction do not receive retrospective meta.
+- Update induction buckets accept only successful execution and explicit domain
+  unavailability. Provider, parser, budget, and other technical failures retain
+  their usage and audit records but never become unavailable learning. Explicit
+  misleading targets prefer wrong Discovery cases and may use sourced domain-
+  unavailable Discovery cases for applicability or retrieval diagnosis when the
+  wrong pool is insufficient; Validation cases never refill that pool and the
+  issuer-disjoint holdout minimum remains unchanged. Machine counts derive from
+  structured evidence verdicts and outcome relations, not rationale prose.
+  Update work keys use the full role/model identity. A substantive committed
+  `no_change` may suppress identical work, while defer and technical obstruction
+  remain eligible for a later bounded retry.
+- Update assigns opaque document refs before masking source text, so the current
+  result and its executed evidence resolve to the same supplied document. Literal
+  facts have no field-length ceiling; exact source membership and the existing
+  response transport budgets remain required. A long valid quote is not a missing
+  evidence error. Runtime outcome relations remain authoritative.
+- Every staged Slow validation records a `search_input_fingerprint` over the
+  input Registry, relevant point-in-time Raw Info identities, Discovery case
+  identities, capability backlog, meta context, Mining limits, and Mining/Update
+  model identities. Cycle ids and model-authored proposal ids are excluded.
+  This fingerprint diagnoses repeated search separately from changed-input
+  retries; it does not turn a no-candidate result into a domain failure.
+- Each H3 hypothesis comparison also records a cycle-independent work
+  fingerprint over the structured hypothesis without its runtime proposal id,
+  the exact visible induction packets, frozen validation case identities,
+  Registry input, Mining protocol, and model identity. A committed terminal
+  `refine`, `rejected`, `inconclusive`, evidence-unavailable, or locally invalid
+  candidate result suppresses only the identical comparison in later cycles.
+  Changed evidence, cohort, Registry, model, protocol, or structured hypothesis
+  creates new work; unaffected sibling hypotheses continue in the same batch.
+  The model-facing H3 payload nests those exact packets under their owning
+  comparison; no global packet pool is exposed. E2 likewise receives bounded
+  runtime-owned decision slots and must bind each supported candidate to explicit
+  positive and control refs from the supplied grounded cohort. The persisted
+  sample basis is that validated binding, while holdout selection remains local
+  and hidden. E1 audit gaps do not globally force `insufficient_evidence` after
+  both fixed groups have enough surviving comparison-ready signatures.
+
+## Candidate implementation context
+
+H3 and E2 candidate contracts and the Update contract include descriptions of
+the actual registered deterministic callables from Signal Library. They explain
+measured quantities, required inputs and parameter behavior before construction.
+A function name is not proof that it implements a proposed observable. Every
+materialized candidate persists the controller's research modality. A
+structured measurement may use only an exact registered deterministic
+implementation; when none exists it is retained as a capability gap and cannot
+be silently recast as an LLM Signal. A narrative predicate may use only a
+source-grounded LLM skill. A proposal that combines a numeric formula with
+narrative fallback rules must be split before materialization. Fixtures and all
+existing semantic, source and point-in-time gates remain mandatory. Effect
+observations are independent of technical admission.
+
+The runtime classifies modality before materialization. A narrative predicate
+with `value_kind=numeric` whose evidence refs mix structured facts with
+narrative events/documents is `mixed`, even when the predicate itself is valid;
+it is recorded in the mining audit as `capability_gap` with
+`status=split_required`, is excluded from candidate refs, and never reaches
+narrative fixture or effectiveness evaluation. This is not a factor rejection:
+the controller must later return separately executable structured and narrative
+candidates before either can be evaluated.
+
+## Shared research target through Slow roles
+
+Reflection, H1, E1, H3, E2 and Update receive one runtime-owned research objective
+projected from `FIXED_PREDICTOR_SEMANTICS`: target, baseline, future comparison
+and horizon. Global task semantics do not reveal any individual case outcome;
+E1 remains label-hidden. H1 input identity includes this objective. Research
+relevance means contributing evidence about expectation gaps, catalysts, changing
+fundamentals or early confirmation under that fixed target, rather than seeking
+generic quality metrics or treating source coverage as business differentiation.
+The goal is context, not a change to labels, sample selection or promotion gates.
+
+Slow discovery is modality-neutral across both supported comparison axes. The
+direction axis contrasts surge cases with controls; an active magnitude target
+contrasts its frozen lower- and higher-magnitude groups (currently 2-3x versus
+>=3x, with 10x+ cases retained in the latter). On either axis, structured
+financial/market measurements and source-grounded narrative predicates are
+first-class factor hypotheses. When a modality is available, the controller
+must explore it before a domain terminal; it must not impose a candidate quota,
+invent a factor, or prefer a modality merely to balance counts. Candidate
+validation and promotion, rather than modality, decide survival. The audit must
+preserve per-modality availability, exploration, proposal, materialization, and
+validation evidence so cross-cycle reflection can detect collapse toward either
+structured-only or narrative-only mining.
+
+The production controller runs the direction axis and the one active,
+gate-passed magnitude target as separate runtime-owned tracks. The first
+version intentionally activates only `magnitude_ge3_v1`; additional magnitude
+targets require their own data gate and a multi-target scheduling contract
+before activation. Each controller view carries one explicit `research_axis`
+descriptor and one axis-specific positive/control map; a magnitude track must
+never inherit `is_surge` as its validation label.
+Candidate work identity, sampling, validation cache identity, audit and result
+all retain the owning axis. Direction candidates keep the established promotion
+path. Magnitude candidates are checked on the frozen high/low target cohort and
+retained as target-supported research candidates, but remain non-promotable
+until the separately authorized Fast absent/present consumption experiment has
+passed its Binary-F1 protection. A direction-only check may neither validate nor
+reject a magnitude candidate.
+
+Modality availability, discovery and grounded exploration are distinct. Listing
+or fetching a narrative family proves availability/discovery only. A narrative
+track counts as explored only after the controller reads a bounded raw narrative
+span (event or document) which can ground a candidate or a no-pattern terminal.
+Candidate presence never backfills a missing read. Structured exploration still
+requires extracted point-in-time facts/series, not merely a source-family name.
+
+
+## Candidate execution semantics supplied to generation
+
+Mining and Update candidate contracts expose the existing effectiveness value
+semantics and retrieval/fixture requirements. POSITIVE/NEGATIVE are evaluated
+against positive/control cases, not the arithmetic sign of an extracted number.
+A new candidate must explain its direction consistently in definition, skill and
+fixtures, using observed contrast without copying case labels into executable
+artifacts. This does not change stable definitions, labels or effectiveness gates.
+
+Retrieval coverage is checked before execution. `minimum_observations` counts
+explicit structured series, not arbitrary scalar financial facts; period counts
+and period spans do not guarantee the concepts or comparable durations required
+by the measurement. Candidate fixtures must satisfy their own retrieval contract
+and use supported source types/formats; a fixture document whose source type is
+family-equivalent to a declared retrieval source (for example `company_news`
+under `news`) satisfies the contract. Failed fixture diagnostics preserve
+resolution status and missing coverage or execution error plus the LLM
+executor's interpretation summary, so an unavailable result cannot conceal
+whether the skill actually ran. Technical execution
+failure never passes a fixture merely because expected is unavailable.
+
+The same shared fixture execution contract must reach the actual tests-author
+module, not only the preceding spec-author call or the H3/E2 candidate view.
+For either supported Company Facts body schema, fixture authors supply an
+explicit body CIK. The default `candidate_fixture_N` company is an opaque alias
+and therefore also requires document `metadata.cik` with the same synthetic
+issuer. A canonical `cik_##########` fixture company must match the body CIK
+and any supplied metadata CIK. Provider CIK accepts a positive integer or a
+plain 1–10 digit string, never bool, float or an issuer inferred from alias
+characters. Use synthetic identity without copying masked Discovery identity;
+preserve literal values, tags, units, periods, filed dates and expected values.
+
+The candidate argument view describes the existing document `content` string
+and optional `metadata` object. The tests-author payload also receives that same
+tests-array schema, including fixture name, as-of, expected value and document
+structure, without copying the unrelated whole spec schema. Metadata is not
+required for every source type. Fixture content must already be a string before
+raw-document construction; non-string values are rejected as invalid fixture
+inputs, never coerced with `str` or automatically JSON-serialized. This applies
+even when expected is unavailable. Valid string bytes and their existing JSON,
+empty-source and unavailable semantics remain unchanged;
+For deterministic Company Facts, every fact row retains its canonical JSON
+literal in content. Serializing the whole financial body with
+`json.dumps(sort_keys=True, separators=(',', ':'))` satisfies the existing
+literal-span requirement; another body format must still contain those exact
+canonical fact-row literals. Other source types are not required to be JSON.
+Company Facts issuer requirements remain owned by its existing consumer.
+Missing/conflicting issuer bindings stay technical failures even when expected
+is unavailable. No validator, auditor or helper fills an omitted identity.
+Update still copies stable fixtures byte-for-byte; this authoring disclosure
+does not migrate published fixtures, change PIT or alter measurements.
+
+
+## Readable Mining history work units
+
+Local and imported committed Mining audits expose individual complete H1
+hypotheses and H3/E2 decisions as source units with exact JSON locators and
+artifact hashes. Their candidate definitions, skills, fixtures, contrast and
+rationale remain together. Whole-track audits remain available for deeper
+inspection but cannot be the sole route to a decision: raw evidence inventories
+can make a track larger than the entire reflection budget. Reflection orders
+these bounded decision units ahead of whole tracks under the existing byte and
+item ceilings, independent of candidate outcome. Oversized units remain pending;
+never truncate a candidate or claim an unread track was processed. Empty-decision
+stages expose their complete terminal stage record as well, so honest no-candidate
+or technical-failure conclusions remain readable under the same policy.
+
+## Mining controller replacement path (gated)
+
+Controller dependency construction supplies exact-version immutable Signal
+spec/skill bundles behind its existing Signal catalog read action. Compact
+capability cards are runtime projections of those originals, with hash/read size;
+fixtures, learning profiles and other versions are not default content inputs.
+Backlog source projection retains anonymous case identity and actual source
+prediction time from the owning case record, so the controller can disclose its
+relation to the current dev cohort. Unknown owners stay unknown. Canonical
+backlog, Registry files, scoring semantics and frozen prior runs are untouched.
+
+The production H1/H2/H3 and E1/E2 mining chain is scheduled for replacement by
+the `LabelAwareMiningController` over the shared lazy PIT Evidence Graph
+specified in `signal_mining_agent.md`. Until the shadow-acceptance gate in the
+owning action plan passes, the H/E chain remains the authoritative production
+path and the controller is built and validated beside it: spec-first, then a
+minimal Evidence Graph implementation, then the fixed-state controller, then
+zero-call historical replay and a controlled candidate closed loop, then one
+live shadow cycle on identical frozen inputs. Cutover changes the production
+mining entry only after that gate, keeps H/E readable for history parsing and
+replay, and archives the legacy specs under repository removal discipline.
+Both paths use the same technical candidate validation and admission contract.
+Independent effect studies retain holdout isolation and paired measurement
+semantics; research yield never permits invalid or nonexecutable publication. The controller's
+mining ledger is a new feedback unit type whose reflection consumption follows
+the existing append-only memory rules.
+
+## Magnitude research targets (ge3 implemented; others data-gated)
+
+Magnitude-class research targets reuse the existing Mining chain with a frozen
+target contract: a fixed projection of the existing realized labels (for
+example `magnitude_ge3` splitting the true-≥2x population at 3x), never a
+redefinition of future outcomes. Every new target requires a data-gate record
+(listed in the action-plan C0 baseline) confirming, before any mining result
+is seen: per-group independent-issuer counts and time coverage on both the
+induction and validation pools, issuer and date isolation, prediction-time
+evidence coverage, and user-confirmed minimum support thresholds. A target
+whose gate is unconfirmed or failing gets no target-specific schema,
+projection, sampler, prompt, validation, or promotion code. As of 2026-09-21:
+`magnitude_ge10` and `magnitude_extremes` are blocked (insufficient issuer
+support); `magnitude_ge3` thresholds were user-confirmed, issuer and month
+criteria pass, but the required full-pool point-in-time evidence-coverage
+audit FAILED (discovery 49.32% / validation 4.86% against the confirmed 90%
+floor — see the C5 audit report), so ge3-specific implementation is blocked
+as `insufficient_pit_coverage` until an authorized evidence backfill or a
+re-confirmed population restriction changes the audit outcome. The frozen
+contract shape (fixed label projection at 3x over the true-≥2x population,
+target version and evaluation protocol in work/cache identity, group
+membership revealed only after evidence-pack freezing) is settled design and
+may be implemented only after the gate record passes. Label-free extraction (H1 hypothesis, E1/H2 evidence) never
+sees group membership; grouping reaches only E2/H3 after evidence packs are
+frozen. Promotion for magnitude targets remains an unapproved change: until a
+separately confirmed decision package, existing directional gates apply
+unchanged and Slow reports keep `magnitude_contribution.assessed=false`.
+
+Implemented for magnitude_ge3_v1 (2026-09-21, after the gate passed):
+`research_targets.py` owns the frozen `ResearchTargetContract` (identity
+hash over target_id/population/rules/version/protocol), the realized-label
+projection (>=3x high, [2,3) low, below 2x excluded — false negatives
+included because the population is defined by true labels), hash-linked
+group manifests, target-scoped issuer-disjoint dev/check sampling seeded by
+`base_seed:target_id`, and the reveal boundary: per-case groups are released
+to comparison roles only against one exact frozen evidence-pack manifest
+whose recorded target identity hash matches the contract — a contract that
+changed after freezing fails closed. `signal_research_objective()` carries
+the label-free target descriptors into H1 and every objective consumer;
+`assert_payload_without_target_groups` is the scanner proving hypothesis and
+extraction payloads stay group-free. The target sampling manifest is
+class-balanced by construction (per contrast group, one case per issuer,
+seeded shuffle, dev/check each draw half their limit from every group) — a
+plain issuer-disjoint split is insufficient because the check side must hold
+both groups for paired validation. When a `SignalEvolutionEngine` runs with
+`research_target_reveal` plus `research_target_sampling`, comparison
+induction draws a class-balanced prefix from the target dev side, comparison
+packets carry positive/control labels from the frozen reveal only, and
+independent paired studies use the balanced target check ids; technical
+admission itself makes no effect calls. Direction bookkeeping and the
+direction-only path remain target-bound. Target evaluations persist through the
+SignalRegistry namespace described in `signal_library.md`.
+
+Production activation additionally builds the target group and issuer-disjoint
+sampling manifests from the contract-bound Discovery dataset at cycle start and
+passes them to the production controller. The direction track always remains
+active beside it. Target effectiveness uses the manifest's high/low labels;
+using the legacy `is_surge` boolean for both 2-3x and >=3x cases is a contract
+failure even when a candidate happens to pass. Until the Fast consumption
+experiment exists, `magnitude_contribution.assessed` remains false, while its
+detail may truthfully report whether target mining/effectiveness was assessed
+and which candidates were supported. A completed target track counts as mining
+assessed even when it honestly produces no candidate; candidate count must not
+be used to collapse "ran and found nothing" into "did not run".
+
+Magnitude learning consumes research-completed evidence only. A Fast technical
+exclusion remains visible to Slow as a technical completion/failure diagnostic,
+but its synthetic negative judgment, empty context, four-way feedback, and
+derived magnitude miss cannot support a factor hypothesis or a claim about
+Signal weighting. The `magnitude_feedback` unit carries research-completed
+class diagnostics plus the number excluded from that diagnostic population;
+formal Plan metrics continue to use the full frozen score denominator. The
+approved `magnitude_ge3_v1` contrast includes every true-surge case at or above
+3x, including 10x+ examples, against the 2-3x group. It uses the same
+modality-neutral factor discovery, execution, paired validation, and Registry
+lifecycle as the direction target; magnitude is a comparison namespace, not a
+structured-feature-only path. This verifies that Slow can observe and compare
+high- versus low-magnitude evidence without creating the still-blocked
+ge10/extremes target or claiming a 10x-specific promotion gate.
+
+## Slow fact inference preservation
+
+`validate_slow_memory` optionally checks the shared authored fact-inference
+contract (`check_inferences=True`) for fresh episode/lesson brief and original
+reflection/guidance. New engine memory validates inside the ordinary reflection
+try/failure boundary before staging. The default retains historical readability
+and all reference-graph checks. The bounded method view discloses flagged old
+facts as `legacy_inference_unchecked`, retaining exact originals, hashes and
+read-by-reference. No schema, research weighting or promotion rule changes.
+
+
+Source catalog construction preserves each frozen input source_manifest's disclosure
+scopes at reflection and every method-view consumer. A processed feedback ref does
+not confer new disclosure authority. Method views omit role-hidden processed units;
+explicit source reads still reject hidden refs. Legacy units without a manifest
+retain their existing scope; new target summaries require explicit scopes.
+
+## Experience productive reuse
+
+Controller candidate audit units retain explicit Experience refs, declared
+usage context, a seed/axis/candidate-bound work key and exact staged Signal ref.
+Failed materialization remains an attempted failed reuse; capability deferrals
+remain pending. The sealed experiment maps each unit through final technical
+validation to success/failed/pending exactly once. No Update inheritance or
+read-only visibility creates new adoption. Only committed cycles enter profiles.

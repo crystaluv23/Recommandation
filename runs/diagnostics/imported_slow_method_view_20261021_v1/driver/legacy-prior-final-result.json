@@ -1,0 +1,21 @@
+{
+  "after": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md": "8fd61842d45f1aecbcb7f548286c5ffe792844ebc043e273bb0123259ad7a722",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+    "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py": "be27cd4e9b0ae55590b4bbaf8a576e73fb2d7b748e11fe4a3f40c6e1c8ac41f6"
+  },
+  "before": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md": "8fd61842d45f1aecbcb7f548286c5ffe792844ebc043e273bb0123259ad7a722",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+    "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py": "be27cd4e9b0ae55590b4bbaf8a576e73fb2d7b748e11fe4a3f40c6e1c8ac41f6"
+  },
+  "bindings_unchanged": true,
+  "errors": 0,
+  "failures": 0,
+  "forbidden_calls": {},
+  "selectors": [
+    "tests.test_imported_slow_method_memory",
+    "tests.test_structured_reflection_roles.SlowAuthoredBriefTests.test_slow_live_briefs_keep_originals_and_resolve_through_existing_reader"
+  ],
+  "tests": 16
+}

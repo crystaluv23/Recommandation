@@ -1,0 +1,176 @@
+{
+  "H1_header_read_manifest": {
+    "available_count": 1,
+    "budget_bytes": 64000,
+    "bytes": 2312,
+    "deferred": [],
+    "deferred_count": 0,
+    "included_count": 1,
+    "included_hashes": {
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1": "e3d151dcf2d33aac8b1f718b57b256586c3cb93f492b2d546fa93e51a70afed8"
+    },
+    "included_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1"
+    ],
+    "max_items": 3,
+    "requested_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1"
+    ],
+    "role_scope": "H1",
+    "schema_version": "slow-source-view-v1"
+  },
+  "all_228_completed_files_unchanged": true,
+  "finding": "additive_header_readable_original_and_pending_preserved",
+  "forbidden_calls": 0,
+  "header_entry_bytes": 2312,
+  "kind_counts": {
+    "candidate_result": 70,
+    "magnitude_feedback": 8,
+    "prediction_comparison": 69,
+    "search_result": 30,
+    "signal_target_observation": 126,
+    "signal_usage": 3229
+  },
+  "manifest_rows": 3532,
+  "native_imported_rows": 3532,
+  "new_header": {
+    "artifact": {
+      "budget_bytes": 32000,
+      "coverage": "method header only; original summary and nested feedback are not consumed",
+      "projection_identity": "443de3d9d462998b8c407e006bd7e0530654a9a5353568c131a69d341f64050e",
+      "projection_status": "available",
+      "schema_version": "imported-slow-method-memory-header-v1",
+      "source": {
+        "json_locator": "/",
+        "profile": "imported-slow-method-memory-header-v1",
+        "source_sha256": "e056b9a626138c7f6e17a90291a3da33dfb3b5176d98a2701688a6e94ceafe87",
+        "summary_identity": "slow-history:source-12a50702a856ddc3:1:slow_memory:summary"
+      },
+      "source_memory_hash": "b1a4e915bf9bccb9cf475dec2dc8b251d945c84c628967f994f1fa06c92bb5ef",
+      "view": {
+        "memory_deltas": [
+          {
+            "coverage": "header only; no processing vectors, read directory or authored bodies",
+            "cycle_id": 1,
+            "failure_ref": "CandidateExecutionRejected: signal_mining_reflect failed validation after one correction: episode_reflections source_refs must cover every selected top-level feedback_ref; no unused episode slot remains, so merge the missing refs and their reflection into one or more existing valid episodes without adding a row",
+            "memory_hash": "b1a4e915bf9bccb9cf475dec2dc8b251d945c84c628967f994f1fa06c92bb5ef",
+            "omitted_fields": [
+              "processed_feedback_refs",
+              "pending_feedback_refs",
+              "model_view_manifest",
+              "episode_reflections",
+              "lesson_additions"
+            ],
+            "schema_version": "slow-method-memory-header-view-v1",
+            "status": "failed"
+          }
+        ],
+        "memory_view_manifest": {
+          "budget_bytes": 32000,
+          "bytes": 1012,
+          "deferred": [],
+          "included_hashes": {},
+          "included_refs": [],
+          "requested_refs": [],
+          "schema_version": "slow-method-memory-header-manifest-v1",
+          "source_memory_hashes": [
+            "b1a4e915bf9bccb9cf475dec2dc8b251d945c84c628967f994f1fa06c92bb5ef"
+          ]
+        }
+      }
+    },
+    "feedback_ref": "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1",
+    "kind": "search_result",
+    "limitations": [
+      "imported committed history; source protocol may be read-only"
+    ],
+    "source_artifact": {
+      "json_locator": "/",
+      "sha256": "e056b9a626138c7f6e17a90291a3da33dfb3b5176d98a2701688a6e94ceafe87"
+    },
+    "source_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1"
+    ],
+    "subject_ref": "source-12a50702a856ddc3:cycle-0001"
+  },
+  "observed_stage_reads": [
+    "slow_history/manifest.json",
+    "slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_experiments.json",
+    "slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_input.json",
+    "slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_loop_result.json",
+    "slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_loop_validation.json",
+    "slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_memory.json"
+  ],
+  "old_summary_H1_hidden": true,
+  "positive_included_count": 1,
+  "positive_ref": "slow-history:source-12a50702a856ddc3:1:slow_loop_result:summary",
+  "positive_view": {
+    "available_count": 1,
+    "budget_bytes": 64000,
+    "bytes": 2312,
+    "deferred": [],
+    "deferred_count": 0,
+    "included_count": 1,
+    "included_hashes": {
+      "slow-history:source-12a50702a856ddc3:1:slow_loop_result:summary": "bb603b9fa09ff35cc11a28e26d8cc079ede6120a078a9349d504e22a9ba04b65"
+    },
+    "included_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_loop_result:summary"
+    ],
+    "max_items": 3,
+    "requested_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_loop_result:summary"
+    ],
+    "role_scope": "reflection",
+    "schema_version": "slow-source-view-v1"
+  },
+  "reflection_header_read_manifest": {
+    "available_count": 1,
+    "budget_bytes": 64000,
+    "bytes": 2312,
+    "deferred": [],
+    "deferred_count": 0,
+    "included_count": 1,
+    "included_hashes": {
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1": "e3d151dcf2d33aac8b1f718b57b256586c3cb93f492b2d546fa93e51a70afed8"
+    },
+    "included_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1"
+    ],
+    "max_items": 3,
+    "requested_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1"
+    ],
+    "role_scope": "reflection",
+    "schema_version": "slow-source-view-v1"
+  },
+  "scope": "Native imported producer/catalog/reader only; not full Engine/S1 input or S2/model consumption.",
+  "source_pending": 3518,
+  "source_processed": 0,
+  "source_status": "failed",
+  "target_artifact_hash": "9ffa34ee54b5067b68ab75977b48306fb6efb654d721fa0da023614d96096fbd",
+  "target_complete_entry_bytes": 847013,
+  "target_included_count": 0,
+  "target_ref": "slow-history:source-12a50702a856ddc3:1:slow_memory:summary",
+  "target_view": {
+    "available_count": 1,
+    "budget_bytes": 64000,
+    "bytes": 0,
+    "deferred": [
+      {
+        "reason": "whole_entry_budget",
+        "ref": "slow-history:source-12a50702a856ddc3:1:slow_memory:summary"
+      }
+    ],
+    "deferred_count": 1,
+    "included_count": 0,
+    "included_hashes": {},
+    "included_refs": [],
+    "max_items": 3,
+    "requested_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:summary"
+    ],
+    "role_scope": "reflection",
+    "schema_version": "slow-source-view-v1"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "error": "StopIteration while finding content keyword",
+  "cause": "AST call-line matching also matched the outer append() on the same line as imported RawInfoDocument.create().",
+  "mutations_at_stop": "First engine file already had the authorized nine metadata-only insertions; imported file unchanged.",
+  "resolution": "Added the one imported metadata line with an explicit patch; independent final SequenceMatcher verified all ten insertions and every other byte unchanged."
+}

@@ -1,0 +1,80 @@
+{
+  "baseline": "Old module corrected-layout selector failed natively; retained previous layout error. Other original eight failures already persisted by root.",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/original-single-selector-layout-probe.py",
+      "sha256": "ab1387b9f8945a0e1d2e8ccf959c04878c2a7d91c7a1bb605a82484762668537"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/original-single-selector-layout.log",
+      "sha256": "58fd7ceee9ede9d8dd40020afb288a0c5785c2b1055067e6a40592db740a8dbc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/original-single-selector-layout-result.json",
+      "sha256": "3f310df3cec4d7d04a0062888d1ae02374f8d2522e1e470f85c7b773d43b72cd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/remaining-old-fixture-inventory.py",
+      "sha256": "95737f5b448536e131aee4ff531bb88ce7ee7cf2b2b95406ba67d02e6e72135c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/remaining-old-fixture-diagnosis.json",
+      "sha256": "ce7f2e311e740730455cfbd8ca669ec3b30ffd9df6ebe4ac7c7a741fdfdf5c1d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/before-named-producer-test_signal_evolution_engine.py",
+      "sha256": "08a8520c2810fe0aabe9f427ef5ecc812e25127f948c4aa0eb62dc06cdbd2f36"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/before-named-producer-test_imported_signal_feedback.py",
+      "sha256": "daff774ff7ff667803922dd09bb7a2bd72d482acbd1af8ce397975d59f8119b8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/repair-named-synthetic-producers.py",
+      "sha256": "c7f5bfe683747fd0f6b2451c599e3c70d76f97cf9e743fecfcf279aa793acc61"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/repair-named-synthetic-producers-v2.py",
+      "sha256": "7adcf2ee3e920d6f2c877cde9149c941a172fc9a10abb07c06e745d688d6a33d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/named-producer-patch-first-harness-failure.json",
+      "sha256": "0328c4e6422b5f6531a54823758b1bb2ada61d12d423ff85d58297283a45b156"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/named-producer-patch-second-harness-failure.json",
+      "sha256": "e012f274b690bad7e0e0052a3119198673cf10efa841b7c10f1e5b286a3c1524"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/named-producer-focused.py",
+      "sha256": "e07edb8bf46c156e8013beee64bdd4cce5811c61d064408929af5c9fcc80debe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/named-producer-focused.log",
+      "sha256": "06dcce4df5ed6487cf04364411d482c99354ec42d956205d840591f389f53184"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/named-producer-focused-result.json",
+      "sha256": "89fb66c9c5a9e5916695083892e957cea36965007776a3fb80a580f4535f2d84"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_evolution_engine.py",
+      "sha256": "6e907829cbf7aadee132f299a3edc4d3cb952dec2e9af256f2c6444c26028de8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_imported_signal_feedback.py",
+      "sha256": "8f83d06ab986257acaf209958149a2b76d2baf78b0cbf3069be82bc1dad17241"
+    }
+  ],
+  "changed": "Ten metadata.cik bindings only, exact 9+1 test-file insertions.",
+  "current_header_source_sha256": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+  "focused": {
+    "errors": 0,
+    "failures": 0,
+    "label_store_load": 0,
+    "network": 0,
+    "seconds": 6.709864999866113,
+    "tests": 19
+  },
+  "stage": "No actual stage operation or fresh model; temporary native synthetic tests only."
+}

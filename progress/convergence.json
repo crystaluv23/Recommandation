@@ -219,9 +219,18 @@
         "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/readability-preflight.json",
         "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-actual-review.json",
         "runs/diagnostics/imported_feedback_readability_20261021_v1/result.json",
-        "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json"
+        "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json",
+        "reports/imported-slow-method-feedback-20261021.md",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/driver/legacy-prior-summary.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/final-review.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-result.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-final-result.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/actual-source/result.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/driver/named-producer-final-summary.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-repaired-result.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/result.json"
       ],
-      "remaining": "Historical input materialization now passed native build/validate/apply with unchanged source and exact v12 definitions/events/artifacts. Old v182 failed memory remains processed0/pending3518. Native imported producer/reader confirms847019byte failure unit unreadable under64KB, while2312byte positive reads. Full S1 admission, fresh accepted reflection, correct task routing and observed downstream consumption remain unverified. Posthoc remains a narrow independently accepted durable stage, not a committed Fast feedback submission."
+      "remaining": "Historical input materialization now passed native build/validate/apply with unchanged source and exact v12 definitions/events/artifacts. Old v182 failed memory remains processed0/pending3518. Native imported producer/reader confirms847019byte failure unit unreadable under64KB, while2312byte positive reads. Full S1 admission, fresh accepted reflection, correct task routing and observed downstream consumption remain unverified. Posthoc remains a narrow independently accepted durable stage, not a committed Fast feedback submission. Additive header now passes final16focused/independent controls and unique actualsource nativeproducer/catalog/reader probe,3532importunits/2312byteheader with oldpending/source preserved. RealEngine/nativeStage contract/reader composition and fresh exact-inbox reflection→task consumer remain unverified; associated198 not allgreen. Remaining9oldfailures reproduced onoriginalcode and normalfixturemetadata-only fixed; final213connected pass. Native destination-only temp composition reaches firstpending with fullnewD4493/4408sourcebytes same/0answers, not roleconsumption."
     },
     {
       "id": "new_magnitude_reuse",
@@ -1246,10 +1255,36 @@
         "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json"
       ],
       "result": "Unique v1 terminal guard failure after181unchangedsource reads: native Workspace constructor needs exact operational trajectory maximumsequence; not committed research evidence. Independently diagnosed, oldfailedstage unchanged. v2 only binds/permits that sidecar; native fullsyntheticrestore excludes highsequence round2decoy/5neighborpaths/sourcewrites. Sole actualbuild/validate/apply1.810s succeeds: ba60fd7c manifest, exactv12/18refs/137definitions/914events/192knowledge-records/5localcycle/7candidatefiles,210sourcebytes same,0forbidden/blocked reads/writes/Signal/model/GET/labels. 228completedfiles reopened identically with0newnativecalls, not OScrash/researchrecovery. Metadata import only; originalmemoryfailed processed0/pending3518 preserved. Source-only oracle exposes expected847019byte importedfailureunit above64KB; nativecatalog/readability and fresh memory/taskconsumption still unverified. Subsequent actualnative imported producer returns3531units(notfullS1universe), targetfailedmemory847019bytes rejectedby64KB reader aswhole_entry_budget; small2312byteunitincluded. Sealed228files unchanged. This confirms the reading-granularity frontier without a model or runtime constructor."
+    },
+    {
+      "id": "engineering-mvp-imported-method-readability-20261021",
+      "strategy": "additive_complete_imported_method_header_with_source_closure",
+      "failure_families": [
+        "imported_failed_memory_complete_unit_exceeds_source_read_budget",
+        "legacy_prior_scope_filtering_regression",
+        "synthetic_numeric_sec_inputs_missing_explicit_issuer_binding"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/imported-slow-method-feedback-20261021.md",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/driver/legacy-prior-summary.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/final-review.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-result.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-final-result.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/actual-source/result.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/driver/named-producer-final-summary.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-repaired-result.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/result.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-final-review.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-actual-header-read-review.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2-freeze.json"
+      ],
+      "result": "Spec-first additive32KB method header preserves fulloriginal/history/pending, binds sourcefile/locator/wholememory identity, omits vectors/membership hashes, inherits actualread/citation closure and laterconsumer scopes; carried projections verify original input/memory and retainstable identity. Initial197 associated9fail/1error exposed newlegacyprior regression; final16focused and independent delta/nativeconsumer controls pass. Final198 associated8fail/1error remain, baseline/testproducer diagnosis not conflated with green. Sole newactualsource nativeproducer/catalog/read probe3532units adds one2312byte header readablebyreflection/H1; originalsummary remainsbudgetdeferred/H1hidden, original3518pending and228sealedfiles unchanged,0forbidden. No actualmodel consumption/Slow/fullS1-S2/newcapability. Newboundedstage candidate underreview; actualworkspace contract connection missing in firstcandidate, fixed authority remains undernativeintegration verification. Originalcode comparisons reproduce remaining9failures. Metadata-only10synthetic normalinput sites repaired without changed body/expectedvalues/helpers/publishedfixtures;19focused pass. Final198+15stage controls=213/213 pass20.294s,0network/LabelStore.load,all7code/testbindings unchanged. Samecontract frozen/verified at actualWorkspace andwrapper restores native914events/192knowledge. Singletemp destination-only patched realEngine composition prepares newfullD4493 andtargetreflection-7d08d205fe330564 then首slow_source_readpending,4408sourcebindingssame/0answers ordispatch;formalstage rootabsent."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-actual-history-materialization-20261021",
+    "after_iteration": "engineering-mvp-imported-method-readability-20261021",
     "evidence": [
       "reports/historical-registry-definition-reading-20261021.md",
       "runs/diagnostics/current_financial_apply_20261021_v1/driver/next-slow-boundary-review.json",
@@ -1269,7 +1304,20 @@
       "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/readability-preflight.json",
       "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-actual-review.json",
       "runs/diagnostics/imported_feedback_readability_20261021_v1/result.json",
-      "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json"
+      "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json",
+      "reports/imported-slow-method-feedback-20261021.md",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/driver/legacy-prior-summary.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/final-review.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-result.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-final-result.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/actual-source/result.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/driver/named-producer-final-summary.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-repaired-result.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/result.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-final-review.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-actual-header-read-review.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2-freeze.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1342,22 +1390,23 @@
       "The earlier seed/author identity repair deliberately preserved published fixtures, but history export still called current capability freeze. Input-only snapshot diagnostics never entered this importer. A minimalcopy omitted the knowledge checkpoint and failed even before audit; native actual source with valid committed knowledge was necessary to identify the real fixture gate.",
       "A pure definition reader implemented through list_signal_cards would still depend on KnowledgeUseStore.profiles and repeat the incomplete-copy failure at materialization. The private reader enumerates stable manifests/specs/skills directly; existing knowledge/event source validation remains separate and fresh execution still audits capabilities.",
       "Nine focused candidate tests validated rawheader/stabletype but missed authority pointer int coercion. Independent complete source controls demonstrate True/1.9 accepted by both old and firstcandidate. Root initially enumerated five freeze callsites too mechanically; the bootstrap manifest validator is the actual downstream consumer and now shares strictRegistryversion identity. No claim is made about all runtime numeric coercions.",
-      "Guard-only preflights missed the real Workspace constructor event-sequence read; complete native temporary restore graph was needed. The exact sidecar is operational metadata, never committed research authority. File preservation also cannot establish reading: failed memory is one oversized imported unit, while compact local method delta is not automatically supplied to an imported-only successor. Do not spend a fresh role before measuring the actual native catalog/read path."
+      "Guard-only preflights missed the real Workspace constructor event-sequence read; complete native temporary restore graph was needed. The exact sidecar is operational metadata, never committed research authority. File preservation also cannot establish reading: failed memory is one oversized imported unit, while compact local method delta is not automatically supplied to an imported-only successor. Do not spend a fresh role before measuring the actual native catalog/read path.",
+      "Initial header-focused controls missed legacy localprior filtering; broad actual oldbrief→reader→nextreflection test exposed it. Final scope restores legacy only when both canonicalschema/readmanifest absent; modern knownhidden/unknown still failclosed.",
+      "Runner mechanics tests omitted actual Workspace contract→native imported learning/knowledge reader. Root contract alone would reject events and skip importedknowledge; prove native composition before any fresh role, never weaken importer authority.",
+      "Previously narrowed positivefixture producer repairs missed additional numeric SEC constructors in paired effectiveness/Update tests. Baseline actualsource comparisons distinguish test-input drift from header regression; no source/publishedfixture rewrite or expectedvalue adjustment is justified.",
+      "Pre-answer source oracle initially copied temp destination and demanded oldpending counts absent from the adopted scoped header. Source-only v2 corrects formalroot/omission rule and separates original detailed errorfrontiers from the visible Controller brief: require supported repairdependency route, never unseen projectiondetails or manufactured rootcause. No role answer was seen."
     ],
     "decision": {
       "acceptance_id": "feedback_consumption",
-      "kind": "repair",
-      "strategy": "reuse_compact_method_projection_for_imported_feedback",
-      "action": "Read the owning contracts first, then repair the imported-memory producer/read granularity using the existing versioned compact method-memory projection where compatible. Preserve original immutable artifacts, original complete summary/refs, pending partitions, source-file/locator/hash authority and role scopes. Cover producer→catalog→bounded reader→reflection/method consumer→persistence/multihop boundaries with original failure, normal/empty/oversized/visibility counterexamples before fresh roles. Prepare any substantive upper-contract tradeoff for user decision rather than changing it silently.",
-      "stop": "No source or completed-stage rewrite, pending-to-processed shortcut, larger budget, hand-authored feedback, externalLLMAPI, full successor or old-run resume. Stop if existing source/projection authority cannot represent the fix without a material design decision; local controls are not actual S1/S2 consumption.",
-      "question": "Can the existing approved compact method-memory representation expose imported failed status/cause within the bounded reader while retaining full immutable history, stable source authority and accurate pending/processed state?",
-      "pass": "Original failure has an owner-produced, provenance-bound complete compact method unit accepted by the unchanged64KB reader; full original unit and pending remain, success/empty/largehistory/role/multihop controls preserve meaning and later actual request contains the exact view.",
-      "fail": "Projection hides required failure meaning, changes old refs or processing state, widens role/temporal scope, requires unapproved schema/budget semantics, or remains invisible at the actual reflection consumer.",
-      "on_pass": "Freeze finite S1/S2 actual request budget and source-derived semantic oracle, dispatch fresh exact-inbox subagents, and verify accepted reflection plus actual task consumer. Keep wholeMVP/feedback consumption open until those live connections pass.",
-      "on_fail": "Preserve the demonstrated producer/consumer frontier and ask only for concrete material contract choices if needed; do not claim unrelated smallunit success or fabricate consumed feedback.",
-      "new_evidence": "Actual export materializes exact history and228files; native imported producer produces3531units, exact failedsummary847019bytes is deferred whole_entry_budget under64KB while2312byte positive reads. Existing local compact method view is541bytes but not automatically provided to first imported cycle.",
-      "distinguishing_variable": "Existing versioned compact method projection through the real imported producer/catalog/reader and actual reflection consumer, with full original artifacts/source authority/64KB budget/pending held fixed.",
-      "authorization_evidence": "Active full engineering MVP goal; public readonly source verification allowed; productionLLM must use independent exact-inbox subagents and externalLLMAPI prohibited. This diagnostic uses0role/Signal/network budget, does not resume v182 or create a full successor."
+      "kind": "diagnose",
+      "strategy": "bounded_native_feedback_reflection_to_controller_progress",
+      "action": "Finish native constructor/importer zero-answer preflight and independent stage/source review; freeze current exact code, full new producer denominator, original40 Discovery scope, reviewed1780 source and external-free8request/1048576logical cap. Then execute one new bounded realEngine memory prefix and actualController factory through first original need-progress sink. Every production role uses a distinct fork_none exact-inbox subagent, with oracle outside. Preserve rawfirst/correction/finalfailure and all oldstages.",
+      "stop": "Any source/permission/budget/code drift, guard/native integration failure or unproved selected-source closure stops this stage; no completeSlow, secondseed/candidate/Signal/publication, externalLLMAPI, sourceacquisition or oldbudgetresume. Controlledbacklog page is not autonomous retrieval.",
+      "question": "Will the actual fresh native reader/reflection consume the readable provenance-bound failedmethod unit correctly and forward accepted memory plus original technicalfailure need to the currentController, whose fresh disposition reaches its original durable sink?",
+      "pass": "Exact rawrequests and answers show selectedheader/source coverage, independently valid technicalvsresearch attribution, correct fullD processed/pending partition, factory memory lineage, targeted technicalfailure disposition grounded in originalerrors and original needunit persistence.",
+      "fail": "Header notactually read, modelinvented economicabsence/rootcause, wrong needroute/version, omitted/doubleddenominator, lost consumercontent, or native boundary rejects. A schema-valid write alone is not semanticpass.",
+      "on_pass": "Record only the bounded live feedback/taskconsumer evidence; separately repair known quota adaptergap and continue prerequisite source/reading and newmeasurement lifecycle before a full engineeringloop. WholeMVP staysopen.",
+      "on_fail": "Retain terminalboundary and sourceoracle, identify first loss or contract conflict and repair its family before considering a newly frozen stage; never reenter completedstage or replace fixedfailure with an easier sample."
     }
   },
   "successor_prerequisites": [

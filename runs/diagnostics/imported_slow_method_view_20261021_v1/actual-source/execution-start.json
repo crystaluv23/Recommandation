@@ -1,0 +1,6 @@
+{
+  "scope": "Read the sealed imported-unit producer and bounded reader, without a runtime.",
+  "script_sha256": "c1b823615d246c5da57cc0c14215c55f5c39bf3e79130be565cb9c8d91880425",
+  "native_source_sha256": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+  "seal_sha256": "af51a017053d258b15b2bda7defcf73bbd86bf76c11b790e2fa2d4bff927352c"
+}

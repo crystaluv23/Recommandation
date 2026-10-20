@@ -1,0 +1,39 @@
+{
+  "formal_root_created": false,
+  "only_document_corrections": true,
+  "oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2.json",
+    "sha256": "d26af36c2f1968e05a7d18034abc6645b165105ce68522bc27a432d641587c70"
+  },
+  "preserved_v1": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle.json",
+    "sha256": "0f064e66f5418006f3dbc2589224ac856f7246450666f34faef45f2577d1721b"
+  },
+  "preserved_v1_freeze": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-freeze.json",
+    "sha256": "e6d898cc50747dc4db6f30e8ff8fad3dececa168236b440053a2398b77b51583"
+  },
+  "unchanged_code": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_slow_feedback_stage.py",
+      "sha256": "a1acad66f4f83935bb5ccdb8834ec32ad064c42a1ab98ac84b76d2f6bb1209f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_slow_feedback_stage.md",
+      "sha256": "84a1bdfe483b2f14a531bd1ffee756e88705295938d74fee8b948e7c38cd0ffe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_slow_feedback_stage.py",
+      "sha256": "b78c8388c9bdb849e4c7961922cdee71e302a74aaa08e858b9121385053a5803"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "8fd61842d45f1aecbcb7f548286c5ffe792844ebc043e273bb0123259ad7a722"
+    }
+  ],
+  "zero_role_answers": true
+}

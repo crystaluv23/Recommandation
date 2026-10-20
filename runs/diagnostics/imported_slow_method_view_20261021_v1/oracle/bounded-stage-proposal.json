@@ -1,0 +1,349 @@
+{
+  "schema_version": "bounded-s1-s2-stage-proposal-v1",
+  "status": "proposal_only_no_runner_no_model_no_Slow_execution",
+  "freeze_status": "Historical source is sealed; implementation code is currently under parent/driver repair and must be committed/frozen before any stage preparation. This proposal does not authorize or claim execution.",
+  "source_authority": {
+    "sealed_history_manifest_hash": "ba60fd7c7aa4472900ef26c8068deee66e9d4e51c8a699455432f7eed626bc55",
+    "source_contract_hash": "12a50702a856ddc3dd24b52ed2d044fae573a9a5da85007ef2f0d87c7d4fcf71",
+    "source_namespace": "source-12a50702a856ddc3",
+    "sealed_stage_files": 228,
+    "old_fast_slow_pointers": "1/1, completed and never reentered",
+    "historical_failed_memory": {
+      "processed": 0,
+      "pending": 3518
+    },
+    "old_native_imported_projection_rows": 3531,
+    "warning": "3531 excludes other _committed_slow_feedback channels and is not a full new input denominator. Additive method views may change a new native population; freeze actual produced D/P only at new prepare."
+  },
+  "recommended_sequence": [
+    "Finish and independently audit current imported method-view repair. Do not expand quota adaptation in that patch.",
+    "Choose evidence boundary A or B and its independent stage budget before dispatch, then create a new dedicated diagnostic workspace. Copy/validate exact sealed source into that workspace; do not construct a runtime in the228-file sealed export stage.",
+    "Restore exact approved Discovery objects from independently hash-frozen v182 input_manifest.json, verify dataset identity against sealed manifest, and restore immutable Fast meta/backlog through native history validation/application and rebasing.",
+    "Construct real EvolutionWorkspace, copied exact v12 Registry, read-only RawInfoStore/EvidenceResolver and real SignalEvolutionEngine with LLMSignalMiningModel/LLMSignalUpdateModel over a new independent-subagent StructuredRoleClient. No __new__ engine/facade or old H1 adapter.",
+    "Start a new native slow_only active cycle with0 Fast rounds and1 cumulativecycle limit under a fresh diagnostic contract/ledger. Last_completed_round/cycle remain0 throughout this stage; no complete_cycle, run_cycle, promotion, candidate tests or Signal apply.",
+    "Invoke native _prepare_slow_input and _prepare_slow_memory, including ordinary opaque source selection. Freeze all produced source refs/kinds/scopes, actual fullD and selectedS/deferred sets before fresh author output. Source-only oracle stays separate from every model inbox.",
+    "After accepted reflection, set engine active input/memory/sampling exactly as the native run_cycle prefix does. Use actual _run_controller_mining_axis factory for the hypothesis seed; native MiningAgentRoleModel and LabelAwareMiningController receive the real _mining_context. Do not invoke whole run_cycle or legacy propose_hypotheses.",
+    "A stops at first native Controller request persistence. B continues through one real page inspection and one accepted need progress unit, then a declared stage control boundary before the next model call/second discovery seed. Preserve partial controller state honestly."
+  ],
+  "construction_and_input_limits": {
+    "workspace": "EvolutionWorkspace.__init__ then start_or_resume_cycle(cycle_mode=slow_only,target_plan_rounds=0,max_slow_cycles=1). Real native start state, never a fabricated old contract/hash or old pointer.",
+    "registry": "Exact copied sealed v12 stable definitions, original history identity and new contract binding; no capability audit/seed fixture execution, promotion or stable write.",
+    "raw_store": "Reviewed read-only source view frozen by source hashes; it may contain PIT material for actual case profile/catalog construction. Do not substitute empty/fake originals to make construction easy. All Signal execution, network/acquisition, label-provider and publication entrances have pre-dispatch tripwires.",
+    "meta": "Actual RoundMetaEntry.from_dict over exported fast_context.meta_entries and native _rebased_history_meta_entries; preserve references and source closures, never turn mutable root meta into source.",
+    "engine": "Nonempty discovery_cases is a real constructor requirement. SignalCandidateValidator/EffectivenessEvaluator may be constructed but their execution methods stay forbidden. Existing stage convention permits inert unused role objects; no endpoint is invoked merely to complete construction.",
+    "factory": "_run_controller_mining_axis builds real case_pairs/label_map, measurable manifest, exact stable specs/skills, memory_index, meta briefs/disclosures, slow_method_memory, LabelAwareMiningController, and original save_need_unit closure. The factory loops bothseeds; stage must stop before discovery seed or candidate action. No claim of complete mining axis."
+  },
+  "Discovery_and_label_scope": {
+    "source_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/input_manifest.json",
+    "source_sha256": "3c6a74fea9c3e29742d9759f11a9087cbb16726e17d509ec1f4dd7d5e2b48d3c",
+    "schema": "diagnostic-development-subset-v1",
+    "approved_manifest_hash": "13772d031162179f7468cb0e9d9aea0424f78084d18c65fe059d5b72840013e9",
+    "declared_splits": {
+      "anchor": 16,
+      "discovery": 16,
+      "evolution_validation": 8
+    },
+    "locked_test_accessed": false,
+    "objects": "Restore the16 existing Discovery rows to EvolutionCase using original case_id/company_id/prediction_time/basic_info and GroundTruth.from_dict(original ground_truth). Bind original row hashes, do not hand-enter outcomes, dummy cases or source labels from pending Signal answers.",
+    "identity_population": "Production supplies Discovery+Anchor+Validation identity cases. A faithful stage may restore the approved40 original objects solely for alias inventory; only Discovery dev label_map/case_prediction_times is supplied to this retrospective Controller. Original Fast outcomes in committed meta remain authorized retrospective feedback; no blind role is started.",
+    "role_authority": "Current MiningAgentRoleModel.next_action uses allow_outcomes=True: this is label-aware retrospective Slow, not blind Fast/Predictor. Direction dev labels come from approved Discovery GroundTruth through native direction classification; active magnitude groups/check labels are unnecessary for this direction-only S1/S2 control and must not be added.",
+    "dev_check": "Use new native _prepare_slow_input sampling for this fresh contract; preserve full16 Discovery population and dev/check separation. Invoke only hypothesis seed on direction dev cases; do not expose held-out check-case outcomes in Controller payload.",
+    "no_global_reads": "No globalLabelStore, original labels.jsonl, LockedTest or uncommitted round2. Dataset authorization/record hashes establish inherited source identity, not a new external semantic audit of outcome truth.",
+    "design_boundary": "The sealed228-file history export does not itself include EvolutionCase objects. Adding the approved v182 input_manifest Discovery rows is an explicit new stage input binding/scope, not an implicit property of the sealed history. Do not launch until it is part of the reviewed new stage spec/manifest."
+  },
+  "evidence_boundary_A": {
+    "name": "Fresh reflection to real Controller first-payload arrival",
+    "work": "Run native input/memory prefix and at most its existing selectors; each first/correction response is a fresh fork_none exact-inbox subagent. Then enter actual factory until StructuredRoleClient writes the Controller request and raises native ExternalRequestPending; do not dispatch that Controller request inA.",
+    "pass": [
+      "Native processed/pending partition matches fullD; failed reflection consumes0, success processes only independently covered selectedrefs.",
+      "The new method-view control is actually selected/read and its source_status/error/oldpending counts are present in the exact reflection request; mere catalog presence fails this control. If a new permission intersection excludes H1, keep that role hidden and select a permitted downstream consumer instead of widening scope.",
+      "Fresh reflection distinguishes historical technical rejection from economic absence, preserves unknown causes and references only selected top-level owners; no unsupported causal/effect claim.",
+      "Exact persisted Controller inbox, built by current factory, includes accepted permitted current slow_method_memory plus actual full backlog identity/counts and bounded page/omission data. Full backlog is retained locally; do not serialize an unbounded all-needs payload.",
+      "Saved raw answer/correction/cache→slow_memory bytes→native context→Controller request lineage is exact. All old sourcebytes/Registry/pointers remain fixed."
+    ],
+    "claim_limit": "Input/accepted-memory persistence and real downstream payload connection only. No Controller action, disposition consumer, quota route, Mining/Update, completeS1/S2 or benefit proof.",
+    "budget_candidate": {
+      "executed_requests_max": 5,
+      "pending_Controller_request_slots": 1,
+      "total_request_slots_max": 6,
+      "per_request_logical_cap": 131072,
+      "total_logical_reservation_cap": 786432,
+      "source_selectors_max": 3,
+      "selector_output_tokens": 512,
+      "selector_corrections": 0,
+      "reflection_first_answers": 1,
+      "reflection_corrections_max": 1,
+      "reflection_output_tokens": 5000,
+      "Controller_answers": 0,
+      "transport": "new diagnostic contract/ledger; no externalLLM API; hosttoken/costunknown unless measured"
+    },
+    "stop": "Unavailable/hidden/not-selected method view, native context budget failure or invalid accepted meaning is retained as stage failure; do not hand-select a successful answer after seeing failure."
+  },
+  "evidence_boundary_B": {
+    "name": "A plus actual bounded need disposition persistence",
+    "work": "ChooseB upfront. Same prefix, then actual factory Controller.run with fresh native responses, only inspect_catalog/backlog and record_need_dispositions in this authorized action envelope. Preserve all fullbacklog rows and original ordering. Stop after first actual progress-unit write, even if independent semantic audit later fails.",
+    "target_page": "After native prepare/context, locate the runtime row by frozen reflection_item_ref below and record its produced need_ref/backlog_hash/native cursor. Use native inspect_catalog(scope=backlog,cursor=<prepared native cursor>) to disclose its real page. Do not forge need_ref, replace entire backlog withone control, or alter page order.",
+    "controlled_initialization_option": "If minimality needs a predetermined native page, a reviewed stage may execute exactly that existing inspect_catalog action as a declared controlled page initialization, consuming its ordinary light budget and retaining ledger/source reply; then fresh Controller authors disposition. This proves reading/decision for a disclosed control, not autonomous model retrieval. Otherwise let a fresh Controller choose the page and count extra search failures/calls within the same frozen cap.",
+    "consumer": "Native _record_need_dispositions validates issuedbase/allowedrefs, appends valid rows and original production save_need_unit persists mining-need-disposition-unit-v1 at experiments/cycles/cycle-0001/mining_need_units/<axis-seed-scope>/<result_hash>.json. Intercept no semantics. A stage-wide control guard checks actual unitwrite and exits via declared control-flow boundary before another role/candidate/discoveryseed, not a fake terminal ControllerResult.",
+    "pass": [
+      "The exact target native need_ref was present in actual disclosed page and allowed_need_refs before action.",
+      "Fresh accepted row uses repair_dependency, signal_refs=[], and cites the specific supported technical validation frontier without inventing measurement invalidity or cause.",
+      "The on-disk unit has unchanged native backlog_hash/axis_id/seed/base_hash/result_hash; accepted_rows equal model-authored validatedrows. Others remainpending; pending_count decreases exactly by newly accepted unique needs, not by all3518 nested oldrefs.",
+      "Controller request/rawanswer/typedcorrection/ledger/toolresponse/unitwrite are linked; source semantic verdict independent of native schema success."
+    ],
+    "claim_limit": "One controlled need-unit consumer succeeded; stage Controller remains partial/running, local round/cycle pointers remain0, no fullSlow completion or all-backlog resolved claim.",
+    "budget_candidate": {
+      "executed_requests_max": 8,
+      "per_request_logical_cap": 131072,
+      "total_logical_reservation_cap": 1048576,
+      "source_selectors_max": 3,
+      "selector_corrections": 0,
+      "selector_output_tokens": 512,
+      "reflection_first_answers": 1,
+      "reflection_corrections_max": 1,
+      "reflection_output_tokens": 5000,
+      "Controller_regular_actions_max": 2,
+      "Controller_correction_requests_max": 1,
+      "Controller_output_tokens": 4000,
+      "native_action_budget": "Keep existing heavy/light/browse limits disclosed; prohibit actual heavy execution by stage scope tripwires rather than change research outcome semantics."
+    },
+    "stop": "A schema-valid wrong route is semantic failure and remains saved. Stop after first persisted unit, not after first independently correct unit. No extra attempts, manual edited answer or subsequent fullrun to manufacture success."
+  },
+  "independent_semantic_control": {
+    "reflection_item_ref": "reflection:42597493a6b1af7ff10a07d6471c48610c0a21a1f24a18cbc9d0d11628abcd12",
+    "source_json_locator": "/manifest/fast_context/meta_entries/0/plan_reflections/0/vertical_plan_reflection/reflection_items/2",
+    "source_item": {
+      "brief": "Three cases recorded signal validation failures (financing_listing_action:v5, guidance_acceleration:v3, order_confirmation_disclosed:v2) that removed forward-expectations and order-confirmation evidence from the research pass, yet all three cases were still scored and none was a technical exclusion.",
+      "category": "missing_information_needs",
+      "counter_refs": [],
+      "detail": "The trajectory table records recorded_signal_execution_failures for case_index 3 (financing_listing_action:v5, validation_failed), case_index 22 (guidance_acceleration:v3, validation_failed), and case_index 23 (order_confirmation_disclosed:v2, validation_failed). The technical_completion statistics for plan_r0001_c01 report technical_exclusion_count = 0, technical_completion_rate = 1.0, and scoring_effect_counts with 0 technical negative abstentions, so these validation failures did not remove the cases from the scored denominator. Case 22 and 23 were magnitude underestimates (2-3x predicted, 3-10x realized); case 3 was a binary false positive. The validation failures are technical execution gaps in the evidence pipeline, not evidence that the measured conditions were absent, and they should be repaired separately from research-quality changes.",
+      "evidence_status": "sources_checked",
+      "item_ref": "reflection:42597493a6b1af7ff10a07d6471c48610c0a21a1f24a18cbc9d0d11628abcd12",
+      "kind": "fact",
+      "level": "plan",
+      "limitations": [
+        "A validation failure does not prove the measured condition was absent or negative; it only means no validated domain result was produced.",
+        "The trajectory table is a bounded view; the full signal execution records are preserved separately.",
+        "The realized outcomes do not establish that the missing signals would have changed the magnitude band."
+      ],
+      "outcome_claims": [],
+      "owner_ref": "reflection_plan:0b5122303576f9cdf7d194d7724ccdd9b6dc4f34031d67091c0e109da6fc678a",
+      "scope": {
+        "case_refs": [],
+        "conditions": "Index when diagnosing whether missing forward-guidance or order-confirmation evidence contributed to magnitude underestimates in plan_r0001_c01; use to route repair to the signal validation layer rather than to the research prompt.",
+        "plan_refs": [
+          "reflection_plan:0b5122303576f9cdf7d194d7724ccdd9b6dc4f34031d67091c0e109da6fc678a"
+        ]
+      },
+      "source_refs": [
+        "reflection_source:c91d9a77532cd0264ec815ff93ca3e94741df8c497801275c2e66a7e4c4d7d25",
+        "reflection_source:0e0f57f8c60b1553d27abd943f52bdfcc19bc8541a6d02407042347d336e3f28"
+      ]
+    },
+    "original_errors": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+        "json_locator": "/trajectories/2/signal_rounds/0/batch/results/0",
+        "case_id": "cik_0000701818:20250930",
+        "plan_id": "plan_r0001_c01",
+        "signal_ref": "financing_listing_action:v5",
+        "source": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+          },
+          "signal_id": "financing_listing_action",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 5
+        },
+        "file_sha256": "67c75ec03242fa451589848dae6f703ba381004dab786c5c678dff18e48551ad"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+        "json_locator": "/trajectories/21/signal_rounds/0/batch/results/1",
+        "case_id": "cik_0001920294:20250530",
+        "plan_id": "plan_r0001_c01",
+        "signal_ref": "guidance_acceleration:v3",
+        "source": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+          },
+          "signal_id": "guidance_acceleration",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 3
+        },
+        "file_sha256": "67c75ec03242fa451589848dae6f703ba381004dab786c5c678dff18e48551ad"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+        "json_locator": "/trajectories/22/signal_rounds/0/batch/results/1",
+        "case_id": "cik_0000839470:20250731",
+        "plan_id": "plan_r0001_c01",
+        "signal_ref": "order_confirmation_disclosed:v2",
+        "source": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+          },
+          "signal_id": "order_confirmation_disclosed",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 2
+        },
+        "file_sha256": "67c75ec03242fa451589848dae6f703ba381004dab786c5c678dff18e48551ad"
+      }
+    ],
+    "native_runtime_row_identity": "Prepared _reflection_action_inventory creates the need_ref using actual rebasedround/provenance. Freeze by matching reflection_item_ref after native generation; no hand-authored ID or compressed singleton population.",
+    "expected": "repair_dependency with empty signal_refs:3 source-backed Signal output-validation failures need execution/citation or dependency diagnosis; no evidence here proves factors economically ineffective or a new measurement is required.",
+    "allowed_uncertainty": [
+      "No unique root cause between original model answer, source projection, validator or correction authority is proved by terminal error.",
+      "Zero case-level technical exclusions coexists with3 per-Signal failures; do not erase either denominator.",
+      "Only exact3 original c01 errors support this control; c02 additional3 remain separate witnesses, not new independent issuer effects."
+    ],
+    "failure_cases": [
+      "already_covered is not a current Controller disposition.",
+      "update_existing with arbitraryguidance ref when no exact measurement-change evidence is a failed attribution.",
+      "new_measurement/no_pattern/not_testable as blanket replacement for technical failure is unsupported.",
+      "A generic plan/process slogan without exact underlying failure family does not pass even if it cites thisref."
+    ]
+  },
+  "quota_bridge_gap": {
+    "status": "known_producer_factory_consumer_gap_not_repaired_here",
+    "original_rows": [
+      {
+        "affected_case_ids": [
+          "cik_0000839470:20250731",
+          "cik_0002023554:20250930"
+        ],
+        "basic_info_request_id": "management_commentary",
+        "occurrences": 2,
+        "provider": "alpha_vantage",
+        "reason": "quota_deferred",
+        "request_id": "management_commentary",
+        "signal_ref": null,
+        "source_types": [
+          "earnings_call",
+          "earnings_transcript"
+        ],
+        "status": "open"
+      },
+      {
+        "affected_case_ids": [
+          "cik_0000839470:20250731",
+          "cik_0002023554:20250930"
+        ],
+        "basic_info_request_id": "recent_management_commentary",
+        "occurrences": 2,
+        "provider": "alpha_vantage",
+        "reason": "quota_deferred",
+        "request_id": "recent_management_commentary",
+        "signal_ref": null,
+        "source_types": [
+          "earnings_call",
+          "earnings_transcript"
+        ],
+        "status": "open"
+      }
+    ],
+    "first_loss": "_mining_context retains ordinary items separately; _run_controller_mining_axis backlog_needs selects only capability_backlog.signal_need_items. The2 quota rows never enter current Controller needs merely because they exist incontext.",
+    "expected_future_owner_fix": "Separate spec-first general adaptation of ordinary dependency backlog to current Controller need interface, preserving originalrequest identity/reason/source scope and pending accounting. No per-case insertion or artificial signal_need_item now.",
+    "this_stage_claim": "quota actualroute remainsunverified/gap inAandB; never count the technical reflection control as fixingquota."
+  },
+  "unresolved_interface_decisions": [
+    "No existing public single-step Controller-runner factory exists;A can naturally stop on first native pendingrequest inside existingaxis factory. B needs a declared stage control boundary after originalprogress sink, or a reviewed reusable factory/step extraction preserving native composition. This is an internal implementation choice to review; no new canonical businessschema is proposed here.",
+    "A/B are alternative predeclared evidence boundaries. Do not sealA then silently reenter it forB; a laterB needs a separately frozen stage with valid source authority and preservedA results.",
+    "If additive methodview inherits sourceclosure excludingH1, do not widenpermissions to satisfyControllercontrol. Header→permitted consumer and technicalFastmeta→Controller are separate evidencechains; wholeS2 remainsopen.",
+    "New active diagnostic contract/Discovery input authorization is distinct from old exhausted/completedv182 runtime. No clone can reactivate oldbudget or implicitly authorizefullSlow."
+  ],
+  "read_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/manifest.json",
+      "sha256": "2584bb7e28173412a79ad0520b80d13ca4711074ad663baccc4d24600bdba438"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/completed-files.json",
+      "sha256": "af51a017053d258b15b2bda7defcf73bbd86bf76c11b790e2fa2d4bff927352c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/input_manifest.json",
+      "sha256": "3c6a74fea9c3e29742d9759f11a9087cbb16726e17d509ec1f4dd7d5e2b48d3c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/source-evidence.json",
+      "sha256": "32c7fb8662ed47140c907ffe712a61f8e25c211c94567ad84b0f8c4980ab72bf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "1e8ad5c2f614a853220f846d79dd77a69ff6011aea3870a78a187c8c26c93d43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "48bc084ca33c095f0ecc0e93404b4d17eb580f1364defa758a8375fd7c93d4a6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "c4bba21b5ec197a4f99fb2cefb5e8b2256dfc72dc92c9feffd47f455c4ddb917"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d"
+    }
+  ],
+  "operations": {
+    "models": 0,
+    "Slow": 0,
+    "Signal": 0,
+    "network": 0,
+    "globalLabelStore": 0,
+    "LockedTest": 0,
+    "uncommittedRound2": 0,
+    "product_changes": 0,
+    "runner_written": false
+  }
+}

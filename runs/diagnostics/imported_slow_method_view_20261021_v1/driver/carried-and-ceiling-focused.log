@@ -1,0 +1,19 @@
+.........F....
+======================================================================
+FAIL: test_old_native_units_and_default_local_projection_unchanged (tests.test_imported_slow_method_memory.ImportedSlowMethodMemoryTests.test_old_native_units_and_default_local_projection_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py", line 108, in test_old_native_units_and_default_local_projection_unchanged
+    self.assertEqual([row['artifact'] for row in originals], [unit for _, _, _, unit in expected])
+AssertionError: Lists differ: [{'contract_hash': 'aaaaaaaaaaaaaaaaaaaaaaaa[896 chars]1']}] != [{'schema_version': 'slow-memory-v1', 'cycle[896 chars] []}]
+
+First differing element 0:
+{'contract_hash': 'aaaaaaaaaaaaaaaaaaaaaaaa[481 chars]None}
+{'schema_version': 'slow-memory-v1', 'cycle[481 chars]None}
+
+Diff is 1140 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 14 tests in 5.620s
+
+FAILED (failures=1)

@@ -1,0 +1,38 @@
+test_large_failed_original_remains_deferred_header_complete_and_readable (tests.test_imported_slow_method_memory.ImportedSlowMethodMemoryTests.test_large_failed_original_remains_deferred_header_complete_and_readable) ... ERROR
+test_hidden_source_closure_gates_header_summary_and_entries (tests.test_imported_slow_method_memory.ImportedSlowMethodMemoryTests.test_hidden_source_closure_gates_header_summary_and_entries) ... FAIL
+
+======================================================================
+ERROR: test_large_failed_original_remains_deferred_header_complete_and_readable (tests.test_imported_slow_method_memory.ImportedSlowMethodMemoryTests.test_large_failed_original_remains_deferred_header_complete_and_readable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py", line 79, in test_large_failed_original_remains_deferred_header_complete_and_readable
+    compact = header(rows); artifact = compact['artifact']
+              ^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py", line 65, in header
+    return next(row for row in rows if row.get('artifact', {}).get('schema_version') == PROFILE)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
+
+======================================================================
+FAIL: test_hidden_source_closure_gates_header_summary_and_entries (tests.test_imported_slow_method_memory.ImportedSlowMethodMemoryTests.test_hidden_source_closure_gates_header_summary_and_entries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py", line 143, in test_hidden_source_closure_gates_header_summary_and_entries
+    self.assertEqual(by_ref[row['feedback_ref']], ['Update', 'reflection'])
+AssertionError: Lists differ: ['E2', 'H1', 'H3', 'Update', 'reflection'] != ['Update', 'reflection']
+
+First differing element 0:
+'E2'
+'Update'
+
+First list contains 3 additional elements.
+First extra element 2:
+'H3'
+
+- ['E2', 'H1', 'H3', 'Update', 'reflection']
++ ['Update', 'reflection']
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.558s
+
+FAILED (failures=1, errors=1)

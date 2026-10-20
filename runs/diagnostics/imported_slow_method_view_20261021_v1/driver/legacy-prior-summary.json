@@ -1,0 +1,29 @@
+{
+  "actual_stages_executed": false,
+  "bindings": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md": "8fd61842d45f1aecbcb7f548286c5ffe792844ebc043e273bb0123259ad7a722",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+    "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py": "be27cd4e9b0ae55590b4bbaf8a576e73fb2d7b748e11fe4a3f40c6e1c8ac41f6"
+  },
+  "old_original_tests_untouched": true,
+  "only_changed_function_from_1e87": [
+    "_scoped_slow_method_deltas"
+  ],
+  "previous_source_preserved": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/before-legacy-prior-signal_evolution.py.txt",
+    "sha256": "1e87ae7c63964ea7feda9414b2e5d4815fc318cebc839f25bdb3c7a9cda8b092"
+  },
+  "result_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/driver/legacy-prior-final-result.json",
+    "sha256": "501f23430b66f2c9da6b9b4db0582d842d36706df3ba37b22001fce8c23e5e27"
+  },
+  "scope": "Legacy prior lacking both canonical schema and recorded read manifest retains existing unreviewed local projection. Modern known-hidden or unknown source closure remains fail-closed.",
+  "status": "stable_legacy_prior_revision",
+  "tests": {
+    "forbidden_calls": 0,
+    "new_module": 15,
+    "original_regression_selector": 1,
+    "passed": 16,
+    "seconds": 5.439
+  }
+}

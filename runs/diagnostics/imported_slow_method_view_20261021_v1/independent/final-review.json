@@ -1,0 +1,71 @@
+{
+  "status": "PASS_bounded_imported_method_header_and_legacy_compatibility",
+  "final_bindings": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md": "8fd61842d45f1aecbcb7f548286c5ffe792844ebc043e273bb0123259ad7a722",
+    "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py": "be27cd4e9b0ae55590b4bbaf8a576e73fb2d7b748e11fe4a3f40c6e1c8ac41f6"
+  },
+  "evidence_bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/probe.py": "757664c30cac13fcf561ad3cce4e189b91e4c660fb8ba050998e4fa8b64d385d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/probe.log": "fb00c34796e80a092cfe5842817b9120eb8914c90cb4cbb02193cd5b951a64f1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/results.json": "4ccd19d12570c37b351f9ce8d7332174ab38e779cde5bb3c96b5a9702b885b16",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/original-1e87-signal_evolution.py.txt": "1e87ae7c63964ea7feda9414b2e5d4815fc318cebc839f25bdb3c7a9cda8b092",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/final-delta-probe.py": "c2a47abc016fcee93292582bbbfa7c3ccbf5b0f8f886900894bc9703889c1add",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/final-delta-probe.log": "ae39e7b9a98a4fa391eaddf5ead0c2e44fda021941f464b871ae15fdcade5098",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/final-delta-results.json": "cbddc1ece7bfccc0e1b6c3a9bde302eeb8ee5af5ab65bf24a34c9b19735a5f6d"
+  },
+  "versioned_results": {
+    "first_candidate": {
+      "source_sha256": "1e87ae7c63964ea7feda9414b2e5d4815fc318cebc839f25bdb3c7a9cda8b092",
+      "independent_groups": 7,
+      "additional_native_temp_methods": 2,
+      "complete_before_source_revision": true,
+      "scope": "Header/source closure, 3 public reads vs 3518 pending/126 hidden, bounded status/cause/cycle identity, legacy imported producer-admission, namespaced handles/three hops, six carried-header forgeries, exact persistence/next-method-view and target-kind ceiling."
+    },
+    "final_revision": {
+      "source_sha256": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+      "only_AST_changed_function": "_scoped_slow_method_deltas",
+      "isolated_1e87_legacy_red_reproduced": true,
+      "legacy_scope_positive": true,
+      "modern_hidden_unknown_negative_and_visible_positive": true,
+      "native_original_local_brief_reader_and_next_reflection_regression": 1,
+      "old_header_controls_not_claimed_freshly_rerun_on_final": true
+    }
+  },
+  "conclusions": [
+    "The old whole summary remains immutable and can remain deferred under 64KB. The additive header is readable without claiming the original summary or its nested pending feedback was processed.",
+    "Three actual public reads produce an H1-readable status/cause header even with 126 hidden units in the 3518 offered/pending directory. No pending counts, membership hashes, source directory or naked entry handles appear in that header; opaque full-original hashes remain provenance.",
+    "Known hidden actual reads/citations and native target-observation kind ceilings restrict header and subsequent method views. Legacy imported inputs without a source manifest retain old valid input admission and add no unproved header.",
+    "Oversized complete status/cause returns bounded explicit deferred metadata; conflicting/missing raw memory identity is unreviewed, not an available known-cycle view.",
+    "Carried headers are reconstructed against original namespaced memory plus bound input; body, locator, projection identity, original-file hash, input hash and fake-schema shadow attempts all reject. Three-hop carry retains one exact ref/identity rather than new observation credit.",
+    "The original header consumer/persistence/reopen/next-method-view link was exercised with deterministic offline authored reflection output. Only the new header ref becomes processed; original summary and original pending vectors are not thereby consumed.",
+    "The first candidate introduced a legacy local-prior filtering regression. Final narrowly restores old scope only when both canonical schema and recorded read-manifest fields are absent; modern known-hidden or unknown scopes remain rejected."
+  ],
+  "limits": [
+    "All executions used synthetic temporary sources, pure native validators and deterministic offline callers. No fresh LLM obedience, real Slow stage, Signal apply, capability audit, API/GET, LabelStore, global source append or immutable-history mutation was performed.",
+    "7 groups plus 2 native temporary methods ran on 1e87. Final23b036 was verified by whole-module AST equivalence except the single scoped-helper change, targeted positive/negative helper controls and the original native local-prior regression selector. These versioned scopes are not conflated.",
+    "No independent observation, adoption/reuse credit, new research gain or whole S1/S2/Slow/MVP closure follows from a derived method view or native persistence.",
+    "The real847019-byte original and3518 pending remain source evidence; this audit did not rewrite or newly consume them. Fresh exact-inbox consumption and actual-stage behavior remain future acceptance items."
+  ],
+  "runtime_forbidden_calls": 0,
+  "commands": [
+    {
+      "runtime": "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "src:scripts:tests:."
+      },
+      "script": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/probe.py",
+      "exit": 0
+    },
+    {
+      "runtime": "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "src:scripts:tests:."
+      },
+      "script": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/final-delta-probe.py",
+      "exit": 0
+    }
+  ]
+}

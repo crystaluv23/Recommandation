@@ -1,0 +1,343 @@
+"""Complete imported method headers preserve originals, scope and consumption."""
+from copy import deepcopy
+from pathlib import Path
+from types import SimpleNamespace
+import hashlib
+import json
+import shutil
+import tempfile
+from unittest import TestCase
+
+from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research import signal_evolution as native
+from stock_opportunity_agent.research.evolution_core import AgentStep
+from stock_opportunity_agent.research.plan_evolution import EvolutionWorkspace
+
+ALL = sorted(native._SLOW_SOURCE_ROLES)
+PROFILE = 'imported-slow-method-memory-header-v1'
+
+
+def memory(*, status='failed', refs=('source-one',), episodes=(), lessons=()):
+    return {'schema_version': 'slow-memory-v1', 'cycle_id': 1, 'contract_hash': 'a'*64,
+        'input_hash': 'b'*64, 'parent_memory_hash': '', 'reflection_work_hash': 'c'*64,
+        'status': status, 'processed_feedback_refs': [], 'pending_feedback_refs': list(refs),
+        'episode_reflections': list(episodes), 'lesson_additions': list(lessons),
+        'model_view_manifest': {'requested_refs': list(refs)}, 'usage_ref': None,
+        'failure_ref': 'Reflection failed; feedback remains unprocessed.' if status == 'failed' else None}
+
+
+def write(path, body):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(body, sort_keys=True))
+
+
+def hashes(root):
+    return {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+
+
+class ImportedOwner:
+    _imported_slow_history_manifest = native.SignalEvolutionEngine._imported_slow_history_manifest
+    _imported_artifact_units = staticmethod(native.SignalEvolutionEngine._imported_artifact_units)
+    _imported_slow_feedback = native.SignalEvolutionEngine._imported_slow_feedback
+
+
+def imported_fixture(root, raw, *, namespace='source-one', scopes=None, carried=()):
+    scopes = scopes if scopes is not None else {ref: ALL for ref in raw.get('pending_feedback_refs', ())}
+    input_rows = [{'feedback_ref': ref, 'kind': 'search_result', 'subject_ref': ref,
+        'source_refs': [ref], 'limitations': [], 'artifact': {'source': ref}}
+        for ref in scopes]
+    input_rows.extend(deepcopy(carried))
+    input_manifest = [{'ref': row['feedback_ref'], 'content_hash': native._canonical_hash(row['artifact']),
+        'visible_to': scopes.get(row['feedback_ref'], ALL)} for row in input_rows]
+    raw['input_hash'] = native._canonical_hash({'feedback_rows': input_rows, 'source_manifest': input_manifest})
+    artifacts = []
+    for filename, body in [('slow_input.json', {'feedback_rows': input_rows, 'source_manifest': input_manifest}), ('slow_memory.json', raw)]:
+        relative = Path('experiments/cycles/cycle-0001') / filename
+        path = root / 'slow_history' / namespace / relative
+        write(path, body)
+        artifacts.append({'cycle_id': '1', 'path': str(relative), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+    manifest = {'schema_version': 'slow-history-manifest-v2', 'source_namespace': namespace,
+        'committed_slow_cycle': 1, 'cycle_artifacts': artifacts}
+    write(root / 'slow_history/manifest.json', {'manifest_hash': native._canonical_hash(manifest), 'manifest': manifest})
+    owner = ImportedOwner(); owner.workspace = SimpleNamespace(root=root)
+    return owner
+
+
+
+def rebind_authored_input(root, namespace='source-one'):
+    path = root / 'slow_history/manifest.json'
+    envelope = json.loads(path.read_text())
+    base = root / 'slow_history' / namespace / 'experiments/cycles/cycle-0001'
+    raw = json.loads((base / 'slow_memory.json').read_text())
+    raw['input_hash'] = native._canonical_hash(json.loads((base / 'slow_input.json').read_text()))
+    write(base / 'slow_memory.json', raw)
+    for item in envelope['manifest']['cycle_artifacts']:
+        item['sha256'] = hashlib.sha256((root / 'slow_history' / namespace / item['path']).read_bytes()).hexdigest()
+    envelope['manifest_hash'] = native._canonical_hash(envelope['manifest'])
+    write(path, envelope)
+
+
+def header(rows):
+    return next(row for row in rows if row.get('artifact', {}).get('schema_version') == PROFILE)
+
+
+class ImportedSlowMethodMemoryTests(TestCase):
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory(); self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name).resolve()
+
+    def test_large_failed_original_remains_deferred_header_complete_and_readable(self):
+        raw = memory(refs=tuple(f'source-{i:04}' for i in range(3518)))
+        raw['model_view_manifest']['large_diagnostic'] = 'diagnostic ' * 65000
+        owner = imported_fixture(self.root, raw); before_raw = deepcopy(raw); before = hashes(self.root)
+        rows, manifest = owner._imported_slow_feedback()
+        compact = header(rows); artifact = compact['artifact']
+        original = next(row for row in rows if row['feedback_ref'].endswith(':slow_memory:summary'))
+        self.assertEqual(original['artifact'], {k: v for k, v in raw.items() if k not in ('episode_reflections', 'lesson_additions')})
+        catalog = native._slow_feedback_source_catalog(rows, manifest)
+        original_read, original_view = native.read_slow_sources([original['feedback_ref']], role_scope='reflection', source_catalog=catalog, budget_bytes=64000)
+        self.assertEqual(original_read, ()); self.assertEqual(original_view['deferred'][0]['reason'], 'whole_entry_budget')
+        selected, view = native.read_slow_sources([compact['feedback_ref']], role_scope='reflection', source_catalog=catalog, budget_bytes=64000)
+        self.assertEqual(len(selected), 1); self.assertEqual(view['deferred'], [])
+        delta = artifact['view']['memory_deltas'][0]
+        self.assertEqual(delta['status'], 'failed'); self.assertEqual(delta['failure_ref'], raw['failure_ref'])
+        self.assertEqual(delta['memory_hash'], native._canonical_hash(raw))
+        self.assertIn('pending_feedback_refs', delta['omitted_fields'])
+        self.assertNotIn('omitted_groups', delta)
+        self.assertNotIn('3518', json.dumps(artifact))
+        self.assertNotIn(native._canonical_hash(raw['pending_feedback_refs']), json.dumps(artifact))
+        self.assertEqual(raw, before_raw); self.assertEqual(before, hashes(self.root))
+        self.assertLess(len(json.dumps(artifact).encode()), 32000)
+        self.assertNotIn('original_ref', json.dumps(artifact))
+        self.assertEqual(artifact['source']['json_locator'], '/')
+        self.assertEqual(artifact['source']['source_sha256'], compact['source_artifact']['sha256'])
+
+    def test_old_native_units_and_default_local_projection_unchanged(self):
+        episode = {'episode_ref': 'e1', 'source_refs': ['source-one'], 'reflection': 'Full old detail.', 'brief': 'Bounded old detail.', 'kind': 'fact', 'unresolved_questions': []}
+        lesson = {'lesson_id': 'l1', 'guidance': 'Preserve the exact source.', 'brief': 'Preserve source.', 'kind': 'action', 'support_refs': ['e1'], 'counterevidence_refs': [], 'qualifies_refs': [], 'challenges_refs': [], 'applicable_scope': [], 'limitations': []}
+        raw = memory(status='appended', episodes=[episode], lessons=[lesson])
+        owner = imported_fixture(self.root, raw)
+        expected = native.SignalEvolutionEngine._imported_artifact_units('slow_memory.json', raw)
+        rows, _ = owner._imported_slow_feedback()
+        originals = [row for row in rows if ':slow_memory:' in row['feedback_ref'] and row['artifact'].get('schema_version') != PROFILE]
+        self.assertEqual([row['artifact'] for row in originals], [unit for _, _, _, unit in expected])
+        default = native.project_slow_method_memory([raw], budget_bytes=32000)
+        self.assertEqual(default['memory_view_manifest']['schema_version'], 'slow-method-memory-view-v1')
+        self.assertEqual(default['memory_deltas'][0]['episode_reflections'][0]['original_ref'], 'slow-memory:1:episode:e1')
+        compact = header(rows)['artifact']['view']
+        self.assertNotIn('episode_reflections', compact['memory_deltas'][0])
+        self.assertIn('lesson_additions', compact['memory_deltas'][0]['omitted_fields'])
+        self.assertEqual(episode, originals[1]['artifact']); self.assertEqual(lesson, originals[2]['artifact'])
+
+    def test_failed_success_empty_and_oversized_header_are_honest(self):
+        for status in ('failed', 'appended', 'no_new_lesson', 'reused'):
+            with self.subTest(status=status):
+                rows, _ = imported_fixture(self.root / status, memory(status=status))._imported_slow_feedback()
+                self.assertEqual(header(rows)['artifact']['view']['memory_deltas'][0]['status'], status)
+        for field in ('status', 'failure_ref'):
+            raw = memory(); raw[field] = 'x' * 40000
+            rows, _ = imported_fixture(self.root / field, raw)._imported_slow_feedback()
+            compact = header(rows)['artifact']
+            self.assertEqual(compact['projection_status'], 'deferred'); self.assertEqual(compact['reason'], 'whole_header_budget')
+            self.assertNotIn('view', compact); self.assertLess(len(json.dumps(compact)), 2000)
+        for bad in (None, 2, True):
+            raw = memory(); raw['cycle_id'] = bad
+            rows, _ = imported_fixture(self.root / str(bad), raw)._imported_slow_feedback()
+            self.assertEqual(header(rows)['artifact']['reason'], 'unreviewed_memory_identity')
+
+    def test_hidden_source_closure_gates_header_summary_and_entries(self):
+        episode = {'episode_ref': 'e1', 'source_refs': ['hidden'], 'reflection': 'Hidden detail.'}
+        lesson = {'lesson_id': 'l1', 'support_refs': ['e1'], 'guidance': 'Hidden lesson.'}
+        raw = memory(refs=('hidden',), episodes=[episode], lessons=[lesson])
+        raw['failure_ref'] = 'Hidden input error.'
+        scopes = {'hidden': ['reflection', 'Update']}
+        rows, manifest = imported_fixture(self.root, raw, scopes=scopes)._imported_slow_feedback()
+        by_ref = {row['ref']: row['visible_to'] for row in manifest}
+        catalog = native._slow_feedback_source_catalog(rows, manifest)
+        memory_rows = [row for row in rows if ':slow_memory:' in row['feedback_ref']]
+        for row in memory_rows:
+            self.assertEqual(by_ref[row['feedback_ref']], ['Update', 'reflection'])
+            with self.assertRaisesRegex(ValidationError, 'role scope'):
+                native.read_slow_sources([row['feedback_ref']], role_scope='H1', source_catalog=catalog, budget_bytes=64000)
+        self.assertEqual(len(memory_rows), 4)
+        visible, _ = native.read_slow_sources([header(rows)['feedback_ref']], role_scope='Update', source_catalog=catalog, budget_bytes=64000)
+        self.assertEqual(len(visible), 1)
+        self.assertEqual(native._scoped_slow_method_deltas([raw], source_catalog={'hidden': {'visible_to': ['reflection', 'Update']}}, role_scope='H1'), [])
+
+    def test_unknown_or_missing_source_scope_fails_closed(self):
+        raw = memory(refs=('absent',))
+        with self.assertRaisesRegex(ValidationError, 'source closure'):
+            imported_fixture(self.root, raw, scopes={'other': ALL})._imported_slow_feedback()
+        self.assertEqual(native._slow_memory_roles(raw, None), [])
+        self.assertEqual(native._slow_memory_roles(raw, {'absent': ['not-a-role']}), [])
+
+    def test_multi_hop_preserves_projection_identity_and_no_duplicate_header(self):
+        raw = memory()
+        rows, _ = imported_fixture(self.root / 'first', raw, namespace='first')._imported_slow_feedback()
+        original = header(rows)
+        shutil.copytree(self.root / 'first/slow_history/first', self.root / 'next/slow_history/first')
+        owner = imported_fixture(self.root / 'next', memory(status='reused'), namespace='next', carried=[original])
+        rows, _ = owner._imported_slow_feedback()
+        copies = [row for row in rows if row.get('artifact', {}).get('projection_identity') == original['artifact']['projection_identity']]
+        self.assertEqual(copies, [original])
+        other, _ = imported_fixture(self.root / 'other', memory(status='appended'), namespace='other')._imported_slow_feedback()
+        self.assertNotEqual(header(other)['artifact']['projection_identity'], original['artifact']['projection_identity'])
+
+    def test_source_hash_tampering_is_rejected_before_projection(self):
+        owner = imported_fixture(self.root, memory())
+        path = next((self.root / 'slow_history/source-one').rglob('slow_memory.json'))
+        path.write_text(path.read_text() + ' ')
+        with self.assertRaisesRegex(ValidationError, 'copy hash mismatch'): owner._imported_slow_feedback()
+
+    def test_native_reflection_payload_persistence_and_next_method_view(self):
+        raw = memory(refs=tuple(f'old-{i}' for i in range(200)))
+        rows, manifest = imported_fixture(self.root / 'import', raw)._imported_slow_feedback()
+        compact = header(rows); ref = compact['feedback_ref']
+        view_manifest = next(row for row in manifest if row['ref'] == ref)
+        workspace = EvolutionWorkspace(self.root / 'runtime')
+        workspace.start_or_resume_cycle(run_contract_hash='a'*64, target_plan_rounds=0, cycle_mode='slow_only',
+            max_slow_cycles=1, initial_signal_registry_version=1, initial_signal_registry_hash='b'*64,
+            observed_signal_registry_version=1, observed_signal_registry_hash='b'*64)
+        slow_input = native.validate_slow_input({'schema_version': 'slow-input-v1', 'cycle_id': 1, 'contract_hash': 'a'*64,
+            'registry_hash': 'b'*64, 'source_cutoff': {'committed_fast_round': 0, 'committed_slow_cycle': 1},
+            'feedback_rows': [compact], 'source_manifest': [view_manifest], 'feedback_hash': native._canonical_hash({'feedback_rows': [compact]}),
+            'sampling_manifest': {'schema_version': 'slow-sampling-manifest-v1', 'dev_case_ids': [], 'check_case_ids': [], 'issuer_groups': {}},
+            'previous_memory_head': None, 'previous_memory_hash': ''})
+        workspace.stage_slow_input(cycle_id=1, slow_input=slow_input)
+        captured = []
+        class OfflineReflector:
+            def reflect_feedback(self, payload):
+                captured.append(deepcopy(payload))
+                return AgentStep({'episode_reflections': [{'episode_ref': payload['episode_slots'][0], 'source_refs': [ref],
+                    'reflection': 'The imported header records a technical reflection failure; its original pending inputs remain unprocessed.',
+                    'unresolved_questions': [], 'kind': 'fact', 'brief': 'Technical failure, not a completed feedback review.'}], 'lesson_additions': []})
+        engine = native.SignalEvolutionEngine.__new__(native.SignalEvolutionEngine)
+        engine.workspace = workspace; engine.mining_model = OfflineReflector(); engine.update_model = None
+        engine.mining_config = native.SignalMiningConfig()
+        state = engine._prepare_slow_memory(cycle_id=1, slow_input=slow_input)
+        self.assertEqual(state['processed_feedback_refs'], [ref])
+        self.assertNotIn(compact['artifact']['source']['summary_identity'], state['processed_feedback_refs'])
+        self.assertEqual(raw['processed_feedback_refs'], []); self.assertEqual(len(raw['pending_feedback_refs']), 200)
+        self.assertEqual(captured[0]['feedback_units'][0]['artifact'], compact['artifact'])
+        reopened = EvolutionWorkspace(workspace.root)
+        self.assertEqual(reopened.load_slow_memory(1), state)
+        engine.workspace = reopened; engine._active_slow_input = slow_input; engine._active_slow_memory = state
+        next_view = engine._slow_method_view('H1')
+        self.assertEqual(next_view['source_entries'][0]['content']['artifact'], compact['artifact'])
+        self.assertEqual(next_view['memory_deltas'][-1]['episode_reflections'][0]['brief'], state['episode_reflections'][0]['brief'])
+
+
+    def test_actual_read_header_does_not_disclose_unread_hidden_directory(self):
+        raw = memory(refs=('public', 'hidden'))
+        raw['model_view_manifest'] = {'included_refs': ['public'], 'requested_refs': ['public', 'hidden'],
+            'deferred': [{'ref': 'hidden', 'reason': 'item_limit'}]}
+        rows, manifest = imported_fixture(self.root, raw, scopes={'public': ALL, 'hidden': ['reflection', 'Update']})._imported_slow_feedback()
+        scopes = {row['ref']: row['visible_to'] for row in manifest}
+        compact = header(rows)
+        self.assertIn('H1', scopes[compact['feedback_ref']])
+        original = next(row for row in rows if row['feedback_ref'].endswith(':slow_memory:summary'))
+        self.assertNotIn('H1', scopes[original['feedback_ref']])
+        self.assertNotIn('hidden', json.dumps(compact['artifact']))
+        self.assertEqual(native._scoped_slow_method_deltas([raw], source_catalog={ref: {'visible_to': roles} for ref, roles in {'public': ALL, 'hidden': ['reflection', 'Update']}.items()}, role_scope='H1'), [raw])
+
+    def test_legacy_scope_is_retained_and_no_unproved_header_is_added(self):
+        raw = memory()
+        owner = imported_fixture(self.root, raw)
+        path = self.root / 'slow_history/source-one/experiments/cycles/cycle-0001/slow_input.json'
+        body = json.loads(path.read_text()); body.pop('source_manifest'); write(path, body)
+        manifest_path = self.root / 'slow_history/manifest.json'; envelope = json.loads(manifest_path.read_text())
+        envelope['manifest']['cycle_artifacts'][0]['sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+        envelope['manifest_hash'] = native._canonical_hash(envelope['manifest']); write(manifest_path, envelope)
+        rebind_authored_input(self.root)
+        rows, manifest = owner._imported_slow_feedback()
+        self.assertFalse(any(row.get('artifact', {}).get('schema_version') == PROFILE for row in rows))
+        self.assertEqual(next(row['visible_to'] for row in manifest if ':slow_memory:' in row['ref']), ALL)
+        validated = native.validate_slow_input({'schema_version': 'slow-input-v1', 'cycle_id': 1, 'contract_hash': 'a'*64,
+            'registry_hash': 'b'*64, 'source_cutoff': {}, 'feedback_rows': rows, 'source_manifest': manifest,
+            'feedback_hash': native._canonical_hash({'feedback_rows': rows}),
+            'sampling_manifest': {'schema_version': 'slow-sampling-manifest-v1', 'dev_case_ids': [], 'check_case_ids': [], 'issuer_groups': {}},
+            'previous_memory_head': None, 'previous_memory_hash': ''})
+        self.assertEqual(validated['feedback_rows'], rows)
+        empty_rows, _ = imported_fixture(self.root / 'empty', memory(status='reused', refs=()))._imported_slow_feedback()
+        self.assertFalse(any(row.get('artifact', {}).get('schema_version') == PROFILE for row in empty_rows))
+
+    def test_oversized_legacy_body_stays_complete_and_separately_deferred(self):
+        lesson = {'lesson_id': 'large', 'support_refs': ['source-one'], 'guidance': 'Original detail. ' * 6000}
+        raw = memory(status='appended', lessons=[lesson])
+        rows, manifest = imported_fixture(self.root, raw)._imported_slow_feedback()
+        compact = header(rows)
+        self.assertEqual(compact['artifact']['projection_status'], 'available')
+        full = next(row for row in rows if row['feedback_ref'].endswith(':lesson-001'))
+        self.assertEqual(full['artifact'], lesson)
+        selected, manifest = native.read_slow_sources([full['feedback_ref']], role_scope='H1',
+            source_catalog=native._slow_feedback_source_catalog(rows, manifest), budget_bytes=64000)
+        self.assertEqual(selected, ()); self.assertEqual(manifest['deferred'][0]['reason'], 'whole_entry_budget')
+
+    def test_contradictory_scope_manifest_is_not_legacy_fallback(self):
+        owner = imported_fixture(self.root, memory())
+        path = self.root / 'slow_history/source-one/experiments/cycles/cycle-0001/slow_input.json'
+        body = json.loads(path.read_text())
+        body['source_manifest'].append({**body['source_manifest'][0], 'visible_to': ['Update']})
+        write(path, body)
+        manifest_path = self.root / 'slow_history/manifest.json'; envelope = json.loads(manifest_path.read_text())
+        envelope['manifest']['cycle_artifacts'][0]['sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+        envelope['manifest_hash'] = native._canonical_hash(envelope['manifest']); write(manifest_path, envelope)
+        rebind_authored_input(self.root)
+        with self.assertRaisesRegex(ValidationError, 'source manifest is invalid'): owner._imported_slow_feedback()
+
+    def test_carried_same_identity_modified_body_or_provenance_cannot_shadow(self):
+        first = self.root / 'first'
+        rows, _ = imported_fixture(first, memory(), namespace='first')._imported_slow_feedback()
+        original = header(rows)
+        for field in ('view', 'source', 'projection_identity'):
+            destination = self.root / field
+            shutil.copytree(first / 'slow_history/first', destination / 'slow_history/first')
+            changed = deepcopy(original)
+            if field == 'view': changed['artifact']['view']['memory_deltas'][0]['failure_ref'] = 'Forged'
+            elif field == 'source': changed['artifact']['source']['json_locator'] = '/status'
+            else: changed['artifact']['projection_identity'] = 'f'*64
+            owner = imported_fixture(destination, memory(), namespace='next', carried=[changed])
+            with self.subTest(field=field), self.assertRaisesRegex(ValidationError, 'carried method header'):
+                owner._imported_slow_feedback()
+
+    def test_target_kind_ceiling_is_not_widened_by_legacy_allrole_manifest(self):
+        raw = memory(refs=('target',))
+        raw['model_view_manifest'] = {'included_refs': ['target'], 'requested_refs': ['target']}
+        owner = imported_fixture(self.root, raw, scopes={'target': ALL})
+        path = self.root / 'slow_history/source-one/experiments/cycles/cycle-0001/slow_input.json'
+        body = json.loads(path.read_text()); body['feedback_rows'][0]['kind'] = 'signal_target_observation'
+        write(path, body)
+        manifest_path = self.root / 'slow_history/manifest.json'; envelope = json.loads(manifest_path.read_text())
+        envelope['manifest']['cycle_artifacts'][0]['sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+        envelope['manifest_hash'] = native._canonical_hash(envelope['manifest']); write(manifest_path, envelope)
+        rebind_authored_input(self.root)
+        rows, manifest = owner._imported_slow_feedback()
+        ref = header(rows)['feedback_ref']
+        scopes = next(row['visible_to'] for row in manifest if row['ref'] == ref)
+        self.assertNotIn('H1', scopes); self.assertIn('Update', scopes)
+        catalog = native._slow_feedback_source_catalog(rows, manifest)
+        with self.assertRaisesRegex(ValidationError, 'role scope'):
+            native.read_slow_sources([ref], role_scope='H1', source_catalog=catalog, budget_bytes=64000)
+        visible, _ = native.read_slow_sources([ref], role_scope='Update', source_catalog=catalog, budget_bytes=64000)
+        self.assertEqual(len(visible), 1)
+        derived = memory(status='appended', refs=())
+        derived['processed_feedback_refs'] = [ref]
+        derived['model_view_manifest'] = {'included_refs': [ref]}
+        self.assertEqual(native._scoped_slow_method_deltas([derived], source_catalog=catalog, role_scope='H1'), [])
+        self.assertEqual(native._scoped_slow_method_deltas([derived], source_catalog=catalog, role_scope='Update'), [derived])
+
+    def test_legacy_local_prior_retains_scope_modern_known_or_unknown_does_not(self):
+        episode = {'episode_ref': 'old-episode', 'source_refs': ['old-feedback'],
+            'reflection': 'Exact legacy original.', 'brief': 'Legacy hypothesis.', 'kind': 'hypothesis'}
+        legacy = {'cycle_id': 1, 'status': 'appended', 'processed_feedback_refs': ['old-feedback'],
+            'episode_reflections': [episode], 'lesson_additions': []}
+        unrelated = {'current-feedback': {'visible_to': ALL}}
+        self.assertEqual(native._scoped_slow_method_deltas([legacy], source_catalog=unrelated, role_scope='reflection'), [legacy])
+        self.assertEqual(native.project_slow_method_memory(native._scoped_slow_method_deltas([legacy],
+            source_catalog=unrelated, role_scope='reflection'), budget_bytes=32000),
+            native.project_slow_method_memory([legacy], budget_bytes=32000))
+        modern = {**legacy, 'schema_version': 'slow-memory-v1', 'model_view_manifest': {'included_refs': ['old-feedback']}}
+        self.assertEqual(native._scoped_slow_method_deltas([modern], source_catalog=unrelated, role_scope='reflection'), [])
+        hidden = {'old-feedback': {'visible_to': ['Update']}}
+        self.assertEqual(native._scoped_slow_method_deltas([modern], source_catalog=hidden, role_scope='H1'), [])
+        self.assertEqual(native._scoped_slow_method_deltas([modern], source_catalog=hidden, role_scope='Update'), [modern])

@@ -1,0 +1,96 @@
+{
+  "bindings_after": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+    "/Users/l/Project/Recommandation/tests/scheme_evolution_test_support.py": "9caf193e3098ce159b914ac1df598e3cd3aa6e13485315965bbc9510dca6cef9",
+    "/Users/l/Project/Recommandation/tests/test_imported_signal_feedback.py": "8f83d06ab986257acaf209958149a2b76d2baf78b0cbf3069be82bc1dad17241",
+    "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py": "be27cd4e9b0ae55590b4bbaf8a576e73fb2d7b748e11fe4a3f40c6e1c8ac41f6",
+    "/Users/l/Project/Recommandation/tests/test_signal_evolution_engine.py": "6e907829cbf7aadee132f299a3edc4d3cb952dec2e9af256f2c6444c26028de8"
+  },
+  "bindings_before": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+    "/Users/l/Project/Recommandation/tests/scheme_evolution_test_support.py": "9caf193e3098ce159b914ac1df598e3cd3aa6e13485315965bbc9510dca6cef9",
+    "/Users/l/Project/Recommandation/tests/test_imported_signal_feedback.py": "8f83d06ab986257acaf209958149a2b76d2baf78b0cbf3069be82bc1dad17241",
+    "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py": "be27cd4e9b0ae55590b4bbaf8a576e73fb2d7b748e11fe4a3f40c6e1c8ac41f6",
+    "/Users/l/Project/Recommandation/tests/test_signal_evolution_engine.py": "6e907829cbf7aadee132f299a3edc4d3cb952dec2e9af256f2c6444c26028de8"
+  },
+  "errors": [],
+  "failures": [],
+  "limitation": "Synthetic CIK1 binds normal test schema only; it does not establish real cross-issuer independence, fresh model obedience, source admission or research benefit.",
+  "passed": true,
+  "patch_proof": [
+    {
+      "added_metadata_lines": [
+        {
+          "new_line": 5404,
+          "old_line": 5404
+        },
+        {
+          "new_line": 5582,
+          "old_line": 5581
+        },
+        {
+          "new_line": 5702,
+          "old_line": 5700
+        },
+        {
+          "new_line": 6198,
+          "old_line": 6195
+        },
+        {
+          "new_line": 6518,
+          "old_line": 6514
+        },
+        {
+          "new_line": 6568,
+          "old_line": 6563
+        },
+        {
+          "new_line": 6691,
+          "old_line": 6685
+        },
+        {
+          "new_line": 6774,
+          "old_line": 6767
+        },
+        {
+          "new_line": 6918,
+          "old_line": 6910
+        }
+      ],
+      "after_sha256": "6e907829cbf7aadee132f299a3edc4d3cb952dec2e9af256f2c6444c26028de8",
+      "all_other_bytes_unchanged": true,
+      "before_sha256": "08a8520c2810fe0aabe9f427ef5ecc812e25127f948c4aa0eb62dc06cdbd2f36",
+      "file": "test_signal_evolution_engine.py"
+    },
+    {
+      "added_metadata_lines": [
+        {
+          "new_line": 268,
+          "old_line": 268
+        }
+      ],
+      "after_sha256": "8f83d06ab986257acaf209958149a2b76d2baf78b0cbf3069be82bc1dad17241",
+      "all_other_bytes_unchanged": true,
+      "before_sha256": "daff774ff7ff667803922dd09bb7a2bd72d482acbd1af8ce397975d59f8119b8",
+      "file": "test_imported_signal_feedback.py"
+    }
+  ],
+  "seconds": 6.709864999866113,
+  "selectors": [
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_slow_loop_validates_and_auto_promotes_exact_batch_idempotently",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_effectiveness_excludes_induction_and_marks_sparse_support_provisional",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_paired_effectiveness_materializes_both_arms_before_freeze",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_paired_effectiveness_rejects_an_identical_update",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_paired_effectiveness_tiers_a_directional_tie_into_provisional",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_processes_top_three_actionable_targets",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_suppresses_exact_work_but_retries_relevant_new_input",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_update_reuses_provisional_vnext_on_a_new_check_identity",
+    "tests.test_imported_signal_feedback"
+  ],
+  "tests": 19,
+  "tripwires": {
+    "label_store_load": 0,
+    "network": 0
+  },
+  "unchanged": true
+}

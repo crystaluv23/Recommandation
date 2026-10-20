@@ -1,0 +1,88 @@
+{
+  "formal_stage_created": false,
+  "removed_duplicate_bytes": 69001853,
+  "removed_duplicate_files": 223,
+  "retained_new_native_artifacts": [
+    {
+      "bytes": 0,
+      "relative_path": ".stage.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2061427,
+      "relative_path": "approved_cases.json",
+      "sha256": "3c6a74fea9c3e29742d9759f11a9087cbb16726e17d509ec1f4dd7d5e2b48d3c"
+    },
+    {
+      "bytes": 0,
+      "relative_path": "exchange/.dispatch.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 106,
+      "relative_path": "exchange/contract.json",
+      "sha256": "8265888a4b7e28fe15238ef90ebfd8f6d04f9f37c1141a63d76c5e98052d1dca"
+    },
+    {
+      "bytes": 36111,
+      "relative_path": "exchange/inbox/aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5.json",
+      "sha256": "0c19b961fb358e9469fe339d1b87ccda3b40bf62bc883690782fe52503621396"
+    },
+    {
+      "bytes": 79344,
+      "relative_path": "manifest.json",
+      "sha256": "db69a94cd4ea4923fcf7dfbc9e4b552554d51eb4ceb353ff0a00d9bc71cd7759"
+    },
+    {
+      "bytes": 644,
+      "relative_path": "progress.json",
+      "sha256": "eb1a0e1f552b218d6602dac09d33df944b3b7730d15f60f0e3d1810b998f8486"
+    },
+    {
+      "bytes": 7021,
+      "relative_path": "run_contract.json",
+      "sha256": "07fb17ac348835e44bfa976a91d0f878c04ab680fe0cb8a27dd7168dc48d6348"
+    },
+    {
+      "bytes": 37336,
+      "relative_path": "transport/requests/aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5.json",
+      "sha256": "0d053fbb62e1bb6a099685dce669f50b7f517bed6d66db7c6ac465e8360b6bbb"
+    },
+    {
+      "bytes": 119,
+      "relative_path": "unused_external_attempts.json",
+      "sha256": "7adfb414620c91083193a8a5090dd3a4bde904b810e5940a9007abff25c7b12b"
+    },
+    {
+      "bytes": 288490,
+      "relative_path": "workspace/capability_backlog.json",
+      "sha256": "b1c35923559bfb96766d7c06e60ef933bd989bc08b3a581134167d873901c9eb"
+    },
+    {
+      "bytes": 783,
+      "relative_path": "workspace/cycle_state.json",
+      "sha256": "1287e1cdade41ea3985aac667483af12b2aeab38ec3d5ca31f9baeeb356d86a2"
+    },
+    {
+      "bytes": 288490,
+      "relative_path": "workspace/experiments/capability_gap_report.json",
+      "sha256": "b1c35923559bfb96766d7c06e60ef933bd989bc08b3a581134167d873901c9eb"
+    },
+    {
+      "bytes": 29736256,
+      "relative_path": "workspace/experiments/cycles/cycle-0001/slow_input.json",
+      "sha256": "0ec321b92f7cf3b5906c25ab08e23b074d274bddbbbdc5193b281a66b987c2d7"
+    },
+    {
+      "bytes": 7021,
+      "relative_path": "workspace/run_contract.json",
+      "sha256": "07fb17ac348835e44bfa976a91d0f878c04ab680fe0cb8a27dd7168dc48d6348"
+    },
+    {
+      "bytes": 32,
+      "relative_path": "workspace/state.json",
+      "sha256": "6c497dda1ea81ff19e044e7cdd57db1e0b7fab237d3a494e2e8a7b5016c989f0"
+    }
+  ],
+  "temporary_pending_not_completed_restore": true
+}

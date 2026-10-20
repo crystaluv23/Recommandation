@@ -69,8 +69,15 @@ manifest ba60fd7c/v12原hash与18refs、137定义/914事件/192knowledge记录/5
 原生只读probe确认3531个imported units（非完整S1总分母），失败memory unit847019bytes被64KB reader以whole_entry_budget拒；小摘要2312bytes正控可读。
 目录无独立失败原因；541bytes紧凑local view不自动进入首个import-only周期。228封存文件不变，无新模型消费。
 新native财务/来源/input-only/F7/S5等已完成阶段保持完成，不因验收失败重跑；不调整冻结oracle或发布旧版本。
-下一按spec复用既有compact method view修imported反馈可读粒度，保完整原件、精确source/role及pending；不加预算或手摘反馈。
-合格后再冻结有限S1/S2 exact-inbox、独立预期及实际后继任务消费；不改已完成物化阶段。
+[Imported method反馈修复](../reports/imported-slow-method-feedback-20261021.md)候选已加完整status/cause紧凑unit，
+原summary/向量/正文与pending保留，actual read/citation scope贯穿后继view，跨namespace/multihop不重复记学习。
+16聚焦及独立反例窄审通过；首197关联暴露legacy prior回归已修，随后198中9旧失败已对照原源码。
+只补10处synthetic numeric SEC metadata（正文/期待不改），最终198+15阶段控制=213全过，原失败均留。
+唯一新实际source probe3532units/1header，2312bytes在reflection/H1可读；原summary仍budget-deferred且H1-hidden，228封存文件全等。
+这只是原生producer/catalog/reader连接，无新模型消费。下一有限S1/S2 stage已实现候选但未正式prepare/dispatch；
+独立发现真实workspace缺合同，双位置同合同修复保native gate，真实914events/192knowledge读取正控通过；
+唯一temp真实Engine组合到首slow_source_read待答，完整新D4493/native need-ref已推导，4408source保真/0答，不等于S1/S2消费。
+之后冻结exact-inbox、独立预期及实际Controller首need-unit消费；不改已完成物化阶段、不完整重跑。
 LLM阅读接口方案待设计决策；两财务期间定义需具体政策/新版本，不能由当前计算结果倒推答案。
 完整反馈消费、新方向/magnitude Mining→忠实实现→准入发布→后继精确使用、完整恢复及双环均未验证。
 旧v182权威Fast/Slow=1/1完成不恢复；memory失败processed0/pending3518不改成功。不启动完整后继，整体MVP保持open。

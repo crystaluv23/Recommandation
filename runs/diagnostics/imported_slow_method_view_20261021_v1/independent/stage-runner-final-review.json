@@ -1,0 +1,60 @@
+{
+  "status": "PASS_bounded_preflight_through_first_zero_answer_native_inbox",
+  "bindings": {
+    "/Users/l/Project/Recommandation/scripts/run_reviewed_slow_feedback_stage.py": "a1acad66f4f83935bb5ccdb8834ec32ad064c42a1ab98ac84b76d2f6bb1209f9",
+    "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_slow_feedback_stage.md": "84a1bdfe483b2f14a531bd1ffee756e88705295938d74fee8b948e7c38cd0ffe",
+    "/Users/l/Project/Recommandation/tests/test_reviewed_slow_feedback_stage.py": "b78c8388c9bdb849e4c7961922cdee71e302a74aaa08e858b9121385053a5803",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/run.py": "40c0deed69c5052fe5634d9700d57cb7cd937ac6677ef7ebf834f7530a28a4b2",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/result.json": "a82fd73aee12deef15345f4d547e27a375ce2acf08e67ec7a4f9a0e882a60439",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/sources-before.json": "df8313347acbf423c567faacf28f7aa4e007b91d51ec9fb2409218d4b20d5eba",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/sources-after.json": "df8313347acbf423c567faacf28f7aa4e007b91d51ec9fb2409218d4b20d5eba",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/stage-artifacts/manifest.json": "db69a94cd4ea4923fcf7dfbc9e4b552554d51eb4ceb353ff0a00d9bc71cd7759",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/stage-artifacts/transport/requests/aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5.json": "0d053fbb62e1bb6a099685dce669f50b7f517bed6d66db7c6ac465e8360b6bbb",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/stage-artifacts/exchange/inbox/aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5.json": "0c19b961fb358e9469fe339d1b87ccda3b40bf62bc883690782fe52503621396"
+  },
+  "actual_temporary_connections": {
+    "only_patch": "STAGE_ROOT",
+    "native_Engine_and_qualified_store": true,
+    "full_feedback_denominator": 4493,
+    "target_need_ref": "reflection-7d08d205fe330564",
+    "source_before_after_bindings": 4408,
+    "same_new_dual_contract": true,
+    "request_hash": "aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5",
+    "first_native_stage": "slow_source_read",
+    "reservation": 36289,
+    "inbox_messages_exact": true,
+    "answers": 0,
+    "receipts": 0,
+    "agent_dispatches": 0,
+    "completed_fast_round": 0,
+    "completed_slow_cycle": 0,
+    "formal_root_exists": false
+  },
+  "dual_contract_temp_controls": [
+    "missing workspace copy rejects",
+    "exact dual copy accepted",
+    "coherently changed workspace copy rejects"
+  ],
+  "retained_copy_evidence": {
+    "expected_copy_map": 223,
+    "all_expected_source_bytes_current_equal_map": true,
+    "copied_files_not_retained_here": 223,
+    "limitation": "Saved temporary artifacts omit historical copy directories. Original native prepare/advance _preserved checks and guard establish execution-time equality; reviewer cannot rehash the removed temporary destination copies. No rerun requested."
+  },
+  "resolved_blocker": "Same new frozen contract is now stored and byte-verified under the actual workspace before native import/knowledge readers; no authority gate weakened.",
+  "audit_correction": "The file named stage-runner-original-a1acad... was captured after the fix raced with review. It is the corrected candidate, not an exact old missing-contract source snapshot. Initial review retained but that old-byte attribution is withdrawn; initial read text and independent native importer counterexample support the old diagnosis, not an actual failed stage execution.",
+  "harness_failure_retained": "The first read-only audit assumed all temp copied directories were preserved and stopped at a missing copied manifest. This is missing retained evidence, not a native prepare failure. No stage operation was rerun.",
+  "static_scope": [
+    "Discovery-only dev/check ids; forty identities provide aliases, not general outcome disclosure. Existing nonempty direct-modality footprint channel rejects before dispatch.",
+    "Unique request journal reservations reconstruct exact family/8request/131072perrequest/1048576total limits before receive; old experiment budgets not reused.",
+    "Original Engine factory/full backlog and explicitly controlled native page retained. Controller system prompt adds a declared execution envelope; not byte-identical native prompt or autonomous retrieval.",
+    "Original need sink returns before EvolutionControlFlow boundary exits ahead of a later call/seed; module remains partial_running, semantics unreviewed.",
+    "Terminal restore only checks saved bytes without construction or further calls."
+  ],
+  "limits": [
+    "No prepare, advance, dispatch, Signal, API, GET, LabelStore, full Slow or real source mutation was executed by this review.",
+    "Authorized temporary integration reached only one pending selector. Fresh reflection/Controller answers and need sink semantics remain future acceptance.",
+    "Saved4408 before/after metadata compared exactly; underlying4408 sources were not independently rehashed again. Expected copied history source files and retained input/contracts/request/inbox were read directly.",
+    "Actual mixed approved case file was not deserialized by this independent review, and no retrospective outcome values are copied to this report."
+  ]
+}

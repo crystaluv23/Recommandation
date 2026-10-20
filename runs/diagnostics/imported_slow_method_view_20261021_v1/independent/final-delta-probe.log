@@ -1,0 +1,22 @@
+test_slow_live_briefs_keep_originals_and_resolve_through_existing_reader (tests.test_structured_reflection_roles.SlowAuthoredBriefTests.test_slow_live_briefs_keep_originals_and_resolve_through_existing_reader) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+{
+  "status": "PASS_final_legacy_delta_and_native_original_regression",
+  "source_sha256": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+  "only_AST_changed_function": "_scoped_slow_method_deltas",
+  "old_1e87_legacy_unrelated_catalog_filter_red": true,
+  "new_legacy_scope_positive": true,
+  "modern_unknown_and_hidden_rejected": true,
+  "modern_public_and_Update_positive": true,
+  "one_missing_identity_field_not_legacy_bypass": true,
+  "native_original_regression_methods": 1,
+  "forbidden_calls": 0,
+  "live_models": 0,
+  "Signal_apply": 0,
+  "GET": 0,
+  "LabelStore": 0
+}

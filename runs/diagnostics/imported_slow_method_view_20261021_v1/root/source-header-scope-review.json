@@ -1,0 +1,60 @@
+{
+  "original_memory_sha256": "e056b9a626138c7f6e17a90291a3da33dfb3b5176d98a2701688a6e94ceafe87",
+  "source_status": "failed",
+  "included": {
+    "count": 3,
+    "unknown_count": 0,
+    "scope_counts": {
+      "E2,H1,H3,Update,reflection": 3
+    },
+    "roles_intersection": [
+      "E2",
+      "H1",
+      "H3",
+      "Update",
+      "reflection"
+    ]
+  },
+  "requested": {
+    "count": 3518,
+    "unknown_count": 0,
+    "scope_counts": {
+      "E2,H1,H3,Update,reflection": 3392,
+      "E2,H3,Update,reflection": 126
+    },
+    "roles_intersection": [
+      "E2",
+      "H3",
+      "Update",
+      "reflection"
+    ]
+  },
+  "pending": {
+    "count": 3518,
+    "unknown_count": 0,
+    "scope_counts": {
+      "E2,H1,H3,Update,reflection": 3392,
+      "E2,H3,Update,reflection": 126
+    },
+    "roles_intersection": [
+      "E2",
+      "H3",
+      "Update",
+      "reflection"
+    ]
+  },
+  "processed": {
+    "count": 0,
+    "unknown_count": 0,
+    "scope_counts": {},
+    "roles_intersection": [
+      "E2",
+      "H1",
+      "H3",
+      "Update",
+      "reflection"
+    ]
+  },
+  "failure_cause_bytes": 312,
+  "scope_note": "This inspects original recorded disclosure scopes only; no role permission or model interpretation is established."
+}

@@ -959,8 +959,9 @@ def project_slow_method_memory(
     deltas: Iterable[Mapping[str, Any]],
     *,
     budget_bytes: int,
+    header_only: bool = False,
 ) -> dict[str, Any]:
-    """Build one bounded whole-entry view without rewriting stored memory."""
+    """Build a bounded full-entry or explicit header view of unchanged memory."""
 
     if budget_bytes < 1:
         raise ValidationError("Slow method-memory budget must be positive")
@@ -970,6 +971,8 @@ def project_slow_method_memory(
     for delta_index in range(len(source_deltas) - 1, -1, -1):
         delta = source_deltas[delta_index]
         cycle_id = int(delta.get("cycle_id", 0))
+        if header_only:
+            continue
         episodes = tuple(
             dict(item)
             for item in delta.get("episode_reflections", ())
@@ -1015,12 +1018,15 @@ def project_slow_method_memory(
             cycle_id = int(delta.get("cycle_id", 0))
             projected.append(
                 {
-                    "schema_version": "slow-method-memory-delta-view-v1",
+                    "schema_version": "slow-method-memory-header-view-v1" if header_only else "slow-method-memory-delta-view-v1",
                     "cycle_id": cycle_id,
                     "status": str(delta.get("status", "")),
                     "memory_hash": _canonical_hash(delta),
                     "failure_ref": delta.get("failure_ref"),
-                    "episode_reflections": [
+                    **({"coverage": "header only; no processing vectors, read directory or authored bodies",
+                        "omitted_fields": ["processed_feedback_refs", "pending_feedback_refs", "model_view_manifest",
+                            "episode_reflections", "lesson_additions"]} if header_only else {}),
+                    **({} if header_only else {"episode_reflections": [
                         brief_entry(ref, kind, value)
                         for ref, owner, kind, value in entry_rows
                         if ref in included
@@ -1033,11 +1039,11 @@ def project_slow_method_memory(
                         if ref in included
                         and owner == delta_index
                         and kind == "lesson"
-                    ],
+                    ]}),
                 }
             )
         manifest = {
-            "schema_version": "slow-method-memory-view-v1",
+            "schema_version": "slow-method-memory-header-manifest-v1" if header_only else "slow-method-memory-view-v1",
             "budget_bytes": budget_bytes,
             "bytes": 0,
             "requested_refs": list(requested_refs),
@@ -1082,6 +1088,150 @@ def project_slow_method_memory(
         if candidate["memory_view_manifest"]["bytes"] <= budget_bytes:
             included_refs.append(ref)
     return render(included_refs)
+
+
+def _slow_memory_input_scopes(source_input: Mapping[str, Any] | None) -> dict[str, list[str]] | None:
+    """Use the same native kind ceiling as ordinary imported feedback projection."""
+    if source_input is None or "source_manifest" not in source_input:
+        return None  # Legacy units retain their original disclosure contract.
+    declared = source_input["source_manifest"]
+    if (not isinstance(declared, list) or not all(isinstance(row, Mapping)
+        and isinstance(row.get("ref"), str) and row["ref"]
+        and isinstance(row.get("visible_to"), list) for row in declared)
+        or len({row["ref"] for row in declared}) != len(declared)):
+        raise ValidationError("imported memory source manifest is invalid")
+    source_rows = source_input.get("feedback_rows", ())
+    originals = {str(row["feedback_ref"]): row for row in source_rows
+        if isinstance(row, Mapping) and row.get("feedback_ref")}
+    if len(originals) != len(source_rows):
+        raise ValidationError("imported memory source originals are invalid or duplicated")
+    result = {}
+    for entry in declared:
+        original = originals.get(entry["ref"])
+        if original is None:
+            raise ValidationError("imported memory source closure lacks its original unit")
+        result[entry["ref"]] = _projected_feedback_roles("slow_input.json", source_input,
+            str(original.get("kind", "search_result")), original)
+    return result
+
+
+def _slow_memory_roles(
+    memory: Mapping[str, Any], source_scopes: Mapping[str, Iterable[str]] | None,
+    *, unit: Mapping[str, Any] | None = None, header_only: bool = False,
+) -> list[str]:
+    """Intersect complete source closure; status/errors can describe any input."""
+    if source_scopes is None:
+        return []
+    scopes = {str(ref): set(roles) for ref, roles in source_scopes.items()}
+    if any(not roles or not roles <= _SLOW_SOURCE_ROLES for roles in scopes.values()):
+        return []
+    entries = {str(row.get("episode_ref") or row.get("lesson_id")): row
+        for field in ("episode_reflections", "lesson_additions")
+        for row in memory.get(field, ()) if isinstance(row, Mapping)}
+    def intersect(values: Iterable[set[str]]) -> set[str]:
+        result = set(_SLOW_SOURCE_ROLES)
+        for roles in values:
+            result &= roles
+        return result
+    def closure(ref: str, seen: frozenset[str]) -> set[str]:
+        if ref in scopes:
+            return scopes[ref]
+        if ref in seen or ref not in entries:
+            return set()
+        row = entries[ref]
+        refs = [str(value) for field in ("source_refs", "support_refs", "counterevidence_refs", "qualifies_refs", "challenges_refs")
+            for value in row.get(field, ())]
+        return intersect(closure(value, seen | {ref}) for value in refs) if refs else set()
+    if unit is not None:
+        refs = [str(value) for field in ("source_refs", "support_refs", "counterevidence_refs", "qualifies_refs", "challenges_refs")
+            for value in unit.get(field, ())]
+        return sorted(intersect(closure(ref, frozenset()) for ref in refs)) if refs else []
+    view = memory.get("model_view_manifest", {})
+    if not isinstance(view, Mapping):
+        return []
+    if header_only:
+        # Only actual reflection reads/accepted citations can ground status/cause.
+        refs = [str(ref) for ref in view.get("included_refs", ())]
+        refs.extend(str(ref) for ref in memory.get("processed_feedback_refs", ()))
+        for row in entries.values():
+            for field in ("source_refs", "support_refs", "counterevidence_refs", "qualifies_refs", "challenges_refs"):
+                refs.extend(str(ref) for ref in row.get(field, ()))
+        if not refs:
+            # A read-selection failure can describe the offered directory. Unknown
+            # empty closure is never an all-role proof for an imported header.
+            refs = [str(ref) for ref in view.get("requested_refs", ())]
+        return sorted(intersect(closure(ref, frozenset()) for ref in refs)) if refs else []
+    refs = [str(ref) for field in ("processed_feedback_refs", "pending_feedback_refs") for ref in memory.get(field, ())]
+    for field in ("included_refs", "requested_refs", "required_refs"):
+        refs.extend(str(ref) for ref in view.get(field, ()))
+    refs.extend(str(row["ref"]) for row in view.get("deferred", ()) if isinstance(row, Mapping) and row.get("ref"))
+    return sorted(intersect(closure(ref, frozenset()) for ref in refs)) if refs else sorted(_SLOW_SOURCE_ROLES)
+
+
+def _scoped_slow_method_deltas(
+    deltas: Iterable[Mapping[str, Any]], *, source_catalog: Mapping[str, Mapping[str, Any]], role_scope: str,
+) -> list[dict[str, Any]]:
+    """Preserve legacy prior scope; enforce recorded closure on modern deltas."""
+    scopes = {ref: row.get("visible_to", ()) for ref, row in source_catalog.items()}
+    return [dict(delta) for delta in deltas
+        if ("schema_version" not in delta and "model_view_manifest" not in delta)
+        or role_scope in _slow_memory_roles(delta, scopes, header_only=True)]
+
+
+def _imported_slow_method_header(
+    memory: Mapping[str, Any], *, artifact_sha256: str, summary_ref: str, cycle_id: int,
+) -> dict[str, Any]:
+    """Project a complete sourced header, never an original-memory read or consume."""
+    profile = "imported-slow-method-memory-header-v1"
+    origin = {"profile": profile, "source_sha256": artifact_sha256, "json_locator": "/"}
+    result: dict[str, Any] = {"schema_version": profile, "projection_identity": _canonical_hash(origin),
+        "source": {**origin, "summary_identity": summary_ref}, "source_memory_hash": _canonical_hash(memory),
+        "coverage": "method header only; original summary and nested feedback are not consumed", "budget_bytes": 32_000}
+    if memory.get("schema_version") != "slow-memory-v1" or type(memory.get("cycle_id")) is not int or memory["cycle_id"] != cycle_id:
+        return {**result, "projection_status": "deferred", "reason": "unreviewed_memory_identity"}
+    try:
+        view = project_slow_method_memory([memory], budget_bytes=32_000, header_only=True)
+        result.update(projection_status="available", view=view)
+        if len(json.dumps(result, sort_keys=True, ensure_ascii=False).encode("utf-8")) > 32_000:
+            raise ValidationError("imported method header provenance exceeds its budget")
+    except ValidationError:
+        result.update(projection_status="deferred", reason="whole_header_budget")
+        result.pop("view", None)
+    return result
+
+
+def _carried_imported_method_header(
+    workspace_root: Path, row: Mapping[str, Any],
+) -> list[str]:
+    """Rebuild a carried header from its copied, exact original namespace."""
+    artifact = row["artifact"]
+    source = artifact.get("source", {})
+    summary = str(source.get("summary_identity", ""))
+    parts = summary.split(":")
+    if (len(parts) != 5 or parts[0] != "slow-history" or not re.fullmatch(r"[A-Za-z0-9_-]+", parts[1])
+        or not re.fullmatch(r"[1-9][0-9]*", parts[2]) or parts[3:] != ["slow_memory", "summary"]
+        or source.get("json_locator") != "/"):
+        raise ValidationError("carried method header source identity is invalid")
+    namespace, cycle_id = parts[1], int(parts[2])
+    origin_path = workspace_root / "slow_history" / namespace / "experiments" / "cycles" / f"cycle-{cycle_id:04d}" / "slow_memory.json"
+    if not origin_path.is_file() or hashlib.sha256(origin_path.read_bytes()).hexdigest() != source.get("source_sha256"):
+        raise ValidationError("carried method header original source hash mismatch")
+    memory = _read_json(origin_path)
+    original_input = _read_json(origin_path.with_name("slow_input.json"))
+    if _canonical_hash(original_input) != memory.get("input_hash"):
+        raise ValidationError("carried method header input provenance mismatch")
+    expected = _imported_slow_method_header(memory, artifact_sha256=str(source["source_sha256"]),
+        summary_ref=summary, cycle_id=cycle_id)
+    expected_ref = summary.removesuffix(":summary") + ":method-header-v1"
+    expected_row = {"feedback_ref": expected_ref, "kind": "search_result", "subject_ref": f"{namespace}:cycle-{cycle_id:04d}",
+        "source_refs": [expected_ref], "limitations": ["imported committed history; source protocol may be read-only"],
+        "source_artifact": {"sha256": source["source_sha256"], "json_locator": "/"}, "artifact": expected}
+    if _canonical_hash(row) != _canonical_hash(expected_row):
+        raise ValidationError("carried method header differs from its original projection")
+    roles = _slow_memory_roles(memory, _slow_memory_input_scopes(original_input), header_only=True)
+    if not roles:
+        raise ValidationError("carried method header has no bound source scope")
+    return roles
 
 
 def _comparison_ready_exploration_signature(
@@ -4180,6 +4330,7 @@ class SignalEvolutionEngine:
             ),
             default=0,
         )
+        artifacts = []
         for item in history.get("cycle_artifacts", ()):
             if not isinstance(item, Mapping):
                 raise ValidationError("imported Slow artifact row must be an object")
@@ -4202,16 +4353,28 @@ class SignalEvolutionEngine:
                 != str(item.get("sha256", ""))
             ):
                 raise ValidationError("imported Slow artifact copy hash mismatch")
-            raw = _read_json(path)
+            artifacts.append((item, relative, filename, _read_json(path)))
+        inputs = {int(item.get("cycle_id", 0)): raw for item, _relative, filename, raw in artifacts if filename == "slow_input.json"}
+        seen_headers: dict[str, tuple[dict[str, Any], dict[str, Any]]] = {}
+        for item, relative, filename, raw in artifacts:
             cycle_id = int(item.get("cycle_id", 0))
             if filename == "slow_input.json" and cycle_id != latest_input_cycle:
                 continue
-            for suffix, kind, locator, unit in self._imported_artifact_units(
-                filename, raw
-            ):
-                feedback_ref = (
-                    f"slow-history:{namespace}:{cycle_id}:{filename[:-5]}:{suffix}"
-                )
+            units = list(self._imported_artifact_units(filename, raw))
+            prefix = f"slow-history:{namespace}:{cycle_id}:{filename[:-5]}"
+            source_scopes = None
+            if filename == "slow_memory.json":
+                source_input = inputs.get(cycle_id)
+                if (source_input is not None and raw.get("schema_version") == "slow-memory-v1"
+                    and raw.get("input_hash") != _canonical_hash(source_input)):
+                    raise ValidationError("imported memory input provenance mismatch")
+                source_scopes = _slow_memory_input_scopes(source_input)
+                if _slow_memory_roles(raw, source_scopes, header_only=True):
+                    header = _imported_slow_method_header(raw, artifact_sha256=str(item["sha256"]),
+                        summary_ref=prefix + ":summary", cycle_id=cycle_id)
+                    units.append(("method-header-v1", "search_result", "/", header))
+            for suffix, kind, locator, unit in units:
+                feedback_ref = prefix + ":" + suffix
                 row = {
                     "feedback_ref": feedback_ref,
                     "kind": kind,
@@ -4226,14 +4389,32 @@ class SignalEvolutionEngine:
                     },
                     "artifact": unit,
                 }
+                roles = _projected_feedback_roles(filename, raw, kind, unit)
+                if filename == "slow_memory.json" and source_scopes is not None:
+                    roles = _slow_memory_roles(raw, source_scopes,
+                        unit=unit if suffix.startswith(("episode-", "lesson-")) else None,
+                        header_only=suffix == "method-header-v1")
+                    if not roles:
+                        raise ValidationError("imported memory source closure is invalid or has no common role")
+                # A carried header retains its original ref/identity, not another observation.
+                if filename == "slow_input.json" and isinstance(unit.get("artifact"), Mapping) and unit["artifact"].get("schema_version") == "imported-slow-method-memory-header-v1":
+                    roles = sorted(set(roles) & set(_carried_imported_method_header(self.workspace.root, unit)))
+                    row = deepcopy(unit)
+                    feedback_ref = str(row["feedback_ref"])
+                    unit = row["artifact"]
+                if unit.get("schema_version") == "imported-slow-method-memory-header-v1":
+                    identity = str(unit["projection_identity"])
+                    if identity in seen_headers:
+                        prior_row, prior_scope = seen_headers[identity]
+                        if _canonical_hash(prior_row["artifact"]) != _canonical_hash(unit):
+                            raise ValidationError("imported method-header identity conflicts")
+                        prior_scope["visible_to"] = sorted(set(prior_scope["visible_to"]) & set(roles))
+                        continue
+                scope_row = {"ref": feedback_ref, "content_hash": _canonical_hash(unit), "visible_to": roles}
+                if unit.get("schema_version") == "imported-slow-method-memory-header-v1":
+                    seen_headers[str(unit["projection_identity"])] = (row, scope_row)
                 rows.append(row)
-                source_manifest.append(
-                    {
-                        "ref": feedback_ref,
-                        "content_hash": _canonical_hash(unit),
-                        "visible_to": _projected_feedback_roles(filename, raw, kind, unit),
-                    }
-                )
+                source_manifest.append(scope_row)
         return rows, source_manifest
 
     @staticmethod
@@ -4581,7 +4762,10 @@ class SignalEvolutionEngine:
                     for index in range(1, min(4, len(selected_refs)) + 1)
                 ]
                 try:
-                    prior_deltas = [item["slow_memory"] for item in prior[-3:]]
+                    prior_deltas = _scoped_slow_method_deltas(
+                        [item["slow_memory"] for item in prior[-3:]],
+                        source_catalog=_slow_feedback_source_catalog(feedback_rows, slow_input.get("source_manifest", ())),
+                        role_scope="reflection")
                     prior_view = project_slow_method_memory(prior_deltas, budget_bytes=32_000)
                     prior_catalog = slow_method_memory_sources(prior_deltas)
                     prior_sources, prior_manifest = read_slow_sources(
@@ -8851,7 +9035,8 @@ class SignalEvolutionEngine:
             dict(item["slow_memory"])
             for item in self.workspace.committed_slow_artifacts()[-3:]
         ]
-        method_deltas = [*prior_deltas, dict(self._active_slow_memory)]
+        method_deltas = _scoped_slow_method_deltas(
+            [*prior_deltas, dict(self._active_slow_memory)], source_catalog=source_catalog, role_scope=role_scope)
         method_sources = slow_method_memory_sources(method_deltas)
         source_catalog.update(method_sources)
         if method_sources:

@@ -1,0 +1,37 @@
+{
+  "original_module_sha256": "3f3723a2008d8e2aa1e2f30d5fff03d76e10e55595833f909a46aafe0bdd99ca",
+  "selectors": [
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_slow_loop_validates_and_auto_promotes_exact_batch_idempotently",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_effectiveness_excludes_induction_and_marks_sparse_support_provisional",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_paired_effectiveness_materializes_both_arms_before_freeze",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_paired_effectiveness_rejects_an_identical_update",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_paired_effectiveness_tiers_a_directional_tie_into_provisional",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_processes_top_three_actionable_targets",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_suppresses_exact_work_but_retries_relevant_new_input",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_update_reuses_provisional_vnext_on_a_new_check_identity",
+    "tests.test_structured_reflection_roles.SlowAuthoredBriefTests.test_slow_live_briefs_keep_originals_and_resolve_through_existing_reader",
+    "tests.test_imported_signal_feedback.ImportedSignalFeedbackTests.test_update_payload_and_suppression_share_committed_feedback_scope"
+  ],
+  "tests": 10,
+  "failures": [
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_effectiveness_excludes_induction_and_marks_sparse_support_provisional",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_paired_effectiveness_materializes_both_arms_before_freeze",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_paired_effectiveness_rejects_an_identical_update",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_paired_effectiveness_tiers_a_directional_tie_into_provisional",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_processes_top_three_actionable_targets",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_signal_update_suppresses_exact_work_but_retries_relevant_new_input",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_update_reuses_provisional_vnext_on_a_new_check_identity"
+  ],
+  "errors": [
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_slow_loop_validates_and_auto_promotes_exact_batch_idempotently",
+    "tests.test_imported_signal_feedback.ImportedSignalFeedbackTests.test_update_payload_and_suppression_share_committed_feedback_scope"
+  ],
+  "passed_selectors": [
+    "tests.test_structured_reflection_roles.SlowAuthoredBriefTests.test_slow_live_briefs_keep_originals_and_resolve_through_existing_reader"
+  ],
+  "tripwires": {
+    "network": 0,
+    "label_load": 0
+  },
+  "scope": "Frozen original module loaded at canonical import name; no product or test bytes rewritten."
+}

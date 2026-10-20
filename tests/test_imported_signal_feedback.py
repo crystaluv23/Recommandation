@@ -265,6 +265,7 @@ class ImportedSignalFeedbackTests(TestCase):
             self.engine.raw_info_store.append(RawInfoDocument.create(
                 document_id=f"update-source-{index}", company_id=case.company_id,
                 source_type="financials", published_at=NOW, available_at=NOW,
+                metadata={"cik": "0000000001"},
                 content=sec_company_facts_content(
                     ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
                     ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"))))

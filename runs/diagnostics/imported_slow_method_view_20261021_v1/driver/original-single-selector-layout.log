@@ -1,0 +1,18 @@
+test_update_payload_and_suppression_share_committed_feedback_scope (tests.test_imported_signal_feedback.ImportedSignalFeedbackTests.test_update_payload_and_suppression_share_committed_feedback_scope) ... FAIL
+
+======================================================================
+FAIL: test_update_payload_and_suppression_share_committed_feedback_scope (tests.test_imported_signal_feedback.ImportedSignalFeedbackTests.test_update_payload_and_suppression_share_committed_feedback_scope)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_imported_signal_feedback.py", line 279, in test_update_payload_and_suppression_share_committed_feedback_scope
+    self.assertEqual(first["audit"]["disposition"], "no_change")
+AssertionError: 'defer' != 'no_change'
+- defer
++ no_change
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.397s
+
+FAILED (failures=1)
+{"selector": "tests.test_imported_signal_feedback.ImportedSignalFeedbackTests.test_update_payload_and_suppression_share_committed_feedback_scope", "tests": 1, "tripwires": {"network": 0, "LabelStore": 0}}

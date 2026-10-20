@@ -1,0 +1,8 @@
+{
+  "inbox_path": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/reviewed-slow-native-preflight-z0f14o15/stage/exchange/inbox/aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5.json",
+  "inbox_sha256": "0c19b961fb358e9469fe339d1b87ccda3b40bf62bc883690782fe52503621396",
+  "outbox_path": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/reviewed-slow-native-preflight-z0f14o15/stage/exchange/outbox/aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5.txt",
+  "request_hash": "aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5",
+  "stage": "slow_source_read",
+  "status": "pending"
+}

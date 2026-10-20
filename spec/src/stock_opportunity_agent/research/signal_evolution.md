@@ -130,6 +130,43 @@ Update, candidate and transition work units, each retaining the immutable source
 artifact hash and JSON locator. A file larger than the role budget is never
 string-truncated or treated as one permanently unreadable feedback unit.
 
+Imported `slow_memory.json` also exposes an additive complete
+`imported-slow-method-memory-header-v1` unit. It uses the explicit header-only
+mode of `project_slow_method_memory` under the existing 32KB ceiling; default
+local entry projection is unchanged. The header retains status, full cause and
+opaque full original-memory hash, and explicitly excludes processing vectors,
+read directories and authored bodies. Their content, counts and membership
+hashes remain in the original summary; no derived empty array claims they were
+read or absent. Authored bodies remain separate existing native complete units,
+not a second alias registry.
+The original summary, refs and source bytes remain unchanged. The new unit binds
+the source artifact SHA, JSON locator and projection identity. Its summary
+identity is provenance, not a fabricated original-read handle. If even the
+complete header/provenance cannot fit, expose a small explicit deferred unit
+and original identity; never clip a field or turn the failure into an empty
+successful view. Missing/contradictory legacy memory identity remains unreviewed.
+Reading or reflecting on a header processes only that new ref, not its source
+summary or any nested feedback. A later import carries the same projection
+identity/ref without creating another independent observation or reuse credit.
+
+Permissions follow the fields actually disclosed. The original complete summary
+includes processing/read vectors and inherits their complete bound closure.
+A method header inherits only actual included/processed/cited source closure;
+when there was no actual read it conservatively uses the requested-source
+closure. A missing/empty proof omits the new header rather than treating it as
+all-role evidence. Subsequent prior/method views use that same disclosed-field
+closure. Known hidden or contradictory sources fail closed; legacy units with
+no bound source manifest retain their old scope and are not silently discarded.
+A hidden source cannot leak through a status/error, count, membership hash or
+body; an opaque whole-source hash remains provenance, not a membership handle. Legacy local prior deltas
+with neither a canonical schema nor a recorded read manifest retain their
+existing unreviewed projection scope; absence of their historical feedback
+from the current catalog does not erase those deltas. Modern canonical deltas
+with recorded provenance continue to require the visible source closure.
+The normal catalog/reader, reflection/task payloads, persistence and reopen
+retain this distinction between header coverage and original-source coverage.
+Budgets, prior windows and canonical memory schemas remain unchanged.
+
 Magnitude learning tasks from locally committed Fast rounds enter this same
 source view as `magnitude_feedback` units: one row per committed Plan whose
 meta reflection authentically carries `magnitude_diagnostics`, under a stable

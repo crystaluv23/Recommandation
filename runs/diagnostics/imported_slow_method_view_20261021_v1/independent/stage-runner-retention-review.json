@@ -1,0 +1,17 @@
+{
+  "status": "PASS_explicit_deduplicated_evidence_layout",
+  "copy_map_count": 223,
+  "removed_duplicate_bytes": 69001853,
+  "retained_native_files": 16,
+  "all_original_rows_accounted_for_by_retained_or_source_mapping": true,
+  "mapped_actual_source_bytes_current_equal": true,
+  "maps_match_frozen_native_manifest_copy_population": true,
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/source-copy-map.json": "e06ecde60f24eb5d162fbc64bbec65d996b41942270bfe40d7c2e5fdec4731ba",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/original-artifact-hashes.json": "907dcc00ea5038fdef90d9dbe70d5808455fb26bbb6a92f58b03403e9654b270",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/evidence-layout.json": "84bed6bad50456d326f3f924aaf0c84b6ba63c940cd0482d1c21d25f3fee86e7",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-final-review.json": "dff8fed2a62f8538f05515f9f5f0971ee4b37c28b91cef545acb8c11c348658a"
+  },
+  "correction": "Missing copied directories in saved temp artifacts are an explicit evidence deduplication, not runtime source loss. First audit assumed they remained and stopped; no business rerun occurred. Source-copy maps and retained native hashes now checked directly.",
+  "limits": "The native preflight is pending with zero answers, not a completed-stage restore or semantic success."
+}

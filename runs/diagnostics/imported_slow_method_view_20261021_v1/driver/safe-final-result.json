@@ -1,0 +1,27 @@
+{
+  "after": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md": "3e53b177ef1320250084031fc72162136d66ce5ac48c52114aff779a28a62350",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "1e87ae7c63964ea7feda9414b2e5d4815fc318cebc839f25bdb3c7a9cda8b092",
+    "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py": "d014146cc9d45e550b355a8dd2fa7108fc976eba5c55c2991d33741fb12055a5"
+  },
+  "before": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md": "3e53b177ef1320250084031fc72162136d66ce5ac48c52114aff779a28a62350",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "1e87ae7c63964ea7feda9414b2e5d4815fc318cebc839f25bdb3c7a9cda8b092",
+    "/Users/l/Project/Recommandation/tests/test_imported_slow_method_memory.py": "d014146cc9d45e550b355a8dd2fa7108fc976eba5c55c2991d33741fb12055a5"
+  },
+  "bindings_unchanged": true,
+  "errors": 0,
+  "failures": 0,
+  "forbidden_calls": {},
+  "selectors": [
+    "tests.test_imported_slow_method_memory",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_slow_source_read_keeps_whole_entries_and_enforces_scope",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_slow_source_read_preserves_whole_entries_beyond_item_limit",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_reflection_prioritizes_terminal_evidence_within_each_cycle",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_slow_method_memory_is_bounded_by_complete_recent_entries",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_typed_slow_source_read_replaces_view_once_and_keeps_pending",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_typed_slow_source_read_cannot_evict_required_recent_frontier",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_failed_slow_memory_cannot_consume_feedback"
+  ],
+  "tests": 21
+}

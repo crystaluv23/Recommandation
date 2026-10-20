@@ -1,0 +1,38 @@
+{
+  "status": "BLOCKED_initial_runner_missing_actual_workspace_contract",
+  "initial_runner": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-original-a1acad66f4f8.py.txt",
+    "sha256": "a1acad66f4f83935bb5ccdb8834ec32ad064c42a1ab98ac84b76d2f6bb1209f9"
+  },
+  "native_temporary_counterexample": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-contract-probe.py",
+    "sha256": "5dd42eac73820c53109b409e17a0278d173d40791f9a3c1ce94c2948d788421c",
+    "log": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-contract-probe.log",
+    "log_sha256": "962bd473444d6a474248f0d5d1da37a37fb9b520aeb1c33fc10c0f49e33f6be5",
+    "exit": 0,
+    "root_contract_only": "native imported_learning_events raises before input creation",
+    "same_contract_in_actual_workspace": "passes same native importer; no gate bypass"
+  },
+  "required_connection": "Persist and verify the same new frozen contract under the actual EvolutionWorkspace root as well as any wrapper copy. Do not weaken imported-learning/knowledge contract checks.",
+  "other_static_findings": [
+    "Source/check sampling is drawn from Discovery only; all40 identity objects are not a grant to disclose all40 outcome values.",
+    "Footprint preflight rejects the existing nonempty modality-metrics channel before dispatch; no general channel repair is claimed.",
+    "Original sink is called before the boundary exception; EvolutionControlFlow propagates out of the native factory, preserving partial running instead of cycle completion.",
+    "Controller system prompt is deliberately extended by the stage authorization envelope; it must be reported as such, not byte-identical native prompt.",
+    "Budget reservation reads native exact request journals and reconstructs unique family reservations on reopen; unexecuted over-budget journals must remain terminal rather than count as models."
+  ],
+  "not_validated": "Full real Engine constructor/open qualified view and original native input path have not been run by this review. Existing13 tests stub composition entrances and did not establish the missing contract location.",
+  "actual_header_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-actual-header-read-review.json",
+    "sha256": "99c9876aee59c535d6fa6413e7cf850ea4c133bb9e86ae435579837b11896602"
+  },
+  "real_actions": {
+    "prepare": 0,
+    "advance": 0,
+    "dispatch": 0,
+    "GET": 0,
+    "Signal": 0,
+    "LabelStore": 0,
+    "global_writes": 0
+  }
+}

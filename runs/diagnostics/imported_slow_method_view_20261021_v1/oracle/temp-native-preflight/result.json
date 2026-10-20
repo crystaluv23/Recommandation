@@ -1,0 +1,32 @@
+{
+  "advance": {
+    "inbox_path": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/reviewed-slow-native-preflight-z0f14o15/stage/exchange/inbox/aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5.json",
+    "inbox_sha256": "0c19b961fb358e9469fe339d1b87ccda3b40bf62bc883690782fe52503621396",
+    "outbox_path": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/reviewed-slow-native-preflight-z0f14o15/stage/exchange/outbox/aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5.txt",
+    "request_hash": "aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5",
+    "stage": "slow_source_read",
+    "status": "pending"
+  },
+  "answer_count": 0,
+  "dispatches": 0,
+  "elapsed_seconds": 34.223789958050475,
+  "external_llm_api_calls": 0,
+  "formal_root_after_exists": false,
+  "formal_root_before_exists": false,
+  "inbox_count": 1,
+  "not_model_success_or_S1_S2_acceptance": true,
+  "only_patch": "STAGE_ROOT",
+  "prepare": {
+    "full_feedback_count": 4493,
+    "manifest_hash": "d759819b03e6d09ef922c9d6744a356c9c6791b4907d7b0157aaf4dfc1664e73",
+    "status": "prepared_not_dispatched",
+    "target_need_ref": "reflection-7d08d205fe330564"
+  },
+  "production_connections_patched": [],
+  "receipt_count": 0,
+  "scope": "single_temp_native_integration_zero_answers_not_formal_stage",
+  "source_binding_count": 4408,
+  "sources_unchanged": true,
+  "submitted_answers": 0,
+  "temporary_runtime_root": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/reviewed-slow-native-preflight-z0f14o15/stage"
+}

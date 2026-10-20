@@ -1,0 +1,6 @@
+{
+  "error": "AssertionError at restored==before",
+  "cause": "Text replace removed a preexisting identical metadata line before the inserted line. Assertion occurred before first test file write.",
+  "product_mutations": 0,
+  "corrected_validation": "Remove insertion positions from in-memory output before comparing exact original bytes."
+}

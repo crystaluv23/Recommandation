@@ -1,0 +1,394 @@
+{
+  "cap_root_correction": {
+    "formal_contract_still_uncreated": true,
+    "new_formal_fixed_root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1",
+    "old_temp_capture_value": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/reviewed-slow-native-preflight-z0f14o15/stage",
+    "old_value_source": {
+      "artifact": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/stage-artifacts/manifest.json",
+        "sha256": "db69a94cd4ea4923fcf7dfbc9e4b552554d51eb4ceb353ff0a00d9bc71cd7759"
+      },
+      "json_locator": "/stage_contract/root"
+    },
+    "reason": "v1 copied the successful temporary capture contract. Only the destination identity is corrected; requested eight-call/action/correction/logical caps are unchanged.",
+    "temp_request_hashes_are_not_formal_request_hashes": true,
+    "zero_actual_role_answers": true
+  },
+  "fixed_denominators": {
+    "actual_native_full_D": 4493,
+    "feedback_refs_hash": "6112482ca7fd11dea4158eda5a78eaeec1ea365fa4d715fecb02b127ed16124e",
+    "historical_imported3531": "Original pre-header projection only; not full new input D.",
+    "kind_counts": {
+      "candidate_result": 70,
+      "magnitude_feedback": 8,
+      "prediction_comparison": 92,
+      "search_result": 30,
+      "signal_target_observation": 150,
+      "signal_usage": 4143
+    },
+    "native_source_manifest_hash": "5b2864643344158f303a2a3f2121fd633688a5eb32fdd7fdbb12a557ce753a21",
+    "old_memory_outside_role_only": {
+      "pending": 3518,
+      "processed": 0,
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_memory.json",
+        "sha256": "e056b9a626138c7f6e17a90291a3da33dfb3b5176d98a2701688a6e94ceafe87"
+      },
+      "status": "failed"
+    },
+    "pending_processed_rule": "Use the actual native full-D partition. A failed reflection processes0. A successful reflection processes only actually selected and completely covered top-level owners; reading/reflection of a header never processes its original summary or nested refs."
+  },
+  "frozen_implementation": {
+    "contract_location_rule": "Same actual EvolutionRunContract byte-identical at root/run_contract.json and workspace/run_contract.json before native readers. No authority expansion.",
+    "files": [
+      {
+        "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_slow_feedback_stage.py",
+        "sha256": "a1acad66f4f83935bb5ccdb8834ec32ad064c42a1ab98ac84b76d2f6bb1209f9"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_slow_feedback_stage.md",
+        "sha256": "84a1bdfe483b2f14a531bd1ffee756e88705295938d74fee8b948e7c38cd0ffe"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/tests/test_reviewed_slow_feedback_stage.py",
+        "sha256": "b78c8388c9bdb849e4c7961922cdee71e302a74aaa08e858b9121385053a5803"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+        "sha256": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md",
+        "sha256": "8fd61842d45f1aecbcb7f548286c5ffe792844ebc043e273bb0123259ad7a722"
+      }
+    ],
+    "system_prompt_envelope": "Actual native Controller system prompt plus declared stage-only action/controlled-read envelope; native payload/backlog unchanged. Do not call the system prompt unchanged."
+  },
+  "header_control": {
+    "current_observation": "Header is available but not included at the first selector pending. No reflection request or model answer exists.",
+    "first_selector_offer": {
+      "content_hash": "f58ea1ae6830040a8b778e321a977313ae12b84da1854fbdede00eeaf2b5579a",
+      "currently_included": false,
+      "read_bytes": 2312,
+      "ref": "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1"
+    },
+    "forbidden_claims": [
+      "Reading this header consumed3518 old feedback units or its original summary.",
+      "The header status/error proves economic invalidity or absent domain evidence.",
+      "Hidden vectors, counts or membership hashes may be disclosed to H1 to satisfy this control."
+    ],
+    "full_failure_ref": "CandidateExecutionRejected: signal_mining_reflect failed validation after one correction: episode_reflections source_refs must cover every selected top-level feedback_ref; no unused episode slot remains, so merge the missing refs and their reflection into one or more existing valid episodes without adding a row",
+    "native_artifact_hash": "5320a5648d1b14dbd41e9424cbe700b65f33392951e8d2a37fae7095949a34af",
+    "native_ref": "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1",
+    "negative_control": "Not selected, whole-entry budget failure, partial cause clipping, fabricated original-read handle, lost source provenance or hidden-source leakage cannot pass header-read acceptance.",
+    "old_pending_count_is_not_a_header_requirement": true,
+    "required_read_proof": "Exact subsequent reflection inbox must actually contain the complete available header with status=failed, the unchanged full failure_ref, original memory/summary SHA/projection provenance and explicit omitted-fields coverage. Catalog presence/ref/hash alone is insufficient.",
+    "role_rule": "Use native visible_to evidence closure. No widening for header, inferred lesson or inherited memory. This frozen input currently offers the header to reflection/H1/H3/E2/Update; future hidden scope remains hidden.",
+    "source_manifest": {
+      "content_hash": "5320a5648d1b14dbd41e9424cbe700b65f33392951e8d2a37fae7095949a34af",
+      "ref": "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1",
+      "visible_to": [
+        "E2",
+        "H1",
+        "H3",
+        "Update",
+        "reflection"
+      ]
+    }
+  },
+  "need_disposition_control": {
+    "actor_knowledge_boundary": {
+      "facts_supported_in_the_disclosed_target": [
+        "The brief names financing_listing_action:v5, guidance_acceleration:v3 and order_confirmation_disclosed:v2.",
+        "It reports recorded signal validation failures that removed forward-expectations/order-confirmation evidence.",
+        "All three were still scored and none was a technical exclusion.",
+        "The original action limitations deny interpreting validation failure as absent/negative domain conditions or as proof score/return would change."
+      ],
+      "full_backlog_item_read": "Existing inspect_catalog/backlog item_refs can expose the full action row, including limitations and original reflection refs. Neither the page nor that row contains original error messages.",
+      "minimum_route_rationale": "Repair the evidence/Signal-validation dependency for the three named versions; preserve the scored denominator and unknown root cause. Do not invent factor invalidity, economic absence or research gain.",
+      "native_page_card_fields": [
+        "need_ref",
+        "need",
+        "kind",
+        "status when present",
+        "source_scope",
+        "source_hash",
+        "read_bytes"
+      ],
+      "not_available_from_target_page_or_full_action": [
+        "Which available-result measured-object phrase failed in financing_listing_action:v5.",
+        "guidance_acceleration:v3 supporting evidence[2] end-edge error, projection ID and listed overlap-interior candidate.",
+        "order_confirmation_disclosed:v2 supporting evidence[0] start-edge error, projection ID and empty listed interior candidates."
+      ],
+      "pre_dispatch_assessment": "These details are independent corroboration, not mandatory model-specific recall. This boundary is declared with zero role answers before formal execution, not adjusted after observing an answer.",
+      "recovered_source_backed_action_row": {
+        "kind": "meta_reflection_action",
+        "limitations": [
+          "A validation failure does not prove the measured condition was absent or negative; it only means no validated domain result was produced.",
+          "The trajectory table is a bounded view; the full signal execution records are preserved separately.",
+          "The realized outcomes do not establish that the missing signals would have changed the magnitude band."
+        ],
+        "need": "Three cases recorded signal validation failures (financing_listing_action:v5, guidance_acceleration:v3, order_confirmation_disclosed:v2) that removed forward-expectations and order-confirmation evidence from the research pass, yet all three cases were still scored and none was a technical exclusion.",
+        "need_ref": "reflection-7d08d205fe330564",
+        "reflection_field": "missing_information_needs",
+        "reflection_item_ref": "reflection:42597493a6b1af7ff10a07d6471c48610c0a21a1f24a18cbc9d0d11628abcd12",
+        "reflection_source_refs": [
+          "reflection_source:c91d9a77532cd0264ec815ff93ca3e94741df8c497801275c2e66a7e4c4d7d25",
+          "reflection_source:0e0f57f8c60b1553d27abd943f52bdfcc19bc8541a6d02407042347d336e3f28"
+        ],
+        "source_round": -1,
+        "sources": []
+      },
+      "saved_native_target": {
+        "manifest": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/stage-artifacts/manifest.json",
+          "sha256": "db69a94cd4ea4923fcf7dfbc9e4b552554d51eb4ceb353ff0a00d9bc71cd7759"
+        },
+        "need_ref": "reflection-7d08d205fe330564",
+        "target_action_hash": "5da3598de291c0409be18fb73ba0489101aea126073b63a6c9fbbd712ec3e228"
+      },
+      "source_item": {
+        "artifact": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/manifest.json",
+          "sha256": "2584bb7e28173412a79ad0520b80d13ca4711074ad663baccc4d24600bdba438"
+        },
+        "json_locator": "/manifest/fast_context/meta_entries/0/plan_reflections/0/vertical_plan_reflection/reflection_items/2"
+      },
+      "target_row_recovery": "Temporary capture stores the native-produced target ref/hash, not the full action row. The source-only row below is recovered from the exact bound Fast item using the published projection/rebasing rule and canonically matches that saved native action hash; no new Engine/action execution or need_ref fabrication occurred."
+    },
+    "consumer_proof": "Prepared native need_ref must appear in the actual complete backlog and genuine disclosed page. Fresh authored row must route repair_dependency with signal_refs=[] for the named three-version Signal-validation/evidence-pipeline dependency, retain scored-denominator meaning, and avoid domain absence or research-return claims. It must reach the unmodified production save_need_unit. Bind raw first/correction answer, native base/backlog/result hashes, accepted rows and actual remaining pending count. Other needs stay pending; stop after the first unit even if its semantics fail.",
+    "controlled_page_claim": "Controlled native page initialization is disclosed and ledger-bound; no autonomous retrieval claim. No handbuilt need_ref, replaced backlog or answer injection.",
+    "counterexamples": [
+      "Wrong economic route/new measurement without source support fails even if schema-valid.",
+      "Any nonempty signal_refs on repair_dependency fails.",
+      "Correct reflection text without original need-unit persistence is not consumer completion."
+    ],
+    "expected_disposition": "repair_dependency",
+    "expected_signal_refs": [],
+    "material_visibility_review": {
+      "actual_Controller_inbox_status": "Not yet produced; one temporary source-selector inbox only, zero answers. After actual construction inspect its exact permitted meta/source disclosures before claiming more detailed knowledge.",
+      "actual_temp_backlog": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/stage-artifacts/workspace/capability_backlog.json",
+        "sha256": "b1c35923559bfb96766d7c06e60ef933bd989bc08b3a581134167d873901c9eb"
+      },
+      "actual_temp_input": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/stage-artifacts/workspace/experiments/cycles/cycle-0001/slow_input.json",
+        "sha256": "0ec321b92f7cf3b5906c25ab08e23b074d274bddbbbdc5193b281a66b987c2d7"
+      },
+      "exact_errors_in_separate_native_backlog_fields": [
+        {
+          "error_message": "signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+          "json_locator": "/technical_failures/0/error_message"
+        },
+        {
+          "error_message": "Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "json_locator": "/technical_failures/1/error_message"
+        },
+        {
+          "error_message": "Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "json_locator": "/technical_failures/5/error_message"
+        }
+      ],
+      "factory_gap": "_mining_context retains technical_failures, but _run_controller_mining_axis constructs Controller backlog_needs only from capability_backlog.signal_need_items. Controller inspect_catalog/backlog resolves only that needs collection; this stage does not permit another read path for the omitted technical_failures.",
+      "not_a_new_scope_change": "No producer/factory adapter is added, no missing error body is inserted into context, no oracle enters roles, and source truth/full original errors remain unchanged.",
+      "projection_ids_in_fast_meta": {
+        "projection_544de7679aa6acff2387f87d": false,
+        "projection_59e5767d03409fd3f4169efb": false
+      },
+      "projection_ids_in_slow_input": {
+        "projection_544de7679aa6acff2387f87d": 0,
+        "projection_59e5767d03409fd3f4169efb": 0
+      }
+    },
+    "native_action_hash": "5da3598de291c0409be18fb73ba0489101aea126073b63a6c9fbbd712ec3e228",
+    "native_prepared_need_ref": "reflection-7d08d205fe330564",
+    "original_errors": [
+      {
+        "error_code": "signal_output_validation_exhausted",
+        "execution_status": "validation_failed",
+        "full_error": "signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+        "json_locator": "/trajectories/2/signal_rounds/0/batch/results/0",
+        "signal_ref": "financing_listing_action:v5",
+        "source_file": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+          "sha256": "67c75ec03242fa451589848dae6f703ba381004dab786c5c678dff18e48551ad"
+        }
+      },
+      {
+        "error_code": "signal_output_validation_exhausted",
+        "execution_status": "validation_failed",
+        "full_error": "Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+        "json_locator": "/trajectories/21/signal_rounds/0/batch/results/1",
+        "signal_ref": "guidance_acceleration:v3",
+        "source_file": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+          "sha256": "67c75ec03242fa451589848dae6f703ba381004dab786c5c678dff18e48551ad"
+        }
+      },
+      {
+        "error_code": "signal_output_validation_exhausted",
+        "execution_status": "validation_failed",
+        "full_error": "Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+        "json_locator": "/trajectories/22/signal_rounds/0/batch/results/1",
+        "signal_ref": "order_confirmation_disclosed:v2",
+        "source_file": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+          "sha256": "67c75ec03242fa451589848dae6f703ba381004dab786c5c678dff18e48551ad"
+        }
+      }
+    ],
+    "original_reflection_source_locator": "/manifest/fast_context/meta_entries/0/plan_reflections/0/vertical_plan_reflection/reflection_items/2",
+    "outside_source_reviewer_corroboration": {
+      "frontiers": {
+        "financing_listing_action:v5": "Required measured-object phrase absent from cited available-result evidence.",
+        "guidance_acceleration:v3": "Supporting evidence[2] touches end of cited projection; source error lists a complete overlap-interior candidate.",
+        "order_confirmation_disclosed:v2": "Supporting evidence[0] touches start of cited projection; source error has no listed overlap-interior candidate."
+      },
+      "original_errors": [
+        {
+          "error_code": "signal_output_validation_exhausted",
+          "execution_status": "validation_failed",
+          "full_error": "signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+          "json_locator": "/trajectories/2/signal_rounds/0/batch/results/0",
+          "signal_ref": "financing_listing_action:v5",
+          "source_file": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+            "sha256": "67c75ec03242fa451589848dae6f703ba381004dab786c5c678dff18e48551ad"
+          }
+        },
+        {
+          "error_code": "signal_output_validation_exhausted",
+          "execution_status": "validation_failed",
+          "full_error": "Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "json_locator": "/trajectories/21/signal_rounds/0/batch/results/1",
+          "signal_ref": "guidance_acceleration:v3",
+          "source_file": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+            "sha256": "67c75ec03242fa451589848dae6f703ba381004dab786c5c678dff18e48551ad"
+          }
+        },
+        {
+          "error_code": "signal_output_validation_exhausted",
+          "execution_status": "validation_failed",
+          "full_error": "Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "json_locator": "/trajectories/22/signal_rounds/0/batch/results/1",
+          "signal_ref": "order_confirmation_disclosed:v2",
+          "source_file": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+            "sha256": "67c75ec03242fa451589848dae6f703ba381004dab786c5c678dff18e48551ad"
+          }
+        }
+      ],
+      "use": "Independent source reviewer verifies actual errors and the truth of the brief. These projection/phrase details are not a required utterance from a Controller that did not receive the original errors. Require finer citations only if exact original errors genuinely enter that role request."
+    },
+    "reflection_item_ref": "reflection:42597493a6b1af7ff10a07d6471c48610c0a21a1f24a18cbc9d0d11628abcd12",
+    "unknowns": [
+      "Underlying root cause across prompt/retrieval/validator is not established.",
+      "No proof these Signals were economically absent, factor definitions invalid, or corrected evidence would change score/return."
+    ]
+  },
+  "never_role_input": true,
+  "observed_temp_integration": {
+    "all_temporary_artifact_hashes_before_dedup": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/original-artifact-hashes.json",
+      "sha256": "907dcc00ea5038fdef90d9dbe70d5808455fb26bbb6a92f58b03403e9654b270"
+    },
+    "answers": 0,
+    "code_binding_matches_final": true,
+    "deduplication": "223 sealed original copies /69001853bytes removed only from the archived temporary audit copy; exact original bindings and all new native artifacts retained. Original source trees untouched.",
+    "dispatches": 0,
+    "elapsed_seconds": 34.223789958050475,
+    "first_exact_request": "aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5",
+    "first_inbox": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/stage-artifacts/exchange/inbox/aee38bfd3ab23bfa9c0b9235f104980e04c40ed4f75624c85b3b5398efa794f5.json",
+      "sha256": "0c19b961fb358e9469fe339d1b87ccda3b40bf62bc883690782fe52503621396"
+    },
+    "first_role_scope": "reflection",
+    "first_stage": "slow_source_read",
+    "formal_root_created": false,
+    "inboxes": 1,
+    "manifest": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/stage-artifacts/manifest.json",
+      "sha256": "db69a94cd4ea4923fcf7dfbc9e4b552554d51eb4ceb353ff0a00d9bc71cd7759"
+    },
+    "pending_is_not_completed_restore": true,
+    "receipts": 0,
+    "result": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/result.json",
+      "sha256": "a82fd73aee12deef15345f4d547e27a375ce2acf08e67ec7a4f9a0e882a60439"
+    },
+    "slow_input": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/stage-artifacts/workspace/experiments/cycles/cycle-0001/slow_input.json",
+      "sha256": "0ec321b92f7cf3b5906c25ab08e23b074d274bddbbbdc5193b281a66b987c2d7"
+    },
+    "source_binding_count": 4408,
+    "source_bytes_unchanged": true,
+    "source_copy_map": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/source-copy-map.json",
+      "sha256": "e06ecde60f24eb5d162fbc64bbec65d996b41942270bfe40d7c2e5fdec4731ba"
+    }
+  },
+  "pre_execution_corrections_from_v1": [
+    "cap.root now names the formal fixed destination; old temporary provenance remains retained.",
+    "Three precise original-error frontiers remain independently verified, but mandatory Controller rationale is limited to the source-backed three-version validation/evidence dependency actually disclosed. Only actual original-error disclosures could justify requiring finer details.",
+    "All budget caps, expected repair_dependency/empty refs, scored-denominator preservation, native progress-sink requirement, honest partial stop and no-fullS1/S2 claim remain unchanged."
+  ],
+  "quota_gap": {
+    "current_factory": "Controller receives signal_need_items; ordinary items are not bridged.",
+    "ordinary_backlog_items": 2,
+    "source_authority": "Existing source fast_context.capability_backlog_seed ordinary items: alpha_vantage management-commentary quota-deferred records.",
+    "verdict": "actual quota task routing remains unverified/unimplemented; do not insert synthetic needs or claim completeS2."
+  },
+  "reporting_limit": "Zero-answer native integration only; no fresh reflection success, Controller payload arrival, accepted need row, formal stage completion, fullS1/S2, new capability, publication, reuse or independent research gain.",
+  "requested_frozen_cap": {
+    "boundary": "B",
+    "complete_cycle": false,
+    "controlled_native_page": true,
+    "controller": {
+      "corrections": 1,
+      "output": 4000,
+      "regular": 2,
+      "stage": "mining_controller_step"
+    },
+    "external_llm_api_calls": 0,
+    "max_calls": 8,
+    "per_request_logical_cap": 131072,
+    "reflection": {
+      "corrections": 1,
+      "first": 1,
+      "output": 5000,
+      "stage": "signal_mining_reflect"
+    },
+    "reflection_item_ref": "reflection:42597493a6b1af7ff10a07d6471c48610c0a21a1f24a18cbc9d0d11628abcd12",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1",
+    "schema_version": "reviewed-slow-feedback-stage-v1",
+    "source_selectors": {
+      "corrections": 0,
+      "max": 3,
+      "output": 512,
+      "stage": "slow_source_read"
+    },
+    "total_logical_cap": 1048576
+  },
+  "schema_version": "reviewed-slow-feedback-final-source-oracle-v2",
+  "status": "frozen_source_only_expectations_zero_answers_no_formal_stage_execution",
+  "superseded_v1_preserved": {
+    "freeze": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-freeze.json",
+      "sha256": "e6d898cc50747dc4db6f30e8ff8fad3dececa168236b440053a2398b77b51583"
+    },
+    "oracle": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle.json",
+      "sha256": "0f064e66f5418006f3dbc2589224ac856f7246450666f34faef45f2577d1721b"
+    },
+    "original_bytes_preserved": true
+  },
+  "supersedes_only_this_old_proposal_clause": {
+    "clause": "evidence_boundary_A.pass: oldpending counts present in reflection request",
+    "correction": "Owning adopted header spec explicitly omits processing vectors, their counts and membership hashes. Old0/3518 is independently source-verified outside the role inbox and is not a required H1/reflection disclosure. Preserve the old proposal unchanged.",
+    "proposal": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/bounded-stage-proposal.json",
+      "sha256": "47096ddf7aaee29de54aa7cb97d747b910c6f1798c7b7cfcb5f129d64768bce7"
+    }
+  }
+}
