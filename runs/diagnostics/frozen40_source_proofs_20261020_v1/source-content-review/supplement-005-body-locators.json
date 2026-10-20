@@ -1,0 +1,105 @@
+{
+  "name": "supplement-005",
+  "source_request": {
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+    "kind": "supplemental_sec_body",
+    "name": "supplement-005",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-005-receipt-snapshot.json",
+    "sha256": "69c8b5441e50a10b9426a7bda2e08e014233ec07d29d7ee783029b1db3f8a44c"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-005.response.raw",
+    "sha256": "abfb5d977f85085b0fd0c69acf40b45baf741fa72f03ac56b54360e19afc95dc"
+  },
+  "decoded_body_sha256": "58fa44e745c88bdddf2f3266e1b68f5ffa9a0bdae590a6c50788116b035aebb8",
+  "decoded_characters": 1053631,
+  "visible_characters": 115737,
+  "visible_text_sha256": "9296580ad94d49a978a6d0c55c0737935cfe862ada20b60c265521cbdc3a7110",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 17,
+    "raw_decoded_end": 2105,
+    "text": "EX-99.3 5 exhibit99-3.htm EXHIBIT 99.3 TASEKO MINES LIMITED Management's Discussion and Analysis This management discussion and analysis (\"MD&A\") is intended to help the reader understand Taseko Mines Limited (\"Taseko\", \"we\", \"our\" or the \"Company\"), our operations, financial performance, and current and future business environment. This MD&A is intended to supplement and complement the consolidated financial statements and notes thereto, prepared in compliance with International Financial Reporting Standards (\"IFRS\") as issued by the International Accounting Standards Board (\"IASB\") for the year ended December 31, 2024 (the \"Financial Statements\"). You are encouraged to review the Financial Statements in conjunction with your review of this MD&A and the Company's other public filings, which are available on the Canadian Securities Administrators' website at www.sedarplus.com and on the EDGAR section of the United States Securities and Exchange Commission's (\"SEC\") website at www.sec.gov . This MD&A is prepared as of February 19, 2025. All dollar figures stated herein are expressed in Canadian dollars, unless otherwise specified. Included throughout this MD&A are references to non-GAAP performance measures which are denoted with an asterisk and further explanation including their"
+  },
+  "tail": {
+    "visible_start": 114887,
+    "visible_end": 115737,
+    "raw_decoded_start": 1052292,
+    "raw_decoded_end": 1053409,
+    "text": "from the March 15, 2023 acquisition of Cariboo from Sojitz, which increased the Company's Gibraltar mine ownership from 75% to 87.5%. Technical Information The technical information contained in this MD&A related to the Florence Copper Project is based upon the report entitled: \"NI 43-101 Technical Report - Florence Copper Project, Pinal County, Arizona\" issued March 30, 2023 with an effective date of March 15, 2023 which is available on SEDAR+. The Florence Copper Project Technical Report was prepared under the supervision of Richard Tremblay, P.Eng., MBA, Richard Weymark, P.Eng., MBA, and Robert Rotzinger, P.Eng. Mr. Tremblay is employed by the Company as Chief Operating Officer, Mr. Weymark is Vice President Engineering, and Robert Rotzinger is Vice President Capital Projects. All three are Qualified Persons as defined by NI 43-101. 51"
+  },
+  "closing_html": false,
+  "section_locators": {
+    "business": [],
+    "mda": [
+      {
+        "visible_start": 60,
+        "visible_end": 910,
+        "raw_decoded_start": 602,
+        "raw_decoded_end": 1704,
+        "text": "Management's Discussion and Analysis This management discussion and analysis (\"MD&A\") is intended to help the reader understand Taseko Mines Limited (\"Taseko\", \"we\", \"our\" or the \"Company\"), our operations, financial performance, and current and future business environment. This MD&A is intended to supplement and complement the consolidated financial statements and notes thereto, prepared in compliance with International Financial Reporting Standards (\"IFRS\") as issued by the International Accounting Standards Board (\"IASB\") for the year ended December 31, 2024 (the \"Financial Statements\"). You are encouraged to review the Financial Statements in conjunction with your review of this MD&A and the Company's other public filings, which are available on the Canadian Securities Administrators' website at www.sedarplus.com and on the EDGAR sect"
+      },
+      {
+        "visible_start": 3069,
+        "visible_end": 3919,
+        "raw_decoded_start": 4385,
+        "raw_decoded_end": 16528,
+        "text": "Management's Discussion and Analysis Contents Overview 3 Highlights 3 Review of Operations 6 Operations Analysis 7 Gibraltar Outlook 9 Florence Copper 9 Long-term Growth Strategy 11 Sustainability 12 Market Review 12 Financial Performance 14 Financial Condition Review 21 Selected Annual Information 26 Fourth Quarter Results 27 Summary of Quarterly Results 35 Critical Accounting Policies and Estimates 36 Change in Accounting Policies 36 Internal and Disclosure Controls Over Financial Reporting 37 Financial Instruments 39 Related Party Transactions 40 Non-GAAP Performance Measures 41 Technical Information 51 2 TASEKO MINES LIMITED Management's Discussion and Analysis Overview Taseko is a copper focused mining company that seeks to create long-term shareholder value by acquiring, developing, and operating large tonnage mineral deposits in st"
+      },
+      {
+        "visible_start": 3706,
+        "visible_end": 4556,
+        "raw_decoded_start": 15612,
+        "raw_decoded_end": 21111,
+        "text": "Management's Discussion and Analysis Overview Taseko is a copper focused mining company that seeks to create long-term shareholder value by acquiring, developing, and operating large tonnage mineral deposits in stable jurisdictions which are capable of supporting a mine for decades. The Company's principal assets are the 100% owned Gibraltar mine (\"Gibraltar\"), which is located in central British Columbia and one of the largest copper mines in North America, and the Florence Copper project (\"Florence Copper\") in Arizona, which is currently under construction. Taseko also owns the Yellowhead copper, New Prosperity gold-copper, and Aley niobium projects in British Columbia. Highlights Operating Data (Gibraltar - 100% basis) Three months ended December 31, Year ended December 31, 2024 2023 Change 2024 2023 Change Tons mined (millions) 24.0 2"
+      },
+      {
+        "visible_start": 113559,
+        "visible_end": 114409,
+        "raw_decoded_start": 1021593,
+        "raw_decoded_end": 1037355,
+        "text": "Management's Discussion and Analysis Non-GAAP Performance Measures (Continued) Site operating costs per ton milled The Company discloses this measure, which has been derived from our financial statements and applied on a consistent basis, to provide assistance in understanding the Company's site operations on a tons milled basis. (Cdn$ in thousands, except per ton milled amounts) 2024 Q4 2024 Q3 2024 Q2 2024 Q1 1 2024 YE 1 Site operating costs (included in cost of sales) - Taseko share 100,495 107,712 79,804 79,678 367,689 Site operating costs - 100% basis 100,495 107,712 79,804 90,040 378,050 Tons milled (thousands) 8,250 7,572 5,728 7,677 29,227 Site operating costs per ton milled $ 12.18 $ 14.23 $ 13.93 $ 11.73 $ 12.93 1 Q1 2024 includes the impact from the March 25, 2024 acquisition of Cariboo from Dowa and Furukawa, which increased t"
+      }
+    ],
+    "risks": [],
+    "statements": [
+      {
+        "visible_start": 62109,
+        "visible_end": 62959,
+        "raw_decoded_start": 432478,
+        "raw_decoded_end": 448874,
+        "text": "Consolidated Statements of Cash Flows Three months ended December 31, (Cdn$ in thousands) 2024 2023 Operating activities Net (loss) income for the period (21,207 ) 38,076 Adjustments for: Depletion and amortization 24,641 13,326 Income tax expense 11,707 17,205 Finance expenses, net 8,585 10,217 Accretion expense 11,214 1,615 (Gain) loss on derivatives (24,511 ) 274 Unrealized foreign exchange loss (gain) 40,462 (14,541 ) Inventory sold or processed with write-ups to net realizable value 1,905 - Deferred revenue deposit 18,244 - Amortization of deferred revenue (1,645 ) (2,029 ) Share-based compensation (recovery) expense (323 ) 1,573 Other operating activities 3,839 (383 ) Net change in working capital 381 (2,498 ) Cash provided by operating activities 73,292 62,835 Investing activities Gibraltar capitalized stripping costs (2,315 ) (31,"
+      }
+    ],
+    "segments": [],
+    "units": [
+      {
+        "visible_start": 18723,
+        "visible_end": 19573,
+        "raw_decoded_start": 129684,
+        "raw_decoded_end": 135479,
+        "text": "in thousands) December 31, 2024 December 31, 2024 Site and PTF operations 6,007 19,512 Commercial facility construction costs 57,647 154,970 Other capital costs - 28,943 Total Florence project expenditures 63,654 203,425 Construction costs in the fourth quarter were US$57.6 million, and US$155.0 million has been incurred for the year ended December 31, 2024. Other capital costs of US$28.9 million include final payments for delivery of long-lead equipment that was ordered in 2022, and the construction of an evaporation pond to provide additional water management flexibility. Construction of this evaporation pond was completed in the third quarter of 2024. The Company has closed several Florence project level financings to fund initial commercial facility construction costs. In October the Company received the fourth deposit of US$10 millio"
+      },
+      {
+        "visible_start": 28945,
+        "visible_end": 29795,
+        "raw_decoded_start": 153284,
+        "raw_decoded_end": 169874,
+        "text": "in thousands) 2024 2023 Change Net (loss) income (13,444) 82,726 (96,170) Unrealized foreign exchange loss (gain) 52,299 (11,875) 64,174 Unrealized (gain) loss on derivatives (10,141) 1,874 (12,015) Crusher relocation costs 16,141 - 16,141 Site care and maintenance costs 2,524 - 2,524 Call premium on settlement of debt 9,571 - 9,571 Loss on settlement of long term debt, net of capitalized interest 2,904 - 2,904 Gain on Cariboo acquisition (47,426 ) (46,212 ) (1,214 ) Gain on acquisition of control of Gibraltar 1 (14,982 ) - (14,982 ) Realized gain on sale of inventory 2 17,122 - 17,122 Inventory write ups to net realizable value that was sold or processed 3 9,227 - 9,227 Accretion and fair value adjustment on Florence royalty obligation 12,933 - 12,933 Accretion and fair value adjustment on Cariboo consideration payable 23,920 - 23,920 No"
+      },
+      {
+        "visible_start": 114468,
+        "visible_end": 115318,
+        "raw_decoded_start": 1037624,
+        "raw_decoded_end": 1053326,
+        "text": "in thousands, except per ton milled amounts) 2023 Q4 2023 Q3 2023 Q2 2023 Q1 1 2023 YE 1 Site operating costs (included in cost of sales) - Taseko share 64,845 87,148 83,374 74,438 309,805 Site operating costs - 100% basis 74,109 99,598 95,285 95,838 364,830 Tons milled (thousands) 7,626 8,041 7,234 7,093 29,994 Site operating costs per ton milled $ 9.72 $ 12.39 $ 13.17 $ 13.54 $ 12.16 1 Q1 2023 includes the impact from the March 15, 2023 acquisition of Cariboo from Sojitz, which increased the Company's Gibraltar mine ownership from 75% to 87.5%. Technical Information The technical information contained in this MD&A related to the Florence Copper Project is based upon the report entitled: \"NI 43-101 Technical Report - Florence Copper Project, Pinal County, Arizona\" issued March 30, 2023 with an effective date of March 15, 2023 which is av"
+      }
+    ]
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

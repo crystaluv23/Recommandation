@@ -1,0 +1,20 @@
+Explicit selectors:
+[
+  "tests.test_reviewed_sec_exhibit_index",
+  "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_index_code_cell_excludes_description_cross_reference_and_ambiguous_rows",
+  "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_actual_retained_kgc_parent_index_layout_proves_only_its_literal_codes"
+]
+Only temporary native profile stores; no actual qualification/globalappend/LabelStore/fullprepare/network. Tripwires active.
+test_actual_hiti_index_still_rejects_old_cover_prose_number (tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_actual_hiti_index_still_rejects_old_cover_prose_number) ... ok
+test_actual_row_layouts_pass_native_profile_restart_and_worker_without_relabeling (tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_actual_row_layouts_pass_native_profile_restart_and_worker_without_relabeling) ... ok
+test_actual_tgb_whole_parent_and_each_literal_row_prove_exact_numbers (tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_actual_tgb_whole_parent_and_each_literal_row_prove_exact_numbers) ... ok
+test_native_wrong_claim_crossreferences_ambiguity_and_nonnotes_reject (tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_native_wrong_claim_crossreferences_ambiguity_and_nonnotes_reject) ... ok
+test_only_explicit_trailing_numeric_superscripts_are_footnotes (tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_only_explicit_trailing_numeric_superscripts_are_footnotes) ... ok
+test_position_and_note_support_do_not_relax_cutoff_or_refresh_proof (tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_position_and_note_support_do_not_relax_cutoff_or_refresh_proof) ... ok
+test_index_code_cell_excludes_description_cross_reference_and_ambiguous_rows (tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_index_code_cell_excludes_description_cross_reference_and_ambiguous_rows) ... ok
+test_actual_retained_kgc_parent_index_layout_proves_only_its_literal_codes (tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_actual_retained_kgc_parent_index_layout_proves_only_its_literal_codes) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.349s
+
+OK

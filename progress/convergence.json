@@ -859,9 +859,16 @@
         "runs/diagnostics/frozen40_source_proofs_20261020_v1/tgb-exhibit-index-native-boundary.json",
         "runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/normalization.json",
         "runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/request-plan.json",
-        "runs/diagnostics/frozen40_source_proofs_20261020_v1/terminal-independent-review.json"
+        "runs/diagnostics/frozen40_source_proofs_20261020_v1/terminal-independent-review.json",
+        "runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/execute-summary.json",
+        "runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplemental-six-exhibit-candidate-fragments.json",
+        "runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/result.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/assembly-summary.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/actual-bundle-preappend-final-code-review.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/plan.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/prepare-summary.json"
       ],
-      "result": "Sole frozen8a01eb96 collector terminal95 GET/open/reservation/retained,94received+1unsupported nonempty split ledger,0retry/redirect/hostfailure. All533source/102code bindings unchanged;277terminal files. Fixed92requests/1928associations unchanged plusFTI daily/HITI2. Actual10primary scope8full reports/2wrappers(TGB,SLF); HITI2full exhibit scope but parentreceipt stillmissing and textdate/index conflicts retained. FTI existing400day request yielded151actualbars2024Oct21..2025May29, actualclock native canonical normalization passed, no admission. Localconsumer wrongbodycarrier counterexample reproduced/fixed,11temp+independent samecounterexample passed;assembler partial-host failure boundary repaired. Supplemental7exactrequests prepared,not executed. No newglobalappend/view/matrix/model/labels/fullprepare orMVPclose. GPRE4ID conflicts/FTIwrongtype remain excluded; useridentitydecision pending."
+      "result": "Sole frozen8a01eb96 collector terminal95 GET/open/reservation/retained,94received+1unsupported nonempty split ledger,0retry/redirect/hostfailure. All533source/102code bindings unchanged;277terminal files. Fixed92requests/1928associations unchanged plusFTI daily/HITI2. Actual10primary scope8full reports/2wrappers(TGB,SLF); HITI2full exhibit scope but parentreceipt stillmissing and textdate/index conflicts retained. FTI existing400day request yielded151actualbars2024Oct21..2025May29, actualclock native canonical normalization passed, no admission. Localconsumer wrongbodycarrier counterexample reproduced/fixed,11temp+independent samecounterexample passed;assembler partial-host failure boundary repaired. Supplemental7exactrequests prepared,not executed. No newglobalappend/view/matrix/model/labels/fullprepare orMVPclose. GPRE4ID conflicts/FTIwrongtype remain excluded; useridentitydecision pending. Supplemental sole7GET completed/exit0,7HTTP200,0retry/redirect/failure; all297collectionfiles unchanged. Actual6exhibits finalnativepass, oldcode HITI/SLF4pass/TGB2reject; numeric-sup/order repair scoped to literal unique index cells. Assembly907targets/1123qualified candidates,6unknown;270canonicalexisting/853expectednew paths independentlychecked. Formal soleprepare20.076s/exit0 plan114a50b2,3230source+114code frozen,0append/view/matrix. Added actualpreappendhelper/ownspec/marketprofile codebindings afteroldcode3drift acceptance reproduced;14safe pass. NoMVPclosure."
     }
   ],
   "review": {
@@ -876,7 +883,14 @@
       "runs/diagnostics/frozen40_source_proofs_20261020_v1/tgb-exhibit-index-native-boundary.json",
       "runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/normalization.json",
       "runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/request-plan.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/terminal-independent-review.json"
+      "runs/diagnostics/frozen40_source_proofs_20261020_v1/terminal-independent-review.json",
+      "runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/execute-summary.json",
+      "runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplemental-six-exhibit-candidate-fragments.json",
+      "runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/result.json",
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/assembly-summary.json",
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/actual-bundle-preappend-final-code-review.json",
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/plan.json",
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/prepare-summary.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -929,15 +943,15 @@
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "bounded_explicit_source_admission_and_original40_consumer",
-      "action": "Verify terminal95 actual proofs; freeze and execute only the separate7exactrequests derived from actualFTI normalization plus literal HITI/TGB/SLF links. Keep native source/code frozen through supplemental terminal. Then repair only independently proved exhibit-index formatting rejection, assemble one explicit complete target batch, qualify before append, and separately freeze one newview plus bothoriginal720input matrices/40BasicInfo. No fullsuccessor.",
+      "strategy": "single_original40_qualified_source_view_and_dual_registry_inputs",
+      "action": "Both collectors are terminal102GETs. Following actualbodyreview, nativeindex repair and complete1123candidate canonical preflight, execute only the separately frozen114a50b2 source-only plan once: nativeappend/exactreadback, preserve alloldbytes, newreview/view/worker/restart, bothoriginal720inputs and40BasicInfo. Keep6unknown targetdispositions/GPRElatestQ1 gap explicit. No model/fullprepare/fullsuccessor or historicalrun resume.",
       "stop": "No oldstage reentry or implicit extraGET; no hotpatch during source freeze; no metadata/type/ID rewrite, changedcutoff/lookback/refs, labels/LockedTest/model/fullprepare. GPRE identitydecision not inferred from silence.",
       "question": "Do exact missing proofs and qualified whole reports permit honest native source admission and original40 input consumption without replacing canonical originals or reducing denominators?",
       "pass": "Complete fixed842/24/41 target dispositions retained; qualified native source chains use actualbody and actualretrieval/availability clocks; collisions remainunknown; exactv6/v12 consumers observe the newview and preserve gaps.",
       "fail": "Admission depends on wrongbody artifact, guessedform/date/endpoint, overwrittenIDs, futurebars, or cohort/source filtering.",
-      "on_pass": "Run one separately frozen source-only admission/input diagnostic, then choose the smallest remaining actual MVP stage from its evidence.",
-      "on_fail": "Preserve precise unknowns and original failures; repair the responsible deterministic boundary or await the substantive design decision, never rerun completed evidence.",
-      "new_evidence": "Actual95 responses and12bodyreviews distinguish8newfullprimary reports,3wrapper families, exactFTI151bar window and one unsupported split ledger. Only7explicit missing proofs remain in this bounded source-family search; this is not a global source absence claim.",
+      "on_pass": "Independently audit actualsource insertion, preservedoldrows/bytes, canonicalview/recovery and complete40case input statuses; choose the smallest remaining fresh MVP role stage without claiming latestQ1/wholebody/model completeness from a readiness fraction.",
+      "on_fail": "Keep the terminalstage and any actualqualifiedappends explicit; diagnose the first concrete boundary, do not reenter/reset/copyretry the frozenstage or hide affectedcases.",
+      "new_evidence": "Actual102proofGETs,6exhibit old/new nativecounterchecks, complete907target/1123candidate preflight and3344current source/codebindings distinguish qualified originals/newproducts from6unresolved targetconflicts. Allactualconsumer behavior beyond prepare remains unverified.",
       "distinguishing_variable": "Actual source content/provenance/native canonical reconstruction and downstream input status, versus filenames, HTTPsuccess, modelselfreported completeness or synthetic replay."
     }
   },

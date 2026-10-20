@@ -1,0 +1,14 @@
+{
+  "all7_retained": true,
+  "all_frozen_bindings_match": true,
+  "code_rows": 106,
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/request-plan.json",
+    "sha256": "8252e2c299a52c474020c7c07fd83dc791db3fb2a3b7d04fdfc2a29a2c79a239"
+  },
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/results.json",
+    "sha256": "078245c8df70c0d72fe600b9ef3d128e323fca958b62ab37eaeeb4213b51294c"
+  },
+  "source_rows": 858
+}

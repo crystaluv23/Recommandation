@@ -1,0 +1,38 @@
+{
+  "reason": "Preserve exact unittest raw logs, including trailing whitespace, in byte-identical gzip archives. Original local log files are unchanged and remain available at bound paths. Restore with gzip.decompress(archive.read_bytes()) if needed; never normalize raw evidence.",
+  "files": [
+    {
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/final-safe-tests.log",
+        "sha256": "231b274f897fb7fb70ac6c2295881da69e4229ff9aea79c70d111be341421dbb"
+      },
+      "archive": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/final-safe-tests.log.gz",
+        "sha256": "d6846dda5affc8517d9e9903bc5bc1e9b79f364739a3f99af5140e040ca24044"
+      },
+      "decoded_bytes_identical": true
+    },
+    {
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/original-exact-safe-tests.log",
+        "sha256": "51ab02909dca00a143edeeeee83b6a97d1b84d3c12c01d8146fa4797d701a3d1"
+      },
+      "archive": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/original-exact-safe-tests.log.gz",
+        "sha256": "e4c2863c4cab9ba7fb518b19a8b9e18953302d6209ca84d75e13bbbbd6b7ecba"
+      },
+      "decoded_bytes_identical": true
+    },
+    {
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/original-safe-tests.log",
+        "sha256": "b7e89d8a69322e456ddae9ade1bb8802f3827815e21bd02b085e956039e050df"
+      },
+      "archive": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/original-safe-tests.log.gz",
+        "sha256": "37b56696b1720ea33af17c6e210f6aa7b2c0eeb00d1dc273807b4676836b99e8"
+      },
+      "decoded_bytes_identical": true
+    }
+  ]
+}

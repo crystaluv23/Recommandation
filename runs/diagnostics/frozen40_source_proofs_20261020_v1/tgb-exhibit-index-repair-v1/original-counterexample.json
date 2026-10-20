@@ -1,0 +1,27 @@
+{
+  "scope": "Before-fix actual retained TGB parent; parser-only no GET/store/prepare",
+  "source": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+    "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+  },
+  "original_source_copy": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/tgb-exhibit-index-repair-v1/original-reviewed_snapshot.py.txt",
+    "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+  },
+  "raw": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+    "sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0"
+  },
+  "actual_controls": [
+    {
+      "code": "99.1",
+      "target": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+      "proved": false
+    },
+    {
+      "code": "99.3",
+      "target": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+      "proved": false
+    }
+  ]
+}

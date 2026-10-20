@@ -177,7 +177,7 @@ def _sec_source_cik(value):
 
 
 class _SecExhibitLinks(HTMLParser):
-    """Retain literal anchor links and their enclosing exhibit-index row text."""
+    """Retain literal links, row cells and explicit superscript provenance."""
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
@@ -187,9 +187,14 @@ class _SecExhibitLinks(HTMLParser):
         if tag == "tr":
             self.stack.append({"cells": [], "links": [], "cell": None})
         if tag in {"td", "th"} and self.stack:
-            cell = {"text": []}
+            cell = {"text": [], "parts": [], "sup_depth": 0}
             self.stack[-1]["cells"].append(cell)
             self.stack[-1]["cell"] = cell
+        if tag == "sup" and self.stack and self.stack[-1]["cell"] is not None:
+            cell = self.stack[-1]["cell"]
+            if cell["sup_depth"] == 0:
+                cell["parts"].append({"sup": [], "closed": False})
+            cell["sup_depth"] += 1
         if tag == "a":
             for name, value in attrs:
                 if name == "href" and isinstance(value, str):
@@ -199,10 +204,21 @@ class _SecExhibitLinks(HTMLParser):
 
     def handle_data(self, data):
         if self.stack and self.stack[-1]["cell"] is not None:
-            self.stack[-1]["cell"]["text"].append(data)
+            cell = self.stack[-1]["cell"]
+            cell["text"].append(data)
+            if cell["sup_depth"]:
+                cell["parts"][-1]["sup"].append(data)
+            else:
+                cell["parts"].append(data)
 
     def handle_endtag(self, tag):
-        if tag == "tr" and self.stack:
+        if tag == "sup" and self.stack and self.stack[-1]["cell"] is not None:
+            cell = self.stack[-1]["cell"]
+            if cell["sup_depth"]:
+                cell["sup_depth"] -= 1
+                if cell["sup_depth"] == 0:
+                    cell["parts"][-1]["closed"] = True
+        elif tag == "tr" and self.stack:
             self.rows.append(self.stack.pop())
         elif tag in {"td", "th"} and self.stack:
             self.stack[-1]["cell"] = None
@@ -215,14 +231,26 @@ def _proved_sec_exhibit_code(parser, parent_endpoint, target_endpoint, claimed):
         links = {urljoin(parent_endpoint, link) for link in row["links"]}
         if target_endpoint not in links:
             continue
-        cells = [" ".join("".join(cell["text"]).split()) for cell in row["cells"]]
-        nonempty = [text for text in cells if text]
-        codes = [re.fullmatch(r"(?:Exhibit\s+)?([0-9]+(?:\.[0-9]+)?)", text, re.IGNORECASE) for text in nonempty]
-        if not codes or codes[0] is None:
+        codes = []
+        for cell in row["cells"]:
+            superscripts = [part for part in cell["parts"] if isinstance(part, dict)]
+            if any(not part["closed"] or not re.fullmatch(r"(?:[0-9]+|\([0-9]+\))", "".join(part["sup"]).strip())
+                   for part in superscripts):
+                continue
+            # Superscripts may only follow a complete code. Keep positions
+            # structural rather than joining digits across an annotation.
+            split = next((i for i, part in enumerate(cell["parts"]) if isinstance(part, dict)), len(cell["parts"]))
+            if any(isinstance(part, str) and part.strip() for part in cell["parts"][split:]):
+                continue
+            text = "".join(cell["parts"][:split]).strip()
+            match = re.fullmatch(r"(?:Exhibit\s+)?([0-9]+(?:\.[0-9]+)?)", text, re.IGNORECASE)
+            if match:
+                codes.append(match.group(1))
+        if not codes:
             continue
-        if len(links) != 1 or sum(match is not None for match in codes) != 1:
+        if len(links) != 1 or len(codes) != 1:
             return False
-        proved.add(codes[0].group(1))
+        proved.add(codes[0])
     return proved == {claimed}
 
 

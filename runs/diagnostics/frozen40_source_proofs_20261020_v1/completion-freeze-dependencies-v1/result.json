@@ -1,0 +1,82 @@
+{
+  "scope": "Spec-first task-local executor dependency freeze correction and accurate new review scope description; no actual bundle prepare/execute or source/global changes.",
+  "changed_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+      "sha256": "3771191d0df656526c77bfb8a75d6c62bbe50ebecf853c960a644892c81b9c7c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_completion.md",
+      "sha256": "46d7af9ad38732b15cf1054a357641041875b39b00a7af23a8dfe25b3d137151"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen_source_completion.py",
+      "sha256": "7a541e468b8e89f216ec7b121c28e4035fba763430b41db8e5ef62e0ac778d23"
+    }
+  ],
+  "new_explicit_frozen_dependencies": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_snapshot.py",
+      "sha256": "b05af2849b3e54563e6041b8c11dff4d96ddce35875b4c19b7d40a2f6e126516"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_snapshot.md",
+      "sha256": "1d7cea6c99ad68f8dd8442624561a5496ee6d395ac3ca1ac90e0934690b69c8a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_market_profile.md",
+      "sha256": "4609cf645b21cff755c7f50b5b680ef32b65bed1c3f76ec89e2602e205d41be3"
+    }
+  ],
+  "existing_dependency_trace": [
+    "frozen._code_bindings -> periodic._code_bindings -> financial module/owning spec, financial source specs, all native SRC modules, periodic module/owning spec, minimal launcher, signal/basic-info contracts",
+    "frozen._code_bindings also includes frozen module/owning spec and stage_contracts",
+    "No other local runtime helper imported by this executor beyond financial/frozen/preappend; no reflection system added"
+  ],
+  "old_failure": {
+    "executed_source": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/original-consumer.py.txt",
+      "sha256": "676455d4c565a7e0c7838d4703aae65778134546fe7bdbe96fcab4c60d000f3f"
+    },
+    "tests": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/original-exact-safe-test-bindings.json",
+      "sha256": "5903b68cc1a177de79d430161274a49372a39df0bacc2b1c3d194d1d1613d4ba"
+    },
+    "log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/original-exact-safe-tests.log",
+      "sha256": "51ab02909dca00a143edeeeee83b6a97d1b84d3c12c01d8146fa4797d701a3d1"
+    },
+    "result": "2 tests /4 assertion failures: missing freeze binding plus all3 dependency drifts accepted; no test errors",
+    "note": "Earlier initial and final-named candidate logs are preserved. They included a test fixture unresolved temporary-directory symlink path, so the first scope/hash guard dominated. Corrected exact paths and old source replay above establish the actual leak."
+  },
+  "final": {
+    "tests": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/final-exact-safe-test-bindings.json",
+      "sha256": "853f05870b7012279e6cd3072bb12512e63ec0cd597604e3a85e8081a65e24ad"
+    },
+    "log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/final-exact-safe-tests.log",
+      "sha256": "31ceae7cdaacb8a71d5d6648581917581db66f4bc6006d0d1779642e8e0ef606"
+    },
+    "tests_run": 14,
+    "passed": 14,
+    "seconds": 0.263,
+    "tripwire_counts": {
+      "labels": 0,
+      "prepare": 0,
+      "socket": 0,
+      "non_temp_store": 0
+    },
+    "new_review_scope": "Original40 fixed cases; both exact v6/v12 input-only groups; source-qualified local scope, no model or Signal apply.",
+    "old_review_rows": "temporary actual review producer preserves prior rows and original input review; downstream store/view/consumer mocked for scope-only test"
+  },
+  "runner": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/safe-runner.py",
+    "sha256": "82d07e8446f58574b4443a2f67b7c44926a3b20d50254749788c9898b2d92df6"
+  },
+  "limitations": [
+    "Tests of prepare use only mocked temporary _load_bundle and patched preappend path/root; no real scope inputs or global store.",
+    "Scope-description test runs only review producer with no-op store and stops before materialization; does not establish actual batch completion.",
+    "No real sourcebatch prepare/execute/GET/append/model/labels/fullprepare; native parser/source/spec and all completed stages unchanged."
+  ]
+}

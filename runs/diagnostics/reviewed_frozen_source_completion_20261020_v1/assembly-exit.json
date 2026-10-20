@@ -1,0 +1,9 @@
+{
+  "exit_code": 0,
+  "finished_at_utc": "2026-10-20T00:39:01.630267+00:00",
+  "wall_seconds": 21.716526833,
+  "script_after": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/assemble_source_bundle.py",
+    "sha256": "6d9f0f92ab6f90e85e0cd87ce2738d8770ed3fbbfca5581cbf8dafca14ca1084"
+  }
+}

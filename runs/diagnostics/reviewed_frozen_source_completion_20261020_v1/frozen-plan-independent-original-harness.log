@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/frozen-plan-independent-review.py", line 35, in <module>
+    assert Counter(c['split'] for c in projection['cases'])=={'anchor':16,'validation':8,'discovery':16}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

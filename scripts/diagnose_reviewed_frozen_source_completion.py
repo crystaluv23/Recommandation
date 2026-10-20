@@ -218,7 +218,10 @@ def prepare(bundle_path, output):
     with preappend._prepare_only():
         if output.exists(): raise ReviewedSourceRejected('new freeze output required')
         binding=_binding(bundle_path);bundle,projection,review,root,documents,groups,data=_load_bundle(binding,output)
-        code=preappend._bindings([*frozen._code_bindings(),_binding(__file__),_binding(SPEC)])
+        code=preappend._bindings([*frozen._code_bindings(),_binding(__file__),_binding(SPEC),
+            _binding(preappend.__file__),
+            _binding(preappend.REPO/'spec/scripts/diagnose_reviewed_frozen_source_snapshot.md'),
+            _binding(preappend.REPO/'spec/src/stock_opportunity_agent/data/reviewed_market_profile.md')])
         plan={'schema_version':'frozen40-source-completion-plan-v1','bundle':binding,'source_bindings':data,'code_bindings':code,
             'qualified_ids':sorted(documents),'oracle_identity':review['oracle_identity'],'groups':groups,
             'output':str(output),'fixed_cases':40,'per_group_inputs':720,'basic_info_cases':40,
@@ -286,7 +289,8 @@ def execute(output, expected_plan_hash):
                     'original_record':original,'verdict':'admitted','reviewed_available_at':document.available_at.isoformat(),
                     **{k:candidate[k] for k in ('proof_profile','proofs','reason')},**{k:candidate[k] for k in ('semantic_review','semantic_target') if k in candidate}})
             review=deepcopy(old_review);review.pop('manifest_hash',None);review['records'].extend(rows)
-            review['scope'].update(company_ids=sorted(projection['identities']),as_of=max(frozen._aware(c['prediction_time']) for c in projection['cases']).isoformat())
+            review['scope'].update(company_ids=sorted(projection['identities']),as_of=max(frozen._aware(c['prediction_time']) for c in projection['cases']).isoformat(),
+                purpose='Original40 fixed cases; both exact v6/v12 input-only groups; source-qualified local scope, no model or Signal apply.')
             review['manifest_hash']=canonical_json_hash(review);review_path=output/'source-review.json';atomic_write_json(review_path,review)
             view=materialize_reviewed_snapshot(review_path,output/'snapshot');summaries=_consume(output,view,projection,groups)
             _verified_plan(output,expected_plan_hash);additions=financial._check_global(before,root,expected)

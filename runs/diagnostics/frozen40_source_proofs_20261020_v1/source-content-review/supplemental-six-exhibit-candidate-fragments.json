@@ -1,0 +1,902 @@
+{
+  "schema_version": "explicit-operating-candidate-fragments-v1",
+  "candidates": [
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/proof-093-exhibit.json",
+        "sha256": "1520d60fcf76582ed505a2c62c51d4832a4cb67167499669c2b94b9e4a5529dc"
+      },
+      "target_keys": [
+        "operating|cik_0001847409:20250131|0001628280-25-002990"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+            "sha256": "19c04f69bb2672b223cd2645959d5682b28b3a1d3b43c99ac469679e2ddb52d1"
+          },
+          "issuer_cik": "0001847409",
+          "accession_number": "0001628280-25-002990",
+          "form": "40-F",
+          "primary_document": "hiti-20241031.htm",
+          "filing_date": "2025-01-29",
+          "accepted_at": "2025-01-29T21:04:40+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-003-receipt-snapshot.json",
+            "sha256": "cb5e59838516d80bf4312264553d05842510dcb6b480da8576d1c5b47eab36ef"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-003.response.raw",
+            "sha256": "dda6554eba9dff8ba0f6dd402458171ade815fc2f86a20a8ef16dbcf628ed2c8"
+          },
+          "entry_name": "supplement-003",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm",
+          "document_role": "primary",
+          "expected_content_hash": "2005eb9fcb9976c098cb3bbd879fb111f89599ec76c03b17fbdb3a7bc7889553"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-093-receipt-snapshot.json",
+            "sha256": "3aa480c46d88af76752cf4c2f987ac9496caaec8b1a25a5195dedec9746976a2"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-093.response.raw",
+            "sha256": "d1e6724b46b6db1837bda8eb4331d5faec1c4cacacb251145e59fcf55b689e3f"
+          },
+          "entry_name": "proof-093",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-annualinformationform.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "hiti-annualinformationform.htm",
+          "exhibit_type": "99.3",
+          "expected_content_hash": "f146fafff7e5bd4d242b0cabe9fff916ce2eb87bc5e85473e8f4ffe65524267c"
+        }
+      ],
+      "reason": "Actual HighTide AIF contains development history, cannabis retail/accessories business, detailed risks and governance/charter appendices throughC7. Fiscal year endedOct31,2024 is explicit. Literal AIF Date Jan29,2024 conflicts with that fiscal period and parentJan29,2025 acceptance; do not silently amend the text or infer a corrected fact-asof date.",
+      "semantic_target": {
+        "case_id": "cik_0001847409:20250131",
+        "accession": "0001628280-25-002990",
+        "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-annualinformationform.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    },
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/proof-094-exhibit.json",
+        "sha256": "b3e749b7f801b21b4a10fd3e8217a624650770a543ada87f567d600c2dd7a643"
+      },
+      "target_keys": [
+        "operating|cik_0001847409:20250131|0001628280-25-002990"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+            "sha256": "19c04f69bb2672b223cd2645959d5682b28b3a1d3b43c99ac469679e2ddb52d1"
+          },
+          "issuer_cik": "0001847409",
+          "accession_number": "0001628280-25-002990",
+          "form": "40-F",
+          "primary_document": "hiti-20241031.htm",
+          "filing_date": "2025-01-29",
+          "accepted_at": "2025-01-29T21:04:40+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-003-receipt-snapshot.json",
+            "sha256": "cb5e59838516d80bf4312264553d05842510dcb6b480da8576d1c5b47eab36ef"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-003.response.raw",
+            "sha256": "dda6554eba9dff8ba0f6dd402458171ade815fc2f86a20a8ef16dbcf628ed2c8"
+          },
+          "entry_name": "supplement-003",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm",
+          "document_role": "primary",
+          "expected_content_hash": "2005eb9fcb9976c098cb3bbd879fb111f89599ec76c03b17fbdb3a7bc7889553"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-094-receipt-snapshot.json",
+            "sha256": "ee0580c7b6a92eab2a2459ea8aac1f4cecc0860efdcdf9fdd491ec8bb53f43a0"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-094.response.raw",
+            "sha256": "c03f2dbdecb332469ff61818439a15a7a473a2c0371ff52eb5f6c7f5b54c73f0"
+          },
+          "entry_name": "proof-094",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-exhibit992mda.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "hiti-exhibit992mda.htm",
+          "exhibit_type": "99.2",
+          "expected_content_hash": "b0d8bc58260364203e5feeae5cb7ccb78292597a739f735ba95cc2d5a9d81abd"
+        }
+      ],
+      "reason": "Actual HighTide annual MD&A contains CannaCabana operating narrative, comparative FY2024/FY2023 and Q4 operating/financial tables, changed segment scope, liquidity/debt maturity discussion, risks/FOFI cautions and coherent32-page end. Amounts in thousands of Canadian dollars with share/per-share/otherwise-stated exceptions; quarter/year flow periods remain distinct.",
+      "semantic_target": {
+        "case_id": "cik_0001847409:20250131",
+        "accession": "0001628280-25-002990",
+        "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-exhibit992mda.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    },
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-004-exhibit.json",
+        "sha256": "536a230a62c1011815b551a44c253e58d55a4fdcfba5d60442e4329da030dc1d"
+      },
+      "target_keys": [
+        "operating|cik_0000878518:20250930|0001062993-25-006514"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v57/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "0acb531b537bf64aa88bc547acd29c5bab7d8e67517f2f0cb6280910124a0921"
+          },
+          "issuer_cik": "0000878518",
+          "accession_number": "0001062993-25-006514",
+          "form": "40-F",
+          "primary_document": "form40f.htm",
+          "filing_date": "2025-03-28",
+          "accepted_at": "2025-03-28T21:08:05+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-059-receipt-snapshot.json",
+            "sha256": "2f82e6c4a8d7c3fcff3e8127271cf42ea47f0839d71960e857f567be95ba39a5"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+            "sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0"
+          },
+          "entry_name": "proof-059",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm",
+          "document_role": "primary",
+          "expected_content_hash": "c00f5c0cd55b3be30c6b7ada10e9a7dd7620bb73597434beb4a719611d7f3d6e"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-004-receipt-snapshot.json",
+            "sha256": "a9a8075a067410ef45cb74647da6a23e27b030c502ffe1b9be38d92a96f40fdf"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-004.response.raw",
+            "sha256": "1cf1aa67d79c9c00191e0c70b46991c3d8ad0ae34ed74319fc17e35cc6b3313c"
+          },
+          "entry_name": "supplement-004",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "exhibit99-1.htm",
+          "exhibit_type": "99.1",
+          "expected_content_hash": "f5f2ab110f47b1015d80d385539e5bbeba2f6a8aab327643c2cc5cde32a98c6f"
+        }
+      ],
+      "reason": "Actual annual AIF with Taseko copper-mining business/Gibraltar and Florence development, detailed properties/resource disclosures, substantive business/industry risks and governance/audit appendices. FYDec2024 and asofMar28,2025 are distinct. Canadian dollars unless otherwise indicated; resource tonnes/grades/copper quantities preserve separate physical units.",
+      "semantic_target": {
+        "case_id": "cik_0000878518:20250930",
+        "accession": "0001062993-25-006514",
+        "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-1.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    },
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-005-exhibit.json",
+        "sha256": "2bca214c1599fd1693d49f09af14958c4479ab4a1bccb8ccfd077e586f1a2e58"
+      },
+      "target_keys": [
+        "operating|cik_0000878518:20250930|0001062993-25-006514"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v57/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "0acb531b537bf64aa88bc547acd29c5bab7d8e67517f2f0cb6280910124a0921"
+          },
+          "issuer_cik": "0000878518",
+          "accession_number": "0001062993-25-006514",
+          "form": "40-F",
+          "primary_document": "form40f.htm",
+          "filing_date": "2025-03-28",
+          "accepted_at": "2025-03-28T21:08:05+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-059-receipt-snapshot.json",
+            "sha256": "2f82e6c4a8d7c3fcff3e8127271cf42ea47f0839d71960e857f567be95ba39a5"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+            "sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0"
+          },
+          "entry_name": "proof-059",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm",
+          "document_role": "primary",
+          "expected_content_hash": "c00f5c0cd55b3be30c6b7ada10e9a7dd7620bb73597434beb4a719611d7f3d6e"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-005-receipt-snapshot.json",
+            "sha256": "69c8b5441e50a10b9426a7bda2e08e014233ec07d29d7ee783029b1db3f8a44c"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-005.response.raw",
+            "sha256": "abfb5d977f85085b0fd0c69acf40b45baf741fa72f03ac56b54360e19afc95dc"
+          },
+          "entry_name": "supplement-005",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "exhibit99-3.htm",
+          "exhibit_type": "99.3",
+          "expected_content_hash": "58fa44e745c88bdddf2f3266e1b68f5ffa9a0bdae590a6c50788116b035aebb8"
+        }
+      ],
+      "reason": "Actual annual MD&A with operating assets/operations analysis, annual/Q4 comparative financial results and cashflows, liquidity/debt and technical/nonGAAP disclosures throughpage51. PreparedFeb19,2025 differs from FYDec2024. Dollar figures Canadian unless otherwise specified; tables may stateCdn$thousands, while US$ project/commodity assumptions remain distinct and forecast.",
+      "semantic_target": {
+        "case_id": "cik_0000878518:20250930",
+        "accession": "0001062993-25-006514",
+        "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-3.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    },
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-006-exhibit.json",
+        "sha256": "a48d4656677c770b08dbe791698ef13ef4f17e6e42f79b896bd440fed9c81c8b"
+      },
+      "target_keys": [
+        "operating|cik_0001097362:20250731|0001097362-25-000008"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/sec_edgar/filing_documents/34c8f197a3ee4a99b63e2eaf.json",
+            "sha256": "33bd7cc70771fe42e0340e9a9b5cbeb2d795795cd46fd36676e213e181f53ae6"
+          },
+          "issuer_cik": "0001097362",
+          "accession_number": "0001097362-25-000008",
+          "form": "40-F",
+          "primary_document": "slf-20241231.htm",
+          "filing_date": "2025-02-13",
+          "accepted_at": "2025-02-12T23:40:36+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-082-receipt-snapshot.json",
+            "sha256": "ac9a4528c06b409b59f1a0091d35bb582e80386eb940d13f96768c4acb73bfa9"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-082.response.raw",
+            "sha256": "a0e1a2bd3884b38d4fbb7ac85866df3107607a9b10a0c97d71c9a83e36d07027"
+          },
+          "entry_name": "proof-082",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/slf-20241231.htm",
+          "document_role": "primary",
+          "expected_content_hash": "94d8526dfe8ef2327369474bb45ccf1d02a18178110c629488be9a0af0bb3ae3"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-006-receipt-snapshot.json",
+            "sha256": "9aa5ae5b6ba84227fb3f241ea895f940a1693fa74535002be48e667f896d10ba"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-006.response.raw",
+            "sha256": "6731b811b37dc488ec94a698f1e2346d65bea47aea0d90a1cceadcaaee9a0577"
+          },
+          "entry_name": "supplement-006",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/annualaifmasterlivemasterq.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "annualaifmasterlivemasterq.htm",
+          "exhibit_type": "99.3",
+          "expected_content_hash": "1cd98ded726866c1d1c7417c13c1f8998d05dcd5733a83e366f71c4c073e6503"
+        }
+      ],
+      "reason": "Actual annual AIF with corporate history, development of asset-management/wealth/insurance/health business, trends/risk/governance and complete audit charter endingpage38. Detailed segments/financials are incorporated from the MD&A/FS rather than silently treated as read inside this AIF.",
+      "semantic_target": {
+        "case_id": "cik_0001097362:20250731",
+        "accession": "0001097362-25-000008",
+        "document_id": "sec-exhibit:cik_0001097362:000109736225000008:annualaifmasterlivemasterq.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    },
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-007-exhibit.json",
+        "sha256": "b1e2e2b8714d699a0e40f052743c70affad6b1660c297a948a777e83469ba43e"
+      },
+      "target_keys": [
+        "operating|cik_0001097362:20250731|0001097362-25-000008"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/sec_edgar/filing_documents/34c8f197a3ee4a99b63e2eaf.json",
+            "sha256": "33bd7cc70771fe42e0340e9a9b5cbeb2d795795cd46fd36676e213e181f53ae6"
+          },
+          "issuer_cik": "0001097362",
+          "accession_number": "0001097362-25-000008",
+          "form": "40-F",
+          "primary_document": "slf-20241231.htm",
+          "filing_date": "2025-02-13",
+          "accepted_at": "2025-02-12T23:40:36+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-082-receipt-snapshot.json",
+            "sha256": "ac9a4528c06b409b59f1a0091d35bb582e80386eb940d13f96768c4acb73bfa9"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-082.response.raw",
+            "sha256": "a0e1a2bd3884b38d4fbb7ac85866df3107607a9b10a0c97d71c9a83e36d07027"
+          },
+          "entry_name": "proof-082",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/slf-20241231.htm",
+          "document_role": "primary",
+          "expected_content_hash": "94d8526dfe8ef2327369474bb45ccf1d02a18178110c629488be9a0af0bb3ae3"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-007-receipt-snapshot.json",
+            "sha256": "ed8fed6aa147524c3ddc136e806fcdf8c97c6ae0afb192e70e7e04d97152854f"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-007.response.raw",
+            "sha256": "e1aeb93ed0fa53de9912faf1ed4b0d4c5200b04f1b7c144bcc4a1834b5a830ff"
+          },
+          "entry_name": "supplement-007",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/a2024q4slfmdalive.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "a2024q4slfmdalive.htm",
+          "exhibit_type": "99.1",
+          "expected_content_hash": "16e1acdfd4dc7bc14aecd79e54530b5b460b4834a57ecfdc110af2275920c13c"
+        }
+      ],
+      "reason": "Actual annual MD&A with reporting basis, four business pillars, segment/geography performance, capital/liquidity and substantive risk-management discussions throughpage111. Asat/fortheyearDec31,2024 Canadian-dollar reporting has explicit exceptions and unavailable-date alternatives; nonIFRS measures do not equal standard IFRS outcomes.",
+      "semantic_target": {
+        "case_id": "cik_0001097362:20250731",
+        "accession": "0001097362-25-000008",
+        "document_id": "sec-exhibit:cik_0001097362:000109736225000008:a2024q4slfmdalive.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    }
+  ],
+  "native_verification": [
+    {
+      "receipt_name": "proof-093",
+      "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-annualinformationform.htm",
+      "native_profile": "passed",
+      "thin_semantic_body_target": "passed",
+      "available_at": "2025-01-29T21:04:40+00:00",
+      "actual_cutoff": "2025-01-31T00:00:00+00:00"
+    },
+    {
+      "receipt_name": "proof-094",
+      "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-exhibit992mda.htm",
+      "native_profile": "passed",
+      "thin_semantic_body_target": "passed",
+      "available_at": "2025-01-29T21:04:40+00:00",
+      "actual_cutoff": "2025-01-31T00:00:00+00:00"
+    },
+    {
+      "receipt_name": "supplement-004",
+      "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-1.htm",
+      "native_profile": "passed",
+      "thin_semantic_body_target": "passed",
+      "available_at": "2025-03-28T21:08:05+00:00",
+      "actual_cutoff": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "receipt_name": "supplement-005",
+      "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-3.htm",
+      "native_profile": "passed",
+      "thin_semantic_body_target": "passed",
+      "available_at": "2025-03-28T21:08:05+00:00",
+      "actual_cutoff": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "receipt_name": "supplement-006",
+      "document_id": "sec-exhibit:cik_0001097362:000109736225000008:annualaifmasterlivemasterq.htm",
+      "native_profile": "passed",
+      "thin_semantic_body_target": "passed",
+      "available_at": "2025-02-12T23:40:36+00:00",
+      "actual_cutoff": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "receipt_name": "supplement-007",
+      "document_id": "sec-exhibit:cik_0001097362:000109736225000008:a2024q4slfmdalive.htm",
+      "native_profile": "passed",
+      "thin_semantic_body_target": "passed",
+      "available_at": "2025-02-12T23:40:36+00:00",
+      "actual_cutoff": "2025-07-31T00:00:00+00:00"
+    }
+  ],
+  "native_reader_binding": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+    "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+  },
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-037-receipt-snapshot.json",
+      "sha256": "548744c7149f8979c21eec69a271a2b07886e0e4d53dfa1c76e1172cb1906829"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-059-receipt-snapshot.json",
+      "sha256": "2f82e6c4a8d7c3fcff3e8127271cf42ea47f0839d71960e857f567be95ba39a5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/primary-first4-native-content-review.json",
+      "sha256": "c0ea864c2537e936d7bcf977ff5b2ef4be71942e4eb3e350431a8af7dce45de6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/primary-final8-native-content-review.json",
+      "sha256": "bff52fcff67fac3bf15f6896d6c7c2b29330ca2a2f16d5196e0e877e178160b8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-082-body-locators.json",
+      "sha256": "ec2f9e6bec6bd9efabc3255b500004b2388919779c85d3c85678d9b43c2ae399"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-082-content-unknown.json",
+      "sha256": "1e024139d1817cf0ac42fe8634b2f92835ca0f2b898c0119c08e1153bf228c35"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-059-body-locators.json",
+      "sha256": "2a4bb79a49fa4e4ae322ed2a0d462f0e309a864ff603150507c7360ba0b18aa1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-037-body-locators.json",
+      "sha256": "9d7244c35c1ae77094c80da71c4452b4977d4a66cfce29b769744061647c38ca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-024-body-locators.json",
+      "sha256": "37f4eb9de87573d62b4c4a4e73e412f6f1105b1b9ee83e48c28a44ebeff0821f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-067-body-locators.json",
+      "sha256": "bfd402e9ec9916a3f22e4d9fbda73c690ac70b75982fe7f78089c81004b1a543"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-011-receipt-snapshot.json",
+      "sha256": "6da78476fe8a5659daf54a813ee35070f753816d8b5495553883b395cfd65c62"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/primary-first3-review.json",
+      "sha256": "a14acb7c422cc41b2b018ee054adc446695ea613719b45abecece299c1bacab7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-067-receipt-snapshot.json",
+      "sha256": "880f2552af7403e07b74225a7834d6b9697944559c81d30d1d448a0e63e0a131"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-093-receipt-snapshot.json",
+      "sha256": "3aa480c46d88af76752cf4c2f987ac9496caaec8b1a25a5195dedec9746976a2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-025-receipt-snapshot.json",
+      "sha256": "3aa14aa56b8195a6d42440fa464e954780602d8dd2851763c126464479614d68"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-094-body-locators.json",
+      "sha256": "5664c0d1a8e97e1009fa3311ffd8a4e80cc3b641f1ed84883edb4977409e466e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-072-body-locators.json",
+      "sha256": "008bcb16267cfbc5a925fa2977dd740387fa958e9c8f4c9a00e7f7aa2c696380"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-011-body-locators.json",
+      "sha256": "1cb6dc1d9fbce820f7c4e9f6d7b09598d5740dbec51a84b18d3f20c251f4d47b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-059-content-unknown.json",
+      "sha256": "f4d6c52c0d8a9a16d26ed4a9a45721140d479fa593694db6f6399c829a179c5a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-067-content-review.json",
+      "sha256": "64ba7749d62e61a6be7b45f39c8ba00c4554036d56433e2bc0adda04b6ffc10f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-094-content-review.json",
+      "sha256": "b961e5b02945c6b0ad434e2919d5b3faee6f806e4001e35878f9bf6864e6d55d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-080-receipt-snapshot.json",
+      "sha256": "f4444119913c2c953f7fea57d6065d2523a41055be74f4ec42a5496413956abb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-082-receipt-snapshot.json",
+      "sha256": "ac9a4528c06b409b59f1a0091d35bb582e80386eb940d13f96768c4acb73bfa9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-094-receipt-snapshot.json",
+      "sha256": "ee0580c7b6a92eab2a2459ea8aac1f4cecc0860efdcdf9fdd491ec8bb53f43a0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-093-content-review.json",
+      "sha256": "917b4326adb79d4e839f1579529b06520857be8de7bdb8fc12bfe106d0661ce1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-076-receipt-snapshot.json",
+      "sha256": "3f71a842356c994bf1dc17b23ef7ac1295960fc530f1195ff3bd597d7c467349"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-080-body-locators.json",
+      "sha256": "7380a23ded6d41574e46d55e2bc1133521d01358bee897cbc8faaa2d80a395a7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-025-body-locators.json",
+      "sha256": "921365ae4cb5ad9bf3ea4887b74923dccb2d4001f60942dc3c487f4d87e19558"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/primary-first4-candidate-fragments.json",
+      "sha256": "02493e272bf183b1128e7c37c474bb2c1f9a952b35630a08c3fcb3c8efdcbc63"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-024-receipt-snapshot.json",
+      "sha256": "53d1181dae8c86ee7619331e59cfc7f197c39fac6812fe94ce4a56e00f9a7cf0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-076-content-review.json",
+      "sha256": "3e8df57ea9a8c95b1ff75b573de23f3cc9ece8d8ca19a0929f177234108c315e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-076-body-locators.json",
+      "sha256": "bc1800a541c85bd0ac9e4684aaf0f96acfaab885c6953c02fb8a888629e1fa8e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-072-receipt-snapshot.json",
+      "sha256": "7b34fac4e0ec0c008d5797da522b69dd7b0e8f1491657683181315f876d1e39b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-093-body-locators.json",
+      "sha256": "4512b0395db1dd4c94bf356c40a3262e0468ba37fc1914c4b0f9cc277f5b1890"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-080-content-review.json",
+      "sha256": "c77c1c38e391414634275755ff8b1236fe818110357d48477786ab1376a3cf67"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-072-content-review.json",
+      "sha256": "bf8a60cb7a2d1abb782fa97afa63de2de077c8642f7536067978ea0d93de5564"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-011.response.raw",
+      "sha256": "d1e4fe7222379a0aa3fa2286e0582a953ce75320886890b937c7e759aa1c57b3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/15a3411d940cfee5aa53dc34.json",
+      "sha256": "e9b181cae6dfd450383db673f8fd0a806b800a5aede598f5f69e8611c667d48a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-024.response.raw",
+      "sha256": "2a57f168a238907e6f058e187850308cbf77d819ff937a907edf5b9d404209f7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/a937fc61226b9b275713291b.json",
+      "sha256": "c84feac6ae79c8343aac16bb34525f7b1f65026839744eb8951d35223c0abf40"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-025.response.raw",
+      "sha256": "e50f23581a5370e2db08a21377fa9f65f8e85ac8d7632617f8f22b248e5590e7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/f234e0ec806e9c788681a9b2.json",
+      "sha256": "58174f5a26377c5cc1e04ee961d3b149659f1193e8882151bfb0395db96a90b8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-037.response.raw",
+      "sha256": "0a2ffdd4cf4799e4070d33bcfe047dabe9b902fce2dd300800cfe9e6fc44187e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/2512f0a943d63a181693038d.json",
+      "sha256": "c88c87187333a48ed880c4cf406f2279fbbb938098f4991086b3ffe5e1474a9e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+      "sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/489da305a72163a6cbbc1838.json",
+      "sha256": "ced851a1f0592da2aea172c5c2b9d827680733acbf7f751c1c5288b8f63539f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-067.response.raw",
+      "sha256": "5e90e38ca4da60ae190223a3dba4f2462d0cc2759c1a16148216dff1faa75fff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/c9b787fdcdb10e1840c2809e.json",
+      "sha256": "1600461a38649fc57dca3635b9abf69bb334e799845ef0f6f6e092eaa3c1e1f0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-072.response.raw",
+      "sha256": "ce585ff39b37659c43cdc939de60ee863830dfe91e9a6a5e07a693c24181c2f3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/3a5d03345c67f4c81959ad44.json",
+      "sha256": "7a63e66b2e0e2a555cb9f9bfaf309ef4d5be10491ae0e805e564281ab709783f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-076.response.raw",
+      "sha256": "64c71a24ea674cb5257400a97a0d47e2274907682c44bb5af50eb4b3030019c6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/d75693499826a3d8ba5db49b.json",
+      "sha256": "db50b1c062b614018f65cc479748dfabe1a9a23a6f18930d74dcc25c22fe8bac"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-080.response.raw",
+      "sha256": "06e739f8515241f5b469516a16a783f87c037ae7d270e3112731cf4ac48f2c31"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/293b00dba817b0452060f9bb.json",
+      "sha256": "29bc53e88c15b2ba643ce6657a9476edd1a2bc208af4c20392a612f2f9af70f7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-082.response.raw",
+      "sha256": "a0e1a2bd3884b38d4fbb7ac85866df3107607a9b10a0c97d71c9a83e36d07027"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/d697fc9104430921ef74d87c.json",
+      "sha256": "51656e00473bbf74591508650229db71f9d041dcfb5ed7b2b0222a64d25c4d3e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-093.response.raw",
+      "sha256": "d1e6724b46b6db1837bda8eb4331d5faec1c4cacacb251145e59fcf55b689e3f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/e94c58c44def0c9421c11880.json",
+      "sha256": "bffcc6a01a0e47699c8f741e1d2bafdaae0b8927f9b06f27a53dfcb0a976038f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-094.response.raw",
+      "sha256": "c03f2dbdecb332469ff61818439a15a7a473a2c0371ff52eb5f6c7f5b54c73f0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/sec_edgar/filing_documents/bdeb628f31c6f867b673cdda.json",
+      "sha256": "1076dd4b88b85c32d3b73214320e0a5ca945f2c53a767f1ab898f93781c37575"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/results.json",
+      "sha256": "a873794947eb6907d14c74ea7db4127459ec4968b6cb8397eb67e25fc4b77b51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/request-plan.json",
+      "sha256": "0c96abd8ae201b36eb50e2cb22974ada8975284be9dc9c4cc4ae5b2496a5b05f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v73/cache/data/sec_edgar/filing_documents/abdb01c0f15090ccb85ac2e2.json",
+      "sha256": "e054499360bfd1732307f2a4f4dd6ecdad7f20995d6e0d885cb6b270276c9a1e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v75/cache/data/sec_edgar/filing_documents/5d06634a0bdf604115251530.json",
+      "sha256": "d597e97babd52606468c0dbfe4dad8debcbd3e288d52932e750e657295b1b4b5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/3154a5ccef31cceaddb284a7.json",
+      "sha256": "91011ab47d51b8e1c7dfb57968aeb168e88b951387270db29b4aaee5df2eb0a5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/13260563b80196a412507f59.json",
+      "sha256": "3d0e2aa8fc9cf9d90d3516811b725443e25d3c81abf48b6f4303e9bb6e021fec"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/a3d62573a7e6803d607c370a.json",
+      "sha256": "d45187d81b319529e84fab1c8f000482a2007e236b0d3811b49a796f96e6584c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/cache/data/sec_edgar/filing_documents/eccebf835993c501bef4144e.json",
+      "sha256": "933c0d8db6c874f3e8485b4d5ea277950982b96a18b34ee420e8cc4d1130167d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v62/cache/data/sec_edgar/filing_documents/bf91090e534a573a72e70202.json",
+      "sha256": "11347db1d53184d1d11e271547dc148061f9943ee63d7e8f0f796d1891213747"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+      "sha256": "3d6fca45c87bcb48d4fe6bbcaa34b31ed4f15d0f9430fbdb518c630936b90326"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplemental-exhibit-content-review.json",
+      "sha256": "17ffce49fb8a4a25ea1a309d63823e27e4cadcc30cdfdd258f7b306519e1635a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-006-receipt-snapshot.json",
+      "sha256": "9aa5ae5b6ba84227fb3f241ea895f940a1693fa74535002be48e667f896d10ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-003-body-locators.json",
+      "sha256": "e4b749a104d791fc08f5f179a93a770b5f387b404b1a37ad82391a97957c7d1e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-004-receipt-snapshot.json",
+      "sha256": "a9a8075a067410ef45cb74647da6a23e27b030c502ffe1b9be38d92a96f40fdf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-006-body-locators.json",
+      "sha256": "8c14c7a839923362ca6270b083890dba1da7dbb3bfbf788f61ff6d94e3da6577"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-005-body-locators.json",
+      "sha256": "5e71b9e75de50c09918be74bfe3ef587ad25dd575c522dd395d30860292a4a26"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/source-final-candidate-fragments.json",
+      "sha256": "112c2b093bc7a0b9076db640050a44acb22ce697531c469b2d764d6efc740488"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-004-body-locators.json",
+      "sha256": "593e9e3f4546d18a9e166d15d5a5b4d8f5c7476fb6d0f94490b0ec07af981dcf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-007-receipt-snapshot.json",
+      "sha256": "ed8fed6aa147524c3ddc136e806fcdf8c97c6ae0afb192e70e7e04d97152854f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+      "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-initial-probe.json",
+      "sha256": "cd1faf90e0269ad5008d535403d490abcb823b790df6f838b56e0ff59a00bafd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-005-receipt-snapshot.json",
+      "sha256": "69c8b5441e50a10b9426a7bda2e08e014233ec07d29d7ee783029b1db3f8a44c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-007-body-locators.json",
+      "sha256": "37ef5862007a44f6a7acdf3c066d2a1f96bad98af3f5574103863d56064753ae"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/final8-semantic-bridge-check.json",
+      "sha256": "c89f7d3450785bd3b1755b64afd2fd384b7233a745abe90f9901f9e480937310"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-003-receipt-snapshot.json",
+      "sha256": "cb5e59838516d80bf4312264553d05842510dcb6b480da8576d1c5b47eab36ef"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-original-reader-probe.json",
+      "sha256": "af428a1263eba11f6926aa0174fa29d3c8c969ff19865746ff8c2c4264543cee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/results.json",
+      "sha256": "078245c8df70c0d72fe600b9ef3d128e323fca958b62ab37eaeeb4213b51294c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/request-plan.json",
+      "sha256": "8252e2c299a52c474020c7c07fd83dc791db3fb2a3b7d04fdfc2a29a2c79a239"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-003.response.raw",
+      "sha256": "dda6554eba9dff8ba0f6dd402458171ade815fc2f86a20a8ef16dbcf628ed2c8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/292e64a32568298c937907f6.json",
+      "sha256": "ccd7c396afae5c99d251f925fc41fe2af7a2860a18eea086f634084b1d543d76"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-004.response.raw",
+      "sha256": "1cf1aa67d79c9c00191e0c70b46991c3d8ad0ae34ed74319fc17e35cc6b3313c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/bd4b4b7f0898eb80dab3567f.json",
+      "sha256": "8ddbcec81401a4267bc0ededa75f9982c7a4febf527d5d9bc9b7250ed6602c97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-005.response.raw",
+      "sha256": "abfb5d977f85085b0fd0c69acf40b45baf741fa72f03ac56b54360e19afc95dc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/13fd3baf43eff36e361f7394.json",
+      "sha256": "56d3c40c2ab4b11503c0c4846a96bfdf8bb97040a4c68408e7292aa91e88113f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-006.response.raw",
+      "sha256": "6731b811b37dc488ec94a698f1e2346d65bea47aea0d90a1cceadcaaee9a0577"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/a86badc08654a9416f521c3b.json",
+      "sha256": "cfff04dcbe6f059462181ff18f78030ecb2116c3dd7895c6d923f913b62cd9ac"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-007.response.raw",
+      "sha256": "e1aeb93ed0fa53de9912faf1ed4b0d4c5200b04f1b7c144bcc4a1834b5a830ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/b9359eeb5d151317f7c9c3d8.json",
+      "sha256": "a5d35f65631e457ad54f01dd3b7501f572203fa6c78609fc1b88528fbfb3a01c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/proof-093-exhibit.json",
+      "sha256": "1520d60fcf76582ed505a2c62c51d4832a4cb67167499669c2b94b9e4a5529dc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+      "sha256": "19c04f69bb2672b223cd2645959d5682b28b3a1d3b43c99ac469679e2ddb52d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/proof-094-exhibit.json",
+      "sha256": "b3e749b7f801b21b4a10fd3e8217a624650770a543ada87f567d600c2dd7a643"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-004-exhibit.json",
+      "sha256": "536a230a62c1011815b551a44c253e58d55a4fdcfba5d60442e4329da030dc1d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v57/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+      "sha256": "0acb531b537bf64aa88bc547acd29c5bab7d8e67517f2f0cb6280910124a0921"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-005-exhibit.json",
+      "sha256": "2bca214c1599fd1693d49f09af14958c4479ab4a1bccb8ccfd077e586f1a2e58"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-006-exhibit.json",
+      "sha256": "a48d4656677c770b08dbe791698ef13ef4f17e6e42f79b896bd440fed9c81c8b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/sec_edgar/filing_documents/34c8f197a3ee4a99b63e2eaf.json",
+      "sha256": "33bd7cc70771fe42e0340e9a9b5cbeb2d795795cd46fd36676e213e181f53ae6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-007-exhibit.json",
+      "sha256": "b1e2e2b8714d699a0e40f052743c70affad6b1660c297a948a777e83469ba43e"
+    }
+  ],
+  "all_six_native_profiles_and_semantic_bridges_passed": true,
+  "source_admissions": 0,
+  "target_scope": "Six exhibit IDs map to only the existing HITI/TGB/SLF40-F case/accession operating targets, two exhibits each; no new targets.",
+  "limitations": [
+    "HITI literal AIFDateJan29,2024 remains inconsistent with FYOct2024/parentacceptedJan2025; publicationtime does not rewrite withintext fact dates.",
+    "HITI parent/index/internal exhibit numbering conflict is retained; native roles use actual parent index cells.",
+    "TGB/SLFprimarywrapper unknown evidence remains bound; source qualification applies to these six separate whole exhibit bodies.",
+    "Old346655 reader rejected same two TGB records; initial37d0 intermediate candidate passed six; final12fcc reader now passes six with unchanged source/ID/clock.",
+    "No global-ID collision scan, append, materialization, actualprepare or model/label/GET by reviewer.",
+    "Only source-body scope and native proof/semantic bridge; not full factual/model reading, Signal readiness or MVP closure."
+  ]
+}

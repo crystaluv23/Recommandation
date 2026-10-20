@@ -1,0 +1,381 @@
+{
+  "GET_attempts": 7,
+  "HTTP_responses_retained": 7,
+  "all_frozen_bindings_unchanged": true,
+  "attempt_reservations": 7,
+  "automatic_retries": 0,
+  "dispositions": [
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:29.601869+00:00",
+      "kind": "historical_issuer",
+      "name": "supplement-001",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/massive/company_profile/98bfc167a7835372cf76f102.json",
+        "sha256": "54f4c480d73c600cd1e7647c447706246fda98aa80d2fbb0097f20550eea5d2d"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:28.354256+00:00",
+      "source": "massive",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:30.794520+00:00",
+      "kind": "all_type_splits",
+      "name": "supplement-002",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/massive/corporate_actions/0f3c80178cdd33309619d3a0.json",
+        "sha256": "dc834558f1179d749b9d3deec53c81d5a6df61dbdfc706f06e644b64b6aaa912"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:29.645970+00:00",
+      "source": "massive",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:31.883110+00:00",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-003",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/292e64a32568298c937907f6.json",
+        "sha256": "ccd7c396afae5c99d251f925fc41fe2af7a2860a18eea086f634084b1d543d76"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:30.844298+00:00",
+      "source": "sec_edgar",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:32.989822+00:00",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-004",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/bd4b4b7f0898eb80dab3567f.json",
+        "sha256": "8ddbcec81401a4267bc0ededa75f9982c7a4febf527d5d9bc9b7250ed6602c97"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:31.949616+00:00",
+      "source": "sec_edgar",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:34.060533+00:00",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-005",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/13fd3baf43eff36e361f7394.json",
+        "sha256": "56d3c40c2ab4b11503c0c4846a96bfdf8bb97040a4c68408e7292aa91e88113f"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:33.042898+00:00",
+      "source": "sec_edgar",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:35.289492+00:00",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-006",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/a86badc08654a9416f521c3b.json",
+        "sha256": "cfff04dcbe6f059462181ff18f78030ecb2116c3dd7895c6d923f913b62cd9ac"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:34.117335+00:00",
+      "source": "sec_edgar",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:36.434617+00:00",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-007",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/b9359eeb5d151317f7c9c3d8.json",
+        "sha256": "a5d35f65631e457ad54f01dd3b7501f572203fa6c78609fc1b88528fbfb3a01c"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:35.340461+00:00",
+      "source": "sec_edgar",
+      "status": "received"
+    }
+  ],
+  "finished_at_utc": "2026-10-20T00:32:36.593987+00:00",
+  "global_appends": 0,
+  "labels_loaded": false,
+  "market_request_record": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/market-request-records.json",
+    "sha256": "51620e452ed403a1d0af18f312e79021b8f570b222164ef654b45e9d3474da75"
+  },
+  "max_GET_attempts": 7,
+  "models": 0,
+  "native_ledger": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/native-ledger.jsonl",
+    "sha256": "ab4205d0da8b84be43eda672ec1e19a61c447453a8f3248be87031ef1792764a"
+  },
+  "network_open_calls": 7,
+  "plan_hash": "3071110b573f0af4e68be924b7a0884877d35959192edb884d9dd8eead56d99e",
+  "redirects_followed": 0,
+  "requests": [
+    {
+      "bytes": 1429,
+      "decoded_response": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-001.response.json",
+        "sha256": "1e5ff361d2841cc13455af44e4494f4227f3983cc571547b1834422e79427a25"
+      },
+      "headers_omitted": [
+        "Authorization"
+      ],
+      "http_status": 200,
+      "method": "GET",
+      "name": "supplement-001",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-001.response.raw",
+      "raw_sha256": "1e5ff361d2841cc13455af44e4494f4227f3983cc571547b1834422e79427a25",
+      "response_headers": {
+        "Connection": "close",
+        "Content-Length": "1429",
+        "Content-Type": "application/json",
+        "Date": "Tue, 20 Oct 2026 00:32:29 GMT",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Polygon-Cluster-Name": "polygon-ny5",
+        "X-Request-Id": "c78864ea03966bf66df7b1b6682502d7"
+      },
+      "response_url": "https://api.massive.com/v3/reference/tickers/FTI?date=2025-05-29",
+      "retrieved_at_utc": "2026-10-20T00:32:29.600903+00:00",
+      "started_at_utc": "2026-10-20T00:32:28.396594+00:00",
+      "status": "http_response_retained",
+      "url": "https://api.massive.com/v3/reference/tickers/FTI?date=2025-05-29"
+    },
+    {
+      "bytes": 76,
+      "decoded_response": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-002.response.json",
+        "sha256": "f77086c71df28429b5e4e6213e22ae648b73354b0fc4b91b5f7aabbbed51b426"
+      },
+      "headers_omitted": [
+        "Authorization"
+      ],
+      "http_status": 200,
+      "method": "GET",
+      "name": "supplement-002",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-002.response.raw",
+      "raw_sha256": "f77086c71df28429b5e4e6213e22ae648b73354b0fc4b91b5f7aabbbed51b426",
+      "response_headers": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization",
+        "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Max-Age": "1728000",
+        "Connection": "close",
+        "Content-Type": "application/json",
+        "Date": "Tue, 20 Oct 2026 00:32:30 GMT",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "x-ratelimit-limit": "100000000, 100000000;w=60",
+        "x-ratelimit-remaining": "80000000",
+        "x-ratelimit-reset": "30",
+        "x-request-id": "d07067eaa8c34fd08ac31082d9303619"
+      },
+      "response_url": "https://api.massive.com/stocks/v1/splits?execution_date.gte=2025-05-30&execution_date.lte=2026-10-20&limit=1000&sort=execution_date.asc&ticker=FTI",
+      "retrieved_at_utc": "2026-10-20T00:32:30.793348+00:00",
+      "started_at_utc": "2026-10-20T00:32:29.687678+00:00",
+      "status": "http_response_retained",
+      "url": "https://api.massive.com/stocks/v1/splits?execution_date.gte=2025-05-30&execution_date.lte=2026-10-20&limit=1000&sort=execution_date.asc&ticker=FTI"
+    },
+    {
+      "bytes": 125274,
+      "headers_omitted": [],
+      "http_status": 200,
+      "method": "GET",
+      "name": "supplement-003",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-003.response.raw",
+      "raw_sha256": "dda6554eba9dff8ba0f6dd402458171ade815fc2f86a20a8ef16dbcf628ed2c8",
+      "response_headers": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-cache, no-store, no-transform, proxy-revalidate",
+        "Connection": "Transfer-Encoding",
+        "Content-Encoding": "gzip",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        "Content-Type": "text/html",
+        "Date": "Tue, 20 Oct 2026 00:32:31 GMT",
+        "Last-Modified": "Wed, 29 Jan 2025 21:05:17 GMT",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+        "Pragma": "no-cache",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "x-amz-id-2": "EkZXLO1CNodPdalOkJX7wsApDUAzJru8Gf5oAw9X3jHFqrZVUPIgUiVcUFPwDpkyVdGFxQBi94Q=",
+        "x-amz-meta-mode": "33188",
+        "x-amz-replication-status": "COMPLETED",
+        "x-amz-request-id": "6BWNARR3BBVFTFZN",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-version-id": "ZFWN.So8fWYXS1JTtPn3VbrmtybOXNGC"
+      },
+      "response_url": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm",
+      "retrieved_at_utc": "2026-10-20T00:32:31.881325+00:00",
+      "started_at_utc": "2026-10-20T00:32:30.887983+00:00",
+      "status": "http_response_retained",
+      "url": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm"
+    },
+    {
+      "bytes": 125515,
+      "headers_omitted": [],
+      "http_status": 200,
+      "method": "GET",
+      "name": "supplement-004",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-004.response.raw",
+      "raw_sha256": "1cf1aa67d79c9c00191e0c70b46991c3d8ad0ae34ed74319fc17e35cc6b3313c",
+      "response_headers": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-cache, no-store, no-transform, proxy-revalidate",
+        "Connection": "Transfer-Encoding",
+        "Content-Encoding": "gzip",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        "Content-Type": "text/html",
+        "Date": "Tue, 20 Oct 2026 00:32:32 GMT",
+        "Last-Modified": "Fri, 28 Mar 2025 21:08:34 GMT",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+        "Pragma": "no-cache",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "x-amz-id-2": "1ZAUGItv5jrOSS2dFimQQFb/6d2JgaH3ReKgD4s0P+8B5tWASa74ulGDd9V8orqrK6m9VRLA/s1jzYK76El8AMBzmZoY8eIR",
+        "x-amz-meta-mode": "33188",
+        "x-amz-replication-status": "COMPLETED",
+        "x-amz-request-id": "1QMVGAK5XEWG4YWB",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-version-id": "Y0AHVqOohvNP1wLSonReJ6yVu8JgPExb"
+      },
+      "response_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+      "retrieved_at_utc": "2026-10-20T00:32:32.988208+00:00",
+      "started_at_utc": "2026-10-20T00:32:31.999908+00:00",
+      "status": "http_response_retained",
+      "url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm"
+    },
+    {
+      "bytes": 68693,
+      "headers_omitted": [],
+      "http_status": 200,
+      "method": "GET",
+      "name": "supplement-005",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-005.response.raw",
+      "raw_sha256": "abfb5d977f85085b0fd0c69acf40b45baf741fa72f03ac56b54360e19afc95dc",
+      "response_headers": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-cache, no-store, no-transform, proxy-revalidate",
+        "Connection": "Transfer-Encoding",
+        "Content-Encoding": "gzip",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        "Content-Type": "text/html",
+        "Date": "Tue, 20 Oct 2026 00:32:34 GMT",
+        "Last-Modified": "Fri, 28 Mar 2025 21:08:34 GMT",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+        "Pragma": "no-cache",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "x-amz-id-2": "OC+RvwagCvFRZBZQzQF3zLkMeJfdc5QK9F4WDAv6VI1EvHX312Mc4cgn32ZsGc04TqkQoExWk/N7GG3PkC+3QCFvcyVvhdwC",
+        "x-amz-meta-mode": "33188",
+        "x-amz-replication-status": "COMPLETED",
+        "x-amz-request-id": "3072STV2VC1KDQDE",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-version-id": "_NkwSWsZ.s4DlAAZ6vNo7rmvXXDO1vV."
+      },
+      "response_url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+      "retrieved_at_utc": "2026-10-20T00:32:34.059129+00:00",
+      "started_at_utc": "2026-10-20T00:32:33.087777+00:00",
+      "status": "http_response_retained",
+      "url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm"
+    },
+    {
+      "bytes": 68752,
+      "headers_omitted": [],
+      "http_status": 200,
+      "method": "GET",
+      "name": "supplement-006",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-006.response.raw",
+      "raw_sha256": "6731b811b37dc488ec94a698f1e2346d65bea47aea0d90a1cceadcaaee9a0577",
+      "response_headers": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-cache, no-store, no-transform, proxy-revalidate",
+        "Connection": "Transfer-Encoding",
+        "Content-Encoding": "gzip",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        "Content-Type": "text/html",
+        "Date": "Tue, 20 Oct 2026 00:32:35 GMT",
+        "Last-Modified": "Thu, 13 Feb 2025 11:01:14 GMT",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+        "Pragma": "no-cache",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "x-amz-id-2": "afb2Cl3QFX0LaM3q6VQ1gfjWDJOyS9FYTWKN//D/kI4RGlvxPCTMrNyU5P/XoYv/vkZDw+JVmjcjhNMY6uv3yvoFeVdplGam",
+        "x-amz-meta-mode": "33188",
+        "x-amz-replication-status": "COMPLETED",
+        "x-amz-request-id": "5B18F0S7GZ3K740K",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-version-id": "bejl7nXmEVB6bOD1OyEdJzSKl0hBIGDv"
+      },
+      "response_url": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/annualaifmasterlivemasterq.htm",
+      "retrieved_at_utc": "2026-10-20T00:32:35.288146+00:00",
+      "started_at_utc": "2026-10-20T00:32:34.160690+00:00",
+      "status": "http_response_retained",
+      "url": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/annualaifmasterlivemasterq.htm"
+    },
+    {
+      "bytes": 220351,
+      "headers_omitted": [],
+      "http_status": 200,
+      "method": "GET",
+      "name": "supplement-007",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-007.response.raw",
+      "raw_sha256": "e1aeb93ed0fa53de9912faf1ed4b0d4c5200b04f1b7c144bcc4a1834b5a830ff",
+      "response_headers": {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-cache, no-store, no-transform, proxy-revalidate",
+        "Connection": "Transfer-Encoding",
+        "Content-Encoding": "gzip",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        "Content-Type": "text/html",
+        "Date": "Tue, 20 Oct 2026 00:32:36 GMT",
+        "Last-Modified": "Thu, 13 Feb 2025 11:01:14 GMT",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+        "Pragma": "no-cache",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Akamai-Transformed": "0 - 0 -",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "x-amz-id-2": "nShSbp17CwewX0aM/tgi+EQmaWpFekNGnhChUR8bUjk64MKaKtqPtkGKNKHzZ0d2lwQtDup956A=",
+        "x-amz-meta-mode": "33188",
+        "x-amz-replication-status": "COMPLETED",
+        "x-amz-request-id": "7954SHNM0XZXE9SG",
+        "x-amz-server-side-encryption": "AES256",
+        "x-amz-version-id": "ycGjm.p_GEia.s1I09vdm.TuCR4bsa_U"
+      },
+      "response_url": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/a2024q4slfmdalive.htm",
+      "retrieved_at_utc": "2026-10-20T00:32:36.432063+00:00",
+      "started_at_utc": "2026-10-20T00:32:35.384062+00:00",
+      "status": "http_response_retained",
+      "url": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/a2024q4slfmdalive.htm"
+    }
+  ],
+  "source_admission": false,
+  "status": "completed",
+  "terminal": true
+}

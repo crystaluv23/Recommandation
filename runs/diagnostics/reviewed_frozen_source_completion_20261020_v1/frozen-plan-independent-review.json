@@ -1,0 +1,98 @@
+{
+  "schema_version": "bounded-frozen-plan-independent-review-v1",
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/plan.json",
+    "sha256": "b099d0af1ecc3720faaa23b884cb810122408c2b7470d494a81b7e4195987761",
+    "canonical_hash": "114a50b2b037409e36eee1439ca1497d94d183df8d342ba984b3f6b8e2ffeb50"
+  },
+  "all_current_bindings_passed": true,
+  "source_bindings": 3230,
+  "code_bindings": 114,
+  "total_declared_bindings": 3344,
+  "unique_current_paths_hashed": 3344,
+  "binding_sets_canonical_sha256": {
+    "source_bindings": "2005a7a3b387d5ec5da2f387b9ae7057d584b165d2667dfaa34ca49a840f1d7e",
+    "code_bindings": "ed2627d5f4646c61ed36469df8d13872eea4b1fccf9b6de5313adb13122a3171"
+  },
+  "qualified_ids_exact_bundle": 1123,
+  "fixed_cases": 40,
+  "splits": {
+    "anchor": 16,
+    "discovery": 16,
+    "evolution_validation": 8
+  },
+  "registry_groups": [
+    {
+      "name": "default_v6",
+      "version": 6,
+      "registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+      "refs": [
+        "financing_listing_action:v2",
+        "cash_burn_rate_elevated:v1",
+        "cash_reserves:v1",
+        "cash_to_current_liabilities_ratio:v1",
+        "gross_margin_change:v2",
+        "liquidity_runway_months:v1",
+        "net_share_retirement_yoy:v1",
+        "operating_cash_flow_margin:v1",
+        "revenue_acceleration:v1",
+        "revenue_growth_yoy:v1",
+        "guidance_acceleration:v1",
+        "max_drawdown_1y:v1",
+        "price_momentum_126d:v1",
+        "negative_word_count:v1",
+        "order_confirmation_disclosed:v1",
+        "order_quality:v1",
+        "commercialization_status:v1",
+        "customer_concentration:v1"
+      ],
+      "case_input_denominator": 720
+    },
+    {
+      "name": "latest_v12",
+      "version": 12,
+      "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+      "refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3",
+        "operating_cash_flow_margin:v2",
+        "revenue_acceleration:v2",
+        "revenue_growth_yoy:v3",
+        "guidance_acceleration:v3",
+        "max_drawdown_1y:v2",
+        "price_momentum_126d:v2",
+        "negative_word_count:v2",
+        "order_confirmation_disclosed:v3",
+        "order_quality:v2",
+        "commercialization_status:v2",
+        "customer_concentration:v2"
+      ],
+      "case_input_denominator": 720
+    }
+  ],
+  "explicit_prohibitions": {
+    "network_allowed": false,
+    "models_allowed": false,
+    "labels_allowed": false,
+    "apply_allowed": false,
+    "full_prepare_allowed": false
+  },
+  "basic_info_denominator": 40,
+  "no_existing_stage_resumed": true,
+  "output_protected_root_overlap": false,
+  "actual_execution_not_started": true,
+  "blocking_findings": [],
+  "limits": [
+    "Original reviewer fixture expected split label validation rather than actual evolution_validation and failed after hash loop; preserved as harness error, no product defect.",
+    "Read/stream-hash and canonical scope audit only; no _load_bundle/prepare/execute/Store/materializer/nativeconsumer/GET/model/LabelStore/LockedTest.",
+    "No mixed origin JSON deserialization or direct mixedorigin binding present.",
+    "102previousauthorizedGET receipts are source evidence; this future dataonlystage has network disabled.",
+    "1123qualified IDs do not establish append/view/worker/2x720/defaultBasicInfo completion or measurement correctness.",
+    "Six unknown source targets and partial factual reading remain in bound bundle; no overall MVP readiness or benefit closure."
+  ]
+}

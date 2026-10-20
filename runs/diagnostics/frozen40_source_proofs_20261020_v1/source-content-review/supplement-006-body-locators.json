@@ -1,0 +1,62 @@
+{
+  "name": "supplement-006",
+  "source_request": {
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/annualaifmasterlivemasterq.htm",
+    "kind": "supplemental_sec_body",
+    "name": "supplement-006",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-006-receipt-snapshot.json",
+    "sha256": "9aa5ae5b6ba84227fb3f241ea895f940a1693fa74535002be48e667f896d10ba"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-006.response.raw",
+    "sha256": "6731b811b37dc488ec94a698f1e2346d65bea47aea0d90a1cceadcaaee9a0577"
+  },
+  "decoded_body_sha256": "1cd98ded726866c1d1c7417c13c1f8998d05dcd5733a83e366f71c4c073e6503",
+  "decoded_characters": 609213,
+  "visible_characters": 177873,
+  "visible_text_sha256": "b1fb909fe8310ded94dc105160652d68b8c9714e1f61771a45f050d56a639fff",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 17,
+    "raw_decoded_end": 29064,
+    "text": "EX-99.3 4 annualaifmasterlivemasterq.htm EX-99.3 Annual Information Form Sun Life Financial Inc. For the Year Ended December 31, 2024 February 12, 2025 Annual Information Form 2024 Table of Contents Annual Information Form Management's Discussion & Analysis (1) Consolidated Financial Statements and Notes (1) Corporate Structure 3 Development of the Business 3 Section B Business of Sun Life 5 Section B Financial Performance Section B Notes 8 \u2013 13 Investments Section I Note 5 Risk Management Section K Note 6 Capital Structure 8 Section J Note 20 Dividends 11 Section J Note 14 Security Ratings 11 Section F Transfer Agents and Registrar 14 Directors and Executive Officers 14 Code of Conduct 18 Principal Accountant Fees and Services 19 Interests of Experts 20 Regulatory Matters 20 Section B Risk Factors 32 Section K Notes 6-7 Legal and Regulatory Proceedings 33 Additional Information 33 Appendix A - Charter of the Audit Committee 34 (1) As indicated, parts of the Company\u2019s MD&A, consolidated financial statements and accompanying notes for the year ended December 31, 2024 are incorporated by reference in this AIF. The 2024 MD&A (as defined below) and the 2024 Consolidated Financial Statements (as defined below) may be accessed at www.sedarplus.ca and www.sec.gov , respectively. Sun Lif"
+  },
+  "tail": {
+    "visible_start": 177023,
+    "visible_end": 177873,
+    "raw_decoded_start": 605522,
+    "raw_decoded_end": 609019,
+    "text": "the annual management information circular. j) The Committee shall undertake and review with the Board an annual performance evaluation of the Committee and the Committee Chair. 3. Access to Management and Independent Advisors The Committee: a) Has full and unrestricted access to management and, in consultation with the Board Chair, may engage any special advisors it deems necessary to provide independent advice at the expense of Sun Life. b) Establishes the scope and frequency of the independent reviews of the Actuarial, Finance and Internal Audit functions and determines whether any special advisors are engaged to conduct such independent reviews. c) Reviews the results of any independent reviews of the Actuarial, Finance and Internal Audit functions conducted at the request of the Committee. Sun Life | Charter of the Audit Committee 38"
+  },
+  "closing_html": false,
+  "section_locators": {
+    "business": [],
+    "mda": [
+      {
+        "visible_start": 164546,
+        "visible_end": 165396,
+        "raw_decoded_start": 565283,
+        "raw_decoded_end": 568520,
+        "text": "Management\u2019s Discussion and Analysis and the related news release (collectively, the \u201cFinancial Disclosure Documents\u201d). b) In conducting its review of the Financial Disclosure Documents: i. reviews the reported and underlying earnings; ii. discusses with the President & Chief Executive Officer and the Chief Financial Officer any significant issues raised in connection with the certifications relating to financial disclosure and controls that those officers are required to file with securities regulatory authorities; iii. reviews reports from the Chief Actuary on the parts of the Financial Disclosure Documents prepared by that officer; iv. reviews with management and the External Auditor Sun Life\u2019s principal accounting and actuarial practices and policies; v. reviews other non-financial disclosures required to be included in the Financial "
+      }
+    ],
+    "risks": [],
+    "statements": [],
+    "segments": [
+      {
+        "visible_start": 15739,
+        "visible_end": 16589,
+        "raw_decoded_start": 65189,
+        "raw_decoded_end": 66925,
+        "text": "operating segments, our strategy, products and methods of distribution, risk management policies and investment activities is included in the 2024 MD&A, which is incorporated by reference in this AIF. The global financial services industry continues to evolve in response to demographic, economic, and technological trends. Specific trends that have an impact on our businesses include: Demographic \u2022 Major demographic shifts in developed markets include the aging of baby boomers and the growth of millennials as a client segment. Aging baby boomers are generating greater demand for retirement solutions and health solutions as they retire, contributing to the expansion of the senior market, also referred to as the silver economy. This shift highlights the need to enhance advisor relationships and expertise to support their complex estate plann"
+      }
+    ],
+    "units": []
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

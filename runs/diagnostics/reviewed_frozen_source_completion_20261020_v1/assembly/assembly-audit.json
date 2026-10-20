@@ -1,0 +1,33 @@
+{
+  "GET_attempts": 0,
+  "candidates": 1123,
+  "family_target_counts": {
+    "financial": 842,
+    "market": 24,
+    "operating": 41
+  },
+  "global_appends": 0,
+  "labels_loaded": false,
+  "models": 0,
+  "prepare_inputs_calls": 0,
+  "targets": 907,
+  "unknown_targets": [
+    "financial|cik_0001309402:20250530|secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79",
+    "financial|cik_0001309402:20250530|secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268",
+    "financial|cik_0001309402:20250530|secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03",
+    "financial|cik_0001309402:20250530|secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47",
+    "market|cik_0001814215:20250530|*",
+    "operating|cik_0001681459:20250530|0001681459-25-000079"
+  ],
+  "variant_rejections": [
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001814215/massive:cik_0001814215:market_data:a3e97dfce3b5b1301f8725f2.json",
+        "sha256": "31769669d533320b6b451da27c83cd9dadce885cdc6fe2551802f2610cba5767"
+      },
+      "reason": "this market profile requires an empty complete post-cutoff split ledger",
+      "status": "unknown_native_market_proof",
+      "target": "market|cik_0001814215:20250530|*"
+    }
+  ]
+}

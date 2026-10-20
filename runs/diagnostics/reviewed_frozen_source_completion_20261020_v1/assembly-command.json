@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/assemble_source_bundle.py",
+    "--output",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/assembly",
+    "--fragment",
+    "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/source-final-candidate-fragments.json",
+    "--fragment",
+    "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplemental-six-exhibit-candidate-fragments.json",
+    "--fragment",
+    "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-source-qualification-v1/candidate-fragment.json"
+  ],
+  "cwd": "/Users/l/Project/Recommandation",
+  "PYTHONPATH": "src:scripts",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/assemble_source_bundle.py",
+    "sha256": "6d9f0f92ab6f90e85e0cd87ce2738d8770ed3fbbfca5581cbf8dafca14ca1084"
+  },
+  "fragments": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/source-final-candidate-fragments.json",
+      "sha256": "112c2b093bc7a0b9076db640050a44acb22ce697531c469b2d764d6efc740488"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplemental-six-exhibit-candidate-fragments.json",
+      "sha256": "a5d68c1fa39e2d4c3852403f6dc392f6c5c53687574bf84b61b2a12657973b37"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-source-qualification-v1/candidate-fragment.json",
+      "sha256": "34de984f8ee9c386226e5d7673b0a4282a5bfc687ae5abe58e01554f2497da39"
+    }
+  ],
+  "started_at_utc": "2026-10-20T00:38:39.914205+00:00"
+}

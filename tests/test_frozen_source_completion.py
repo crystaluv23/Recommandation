@@ -141,6 +141,36 @@ class FrozenSourceCompletionTests(TestCase):
             self.assertEqual(saved['summary']['denominator'],18)
         self.assertEqual(len(json.loads((output/'basic-info/case.json').read_text())['bundle']['requests']),4)
 
+    def test_new_review_scope_describes_original40_both_groups_and_preserves_old_rows(self):
+        output=self.base/'scope-producer';output.mkdir()
+        old_review={'scope':{'purpose':'Fixed15 sources and exact-v12 only','company_ids':['old']},
+            'records':[{'document_id':'preserved-old-row','reason':'verbatim old evidence'}]}
+        old_copy=deepcopy(old_review)
+        cases=[{**self.case,'case_id':'case'+str(i)} for i in range(40)]
+        projection={'cases':cases,'identities':{self.fixture.company:{'cik':self.fixture.cik}}}
+        loaded=({'candidates':[self.candidate],'target_dispositions':self.dispositions},projection,old_review,
+            self.fixture.oracle,{self.fixture.document.document_id:self.fixture.document},[],[])
+        # Run only the actual review producer. Storage, proof reloading and all
+        # view/consumer work are fake here; the existing temporary original is read.
+        class NoOpStore:
+            def __init__(self,root): pass
+            def append(self,document): return False
+            def load(self,document_id): return self_document
+        self_document=self.fixture.document
+        with patch.object(completion,'_verified_plan',return_value=({'plan_hash':'fixture'},loaded)), \
+                patch.object(completion,'RawInfoStore',NoOpStore), \
+                patch.object(completion,'materialize_reviewed_snapshot',side_effect=ReviewedSourceRejected('stop before view')), \
+                patch.object(completion,'_consume',side_effect=AssertionError('consumer must not run')):
+            with self.assertRaisesRegex(ReviewedSourceRejected,'stop before view'):
+                completion.execute(output,'fixture')
+        review=json.loads((output/'source-review.json').read_text())
+        self.assertEqual(review['records'][:len(old_copy['records'])],old_copy['records'])
+        self.assertEqual(old_review,old_copy)
+        self.assertEqual(review['scope']['company_ids'],[self.fixture.company])
+        self.assertIn('Original40 fixed cases',review['scope']['purpose'])
+        self.assertIn('both exact v6/v12 input-only',review['scope']['purpose'])
+        self.assertNotIn('Fixed15',review['scope']['purpose'])
+
     def test_semantic_carrier_is_exact_managed_body_or_actual_response_body_never_other_proof(self):
         for managed in (False, True):
             with self.subTest(managed=managed):
@@ -188,3 +218,58 @@ class FrozenSourceCompletionTests(TestCase):
         self.candidate['semantic_review']=write(self.base/'changed-semantic.json',self.semantic)
         with self.assertRaisesRegex(ReviewedSourceRejected,'whole body/content hash'):
             completion._semantic(self.candidate,self.fixture.document,'case')
+
+
+class FrozenSourceCompletionCodeBindingTests(TestCase):
+    """Freeze real helper dependencies using only patched temporary bundle inputs."""
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.base = Path(temporary.name)
+
+    def frozen(self, directory):
+        helper = directory / 'scripts/diagnose_reviewed_frozen_source_snapshot.py'
+        owner = directory / 'spec/scripts/diagnose_reviewed_frozen_source_snapshot.md'
+        market = directory / 'spec/src/stock_opportunity_agent/data/reviewed_market_profile.md'
+        for path in (helper, owner, market):
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('Unchanged local dependency: ' + path.name)
+        bundle = directory / 'bundle.json'
+        write(bundle, {'fixture': 'no actual candidates, oracle, registry or source scope'})
+        output = (directory / 'freeze').resolve()
+        loaded = ({}, {}, {'oracle_identity': {'fixture': 'not opened'}}, directory / 'unused-oracle', {}, [], [])
+        return helper, owner, market, bundle, output, loaded
+
+    def test_preappend_helper_owner_and_market_contract_are_frozen_before_reload(self):
+        helper, owner, market, bundle, output, loaded = self.frozen(self.base)
+        with patch.object(completion.preappend, '__file__', str(helper)), \
+                patch.object(completion.preappend, 'REPO', self.base), \
+                patch.object(completion.frozen, '_code_bindings', return_value=[]), \
+                patch.object(completion, '_load_bundle', return_value=loaded) as load, \
+                patch.object(RawInfoStore, '__init__', side_effect=AssertionError('no store in freeze fixture')):
+            plan = completion.prepare(bundle, output)
+            bindings = {item['path']: item['sha256'] for item in plan['code_bindings']}
+            for dependency in (helper, owner, market):
+                self.assertEqual(bindings.get(str(dependency.resolve())), bound(dependency)['sha256'])
+            verified, actual = completion._verified_plan(output, plan['plan_hash'])
+            self.assertEqual(verified, plan)
+            self.assertEqual(actual, loaded)
+            self.assertEqual(load.call_count, 2)
+
+    def test_each_runtime_helper_or_contract_drift_rejects_before_bundle_reload_or_store(self):
+        for index in range(3):
+            with self.subTest(dependency=('preappend_code', 'preappend_spec', 'market_profile')[index]):
+                directory = self.base / str(index)
+                helper, owner, market, bundle, output, loaded = self.frozen(directory)
+                with patch.object(completion.preappend, '__file__', str(helper)), \
+                        patch.object(completion.preappend, 'REPO', directory), \
+                        patch.object(completion.frozen, '_code_bindings', return_value=[]), \
+                        patch.object(completion, '_load_bundle', return_value=loaded) as load, \
+                        patch.object(RawInfoStore, '__init__', side_effect=AssertionError('store must not open')):
+                    plan = completion.prepare(bundle, output)
+                    dependency = (helper, owner, market)[index]
+                    dependency.write_text(dependency.read_text() + '\nChanged after freeze')
+                    with self.assertRaisesRegex(ReviewedSourceRejected, 'bound source changed'):
+                        completion._verified_plan(output, plan['plan_hash'])
+                    self.assertEqual(load.call_count, 1, 'drift must reject before bundle/source reload')

@@ -1,0 +1,90 @@
+{
+  "name": "supplement-004",
+  "source_request": {
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+    "kind": "supplemental_sec_body",
+    "name": "supplement-004",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-004-receipt-snapshot.json",
+    "sha256": "a9a8075a067410ef45cb74647da6a23e27b030c502ffe1b9be38d92a96f40fdf"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-004.response.raw",
+    "sha256": "1cf1aa67d79c9c00191e0c70b46991c3d8ad0ae34ed74319fc17e35cc6b3313c"
+  },
+  "decoded_body_sha256": "f5f2ab110f47b1015d80d385539e5bbeba2f6a8aab327643c2cc5cde32a98c6f",
+  "decoded_characters": 722453,
+  "visible_characters": 356020,
+  "visible_text_sha256": "54f9bb1c48d58ebf774877d91e6b39c23fe808e6ab7cc88f3954e80547bb8a37",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 17,
+    "raw_decoded_end": 9913,
+    "text": "EX-99.1 3 exhibit99-1.htm EXHIBIT 99.1 ANNUAL INFORMATION FORM FOR THE YEAR ENDED DECEMBER 31, 2024 AS AT MARCH 28, 2025 Table of Contents Introductory Notes 2 Forward-Looking Statements 2 Additional Financial Information 6 Non-GAAP Performance Measures 6 Currency and Metric Equivalents 6 Abbreviations 7 Resource and Reserve Categories (Classifications) Used in this AIF 10 Corporate Structure 13 Taseko's Business 15 Gibraltar Mine 22 Florence Copper 35 Yellowhead Project 49 New Prosperity Project 60 Aley Project 62 Risk Factors 63 Dividends 94 Description of Capital Structure 95 Share Capital 95 Senior Secured Notes 95 Revolving Credit Facility 96 Consideration Payable to Sojitz Corporation 96 Consideration Payable to Dowa and Furukawa 97 Purchase and Sale Agreement with Osisko 98 Mitsui Copper Stream Agreement 99 Florence Copper Equipment Loan Facility 100 Ratings 102 Market for Securities 104 Directors and Officers 105 Committees of the Board of Directors 106 Principal Occupations and Other Information 106 Cease Trade Orders, Bankruptcies, Penalties or Sanctions 116 Potential Conflicts of Interest 118 Legal Proceedings and Regulatory Actions 118 Interest of Management and Others in Material Transactions 119 Transfer Agent and Registrar 119 Material Contracts 119 Interests of Ex"
+  },
+  "tail": {
+    "visible_start": 355170,
+    "visible_end": 356020,
+    "raw_decoded_start": 719833,
+    "raw_decoded_end": 722242,
+    "text": "ly supervising one or more persons engaged in such activities; (D) An understanding of internal control over financial reporting; and (E) An understanding of audit committee functions. - 10 - A person shall have acquired such attributes through: (A) Education and experience as a principal financial officer, principal accounting officer, controller, public accountant or auditor or experience in one or more positions that involve the performance of similar functions; (B) Experience actively supervising a principal financial officer, principal accounting officer, controller, public accountant, auditor or person performing similar functions; (C) Experience overseeing or assessing the performance of companies or public accountants with respect to the preparation, auditing or evaluation of financial statements; or (D) Other relevant experience."
+  },
+  "closing_html": false,
+  "section_locators": {
+    "business": [],
+    "mda": [
+      {
+        "visible_start": 16507,
+        "visible_end": 17357,
+        "raw_decoded_start": 38006,
+        "raw_decoded_end": 43623,
+        "text": "Management's Discussion and Analysis for the year ended December 31, 2024 dated February 19, 2025. ASCu The weight percentage of copper per unit weight of rock that is readily acid soluble, including native copper. ADEQ Arizona Department of Environmental Quality. APP and TAPP Aquifer Protection Permit and Temporary Aquifer Protection Permit. BC EAO British Columbia Environmental Assessment Office Cariboo Cariboo Copper Corporation Common Shares The Company's common shares without par value, being the only class or kind of the Company's authorized capital. Carbonatite Deposit Carbonatite deposits are igneous rocks largely consisting of the carbonate minerals calcite and dolomite , which contain the niobium mineral pyrochlore, rare earth minerals or copper sulphide minerals. Concentrator A type of mineral processing facility that converts "
+      },
+      {
+        "visible_start": 338764,
+        "visible_end": 339614,
+        "raw_decoded_start": 693260,
+        "raw_decoded_end": 695091,
+        "text": "management's discussion and analysis, and recommend to the Board whether the audited financial statements should be filed with applicable securities regulatory authorities and included in the Company's annual reports. (ii) The Committee shall review and discuss with management (and, to the extent the Committee deems it necessary or appropriate, the independent auditor) the Company's quarterly financial statements, including disclosures made in management's discussion and analysis, and recommend to the Board whether such financial statements should be filed with applicable securities regulatory authorities. - 3 - (iii) The Committee shall review and discuss with management and the independent auditor significant financial reporting issues and judgments made in connection with the preparation of the Company's financial statements, including"
+      },
+      {
+        "visible_start": 345874,
+        "visible_end": 346724,
+        "raw_decoded_start": 703370,
+        "raw_decoded_end": 704947,
+        "text": "management's discussion and analysis, the Committee shall confirm with management that the Company (with CEO and CFO participation) has taken all actions required in connection with the certifications required by National Instrument NI 52-109, Certification of Disclosure in Issuers' Annual and Interim Filings. (vi) The Committee shall establish procedures for the receipt, retention and treatment of complaints received by the Company regarding accounting, internal accounting controls or auditing matters, and the confidential, anonymous submission by employees of concerns regarding questionable accounting or auditing matters. (vii) The Committee shall discuss with management and the independent auditor any correspondence with regulators or governmental agencies and any employee complaints or reports which raise material issues regarding the"
+      }
+    ],
+    "risks": [],
+    "statements": [],
+    "segments": [],
+    "units": [
+      {
+        "visible_start": 84896,
+        "visible_end": 85746,
+        "raw_decoded_start": 206649,
+        "raw_decoded_end": 213837,
+        "text": "in millions $) Major Mining Equipment 26 Process Improvements 8 Road & Utility Realignment 24 Tailings 145 Water Management & Treatment 34 General Sustaining 552 Total 788 (1) Totals may not add due to rounding. Average estimated per unit operating costs over the next 20 years are summarized in Table 7: Table 7: Site Operating Cost Summary Operating Category Life of Mine Cost ($) Mine cost/ton milled 6.08 Processing cost/ton milled 4.55 General and Admin cost/ton milled 1.00 Total Operating cost/ton milled 11.63 (1) Totals may not add due to rounding. The basis for capital and operating cost estimates is documented in the Gibraltar Technical Report. - 35 - Exploration, Development, and Production Gibraltar has a number of continuous improvement initiatives underway with focus areas that include improving productivity of the mining and pro"
+      },
+      {
+        "visible_start": 107298,
+        "visible_end": 108148,
+        "raw_decoded_start": 244075,
+        "raw_decoded_end": 249408,
+        "text": "in millions) % TCu Grade Contained Cu (in millions lbs) Proven 258 0.35 1,812 Probable 63 0.40 503 Total 320 0.36 2,315 (1) The mineral reserve estimation was completed under the supervision of Richard Weymark, P.Eng., MBA, Vice President, Engineering for Taseko and a Qualified person as defined by NI 43-101. (2) Mineral Reserves as of December 31, 2022 have been depleted to reflect copper extracted due to PTF rinsing operations in 2023 and 2024. (3) Mineral Reserves follow CIM Definition Standards for Mineral Resources and Mineral Reserves (2014). (4) Mineral Reserves are contained within Florence Copper's Mineral Resources. (5) Mineral Reserves are assumed to be extracted using ISCR extraction methods using the following assumptions: $3.05 Cu price, $31,600/acre for core hole abandonment, $240,400/acre for cultural mitigations in identi"
+      },
+      {
+        "visible_start": 140697,
+        "visible_end": 141547,
+        "raw_decoded_start": 322469,
+        "raw_decoded_end": 329975,
+        "text": "in millions) Cu (%) Au (gpt) Ag (gpt) Measured 561 0.27 0.029 1.2 Indicated 730 0.24 0.027 1.2 M+I 1,292 0.25 0.028 1.2 Inferred 109 0.24 0.026 1.2 Note: Totals may not add due to rounding. (1) The mineral resource estimation was completed under the supervision of Richard Weymark, P.Eng., MBA, Vice President, Engineering for Taseko and a Qualified person as defined by NI 43-101. (2) Yellowhead Mineral Reserves and Mineral Resources follow CIM Definition Standards for Mineral Resources and Mineral Reserves (2014). (3) Mineral Resources that are not Mineral Reserves do not have demonstrated economic viability. (4) The Mineral Resource has been confined by a \u201creasonable prospects of eventual economic extraction\u201d pit using the following assumptions: US$3.25/lb Cu price, US$1,300/oz Au price, US$17.00/oz Ag price, exchange rate of US$0.80=C$1."
+      }
+    ]
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

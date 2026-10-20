@@ -1,0 +1,78 @@
+{
+  "phase": "final-exact",
+  "scope": "Only explicit temporary tests, no real bundle prepare/execute/GET/globalstore/LabelStore. Original expected red is the current pre-fix consumer; source preserved as original-consumer.py.txt.",
+  "selectors": [
+    "tests.test_frozen_source_completion"
+  ],
+  "expanded_test_ids": [
+    "tests.test_frozen_source_completion.FrozenSourceCompletionCodeBindingTests.test_each_runtime_helper_or_contract_drift_rejects_before_bundle_reload_or_store",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionCodeBindingTests.test_preappend_helper_owner_and_market_contract_are_frozen_before_reload",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_cross_case_and_proof_drift_fail_on_next_qualification_not_memo_reused",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_financial_subset_keeps_complete_expected_set_and_explicit_unknown_member",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_native_proof_qualified_record_materializes_worker_and_restart_without_relabel",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_new_review_scope_describes_original40_both_groups_and_preserves_old_rows",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_preflight_failure_records_terminal_attempt_without_opening_any_store",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_rehashed_actual_body_carrier_still_requires_complete_decoded_content_and_hash",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_same_id_different_canonical_global_record_is_rejected_before_append",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_semantic_carrier_is_exact_managed_body_or_actual_response_body_never_other_proof",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_semantic_flags_cannot_substitute_for_exact_case_body_original_and_source_binding",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_temp_native_two_registry_input_consumers_keep_every_ref_and_partial_basic_info",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_unknown_unpersisted_targets_stay_dispositions_not_fake_originals",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionTests.test_wrong_exact_type_native_identity_and_early_cutoff_still_reject"
+  ],
+  "tripwire_calls": {
+    "labels": 0,
+    "prepare": 0,
+    "socket": 0,
+    "non_temp_store": 0
+  },
+  "source_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_completion.md",
+      "sha256": "46d7af9ad38732b15cf1054a357641041875b39b00a7af23a8dfe25b3d137151"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+      "sha256": "3771191d0df656526c77bfb8a75d6c62bbe50ebecf853c960a644892c81b9c7c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen_source_completion.py",
+      "sha256": "7a541e468b8e89f216ec7b121c28e4035fba763430b41db8e5ef62e0ac778d23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+    }
+  ],
+  "source_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_completion.md",
+      "sha256": "46d7af9ad38732b15cf1054a357641041875b39b00a7af23a8dfe25b3d137151"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+      "sha256": "3771191d0df656526c77bfb8a75d6c62bbe50ebecf853c960a644892c81b9c7c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen_source_completion.py",
+      "sha256": "7a541e468b8e89f216ec7b121c28e4035fba763430b41db8e5ef62e0ac778d23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+    }
+  ],
+  "source_stable": true,
+  "executed_consumer": {
+    "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+    "sha256": "3771191d0df656526c77bfb8a75d6c62bbe50ebecf853c960a644892c81b9c7c"
+  },
+  "tests_run": 14,
+  "successful": true,
+  "failures": 0,
+  "errors": 0,
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/final-exact-safe-tests.log",
+    "sha256": "31ceae7cdaacb8a71d5d6648581917581db66f4bc6006d0d1779642e8e0ef606"
+  }
+}

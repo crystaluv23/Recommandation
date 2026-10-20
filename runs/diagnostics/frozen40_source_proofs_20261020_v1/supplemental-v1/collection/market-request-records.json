@@ -1,0 +1,40 @@
+[
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/FTI",
+    "http_status": 200,
+    "name": "supplement-001",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-05-29"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-001.response.raw",
+      "sha256": "1e5ff361d2841cc13455af44e4494f4227f3983cc571547b1834422e79427a25"
+    },
+    "raw_response": "responses/supplement-001.response.json",
+    "retrieved_at": "2026-10-20T00:32:29.600903+00:00",
+    "sha256": "1e5ff361d2841cc13455af44e4494f4227f3983cc571547b1834422e79427a25"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "supplement-002",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-05-30",
+      "execution_date.lte": "2026-10-20",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "FTI"
+    },
+    "raw_HTTP_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-002.response.raw",
+      "sha256": "f77086c71df28429b5e4e6213e22ae648b73354b0fc4b91b5f7aabbbed51b426"
+    },
+    "raw_response": "responses/supplement-002.response.json",
+    "retrieved_at": "2026-10-20T00:32:30.793348+00:00",
+    "sha256": "f77086c71df28429b5e4e6213e22ae648b73354b0fc4b91b5f7aabbbed51b426"
+  }
+]

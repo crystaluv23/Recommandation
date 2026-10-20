@@ -48,6 +48,17 @@ def assemble(output, fragment_paths):
     targets = completion._targets(stage)
     dispositions = {key: {'candidate_ids': [], 'reason': 'Unknown: no qualified candidate in this explicit source packet.'} for key in targets}
     candidates, audit, evidence, ids = [], [], [], set()
+    # Freeze unknown evidence too, including the unsupported split raw body.
+    # Historical collector code hashes remain historical; only their terminal
+    # output inventories are replayed as current byte bindings here.
+    for path, count in [(HERE / 'collection-terminal-bindings.json', 277),
+                        (HERE / 'supplemental-v1/terminal-file-bindings.json', 20)]:
+        binding = B(path)
+        files = _read_bound(binding)[1]['files']
+        if len(files) != count:
+            raise ReviewedSourceRejected('terminal source inventory denominator differs')
+        preappend._check(files)
+        evidence.extend([binding, *files])
 
     def add(candidate):
         document = RawInfoDocument.from_dict(_read_bound(candidate['document'])[1])
@@ -160,6 +171,12 @@ def assemble(output, fragment_paths):
             add(deepcopy(candidate))
         evidence.extend(fragment.get('evidence_bindings', []))
         additional_market_products.extend(fragment.get('additional_market_products', []))
+
+    for key, disposition in dispositions.items():
+        if key.startswith('market|') and not disposition['candidate_ids']:
+            reasons = sorted({row['reason'] for row in audit if row['target'] == key})
+            if reasons:
+                disposition['reason'] = 'Unknown: retained source variants failed native market proof: ' + '; '.join(reasons)
 
     bundle = {'schema_version': 'frozen40-source-completion-bundle-v1',
         'projection': projection_binding, 'original40_plan': old_plan['original40_plan'],

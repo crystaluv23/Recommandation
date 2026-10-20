@@ -1,0 +1,160 @@
+{
+  "additional_market_products": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/candidate.json",
+      "sha256": "2ae4900ab07a4ef47940ce5672a8d4af8161bd1f4698d599e71d9f7f24efdac1"
+    }
+  ],
+  "candidates": [
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/candidate.json",
+        "sha256": "2ae4900ab07a4ef47940ce5672a8d4af8161bd1f4698d599e71d9f7f24efdac1"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+            "sha256": "f4788773be94acbf0b7abfda5cfa446afa1b428a9d8129d8879d0dcdd6665d13"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-10-20T00:27:28.233611+00:00",
+          "provider_retrieved_at": "2026-10-20T00:25:29.635804+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-001.response.json",
+            "sha256": "1e5ff361d2841cc13455af44e4494f4227f3983cc571547b1834422e79427a25"
+          },
+          "entry_name": "supplement-001",
+          "expected_identity": {
+            "cik": "0001681459",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "FTI",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/market-request-records.json",
+            "sha256": "51620e452ed403a1d0af18f312e79021b8f570b222164ef654b45e9d3474da75"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-002.response.json",
+            "sha256": "f77086c71df28429b5e4e6213e22ae648b73354b0fc4b91b5f7aabbbed51b426"
+          },
+          "entry_name": "supplement-002",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/market-request-records.json",
+            "sha256": "51620e452ed403a1d0af18f312e79021b8f570b222164ef654b45e9d3474da75"
+          }
+        }
+      ],
+      "reason": "Actual complete native daily reconstruction with historical issuer and all-type split proof; no research effect claim.",
+      "target_keys": [
+        "market|cik_0001681459:20250530|*"
+      ]
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/normalization.json",
+      "sha256": "5eac97f4f7fa254c9a131ccae9c5d82518fcbc00c83a30672f489d6140e748b3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/origin.json",
+      "sha256": "cfde101150fe2bf197d59f4ea72a1ef135529c4eb5466d8bf645f0053b7a9c60"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/normalize.py",
+      "sha256": "219b3b6506cf691578ddac43a55c2448bd2086146152603c6ccb7b3de49231b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/candidate.json",
+      "sha256": "2ae4900ab07a4ef47940ce5672a8d4af8161bd1f4698d599e71d9f7f24efdac1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/cache/data/massive/price_daily/5015e346ebf9b81579a04cf4.json",
+      "sha256": "f4788773be94acbf0b7abfda5cfa446afa1b428a9d8129d8879d0dcdd6665d13"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/results.json",
+      "sha256": "078245c8df70c0d72fe600b9ef3d128e323fca958b62ab37eaeeb4213b51294c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/market-request-records.json",
+      "sha256": "51620e452ed403a1d0af18f312e79021b8f570b222164ef654b45e9d3474da75"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-001.response.json",
+      "sha256": "1e5ff361d2841cc13455af44e4494f4227f3983cc571547b1834422e79427a25"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-002.response.json",
+      "sha256": "f77086c71df28429b5e4e6213e22ae648b73354b0fc4b91b5f7aabbbed51b426"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/results.json",
+      "sha256": "a873794947eb6907d14c74ea7db4127459ec4968b6cb8397eb67e25fc4b77b51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/collection-terminal-bindings.json",
+      "sha256": "ab775332a2e551f0f28d04bf21479c9e8e313384e7ade4c100e7bdccdbda9b3a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/terminal-file-bindings.json",
+      "sha256": "e56841b4886cc40b4a0101032dc25baedd81ddb0d3616a019b045dfad5c39fa7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-092.response.raw",
+      "sha256": "f882386335c8b333d0b858c8c737fbd2a41202b407e3488ce985499fac291004"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-001.response.raw",
+      "sha256": "1e5ff361d2841cc13455af44e4494f4227f3983cc571547b1834422e79427a25"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-002.response.raw",
+      "sha256": "f77086c71df28429b5e4e6213e22ae648b73354b0fc4b91b5f7aabbbed51b426"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-source-qualification-v1/qualify.py",
+      "sha256": "91b03182166e9b9f59b91b978d49b3485516a8614ff0d5cbcbc8183e1b20445b"
+    }
+  ],
+  "global_appends": 0,
+  "labels_loaded": false,
+  "models": 0,
+  "new_GETs": 0,
+  "qualification": {
+    "actual_native_verifier": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "37d0a2d337195c2a3a162ad9c0e799abb0e7278c4c1a6c49fc9eff2c4b04ea3c"
+    },
+    "canonical_record_hash": "31e4f1f3cc1795c51807ba960377535f71ba581da82eac1ce05e5ae0442d2273",
+    "expected_identity": {
+      "cik": "0001681459",
+      "currency_name": "usd",
+      "locale": "us",
+      "market": "stocks",
+      "primary_exchange": "XNYS",
+      "ticker": "FTI",
+      "type": "CS"
+    },
+    "failure": null,
+    "latest_bar": "2025-05-29",
+    "reviewed_available_at": "2025-05-30T00:00:00+00:00",
+    "rows": 151,
+    "status": "native_profile_passed_not_admitted"
+  },
+  "source_admissions": 0,
+  "source_bundle_assembled": false,
+  "stage_prepare": false,
+  "terminal_original_files_rehashed_unchanged": 297
+}

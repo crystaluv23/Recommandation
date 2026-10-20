@@ -1,0 +1,460 @@
+{
+  "reader": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+    "sha256": "37d0a2d337195c2a3a162ad9c0e799abb0e7278c4c1a6c49fc9eff2c4b04ea3c"
+  },
+  "native_checks": [
+    {
+      "receipt_name": "proof-093",
+      "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-annualinformationform.htm",
+      "native_verifier": "passed",
+      "error": null,
+      "actual_cutoff": "2025-01-31T00:00:00+00:00"
+    },
+    {
+      "receipt_name": "proof-094",
+      "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-exhibit992mda.htm",
+      "native_verifier": "passed",
+      "error": null,
+      "actual_cutoff": "2025-01-31T00:00:00+00:00"
+    },
+    {
+      "receipt_name": "supplement-004",
+      "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-1.htm",
+      "native_verifier": "passed",
+      "error": null,
+      "actual_cutoff": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "receipt_name": "supplement-005",
+      "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-3.htm",
+      "native_verifier": "passed",
+      "error": null,
+      "actual_cutoff": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "receipt_name": "supplement-006",
+      "document_id": "sec-exhibit:cik_0001097362:000109736225000008:annualaifmasterlivemasterq.htm",
+      "native_verifier": "passed",
+      "error": null,
+      "actual_cutoff": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "receipt_name": "supplement-007",
+      "document_id": "sec-exhibit:cik_0001097362:000109736225000008:a2024q4slfmdalive.htm",
+      "native_verifier": "passed",
+      "error": null,
+      "actual_cutoff": "2025-07-31T00:00:00+00:00"
+    }
+  ],
+  "candidate_drafts": [
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/proof-093-exhibit.json",
+        "sha256": "1520d60fcf76582ed505a2c62c51d4832a4cb67167499669c2b94b9e4a5529dc"
+      },
+      "target_keys": [
+        "operating|cik_0001847409:20250131|0001628280-25-002990"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+            "sha256": "19c04f69bb2672b223cd2645959d5682b28b3a1d3b43c99ac469679e2ddb52d1"
+          },
+          "issuer_cik": "0001847409",
+          "accession_number": "0001628280-25-002990",
+          "form": "40-F",
+          "primary_document": "hiti-20241031.htm",
+          "filing_date": "2025-01-29",
+          "accepted_at": "2025-01-29T21:04:40+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-003-receipt-snapshot.json",
+            "sha256": "cb5e59838516d80bf4312264553d05842510dcb6b480da8576d1c5b47eab36ef"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-003.response.raw",
+            "sha256": "dda6554eba9dff8ba0f6dd402458171ade815fc2f86a20a8ef16dbcf628ed2c8"
+          },
+          "entry_name": "supplement-003",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm",
+          "document_role": "primary",
+          "expected_content_hash": "2005eb9fcb9976c098cb3bbd879fb111f89599ec76c03b17fbdb3a7bc7889553"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-093-receipt-snapshot.json",
+            "sha256": "3aa480c46d88af76752cf4c2f987ac9496caaec8b1a25a5195dedec9746976a2"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-093.response.raw",
+            "sha256": "d1e6724b46b6db1837bda8eb4331d5faec1c4cacacb251145e59fcf55b689e3f"
+          },
+          "entry_name": "proof-093",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-annualinformationform.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "hiti-annualinformationform.htm",
+          "exhibit_type": "99.3",
+          "expected_content_hash": "f146fafff7e5bd4d242b0cabe9fff916ce2eb87bc5e85473e8f4ffe65524267c"
+        }
+      ],
+      "reason": "Actual HighTide AIF contains development history, cannabis retail/accessories business, detailed risks and governance/charter appendices throughC7. Fiscal year endedOct31,2024 is explicit. Literal AIF Date Jan29,2024 conflicts with that fiscal period and parentJan29,2025 acceptance; do not silently amend the text or infer a corrected fact-asof date.",
+      "semantic_target": {
+        "case_id": "cik_0001847409:20250131",
+        "accession": "0001628280-25-002990",
+        "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-annualinformationform.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    },
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/proof-094-exhibit.json",
+        "sha256": "b3e749b7f801b21b4a10fd3e8217a624650770a543ada87f567d600c2dd7a643"
+      },
+      "target_keys": [
+        "operating|cik_0001847409:20250131|0001628280-25-002990"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/3d82ac497dfdf187933d1246.json",
+            "sha256": "19c04f69bb2672b223cd2645959d5682b28b3a1d3b43c99ac469679e2ddb52d1"
+          },
+          "issuer_cik": "0001847409",
+          "accession_number": "0001628280-25-002990",
+          "form": "40-F",
+          "primary_document": "hiti-20241031.htm",
+          "filing_date": "2025-01-29",
+          "accepted_at": "2025-01-29T21:04:40+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-003-receipt-snapshot.json",
+            "sha256": "cb5e59838516d80bf4312264553d05842510dcb6b480da8576d1c5b47eab36ef"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-003.response.raw",
+            "sha256": "dda6554eba9dff8ba0f6dd402458171ade815fc2f86a20a8ef16dbcf628ed2c8"
+          },
+          "entry_name": "supplement-003",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm",
+          "document_role": "primary",
+          "expected_content_hash": "2005eb9fcb9976c098cb3bbd879fb111f89599ec76c03b17fbdb3a7bc7889553"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-094-receipt-snapshot.json",
+            "sha256": "ee0580c7b6a92eab2a2459ea8aac1f4cecc0860efdcdf9fdd491ec8bb53f43a0"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-094.response.raw",
+            "sha256": "c03f2dbdecb332469ff61818439a15a7a473a2c0371ff52eb5f6c7f5b54c73f0"
+          },
+          "entry_name": "proof-094",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-exhibit992mda.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "hiti-exhibit992mda.htm",
+          "exhibit_type": "99.2",
+          "expected_content_hash": "b0d8bc58260364203e5feeae5cb7ccb78292597a739f735ba95cc2d5a9d81abd"
+        }
+      ],
+      "reason": "Actual HighTide annual MD&A contains CannaCabana operating narrative, comparative FY2024/FY2023 and Q4 operating/financial tables, changed segment scope, liquidity/debt maturity discussion, risks/FOFI cautions and coherent32-page end. Amounts in thousands of Canadian dollars with share/per-share/otherwise-stated exceptions; quarter/year flow periods remain distinct.",
+      "semantic_target": {
+        "case_id": "cik_0001847409:20250131",
+        "accession": "0001628280-25-002990",
+        "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-exhibit992mda.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    },
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-004-exhibit.json",
+        "sha256": "536a230a62c1011815b551a44c253e58d55a4fdcfba5d60442e4329da030dc1d"
+      },
+      "target_keys": [
+        "operating|cik_0000878518:20250930|0001062993-25-006514"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v57/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "0acb531b537bf64aa88bc547acd29c5bab7d8e67517f2f0cb6280910124a0921"
+          },
+          "issuer_cik": "0000878518",
+          "accession_number": "0001062993-25-006514",
+          "form": "40-F",
+          "primary_document": "form40f.htm",
+          "filing_date": "2025-03-28",
+          "accepted_at": "2025-03-28T21:08:05+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-059-receipt-snapshot.json",
+            "sha256": "2f82e6c4a8d7c3fcff3e8127271cf42ea47f0839d71960e857f567be95ba39a5"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+            "sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0"
+          },
+          "entry_name": "proof-059",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm",
+          "document_role": "primary",
+          "expected_content_hash": "c00f5c0cd55b3be30c6b7ada10e9a7dd7620bb73597434beb4a719611d7f3d6e"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-004-receipt-snapshot.json",
+            "sha256": "a9a8075a067410ef45cb74647da6a23e27b030c502ffe1b9be38d92a96f40fdf"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-004.response.raw",
+            "sha256": "1cf1aa67d79c9c00191e0c70b46991c3d8ad0ae34ed74319fc17e35cc6b3313c"
+          },
+          "entry_name": "supplement-004",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "exhibit99-1.htm",
+          "exhibit_type": "99.1",
+          "expected_content_hash": "f5f2ab110f47b1015d80d385539e5bbeba2f6a8aab327643c2cc5cde32a98c6f"
+        }
+      ],
+      "reason": "Actual annual AIF with Taseko copper-mining business/Gibraltar and Florence development, detailed properties/resource disclosures, substantive business/industry risks and governance/audit appendices. FYDec2024 and asofMar28,2025 are distinct. Canadian dollars unless otherwise indicated; resource tonnes/grades/copper quantities preserve separate physical units.",
+      "semantic_target": {
+        "case_id": "cik_0000878518:20250930",
+        "accession": "0001062993-25-006514",
+        "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-1.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    },
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-005-exhibit.json",
+        "sha256": "2bca214c1599fd1693d49f09af14958c4479ab4a1bccb8ccfd077e586f1a2e58"
+      },
+      "target_keys": [
+        "operating|cik_0000878518:20250930|0001062993-25-006514"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v57/cache/data/sec_edgar/filing_documents/ae9d295b6ab402d327c82739.json",
+            "sha256": "0acb531b537bf64aa88bc547acd29c5bab7d8e67517f2f0cb6280910124a0921"
+          },
+          "issuer_cik": "0000878518",
+          "accession_number": "0001062993-25-006514",
+          "form": "40-F",
+          "primary_document": "form40f.htm",
+          "filing_date": "2025-03-28",
+          "accepted_at": "2025-03-28T21:08:05+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-059-receipt-snapshot.json",
+            "sha256": "2f82e6c4a8d7c3fcff3e8127271cf42ea47f0839d71960e857f567be95ba39a5"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-059.response.raw",
+            "sha256": "0de96e11838f320df72cf26953842b5680e8c535060aece0c402b892874350a0"
+          },
+          "entry_name": "proof-059",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/form40f.htm",
+          "document_role": "primary",
+          "expected_content_hash": "c00f5c0cd55b3be30c6b7ada10e9a7dd7620bb73597434beb4a719611d7f3d6e"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-005-receipt-snapshot.json",
+            "sha256": "69c8b5441e50a10b9426a7bda2e08e014233ec07d29d7ee783029b1db3f8a44c"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-005.response.raw",
+            "sha256": "abfb5d977f85085b0fd0c69acf40b45baf741fa72f03ac56b54360e19afc95dc"
+          },
+          "entry_name": "supplement-005",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "exhibit99-3.htm",
+          "exhibit_type": "99.3",
+          "expected_content_hash": "58fa44e745c88bdddf2f3266e1b68f5ffa9a0bdae590a6c50788116b035aebb8"
+        }
+      ],
+      "reason": "Actual annual MD&A with operating assets/operations analysis, annual/Q4 comparative financial results and cashflows, liquidity/debt and technical/nonGAAP disclosures throughpage51. PreparedFeb19,2025 differs from FYDec2024. Dollar figures Canadian unless otherwise specified; tables may stateCdn$thousands, while US$ project/commodity assumptions remain distinct and forecast.",
+      "semantic_target": {
+        "case_id": "cik_0000878518:20250930",
+        "accession": "0001062993-25-006514",
+        "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-3.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    },
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-006-exhibit.json",
+        "sha256": "a48d4656677c770b08dbe791698ef13ef4f17e6e42f79b896bd440fed9c81c8b"
+      },
+      "target_keys": [
+        "operating|cik_0001097362:20250731|0001097362-25-000008"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/sec_edgar/filing_documents/34c8f197a3ee4a99b63e2eaf.json",
+            "sha256": "33bd7cc70771fe42e0340e9a9b5cbeb2d795795cd46fd36676e213e181f53ae6"
+          },
+          "issuer_cik": "0001097362",
+          "accession_number": "0001097362-25-000008",
+          "form": "40-F",
+          "primary_document": "slf-20241231.htm",
+          "filing_date": "2025-02-13",
+          "accepted_at": "2025-02-12T23:40:36+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-082-receipt-snapshot.json",
+            "sha256": "ac9a4528c06b409b59f1a0091d35bb582e80386eb940d13f96768c4acb73bfa9"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-082.response.raw",
+            "sha256": "a0e1a2bd3884b38d4fbb7ac85866df3107607a9b10a0c97d71c9a83e36d07027"
+          },
+          "entry_name": "proof-082",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/slf-20241231.htm",
+          "document_role": "primary",
+          "expected_content_hash": "94d8526dfe8ef2327369474bb45ccf1d02a18178110c629488be9a0af0bb3ae3"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-006-receipt-snapshot.json",
+            "sha256": "9aa5ae5b6ba84227fb3f241ea895f940a1693fa74535002be48e667f896d10ba"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-006.response.raw",
+            "sha256": "6731b811b37dc488ec94a698f1e2346d65bea47aea0d90a1cceadcaaee9a0577"
+          },
+          "entry_name": "supplement-006",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/annualaifmasterlivemasterq.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "annualaifmasterlivemasterq.htm",
+          "exhibit_type": "99.3",
+          "expected_content_hash": "1cd98ded726866c1d1c7417c13c1f8998d05dcd5733a83e366f71c4c073e6503"
+        }
+      ],
+      "reason": "Actual annual AIF with corporate history, development of asset-management/wealth/insurance/health business, trends/risk/governance and complete audit charter endingpage38. Detailed segments/financials are incorporated from the MD&A/FS rather than silently treated as read inside this AIF.",
+      "semantic_target": {
+        "case_id": "cik_0001097362:20250731",
+        "accession": "0001097362-25-000008",
+        "document_id": "sec-exhibit:cik_0001097362:000109736225000008:annualaifmasterlivemasterq.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    },
+    {
+      "document": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/candidate-documents/supplement-007-exhibit.json",
+        "sha256": "b1e2e2b8714d699a0e40f052743c70affad6b1660c297a948a777e83469ba43e"
+      },
+      "target_keys": [
+        "operating|cik_0001097362:20250731|0001097362-25-000008"
+      ],
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "proofs": [
+        {
+          "kind": "sec_submissions_root",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v109/cache/data/sec_edgar/filing_documents/34c8f197a3ee4a99b63e2eaf.json",
+            "sha256": "33bd7cc70771fe42e0340e9a9b5cbeb2d795795cd46fd36676e213e181f53ae6"
+          },
+          "issuer_cik": "0001097362",
+          "accession_number": "0001097362-25-000008",
+          "form": "40-F",
+          "primary_document": "slf-20241231.htm",
+          "filing_date": "2025-02-13",
+          "accepted_at": "2025-02-12T23:40:36+00:00"
+        },
+        {
+          "kind": "sec_parent_primary_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-082-receipt-snapshot.json",
+            "sha256": "ac9a4528c06b409b59f1a0091d35bb582e80386eb940d13f96768c4acb73bfa9"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-082.response.raw",
+            "sha256": "a0e1a2bd3884b38d4fbb7ac85866df3107607a9b10a0c97d71c9a83e36d07027"
+          },
+          "entry_name": "proof-082",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/slf-20241231.htm",
+          "document_role": "primary",
+          "expected_content_hash": "94d8526dfe8ef2327369474bb45ccf1d02a18178110c629488be9a0af0bb3ae3"
+        },
+        {
+          "kind": "sec_static_archive_body_response",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-007-receipt-snapshot.json",
+            "sha256": "ed8fed6aa147524c3ddc136e806fcdf8c97c6ae0afb192e70e7e04d97152854f"
+          },
+          "raw_response": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-007.response.raw",
+            "sha256": "e1aeb93ed0fa53de9912faf1ed4b0d4c5200b04f1b7c144bcc4a1834b5a830ff"
+          },
+          "entry_name": "supplement-007",
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/a2024q4slfmdalive.htm",
+          "document_role": "incorporated_exhibit",
+          "exhibit_document": "a2024q4slfmdalive.htm",
+          "exhibit_type": "99.1",
+          "expected_content_hash": "16e1acdfd4dc7bc14aecd79e54530b5b460b4834a57ecfdc110af2275920c13c"
+        }
+      ],
+      "reason": "Actual annual MD&A with reporting basis, four business pillars, segment/geography performance, capital/liquidity and substantive risk-management discussions throughpage111. Asat/fortheyearDec31,2024 Canadian-dollar reporting has explicit exceptions and unavailable-date alternatives; nonIFRS measures do not equal standard IFRS outcomes.",
+      "semantic_target": {
+        "case_id": "cik_0001097362:20250731",
+        "accession": "0001097362-25-000008",
+        "document_id": "sec-exhibit:cik_0001097362:000109736225000008:a2024q4slfmdalive.htm"
+      },
+      "semantic_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+        "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+      }
+    }
+  ],
+  "semantic_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-semantic-review.json",
+    "sha256": "321404302f63fa03013a5855082358801f3759680338fbee8d2dbd1288c6c41e"
+  },
+  "all_source_admissions": 0,
+  "scope": "Local candidates only. Failed native proofs stay unknown; no store/append/prepare/GET."
+}

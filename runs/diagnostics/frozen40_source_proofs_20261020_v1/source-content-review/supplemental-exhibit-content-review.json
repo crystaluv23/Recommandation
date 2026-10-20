@@ -1,0 +1,166 @@
+{
+  "schema_version": "manual-supplemental-exhibit-content-review-v1",
+  "records_pending_native_binding": [
+    {
+      "receipt_name": "supplement-004",
+      "issuer": "Taseko Mines Limited",
+      "period": "2024-12-31",
+      "content_scope": "whole_annual_AIF",
+      "qualified_content_scope_only": true,
+      "reason": "Actual annual AIF with Taseko copper-mining business/Gibraltar and Florence development, detailed properties/resource disclosures, substantive business/industry risks and governance/audit appendices. FYDec2024 and asofMar28,2025 are distinct. Canadian dollars unless otherwise indicated; resource tonnes/grades/copper quantities preserve separate physical units.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-004.response.raw",
+        "sha256": "1cf1aa67d79c9c00191e0c70b46991c3d8ad0ae34ed74319fc17e35cc6b3313c"
+      },
+      "decoded_content_sha256": "f5f2ab110f47b1015d80d385539e5bbeba2f6a8aab327643c2cc5cde32a98c6f",
+      "manual_windows": [
+        {
+          "visible_start": 0,
+          "text": "EX-99.1 3 exhibit99-1.htm EXHIBIT 99.1 ANNUAL INFORMATION FORM FOR THE YEAR ENDED DECEMBER 31, 2024 AS AT MARCH 28, 2025 Table of Contents Introductory Notes 2 Forward-Looking Statements 2 Additional Financial Information 6 Non-GAAP Performance Measures 6 Currency and Metric Equivalents 6 Abbreviations 7 Resource and Reserve Categories (Classifications) Used in this AIF 10 Corporate Structure 13 Taseko's Business 15 Gibraltar Mine 22 Florence Copper 35 Yellowhead Project 49 New Prosperity Project 60 Aley Project 62 Risk Factors 63 Dividends 94 Description of Capital Structure 95 Share Capital 95 Senior Secured Notes 95 Revolving Credit Facility 96 Consideration Payable to Sojitz Corporation 96 Consideration Payable to Dowa and Furukawa 97 Purchase and Sale Agreement with Osisko 98 Mitsui Copper Stream Agreement 99 Florence Copper Equipmen"
+        },
+        {
+          "visible_start": 15927,
+          "text": "Currency and Metric Equivalents The Company's accounts are maintained in Canadian dollars and all dollar amounts herein are expressed in Canadian dollars unless otherwise indicated. - 7 - The following factors for converting Imperial measurements into metric equivalents are provided: To Convert from Imperial To Metric Multiply by acres hectares 0.405 feet metres 0.305 miles kilometres 1.609 tons (2,000 pounds) tonnes 0.907 ounces (troy)/ton grams/tonne 34.286 Abbreviations In this AIF, the following capitalized terms have the defined meanings set forth below: 2024 MD&A Our Management's Discussion and Analysis for the year ended December 31, 2024 dated February 19, 2025. ASCu The weight percentage of copper per unit weight of rock that is readily acid soluble, including native copper. ADEQ Arizona Department of Environmental Quality. APP a"
+        },
+        {
+          "visible_start": 33440,
+          "text": "Gibraltar Mines Ltd. 1 British Columbia 100% Cariboo Copper Corporation 2 British Columbia 100% Curis Holdings (Canada) Ltd. 3 British Columbia 100% Florence Holdings Inc. 3 Nevada, USA 100% Florence Copper Holdings Inc. 3 Nevada, USA 100% FC-ISR Holdings Inc. 3 Nevada, USA 100% Florence Copper LLC 3 Nevada, USA 100% Yellowhead Mining Inc. British Columbia 100% Aley Corporation Canada 100% 1. Taseko owns 100% of Gibraltar Mines Ltd., which owns 75% of the Gibraltar Joint Venture. 2. Taseko owns 100% of Cariboo Copper Corporation, which owns 25% of the Gibraltar Joint Venture. Taseko acquired 50% share ownership of Cariboo Copper Corporation on March 15, 2023 and acquired the remaining 50% on March 25, 2024. 3. Taseko owns 100% of Curis Holdings (Canada) Ltd., which owns 100% of Florence Holdings Inc., which owns 100% of Florence Copper Ho"
+        },
+        {
+          "visible_start": 35807,
+          "text": "Taseko's Business Taseko is a British Columbia incorporated copper mining company, headquartered in Vancouver, Canada, and listed on the TSX, the NYSE American and the LSE. Our principal operating asset is our wholly-owned Gibraltar Mine, a large copper mine located in central British Columbia. We are also currently constructing our 100% owned Florence Copper Project in Arizona, which is expected to commence copper production in the fourth quarter of 2025. Florence Copper is expected to be a low-cost copper producer and one of the greenest sources of copper globally. In addition, we have several wholly-owned advanced-stage development projects. The location of our properties in British Columbia, Canada, and the Florence Copper property in Arizona, United States are shown in the map below. Taseko's mineral properties are summarized in the "
+        },
+        {
+          "visible_start": 159797,
+          "text": "Risk Factors There are a number of risks that may have a material and adverse impact on the future operating and financial performance of Taseko and could cause the Company's operating and financial performance to differ materially from the estimates described in forward-looking statements relating to the Company. Risks Relating to Our Business and Our Industry Changes in the market price of copper and other metals, which are volatile and have fluctuated widely, affect the profitability of our operations and financial condition. Our profitability and long-term viability depend, in large part, upon the market price of metals, primarily copper, and potentially molybdenum, gold, silver and other metals and minerals. The market price of copper is volatile and is affected by numerous factors beyond our control, including: copper demand, especi"
+        }
+      ],
+      "source_admitted": false,
+      "raw_carrier_note": "Whole HTML retained within SEC DOCUMENT/TEXT wrapper; closing HTML precedes the SGML terminator, not absoluteEOF."
+    },
+    {
+      "receipt_name": "supplement-005",
+      "issuer": "Taseko Mines Limited",
+      "period": "2024-12-31",
+      "content_scope": "whole_annual_MDA",
+      "qualified_content_scope_only": true,
+      "reason": "Actual annual MD&A with operating assets/operations analysis, annual/Q4 comparative financial results and cashflows, liquidity/debt and technical/nonGAAP disclosures throughpage51. PreparedFeb19,2025 differs from FYDec2024. Dollar figures Canadian unless otherwise specified; tables may stateCdn$thousands, while US$ project/commodity assumptions remain distinct and forecast.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-005.response.raw",
+        "sha256": "abfb5d977f85085b0fd0c69acf40b45baf741fa72f03ac56b54360e19afc95dc"
+      },
+      "decoded_content_sha256": "58fa44e745c88bdddf2f3266e1b68f5ffa9a0bdae590a6c50788116b035aebb8",
+      "manual_windows": [
+        {
+          "visible_start": 0,
+          "text": "EX-99.3 5 exhibit99-3.htm EXHIBIT 99.3 TASEKO MINES LIMITED Management's Discussion and Analysis This management discussion and analysis (\"MD&A\") is intended to help the reader understand Taseko Mines Limited (\"Taseko\", \"we\", \"our\" or the \"Company\"), our operations, financial performance, and current and future business environment. This MD&A is intended to supplement and complement the consolidated financial statements and notes thereto, prepared in compliance with International Financial Reporting Standards (\"IFRS\") as issued by the International Accounting Standards Board (\"IASB\") for the year ended December 31, 2024 (the \"Financial Statements\"). You are encouraged to review the Financial Statements in conjunction with your review of this MD&A and the Company's other public filings, which are available on the Canadian Securities Admini"
+        },
+        {
+          "visible_start": 3743,
+          "text": "Overview Taseko is a copper focused mining company that seeks to create long-term shareholder value by acquiring, developing, and operating large tonnage mineral deposits in stable jurisdictions which are capable of supporting a mine for decades. The Company's principal assets are the 100% owned Gibraltar mine (\"Gibraltar\"), which is located in central British Columbia and one of the largest copper mines in North America, and the Florence Copper project (\"Florence Copper\") in Arizona, which is currently under construction. Taseko also owns the Yellowhead copper, New Prosperity gold-copper, and Aley niobium projects in British Columbia. Highlights Operating Data (Gibraltar - 100% basis) Three months ended December 31, Year ended December 31, 2024 2023 Change 2024 2023 Change Tons mined (millions) 24.0 24.1 (0.1 ) 88.3 88.1 0.2 Tons milled "
+        },
+        {
+          "visible_start": 18723,
+          "text": "in thousands) December 31, 2024 December 31, 2024 Site and PTF operations 6,007 19,512 Commercial facility construction costs 57,647 154,970 Other capital costs - 28,943 Total Florence project expenditures 63,654 203,425 Construction costs in the fourth quarter were US$57.6 million, and US$155.0 million has been incurred for the year ended December 31, 2024. Other capital costs of US$28.9 million include final payments for delivery of long-lead equipment that was ordered in 2022, and the construction of an evaporation pond to provide additional water management flexibility. Construction of this evaporation pond was completed in the third quarter of 2024. The Company has closed several Florence project level financings to fund initial commercial facility construction costs. In October the Company received the fourth deposit of US$10 millio"
+        },
+        {
+          "visible_start": 28945,
+          "text": "in thousands) 2024 2023 Change Net (loss) income (13,444) 82,726 (96,170) Unrealized foreign exchange loss (gain) 52,299 (11,875) 64,174 Unrealized (gain) loss on derivatives (10,141) 1,874 (12,015) Crusher relocation costs 16,141 - 16,141 Site care and maintenance costs 2,524 - 2,524 Call premium on settlement of debt 9,571 - 9,571 Loss on settlement of long term debt, net of capitalized interest 2,904 - 2,904 Gain on Cariboo acquisition (47,426 ) (46,212 ) (1,214 ) Gain on acquisition of control of Gibraltar 1 (14,982 ) - (14,982 ) Realized gain on sale of inventory 2 17,122 - 17,122 Inventory write ups to net realizable value that was sold or processed 3 9,227 - 9,227 Accretion and fair value adjustment on Florence royalty obligation 12,933 - 12,933 Accretion and fair value adjustment on Cariboo consideration payable 23,920 - 23,920 No"
+        },
+        {
+          "visible_start": 43237,
+          "text": "Financial Performance (Continued) Finance income for the year ended December 31, 2024 increased from the prior year due to more cash held throughout the year and higher interest rates earned on the Company's cash balances. Income tax Year ended December 31, (Cdn$ in thousands) 2024 2023 Change Current income tax expense 3,482 3,002 480 Deferred income tax expense 28,060 47,141 (19,081 ) Income tax expense 31,542 50,143 (18,601 ) Effective tax rate 174.3% 37.7% 136.6% Canadian statutory rate 27.0% 27.0% - B.C. mineral tax rate 9.5% 9.5% - Effective tax rate reconciliation Year ended December 31, (Cdn$ in thousands) 2024 2023 Change Income tax expense at Canadian statutory rate of 36.5% 6,603 48,484 (41,881) Permanent differences 20,684 2,641 18,043 Foreign tax rate differential 629 104 525 Unrecognized tax benefits 6,627 (1,189 ) 7,816 Def"
+        },
+        {
+          "visible_start": 62109,
+          "text": "Consolidated Statements of Cash Flows Three months ended December 31, (Cdn$ in thousands) 2024 2023 Operating activities Net (loss) income for the period (21,207 ) 38,076 Adjustments for: Depletion and amortization 24,641 13,326 Income tax expense 11,707 17,205 Finance expenses, net 8,585 10,217 Accretion expense 11,214 1,615 (Gain) loss on derivatives (24,511 ) 274 Unrealized foreign exchange loss (gain) 40,462 (14,541 ) Inventory sold or processed with write-ups to net realizable value 1,905 - Deferred revenue deposit 18,244 - Amortization of deferred revenue (1,645 ) (2,029 ) Share-based compensation (recovery) expense (323 ) 1,573 Other operating activities 3,839 (383 ) Net change in working capital 381 (2,498 ) Cash provided by operating activities 73,292 62,835 Investing activities Gibraltar capitalized stripping costs (2,315 ) (31,"
+        }
+      ],
+      "source_admitted": false,
+      "raw_carrier_note": "Whole HTML retained within SEC DOCUMENT/TEXT wrapper; closing HTML precedes the SGML terminator, not absoluteEOF."
+    },
+    {
+      "receipt_name": "supplement-006",
+      "issuer": "Sun Life Financial Inc.",
+      "period": "2024-12-31",
+      "content_scope": "whole_annual_AIF",
+      "qualified_content_scope_only": true,
+      "reason": "Actual annual AIF with corporate history, development of asset-management/wealth/insurance/health business, trends/risk/governance and complete audit charter endingpage38. Detailed segments/financials are incorporated from the MD&A/FS rather than silently treated as read inside this AIF.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-006.response.raw",
+        "sha256": "6731b811b37dc488ec94a698f1e2346d65bea47aea0d90a1cceadcaaee9a0577"
+      },
+      "decoded_content_sha256": "1cd98ded726866c1d1c7417c13c1f8998d05dcd5733a83e366f71c4c073e6503",
+      "manual_windows": [
+        {
+          "visible_start": 0,
+          "text": "EX-99.3 4 annualaifmasterlivemasterq.htm EX-99.3 Annual Information Form Sun Life Financial Inc. For the Year Ended December 31, 2024 February 12, 2025 Annual Information Form 2024 Table of Contents Annual Information Form Management's Discussion & Analysis (1) Consolidated Financial Statements and Notes (1) Corporate Structure 3 Development of the Business 3 Section B Business of Sun Life 5 Section B Financial Performance Section B Notes 8 \u2013 13 Investments Section I Note 5 Risk Management Section K Note 6 Capital Structure 8 Section J Note 20 Dividends 11 Section J Note 14 Security Ratings 11 Section F Transfer Agents and Registrar 14 Directors and Executive Officers 14 Code of Conduct 18 Principal Accountant Fees and Services 19 Interests of Experts 20 Regulatory Matters 20 Section B Risk Factors 32 Section K Notes 6-7 Legal and Regulat"
+        },
+        {
+          "visible_start": 8266,
+          "text": "Corporate Structure SLF Inc. was incorporated under the Insurance Companies Act, Canada (the \"Insurance Act\") on August 5, 1999, to become the holding company of Sun Life Assurance in connection with the demutualization of Sun Life Assurance. Sun Life Assurance was incorporated in 1865 as a stock insurance company and was converted into a mutual insurance company in 1962. On March 22, 2000, Sun Life Assurance implemented a plan of demutualization under which it converted back to a stock company pursuant to Letters Patent of Conversion issued under the Insurance Act. Under this plan of demutualization, Sun Life Assurance became a wholly-owned subsidiary of SLF Inc. The head and registered office of SLF Inc. is located at 1 York Street, Toronto, Ontario, M5J 0B6. SLF Inc. conducts its business worldwide through direct and indirect operating"
+        },
+        {
+          "visible_start": 9759,
+          "text": "Development of the Business Sun Life is a leading international financial services organization providing asset management, wealth, insurance and health solutions to individual and institutional Clients. Sun Life has operations in a number of markets worldwide, including Canada, the United States, the United Kingdom (\"UK\"), Ireland, Hong Kong, the Philippines, Japan, Indonesia, India, China, Australia, Singapore, Vietnam, Malaysia and Bermuda. As of December 31, 2024, Sun Life had total assets under management of $1.54 trillion. Three Year History: Acquisitions, Disposals, and Other Developments We assess our businesses and corporate strategies on an ongoing basis to ensure that we make optimal use of our capital and maximize shareholder value. The following summary outlines our major acquisitions, dispositions and other developments over"
+        },
+        {
+          "visible_start": 15683,
+          "text": "Business of Sun Life Information about our business and operating segments, our strategy, products and methods of distribution, risk management policies and investment activities is included in the 2024 MD&A, which is incorporated by reference in this AIF. The global financial services industry continues to evolve in response to demographic, economic, and technological trends. Specific trends that have an impact on our businesses include: Demographic \u2022 Major demographic shifts in developed markets include the aging of baby boomers and the growth of millennials as a client segment. Aging baby boomers are generating greater demand for retirement solutions and health solutions as they retire, contributing to the expansion of the senior market, also referred to as the silver economy. This shift highlights the need to enhance advisor relations"
+        },
+        {
+          "visible_start": 161424,
+          "text": "risk factors set out in the 2024 MD&A contain forward-looking statements. Legal and Regulatory Proceedings We are regularly involved in legal actions, both as a defendant and as a plaintiff. Information on legal and regulatory proceedings is provided in Note 22.G of our 2024 Consolidated Financial Statements and is incorporated herein by reference. Since January 1, 2024, (i) no penalties or sanctions have been imposed against Sun Life by a court or regulatory body that would likely be considered important to a reasonable investor in making an investment decision; (ii) Sun Life has not entered into any settlement agreements with a court relating to Canadian securities legislation or with a Canadian securities regulatory authority and (iii) no penalties or sanctions have been imposed against Sun Life by a Canadian securities regulatory auth"
+        }
+      ],
+      "source_admitted": false,
+      "raw_carrier_note": "Whole HTML retained within SEC DOCUMENT/TEXT wrapper; closing HTML precedes the SGML terminator, not absoluteEOF."
+    },
+    {
+      "receipt_name": "supplement-007",
+      "issuer": "Sun Life Financial Inc.",
+      "period": "2024-12-31",
+      "content_scope": "whole_annual_MDA",
+      "qualified_content_scope_only": true,
+      "reason": "Actual annual MD&A with reporting basis, four business pillars, segment/geography performance, capital/liquidity and substantive risk-management discussions throughpage111. Asat/fortheyearDec31,2024 Canadian-dollar reporting has explicit exceptions and unavailable-date alternatives; nonIFRS measures do not equal standard IFRS outcomes.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-007.response.raw",
+        "sha256": "e1aeb93ed0fa53de9912faf1ed4b0d4c5200b04f1b7c144bcc4a1834b5a830ff"
+      },
+      "decoded_content_sha256": "16e1acdfd4dc7bc14aecd79e54530b5b460b4834a57ecfdc110af2275920c13c",
+      "manual_windows": [
+        {
+          "visible_start": 2700,
+          "text": "\"). In this management's discussion and analysis (\"MD&A\"), SLF Inc., its subsidiaries and, where applicable, its joint ventures and associates are collectively referred to as \"the Company\", \"Sun Life\", \"we\", \"our\", and \"us\". Unless otherwise indicated, all information in this MD&A is presented as at and for the year ended December 31, 2024 and the information contained in this document is in Canadian dollars. Amounts in this document are impacted by rounding. Certain 2023 results in the Drivers of Earnings and Contractual Service Margin (\"CSM\") Movement Analysis were refined to more accurately reflect how the business is managed. Where information at and for the year ended December 31, 2024 is not available, information available for the latest period before December 31, 2024 is used. Except where otherwise noted, financial information is"
+        },
+        {
+          "visible_start": 7953,
+          "text": "B. Overview Sun Life is a leading international financial services organization providing a diverse range of asset management, wealth, insurance, and health solutions to individual and institutional Clients. We have four business pillars: Asset Management, Canada, U.S. and Asia. 1. Strategy Our strategy places the Client at the centre of everything we do. Our enterprise strategy, as described below, reflects our priorities and our diversified business mix. We believe by effectively executing on our strategy, we can fulfill our Purpose, create a positive impact for our Clients, and achieve our goal to be a leader in each of our four pillars. Purpose and Ambition Our Purpose is to help our Clients achieve lifetime financial security and live healthier lives. Our Purpose shapes our strategy, structure, and people and culture. We seek to prov"
+        },
+        {
+          "visible_start": 82765,
+          "text": "We are a leading provider of benefits and pensions in the workplace and offer a wide range of products to individuals via retail channels. We are focused on helping Canadians achieve lifetime financial security and live healthier lives. 2024 Highlights Advance our One Sun Client strategy to serve more of our Client needs \u2022 Improved Client Satisfaction (\"CSAT\") (1) score by two points and accelerated delivery of financial roadmaps by 155% compared to prior year. \u2022 Launched Sun Life Term Insurance for Diabetes, an innovative and comprehensive protection product that combines affordable protection coverage with personalized care through the Diabetes Care Program offered by our Lumino Health Platform. \u2022 Deployed Sun eApp, our digital application that allows advisors and Clients to complete and submit protection applications electronically, ac"
+        },
+        {
+          "visible_start": 173601,
+          "text": "in millions) 2024 2023 Balance, beginning of year 584.6 586.4 Stock options exercised 0.8 1.0 Common shares repurchased and cancelled (11.5) (2.8) Balance, end of year 573.9 584.6 Number of Stock Options Outstanding (in millions) 2024 2023 Balance, beginning of year 3.4 3.6 Options issued 0.5 0.8 Options exercised, forfeited or expired (0.8) (1.0) Balance, end of year 3.1 3.4 Under our Canadian Dividend Reinvestment and Share Purchase Plan (\"DRIP\"), Canadian-resident common and preferred shareholders may choose to have their dividends automatically reinvested in common shares of SLF Inc. and may also purchase common shares through our DRIP with cash. For dividend reinvestments, we may, at our option, issue common shares of SLF Inc. from treasury at a discount of up to 5% to the volume-weighted average trading price or direct that common s"
+        },
+        {
+          "visible_start": 187459,
+          "text": "Risk Management Framework The Company has an established Risk Management Framework (\"Risk Framework\") approved by the Board that sets out the components of our risk programs and explains how they operate together in conducting business activities. The risks that arise when providing products and services to Clients, which are in line with our Purpose to help our Clients achieve lifetime financial security and live healthier lives, are managed within these protocols and programs. Effective risk management is critical to the overall profitability, competitive market positioning, organizational resilience and long-term financial viability of the Company. While all risks cannot necessarily be eliminated or known with certainty, the Risk Framework seeks to ensure that risks to a business undertaking are appropriately managed to achieve the Com"
+        }
+      ],
+      "source_admitted": false,
+      "raw_carrier_note": "Whole HTML retained within SEC DOCUMENT/TEXT wrapper; closing HTML precedes the SGML terminator, not absoluteEOF."
+    }
+  ],
+  "limits": [
+    "Selected-sections source-scope review, not all-fact reading/model consumption.",
+    "TGB source qualification still must pass native index-code guard; no semantic review bypass.",
+    "0reviewerGET/store/prepare/append/model/labels."
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/plan.json",
+    "sha256": "b099d0af1ecc3720faaa23b884cb810122408c2b7470d494a81b7e4195987761"
+  },
+  "plan_hash": "114a50b2b037409e36eee1439ca1497d94d183df8d342ba984b3f6b8e2ffeb50",
+  "bundle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/assembly/bundle.json",
+    "sha256": "47406a0dd8e31eb35ae7ae6bfe7660f0669f8cbddcfe40b3cac171744d01a345"
+  },
+  "exit": {
+    "exit_code": 0,
+    "finished_at_utc": "2026-10-20T00:45:55.364018+00:00",
+    "wall_seconds": 20.075767208
+  },
+  "source_bindings": 3230,
+  "code_bindings": 114,
+  "unique_bound_paths": 3344,
+  "all_bindings_current_equal": true,
+  "qualified_ids": 1123,
+  "fixed_cases": 40,
+  "per_group_inputs": 720,
+  "basic_info_cases": 40,
+  "groups": [
+    {
+      "name": "default_v6",
+      "version": 6,
+      "registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+      "refs_count": 18,
+      "definition_bindings": 46
+    },
+    {
+      "name": "latest_v12",
+      "version": 12,
+      "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+      "refs_count": 18,
+      "definition_bindings": 43
+    }
+  ],
+  "block_flags": {
+    "network_allowed": false,
+    "models_allowed": false,
+    "labels_allowed": false,
+    "apply_allowed": false,
+    "full_prepare_allowed": false
+  },
+  "stage_files": [
+    "plan.json",
+    "unused_candidates"
+  ],
+  "execution_start_exists": false,
+  "global_appends": 0,
+  "view_created": false,
+  "matrix_executed": false,
+  "command": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/prepare-command.json",
+    "sha256": "61e905dba8cc21973e5883da32a296c8728876d471a9a504a236d8c43f791bdb"
+  },
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/prepare.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "summary_harness_initial_failure": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/prepare-summary-harness-first-failure.json",
+    "sha256": "3075d44f48f3818241501144ff4a0ea8add5a8ca8c3c87af7f6563fc3342f1fd"
+  }
+}

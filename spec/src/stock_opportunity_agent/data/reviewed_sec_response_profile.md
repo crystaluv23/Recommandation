@@ -119,12 +119,17 @@ proved parent URL. The exact requested exhibit must be a literal link to the
 same issuer and accession directory with the declared safe exact filename.
 Do not accept metadata relabeling or an unlinked URL. If an exhibit code such as
 `99.1` or `99.2` is claimed, prove it from an independent exhibit-number cell
-in the same index row containing that target anchor. The first nonempty cell
-must consist only of that code (optionally prefixed by `Exhibit`), with exactly
-one standalone code cell and one unique linked URL in the row. Description
-cross-references are not exhibit-number proof. Conflicting target index rows,
-multiple codes or links keep the claimed type unproved; do not derive it from
-filename order.
+in the same index row containing that target anchor. Exactly one cell, at any
+position in the row, must consist only of the complete code (optionally
+prefixed by `Exhibit`), and the row must have one unique linked URL. Multiple
+anchors to that same literal URL are compatible. Preserve superscript markup
+provenance: only trailing `<sup>` annotations containing a complete ASCII
+integer or parenthesized ASCII integer are numeric footnotes that may be
+excluded from this code cell. Plain-text suffixes, nonnumeric superscripts,
+superscripts embedded inside a code and description cross-references are not
+exhibit-number proof. Conflicting target index rows, multiple code cells or
+linked URLs keep the claimed type unproved; do not derive it from filename
+order. Rows without a complete standalone code cell supply no code proof.
 Absent index proof keeps `exhibit_type=null` rather than inventing its meaning.
 This parser proves a source link/code, not AIF/MD&A/financial-statement semantics.
 

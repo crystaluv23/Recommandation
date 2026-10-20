@@ -1,0 +1,51 @@
+{
+  "historical_reader": {
+    "git": "7f0509fe",
+    "path": "src/stock_opportunity_agent/data/reviewed_snapshot.py",
+    "sha256": "3466550b2b8a7bb69aa6697860ac33425da3fc97de04ad224a9c28c48ad4e034"
+  },
+  "same_candidate_and_proof_input": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/exhibit-six-native-initial-probe.json",
+    "sha256": "cd1faf90e0269ad5008d535403d490abcb823b790df6f838b56e0ff59a00bafd"
+  },
+  "checks": [
+    {
+      "receipt_name": "proof-093",
+      "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-annualinformationform.htm",
+      "native_verifier": "passed",
+      "error": null
+    },
+    {
+      "receipt_name": "proof-094",
+      "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-exhibit992mda.htm",
+      "native_verifier": "passed",
+      "error": null
+    },
+    {
+      "receipt_name": "supplement-004",
+      "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-1.htm",
+      "native_verifier": "rejected",
+      "error": "SEC exhibit type is not proved by its parent index row"
+    },
+    {
+      "receipt_name": "supplement-005",
+      "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-3.htm",
+      "native_verifier": "rejected",
+      "error": "SEC exhibit type is not proved by its parent index row"
+    },
+    {
+      "receipt_name": "supplement-006",
+      "document_id": "sec-exhibit:cik_0001097362:000109736225000008:annualaifmasterlivemasterq.htm",
+      "native_verifier": "passed",
+      "error": null
+    },
+    {
+      "receipt_name": "supplement-007",
+      "document_id": "sec-exhibit:cik_0001097362:000109736225000008:a2024q4slfmdalive.htm",
+      "native_verifier": "passed",
+      "error": null
+    }
+  ],
+  "working_sources_unchanged": true,
+  "scope": "Old-reader isolated replay; original candidate/proof/body/clock unchanged, no store or GET."
+}

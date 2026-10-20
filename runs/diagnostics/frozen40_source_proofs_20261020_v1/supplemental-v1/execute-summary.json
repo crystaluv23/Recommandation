@@ -1,0 +1,202 @@
+{
+  "head": "7f0509feb6dd88778aa1f507c59151fa5b8ed1a9",
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/request-plan.json",
+    "sha256": "8252e2c299a52c474020c7c07fd83dc791db3fb2a3b7d04fdfc2a29a2c79a239"
+  },
+  "plan_hash": "3071110b573f0af4e68be924b7a0884877d35959192edb884d9dd8eead56d99e",
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/results.json",
+    "sha256": "078245c8df70c0d72fe600b9ef3d128e323fca958b62ab37eaeeb4213b51294c"
+  },
+  "exit": {
+    "exit_code": 0,
+    "finished_at_utc": "2026-10-20T00:32:36.620662+00:00"
+  },
+  "terminal": true,
+  "status": "completed",
+  "counts": {
+    "GET_attempts": 7,
+    "network_open_calls": 7,
+    "HTTP_responses_retained": 7,
+    "attempt_reservations": 7,
+    "automatic_retries": 0,
+    "redirects_followed": 0
+  },
+  "disposition_counts": {
+    "received": 7
+  },
+  "dispositions": [
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:29.601869+00:00",
+      "kind": "historical_issuer",
+      "name": "supplement-001",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/massive/company_profile/98bfc167a7835372cf76f102.json",
+        "sha256": "54f4c480d73c600cd1e7647c447706246fda98aa80d2fbb0097f20550eea5d2d"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:28.354256+00:00",
+      "source": "massive",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:30.794520+00:00",
+      "kind": "all_type_splits",
+      "name": "supplement-002",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/massive/corporate_actions/0f3c80178cdd33309619d3a0.json",
+        "sha256": "dc834558f1179d749b9d3deec53c81d5a6df61dbdfc706f06e644b64b6aaa912"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:29.645970+00:00",
+      "source": "massive",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:31.883110+00:00",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-003",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/292e64a32568298c937907f6.json",
+        "sha256": "ccd7c396afae5c99d251f925fc41fe2af7a2860a18eea086f634084b1d543d76"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:30.844298+00:00",
+      "source": "sec_edgar",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:32.989822+00:00",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-004",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/bd4b4b7f0898eb80dab3567f.json",
+        "sha256": "8ddbcec81401a4267bc0ededa75f9982c7a4febf527d5d9bc9b7250ed6602c97"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:31.949616+00:00",
+      "source": "sec_edgar",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:34.060533+00:00",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-005",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/13fd3baf43eff36e361f7394.json",
+        "sha256": "56d3c40c2ab4b11503c0c4846a96bfdf8bb97040a4c68408e7292aa91e88113f"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:33.042898+00:00",
+      "source": "sec_edgar",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:35.289492+00:00",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-006",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/a86badc08654a9416f521c3b.json",
+        "sha256": "cfff04dcbe6f059462181ff18f78030ecb2116c3dd7895c6d923f913b62cd9ac"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:34.117335+00:00",
+      "source": "sec_edgar",
+      "status": "received"
+    },
+    {
+      "cache_retrieved_at": "2026-10-20T00:32:36.434617+00:00",
+      "kind": "supplemental_sec_body",
+      "name": "supplement-007",
+      "native_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/cache/data/sec_edgar/filing_documents/b9359eeb5d151317f7c9c3d8.json",
+        "sha256": "a5d35f65631e457ad54f01dd3b7501f572203fa6c78609fc1b88528fbfb3a01c"
+      },
+      "reserved_at_utc": "2026-10-20T00:32:35.340461+00:00",
+      "source": "sec_edgar",
+      "status": "received"
+    }
+  ],
+  "responses": [
+    {
+      "name": "supplement-001",
+      "url": "https://api.massive.com/v3/reference/tickers/FTI?date=2025-05-29",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-001.response.raw",
+      "raw_sha256": "1e5ff361d2841cc13455af44e4494f4227f3983cc571547b1834422e79427a25",
+      "bytes": 1429,
+      "retrieved_at_utc": "2026-10-20T00:32:29.600903+00:00"
+    },
+    {
+      "name": "supplement-002",
+      "url": "https://api.massive.com/stocks/v1/splits?execution_date.gte=2025-05-30&execution_date.lte=2026-10-20&limit=1000&sort=execution_date.asc&ticker=FTI",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-002.response.raw",
+      "raw_sha256": "f77086c71df28429b5e4e6213e22ae648b73354b0fc4b91b5f7aabbbed51b426",
+      "bytes": 76,
+      "retrieved_at_utc": "2026-10-20T00:32:30.793348+00:00"
+    },
+    {
+      "name": "supplement-003",
+      "url": "https://www.sec.gov/Archives/edgar/data/1847409/000162828025002990/hiti-20241031.htm",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-003.response.raw",
+      "raw_sha256": "dda6554eba9dff8ba0f6dd402458171ade815fc2f86a20a8ef16dbcf628ed2c8",
+      "bytes": 125274,
+      "retrieved_at_utc": "2026-10-20T00:32:31.881325+00:00"
+    },
+    {
+      "name": "supplement-004",
+      "url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-1.htm",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-004.response.raw",
+      "raw_sha256": "1cf1aa67d79c9c00191e0c70b46991c3d8ad0ae34ed74319fc17e35cc6b3313c",
+      "bytes": 125515,
+      "retrieved_at_utc": "2026-10-20T00:32:32.988208+00:00"
+    },
+    {
+      "name": "supplement-005",
+      "url": "https://www.sec.gov/Archives/edgar/data/878518/000106299325006514/exhibit99-3.htm",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-005.response.raw",
+      "raw_sha256": "abfb5d977f85085b0fd0c69acf40b45baf741fa72f03ac56b54360e19afc95dc",
+      "bytes": 68693,
+      "retrieved_at_utc": "2026-10-20T00:32:34.059129+00:00"
+    },
+    {
+      "name": "supplement-006",
+      "url": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/annualaifmasterlivemasterq.htm",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-006.response.raw",
+      "raw_sha256": "6731b811b37dc488ec94a698f1e2346d65bea47aea0d90a1cceadcaaee9a0577",
+      "bytes": 68752,
+      "retrieved_at_utc": "2026-10-20T00:32:35.288146+00:00"
+    },
+    {
+      "name": "supplement-007",
+      "url": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/a2024q4slfmdalive.htm",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-007.response.raw",
+      "raw_sha256": "e1aeb93ed0fa53de9912faf1ed4b0d4c5200b04f1b7c144bcc4a1834b5a830ff",
+      "bytes": 220351,
+      "retrieved_at_utc": "2026-10-20T00:32:36.432063+00:00"
+    }
+  ],
+  "terminal_bindings": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/terminal-file-bindings.json",
+    "sha256": "e56841b4886cc40b4a0101032dc25baedd81ddb0d3616a019b045dfad5c39fa7"
+  },
+  "terminal_files": 20,
+  "source_bindings": 858,
+  "code_bindings": 106,
+  "all_frozen_bindings_current_equal": true,
+  "actual_total95plus7": 102,
+  "source_admission": false,
+  "global_appends": 0,
+  "models": 0,
+  "labels_loaded": false,
+  "fullprepare": false,
+  "cost_unknown": true
+}

@@ -1,0 +1,106 @@
+{
+  "name": "supplement-007",
+  "source_request": {
+    "endpoint": "https://www.sec.gov/Archives/edgar/data/1097362/000109736225000008/a2024q4slfmdalive.htm",
+    "kind": "supplemental_sec_body",
+    "name": "supplement-007",
+    "query": {},
+    "source": "sec_edgar"
+  },
+  "receipt_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplement-007-receipt-snapshot.json",
+    "sha256": "ed8fed6aa147524c3ddc136e806fcdf8c97c6ae0afb192e70e7e04d97152854f"
+  },
+  "raw_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-007.response.raw",
+    "sha256": "e1aeb93ed0fa53de9912faf1ed4b0d4c5200b04f1b7c144bcc4a1834b5a830ff"
+  },
+  "decoded_body_sha256": "16e1acdfd4dc7bc14aecd79e54530b5b460b4834a57ecfdc110af2275920c13c",
+  "decoded_characters": 2509275,
+  "visible_characters": 497617,
+  "visible_text_sha256": "5199a5104fd4f34d07c33a2ac2d84130da11a48c9f4017fc7b1153a7a2f0d4c3",
+  "head": {
+    "visible_start": 0,
+    "visible_end": 1300,
+    "raw_decoded_start": 17,
+    "raw_decoded_end": 33584,
+    "text": "EX-99.1 2 a2024q4slfmdalive.htm EX-99.1 MANAGEMENT'S DISCUSSION AND ANALYSIS 2 A. HOW WE REPORT OUR RESULTS 46 J. CAPITAL AND LIQUIDITY MANAGEMENT 46 1. Capital 4 B. OVERVIEW 48 2. Capital Adequacy 4 1. Strategy 49 3. Shareholder Dividends 7 2. Financial Objectives 50 4. Principal Sources and Uses of Funds 7 3. Acquisitions and Other 51 5. Liquidity 8 C. FINANCIAL SUMMARY 52 K. RISK MANAGEMENT 52 1. Risk Management Framework 9 D. PROFITABILITY 53 2. Risk Governance 54 3. Risk Universe 12 E. GROWTH 54 4. Risk Appetite 12 1. Sales, Gross Flows and Value of New Business 55 5. Risk Management Policies 13 2. Assets Under Management 55 6. Risk Management Process 56 7. Three Lines of Defence 14 F. CONTRACTUAL SERVICE MARGIN 56 8. Risk Culture and Philosophy 58 9. Risk Categories 16 G. FINANCIAL STRENGTH 83 L. ADDITIONAL FINANCIAL DISCLOSURE 19 H. PERFORMANCE BY BUSINESS GROUP 83 1. Selected Annual Information 20 1. Asset Management 84 2. Items related to Statement of Operations 25 2. Canada 86 3. Items related to Statement of Financial Position 29 3. U.S. 87 4. Fourth Quarter 2024 Profitability 34 4. Asia 89 5. Fourth Quarter 2024 Growth 39 5. Corporate 90 6. Previous Quarters 40 I. INVESTMENTS 93 M. NON-IFRS FINANCIAL MEASURES 40 1. Investment Profile 40 2. Debt Securities 102 N. ACCOU"
+  },
+  "tail": {
+    "visible_start": 496767,
+    "visible_end": 497617,
+    "raw_decoded_start": 2506470,
+    "raw_decoded_end": 2509109,
+    "text": "; information management; liquidity risks - the possibility that we will not be able to fund all cash outflow commitments as they fall due; and other risks - changes to accounting standards in the jurisdictions in which we operate; risks associated with our international operations, including our joint ventures; market conditions that affect our capital position or ability to raise capital; downgrades in financial strength or credit ratings; and tax matters, including estimates and judgements used in calculating taxes. The Company does not undertake any obligation to update or revise its forward-looking statements to reflect events or circumstances after the date of this document or to reflect the occurrence of unanticipated events, except as required by law. MANAGEMENT'S DISCUSSION & ANALYSIS Sun Life Financial Inc. December 31, 2024 111"
+  },
+  "closing_html": false,
+  "section_locators": {
+    "business": [],
+    "mda": [
+      {
+        "visible_start": 40,
+        "visible_end": 890,
+        "raw_decoded_start": 463,
+        "raw_decoded_end": 22952,
+        "text": "MANAGEMENT'S DISCUSSION AND ANALYSIS 2 A. HOW WE REPORT OUR RESULTS 46 J. CAPITAL AND LIQUIDITY MANAGEMENT 46 1. Capital 4 B. OVERVIEW 48 2. Capital Adequacy 4 1. Strategy 49 3. Shareholder Dividends 7 2. Financial Objectives 50 4. Principal Sources and Uses of Funds 7 3. Acquisitions and Other 51 5. Liquidity 8 C. FINANCIAL SUMMARY 52 K. RISK MANAGEMENT 52 1. Risk Management Framework 9 D. PROFITABILITY 53 2. Risk Governance 54 3. Risk Universe 12 E. GROWTH 54 4. Risk Appetite 12 1. Sales, Gross Flows and Value of New Business 55 5. Risk Management Policies 13 2. Assets Under Management 55 6. Risk Management Process 56 7. Three Lines of Defence 14 F. CONTRACTUAL SERVICE MARGIN 56 8. Risk Culture and Philosophy 58 9. Risk Categories 16 G. FINANCIAL STRENGTH 83 L. ADDITIONAL FINANCIAL DISCLOSURE 19 H. PERFORMANCE BY BUSINESS GROUP 83 1. Se"
+      },
+      {
+        "visible_start": 2712,
+        "visible_end": 3562,
+        "raw_decoded_start": 45550,
+        "raw_decoded_end": 47140,
+        "text": "management's discussion and analysis (\"MD&A\"), SLF Inc., its subsidiaries and, where applicable, its joint ventures and associates are collectively referred to as \"the Company\", \"Sun Life\", \"we\", \"our\", and \"us\". Unless otherwise indicated, all information in this MD&A is presented as at and for the year ended December 31, 2024 and the information contained in this document is in Canadian dollars. Amounts in this document are impacted by rounding. Certain 2023 results in the Drivers of Earnings and Contractual Service Margin (\"CSM\") Movement Analysis were refined to more accurately reflect how the business is managed. Where information at and for the year ended December 31, 2024 is not available, information available for the latest period before December 31, 2024 is used. Except where otherwise noted, financial information is presented i"
+      }
+    ],
+    "risks": [],
+    "statements": [
+      {
+        "visible_start": 39132,
+        "visible_end": 39982,
+        "raw_decoded_start": 204009,
+        "raw_decoded_end": 212488,
+        "text": "Consolidated Statements of Operations, as well as underlying net income (loss), and sales, are translated into Canadian dollars using average exchange rates for the appropriate daily, monthly, or quarterly period. For Assets and Liabilities in our Consolidated Statements of Financial Position, as well as the AUM and certain components of the Drivers of Earnings disclosure, period-end rates are used for currency translation purposes. The following table provides the foreign exchange rates for the U.S. dollar, which generates the most significant impact of foreign exchange translation, over the past four quarters and two years. Exchange rate Quarterly results Full year Q4'24 Q3'24 Q2'24 Q1'24 2024 2023 U.S. Dollar - Average 1.399 1.364 1.368 1.348 1.370 1.350 U.S. Dollar - Period end 1.438 1.352 1.368 1.354 1.438 1.325 The relative impacts "
+      },
+      {
+        "visible_start": 39380,
+        "visible_end": 40230,
+        "raw_decoded_start": 204009,
+        "raw_decoded_end": 212488,
+        "text": "Consolidated Statements of Financial Position, as well as the AUM and certain components of the Drivers of Earnings disclosure, period-end rates are used for currency translation purposes. The following table provides the foreign exchange rates for the U.S. dollar, which generates the most significant impact of foreign exchange translation, over the past four quarters and two years. Exchange rate Quarterly results Full year Q4'24 Q3'24 Q2'24 Q1'24 2024 2023 U.S. Dollar - Average 1.399 1.364 1.368 1.348 1.370 1.350 U.S. Dollar - Period end 1.438 1.352 1.368 1.354 1.438 1.325 The relative impacts of foreign exchange translation in any given period are driven by the movement of foreign exchange rates as well as the proportion of earnings generated in our foreign operations. In general, net income benefits from a weakening Canadian dollar and"
+      },
+      {
+        "visible_start": 478174,
+        "visible_end": 479024,
+        "raw_decoded_start": 2473926,
+        "raw_decoded_end": 2475788,
+        "text": "Consolidated Statements of Financial Position was $3,624 million, primarily in Canada. Any future tax rate reductions in jurisdictions where we carry a net deferred tax asset, could result in a reduction in the carrying value of the deferred tax asset and a corresponding income tax expense at the time of substantial enactment of a rate reduction. The Pillar Two global minimum tax rules apply to us effective January 1, 2024 and have been substantively enacted in several jurisdictions in which we operate, including Canada, whose Global Minimum Tax Act became enacted in June 2024. The Pillar Two legislation requires the ultimate parent entity of a group to pay top-up tax, on a jurisdiction-by-jurisdiction basis, on profits of its subsidiaries that are taxed below 15%. Our subsidiaries that are currently subject to a statutory rate or to a ta"
+      }
+    ],
+    "segments": [
+      {
+        "visible_start": 376499,
+        "visible_end": 377349,
+        "raw_decoded_start": 1910454,
+        "raw_decoded_end": 1913565,
+        "text": "operating segments/business groups, see section A - How We Report Our Results in this document. (2) Effective Q1'24, reflects a refinement in the allocation methodology for expenses from Individual - Protection to Group - Health & Protection business types in the U.S. business group. (3) Real estate experience reflects the difference between the actual value of real estate investments compared to management's longer-term expected returns supporting insurance contract liabilities (\"real estate experience\"). MANAGEMENT'S DISCUSSION & ANALYSIS Sun Life Financial Inc. December 31, 2024 87 The Q4'24 effective income tax rate (1) on underlying net income and reported net income was 17.4% and 63.2% respectively. The effective income tax rate on reported net income reflects the non-deductible impairment charge on an intangible asset in Vietnam as"
+      }
+    ],
+    "units": [
+      {
+        "visible_start": 173601,
+        "visible_end": 174451,
+        "raw_decoded_start": 1130313,
+        "raw_decoded_end": 1140170,
+        "text": "in millions) 2024 2023 Balance, beginning of year 584.6 586.4 Stock options exercised 0.8 1.0 Common shares repurchased and cancelled (11.5) (2.8) Balance, end of year 573.9 584.6 Number of Stock Options Outstanding (in millions) 2024 2023 Balance, beginning of year 3.4 3.6 Options issued 0.5 0.8 Options exercised, forfeited or expired (0.8) (1.0) Balance, end of year 3.1 3.4 Under our Canadian Dividend Reinvestment and Share Purchase Plan (\"DRIP\"), Canadian-resident common and preferred shareholders may choose to have their dividends automatically reinvested in common shares of SLF Inc. and may also purchase common shares through our DRIP with cash. For dividend reinvestments, we may, at our option, issue common shares of SLF Inc. from treasury at a discount of up to 5% to the volume-weighted average trading price or direct that common s"
+      },
+      {
+        "visible_start": 173818,
+        "visible_end": 174668,
+        "raw_decoded_start": 1134928,
+        "raw_decoded_end": 1140170,
+        "text": "in millions) 2024 2023 Balance, beginning of year 3.4 3.6 Options issued 0.5 0.8 Options exercised, forfeited or expired (0.8) (1.0) Balance, end of year 3.1 3.4 Under our Canadian Dividend Reinvestment and Share Purchase Plan (\"DRIP\"), Canadian-resident common and preferred shareholders may choose to have their dividends automatically reinvested in common shares of SLF Inc. and may also purchase common shares through our DRIP with cash. For dividend reinvestments, we may, at our option, issue common shares of SLF Inc. from treasury at a discount of up to 5% to the volume-weighted average trading price or direct that common shares be purchased on behalf of participants on the open market through the TSX and alternative Canadian trading platforms (collectively, the \"Exchanges\") at the market price. Common shares of SLF Inc. acquired by par"
+      }
+    ]
+  },
+  "locator_only_not_automatic_semantic_admission": true
+}

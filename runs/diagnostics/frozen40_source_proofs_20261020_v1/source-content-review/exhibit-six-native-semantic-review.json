@@ -1,0 +1,131 @@
+{
+  "schema_version": "source-content-review-exact-exhibits-v1",
+  "records": [
+    {
+      "case_id": "cik_0001847409:20250131",
+      "accession": "0001628280-25-002990",
+      "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-annualinformationform.htm",
+      "content_hash": "f146fafff7e5bd4d242b0cabe9fff916ce2eb87bc5e85473e8f4ffe65524267c",
+      "content_scope": "whole_annual_AIF",
+      "qualified": true,
+      "reason": "Actual HighTide AIF contains development history, cannabis retail/accessories business, detailed risks and governance/charter appendices throughC7. Fiscal year endedOct31,2024 is explicit. Literal AIF Date Jan29,2024 conflicts with that fiscal period and parentJan29,2025 acceptance; do not silently amend the text or infer a corrected fact-asof date.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-093.response.raw",
+        "sha256": "d1e6724b46b6db1837bda8eb4331d5faec1c4cacacb251145e59fcf55b689e3f"
+      },
+      "limitations": [
+        "Semantic scope only; native qualification is separately recorded.",
+        "Publication/acceptance clock is exact retainedroot time and does not silently rewrite any withintext dates."
+      ]
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "accession": "0001628280-25-002990",
+      "document_id": "sec-exhibit:cik_0001847409:000162828025002990:hiti-exhibit992mda.htm",
+      "content_hash": "b0d8bc58260364203e5feeae5cb7ccb78292597a739f735ba95cc2d5a9d81abd",
+      "content_scope": "whole_annual_MDA",
+      "qualified": true,
+      "reason": "Actual HighTide annual MD&A contains CannaCabana operating narrative, comparative FY2024/FY2023 and Q4 operating/financial tables, changed segment scope, liquidity/debt maturity discussion, risks/FOFI cautions and coherent32-page end. Amounts in thousands of Canadian dollars with share/per-share/otherwise-stated exceptions; quarter/year flow periods remain distinct.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-094.response.raw",
+        "sha256": "c03f2dbdecb332469ff61818439a15a7a473a2c0371ff52eb5f6c7f5b54c73f0"
+      },
+      "limitations": [
+        "Semantic scope only; native qualification is separately recorded.",
+        "Publication/acceptance clock is exact retainedroot time and does not silently rewrite any withintext dates."
+      ]
+    },
+    {
+      "case_id": "cik_0000878518:20250930",
+      "accession": "0001062993-25-006514",
+      "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-1.htm",
+      "content_hash": "f5f2ab110f47b1015d80d385539e5bbeba2f6a8aab327643c2cc5cde32a98c6f",
+      "content_scope": "whole_annual_AIF",
+      "qualified": true,
+      "reason": "Actual annual AIF with Taseko copper-mining business/Gibraltar and Florence development, detailed properties/resource disclosures, substantive business/industry risks and governance/audit appendices. FYDec2024 and asofMar28,2025 are distinct. Canadian dollars unless otherwise indicated; resource tonnes/grades/copper quantities preserve separate physical units.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-004.response.raw",
+        "sha256": "1cf1aa67d79c9c00191e0c70b46991c3d8ad0ae34ed74319fc17e35cc6b3313c"
+      },
+      "limitations": [
+        "Semantic scope only; native qualification is separately recorded.",
+        "Publication/acceptance clock is exact retainedroot time and does not silently rewrite any withintext dates."
+      ]
+    },
+    {
+      "case_id": "cik_0000878518:20250930",
+      "accession": "0001062993-25-006514",
+      "document_id": "sec-exhibit:cik_0000878518:000106299325006514:exhibit99-3.htm",
+      "content_hash": "58fa44e745c88bdddf2f3266e1b68f5ffa9a0bdae590a6c50788116b035aebb8",
+      "content_scope": "whole_annual_MDA",
+      "qualified": true,
+      "reason": "Actual annual MD&A with operating assets/operations analysis, annual/Q4 comparative financial results and cashflows, liquidity/debt and technical/nonGAAP disclosures throughpage51. PreparedFeb19,2025 differs from FYDec2024. Dollar figures Canadian unless otherwise specified; tables may stateCdn$thousands, while US$ project/commodity assumptions remain distinct and forecast.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-005.response.raw",
+        "sha256": "abfb5d977f85085b0fd0c69acf40b45baf741fa72f03ac56b54360e19afc95dc"
+      },
+      "limitations": [
+        "Semantic scope only; native qualification is separately recorded.",
+        "Publication/acceptance clock is exact retainedroot time and does not silently rewrite any withintext dates."
+      ]
+    },
+    {
+      "case_id": "cik_0001097362:20250731",
+      "accession": "0001097362-25-000008",
+      "document_id": "sec-exhibit:cik_0001097362:000109736225000008:annualaifmasterlivemasterq.htm",
+      "content_hash": "1cd98ded726866c1d1c7417c13c1f8998d05dcd5733a83e366f71c4c073e6503",
+      "content_scope": "whole_annual_AIF",
+      "qualified": true,
+      "reason": "Actual annual AIF with corporate history, development of asset-management/wealth/insurance/health business, trends/risk/governance and complete audit charter endingpage38. Detailed segments/financials are incorporated from the MD&A/FS rather than silently treated as read inside this AIF.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-006.response.raw",
+        "sha256": "6731b811b37dc488ec94a698f1e2346d65bea47aea0d90a1cceadcaaee9a0577"
+      },
+      "limitations": [
+        "Semantic scope only; native qualification is separately recorded.",
+        "Publication/acceptance clock is exact retainedroot time and does not silently rewrite any withintext dates."
+      ]
+    },
+    {
+      "case_id": "cik_0001097362:20250731",
+      "accession": "0001097362-25-000008",
+      "document_id": "sec-exhibit:cik_0001097362:000109736225000008:a2024q4slfmdalive.htm",
+      "content_hash": "16e1acdfd4dc7bc14aecd79e54530b5b460b4834a57ecfdc110af2275920c13c",
+      "content_scope": "whole_annual_MDA",
+      "qualified": true,
+      "reason": "Actual annual MD&A with reporting basis, four business pillars, segment/geography performance, capital/liquidity and substantive risk-management discussions throughpage111. Asat/fortheyearDec31,2024 Canadian-dollar reporting has explicit exceptions and unavailable-date alternatives; nonIFRS measures do not equal standard IFRS outcomes.",
+      "review_read_scope": "selected_sections_partial_facts",
+      "body_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/collection/responses/supplement-007.response.raw",
+        "sha256": "e1aeb93ed0fa53de9912faf1ed4b0d4c5200b04f1b7c144bcc4a1834b5a830ff"
+      },
+      "limitations": [
+        "Semantic scope only; native qualification is separately recorded.",
+        "Publication/acceptance clock is exact retainedroot time and does not silently rewrite any withintext dates."
+      ]
+    }
+  ],
+  "manual_review_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplemental-exhibit-content-review.json",
+      "sha256": "17ffce49fb8a4a25ea1a309d63823e27e4cadcc30cdfdd258f7b306519e1635a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-093-content-review.json",
+      "sha256": "917b4326adb79d4e839f1579529b06520857be8de7bdb8fc12bfe106d0661ce1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-094-content-review.json",
+      "sha256": "b961e5b02945c6b0ad434e2919d5b3faee6f806e4001e35878f9bf6864e6d55d"
+    }
+  ],
+  "limits": [
+    "HITI AIF literalJan29,2024/fiscalOct2024/parentacceptedJan2025 remain different facts; no text/date repair.",
+    "No model fulltext reading or source admission."
+  ]
+}

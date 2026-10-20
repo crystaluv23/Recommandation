@@ -1,0 +1,87 @@
+{
+  "schema_version": "bounded-actual-bundle-preappend-independent-review-v1",
+  "bundle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/assembly/bundle.json",
+    "sha256": "47406a0dd8e31eb35ae7ae6bfe7660f0669f8cbddcfe40b3cac171744d01a345"
+  },
+  "fixed_cases": 40,
+  "target_counts": {
+    "financial": 842,
+    "market": 24,
+    "operating": 41
+  },
+  "candidate_counts": {
+    "financial": 838,
+    "operating": 43,
+    "market": 242
+  },
+  "profiles": {
+    "sec_companyfacts_filed_next_utc_day_v1": 838,
+    "sec_archive_acceptance_v1": 29,
+    "massive_daily_no_post_cutoff_split_v1": 242,
+    "sec_filing_response_acceptance_v1": 8,
+    "sec_filing_exhibit_response_v1": 6
+  },
+  "operating_candidate_roles": {
+    "retained_original": 29,
+    "new_primary": 8,
+    "exhibit": 6
+  },
+  "market_candidate_origin": {
+    "retained_exact_original": 241,
+    "explicit_new_FTI": 1
+  },
+  "old_base_rows": 658,
+  "old_base_admitted": 653,
+  "old_base_id_overlap": [],
+  "same_id_canonical_conflicts": [],
+  "existing_exact_canonical_candidates": {
+    "operating": 29,
+    "market": 241
+  },
+  "predicted_new_global_originals": {
+    "financial": 838,
+    "operating": 14,
+    "market": 1
+  },
+  "predicted_total_new_originals": 853,
+  "expected_canonical_insert_paths_count": 1123,
+  "expected_canonical_insert_path_set_sha256": "3e282b2e89cbd8573ee6f4886046b1c99ddd4ea39e1b3d9affdf0bd031e29d34",
+  "unknown_dispositions": {
+    "financial|cik_0001309402:20250530|secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79": {
+      "candidate_ids": [],
+      "reason": "Unknown: retained complete product has a canonical ID conflict or failed native proof; full expected set preserved."
+    },
+    "financial|cik_0001309402:20250530|secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268": {
+      "candidate_ids": [],
+      "reason": "Unknown: retained complete product has a canonical ID conflict or failed native proof; full expected set preserved."
+    },
+    "financial|cik_0001309402:20250530|secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03": {
+      "candidate_ids": [],
+      "reason": "Unknown: retained complete product has a canonical ID conflict or failed native proof; full expected set preserved."
+    },
+    "financial|cik_0001309402:20250530|secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47": {
+      "candidate_ids": [],
+      "reason": "Unknown: retained complete product has a canonical ID conflict or failed native proof; full expected set preserved."
+    },
+    "market|cik_0001814215:20250530|*": {
+      "candidate_ids": [],
+      "reason": "Unknown: retained source variants failed native market proof: this market profile requires an empty complete post-cutoff split ledger"
+    },
+    "operating|cik_0001681459:20250530|0001681459-25-000079": {
+      "candidate_ids": [],
+      "reason": "Unknown: Actual header and body are Q1 10-Q: Business Outlook, consolidated/segment results, inbound orders/backlog, interim statements and signed end. Content is a substantive interim report; persisted 10-k type conflicts with root/metadata10-Q and remains source-unknown."
+    }
+  },
+  "checked_actual_source_artifact_bindings": 1670,
+  "source_artifact_inventory_sha256": "92b359ab4b06532d61e66767edc95785074e3864b0e3cb99c69d89b3d79d0abf",
+  "blocking_findings": [],
+  "actual_stage_absent": true,
+  "limits": [
+    "Pure read-only artifact/canonical/PIT/membership/path check; no native materializer/prepare/execute/Store/GET or global mutation.",
+    "Assembly previous _qualify is its actual producer evidence; independent checks here do not claim a second whole native-profile execution.",
+    "Historical code hashes inside completed artifacts are retained provenance, not compared against current source.",
+    "Remaining GPRE4 metadata conflicts, one nonempty-split market family and wrongtypedFTIinterim remain unknown; no negative observations or denominator deletion.",
+    "Oldbase preservation and exact append/view/worker/2x720/40BasicInfo are future execution obligations, not established by bundle presence."
+  ]
+}

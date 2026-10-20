@@ -1,0 +1,36 @@
+{
+  "schema_version": "bounded-final-consumer-freeze-code-review-v1",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+      "sha256": "3771191d0df656526c77bfb8a75d6c62bbe50ebecf853c960a644892c81b9c7c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_completion.md",
+      "sha256": "46d7af9ad38732b15cf1054a357641041875b39b00a7af23a8dfe25b3d137151"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen_source_completion.py",
+      "sha256": "7a541e468b8e89f216ec7b121c28e4035fba763430b41db8e5ef62e0ac778d23"
+    }
+  ],
+  "actual_bundle_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/actual-bundle-preappend-review.json",
+    "sha256": "6ae3aee94d250efce7e41e62babd1305aabc2ff53e229172619a2dc7a2119fa4"
+  },
+  "independent_test_log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/final-code-binding-independent.log",
+    "sha256": "41919cc1849a5baca889b145de1b4eb93cc6286c4e6b996e80ebf7981eee9f1c"
+  },
+  "verified_family": [
+    "Actual preappend helper plus its owning spec and marketprofile added to new freeze codebindings.",
+    "Unchanged temporary dependencies reload; allthree single dependency drifts reject before bundle loader/store.",
+    "Original actualbundle review remains unchanged; no repeat source canonical scan."
+  ],
+  "blocking_findings": [],
+  "limits": [
+    "Two existing scoped nativewrapper temp tests independently rerun, not new real prepare/execute/store.",
+    "No admission/view/consumer result yet; frozen stage still absent.",
+    "Historical collector/code source hashes remain historical, not required to match current evolved source."
+  ]
+}

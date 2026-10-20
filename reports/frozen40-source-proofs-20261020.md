@@ -120,10 +120,54 @@ terminal95 evidence and independently authored semantic fragments; it cannot
 append, materialize a view or execute a model. GPRE's four conflicting IDs and
 FTI's persisted wrong filing type remain excluded under the current contract.
 
-The separate seven-request supplemental plan is prepared, not executed:
+The separate seven-request supplemental plan completed under checkpoint7f0509fe:
 two actual FTI issuer/split proofs, the HITI parent response, and the literal
-TGB/SLF AIF and MD&A bodies. Its file SHA256 is
+TGB/SLF AIF and MD&A bodies. All7 reservations, opens and retained HTTP200
+responses completed without retry, redirect or technical failure; no admission
+or append. Root independently rehashed its858 source and106 code binding rows
+before subsequent native code changes. Its plan file SHA256 is
 `8252e2c299a52c474020c7c07fd83dc791db3fb2a3b7d04fdfc2a29a2c79a239`.
-The95 batch has finished; native code remains frozen through any supplemental
-execution. TGB's observed index-order/footnote rejection is diagnosed against
-actual source rows; a fix belongs after that source freeze, not inside it.
+Both collectors are terminal and will not reenter. TGB's observed index-order/
+footnote rejection is diagnosed against actual source rows; its local repair
+begins only after the supplemental freeze has ended. The terminal result SHA is
+`078245c8df70c0d72fe600b9ef3d128e323fca958b62ab37eaeeb4213b51294c`.
+
+## Complete explicit batch freeze
+
+The native index repair now accepts one complete number cell anywhere in the
+literal target row and only explicit trailing numeric superscript annotations.
+Ambiguous links/codes, description cross-references and arbitrary suffixes still
+reject. The same actual six exhibits passed the final native profiles; isolated
+old-code replay passed HITI/SLF and rejected TGB's two formats. Eight focused
+safe controls passed; root also ran six new tests and21 related profile/consumer
+tests before the final freeze-dependency change.
+
+The [actual batch](../runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/assembly-summary.json)
+retains907 targets:842 financial products,24 market families and41 operating
+targets. Its1123 qualified candidates comprise838 financial products,242 daily
+records (241 originals plus the new FTI record), and43 operating records
+(29 originals,8 new primary reports and6 exhibits). Six target dispositions
+remain unknown: GPRE's four canonical conflicts, BURU's nonempty split ledger,
+and FTI's old mislabelled interim. Both complete terminal inventories, including
+unknown-source raw evidence, are bound. No target or failed variant was removed.
+
+Independent review found270 exact existing records and853 expected new insertion
+paths, with no overlap against the653-document base review. Actual assembly
+took21.717s/exit0 without stores or append. Root's final dependency inspection
+also found that the new consumer omitted its real preappend helper and owning
+contract, plus the market-profile contract, from its code freeze. Those three
+bindings are now explicit; original-code drift acceptance and final early
+rejection are retained. Fourteen safe consumer tests passed, including those
+drift boundaries. The new review's purpose describes the actual original40 and
+both Registry groups while preserving all old rows.
+
+The sole formal source-only prepare completed in20.076s/exit0. Its plan has
+3230 source and114 code binding rows,1123 qualified IDs and the original40,
+two720-input scopes and40 BasicInfo cases. All network/model/label/apply/full
+prepare permissions are false. Plan file SHA256:
+`b099d0af1ecc3720faaa23b884cb810122408c2b7470d494a81b7e4195987761`;
+canonical hash:
+`114a50b2b037409e36eee1439ca1497d94d183df8d342ba984b3f6b8e2ffeb50`.
+Global append, reviewed-view materialization and actual input consumption have
+not yet run. A summary-only list/dict display error was repaired without
+repeating the successful prepare; its failed summary output is preserved.

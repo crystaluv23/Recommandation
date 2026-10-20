@@ -81,9 +81,16 @@ Preparation verifies the base658 review rows/653 admitted documents, all full
 financial expected sets, target coverage, current native proof qualification,
 complete canonical IDs and collisions against direct exact global paths. It
 freezes qualified candidates, dispositions, all data bindings, old view and
-current code/spec hashes before execution. Historical code bindings inside old
-terminal evidence are historical facts, not requirements to restore old source
-bytes. Output must be new and outside every retained oracle/view/stage root.
+current code/spec hashes before execution. This explicitly includes the reused
+`diagnose_reviewed_frozen_source_snapshot.py` helper and its owning
+`spec/scripts/diagnose_reviewed_frozen_source_snapshot.md`, in addition to the
+existing frozen-case/periodic/financial dependency chain and this executor.
+Bind the current `reviewed_market_profile.md` contract used by market
+qualification as well as the already included source-profile specs. Check all
+frozen code/spec bindings before reloading the bundle or opening a store;
+helper or contract drift rejects the execution preflight. Historical code
+bindings inside old terminal evidence are historical facts, not requirements
+to restore old source bytes. Output must be new and outside every retained oracle/view/stage root.
 Unknown candidates without a persisted original remain separate dispositions;
 never put an outside prototype into a reviewed manifest's original_record.
 
@@ -91,8 +98,10 @@ Execution rechecks the entire frozen batch and exact IDs before its first append
 Use the existing native RawInfoStore append/load and complete canonical equality;
 keep oracle.json and every pre-existing source file hash. Create a new review
 preserving all old rows verbatim, adding only proven original records under the
-actual oracle root. Materialize one new reviewed view, check worker and restart
-canonical membership, and run only native SignalExecutor.prepare_inputs plus
+actual oracle root. The new review scope purpose names the original40 cases
+and both exact v6/v12 input-only groups; do not carry the old fixed15/exact-v12
+purpose forward. Preserve old records verbatim while describing the new scope.
+Materialize one new reviewed view, check worker and restart canonical membership, and run only native SignalExecutor.prepare_inputs plus
 BasicInfo/resolver projections. Never apply Signals, run roles/models/fullprepare,
 read labels or acquire data. Reverify frozen bindings and old/new source inventory
 at terminal. A durable exclusive execution-start file prohibits reentry after

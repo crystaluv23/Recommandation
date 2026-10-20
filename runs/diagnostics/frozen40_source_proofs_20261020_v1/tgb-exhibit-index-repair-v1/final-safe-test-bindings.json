@@ -1,0 +1,73 @@
+{
+  "scope": "Eight explicit safe tests: six focused new tests plus existing crossreference/ambiguity and actual KGC controls. Native materialize/worker/restart only in tmp; actual TGB/HITI bodies read-only. Not actual sourcebatch qualification.",
+  "selectors": [
+    "tests.test_reviewed_sec_exhibit_index",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_index_code_cell_excludes_description_cross_reference_and_ambiguous_rows",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_actual_retained_kgc_parent_index_layout_proves_only_its_literal_codes"
+  ],
+  "expanded_test_ids": [
+    "tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_actual_hiti_index_still_rejects_old_cover_prose_number",
+    "tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_actual_row_layouts_pass_native_profile_restart_and_worker_without_relabeling",
+    "tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_actual_tgb_whole_parent_and_each_literal_row_prove_exact_numbers",
+    "tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_native_wrong_claim_crossreferences_ambiguity_and_nonnotes_reject",
+    "tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_only_explicit_trailing_numeric_superscripts_are_footnotes",
+    "tests.test_reviewed_sec_exhibit_index.ReviewedSecExhibitIndexTests.test_position_and_note_support_do_not_relax_cutoff_or_refresh_proof",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_index_code_cell_excludes_description_cross_reference_and_ambiguous_rows",
+    "tests.test_reviewed_sec_response_profile.ReviewedSecResponseProfileTests.test_actual_retained_kgc_parent_index_layout_proves_only_its_literal_codes"
+  ],
+  "tripwires": [
+    "minimal.LABELS unreadable and real labels open forbidden",
+    "LabelStore.load forbidden",
+    "minimal.prepare/_prepare_workspace forbidden",
+    "socket.socket/create_connection forbidden",
+    "RawInfoStore roots restricted to platform temporary directory"
+  ],
+  "tripwire_calls": {
+    "labels": 0,
+    "prepare": 0,
+    "socket": 0,
+    "non_temp_store": 0
+  },
+  "temporary_store_opens": 17,
+  "source_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_sec_response_profile.md",
+      "sha256": "ef413dc6c4e7c0b4aceec5a705d785d89dcd9a90506307ddde5d7720980d72b6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_sec_exhibit_index.py",
+      "sha256": "9e9292aa28e489be58885fdab0697ae64b137c677f5ff84fb4aea6ad2b5470cf"
+    }
+  ],
+  "source_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_sec_response_profile.md",
+      "sha256": "ef413dc6c4e7c0b4aceec5a705d785d89dcd9a90506307ddde5d7720980d72b6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_sec_exhibit_index.py",
+      "sha256": "9e9292aa28e489be58885fdab0697ae64b137c677f5ff84fb4aea6ad2b5470cf"
+    }
+  ],
+  "source_stable": true,
+  "tests_run": 8,
+  "successful": true,
+  "failures": 0,
+  "errors": 0,
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/tgb-exhibit-index-repair-v1/final-safe-tests.log",
+    "sha256": "1843a505af9821b844ce3def392c568eedf055f210e80f7e810e2da82ad44c71"
+  },
+  "original_failure": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/tgb-exhibit-index-repair-v1/original-counterexample.json",
+    "sha256": "2926c5118f45a5310ce9a50ae6e43f1398de457738fffeb208c7300c549677c0"
+  }
+}

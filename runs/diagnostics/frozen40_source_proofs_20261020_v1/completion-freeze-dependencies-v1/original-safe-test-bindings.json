@@ -1,0 +1,62 @@
+{
+  "phase": "original",
+  "scope": "Only explicit temporary tests, no real bundle prepare/execute/GET/globalstore/LabelStore. Original expected red is the current pre-fix consumer; source preserved as original-consumer.py.txt.",
+  "selectors": [
+    "tests.test_frozen_source_completion.FrozenSourceCompletionCodeBindingTests"
+  ],
+  "expanded_test_ids": [
+    "tests.test_frozen_source_completion.FrozenSourceCompletionCodeBindingTests.test_each_runtime_helper_or_contract_drift_rejects_before_bundle_reload_or_store",
+    "tests.test_frozen_source_completion.FrozenSourceCompletionCodeBindingTests.test_preappend_helper_owner_and_market_contract_are_frozen_before_reload"
+  ],
+  "tripwire_calls": {
+    "labels": 0,
+    "prepare": 0,
+    "socket": 0,
+    "non_temp_store": 0
+  },
+  "source_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_completion.md",
+      "sha256": "76bd057d30b0fb2a4ab0432c5937aced577ce95b4ae05a11f6c7713b5e62089a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+      "sha256": "676455d4c565a7e0c7838d4703aae65778134546fe7bdbe96fcab4c60d000f3f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen_source_completion.py",
+      "sha256": "313326b4fe54b5ac929841d3bb7113ae54acbc3c92ca7ccc995e87d00bfcdbd6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+    }
+  ],
+  "source_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_source_completion.md",
+      "sha256": "76bd057d30b0fb2a4ab0432c5937aced577ce95b4ae05a11f6c7713b5e62089a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+      "sha256": "676455d4c565a7e0c7838d4703aae65778134546fe7bdbe96fcab4c60d000f3f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_frozen_source_completion.py",
+      "sha256": "313326b4fe54b5ac929841d3bb7113ae54acbc3c92ca7ccc995e87d00bfcdbd6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+    }
+  ],
+  "source_stable": true,
+  "tests_run": 2,
+  "successful": false,
+  "failures": 4,
+  "errors": 0,
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/original-safe-tests.log",
+    "sha256": "b7e89d8a69322e456ddae9ade1bb8802f3827815e21bd02b085e956039e050df"
+  }
+}
