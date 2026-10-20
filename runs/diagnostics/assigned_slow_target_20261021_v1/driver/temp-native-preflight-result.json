@@ -1,0 +1,25 @@
+{
+  "after": {
+    "/Users/l/Project/Recommandation/scripts/run_assigned_slow_target_stage.py": "a9a1d9e0ecca0ce48f1fe4e7f5248770b6a0aa2b2a70cd00870def6be7a4cdda",
+    "/Users/l/Project/Recommandation/spec/scripts/run_assigned_slow_target_stage.md": "7b2a269cc5e0c7b811a81f5fa4bdc2dc47fedfa06281c9e5f9999249e5f59959",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395",
+    "/Users/l/Project/Recommandation/tests/test_assigned_slow_target_stage.py": "e7dddc64eac4290d27c62cebafc208bbb5016531ea2ad6eb9eb0b7524e3381fa"
+  },
+  "before": {
+    "/Users/l/Project/Recommandation/scripts/run_assigned_slow_target_stage.py": "a9a1d9e0ecca0ce48f1fe4e7f5248770b6a0aa2b2a70cd00870def6be7a4cdda",
+    "/Users/l/Project/Recommandation/spec/scripts/run_assigned_slow_target_stage.md": "7b2a269cc5e0c7b811a81f5fa4bdc2dc47fedfa06281c9e5f9999249e5f59959",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395",
+    "/Users/l/Project/Recommandation/tests/test_assigned_slow_target_stage.py": "e7dddc64eac4290d27c62cebafc208bbb5016531ea2ad6eb9eb0b7524e3381fa"
+  },
+  "counts": {
+    "exchange_receive": 0
+  },
+  "result": {
+    "manifest_hash": "0f7035105d0ad2ec9e943961f936f079498a19440a0cc4d479570efa785e93ca",
+    "status": "prepared_not_dispatched",
+    "target_need_ref": "reflection-7d08d205fe330564"
+  },
+  "scope": "One temporary real-source native prepare; no raw answer, no dispatch, no formal stage; first failure retained without rerun.",
+  "seconds": 15.848074667155743,
+  "unchanged": true
+}

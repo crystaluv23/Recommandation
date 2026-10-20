@@ -6462,6 +6462,21 @@ class SignalEvolutionEngine:
             },
         }
 
+    def _save_mining_need_unit(self, cycle_id: int, unit: Mapping[str, Any]) -> None:
+        """Persist one original native need delta without changing its identity."""
+        scope = _canonical_hash({"axis": unit["axis_id"], "seed": unit["seed"]})
+        path = (self.workspace.experiments_root / "cycles" / f"cycle-{cycle_id:04d}"
+                / "mining_need_units" / scope / f"{unit['result_hash']}.json")
+        _write_or_verify_json(path, dict(unit))
+
+    def _new_mining_controller(self, *, cycle_id: int, **kwargs: Any) -> LabelAwareMiningController:
+        """Construct the production Controller with its original progress sink."""
+        return LabelAwareMiningController(
+            cycle_id=cycle_id,
+            need_progress_sink=lambda unit: self._save_mining_need_unit(cycle_id, unit),
+            **kwargs,
+        )
+
     def _run_controller_mining_axis(
         self,
         *,
@@ -6556,19 +6571,13 @@ class SignalEvolutionEngine:
                 candidates.append((_seed, dict(candidate)))
                 return {"status": "validated"}
 
-            def save_need_unit(unit: Mapping[str, Any]) -> None:
-                scope = _canonical_hash({"axis": unit["axis_id"], "seed": unit["seed"]})
-                path = (self.workspace.experiments_root / "cycles" / f"cycle-{cycle_id:04d}"
-                        / "mining_need_units" / scope / f"{unit['result_hash']}.json")
-                _write_or_verify_json(path, dict(unit))
-
             try:
                 controller_kwargs: dict[str, Any] = {}
                 if self.mining_heavy_action_limit is not None:
                     controller_kwargs["heavy_action_limit"] = (
                         self.mining_heavy_action_limit
                     )
-                controller = LabelAwareMiningController(
+                controller = self._new_mining_controller(
                     store=self.raw_info_store,
                     model=model,
                     case_pairs=case_pairs,
@@ -6584,7 +6593,6 @@ class SignalEvolutionEngine:
                         context.get("prior_modality_footprints", ())
                     ),
                     validation_sink=seed_sink,
-                    need_progress_sink=save_need_unit,
                     label_map=label_map,
                     research_axis=research_axis,
                     **controller_kwargs,
@@ -8669,6 +8677,36 @@ class SignalEvolutionEngine:
             "audit": dict(audit),
         }
 
+    def _controller_memory_index(self) -> ReflectionMemoryIndex:
+        """Build the native immutable reflection index without requesting roles."""
+
+        # The reflection index must be built from the authoritative unmasked
+        # archive: every item_ref and source_ref is a content hash, so masking
+        # entries first would break ref verification and closure. Identity is
+        # removed only from the model-facing views below and from the originals
+        # staged for on-demand reads.
+        meta_entries = list(self.meta_memory.archive_view())
+        meta_index = ReflectionMemoryIndex.from_entries(meta_entries,
+            performance_profiles=self.meta_memory.experience_profiles)
+        from stock_opportunity_agent.research.cross_round_reflection import comparison_original
+        active_input = self._active_slow_input or {}
+        scopes = {row["ref"]: row["visible_to"] for row in active_input.get("source_manifest", ())}
+        comparison_sources = {row["feedback_ref"]: comparison_original(row)
+            for row in active_input.get("feedback_rows", ())
+            if row.get("kind") == "prediction_comparison" and "H1" in scopes.get(row["feedback_ref"], ())}
+        comparison_rows = list({pair["comparison_ref"]: pair for pair in comparison_sources.values()}.values())
+        comparison_episodes = [episode for artifact in self.workspace.committed_slow_artifacts()
+                              for episode in artifact["slow_memory"].get("episode_reflections", ())]
+        comparison_episodes.extend((self._active_slow_memory or {}).get("episode_reflections", ()))
+        comparison_episodes.extend(row["artifact"] for row in active_input.get("feedback_rows", ())
+            if isinstance(row.get("artifact"), Mapping) and row["artifact"].get("reflection_layer") == "cross_round"
+            and "H1" in scopes.get(row["feedback_ref"], ()))
+        pair_refs = {row["comparison_ref"] for row in comparison_rows} | set(comparison_sources)
+        meta_index.add_comparisons(comparison_rows, episodes=(episode for episode in comparison_episodes
+            if set(episode.get("source_refs", ())) <= pair_refs),
+            source_aliases={ref: pair["comparison_ref"] for ref, pair in comparison_sources.items()})
+        return meta_index
+
     def _mining_context(self, *, cycle_id: int) -> dict[str, Any]:
         prior_work: list[dict[str, Any]] = []
         committed_paths = [
@@ -8831,31 +8869,7 @@ class SignalEvolutionEngine:
         capability_backlog = self._mining_capability_backlog_view(
             capability_backlog
         )
-        # The reflection index must be built from the authoritative unmasked
-        # archive: every item_ref and source_ref is a content hash, so masking
-        # entries first would break ref verification and closure. Identity is
-        # removed only from the model-facing views below and from the originals
-        # staged for on-demand reads.
-        meta_entries = list(self.meta_memory.archive_view())
-        meta_index = ReflectionMemoryIndex.from_entries(meta_entries,
-            performance_profiles=self.meta_memory.experience_profiles)
-        from stock_opportunity_agent.research.cross_round_reflection import comparison_original
-        active_input = self._active_slow_input or {}
-        scopes = {row["ref"]: row["visible_to"] for row in active_input.get("source_manifest", ())}
-        comparison_sources = {row["feedback_ref"]: comparison_original(row)
-            for row in active_input.get("feedback_rows", ())
-            if row.get("kind") == "prediction_comparison" and "H1" in scopes.get(row["feedback_ref"], ())}
-        comparison_rows = list({pair["comparison_ref"]: pair for pair in comparison_sources.values()}.values())
-        comparison_episodes = [episode for artifact in self.workspace.committed_slow_artifacts()
-                              for episode in artifact["slow_memory"].get("episode_reflections", ())]
-        comparison_episodes.extend((self._active_slow_memory or {}).get("episode_reflections", ()))
-        comparison_episodes.extend(row["artifact"] for row in active_input.get("feedback_rows", ())
-            if isinstance(row.get("artifact"), Mapping) and row["artifact"].get("reflection_layer") == "cross_round"
-            and "H1" in scopes.get(row["feedback_ref"], ()))
-        pair_refs = {row["comparison_ref"] for row in comparison_rows} | set(comparison_sources)
-        meta_index.add_comparisons(comparison_rows, episodes=(episode for episode in comparison_episodes
-            if set(episode.get("source_refs", ())) <= pair_refs),
-            source_aliases={ref: pair["comparison_ref"] for ref, pair in comparison_sources.items()})
+        meta_index = self._controller_memory_index()
         self._mining_memory_index = meta_index
         meta_view = _mask_identity_values(
             meta_index.brief_view(max_bytes=32_000),

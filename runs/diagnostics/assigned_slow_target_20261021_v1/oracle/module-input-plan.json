@@ -1,0 +1,292 @@
+{
+  "accepted_prefix_reuse": {
+    "bound_prefix_roles": [
+      {
+        "raw_answer": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/outbox/32fc8f394c6e80f7634518622e80f7fd09be542d53e606b5d28c95e9c9c9f74f.txt",
+          "sha256": "c4b07fc436edda33825b9344a79189fcf65ef28d2baa5c352885f610a67129cc"
+        },
+        "receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/receipts/32fc8f394c6e80f7634518622e80f7fd09be542d53e606b5d28c95e9c9c9f74f.json",
+          "sha256": "9f9fb53bb419a6373d26b20a1404377333e11730ac788260a58d356a8133fb15"
+        },
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/transport/requests/32fc8f394c6e80f7634518622e80f7fd09be542d53e606b5d28c95e9c9c9f74f.json",
+          "sha256": "c0b5367a395af6e308beeeb10b6133e5384e75d0c4247a81a90917e79a4061b2"
+        },
+        "request_hash": "32fc8f394c6e80f7634518622e80f7fd09be542d53e606b5d28c95e9c9c9f74f",
+        "stage": "slow_source_read"
+      },
+      {
+        "raw_answer": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/outbox/85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7.txt",
+          "sha256": "6cc71ba160a0904ef1f86ff9915a67eecb31addab89b35c5f39f1c054a2857d4"
+        },
+        "receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/receipts/85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7.json",
+          "sha256": "1bdab187d073e9077cb951abbbe17c4ec6fba1b9d23303896e5e23558b565355"
+        },
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/transport/requests/85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7.json",
+          "sha256": "093cb08cd66ba7ece33bffc45b6fdfef508086458c18265faf70f81f9660e79c"
+        },
+        "request_hash": "85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7",
+        "stage": "signal_mining_reflect"
+      },
+      {
+        "raw_answer": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/outbox/c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb.txt",
+          "sha256": "42bc0611b0ca18edfad115ec2673c392b170b22924bcd041003c4a733fa66c67"
+        },
+        "receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/receipts/c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb.json",
+          "sha256": "bfa9442629422feee83046f94f4f24ee8e5b22a9cb827cca073b6123b622f33e"
+        },
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/transport/requests/c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb.json",
+          "sha256": "b8c3e6eeb94b02313f59d3d52ead865e3bb795fcf2ab7122f7d5091a26737a53"
+        },
+        "request_hash": "c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb",
+        "stage": "slow_source_read"
+      },
+      {
+        "raw_answer": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/outbox/d8caf5dbbceb06aa546926c4cc56676794afd995f9de988bc83f913e440c3950.txt",
+          "sha256": "3be05cfa8819f5c71c447a813db8327a8ddc8515f5598b0ad0fd54611ecdca38"
+        },
+        "receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/receipts/d8caf5dbbceb06aa546926c4cc56676794afd995f9de988bc83f913e440c3950.json",
+          "sha256": "af74ec82e8a9336234d0d022329e018cf11047cc03a52f7754824b8aba03b445"
+        },
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/transport/requests/d8caf5dbbceb06aa546926c4cc56676794afd995f9de988bc83f913e440c3950.json",
+          "sha256": "f09f3d073a4a5fdb8377951dac0d61ed610ba4f74f46fb93473bcfb3f7555f74"
+        },
+        "request_hash": "d8caf5dbbceb06aa546926c4cc56676794afd995f9de988bc83f913e440c3950",
+        "stage": "slow_source_read"
+      }
+    ],
+    "constructor_source": "The four accepted prefix roles (three selectors and one reflection), exact memory, sampling, selected six H1 original disclosures and complete265-backlog form an explicitly imported module input. They are not a new committed Slow cycle or a new history observation.",
+    "episode_reflections": 3,
+    "full_feedback_D": 4493,
+    "lesson_additions": 3,
+    "memory_contract_hash": "bc2459e29760e365c93ed1a4c955e7f9ab2a0b39c30b42944ca19fff3915991b",
+    "memory_hash": "603908b96acf91a90bc39f3ad0e0950bfd1282d0d3bc272970962e37334e67d0",
+    "no_reexecution": "Do not invoke _prepare_slow_input/_prepare_slow_memory or issue/re-author source selector/reflect responses. Deterministic validation/reconstruction of these immutable accepted module inputs is permitted but cannot count as a fresh model action.",
+    "pending_count": 4490,
+    "processed_count": 3,
+    "processed_top_level_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1",
+      "prediction_comparison:07fe9330743c41441c970db70a71466eed9579b804594e79230aa450e1024c0c",
+      "slow-history:source-12a50702a856ddc3:1:slow_input:feedback-939"
+    ],
+    "reflection_status": "appended",
+    "source_input_hash": "1b5080791334f5e36973c36e93e77e4d7cc3f5387a12ab7e76246c85fcb56573"
+  },
+  "complete_native_constructor_requirements": [
+    {
+      "arg": "store",
+      "authority": "Same reviewed1780 descriptor from source manifest, SHA47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a and its original-source qualification closure. Read-only; no empty substitute/acquisition/append."
+    },
+    {
+      "arg": "model/caller",
+      "authority": "Fresh actual MiningAgentRoleModel over a new independent-subagent StructuredRoleClient/new contract/local exchange/ledger; source stage request is a baseline, never a submitted new answer."
+    },
+    {
+      "arg": "case_pairs",
+      "authority": "Restore exact eight dev EvolutionCases in source sampling_manifest.dev_case_ids order from hash-bound approved40; preserve opaque case-001..008 mapping. Do not rerun new-contract-hash sampling."
+    },
+    {
+      "arg": "label_map/research_axis",
+      "authority": "Exact saved factory label_map for8 dev cases and surge_direction research_axis; label-aware retrospective role only. Original check8 outcomes remain unavailable to this Controller; no global labels/LockedTest."
+    },
+    {
+      "arg": "measurable_evidence_manifest",
+      "authority": "Exact complete value in first native Controller request payload; verify reconstruction from bound dev cases/1780 originals and matching source_hash/PIT scope, never a hand-authored substitute."
+    },
+    {
+      "arg": "signal_catalog/signal_originals",
+      "authority": "All18 stablev12 specs/skills and native catalog descriptions, Registry hash40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d. First inbox contains only7 projected cards and cannot recover the full constructor catalog. Pure definition reconstruction only, no freeze/audit/fixtures/Signal."
+    },
+    {
+      "arg": "seed/cycle/budgets",
+      "authority": "hypothesis/cycle1; native heavy12/light4/browse24 then one declared controlled native page read consumes light1. Preserve existing default budgets in view; stage admits only backlog inspection and assigned need recording."
+    },
+    {
+      "arg": "backlog_needs",
+      "authority": "Exact factory-input.backlog_needs all265/order/hash; do not subset to assigned item. Ordinary items/technical_failures are separate and not silently spliced into needs."
+    },
+    {
+      "arg": "identity_aliases",
+      "authority": "Reconstruct the same native identity guard inventories from approved40 identity population; actualmodel scoped alias set andController full guard are distinct native derivations, not a guessed alias list."
+    },
+    {
+      "arg": "attribute_vocabulary",
+      "authority": "Native deterministic derive_attribute_vocabulary over source dev/PIT filing narratives from1780 view. It is not serialized by factory-input/first inbox; bind/reconstruct and verify rather than omit because this stage forbids heavy actions."
+    },
+    {
+      "arg": "prior_modality_footprints",
+      "authority": "Exact saved empty list. Do not import hidden check/confirmation summaries."
+    },
+    {
+      "arg": "meta_memory_briefs/meta_memory_disclosures",
+      "authority": "Exact saved factory values; all6 complete selected original units and role scopes/source hashes, never justbriefs. Bind the2 H1 source-selector answers that selected them, but do not send those old answers to the new model."
+    },
+    {
+      "arg": "memory_index",
+      "authority": "Real ReflectionMemoryIndex rebuilt using the exact rebased original Fast meta/knowledge profiles plus only H1-permitted comparison originals/accepted episodes as the native _mining_context does. It overrides the simple brief fallback in _memory_view; factory-input alone omits it."
+    },
+    {
+      "arg": "slow_method_memory",
+      "authority": "Exact saved H1-scoped derived memory view/source entries, tied to accepted memory603908b9 and original source manifest. Preserve hidden-source closure; do not rewrite its old input/contract hashes to the new contract."
+    },
+    {
+      "arg": "validation_sink/need_progress_sink",
+      "authority": "Use the genuine production factory closures/shared owner sink. Candidate sink remains unreachable by stage guard. Need units write only to the new local destination under the existing axis/seed/result-hash path and native _write_or_verify_json. A copied homemade sink is not original factory evidence."
+    }
+  ],
+  "evidence_limits": "Source-only review/proposal; no new constructors, role calls, Signal, source GET, stage prepare/advance or committed learning was executed.",
+  "fresh_branch_boundary": {
+    "branch_point": "Immediately before the first old Controller response, after original controlled page initialization.",
+    "controlled_cursor": 259,
+    "fixed_target_denominators": "Keep old result0/1 forever. New assigned-stage target also has its own fixed1 denominator. No alternate item may substitute for it, and no new result is added to empirical learning/benefit counts.",
+    "initial_pending_count": 265,
+    "initial_staged_count": 0,
+    "native_backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+    "not_a_resume_of_264": "The prior stage is terminal. This new explicitly assigned consumer experiment branches from its before-Controller module input, not from its post-unit state. Old answers, correction issue/body, accepted alternate unit and old need dispositions do not enter the fresh role payload.",
+    "source_first_need_state_hash": "25c45c0c801f27f5c0aa394752234c38484039befe27548e15465b35ac845319",
+    "source_first_request": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/transport/requests/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json",
+      "sha256": "332d8f0d069f99d1cf3e0141b0e3c430d12b1d274f732df23c54884a14582c31"
+    }
+  },
+  "head_inspected": "55fb1f5ee1ed0fdbac455b46451fc829af809b33",
+  "known_snapshot_gaps": {
+    "factory_input_is_not_complete_constructor_snapshot": true,
+    "first_inbox_is_not_full_state": "It is a bounded model projection with7/18 catalog cards and12/265 default backlog cards plus6 controlled cards, not a serialized full Controller. Do not instantiate a facade or fill missing values with empties.",
+    "not_saved_as_constructor_values": [
+      "case_pairs objects",
+      "measurable_evidence_manifest",
+      "full catalog/spec originals",
+      "identity alias arrays",
+      "attribute_vocabulary",
+      "ReflectionMemoryIndex object",
+      "model/caller/sink objects"
+    ],
+    "saved_factory_keys": [
+      "backlog_needs",
+      "case_count",
+      "factory",
+      "label_map",
+      "meta_memory_briefs",
+      "meta_memory_disclosures",
+      "prior_modality_footprints",
+      "research_axis",
+      "seed",
+      "slow_method_memory"
+    ]
+  },
+  "legal_module_lineage": {
+    "implementation_choices_needing_explicit_review": [
+      "If adding a generic prepared-context factory entrance, specify ownership/input validation before code and test equivalence to the original before-Controller payload/complete constructor args.",
+      "A raw patch/mock replacing _mining_context with a dict or a direct Controller using incomplete factory-input is insufficient authority/equivalence.",
+      "Revalidating old exact selections is input restoration, not fresh source/model behavior; if implemented as role replay it must be explicitly separated from new-role accounting and cannot be represented as a new source-selector execution."
+    ],
+    "native_history_rule": "Only the already approved ba60 history remains historical authority. Never build/import a slow_history manifest from this0/0 partial stage, bump completed pointers, publish profiles, append learning, or mutate accepted603908 memory contract/input fields.",
+    "new_input_manifest": "Bind source completion272 hash map + source contract/manifest + exact input/memory/sampling + first baseline request/factory/page + v12/1780/40 source authority + new assigned stage code/contract/cap. Keep original artifacts readonly under module_inputs references; do not copy/relabel them as fresh slow_input/slow_memory under the new contract.",
+    "recommended": "A spec-first explicit prepared-controller-input/context seam owned by the native factory, validated against the frozen accepted prefix. The original factory must rebuild/validate missing deterministic constructor fields and invoke the real Controller/original sink, while using the previously accepted source views without source/reflection model calls.",
+    "reconstruction_stop": "If a missing field/scope cannot be reconstructed and source-validated deterministically without new role calls, stop before dispatch and surface that module-input interface gap. Do not repair by rerunning the accepted prefix."
+  },
+  "neutral_assignment": {
+    "allowed_instruction": {
+      "assigned_native_need_refs": [
+        "reflection-7d08d205fe330564"
+      ]
+    },
+    "forbidden_actor_material": [
+      "expected repair_dependency disposition",
+      "expected empty Signal refs",
+      "three original error full messages/projection IDs/phrase lists not in disclosed row",
+      "source-only oracle",
+      "old Controller first/correction answer or its chosen alternate rationale"
+    ],
+    "stage_admission": "Before the original record action executes, refuse rows for unassigned needs without writing a unit. This is the assigned stage task boundary, not a change to the six native disposition semantics. Preserve rejected raw answers and original native schema corrections.",
+    "task_envelope": "Process the explicitly assigned native need using the supplied genuine backlog page; leave other needs pending. Keep original native prompt plus clearly declared stage authorization envelope."
+  },
+  "new_budget_candidate_not_execution_authority": {
+    "Controller_native_correction_responses_max": 1,
+    "Controller_regular_responses_max": 2,
+    "all_responses_max": 3,
+    "controlled_read": "One existing native backlog page259 initialization, declared nonautonomous and ledger-bound. Extra fresh backlog inspection stays inside2 regular responses. No source reads/reflection/candidate/Signal/secondseed/fullSlow.",
+    "exact_stage": "mining_controller_step",
+    "freshness": "Each new actual response including native continuation uses its own fresh fork_none exact-inbox subagent;0 external LLM API. Distinct new contract/exchange/receipts, no old response cache copied into new model outputs.",
+    "logical_basis": "Serialized UTF8 messages plus output reservation, not measured host token/cost. Restoring accepted prefix consumes0 new roles; its old301117 reservation remains separately recorded, never refunded/recounted.",
+    "output_limit": 4000,
+    "per_request_logical_cap": 131072,
+    "reflection_calls": 0,
+    "source_selector_calls": 0,
+    "total_logical_cap": 393216
+  },
+  "schema_version": "assigned-slow-target-source-only-module-input-plan-v1",
+  "source_only_expected": {
+    "detail_limit": "The source first Controller inbox does not contain target original source refs or either projection ID; page cards convey thebrief. Full backlog item read may reveal limitations/source refs, not the original error bodies. Those exact frontiers remain outside-source corroboration, not required actor recall.",
+    "expected_disposition": "repair_dependency",
+    "expected_signal_refs": [],
+    "native_need_ref": "reflection-7d08d205fe330564",
+    "original_reflection_source_refs": [
+      "reflection_source:c91d9a77532cd0264ec815ff93ca3e94741df8c497801275c2e66a7e4c4d7d25",
+      "reflection_source:0e0f57f8c60b1553d27abd943f52bdfcc19bc8541a6d02407042347d336e3f28"
+    ],
+    "rationale_bound": "The three named versions had Signal-validation/evidence-pipeline failures; repair that technical dependency while preserving still-scored/no-exclusion meaning, unknown root cause, no domain-absence or expected-return claim.",
+    "raw_to_sink_control": "The exact assigned row, native initial state/base/backlog hash, real _record_need_dispositions, original factory sink and remaining pending264 must agree. Preserve original unit/raw answer/correction/ledger hashes. Stop after first unit, even if semantic oracle fails.",
+    "reflection_item_ref": "reflection:42597493a6b1af7ff10a07d6471c48610c0a21a1f24a18cbc9d0d11628abcd12",
+    "visible_target_row": {
+      "kind": "meta_reflection_action",
+      "limitations": [
+        "A validation failure does not prove the measured condition was absent or negative; it only means no validated domain result was produced.",
+        "The trajectory table is a bounded view; the full signal execution records are preserved separately.",
+        "The realized outcomes do not establish that the missing signals would have changed the magnitude band."
+      ],
+      "need": "Three cases recorded signal validation failures (financing_listing_action:v5, guidance_acceleration:v3, order_confirmation_disclosed:v2) that removed forward-expectations and order-confirmation evidence from the research pass, yet all three cases were still scored and none was a technical exclusion.",
+      "need_ref": "reflection-7d08d205fe330564",
+      "reflection_field": "missing_information_needs",
+      "reflection_item_ref": "reflection:42597493a6b1af7ff10a07d6471c48610c0a21a1f24a18cbc9d0d11628abcd12",
+      "reflection_source_refs": [
+        "reflection_source:c91d9a77532cd0264ec815ff93ca3e94741df8c497801275c2e66a7e4c4d7d25",
+        "reflection_source:0e0f57f8c60b1553d27abd943f52bdfcc19bc8541a6d02407042347d336e3f28"
+      ],
+      "source_round": -1,
+      "sources": []
+    }
+  },
+  "source_stage": {
+    "all_source_sealed_bytes_match": true,
+    "completed_round_cycle": [
+      0,
+      0
+    ],
+    "completion": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/completion.json",
+      "sha256": "3640c700b68f002582be664e4e907caf33f840535e68671fcd0220c73057fe63"
+    },
+    "module_status": "partial_running",
+    "old_alternate_unit": "Preserve accepted reflection-68eeb8eb36ca95db fast_plan_action and its native264-pending result. It is neither failure of its own semantic route nor a pass of the target.",
+    "old_target": {
+      "fixed_denominator": 1,
+      "need_ref": "reflection-7d08d205fe330564",
+      "passes": 0,
+      "still_pending": true
+    },
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1",
+    "sealed_files": 272
+  },
+  "status": "proposal_no_prepare_no_new_roles_no_product_change",
+  "unchanged_open_items": [
+    "old target0/1",
+    "fullS1/S2",
+    "ordinary quota items not routed toController",
+    "new capability/Mining/Signal implementation/admission/publication/reuse",
+    "independent gain",
+    "whole Slow or OS/crash recovery"
+  ]
+}

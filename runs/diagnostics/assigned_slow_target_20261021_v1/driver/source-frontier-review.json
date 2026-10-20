@@ -1,0 +1,146 @@
+{
+  "actual_frontier": {
+    "accepted_reflection_hash": "603908b96acf91a90bc39f3ad0e0950bfd1282d0d3bc272970962e37334e67d0",
+    "factory_fields_match_first_wire": [
+      "slow_method_memory",
+      "meta_memory_disclosures",
+      "prior_modality_footprints",
+      "research_axis",
+      "label_map"
+    ],
+    "first_and_correction_views": 2,
+    "full_backlog": 265,
+    "native_first_controller_inbox": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json",
+    "old_target_acceptance": "0/1 permanently retained",
+    "pending_after_v1": 264,
+    "target_need_ref": "reflection-7d08d205fe330564",
+    "target_still_pending": true
+  },
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/completion.json",
+      "sha256": "3640c700b68f002582be664e4e907caf33f840535e68671fcd0220c73057fe63"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/manifest.json",
+      "sha256": "f5c2148baf0b915bd41905d563f1947a11255d46ea30afed2a1aab82e0647fbf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/factory-input.json",
+      "sha256": "254a24322260b33d2fcfbf37277a83de7af2dd5e624f10a0fe1c0a0ec45da6fc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/reflection-boundary.json",
+      "sha256": "05b4bcf8552c3e605a91f8a814dab8b6f3f186c7f4aa1d5a98e8a31290be75a5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/controlled-page.json",
+      "sha256": "47bfa416cfb3bbd1bbe190379e43610f3ee4504343957677eba28c6cd070b366"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/controlled-page-read.json",
+      "sha256": "44d1577a978e0bf7db4b8530c1e7604f5a9d19507bfe6ed1664cdae0a14c8cbb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/controller-boundary.json",
+      "sha256": "85b281daf8d5d24ad7a87360b8a4d4a3be131ef70e75728189c30dc5df38502d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/run_contract.json",
+      "sha256": "8793f405d4d16c739c5f310678169042b3be72ecd0cd576a3a74b1322601f822"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/experiments/cycles/cycle-0001/slow_input.json",
+      "sha256": "ab4625bb8d5c39a3ae7c3fc65fd4d5b4a94c4827c655e24acaef96ad72c9fe74"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "48bc084ca33c095f0ecc0e93404b4d17eb580f1364defa758a8375fd7c93d4a6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "c4bba21b5ec197a4f99fb2cefb5e8b2256dfc72dc92c9feffd47f455c4ddb917"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_slow_feedback_stage.py",
+      "sha256": "a1acad66f4f83935bb5ccdb8834ec32ad064c42a1ab98ac84b76d2f6bb1209f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_slow_feedback_stage.md",
+      "sha256": "84a1bdfe483b2f14a531bd1ffee756e88705295938d74fee8b948e7c38cd0ffe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json",
+      "sha256": "f20fbbe47e5e16a31e2cbd11400d7a7ab239d39d8964438f02375e720b62a304"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/cd19a93e367e6e3b9037dc97a78788cfcf69d85802982726cd41df3c84d886ff.json",
+      "sha256": "083ae80a589ee1fa8184adc499b7572a1d91c894bc1c62fa2670d98e79020287"
+    }
+  ],
+  "option_A": {
+    "change": "New assigned-target profile in existing runner; freeze native target need_ref in task envelope with no route/disposition/rationale gold. New independent contract/root/limits; rerun full source selection, Reflect and Controller prefix.",
+    "evidence": "Fresh end-to-end small composition under new assignment; original v1 remains 0/1, no transfer of successful prefix claims to new role outputs.",
+    "risk": "Repeats already successful costly semantic prefix, introduces different selected originals/reflection and changes more than task assignment. More requests and more moving parts; not minimal discriminator."
+  },
+  "option_B_recommended": {
+    "allowed_actions": "Only native backlog inspect if required and record_need_dispositions for the assigned native need. Full backlog stays visible/order unchanged; stage envelope states assigned target and stops at first original accepted progress-unit write, even if semantically wrong. Wrong target/unsupported action/correction exhaustion retains failure and original answer.",
+    "boundary": "New assigned Controller-only experiment branching at sealed pre-first-Controller frontier. It imports accepted input artifacts as immutable provenance, not old execution authority and not a resume of v1. Old other-need unit is retained as provenance, not credited/applied a second time.",
+    "counts_and_acceptance": "New target denominator 1, old v1 0/1 retained. First answer, native correction, raw/cache/receipt, row validation, exact native saved unit and pending target reviewed separately. No answer/route oracle reaches role. Budget requires root freeze; initial+one existing native correction is sufficient proposed minimum, no automatic extension.",
+    "inputs": [
+      "All 265 backlog rows/order and native target identity from sealed manifest+factory.",
+      "Exact accepted slow_input/sampling, slow_memory_delta, full 603908 provenance hash, six disclosure originals, briefs, and factory research_axis/label_map.",
+      "Frozen approved case objects selected in original sampling order, existing qualified 1780 view, exact stable catalog/spec/skills, native identity guards and measurable evidence manifest.",
+      "Real native memory index reconstructed from bound historical meta archive/profiles and accepted comparison sources/episodes; original schema/scope validation retained.",
+      "Constructor parameters absent from factory JSON: case_pairs, measurable_evidence_manifest, catalog/originals, identity_aliases, attribute_vocabulary, memory_index, native heavy/light/browse limits. Freeze or reconstruct them from exact named sources; no defaults guessed to match outcome."
+    ],
+    "minimal_product_refactor": [
+      "Extract current Controller constructor plus its original need-progress persistence closure into one private shared builder/sink used by _run_controller_mining_axis and the thin diagnostic. Preserve all arguments, original unit path recipe and _write_or_verify_json behavior. No general continuation framework/public schema.",
+      "Factor the existing pure ReflectionMemoryIndex construction block only if necessary for exact rebuilding; both native context and diagnostic use the same source/scope algorithm. Never call _mining_context or _slow_method_view in this Controller-only boundary because their optional role reads would replay semantic prefix."
+    ],
+    "new_authority": "Separate fixed destination/profile and fresh explicitly authorized limited Controller budget, not original run_contract or remaining old allowance. If a contract is used, bind identical copies at actual workspace and stage. No complete_cycle, original source/reflect calls, Engine-prefix-success claim, stable publication or duplicate learning event credit.",
+    "pre_dispatch_gate": "Construct actual Controller with the shared builder, execute the same controlled inspect_catalog/backlog initialization, compare complete canonical first model view with original first inbox (including catalog, memory, page hash, base_hash and budget). Any unavoidable change must be explicit contract delta before execution; never coerce it away. The only planned semantic delta is wrapper task assignment of native need_ref, no route/answer.",
+    "proof_limit": "Demonstrates actual native target handoff and sink from an accepted prefix; does not establish a fresh full Engine/S1-S2 run, autonomous task search, all-backlog processing, Mining/new measurement or independent benefit.",
+    "unverified": "No Controller-frontier native reconstruction or equality probe executed in this design task. If original memory-index lineage cannot be reproduced exactly without a role, stop and revise boundary before new model request."
+  },
+  "revision": "55fb1f5ee1ed0fdbac455b46451fc829af809b33",
+  "safe_preflight_proposal": [
+    "Shared builder/sink versus original factory constructor arguments and exact saved unit equality; source hashes unchanged.",
+    "Reconstructed initial native view exact original-wire equality, including real memory index and six original disclosures; no caller allowed during prepare.",
+    "Assignment wrapper contains native need_ref but no route/gold; wrong/non-native/duplicate/removed target and source/code drift reject before first role.",
+    "Typed invalid row uses existing one correction; no accepted row means no sink success; partial sibling rows/pending count remain native.",
+    "Old completed stage unchanged, new fresh fixed root/contract/limits and no source/reflect/Signal/label/GET/other seed/candidate actions."
+  ],
+  "scope": "Design and persisted-source verification only. No native constructors, execution, role request, budget reuse, Signal, global source mutation, or old-stage reentry.",
+  "source_findings": [
+    {
+      "file": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "finding": "_run_controller_mining_axis calls _mining_context before making two seed Controllers. That context can request fresh original/method reads; calling the whole factory is not inherently Controller-only.",
+      "lines": "6465-6607"
+    },
+    {
+      "file": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "finding": "save_need_unit is a nested closure, not EvolutionWorkspace API. It writes native schema mining-need-disposition-unit-v1 to experiments/cycles/cycle-ID/mining_need_units/hash(axis,seed)/result_hash.json with _write_or_verify_json.",
+      "lines": "6559-6563"
+    },
+    {
+      "file": "src/stock_opportunity_agent/research/mining_controller.py",
+      "finding": "Original Controller validates issued base_hash, disclosed unresolved need refs, row semantics, retains invalid siblings, updates native pending state and calls progress sink only after accepted rows. No new task/answer schema is needed.",
+      "lines": "1728-1762"
+    },
+    {
+      "file": "src/stock_opportunity_agent/research/mining_controller.py",
+      "finding": "Real ReflectionMemoryIndex affects even initial meta_info. Replacing it with None or a replay facade changes the input; factory-input alone is insufficient.",
+      "lines": "1863-1897"
+    },
+    {
+      "file": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "finding": "Native memory-index construction uses PlanMetaMemory archive/profiles plus comparison sources/episodes under H1 scope. This is pure reconstructible work, distinct from later optional role reads.",
+      "lines": "8838-8859"
+    }
+  ]
+}

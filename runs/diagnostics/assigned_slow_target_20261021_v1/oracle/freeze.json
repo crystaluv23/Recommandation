@@ -1,0 +1,17 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/oracle/module-input-plan.json",
+      "sha256": "77a2d32b672d4fabb58c1411bd3f2c6415bd05df6eeac4fdcc1e4f502b80dbbc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/oracle/bindings.json",
+      "sha256": "d66b3c522b4c0c0292073ee742126d5e3cae69149388fb0df68a887a537737c5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/oracle/source-integrity.json",
+      "sha256": "a2516bd1d9899d8610daf9d2b4da29d60c4da801c6d44477dfae12629626a4c8"
+    }
+  ],
+  "status": "frozen_source_only_proposal_not_execution_authority"
+}

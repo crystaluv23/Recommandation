@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：为原技术target的明确任务指派提取原生Controller constructor/sink及完整comparison memory index，生产axis算法保持；新Controller-only child从首请求前265pending/0staged分支，原603908反思/六原件和旧0of1保留，不重跑source/Reflect、不送答案。唯一实际临时preflight15.848s通过真实Engine到request_ready，完整首userwire与封存前沿canonical同，0dispatch、4代码/spec/test绑定保真；221关联测试全过/0network或LabelStore.load，正式阶段尚未prepare，独立审查后冻结最多3响应独立预算。仅验收输入连接，不关S1/S2或MVP。
+
 - 2026-10-21：6ad836fa后正式bounded Slow反馈stage fullD4493，6fresh exact-inbox角色/1Controller原生纠错/301117逻辑预留/外部LLMAPI0。新header自主选读→反思首答3ep3lesson接受/processed3-pending4490→实际H1读取6完整原件与brief/精确603908memory；独立原材料语义过，旧failed0/3518保留。Controller首答另选同页Plan-action且row rationale类型拒；无patch原生有限续步同选该项、array合法后原sink保存1unit/remaining264of265。预冻技术repair target未处置0of1保持，提示仅暴露同页却未指派目标，不能归模型违规或以别项替代。272封存文件唯一reopen全等/0新构造调用，round-cycle0/0、Controller partial；不是完整S1/S2/Plan实施/收益。下一修验收任务指派与目标的对应，不改旧结果或全量重跑。
 
 - 2026-10-21：imported failedmemory复用既有32KB compact method header，完整status/cause/provenance在64KB reader可读，原summary/3518pending及权限保留；source closure贯穿method consumer、namespaced多跳验原件不重复记观察。独立反例与16聚焦通过；首197暴露legacy prior回归已修，余9旧失败原源码重现，仅补10处synthetic numeric SEC metadata，正文/期待/历史fixture不改，最终213关联全过。唯一实际producer/catalog/read新3532units/2312byteheader可读，原summary847013bytes仍拒且H1hidden，228seal保真/0角色。新有限Slow stage独立发现workspace合同漏接，双合同原生914events/192knowledge正控接通；唯一temp实际Engine→prepare fullD4493→首请求pending，4408source保真/0答案，正式stage尚未启动。普通quota→Controller仍缺，外部LLMAPI0，不关S1/S2或MVP。

@@ -1,0 +1,14 @@
+test_budget_has_two_regular_one_native_correction_and_no_prefix_or_cross_borrow (tests.test_assigned_slow_target_stage.AssignedSlowTargetStageTests.test_budget_has_two_regular_one_native_correction_and_no_prefix_or_cross_borrow) ... ok
+test_fixed_child_root_cannot_rename_budget (tests.test_assigned_slow_target_stage.AssignedSlowTargetStageTests.test_fixed_child_root_cannot_rename_budget) ... ok
+test_guard_blocks_all_prefix_and_complete_axis_entrances (tests.test_assigned_slow_target_stage.AssignedSlowTargetStageTests.test_guard_blocks_all_prefix_and_complete_axis_entrances) ... ok
+test_native_need_row_calls_shared_sink_and_keeps_invalid_sibling_pending (tests.test_assigned_slow_target_stage.AssignedSlowTargetStageTests.test_native_need_row_calls_shared_sink_and_keeps_invalid_sibling_pending) ... ok
+test_request_cap_checked_before_dispatch (tests.test_assigned_slow_target_stage.AssignedSlowTargetStageTests.test_request_cap_checked_before_dispatch) ... ok
+test_shared_factory_real_controller_and_original_sink_canonical_idempotency (tests.test_assigned_slow_target_stage.AssignedSlowTargetStageTests.test_shared_factory_real_controller_and_original_sink_canonical_idempotency) ... ok
+test_shared_memory_index_preserves_comparisons_and_native_factory_uses_helper (tests.test_assigned_slow_target_stage.AssignedSlowTargetStageTests.test_shared_memory_index_preserves_comparisons_and_native_factory_uses_helper) ... ok
+test_system_assignment_is_only_native_ref_and_leaves_payload_unchanged (tests.test_assigned_slow_target_stage.AssignedSlowTargetStageTests.test_system_assignment_is_only_native_ref_and_leaves_payload_unchanged) ... ok
+test_terminal_exact_bytes_returns_without_constructing_runtime (tests.test_assigned_slow_target_stage.AssignedSlowTargetStageTests.test_terminal_exact_bytes_returns_without_constructing_runtime) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.009s
+
+OK

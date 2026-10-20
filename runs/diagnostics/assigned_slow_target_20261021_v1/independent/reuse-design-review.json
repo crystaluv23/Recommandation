@@ -1,0 +1,75 @@
+{
+  "status": "DESIGN_REUSE_FEASIBLE_WITH_EXPLICIT_MODULE_FRONTIER; NOT_IMPLEMENTED_OR_EXECUTED",
+  "source_module": {
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1",
+    "business_committed_round": 0,
+    "business_committed_cycle": 0,
+    "terminal_first_sink": true,
+    "full_backlog": 265,
+    "pending_after_original_sink": 264,
+    "original_target_still_pending": true,
+    "original_target_acceptance": "0/1 not exercised; immutable",
+    "factory_complete_source_entries": 6,
+    "factory_meta_disclosures": 6
+  },
+  "facts": [
+    {
+      "location": "signal_evolution.py:6465-6604",
+      "finding": "Production factory derives opaque dev cases/runtime labels, original measurable manifest, full backlog and catalog/spec/skill originals; creates real MiningAgentRoleModel and LabelAwareMiningController; local save_need_unit writes canonical unit under axis/seed/result identity."
+    },
+    {
+      "location": "run_reviewed_slow_feedback_stage.py:505-515",
+      "finding": "Actual frozen factory-input preserves full ordered265backlog, six complete Slow originals plus briefs, meta originals/disclosures, footprints, axis and label map, but only case_count for constructor cases and no evidence manifest/catalog/originals/aliases/attribute vocabulary/memory_index."
+    },
+    {
+      "location": "mining_controller.py:259-392,486-565,1863-1905",
+      "finding": "Constructor derives available families from actual store, validates label/case refs and enriches Signal cards; native view reads the real ReflectionMemoryIndex on every call even if no memory action is selected. factory-input is not a stand-alone lossless constructor snapshot."
+    },
+    {
+      "location": "signal_evolution.py:8672-9005",
+      "finding": "_mining_context performs optional H1 source-role reads and builds a scoped index/Slow view. Calling it again without a declared reuse seam could repeat paid selection; replacing it by a mock would bypass the production boundary being claimed."
+    }
+  ],
+  "minimal_reviewable_option": {
+    "scope": "A new assigned-target Controller-only diagnostic at the sealed preanswer frontier, reusing previously produced and independently reviewed input; no source/Reflect rerun and no v1 resume.",
+    "production_change": "Extract a small shared private constructor/factory and original need-unit persistence helper from the existing factory. The normal factory and diagnostic must both invoke that real helper; preserve existing constructor validation and sink behavior. A method that merely returns hand-built model JSON is insufficient.",
+    "context_seam": "Supply the sealed actual produced context as explicit module-stage inputs with origin/artifact hashes. Reconstruct required existing index/case/catalog/store inputs through their native read-only constructors and ensure first native view equals the source Controller view except declared assignment/envelope/new independent budget identity. Do not mock the factory, _memory_view or evidence/source validators.",
+    "inputs": "Preserve full265backlog order/hash and original target action sourcehash; six complete originals and their actual role scopes/closure; meta disclosures/index; exact dev opaque mapping/time/labels and no check label leakage; measurable manifest; stable Signal originals and prior footprints; real qualified store and identity guards.",
+    "assignment": "Declare only which original need_ref is the task and that other needs remain pending; do not supply required disposition or repair diagnosis. Retain the native full backlog/controlled page and native base-hash calculation, not a singleton backlog.",
+    "progress": "Bind the source preanswer frontier explicitly. v1 remains terminal with its unrelated saved intent and target0/1. New unit belongs to the new module diagnostic and is not a replacement or second independent credit for the old intent; no active/current business pointer or old pending set is rewritten.",
+    "contract": "New stage execution budget/permissions are frozen explicitly and counted only for its actual fresh Controller requests. Keep source memory/input contract_hashes unchanged and bind them as provenance; never retag old memory with the new contract, promote it to committed Slow history, or inherit source execution permission/budget.",
+    "sink": "Shared original persistence helper writes only the new owned module workspace and exits at first native accepted need unit whether semantic pass/fail. No discovery seed, candidate work, Signal, Fast/Slow pointer completion, publication, or history installation."
+  },
+  "blocking_conditions_before_execution": [
+    "Factory-input alone cannot satisfy all native constructor/index dependencies. A concrete implementation must show exact reconstruction or a verified materialization of those missing inputs; no silent defaults/facades.",
+    "The new entry must explicitly distinguish diagnostic input reuse from committed-history admission. Current v1 completed pointers remain0/0, so its memory cannot be fed to the existing committed-import API as a successful cycle.",
+    "Source prior unit must not be copied into a fresh staged-state set and then compared to the preanswer basehash; choose and freeze one explicit frontier, retain original result separately."
+  ],
+  "authority_assessment": "This internal bounded diagnostic task-selection seam does not by itself alter research definition, canonical SignalResult, scoring/PIT/LockedTest or grant business history admission; no automatic need for a new user design decision. Its actual run/budget still needs the existing root authorization/freeze. Any widening to persistent cross-run reuse/history admission would be a separate contract decision.",
+  "acceptance_counterexamples": [
+    "Same265rows with changed order, a different target source hash, or singleton backlog must reject before request/write.",
+    "A complete module but business pointers0/0 must be accepted only as declared look-stage input, not committed history.",
+    "All six Slow originals must retain original content/provenance and H1 visibility; hidden/source omitted material cannot be broadened by mere file presence.",
+    "Newassigned stage may not replay old83/84 answers as fresh model behavior or use the old role context.",
+    "Mocked index/empty store that yields a superficially similar JSON request must not pass the native construction claim."
+  ],
+  "limits": [
+    "Read-only static design review only; no native constructor, Store, stage command, model, GET, Signal or LabelStore invoked. No mixed approved case envelope deserialized.",
+    "No new interface/code/schema or policy is implemented by this document. The shared helper and lossless input seam require candidate implementation review.",
+    "The previous stage target0/1 and other intent semantics remain unchanged; no full S1/S2/MVP or benefit claim."
+  ],
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/manifest.json": "f5c2148baf0b915bd41905d563f1947a11255d46ea30afed2a1aab82e0647fbf",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/factory-input.json": "254a24322260b33d2fcfbf37277a83de7af2dd5e624f10a0fe1c0a0ec45da6fc",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/controlled-page.json": "47bfa416cfb3bbd1bbe190379e43610f3ee4504343957677eba28c6cd070b366",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/controlled-page-read.json": "44d1577a978e0bf7db4b8530c1e7604f5a9d19507bfe6ed1664cdae0a14c8cbb",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/completion.json": "3640c700b68f002582be664e4e907caf33f840535e68671fcd0220c73057fe63",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/controller-boundary.json": "85b281daf8d5d24ad7a87360b8a4d4a3be131ef70e75728189c30dc5df38502d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/transport/requests/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json": "332d8f0d069f99d1cf3e0141b0e3c430d12b1d274f732df23c54884a14582c31",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "23b036dfd4a116dba7518355210df66fefd5f880e69e03a9db63ae911bc4598f",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "48bc084ca33c095f0ecc0e93404b4d17eb580f1364defa758a8375fd7c93d4a6",
+    "/Users/l/Project/Recommandation/scripts/run_reviewed_slow_feedback_stage.py": "a1acad66f4f83935bb5ccdb8834ec32ad064c42a1ab98ac84b76d2f6bb1209f9",
+    "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_slow_feedback_stage.md": "84a1bdfe483b2f14a531bd1ffee756e88705295938d74fee8b948e7c38cd0ffe",
+    "/Users/l/Project/Recommandation/spec/architecture.md": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+  }
+}

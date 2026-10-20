@@ -1,0 +1,202 @@
+{
+  "contract": {
+    "code_revision": "55fb1f5ee1ed0fdbac455b46451fc829af809b33:assigned-controller-a7ab194d9735d80021a7ed4365aefa4a1028a9d96cb368a3ec5456ca0c72ec74",
+    "created_at": "2026-10-20T22:26:34.372465+00:00",
+    "cycle_mode": "slow_only",
+    "data_acquisition": {
+      "allowed_capabilities": [],
+      "allowed_providers": [],
+      "allowed_source_types": [],
+      "enabled": false,
+      "max_requests_per_cycle": 0,
+      "max_requests_per_run": 0
+    },
+    "dataset_manifest_hash": "13772d031162179f7468cb0e9d9aea0424f78084d18c65fe059d5b72840013e9",
+    "initial_signal_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+    "initial_signal_registry_version": 12,
+    "limits": {
+      "basic_info_context_chars": 32000,
+      "candidates_per_round": 1,
+      "evaluation": {
+        "anchor": {
+          "case_count": 16,
+          "label_counts": {
+            "10x_plus": 1,
+            "2_3x": 5,
+            "3_10x": 3,
+            "non_surge": 7
+          }
+        },
+        "base_seed": 42,
+        "cases_per_round": 24,
+        "fitness_gate": {
+          "require_finalized": true,
+          "require_predicted_positive": true,
+          "require_source_evidence": true,
+          "require_true_positive": true
+        },
+        "label_counts": {
+          "10x_plus": 2,
+          "2_3x": 7,
+          "3_10x": 5,
+          "non_surge": 10
+        },
+        "max_cases_per_company_per_round": 1,
+        "primary_metric": "binary_f1",
+        "proposal": {
+          "max_attempts_per_slot": 3,
+          "max_structured_corrections": 1
+        },
+        "random": {
+          "case_count": 8,
+          "label_counts": {
+            "10x_plus": 1,
+            "2_3x": 2,
+            "3_10x": 2,
+            "non_surge": 3
+          }
+        },
+        "secondary_metrics": [
+          "binary_precision",
+          "binary_recall",
+          "magnitude_macro_f1",
+          "magnitude_accuracy"
+        ]
+      },
+      "finalization_token_reserve": 64000,
+      "h1_request_budget": 512000,
+      "judge_temperature": 0.0,
+      "max_agent_steps": 3,
+      "max_case_cost": 0.01,
+      "max_case_llm_calls": 3,
+      "max_case_tokens": 393216,
+      "max_llm_calls": 3,
+      "max_llm_signals_per_round": 2,
+      "max_local_role_calls": 3,
+      "max_parallel_plans": 1,
+      "max_request_tokens": 131072,
+      "max_signal_calls": 1,
+      "max_signal_rounds": 1,
+      "max_signals_per_round": 4,
+      "max_structured_corrections": 1,
+      "max_tokens": 393216,
+      "meta_context_chars": 48000,
+      "parent_selection_seed": 42,
+      "plan_proposal_temperature": 1.0,
+      "plan_rounds_per_signal_cycle": 0,
+      "posthoc_context_chars": 24000,
+      "predictor_context_bytes": 24000,
+      "random_k": 0,
+      "role_output_tokens": {
+        "controller": 2000,
+        "critic": 4000,
+        "h1": 8000,
+        "h2": 2000,
+        "h3": 8000,
+        "posthoc": 2000,
+        "predictor": 2000,
+        "proposer": 4000,
+        "routing": 2000,
+        "signal_batch": 4000,
+        "update": 8000
+      },
+      "signal_batch_context_chars": 32000,
+      "similarity_threshold": 0.9,
+      "structured_reasoning_token_reserve": 0,
+      "top_k": 1
+    },
+    "locked_test_accessed": false,
+    "max_external_attempts": 3,
+    "max_slow_cycles": 1,
+    "max_total_cost": 0.01,
+    "min_new_signals_per_cycle": 1,
+    "models": {
+      "judge": {
+        "alias": "independent-subagent",
+        "api_key_env_var": "",
+        "default_input_cost_per_million_tokens": 0.0,
+        "default_max_output_tokens": 16384,
+        "default_output_cost_per_million_tokens": 0.0,
+        "default_reasoning_effort": null,
+        "description": "Independent role agent through exact local request/response files; no API transport.",
+        "model": "independent-subagent",
+        "proposal_profile": "independent_agent",
+        "provider": "local",
+        "provider_identity": "local",
+        "provider_route": null,
+        "roles": [
+          "evolution",
+          "judge"
+        ],
+        "web_tools_allowed": false
+      },
+      "mining": {
+        "alias": "independent-subagent",
+        "api_key_env_var": "",
+        "default_input_cost_per_million_tokens": 0.0,
+        "default_max_output_tokens": 16384,
+        "default_output_cost_per_million_tokens": 0.0,
+        "default_reasoning_effort": null,
+        "description": "Independent role agent through exact local request/response files; no API transport.",
+        "model": "independent-subagent",
+        "proposal_profile": "independent_agent",
+        "provider": "local",
+        "provider_identity": "local",
+        "provider_route": null,
+        "roles": [
+          "evolution",
+          "judge"
+        ],
+        "web_tools_allowed": false
+      },
+      "proposer": {
+        "alias": "independent-subagent",
+        "api_key_env_var": "",
+        "default_input_cost_per_million_tokens": 0.0,
+        "default_max_output_tokens": 16384,
+        "default_output_cost_per_million_tokens": 0.0,
+        "default_reasoning_effort": null,
+        "description": "Independent role agent through exact local request/response files; no API transport.",
+        "model": "independent-subagent",
+        "proposal_profile": "independent_agent",
+        "provider": "local",
+        "provider_identity": "local",
+        "provider_route": null,
+        "roles": [
+          "evolution",
+          "judge"
+        ],
+        "web_tools_allowed": false
+      },
+      "update": {
+        "alias": "independent-subagent",
+        "api_key_env_var": "",
+        "default_input_cost_per_million_tokens": 0.0,
+        "default_max_output_tokens": 16384,
+        "default_output_cost_per_million_tokens": 0.0,
+        "default_reasoning_effort": null,
+        "description": "Independent role agent through exact local request/response files; no API transport.",
+        "model": "independent-subagent",
+        "proposal_profile": "independent_agent",
+        "provider": "local",
+        "provider_identity": "local",
+        "provider_route": null,
+        "roles": [
+          "evolution",
+          "judge"
+        ],
+        "web_tools_allowed": false
+      }
+    },
+    "predictor_semantics_hash": "bf2fe6d0963ca6bd4d831c31c07244c7483a4487147c86feca753a0ddbce87b5",
+    "priors_hash": "d86c9c2494b13e85a1a2b2c865d2e50ac4769dfedf6a8263ed275cde91b8e297",
+    "python_runtime": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+    "raw_info_inventory_hash": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+    "raw_info_oracle_id": "qualified-reviewed1780-module-stage",
+    "run_id": "driver",
+    "schema_version": "evolution-run-contract-v8",
+    "slow_history_manifest_hash": "ba60fd7c7aa4472900ef26c8068deee66e9d4e51c8a699455432f7eed626bc55",
+    "source_type_catalog_hash": "e168b469c410c543091f7122be7aff19861858f2cc131b3d59a2f09cca235398"
+  },
+  "contract_hash": "1a692880d42b15d24a88437ee85fb6d4da503f88dfec9d31918284020d0ffdd8"
+}

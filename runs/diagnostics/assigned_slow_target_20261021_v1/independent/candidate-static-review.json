@@ -1,0 +1,38 @@
+{
+  "status": "PASS_bounded_static_extraction; actual_constructor_frontier_not_independently_exercised",
+  "observed_candidate_bindings": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395",
+    "/Users/l/Project/Recommandation/scripts/run_assigned_slow_target_stage.py": "a9a1d9e0ecca0ce48f1fe4e7f5248770b6a0aa2b2a70cd00870def6be7a4cdda",
+    "/Users/l/Project/Recommandation/spec/scripts/run_assigned_slow_target_stage.md": "7b2a269cc5e0c7b811a81f5fa4bdc2dc47fedfa06281c9e5f9999249e5f59959",
+    "/Users/l/Project/Recommandation/tests/test_assigned_slow_target_stage.py": "e7dddc64eac4290d27c62cebafc208bbb5016531ea2ad6eb9eb0b7524e3381fa"
+  },
+  "production_AST_checks": {
+    "full_index_and_comparison_block_exact": true,
+    "need_unit_sink_body_exact": true,
+    "axis_body_exact_after_only_shared_call_sink_extraction": true
+  },
+  "runner_checks": {
+    "complete_backlog265_native_constructor_zero_staged": true,
+    "original_memory_source_hash_unchanged_not_retagged": true,
+    "shared_real_sink": true,
+    "real_index_rebuild": true,
+    "task_envelope_only_ref_no_expected_route": true,
+    "native_full_userwire_equal_before_dispatch": true,
+    "budget": "2regular+1nativecorrection, max3, 131072/request,393216total; reconstruct unique journals before receive",
+    "fixed_root": true,
+    "terminal_return_before_runtime_constructor": true,
+    "source_prefix_factory_reentry_forbidden": true,
+    "parent_completed_stage_unchanged": true
+  },
+  "concrete_remaining_connection_check": {
+    "finding": "Current tests use inspect-based index assertions and object.__new__/empty-store constructor controls. These establish local extraction mechanics, not this actual Engine/index/catalog/source reconstruction reaching identical full Controller wire.",
+    "required": "Before actual role dispatch, one native zero-answer temporary integration or the authorized preparation must actually reach request_ready/capture full user equality, preserve six source/disclosure and comparison-index entries/scopes and prove no source/Reflect role executes. A failure must stay a preflight failure; do not mock _construct/_model_view or replace the original wire."
+  },
+  "no_other_static_block_found": true,
+  "limits": [
+    "Candidate is a draft, not a frozen or executed new stage. Hashes record the inspected revision only.",
+    "AST extraction equality does not prove semantic source qualification or fresh Controller task performance.",
+    "No prepare/advance/constructor/Store/Signal/GET/model/LabelStore executed by this review. No actual mixed case envelope deserialized.",
+    "Original target0/1 is retained; a future fresh assigned task is a new bounded control, not a source-cycle commit, benefit claim or revised prior result."
+  ]
+}

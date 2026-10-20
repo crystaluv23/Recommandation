@@ -1,0 +1,56 @@
+{
+  "status": "PASS_bounded_candidate_preflight; no_actual_fresh_response",
+  "temp_manifest_hash": "0f7035105d0ad2ec9e943961f936f079498a19440a0cc4d479570efa785e93ca",
+  "actual_native_user_complete_equal_to_original": true,
+  "original_controller_native_system_prefix_equal": true,
+  "only_declared_system_difference": "Assigned native target ref plus execution restrictions; no route, diagnosis or expected answer supplied.",
+  "materialized_frontier": {
+    "backlog": 265,
+    "staged": 0,
+    "base_hash": "25c45c0c801f27f5c0aa394752234c38484039befe27548e15465b35ac845319",
+    "six_complete_source_entries_and_exact_scopes": true,
+    "six_meta_original_disclosures_exact": true,
+    "memory_delta_hash": "603908b96acf91a90bc39f3ad0e0950bfd1282d0d3bc272970962e37334e67d0",
+    "index_initial_counts": {
+      "available": 235,
+      "deferred": 233,
+      "included": 2
+    },
+    "comparison_index_block": "Shared production helper AST exactly retains source comparison originals, H1 scope filter, episodes and source aliases (separate candidate-static-review). Native initial indexed view now actually matches the old view.",
+    "controlled_page_cursor": 259
+  },
+  "execution_evidence": {
+    "executor_temp_seconds": 15.848074667155743,
+    "executor_receive_calls": 0,
+    "exchange_only_contract_no_inbox_receipt_raw": true,
+    "formal_root_absent": true,
+    "one_native_request_journal": "5a9f6fad766550af4d1e8e69da5f7434b2d51ddd527ba35540423d17106541c5",
+    "logical_reservation": 92533,
+    "source_code_spec_test_before_after_current_exact": true
+  },
+  "native_connection_review": "The executor test patches only the temporary fixed destination and exchange.receive denial. It does not mock Engine/Workspace/Registry/index/store construction or the factory helpers. The saved native request and complete user equality close the previously missing constructor-to-egress connection for this fixture.",
+  "limits": [
+    "Reviewer did not call prepare/advance/Store/Engine/model/Signal/GET/LabelStore; this script only parses retained artifacts and hashes.",
+    "The initial native index disclosure is verified. No new memory browsing request was performed, and omitted original branches are supported by extraction equality, not fresh execution of every page.",
+    "Temporary destination was explicitly patched for this executor check; formal fixed-root behavior remains the separately reviewed code/control boundary.",
+    "No answer, correction, intent, target semantics, publication, completed Slow cycle or benefit is established. Original v1 target0/1 remains unchanged.",
+    "Hashes and native wire equivalence are connection evidence, not semantic proof of a future answer."
+  ],
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/temp-native-preflight-result.json": "b98e9c6770c5e1034809a25a40b485e27de47a409889f1f0aed74a50e3b9be43",
+    "/Users/l/Project/Recommandation/scripts/run_assigned_slow_target_stage.py": "a9a1d9e0ecca0ce48f1fe4e7f5248770b6a0aa2b2a70cd00870def6be7a4cdda",
+    "/Users/l/Project/Recommandation/spec/scripts/run_assigned_slow_target_stage.md": "7b2a269cc5e0c7b811a81f5fa4bdc2dc47fedfa06281c9e5f9999249e5f59959",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395",
+    "/Users/l/Project/Recommandation/tests/test_assigned_slow_target_stage.py": "e7dddc64eac4290d27c62cebafc208bbb5016531ea2ad6eb9eb0b7524e3381fa",
+    "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/temp-native-preflight/manifest.json": "43d45d42bc8c64d61930e23616e66734fd155129b3ca18bbae3a90657145f978",
+    "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/temp-native-preflight/preflight-wire.json": "19f35c40f8cb5e6aa85da8bdd974d06e1477156817256bbb44ebafb1c0501fb1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json": "f20fbbe47e5e16a31e2cbd11400d7a7ab239d39d8964438f02375e720b62a304",
+    "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/temp-native-preflight/preflight/requests/5a9f6fad766550af4d1e8e69da5f7434b2d51ddd527ba35540423d17106541c5.json": "e578e108890c20d09bc31b2190f18a8dab8b769b7d65040ca369f51dc883a07c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/factory-input.json": "254a24322260b33d2fcfbf37277a83de7af2dd5e624f10a0fe1c0a0ec45da6fc",
+    "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/temp-native-preflight/run_contract.json": "74a536de01d86ff4617834a9b655a45b350ad80b8011964412523d539069cd99",
+    "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/temp-native-preflight/workspace/run_contract.json": "74a536de01d86ff4617834a9b655a45b350ad80b8011964412523d539069cd99",
+    "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/temp-native-preflight.py": "5274106987f8fca10d4b2828c8ead7b5929cd0005aed3fa02815afc78b2ba670",
+    "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/independent/candidate-static-review.json": "6d51392471543681612516eabc8eb2fd2e0d75eae3e0d25665cb17648829ca2e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/independent/actual-temp-preflight-audit.py": "eb2a706503cda6a6a55f0d430d5fc2dc4c481bd725e21e44424d35f03bf68737"
+  }
+}

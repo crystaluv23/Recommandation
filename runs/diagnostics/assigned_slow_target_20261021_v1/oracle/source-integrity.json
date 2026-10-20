@@ -1,0 +1,11 @@
+{
+  "after_hash": "8682c43daf9f4086b83bffac9db2ee137c3c95c4359a6db2c8fc60e6add6acf9",
+  "before_hash": "8682c43daf9f4086b83bffac9db2ee137c3c95c4359a6db2c8fc60e6add6acf9",
+  "members": 272,
+  "reads_only_no_new_model_or_constructor": true,
+  "source_completion": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/completion.json",
+    "sha256": "3640c700b68f002582be664e4e907caf33f840535e68671fcd0220c73057fe63"
+  },
+  "unchanged": true
+}

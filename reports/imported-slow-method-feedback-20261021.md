@@ -173,3 +173,27 @@ original raw-to-unit equality and remaining target. It independently recomputes
 301117 reservation and checks the272-file completion map. Its earlier
 read/truncation and audit-wrapper mistakes are preserved with explicit
 corrections;none caused a production rerun.
+
+## Assigned-target child, before dispatch
+
+The next bounded control branches before that first Controller request. It
+retains the same265 pending needs,zero staged rows,accepted `603908b9…` memory,
+six complete disclosures and the same original technical target. The unrelated
+accepted Plan-action unit remains only in the immutable parent. The new system
+envelope assigns the existing target ref without providing its disposition,
+diagnosis or answer. The native first sink still stops the child even if it
+handles the wrong target; such persistence cannot pass the semantic control.
+
+The production axis and child now share the original private Controller
+constructor/sink and pure reflection-index builder,including comparisons and
+source aliases. This avoids a fake `_mining_context` or source/Reflect replay.
+The [sole temporary native preflight](../runs/diagnostics/assigned_slow_target_20261021_v1/driver/temp-native-preflight-result.json)
+constructs the actual Workspace/Registry/Engine/1780-document store/index and
+reaches native Model→egress→`request_ready` in15.848s. Its complete user wire
+canonically equals the original first request;zero exchange receives or
+dispatches occurred and all four executable/spec/test bindings stayed equal.
+This proves this reconstructed input frontier,not fresh Controller behavior,
+autonomous retrieval or whole-Engine-prefix execution. No formal child is yet
+prepared. Associated tests pass221/221 with zero network or LabelStore loads
+and unchanged bindings. Independent counterexample review precedes code
+checkpoint and its separate frozen3-response budget.

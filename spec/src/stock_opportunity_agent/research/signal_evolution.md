@@ -92,6 +92,17 @@ episodes reach the production controller locally. Selected originals and method
 memory are retained in actual requests; a bounded brief is never the whole
 authorized pool. Restart and imported history preserve observation identities.
 
+Controller construction and its original need-progress sink share a private
+factory with bounded accepted-frontier diagnostics. The normal axis still
+produces its context and constructs both seeds through that same factory.
+The reflection-memory index is reconstructed by the same pure source/scope
+algorithm; materialized context reuse does not run source-selection or Reflect
+again, grant execution authority, or represent a fresh complete axis. Such a
+diagnostic must bind the accepted prefix and exactly reproduce the first native
+Controller view before dispatch, then independently freeze its task and budget.
+It may assign an existing native need ref without supplying a disposition or
+semantic answer. The original source stage and its acceptance remain immutable.
+
 Controller Mining persists immutable accepted need-disposition deltas under the
 cycle's `mining_need_units/`, bound to backlog, axis, seed and prior/result state
 hashes. These are staged diagnostic units, not cycle commit pointers. The seed

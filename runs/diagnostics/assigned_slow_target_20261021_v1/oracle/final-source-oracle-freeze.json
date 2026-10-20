@@ -1,0 +1,60 @@
+{
+  "accepted_memory_hash": "603908b96acf91a90bc39f3ad0e0950bfd1282d0d3bc272970962e37334e67d0",
+  "all_runtime_code_bindings_hash": "a7ab194d9735d80021a7ed4365aefa4a1028a9d96cb368a3ec5456ca0c72ec74",
+  "candidate_primary_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_assigned_slow_target_stage.py",
+      "sha256": "a9a1d9e0ecca0ce48f1fe4e7f5248770b6a0aa2b2a70cd00870def6be7a4cdda"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_assigned_slow_target_stage.md",
+      "sha256": "7b2a269cc5e0c7b811a81f5fa4bdc2dc47fedfa06281c9e5f9999249e5f59959"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_assigned_slow_target_stage.py",
+      "sha256": "e7dddc64eac4290d27c62cebafc208bbb5016531ea2ad6eb9eb0b7524e3381fa"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "b1d0009516ede8d40c673e64bbe15dc0a509dd4113d959e859a8f64a84a5d715"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_slow_feedback_stage.py",
+      "sha256": "a1acad66f4f83935bb5ccdb8834ec32ad064c42a1ab98ac84b76d2f6bb1209f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_slow_feedback_stage.md",
+      "sha256": "84a1bdfe483b2f14a531bd1ffee756e88705295938d74fee8b948e7c38cd0ffe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_slow_feedback_stage.py",
+      "sha256": "b78c8388c9bdb849e4c7961922cdee71e302a74aaa08e858b9121385053a5803"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "48bc084ca33c095f0ecc0e93404b4d17eb580f1364defa758a8375fd7c93d4a6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "c4bba21b5ec197a4f99fb2cefb5e8b2256dfc72dc92c9feffd47f455c4ddb917"
+    }
+  ],
+  "native_backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+  "no_child_answers_or_formal_stage": true,
+  "oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/oracle/final-source-oracle.json",
+    "sha256": "82bd49365f8779a74e443b54e97bb17cdae382c6d478f294f5b7fe569290b5c7"
+  },
+  "preserved_plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/oracle/module-input-plan.json",
+    "sha256": "77a2d32b672d4fabb58c1411bd3f2c6415bd05df6eeac4fdcc1e4f502b80dbbc"
+  },
+  "schema_version": "assigned-slow-target-source-oracle-freeze-v1",
+  "source272_after_hash": "8682c43daf9f4086b83bffac9db2ee137c3c95c4359a6db2c8fc60e6add6acf9",
+  "source272_before_hash": "8682c43daf9f4086b83bffac9db2ee137c3c95c4359a6db2c8fc60e6add6acf9",
+  "source272_unchanged": true
+}

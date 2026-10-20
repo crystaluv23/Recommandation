@@ -1,0 +1,86 @@
+{
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_assigned_slow_target_stage.py",
+      "sha256": "a9a1d9e0ecca0ce48f1fe4e7f5248770b6a0aa2b2a70cd00870def6be7a4cdda"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_assigned_slow_target_stage.md",
+      "sha256": "7b2a269cc5e0c7b811a81f5fa4bdc2dc47fedfa06281c9e5f9999249e5f59959"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "b1d0009516ede8d40c673e64bbe15dc0a509dd4113d959e859a8f64a84a5d715"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_assigned_slow_target_stage.py",
+      "sha256": "e7dddc64eac4290d27c62cebafc208bbb5016531ea2ad6eb9eb0b7524e3381fa"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/source-frontier-review.json",
+      "sha256": "acaa98cdfde4bd19eebd14552936113c91a72c7f2a6b8274e6bfb9fd63cf75cb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/temp-native-preflight-result.json",
+      "sha256": "b98e9c6770c5e1034809a25a40b485e27de47a409889f1f0aed74a50e3b9be43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/temp-native-preflight/preflight-wire.json",
+      "sha256": "19f35c40f8cb5e6aa85da8bdd974d06e1477156817256bbb44ebafb1c0501fb1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/connected-candidate-result.json",
+      "sha256": "c32c5f1b3fdc5c6e0c9b1cd9062ba4827f49b0a5e0ddba8063b213df1e4f7704"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/assigned_slow_target_20261021_v1/driver/connected-candidate-tests.log",
+      "sha256": "eda3f3cc839326016c1a665cae1d67c54e62e65155ea5c6e0a9db4c313c4c7c9"
+    }
+  ],
+  "bounds": {
+    "native_correction": 1,
+    "output": 4000,
+    "per_request": 131072,
+    "regular": 2,
+    "requests": 3,
+    "total": 393216
+  },
+  "development_limits": [
+    "Initial import-only self-check failed at a mistaken module path mining_attributes, before any stage or role; corrected to existing mining_agent_tools.",
+    "Earlier 8/9 focused logs bind earlier test bytes; weak inspect.getsource test removed, replaced by actual-source native preflight evidence. Final221 includes current8 focused tests.",
+    "No fresh semantic role, final formal prepare or independent counterreview yet; those remain root-owned.",
+    "Only complete terminal byte restore, not OS/process-crash recovery."
+  ],
+  "parent": {
+    "all_members_and_bytes_unchanged": true,
+    "contract_not_reused_as_child_authority": true,
+    "sealed_file_count": 272,
+    "target_0_of_1_retained": true
+  },
+  "production_changes": "Three small private helpers: original Controller construction, original native need-unit sink, identical pure reflection index including comparisons. Normal axis/context delegates to these.",
+  "regression": {
+    "label_store_load": 0,
+    "network": 0,
+    "passed": true,
+    "seconds": 20.226117125013843,
+    "source_bytes_unchanged_during_run": true,
+    "tests": 221
+  },
+  "status": "candidate_ready_not_formally_prepared",
+  "temp_native_preflight": {
+    "actual_exchange_files": {
+      "inbox": 0,
+      "outbox": 0,
+      "receipts": 0
+    },
+    "complete_user_wire_exact": true,
+    "exchange_receive": 0,
+    "formal_stage_created": false,
+    "roles": 0,
+    "seconds": 15.848074667155743
+  }
+}

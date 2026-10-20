@@ -78,7 +78,9 @@ header完整进入真实反思；Reflect首答接受3ep/3lesson，processed3/pen
 Controller首答另选68e... Plan-action但row rationale string被拒；允许的一次无patch原生续步仍选该项，array合法后原sink保存1unit，pending264。
 预冻技术repair target7d...未选择，仍0/1/pending，不能用合法别项替代。阶段提示只暴露同页未指派目标，是验收任务选择缺口，不自动归模型违规。
 唯一终态reopen272封存文件+completion全等/0新构造模型；stage完成但Controller partial/round-cycle0/0，不是完整Slow/S1-S2或OS恢复。
-下一先把验收阶段任务指派说明与原native target对齐（不送答案/改来源/换简单样本），审查冻结新边界后再执行；旧stage不重入、不完整重跑。
+当前修复把验收任务明确指派给原native target（只给ref，不送答案/改来源/换简单样本）；新Controller-only阶段复用封存反思前缀，保全265 backlog。
+共享原生constructor/sink/index提取后，唯一临时真实Engine→request_ready预检15.848s：完整首userwire与旧前沿canonical相等，0dispatch/0source或Reflect重跑。
+221关联测试全过/0network或LabelStore.load，候选代码稳定、独立审查中；正式新stage尚未prepare，审后冻结最多3个Controller响应的新预算，旧stage不重入、不完整重跑。
 LLM阅读接口方案待设计决策；两财务期间定义需具体政策/新版本，不能由当前计算结果倒推答案。
 完整反馈消费、新方向/magnitude Mining→忠实实现→准入发布→后继精确使用、完整恢复及双环均未验证。
 旧v182权威Fast/Slow=1/1完成不恢复；memory失败processed0/pending3518不改成功。不启动完整后继，整体MVP保持open。

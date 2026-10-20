@@ -1,0 +1,16 @@
+{
+  "original_six_files_unchanged": {
+    "runs/cold_start/minimal_rounds_v151/fast_summary.json": "441c565efda31b60453837ce8d405a951bcc19f6c8691604a3abc18710475c77",
+    "runs/cold_start/minimal_rounds_v151/fast_trajectories.json": "4734ab1a71ee3c20231e38a860e8176bdc4976816c8019d674cd887b144dd140",
+    "spec/architecture.md": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1",
+    "spec/src/stock_opportunity_agent/memory/knowledge.md": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba",
+    "spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b",
+    "spec/src/stock_opportunity_agent/research/plan_evolution.md": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e"
+  },
+  "original_control_dirty_preserved": true,
+  "original_signal_spec_dirty_preserved": true,
+  "signal_spec_original_sha256": "8fd61842d45f1aecbcb7f548286c5ffe792844ebc043e273bb0123259ad7a722",
+  "own_insertion_sha256": "d0b41dc739e389a40eb738a70a3acff684d6a484a40c15f864fc2d92aba13e82",
+  "full_worktree_signal_spec_sha256": "b1d0009516ede8d40c673e64bbe15dc0a509dd4113d959e859a8f64a84a5d715",
+  "indexed_signal_spec_sha256": "900d1a61de89ddbaa84e97a719ad644145fd584c9df12c273745bc254f87954a"
+}
