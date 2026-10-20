@@ -1,0 +1,22 @@
+{
+  "original_six_files_unchanged": {
+    "runs/cold_start/minimal_rounds_v151/fast_summary.json": "441c565efda31b60453837ce8d405a951bcc19f6c8691604a3abc18710475c77",
+    "runs/cold_start/minimal_rounds_v151/fast_trajectories.json": "4734ab1a71ee3c20231e38a860e8176bdc4976816c8019d674cd887b144dd140",
+    "spec/architecture.md": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1",
+    "spec/src/stock_opportunity_agent/memory/knowledge.md": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba",
+    "spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b",
+    "spec/src/stock_opportunity_agent/research/plan_evolution.md": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e"
+  },
+  "owning_spec_full_worktree_unchanged": "8fd61842d45f1aecbcb7f548286c5ffe792844ebc043e273bb0123259ad7a722",
+  "control_spec_original_dirty_preserved": true,
+  "source_original_v182_pointer_hashes": {
+    "state.json": "e2cb3bbef7bfcfa62c4a1c218c181ac49796e6ebbd94851224ddbe1ed8dc2de9",
+    "cycle_state.json": "5619ac234153d2946c4d186e18a04043d4bf7e0739ae75859a6c91180fb00bf6"
+  },
+  "source_original_fast_slow_completed": [
+    1,
+    1
+  ],
+  "source_active_cycle": null,
+  "runtime_source_code_unchanged": true
+}

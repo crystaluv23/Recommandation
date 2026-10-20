@@ -1,0 +1,8 @@
+{
+  "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json",
+  "inbox_sha256": "f20fbbe47e5e16a31e2cbd11400d7a7ab239d39d8964438f02375e720b62a304",
+  "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/outbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.txt",
+  "request_hash": "41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af",
+  "stage": "mining_controller_step",
+  "status": "pending"
+}

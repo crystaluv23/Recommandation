@@ -228,9 +228,19 @@
         "runs/diagnostics/imported_slow_method_view_20261021_v1/actual-source/result.json",
         "runs/diagnostics/imported_slow_method_view_20261021_v1/driver/named-producer-final-summary.json",
         "runs/diagnostics/imported_slow_method_view_20261021_v1/root/connected-repaired-result.json",
-        "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/result.json"
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/temp-native-preflight/result.json",
+        "reports/imported-slow-method-feedback-20261021.md",
+        "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/manifest.json",
+        "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/completion.json",
+        "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/controller-boundary.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-reflection-inbox-check.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-controller-inbox-check.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-completed-verification.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-initial-review.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-reflection-raw-review.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-review.json"
       ],
-      "remaining": "Historical input materialization now passed native build/validate/apply with unchanged source and exact v12 definitions/events/artifacts. Old v182 failed memory remains processed0/pending3518. Native imported producer/reader confirms847019byte failure unit unreadable under64KB, while2312byte positive reads. Full S1 admission, fresh accepted reflection, correct task routing and observed downstream consumption remain unverified. Posthoc remains a narrow independently accepted durable stage, not a committed Fast feedback submission. Additive header now passes final16focused/independent controls and unique actualsource nativeproducer/catalog/reader probe,3532importunits/2312byteheader with oldpending/source preserved. RealEngine/nativeStage contract/reader composition and fresh exact-inbox reflection→task consumer remain unverified; associated198 not allgreen. Remaining9oldfailures reproduced onoriginalcode and normalfixturemetadata-only fixed; final213connected pass. Native destination-only temp composition reaches firstpending with fullnewD4493/4408sourcebytes same/0answers, not roleconsumption."
+      "remaining": "Boundedactual native read→freshacceptedReflect→currentH1payload proven:headerfullcause,3processed/4490pending of4493,6newmemoryoriginals/briefs. AlternateoriginalPlan-action reachesnative durable sink after1rowtype rejection/nativecontinuation,264pending of265. Frozen7d technicaldependencycontrol notselected0of1 remainspending; pageexposure notassignment. Need explicit originaltask assignment before another frozenstage, then correcttargetroute and actualdownstreamwork. FullS1/S2/quota+technicaldetailadapter/newcapability/wholeloop unverified. Oldhistoryfailed0/3518 and allfixedfailures remain; no benefit."
     },
     {
       "id": "new_magnitude_reuse",
@@ -1281,10 +1291,32 @@
         "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2-freeze.json"
       ],
       "result": "Spec-first additive32KB method header preserves fulloriginal/history/pending, binds sourcefile/locator/wholememory identity, omits vectors/membership hashes, inherits actualread/citation closure and laterconsumer scopes; carried projections verify original input/memory and retainstable identity. Initial197 associated9fail/1error exposed newlegacyprior regression; final16focused and independent delta/nativeconsumer controls pass. Final198 associated8fail/1error remain, baseline/testproducer diagnosis not conflated with green. Sole newactualsource nativeproducer/catalog/read probe3532units adds one2312byte header readablebyreflection/H1; originalsummary remainsbudgetdeferred/H1hidden, original3518pending and228sealedfiles unchanged,0forbidden. No actualmodel consumption/Slow/fullS1-S2/newcapability. Newboundedstage candidate underreview; actualworkspace contract connection missing in firstcandidate, fixed authority remains undernativeintegration verification. Originalcode comparisons reproduce remaining9failures. Metadata-only10synthetic normalinput sites repaired without changed body/expectedvalues/helpers/publishedfixtures;19focused pass. Final198+15stage controls=213/213 pass20.294s,0network/LabelStore.load,all7code/testbindings unchanged. Samecontract frozen/verified at actualWorkspace andwrapper restores native914events/192knowledge. Singletemp destination-only patched realEngine composition prepares newfullD4493 andtargetreflection-7d08d205fe330564 then首slow_source_readpending,4408sourcebindingssame/0answers ordispatch;formalstage rootabsent."
+    },
+    {
+      "id": "engineering-mvp-bounded-feedback-consumption-20261021",
+      "strategy": "fresh_native_reflection_to_first_controller_need_unit",
+      "failure_families": [
+        "controller_row_rationale_shape_rejection",
+        "bounded_stage_target_not_assigned_despite_controlled_page_exposure"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/imported-slow-method-feedback-20261021.md",
+        "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/manifest.json",
+        "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/completion.json",
+        "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/controller-boundary.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-reflection-inbox-check.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-controller-inbox-check.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-completed-verification.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-initial-review.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-reflection-raw-review.json",
+        "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-review.json"
+      ],
+      "result": "Formal6ad836fa nativeEngine stage manifest3a4a0e30/fullD4493;6fresh fork_none roles,3source+Reflectfirst+Controllerfirst+oneallowed no-patch invalid-action continuation,301117logicalreservation/1048576,0externalLLMAPI/Signal/acquisition/labels. Header independentlyselected and fullstatus/cause/provenance in actualReflect;firstReflect3ep3lesson accepted/processed3pending4490, oldfailed0/3518 unchanged; independentoriginalsemantic and exactcache/persistence pass. Actual currentfactory consumes6full memoryoriginals/6briefs/exact603908memoryhash plus8dev/4-4labels/no check/priorfootprints. Controlled page259/full265 has frozen7d technicaltarget first but no assignedtask. FirstController chooses alternate68e FastPlan action,rationale string rejected; next native no-patch continuation permits choosing admissibleaction, fresh84 again68e withvalidarray. Originalsave_need_unit persists1supported Planintent/pending264;7d remains pending, frozenpositive0of1nottriggered, no substitution. Stopsimmediately atfirstoriginalsink. Soleterminalreopen272sealed+completion=273 byteidentical/0newconstruct/model/Signal/labels/network; completedpointers0/0/controllerpartial. Confirms boundedrealread/reflection/payload andalternateintent persistence, not wholeS1/S2/newcapability/Planimplementation/researchgain. Selectiongap belongs to stage taskmeasurement design, no proved modelnoncompliance. All raw/rejected/corrected/partial results remain."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-imported-method-readability-20261021",
+    "after_iteration": "engineering-mvp-bounded-feedback-consumption-20261021",
     "evidence": [
       "reports/historical-registry-definition-reading-20261021.md",
       "runs/diagnostics/current_financial_apply_20261021_v1/driver/next-slow-boundary-review.json",
@@ -1317,7 +1349,17 @@
       "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-final-review.json",
       "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/stage-runner-actual-header-read-review.json",
       "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2.json",
-      "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2-freeze.json"
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/oracle/final-stage-oracle-v2-freeze.json",
+      "reports/imported-slow-method-feedback-20261021.md",
+      "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/manifest.json",
+      "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/completion.json",
+      "runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/controller-boundary.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-reflection-inbox-check.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-controller-inbox-check.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-completed-verification.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-initial-review.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-reflection-raw-review.json",
+      "runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1394,19 +1436,22 @@
       "Initial header-focused controls missed legacy localprior filtering; broad actual oldbrief→reader→nextreflection test exposed it. Final scope restores legacy only when both canonicalschema/readmanifest absent; modern knownhidden/unknown still failclosed.",
       "Runner mechanics tests omitted actual Workspace contract→native imported learning/knowledge reader. Root contract alone would reject events and skip importedknowledge; prove native composition before any fresh role, never weaken importer authority.",
       "Previously narrowed positivefixture producer repairs missed additional numeric SEC constructors in paired effectiveness/Update tests. Baseline actualsource comparisons distinguish test-input drift from header regression; no source/publishedfixture rewrite or expectedvalue adjustment is justified.",
-      "Pre-answer source oracle initially copied temp destination and demanded oldpending counts absent from the adopted scoped header. Source-only v2 corrects formalroot/omission rule and separates original detailed errorfrontiers from the visible Controller brief: require supported repairdependency route, never unseen projectiondetails or manufactured rootcause. No role answer was seen."
+      "Pre-answer source oracle initially copied temp destination and demanded oldpending counts absent from the adopted scoped header. Source-only v2 corrects formalroot/omission rule and separates original detailed errorfrontiers from the visible Controller brief: require supported repairdependency route, never unseen projectiondetails or manufactured rootcause. No role answer was seen.",
+      "Controlled native page exposure is not task assignment. Stage stopped afterfirstunit while prompt allowed anyof6pageitems; a semantically legitimate alternate Plan-action cannot satisfy predeclared technicalrepair target. Preserve0of1 and pending; nextstage must assign originalnative target explicitly without its answer or a replacement need.",
+      "Controller firstrow rationale string was rejected despite valid route semantics; normal no-output_patch_contract branch explicitly allows choosing one admissible action, so its continuation is not a field-preserving typedpatch. It contains only action/issue, not rejectedbody; do not secretly inject earlierresponse or claim exactfield repair. Actualcorrectedaction keptsamealternate need but authorednewrationales withinexistingnativecontract.",
+      "Header→freshreflection→H1payload arrival and originalFastneed→alternateaction→sink are distinct chains. Their coexistence does not prove the new lesson caused that action or a downstream Plan was implemented. Technicalcontrol remains unattempted; no newmagnitude/benefit claim follows."
     ],
     "decision": {
       "acceptance_id": "feedback_consumption",
-      "kind": "diagnose",
-      "strategy": "bounded_native_feedback_reflection_to_controller_progress",
-      "action": "Finish native constructor/importer zero-answer preflight and independent stage/source review; freeze current exact code, full new producer denominator, original40 Discovery scope, reviewed1780 source and external-free8request/1048576logical cap. Then execute one new bounded realEngine memory prefix and actualController factory through first original need-progress sink. Every production role uses a distinct fork_none exact-inbox subagent, with oracle outside. Preserve rawfirst/correction/finalfailure and all oldstages.",
-      "stop": "Any source/permission/budget/code drift, guard/native integration failure or unproved selected-source closure stops this stage; no completeSlow, secondseed/candidate/Signal/publication, externalLLMAPI, sourceacquisition or oldbudgetresume. Controlledbacklog page is not autonomous retrieval.",
-      "question": "Will the actual fresh native reader/reflection consume the readable provenance-bound failedmethod unit correctly and forward accepted memory plus original technicalfailure need to the currentController, whose fresh disposition reaches its original durable sink?",
-      "pass": "Exact rawrequests and answers show selectedheader/source coverage, independently valid technicalvsresearch attribution, correct fullD processed/pending partition, factory memory lineage, targeted technicalfailure disposition grounded in originalerrors and original needunit persistence.",
-      "fail": "Header notactually read, modelinvented economicabsence/rootcause, wrong needroute/version, omitted/doubleddenominator, lost consumercontent, or native boundary rejects. A schema-valid write alone is not semanticpass.",
-      "on_pass": "Record only the bounded live feedback/taskconsumer evidence; separately repair known quota adaptergap and continue prerequisite source/reading and newmeasurement lifecycle before a full engineeringloop. WholeMVP staysopen.",
-      "on_fail": "Retain terminalboundary and sourceoracle, identify first loss or contract conflict and repair its family before considering a newly frozen stage; never reenter completedstage or replace fixedfailure with an easier sample."
+      "kind": "repair",
+      "strategy": "explicit_native_target_assignment_in_new_bounded_stage",
+      "action": "Before any further role, read owning stage/runtime specs and minimally clarify a new separately frozen bounded stage task envelope: assign its exact native-prepared original technical need_ref for inspection/disposition while retaining fullbacklog, originalsource/versions, native factory/sink and independent expectedroute outside everyinbox. Preserve completedv1 and target0of1. Test legacy behavior, missing/drift/forgedtarget, actual assignment-visible envelope with no expectedanswer, and native budget/producer/consumer continuity. Do not change product need-selection policy or handwrite a disposition.",
+      "stop": "No reentry of completedv1, oracle/result edits, easier replacementneed, signal/source/period/permission/budget expansion, parentauthoredanswer, externalLLMAPI or fullsuccessor. A material uppercontract tradeoff requires concrete userdecision; simple stage taskassignment is an implementation detail, not a new policy.",
+      "question": "Can a reviewed stage make the original predeclared target an explicit runtime-bound task while preserving the same original evidence, complete native backlog and independent disposition judgment?",
+      "pass": "Before answers, exact Controller request explicitly assigns native-generated7d target and retains its sourcehash/fullbacklog. No expectedroute, engineeringerrorbody ororacle enters through the envelope. Existing behavior and budget/sourcecounterexamples hold.",
+      "fail": "Taskstillunderspecified, inventedtarget orexpectedanswer supplied, originalpopulation compressed/replaced, runtimeauthority widened, or budget/native sink connection broken.",
+      "on_pass": "Freeze a new stage and finite budget under activegoal; fresh exact-inbox roles test the sameoriginal technicaltarget. Report initial/corrected/finalfailure and preserve v1 target0of1. Do not infer autonomousallneedsprocessing or wholeS1/S2 from an assigned-control pass.",
+      "on_fail": "Retain specific contract/producer/consumer evidence and revise the stage design or request only substantive unresolvedpolicy decisions; do not keep rerunning the free-choice firstunit strategy."
     }
   },
   "successor_prerequisites": [

@@ -1,0 +1,49 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Elevated cash burn rate: the ratio of absolute operating cash outflow to cash and cash equivalents is high, indicating rapid cash consumption. Positive when point-in-time evidence shows operating cash outflow is negative and the ratio meets or exceeds the threshold, or documents explicitly describe a high cash burn rate. Negative when evidence shows positive operating cash flow, no material cash consumption, or an explicit denial/cancellation of a high burn. Neutral for proposals, memoranda, non-binding intent, lookalikes, or below-threshold mentions. Unavailable when adequate point-in-time evidence is missing."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "skill_file": "skills/cash_burn_rate_elevated.md",
+    "type": "llm"
+  },
+  "parameters": {
+    "burn_threshold": 0.1,
+    "lookback_days": 550
+  },
+  "raw_retrieval": {
+    "lookback_days": 550,
+    "query_terms": [
+      "cash burn rate",
+      "operating cash flow",
+      "cash and cash equivalents",
+      "NetCashProvidedByUsedInOperatingActivities",
+      "CashAndCashEquivalentsAtCarryingValue"
+    ],
+    "source_types": [
+      "company_facts",
+      "financials"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "cash_burn_rate_elevated",
+  "version": 1
+}

@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "read_source_refs": [
+      "slow-memory:1:episode:episode-c0001-001",
+      "slow-memory:1:episode:episode-c0001-002",
+      "slow-memory:1:episode:episode-c0001-003",
+      "slow-memory:1:lesson:lesson-c0001-001",
+      "slow-memory:1:lesson:lesson-c0001-002",
+      "slow-memory:1:lesson:lesson-c0001-003"
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"read_source_refs\":[\"slow-memory:1:episode:episode-c0001-001\",\"slow-memory:1:episode:episode-c0001-002\",\"slow-memory:1:episode:episode-c0001-003\",\"slow-memory:1:lesson:lesson-c0001-001\",\"slow-memory:1:lesson:lesson-c0001-002\",\"slow-memory:1:lesson:lesson-c0001-003\"]}\n",
+  "request_hash": "32fc8f394c6e80f7634518622e80f7fd09be542d53e606b5d28c95e9c9c9f74f",
+  "response_id": "local-32fc8f394c6e80f7634518622e80f7fd09be542d53e606b5d28c95e9c9c9f74f",
+  "usage": {
+    "accounting_tokens": 8939,
+    "agent_id": "/root/slow_feedback_role82",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "3640c97eb19ad76af4f776f39c35648ff57d93fc4475f55853c19972ab53d378",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "c4b07fc436edda33825b9344a79189fcf65ef28d2baa5c352885f610a67129cc",
+    "request_hash": "32fc8f394c6e80f7634518622e80f7fd09be542d53e606b5d28c95e9c9c9f74f",
+    "token_usage": null
+  }
+}

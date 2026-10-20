@@ -69,15 +69,16 @@ manifest ba60fd7c/v12原hash与18refs、137定义/914事件/192knowledge记录/5
 原生只读probe确认3531个imported units（非完整S1总分母），失败memory unit847019bytes被64KB reader以whole_entry_budget拒；小摘要2312bytes正控可读。
 目录无独立失败原因；541bytes紧凑local view不自动进入首个import-only周期。228封存文件不变，无新模型消费。
 新native财务/来源/input-only/F7/S5等已完成阶段保持完成，不因验收失败重跑；不调整冻结oracle或发布旧版本。
-[Imported method反馈修复](../reports/imported-slow-method-feedback-20261021.md)候选已加完整status/cause紧凑unit，
-原summary/向量/正文与pending保留，actual read/citation scope贯穿后继view，跨namespace/multihop不重复记学习。
-16聚焦及独立反例窄审通过；首197关联暴露legacy prior回归已修，随后198中9旧失败已对照原源码。
-只补10处synthetic numeric SEC metadata（正文/期待不改），最终198+15阶段控制=213全过，原失败均留。
-唯一新实际source probe3532units/1header，2312bytes在reflection/H1可读；原summary仍budget-deferred且H1-hidden，228封存文件全等。
-这只是原生producer/catalog/reader连接，无新模型消费。下一有限S1/S2 stage已实现候选但未正式prepare/dispatch；
-独立发现真实workspace缺合同，双位置同合同修复保native gate，真实914events/192knowledge读取正控通过；
-唯一temp真实Engine组合到首slow_source_read待答，完整新D4493/native need-ref已推导，4408source保真/0答，不等于S1/S2消费。
-之后冻结exact-inbox、独立预期及实际Controller首need-unit消费；不改已完成物化阶段、不完整重跑。
+[Imported method反馈修复](../reports/imported-slow-method-feedback-20261021.md)已提交6ad836fa；完整status/cause紧凑unit保原件/权限/pending，
+多跳不重记观察；16聚焦/独立反例过。首197的legacy prior回归修后，余9旧失败原源码重现；仅10处synthetic metadata补齐，最终213关联全过。
+唯一实际source probe3532units/2312byteheader可读，原summary仍budget-deferred/H1-hidden，228seal保真。
+之后正式有限stage manifest3a4a0e30/D4493，6fresh roles/1Controller原生纠错/301117逻辑预留/0外部LLMAPI。
+header完整进入真实反思；Reflect首答接受3ep/3lesson，processed3/pending4490，独立原件语义过，旧failed0/3518不改。
+真正Controller已读6新原件/brief和603908b9精确memory，full265 backlog的controlled页259保原target（非自主检索）。
+Controller首答另选68e... Plan-action但row rationale string被拒；允许的一次无patch原生续步仍选该项，array合法后原sink保存1unit，pending264。
+预冻技术repair target7d...未选择，仍0/1/pending，不能用合法别项替代。阶段提示只暴露同页未指派目标，是验收任务选择缺口，不自动归模型违规。
+唯一终态reopen272封存文件+completion全等/0新构造模型；stage完成但Controller partial/round-cycle0/0，不是完整Slow/S1-S2或OS恢复。
+下一先把验收阶段任务指派说明与原native target对齐（不送答案/改来源/换简单样本），审查冻结新边界后再执行；旧stage不重入、不完整重跑。
 LLM阅读接口方案待设计决策；两财务期间定义需具体政策/新版本，不能由当前计算结果倒推答案。
 完整反馈消费、新方向/magnitude Mining→忠实实现→准入发布→后继精确使用、完整恢复及双环均未验证。
 旧v182权威Fast/Slow=1/1完成不恢复；memory失败processed0/pending3518不改成功。不启动完整后继，整体MVP保持open。

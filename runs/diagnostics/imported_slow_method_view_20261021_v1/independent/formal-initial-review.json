@@ -1,0 +1,48 @@
+{
+  "status": "PASS_formal_frozen_initial_request_only",
+  "manifest_hash": "3a4a0e30bfc60ee7bd383f3dee6e2bf446faed89d61a00ee3d8625e71b1705d1",
+  "code_bindings_verified": 175,
+  "direct_source_bindings_verified": 4,
+  "copied_population_bytes_verified": 223,
+  "dual_contract_exact": true,
+  "full_feedback_count": 4493,
+  "feedback_refs_hash": "6112482ca7fd11dea4158eda5a78eaeec1ea365fa4d715fecb02b127ed16124e",
+  "permission_catalog_hash": "5b2864643344158f303a2a3f2121fd633688a5eb32fdd7fdbb12a557ce753a21",
+  "target_need_ref": "reflection-7d08d205fe330564",
+  "same_fixed_feedback_scope_and_action_as_zero_answer_temp": true,
+  "initial_request_hash": "c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb",
+  "initial_stage": "slow_source_read",
+  "initial_logical_reservation": 36289,
+  "request_journal_hash_and_inbox_messages_exact": true,
+  "budget": {
+    "requests": 8,
+    "per_request": 131072,
+    "total": 1048576,
+    "selector": 3,
+    "reflection_first": 1,
+    "reflection_correction": 1,
+    "controller_regular": 2,
+    "controller_correction": 1
+  },
+  "completed_pointers": [
+    0,
+    0
+  ],
+  "source_check_footprint_preflight_clear": true,
+  "native_payload_shape": "source selector catalog/read directory, not a disposition answer or private oracle",
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/manifest.json": "f5c2148baf0b915bd41905d563f1947a11255d46ea30afed2a1aab82e0647fbf",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/run_contract.json": "8793f405d4d16c739c5f310678169042b3be72ecd0cd576a3a74b1322601f822",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/run_contract.json": "8793f405d4d16c739c5f310678169042b3be72ecd0cd576a3a74b1322601f822",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/transport/requests/c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb.json": "b8c3e6eeb94b02313f59d3d52ead865e3bb795fcf2ab7122f7d5091a26737a53",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb.json": "02357be8dee9fc4fd6d7b0b0cefd801b46c248f399e26754b5f41044193a5996",
+    "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-initial-audit.py": "5c752bfd1479b90b27b3cff9a7a8d4b50b34e070c8dc09623832eb73f09b5b24"
+  },
+  "limits": [
+    "Only the first frozen request was read; no role79 or other unfinished/future output read.",
+    "No prepare, advance, dispatch, model/API, GET, Store, Signal or LabelStore invoked.",
+    "Actual approved mixed case file was stream-hashed, not deserialized. No retrospective outcome values copied to this audit.",
+    "Manifest/hash integrity is not semantic correctness or model obedience. Later fresh reflection/controller/sink need separate actual review.",
+    "This first source-selector request does not yet establish the declared Controller prompt authorization envelope was actually transmitted."
+  ]
+}

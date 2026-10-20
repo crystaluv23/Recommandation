@@ -1,0 +1,53 @@
+{
+  "category": "news",
+  "definition": {
+    "description": "Count configured negative terms in complete point-in-time company news source documents."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "news.negative_word_count",
+    "type": "deterministic"
+  },
+  "modality": "structured",
+  "parameters": {
+    "negative_count_min": 1,
+    "terms": [
+      "decline",
+      "loss",
+      "risk",
+      "delay",
+      "investigation",
+      "default"
+    ]
+  },
+  "raw_retrieval": {
+    "lookback_days": 365,
+    "query_terms": [
+      "risk loss delay",
+      "decline warning"
+    ],
+    "source_types": [
+      "news"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "negative_word_count",
+  "version": 2
+}

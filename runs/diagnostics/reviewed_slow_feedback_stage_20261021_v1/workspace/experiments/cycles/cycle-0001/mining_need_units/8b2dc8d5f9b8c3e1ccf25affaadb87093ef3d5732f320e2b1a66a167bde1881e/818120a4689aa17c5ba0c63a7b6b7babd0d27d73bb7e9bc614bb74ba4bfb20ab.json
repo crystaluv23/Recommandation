@@ -1,0 +1,24 @@
+{
+  "accepted_rows": [
+    {
+      "disposition": "fast_plan_action",
+      "need_refs": [
+        "reflection-68eeb8eb36ca95db"
+      ],
+      "rationale": [
+        "This need explicitly requests a Plan review step for magnitude classification rather than a new economic measurement.",
+        "Route a source-backed review of each magnitude band to Fast Plan research; permit unsupported upper bands to remain unsupported and do not force higher predictions.",
+        "This stages an action intent only; implementation, exact Plan consumption and independent improvement remain unverified."
+      ],
+      "signal_refs": []
+    }
+  ],
+  "axis_id": "surge_direction",
+  "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+  "base_hash": "25c45c0c801f27f5c0aa394752234c38484039befe27548e15465b35ac845319",
+  "invalid_rows": [],
+  "pending_count": 264,
+  "result_hash": "818120a4689aa17c5ba0c63a7b6b7babd0d27d73bb7e9bc614bb74ba4bfb20ab",
+  "schema_version": "mining-need-disposition-unit-v1",
+  "seed": "hypothesis"
+}

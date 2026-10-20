@@ -1,0 +1,8 @@
+{
+  "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb.json",
+  "inbox_sha256": "02357be8dee9fc4fd6d7b0b0cefd801b46c248f399e26754b5f41044193a5996",
+  "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/outbox/c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb.txt",
+  "request_hash": "c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb",
+  "stage": "slow_source_read",
+  "status": "pending"
+}

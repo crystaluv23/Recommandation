@@ -1,0 +1,161 @@
+{
+  "ledger": [
+    {
+      "action": "inspect_catalog",
+      "action_id": 1,
+      "case_refs": [],
+      "coverage": {
+        "keys": [
+          "backlog_hash",
+          "counts",
+          "cursor",
+          "items",
+          "max_entry_bytes",
+          "next_cursor",
+          "oversized_entries",
+          "read_action",
+          "read_byte_limit",
+          "selection_is_exhaustive",
+          "total_backlog_count"
+        ]
+      },
+      "evidence_refs": [],
+      "input_hash": "1509146ddbf4910b8af1a54aed4a678964f213a225a216c98ccfab794259db32",
+      "note": null,
+      "omitted_coverage": {
+        "available": 265,
+        "included": 6,
+        "omitted_after": 0,
+        "omitted_before": 259,
+        "oversized": 0
+      },
+      "output_hash": "518ec65ba8efbc6dd2b3c57161930b6bcca645a4b86192ec8d6288fb23bcf799",
+      "pit_status": "enforced",
+      "source_types": [],
+      "terminal_disposition": null,
+      "usage": {
+        "model_calls": 0
+      }
+    }
+  ],
+  "tool_result": {
+    "action": "inspect_catalog",
+    "result": {
+      "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+      "counts": {
+        "available": 265,
+        "included": 6,
+        "omitted_after": 0,
+        "omitted_before": 259,
+        "oversized": 0
+      },
+      "cursor": 259,
+      "items": [
+        {
+          "kind": "meta_reflection_action",
+          "need": "Three cases recorded signal validation failures (financing_listing_action:v5, guidance_acceleration:v3, order_confirmation_disclosed:v2) that removed forward-expectations and order-confirmation evidence from the research pass, yet all three cases were still scored and none was a technical exclusion.",
+          "need_ref": "reflection-7d08d205fe330564",
+          "read_bytes": 1122,
+          "source_hash": "5da3598de291c0409be18fb73ba0489101aea126073b63a6c9fbbd712ec3e228",
+          "source_scope": {
+            "current_dev_case_refs": [],
+            "known_source_case_count": 0,
+            "omitted_prediction_times": 0,
+            "relation": "plan_action",
+            "source_prediction_times": [],
+            "unknown_source_count": 0,
+            "unknown_source_time_count": 0
+          }
+        },
+        {
+          "kind": "meta_reflection_action",
+          "need": "Across the combined 24-case cohort, magnitude classification collapsed to a single class: all 14 predicted surges were labeled 2-3x, producing 7 underestimates, 0 overestimates, and 0 predictions in either 3-10x or 10x+, while binary F1 was 0.786.",
+          "need_ref": "reflection-fca3541d11777b98",
+          "read_bytes": 1244,
+          "source_hash": "8c80e41bc54232a333ea0ec5182b67c936c1d66bd858fd3c186b77d2bf2126b5",
+          "source_scope": {
+            "current_dev_case_refs": [],
+            "known_source_case_count": 0,
+            "omitted_prediction_times": 0,
+            "relation": "plan_action",
+            "source_prediction_times": [],
+            "unknown_source_count": 0,
+            "unknown_source_time_count": 0
+          }
+        },
+        {
+          "kind": "meta_reflection_action",
+          "need": "Testable hypothesis: the plan's instruction to treat negative liquidity-runway and neutral financing facts as non-capping may be under-applied because the evidence organizer still anchors magnitude to the doubling threshold rather than to the upper tail of comparable realized multiples.",
+          "need_ref": "reflection-3dedae2c55384599",
+          "read_bytes": 1115,
+          "source_hash": "d959f34dc34fcb04d1d689f364aa6a736281f48dca28225a162fe5e3bca7aeae",
+          "source_scope": {
+            "current_dev_case_refs": [],
+            "known_source_case_count": 0,
+            "omitted_prediction_times": 0,
+            "relation": "plan_action",
+            "source_prediction_times": [],
+            "unknown_source_count": 0,
+            "unknown_source_time_count": 0
+          }
+        },
+        {
+          "kind": "meta_reflection_action",
+          "need": "Add an explicit magnitude-band review step that, when binary surge evidence is supported, requires enumerating the upper magnitude classes and naming the specific source-backed driver that would justify each, rather than defaulting to the 2-3x band.",
+          "need_ref": "reflection-68eeb8eb36ca95db",
+          "read_bytes": 1179,
+          "source_hash": "9c842abfac23af0813bf64ca78504af08369390e93cc7d99d8dff6c99f160dd8",
+          "source_scope": {
+            "current_dev_case_refs": [],
+            "known_source_case_count": 0,
+            "omitted_prediction_times": 0,
+            "relation": "plan_action",
+            "source_prediction_times": [],
+            "unknown_source_count": 0,
+            "unknown_source_time_count": 0
+          }
+        },
+        {
+          "kind": "meta_reflection_action",
+          "need": "Technical completion for the combined cohort is 1.0: 24 of 24 scored cases were research-completed with 0 technical exclusions, so the magnitude and binary metrics are not attenuated by technical abstentions.",
+          "need_ref": "reflection-4be8cbb1c3803a50",
+          "read_bytes": 1080,
+          "source_hash": "5283fb633fa372961071c961259d40cb453b9aa598ddf49371c429734e5e23bb",
+          "source_scope": {
+            "current_dev_case_refs": [],
+            "known_source_case_count": 0,
+            "omitted_prediction_times": 0,
+            "relation": "plan_action",
+            "source_prediction_times": [],
+            "unknown_source_count": 0,
+            "unknown_source_time_count": 0
+          }
+        },
+        {
+          "kind": "meta_reflection_action",
+          "need": "Across the combined cohort the Plan's magnitude classifier never emitted a class above 2-3x: all 15 predicted positives were labeled 2-3x, while the truth distribution contained 5 cases at 3-10x and 2 at 10x+, producing 7 underestimates, 0 overestimates, and 0 correct 3-10x or 10x+ calls.",
+          "need_ref": "reflection-f416b998d80a8019",
+          "read_bytes": 1180,
+          "source_hash": "284c5b985d4a5a02eb604e5dfcf6d374a7e9ead7130d97b95ec745cd1737e70e",
+          "source_scope": {
+            "current_dev_case_refs": [],
+            "known_source_case_count": 0,
+            "omitted_prediction_times": 0,
+            "relation": "plan_action",
+            "source_prediction_times": [],
+            "unknown_source_count": 0,
+            "unknown_source_time_count": 0
+          }
+        }
+      ],
+      "max_entry_bytes": 8000,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "read_action": "inspect_catalog scope=backlog item_refs",
+      "read_byte_limit": 16000,
+      "selection_is_exhaustive": false,
+      "total_backlog_count": 265
+    },
+    "scope": "backlog"
+  }
+}

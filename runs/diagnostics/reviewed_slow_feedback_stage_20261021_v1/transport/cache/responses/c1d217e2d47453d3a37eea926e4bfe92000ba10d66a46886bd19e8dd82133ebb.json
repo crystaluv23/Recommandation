@@ -1,0 +1,25 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "read_source_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1",
+      "prediction_comparison:07fe9330743c41441c970db70a71466eed9579b804594e79230aa450e1024c0c",
+      "slow-history:source-12a50702a856ddc3:1:slow_input:feedback-939"
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"read_source_refs\":[\"slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1\",\"prediction_comparison:07fe9330743c41441c970db70a71466eed9579b804594e79230aa450e1024c0c\",\"slow-history:source-12a50702a856ddc3:1:slow_input:feedback-939\"]}\n",
+  "request_hash": "c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb",
+  "response_id": "local-c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb",
+  "usage": {
+    "accounting_tokens": 36289,
+    "agent_id": "/root/slow_feedback_role79",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "02357be8dee9fc4fd6d7b0b0cefd801b46c248f399e26754b5f41044193a5996",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "42bc0611b0ca18edfad115ec2673c392b170b22924bcd041003c4a733fa66c67",
+    "request_hash": "c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb",
+    "token_usage": null
+  }
+}

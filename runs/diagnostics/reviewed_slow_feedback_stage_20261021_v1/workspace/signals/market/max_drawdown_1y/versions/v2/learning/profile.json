@@ -1,0 +1,46 @@
+{
+  "confidence": "insufficient",
+  "directional": {
+    "correct": 0,
+    "unavailable": 0,
+    "unavailable_with_inputs": 0,
+    "unavailable_without_inputs": 0,
+    "wrong": 0
+  },
+  "disputed_observations": 0,
+  "recurring_contexts": [],
+  "reflection_attribution": {
+    "ignored": 0,
+    "misleading": 0,
+    "other": 0
+  },
+  "schema_version": "signal-learning-profile-v1",
+  "selection_events": 1,
+  "selection_reason_codes": [
+    {
+      "count": 1,
+      "reason_code": "assess_applicability"
+    }
+  ],
+  "signal_ref": "max_drawdown_1y:v2",
+  "state_outcome_matrix": {
+    "negative": {
+      "non_surge": 0,
+      "surge": 0
+    },
+    "neutral": {
+      "non_surge": 1,
+      "surge": 0
+    },
+    "positive": {
+      "non_surge": 0,
+      "surge": 0
+    },
+    "unavailable": {
+      "non_surge": 0,
+      "surge": 0
+    }
+  },
+  "unique_issuers": 1,
+  "unique_observations": 1
+}

@@ -1,0 +1,61 @@
+{
+  "pending": {
+    "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7.json",
+    "inbox_sha256": "97054f9a78f4ff3dafb2d20962bd3807911e805a2a5d45b7eb05268f4d7b4d99",
+    "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/outbox/85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7.txt",
+    "request_hash": "85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7",
+    "stage": "signal_mining_reflect",
+    "status": "pending"
+  },
+  "message_chars": [
+    6473,
+    41599
+  ],
+  "header_full_status_cause_source_provenance_in_actual_reflection_request": true,
+  "header_count": 1,
+  "header": {
+    "budget_bytes": 32000,
+    "coverage": "method header only; original summary and nested feedback are not consumed",
+    "projection_identity": "443de3d9d462998b8c407e006bd7e0530654a9a5353568c131a69d341f64050e",
+    "projection_status": "available",
+    "schema_version": "imported-slow-method-memory-header-v1",
+    "source": {
+      "json_locator": "/",
+      "profile": "imported-slow-method-memory-header-v1",
+      "source_sha256": "e056b9a626138c7f6e17a90291a3da33dfb3b5176d98a2701688a6e94ceafe87",
+      "summary_identity": "slow-history:source-12a50702a856ddc3:1:slow_memory:summary"
+    },
+    "source_memory_hash": "b1a4e915bf9bccb9cf475dec2dc8b251d945c84c628967f994f1fa06c92bb5ef",
+    "view": {
+      "memory_deltas": [
+        {
+          "coverage": "header only; no processing vectors, read directory or authored bodies",
+          "cycle_id": 1,
+          "failure_ref": "CandidateExecutionRejected: signal_mining_reflect failed validation after one correction: episode_reflections source_refs must cover every selected top-level feedback_ref; no unused episode slot remains, so merge the missing refs and their reflection into one or more existing valid episodes without adding a row",
+          "memory_hash": "b1a4e915bf9bccb9cf475dec2dc8b251d945c84c628967f994f1fa06c92bb5ef",
+          "omitted_fields": [
+            "processed_feedback_refs",
+            "pending_feedback_refs",
+            "model_view_manifest",
+            "episode_reflections",
+            "lesson_additions"
+          ],
+          "schema_version": "slow-method-memory-header-view-v1",
+          "status": "failed"
+        }
+      ],
+      "memory_view_manifest": {
+        "budget_bytes": 32000,
+        "bytes": 1012,
+        "deferred": [],
+        "included_hashes": {},
+        "included_refs": [],
+        "requested_refs": [],
+        "schema_version": "slow-method-memory-header-manifest-v1",
+        "source_memory_hashes": [
+          "b1a4e915bf9bccb9cf475dec2dc8b251d945c84c628967f994f1fa06c92bb5ef"
+        ]
+      }
+    }
+  }
+}

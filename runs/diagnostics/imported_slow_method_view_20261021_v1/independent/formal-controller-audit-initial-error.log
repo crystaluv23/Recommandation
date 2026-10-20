@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-audit.py", line 83, in <module>
+    originals = {f"slow-memory:1:{kind}:{row[field]}": row
+  File "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-audit.py", line 83, in <dictcomp>
+    originals = {f"slow-memory:1:{kind}:{row[field]}": row
+KeyError: 'lesson_ref'

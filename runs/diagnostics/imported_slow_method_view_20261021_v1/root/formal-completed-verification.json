@@ -1,0 +1,47 @@
+{
+  "result": {
+    "complete_S1_S2": false,
+    "completed_cycle": 0,
+    "completed_round": 0,
+    "external_llm_api_calls": 0,
+    "module_status": "partial_running",
+    "status": "native_need_unit_saved_semantics_unreviewed"
+  },
+  "completed_sealed_files": 272,
+  "total_files_with_completion": 273,
+  "all_bytes_members_unchanged_after_sole_terminal_reopen": true,
+  "construction_model_Signal_labels_network_tripwires": {
+    "construction": 0,
+    "model": 0,
+    "Signal": 0,
+    "labels": 0,
+    "network": 0
+  },
+  "copied_source_files": 223,
+  "code_files": 175,
+  "source_binding_files": 4,
+  "old_failed_memory_pending": 3518,
+  "old_failed_memory_processed": 0,
+  "new_feedback_full": 4493,
+  "new_processed": 3,
+  "new_pending": 4490,
+  "backlog_full": 265,
+  "backlog_pending": 264,
+  "frozen_technical_target_still_pending": true,
+  "technical_target_control_passed": false,
+  "technical_target_control_denominator": 1,
+  "first_original_need_unit": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/818120a4689aa17c5ba0c63a7b6b7babd0d27d73bb7e9bc614bb74ba4bfb20ab.json",
+    "sha256": "cfc941644e368f245b0f22f155c7163dd4c27e3bfe8d851d8ebe23bc488e128a"
+  },
+  "receipts": 6,
+  "unique_role_requests": 6,
+  "logical_reservation": 301117,
+  "families": {
+    "controller_correction": 1,
+    "controller_regular": 1,
+    "reflection_first": 1,
+    "selector": 3
+  },
+  "whole_S1_S2_or_cycle_or_gain": false
+}

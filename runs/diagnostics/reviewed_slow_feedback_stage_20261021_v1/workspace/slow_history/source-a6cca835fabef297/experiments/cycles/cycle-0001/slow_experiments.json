@@ -1,0 +1,98 @@
+{
+  "attempts": [
+    {
+      "action_summary": "update",
+      "candidate_hash": "14e5efd9dd676e10531072decf1c051aa767edbc2bb6cc955923f44f40d4ff12",
+      "candidate_ref": "liquidity_runway_months:v3",
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "update",
+      "parent_signal_ref": "liquidity_runway_months:v2",
+      "proposal_hash": "6b8620372c02fda71a8395e8b9a66e82d3673e42f5236da646db6334fc6f49e8",
+      "request_refs": [
+        "9a72e03c9a02d8251d6cdacbbb4e056cd44274d5d97f5bd659775960983dd6e0",
+        "528b5b50832c7f68e0a0b5d93d82cdf388f83f0d559d82810914ccedd722a570"
+      ],
+      "stage": "Update",
+      "usage_ref": "528b5b50832c7f68e0a0b5d93d82cdf388f83f0d559d82810914ccedd722a570",
+      "work_id": "cycle-0001:Update:001"
+    },
+    {
+      "action_summary": "update",
+      "candidate_hash": "fe876e3a64a04803453fcf3ceb20d20e07f7891d60e5cc16934d05c99e2253c2",
+      "candidate_ref": "order_confirmation_disclosed:v3",
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "update",
+      "parent_signal_ref": "order_confirmation_disclosed:v2",
+      "proposal_hash": "cca90f73eda1cc790b5d3a66a051f4746f393eb7203200bd0eb0f1a0b2d4d803",
+      "request_refs": [
+        "a7b9bc704246de5d99e3879e766063dc528e3bc5039d3cc65ef994f222c27902"
+      ],
+      "stage": "Update",
+      "usage_ref": "a7b9bc704246de5d99e3879e766063dc528e3bc5039d3cc65ef994f222c27902",
+      "work_id": "cycle-0001:Update:002"
+    },
+    {
+      "action_summary": "no_change",
+      "candidate_hash": null,
+      "candidate_ref": null,
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "no_change",
+      "parent_signal_ref": "guidance_acceleration:v3",
+      "proposal_hash": "b71b7e345c11a3435b67acd57abfcbb96b0040d39882bc0d1eb309128aee3ff1",
+      "request_refs": [
+        "c6a001552d98053138b99c71008fbc0af924083842a71c0b16e9ec784dac18ae"
+      ],
+      "stage": "Update",
+      "usage_ref": "c6a001552d98053138b99c71008fbc0af924083842a71c0b16e9ec784dac18ae",
+      "work_id": "cycle-0001:Update:003"
+    },
+    {
+      "action_summary": "candidate validation",
+      "candidate_hash": "14e5efd9dd676e10531072decf1c051aa767edbc2bb6cc955923f44f40d4ff12",
+      "candidate_ref": "liquidity_runway_months:v3",
+      "evidence_or_evaluation_refs": [
+        "818ecdb58bf4f3667272d5011be6286a843d822620a01100bdc16cb0fccf7ce4"
+      ],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "validated",
+      "parent_signal_ref": "liquidity_runway_months",
+      "proposal_hash": "14e5efd9dd676e10531072decf1c051aa767edbc2bb6cc955923f44f40d4ff12",
+      "request_refs": [],
+      "stage": "Update",
+      "usage_ref": null,
+      "work_id": "cycle-0001:candidate:liquidity_runway_months:v3"
+    },
+    {
+      "action_summary": "candidate validation",
+      "candidate_hash": "fe876e3a64a04803453fcf3ceb20d20e07f7891d60e5cc16934d05c99e2253c2",
+      "candidate_ref": "order_confirmation_disclosed:v3",
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": "order_confirmation_disclosed:v3",
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "rejected",
+      "parent_signal_ref": "order_confirmation_disclosed",
+      "proposal_hash": "fe876e3a64a04803453fcf3ceb20d20e07f7891d60e5cc16934d05c99e2253c2",
+      "request_refs": [],
+      "stage": "Update",
+      "usage_ref": null,
+      "work_id": "cycle-0001:candidate:order_confirmation_disclosed:v3"
+    }
+  ],
+  "contract_hash": "a6cca835fabef297c093035d29198aad57f90544cf2a5e0e2598a20c04e07274",
+  "cycle_id": 1,
+  "input_hash": "3bf385c68cc484f3b1586230f16af4994cc94e0608dbc575ec57302d3bb834f5",
+  "memory_hash": "c78d8f2b2c59becb37e4ba54578514bf12f705abbb82fddde3a153fe3381b220",
+  "schema_version": "slow-experiments-v1"
+}

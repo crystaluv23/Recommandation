@@ -1,0 +1,118 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "episode_reflections": [
+      {
+        "brief": "A committed method header records rejection for incomplete episode coverage after correction, with no free slot. It supplies no authored bodies or processing vectors, so it supports a validation diagnosis only. Compatible episodes must cover missing feedback substantively; an empty projection manifest does not prove empty underlying memory.",
+        "episode_ref": "episode-c0001-001",
+        "kind": "fact",
+        "reflection": "The imported committed method header records a failed Slow reflection: after one correction, episode source_refs still did not cover every selected top-level feedback_ref, and no unused episode slot remained. This establishes a validation and coverage failure, not a research finding. The projection contains only the method header; authored reflections, processing vectors and read-directory contents were omitted. Its empty included_refs manifest describes this restricted view and cannot establish an empty underlying memory. The prescribed repair was to merge missing references and their substantive reflections into compatible existing episodes, while keeping comparison feedback separate. No successful repair or downstream consumption is demonstrated by this header.",
+        "source_refs": [
+          "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1"
+        ],
+        "unresolved_questions": [
+          "What substantive feedback was omitted from the rejected reflection, and could it fit compatible existing episodes without conflating comparison and other feedback?"
+        ]
+      },
+      {
+        "brief": "Possible/2-3x became unlikely/no magnitude with changed Plan and canonical context; realized magnitude was 3-10x. The originals emphasized different evidence, and the right had partial operating-report coverage. Left direction was correct; neither magnitude was correct. Changed inputs, unknown provider requests and one case prevent model-only or causal conclusions.",
+        "episode_ref": "episode-c0001-002",
+        "kind": "fact",
+        "reflection": "At the same 2025-05-30 prediction time and outcome contract, the left original called possible surge, low confidence, 2-3x; the right called unlikely, medium confidence, no magnitude. Both Plan and canonical-context hashes changed; provider-request equivalence is unestablished. Left reasons emphasized completed acquisitions, a 51.08% 31-trading-day rise and possible offering-funded runway extension. Right reasons emphasized delayed commercialization, resale risk, neutral qualifying orders and adverse liquidity; its operating-report view omitted seven projections. Both finalized at budget exhaustion without recorded Signal execution failures. The realized maximum five-complete-trading-day adjusted-close mean over six calendar months was 3.3770028275212063 times baseline: left binary correct but magnitude underestimated; right missed both axes. Historical weighting and catalyst explanations remain hypotheses, not established causes.",
+        "source_refs": [
+          "prediction_comparison:07fe9330743c41441c970db70a71466eed9579b804594e79230aa450e1024c0c"
+        ],
+        "unresolved_questions": [
+          "Which input and Plan changes explain the reversal once complete provider requests and source visibility are compared?",
+          "Do prediction-time acquisition, momentum and financing measurements distinguish magnitude outcomes across independent cases?"
+        ]
+      },
+      {
+        "brief": "A financing_listing_action:v4 coverage usage returned neutral despite sufficient document coverage; the associated prediction missed a realized surge. Neutral is available, nondecisive and non-POSITIVE under the measurement contract. Empty attribution and absent paired measurements prevent causal Signal credit, technical-failure claims or any effectiveness-gate conclusion.",
+        "episode_ref": "episode-c0001-003",
+        "kind": "fact",
+        "reflection": "The nested imported usage event records financing_listing_action:v4 selected for financing-need coverage in a small-cap biotechnology catalyst window at 2025-09-30. Its result was neutral with sufficient coverage and document fingerprints; reflection_attribution was empty. The case outcome records a surge, realized_max_multiple=6.795183595612781 and prediction_correct=false. Under the supplied measurement contract, neutral is available but not decisive; on a positive case it belongs to the non-POSITIVE side of candidate confusion. It is not a technical execution failure or an unexplained efficacy exclusion. The event supplies neither paired aggregate measurements nor a gate result. Sufficient document coverage does not establish directional usefulness, and the failed prediction does not establish that this Signal caused the miss.",
+        "source_refs": [
+          "slow-history:source-12a50702a856ddc3:1:slow_input:feedback-939"
+        ],
+        "unresolved_questions": [
+          "What prediction-time financing evidence produced the neutral v4 result under its versioned materiality rules?",
+          "Did the prediction consume this exact result, and how did it use it?"
+        ]
+      }
+    ],
+    "lesson_additions": [
+      {
+        "applicable_scope": "Slot-limited Slow feedback reflection and restricted imported method-header review.",
+        "brief": "When selected feedback exceeds an initial episode grouping, verify complete top-level reference coverage and merge only compatible substantive reflections. The observed failure persisted after correction with no spare slot. Header-only evidence cannot reveal missing authored content, prove successful recovery or justify conflating comparison and unrelated feedback.",
+        "challenges_refs": [],
+        "counterevidence_refs": [],
+        "guidance": "Before emitting a slot-limited Slow reflection, map every selected top-level feedback_ref to a substantive episode and check their union for complete coverage. Group compatible noncomparison units when necessary, reserving a separate episode for same-case comparisons. Nested reference-like strings are audit content, not valid episode citations. When a header reports coverage rejection but omits authored bodies and processing vectors, retain that restricted failure layer and do not infer what was processed or successfully retained. This preflight action addresses the observed validation family; it neither recovers absent research content nor demonstrates that a later correction was accepted or consumed.",
+        "kind": "action",
+        "lesson_id": "lesson-c0001-001",
+        "limitations": [
+          "Only a failed method header is supplied; successful repair and downstream consumption are unobserved.",
+          "Comparison episodes must remain separate even when slots constrain grouping."
+        ],
+        "qualifies_refs": [],
+        "support_refs": [
+          "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1",
+          "episode-c0001-001"
+        ]
+      },
+      {
+        "applicable_scope": "Cross-round same-case comparisons with changed canonical contexts or Plans, followed by Plan research and independent PIT factor evaluation.",
+        "brief": "For a reversal accompanied by Plan and input changes, inspect both original evidence paths and provider requests before causal attribution. Preserve separate binary and magnitude errors plus contrary financing and coverage evidence. This case supports Plan diagnostics and independently testable PIT hypotheses, not model-only instability or proven factor weighting errors.",
+        "challenges_refs": [],
+        "counterevidence_refs": [
+          "prediction_comparison:07fe9330743c41441c970db70a71466eed9579b804594e79230aa450e1024c0c"
+        ],
+        "guidance": "Route this changed-input reversal to Plan research: compare both originals, exact provider requests, source projections, Plan versions and termination conditions before attributing the change. Record binary and magnitude outcomes separately and retain contrary evidence such as commercialization delay, resale pressure and incomplete source visibility alongside acquisitions and momentum. Treat the historical underweighting and catalyst-dismissal rationales as hypotheses requiring independent tests. For any economic-factor proposal, define measurements from prediction-time evidence, preserve Signal version and materiality semantics, and test independent cases against the fixed six-month maximum-five-day-mean target. A correct binary call or realized surge alone does not validate its reasons, justify a higher ex-ante category, or demonstrate improvement.",
+        "kind": "action",
+        "lesson_id": "lesson-c0001-002",
+        "limitations": [
+          "Only one same-case comparison is supplied, with changed canonical input and unknown provider-request differences.",
+          "Seven omitted operating-report projections do not establish that useful catalysts were missed."
+        ],
+        "qualifies_refs": [],
+        "support_refs": [
+          "prediction_comparison:07fe9330743c41441c970db70a71466eed9579b804594e79230aa450e1024c0c",
+          "episode-c0001-002"
+        ]
+      },
+      {
+        "applicable_scope": "Signal usage interpretation and effectiveness review where neutral results coexist with sufficient coverage or missed surge predictions.",
+        "brief": "When a sufficiently covered Signal is neutral on a realized surge, preserve availability separately from decisiveness and candidate confusion. The v4 event provides no causal attribution or paired gate evidence. Neutral explains the population distinction; neither document coverage nor prediction failure establishes efficacy or technical malfunction.",
+        "challenges_refs": [],
+        "counterevidence_refs": [],
+        "guidance": "Interpret neutral Signal usage using the supplied measurement contract: it is available but nondecisive, and a positive-label case without a POSITIVE call belongs on the false-negative side of candidate confusion. A decisive/available gap can therefore reflect neutral measurements rather than sample exclusion. Keep technical execution failure distinct from domain unavailability and neutral results. Paired arms share a frozen case pool, although availability and decisive subsets can differ. Preserve each gate threshold with its stated population and leave counters in the runtime artifact. The supplied v4 usage supports this interpretation but contains no paired gate result; sufficient coverage and a missed surge cannot establish financing Signal inefficacy or causal contribution.",
+        "kind": "action",
+        "lesson_id": "lesson-c0001-003",
+        "limitations": [
+          "No aggregate effectiveness artifact, paired gate result or causal attribution is supplied.",
+          "The underlying versioned financing evidence is not exposed in the usage event."
+        ],
+        "qualifies_refs": [],
+        "support_refs": [
+          "slow-history:source-12a50702a856ddc3:1:slow_input:feedback-939",
+          "episode-c0001-003"
+        ]
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"episode_reflections\":[{\"episode_ref\":\"episode-c0001-001\",\"source_refs\":[\"slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1\"],\"reflection\":\"The imported committed method header records a failed Slow reflection: after one correction, episode source_refs still did not cover every selected top-level feedback_ref, and no unused episode slot remained. This establishes a validation and coverage failure, not a research finding. The projection contains only the method header; authored reflections, processing vectors and read-directory contents were omitted. Its empty included_refs manifest describes this restricted view and cannot establish an empty underlying memory. The prescribed repair was to merge missing references and their substantive reflections into compatible existing episodes, while keeping comparison feedback separate. No successful repair or downstream consumption is demonstrated by this header.\",\"unresolved_questions\":[\"What substantive feedback was omitted from the rejected reflection, and could it fit compatible existing episodes without conflating comparison and other feedback?\"],\"kind\":\"fact\",\"brief\":\"A committed method header records rejection for incomplete episode coverage after correction, with no free slot. It supplies no authored bodies or processing vectors, so it supports a validation diagnosis only. Compatible episodes must cover missing feedback substantively; an empty projection manifest does not prove empty underlying memory.\"},{\"episode_ref\":\"episode-c0001-002\",\"source_refs\":[\"prediction_comparison:07fe9330743c41441c970db70a71466eed9579b804594e79230aa450e1024c0c\"],\"reflection\":\"At the same 2025-05-30 prediction time and outcome contract, the left original called possible surge, low confidence, 2-3x; the right called unlikely, medium confidence, no magnitude. Both Plan and canonical-context hashes changed; provider-request equivalence is unestablished. Left reasons emphasized completed acquisitions, a 51.08% 31-trading-day rise and possible offering-funded runway extension. Right reasons emphasized delayed commercialization, resale risk, neutral qualifying orders and adverse liquidity; its operating-report view omitted seven projections. Both finalized at budget exhaustion without recorded Signal execution failures. The realized maximum five-complete-trading-day adjusted-close mean over six calendar months was 3.3770028275212063 times baseline: left binary correct but magnitude underestimated; right missed both axes. Historical weighting and catalyst explanations remain hypotheses, not established causes.\",\"unresolved_questions\":[\"Which input and Plan changes explain the reversal once complete provider requests and source visibility are compared?\",\"Do prediction-time acquisition, momentum and financing measurements distinguish magnitude outcomes across independent cases?\"],\"kind\":\"fact\",\"brief\":\"Possible/2-3x became unlikely/no magnitude with changed Plan and canonical context; realized magnitude was 3-10x. The originals emphasized different evidence, and the right had partial operating-report coverage. Left direction was correct; neither magnitude was correct. Changed inputs, unknown provider requests and one case prevent model-only or causal conclusions.\"},{\"episode_ref\":\"episode-c0001-003\",\"source_refs\":[\"slow-history:source-12a50702a856ddc3:1:slow_input:feedback-939\"],\"reflection\":\"The nested imported usage event records financing_listing_action:v4 selected for financing-need coverage in a small-cap biotechnology catalyst window at 2025-09-30. Its result was neutral with sufficient coverage and document fingerprints; reflection_attribution was empty. The case outcome records a surge, realized_max_multiple=6.795183595612781 and prediction_correct=false. Under the supplied measurement contract, neutral is available but not decisive; on a positive case it belongs to the non-POSITIVE side of candidate confusion. It is not a technical execution failure or an unexplained efficacy exclusion. The event supplies neither paired aggregate measurements nor a gate result. Sufficient document coverage does not establish directional usefulness, and the failed prediction does not establish that this Signal caused the miss.\",\"unresolved_questions\":[\"What prediction-time financing evidence produced the neutral v4 result under its versioned materiality rules?\",\"Did the prediction consume this exact result, and how did it use it?\"],\"kind\":\"fact\",\"brief\":\"A financing_listing_action:v4 coverage usage returned neutral despite sufficient document coverage; the associated prediction missed a realized surge. Neutral is available, nondecisive and non-POSITIVE under the measurement contract. Empty attribution and absent paired measurements prevent causal Signal credit, technical-failure claims or any effectiveness-gate conclusion.\"}],\"lesson_additions\":[{\"lesson_id\":\"lesson-c0001-001\",\"guidance\":\"Before emitting a slot-limited Slow reflection, map every selected top-level feedback_ref to a substantive episode and check their union for complete coverage. Group compatible noncomparison units when necessary, reserving a separate episode for same-case comparisons. Nested reference-like strings are audit content, not valid episode citations. When a header reports coverage rejection but omits authored bodies and processing vectors, retain that restricted failure layer and do not infer what was processed or successfully retained. This preflight action addresses the observed validation family; it neither recovers absent research content nor demonstrates that a later correction was accepted or consumed.\",\"applicable_scope\":\"Slot-limited Slow feedback reflection and restricted imported method-header review.\",\"support_refs\":[\"slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1\",\"episode-c0001-001\"],\"counterevidence_refs\":[],\"limitations\":[\"Only a failed method header is supplied; successful repair and downstream consumption are unobserved.\",\"Comparison episodes must remain separate even when slots constrain grouping.\"],\"qualifies_refs\":[],\"challenges_refs\":[],\"kind\":\"action\",\"brief\":\"When selected feedback exceeds an initial episode grouping, verify complete top-level reference coverage and merge only compatible substantive reflections. The observed failure persisted after correction with no spare slot. Header-only evidence cannot reveal missing authored content, prove successful recovery or justify conflating comparison and unrelated feedback.\"},{\"lesson_id\":\"lesson-c0001-002\",\"guidance\":\"Route this changed-input reversal to Plan research: compare both originals, exact provider requests, source projections, Plan versions and termination conditions before attributing the change. Record binary and magnitude outcomes separately and retain contrary evidence such as commercialization delay, resale pressure and incomplete source visibility alongside acquisitions and momentum. Treat the historical underweighting and catalyst-dismissal rationales as hypotheses requiring independent tests. For any economic-factor proposal, define measurements from prediction-time evidence, preserve Signal version and materiality semantics, and test independent cases against the fixed six-month maximum-five-day-mean target. A correct binary call or realized surge alone does not validate its reasons, justify a higher ex-ante category, or demonstrate improvement.\",\"applicable_scope\":\"Cross-round same-case comparisons with changed canonical contexts or Plans, followed by Plan research and independent PIT factor evaluation.\",\"support_refs\":[\"prediction_comparison:07fe9330743c41441c970db70a71466eed9579b804594e79230aa450e1024c0c\",\"episode-c0001-002\"],\"counterevidence_refs\":[\"prediction_comparison:07fe9330743c41441c970db70a71466eed9579b804594e79230aa450e1024c0c\"],\"limitations\":[\"Only one same-case comparison is supplied, with changed canonical input and unknown provider-request differences.\",\"Seven omitted operating-report projections do not establish that useful catalysts were missed.\"],\"qualifies_refs\":[],\"challenges_refs\":[],\"kind\":\"action\",\"brief\":\"For a reversal accompanied by Plan and input changes, inspect both original evidence paths and provider requests before causal attribution. Preserve separate binary and magnitude errors plus contrary financing and coverage evidence. This case supports Plan diagnostics and independently testable PIT hypotheses, not model-only instability or proven factor weighting errors.\"},{\"lesson_id\":\"lesson-c0001-003\",\"guidance\":\"Interpret neutral Signal usage using the supplied measurement contract: it is available but nondecisive, and a positive-label case without a POSITIVE call belongs on the false-negative side of candidate confusion. A decisive/available gap can therefore reflect neutral measurements rather than sample exclusion. Keep technical execution failure distinct from domain unavailability and neutral results. Paired arms share a frozen case pool, although availability and decisive subsets can differ. Preserve each gate threshold with its stated population and leave counters in the runtime artifact. The supplied v4 usage supports this interpretation but contains no paired gate result; sufficient coverage and a missed surge cannot establish financing Signal inefficacy or causal contribution.\",\"applicable_scope\":\"Signal usage interpretation and effectiveness review where neutral results coexist with sufficient coverage or missed surge predictions.\",\"support_refs\":[\"slow-history:source-12a50702a856ddc3:1:slow_input:feedback-939\",\"episode-c0001-003\"],\"counterevidence_refs\":[],\"limitations\":[\"No aggregate effectiveness artifact, paired gate result or causal attribution is supplied.\",\"The underlying versioned financing evidence is not exposed in the usage event.\"],\"qualifies_refs\":[],\"challenges_refs\":[],\"kind\":\"action\",\"brief\":\"When a sufficiently covered Signal is neutral on a realized surge, preserve availability separately from decisiveness and candidate confusion. The v4 event provides no causal attribution or paired gate evidence. Neutral explains the population distinction; neither document coverage nor prediction failure establishes efficacy or technical malfunction.\"}]}",
+  "request_hash": "85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7",
+  "response_id": "local-85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7",
+  "usage": {
+    "accounting_tokens": 54845,
+    "agent_id": "/root/slow_feedback_role80",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "97054f9a78f4ff3dafb2d20962bd3807911e805a2a5d45b7eb05268f4d7b4d99",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "6cc71ba160a0904ef1f86ff9915a67eecb31addab89b35c5f39f1c054a2857d4",
+    "request_hash": "85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7",
+    "token_usage": null
+  }
+}

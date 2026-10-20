@@ -1,0 +1,29 @@
+{
+  "pending": {
+    "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb.json",
+    "inbox_sha256": "02357be8dee9fc4fd6d7b0b0cefd801b46c248f399e26754b5f41044193a5996",
+    "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/outbox/c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb.txt",
+    "request_hash": "c1d217e2d47453d3a37eea926e4bfe92000ba10d66a46886bd19e8dd82133ebb",
+    "stage": "slow_source_read",
+    "status": "pending"
+  },
+  "header_offer": [
+    {
+      "content_hash": "f58ea1ae6830040a8b778e321a977313ae12b84da1854fbdede00eeaf2b5579a",
+      "currently_included": false,
+      "read_bytes": 2312,
+      "ref": "slow-history:source-12a50702a856ddc3:1:slow_memory:method-header-v1"
+    }
+  ],
+  "message_sizes": [
+    2140,
+    31960
+  ],
+  "output": 512,
+  "available_count": 4493,
+  "included_count": 3,
+  "deferred_count": 4490,
+  "omitted_sources": 4380,
+  "journal_messages_match": true,
+  "receipt_count": 0
+}

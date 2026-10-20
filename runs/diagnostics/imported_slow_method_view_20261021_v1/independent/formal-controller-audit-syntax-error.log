@@ -1,0 +1,4 @@
+  File "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-audit.py", line 164
+    'Audit harness first used lesson_ref instead of actual lesson_id, then compared a tool result body with its wrapper; both initial logs remain. A third assertion initially hashed the entire raw action rather than native ledger's action/args excluding top-level rationale; its failed log also remains. Only audit code was corrected; no product operation was repeated.',
+                                                                                                                                                                                                                                      ^
+SyntaxError: invalid syntax

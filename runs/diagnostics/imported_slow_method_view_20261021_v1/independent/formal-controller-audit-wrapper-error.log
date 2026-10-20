@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-audit.py", line 98, in <module>
+    assert actual_page == page
+AssertionError

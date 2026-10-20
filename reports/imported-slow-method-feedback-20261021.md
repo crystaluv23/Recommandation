@@ -97,3 +97,79 @@ engineering MVP remain open. Ordinary quota backlog items currently do not
 reach the Controller factory; this header change does not repair that separate
 adapter gap. Pending LLM reading-interface and two financial-period policy
 decisions are not inferred from observed outputs.
+
+## Actual bounded stage after checkpoint
+
+The new formal stage ran only after checkpoint `6ad836fa683667c4a75cf46566144a8f2118125b`.
+Its [manifest](../runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/manifest.json)
+is `3a4a0e30…`;actual native fullD4493, refs/scope hashes,265-need
+backlog and original technical-control ref match the pre-answer oracle.
+All175 code bindings,4 direct source bindings and223 copied source files
+were independently checked.
+
+Six distinct fresh fork_none agents supplied exact production responses:
+three source selectors,one Reflect first answer,one Controller first answer,
+and its one allowed native invalid-action continuation. Zero external LLM API,
+Signal execution, source acquisition or global LabelStore/LockedTest use.
+Logical reservation301117 of1048576;host model tokens/fees remain unmeasured.
+
+The first selector independently chose the additive header,one comparison
+and one historical usage unit. The exact [Reflect request](../runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/85f2f68ae87dbd32bb7aa6a2e0077a1f868f9800b658f50fe2af703ba9cb9ce7.json)
+contains the full failed status/cause/provenance. Reflect first answer is
+natively accepted without correction:3 episodes/3 lessons,processed3 and
+pending4490,exact fullD partition. It distinguishes the old coverage failure,
+changed-input comparison and neutral available/nondecisive result;no causal
+Signal credit or research benefit. Independent original-material review passes.
+Author fields persist exactly;native metadata only adds the comparison layer.
+The original imported failed memory stays processed0/pending3518.
+
+Actual H1 selectors read original meta material and all6 new episode/lesson
+originals. The [current factory Controller request](../runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json)
+contains all6 briefs,complete disclosure entries and the exact new memory hash
+`603908b9…`. Its controlled page starts at259 in the full265 backlog,with the
+technical-control card first. It is controlled exposure,not autonomous search.
+
+The Controller first answer chooses a different disclosed need,
+`reflection-68eeb8eb36ca95db`,for `fast_plan_action`. Its proposed source-backed
+magnitude-band review is supported by that original need,does not force a
+higher class,and leaves effectiveness unknown. Native validation rejects the
+row rationale string:it requires a nonempty string array. No unit is written
+by this first answer. The permitted continuation is the existing no-patch
+Controller branch:choose one admissible action after the reported error.
+It does not include the failed full body or an output_patch_contract,so this
+is not claimed as a field-preserving incremental patch. A fresh exact-inbox
+agent again chooses the same Plan-action need with valid array rationales.
+The parent supplies neither previous answer nor target/expected disposition.
+
+The unmodified production sink writes exactly one [need unit](../runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/818120a4689aa17c5ba0c63a7b6b7babd0d27d73bb7e9bc614bb74ba4bfb20ab.json),
+`fast_plan_action` with empty Signal refs;pending264 of265. The stage stops
+immediately after this original sink. **The frozen technical repair-dependency
+control remains pending and is0/1,not passed.** The alternate valid task cannot
+replace it. The stage prompt offered a page with several choices but did not
+assign which one must be processed;therefore selection of another legitimate
+item is not proved model noncompliance. The acceptance driver assumed page
+exposure would force target selection. That assumption was wrong.
+
+The [sole terminal reopen](../runs/diagnostics/imported_slow_method_view_20261021_v1/root/formal-completed-verification.json)
+verifies272 sealed files plus completion byte-identically with0 new
+constructor/model/Signal/label/network entries. This is an exact completed
+module-stage reopen,not OS crash recovery or a completed Slow cycle. Completion
+status remains `native_need_unit_saved_semantics_unreviewed`;semantic evaluation
+is separate. Round/cycle pointers remain0/0 and Controller remainspartial.
+
+The evidence supports actual header→accepted reflection→actual H1 payload
+arrival and an original-source-backed alternate task→native durable sink.
+It does not establish that the new lesson caused the task selection,that the
+frozen technical target routed correctly,or that a Plan was changed/executed.
+Next clarify the stage task assignment against the same native original target
+without giving its expected answer,then review/freeze a new bounded stage if
+appropriate. Preserve this complete stage and0/1 target result. Do not replay
+it,change the oracle,swap to the easier alternate need,or start a full successor.
+
+The [final independent actual review](../runs/diagnostics/imported_slow_method_view_20261021_v1/independent/formal-controller-review.json)
+verifies all6 complete originals and briefs through the factory and both
+Controller requests,the rejected first shape,the permitted continuation,
+original raw-to-unit equality and remaining target. It independently recomputes
+301117 reservation and checks the272-file completion map. Its earlier
+read/truncation and audit-wrapper mistakes are preserved with explicit
+corrections;none caused a production rerun.

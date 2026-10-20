@@ -1,0 +1,45 @@
+{
+  "pending": {
+    "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json",
+    "inbox_sha256": "f20fbbe47e5e16a31e2cbd11400d7a7ab239d39d8964438f02375e720b62a304",
+    "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/outbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.txt",
+    "request_hash": "41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af",
+    "stage": "mining_controller_step",
+    "status": "pending"
+  },
+  "actual_memory_hash": "603908b96acf91a90bc39f3ad0e0950bfd1282d0d3bc272970962e37334e67d0",
+  "all_6_briefs_in_actual_controller_memory_view": true,
+  "controlled_target_rows": [
+    {
+      "path": "/last_action_result/result/items/0",
+      "row": {
+        "kind": "meta_reflection_action",
+        "need": "Three cases recorded signal validation failures (financing_listing_action:v5, guidance_acceleration:v3, order_confirmation_disclosed:v2) that removed forward-expectations and order-confirmation evidence from the research pass, yet all three cases were still scored and none was a technical exclusion.",
+        "need_ref": "reflection-7d08d205fe330564",
+        "read_bytes": 1122,
+        "source_hash": "5da3598de291c0409be18fb73ba0489101aea126073b63a6c9fbbd712ec3e228",
+        "source_scope": {
+          "current_dev_case_refs": [],
+          "known_source_case_count": 0,
+          "omitted_prediction_times": 0,
+          "relation": "plan_action",
+          "source_prediction_times": [],
+          "unknown_source_count": 0,
+          "unknown_source_time_count": 0
+        }
+      }
+    }
+  ],
+  "case_count": 8,
+  "label_counts": {
+    "control": 4,
+    "positive": 4
+  },
+  "prior_modality_footprints": [],
+  "message_chars": [
+    13385,
+    70697
+  ],
+  "output": 4000,
+  "system_stage_envelope_present": true
+}

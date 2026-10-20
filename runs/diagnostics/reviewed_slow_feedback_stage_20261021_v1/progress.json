@@ -1,0 +1,8 @@
+{
+  "complete_S1_S2": false,
+  "completed_cycle": 0,
+  "completed_round": 0,
+  "external_llm_api_calls": 0,
+  "module_status": "partial_running",
+  "status": "native_need_unit_saved_semantics_unreviewed"
+}

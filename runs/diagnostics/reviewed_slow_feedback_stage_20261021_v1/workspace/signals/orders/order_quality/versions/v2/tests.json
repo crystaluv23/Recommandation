@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "documents": [
+        {
+          "content": "The memorandum of understanding is non-binding.",
+          "source_type": "filing"
+        }
+      ],
+      "expected": "neutral",
+      "name": "non-binding MOU"
+    }
+  ]
+}
