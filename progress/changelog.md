@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：按已批准完整公开内容时间政策，移除Alpha transcript reportedDate+1及legacy formal Finnhub列表日/季度末两条无证明自动PIT写入；既有typed历史缺口/明确warning在provider调用前拒绝，raw client/cache、local-first与其他来源保持。旧测试曾直接断言错误clock/以单段remarks当完整内容，原反例/失败保留。232关联及独立8/8全过（精确旧版5方法失败）、socket网络tripwire0；基线copy race/selector及seal-header审计错误保原证据纠正，不算旧红或放宽产品。26原件/旧inventory、original8及旧权威/完成probe绑定全同。仅关闭错误producer边界，非完整transcript正控；KGC/FIBK三项有限取证仍unknown、0/26时间proof，proof-backed materialization及后继准入仍open。外部LLMAPI0，无新模型/原stage重入/完整后继。
+
 - 2026-10-21：不等待待决Fact schema，利用H1原context的真实taxonomy分组修len(records)>=2误报：自动关系/H1共用row-index期间/冲突selector，目录仅证存在合法pair、不默认币种duration或要求整concept唯一scalar，原12k/24concept/分母/排名和modality保持。205关联/独立12及9等价+10H1控制过，旧3红/词句期待及harness错保留；H1 system/coverage不再把所有列项说成已成pair或以缺目录证明无来源。唯一actual unbound H1用原dev8/qualified1780，1789绑定全等、24项成员/顺序/count同，观察增益0；非Engine/LLM/FactGraph/labels/GET/旧stage，不关legacy namespace/Mining/全MVP。原dirty Experience段逐字保留，只提交本任务spec hunk。
 
 - 2026-10-21：唯一7控nativeMining探针确认原0671 context19→facts0及typed小控2→0，legacy正控ratio1.2；R1仅synthetic证半年/季度错自动pair，算术正确；4135绑定/终态4文件独立全等。随后spec-first修value/val、legacy同end/UTC-PIT、parsed日期角色/basis、唯一doc-local pair、Controller当前派生索引及summary/closure/replay；原0671修后19facts逐literal全真，102关联/独立21×2及日期7控过。保原红/旧unit丢冲突期待/日期候选3红/import污染假绿，泛型compute权限不改。legacy taxonomy丢失另有实际错pair，H1 rowcount仍不等有效pair：两项open，具体可选字段/原文索引方案待用户设计选择，未改schema/启动Mining/外部LLMAPI/GET/标签/全跑，不关闭全MVP。

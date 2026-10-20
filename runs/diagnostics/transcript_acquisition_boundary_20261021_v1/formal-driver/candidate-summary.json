@@ -1,0 +1,104 @@
+{
+  "status": "candidate stable; independent acceptance review pending",
+  "problem": "Formal Finnhub producer previously accepted provider dates or quarter-end fallback plus partial text and labeled it COMPLETE_BODY without reviewed public-complete-content availability proof.",
+  "fix": "Requested transcripts with configured client now emit historical_data_unavailable warning and return[] before any provider call; disabled/missing-client skips remain silent. No proof input is added and this is incomplete capability, not transcript MVP success.",
+  "changes": [
+    "scripts/run_cold_start_formal.py:_transcript_documents_for_candidate retains signature and adds warning guard.",
+    "Removed four transcript-only helpers after repo Python/Markdown usage search found no other source/test consumers.",
+    "tests/test_formal_transcript_availability.py7synthetic actual producer controls."
+  ],
+  "validation": {
+    "old_actual_counterexamples": {
+      "date_partial_accepted": 1,
+      "quarter_end_partial_accepted": 1,
+      "both_marked_complete_body": true,
+      "file": "old-provider-counterexamples.json"
+    },
+    "old_same_test_bytes": {
+      "tests": 7,
+      "failures": 5,
+      "exit_code": 1
+    },
+    "candidate_same_test_bytes": {
+      "tests": 7,
+      "failures": 0,
+      "exit_code": 0
+    },
+    "existing_context_tests": {
+      "tests": 2,
+      "failures": 0,
+      "names": [
+        "ColdStartSignalTests.test_formal_context_fetch_merges_provider_and_web_evidence",
+        "ColdStartSignalTests.test_formal_filing_acquisition_preserves_complete_source_body"
+      ]
+    },
+    "lint_repo": "PASS; own lint.log read",
+    "pre_push_log": "Existing .lint-feedback/pre-push-last.log also read; not attributed as a newly invoked pre-push hook.",
+    "removed_helper_recheck": "No remaining matches in scripts/src/tests/spec."
+  },
+  "bindings": [
+    {
+      "path": "scripts/run_cold_start_formal.py",
+      "sha256": "34d6336e3b4649cb05add2ccccfe11e4bce7ee228183d553bd67fec061e1b722"
+    },
+    {
+      "path": "tests/test_formal_transcript_availability.py",
+      "sha256": "c87a4a02b26793c5a34a5a1568b60317e4a8780f78f7bb90f79887980881431d"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/cold_start.md",
+      "sha256": "dafa28d6a0e3d4922bcb106a5d5f59c10bbfa77d459a5dc90d5bb4ef50b3f36d"
+    }
+  ],
+  "old_product_sha256": "4b3aa81b8536a9f73a427691222fdbe5095e00fa8f22eeb9839413dd1d25665f",
+  "test_sha256_before_after_equal": true,
+  "scope": {
+    "network_calls": 0,
+    "model_calls": 0,
+    "research_or_source_migration": 0,
+    "research_labels_read": 0,
+    "old_stage_reentry": 0,
+    "raw_FinnhubClient_changes": 0,
+    "cache_or_historical_artifact_changes": 0,
+    "commits_by_driver": 0
+  },
+  "limitations": [
+    "No reviewed transcript proof ingress is implemented for formal collection; transcripts remain unavailable.",
+    "Other context validation is existing synthetic integration, not real source acquisition or full formal research.",
+    "No inventory, source original, oracle, old run or successor manifest migrated."
+  ],
+  "evidence_files": [
+    {
+      "path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/before-binding.json",
+      "sha256": "4db8b5eea7c5d9a06c744b47f36e2c3b096ed06f228afc675ffe355f7cf4d7c2"
+    },
+    {
+      "path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/before-run_cold_start_formal.py.txt",
+      "sha256": "4b3aa81b8536a9f73a427691222fdbe5095e00fa8f22eeb9839413dd1d25665f"
+    },
+    {
+      "path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/existing-context-tests.log",
+      "sha256": "358524e358ca9b6ab49e8f9925fd4b78e6f9b70e6d84be2180f9ee7e9e476b24"
+    },
+    {
+      "path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/focused-tests.log",
+      "sha256": "07be6fd768f95fb8e45a9df4ccf735c3b02ef559cbbb6a66390f2c10eadd2d48"
+    },
+    {
+      "path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/lint.log",
+      "sha256": "347a7935534b14a1069e76580b7b7ac37455c40314cc5063375fed0b0af4294c"
+    },
+    {
+      "path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/old-provider-counterexamples.json",
+      "sha256": "610da900c4ec0dc45fa0d78e78ed265168e5d1f2ce22645b01b6e120e4b88277"
+    },
+    {
+      "path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/old-red-summary.json",
+      "sha256": "6d00e42ad8bbf967840a1a39e7476176474fe5554d326a093d888d09fb53d96b"
+    },
+    {
+      "path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/old-red-tests.log",
+      "sha256": "ace6017464626dcb4ae9adcd1dc48b506c2185ecbf98eb6443105216b8cab8a7"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "head": "b506fa787ad8250b1412e8b8cfe4330990549ccc",
+  "original_user_delta": {
+    "runs/cold_start/minimal_rounds_v151/fast_summary.json": "441c565efda31b60453837ce8d405a951bcc19f6c8691604a3abc18710475c77",
+    "runs/cold_start/minimal_rounds_v151/fast_trajectories.json": "4734ab1a71ee3c20231e38a860e8176bdc4976816c8019d674cd887b144dd140",
+    "spec/architecture.md": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1",
+    "spec/src/stock_opportunity_agent/memory/knowledge.md": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba",
+    "spec/src/stock_opportunity_agent/research/evolution_control.md": "6551ca4ccffe2aaedb72d967d1905a40bd214206d93f794f3b73720c89222c83",
+    "spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b",
+    "spec/src/stock_opportunity_agent/research/plan_evolution.md": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e",
+    "spec/src/stock_opportunity_agent/research/signal_evolution.md": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08"
+  },
+  "frozen_inventory": {
+    "reports/transcript-proof-inventory-20261019.json": "c998c06077fc2bed98ea8db29073d6981c00a66fa8974ecdddf3175bcfee8256",
+    "reports/transcript-availability-correction-preview-20261007.json": "b092bf127fadd2b9ec6edfafbb00c4b01a0dd2211bc44f881130092ff88f4fbe"
+  },
+  "scope": "new automatic acquisition producer guard only; no admission/migration/model/old-stage entry"
+}

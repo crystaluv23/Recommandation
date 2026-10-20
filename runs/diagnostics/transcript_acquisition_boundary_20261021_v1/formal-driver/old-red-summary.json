@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_formal_transcript_availability",
+    "-v"
+  ],
+  "exit_code": 1,
+  "test_sha256": "c87a4a02b26793c5a34a5a1568b60317e4a8780f78f7bb90f79887980881431d",
+  "product_sha256": "4b3aa81b8536a9f73a427691222fdbe5095e00fa8f22eeb9839413dd1d25665f"
+}

@@ -1,0 +1,33 @@
+{
+  "command": [
+    "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/driver/run-focused.py"
+  ],
+  "selectors": [
+    "tests.test_transcript_acquisition_boundary",
+    "tests.test_data_resolution.EvidenceResolverTests.test_transcript_adapter_rejects_calendar_as_public_content_proof",
+    "tests.test_evolution_control.RunControlTests.test_runtime_exposes_authorized_transcript_adapter"
+  ],
+  "tests_run": 10,
+  "failures": 0,
+  "errors": 0,
+  "forbidden": [],
+  "bindings": [
+    {
+      "path": "src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "7f7298d90e21b00cfd4fdfd095e116167c20e1136826b23754d1c9a729004270"
+    },
+    {
+      "path": "tests/test_data_resolution.py",
+      "sha256": "26b9ba4727451e6a88e2dae11dd8ab9b2cd758e0d73731e77f53598b0b621cc1"
+    },
+    {
+      "path": "tests/test_evolution_control.py",
+      "sha256": "0caeb0fdb1e5e6d984863d29c3a879804f84ee8d831626277e1eea1007fd6949"
+    },
+    {
+      "path": "tests/test_transcript_acquisition_boundary.py",
+      "sha256": "1d1369c7be3bef19b997c11893de14da32e47e458ba66075c8ae4a116f578b8f"
+    }
+  ],
+  "limits": "Only unsafe automatic production blocked; raw client cache/local reads are not public-time admission proof. 26 unknown originals unchanged. Proof-backed transcript capability remains open."
+}

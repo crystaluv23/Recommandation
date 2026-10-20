@@ -1,0 +1,8 @@
+{
+  "head": "b506fa787ad8250b1412e8b8cfe4330990549ccc",
+  "product_path": "scripts/run_cold_start_formal.py",
+  "product_sha256": "4b3aa81b8536a9f73a427691222fdbe5095e00fa8f22eeb9839413dd1d25665f",
+  "owning_spec_path": "spec/src/stock_opportunity_agent/research/cold_start.md",
+  "owning_spec_sha256": "dafa28d6a0e3d4922bcb106a5d5f59c10bbfa77d459a5dc90d5bb4ef50b3f36d",
+  "whole_repo_helper_use_search": "rg symbols across repo Python/Markdown found only definitions and calls in this formal script; no other source/test consumers. Raw FinnhubClient is untouched."
+}

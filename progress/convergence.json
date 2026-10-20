@@ -195,7 +195,8 @@
         "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/readability-preflight.json",
         "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-actual-review.json",
         "runs/diagnostics/imported_feedback_readability_20261021_v1/result.json",
-        "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json"
+        "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json",
+        "reports/transcript-acquisition-boundary-20261021.md"
       ],
       "remaining": "Engineering content chain remains local/open. Actual currentv12 financial9 has6strictpasses/1prior original-row alternative mismatch/2definition-policyunknown;7numeric/state/unit/currentperiod match source oracle,9projections exact, completedrestore24bytes preserved, not fresh model consumption. Bounded lexical selection fails latest/comparison/currency/conflict witnesses; no callback installed, native LLM bounded-reading design pending. Typed reader local repair63associated/13independent holds; historicalv6 unchanged. FreshF7 temporal target3of3 and downstream/restores narrow, original0of1 preserved/mirrorunexercised; priorp01 auxiliary atomic quarantine is authorized, unavailable topic/provenance guard locally repaired282/31 but fresh behavior unverified. S5 independent tests-author2of2 is not Mining/newmeasurement implementation. Original40 readiness670of720 each/BasicInfoallpartial/newsunknown;BURUbaseline/FTItype/MSclock/26transcriptpublictimeproof remain. F10/Slowfeedback/direction+magnitude discovery/admission/exactreuse/wholeloop unverified. No benefit claim. Historical Registry metadata reader locally repaired at5source/materialization checks and typedversion producer/consumer authorities,65associated/10independent controls pass; freshcapabilityaudit preserved. Corrected realhistoryexport/validate/materialization now succeeds with228byte-identical completedfiles and210unchangedsource reads; no freshS1/S2memory/taskconsumption. Importedfailure summary expected847019bytes exceeds64KB; actual imported producer/64KB reader confirms failedunit847019bytes is whole_entry_budget;3531importunits are not full S1 denominator. Readable history is not current executable capability."
     },
@@ -1401,10 +1402,29 @@
         "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/user-delta-preservation.json"
       ],
       "result": "H1 has taxonomy inoriginalcontext,so itslenrecords gate canberepaired independently ofpendingFactschema. Sharedprivaterow-indexselector provesgroup-local latest/nearestcomparable operand uniqueness;H1counts existentialpair,notuniqueconceptscalar/defaultduration. No allcohortFactGraph/publicschema/modality/cap/sampling/scorechange.205associated tests pass with0network/researchLabelStore;oneoldphraseassert updatedtoexplicitcount/uniqueness/omissionobligations,originalredretained. Independent12 controls pass vs3oldfail;specific9relationoutput/ID equivalence and10syntheticH1controls pass. Sole actualH1 unboundmethod usesoriginaldev8metadata/qualified1780,1789before-after/current bindings exact,24rows/order/count unchanged,onlycoverage_notecorrected;observedcoveragegain0.0Engine/LLM/GET/LabelStore/oldstageentry. Proveslocal deterministiccatalog correctness/preservation,notfreshroleconsumption,newmeasurement or wholeMVP. LegacyFactnamespace falsepair remains pendinguserchoice;originaluserExperience suffix preserved/task-onlyspecindex."
+    },
+    {
+      "id": "engineering-mvp-transcript-acquisition-boundary-20261021",
+      "strategy": "remove_unproved_transcript_publication_clocks_at_automatic_producers",
+      "failure_families": [
+        "earnings_report_date_misused_as_complete_transcript_public_time",
+        "provider_list_date_or_quarter_end_misused_as_complete_conference_public_time"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/transcript-acquisition-boundary-20261021.md",
+        "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/associated-result.json",
+        "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/original26-preservation.json",
+        "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/final-preservation.json",
+        "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/source-only-expectations.json",
+        "runs/diagnostics/transcript_public_content_time_20261021_v1/independent/source-only-standards.json",
+        "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/final-review.json"
+      ],
+      "result": "Spec-first local guard removes Alpha reportedDate+1 and legacy formal Finnhub list-date/quarter-end materialization. Both have no reviewed public-content proof input; typed historical_data_unavailable or explicit warning occurs before provider calls. Original raw clients/cache and local-first/independent source routes preserved.232 associated tests pass with0socket network attempts and unchanged code/test bindings; not actual public-time proof, fresh model behavior or substantive transcript capability positive control. All26 original file/content bindings and frozen inventory unchanged;3 source-reviewed targets still unknown, remaining23 not newly body-reviewed. Original8 user deltas and6 prior authority/completed-probe bindings preserved. Broader content chain, new Signal reuse and MVP remain open. Independent8of8 candidate controls pass versus5failed methods/9subcases on exact old Git versions; raw Alpha/Finnhub client-cache-reopen preservation verified. Initial baseline-copy race, wrong focused class selector and seal-header harness errors preserved, not counted as product acceptance."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-h1-period-pair-catalog-20261021",
+    "after_iteration": "engineering-mvp-transcript-acquisition-boundary-20261021",
     "evidence": [
       "reports/imported-slow-method-feedback-20261021.md",
       "runs/diagnostics/assigned_slow_target_20261021_v1/stage/manifest.json",
@@ -1433,7 +1453,14 @@
       "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/native/result.json",
       "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/actual-native-review.json",
       "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/final-associated-tests.log",
-      "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/user-delta-preservation.json"
+      "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/user-delta-preservation.json",
+      "reports/transcript-acquisition-boundary-20261021.md",
+      "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/associated-result.json",
+      "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/original26-preservation.json",
+      "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/final-preservation.json",
+      "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/source-only-expectations.json",
+      "runs/diagnostics/transcript_public_content_time_20261021_v1/independent/source-only-standards.json",
+      "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/final-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1518,14 +1545,21 @@
       "The F5 typed facts-array repair reached model projection but Mining has a separate consumer requiring parsed[val],while real approved source rows use value. Native value-free manifest uses the shared readable projection and counts records>=2 as comparable;it can therefore advertise concepts absent from actual Mining facts or overstate pair certainty. Source presence,default selection order and fact-role assignment need separate probes. Do not fix the val name alone and then label every retained second latest-end alternative a comparable prior;actual duration examples and fixed source identities must survive. This is a static seam diagnosis,not an observed native zero-fact or wrong-relation result.",
       "The frozen native probe now isolates actual value-only context19 to zero Mining facts, not absence of materials. Legacy two-record fixtures bypassed producer shape and made positional roles appear correct;source-only diagnosis is superseded by native evidence,while real typed wrongpairs remain unexecuted. Legacy producer end-only dedup and downstream role dictionaries require the same family repair,not a one-line value fallback.",
       "Parsed dates must drive both chronological order and basis identity:correcting max alone leaves calendar-equivalent spellings split. An independent old-snapshot harness also accidentally retained preloadedcurrentmodules;actual module __file__/hash proof is necessary. Legacy row literals erase namespace even within one document,so doc-local pairing cannot close semantic identity without provenance field or explicit original-document index. H1 counts>=2 isanother unchecked consumer and not pairproof.",
-      "H1 already retains taxonomy in its original context,so coupling its recordcount repair to a pendingFactschema choice was unnecessarily blocking independent authorized work. Catalog comparability is existence of one unambiguous periodpair,notunique wholeconcept measurement;requiring the latter would wrongly narrow direction/magnitude input capability. Shared rowselector prevents divergent arithmetic/period criteria without materializing the full EvidenceGraph. Actualnative dev8 counts unchanged;do not turn counterexample repair into measuredcoveragegain or modelcompliance."
+      "H1 already retains taxonomy in its original context,so coupling its recordcount repair to a pendingFactschema choice was unnecessarily blocking independent authorized work. Catalog comparability is existence of one unambiguous periodpair,notunique wholeconcept measurement;requiring the latter would wrongly narrow direction/magnitude input capability. Shared rowselector prevents divergent arithmetic/period criteria without materializing the full EvidenceGraph. Actualnative dev8 counts unchanged;do not turn counterexample repair into measuredcoveragegain or modelcompliance.",
+      "The original transcript test asserted the same earnings-calendar publication proxy as the producer and treated a single management remark as sufficient; it never proved full public conference content or its clock. A second legacy formal producer also substituted provider list dates or quarter ends, so checking only the active RawInfo adapter would leave the same family elsewhere.",
+      "A fail-closed unsupported producer does not satisfy the normal transcript capability. Existing local-source positives prove preservation only and cannot endorse legacy clocks; retain0of26 verified public-content proofs and explicit successor exclusions until independent source evidence and proof-backed materialization are implemented."
     ],
     "decision": {
-      "acceptance_id": "new_magnitude_reuse",
-      "kind": "human_decision",
-      "strategy": "explicit_namespace_provenance_before_mining_capability",
-      "action": "H1context-level comparablecount is now independently repaired/verified withoutnewFactschema. Outstanding userchoice remains optional EvidenceFact taxonomy from existingcontext(recommended) versusexplicitoriginal-document namespaceindex. Implementselected provenance in spec order and verify knownsame-doc crossnamespacefalsepair plus downstreambefore nextnativeMiningcapabilitystage. Preserve unchangedactualdev8catalog counts and donotclaimcoveragegain.",
-      "stop": "Do notinferananswerfromtimeout;no newFactfield/interface beforechoice,namespacedefault/hiddenmetadata/defaultcurrency/duration/sourcepriority. No freshnativeMining/fullsuccessor orbenefitclaim while knownFactnamespacefalsepair remains;oldstages/source/failuredenominatorsimmutable."
+      "acceptance_id": "content_chain",
+      "kind": "diagnose",
+      "strategy": "first_party_historical_event_replay_metadata_proof",
+      "question": "Can the newly located correct FIBK IR historical event/replay metadata independently establish complete public content and its historical UTC boundary for one of the fixed26 records?",
+      "pass": "First-party actual event/replay content can be bound to issuer/fiscal/body identity and proves completion/public availability before a precise UTC boundary.",
+      "fail": "Only schedules, prospective replay promises, current modified content or missing replay metadata are available.",
+      "on_pass": "Preserve original records; prepare proof-bound materialization and explicit reviewed successor exclusions with normal capability controls before admission. Do not launch a full successor.",
+      "on_fail": "Keep the individual records unknown, stop that bounded metadata strategy and move to another distinct prerequisite; do not substitute earnings dates or increase attempts until one happens to pass.",
+      "action": "Inspect at most4 exact historical event/replay navigation targets through the correct first-party FIBK IR entry, no external LLM API or model stage. Keep all26 denominator and accepted proof0 unless actual sufficient evidence is obtained. Pending bounded-reading/financial-definition/Fact-taxonomy choices remain unanswered and are not inferred.",
+      "stop": "Stop after4 navigation attempts or if only prospective announcements are available; no full successor, old-stage reentry, source rewrite or proofless publication. Do not present this producer guard as complete transcript support."
     }
   },
   "successor_prerequisites": [

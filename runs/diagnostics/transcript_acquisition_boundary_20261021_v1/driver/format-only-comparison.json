@@ -1,0 +1,5 @@
+{
+  "before_sha256": "1d1369c7be3bef19b997c11893de14da32e47e458ba66075c8ae4a116f578b8f",
+  "after_sha256": "ed9df43518415c560601c715d2290cfd87b8fb7f084a32bd214c5c4d42d6c699",
+  "behavioral_ast_equal_excluding_docstrings": true
+}

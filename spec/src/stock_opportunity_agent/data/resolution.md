@@ -268,8 +268,15 @@ Unknown completion, UTC boundary, availability or fiscal mapping leaves only
 that record unavailable; other verified sources remain eligible. Corrections
 must use new document IDs, original hash/evidence lineage and an explicit
 successor manifest exclusion of superseded records; retain all originals and
-completed-run inputs. The historical adapter's reported-date clock is known
-noncompliant pending the corresponding proof and snapshot implementation.
+completed-run inputs. The automatic historical transcript adapter has no
+reviewed public-content proof input. It must reject acquisition with the
+existing `historical_data_unavailable` gap before provider calls; it must not
+use the earnings calendar, provider quarter, retrieval time or cutoff as a
+substitute clock. The provider raw-client/cache interface and local-first
+resolution remain available, without rewriting or newly endorsing old local
+documents. This closes only the unsafe automatic producer. Proof-backed
+materialization, reviewed successor exclusions and a substantive transcript
+capability positive control remain required before transcript support closes.
 
 Adapter routing may deterministically recover the SEC identifier from a
 canonical `company_id` shaped as `cik_##########` when the label-free case

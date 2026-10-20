@@ -1,0 +1,95 @@
+{
+  "status": "PASS_LOCAL_PROOFLESS_MATERIALIZATION_BOUNDARY_NOT_TRANSCRIPT_QUALIFICATION",
+  "candidate_bindings": {
+    "src/stock_opportunity_agent/data/acquisition.py": "7f7298d90e21b00cfd4fdfd095e116167c20e1136826b23754d1c9a729004270",
+    "scripts/run_cold_start_formal.py": "34d6336e3b4649cb05add2ccccfe11e4bce7ee228183d553bd67fec061e1b722"
+  },
+  "unchanged_raw_interface_and_resolver_factory_bindings": {
+    "src/stock_opportunity_agent/data/sources/alpha_vantage.py": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0",
+    "src/stock_opportunity_agent/data/sources/finnhub.py": "74dfda1e717b168ad6bb9764a266cb9cf0c2327261bdaec8b08680207f62efa2",
+    "src/stock_opportunity_agent/data/sources/state.py": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c",
+    "src/stock_opportunity_agent/data/resolution.py": "bc3eaae3e96cec370ed0094a9a51d5928e181f5c2a40b22faf0557083ce28ae0",
+    "src/stock_opportunity_agent/research/evolution_control.py": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d"
+  },
+  "independent_results": {
+    "test_methods": 8,
+    "candidate_passed": 8,
+    "exact_old_baseline_passed_methods": 3,
+    "exact_old_failed_methods": 5,
+    "exact_old_failure_assertions_or_subcases": 9,
+    "exact_old_errors": 0
+  },
+  "confirmed": [
+    "All three Alpha transcript aliases and missing-client/identity boundary reject with HISTORICAL_DATA_UNAVAILABLE before provider methods; ad hoc identity proof flags cannot override.",
+    "Native generic resolver/factory persist a typed historical gap, not provider_no_data/provider_error. available=False is introspection; first resolve still reserves one provider-level request under existing semantics and repeated same failure is memoized with no further reservation.",
+    "Synthetic local eligible transcript is consumable without acquisition, future local source excluded, disabled policy remains external_not_authorized. None is claimed a real public-content proof.",
+    "Generic request can still resolve an independently supplied filing fallback; transcript gap does not mean economic absence or disable other source families.",
+    "Legacy formal provider date and calendar-quarter-end each previously materialized a partial body as COMPLETE_BODY; candidate returns no DocumentRecord and never calls list/body clients.",
+    "Real AlphaVantageClient/FinnhubClient -> ManagedHttpTransport -> RawDataCache -> freshly reopened native cache/client path preserves complete JSON dictionaries and transcript arrays. Only innermost HTTP is fake; neither client nor cache is mocked.",
+    "Alpha raw path: one fake HTTP get on initial call, zero on reopened call, ledger fetched/cache_hit. Finnhub list+body: two fake gets then zero, two fetched/two cache_hit. Cache file bytes remain identical on hits; dummy token absent from ledger.",
+    "Raw source clients/state, resolver and production factory bytes remain identical to HEAD. Original26 records and inventory remain hash-exact, proofs accepted still0."
+  ],
+  "harness_correction": {
+    "first_log": "original-independent-tests.log",
+    "cause": "Concurrent writer update occurred between earlier source read and snapshot copy: original-acquisition.py.txt is actually candidate7f729, not old882f. That first Alpha7-green result is not old-source evidence.",
+    "corrected_old": "Saved Git HEAD original-882f-acquisition.py.txt is exact882f; legacy original copy is exact4b3. Explicit isolated loaders use those two pinned files; no shared source replacement. Exact old run has9 assertion/subcase failures across5methods.",
+    "seal_harness_note": "First stdlib seal check searched ERROR: anywhere and matched DataGapReason.PROVIDER_ERROR enum text inside an expected assertion; corrected to line-anchored unittest ERROR header, original seal log retained. No product/test rerun.",
+    "candidate_factory": "Candidate temporary factory alias patch supplies the identical native Adapter class; old mode supplies pinned old Adapter to the otherwise unchanged native factory. No provider client/cache/resolve algorithm is mocked."
+  },
+  "limits": [
+    "This blocks unsound automatic historical transcript materialization; it neither establishes first-party completion/publication time nor admits any of the original26.",
+    "No new proof interface, historical migration, global append, real stage, fresh model/GET/Signal/LabelStore or research claim. Raw HTTP response bytes are not simulated here; complete parsed JSON and native persisted-cache bytes are verified.",
+    "Factory credentials absent may still report existing configuration unavailability; external authorization precedence is unchanged.",
+    "Guarded fake HTTP tests are local wiring/compatibility evidence, not actual API/provider availability."
+  ],
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/test_independent_boundary.py",
+      "sha256": "d6c280922e13aa2e628be98f249626c19c94e3b64866ac1d45e98ac07368a1ec"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/candidate-independent-tests.log",
+      "sha256": "5375912a487a681dbe3211d8100ed3a38e3b85e316631d7c891f8c8b7d89e226"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-verified-independent-tests.log",
+      "sha256": "6cffeac8446aab75c20711a812ecb374720374f0028296d4ee25f4993e76e055"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-independent-tests.log",
+      "sha256": "e874ce7e3045a2ec33183d6d69a27452c7d5684701c56fb8f0e7452ff5425dd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-acquisition.py.txt",
+      "sha256": "7f7298d90e21b00cfd4fdfd095e116167c20e1136826b23754d1c9a729004270"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-882f-acquisition.py.txt",
+      "sha256": "882f765da65b3352cb638290378b1bebb5d7afaee4f656c9664d10b4a4eaf092"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-run_cold_start_formal.py.txt",
+      "sha256": "4b3aa81b8536a9f73a427691222fdbe5095e00fa8f22eeb9839413dd1d25665f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/before-baseline-binding-test.py.txt",
+      "sha256": "7f7d57f94f209f1670c035bbb4234988ca90a0cc2074dd776d5ddf5e69e10935"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/source-only-expectations.json",
+      "sha256": "cfea195b1ee18c5144d45ed03fcfd8e532b003940455c9d93fc2b0f9b95a86fc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/final-review-build.py",
+      "sha256": "b7d90cfeda575395ea765c015b804455fba88881a7293b71cc8b80d6b666b6a5"
+    }
+  ],
+  "original_inventory_binding": {
+    "path": "/Users/l/Project/Recommandation/reports/transcript-proof-inventory-20261019.json",
+    "sha256": "c998c06077fc2bed98ea8db29073d6981c00a66fa8974ecdddf3175bcfee8256"
+  },
+  "commands": {
+    "old": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. TRANSCRIPT_REVIEW_ORIGINAL=1 python3.12 /Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/test_independent_boundary.py",
+    "candidate": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. python3.12 /Users/l/Project/Recommandation/runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/test_independent_boundary.py"
+  }
+}

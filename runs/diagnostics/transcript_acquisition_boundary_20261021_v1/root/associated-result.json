@@ -1,0 +1,24 @@
+{
+  "modules": [
+    "tests.test_transcript_acquisition_boundary",
+    "tests.test_formal_transcript_availability",
+    "tests.test_data_resolution",
+    "tests.test_evolution_control",
+    "tests.test_data",
+    "tests.test_cold_start",
+    "tests.test_provider_response_boundary"
+  ],
+  "tests_run": 232,
+  "failures": 0,
+  "errors": 0,
+  "network_attempts": 0,
+  "source_bindings": {
+    "src/stock_opportunity_agent/data/acquisition.py": "7f7298d90e21b00cfd4fdfd095e116167c20e1136826b23754d1c9a729004270",
+    "scripts/run_cold_start_formal.py": "34d6336e3b4649cb05add2ccccfe11e4bce7ee228183d553bd67fec061e1b722",
+    "tests/test_transcript_acquisition_boundary.py": "ed9df43518415c560601c715d2290cfd87b8fb7f084a32bd214c5c4d42d6c699",
+    "tests/test_formal_transcript_availability.py": "c87a4a02b26793c5a34a5a1568b60317e4a8780f78f7bb90f79887980881431d",
+    "tests/test_data_resolution.py": "26b9ba4727451e6a88e2dae11dd8ab9b2cd758e0d73731e77f53598b0b621cc1",
+    "tests/test_evolution_control.py": "0caeb0fdb1e5e6d984863d29c3a879804f84ee8d831626277e1eea1007fd6949"
+  },
+  "scope": "Local producer/consumer tests only; no proof admission, production role or full successor"
+}

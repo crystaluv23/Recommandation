@@ -1,0 +1,17 @@
+{
+  "revision": "b506fa787ad8250b1412e8b8cfe4330990549ccc",
+  "bindings": [
+    {
+      "path": "src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "882f765da65b3352cb638290378b1bebb5d7afaee4f656c9664d10b4a4eaf092"
+    },
+    {
+      "path": "tests/test_data_resolution.py",
+      "sha256": "8b1d3e9e28d3c19035bc8ecf9a4a96c6101a23627921b2e7d77a5871198f19cf"
+    },
+    {
+      "path": "tests/test_evolution_control.py",
+      "sha256": "2116d6d63fa4010bccccb77459dd671540e4eadf41d9c98143e7792eab230b12"
+    }
+  ]
+}

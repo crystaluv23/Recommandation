@@ -374,11 +374,13 @@ class FinnhubNewsAdapter:
 
 
 class AlphaVantageTranscriptAdapter:
-    """Materialize complete historical transcripts with report-date lineage."""
+    """Describe transcript routing while unreviewed public-time proof is absent."""
 
     provider = "alpha_vantage"
     source_types = ("earnings_call", "transcript", "earnings_transcript")
     capabilities = ("transcripts",)
+    available = False
+    unavailability_reason = "historical_data_unavailable"
 
     def __init__(self, client: Any) -> None:
         self.client = client
@@ -391,89 +393,12 @@ class AlphaVantageTranscriptAdapter:
         identity: Mapping[str, Any],
         as_of: datetime,
     ) -> AcquisitionResult:
-        cursor = _event_cursor(self.client)
-        symbol = _identity_value(identity, "ticker", "symbol").upper()
-        earnings = self.client.earnings(symbol)
-        earnings_content = _canonical_json(earnings)
-        retrieved_at = datetime.now(timezone.utc)
-        raw_document = RawInfoDocument.create(
-            document_id=_document_id(
-                self.provider,
-                company_id,
-                "alpha_vantage_earnings_raw_response",
-                earnings_content,
-            ),
-            company_id=company_id,
-            source_type="alpha_vantage_earnings_raw_response",
-            published_at=retrieved_at,
-            available_at=retrieved_at,
-            content=earnings_content,
-            metadata={"provider": self.provider, "symbol": symbol},
-        )
-        lower = as_of - timedelta(days=request.lookback_days or 730)
-        eligible = [
-            item
-            for item in _alpha_fiscal_quarters(earnings)
-            if lower <= item[2] <= as_of
-        ]
-        eligible.sort(key=lambda item: (item[2], item[0]), reverse=True)
-        source_type = _first_supported(request.source_types, self.source_types)
-        documents: list[RawInfoDocument] = [raw_document]
-        transcript_limit = min(request.max_documents, 2)
-        failures: list[str] = []
-        for quarter, fiscal_end, available in eligible[: transcript_limit + 2]:
-            if len(documents) - 1 >= transcript_limit:
-                break
-            try:
-                raw = self.client.earnings_call_transcript(symbol, quarter)
-            except DataQuotaDeferred:
-                raise
-            except Exception as exc:
-                failures.append(type(exc).__name__)
-                continue
-            turns = raw.get("transcript", ()) if isinstance(raw, Mapping) else ()
-            valid_turns = [
-                item
-                for item in turns
-                if isinstance(item, Mapping) and str(item.get("content", "")).strip()
-            ]
-            if (
-                str(raw.get("symbol", "")).upper() != symbol
-                or str(raw.get("quarter", "")) != quarter
-                or not valid_turns
-            ):
-                failures.append("invalid_transcript_payload")
-                continue
-            content = _canonical_json(raw)
-            documents.append(
-                RawInfoDocument.create(
-                    document_id=_document_id(
-                        self.provider, company_id, source_type, content
-                    ),
-                    company_id=company_id,
-                    source_type=source_type,
-                    published_at=available - timedelta(days=1),
-                    available_at=available,
-                    content=content,
-                    metadata={
-                        "provider": self.provider,
-                        "symbol": symbol,
-                        "quarter": quarter,
-                        "fiscal_date_ending": fiscal_end.isoformat(),
-                        "reported_date": (available - timedelta(days=1)).date().isoformat(),
-                    },
-                )
-            )
-        if len(documents) == 1 and failures:
-            raise AcquisitionFailure(
-                DataGapReason.PROVIDER_ERROR,
-                "Alpha Vantage transcripts were unavailable for eligible fiscal "
-                "quarters: "
-                + ", ".join(failures),
-            )
-        return AcquisitionResult(
-            documents=tuple(documents),
-            events=_provider_events(self.client, cursor),
+        """Fail before provider I/O; dates and quarter echoes are not proof."""
+        raise AcquisitionFailure(
+            DataGapReason.HISTORICAL_DATA_UNAVAILABLE,
+            "Transcript materialization requires reviewed complete public-content "
+            "availability proof; provider earnings dates and quarter echoes "
+            "cannot supply that historical clock.",
         )
 
 
@@ -656,51 +581,6 @@ def _alpha_datetime(value: Any) -> datetime | None:
         except ValueError:
             pass
     return None
-
-
-def _alpha_fiscal_quarters(
-    raw: Mapping[str, Any],
-) -> tuple[tuple[str, date, datetime], ...]:
-    """Map Alpha fiscal period ends to quarter labels and conservative availability."""
-
-    annual_ends = sorted(
-        {
-            parsed
-            for item in raw.get("annualEarnings", ())
-            if isinstance(item, Mapping)
-            if (parsed := _iso_date(item.get("fiscalDateEnding"))) is not None
-        }
-    )
-    quarterly: dict[date, date] = {}
-    for item in raw.get("quarterlyEarnings", ()):
-        if not isinstance(item, Mapping):
-            continue
-        fiscal_end = _iso_date(item.get("fiscalDateEnding"))
-        reported = _iso_date(item.get("reportedDate"))
-        if fiscal_end is not None and reported is not None:
-            quarterly[fiscal_end] = reported
-    values: list[tuple[str, date, datetime]] = []
-    previous_annual: date | None = None
-    for annual_end in annual_ends:
-        period_ends = sorted(
-            item
-            for item in quarterly
-            if (previous_annual is None or item > previous_annual)
-            and item <= annual_end
-            and (annual_end - item).days <= 380
-        )
-        if len(period_ends) == 4:
-            for index, fiscal_end in enumerate(period_ends, start=1):
-                reported = quarterly[fiscal_end]
-                values.append(
-                    (
-                        f"{annual_end.year}Q{index}",
-                        fiscal_end,
-                        _midnight(reported + timedelta(days=1)),
-                    )
-                )
-        previous_annual = annual_end
-    return tuple(values)
 
 
 def _iso_date(value: Any) -> date | None:

@@ -1,0 +1,94 @@
+{
+  "status": "FROZEN_READONLY_PREIMPLEMENTATION_EXPECTATIONS_NOT_EXECUTED",
+  "policy": "Reviewed first-party issuer/fiscal-period/full-public-content identity plus established publication instant, or completed call and full public content before next UTC midnight. Report date, planned start, fetch time and now-online are insufficient.",
+  "denominator": {
+    "original_transcripts": 26,
+    "proofs_accepted": 0,
+    "original_bytes_match": 26,
+    "preview": "Historical proposal only; no corrected records admitted."
+  },
+  "proposed_guard_scope": "Stop automatic AlphaVantageTranscriptAdapter materialization until an authorized complete-public-content proof interface exists. No new provenance interface/policy is invented by this local guard.",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "882f765da65b3352cb638290378b1bebb5d7afaee4f656c9664d10b4a4eaf092"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "bc3eaae3e96cec370ed0094a9a51d5928e181f5c2a40b22faf0557083ce28ae0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/alpha_vantage.py",
+      "sha256": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_cold_start_formal.py",
+      "sha256": "4b3aa81b8536a9f73a427691222fdbe5095e00fa8f22eeb9839413dd1d25665f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_data_resolution.py",
+      "sha256": "8b1d3e9e28d3c19035bc8ecf9a4a96c6101a23627921b2e7d77a5871198f19cf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_evolution_control.py",
+      "sha256": "2116d6d63fa4010bccccb77459dd671540e4eadf41d9c98143e7792eab230b12"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/resolution.md",
+      "sha256": "f1894d5b303a0286ad77cfbf8c161838c0eb60b530ebaee53aeb37cc70263cc9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sources.md",
+      "sha256": "8ec3e444bb495e835fc67f85302bcfe60e2457042dced233149e0bb5d8e3f242"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/transcript-proof-inventory-20261019.json",
+      "sha256": "c998c06077fc2bed98ea8db29073d6981c00a66fa8974ecdddf3175bcfee8256"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/transcript-availability-correction-preview-20261007.json",
+      "sha256": "b092bf127fadd2b9ec6edfafbb00c4b01a0dd2211bc44f881130092ff88f4fbe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/transcript-availability-policy-review-20261007.md",
+      "sha256": "074077fccc0127210d6c50a4860a9a358f7a26c73a71a7408cdabbf0c5f07133"
+    }
+  ],
+  "call_chain": [
+    "evolution_control._build_evidence_resolver configured AlphaVantageClient -> AlphaVantageTranscriptAdapter; disabled-external descriptor also instantiates this adapter with None; missing-key branch uses UnavailableProviderAdapter.",
+    "EvidenceResolver.resolve -> local lookup first -> authorized adapter -> budget.reserve -> adapter.acquire -> store.append -> local reread.",
+    "Adapter currently fetches earnings, makes a retrieved-at raw response, maps fiscal quarters with reportedDate+1 UTC, then stamps transcript published/available from that derived clock.",
+    "AlphaVantageClient.earnings_call_transcript returns provider JSON only; preserve raw client/cache capabilities and do not conflate fetch success with historical admission."
+  ],
+  "required_local_controls": [
+    "Direct adapter acquire for all three transcript aliases must raise AcquisitionFailure(HISTORICAL_DATA_UNAVAILABLE) before identity/earnings/transcript/event-client access; no returned raw response or transcript.",
+    "Configured native factory/resolver with empty synthetic store must expose historical unavailability and yield typed gap, not provider_no_data/provider_error/resolved; client method counters remain zero and store unchanged.",
+    "Preserve authorization precedence: disabled external policy stays external_not_authorized; no permission bypass.",
+    "can_acquire false and acquisition_unavailability_reason historical_data_unavailable for configured proofless adapter if adopting existing available=False descriptor. Resolver budget reservation is a separate existing behavior, not an HTTP request.",
+    "Already supplied local eligible synthetic transcript still resolves by local lookup without acquisition; future available_at remains excluded. This is compatibility, not a proof that original26 are now qualified.",
+    "Other source families in the same resolver continue to resolve; transcript gap does not imply economic absence or block ordinary SEC/financial/market inputs.",
+    "Provider quarter echo, reportedDate, scheduled meeting metadata, current retrieval or arbitrary ad-hoc proof keys cannot bypass the guard.",
+    "Raw provider client/cache behavior and all original transcript/provider records remain byte-identical; completed old stages are not migrated or resumed."
+  ],
+  "why_old_tests_missed": "test_transcript_adapter_maps_fiscal_quarters_and_excludes_future_reports asserts reportedDate+1 directly and considers one management remark adequate. It tests fiscal routing/provider echo and the old clock, not actual completion/full-public-content proof. Factory tests assert descriptors/client error-detector wiring without that semantic premise.",
+  "remaining_surfaces": [
+    {
+      "path": "scripts/run_cold_start_formal.py::_transcript_documents_for_candidate / _transcript_published_date",
+      "meaning": "Separate Finnhub DocumentRecord producer stamps list timestamp or fallback calendar quarter-end directly as published_date=available_date/complete body; not fixed by RawInfo adapter guard and must not be claimed compliant if reused."
+    },
+    {
+      "path": "src/stock_opportunity_agent/data/backfill.py",
+      "meaning": "Current transcript references count inventory/missing capability; no same reportedDate RawInfo materializer found."
+    },
+    {
+      "path": "Existing persisted originals/local ordinary store",
+      "meaning": "Guard does not retrospectively quarantine invalid old timestamps or admit replacements. Keep original26 pending and successor reviewed source exclusions explicit."
+    }
+  ],
+  "reviewer_execution": "Only source/spec/test JSON/text/hash reads; no native helper, model, network, labels, store constructor/append, stage or business execution.",
+  "limits": "This freezes expected local production fail-closed behavior, not transcript proof success, whole F2/MVP readiness or a generalized archival proof interface."
+}

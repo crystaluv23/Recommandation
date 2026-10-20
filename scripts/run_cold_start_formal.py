@@ -1060,108 +1060,15 @@ def _transcript_documents_for_candidate(
     finnhub_client: FinnhubClient | None,
     warnings: list[str],
 ) -> list[DocumentRecord]:
+    """Skip historical transcripts until reviewed public-content proof is supported."""
     if args.max_transcripts_per_symbol < 1 or finnhub_client is None:
         return []
-    try:
-        raw_list = finnhub_client.transcript_list(candidate.symbol)
-    except (DataSourceError, OSError) as exc:
-        warnings.append(f"{candidate.symbol}: Finnhub transcript list unavailable: {exc}")
-        return []
-    items = _transcript_items(raw_list)
-    documents: list[DocumentRecord] = []
-    for item in items:
-        transcript_id = _non_empty_text(item.get("id") or item.get("transcriptId"))
-        published = _transcript_published_date(item)
-        if transcript_id is None or published is None:
-            continue
-        if not context_start <= published <= candidate.inflection_date:
-            continue
-        try:
-            raw_transcript = finnhub_client.transcript(transcript_id)
-        except (DataSourceError, OSError) as exc:
-            warnings.append(f"{candidate.symbol}: Finnhub transcript unavailable for {transcript_id}: {exc}")
-            continue
-        text = _transcript_text(raw_transcript)
-        if text is None:
-            warnings.append(f"{candidate.symbol}: transcript {transcript_id} had no text")
-            continue
-        title = _non_empty_text(item.get("title")) or f"{candidate.symbol} earnings transcript {transcript_id}"
-        source_id = f"finnhub:{candidate.symbol.upper()}:transcript:{transcript_id}"
-        documents.append(
-            DocumentRecord(
-                document_id=_document_id(source_id),
-                symbol=candidate.symbol,
-                kind=EvidenceKind.TRANSCRIPT,
-                title=title,
-                text=text,
-                source_id=source_id,
-                source_url=str(item.get("url") or f"urn:{source_id}"),
-                published_date=published,
-                available_date=published,
-                retrieved_at=created_at,
-                content_scope=DocumentContentScope.COMPLETE_BODY,
-            )
-        )
-        if len(documents) >= args.max_transcripts_per_symbol:
-            break
-    return documents
-
-
-def _transcript_items(raw: object) -> list[dict[str, object]]:
-    if isinstance(raw, list):
-        return [item for item in raw if isinstance(item, dict)]
-    if isinstance(raw, dict):
-        for key in ("transcripts", "data", "results"):
-            value = raw.get(key)
-            if isinstance(value, list):
-                return [item for item in value if isinstance(item, dict)]
+    warnings.append(
+        f"{candidate.symbol}: Finnhub transcript historical_data_unavailable: "
+        "formal collection has no reviewed proof of complete public "
+        "conference-content availability; transcripts skipped"
+    )
     return []
-
-
-def _transcript_published_date(item: dict[str, object]) -> date | None:
-    direct = _date_from_unix_or_iso(item.get("datetime") or item.get("time") or item.get("date") or item.get("publishedDate"))
-    if direct is not None:
-        return direct
-    year = _int_value(item.get("year"))
-    quarter = _int_value(item.get("quarter"))
-    if isinstance(year, int) and isinstance(quarter, int):
-        return _quarter_end_date(year, quarter)
-    return None
-
-
-def _transcript_text(raw: object) -> str | None:
-    if isinstance(raw, str) and raw.strip():
-        return raw
-    if not isinstance(raw, dict):
-        return None
-    for key in ("transcript", "content", "text"):
-        value = raw.get(key)
-        if isinstance(value, str) and value.strip():
-            return value
-        if isinstance(value, list):
-            pieces = []
-            for item in value:
-                if isinstance(item, str):
-                    pieces.append(item)
-                elif isinstance(item, dict):
-                    speech = item.get("speech") or item.get("content") or item.get("text")
-                    if isinstance(speech, str):
-                        speaker = item.get("name") or item.get("speaker")
-                        prefix = f"{speaker}: " if isinstance(speaker, str) and speaker.strip() else ""
-                        pieces.append(prefix + speech)
-            joined = "\n".join(piece for piece in pieces if piece.strip())
-            if joined.strip():
-                return joined
-    return None
-
-
-def _quarter_end_date(year: int, quarter: int) -> date | None:
-    month_by_quarter = {1: 3, 2: 6, 3: 9, 4: 12}
-    month = month_by_quarter.get(quarter)
-    if month is None:
-        return None
-    day = 31 if month in {3, 12} else 30
-    return date(year, month, day)
 
 
 def _optional_finnhub_client(config: AgentConfig, warnings: list[str]) -> FinnhubClient | None:

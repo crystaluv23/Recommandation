@@ -40,6 +40,15 @@ The submodule exposes:
   a formal run can resume without redoing earlier blind assessments.
 - LLM output is analysis evidence; it cannot mutate memory or signal versions
   directly.
+- Future formal context collection follows the approved
+  [historical transcript availability policy](../data/resolution.md). Finnhub
+  list dates, quarter ends and the presence of a body do not prove when complete
+  conference content was publicly available. The formal collector currently has
+  no reviewed proof input: when transcripts are requested with a configured
+  client, emit an explicit `historical_data_unavailable` warning and skip this
+  producer before provider calls. Retain other context collection, raw provider
+  interfaces/cache and completed artifacts. This is an incomplete capability,
+  not a claim of no conference and not closure of transcript MVP acceptance.
 
 ## Testing
 

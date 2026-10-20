@@ -1,0 +1,465 @@
+{
+  "status": "source-only independent standards frozen before reading new web results; no source migration",
+  "policy_owner": "spec/src/stock_opportunity_agent/data/resolution.md:257-271, user-approved2026-10-19 public complete conference-content policy",
+  "fixed_denominator": 26,
+  "verified_original_records": 26,
+  "existing_inventory_accepted_public_content_proofs": 0,
+  "scope": {
+    "network_search_or_open": 0,
+    "model_roles": 0,
+    "product_or_source_or_inventory_or_label_changes": 0,
+    "research_labels_read": 0,
+    "native_Engine_or_stage_entry": 0,
+    "read": "Policy/report/inventory and original transcript bytes only; all26 hash bindings checked, only3 transcript bodies reviewed for this target."
+  },
+  "known_contract_conflict": "sources.md:54-58 still describes reportedDate next-UTC-day adapter behavior. It is a known stale implementation description superseded by approved resolution policy; it cannot authorize current proof or migration. Historical correction-preview times and reports are clues only.",
+  "sufficient_conditions": [
+    {
+      "gate": "Issuer and fiscal-content identity",
+      "requirement": "Reviewed first-party evidence must identify the actual company, its actual fiscal period and the corresponding conference content. Bind the stored source_path/document/content hash to the same event using substance such as named speakers, distinctive financial/operating facts and sequence, Q&A and closing. Matching provider quarter/symbol or generic operator wording alone is insufficient.",
+      "targets": "KGC Q1 target period end2025-03-31; FIBK Q1 target2025-03-31 and Q2 target2025-06-30. These targets come from provider metadata and corroborating body anchors; first-party fiscal mapping still must be confirmed, not calendar-quarter assumption."
+    },
+    {
+      "gate": "Complete content and actual completion",
+      "requirement": "Evidence must cover prepared remarks and Q&A through actual close, or an explicitly complete first-party replay/transcript matching that content. Original provider close lines support apparent file completeness but do not independently prove first-party actual event/publication. Presentation, earnings release, highlights or planned session alone are insufficient."
+    },
+    {
+      "gate": "Public availability clock, exact route",
+      "requirement": "Use an exact UTC instant only if first-party evidence verifies when the complete replay/transcript, or full complete meeting content, was publicly available. Determine what the timestamp denotes; meeting scheduled start, earnings release/8-K submission time or page last-modified time is not automatically a complete-content publication instant."
+    },
+    {
+      "gate": "Public availability clock, date-only conservative route",
+      "requirement": "If only actual conference date is verified, additionally establish that the actual conference ended and the complete content was publicly accessible before the next UTC midnight. Prove timezone/date and actual end boundary, for example actual full replay plus verified actual start/duration and public live/replay availability evidence. Only then use that next UTC midnight as a conservative upper bound; do not claim provider transcript-file publication at that time."
+    },
+    {
+      "gate": "Uncertainty disposition",
+      "requirement": "Any unresolved fiscal identity, actual completion, completeness, historical public access or UTC boundary leaves that individual record unknown/unavailable for corrected successor input. It does not claim the event/content did not exist and does not exclude independently verified non-transcript sources."
+    }
+  ],
+  "per_target_checks": [
+    {
+      "target": "KGC2025Q1",
+      "original_link": "Kinross Gold Q1 title; David Shaver/Paul Rollinson/Andrea Freeborough; body identifies May6 news release, MD&A endedMarch31;512,000ounces production; analyst Anita Soni at Q&A; final CEO and operator close.",
+      "time_clue_from_old_report_not_proof": "Scheduled May7 2025 07:45EDT=11:45UTC. Confirm actual event/full-public completion independently.",
+      "conditional_conservative_time": "2025-05-08T00:00:00Z only if complete content already public and actual conference ended before that boundary; old2025-05-07T00:00:00Z is earlier than this scheduled meeting and cannot survive as proof."
+    },
+    {
+      "target": "FIBK2025Q1",
+      "original_link": "First Interstate BancSystem opening explicitly records WednesdayApril30 2025; Nancy Vermeulen/Jim Reuter/Marcy Mutch and deputyCFO David Della Camera; Marcy final earnings-call retirement discussion; March31 balance reference and12-branch Arizona/Kansas transaction; Matthew Clark starts Q&A; operator close.",
+      "time_clue_from_old_report_not_proof": "Scheduled Apr30 11:00ET, replay promised after13:00ET; on that date EDT means15:00/17:00UTC. A prospective promise alone is not evidence it was fulfilled.",
+      "conditional_conservative_time": "2025-05-01T00:00:00Z only with actual complete-public/end-before-boundary evidence; no reuse of old2025-04-30T00:00:00Z."
+    },
+    {
+      "target": "FIBK2025Q2",
+      "original_link": "First Interstate BancSystem opening explicitly records WednesdayJuly30 2025; Nancy Vermeulen/James A.Reuter and CFO David P.Della Camera; net income71.7million/$0.69 vs first-quarter50.2million/$0.49; June30 capital-ratio reference; Jeff Rulis starts Q&A; operator close. Jim/James and David name variants require coherent matching, not rejection or acceptance by name string alone.",
+      "time_clue_from_old_report_not_proof": "Scheduled Jul30 11:00ET/replay after13:00ET=15:00/17:00UTC if EDT is verified; prospective announcement is not actual access evidence.",
+      "conditional_conservative_time": "2025-07-31T00:00:00Z only with actual complete-public/end-before-boundary evidence; no reuse of old2025-07-30T00:00:00Z."
+    }
+  ],
+  "reject_or_unknown_counterexamples": [
+    "Provider quarter echo, fiscal_date_ending or reportedDate alone; old preview timestamp or a local hash alone.",
+    "Official pre-call schedule, webcast registration URL or replay will-be-available promise with no evidence of actual occurrence/full public availability.",
+    "Official recording currently reachable but only labeled with meeting date: that label is not automatically the historical publication timestamp. Resolve the timestamp meaning and historical/public live or replay access basis.",
+    "Beginning of meeting used as full-content availability; end inferred merely from normal earnings-call duration; no proven UTC timezone or a conference that might cross midnight.",
+    "Press release or slide deck matches financial results, but no full Q&A/end; truncated transcript/partial replay or missing tail.",
+    "Company/year/quarter title matches while actual speakers, fiscal period or distinctive financial facts differ; FIBKQ1/Q2 content swapped; KGC other quarter mistakenly matched.",
+    "Exact replay-ready13:00ET accepted from future-tense release without establishing actual access; claim date-only nextUTC midnight without end/access boundary.",
+    "Later corrections, appended content or after-call information in provider transcript without showing that the same material was already in the complete public conference before the chosen time."
+  ],
+  "what_can_close": "A reviewed proof satisfying issuer/fiscal/full-content identity and one complete public-time route can close the corresponding source-time proof only. It does not by itself implement corrected RawInfo/snapshot or close all26/F2.",
+  "what_stays_unknown_now": "All3 public-time proofs remain unknown before new first-party review;26inventory remains0accepted. Surface completeness is not historical public-time proof.",
+  "migration_not_performed": "No new ID, oracle append or successor manifest in this review. Any later admitted correction must retain originals and original hash/evidence lineage, use a new ID, explicitly exclude superseded wrong-clock originals from successor input, and leave completed-run inputs immutable.",
+  "original_records": [
+    {
+      "document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b",
+      "company_id": "cik_0000701818",
+      "symbol": "KGC",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b.json",
+      "file_sha256": "1e548ac54d38a9c4a38a6763410bda767f57d2c23a47f207ad051527f397289d",
+      "content_hash": "2761f139f195f3fb785c442b14f71654e518ad32b97da6881d29a6ba21a88fce",
+      "source_type": "earnings_call",
+      "provider_fiscal_period": "2025Q1",
+      "provider_fiscal_date_ending": "2025-03-31",
+      "reported_date_clue_only": "2025-05-06",
+      "old_published_at_unproved": "2025-05-06T00:00:00+00:00",
+      "old_available_at_unproved": "2025-05-07T00:00:00+00:00",
+      "utterance_count": 61,
+      "content_chars": 42895,
+      "identity_anchors_from_original_provider_not_publication_proof": [
+        {
+          "locator": "/transcript/0",
+          "speaker": "Operator",
+          "title": "Operator",
+          "content": "Thank you for standing by. My name is Ian, and I will be your conference operator today. At this time, I would like to welcome everyone to the Kinross Gold First Quarter 2025 Results Conference Call and Webcast. All lines have been placed on mute to prevent any background noise. After the speaker's remarks, there will be a question-and-answer session. Thank you. I would like to hand the call over to David Shaver, Senior Vice President, Investor Relations and Communications. Please go ahead.",
+          "entry_canonical_sha256": "dfd12b5f14e29f20dc7e3854dabd84d82f5c45fb6de69c13fc671922f9d46b3f"
+        },
+        {
+          "locator": "/transcript/1",
+          "speaker": "David Shaver",
+          "title": "Senior Vice President, Investor Relations and Communications",
+          "content": "Thank you and good morning. In the room with us today on the call, we have Paul Rollinson, CEO; and from the Kinross senior leadership team, Andrea Freeborough, Claude Schimper, Will Dunford, and Geoff Gold. For a complete discussion of the risks and uncertainties, which may lead to actual results differing from estimates contained in our forward-looking information, please refer to page 3 of this presentation, our news release dated May 6, 2025, the MD&A for the period ended March 31, 2025, and our most recently filed AIF, all of which are available on our website. I will now turn the call over to Paul.",
+          "entry_canonical_sha256": "bc3ddbba1e2f2f87aaa77ce6c2f76bd988aef3098f0c044d0bc1b24959fd0c5c"
+        },
+        {
+          "locator": "/transcript/2",
+          "speaker": "Paul Rollinson",
+          "title": "CEO",
+          "content": "Thanks, David, and thank you all for joining us. This morning, I will discuss our first quarter results, provide high-level updates across our portfolio, comment on sustainability, and confirm our outlook. I will then hand the call over to Andrea, Claude, and Will to provide more detail. Following outstanding performance in 2024, we continue to deliver strong results in the first quarter. Our culture of technical excellence and financial discipline, complemented by our consistent operating performance, continues to drive significant margins and cash flow for our business. Our financial position and cash flow outlook remains excellent. And as a result, we are enhancing capital returns for shareholders. Q1 was a great start to the year with production of 512,000 ounces. Tasiast and Paracatu had another notable quarter and together accounted for more than half of our production and drove significant cash flow. Tasiast saw strong output in Q1, supported by strong grades and recoveries. Claude will elaborate further, but after a brief shutdown due to a fire in April, the mill was recently restarted, and Tasiast remains on track to meet its original full-year guidance. Paracatu delivered another excellent quarter on the back of strong grades and improved mill recoveries. La Coipa and our US assets also delivered production and costs as planned. Turning now to updates on our projects. Our in-house technical and project execution teams made notable progress in Q1 across our pipeline of mine life extensions and growth projects that underpin our long-term production profile. At Curlew, ongoing resource drilling is returning exciting results with recent assays demonstrating substantial grades and widths supporting future high-margin production. At Round Mountain, underground development at Phase X is advancing well. And as outlined in our news release, we are continuing to see strong exploration results from infill drilling. At Lobo-Marte, baseline studies to support the project EIA are progressing well. At Great Bear, the advanced exploration program continues with construction and earthworks underway. Regarding the main project, we continue to advance our pruning efforts, working with the Impact Assessment Agency of Canada. And we've also kicked off detailed engineering on the mill and site infrastructure to advance the main project towards construction. Turning now to sustainability. I am pleased to say that our annual sustainability report will be published later this month. This comprehensive report, which is in its 17th edition, provides an update on all the progress we made in 2024 and what we aim to accomplish this year and beyond. It's an impressive document, which I encourage you all to review. Moving to our outlook. Following a strong first quarter, we are firmly on track to achieve our production, cost, and capital guidance for the year. As we did last year and in Q1, we will continue to maintain our financial discipline and prioritize cost management in order to deliver strong margins and cash flow. With this positive outlook, I am pleased to say that in addition to our dividend, we have enhanced our return of capital by reactivating our share buyback. This should provide a substantial year-over-year increase in return of capital to our shareholders. With that, I'll now turn the call over to Andrea.",
+          "entry_canonical_sha256": "54288f20636d8f79ff5a93c8df121de5b18c6ef01ddec8f681dfc47fa0fa6544"
+        },
+        {
+          "locator": "/transcript/3",
+          "speaker": "Andrea Freeborough",
+          "title": "CFO",
+          "content": "Thanks, Paul. This morning, I will review our financial highlights from the quarter, provide an overview of our balance sheet and return of capital plans and comment on our outlook. As Paul noted, we had a strong start to the year in Q1. We produced 512,000 gold equivalent ounces and sold 506,000 ounces. As per plan, Q1 cost of sales of $1,038 per ounce and all-in sustaining costs of $1,355 per ounce were lower than our guidance for the year. Q1 costs were also lower than the prior quarter, benefiting from more ounces produced, lower energy, and lower maintenance costs. Q1 margins were strong at over $1,800 per ounce, increasing over the prior quarter and outpacing the increase in the gold price. In Q1, our adjusted earnings were $0.30 per share and adjusted operating cash flow was $676 million. Attributable CapEx was $204 million with higher spending expected for the rest of the year to conform with our annual guidance. Attributable free cash flow was $371 million, or $472 million, excluding changes in working capital. Free cash flow in Q1 was lower compared to the prior quarter as expected due to annual tax payments in Brazil and Mauritania. Turning to the balance sheet. Our financial position continued to improve in Q1. Following the repayment of the final $200 million on our term loan, we ended the quarter with $695 million in cash and approximately $2.3 billion of total liquidity, both increasing from year-end. We improved our net debt position to $540 million and our trailing 12-month net debt-to-EBITDA ratio to 0.2 times compared to 0.3 times as of year-end. With the term loan now fully repaid and our strong cash balance at the end of Q1, we are increasing our returns to shareholders. Our quarterly dividend of $0.03 per share remains in place. In addition, we have reactivated our share buyback program, and to date, have repurchased $60 million in shares. Based on recent gold prices, we are aiming to repurchase a minimum of $500 million of our common shares this year, which would increase our total return of capital to $650 million, representing an increase of over 300% compared to last year. Our shares continue to represent an attractive use of excess cash given our favorable relative valuation and strong free cash flow metrics. With our strong cash flow outlook, we expect to continue returning a substantial amount of capital to shareholders while also building cash on the balance sheet with a view to repay the $500 million 2027 notes at or before maturity. At today's gold prices, we expect to be in a net cash position by the end of the year. Lastly, during the quarter, Moody's performed their annual review, revising our outlook to positive from stable and reaffirming our investment-grade credit rating. Turning to our guidance. We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining costs of $1,500 per ounce. Operating costs are expected to increase throughout the rest of the year for three reasons. First, stripping costs at Round Mountain Phase S and Fort Knox Phase X are currently being capitalized, and we expect both to be characterized as operating costs for accounting purposes from midyear. Second, we continue to expect inflation in the range of 3% to 4% on average for the year. And third, we had slightly stronger production in Q1, providing a favorable denominator on fixed costs with production in the remaining quarters expected to deliver our annual guidance of 2 million ounces. Capital expenditures remain on track to meet guidance of $1.15 billion. I will now turn the call over to Claude to discuss our operations.",
+          "entry_canonical_sha256": "c8a391f7746647429b0300cb2e1a62bef261f36ae0748e3c1fe23139d4b1870a"
+        },
+        {
+          "locator": "/transcript/7",
+          "speaker": "Operator",
+          "title": "Operator",
+          "content": "Our first question comes from Anita Soni with CIBC. Your line is open.",
+          "entry_canonical_sha256": "5fd22be60d6f672aea1ae6d0d4a08ae27f3385161394fa03909b6a230c59fe46"
+        },
+        {
+          "locator": "/transcript/59",
+          "speaker": "Paul Rollinson",
+          "title": "CEO",
+          "content": "Thank you, operator, and thanks, everyone, for joining us this morning. We look forward to catching up with you in person in the coming weeks. Thank you everyone.",
+          "entry_canonical_sha256": "29ee33223379b4721004843081fc5768c8c45370ff735bff72dc4b7b79d4dcbe"
+        },
+        {
+          "locator": "/transcript/60",
+          "speaker": "Operator",
+          "title": "Operator",
+          "content": "This concludes today's conference call. You may now disconnect.",
+          "entry_canonical_sha256": "ade4a03810a9eb8d6b6bd70a543238ea0caa342bc1598a2c4a3da92a9ed614fd"
+        }
+      ],
+      "status_before_external_review": "unknown_complete_public_content_time; original identity/completeness appearance corroborated, not first-party public-time proof"
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a",
+      "company_id": "cik_0000860413",
+      "symbol": "FIBK",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000860413/alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a.json",
+      "file_sha256": "5103acfc4c4987c36f42f83e93840aad7d4403d14cce45099afd4bf4f4b012aa",
+      "content_hash": "0f2df7d4dde1b1d0e3dcd42a820e41313c8a8d67c0df7fde9e027afdd7c630ad",
+      "source_type": "earnings_call",
+      "provider_fiscal_period": "2025Q1",
+      "provider_fiscal_date_ending": "2025-03-31",
+      "reported_date_clue_only": "2025-04-29",
+      "old_published_at_unproved": "2025-04-29T00:00:00+00:00",
+      "old_available_at_unproved": "2025-04-30T00:00:00+00:00",
+      "utterance_count": 81,
+      "content_chars": 47847,
+      "identity_anchors_from_original_provider_not_publication_proof": [
+        {
+          "locator": "/transcript/0",
+          "speaker": "Operator",
+          "title": "Operator",
+          "content": "Good morning, ladies and gentlemen, and welcome to the First Interstate BancSystem, Inc. First Quarter Earnings Conference Call. At this time, all lines are in listen-only mode. Following the presentation, we will conduct a question-and-answer session. This call is being recorded on Wednesday, April 30, 2025. I would now like to turn the conference over to Nancy Vermeulen. Please go ahead.",
+          "entry_canonical_sha256": "4e2c1880351b2b397169ddf27e1f566eae931a973eca16b7f7cd2b729224dc04"
+        },
+        {
+          "locator": "/transcript/1",
+          "speaker": "Nancy Vermeulen",
+          "title": "Investor Relations",
+          "content": "Thanks very much. Good morning. Thank you for joining us for our first quarter earnings conference call. As we begin, please note that the information provided during this call will contain forward-looking statements. Actual results or outcomes may differ materially from those expressed by those statements. I'd like to direct all listeners to read the cautionary note regarding forward-looking statements contained in our most recent annual report on Form 10-K filed with the SEC and in our earnings release as well as the risk factors identified in the annual report and in our more recent periodic reports filed with the SEC. Relevant factors that could cause actual results to differ materially from any forward-looking statements are included in the earnings release and in our SEC filings. The company does not undertake to update any of the forward-looking statements made today. A copy of our earnings release, which contains non-GAAP financial measures, is available on our website at fibk.com and information regarding our use of the non-GAAP financial measures may be found in the body of the earnings release and a reconciliation to their most directly comparable GAAP financial measures is included at the end of the earnings release for your reference. Again, this quarter, along with our earnings release, we've published an updated investor presentation that has additional disclosures that we believe will be helpful. The presentation can be accessed on our Investor Relations website. And if you have not downloaded a copy yet, we encourage you to do so. Please also note that as we discuss our financials today, unless otherwise noted, all of the prior period comparisons will be with the fourth quarter of 2024. Joining us from management this morning are Jim Reuter, our Chief Executive Officer; Marcy Mutch, our Chief Financial Officer; and David Della Camera, our Deputy Chief Financial Officer, along with other members of our management team. At this time, I'll turn the call over to Jim Reuter. Jim?",
+          "entry_canonical_sha256": "28b766eaf91126520884479301e56445a6fe4b6f4187e54b1d38d8a659b9b970"
+        },
+        {
+          "locator": "/transcript/2",
+          "speaker": "Jim Reuter",
+          "title": "CEO",
+          "content": "Thank you, Nancy, and good morning all, and thank you for joining us on our earnings call. Before we begin, let me point out the bittersweet fact that this is the last earnings call we will have with Marcy. As we announced at the end of February, Marcy is retiring after more than 18 years here at the bank and an accomplished career in finance of more than 30 years. It has been a pleasure and a privilege to work with you, Marcy. Even for the short period of time that I've had the opportunity, it is obvious that your influence on this company has been profound. You are leaving your post in great hands with David, but our future success will always be due in large part to the impact you have had in your time here. Thank you for all you have done for First Interstate, and congratulations on a brilliant career. On to the business at hand. I'd like to begin by discussing our longer-term strategy. As I discussed in the earnings call in the previous quarter, First Interstate is deemphasizing large-scale mergers and acquisitions and refocusing on full relationship banking. Both our near and long-term actions will be centered around reorienting the bank towards organic growth. This affects how we operate and how we evaluate every other aspect of our business. While we won't be providing 2026 guidance in light of the ongoing economic uncertainty, we will provide additional color later in the call on our medium-term net interest income expectations and our longer-term brand strategy. Our overarching strategy will be to deploy capital to areas of strength. We have a valuable low-cost granular deposit base and strong market share in areas that are growing faster than national trends, in which we intend to invest. Our capital levels and balance sheet are strong and flexible, and our underlying earnings are supported by asset repricing, which we anticipate will support meaningful earnings improvement. We also acknowledge that there are opportunities in our footprint to optimize our branch network. Today, our average branch size is approximately $76 million, which is smaller than our peer average. As a result, we are evaluating our branch network, and we anticipate beginning to take sequenced action to reposition, open or consolidate branches later in 2025. With that said, due to our more rural branch network, we will always have a bit of a smaller branch size on average, but our goal is to narrow this delta. As announced on Monday, we are exiting our 12 locations in the states of Arizona and Kansas. Our decision to divest is aligned with our noted strategy to shift our capital investment and drive growth in markets where we have strong market share and we believe this transaction allows us to do so. Deposit balances associated with these markets totaled $740 million as of March 31 and about $200 million of loans will be included in the transaction, which we expect to close by the fourth quarter. Moving to credit. We are taking a proactive approach to managing credit, which we believe sets the bank up to perform well in all economic cycles. We reported an increase in criticized loans in the first quarter of $252.8 million, generally concentrated within commercial real estate. Our focus on the primary source of repayment drove most of these downgrades. Downgrades in the multifamily book, which represented approximately $75 million this quarter, were mainly reflective of slower lease-up activity. Guarantors in this portfolio are generally strong, and they have shown willingness to solve property-specific challenges when asked. Outside the multifamily asset class, our commercial real estate downgrades were primarily in the industrial warehouse property type. They were customer-specific, and we did not see any specific trends driving this activity. Overall, while our downgrades in the first quarter were not as concentrated among a few borrowers as they were in the prior quarter, we did see pressure mainly from larger credits. The top 10 downgrades in terms of size comprised about three-quarters of the increase in criticized assets. On a side note, the four larger properties that migrated to criticized in the prior quarter, which we discussed in the previous earnings call, remained in the criticized bucket at the end of this quarter. Nonperforming assets increased $52.8 million during the quarter. Five credits comprise the majority of the increase and include agriculture, agriculture real estate and commercial real estate properties. Again, there was no specific trend among these credits. Broadly, the bank believes it is well secured in these instances. This quarter, we completed the external credit review we discussed on the prior quarter's call. To date, we performed a detailed review comprised of both external and internal credit reviews of a good portion of the commercial book with a focus on larger credits. We could have additional external reviews planned at this time. As we stated on our previous earnings call, credit is one of our primary areas of focus, and we have been proactive in recognizing credit concerns. Our current assessment indicates we have good collateral and strong guarantor support in most cases, and we're hopeful for positive migration over time. You may also recall from the previous earnings call our decision to exit certain transactional credits, including large agricultural lending. Here's where we have had some success this quarter. We received approximately $40 million in an agricultural line paydown from one of the four customers we noted in the prior quarter to whom we had exposure over $50 million. Three customers now remain with outstanding balances over that level. We also exited certain transactional real estate loans, including a $40 million low-yielding multifamily property. These payoffs contributed to loan balances declining more than we previously anticipated in the first quarter. I'd also note that the current economic uncertainty has resulted in limited customer demand and loan production this quarter was below expectations, especially in commercial real estate. With the combination of lower customer demand and some expected larger payoffs in the multifamily space, we expect further shrinking of the balance sheet in the second quarter, which is reflected in our loan and net interest income guidance. Again, we intentionally exited loans that exhibited credit or transactional characteristics that do not fit with our longer-term strategy, and we believe some additional activity will occur in the second quarter. This intentional activity, which is a near-term reset, aligns our balance sheet with our business strategy and will position us for meaningful organic growth as we move into 2026 and drive our franchise value going forward. We are also increasing our efforts to reinvigorate our brand and have hired a new director of marketing and client experience. We will be highlighting our strong brand presence, community engagement, and the fact we have the services offered by a large bank with the personal touch of a community bank. This, combined with increased investment in digital delivery channels, which is included in our noninterest expense guidance, is all part of our organic growth strategy. We have also recently hired a new Chief Risk Officer, Nathan Jones. Nathan brings with him extensive experience in credit and enterprise risk management in both large and medium-sized institutions. Before I turn the call over to Marcy, I want to touch on capital. Our capital ratios continued to improve this quarter due mostly to the reduction in our balance sheet. Our level of capital, our expectation of improving earnings, and near-term declines in loan balances create optionality in our capital. This will be strengthened further when we close on the announced branch transaction. Our dividend remains a key priority for us to provide shareholders with a strong yield. We actively consider our capital deployment strategy on an ongoing basis and will continue to do so. As we finalize our strategic planning, we'll continue to provide more guidance over time. I will now hand the call over to Marcy to discuss our results.",
+          "entry_canonical_sha256": "b9fa40c66ddc1717eb97679d82d6a6a5beec51f69c757127471529cbfbc8faa6"
+        },
+        {
+          "locator": "/transcript/4",
+          "speaker": "David Della Camera",
+          "title": "Deputy CFO",
+          "content": "Thank you, Marcy. You can find our guidance on Page 15 of the investor presentation. On Monday, we announced the sale of 12 branches and associated deposits and certain loans in Arizona and Kansas. We expect this transaction to close by early fourth quarter. The transactions will improve capital at close and align with our strategic principle to invest and grow in markets where we have greater market share to deliver higher returns to shareholders. We anticipate tangible book value accretion of roughly 2% at close. Based upon March 31, deposit and loan balances, an improvement in our common equity Tier 1 ratio of approximately 30 to 40 basis points, excluding any capital deployment. We are currently considering our capital deployment options and anticipate that the combination of this transaction and any associated deployment of capital would be accretive to earnings. We plan to provide further guidance later in the year. Moving to the current guidance, which excludes the impact of the branch sale. I'll start with the balance sheet. Deposit balances declined seasonally in the first quarter, generally in line with our expectations. We continue to forecast modest deposit growth in 2025. We were pleased to see a 12 basis point decline in interest-bearing deposit costs in the first quarter and expect a modest decline into the second quarter as well. Excluding the impact of any Fed rate changes, we have two rate cuts in our guidance in the third quarter. Our balance sheet remains modestly liability sensitive, but it continues to trend towards neutral as fixed-rate investment cash flows reduce variable-rate borrowings. We don't believe the rate cuts included in our guidance are meaningful to the net interest income forecast we have presented for 2025. The asset trends in our guidance imply that we will eliminate short-term borrowings in the third quarter of this year, and we expect interest-earning assets will bottom at that time. We would also note that over time, we are comfortable with borrowings on the balance sheet. Given our loan-to-deposit ratio and structural liquidity position, when loan demand recovers, and we return to organic growth, we will have the flexibility to grow loans faster than deposits, if necessary. We anticipate net interest income to increase by $3.5 million to $5.5 million for the full year 2025 over 2024, with quarterly reported numbers improving sequentially through the year. We expect this momentum to accelerate into 2026. While we aren't providing full 2026 guidance, we expect 2026 net interest income, assuming flat loan balances in 2026 to increase in the high single digits over 2025. Again, we are confident in our ability to grow, but wanted to provide this number for context around the impact we foresee from fixed asset repricing. Through 2026 from the end of the first quarter of 2025, we anticipate approximately $1.5 billion of cash flow from our investment portfolio at about a 2.5% rate and about 2.4% of fixed-rate and adjustable-rate loans to either mature or reprice at a weighted average rate of about 4.3%. For clarity, the balance of maturing loans increases in late 2026 and into 2027. We also anticipate a meaningful step-up in the net interest margin in the second quarter as compared to the first. With a backdrop of interest-earning assets in the $25 billion to $25.5 billion range, we anticipate the margin, excluding purchase accounting, to increase around 10 to 15 basis points in the second quarter from the 3.14% figure we reported in the first quarter. Given the meaningful drop in borrowings in the first quarter, the margin is notably higher to start the second quarter. From there, we would expect the third and fourth quarter margin to expand at a slightly slower pace than the second quarter, with fourth quarter net interest margin, excluding purchase accounting, in the 3.4% to 3.5% range. Our underlying earning asset assumption is a modest decline in the third quarter and flat to slightly higher balances in the fourth quarter. We continue to exhibit expense discipline while investing in the future of the company. Noninterest expense guidance of a 2% to 4% increase in 2025 versus 2024, and includes an increase in advertising expense as we move through the year, one of the many factors supporting growth into 2026. Expense guidance does not include any actions related to changes in the branch network. We anticipate the impact of branch-related optimization to be more meaningful in 2026. We will provide more information about these actions as we move through 2025 and complete our market-by-market analysis. Now I'll turn the call back to Jim.",
+          "entry_canonical_sha256": "7c10d3121150d43bb0bb7be9f49ff93921c11c06c184a071ddbc390e63c559d3"
+        },
+        {
+          "locator": "/transcript/6",
+          "speaker": "Operator",
+          "title": "Operator",
+          "content": "Thank you. Ladies and gentlemen, we will now begin the question-and-answer session. Your first question is from Matthew Clark from Piper Sandler. Please go ahead.",
+          "entry_canonical_sha256": "dce4702663ee59237c952898ef0909d92f55aa084a132ce4dba0e3b47bca7878"
+        },
+        {
+          "locator": "/transcript/79",
+          "speaker": "Jim Reuter",
+          "title": "CEO",
+          "content": "Very good. Thank you. I want to again recognize Marcy for her great work with the bank over the years. And I can tell you personally, she's been an unbelievable partner in this transition, and I just want to say thank you. I don't enter an investor room without feeling like I'm traveling with the mayor of the banking industry because she's very well-liked and respected by the investor community. So thank you, Marcy. And thank you for your questions. And as always, we welcome calls from our investors and analysts. And please reach out to us if you have any follow-up questions, and thank you for tuning into the call today.",
+          "entry_canonical_sha256": "c44a49cd5e91d5a50926a9d3de8a0036a2a341cee523834961819f1bc8c4a00e"
+        },
+        {
+          "locator": "/transcript/80",
+          "speaker": "Operator",
+          "title": "Operator",
+          "content": "Ladies and gentlemen, this concludes your conference call for today. We thank you for participating and ask that you please disconnect your lines.",
+          "entry_canonical_sha256": "c6840534b96393244071bf4ece61e00b4e70aa7361a3eb62e9aee4ab0e1825ad"
+        }
+      ],
+      "status_before_external_review": "unknown_complete_public_content_time; original identity/completeness appearance corroborated, not first-party public-time proof"
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e",
+      "company_id": "cik_0000860413",
+      "symbol": "FIBK",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000860413/alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e.json",
+      "file_sha256": "a2ed0b264e6597d7994792b2581ba1c1d865d6a004e1df7174d2fef16854ba59",
+      "content_hash": "5c87489efef8befa6410f69ee50f332053b8a9e4f56473b82aaf031af7cd3dc2",
+      "source_type": "earnings_call",
+      "provider_fiscal_period": "2025Q2",
+      "provider_fiscal_date_ending": "2025-06-30",
+      "reported_date_clue_only": "2025-07-29",
+      "old_published_at_unproved": "2025-07-29T00:00:00+00:00",
+      "old_available_at_unproved": "2025-07-30T00:00:00+00:00",
+      "utterance_count": 50,
+      "content_chars": 38256,
+      "identity_anchors_from_original_provider_not_publication_proof": [
+        {
+          "locator": "/transcript/0",
+          "speaker": "Operator",
+          "title": "Operator",
+          "content": "Good morning, ladies and gentlemen, and welcome to the First Interstate BancSystem Inc. Second Quarter Earnings Conference Call. This call is being recorded on Wednesday, July 30, 2025. I would now like to turn the conference over to Nancy Vermeulen. Please go ahead.",
+          "entry_canonical_sha256": "e92b249e0f522f5a9d0aac633809a67a5371c17e3abe5eab44689897d7a4ed75"
+        },
+        {
+          "locator": "/transcript/1",
+          "speaker": "Nancy Vermeulen",
+          "title": "Moderator",
+          "content": "Thanks very much. Good morning. Thank you for joining us for our second quarter earnings conference call. As we begin, please note that the information provided during this call will contain forward-looking statements. Actual results or outcomes might differ materially from those expressed by those statements. I'd like to direct all listeners to read the cautionary note regarding forward-looking statements contained in our most recent annual report on Form 10-K filed with the SEC and in our earnings release as well as the risk factors identified in the annual report and our more recent periodic reports filed with the SEC. Relevant factors that could cause actual results to differ materially from any forward-looking statements are included in the earnings release and in our SEC filings. The company does not undertake to update any of the forward-looking statements made today. A copy of our earnings release, which contains non-GAAP financial measures, is available on our website at fibk.com. Information regarding our use of the non-GAAP financial measures may be found in the body of the earnings release, and a reconciliation to their most directly comparable GAAP financial measures is included at the end of the earnings release for your reference. Again, this quarter, along with our earnings release, we've published an updated investor presentation that has additional disclosures that we believe will be helpful. The presentation can be accessed on our Investor Relations website. If you have not downloaded a copy yet, we encourage you to do so. Please also note that as we discuss our financials today, unless otherwise noted, all of the prior period comparisons will be with the first quarter of 2025. Joining us from management this morning are Jim Reuter, our Chief Executive Officer; David Della Camera, our Chief Financial Officer; and other members of our management team. Now I'll turn the call over to Jim Reuter. Jim?",
+          "entry_canonical_sha256": "b827a118614926822c1114a125479b2b1f55bac94c42512ad48b43a2d90de17a"
+        },
+        {
+          "locator": "/transcript/2",
+          "speaker": "James A. Reuter",
+          "title": "CEO",
+          "content": "Thank you, Nancy, and good morning, everyone, and thank you for joining us on our call today. This remains an exciting and busy time at First Interstate. This quarter, we continued our efforts to refocus our capital investment, optimize our balance sheet and improve core profitability. In addition to our decision in the first quarter to stop new originations in indirect lending, followed by our April announcement of the Arizona and Kansas branch transaction, we signed an agreement this quarter to outsource our consumer credit card product and the underlying loans moved off of our balance sheet. We continue to take steps to refocus the franchise in our core markets where we enjoy strong market share and believe there is high growth potential. First Interstate has a strong brand and branch network located in growth markets, a market-leading low-cost granular deposit base and a team of strong community bankers. We believe these attributes, when combined with recent strategic actions, branch optimizations, future organic growth through relationship banking and the continued repricing of our assets will lead to higher profitability. We continue to take a proactive approach to credit risk management. This quarter, we were pleased to see stability in nonperforming asset levels, modestly lower classified asset levels and 14 basis points of annualized net charge-offs. Criticized loans did increase, generally reflective of slower lease-up in our multifamily book, and we will discuss that in more detail later in the call. Our recent strategic decisions have led to strong levels of capital and liquidity, providing us with a solid and flexible foundation. We ended the quarter with a 72% loan-to-deposit ratio, minimal short-term borrowings on the balance sheet and no broker deposits. Capital had also continued to meaningfully accrete with our common equity Tier 1 capital ratio, ending the quarter at 13.43% and with an expectation for continued accretion through 2025. Later in the call, David will address new commentary we have added to our guidance regarding our anticipation for a high single-digit increase in net interest income in 2026, supported by our expectation for continued margin improvement assuming generally flat total loan balances in 2026. We are sharing this color to highlight what we believe is the impact of our disciplined approach to repricing maturing assets as we continue to focus the organization on organically growing loan balances over the long term. We have also added a slide to our investor presentation this quarter, highlighting the strength of our deposit profile, which we believe is the key driver of the long-term value of the franchise. 93% of the deposit base is located in areas where we have top 10 market share and about 70% of our deposits are in markets that are growing faster than the national average, supporting long-term organic growth. We opened one additional branch this quarter in Columbia Falls, Montana, which is a small example of our future efforts to drive organic growth. We did not announce any branch consolidations in the second quarter, but we anticipate sequential action moving forward as we progress through 2025 and into 2026. With that, I will hand the call off to David to give more details on our quarterly results and to discuss our guidance. David?",
+          "entry_canonical_sha256": "11b225c34bf15dc92ec3d5af1acbdd2e68ac053a9472c0e7fe745d5d5ed94256"
+        },
+        {
+          "locator": "/transcript/3",
+          "speaker": "David P. Della Camera",
+          "title": "CFO",
+          "content": "Thank you, Jim. I will start with our second quarter results. For the second quarter of the year, the company reported net income of $71.7 million or $0.69 per diluted share compared to $50.2 million or $0.49 per diluted share in the first quarter. Net interest income was $207.2 million in the second quarter, an increase of $2.2 million over the prior period. This increase is primarily driven by a reduction in interest expense from reduced other borrowed funds balances, partially offset by lower interest income on earning assets resulting from a decrease in average loan balances. Our net interest margin was 3.32% on a fully tax equivalent basis, and excluding purchase accounting accretion, our net interest margin was 3.26%, an increase of 12 basis points from the prior quarter. Other borrowed funds ended the second quarter at $250 million, a decline of $2.2 billion from a year ago and $710 million from the end of the prior quarter. Yield on average loans increased 6 basis points from the previous quarter to 5.65% in the second quarter, driven by continued repricing and payoffs of lower-yielding loans. Interest-bearing deposit costs declined by 1 basis point in the second quarter compared to the first quarter, and total funding costs declined 9 basis points due to improving mix shift driven by the reduction in other borrowed funds. Noninterest income was $41.1 million, a decrease of $0.9 million from the prior quarter. Results this quarter include a $7.3 million valuation allowance related to movement of Arizona and Kansas loans that are included in the branch transaction to held for sale. This was partially offset by a $4.3 million gain on sale related to the outsourcing of our consumer credit card product. Results were generally in line with our expectations, excluding these items. Noninterest expense declined in the second quarter by $5.5 million to $155.1 million. This decline compared to the prior quarter was due to lower seasonal payroll taxes and reductions in incentive-based compensation estimates. Results include roughly $1.5 million in property valuation adjustments and lease termination fees associated with properties in Arizona and Kansas. We continue to exhibit expense discipline related to our staffing levels driving results favorable to our prior expectations. As part of that discipline, we are thoughtfully developing efficiencies as we move forward, which includes our ongoing analysis related to the branch network and are carefully controlling staffing levels and other marginal spend. Turning to credit. Net charge-offs totaled $5.8 million representing 14 basis points of average loans on an annualized basis. We recorded a reduction to provision expense for the current quarter of $0.3 million, driven by lower loans held for investment. Our total funded provision increased to 1.28% of loans held for investment from 1.24% at the end of the first quarter. Classified loans declined $24.4 million or 5.1%, and nonperforming loans also declined modestly. Criticized loans increased $176.9 million or 17.2% from the first quarter of 2025, driven mostly by some of our larger multifamily loans, generally reflective of slower lease-up. Broadly, we are comfortable with the underlying value of the properties and guarantor's ability to support in these circumstances, but lease-up timelines are slower than initially anticipated at underwriting, driving movement into the criticized bucket. Turning to the balance sheet. Loans held for investment declined $1 billion, which included the impact from the strategic moves we have discussed. The decline was influenced by $338 million in loans related to the Arizona and Kansas transaction that moved to held-for-sale, $74 million of loans sold with the consumer credit card outsourcing, and $73 million from the continued amortization of the indirect lending portfolio. The remaining reduction was influenced by higher larger loan payoffs, including loans we strategically exited. We are remaining diligent in adhering to our pricing and credit discipline. And while competition is always strong for great clients, we are seeing initial indications of increasing pipeline activity. We do believe that loans will decline in the near term but remain optimistic that we will stabilize and return balances to growth in the medium term. Deposits declined $102.2 million in the second quarter and are approximately flat compared to the prior year, adjusted for a larger temporary deposit on our balance sheet at the end of the second quarter of 2024. Finally, in the second quarter, we declared a dividend of $0.47 per share or a yield of 7.0%. Our common equity Tier 1 capital ratio improved by 90 basis points to 13.43%. Moving to our guidance. Our guidance as displayed includes the impact of the consumer credit card outsourcing and excludes the impact of the branch transaction, which we anticipate closing in the fourth quarter. Broadly, the consumer credit card outsourcing reduces the major lines of the income statement and is mostly neutral to forward net income. We have updated our guidance to reflect our current assumption of a 125 basis point rate cut for the remainder of 2025. As of the end of the second quarter, our balance sheet has shifted from slightly liability sensitive to mostly neutral, and we do not believe the rate cut included in our guidance is meaningful to the net interest income forecast we have presented for 2025. Our net interest income guidance reflects an anticipation of continued margin improvement with an expectation of fourth quarter net interest margin, excluding purchase accounting accretion, to approximate 3.4% compared to the 3.26% figure reported in the second quarter. Compared to the prior quarter's forecast, in addition to the impact from the outsourcing of consumer credit cards, the net interest income forecast was modestly impacted by lower risk-weighted density. Our guidance now assumes a more meaningful near-term asset allocation into the investment portfolio versus loan balances as loans have declined more than previously anticipated. We anticipate beginning to reinvest into the investment portfolio in this quarter. We have added commentary in our guidance, noting that we anticipate net interest income to increase in the high single digits in 2026 compared to 2025, supported by our expectation for continued margin improvement, assuming generally flat loan balances in 2026. We're sharing this to highlight what we believe is the impact of our disciplined approach to repricing maturing assets and continue to believe we will grow loan balances over the long term. To provide additional detail, we've included the slide in our investor presentation detailing near-term fixed asset maturity and adjustable rate loan repricing expectations. Note that loan balances represent maturities in the case of fixed rate loans and maturities or repricing events in the case of adjustable-rate loans. These figures displayed do not include contractual cash flow or any prepayment expectations. We expect loan yields to continue to benefit from the tailwinds of fixed rate repricing, a key component of our expectation for continued net interest margin and net interest income improvement. The investment security figures displayed represent current market expectations for total principal cash flows during each period which provides another source of anticipated net interest income expansion. Noninterest income guidance is modestly lower than the prior quarter, impacted by the outsourcing of our consumer credit card. Finally, we reduced our noninterest expense guidance from an expectation in the prior quarter for a 2% to 4% full year increase to 0% to 1% for the full year of 2025, compared to the reported 2024 number. In addition to favorability in the second quarter expense levels to prior expectations, we are carefully controlling staffing levels and other expense levers while continuing to invest in production-driven areas as we look to drive our balance sheet growth. These areas of continued focus have reduced our forward expectation of expenses in the near term. While near-term loan levels are lower than previously anticipated, leading to some modest pressure in net interest income in the near term, we are carefully controlling the expense base as we look to drive an efficient return profile for our shareholders. Turning to the Arizona and Kansas branch transaction. We stated in our previous earnings call that we anticipate tangible book value accretion of roughly 2% at the close of the branch transaction, an improvement in our common equity Tier 1 ratio of approximately 30 to 40 basis points. As noted, we modestly increased loans associated with the transaction since the prior quarter. Together with the anticipated recognition of the deposit premium in the fourth quarter, which would occur concurrent with close, we continue to anticipate total tangible book value accretion of approximately 2% from the transaction, which would include the impact of the held-for-sale valuation allowance recognized this quarter. We now anticipate our CET1 ratio to increase at the high end of the noted range given the additional loans included. With that, I will hand the call back to Jim.",
+          "entry_canonical_sha256": "7acbc2ec0a0f721e3465e41d8f11a6caf46898c27e9ccb18d213337dfccb55af"
+        },
+        {
+          "locator": "/transcript/5",
+          "speaker": "Operator",
+          "title": "Operator",
+          "content": "The first question comes from Jeff Rulis at D.A. Davidson.",
+          "entry_canonical_sha256": "61ddbe09ada2bfa2d88aa8534eb538f35b3493cfa05318762eb2830590a58664"
+        },
+        {
+          "locator": "/transcript/12",
+          "speaker": "David P. Della Camera",
+          "title": "CFO",
+          "content": "So I think at year-end, to your point, so 13.4% was the June 30 number. We think we are around the 40 basis point number of additional accretion from the branch transaction and then modestly lower loans in the near term. So that does get you to a higher number from here, all else equal. As we think about capital, we certainly acknowledge we have strong capital levels, and it creates significant optionality for us. We're very pleased with that. We're looking at a variety of options. So we're looking at all the different capital deployment options from here and considering how we can utilize that to enhance return. So more to come there, but we're looking at our different options.",
+          "entry_canonical_sha256": "cf9e6d2bbf60ffe598f58d05172a8ec9aaba939e16611b206c39db34eb3a097c"
+        },
+        {
+          "locator": "/transcript/48",
+          "speaker": "James A. Reuter",
+          "title": "CEO",
+          "content": "All right. Thank you, and thank you, everybody, for your questions. And as always, we welcome calls from our investors and analysts. So please reach out to us if you have any follow-up questions, and thank you for tuning into the call today.",
+          "entry_canonical_sha256": "96a2bafed771fcd507f2901638c642b864955f5e520791e855150c3089cadc09"
+        },
+        {
+          "locator": "/transcript/49",
+          "speaker": "Operator",
+          "title": "Operator",
+          "content": "Ladies and gentlemen, this concludes your conference call for today. We thank you for participating, and we ask that you please disconnect your lines.",
+          "entry_canonical_sha256": "01d5f439341a1a98ad514480cbd6e4e8c094b012787eed53464ff90755cc80f9"
+        }
+      ],
+      "status_before_external_review": "unknown_complete_public_content_time; original identity/completeness appearance corroborated, not first-party public-time proof"
+    }
+  ],
+  "all26_original_bindings": [
+    {
+      "document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b",
+      "file_sha256": "1e548ac54d38a9c4a38a6763410bda767f57d2c23a47f207ad051527f397289d",
+      "content_hash": "2761f139f195f3fb785c442b14f71654e518ad32b97da6881d29a6ba21a88fce",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665",
+      "file_sha256": "764e4d75432a1e94414ab848598da741fca4ed6502d7c10aaeeee3172dffee13",
+      "content_hash": "b4cdd180de023800dac85665b5fcb5dfd0b87e509edd854b1c38a6207105e94a",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a",
+      "file_sha256": "5103acfc4c4987c36f42f83e93840aad7d4403d14cce45099afd4bf4f4b012aa",
+      "content_hash": "0f2df7d4dde1b1d0e3dcd42a820e41313c8a8d67c0df7fde9e027afdd7c630ad",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e",
+      "file_sha256": "a2ed0b264e6597d7994792b2581ba1c1d865d6a004e1df7174d2fef16854ba59",
+      "content_hash": "5c87489efef8befa6410f69ee50f332053b8a9e4f56473b82aaf031af7cd3dc2",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000895421:earnings_call:4991cd407c0da0768c268d49",
+      "file_sha256": "5b05465542ec6e704ad6c9a0167210dd4beeb6d9fe0944b47564bf3fa12e7d74",
+      "content_hash": "4991cd407c0da0768c268d49bb06371fe31a6379636e3a2df63ee9f1162e6313",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000895421:earnings_call:5d4f3600f93dd9c8e001d802",
+      "file_sha256": "e93a59ec12c1695b882fa18fb55c2a389321ec9f4013726e47a10feeec6d9a4c",
+      "content_hash": "5d4f3600f93dd9c8e001d8024e7c50fa890e17e2a4ac465a69356e6b4d02ff17",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d",
+      "file_sha256": "3311b695c2c9cd0a92c03b37a8fb31fc266e38915fd3749b5c432d605b184fcc",
+      "content_hash": "1671fd0384ab41adb0c9f05d9214a0330c6a3b17c90a6b2310258a99d8523cd4",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af",
+      "file_sha256": "9d4f14509352afdb8a3a7aab51be6d43d2a07fab229c0251501f14fff6cb63e0",
+      "content_hash": "fa7da0996dd0446fc96799af2b07ee9d59e86b835401f4970bc559b6cc1ee537",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000936395:earnings_call:20258bddd129b37a173d7a2e",
+      "file_sha256": "c8cca552e2bdbc86fc9d90847e819a7ba846b90a58e8d3d0cbe38b38a7818538",
+      "content_hash": "20258bddd129b37a173d7a2e93415dd7e49b6cee04c37aa7c23244576c265b1a",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0000936395:earnings_call:5ccd7fe1e6f86751f3d011c4",
+      "file_sha256": "1ea50ca0ff0e41d9b463a93c7ab8a394858a0e13e6be94d5bc22571f25657ba0",
+      "content_hash": "5ccd7fe1e6f86751f3d011c45510a6e25d19fe41c9061a8a2248f1aa04843534",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001018963:earnings_call:7e2a69eede1c1b4c9695b46a",
+      "file_sha256": "772489f923a9561dc1a1355286a8211b7e1bd0459651c0556ace53320e51e12c",
+      "content_hash": "7e2a69eede1c1b4c9695b46ae7d80b9f29fce02ff8bdf141aa47d04dad9cac55",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001018963:earnings_call:b0b34701653d7e0a2cd607ef",
+      "file_sha256": "7c7921e6bf00befef5853de57faef82fdba71c0881859862dcd1f45734009890",
+      "content_hash": "b0b34701653d7e0a2cd607efbd1be15a61ef393459b7c47128338ee0627d5fee",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001051627:earnings_call:2ee31980cdce97120fff94ad",
+      "file_sha256": "931cdc4c7b2633ff39e4ae71626068098b7572d97f2fa7c45b07cade2849ecc6",
+      "content_hash": "2ee31980cdce97120fff94adc65deefda3e7b659861f3b7f362f1fa00e9a4448",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001051627:earnings_call:cca0e576bc815687121312f0",
+      "file_sha256": "b93d11103743ec0682bc094151a517dec1d5a109b2f796a656e802cba9b9b0de",
+      "content_hash": "cca0e576bc815687121312f0fe0a3c46717325c165103cb4c7407c25678c7dcb",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001114995:earnings_call:56963e7fdddc4c2a731ab0cb",
+      "file_sha256": "739c3b90d6c4814dcd1b7633aa63f3629334957054284a202426ec600aea88b3",
+      "content_hash": "56963e7fdddc4c2a731ab0cbbfc21141b1e4089762e27e26787b24166b371fdc",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001114995:earnings_call:8fb807995bdde614fddde66d",
+      "file_sha256": "aa74da6312554392e505e4b42a26c5986b4e62263ecb9679f5ec92dc254e4919",
+      "content_hash": "8fb807995bdde614fddde66d4fef26c5178f1a74886a5c95e49a51ae534f767b",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001174922:earnings_call:d7b5b20f33fc541b281aa4fc",
+      "file_sha256": "dd275f6678ca5c6c3724907f81d4189702c4742c4e374fe1844ebbe507e72ccc",
+      "content_hash": "d7b5b20f33fc541b281aa4fc7705482bb9f2b49d1069a61fc4dcd73556874d65",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001309402:earnings_call:c24a7e3f69c8213549547c34",
+      "file_sha256": "2aa98d39ed282fbe18afc49a4c158d05a41aace67e64ac1a3d33518cf7123c2e",
+      "content_hash": "c24a7e3f69c8213549547c34cc6bb0a49af3c801f7bf878ff4035de7f9600b6f",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001309402:earnings_call:fc2a37b31742bfbc3b48bc14",
+      "file_sha256": "5ae219f38631df6a272bb3da5d2416bc40216b2de1847e96068b04b6f91e5cc7",
+      "content_hash": "fc2a37b31742bfbc3b48bc14f8be32c57aa94cae6b9f980d9688012ddaa8b87d",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001576942:earnings_call:4c59689781c1f6e972246d25",
+      "file_sha256": "f4300f4fdeacbf84ba1e88afc9e86c4ac0736844484b856fd87df7c532b267ca",
+      "content_hash": "4c59689781c1f6e972246d256b8d1bad30a8b8f778c641f742ad386962d52c05",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001576942:earnings_call:e32acd3fe08e04908e514cc9",
+      "file_sha256": "ea6068f6440bfddb949810c579e7a1fa80684f89202df1d4891184277d410887",
+      "content_hash": "e32acd3fe08e04908e514cc9e34008fc8cfcf78e35acb5754760c7950a096dc3",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001590364:earnings_call:1d83f5b836b1615c722d8f29",
+      "file_sha256": "2fef52e5ea401960bb72fec66e81d56c88463efef31ac322112a7389e47529a0",
+      "content_hash": "1d83f5b836b1615c722d8f29738676ba1225eecf794af9df11717b3a771137e5",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001590364:earnings_call:55324a9027cb59212ffea652",
+      "file_sha256": "5a7a47d6e8dd9ef20d6c6be6c78885c70dd72ac3685c2749019b161b922609d8",
+      "content_hash": "55324a9027cb59212ffea652a9385f6e132faa7886ab21b86e4bc995b83bfe29",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+      "file_sha256": "f23c7887094f0cb484d053e6d04aab37e6f6a98d8e6bd7ad2c73b3ef2d718bc3",
+      "content_hash": "3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001869198:earnings_call:aa8f522e8e241985b6e59a83",
+      "file_sha256": "4a604ae944f31a07babaa4f1a17126ea13d72b854ffdd17f08e46ef9d027b395",
+      "content_hash": "aa8f522e8e241985b6e59a833348b1f4a8683457268f42f017ba269e6882e2cf",
+      "verified_original_bytes_only": true
+    },
+    {
+      "document_id": "alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324",
+      "file_sha256": "f7f6a3842330a156e2ac7f4acb4a2d885b07ab098251254dc4d45625a2f9775e",
+      "content_hash": "c75a3969dca155a9308193243fe3d3f351b19dab0deae9d59345598e2fdd0a5d",
+      "verified_original_bytes_only": true
+    }
+  ],
+  "policy_and_input_bindings": [
+    {
+      "path": "spec/src/stock_opportunity_agent/data/resolution.md",
+      "sha256": "89351b88124e75564b3e00854c00fc57056bbbc7ac6699a999f69642401844c8"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/data/sources.md",
+      "sha256": "16882b954126f8622ebd0405e0f8df84495f8dc9eff625d76356619c14411c9d"
+    },
+    {
+      "path": "reports/transcript-availability-policy-review-20261007.md",
+      "sha256": "074077fccc0127210d6c50a4860a9a358f7a26c73a71a7408cdabbf0c5f07133"
+    },
+    {
+      "path": "reports/transcript-availability-correction-preview-20261007.json",
+      "sha256": "b092bf127fadd2b9ec6edfafbb00c4b01a0dd2211bc44f881130092ff88f4fbe"
+    },
+    {
+      "path": "reports/transcript-proof-inventory-20261019.json",
+      "sha256": "c998c06077fc2bed98ea8db29073d6981c00a66fa8974ecdddf3175bcfee8256"
+    }
+  ]
+}

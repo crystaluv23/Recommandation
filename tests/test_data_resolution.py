@@ -442,7 +442,7 @@ class EvidenceResolverTests(TestCase):
             "test_configuration_unavailable",
         )
 
-    def test_transcript_adapter_maps_fiscal_quarters_and_excludes_future_reports(
+    def test_transcript_adapter_rejects_calendar_as_public_content_proof(
         self,
     ) -> None:
         calls: list[str] = []
@@ -516,18 +516,13 @@ class EvidenceResolverTests(TestCase):
             as_of=AS_OF,
         )
 
-        self.assertEqual(calls, ["2025Q3", "2025Q2"])
-        self.assertEqual(resolution.status, "resolved")
-        loaded = resolver.load_documents(resolution, as_of=AS_OF)
-        self.assertEqual(
-            [item.metadata["quarter"] for item in loaded],
-            ["2025Q3", "2025Q2"],
-        )
-        self.assertEqual(
-            loaded[0].available_at,
-            datetime(2024, 11, 20, tzinfo=timezone.utc),
-        )
-        self.assertIn("earnings_call", resolver.available_source_types)
+        self.assertEqual(calls, [])
+        self.assertEqual(resolution.status, "unresolved")
+        self.assertEqual(resolution.gap.reason, DataGapReason.HISTORICAL_DATA_UNAVAILABLE)
+        self.assertEqual(resolution.documents, ())
+        self.assertEqual(resolution.appended_documents, ())
+        self.assertEqual(resolver.store.documents, ())
+        self.assertNotIn("earnings_call", resolver.available_source_types)
 
     def test_unknown_provider_errors_remain_retryable(self) -> None:
         adapter = FailingAdapter(DataGapReason.PROVIDER_ERROR)

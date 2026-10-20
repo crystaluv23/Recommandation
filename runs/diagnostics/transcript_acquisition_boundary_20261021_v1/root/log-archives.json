@@ -1,0 +1,159 @@
+{
+  "note": "Lossless logs and before-snapshots. Original raw logs/copies retained locally; decompress to raw_path before replaying bound harnesses. before-status-condense.md is the previous status section, retained in this archive. First lint failed status length108; current status condensed to81 with details in linked reports.",
+  "records": [
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/driver/before-format-test_transcript_acquisition_boundary.py",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/driver/before-format-test_transcript_acquisition_boundary.py.gz",
+      "raw_sha256": "1d1369c7be3bef19b997c11893de14da32e47e458ba66075c8ae4a116f578b8f",
+      "archive_sha256": "eff4b83b2a5f6d7307a66c19982d9d44811d23d3b1290b3712f25d6415b004d7",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/driver/focused-final.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/driver/focused-final.log.gz",
+      "raw_sha256": "f198fe6e0ac17b33cd7562b6a92fa0b3685f73e640b857d22361744b81d77cbf",
+      "archive_sha256": "87c0482377910574d3ca84481c3a4325df5f5b3f5856f7f1edfb371586c4fd0b",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/driver/focused-v1.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/driver/focused-v1.log.gz",
+      "raw_sha256": "8036e84a3beb8c3214943ec06a145bbd8cc6bed36f2451cb62b838269a208f07",
+      "archive_sha256": "79347491f8edd2101e9531f51a43328c5c8b36d72f413803bdd48edd2de4036d",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/driver/old-boundary-tests.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/driver/old-boundary-tests.log.gz",
+      "raw_sha256": "7bb4c87795dcbc00fd851fb5524f05118fbea78a97f6e86758f25eb4ebbe59be",
+      "archive_sha256": "b5b5c564e3f4cdc3f8631bb3bb004a0a4d94bef7f43d349bb07d4f91fb10a8d2",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/before-run_cold_start_formal.py.txt",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/before-run_cold_start_formal.py.txt.gz",
+      "raw_sha256": "4b3aa81b8536a9f73a427691222fdbe5095e00fa8f22eeb9839413dd1d25665f",
+      "archive_sha256": "9d27305da89ed9c31cf369c377825687c74b5847ff7b7ce54c33ecf0b23f7484",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/existing-context-tests.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/existing-context-tests.log.gz",
+      "raw_sha256": "358524e358ca9b6ab49e8f9925fd4b78e6f9b70e6d84be2180f9ee7e9e476b24",
+      "archive_sha256": "ce5b640cc1f6a42308988293281ddfd153dd335925eac8b30590cbcc49d8ee5e",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/focused-tests.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/focused-tests.log.gz",
+      "raw_sha256": "07be6fd768f95fb8e45a9df4ccf735c3b02ef559cbbb6a66390f2c10eadd2d48",
+      "archive_sha256": "e7bd2d67a8c387e4ecf6d39d985d624ef5a8a82a3b75a1c009bcd2d540240b5c",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/lint.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/lint.log.gz",
+      "raw_sha256": "347a7935534b14a1069e76580b7b7ac37455c40314cc5063375fed0b0af4294c",
+      "archive_sha256": "d2048a1e00974d3a099c02247171fafe785be289313fc41eef4a810ab4f496fa",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/old-red-tests.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/formal-driver/old-red-tests.log.gz",
+      "raw_sha256": "ace6017464626dcb4ae9adcd1dc48b506c2185ecbf98eb6443105216b8cab8a7",
+      "archive_sha256": "a7552bcebfe4dad96a8f8bf4cf40e8b31892ef0f0536d320da88c547a16be2f1",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/before-baseline-binding-test.py.txt",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/before-baseline-binding-test.py.txt.gz",
+      "raw_sha256": "7f7d57f94f209f1670c035bbb4234988ca90a0cc2074dd776d5ddf5e69e10935",
+      "archive_sha256": "a4ab619f4c8697ea3cb2572b6d478bd6a94338ebca30f608657d798c4f74c3ca",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/candidate-independent-tests.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/candidate-independent-tests.log.gz",
+      "raw_sha256": "5375912a487a681dbe3211d8100ed3a38e3b85e316631d7c891f8c8b7d89e226",
+      "archive_sha256": "cb9544951d4ea110490e01e16f58c54bd983dda3085aadf37e42329afd421e46",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/final-review-build-initial-enum-match-error.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/final-review-build-initial-enum-match-error.log.gz",
+      "raw_sha256": "7baded01664b87ff3f66c10c0ed1d30cdd7b4e4122ba7097867b0968344e6b99",
+      "archive_sha256": "bb2bb7ba14af2485415104a21338d504578924546ae21dbba6802b984f03e1d0",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/final-review-build.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/final-review-build.log.gz",
+      "raw_sha256": "fd2c8e7a17597c8d10cc878a883e99cdb753109761a7d4a499e0eaa018bd00fd",
+      "archive_sha256": "6ca8db72fb0594dac3cca68f2bfa1c599e990c4485cfb43e7ca4feedbf79c629",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-882f-acquisition.py.txt",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-882f-acquisition.py.txt.gz",
+      "raw_sha256": "882f765da65b3352cb638290378b1bebb5d7afaee4f656c9664d10b4a4eaf092",
+      "archive_sha256": "f209c2cf62abfa92be451c9bf7f59761cc81fadb7e09cbc13ca2746aac5bf610",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-acquisition.py.txt",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-acquisition.py.txt.gz",
+      "raw_sha256": "7f7298d90e21b00cfd4fdfd095e116167c20e1136826b23754d1c9a729004270",
+      "archive_sha256": "920b78f994cf7275ad804ac2f18232563a31bacb88dcb3b2bac9a2f129e61459",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-independent-tests.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-independent-tests.log.gz",
+      "raw_sha256": "e874ce7e3045a2ec33183d6d69a27452c7d5684701c56fb8f0e7452ff5425dd8",
+      "archive_sha256": "6cd67a6668ad89a6858d888627f232ab2c3c3b146400ed3e880ab49e096cb289",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-run_cold_start_formal.py.txt",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-run_cold_start_formal.py.txt.gz",
+      "raw_sha256": "4b3aa81b8536a9f73a427691222fdbe5095e00fa8f22eeb9839413dd1d25665f",
+      "archive_sha256": "9d27305da89ed9c31cf369c377825687c74b5847ff7b7ce54c33ecf0b23f7484",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-verified-independent-tests.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/original-verified-independent-tests.log.gz",
+      "raw_sha256": "6cffeac8446aab75c20711a812ecb374720374f0028296d4ee25f4993e76e055",
+      "archive_sha256": "441ec2c1d3d504dc67199bc61830c67374966e6a70f01a9a44a2aa1afd3a561e",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/associated-tests.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/associated-tests.log.gz",
+      "raw_sha256": "5ea239b5cd90fc7767db0a43de7e3210b5d0b2da12ee928f3e985893a797025b",
+      "archive_sha256": "210cdd9ee5cb421863b498e01fe33e5716d04c36e033eb09f89a8e44a168a9cd",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/before-status-condense.md",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/before-status-condense.md.gz",
+      "raw_sha256": "2ed2aea63b34c15df2e98177545f53f47a6f04ffc0d1bdc0cb5872bccc007737",
+      "archive_sha256": "f92773463ac8bdc3d5257b41c83c85a3ee08b11b5c97ac0fedfdf9f9692af8c6",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/first-lint-failure.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/first-lint-failure.log.gz",
+      "raw_sha256": "938319f381dd8d70d435d61a584b744d9b5754ea539697f0dfc043caaa51f039",
+      "archive_sha256": "374b6fda77780f755c7b1e88c78312b7a5f73cd3949d18961c714b371994d8ac",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/final-lint.log",
+      "archive_path": "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/final-lint.log.gz",
+      "raw_sha256": "0d0605f6fd694f2afcb25077a007d3a51422828411d05f6cee499a64a481ca20",
+      "archive_sha256": "60a3bba8d03c1af0d6a15654b0cb70bfe4a621a9d026ebb5f0605fc494da70be",
+      "lossless": true
+    }
+  ]
+}

@@ -50,11 +50,18 @@ Use the source catalog as the canonical free/free-key capability manifest:
 - `massive`: U.S. equity daily OHLCV aggregate bars from the keyed Massive REST API.
 - `stooq`: daily historical OHLCV CSV fallback, with `STOOQ_API_KEY` support because the CSV download can require a captcha-issued apikey.
 - `alpha_vantage`: listing status, daily prices, overview, statements, earnings, estimates, symbol and topic news sentiment, transcripts, ETF profile, and selected macro endpoints.
-- Historical transcript materialization pairs the transcript response with the
-  same provider's earnings history: annual and quarterly fiscal-period ends
-  determine the requested fiscal `YYYYQn`, while `reportedDate` supplies the
-  public-date anchor. Date-only reports become usable on the next UTC day; a
-  quarter without an unambiguous fiscal mapping is not emitted.
+- Raw transcript responses remain available through the provider client and
+  managed raw cache. Provider earnings dates and fiscal-quarter echoes cannot
+  establish when complete conference content was publicly available. Automatic
+  transcript acquisition currently has no reviewed public-content proof input
+  and must return `historical_data_unavailable` before making provider requests,
+  rather than minting PIT documents from `reportedDate`. This is an explicit
+  acquisition limitation, not evidence that a conference or its content did not
+  exist. Existing local documents, raw responses and unrelated acquisition
+  capabilities remain intact. A proof-backed materializer and its normal
+  capability controls remain open under the approved
+  [transcript availability policy](resolution.md); this guard does not complete
+  transcript support or authorize old unreviewed records for a successor.
 - Historical company-news backfills may call Alpha Vantage with an exact ticker,
   UTC `time_from`/`time_to`, sort order, and limit. A 1,000-row response is a
   saturation signal, not proof of complete coverage; stored Raw Info contains

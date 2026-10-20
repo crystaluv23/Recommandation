@@ -2,7 +2,8 @@
 
 更新：2026-10-21。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛。
 独立预测收益是后续里程碑、未知；生产 LLM 节点由 exact inbox/outbox 独立 subagent 处理，外部 LLM API 调用0。
-公开资料只读取证已授权；累计147 GET（115行情、32SEC），本轮新增0。host模型tokens/费用及资料成本未测量。
+公开资料只读取证已授权；累计147 managed-provider GET（115行情、32SEC），本轮新增0。
+另有限公开web取证2search/4queries、6navigation attempts，底层HTTP数未知，不混入provider计数。host模型tokens/费用及资料成本未测量。
 
 ## 最新实证
 
@@ -33,6 +34,13 @@
 仅本案双18输入各17resolved/1news缺，BasicInfo3resolved/1news缺、17投影均保partial/遗漏。
 确定性输入消费default6/6、current9/9选typedQ1；allfinancial来源请求8/9及9/9，defaultLLM cash_ratio选文缺口仍留。
 26 transcript完整公开内容时间证明仍0，按用户已选“核实完整公开内容时间”口径，不改旧记录/实验。
+[采集时间边界修复](../reports/transcript-acquisition-boundary-20261021.md)：KGC Q1/FIBK Q1-Q2三正文有开场/Q&A/闭会，
+官方页面当前仅证会议计划/回放承诺，完整公开时间仍unknown；其余23未新审正文，固定26分母不变。
+Alpha自动adapter的reportedDate+1及legacy formal Finnhub列表日/季度末两错误clock已按spec移除，
+无reviewed proof输入时分别typed historical_data_unavailable/明确warning，provider调用前拒绝。
+保raw client/cache、local-first/其他source及原件；不背书旧local时间，不把producer guard当完整transcript能力通过。
+232关联测试全过/网络tripwire0、独立8/8（精确旧版5方法失败）；typed gap保存/重复memo/local消费/独立来源fallback/rawcache重开保真，
+resolve仍保既有1次adapter预算预留，不冒称零预算。proof-backed materialization/正常能力正控及reviewed successor排除仍open。
 FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/unknown不等于无事件。
 [案例边界](../reports/case-scope-and-blind-boundary-20261020.md)：fresh40=16Anchor+8Random+16Discovery，Fast24；
 旧48无清单支持，不推剩余8为LockedTest。失败分母、标签、身份屏蔽与LockedTest保持。
@@ -56,45 +64,18 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
 
 ## 下一步与运行边界
 
-[历史Registry读取修复](../reports/historical-registry-definition-reading-20261021.md)已局部验过：真实source知识前置通过后，
-旧history exporter因9金融legacy fixture issuer失败拒绝（12原生fixture计算，93source读字节同、0写）。
-现5历史身份读取改纯定义重建，不加载profile/不重跑旧fixture，fresh execution的3处freeze及现准入保持。
-独立又发现pointer bool/float被int冒充版本，已贯穿source/apply-before-write/history及bootstrap validator严格正整数；
-65关联/10独立控制过，旧反例/首probe副本缺checkpoint/harness写receipt错误均留。
-修后真实v1因runner漏列constructor运营日志读取终态失败（181源文件保真），不重入；独立核仅maxsequence初始化，非研究输入。
-独立v2仅增加该exact sidecar的hash/许可，完整native临时restore控制拒round2诱饵；唯一实际build→validate→apply1.810s通过。
-manifest ba60fd7c/v12原hash与18refs、137定义/914事件/192knowledge记录/5本地cycle/7candidate文件，210源读全保真/0越界或禁止调用。
-228完成文件唯一只读再开全等/0新native调用；仅历史输入物化，非新Slow提交/模型消费/OS崩溃恢复。
-独立S1/S2 source-only预期核原3518分母processed0/pending3518，6Signal技术失败/4quota缺口；新输入分母须由真实producer再推导。
-原生只读probe确认3531个imported units（非完整S1总分母），失败memory unit847019bytes被64KB reader以whole_entry_budget拒；小摘要2312bytes正控可读。
-目录无独立失败原因；541bytes紧凑local view不自动进入首个import-only周期。228封存文件不变，无新模型消费。
-新native财务/来源/input-only/F7/S5等已完成阶段保持完成，不因验收失败重跑；不调整冻结oracle或发布旧版本。
-[Imported method反馈修复](../reports/imported-slow-method-feedback-20261021.md)已提交6ad836fa；完整status/cause紧凑unit保原件/权限/pending，
-多跳不重记观察；16聚焦/独立反例过。首197的legacy prior回归修后，余9旧失败原源码重现；仅10处synthetic metadata补齐，最终213关联全过。
-唯一实际source probe3532units/2312byteheader可读，原summary仍budget-deferred/H1-hidden，228seal保真。
-之后正式有限stage manifest3a4a0e30/D4493，6fresh roles/1Controller原生纠错/301117逻辑预留/0外部LLMAPI。
-header完整进入真实反思；Reflect首答接受3ep/3lesson，processed3/pending4490，独立原件语义过，旧failed0/3518不改。
-真正Controller已读6新原件/brief和603908b9精确memory，full265 backlog的controlled页259保原target（非自主检索）。
-Controller首答另选68e... Plan-action但row rationale string被拒；允许的一次无patch原生续步仍选该项，array合法后原sink保存1unit，pending264。
-预冻技术repair target7d...未选择，仍0/1/pending，不能用合法别项替代。阶段提示只暴露同页未指派目标，是验收任务选择缺口，不自动归模型违规。
-唯一终态reopen272封存文件+completion全等/0新构造模型；stage完成但Controller partial/round-cycle0/0，不是完整Slow/S1-S2或OS恢复。
-新assigned child在55ec6245后唯一prepare15.759s，manifest7f39f03f；原265/0staged、603908memory/六原件及完整首userwire保持，仅system指派原7d ref、不送答案。
-fresh85首答选对repair_dependency/[]但row rationale string拒；fresh86一次原生无patch续步array合法，原sink保存唯一7d unit/其余264pending。独立原材料终审纠后1/1、首答0/1；旧v1的0/1不改。
-2响应/185245逻辑预留/0source或Reflect重跑/0外部LLMAPI；178代码/223副本/父272保真，子247files+completion唯一terminal reopen全同/0runtime入口。业务指针仍0/0。
-221关联测试全过；只证明明确任务→有据repair-route intent→原sink，不证明修复实施、全S1/S2或收益。
-重复row类型拒已定位初始合同未明示嵌套rationale数组（顶层有声明）；现共享声明贯穿system/native contract/精确错误，81关联全过及独立三路径/11坏shape/有效sibling原sink保真。
-validator谓词/权限/哈希/旧stage未改，fresh新声明首答遵循仍未验。
-[Mining原生事实诊断](../reports/mining-native-fact-semantics-20261021.md)：唯一7控制已执行，0LLM/GET/Signal/标签/旧stage重入，4135绑定前后及独立核全等。
-O1在56候选中限1选2011旧件；O2原0671实际context19含两完整OCF operand、facts0，T1/P2各2→0，确认value/val适配断链；legacy正控2facts/ratio1.2。
-R1仅synthetic dual-key证半年120/季度50错自动pair（算术2.4正确），EUR900/800独立正确；不改真原件，也不冒称真实typed错pair。
-PIT两未来row排除有效；spec-first局部候选已修producer→facts→pair→summary/closure/replay，原0671现在19facts逐literal/period/unit/hash核真。
-102关联及独立21×2控制通过；日期独立7控通过（首候选raw字序/身份3失败及一次import污染假绿均保留，不计旧版证据），0网络/真实LabelStore。
-旧unit期待任取同日101已改为完整保101/100及prior100，原红保留。非有限测量不伪negative，显式USD/shares算术权限不变。
-[H1计数后续修复](../reports/mining-native-fact-semantics-20261021.md)：原context已知taxonomy，现与自动关系共享row-level期间/冲突判定，统计组内有效pair存在性；多duration能力不缩为唯一scalar。
-205关联、独立12及另9等价+10H1控通过；原len gate3红及旧phrase unit期待保留。实际仅一次H1 unbound方法读原dev8/qualified1780，1789绑定保真，24项/顺序/计数全同，仅覆盖说明变更，观察覆盖增益0。
-未构造Engine/新FactGraph/角色/标签/GET/旧stage；新prompt仅本地request构造验证，不称模型消费。旧格式Fact leaf丢taxonomy的真实错配仍open、不进下一Mining能力stage。
-可选taxonomy字段与原文索引具体方案已提交用户选择，未答前不默改schema/interface；已完成旧probe保持封存。
-12函数有真实参数化空间；方向/magnitude新测量能力与闭环仍open，不用完整Mining找前置错误。
-LLM阅读接口方案待设计决策；两财务期间定义需具体政策/新版本，不能由当前计算结果倒推答案。
-完整反馈消费、新方向/magnitude Mining→忠实实现→准入发布→后继精确使用、完整恢复及双环均未验证。
-旧v182权威Fast/Slow=1/1完成不恢复；memory失败processed0/pending3518不改成功。不启动完整后继，整体MVP保持open。
+- [历史输入读取](../reports/historical-registry-definition-reading-20261021.md)：纯定义重建与严格正整数版本门已修；
+  唯一原生v2物化228文件再开保真，只是历史输入，非新Slow或OS恢复。旧fixture/指针不改。
+- [Slow反馈](../reports/imported-slow-method-feedback-20261021.md)：紧凑失败header进入fresh反思，processed3/pending4490；
+  原failed0/3518保留。Controller实际读6原件和精确memory；初未指派target的阶段0/1不改。
+  assigned child首答格式拒/一次原生纠错后，指定7d repair_dependency意图落盘1/1、其余264pending；
+  父272/子247封存文件再开保真、业务指针0/0。只证分流，不证修复实施或全S1/S2。
+  row rationale数组义务现已贯穿初始声明，81关联及独立反例过，fresh新声明首答遵循尚未验。
+- [Mining事实与H1](../reports/mining-native-fact-semantics-20261021.md)：原生7控确认context19→facts0；
+  value/val、期间/单位/冲突及派生关系连接已修，原0671现在19facts逐literal核真；102关联/独立21×2及日期7控过。
+  H1改共享row级合法pair存在性，205关联及独立控制过；实际dev8/qualified1780的24目录项/计数未变，观察增益0。
+  legacy Fact leaf丢taxonomy的真实错配仍open；可选taxonomy字段/原文索引方案待答，不默改schema或启动Mining能力stage。
+- 优先取得完整公开会议内容的历史时间证明；现两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
+  有界LLM阅读接口、gross_margin/revenue_acceleration期间定义也待设计决策；不由现有结果倒推答案。
+- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。
+  旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

@@ -1446,7 +1446,7 @@ class RunControlTests(TestCase):
                 cycle_id=1,
             )
 
-        self.assertIn("earnings_call", resolver.available_source_types)
+        self.assertNotIn("earnings_call", resolver.available_source_types)
         self.assertIn(
             "alpha_vantage",
             [

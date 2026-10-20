@@ -1,0 +1,58 @@
+{
+  "actual_function_file": "/Users/l/Project/Recommandation/scripts/run_cold_start_formal.py",
+  "actual_product_sha256": "4b3aa81b8536a9f73a427691222fdbe5095e00fa8f22eeb9839413dd1d25665f",
+  "cases": [
+    {
+      "list_item": {
+        "id": "provider-date",
+        "date": "2025-04-29"
+      },
+      "provider_calls": [
+        [
+          "transcript_list",
+          "SYNTH"
+        ],
+        [
+          "transcript",
+          "provider-date"
+        ]
+      ],
+      "warnings": [],
+      "accepted_documents": [
+        {
+          "text": "Prepared remarks only; no Q&A or closing.",
+          "published_date": "2025-04-29",
+          "available_date": "2025-04-29",
+          "content_scope": "complete_body"
+        }
+      ]
+    },
+    {
+      "list_item": {
+        "id": "quarter-only",
+        "year": 2025,
+        "quarter": 1
+      },
+      "provider_calls": [
+        [
+          "transcript_list",
+          "SYNTH"
+        ],
+        [
+          "transcript",
+          "quarter-only"
+        ]
+      ],
+      "warnings": [],
+      "accepted_documents": [
+        {
+          "text": "Prepared remarks only; no Q&A or closing.",
+          "published_date": "2025-03-31",
+          "available_date": "2025-03-31",
+          "content_scope": "complete_body"
+        }
+      ]
+    }
+  ],
+  "scope": "Local synthetic provider only; actual old function; no network, labels, research or old-stage entry."
+}
