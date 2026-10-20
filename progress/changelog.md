@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：冻结eb0ef3d6后唯一GPRE prepare13.907s/exit0，57原生capture资格通过、4选定/53保留，plan b5b6002f、62stage文件/5869source/116code/16493旧global冻结；root核plan/映射/public clocks与代码绑定。launcher首次mkdir失败在Popen/marker前，证据保留、正式prepare仅一次。独立复核20715唯一路径/16493旧global全字节及57/4/53通过；未execute/append/consumer，下一唯一执行，原未知/MVP open不变。
+
 - 2026-10-21：新增独立GPRE source-only prepare/execute入口，冻结57/4/53、旧1776view/1781rows及实际36inputs/默认BasicInfo选择证据，0GET/model/labels/apply。初8safe漏目录先写marker再拒，执行前审发现并修为写前目的地/既有plan校验；9safe及独立14反例通过，旧候选保留，helper/ownspec漂移与已有capture拒绝接通。真实authority5869绑定已核，尚未正式prepare/append，不以预检当实际准入。
 
 - 2026-10-21：定位F7初答把umbrella问题缩成静态terms而丢动态状态/后续coverage；按spec澄清对象、属性、状态、coverage与公开cutoff，并接既有300字无损不足时unanswered/null保原need路径，保reason解释。17安全测试过/四类tripwire0，原控制器3输入缺新指导红证据保留；仅prompt字符串变化，无新语义gate/schema/typed权限，旧fresh0/1不改。另独立实际57临时来源审通过、新来源authority5869绑定核过，仍0真实GPRE准入/append/模型。

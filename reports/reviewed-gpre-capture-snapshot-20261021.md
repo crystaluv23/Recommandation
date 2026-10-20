@@ -37,8 +37,21 @@ version count. Same-content deduplication remains unchanged.
 
 ## Actual phase
 
-Formal preparation and execution remain pending. After a frozen plan is reviewed,
-one sole executor may append only the four approved complete capture records,
+The unique formal preparation completed with exit0 in13.906679 seconds:
+[process summary](../runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/driver-prepare-v1/prepare-summary.json).
+Its [plan](../runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/plan.json)
+has canonical hash `b5b6002f65216e0ea36c6d8e6e23258a060ac360cc722b7e956ab344758bef3e`.
+All57 native-profile products passed;62 stage files,5869 source bindings,116 code
+bindings and16493 pre-existing global files are frozen. The launcher initially
+failed to create its log parent before Popen; that harness failure is retained,
+and the actual prepare invocation ran once. No execution marker or global append
+was produced by preparation.
+
+[Independent frozen-plan review](../runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/frozen-plan-independent-review.json)
+passed:20715 unique bound paths, all16493 old global file bytes/membership,
+57 complete products,53 retained originals and the exact four new IDs agree.
+Public times, recorded normalization time and old raw proof are unchanged.
+Execution remains pending. One sole executor may append only those four records,
 check canonical readback and same-record replay, preserve all old bytes/rows,
 create a separate view and inspect GPRE's two18-input groups and default
 BasicInfo. Snapshot/reopen equality is a store check, not an OS crash claim.

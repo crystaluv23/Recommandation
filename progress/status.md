@@ -63,7 +63,8 @@ FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍un
 
 来源与F7单样本stage均已完成，不重入；F7的temporal-facet未达保留，capture版本身份局部修复已验证。
 [GPRE source-only入口](../reports/reviewed-gpre-capture-snapshot-20261021.md)已过9临时测试/独立目录与漂移反例；
-下一正式freeze/复核后唯一执行：完整57产品重建、保留53既有产品、仅4GPRE新版本准入与实际选择。
+唯一正式prepare13.907s/exit0：57原生profile通过、62stage文件/5869source/116code/16493旧global冻结。
+plan b5b6002f，独立冻结复核20715唯一绑定通过；下一仅4GPRE新版本追加/实际消费，尚无execution marker/global append。
 旧ID/引用/原件/实验不改；同已记录capture replay幂等，采集版本不能增加独立证据数量。0GET/model/labels/apply。
 后续LLM节点仍由exact inbox独立subagent处理；不恢复旧运行或启动完整后继。
 保6unknown/完整失败分母/上下文限制，不以0.8替代测量、最新Q1完整性或整体MVP关闭。

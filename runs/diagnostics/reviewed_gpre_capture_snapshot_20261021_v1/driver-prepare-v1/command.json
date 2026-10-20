@@ -1,0 +1,14 @@
+{
+  "PYTHONPATH": ".:src:scripts",
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/diagnose_reviewed_gpre_capture_snapshot.py",
+    "--prepare",
+    "--output",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage"
+  ],
+  "cwd": "/Users/l/Project/Recommandation",
+  "head": "eb0ef3d621c7f0f2fc147c3987f74a66e41dbce7",
+  "stage_absent_before": true,
+  "started_at_utc": "2026-10-20T16:56:39.043878+00:00"
+}

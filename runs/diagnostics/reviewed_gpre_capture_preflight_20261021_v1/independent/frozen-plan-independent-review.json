@@ -1,0 +1,63 @@
+{
+  "verdict": "PASS_actual_frozen_plan_only",
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/plan.json",
+    "sha256": "e82e93a5fae343890c04c95c4c8794b2860ce06c261484c3c922b31a26ff042c"
+  },
+  "plan_hash": "b5b6002f65216e0ea36c6d8e6e23258a060ac360cc722b7e956ab344758bef3e",
+  "prepare_summary": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/driver-prepare-v1/prepare-summary.json",
+    "sha256": "9d3013554bb41ed173493971cd0714505539646c183ad16a665e36f33206818f"
+  },
+  "stage_files_verified": 62,
+  "source_bindings": 5869,
+  "code_bindings": 116,
+  "global_before_files_membership_and_SHA_verified": 16493,
+  "unique_all_binding_paths_verified": 20715,
+  "historical_source_code_checked_against_git": "c9ad66e80f9b4f72438f5be93496dbaaa9410e92",
+  "full_products": 57,
+  "selected_new_capture_ids": [
+    "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+    "rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b",
+    "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+    "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902"
+  ],
+  "selected_legacy_ids": [
+    "secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79",
+    "secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268",
+    "secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03",
+    "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+  ],
+  "retained_exact_legacy_admitted": 53,
+  "new_capture_all_records_except_ID_equal_frozen_legacy": true,
+  "public_times_and_normalization_clock_unchanged": true,
+  "expected_product_full_set_matches_all57": true,
+  "old_raw_proof_reused_exact": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/raw-response-proof.json",
+    "sha256": "81baee446ae7f9d4f58d23b925cd576b2254dd419770823b666ce44ec19ebea6"
+  },
+  "old_view_documents": 1776,
+  "old_review_rows": 1781,
+  "group_versions_and_denominators": [
+    [
+      "default_v6",
+      6,
+      18,
+      "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24"
+    ],
+    [
+      "latest_v12",
+      12,
+      18,
+      "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d"
+    ]
+  ],
+  "no_execution_marker_or_append_or_newview": true,
+  "qualify_evidence_scope": "Actual frozen code calls the complete native profile on all57 before plan creation; frozen v2 expected set/cache/raw/item/selection/provenance/clock all match this prior independently verified actual57 temporary profile. No Store or stage helper/materializer was rerun in this audit.",
+  "elapsed_seconds": 11.676307,
+  "limits": [
+    "This is a prepare-only freeze, not actual4 insertion/1780view or consumer-Q1 selection success.",
+    "No Store/append/prepare/execute/GET/models/LabelStore/LockedTest or old-stage resume.",
+    "The first metadata-only inspection mistakenly requested registry_version instead of actual version and raised KeyError; no audit success was inferred and no frozen file was written."
+  ]
+}

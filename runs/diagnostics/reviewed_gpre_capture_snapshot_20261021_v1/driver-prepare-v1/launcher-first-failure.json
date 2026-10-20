@@ -1,0 +1,10 @@
+{
+  "actual_prepare_started": false,
+  "before_Popen": true,
+  "correction": "mkdir(parents=True) only in launcher; frozen source unchanged",
+  "exception": "FileNotFoundError",
+  "formal_stage_created": false,
+  "operation": "driver.mkdir() without missing parent",
+  "preserved_original_trace": "tool chunk63932c",
+  "tool_chunk_id": "63932c"
+}
