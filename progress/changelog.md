@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：新增独立GPRE source-only prepare/execute入口，冻结57/4/53、旧1776view/1781rows及实际36inputs/默认BasicInfo选择证据，0GET/model/labels/apply。初8safe漏目录先写marker再拒，执行前审发现并修为写前目的地/既有plan校验；9safe及独立14反例通过，旧候选保留，helper/ownspec漂移与已有capture拒绝接通。真实authority5869绑定已核，尚未正式prepare/append，不以预检当实际准入。
+
 - 2026-10-21：定位F7初答把umbrella问题缩成静态terms而丢动态状态/后续coverage；按spec澄清对象、属性、状态、coverage与公开cutoff，并接既有300字无损不足时unanswered/null保原need路径，保reason解释。17安全测试过/四类tripwire0，原控制器3输入缺新指导红证据保留；仅prompt字符串变化，无新语义gate/schema/typed权限，旧fresh0/1不改。另独立实际57临时来源审通过、新来源authority5869绑定核过，仍0真实GPRE准入/append/模型。
 
 - 2026-10-21：按用户批准完成共享rawcap:v1完整typed记录身份，采集/backfill v2显式使用、v1及旧profile精确兼容，新capture profile完整重建；相同正文仍去重。33安全测试及独立typed/forged/replay控制过，发现并补齐search/documents→resolver嵌套metadata漂移漏门；四类tripwire全0。旧PIT测试仅固定测试capture clock/适配ID，值与日期预期不变。仅临时保存四对实际GPRE冲突，未实际准入/GET/LLM/标签；下一冻结57全产品、仅4新增版本source-only消费阶段，F7原0/1与MVP open保留。

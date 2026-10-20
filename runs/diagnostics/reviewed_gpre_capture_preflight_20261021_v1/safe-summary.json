@@ -1,0 +1,34 @@
+{
+  "GETs": 0,
+  "PYTHONPATH": ".:src:scripts",
+  "actual_append": false,
+  "actual_prepare": false,
+  "bindings_after": {
+    "scripts/diagnose_reviewed_gpre_capture_snapshot.py": "88e80eab0e4e9f875a1475da0c90c10515f60f82ee82c668ada97f925f849e92",
+    "spec/scripts/diagnose_reviewed_gpre_capture_snapshot.md": "c0d6289c062b15697379332711d3fc25ad231474b247232ebfcfee0034b863b3",
+    "tests/test_reviewed_gpre_capture_snapshot.py": "a1f785edefd067c9b11b020fffdf07289d4761feeda73dd31505cd954089b25f"
+  },
+  "bindings_before": {
+    "scripts/diagnose_reviewed_gpre_capture_snapshot.py": "88e80eab0e4e9f875a1475da0c90c10515f60f82ee82c668ada97f925f849e92",
+    "spec/scripts/diagnose_reviewed_gpre_capture_snapshot.md": "c0d6289c062b15697379332711d3fc25ad231474b247232ebfcfee0034b863b3",
+    "tests/test_reviewed_gpre_capture_snapshot.py": "a1f785edefd067c9b11b020fffdf07289d4761feeda73dd31505cd954089b25f"
+  },
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_reviewed_gpre_capture_snapshot",
+    "-v"
+  ],
+  "exit_code": 0,
+  "initial_eight_test_fixture_corrections": "tool trace retained: nonexistent RawInfoDocument.ref method and expected rejection wording corrected in tests; no actual stage or source mutation.",
+  "labels": false,
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/safe-tests.log",
+    "sha256": "7868279fb4d66a843e09310841485ff15b8fac834f48e501e6cf9ea6bce63527"
+  },
+  "models": 0,
+  "temp_only": true,
+  "tests": 8,
+  "wall_seconds": 0.6006540840025991
+}

@@ -1,0 +1,92 @@
+{
+  "verdict": "PASS_bounded_preflight",
+  "new_script_binding": {
+    "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_gpre_capture_snapshot.py",
+    "sha256": "55b2f758aebbd50c1d957a45317744ca302c55ee2600d52d756ac739d5a6c8f2"
+  },
+  "new_spec_binding": {
+    "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_gpre_capture_snapshot.md",
+    "sha256": "0a912dc0300cc137527ffccc9c9e283fc2b3500085bae9d9bcd79d7975cb99a9"
+  },
+  "new_test_binding": {
+    "path": "/Users/l/Project/Recommandation/tests/test_reviewed_gpre_capture_snapshot.py",
+    "sha256": "a4e400c154e85335c86b00f6c24b67eda70d2fda7cbe34e116405bc891bb042e"
+  },
+  "old_script_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/original-before-destination-guard.py.txt",
+    "sha256": "88e80eab0e4e9f875a1475da0c90c10515f60f82ee82c668ada97f925f849e92"
+  },
+  "controls": [
+    {
+      "case": "old_prepare_overlap_rejection",
+      "protected_files_added": [
+        "new-child/preparation-failure.json",
+        "new-child/preparation-start.json"
+      ],
+      "provenance": "Exact archived original prepare; actual authority rejection replaced by its overlap exception only, avoiding real old-stage reads."
+    },
+    {
+      "case": "old_execute_missing_plan",
+      "protected_files_added": [
+        "execution-start.json",
+        "failure.json"
+      ]
+    },
+    {
+      "case": "new_prepare_oracle_child",
+      "protected_tree_unchanged": true
+    },
+    {
+      "case": "new_prepare_old_stage_child",
+      "protected_tree_unchanged": true
+    },
+    {
+      "case": "new_prepare_old_diagnosis_child",
+      "protected_tree_unchanged": true
+    },
+    {
+      "case": "new_prepare_old_view_child",
+      "protected_tree_unchanged": true
+    },
+    {
+      "case": "new_execute_protected_old_stage",
+      "tree_unchanged_no_marker": true
+    },
+    {
+      "case": "new_execute_unprepared_outside",
+      "tree_unchanged_no_marker": true
+    },
+    {
+      "case": "new_execute_relocated_plan",
+      "tree_unchanged_no_marker": true
+    },
+    {
+      "case": "new_execute_selfconsistent_protected_output",
+      "protected_tree_unchanged_no_marker": true
+    },
+    {
+      "case": "retained_legacy_fullrecord_type_drift",
+      "rehash_rejected": true
+    },
+    {
+      "case": "frozen_dependency_drift",
+      "path_suffix": "preappend-helper.py",
+      "rejected_before_authorities": true
+    },
+    {
+      "case": "frozen_dependency_drift",
+      "path_suffix": "run_reviewed_posthoc_stage.md",
+      "rejected_before_authorities": true
+    },
+    {
+      "case": "frozen_dependency_drift",
+      "path_suffix": "diagnose_reviewed_frozen_source_snapshot.md",
+      "rejected_before_authorities": true
+    }
+  ],
+  "scope": "Temporary fixtures only. Native normalizer/profile retained in positives; small count constants and historical-authority fixture only. No actual prepare/append/GET/models/LabelStore/LockedTest/fullprepare or actual old source-tree mutation.",
+  "limits": [
+    "Actual global before inventory/four inserts/1780view/Q1 consumer values are future execution evidence, not established by this preflight.",
+    "Driver9 native controls cover full temporary execute/36resolutions/4BasicInfo; this audit does not rerun that entire set."
+  ]
+}

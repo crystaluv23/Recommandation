@@ -1,0 +1,62 @@
+{
+  "verdict": "PASS_bounded_preflight_no_remaining_concrete_blocker",
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_gpre_capture_snapshot.py",
+      "sha256": "55b2f758aebbd50c1d957a45317744ca302c55ee2600d52d756ac739d5a6c8f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_gpre_capture_snapshot.md",
+      "sha256": "0a912dc0300cc137527ffccc9c9e283fc2b3500085bae9d9bcd79d7975cb99a9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_gpre_capture_snapshot.py",
+      "sha256": "a4e400c154e85335c86b00f6c24b67eda70d2fda7cbe34e116405bc891bb042e"
+    }
+  ],
+  "fixed_old_source_evidence": {
+    "source_review": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/source-review.json",
+      "sha256": "46e80d6bc24b7455844560050879f7db3248ece16f2b3d9d90a268477fd2646f"
+    },
+    "old_rows": 1781,
+    "old_admitted": 1776,
+    "GPRE_retained_legacy_admitted": 53,
+    "authority_review": "Source result/input/plan and diagnosis have fixed file SHAs; completed old plan canonical hash and historical native code are checked against SOURCE_COMMIT c9ad66e8, not current changed source. Existing input groups must equal original ordered default_v6/latest_v12 groups."
+  },
+  "full_preappend_contract": "Actual complete57 legacy/capture reconstruction is compared to saved expected/canonical records and exact4collision mapping;53 unchanged admitted originals required. All57 products pass real native capture profile before append, with complete expected set. Old raw proof remains the original binding. Crossnamespace differing canonical IDs reject; selected capture IDs already present reject before a fresh plan.",
+  "destination_failure_and_fix": {
+    "old88e80": "Independent exact archived prepare with overlap rejection left preparation-start+failure in a temporary protected tree; exact old execute with missing plan likewise left execution-start+failure.",
+    "new55b2": "Pure bound-source destination check precedes mkdir/marker. Protected oracle/base/diagnosis/view children, missing plan, relocated plan and selfconsistent plan targeting protected root reject with trees unchanged. Legal started-stage failures remain terminal.",
+    "scope": "All counterexamples use temporary roots only; no actual old tree was mutated."
+  },
+  "additional_independent_negatives": "Retained legacy record with rehashed bool→int metadata drift rejects. Preappend helper, preappend owning spec and posthoc owning spec each have explicit frozen bindings and drift rejects before authority rederivation.",
+  "consumer_scope_review": "New _selected_scope reads actual resolution.document refs via PIT load, preserving tagged period/unit rows separately for every exact36 Signal input and4 BasicInfo requests. Merely visible Q1 is not used as selection proof; missing selected Q1 remains a named gap. Saved BasicInfo model/lineage and omission flags limit what was actually visible. No Signal values/readiness are manufactured.",
+  "execute_contract": "Expected4 fresh originals are checked absent before append and require insertedTrue; exact recorded replay must beFalse and canonical reread equal. Old global inventory is frozen and rechecked for additions before constructor. Four rows extend the full old review; expected1780 membership and snapshot/reopen canonical equality are checked. This is not OS-crash recovery.",
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/original-before-destination-guard.py.txt",
+      "sha256": "88e80eab0e4e9f875a1475da0c90c10515f60f82ee82c668ada97f925f849e92"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/boundary-probe.py",
+      "sha256": "4e30d03873d4f10ff0f487922bc4e4f96ddd591d85a90315587b3dfeacf72a8c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/boundary-probe.log",
+      "sha256": "269d7951fe022996d8346236ac52665e79cb20fdcbcd51e3d3cce78cd416b04f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/boundary-results.json",
+      "sha256": "269d7951fe022996d8346236ac52665e79cb20fdcbcd51e3d3cce78cd416b04f"
+    }
+  ],
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/boundary-probe.py",
+  "controls_count": 14,
+  "review_harness_status": "exit0; no new harness error. Fixture patches only small counts/source-authority provider and temporary dependency paths. Real normalizer/profile/read/derive/freeze logic are retained.",
+  "limits": [
+    "No actual prepare/append/GET/models/LabelStore/LockedTest/fullprepare/old-stage resume. This does not authorize execution.",
+    "Actual4 append receipts/global preservation/1780view/GPRE36 selected inputs+4BasicInfo latestQ1/omissions remain future execution evidence. Native temporary9-test execution is driver evidence, not a fresh actual GPRE run.",
+    "Capture IDs do not add independent facts/coverage or predictive gain; no wholeMVP closure."
+  ]
+}

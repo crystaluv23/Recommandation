@@ -1,0 +1,28 @@
+{
+  "actual_append": false,
+  "actual_command": "PYTHONPATH=.:src:scripts /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest tests.test_reviewed_gpre_capture_snapshot -v",
+  "actual_prepare": false,
+  "current_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_gpre_capture_snapshot.py",
+      "sha256": "55b2f758aebbd50c1d957a45317744ca302c55ee2600d52d756ac739d5a6c8f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_gpre_capture_snapshot.md",
+      "sha256": "0a912dc0300cc137527ffccc9c9e283fc2b3500085bae9d9bcd79d7975cb99a9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_gpre_capture_snapshot.py",
+      "sha256": "a4e400c154e85335c86b00f6c24b67eda70d2fda7cbe34e116405bc891bb042e"
+    }
+  ],
+  "exit_code": 0,
+  "previous_candidate": "destination-boundary-original/bindings.json",
+  "previous_eight_safe_logs_unchanged": true,
+  "status": "OK",
+  "temp_only": true,
+  "test_evidence": "Original stdout is retained in tool chunk 0117fd; this summary records that execution without rerunning tests solely to create a log.",
+  "tool_chunk_id": "0117fd",
+  "unittest_seconds": 0.497,
+  "unittest_tests": 9
+}

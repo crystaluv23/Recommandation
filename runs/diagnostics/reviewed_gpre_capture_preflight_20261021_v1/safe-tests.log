@@ -1,0 +1,13 @@
+test_bound_source_drift_is_terminal_before_global_constructor (tests.test_reviewed_gpre_capture_snapshot.GpreCaptureStageTests.test_bound_source_drift_is_terminal_before_global_constructor) ... ok
+test_complete_set_and_typed_profile_failure_precede_any_append (tests.test_reviewed_gpre_capture_snapshot.GpreCaptureStageTests.test_complete_set_and_typed_profile_failure_precede_any_append) ... ok
+test_cross_namespace_capture_canonical_drift_rejects_without_changing_legacy (tests.test_reviewed_gpre_capture_snapshot.GpreCaptureStageTests.test_cross_namespace_capture_canonical_drift_rejects_without_changing_legacy) ... ok
+test_execute_actual_append_replay_view_two_groups_and_basic_info (tests.test_reviewed_gpre_capture_snapshot.GpreCaptureStageTests.test_execute_actual_append_replay_view_two_groups_and_basic_info) ... ok
+test_existing_exact_selected_capture_rejects_fresh_prepare_before_append (tests.test_reviewed_gpre_capture_snapshot.GpreCaptureStageTests.test_existing_exact_selected_capture_rejects_fresh_prepare_before_append) ... ok
+test_prepare_native_full_set_and_only_collision_subset_without_global_store (tests.test_reviewed_gpre_capture_snapshot.GpreCaptureStageTests.test_prepare_native_full_set_and_only_collision_subset_without_global_store) ... ok
+test_same_content_versions_dedup_and_real_source_only_tripwires (tests.test_reviewed_gpre_capture_snapshot.GpreCaptureStageTests.test_same_content_versions_dedup_and_real_source_only_tripwires) ... ok
+test_visible_q1_does_not_pass_when_actual_consumer_selected_only_old_period (tests.test_reviewed_gpre_capture_snapshot.GpreCaptureStageTests.test_visible_q1_does_not_pass_when_actual_consumer_selected_only_old_period) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.428s
+
+OK
