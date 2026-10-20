@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/direct-fixture-probe.py"
+  ],
+  "head": "95386240b97659ae751f23620c5de620f50f0a6c",
+  "pid": 4088,
+  "python": "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
+}

@@ -1,0 +1,153 @@
+{
+  "status": "ACTUAL_SOURCE_BOUNDARY_CONFIRMED_rejected_at_capability_audit",
+  "freeze": 1,
+  "native_synthetic_audits": 12,
+  "native_single_ref_batches": 12,
+  "instrumented_native_functions": 12,
+  "financial_synthetic_issuer_failures": 9,
+  "other_deterministic_fixture_passes": 3,
+  "rows": [
+    {
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "published_synthetic_fixture_issuer_validation_failed",
+      "native_function_called_once": true,
+      "issuer_field_shapes": [
+        {
+          "body_cik_present": false,
+          "metadata_cik_present": false
+        }
+      ]
+    },
+    {
+      "signal_ref": "cash_reserves:v2",
+      "status": "published_synthetic_fixture_issuer_validation_failed",
+      "native_function_called_once": true,
+      "issuer_field_shapes": [
+        {
+          "body_cik_present": false,
+          "metadata_cik_present": false
+        }
+      ]
+    },
+    {
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "published_synthetic_fixture_issuer_validation_failed",
+      "native_function_called_once": true,
+      "issuer_field_shapes": [
+        {
+          "body_cik_present": false,
+          "metadata_cik_present": false
+        }
+      ]
+    },
+    {
+      "signal_ref": "gross_margin_change:v3",
+      "status": "published_synthetic_fixture_issuer_validation_failed",
+      "native_function_called_once": true,
+      "issuer_field_shapes": [
+        {
+          "body_cik_present": false,
+          "metadata_cik_present": false
+        }
+      ]
+    },
+    {
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "published_synthetic_fixture_issuer_validation_failed",
+      "native_function_called_once": true,
+      "issuer_field_shapes": [
+        {
+          "body_cik_present": false,
+          "metadata_cik_present": false
+        }
+      ]
+    },
+    {
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "published_synthetic_fixture_issuer_validation_failed",
+      "native_function_called_once": true,
+      "issuer_field_shapes": [
+        {
+          "body_cik_present": false,
+          "metadata_cik_present": false
+        }
+      ]
+    },
+    {
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "published_synthetic_fixture_issuer_validation_failed",
+      "native_function_called_once": true,
+      "issuer_field_shapes": [
+        {
+          "body_cik_present": false,
+          "metadata_cik_present": false
+        }
+      ]
+    },
+    {
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "published_synthetic_fixture_issuer_validation_failed",
+      "native_function_called_once": true,
+      "issuer_field_shapes": [
+        {
+          "body_cik_present": false,
+          "metadata_cik_present": false
+        }
+      ]
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "published_synthetic_fixture_issuer_validation_failed",
+      "native_function_called_once": true,
+      "issuer_field_shapes": [
+        {
+          "body_cik_present": false,
+          "metadata_cik_present": false
+        }
+      ]
+    },
+    {
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "published_synthetic_fixture_passed",
+      "native_function_called_once": true
+    },
+    {
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "published_synthetic_fixture_passed",
+      "native_function_called_once": true
+    },
+    {
+      "signal_ref": "negative_word_count:v2",
+      "status": "published_synthetic_fixture_passed",
+      "native_function_called_once": true
+    }
+  ],
+  "read_scope": {
+    "source_paths": 93,
+    "registry_paths": 84,
+    "committed_metadata_knowledge_history_paths": 9,
+    "uncommitted_read_observed": false,
+    "LabelStore_LockedTest_global_read_observed": false,
+    "source_write_attempts": [],
+    "scope_denials": [],
+    "allowed_existing_directory_mkdir_no_content_change": 2,
+    "verification": "Independently stream-hashed all93 recorded paths and4code files; read source fixture JSON only. Did not deserialize or copy historical checkpoint/record/knowledge outcome values. Native unchanged KnowledgeUseStore validation and original contract checks completed before actual fixture gate."
+  },
+  "source_code_bytes_unchanged": true,
+  "history_manifest_created": false,
+  "real_entry_usable": false,
+  "interpretation": [
+    "First clone checkpoint error was an incomplete diagnostic-source boundary, not proof that actual source is invalid. Real committed source reached its native capability audit.",
+    "All9 exact financial fixtures have observed missing bodyCIK and metadataCIK, and each actual result independently reports opaque-issuer validation_failed. This does not establish that a CIK-only change would fix every fixture; only prior2memory counterfactuals were actually executed.",
+    "No profile/issuer gate was loosened, no published fixture migrated, no full history export/import or Slow execution succeeded.",
+    "Retrospective committed knowledge is authorized for this S1/operator preflight; this does not expose outcomes to a blind role or permit LabelStore/LockedTest access."
+  ],
+  "review_execution": "Read-only standard-library JSON/shape/hash audit only; no stage/Signal/Store/GET/model/labels executed by reviewer.",
+  "bindings": {
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-preflight.json": "e6a7de64b7f19e0d70691868d3c1b5024300ba7fab7be57181596eead6b66a19",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-probe.py": "32d6105b24b61756bd0299ec7280086b977d4193381dabc7af19ec55376ee954",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-command.json": "b5da5996e54003aa115e5400e7095b21069299beb69f55308132cd3ab53a1cc5",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-command.log": "33ada5ffe2e6651a7b97dd1dad50d397dea23e8634dce56f2cb1f8675f69398d",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-review.json": "de2668777f5a41e95ace41f19de487e9c72a4ef4d349e78ec00c054b0fef71b2"
+  }
+}

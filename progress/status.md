@@ -56,8 +56,13 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
 
 ## 下一步与运行边界
 
+[历史Registry读取修复](../reports/historical-registry-definition-reading-20261021.md)已局部验过：真实source知识前置通过后，
+旧history exporter因9金融legacy fixture issuer失败拒绝（12原生fixture计算，93source读字节同、0写）。
+现5历史身份读取改纯定义重建，不加载profile/不重跑旧fixture，fresh execution的3处freeze及现准入保持。
+独立又发现pointer bool/float被int冒充版本，已贯穿source/apply-before-write/history及bootstrap validator严格正整数；
+65关联/10独立控制过，旧反例/首probe副本缺checkpoint/harness写receipt错误均留。仅局部修复，尚无修后真实export或新Slow消费。
 新native财务/来源/input-only/F7/S5等已完成阶段保持完成，不因验收失败重跑；不调整冻结oracle或发布旧版本。
-先按既有接口核实Slow反馈的合法来源与方向/magnitude正控的真实Mining入口，区分已提交Fast与允许的冻结导入。
+下一冻结新代码后唯一actual history export/validate/materialization；合格后再准备有限S1/S2 exact-inbox与实际后继任务消费。
 LLM阅读接口方案待设计决策；两财务期间定义需具体政策/新版本，不能由当前计算结果倒推答案。
 完整反馈消费、新方向/magnitude Mining→忠实实现→准入发布→后继精确使用、完整恢复及双环均未验证。
 旧v182权威Fast/Slow=1/1完成不恢复；memory失败processed0/pending3518不改成功。不启动完整后继，整体MVP保持open。

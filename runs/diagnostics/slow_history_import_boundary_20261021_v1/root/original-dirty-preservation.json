@@ -1,0 +1,6 @@
+{
+  "original_control_spec_sha256_after_removing_task_addition": "c5eb58a7a0ddf4442598fa37189a334b22448c73bf52c8d38c1c93e5411fa431",
+  "original_other_six_sha256_preserved": true,
+  "original_signal_spec_suffix_preserved": true,
+  "owning_spec_staged_without_original_user_hunk": true
+}

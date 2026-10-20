@@ -1,0 +1,90 @@
+{
+  "head": "95386240b97659ae751f23620c5de620f50f0a6c",
+  "current_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "d96610db1aa3a4bb199c724eee4ed69b69199f765e506036d07661537f24de34"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py",
+      "sha256": "dda0bb26a9d5c3fb6fb42ef9442a2fb8d70f5e78de7e49fa8a5826eb54e32c20"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_control.md",
+      "sha256": "67cd3f56f12ecb18922bbcbd9967944e87be8e783e5c3a0bad5165f49d10da3b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "e4ba81821540ef0775f4848babe9221bfee9b78b28cfdb46da74945213d7e0b9"
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/current-final-tests.log",
+      "sha256": "5f08e2fd842252e50953732bb6db028733017f6aa82b795a5cfc56bebf3718e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/current-tests.log",
+      "sha256": "d42d05c700a973c0c709620db639add962ebec8ba8e918c1b6b7363660dd175a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/guarded-final-result.json",
+      "sha256": "71eec7d9bee923a2f2b9d6e37e68e89eb1556699fcf036d231e76306f17cef2f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/guarded-final.log",
+      "sha256": "eadbf90798cc5b572be92458f6c67d4ce96059802724d41ffedce2a9501cbdbc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/original-bindings.json",
+      "sha256": "358915a355e8b2f46e96f0de8fa0ed764dd8f7ae830ee0d13035955476111189"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/original-evolution-control.py.txt",
+      "sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/original-targeted-final.log",
+      "sha256": "769f00b435d75336798d12204152ca7793e59cecca90cc146b6f43e54e079000"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/original-targeted-tests.log",
+      "sha256": "53456f83f471f6d35f1bba7e17ae3110b9a8b165fb1b791214a1dffe2a6577ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/original-test.py.txt",
+      "sha256": "80d38c70bd52b38ee29a9c74979ad13c4679d85fd042324182e6e6103746c5ef"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/original-tests.log",
+      "sha256": "e9fe7581affb1ececaf5c86dba585359ad0368cb00fd2cd6d68447d5ab441f5f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/run-focused.py",
+      "sha256": "8262735285165d00917780b8c6d6e0af2713ca49a54cd4401ef5675befae1341"
+    }
+  ],
+  "final_tests": {
+    "new_module": 9,
+    "new_passed": 9,
+    "associated_original_selectors": 4,
+    "guarded_total_passed": 13,
+    "guarded_seconds": 0.903,
+    "forbidden_network_model_real_label_calls": 0
+  },
+  "original_red": "Only two selected methods were run on original source after fixture setup corrections: history build errored at native legacy issuer capability audit; fresh freeze correctly rejected. Exact then-test bytes are original-test.py.txt, not represented as current expanded9 suite red.",
+  "preserved_harness_errors": [
+    "first original-tests.log: missing RoundMetaEntry evidence_refs",
+    "original-targeted-tests.log: temp cycle artifact directory absent",
+    "current-tests.log: test inspected target skill before apply; test corrected to actually materialize first"
+  ],
+  "call_sites": [
+    1645,
+    1895,
+    1916,
+    2016,
+    2196
+  ],
+  "scope": "Historical definitions only; no learned/research profiles synthesized; new execution/candidate/promotion freeze unchanged. No real source export, real labels, GET, model or formal stage.",
+  "not_closed": "Actual v182 export and S1/S2 fresh consumption not executed; this is code plus temporary native tests."
+}

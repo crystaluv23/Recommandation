@@ -1,0 +1,59 @@
+{
+  "status": "PASS_bounded_history_read_repair",
+  "bindings": {
+    "src/stock_opportunity_agent/research/evolution_control.py": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+    "tests/test_historical_registry_definition_reads.py": "89677647b83723215ffaea25b7f41aed2c84e45abd7b99a1eaeb17216fd1a871",
+    "spec/src/stock_opportunity_agent/research/evolution_control.md": "6551ca4ccffe2aaedb72d967d1905a40bd214206d93f794f3b73720c89222c83",
+    "spec/src/stock_opportunity_agent/signal_library.md": "e4ba81821540ef0775f4848babe9221bfee9b78b28cfdb46da74945213d7e0b9",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/probe.py": "1fecaaa2046aa18bbca18c2d3d2bc29f455bbca27d8301cb4ada0733d51bb7ef",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/probe.log": "5b42c48a8a44c1b661a377f487efbcb9565e2e0f9273850649ad2015906c3347",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/final-probe.log": "4a4405c1cc05a5cdfec4bb9954fbfcf2704c28335dc1881199ca6b095fea073f",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/complete-probe.log": "01b1a1990164273eda74f1172a2fcb3b3b80db69f5c89ebb9e0b46aef136f6e1",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/final-scope-probe.log": "f35431766a094ae1e1642ee80273298864b43bfc30ad4b56a0918ddc0c21d28b",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/sealed-probe.log": "f35431766a094ae1e1642ee80273298864b43bfc30ad4b56a0918ddc0c21d28b",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/review.json": "8314893db55b19435575642371f26bd1384a1bbe103a0c87f174c23ee81faa6d",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/pointer-counterexample.json": "4d9f3c245adf22a37f5f318d7ce8b676e41ff54c82b671e4ceaea0524f85588b",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/initial-static-scope.json": "988fc09e12fcd08998fbe942b2db6b96a54afee48fdcb052dcf68ad5f7e2a4d4"
+  },
+  "historical_call_sites": {
+    "build_slow_history_manifest": 1,
+    "apply_slow_history_manifest": 2,
+    "build_slow_bootstrap_manifest": 1,
+    "_build_committed_fast_bootstrap_manifest": 1
+  },
+  "changed_existing_functions": [
+    "build_slow_history_manifest",
+    "validate_slow_history_manifest",
+    "apply_slow_history_manifest",
+    "build_slow_bootstrap_manifest",
+    "_build_committed_fast_bootstrap_manifest",
+    "validate_slow_bootstrap_manifest"
+  ],
+  "fresh_cycle_function_AST_exact_old": true,
+  "three_fresh_cycle_freezes_preserved": true,
+  "independent_controls": [
+    "legacy missing-CIK definition/order/skill identity reads without profile/audit or mutation",
+    "fresh capability-audited freeze still rejects the identical legacy fixture",
+    "six raw header/stable/spec bool/float version mutations rejected",
+    "empty registry and duplicate/path-mismatched identity rejected",
+    "temporary history export/apply retains only committed event cutoff, no future event",
+    "original frozen history artifact validation remains active",
+    "unknown current callable remains readable as historical definition, but fresh freeze does not certify it",
+    "source definition and existing-target skill drift fail authority comparisons",
+    "typed source pointer/export, apply-before-write and coherently rehashed history-validator4badtypes reject",
+    "real temporary bootstrap build->validator validint positive and coherent manifest/snapshot4badtypes rejected"
+  ],
+  "pointer_counterexample": "Old HEAD and firstd966 candidate accepted bool/float Registry pointer identities. Original evidence retained. Final source/export/apply/history validator/bootstrap producer-consumer controls reject malformed types before relevant writes.",
+  "policy_verdict": "Internal historical definition/provenance read is separated from current execution admission. No old fixture/source migration, no profiles fabricated, exact authority comparisons retained; normal fresh freeze and current issuer/PIT gates remain mandatory.",
+  "harness_notes": [
+    "Isolated oldmodule first needed sys.modules registration for dataclasses; stopped before fixtures.",
+    "A fixed-source guard observed authorized implementation transition before fixtures; original log preserved.",
+    "First finalbootstrap fixture used fast_then_slow contract plusbootstrap hash, correctly rejected by unchanged contract; corrected only synthetic contract to slow_bootstrap/zeroFastRounds and retained log."
+  ],
+  "scope_limitations": [
+    "Only pure/temp synthetic controls; no real source export/history import/production labels/API/model/oldstage or source mutations.",
+    "Current callable-missing diagnostic independently present, not inferred merely from a different fixture failure.",
+    "Unchanged _registry_matches_committed_history retains Python equality/isinstance(int) semantics; no claim of full fresh-cycle/control-plane numeric strictness.",
+    "The three original source diagnosis reviews remain byte-identical and do not become successful imports."
+  ]
+}

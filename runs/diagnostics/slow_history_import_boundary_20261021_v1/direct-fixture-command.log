@@ -1,0 +1,50 @@
+{
+  "confirmed_fixture_identity_defect": true,
+  "rows": [
+    {
+      "ref": "cash_reserves:v2",
+      "case": "exact_published_positive",
+      "status": "rejected",
+      "execution": {
+        "status": "validation_failed",
+        "error_code": "deterministic_result_validation_failed",
+        "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+      }
+    },
+    {
+      "ref": "cash_reserves:v2",
+      "case": "memory_only_consistent_synthetic_CIK",
+      "status": "passed",
+      "execution": {
+        "status": "success"
+      }
+    },
+    {
+      "ref": "revenue_growth_yoy:v3",
+      "case": "exact_published_positive",
+      "status": "rejected",
+      "execution": {
+        "status": "validation_failed",
+        "error_code": "deterministic_result_validation_failed",
+        "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+      }
+    },
+    {
+      "ref": "revenue_growth_yoy:v3",
+      "case": "memory_only_consistent_synthetic_CIK",
+      "status": "passed",
+      "execution": {
+        "status": "success"
+      }
+    }
+  ],
+  "counts": {
+    "audits": 4,
+    "fixture_internal_batches": 4,
+    "native_functions": 4,
+    "forbidden": 0
+  },
+  "source_unchanged": true,
+  "code_unchanged": true,
+  "wall_seconds": 0.013217833125963807
+}

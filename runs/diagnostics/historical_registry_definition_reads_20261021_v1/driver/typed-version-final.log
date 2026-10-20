@@ -1,0 +1,29 @@
+test_bootstrap_input_snapshot_version_cannot_coerce_identity (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_bootstrap_input_snapshot_version_cannot_coerce_identity) ... ok
+test_committed_bootstrap_uses_historical_definition_without_audit (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_committed_bootstrap_uses_historical_definition_without_audit) ... ok
+test_definition_reader_does_not_read_missing_knowledge_profile (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_definition_reader_does_not_read_missing_knowledge_profile) ... ok
+test_definition_skill_version_and_duplicate_path_drift_reject (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_definition_skill_version_and_duplicate_path_drift_reject) ... ok
+test_fresh_freeze_still_rejects_unchanged_legacy_fixture (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_fresh_freeze_still_rejects_unchanged_legacy_fixture) ... ok
+test_history_build_apply_replay_preserves_files_and_exact_committed_events (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_history_build_apply_replay_preserves_files_and_exact_committed_events) ... ok
+test_identity_order_empty_and_strict_versions (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_identity_order_empty_and_strict_versions) ... ok
+test_manifest_and_spec_path_identity_reject (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_manifest_and_spec_path_identity_reject) ... ok
+test_manifest_typed_version_rejects_before_target_copy_or_event_write (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_manifest_typed_version_rejects_before_target_copy_or_event_write) ... ok
+test_manifest_validation_preserves_original_file_checks (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_manifest_validation_preserves_original_file_checks) ... ok
+test_rejected_bootstrap_uses_historical_definition_without_audit (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_rejected_bootstrap_uses_historical_definition_without_audit) ... ok
+test_source_pointer_registry_version_is_typed_identity (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_source_pointer_registry_version_is_typed_identity) ... ok
+test_slow_history_preserves_imported_learning_events (tests.test_evolution_control.RunControlTests.test_slow_history_preserves_imported_learning_events) ... ok
+test_slow_history_import_uses_only_committed_source_pointer (tests.test_evolution_control.RunControlTests.test_slow_history_import_uses_only_committed_source_pointer) ... ok
+test_slow_bootstrap_manifest_masks_identity_and_binds_rejection (tests.test_evolution_control.RunControlTests.test_slow_bootstrap_manifest_masks_identity_and_binds_rejection) ... ok
+test_slow_bootstrap_reconstructs_one_committed_fast_boundary (tests.test_evolution_control.RunControlTests.test_slow_bootstrap_reconstructs_one_committed_fast_boundary) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.999s
+
+OK
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/run-focused.py", line 31, in <module>
+    with path.open('x')as handle:json.dump(summary,handle,indent=2);handle.write('\n')
+         ^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: '/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/guarded-final-result.json'

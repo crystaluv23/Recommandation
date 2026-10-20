@@ -1,0 +1,22 @@
+E.
+======================================================================
+ERROR: test_history_build_apply_replay_preserves_files_and_exact_committed_events (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_history_build_apply_replay_preserves_files_and_exact_committed_events)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 114, in test_history_build_apply_replay_preserves_files_and_exact_committed_events
+    target,envelope=self.export(source,contract)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 102, in export
+    digest=control.build_slow_history_manifest(workspace=target,source_workspace=source,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py", line 1619, in build_slow_history_manifest
+    snapshot = registry.freeze()
+               ^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 2325, in freeze
+    raise ValidationError(
+stock_opportunity_agent.models.ValidationError: Signal capability audit failed: {"disabled": {"cash_reserves:v1": ["schema_fixture_failed: expected positive, received unavailable"]}, "enabled_refs": ["revenue_growth_yoy:v1", "guidance_acceleration:v1"], "passed": false, "schema_version": "signal-capability-audit-v1"}
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.051s
+
+FAILED (errors=1)

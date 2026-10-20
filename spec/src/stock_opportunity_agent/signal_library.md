@@ -375,6 +375,10 @@ the committed-input contract.
 skills in their explicit order, recomputing the definition hash. It is used to
 verify prior inputs after valid publication; callers must compare with their
 frozen contract and cannot use it to invent commit authority or learned profiles.
+Historical control-plane readers also use this definition-only reconstruction
+for exact committed Registry identity. Reading an archive does not re-execute its
+old fixtures with the current runtime or certify current executability; the
+ordinary `freeze()` capability audit is still mandatory for fresh execution.
 Freezing an empty Registry is invalid: a v4 run must contain at least one
 enabled, capability-audited stable Signal and the normal seed initialization
 contains all 14 enabled definitions from the current seed catalog.

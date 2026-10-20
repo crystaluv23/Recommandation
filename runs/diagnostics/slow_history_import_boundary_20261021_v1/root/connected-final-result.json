@@ -1,0 +1,26 @@
+{
+  "code_and_test_bindings_after": {
+    "src/stock_opportunity_agent/research/evolution_control.py": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+    "tests/test_historical_registry_definition_reads.py": "89677647b83723215ffaea25b7f41aed2c84e45abd7b99a1eaeb17216fd1a871"
+  },
+  "code_and_test_bindings_before": {
+    "src/stock_opportunity_agent/research/evolution_control.py": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+    "tests/test_historical_registry_definition_reads.py": "89677647b83723215ffaea25b7f41aed2c84e45abd7b99a1eaeb17216fd1a871"
+  },
+  "code_and_test_bytes_unchanged": true,
+  "elapsed_seconds": 1.0903646668884903,
+  "errors": 0,
+  "failures": 0,
+  "passed": true,
+  "scope": "Native control tests and synthetic sources only; not actual feedback consumption.",
+  "selectors": [
+    "tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests",
+    "tests.test_evolution_control.RunControlTests",
+    "tests.test_evolution_control.SlowOnlyRegistryChainTests"
+  ],
+  "tests": 65,
+  "tripwires": {
+    "labels": 0,
+    "network": 0
+  }
+}

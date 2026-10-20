@@ -1,0 +1,21 @@
+{
+  "tests_completed": 16,
+  "test_failures": 0,
+  "test_errors": 0,
+  "test_seconds": 0.999,
+  "test_status": "All16 unittest methods PASS before receipt-writing failure",
+  "harness_exit": 1,
+  "harness_error": "Existing guarded-final-result.json was correctly not overwritten; post-test FileExistsError",
+  "no_rerun_for_logging": true,
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/typed-version-final.log",
+    "sha256": "360e9ab607a1e26532493758032339889cca20d9cbf12614f5d916d91698106f"
+  },
+  "prior_evidence_preserved": [
+    "safe-summary.json",
+    "guarded-final-result.json",
+    "guarded-final.log",
+    "pretyped-version-control.py.txt",
+    "pretyped-version-test.py.txt"
+  ]
+}

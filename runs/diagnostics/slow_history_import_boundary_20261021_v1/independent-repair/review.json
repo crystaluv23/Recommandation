@@ -1,0 +1,19 @@
+{
+  "status": "PASS_bounded_historical_read_and_typed_identity_controls",
+  "source_sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+  "checks": [
+    "legacy missing-CIK definition/order/skill identity reads without profile/audit or mutation",
+    "fresh capability-audited freeze still rejects the identical legacy fixture",
+    "six raw header/stable/spec bool/float version mutations rejected",
+    "empty registry and duplicate/path-mismatched identity rejected",
+    "temporary history export/apply retains only committed event cutoff, no future event",
+    "original frozen history artifact validation remains active",
+    "unknown current callable remains readable as historical definition, but fresh freeze does not certify it",
+    "source definition and existing-target skill drift fail authority comparisons",
+    "typed source pointer/export, apply-before-write and coherently rehashed history-validator4badtypes reject",
+    "real temporary bootstrap build->validator validint positive and coherent manifest/snapshot4badtypes rejected"
+  ],
+  "forbidden_calls": 0,
+  "scope": "Only temporary synthetic source/catalog/committed records/events. No real source export, labels/API/model. Native fresh fixture execution occurs only inside temp audited freeze.",
+  "remaining": "Original pointer coercion old/d966 accepted evidence retained; final caller/validator rejects it. No real source import/fresh execution readiness or whole control-plane numeric strictness claim."
+}

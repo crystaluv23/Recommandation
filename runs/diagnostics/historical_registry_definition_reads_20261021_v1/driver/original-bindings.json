@@ -1,0 +1,13 @@
+{
+  "before_source": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py",
+      "sha256": "80d38c70bd52b38ee29a9c74979ad13c4679d85fd042324182e6e6103746c5ef"
+    }
+  ],
+  "old_result": "Two targeted methods: history build fails native missing issuer audit; fresh freeze rejects as required. Earlier two runs are fixture setup errors, not product failures."
+}

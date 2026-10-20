@@ -1,0 +1,66 @@
+{
+  "head": "95386240b97659ae751f23620c5de620f50f0a6c",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "54288ac9bbfc80b35c5c48c0864470098dd3a2d174ec92ca14928b3aac56b90c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py",
+      "sha256": "af394e5ee6175df9cb8f969b27d1ee92558359746e149412755530978541dc0f"
+    }
+  ],
+  "prior16_test_result": "All16 methods PASS0.999s; subsequent exclusive summary write collided with old receipt and harness exited1. Old log/receipt retained, not rerun for logging.",
+  "new_active_branch_result": "1 new method PASS0.030s, eight malformed typed identity variants plus legitimate int; actual HTTP/model/real-label tripwires0.",
+  "typed_fields": [
+    "source cycle_state.current_signal_registry_version",
+    "history manifest.registry_version before apply writes and validation use",
+    "public/private bootstrap signal_snapshot.version",
+    "committed bootstrap active.input_signal_registry_version"
+  ],
+  "remaining_int_conversions_outside_five_historical_readers": [
+    {
+      "line": 2393,
+      "scope": "validate_slow_bootstrap_manifest input_signal_registry_version; not one of requested five historical definition reads; unchanged"
+    },
+    {
+      "line": 2666,
+      "scope": "fresh run_evolution history_registry_version argument after validate_slow_history_manifest strict check; unchanged"
+    },
+    {
+      "line": 2751,
+      "scope": "fresh active execution cycle pointer check; unchanged"
+    }
+  ],
+  "no_real_source_export_or_model": true,
+  "evidence": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/pretyped-version-control.py.txt",
+      "sha256": "d96610db1aa3a4bb199c724eee4ed69b69199f765e506036d07661537f24de34"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/pretyped-version-test.py.txt",
+      "sha256": "dda0bb26a9d5c3fb6fb42ef9442a2fb8d70f5e78de7e49fa8a5826eb54e32c20"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/typed-version-final.log",
+      "sha256": "360e9ab607a1e26532493758032339889cca20d9cbf12614f5d916d91698106f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/typed-version-run-observation.json",
+      "sha256": "430b113401052fa59b9bf0d2d25dac743eb20c398f939c43b8df16a2e99d1fda"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/run-active-version.py",
+      "sha256": "0fc2411ee20a5f0a2fd5354cf3af81f462de7282468d665c521ede46f64173ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/active-version-final.log",
+      "sha256": "c03745f258cd318cb4d53ca75341924b38969025e738b606314151b80db97eb9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/active-version-result.json",
+      "sha256": "20b1069da588b7147bc5c92e71c704e83ac35af2876d4cb3067605f20064003e"
+    }
+  ]
+}

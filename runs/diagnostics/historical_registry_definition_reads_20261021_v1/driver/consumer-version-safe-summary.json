@@ -1,0 +1,41 @@
+{
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py",
+      "sha256": "89677647b83723215ffaea25b7f41aed2c84e45abd7b99a1eaeb17216fd1a871"
+    }
+  ],
+  "new_only_test": "Full native bootstrap validator: original integer accepted, coherent rehash malformed manifest integer identity rejects, malformed input snapshot rejects, final validint accepted. Eight invalid variants each for manifest and snapshot.",
+  "test_result": {
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "forbidden_calls": 0,
+    "selector": "tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_bootstrap_validator_rejects_typed_identity_drift_after_coherent_rehash"
+  },
+  "seconds": 0.02,
+  "not_repeated": "Previous16/17 method sets not rerun for this consumer-only change. Root to run final association suite.",
+  "scope": "Only historical Registry-version identity; fresh execution cycle/version after-validated int calls untouched.",
+  "evidence": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/preconsumer-version-control.py.txt",
+      "sha256": "54288ac9bbfc80b35c5c48c0864470098dd3a2d174ec92ca14928b3aac56b90c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/run-consumer-version.py",
+      "sha256": "0c39be54aeba6c572b581d69f847576471a50139e1c4940e002bc0b8c7a7f3dd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/consumer-version-final.log",
+      "sha256": "bcfaf191754196df064c44dca18c5d025b1d123deb85b3e4b2f05deb529c0c5b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/historical_registry_definition_reads_20261021_v1/driver/consumer-version-result.json",
+      "sha256": "8610cf6a26dd628c31cc16e3223ea4b75dd2c292d2bf5258c6f1fb3b10ffadf9"
+    }
+  ]
+}

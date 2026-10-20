@@ -1,0 +1,7 @@
+{
+  "tests": 1,
+  "failures": 0,
+  "errors": 0,
+  "forbidden_calls": 0,
+  "selector": "tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_committed_bootstrap_active_registry_pointer_is_typed_identity"
+}

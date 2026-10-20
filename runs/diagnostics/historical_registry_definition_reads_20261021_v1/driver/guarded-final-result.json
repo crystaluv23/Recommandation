@@ -1,0 +1,14 @@
+{
+  "tests": 13,
+  "failures": 0,
+  "errors": 0,
+  "forbidden_calls": 0,
+  "selectors": [
+    "tests.test_historical_registry_definition_reads",
+    "tests.test_evolution_control.RunControlTests.test_slow_history_preserves_imported_learning_events",
+    "tests.test_evolution_control.RunControlTests.test_slow_history_import_uses_only_committed_source_pointer",
+    "tests.test_evolution_control.RunControlTests.test_slow_bootstrap_manifest_masks_identity_and_binds_rejection",
+    "tests.test_evolution_control.RunControlTests.test_slow_bootstrap_reconstructs_one_committed_fast_boundary"
+  ],
+  "scope": "No real source export/stage; all Registry/workspace sources synthetic temporary trees."
+}

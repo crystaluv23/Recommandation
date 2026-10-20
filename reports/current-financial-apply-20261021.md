@@ -126,3 +126,29 @@ Next, retain the pending LLM-interface decision and period-definition unknowns,
 and inspect the existing authorized Slow ingestion/Mining boundary. No full
 successor is authorized by these partial results; overall F5/F6, feedback,
 new direction/magnitude discovery/admission/reuse and engineering MVP stay open.
+
+## Pending comparison-period decision
+
+The [source-backed policy review](../runs/diagnostics/current_financial_apply_20261021_v1/driver/period-policy-review.json)
+confirms that the old annual fixtures cannot distinguish the possible policies.
+No option below is adopted, and none changes a published version or the failed
+batch. Root recommends same-fiscal-window YoY gross-margin change, with revenue
+acceleration measured against the immediately preceding reporting period's YoY
+growth. That acceleration is more responsive to the project's3–6month question;
+the alternative below measures a different, slower change. This recommendation
+does not select whichever formula has sufficient GPRE data.
+
+| Option | Gross margin | Revenue acceleration | Required evidence and limits |
+| --- | --- | --- | --- |
+| Adjacent-period acceleration (root recommendation) | Current margin minus same fiscal window last year | Current standalone quarter YoY growth minus immediately preceding standalone quarter YoY growth; annual growth compares adjacent fiscal years | Four matching quarter windows with proven fiscal adjacency; annual uses three annual windows. No quarter may be skipped. Cumulative YTD needs an explicit standalone basis; otherwise unavailable. |
+| Same-window annual change | Same as above | Current window YoY growth minus that same window's YoY growth one fiscal year earlier | Three same-fiscal-window observations one year apart; same duration/currency/accounting basis. This is an annual change of growth, not recent-quarter acceleration. |
+| Retain unknown | No new policy | No new policy | Keep both versions outside successful semantic closure and continue independent work. |
+
+Both new-version options anchor to the newest eligible reporting window. Missing
+current operands or a comparison do not authorize fallback to an older complete
+pair. Preserve existing thresholds, issuer/PIT/units, evidence and failure
+semantics; do not synthesize standalone quarters by subtraction, mix annual and
+quarterly growth, convert currencies or overwrite old definitions. Any new
+version must pass independent normal, insufficient, conflict, fiscal-calendar
+and period-mismatch controls before admission. Final version numbers must be
+checked for allocation when the policy is chosen.

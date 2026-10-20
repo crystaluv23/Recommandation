@@ -1,0 +1,35 @@
+EE
+======================================================================
+ERROR: test_history_build_apply_replay_preserves_files_and_exact_committed_events (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_history_build_apply_replay_preserves_files_and_exact_committed_events)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 104, in test_history_build_apply_replay_preserves_files_and_exact_committed_events
+    source,registry,snapshot,contract=self.source()
+                                      ^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 60, in source
+    workspace.commit_round(round_id=1,records=(record,),meta_entry=RoundMetaEntry(round_id=1),
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 17, in __init__
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 6248, in __post_init__
+    raise ValidationError("round meta entry requires experiment evidence refs")
+stock_opportunity_agent.models.ValidationError: round meta entry requires experiment evidence refs
+
+======================================================================
+ERROR: test_fresh_freeze_still_rejects_unchanged_legacy_fixture (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_fresh_freeze_still_rejects_unchanged_legacy_fixture)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 124, in test_fresh_freeze_still_rejects_unchanged_legacy_fixture
+    _,registry,_,_=self.source();self.make_legacy_fixture(registry)
+                   ^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 60, in source
+    workspace.commit_round(round_id=1,records=(record,),meta_entry=RoundMetaEntry(round_id=1),
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 17, in __init__
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 6248, in __post_init__
+    raise ValidationError("round meta entry requires experiment evidence refs")
+stock_opportunity_agent.models.ValidationError: round meta entry requires experiment evidence refs
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.029s
+
+FAILED (errors=2)

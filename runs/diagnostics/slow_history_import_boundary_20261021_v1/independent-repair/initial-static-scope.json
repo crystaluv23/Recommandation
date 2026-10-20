@@ -1,0 +1,38 @@
+{
+  "current_source_sha256": "d96610db1aa3a4bb199c724eee4ed69b69199f765e506036d07661537f24de34",
+  "old_source_sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9",
+  "whole_module_AST_equal_after_exact5_historical_swap_and_helper_removal": true,
+  "old_freeze_calls": {
+    "load_or_create_historical_plan_seed_pool": [
+      1388
+    ],
+    "build_slow_history_manifest": [
+      1619
+    ],
+    "apply_slow_history_manifest": [
+      1890,
+      1869
+    ],
+    "build_slow_bootstrap_manifest": [
+      1990
+    ],
+    "_build_committed_fast_bootstrap_manifest": [
+      2170
+    ],
+    "_run_bounded_evolution_cycle_unlocked": [
+      2595,
+      2969,
+      2692
+    ]
+  },
+  "new_freeze_calls": {
+    "load_or_create_historical_plan_seed_pool": [
+      1388
+    ],
+    "_run_bounded_evolution_cycle_unlocked": [
+      2621,
+      2995,
+      2718
+    ]
+  }
+}

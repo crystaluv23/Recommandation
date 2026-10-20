@@ -1,0 +1,17 @@
+{
+  "elapsed_seconds": 0.9947925419546664,
+  "errors": 0,
+  "failures": 0,
+  "passed": true,
+  "scope": "Native control tests and synthetic sources only; not actual feedback consumption.",
+  "selectors": [
+    "tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests",
+    "tests.test_evolution_control.RunControlTests",
+    "tests.test_evolution_control.SlowOnlyRegistryChainTests"
+  ],
+  "tests": 60,
+  "tripwires": {
+    "labels": 0,
+    "network": 0
+  }
+}

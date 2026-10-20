@@ -1,0 +1,558 @@
+{
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/slow_history_import_boundary_20261021_v1/direct-fixture-probe.py",
+      "sha256": "7c3b27d4fae083401d506a758e93b1545a0a3c9eaf63b1d07ff244ddc478d048"
+    }
+  ],
+  "code_bytes_unchanged": true,
+  "confirmed_fixture_identity_defect": true,
+  "counts": {
+    "audits": 4,
+    "fixture_internal_batches": 4,
+    "forbidden": 0,
+    "native_functions": 4
+  },
+  "history_entry_status": "Original builder slice remains stopped before auditor due absent knowledge checkpoint in minimal copy. This direct slice does not prove full history entry readiness or prescribe relaxing its gate.",
+  "original_source_bytes_unchanged": true,
+  "rows": [
+    {
+      "actual_native_batch": {
+        "document_fingerprints": {
+          "cash_reserves:v2": [
+            "capability_cash_reserves_0_0:29366d6f862e9e5f0acb975bcadbfb217c648bfc3b483668fae557771bcd2c05"
+          ]
+        },
+        "resolutions": [
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 1,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 1,
+              "observed_observation_count": 0,
+              "observed_period_span_days": null,
+              "query_evaluated": true,
+              "query_matched_document_count": 1,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 1,
+              "satisfied_source_group_count": 1,
+              "selected_document_count": 1,
+              "selection_truncated": false,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-01-20T00:00:00+00:00",
+                "content_hash": "29366d6f862e9e5f0acb975bcadbfb217c648bfc3b483668fae557771bcd2c05",
+                "document_id": "capability_cash_reserves_0_0"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "capability_cash_reserves_0_0"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:cash_reserves:v2",
+                  "source_types": [
+                    "financials",
+                    "filing"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Read the latest point-in-time cash and equivalents balance.",
+              "max_documents": 10,
+              "minimum_distinct_periods": 1,
+              "query": "cash and equivalents cash balance liquidity",
+              "request_id": "signal:cash_reserves:v2",
+              "required_source_groups": [
+                [
+                  "financials",
+                  "filing"
+                ]
+              ],
+              "source_types": [
+                "financials",
+                "filing"
+              ]
+            },
+            "status": "resolved"
+          }
+        ],
+        "results": [
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": []
+            },
+            "execution": {
+              "error_code": "deterministic_result_validation_failed",
+              "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+              "status": "validation_failed"
+            },
+            "interpretation": {
+              "summary": "Signal execution failed strict validation or execution: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+            },
+            "signal_id": "cash_reserves",
+            "state": {
+              "confidence": 0.0,
+              "value": "unavailable"
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "version": 2
+          }
+        ],
+        "signal_calls_result_count": 1
+      },
+      "audit_status": "rejected",
+      "case": "exact_published_positive",
+      "error": "expected positive, received unavailable",
+      "error_type": "ValidationError",
+      "expected": "positive",
+      "fixture_hash": "12d539a91840c7417fccae499a53e424bf67b1d908db650daba03d3b964693c3",
+      "fixture_name": "cash buffer",
+      "function_calls": [
+        "financial.cash_reserves"
+      ],
+      "signal_ref": "cash_reserves:v2"
+    },
+    {
+      "actual_native_batch": {
+        "document_fingerprints": {
+          "cash_reserves:v2": [
+            "capability_cash_reserves_0_0:0bb26ec3a2708a6b04f57fef52aaea12160f4feeaa7b3afeaa94c947ad16b4ea"
+          ]
+        },
+        "resolutions": [
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 1,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 1,
+              "observed_observation_count": 0,
+              "observed_period_span_days": null,
+              "query_evaluated": true,
+              "query_matched_document_count": 1,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 1,
+              "satisfied_source_group_count": 1,
+              "selected_document_count": 1,
+              "selection_truncated": false,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-01-20T00:00:00+00:00",
+                "content_hash": "0bb26ec3a2708a6b04f57fef52aaea12160f4feeaa7b3afeaa94c947ad16b4ea",
+                "document_id": "capability_cash_reserves_0_0"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "capability_cash_reserves_0_0"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:cash_reserves:v2",
+                  "source_types": [
+                    "financials",
+                    "filing"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Read the latest point-in-time cash and equivalents balance.",
+              "max_documents": 10,
+              "minimum_distinct_periods": 1,
+              "query": "cash and equivalents cash balance liquidity",
+              "request_id": "signal:cash_reserves:v2",
+              "required_source_groups": [
+                [
+                  "financials",
+                  "filing"
+                ]
+              ],
+              "source_types": [
+                "financials",
+                "filing"
+              ]
+            },
+            "status": "resolved"
+          }
+        ],
+        "results": [
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": [
+                {
+                  "document_id": "capability_cash_reserves_0_0",
+                  "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150000000}",
+                  "timestamp": "2025-01-20T00:00:00+00:00"
+                }
+              ]
+            },
+            "execution": {
+              "status": "success"
+            },
+            "interpretation": {
+              "summary": "cash_reserves=1.5e+08"
+            },
+            "measurement": {
+              "formula": "latest reported instant cash balance",
+              "period": {
+                "end": "2024-12-31"
+              },
+              "unit": "USD",
+              "value": 150000000.0
+            },
+            "signal_id": "cash_reserves",
+            "state": {
+              "confidence": 1.0,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "version": 2
+          }
+        ],
+        "signal_calls_result_count": 1
+      },
+      "all_non_identity_fixture_fields_preserved": true,
+      "audit_status": "passed",
+      "case": "memory_only_consistent_synthetic_CIK",
+      "expected": "positive",
+      "fixture_hash": "8bd0609bede1b0e09c61787a38ad68704fb76b063e0f6744bc8afa8965ab455f",
+      "fixture_name": "cash buffer",
+      "function_calls": [
+        "financial.cash_reserves"
+      ],
+      "preservation": [
+        {
+          "body_original_sha256": "29366d6f862e9e5f0acb975bcadbfb217c648bfc3b483668fae557771bcd2c05",
+          "body_without_added_cik_exact_json_equal": true,
+          "original_body_bytes_recovered_by_removing_only_added_cik": true
+        }
+      ],
+      "signal_ref": "cash_reserves:v2"
+    },
+    {
+      "actual_native_batch": {
+        "document_fingerprints": {
+          "revenue_growth_yoy:v3": [
+            "capability_revenue_growth_yoy_0_0:f5ad5eb66729dc4e6817983fa17ffacafd505eae6137b294bbb244cf765fa0af"
+          ]
+        },
+        "resolutions": [
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 1,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 2,
+              "observed_observation_count": 0,
+              "observed_period_span_days": 366,
+              "query_evaluated": true,
+              "query_matched_document_count": 1,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "selected_document_count": 1,
+              "selection_truncated": false,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-01-20T00:00:00+00:00",
+                "content_hash": "f5ad5eb66729dc4e6817983fa17ffacafd505eae6137b294bbb244cf765fa0af",
+                "document_id": "capability_revenue_growth_yoy_0_0"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "capability_revenue_growth_yoy_0_0"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:revenue_growth_yoy:v3",
+                  "source_types": [
+                    "financials",
+                    "company_facts"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Measure the latest point-in-time year-over-year revenue growth.",
+              "max_documents": 10,
+              "minimum_distinct_periods": 2,
+              "minimum_period_span_days": 330,
+              "query": "revenue sales total revenue revenues",
+              "request_id": "signal:revenue_growth_yoy:v3",
+              "source_types": [
+                "financials",
+                "company_facts"
+              ]
+            },
+            "status": "resolved"
+          }
+        ],
+        "results": [
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": []
+            },
+            "execution": {
+              "error_code": "deterministic_result_validation_failed",
+              "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+              "status": "validation_failed"
+            },
+            "interpretation": {
+              "summary": "Signal execution failed strict validation or execution: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+            },
+            "signal_id": "revenue_growth_yoy",
+            "state": {
+              "confidence": 0.0,
+              "value": "unavailable"
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "version": 3
+          }
+        ],
+        "signal_calls_result_count": 1
+      },
+      "audit_status": "rejected",
+      "case": "exact_published_positive",
+      "error": "expected positive, received unavailable",
+      "error_type": "ValidationError",
+      "expected": "positive",
+      "fixture_hash": "8661ce3052aef8ddb57f0834d52afee07b6abfa7e2f47d5aa3e3f38318ca8873",
+      "fixture_name": "positive growth",
+      "function_calls": [
+        "financial.revenue_growth_yoy"
+      ],
+      "signal_ref": "revenue_growth_yoy:v3"
+    },
+    {
+      "actual_native_batch": {
+        "document_fingerprints": {
+          "revenue_growth_yoy:v3": [
+            "capability_revenue_growth_yoy_0_0:5c747043b1224fd34ff72545fe9922d2edf59d3d810ab924bc511f81f5a77ae7"
+          ]
+        },
+        "resolutions": [
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 1,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 2,
+              "observed_observation_count": 0,
+              "observed_period_span_days": 366,
+              "query_evaluated": true,
+              "query_matched_document_count": 1,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "selected_document_count": 1,
+              "selection_truncated": false,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-01-20T00:00:00+00:00",
+                "content_hash": "5c747043b1224fd34ff72545fe9922d2edf59d3d810ab924bc511f81f5a77ae7",
+                "document_id": "capability_revenue_growth_yoy_0_0"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "capability_revenue_growth_yoy_0_0"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:revenue_growth_yoy:v3",
+                  "source_types": [
+                    "financials",
+                    "company_facts"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Measure the latest point-in-time year-over-year revenue growth.",
+              "max_documents": 10,
+              "minimum_distinct_periods": 2,
+              "minimum_period_span_days": 330,
+              "query": "revenue sales total revenue revenues",
+              "request_id": "signal:revenue_growth_yoy:v3",
+              "source_types": [
+                "financials",
+                "company_facts"
+              ]
+            },
+            "status": "resolved"
+          }
+        ],
+        "results": [
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": [
+                {
+                  "document_id": "capability_revenue_growth_yoy_0_0",
+                  "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":130}",
+                  "timestamp": "2025-01-20T00:00:00+00:00"
+                },
+                {
+                  "document_id": "capability_revenue_growth_yoy_0_0",
+                  "exact_span": "{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}",
+                  "timestamp": "2025-01-20T00:00:00+00:00"
+                }
+              ]
+            },
+            "execution": {
+              "status": "success"
+            },
+            "interpretation": {
+              "summary": "revenue_growth_yoy=0.3"
+            },
+            "measurement": {
+              "formula": "current / comparable prior-year revenue - 1",
+              "period": {
+                "end": "2024-12-31",
+                "start": "2024-01-01"
+              },
+              "unit": "fraction",
+              "value": 0.30000000000000004
+            },
+            "signal_id": "revenue_growth_yoy",
+            "state": {
+              "confidence": 1.0,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "version": 3
+          }
+        ],
+        "signal_calls_result_count": 1
+      },
+      "all_non_identity_fixture_fields_preserved": true,
+      "audit_status": "passed",
+      "case": "memory_only_consistent_synthetic_CIK",
+      "expected": "positive",
+      "fixture_hash": "591af2bd62c4b86467acd3698baa9802854459f8ce406d1b43bfd7c813a1732e",
+      "fixture_name": "positive growth",
+      "function_calls": [
+        "financial.revenue_growth_yoy"
+      ],
+      "preservation": [
+        {
+          "body_original_sha256": "f5ad5eb66729dc4e6817983fa17ffacafd505eae6137b294bbb244cf765fa0af",
+          "body_without_added_cik_exact_json_equal": true,
+          "original_body_bytes_recovered_by_removing_only_added_cik": true
+        }
+      ],
+      "signal_ref": "revenue_growth_yoy:v3"
+    }
+  ],
+  "scope": "Four native audits at most. Only exact published synthetic fixtures and identity-only memory copies; no real financial/source or outcome reads.",
+  "source_bindings_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/spec.json",
+      "sha256": "00a4595fe13d41e8bc0e972ef99fe6f9a8e5c46988aa47a667d8bf8816b309da"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/tests.json",
+      "sha256": "2e937d5ccacb56308d87b5b4f92b53bbd24e6b6c42341cf44819325a7244464e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/spec.json",
+      "sha256": "91acc7bf052c8a39114c5a119e6a9bec9c6093ccaf4ae65ea832d605255636cf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/tests.json",
+      "sha256": "d9864cc33471659b1de65828bbdb6aa57b1bec2b4056a5f798d8c4739e4517b7"
+    }
+  ],
+  "source_bindings_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/spec.json",
+      "sha256": "00a4595fe13d41e8bc0e972ef99fe6f9a8e5c46988aa47a667d8bf8816b309da"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/tests.json",
+      "sha256": "2e937d5ccacb56308d87b5b4f92b53bbd24e6b6c42341cf44819325a7244464e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/spec.json",
+      "sha256": "91acc7bf052c8a39114c5a119e6a9bec9c6093ccaf4ae65ea832d605255636cf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/tests.json",
+      "sha256": "d9864cc33471659b1de65828bbdb6aa57b1bec2b4056a5f798d8c4739e4517b7"
+    }
+  ],
+  "wall_seconds": 0.013217833125963807
+}

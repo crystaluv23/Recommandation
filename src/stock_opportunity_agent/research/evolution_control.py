@@ -1582,6 +1582,32 @@ def _load_slow_fast_context(
     })
 
 
+def _historical_registry_snapshot(registry: SignalRegistry) -> FrozenSignalRegistry:
+    """Read stable definition identity without executing fixtures or loading profiles."""
+    version = _read_json(registry.root / "registry.json").get("version")
+    if type(version) is not int or version < 1:
+        raise ValidationError("historical Registry version must be a positive integer")
+    specs = []
+    for path in sorted(registry.root.glob("*/*/manifest.json")):
+        manifest = _read_json(path)
+        signal_id, category = manifest.get("signal_id"), manifest.get("category")
+        stable = manifest.get("stable_version")
+        if (not isinstance(signal_id, str) or not isinstance(category, str)
+                or path.parent.name != signal_id or path.parent.parent.name != category
+                or type(stable) is not int or stable < 1):
+            raise ValidationError("historical Signal manifest path/identity differs")
+        spec = registry.load_spec(f"{signal_id}:v{stable}")
+        raw_spec = _read_json(path.parent / "versions" / f"v{stable}" / "spec.json")
+        if spec.category != category or type(raw_spec.get("version")) is not int:
+            raise ValidationError("historical Signal spec path/identity differs")
+        specs.append(spec)
+    specs.sort(key=lambda spec: (spec.category, spec.signal_id))
+    refs = tuple(spec.ref for spec in specs)
+    if not refs or len(refs) != len(set(refs)):
+        raise ValidationError("historical Registry must contain unique stable definitions")
+    return registry.snapshot_from_refs(version, refs)
+
+
 def build_slow_history_manifest(
     *,
     workspace: str | Path,
@@ -1602,6 +1628,9 @@ def build_slow_history_manifest(
         raise ValidationError("Slow history source workspace is incompatible")
     state = _read_json(source_root / "state.json")
     cycle_state = _read_json(source_root / "cycle_state.json")
+    registry_version = cycle_state.get("current_signal_registry_version")
+    if type(registry_version) is not int or registry_version < 1:
+        raise ValidationError("Slow history pointer Registry version must be a positive integer")
     completed_fast = int(state.get("last_completed_round", 0))
     completed_slow = int(cycle_state.get("last_completed_cycle", 0))
     active_cycle = cycle_state.get("active_cycle")
@@ -1616,10 +1645,10 @@ def build_slow_history_manifest(
         source_root / "signals",
         candidate_root=source_root / "signals_candidates",
     )
-    snapshot = registry.freeze()
+    snapshot = _historical_registry_snapshot(registry)
     if (
         snapshot.version
-        != int(cycle_state.get("current_signal_registry_version", 0))
+        != registry_version
         or snapshot.registry_hash
         != str(cycle_state.get("current_signal_registry_hash", ""))
     ):
@@ -1786,6 +1815,9 @@ def validate_slow_history_manifest(
         or manifest.get("dataset_manifest_hash") != contract.dataset_manifest_hash
     ):
         raise ValidationError("Slow history manifest identity mismatch")
+    registry_version = manifest.get("registry_version")
+    if type(registry_version) is not int or registry_version < 1:
+        raise ValidationError("Slow history manifest Registry version must be a positive integer")
     if manifest.get("schema_version") == "slow-history-manifest-v2":
         _validate_slow_fast_context(manifest.get("fast_context"))
     source_root = Path(str(manifest.get("source_workspace", "")))
@@ -1861,15 +1893,18 @@ def apply_slow_history_manifest(
 ) -> None:
     """Materialize the exact committed Registry and namespaced history once."""
 
+    registry_version = manifest.get("registry_version")
+    if type(registry_version) is not int or registry_version < 1:
+        raise ValidationError("Slow history manifest Registry version must be a positive integer")
     target_root = Path(workspace)
     source_root = Path(str(manifest["source_workspace"]))
     signals_root = target_root / "signals"
     existing_manifests = tuple(signals_root.glob("*/*/manifest.json"))
     if existing_manifests:
-        snapshot = SignalRegistry(
+        snapshot = _historical_registry_snapshot(SignalRegistry(
             signals_root,
             candidate_root=target_root / "signals_candidates",
-        ).freeze()
+        ))
         if snapshot.registry_hash != manifest.get("registry_hash"):
             raise ValidationError("target Registry conflicts with Slow history")
     else:
@@ -1887,9 +1922,9 @@ def apply_slow_history_manifest(
         for item in manifest.get("learning_events", ())
     )
     record_committed_signal_use(registry, events)
-    snapshot = registry.freeze()
+    snapshot = _historical_registry_snapshot(registry)
     if (
-        snapshot.version != int(manifest["registry_version"])
+        snapshot.version != registry_version
         or snapshot.registry_hash != manifest["registry_hash"]
     ):
         raise ValidationError("imported Slow history Registry identity mismatch")
@@ -1943,6 +1978,8 @@ def build_slow_bootstrap_manifest(
 ) -> str:
     """Freeze one explicit rejected-gap or committed-Fast Slow seed."""
 
+    if type(signal_snapshot.version) is not int or signal_snapshot.version < 1:
+        raise ValidationError("bootstrap input Registry version must be a positive integer")
     workspace_root = Path(workspace)
     manifest_path = workspace_root / "slow_bootstrap" / "manifest.json"
     sources = tuple(Path(item) for item in source_workspaces)
@@ -1987,10 +2024,10 @@ def build_slow_bootstrap_manifest(
             != dict(evaluation_contract)
         ):
             raise ValidationError("slow-bootstrap source workspace is incompatible")
-        source_snapshot = SignalRegistry(
+        source_snapshot = _historical_registry_snapshot(SignalRegistry(
             source_root / "signals",
             candidate_root=source_root / "signals_candidates",
-        ).freeze()
+        ))
         if (
             source_snapshot.version != signal_snapshot.version
             or source_snapshot.registry_hash != signal_snapshot.registry_hash
@@ -2148,6 +2185,8 @@ def _build_committed_fast_bootstrap_manifest(
 ) -> str:
     """Freeze derivatives from one committed Fast range whose Slow has not run."""
 
+    if type(signal_snapshot.version) is not int or signal_snapshot.version < 1:
+        raise ValidationError("bootstrap input Registry version must be a positive integer")
     if len(source_workspaces) != 1:
         raise ValidationError(
             "committed Fast bootstrap requires exactly one source workspace"
@@ -2167,10 +2206,10 @@ def _build_committed_fast_bootstrap_manifest(
         != dict(evaluation_contract)
     ):
         raise ValidationError("committed Fast bootstrap source is incompatible")
-    source_snapshot = SignalRegistry(
+    source_snapshot = _historical_registry_snapshot(SignalRegistry(
         source_root / "signals",
         candidate_root=source_root / "signals_candidates",
-    ).freeze()
+    ))
     if (
         source_snapshot.version != signal_snapshot.version
         or source_snapshot.registry_hash != signal_snapshot.registry_hash
@@ -2186,6 +2225,9 @@ def _build_committed_fast_bootstrap_manifest(
     active = cycle_state.get("active_cycle")
     if not isinstance(active, Mapping):
         raise ValidationError("committed Fast bootstrap requires an active source cycle")
+    input_registry_version = active.get("input_signal_registry_version")
+    if type(input_registry_version) is not int or input_registry_version < 1:
+        raise ValidationError("committed Fast pointer Registry version must be a positive integer")
     cycle_id = int(active.get("cycle_id", 0))
     start_round = int(active.get("start_round", -1))
     target_rounds = int(active.get("target_plan_rounds", 0))
@@ -2195,7 +2237,7 @@ def _build_committed_fast_bootstrap_manifest(
         or active.get("cycle_mode") != "fast_then_slow"
         or cycle_state.get("run_contract_hash") != contract.contract_hash
         or active.get("phase") not in {"fast_loop", "slow_loop"}
-        or int(active.get("input_signal_registry_version", 0))
+        or input_registry_version
         != signal_snapshot.version
         or active.get("input_signal_registry_hash")
         != signal_snapshot.registry_hash
@@ -2331,11 +2373,16 @@ def validate_slow_bootstrap_manifest(
 ) -> Mapping[str, Any]:
     """Verify the immutable Slow-bootstrap seed before cycle creation."""
 
+    if type(signal_snapshot.version) is not int or signal_snapshot.version < 1:
+        raise ValidationError("bootstrap input Registry version must be a positive integer")
     path = Path(workspace) / "slow_bootstrap" / "manifest.json"
     envelope = _read_json(path)
     manifest = envelope.get("manifest", {})
     if not isinstance(manifest, Mapping):
         raise ValidationError("slow-bootstrap manifest body is invalid")
+    registry_version = manifest.get("input_signal_registry_version")
+    if type(registry_version) is not int or registry_version < 1:
+        raise ValidationError("bootstrap manifest Registry version must be a positive integer")
     manifest_hash = _canonical_hash(manifest)
     backlog = manifest.get("capability_backlog_seed", {})
     if (
@@ -2348,7 +2395,7 @@ def validate_slow_bootstrap_manifest(
         != contract.predictor_semantics_hash
         or dict(manifest.get("evaluation_contract", {}))
         != dict(contract.limits.get("evaluation", {}))
-        or int(manifest.get("input_signal_registry_version", 0))
+        or registry_version
         != signal_snapshot.version
         or manifest.get("input_signal_registry_hash")
         != signal_snapshot.registry_hash

@@ -1,0 +1,6 @@
+test_bootstrap_validator_rejects_typed_identity_drift_after_coherent_rehash (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_bootstrap_validator_rejects_typed_identity_drift_after_coherent_rehash) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.020s
+
+OK

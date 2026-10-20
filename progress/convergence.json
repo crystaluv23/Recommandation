@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T20:27:50+00:00",
+    "checked_at": "2026-10-20T20:57:09+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal after terminal native financial9 and unique completed restore; no budget limit; engineering MVP remains open"
+    "source": "Actual root get_goal after final historical reader65/independent10 controls; full MVP remains open, no budget limit"
   },
   "acceptance": [
     {
@@ -176,9 +176,18 @@
         "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/result.json",
         "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-review.json",
         "runs/diagnostics/current_financial_apply_20261021_v1/root/completed-restore.json",
-        "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-restore-review.json"
+        "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-restore-review.json",
+        "reports/historical-registry-definition-reading-20261021.md",
+        "runs/diagnostics/current_financial_apply_20261021_v1/driver/next-slow-boundary-review.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/result.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/direct-fixture-result.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-preflight.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-independent-review.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/pointer-counterexample.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/root/connected-final-result.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair-review.json"
       ],
-      "remaining": "Engineering content chain remains local/open. Actual currentv12 financial9 has6strictpasses/1prior original-row alternative mismatch/2definition-policyunknown;7numeric/state/unit/currentperiod match source oracle,9projections exact, completedrestore24bytes preserved, not fresh model consumption. Bounded lexical selection fails latest/comparison/currency/conflict witnesses; no callback installed, native LLM bounded-reading design pending. Typed reader local repair63associated/13independent holds; historicalv6 unchanged. FreshF7 temporal target3of3 and downstream/restores narrow, original0of1 preserved/mirrorunexercised; priorp01 auxiliary atomic quarantine is authorized, unavailable topic/provenance guard locally repaired282/31 but fresh behavior unverified. S5 independent tests-author2of2 is not Mining/newmeasurement implementation. Original40 readiness670of720 each/BasicInfoallpartial/newsunknown;BURUbaseline/FTItype/MSclock/26transcriptpublictimeproof remain. F10/Slowfeedback/direction+magnitude discovery/admission/exactreuse/wholeloop unverified. No benefit claim."
+      "remaining": "Engineering content chain remains local/open. Actual currentv12 financial9 has6strictpasses/1prior original-row alternative mismatch/2definition-policyunknown;7numeric/state/unit/currentperiod match source oracle,9projections exact, completedrestore24bytes preserved, not fresh model consumption. Bounded lexical selection fails latest/comparison/currency/conflict witnesses; no callback installed, native LLM bounded-reading design pending. Typed reader local repair63associated/13independent holds; historicalv6 unchanged. FreshF7 temporal target3of3 and downstream/restores narrow, original0of1 preserved/mirrorunexercised; priorp01 auxiliary atomic quarantine is authorized, unavailable topic/provenance guard locally repaired282/31 but fresh behavior unverified. S5 independent tests-author2of2 is not Mining/newmeasurement implementation. Original40 readiness670of720 each/BasicInfoallpartial/newsunknown;BURUbaseline/FTItype/MSclock/26transcriptpublictimeproof remain. F10/Slowfeedback/direction+magnitude discovery/admission/exactreuse/wholeloop unverified. No benefit claim. Historical Registry metadata reader locally repaired at5source/materialization checks and typedversion producer/consumer authorities,65associated/10independent controls pass; freshcapabilityaudit preserved. Corrected realhistoryexport and actualS1/S2memory/taskconsumption remain unverified. Readable history is not current executable capability."
     },
     {
       "id": "feedback_consumption",
@@ -1171,20 +1180,42 @@
         "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-restore-review.json"
       ],
       "result": "Fixed lexical improvement recovers actualQ1 rank46to4 and complete literals but frozen11doc plus independent comparison/currency/conflict controls falsify semantic preservation. No ranking callback installed; bounded read proposal pending user design decision. Separate currentv12 deterministic financial9 executed once at6b7205ec with4389bindings:6strictpass/1prior literal fail/2predeclared period-policyunknown, fixed9 and completed_acceptance_failed preserved.7unique quantities/state/unit/currentperiod match frozen independent source oracle; actual prior is the same2024Q1 total revenue fact in original2024filing, omitted by oracle prior alternative list.9actual selected/order/fp and public consumer projections faithful; no fresh model consumption. One completed restore24files byte-identical/0newbatch.0model/GET/labels/append, no full successor. Source/current and historicalv6 frozen scopes remain distinct."
+    },
+    {
+      "id": "engineering-mvp-historical-definition-reading-20261021",
+      "strategy": "historical_registry_identity_read_without_current_execution_audit",
+      "failure_families": [
+        "historical_metadata_read_executes_old_fixtures_under_new_runtime",
+        "definition_enumeration_loads_derived_knowledge_profiles",
+        "registry_authority_version_int_coercion"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/historical-registry-definition-reading-20261021.md",
+        "runs/diagnostics/current_financial_apply_20261021_v1/driver/next-slow-boundary-review.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/result.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/direct-fixture-result.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-preflight.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-independent-review.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/pointer-counterexample.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/root/connected-final-result.json",
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair-review.json"
+      ],
+      "result": "Original minimalcopy freeze stops at missing knowledgecheckpoint, not real source fault; direct2oldpositives failissuer and memory-onlyCIK controls pass(4audits/batches/functions). Unique actual source builder passes knowledge and then9financiallegacyfixtures failissuer,3otherdetpass(12audits/functions),93readbytes unchanged/no write/export. Spec-first privatepure reader replaces5historicalfreeze only; freshcycle AST/3freeze unchanged. Independent bool/floatpointer counter accepts old andfirstcandidate, fixedtypedRegistry authorities through source/apply-before-write/history/bootstrapproducer+validator. Final65associated and10independent groups pass; no fresh model/GET/LabelStore/actual corrected export or S1/S2 closure. Published sourcefixtures/oldpointers unchanged; definitionread supplies no profiles/current capability."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-fixed-reading-and-financial-apply-20261021",
+    "after_iteration": "engineering-mvp-historical-definition-reading-20261021",
     "evidence": [
-      "reports/current-financial-apply-20261021.md",
-      "reports/llm-signal-bounded-source-reading-proposal-20261021.md",
-      "runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/summary.json",
-      "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/interface-review.json",
-      "runs/diagnostics/current_financial_apply_20261021_v1/oracle/frozen-manifest.json",
-      "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/result.json",
-      "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-review.json",
-      "runs/diagnostics/current_financial_apply_20261021_v1/root/completed-restore.json",
-      "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-restore-review.json"
+      "reports/historical-registry-definition-reading-20261021.md",
+      "runs/diagnostics/current_financial_apply_20261021_v1/driver/next-slow-boundary-review.json",
+      "runs/diagnostics/slow_history_import_boundary_20261021_v1/result.json",
+      "runs/diagnostics/slow_history_import_boundary_20261021_v1/direct-fixture-result.json",
+      "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-preflight.json",
+      "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-independent-review.json",
+      "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/pointer-counterexample.json",
+      "runs/diagnostics/slow_history_import_boundary_20261021_v1/root/connected-final-result.json",
+      "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1253,22 +1284,25 @@
       "The lexical cap3 candidate improved one actual query but a fixed11source counterexample and independent older-comparison/unit/conflict witnesses falsify a semantic guarantee. Ranking alone is stopped, rather than tuned or installed after a favorable example. Runner-only reads would bypass actual-source evidence/fingerprint and skip contracts; the concrete bounded interface remains a human design choice.",
       "The independent financial oracle enumerated current alternatives but omitted an already frozen original prior-filing row. Same-value/tag/unit/duration with different reporting-frame metadata caused a strict literal failure despite correct revenue math. Keep original failure and enumerate both prior/current variants before any future freeze; do not weaken whole-source validation or retrofit this result.",
       "Private native preflight originally hashed a whole group wrapper against a five-field snapshot identity and forbade the ReviewedStore memory-only parent initializer; early synthetic fakes missed actual constructor composition. Original failures remain; strict identity plus43definition bindings, actual ReviewedStore and11safety controls now cover the harness. Root-only seal exclusion must compare its fullpath; same basename nested underresults must not evade restore.",
-      "Independent actual audit initially treated optional null instant-period start as a required key and then required dict identity against start:null. It now checks optionalstart semantically while tag/value/unit/end remain exact; original audit failures are retained, and none warrants product period correction."
+      "Independent actual audit initially treated optional null instant-period start as a required key and then required dict identity against start:null. It now checks optionalstart semantically while tag/value/unit/end remain exact; original audit failures are retained, and none warrants product period correction.",
+      "The earlier seed/author identity repair deliberately preserved published fixtures, but history export still called current capability freeze. Input-only snapshot diagnostics never entered this importer. A minimalcopy omitted the knowledge checkpoint and failed even before audit; native actual source with valid committed knowledge was necessary to identify the real fixture gate.",
+      "A pure definition reader implemented through list_signal_cards would still depend on KnowledgeUseStore.profiles and repeat the incomplete-copy failure at materialization. The private reader enumerates stable manifests/specs/skills directly; existing knowledge/event source validation remains separate and fresh execution still audits capabilities.",
+      "Nine focused candidate tests validated rawheader/stabletype but missed authority pointer int coercion. Independent complete source controls demonstrate True/1.9 accepted by both old and firstcandidate. Root initially enumerated five freeze callsites too mechanically; the bootstrap manifest validator is the actual downstream consumer and now shares strictRegistryversion identity. No claim is made about all runtime numeric coercions."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "existing_slow_entry_before_frozen_positive_control",
-      "action": "Read existing authorized committed Fast feedback or explicitly allowed frozen imports and native Slow Mining/materialization interfaces. Identify a minimal direction/magnitude capability positive control using sufficient PIT materials, exact producer/consumer handoff, existing resource limits and fresh independent production subagents. Do not implement pending LLM source-reading interface or change comparison-period policy.",
-      "stop": "No model/Signal/GET/labels/full successor or Registry writes during entry diagnosis. Stop if the source import/measurement definition is unauthorized, labels or LockedTest would leak, or the only available control preauthors the candidate instead of exercising Mining. Keep completed stages immutable and the current9 denominator unchanged.",
-      "question": "Can existing authorized Slow input and runtime boundaries support a finite actual discovery-to-admission positive control without depending on the pending LLM reading-interface or measurement-period decisions?",
-      "pass": "A concrete native producer/consumer entry, authorized sufficient sources, independent expected reusable measurement boundaries and existing bounded call/correction limits are identified; no handwritten candidate substitutes for Mining.",
-      "fail": "No authorized source/import or sufficient material is available, the boundary requires a new research/interface policy, or a proposed control only seeds/publishes a handwritten Signal.",
-      "on_pass": "Prepare only the existing bounded native entry with exact frozen inputs/oracle/budget, validate actual request and persistence, and then use independent exact-inbox subagents.",
-      "on_fail": "Name the missing input or substantive policy with a concrete reviewable proposal; continue other independent acceptance work instead of fabricating consumption, widening permission or running the whole loop.",
-      "new_evidence": "The current deterministic measurement and completed-restore batch is terminal and independently reviewed; the fixed lexical strategy is falsified and stopped. Neither missing LLM navigation nor two published period ambiguities can be solved by more identical calls. Existing Slow positive-control capability remains an independent required MVP frontier.",
-      "distinguishing_variable": "Actual authorized feedback/source artifact and native Mining request versus seeded handwritten measurement; input permission, sufficient source evidence and supported call interface are checked separately from schema/Registry visibility.",
-      "authorization_evidence": "Active user engineering MVP goal; independent production subagents replace LLM API, externalLLMAPI prohibited; read-only public sourcing permitted. This action is local read-only entry diagnosis under existing contracts, not a full successor or interface budget change."
+      "strategy": "actual_history_export_before_fresh_slow_memory",
+      "action": "After a scoped code/spec/test checkpoint, execute one fixed v182 committed-source history build, native manifest validation and new-target materialization with no model or Signal execution. Freeze code/source identity, forbid source/global writes and global LabelStore/LockedTest, log actual authorized committed/namespaced reads and their before/after hashes. Verify exact v12 definition identity and preserve old pending/failed records.",
+      "stop": "One bounded export/materialization attempt; native failure is terminal, no source edits, retries, hand-authored replacement manifests, capability-audit bypass for fresh runs or full successor. No production role dispatch until real input and request budget are separately frozen; metadata import grants no executable capability or benefit.",
+      "question": "Does the repaired historical reader let the actual committed source produce and materialize an exact authorized history manifest without mutating source bytes or invoking current Signal/model execution?",
+      "pass": "Native build/validate/materialization complete with exact v12 version/hash, preserved source/pointer/definition bytes, authorized committed source reads only,0model/GET/LabelStore/Signal/audit/freshfreeze and a durable new manifest whose files/events match source authority.",
+      "fail": "Any native schema/provenance/identity gate fails, an undeclared/staged/LockedTest source is requested, source/global write is attempted, or a current capability/execution call occurs during metadata import.",
+      "on_pass": "Freeze a finite native S1/S2 source-view/reflection preflight and independent semantic oracle, then use fresh exact-inbox subagents and inspect actual task handoff; do not mark a Slow cycle complete from memory alone.",
+      "on_fail": "Preserve the unique native frontier and first exact cause; choose the smallest source/reader repair supported by original evidence without filling missing data or weakening current admission.",
+      "new_evidence": "Actualsource3slice diagnosis distinguishes incompletecopy knowledge from9legacyissuer failures; newpuremetadata+typedauthority repair passes65associated/10independent groups while fresh audit still refuses oldfixtures. The prior import assumption is now locally repaired but actual full export/materialization remains untested.",
+      "distinguishing_variable": "Real committed source export/materialization under corrected code versus old freshaudit-coupled source read, with source records/hash/pointers held fixed; historical readability, event authority and current executability remain separate.",
+      "authorization_evidence": "Active engineering MVP goal, independent subagents replace production LLM API, externalLLMAPI prohibited. S1 permits retrospective committed Fast/Slow history; no blind role/LockedTest/globalLabelStore. This is a new isolated metadata stage with0role/network/Signal budget, not a full successor or old-run resume."
     }
   },
   "successor_prerequisites": [

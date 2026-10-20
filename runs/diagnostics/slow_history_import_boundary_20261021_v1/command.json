@@ -1,0 +1,10 @@
+{
+  "command": [
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/probe.py"
+  ],
+  "guard": "Only native synthetic-fixture internal batch exception; no production batch.",
+  "head": "95386240b97659ae751f23620c5de620f50f0a6c",
+  "pid": 3996,
+  "python": "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "started_at": "2026-10-20T20:34:33.597849+00:00"
+}

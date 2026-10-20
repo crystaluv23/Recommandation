@@ -1,0 +1,27 @@
+{
+  "old_control_sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9",
+  "new_control_sha256": "d96610db1aa3a4bb199c724eee4ed69b69199f765e506036d07661537f24de34",
+  "results": [
+    {
+      "version_type": "bool",
+      "reader": "old_HEAD",
+      "status": "accepted"
+    },
+    {
+      "version_type": "bool",
+      "reader": "new_candidate",
+      "status": "accepted"
+    },
+    {
+      "version_type": "float",
+      "reader": "old_HEAD",
+      "status": "accepted"
+    },
+    {
+      "version_type": "float",
+      "reader": "new_candidate",
+      "status": "accepted"
+    }
+  ],
+  "scope": "Synthetic temp source/exports only; no actual source export. First isolated oldmodule load required sys.modules registration before dataclass definition; initial harness failed before anyfixture."
+}

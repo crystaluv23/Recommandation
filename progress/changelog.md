@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：真实v182 history前置通过knowledge后被9金融legacy fixture issuer门拒（12审计函数/93source读保真/0写），首minimalcopy缺checkpoint不归真实源；两原正控与memory-onlyCIK反事实4执行独立核过。spec-first私有纯定义reader替5历史freeze，不经cards/profile，source/event/hash/pointer及fresh3freeze保持；独立原生反例又证旧/首candidate把True/1.9当Registry版本1，现贯穿source、apply写前、history与bootstrap producer/validator严格int。最终65关联/10独立控制过，原红/首9绿漏门/receipt写入harness错全留；旧发布fixture与指针不改、0新LLM/GET/LabelStore。仅局部历史读取修复，修后真实导出与S1/S2消费待验，不关完整MVP。
+
 - 2026-10-21：固定词频饱和选文使实际Q1 rank46→4/完整literal可见，但11文档及独立比较期/币种/冲突反例证伪语义保留，停止排序策略、未装callback；有界阅读具体方案待用户决策。独立源oracle预冻7唯一/2期间unknown后，6b7205ec当前v12唯一native财务9批次20.261s：6严格通过/1prior字面版本失败/2unknown，原completed_acceptance_failed及分母9保留；7数值/分类/单位/当前期间一致，失败为oracle漏列2024原申报同事实prior，非改算通过。4389绑定/9实际选文顺序-fp/21证据/9消费者投影独立核过，唯一restore24files全等/0新batch。首prepare前置拒及两audit可空instant字段误判保留；11私有安全控过，0模型/GET/labels/append/源码行为变更。仅真实计算/保存恢复局部证据，不关F5/F6/Slow/MVP，下一核既有Slow合法反馈与Mining正控入口。
 
 - 2026-10-21：F5只读native诊断区分57→10词频选文（Q1原rank46）与typed facts数组被nested-only reader跳过两门；限定入口v143默认/显式v182/一般init差异，不换Registry或改历史v1。spec-first扩既有reader，原row/value/string/offset及同end冲突、duration/币种/可比prior保留，整组贯穿32k/token预算，遗漏显式partial；旧nested逻辑不变。生产者链旧2红、最终63关联及13独立边界过；初7fail为root拦截公开complete_json误挡本地pending测试，保原log并仅下移HTTP guard，零外部/标签tripwire。实际预定10文档counter两最新完整literal各1/31986chars，native仍0/31968，源码外来源/定义字节保真；仅纯投影，0模型/Signal测量/GET/labels/append/重入。局部读取修复不关整体F5/MVP，下一有界选文及fresh apply前置。

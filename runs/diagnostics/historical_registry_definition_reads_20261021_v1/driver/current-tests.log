@@ -1,0 +1,14 @@
+..E....
+======================================================================
+ERROR: test_definition_skill_version_and_duplicate_path_drift_reject (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_definition_skill_version_and_duplicate_path_drift_reject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 168, in test_definition_skill_version_and_duplicate_path_drift_reject
+    skill=next((target/'signals').glob('*/guidance_acceleration/versions/v1/skill.md'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.138s
+
+FAILED (errors=1)

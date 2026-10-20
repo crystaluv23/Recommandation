@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/probe.py", line 148, in <module>
+    bound = replace(boot_contract, slow_bootstrap_manifest_hash=valid["manifest_hash"])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 29, in __init__
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py", line 388, in __post_init__
+    raise ValidationError(
+stock_opportunity_agent.models.ValidationError: 8 fast_then_slow requires positive Fast rounds and no Slow bootstrap manifest

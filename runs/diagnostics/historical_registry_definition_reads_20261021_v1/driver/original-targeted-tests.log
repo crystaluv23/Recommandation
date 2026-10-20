@@ -1,0 +1,43 @@
+EE
+======================================================================
+ERROR: test_history_build_apply_replay_preserves_files_and_exact_committed_events (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_history_build_apply_replay_preserves_files_and_exact_committed_events)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 104, in test_history_build_apply_replay_preserves_files_and_exact_committed_events
+    source,registry,snapshot,contract=self.source()
+                                      ^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 71, in source
+    write_json(source/'experiments/cycles/cycle-0001'/name,{'artifact':name})
+  File "/Users/l/Project/Recommandation/tests/evolution_runtime_test_support.py", line 146, in write_json
+    path.write_text(json.dumps(value), encoding="utf-8")
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpfo6k0flk/source/experiments/cycles/cycle-0001/slow_input.json'
+
+======================================================================
+ERROR: test_fresh_freeze_still_rejects_unchanged_legacy_fixture (tests.test_historical_registry_definition_reads.HistoricalRegistryDefinitionReadsTests.test_fresh_freeze_still_rejects_unchanged_legacy_fixture)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 124, in test_fresh_freeze_still_rejects_unchanged_legacy_fixture
+    _,registry,_,_=self.source();self.make_legacy_fixture(registry)
+                   ^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_historical_registry_definition_reads.py", line 71, in source
+    write_json(source/'experiments/cycles/cycle-0001'/name,{'artifact':name})
+  File "/Users/l/Project/Recommandation/tests/evolution_runtime_test_support.py", line 146, in write_json
+    path.write_text(json.dumps(value), encoding="utf-8")
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp_g5yf3rl/source/experiments/cycles/cycle-0001/slow_input.json'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.029s
+
+FAILED (errors=2)

@@ -1,0 +1,77 @@
+{
+  "status": "PASS_two_slice_evidence_review_third_pending",
+  "first_slice": {
+    "freeze_calls": 1,
+    "fixture_audits": 0,
+    "native_batches": 0,
+    "native_functions": 0,
+    "stopped_before_auditor": "Minimal source clone omitted knowledge checkpoint required before list_signal_cards; cannot attribute this to real source or issuer.",
+    "history_manifest_created": false,
+    "pure_definition_snapshot": "18 exact refs/hash only; no profile/history readiness proof.",
+    "source_current_hashes_verified": 141,
+    "recorded_copy_hash_equality": true,
+    "copy_limit": "Temporary copies deleted; verified recorded copy/source hashes and current originals, not reread deleted copies."
+  },
+  "direct_slice": {
+    "actual_audits": 4,
+    "actual_single_ref_batches": 4,
+    "instrumented_callable_invocations": {
+      "financial.cash_reserves": 2,
+      "financial.revenue_growth_yoy": 2
+    },
+    "rows": [
+      {
+        "signal_ref": "cash_reserves:v2",
+        "control": "exact_published_positive",
+        "audit_status": "rejected",
+        "native_execution_status": "validation_failed",
+        "native_single_ref_batch": true,
+        "one_instrumented_function_call": true
+      },
+      {
+        "signal_ref": "cash_reserves:v2",
+        "control": "memory_only_consistent_synthetic_CIK",
+        "audit_status": "passed",
+        "native_execution_status": "success",
+        "native_single_ref_batch": true,
+        "one_instrumented_function_call": true
+      },
+      {
+        "signal_ref": "revenue_growth_yoy:v3",
+        "control": "exact_published_positive",
+        "audit_status": "rejected",
+        "native_execution_status": "validation_failed",
+        "native_single_ref_batch": true,
+        "one_instrumented_function_call": true
+      },
+      {
+        "signal_ref": "revenue_growth_yoy:v3",
+        "control": "memory_only_consistent_synthetic_CIK",
+        "audit_status": "passed",
+        "native_execution_status": "success",
+        "native_single_ref_batch": true,
+        "one_instrumented_function_call": true
+      }
+    ],
+    "scope": "Only2 exact published synthetic positive fixtures and their memory-only CIK counterfactuals. No real company evidence, history import or policy relaxation.",
+    "independent_counterfactual_reconstruction": "Reconstructed exact content insertion+metadata CIK in memory; resulting fixture canonical hashes and resolution content hashes match recorded controls. No auditor or Signal rerun."
+  },
+  "source_code_bytes_preserved": true,
+  "outcome_values_read_or_copied_by_review": false,
+  "third_slice": "Await root terminal notification; not inspected/executed.",
+  "limits": [
+    "No full history entry success proven by first2 slices.",
+    "No migration/rewrite of published fixtures or widening issuer/source/knowledge qualification.",
+    "Review only stdlib/hash/record inspection; no stage/Signal/GET/model/LabelStore executed."
+  ],
+  "bindings": {
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/probe.py": "1e4c99d00d18c171a0b62b83dad3586fb287e3c2d856873a77efa964084187eb",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/result.json": "0682019e54c19101934ae203b711e0d8691654e35dbeac05473df9cdd8059291",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/command.json": "ce8a034506cc103e9d9bbf879826959af61079a99be2d9df30e41cf076bee751",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/command.log": "38de8575a183de488fb4908b8cd14da058b865e812739896ac5e31abfd91d571",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/direct-fixture-probe.py": "7c3b27d4fae083401d506a758e93b1545a0a3c9eaf63b1d07ff244ddc478d048",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/direct-fixture-result.json": "0ca02de6661a2c36104d81403a460a4c2fc000b273962927f5497715849dcfdc",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/direct-fixture-command.json": "fbc702f76842abe2927465880a0804620c05fa7543f31fed50c44834c2c0fc7d",
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/direct-fixture-command.log": "d07c3ce873b93a5f2241427c71b66848d50e30a7d5574f5958e32abf57fab44d"
+  }
+}

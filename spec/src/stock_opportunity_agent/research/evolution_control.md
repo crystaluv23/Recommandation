@@ -115,6 +115,27 @@ retroactively run against changed adapter wiring.
 
 ## Imported committed Signal tracking
 
+Historical Registry identity is a definition/provenance read, not a fresh
+execution freeze. Slow-history export/materialization and both rejected-gap and
+committed-Fast bootstrap source checks reconstruct the current stable definitions
+and skills in their native order with `snapshot_from_refs`, then compare the
+version/hash with the existing committed pointer or explicitly frozen target
+authority. An empty Registry or a changed stable definition/version still fails.
+Registry versions in headers, manifests, committed Registry pointers and frozen
+snapshot authorities must be positive JSON integers; bool, float or string
+coercion cannot establish identity. Reject malformed authorities before target
+materialization or event writes, including manifest validation and replay.
+They must not execute historical fixtures under a later runtime merely to read
+committed history. Source fixture/spec/skill bytes and their manifest bindings
+remain unchanged; no import repairs, upgrades or silently enables a version.
+
+This definition-only read supplies no learned profile or present-day capability
+certificate. Learning-event cutoffs, knowledge provenance, source contracts,
+namespaced artifacts and imported-event identity retain their separate existing
+validation. Fresh execution, candidate admission and promotion continue to use
+the normal capability-audited `freeze()`; importing historical definitions cannot
+make an incompatible fixture executable or bypass current issuer/PIT gates.
+
 Hash-verified committed Slow-history and Fast-bootstrap learning events use the
 same tracking bridge as local round commits. It derives only the purposes declared
 by exact version metadata, preserves imported event identities, and never imports

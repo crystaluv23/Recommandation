@@ -1,0 +1,23 @@
+{
+  "conclusion": "counterevidence_or_unresolved_do_not_repair_from_metadata_inference",
+  "counts": {
+    "freeze": 1,
+    "fixture_audit": 0,
+    "fixture_internal_batches": 0,
+    "native_functions": 0,
+    "forbidden_calls": 0
+  },
+  "pure_definition_control": {
+    "version": 12,
+    "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+    "exact_v12_hash": true,
+    "refs": true,
+    "count": 18,
+    "no_new_fixture_or_batch_or_function_calls": true,
+    "profile_scope": "Pure definitions/skills only; learned profiles/import cutoffs/committed events not reconstructed. Not a freeze/import replacement."
+  },
+  "history_manifest_created": false,
+  "original_source_all_bytes_unchanged": true,
+  "code_unchanged": true,
+  "wall_seconds": 0.08562804199755192
+}

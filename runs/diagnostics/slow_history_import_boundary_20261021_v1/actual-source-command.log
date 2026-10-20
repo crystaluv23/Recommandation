@@ -1,0 +1,25 @@
+{
+  "entry": {
+    "status": "rejected",
+    "error_type": "ValidationError",
+    "error": "Signal capability audit failed: {\"disabled\": {\"cash_burn_rate_elevated:v2\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"cash_reserves:v2\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"cash_to_current_liabilities_ratio:v2\": [\"schema_fixture_failed: expected negative, received unavailable\"], \"gross_margin_change:v3\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"liquidity_runway_months:v3\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"net_share_retirement_yoy:v3\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"operating_cash_flow_margin:v2\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"revenue_acceleration:v2\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"revenue_growth_yoy:v3\": [\"schema_fixture_failed: expected positive, received unavailable\"]}, \"enabled_refs\": [\"financing_listing_action:v5\", \"guidance_acceleration:v3\", \"max_drawdown_1y:v2\", \"price_momentum_126d:v2\", \"negative_word_count:v2\", \"order_confirmation_disclosed:v3\", \"order_quality:v2\", \"commercialization_status:v2\", \"customer_concentration:v2\"], \"passed\": false, \"schema_version\": \"signal-capability-audit-v1\"}"
+  },
+  "native_freeze": {
+    "status": "rejected",
+    "error_type": "ValidationError",
+    "error": "Signal capability audit failed: {\"disabled\": {\"cash_burn_rate_elevated:v2\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"cash_reserves:v2\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"cash_to_current_liabilities_ratio:v2\": [\"schema_fixture_failed: expected negative, received unavailable\"], \"gross_margin_change:v3\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"liquidity_runway_months:v3\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"net_share_retirement_yoy:v3\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"operating_cash_flow_margin:v2\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"revenue_acceleration:v2\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"revenue_growth_yoy:v3\": [\"schema_fixture_failed: expected positive, received unavailable\"]}, \"enabled_refs\": [\"financing_listing_action:v5\", \"guidance_acceleration:v3\", \"max_drawdown_1y:v2\", \"price_momentum_126d:v2\", \"negative_word_count:v2\", \"order_confirmation_disclosed:v3\", \"order_quality:v2\", \"commercialization_status:v2\", \"customer_concentration:v2\"], \"passed\": false, \"schema_version\": \"signal-capability-audit-v1\"}"
+  },
+  "counts": {
+    "freeze": 1,
+    "auditor": 12,
+    "fixture_internal_batches": 12,
+    "native_functions": 12,
+    "forbidden_operations": 0
+  },
+  "all_actual_source_read_bytes_unchanged": true,
+  "source_write_tripwire": [],
+  "source_read_scope_denials": [],
+  "code_unchanged": true,
+  "history_manifest_created": false,
+  "wall_seconds": 0.5271190421190113
+}

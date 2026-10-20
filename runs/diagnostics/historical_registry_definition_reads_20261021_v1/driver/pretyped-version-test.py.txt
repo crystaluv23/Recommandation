@@ -1,0 +1,224 @@
+"""Historical definition reads preserve lineage without certifying fresh execution."""
+from contextlib import contextmanager
+from copy import deepcopy
+from dataclasses import replace
+from datetime import datetime
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import tempfile
+from unittest import TestCase
+from unittest.mock import patch
+
+from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research import evolution_control as control
+from stock_opportunity_agent.research.evolution_core import PlanEvaluationConfig, RoundMetaEntry, GroundTruth
+from stock_opportunity_agent.research.plan_evolution import EvolutionWorkspace
+from stock_opportunity_agent.signal_library import SignalRegistry, SignalLearningEvent, SignalValue, SignalCoverage
+from tests.evolution_runtime_test_support import make_contract, write_json as _write_json, SHA_A, SHA_B
+from tests.scheme_evolution_test_support import make_record
+
+REPO=Path(__file__).resolve().parents[1]
+
+
+def write_json(path,value):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    _write_json(path,value)
+
+
+def file_hashes(root):
+    return {str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest()for p in root.rglob('*')if p.is_file()}
+
+
+@contextmanager
+def observe_audits():
+    original=SignalRegistry.audit_capabilities
+    observed=[]
+    def audit(self,**kwargs):
+        observed.append(str(self.root))
+        return original(self,**kwargs)
+    with patch.object(SignalRegistry,'audit_capabilities',audit):yield observed
+
+
+class HistoricalRegistryDefinitionReadsTests(TestCase):
+    def setUp(self):
+        self.temporary=tempfile.TemporaryDirectory();self.addCleanup(self.temporary.cleanup)
+        self.root=Path(self.temporary.name).resolve()
+        catalog=json.loads((REPO/'configs/signals_v1.json').read_text())
+        catalog['signals']=[entry for entry in catalog['signals']if entry['spec']['signal_id']in
+            {'cash_reserves','revenue_growth_yoy','guidance_acceleration'}]
+        self.catalog=self.root/'catalog.json';write_json(self.catalog,catalog)
+
+    def source(self, *, history=True):
+        source=self.root/'source'
+        registry=SignalRegistry(source/'signals');registry.install_catalog(self.catalog)
+        snapshot=registry.freeze()
+        contract=replace(make_contract(),initial_signal_registry_version=snapshot.version,
+            initial_signal_registry_hash=snapshot.registry_hash)
+        contract.freeze(source/'run_contract.json')
+        workspace=EvolutionWorkspace(source)
+        workspace.start_or_resume_cycle(run_contract_hash=contract.contract_hash,target_plan_rounds=1,
+            cycle_mode='fast_then_slow',initial_signal_registry_version=snapshot.version,
+            initial_signal_registry_hash=snapshot.registry_hash,observed_signal_registry_version=snapshot.version,
+            observed_signal_registry_hash=snapshot.registry_hash)
+        record=make_record('source_plan',1.0,(1.0,))
+        workspace.commit_round(round_id=1,records=(record,),meta_entry=RoundMetaEntry(round_id=1,evidence_refs=(record.plan_id,)),
+            signal_registry_version=snapshot.version,signal_registry_hash=snapshot.registry_hash,
+            run_contract_hash=contract.contract_hash)
+        workspace.start_or_resume_cycle(run_contract_hash=contract.contract_hash,target_plan_rounds=1,
+            cycle_mode='fast_then_slow',initial_signal_registry_version=snapshot.version,
+            initial_signal_registry_hash=snapshot.registry_hash,observed_signal_registry_version=snapshot.version,
+            observed_signal_registry_hash=snapshot.registry_hash)
+        if history:
+            write_json(source/'cycle_state.json',{'last_completed_cycle':1,'active_cycle':None,
+                'current_signal_registry_version':snapshot.version,'current_signal_registry_hash':snapshot.registry_hash})
+            for name in ('slow_input.json','slow_memory.json','slow_experiments.json','slow_loop_validation.json','slow_loop_result.json'):
+                write_json(source/'experiments/cycles/cycle-0001'/name,{'artifact':name})
+        return source,registry,snapshot,contract
+
+    @staticmethod
+    def make_legacy_fixture(registry):
+        path=registry.root/'financial/cash_reserves/versions/v1/tests.json'
+        payload=json.loads(path.read_text())
+        for doc in payload['tests'][0]['documents']:
+            body=json.loads(doc['content']);body.pop('cik',None)
+            doc['content']=json.dumps(body,sort_keys=True,separators=(',',':'))
+            doc.pop('metadata',None)
+        write_json(path,payload)
+
+    @staticmethod
+    def event(round_id):
+        return SignalLearningEvent(event_id=f'event-{round_id}',observation_key=f'obs-{round_id}',
+            signal_ref='revenue_growth_yoy:v1',round_id=round_id,plan_id=f'plan-{round_id}',
+            case_id=f'case-{round_id}',company_id='synthetic',prediction_time='2025-01-10T00:00:00+00:00',
+            selection={'signal_ref':'revenue_growth_yoy:v1','reason_code':'assess_applicability',
+                'selection_reason':'Exercise historical identity.','applicability_hypothesis':'Unknown.',
+                'expected_role':'coverage','context_tags':[]},result_value=SignalValue.POSITIVE,
+            coverage=SignalCoverage.SUFFICIENT,document_fingerprint=('synthetic-doc',),
+            is_surge=True,realized_max_multiple=2.5,prediction_correct=True)
+
+    def export(self,source,contract,target=None):
+        target=target or self.root/'target'
+        digest=control.build_slow_history_manifest(workspace=target,source_workspace=source,
+            dataset_manifest_hash=contract.dataset_manifest_hash)
+        envelope=json.loads((target/'slow_history/manifest.json').read_text())
+        self.assertEqual(envelope['manifest_hash'],digest)
+        return target,envelope
+
+    def test_history_build_apply_replay_preserves_files_and_exact_committed_events(self):
+        source,registry,snapshot,contract=self.source()
+        committed,future=self.event(1),self.event(2)
+        registry.record_learning_events((committed,future));self.make_legacy_fixture(registry)
+        before=file_hashes(source)
+        with observe_audits()as observed:
+            target,envelope=self.export(source,contract)
+            self.assertEqual(envelope['manifest']['learning_events'],[committed.to_dict()])
+            control.apply_slow_history_manifest(workspace=target,manifest=envelope['manifest'])
+            first=file_hashes(target)
+            control.apply_slow_history_manifest(workspace=target,manifest=envelope['manifest'])
+            self.assertEqual(first,file_hashes(target));self.assertEqual(observed,[])
+        self.assertEqual(before,file_hashes(source))
+        restored=SignalRegistry(target/'signals')
+        self.assertEqual([e.to_dict()for e in restored.load_learning_events(committed.signal_ref)],[committed.to_dict()])
+        for row in envelope['manifest']['registry_definition_files']:
+            self.assertEqual((target/'signals'/row['path']).read_bytes(),(source/'signals'/row['path']).read_bytes())
+        new_contract=replace(contract,slow_history_manifest_hash=envelope['manifest_hash'])
+        self.assertEqual(control.validate_slow_history_manifest(workspace=target,contract=new_contract),envelope['manifest'])
+
+    def test_fresh_freeze_still_rejects_unchanged_legacy_fixture(self):
+        _,registry,_,_=self.source();self.make_legacy_fixture(registry)
+        with self.assertRaisesRegex(ValidationError,'capability audit failed'):registry.freeze()
+
+    def test_definition_reader_does_not_read_missing_knowledge_profile(self):
+        _,registry,snapshot,_=self.source();self.make_legacy_fixture(registry)
+        write_json(registry.root.parent/'state.json',{'last_completed_round':2})
+        with observe_audits()as observed:
+            actual=control._historical_registry_snapshot(registry)
+        self.assertEqual(actual.registry_hash,snapshot.registry_hash);self.assertEqual(observed,[])
+        self.assertEqual(dict(actual.learned_profiles),{})
+        with self.assertRaisesRegex(ValidationError,'knowledge source'):registry.freeze()
+
+    def test_identity_order_empty_and_strict_versions(self):
+        _,registry,snapshot,_=self.source()
+        actual=control._historical_registry_snapshot(registry)
+        self.assertEqual(tuple(s.ref for s in actual.specs),tuple(s.ref for s in snapshot.specs))
+        for invalid in (True,1.0,0):
+            with self.subTest(registry_version=invalid):
+                write_json(registry.root/'registry.json',{'version':invalid})
+                with self.assertRaises(ValidationError):control._historical_registry_snapshot(registry)
+        write_json(registry.root/'registry.json',{'version':1})
+        path=registry.root/'financial/cash_reserves/manifest.json';original=json.loads(path.read_text())
+        for invalid in (True,1.0,0):
+            with self.subTest(stable_version=invalid):
+                write_json(path,{**original,'stable_version':invalid})
+                with self.assertRaises(ValidationError):control._historical_registry_snapshot(registry)
+        write_json(path,original)
+        empty=SignalRegistry(self.root/'empty')
+        with self.assertRaises(ValidationError):control._historical_registry_snapshot(empty)
+
+    def test_definition_skill_version_and_duplicate_path_drift_reject(self):
+        source,registry,_,contract=self.source()
+        target,envelope=self.export(source,contract)
+        specpath=registry.root/'financial/cash_reserves/versions/v1/spec.json'
+        original=specpath.read_bytes();payload=json.loads(original)
+        payload['definition']['description']+=' Changed source definition.';write_json(specpath,payload)
+        with self.assertRaises(ValidationError):self.export(source,contract,self.root/'changed-export')
+        specpath.write_bytes(original)
+        # Existing target identity, including skills, cannot be relabeled by history.
+        control.apply_slow_history_manifest(workspace=target,manifest=envelope['manifest'])
+        skill=next((target/'signals').glob('*/guidance_acceleration/versions/v1/skill.md'))
+        skill.write_text(skill.read_text()+'\nChanged skill.\n')
+        with self.assertRaises(ValidationError):control.apply_slow_history_manifest(workspace=target,manifest=envelope['manifest'])
+        write_json(registry.root/'registry.json',{'version':2})
+        with self.assertRaises(ValidationError):self.export(source,contract,self.root/'version-export')
+        write_json(registry.root/'registry.json',{'version':1})
+        duplicate=registry.root/'other/cash_reserves';shutil.copytree(registry.root/'financial/cash_reserves',duplicate)
+        with self.assertRaises(ValidationError):control._historical_registry_snapshot(registry)
+
+    def test_manifest_and_spec_path_identity_reject(self):
+        _,registry,_,_=self.source()
+        manifest=registry.root/'financial/cash_reserves/manifest.json'
+        spec=registry.root/'financial/cash_reserves/versions/v1/spec.json'
+        for path,field,value in ((manifest,'signal_id','other'),(manifest,'category','other'),
+                (spec,'signal_id','other'),(spec,'category','other'),(spec,'version',True)):
+            with self.subTest(field=field,path=path.name):
+                original=path.read_bytes();payload=json.loads(original);payload[field]=value
+                write_json(path,payload)
+                try:
+                    with self.assertRaises(ValidationError):control._historical_registry_snapshot(registry)
+                finally:path.write_bytes(original)
+
+    def test_manifest_validation_preserves_original_file_checks(self):
+        source,_,_,contract=self.source()
+        target,envelope=self.export(source,contract)
+        target_contract=replace(contract,slow_history_manifest_hash=envelope['manifest_hash'])
+        artifact=source/'experiments/cycles/cycle-0001/slow_memory.json'
+        before=artifact.read_bytes();write_json(artifact,{'artifact':'changed'})
+        try:
+            with self.assertRaisesRegex(ValidationError,'artifact changed'):
+                control.validate_slow_history_manifest(workspace=target,contract=target_contract)
+        finally:artifact.write_bytes(before)
+
+    def test_rejected_bootstrap_uses_historical_definition_without_audit(self):
+        source,registry,snapshot,contract=self.source(history=False)
+        self.make_legacy_fixture(registry)
+        write_json(source/'state.json',{'last_completed_round':0})
+        case=control.EvolutionCase(case_id='sample',company_id='synthetic',prediction_time=datetime.fromisoformat('2025-01-10T00:00:00+00:00'),
+            basic_info={},ground_truth=GroundTruth(2.5))
+        write_json(source/'experiments/round-0001/rejected.json',{'schema_version':'plan-round-rejected-v1','round_id':1,
+            'last_completed_round':0,'attempts':[{'trajectories':[{'case_id':'sample','stop_reason':'no_signal_match',
+                'termination_trigger':'no_signal_match','final_state':{'decision':'continue','next_information_needs':['Determine source-backed order durability.']}}]}]})
+        dataset=control.ApprovedDevelopmentDataset(discovery=(),anchor=(),evolution_validation=(case,),locked_test_hash=SHA_B,approved_manifest_hash=SHA_A)
+        with observe_audits()as observed:
+            control.build_slow_bootstrap_manifest(workspace=self.root/'bootstrap',source_workspaces=(source,),
+                dataset=dataset,signal_snapshot=snapshot,evaluation_contract=PlanEvaluationConfig().to_dict())
+            self.assertEqual(observed,[])
+
+    def test_committed_bootstrap_uses_historical_definition_without_audit(self):
+        source,registry,snapshot,_=self.source(history=False);self.make_legacy_fixture(registry)
+        dataset=control.ApprovedDevelopmentDataset(discovery=(),anchor=(),evolution_validation=(),locked_test_hash=SHA_B,approved_manifest_hash=SHA_A)
+        with observe_audits()as observed:
+            control.build_slow_bootstrap_manifest(workspace=self.root/'bootstrap',source_workspaces=(source,),
+                dataset=dataset,signal_snapshot=snapshot,evaluation_contract=PlanEvaluationConfig().to_dict())
+            self.assertEqual(observed,[])

@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-probe.py"
+  ],
+  "head": "95386240b97659ae751f23620c5de620f50f0a6c",
+  "pid": 4331,
+  "python": "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "scope": "One actual source builder/freeze; S1 committed retrospective outcomes authorized, no blind role input."
+}

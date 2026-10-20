@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/probe.py", line 23, in <module>
+    assert BEFORE == "d96610db1aa3a4bb199c724eee4ed69b69199f765e506036d07661537f24de34"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
