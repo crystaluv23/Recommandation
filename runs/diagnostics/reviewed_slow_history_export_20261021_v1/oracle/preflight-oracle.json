@@ -1,0 +1,201 @@
+{
+  "schema_version": "source-only-s1-s2-preflight-oracle-v1",
+  "status": "source_only_preflight_no_successful_export_or_consumer_claim",
+  "scope": "Committed v182 round1/cycle1 and its contract-bound local imported Slow history; fixed original failure denominator preserved. No LockedTest, global LabelStore or uncommitted round2.",
+  "independent_basis": "Runtime execution states, complete persisted needs, provider gaps, pointers, source/hash relationships and original committed Plan records. Historical authored reflections remain hypotheses or claims to audit, not source truth.",
+  "historical_denominators": {
+    "feedback_units": 3518,
+    "kind_counts": {
+      "magnitude_feedback": 8,
+      "prediction_comparison": 69,
+      "candidate_result": 59,
+      "signal_target_observation": 126,
+      "signal_usage": 3229,
+      "search_result": 27
+    },
+    "feedback_hash": "307f729fd8c2fcf6a9fc824f89dcedcf20bec4257da50491be4a75e08952f0c2",
+    "sorted_ref_set_hash": "14a62497bbe2c767d491f84e368d21220e203b0f29e872aa6d2940d67c99b7cd",
+    "processed_ref_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "pending_ref_set_hash": "14a62497bbe2c767d491f84e368d21220e203b0f29e872aa6d2940d67c99b7cd",
+    "source_manifest_count": 3518,
+    "note": "This is the historical committed cycle1 universe. The not-yet-executed new export/input may add the newly imported local cycle units; its own denominator must be derived/frozen from actual export, never guessed as3518 or reduced to3 selected items."
+  },
+  "observed_facts_and_allowed_attribution": [
+    {
+      "family": "Slow reflection technical failure",
+      "source": "experiments/cycles/cycle-0001/slow_memory.json",
+      "fact": "status failed, processed0/pending3518, no episodes/lessons; failure_ref names exhausted selected-top-level-feedback coverage correction.",
+      "correct_inference": "The reflection package was not accepted; preserve all pending. Diagnose author/coverage/correction/consumer alignment as engineering.",
+      "forbidden_inference": "No new lesson, no successful processing, no empirical rejection of self-evolution or a market factor.",
+      "access_limit": "Current imported summary is 825268 UTF-8 compact bytes and exceeds existing64000-byte complete-unit source read. Its failure reason is not proved visible to a fresh role."
+    },
+    {
+      "family": "Signal technical failures",
+      "source": "Two checkpoint-authorized Plan records; source-evidence.json precise JSON locators",
+      "fact": "6 results are execution.validation_failed with signal_output_validation_exhausted: financing:v5 once, guidance:v3 four times, order_confirmation:v2 once. Four are citation-edge errors and2 require version-owned measured-object phrases.",
+      "correct_inference": "Engineering/execution or exact-version output/citation-contract issues. Investigate native request/original answer/correction before proposing a measuring-definition change.",
+      "forbidden_inference": "Do not reclassify as legitimate negative, absent events, proven bad factor, or safe evidence-free research failure. Do not claim prompt/validator root cause from terminal error alone."
+    },
+    {
+      "family": "Provider information gap",
+      "source": "Four BasicInfo data_gap literals in two Plans/two unique cases",
+      "fact": "alpha_vantage quota_deferred for management_commentary/recent_management_commentary.",
+      "correct_inference": "Explicit acquisition/dependency gap; preserve need and route through existing capability backlog, normally repair_dependency if included by the actual routing entry.",
+      "forbidden_inference": "No transcript/commentary does not exist claim; no automatic new financial Signal and no attribution to issuer fundamentals."
+    },
+    {
+      "family": "Measurement information unavailable",
+      "source": "15 domain_unavailable Signal results across the two48-trajectory Plan records",
+      "fact": "Domain-unavailable is distinct from validation_failed; selected summaries cite absent or incomplete visible supporting material.",
+      "correct_inference": "Preserve unavailable and specific checked-scope limitation. Material sufficiency requires actual native documents, not terminal status alone.",
+      "forbidden_inference": "Do not turn unavailable into negative or assume it proves a product bug/source absence."
+    },
+    {
+      "family": "New capability need candidate",
+      "source": "Final next_information_needs includes backlog/book-to-bill and analyst-consensus comparisons;5 precise locators retained",
+      "fact": "These are unresolved requested measurements/comparisons in committed trajectories.",
+      "correct_inference": "Keep open; check exact stable-card scope and retrieval feasibility before new_measurement/update_existing/deferred_measurement. A reusable measure outside bounded portfolio remains deferred_measurement.",
+      "forbidden_inference": "Unmatched does not prove no existing capability; no forced novelty, hypothesis, newSignal, untestable, already-covered or successfulMining claim."
+    },
+    {
+      "family": "Fast magnitude policy feedback",
+      "source": "meta/round-0001.json plan_reflections magnitude_diagnostics; source-only input event magnitude:plan_r0001_c01",
+      "fact": "Plan c01 has24 scored cases,14 surge calls all predicted2-3x,7 underestimates and0 technical exclusions at case-completion level.",
+      "correct_inference": "A diagnostic output-distribution/calibration observation, with source-defined counts; process/policy hypothesis may go through original meta action to next Fast proposer.",
+      "forbidden_inference": "Does not show which fact caused misses, justify automatic higher predictions, require guaranteed/quantified price paths, or establish magnitudeFactor benefit."
+    },
+    {
+      "family": "Publication and declared reuse",
+      "source": "Local committed cycle result and2 knowledge observation derivatives",
+      "fact": "Updated order_confirmation_disclosed:v3 published; new promotedSignal count0, signal goal unmet, magnitude_contribution.assessed false;24+24 knowledge rows bind each committed record hash and declared experience refs.",
+      "correct_inference": "Preserve exact-version update and source lineage. Declared exposure/adoption remains distinct from actual later action or benefit.",
+      "forbidden_inference": "No newSignal discovery, successorFast use, processed3518, independent gain or successful memory consumption inferred from publication/knowledge files."
+    }
+  ],
+  "proposed_existing_unit_positive_controls": [
+    {
+      "source": "Local slow_loop_result.json /result summary via existing _imported_artifact_units",
+      "expected_fields": {
+        "promoted": [
+          "order_confirmation_disclosed:v3"
+        ],
+        "new_promoted_signal_count": 0,
+        "updated_signal_count": 1,
+        "signal_goal_status": "unmet",
+        "magnitude_contribution": {
+          "assessed": false,
+          "fast_consumption_assessed": false,
+          "reason": "target mining/effectiveness may be assessed, but the required Fast absent/present consumption experiment and Binary-F1 protection have not run",
+          "target_candidate_refs": [],
+          "target_mining_assessed": true,
+          "target_supported_candidate_refs": [],
+          "target_track_statuses": {
+            "magnitude_ge3_v1": "completed"
+          }
+        }
+      },
+      "projection_bytes_compact": 1765,
+      "required_check": "Actual export must create the native namespaced summary with exact retained values; author distinguishes update from new capability and unassessed benefit."
+    },
+    {
+      "source": "Existing slow_input feedback row magnitude:plan_r0001_c01, projected whole via native imported slow_input feedback unit",
+      "expected_meaning": "Diagnostic lower-band concentration/underestimates with unknown causes; no new promotion gate or fabricated mechanism.",
+      "required_check": "Bind actual new top-level opaque ref after export; do not force old nested ref as a directly available role source."
+    },
+    {
+      "source": "Local slow_experiments.json /attempts/0 via native attempt unit",
+      "expected_fields": {
+        "action_summary": "defer",
+        "candidate_hash": null,
+        "candidate_ref": null,
+        "evidence_or_evaluation_refs": [],
+        "failure_ref": null,
+        "lesson_refs": [],
+        "need_refs": [],
+        "outcome": "defer",
+        "parent_signal_ref": "guidance_acceleration:v3",
+        "proposal_hash": "1e274a80600af14f1e4c3de85ca849e312a92decf41420f07a9e4542f2b8c936",
+        "request_refs": [],
+        "stage": "Update",
+        "usage_ref": null,
+        "work_id": "cycle-0001:Update:001"
+      },
+      "required_check": "Preserve defer/parent/version and unknown evidence; never call this a successful update or factor invalidity."
+    }
+  ],
+  "mandatory_counterexamples": [
+    "Failed memory with nonempty processed must fail; included3 or cycle1 completed cannot turn pending3518 into consumed.",
+    "Any export that drops failed Slow artifacts or imported Fast meta/backlog because no lesson was accepted fails S1 preservation.",
+    "Each complete source unit has its own top-level feedback_ref; nested unique locators may map only through existing owner canonicalization, not arbitrary aliases.",
+    "Raw failure summary above read budget stays explicitly oversized/pending; selecting a brief/field excerpt without owner-issued complete-unit support cannot establish a read.",
+    "A provider quota_deferred statement routes acquisition dependency, not absent evidence as economic negative or automatically a newSignal.",
+    "Q2-guidance literal alone cannot prove a Q3 question answered; later trajectory evidence must be checked before a whole-case coverage verdict.",
+    "New measurement need remains unresolved if no evidence/capability available; do not group unrelated needs under one existingSignal or invent research inability.",
+    "Same-case/cross-Plan and recursively imported duplicate observations do not become independent samples merely because feedback refs differ.",
+    "Read-only histories, legacy unreviewed reflections and effect-unverified selected-use profiles never become verified truth or independent causal benefit.",
+    "Hidden-role feedback cannot enter E1 or blind Fast/Predictor merely because it was processed by Slow; keep source visible_to rules.",
+    "Uncommitted round2/staged candidates, current mutable ledgers beyond committed/import authority and LockedTest cannot enter source closure."
+  ],
+  "production_chain_to_verify_later": [
+    {
+      "entry": "src/stock_opportunity_agent/research/evolution_control.py:1611 build_slow_history_manifest",
+      "purpose": "Committed pointer/contract/Registry check, five required cycle artifacts, immutable Fast-context and transitive imported references; target-only writes after existing authorization."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/evolution_control.py:1802 validate_slow_history_manifest; :1889 apply_slow_history_manifest",
+      "purpose": "Verify frozen export and copy immutable source artifacts into a new workspace; source pointers never advanced."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/signal_evolution.py:_committed_slow_feedback -> _imported_slow_feedback -> _imported_artifact_units (exact function names; inspected source binding in read-bindings.json)",
+      "purpose": "Produce named complete feedback units with source hash/JSON locator and role visibility; freeze actual new universe only after this real producer runs."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/signal_evolution.py:3947 _prepare_slow_input; :4418 _prepare_slow_memory",
+      "purpose": "Freeze source manifest/rows/cutoff; subtract only truly processed prior units, select complete bounded entries and preserve pending; no oldcycle reentry."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/evolution_signal_roles.py:1590 reflect_feedback; signal_evolution.py:654 validate_slow_memory; plan_evolution.py:1009 stage_slow_memory",
+      "purpose": "Fresh independent role native payload/rawanswer/correction/accepted-or-failed memory plus coverage; successful semantics and persistence, not source/hash alone."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/signal_evolution.py:8831 _slow_method_view; :8488 _mining_context; :6395 MiningController construction",
+      "purpose": "Role-scoped accepted memory/source closure actually enters H1/controller meta briefs, disclosures and slow_method_memory."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/mining_controller.py:1556 _validate_need_dispositions; :1728 _record_need_dispositions; evolution_signal_roles.py:signal-mining-hypothesis-v7 contract",
+      "purpose": "Use actual selected backend contract. Current Controller allows6 dispositions (no already_covered); old H1 role allows7. Do not invent a unified schema or demand legacy enum on Controller."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/signal_evolution.py:5929 _mining_update_refs -> :5344 _run_signal_update -> :5726 Update payload slow_method_memory",
+      "purpose": "Completed update_existing disposition hands exactSignal target into Update, not just a stored adoption flag."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/signal_evolution.py:7886 H3 and :8325 E2 payload slow_method_memory",
+      "purpose": "Accepted method episodes reach semantic evaluation consumers under role-specific source visibility."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/signal_evolution.py:9063 _reflection_action_inventory; plan_evolution.py:2281 proposer.propose(meta_info=self.meta_memory.entries)",
+      "purpose": "Meta Fast-policy action stays on original Fast meta-memory path. A Slow fast_plan_action disposition acknowledges that path; it does not itself mutate the next Plan or prove subsequent use."
+    }
+  ],
+  "preflight_success_and_stop": {
+    "source_preservation": "After actual export, all authorized local fivecycle artifacts, transitive source/import closure and Fast meta/backlog survive exact bytes/hash; original1/1 pointers remain. No execution/consumption claim.",
+    "new_denominator": "Derive actual native imported feedback refs and processed/pending partition; preserve original3518 pending through provenance even if namespaced/rebased. Current preflight does not guess the new total.",
+    "fresh_role_before_condition": "Freeze actual producer-shaped complete selected units plus independent source oracle and existing budget/contract before dispatch. Never substitute hand-authored feed units.",
+    "stop": "If required semantic failure evidence has no owner-issued addressable complete unit under existing budget, retain gap and diagnose producer/read granularity before spending a role; no widerbudget/new schema by this oracle.",
+    "closure_limit": "This preflight closes no S1/S2/live ingestion/consumption. Export/copy later may close preservation only. Fresh memory→correct routing→actual target consumer remains separately required."
+  },
+  "operations": {
+    "product_imports": 0,
+    "Slow_execution": 0,
+    "models": 0,
+    "GET": 0,
+    "global_LabelStore": 0,
+    "LockedTest": 0,
+    "round2": 0,
+    "product_changes": 0,
+    "old_run_changes": 0
+  },
+  "context_limit": "This oracle did not execute or inspect a successful new export. Root separately reported originalv1 terminal wrapper-sidecar failure and is preparing a distinctv2; that does not mutate the approved v182 source or establish ingestion.",
+  "readability_detail": "See readability-preflight.json: original987313 bytes; imported summary compact825268 bytes; declarative production-shaped complete-entry read847019 bytes versus64000. Existing local method delta can expose failure status/error in541 bytes, but does not automatically apply to first imported target cycle."
+}

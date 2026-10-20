@@ -60,9 +60,17 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
 旧history exporter因9金融legacy fixture issuer失败拒绝（12原生fixture计算，93source读字节同、0写）。
 现5历史身份读取改纯定义重建，不加载profile/不重跑旧fixture，fresh execution的3处freeze及现准入保持。
 独立又发现pointer bool/float被int冒充版本，已贯穿source/apply-before-write/history及bootstrap validator严格正整数；
-65关联/10独立控制过，旧反例/首probe副本缺checkpoint/harness写receipt错误均留。仅局部修复，尚无修后真实export或新Slow消费。
+65关联/10独立控制过，旧反例/首probe副本缺checkpoint/harness写receipt错误均留。
+修后真实v1因runner漏列constructor运营日志读取终态失败（181源文件保真），不重入；独立核仅maxsequence初始化，非研究输入。
+独立v2仅增加该exact sidecar的hash/许可，完整native临时restore控制拒round2诱饵；唯一实际build→validate→apply1.810s通过。
+manifest ba60fd7c/v12原hash与18refs、137定义/914事件/192knowledge记录/5本地cycle/7candidate文件，210源读全保真/0越界或禁止调用。
+228完成文件唯一只读再开全等/0新native调用；仅历史输入物化，非新Slow提交/模型消费/OS崩溃恢复。
+独立S1/S2 source-only预期核原3518分母processed0/pending3518，6Signal技术失败/4quota缺口；新输入分母须由真实producer再推导。
+原生只读probe确认3531个imported units（非完整S1总分母），失败memory unit847019bytes被64KB reader以whole_entry_budget拒；小摘要2312bytes正控可读。
+目录无独立失败原因；541bytes紧凑local view不自动进入首个import-only周期。228封存文件不变，无新模型消费。
 新native财务/来源/input-only/F7/S5等已完成阶段保持完成，不因验收失败重跑；不调整冻结oracle或发布旧版本。
-下一冻结新代码后唯一actual history export/validate/materialization；合格后再准备有限S1/S2 exact-inbox与实际后继任务消费。
+下一按spec复用既有compact method view修imported反馈可读粒度，保完整原件、精确source/role及pending；不加预算或手摘反馈。
+合格后再冻结有限S1/S2 exact-inbox、独立预期及实际后继任务消费；不改已完成物化阶段。
 LLM阅读接口方案待设计决策；两财务期间定义需具体政策/新版本，不能由当前计算结果倒推答案。
 完整反馈消费、新方向/magnitude Mining→忠实实现→准入发布→后继精确使用、完整恢复及双环均未验证。
 旧v182权威Fast/Slow=1/1完成不恢复；memory失败processed0/pending3518不改成功。不启动完整后继，整体MVP保持open。

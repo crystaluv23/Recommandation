@@ -1,0 +1,1 @@
+Identify completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing actions. Separate completed actions from proposals. Explain whether the point-in-time effect supports runway/tradability or increases dilution/distress, with literal spans.

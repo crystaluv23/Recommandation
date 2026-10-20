@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：修后真实history v1通过旧fixture读取门，但runner漏列Workspace初始化日志而终态失败，181源读保真；独立因果核只maxsequence副作用，旧stage不重入。v2仅hash绑定并允许exact运营sidecar，完整native临时restore拒round2诱饵/5邻近路径/源写；原生build→validate→apply唯一执行1.810s成功，manifest ba60fd7c保v12原hash/18refs、137定义/914事件/192knowledge记录/5本地cycle/7candidate文件，210源文件保真/0越界或禁止调用。228完成文件只读再开全同/0新native调用，非OS恢复或新Slow提交。随后原生imported producer/reader实际3531units（非全S1分母），失败memory unit847019bytes以whole_entry_budget拒，小摘要2312bytes正控可读；紧凑local method view不自动覆盖首import周期，下一按spec复用既有projection修粒度后才派fresh反思。原3518 pending/0processed保持，native apply仅重建既有事件profiles派生，不算新研究学习；S1/S2消费与MVP仍open。
+
 - 2026-10-21：真实v182 history前置通过knowledge后被9金融legacy fixture issuer门拒（12审计函数/93source读保真/0写），首minimalcopy缺checkpoint不归真实源；两原正控与memory-onlyCIK反事实4执行独立核过。spec-first私有纯定义reader替5历史freeze，不经cards/profile，source/event/hash/pointer及fresh3freeze保持；独立原生反例又证旧/首candidate把True/1.9当Registry版本1，现贯穿source、apply写前、history与bootstrap producer/validator严格int。最终65关联/10独立控制过，原红/首9绿漏门/receipt写入harness错全留；旧发布fixture与指针不改、0新LLM/GET/LabelStore。仅局部历史读取修复，修后真实导出与S1/S2消费待验，不关完整MVP。
 
 - 2026-10-21：固定词频饱和选文使实际Q1 rank46→4/完整literal可见，但11文档及独立比较期/币种/冲突反例证伪语义保留，停止排序策略、未装callback；有界阅读具体方案待用户决策。独立源oracle预冻7唯一/2期间unknown后，6b7205ec当前v12唯一native财务9批次20.261s：6严格通过/1prior字面版本失败/2unknown，原completed_acceptance_failed及分母9保留；7数值/分类/单位/当前期间一致，失败为oracle漏列2024原申报同事实prior，非改算通过。4389绑定/9实际选文顺序-fp/21证据/9消费者投影独立核过，唯一restore24files全等/0新batch。首prepare前置拒及两audit可空instant字段误判保留；11私有安全控过，0模型/GET/labels/append/源码行为变更。仅真实计算/保存恢复局部证据，不关F5/F6/Slow/MVP，下一核既有Slow合法反馈与Mining正控入口。

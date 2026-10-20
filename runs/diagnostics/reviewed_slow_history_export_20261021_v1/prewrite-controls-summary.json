@@ -1,0 +1,31 @@
+{
+  "actual_stage_exists": false,
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py": "9fc0977424ca744895be84415a984275fadeacd1bc11c67e94f292e423bdfa85",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/original-297702-export_history.py.txt": "297702302cd8f4150d20866234353c1bdf7f66df12e7ad3078d3c06e262157c6",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/prewrite-controls.log": "f062d3cc08b2a2cae67b693eed0c62ea5652ecf3f15e0d88141ad4a8e626826c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/prewrite-controls.py": "b8efe33888c79e4a5150206f707b5feb14149142c3aaf0610111362594eb69d7",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/prewrite-guard-final.log": "57630ea08f6c4bd3b7045383130d0374a74111a7d7c9e1811f7f17ced7c99d09",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/source-metadata-shape-check.json": "7f2f4b7e94b1bebb29be543006746dd1aa927d428627e4b93d8433f6acd20e23"
+  },
+  "controls": {
+    "failed_control_only_after_fixture_path_fix": {
+      "passed": 1
+    },
+    "first_run": {
+      "cause": "temporary /var path was not resolved to /private/var; stage guard correctly rejected it",
+      "harness_error": 1,
+      "passed": 3
+    },
+    "total_distinct_methods_passed": 4
+  },
+  "head": "6a5cac5f9e0f1b5e4ebd7382bd1fd26d566927e0",
+  "native_build_validate_apply_calls": 0,
+  "script_changes": [
+    "Four fixed source authority SHA checks before stage creation",
+    "Existing checkpoint run_contract_hash/meta_ref and meta file shape checked before creation",
+    "CLI expected-script-sha replaces script git-show self requirement; revision/control/product diff checks preserved"
+  ],
+  "source_or_global_writes": 0,
+  "status": "ready_for_independent_preflight_not_executed"
+}

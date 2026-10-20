@@ -1,0 +1,6 @@
+{
+  "carrier_contract_hash": "080909a662d8b6ff3a1c8577d2a81a66b1ca6ea60164395e3c006b04718c51b0",
+  "carrier_scope": "In-memory validator argument only; not frozen, executed or a new budget authority.",
+  "manifest_hash": "ba60fd7c7aa4472900ef26c8068deee66e9d4e51c8a699455432f7eed626bc55",
+  "source_contract_hash": "12a50702a856ddc3dd24b52ed2d044fae573a9a5da85007ef2f0d87c7d4fcf71"
+}

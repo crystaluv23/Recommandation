@@ -1,0 +1,7 @@
+{
+  "status": "auditor_only_assertion_before_review_write",
+  "error": "First read-only audit incorrectly assumed all candidate_evaluations values were Mapping and candidate_effectiveness was empty. Actual candidate_evaluations value is a string and is excluded by native isinstance gate; candidate_effectiveness contains one Mapping pending_use record.",
+  "correction": "Count only Mapping-valued fixture/effect units, exactly as inspected producer does. Fixed native denominator remains3531.",
+  "probe_or_stage_reexecuted": false,
+  "source_mutated": false
+}

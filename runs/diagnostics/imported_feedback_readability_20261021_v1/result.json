@@ -1,0 +1,74 @@
+{
+  "all_228_completed_files_unchanged": true,
+  "finding": "complete_failed_memory_unit_unreadable_under_existing_budget",
+  "forbidden_calls": 0,
+  "kind_counts": {
+    "candidate_result": 70,
+    "magnitude_feedback": 8,
+    "prediction_comparison": 69,
+    "search_result": 29,
+    "signal_target_observation": 126,
+    "signal_usage": 3229
+  },
+  "manifest_rows": 3531,
+  "native_imported_rows": 3531,
+  "observed_stage_reads": [
+    "slow_history/manifest.json",
+    "slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_experiments.json",
+    "slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_input.json",
+    "slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_loop_result.json",
+    "slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_loop_validation.json",
+    "slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_memory.json"
+  ],
+  "positive_included_count": 1,
+  "positive_ref": "slow-history:source-12a50702a856ddc3:1:slow_loop_result:summary",
+  "positive_view": {
+    "available_count": 1,
+    "budget_bytes": 64000,
+    "bytes": 2312,
+    "deferred": [],
+    "deferred_count": 0,
+    "included_count": 1,
+    "included_hashes": {
+      "slow-history:source-12a50702a856ddc3:1:slow_loop_result:summary": "bb603b9fa09ff35cc11a28e26d8cc079ede6120a078a9349d504e22a9ba04b65"
+    },
+    "included_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_loop_result:summary"
+    ],
+    "max_items": 3,
+    "requested_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_loop_result:summary"
+    ],
+    "role_scope": "reflection",
+    "schema_version": "slow-source-view-v1"
+  },
+  "scope": "Native imported producer/catalog/reader only; not full Engine/S1 input or S2/model consumption.",
+  "source_pending": 3518,
+  "source_processed": 0,
+  "source_status": "failed",
+  "target_artifact_hash": "9ffa34ee54b5067b68ab75977b48306fb6efb654d721fa0da023614d96096fbd",
+  "target_complete_entry_bytes": 847019,
+  "target_included_count": 0,
+  "target_ref": "slow-history:source-12a50702a856ddc3:1:slow_memory:summary",
+  "target_view": {
+    "available_count": 1,
+    "budget_bytes": 64000,
+    "bytes": 0,
+    "deferred": [
+      {
+        "reason": "whole_entry_budget",
+        "ref": "slow-history:source-12a50702a856ddc3:1:slow_memory:summary"
+      }
+    ],
+    "deferred_count": 1,
+    "included_count": 0,
+    "included_hashes": {},
+    "included_refs": [],
+    "max_items": 3,
+    "requested_refs": [
+      "slow-history:source-12a50702a856ddc3:1:slow_memory:summary"
+    ],
+    "role_scope": "reflection",
+    "schema_version": "slow-source-view-v1"
+  }
+}

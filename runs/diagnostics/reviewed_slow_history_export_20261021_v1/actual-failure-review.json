@@ -1,0 +1,77 @@
+{
+  "status": "CONFIRMED_terminal_harness_scope_failure_not_source_or_fixture_failure",
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py": "9fc0977424ca744895be84415a984275fadeacd1bc11c67e94f292e423bdfa85",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/actual-command.json": "34f29b9108f1733a5ba0129fa27f6b174724c5212b21a972f0f741f3864b2513",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/actual-command-result.json": "da3e0bf75d3856483d1630529bba6ee4876bdbe4374e63960d7195dc55af723b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/stage/execution-start.json": "f8fc7753792dad89a347f04b567b520ab0da208dfd581a63b87e4f647e3b6ed9",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/stage/failure.json": "1ef26e1add644d69a5c7905d82bd98a68f27dc13e900fcac60e54d8727790421",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1"
+  },
+  "actual": {
+    "exit_code": 1,
+    "attempts": 1,
+    "stage_files": [
+      "execution-start.json",
+      "failure.json"
+    ],
+    "result_present": false,
+    "observed_source_reads": 181,
+    "all_observed_source_before_after_current_SHA_equal": true,
+    "blocked_reads": [
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectory.jsonl"
+    ],
+    "blocked_writes": 0,
+    "forbidden_calls": 0,
+    "existing_mkdir_attempts": 8,
+    "source_fast_round": 1,
+    "source_slow_cycle": 1,
+    "source_active_cycle": null,
+    "native_history_build_started": true,
+    "native_validate_or_apply_reached": false
+  },
+  "log_metadata_only": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectory.jsonl",
+    "sha256": "669e245e6735a2af4256ea2fec267c02af40745ca699144dd09010c22ea3efa7",
+    "counts": {
+      "lines": 2456,
+      "objects": 2456
+    },
+    "sequence_types": {
+      "int": 2456
+    },
+    "max_sequence": 2456,
+    "payloads_outcomes_or_event_content_copied": false
+  },
+  "causal_chain": [
+    "build_slow_history_manifest computes fast_context before manifest persistence",
+    "_load_slow_fast_context constructs EvolutionWorkspace for committed archive/meta reads",
+    "constructor first initializes event append counter via _last_event_sequence(trajectory.jsonl)",
+    "source_only rejects this undeclared exact file before open; no log contents entered native export",
+    "the following committed restore methods do not call load_events or use _event_sequence"
+  ],
+  "independent_pure_counterexample": {
+    "same_sequence_different_synthetic_payload_same_result": true,
+    "uncommitted_high_sequence_affects_append_counter_only": 900,
+    "temporary_helper_only": true
+  },
+  "classification": {
+    "direct_cause": "Thin-runner read allowlist omitted a native workspace constructor dependency.",
+    "research_authority": "The debug JSONL does not establish committed research input, history eligibility or output semantics.",
+    "product_boundary": "EvolutionWorkspace constructor couples read-only restore with runtime mkdir/event-counter initialization. This is an adjacent API design issue; present failure alone does not require changing historical eligibility or fresh execution gates.",
+    "preflight_correction": "Prior v1/v2 PASS established static connection and selected temporary guards, not end-to-end native dependency readiness. Reviewer missed the constructor log read."
+  },
+  "minimal_next_step": [
+    "Keep this completed failed stage and exact records immutable; no retry/resume or permission edit in this stage.",
+    "Prepare a separately frozen diagnostic revision/root if root elects to continue. Bind and explicitly permit only this exact JSONL for initialization metadata, not the trajectory directory or staged artifacts; source before/after SHA must remain checked. No payload from the log may enter the export.",
+    "Alternatively, a spec-first read-only workspace constructor/reader could avoid runtime mkdir/event-counter initialization. That is a product cleanup, not evidence that uncommitted records must be admitted.",
+    "Before any new real attempt, test constructor plus committed archive/meta load under guards using synthetic committed checkpoints with an unrelated high-sequence staged debug event; export-derived context must remain pointer-bound, and neighboring staged artifact reads/source writes must stay blocked."
+  ],
+  "limits": [
+    "No source/global mutation, actual retry, build, validate, apply, Store, Signal, model, GET or LabelStore was performed by this audit.",
+    "Observed source file hashes and four authorities are verified; no universal filesystem no-write proof is claimed.",
+    "Actual source was not rejected for issuer/PIT/fixture content; execution stopped earlier on an undeclared initializer read."
+  ]
+}

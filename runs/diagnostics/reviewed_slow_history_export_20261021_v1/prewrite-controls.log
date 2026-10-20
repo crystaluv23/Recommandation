@@ -1,0 +1,27 @@
+test_actual_metadata_shape_read_only (__main__.PrewriteControls.test_actual_metadata_shape_read_only) ... ok
+test_fixed_authority_and_metadata_shape (__main__.PrewriteControls.test_fixed_authority_and_metadata_shape) ... ok
+test_revision_script_control_and_existing_stage_before_marker (__main__.PrewriteControls.test_revision_script_control_and_existing_stage_before_marker) ... ok
+test_write_and_actual_operation_guards (__main__.PrewriteControls.test_write_and_actual_operation_guards) ... ERROR
+
+======================================================================
+ERROR: test_write_and_actual_operation_guards (__main__.PrewriteControls.test_write_and_actual_operation_guards)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/prewrite-controls.py", line 61, in test_write_and_actual_operation_guards
+    runner.save(stage / 'allowed.json', {'allowed': True})
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py", line 60, in save
+    with Path(path).open('x') as handle:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py", line 115, in io_opened
+    (writable if any(c in mode for c in 'wax+') else readable)(file)
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py", line 106, in writable
+    raise ScopeStop('source/global/outside-stage write blocked: ' + str(path))
+export_history_candidate.ScopeStop: source/global/outside-stage write blocked: /private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpxqgt5dzf/stage/allowed.json
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.006s
+
+FAILED (errors=1)

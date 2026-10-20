@@ -1,0 +1,8 @@
+{
+  "admission_keys": {
+    "3": "818ecdb58bf4f3667272d5011be6286a843d822620a01100bdc16cb0fccf7ce4"
+  },
+  "category": "financial",
+  "signal_id": "liquidity_runway_months",
+  "stable_version": 3
+}

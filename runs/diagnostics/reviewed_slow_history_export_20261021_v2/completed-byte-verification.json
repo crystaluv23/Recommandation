@@ -1,0 +1,11 @@
+{
+  "completed_files": 228,
+  "all_bytes_equal": true,
+  "source_reads": 210,
+  "all_source_bytes_equal": true,
+  "original_failed_stage_unchanged": true,
+  "new_native_calls": 0,
+  "scope": "Exact completed file bytes only; no native execution or OS-crash recovery",
+  "seal_sha256": "af51a017053d258b15b2bda7defcf73bbd86bf76c11b790e2fa2d4bff927352c",
+  "result_sha256": "f1976d7436f09eec046ded35c74cfa00318a66426455e214dcfe9e0fa9608d6e"
+}

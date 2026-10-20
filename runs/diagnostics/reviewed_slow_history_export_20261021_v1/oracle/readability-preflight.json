@@ -1,0 +1,66 @@
+{
+  "status": "preflight_static_source_inspection_no_new_consumer",
+  "source_file": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/cycles/cycle-0001/slow_memory.json",
+    "sha256": "e056b9a626138c7f6e17a90291a3da33dfb3b5176d98a2701688a6e94ceafe87",
+    "file_bytes": 987313
+  },
+  "sizes": {
+    "memory_object_compact_utf8_bytes": 825315,
+    "imported_summary_artifact_compact_utf8_bytes": 825268,
+    "imported_summary_artifact_default_spaces_utf8_bytes": 846429,
+    "production_shaped_imported_source_entry_read_bytes": 847019,
+    "entry_serialization": "json.dumps(entry,sort_keys=True,ensure_ascii=False) exactly as read_slow_sources; entry built declaratively from inspected producer fields, not producer execution",
+    "assumed_new_source_namespace": "source-12a50702a856ddc3",
+    "new_native_export_or_read_performed": false,
+    "normal_complete_unit_budget_bytes": 64000,
+    "entry_fits": false
+  },
+  "existing_imported_source_directory": {
+    "field_names": [
+      "ref",
+      "content_hash",
+      "currently_included",
+      "read_bytes"
+    ],
+    "has_brief": false,
+    "has_independent_failure_status": false,
+    "has_independent_failure_error": false,
+    "has_independent_pending_count": false,
+    "deferred_reason_in_local_view_manifest": "whole_entry_budget when evaluated before max_items exhaustion, else item_limit",
+    "deferred_reason_in_selector_current_view": "deferred_refs only, no per-ref reason",
+    "visibility_caveat": "Optional directory offers only last1024 requested refs and whole32KB envelope; this source may be omitted altogether. No actual new transmitted directory has been inspected."
+  },
+  "independent_compact_index_already_exists": {
+    "local_committed_delta_method_view": {
+      "schema_version": "slow-method-memory-delta-view-v1",
+      "cycle_id": 1,
+      "status": "failed",
+      "memory_hash": "b1a4e915bf9bccb9cf475dec2dc8b251d945c84c628967f994f1fa06c92bb5ef",
+      "failure_ref": "CandidateExecutionRejected: signal_mining_reflect failed validation after one correction: episode_reflections source_refs must cover every selected top-level feedback_ref; no unused episode slot remains, so merge the missing refs and their reflection into one or more existing valid episodes without adding a row",
+      "episode_reflections": [],
+      "lesson_additions": []
+    },
+    "local_delta_object_compact_bytes": 541,
+    "exposes_status_and_failure_ref": true,
+    "exposes_processed_or_pending_count": false,
+    "applies_when": "_prepare_slow_memory prior[-3:] or _slow_method_view includes workspace.committed_slow_artifacts local pointer-reachable memory",
+    "imported_history_first_cycle": "Not automatically applicable: PlanEvolutionWorkspace.committed_slow_artifacts only loops local1..last_completed_cycle; imported memory is fed as namespaced source artifact, not inserted as a local committed memory delta. Cannot claim this compact path exposes v182 failure to first target reflection without actual construction."
+  },
+  "complete_failure_reason_occurrences_in_five_approved_local_cycle_artifacts": [
+    "slow_memory.json/failure_ref"
+  ],
+  "what_is_visible_without_large_memory_read": [
+    "Immutable export/copy can preserve the failure original and allpending rows; this is source preservation only.",
+    "If offered, opaque source ref/hash/read_bytes identify an unavailable large memory summary. They disclose neither status failed nor coverage error nor3518 pending count.",
+    "Local source workspace future method-memory projection has an existing compact status/error view, but target imported-only successor lacks it automatically.",
+    "Small exported result summary can disclose updated1/new0/goalunmet and unassessed magnitude contribution; small attempt units disclose defer/candidate action states. Neither substitutes for the failed-memory cause.",
+    "Committed Fast record/meta/backlog paths separately support6 Signal output validation failures and4 quota gap occurrences. They must enter H1 via real meta/backlog/source read and remain distinct from Slow reflection failure."
+  ],
+  "blocked_acceptance": [
+    "S1 source preservation may pass actual export without a model, while readable feedback ingestion of the failed-memory unit remains unproven/oversizedpending.",
+    "S2 cannot be credited with diagnosing or routing the v182 reflection coverage failure from an untransmitted failure reason.",
+    "No amount of correctly reflecting other smallunits closes the unreadable failure-family positive control or proves all3518 consumed."
+  ],
+  "permitted_next_action": "Inspect actualv2 export bytes and native source catalog/visibility as a separate read-only preflight. If failure status/error has no budget-fitting approved path, retain this blocker and diagnose producer/read granularity before any fresh reflection; no hand-extracted units, automatic schema split or larger budget."
+}

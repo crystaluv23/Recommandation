@@ -1,0 +1,3388 @@
+{
+  "contract_hash": "a3d0a9606e798cfa77aa70cc6584a677dd2e75d7563e57481424f628d5d7a3c9",
+  "cycle_id": 1,
+  "episode_reflections": [
+    {
+      "brief": "Same frozen case, two arms: left called possible/surge, right called unlikely/non_surge, with different canonical context hashes (changed_canonical_input, cause unestablished). Realized outcome was non-surge at 1.0140x vs 31.80 baseline; left was a binary false positive, right binary-correct. Cause of reversal unknown.",
+      "episode_ref": "episode-c0001-001",
+      "kind": "fact",
+      "reflection": "Cross-round comparison of the same frozen case (comparison_case:3610ae94...) shows the left arm called 'possible'/surge (is_surge=true, magnitude 2-3x) and the right arm called 'unlikely'/non_surge (is_surge=false, magnitude null). The canonical context hashes differ (0a59cc0c... vs 88d1b499...), so the input changed; the comparison artifact classifies this as changed_canonical_input with cause_status unestablished. Both arms share the same realized outcome: is_surge=false, realized_max_multiple=1.0140x against the 31.80 baseline (threshold 63.60). The left arm was a binary false positive; the right arm was binary-correct. Equal canonical contexts are not established here, and the reversal's cause is unknown; do not certify model-only instability.",
+      "reflection_layer": "cross_round",
+      "source_refs": [
+        "prediction_comparison:7117f1b4dcc90ad9d3819863f2bc26a44f359cd6dbb8f1dc0cab602fd99ed068"
+      ],
+      "unresolved_questions": [
+        "Which specific canonical-input differences between the two arms produced the reversal, and were provider prompts/model parameters also different?",
+        "Would the left arm have reached the same non-surge call under the right arm's input set?"
+      ]
+    },
+    {
+      "brief": "Slow-loop summaries: signal_goal_status unmet, zero new candidates, magnitude_contribution unassessed, magnitude_ge3_v1 failed. Two signals promoted (financing_listing_action:v4, guidance_acceleration:v3). customer_concentration:v2 update rejected for output-ceiling truncation (engineering diagnostic). Magnitude track awaits Fast consumption experiment and Binary-F1 protection.",
+      "episode_ref": "episode-c0001-002",
+      "kind": "fact",
+      "reflection": "The committed slow-loop summaries report signal_goal_status=unmet, new_candidate_count=0, new_validated_signal_count=0, and magnitude_contribution.assessed=false with target_track_statuses.magnitude_ge3_v1=failed. Two signals were promoted/updated (financing_listing_action:v4, guidance_acceleration:v3) with validated_candidates hashes, but no new candidates were mined. The customer_concentration:v2 update was rejected for structured_output_failed: output-ceiling truncation at max_output_tokens=8000, an engineering diagnostic, not a research conclusion. The magnitude track is unassessed because the required Fast absent/present consumption experiment and Binary-F1 protection have not run.",
+      "source_refs": [
+        "slow-history:source-175e61eae26433b3:1:slow_loop_result:summary",
+        "slow-history:source-175e61eae26433b3:1:slow_loop_validation:summary"
+      ],
+      "unresolved_questions": [
+        "Will the required Fast absent/present consumption experiment and Binary-F1 protection be executed so magnitude_ge3_v1 can be assessed?",
+        "Does the promoted guidance_acceleration:v3 carry a verified effect_status, or does it remain unverified as in the case reflection?"
+      ]
+    },
+    {
+      "brief": "Both arms cite the same March 2025 secondary offering (23M shares at $30.40, no proceeds) and the H2 2026 Brooklyn Tower opening outside the horizon. Left leaned on the guidance raise for a possible surge; right treated it as insufficient and weighted supply overhang. The 1.0140x outcome is consistent with supply absorption but is interpretation, not measured causation.",
+      "episode_ref": "episode-c0001-003",
+      "kind": "hypothesis",
+      "reflection": "Both arms of the same frozen case cite the same within-horizon facts: the March 3, 2025 secondary offering of 23,000,000 shares at $30.40 (no proceeds to the company) and the Brooklyn Tower opening in H2 2026, outside the six-month horizon. The left arm treated the guidance raise as expectation-changing acceleration supporting a possible surge; the right arm treated the same raise as insufficient and emphasized supply overhang and the absence of a within-horizon catalyst. The realized 1.0140x multiple is consistent with supply absorption rather than a doubling, but this is an interpretation, not a measured causal link.",
+      "reflection_layer": "cross_round",
+      "source_refs": [
+        "prediction_comparison:7117f1b4dcc90ad9d3819863f2bc26a44f359cd6dbb8f1dc0cab602fd99ed068"
+      ],
+      "unresolved_questions": [
+        "Is the guidance_acceleration signal's effect_status verified, and does it historically map to large multi-month repricing?",
+        "Does the secondary offering's float increase measurably constrain surge outcomes across independent cases?"
+      ]
+    }
+  ],
+  "failure_ref": null,
+  "input_hash": "bcbb533e41f3af176322c585c8d8a7c3db2aab05e02a32ab333ece3f10eb9608",
+  "lesson_additions": [
+    {
+      "applicable_scope": "Surge screening where a positive fundamental signal with unverified effect status is used to support a positive judgment.",
+      "brief": "Treat unverified-effect positive fundamental signals as inputs, not surge triggers; check historical mapping to large repricing before letting them support a positive call, and record the unverified status.",
+      "challenges_refs": [],
+      "counterevidence_refs": [],
+      "guidance": "When a positive fundamental signal (e.g., guidance_acceleration) has research_status.effect_status='unverified', treat it as a positive input rather than a surge trigger. Before letting it support a surge call, check whether it historically maps to large multi-month repricing; if no such base rate is available, keep the judgment constrained and record the unverified status explicitly.",
+      "kind": "action",
+      "lesson_id": "lesson-c0001-001",
+      "limitations": [
+        "Causal link from guidance acceleration to a doubling is a hypothesis, not established; the raise may have contributed to the modest 1.4% gain without being sufficient.",
+        "No counterfactual or historical base rate for guidance raises translating to 2x moves is supplied."
+      ],
+      "qualifies_refs": [],
+      "support_refs": [
+        "prediction_comparison:7117f1b4dcc90ad9d3819863f2bc26a44f359cd6dbb8f1dc0cab602fd99ed068"
+      ]
+    },
+    {
+      "applicable_scope": "Surge screening where a large secondary offering or float increase is disclosed within the prediction horizon.",
+      "brief": "When a large secondary offering or float increase coincides with a surge prediction, weigh supply overhang against the upside case; record offering price vs baseline and whether proceeds went to the company.",
+      "challenges_refs": [],
+      "counterevidence_refs": [],
+      "guidance": "When a large secondary offering or float increase coincides with a surge prediction, explicitly weigh supply overhang against the upside case. Record the offering price relative to the prediction baseline and recent close, and note whether proceeds went to the company; do not let positive momentum or guidance alone override the supply signal.",
+      "kind": "action",
+      "lesson_id": "lesson-c0001-002",
+      "limitations": [
+        "The offering's actual market impact is not directly measured; the link to the absent surge is an interpretation.",
+        "The company received no proceeds, so the offering did not change primary capital or shares outstanding."
+      ],
+      "qualifies_refs": [],
+      "support_refs": [
+        "prediction_comparison:7117f1b4dcc90ad9d3819863f2bc26a44f359cd6dbb8f1dc0cab602fd99ed068"
+      ]
+    },
+    {
+      "applicable_scope": "Designing or reviewing the catalyst-timing portion of a surge-screening plan.",
+      "brief": "For six-month surge screens, list disclosed expansion/capital events with timing, mark in- vs out-of-horizon, and flag partial-coverage sources that could hide a within-horizon catalyst; keep it auditable, not a positive-judgment condition.",
+      "challenges_refs": [],
+      "counterevidence_refs": [],
+      "guidance": "For six-month surge screens, list each disclosed expansion or capital event with its expected timing and mark it in-horizon vs out-of-horizon, and flag any partial-coverage source that could contain a within-horizon catalyst. Keep this as an auditable process step, not a condition for a positive judgment, and do not mechanically produce a non-surge call when a within-horizon catalyst exists.",
+      "kind": "action",
+      "lesson_id": "lesson-c0001-003",
+      "limitations": [
+        "This is a process improvement, not evidence that the horizon screen caused the correct outcome.",
+        "If a future case has a within-horizon catalyst, the same screen should not mechanically produce a non-surge call."
+      ],
+      "qualifies_refs": [],
+      "support_refs": [
+        "prediction_comparison:7117f1b4dcc90ad9d3819863f2bc26a44f359cd6dbb8f1dc0cab602fd99ed068"
+      ]
+    }
+  ],
+  "model_view_manifest": {
+    "available_count": 538,
+    "budget_bytes": 64000,
+    "bytes": 31915,
+    "canonicalized_nested_refs": {},
+    "deferred": [
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_loop_validation:effect-1af6e9c35ae7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_loop_validation:effect-bc7bdb076f5b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-target-001"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-target-002"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-target-003"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-summary"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_memory:summary"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_memory:lesson-001"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_memory:lesson-002"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_memory:episode-001"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_memory:episode-002"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_memory:episode-003"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-001"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-002"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-003"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-004"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-005"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-001"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-002"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-003"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-004"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-005"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-006"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-007"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-008"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-009"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-010"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-011"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-012"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-013"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-014"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-015"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-016"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-017"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-018"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-019"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-020"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-021"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-022"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-023"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-024"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-025"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-026"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-027"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-028"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-029"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-030"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-031"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-032"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-033"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-034"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-035"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-036"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-037"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-038"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-039"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-040"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-041"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-042"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-043"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-044"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-045"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-046"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-047"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-048"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-049"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-050"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-051"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-052"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-053"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-054"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-055"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-056"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-057"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-058"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-059"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-060"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-061"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-062"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-063"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-064"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-065"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-066"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-067"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-068"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-069"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-070"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-071"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-072"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-073"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-074"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-075"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-076"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-077"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-078"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-079"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-080"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-081"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-082"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-083"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-084"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-085"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-086"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-087"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-088"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-089"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-090"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-091"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-092"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-093"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-094"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-095"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-096"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-097"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-098"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-099"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-100"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-101"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-102"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-103"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-104"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-105"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-106"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-107"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-108"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-109"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-110"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-111"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-112"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-113"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-114"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-115"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-116"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-117"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-118"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-119"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-120"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-121"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-122"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-123"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-124"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-125"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-126"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-127"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-128"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-129"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-130"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-131"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-132"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-133"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-134"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-135"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-136"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-137"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-138"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-139"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-140"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-141"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-142"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-143"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-144"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-145"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-146"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-147"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-148"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-149"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-150"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_input:feedback-151"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "slow-history:source-175e61eae26433b3:1:slow_loop_validation:mining"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "magnitude:plan_r0001_c01"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "magnitude:plan_r0001_c02"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "prediction_comparison:c039214748cffc52906f4d22e28a13f24a3224abae16b48bf707d14846dc19d5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:cash_burn_rate_elevated:v2:surge_direction:12af5ae9b34d3686c05dc30292e46235d3ebbb54e484002f1bbb0e6ab491e583"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:17077ba0e6aa73110069f58e75bf24b1bc9df74a411563a2434cabe92cb3266a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1f809f7ab543acfbda0b5efdd7967c7a995cc14dab4665c91c17a79643f4e6d8"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:5f54e9997227928d2a637e260edd68847ad5e151957a9ba0080e3d4202ccfb5d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6b6c0602ca6ae3f6ea895e71d0b78df2956890b7e7aff33c2b20ab3e04a389b5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:71f9c4fdfbb66221394e2e118b338210288fd78de0643cad9cda5615a6649dad"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:746798389312f62b5c7f70668f4451161d678ec9b49376b0ecc66d56b5b24ce8"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7ef7eea8215e04f32cdc95a2c564f350e30aa7c6a3c0a62b924938441fd04898"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:826ab9c93603accc692fb6256e8383b1099ebf16aeaf57a5a11a38b44af092ae"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9ef172ccd38d80f9d5588274c8aeea9b8eff738edf988afc50d759a01ce297d2"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ed917a0993d35eeaa080fbe8630143d7fd9f7cbfa7f4fe6d58530bac7b97ec1e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fc13b8f0a267a9f443b7550ce33b1a82a4cc1615a7edfe74db15ba00e5c8b60a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:cash_reserves:v2:surge_direction:163d5364afa6045c78406eb277456197a06972eca05126f4d9b48fa09eb4e3a1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:010b146506ab9f19873733f9cced882d4e4839295170c0bf2216b9830d44aeda"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0555f05c310ed8651e8bce9fcc7dbc78bde3027d196b7e0a801325baea2eac88"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0b36ea503d31a6a2cad6e8b7c84baa739cfa7afc10b600f221905599b73a21b3"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:16b83bb63098b345464a61c059d4d58b0e01d20ac0b30ab7cc13477651d93bd1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1a9137d85701cbb6fdd77a44de664f92f912ff51ae03564e3ffdc4fd565d9c81"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1ba9d087831e431d24ef35d1a2810b7ebaad116631b930173ceae9c49874a759"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1c2003d9ad32e208d15bce780f8bedbef950f2ae117d643d86a2f68750d4ad21"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:213d0c9a87ed654f7b7fbc4442dea3617bbdc649eec8817af22013a0de65b5d7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:221206a55e5361011d9b68fe7d7133eda5fd05e2bdd921ef7d6bb85f1f6c9ade"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:23cd2793b2bf02acc0ce45228c0f6c771cdb3dde872b35e4f4cd30b56edc5dac"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:24ddad9822a290d46c41b01836d8793e7e60cdfbaa772f70cce841c81f33b469"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:274442175e9919e529a80619f917b70d046d17f666330296d085fc239b83f713"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:29addb75c1387b402ec8d6e1e8764875f3cc662594c873129333510970f2c435"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:43ee817ffe640269eac22992a6e61a8259b94ac991edc7fc5e43fc4bdbd82d21"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:468d328626b3db8184698f6d50be08ae9858ace91df8e3c102fb501898c88057"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4901f8157bb38c05dfed814c0491ddc55477029c1c2051f5fa86cae9d2b3b4e0"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:569cf5c425982ef1fe881eb2296efb57e89a770a42c9df08bc10f8db8dbf797e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:629d570409860ba07304cee404c006d7cfbf9700f025235ef0e3ee70cac79a24"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6a66d370870f9239ef47ba5873c02fc20ba265d16560630d563ce8bd2a510b43"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6e7dabcee5356810f3eb0810f43fb314c228e520744d75f2d0a7e24a44575e03"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:704e0f7c0733107120ee189f55572468794471a62d33225f0807034502ea7494"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:70a929a181ee5d11b5b39df3978d43957ba8c3c7cc398735da6e58d8dde086db"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:721693f576a34f1a56d182839758ecdfe2d76b5e783f797e5d3d8ee529448efe"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:77993aff7062a7fd8ce3bfed0bdf2e3212da2d58c7d770c568c1352e7fc9a446"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:798f8c42d7a71197a6edd248f3e64c574dc41eb29ef874a23284e78b8633d649"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7d3062fcb91d9d753da74de7dcad05c5d540a893d858857807822be2df0fd5c1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:865039e19c79f168276199aaefc8708a237ea068ae560d91855c869f45d8c607"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:88cbbf247be411abf2df0bc39047d5c3f75b04b2a2f199f92e45fd32650cfe82"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9348543f24434c44e084065cfbdaeb55e6fd99d9a9a1520e106d40e4b06bf97c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:94e376a90b1011721f075dafdbca16bebcf35134daa63f619d752bff4f5c8676"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9530dd650090e2881bee67263d9a975ec21b95cdbc6d39ec6779246f274bb65d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9582a7940be24a7c82d2e0db78b9859c376dfa6e3c987598bb4d1e3088d59ecc"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:984e7525e7617aa9430e9bd3687c6ab098c2ee5187773a1f84b227eeb91e3fdb"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9c16820ad5e7f9e38203a0d1a0a64a458b7fadd916bf2f0e3b82739a6dfcd8b0"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9e9cd8239b33854044f3f1416a4f3a5a0feef3e37c678d6de8d4317cfad97e32"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9ed1c7edfefb6d899e7c622278a53c89b6a3fbaa01508f4046a6f021e8f2c8a9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a3d72ef6ca7259eaf930b2a1a1070a92f36ce460eabe3fc0f94b1e66b9885857"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b222a9e4bfe4fc4297ce7d57d1c2df0624536a41f1fbc02b30b6d927b8b39fb2"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ba16baf429a21d3a11551720219e1c4a38f3e0f62c67f0e92388feba49890f03"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c24fa4507949a52115ce25b0ccff4a1ad3d97b3c0d1d12945becd8733c0a7592"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c3b2dffb5292c55940a9ee410d2be6c72aba95133fc62440571148d7ee612711"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c4a74eda07dac79c742604e0086707c5a5a40c6a6b920ad4e86768d3f62fc72f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c554b33f785bef94b4d0691f632fd0402e9b2249cfb61966deddf4af43be1366"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d6d3a4c10aff29ce419878a9d09769178a1de01615f00ee126ddfe4325d5c3c4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d75ed77c79e2233792fad26626b5b58222dc0d76819c05513a739fb4a9e03f2f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d94413241ab863b72170685c4d716504175d410bb9a8a63a2d8cd4ca2ffec99c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e272c21ba3f6e38bfe7b304399c270debf46e594d7141537856b1f6ec764ee43"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e9e91b80529ebda69e76458a22e955bf7b4a15edcb09b8c22a3e016583249fe2"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ee739f3846be091cd38d8dd939a0c262ceb5df3dee6f173a9afa2b6062a555e7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f035c8fef5572582f278820ef889f652c0431a8ae454531ecbf2e75983990abc"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f413445051d2142bb350099a3f1bd26a56d1579cac3db91f2a2dbfcdb97e4be7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f5ba528db1fccfcf2b865e5dbc08a0423eb59701c1ce8a8c0e0a7aa876dcc189"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:cash_to_current_liabilities_ratio:v2:surge_direction:5176d9433c07c727a7826f7a667e9c31d9e034de63f6d3bec1e71b38f05ea1a4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:03f1ef4ac5598f0e82047c92e6114e5af4f6030334f653149956d19388bfa7cb"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:5d2a18f3744f1e2b8fa825245f1de905f8992e64b4f5d9a9cd5a00eddf02a59b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7b2edae4d86c73a045a61dfbbf7283b96a244d79e6f607ecd2777f6df18f5d72"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a24f879bc7ea291ee97818648aa543a60be7b11b7d287d85b92bc6f626b3e359"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a2f29c96d62019728481d8f926cf89f91f028b92d10afc02a4436ee0b128a6b2"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:bdd3999a54d0c315c76354c04539dd7b95cdc88e4f9eee0123113cd165d37aa7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c85975177e8ebb06601380b41bc9169b73858174cb224ec7323a406b360c9e81"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c8839ffc9f648d63b2fcbb97212de70806d85d868d82efb90af2449f47e3ca75"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d805df823076b13a523b4256a068f4d11e75d15e7a5090a380fa977925f747b4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:commercialization_status:v2:surge_direction:ba98ae6981daecac77d60a0c63ba5360faf3055d0ca10e62d4d3d8914770e88e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:3b62dc9cbc462ef2d9a0f8ec8a8039fc175a6f0145d6991e0d350d0337faf88b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4c7652916ff82dc27a4cbf93070afd8f6c8a0007d7d6bc7d8695198d82abf4a3"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4e1a52109926e9d23d115ff99620c10a376d8cd6e2962627f8a0c9d308cec68a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:5ee2c698cda48412aec70848a5ee65740ce5fccc38afeff7c8f15abb378831a6"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:5fc215d3f35caa02ef1325d6946b9b8a3b6430de33a0388f44544a4f1dff0089"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:64a7fafd0d674aa8416e293517916ed68f154d1a7e3aaa7df5e039b2f0257ae1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:65effa2227f4effc5f204b61ed628db9a55bf294caa390b8d7902dd7ff40169b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6f6ec4c157e15499c1463e81bd2ec83a50f60296ca3c07fc83c340e11ec15c33"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7b4b839aec401c113203d6a993309b2c06deacd82917a31242a82b4b015ca978"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8596ab1c8143a1c134e07187cee533f4419f0a76d410f90672676e456a96907b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8cf3cc4f26f432f7e4a6e6c97caaea239329e70c7f2d94d9c394d6a1c1e43c70"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:cd1a98b21f5187ed27c52d8a49352537be61ac8c73ead9279bf004000e3003c5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d12fe7014579ba0fdcff061b98490f674b04e65439b4a0745de1d234178ada84"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d172f6bee8cf174bf3e814164c4c6ec108f13decc1363fa5570492a687969c8d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e049ffef0c5f3dc099ba18bf7c0e281da82d1e5983faffac750a0bc73d1acd6b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:customer_concentration:v2:surge_direction:d534d606ce8e48be80ab9f9b788e24b2ea70507d17fce3a80ec32b6230124629"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:05f613a43ae720eb8486fda6b91a7ba8e7a5a862884ce3a15372314061446ec9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:30d52ae3f124d9879b3b1e4e8636fd67eb8464798c362ca3d7f34f8943252fdf"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4505f32edf672041fb08b6fd45ebc54ad2b3f562c8e3ad160bd21e68aacfcec8"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4864351f83a6b28bf07b5b094fe5d26d3c339ad0a2dd346a4fccfaff0ad6a776"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:48ff19d843962fa2802ba98eb9a97fb1d3dbc7dad710a3e0e005fb8d64335641"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4c2c1a4c0e40e66c4ba71b77b231909c7c664c72353b69a06cf92c776fdb0a1c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7fdcccc0fca9dc4f66ac95f4d67594cd4e0188a865cd06a45a7405f5c8d9e9f9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7fdd832bacd99fa11dc58f2cdb1df7712a3b4440418a2cc6a42f360e7dec4871"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:84ac5eac55e1ec6cfe1f8d14785502ec0e6f80d667bdb2f26b83e10e11e4cfa1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8b8e928cf1dd6b4a65e84c93df3a527615df5829317cc69c8e2ee03dec8e5b7e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a2e9ccce63f18311dd3da6beeda2d1de9bf96104e01c4c1b73b6a55eecbda0ff"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:adaeeef057d7cb2effc7798589be038197acc97ea9db75567e744967c3136b89"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e22481a47fa8d59cffc33985542166620572fc9d0fa03d2b819d2a2d591a072f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fdb717f7e0dd719504b0ad10c851bbdc7bb6364957af7f50d8803de8d5fdc95d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:financing_listing_action:v3:surge_direction:a41a1b8d64caf2b66c8b12fd79a7515643c1fc26d688536a8ffc0adc8c3455b8"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0647493a7bedb9f2949a28f33cb344d45988067dbd54c565b530840b8f01bf4b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1a316555425e2fadb14c43cb589832c44e42641e1e0eb22c3b8703d494730899"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1fbf7948eecefa68f8255d0eb8fa6b75e1a3987c135f336420290474927cf71f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:2ae414fc3ef0c82300fe2064cbf4f996dc923864d382f8b59f70d2b92cf2fa90"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:306c85a0de33c9f836f79add330d541cef2b78f474c1d463b301508fd095232c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:3828588a2486315ac3a99403cee54b9acd003f83023dc2ac8dde26292cb00af3"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:60dfd77f713505207023803805cf5339fd01d6721115e00d252f995d48124a1a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6ae9fc849fb8290f86d13ebea990381f7ba0b2fa07b3cd9c2a89438571e6dc7a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:74e3d59bd3f2f07c557616720e0609988793c2dc1951b4987fc5ebcc6a47d8c7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7e1c8ab23c7e68e2a96bb0fedd28af79f59eaead78f621c9b7671f2f6a8b636e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:87a015a54f07faf1460e5b962266949b9aa77b398e9a003aa818d79403729dc4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9af4839aba3539e587f851e4653f330c2e28cf73cbb94f3a967895152439e020"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:aa4a06923c59f112baaadaa0469249b284b86f960c8e4902daded11d204f8bb4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:adb7c9e87b5325f0c492f8b2c162e7a8f29b5760540610edfdd2db263756584e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b3032f46ff942ae9979e341c39d189a25b73870e55202884c4b7329d35a7c258"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:dd5ccb152c440f1acc8397cb3901853bdb57e23c6e7c5f9d0f341b13be90b5c6"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e8c4d5b10d694cf3856fd72ca549d7cef407f2a441765b48345448c35297c3b7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:financing_listing_action:v4:surge_direction:9153c439bb4387065f5392b9f1612b5774c7aa2bbd8a7ec010f5dba8ab9cd8ca"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0c26525c1aa54a82482dcdb3b915f79c9b26c73a2c5acb86aa9e16434b96d476"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0ed098761602bdd42b072dc3b845c40605e20236ec004102fc7bbe0700296fd2"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:17d5a4eaf72d5a2b29e265488ebb897a818b93d7226562caf83bfb5791634c8d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:19929712f998bd171f099ff00b17bb78954edd6134353bce98a8ad95d94ff9e4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:203d19f9f210a48ea4e8b44d8693746fd6431a68d5de113ccd1d556feddc5f7e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:34f9ef11127da415d42b85a9be5a218912de7db3f4fba06e75650d8f19606ea1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:38a82ed0da073e1889fead2cb94b6fd7dec50107a668fe1bc00c09402bb666cf"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:3e469591936e9abcd2dd0cfea619794211669b6b0b944f5639feb378b4b0b390"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:440cfd2121d76f7ca364d5b4a97579e48a6d0d714872833fd4fb228021d91f2a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:443aac8034dc2b2de9321c5684aacbd09d3939d00bca0cfbc050ca00cbd691d7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:495b6f648a3ba713651710ddd00b4ef6efcdde7bcfe1e54667b7efb1879664af"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4b9997dc1fe3d71852cd98891da35ed416d815cd94931adddf1b1772faab4079"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4eed90f102f60946d993702aaf2ad6b20987a31b9e6b558958e4d442e328ed89"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:613a736979fcfdc9384b3f93bbcfc4f8eb498e6f8168d09c87239ce0afd59356"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6dab69c1ff5e6794e43a140fa827a7fd9f3bc5ece2caea379380a2d5cd8ca98b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6fd7a6639f7395191917d9bc06b091a15154fc7acba3a7038d47f8564ba3a649"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7014ff0916e3ce7774ae7490e4e077a60ff3f1c07d738dd92c26a471cd4d7e56"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7d195babee13a196cb79f4d84c219fc388edd313287c6832ec07903ec517e96b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7f94fb4645ee0534233f9afaeddab8f52608fa1137ec013719fbfcaaf4f43504"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8abb65ccf49b9b178e6b8d715dbc490bd75481f385cbe4336cd407c4b400559e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8b33fb638c879f21ac42a57be1aa9b67f708bfb006ea665ff56d45ecfc24f921"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8ca42762e2dcb938b252e057fb6ea2bd659b9b394bcb8f4dee3d065513175200"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8d292bdc57fc887a22950bed9fd8e589808f1aeeaac1339b4cd991935c494f7b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:912b9a3199af36cc642348d50f582a767efa2c0f03dd020f23bf8533b2952167"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:991b7ebfe23f37efc9d146e3e9e65942d95a78782a38c92a8e43e0bfeec958b7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b305aac882ca18df2722853b5fb0c14d1d9ed2c81a35dd34fab2d263bfa5248e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b586d34f54de224577685640b524002fa0070f8dff8d0fb0a1b83fe97b6e567c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:bf426b6b57d57adf6da3043abb5c762c74dc38a504007b91a2f37fb88cc5e6da"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ccad099bc98e9181c9c9ddaec54800be9dde75fccfa3c31509b26c2e58e285ae"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:cfa530f273631ba956270890e50d27574acf83720246e146a7e4c86c39f29edd"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d65d46eff2d4b02d1465f4401b78c7a1540eae1d38edb005b00e686838f42c50"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e54ffa4a2bf6eb3b5c5bbf1faca7cec3a132d89df2a5e543c9fd8c25769b442f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ecb656b40dadf21d0e41e12d1ada2207e789d79600b88f445bb518882ea6ec66"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f706a5a0660f7ecd85727768fb8c99679140663bd2ba64d8f544b0fcfb485db2"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f84e8fc6701123ef7f1ddee9e5f2d0b9c423e41937c35f56ffb7974e3172220b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fda6696a57bec4c3ff84af04fb997aa4e0962b333ee7259e2bd1df2036b0d608"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ff3f3207d8a5a19f867aa3c488888bce47972eae8cf41d5702f6f2a9b3d18039"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:gross_margin_change:v3:surge_direction:4e28ff6592b017a3caebea14a528bdfe6d30e8b57783fa9c7eb6a0d89b533f3f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1fb867b5a388aa4cbaed93541c72efa87137c51eb422333758248ef145a2b5ab"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:2be8d2caf84f02b7371d6aec56595c71a680261f7b389ac6d3a0debebc24083d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:3551c16d63c44334f70112e61ffcfa9de5c9c5aec1528f1896de4f735f0632e0"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:369ac719bf7b03c38ed0678f1747f489dd200e449d1547932db10647aec3ef63"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4910544080a51aae583782f24b76d402befde110d49182d7a9cd7ea501caaab7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:5114902ff15359b3d7095e912e372b375a395396cdc63cf00f15ef5f9bf4d1c0"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6fff56b8aefe94959d72c35f506a49a1ee404361da873bda12c0dd144c36fcc1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7bd116d14218429c4e69d4cbf360e0263efc87db76981c556189dcf427acaadc"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a102a7df429e1097a1bf60c75b404dbd5c8f6fcc5b66df450b73e4ddc8175263"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a39d5eabd38f2f44a962fe7aef27dd1d664c6954a76499f091d1a034525cfec6"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a90cb86fb39e078f0ac269368407a39e8ad2d62a0b3c11710ff4ea3af6afea2a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b9a69e74b3fa027a97c41be861f6e43e456968948b9087ea42d6009c5277efb6"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:guidance_acceleration:v2:surge_direction:01d3327be171a8d87859f9b9b73d1287d40e5dc3a5c1a954d0f6535c8a913a30"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0a4fb66eba62d09d0d1c3c49d555ac3996b555f87557fac8145c8177d62d9a26"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1dc2dd3fcb7a0a714f7fb2311d15e95f31af2e9419c41e692181f98fc3d0ba22"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:34e243031d1271b844474f8cd744044f2d4e2aa17f37cba66655df0d3f80c264"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:50c1bd0c6659639891682a1a1ad189f8068265e6f1b3e04b8531973d16a11236"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6e696970013f6a759de4f2c8654411be756f2c74661e076023c6239894b9cf0c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7eb30e9c6921a424030aeac23d1ff69adad72a2692477dea1af622f4a2e412e0"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b531f594ab708ebe6bf60f52214eec45b2ee8eee4a15970cbdad97dc7e5c3e61"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:bf33fd08a50151ee7a488f4f135c1b459de28f4a5c172afb644cee75d75b9c44"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c06dea57bef5dd69de7d71e419669a380a568387d8e952286b74ca8828e2882a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c1d5f56de66dd61e5d8fe71f0b10ed308fa03cc97c87192bc1b9e2fa38a3bfdf"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d701fd7af32ff3e3ea26723d80dde77022e29acd6f0ba401c8677cb03f4935e9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fb1d4c479fdca8a003e5b9f0327ed7a74ebfb1ab2cbb16e43237f26a8cabb344"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fb644170769f48e4e5bd365244e34126022924c0d6ad5c66a71d4e206fe63ea7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fedb661fad283b5e2e3df60cfd12e9da6306a4ae2235afb1653150f4d5fefb39"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:guidance_acceleration:v3:surge_direction:082a548a60a47aa997cb546452666f1124bb171d0eb96f43102bad997b45186b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:01484b8dc471c06b63f31ee264a3bf2d6385aa293ea6015f5806d1271e9b2382"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:01e8dbdf7969f7f8457837360e6ce5f791b1ec89c1020aa13d22f2d74df953e7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1dbfa2b542ec1d56866b63ae38bec0dce30fd34a287f8f406b1d81da8b1b7ca8"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:300a8a174bde079f437748fbc863f72ba5db7c8311bedce2d5eb3626e6d817e3"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:411f9b1cec52e46a75581885d19e90e9d65e2da6667aca3719bd4c94e3d91102"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:49bd2e38493ff23566fc542f1beacecb134d174758459723c13c31208e3290a5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:70dd43b15d3b1167b3bbc0278dac6d6e5eefd94dd21eac692106bd9af5573f1b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8430b7cd0dad266f9bdb2e7172d56a119a66cc53b748e2e34d69f34bfdde3d10"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:87e4895307d74bb20dbd0dccbf28cbacaefdc371120514e553d735cfacc9c1cd"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:88702977b409ff5da65d165c380082d58843b8fae959c44cdee8e890c7193249"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9db150085e7fbb42a88db0a8178882f0b8aa336147c8f4f86b421f2475e6695f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a04d266bf8d0ed80150bbaec300452cab70b04293ec62a3bec2f366d9cf28d94"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b56be1dcb429f40ebf9199ae6041d1b6a68d6d46af5bf3b3e20c4455561d5ceb"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:bf11e170a6b6b60c643c02322f7af65ae63794d877fd4ae08af5dfec7616d8aa"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c32181237885f8f2f6a2bc3a6a7c24340b3443cfd295dc25702899624a8f183e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c384408827fa7edd853151e63552e37a202cfb2a735a411b9a464d0e973633d7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c9afa07ae313468b8d48cd3f2e33031e541aed26bc2c9b103e25aa04bcf786cb"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d1588b67aa6a1932f9def06ca8e7c62637777d6a630b95672866500fef2d7ed2"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e06336c83d1761a6f3dd1de507aefb26ad40c82ebdf036586daf4f366b381261"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fd02fc3d2b5d4611587ef810e57c89391ca27fd98559767f60325104f620f6e5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fdfeb9d54f94293e8e227852e6e95f6ffcab6db0b2af806735e275320bea4db7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:liquidity_runway_months:v2:surge_direction:34fb17cb570bd143dd2a0c50fd0b5d89a811137e47bc242435111646843dd121"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:06fa81fb402febf33a76072a0da52689a90e36b808d3152633ba4b0e91cd6d12"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0d0fc008ac42db9159797627cadeaaa3f1ccdfaf7ebfa16dcff9b790a5cd5b2d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1428817ea1dd8b507d275cbcfda13793ef01d933b828849d531d89a55774dc02"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1768b21569566cd2365db20aa08b91600382fd7303cbf4d0cda8661891d60ccc"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:18327c02aed84abe696aa471f4d0bf0ecd4d0f2b31d35c0cb82bbb1d34c99020"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1a3413e49814f6657cece09163c2d597664aa46fff55b4df515073b9d51c8242"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1f9ca6198c54226a7510c6e76ffba7c3852623fe037cb746cf80b544cbf83b5b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:25aa68a4e96aeb8b6e6873442a4ce090b4dc8d7026ddc26dd24fe5b7ab782147"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:465df386e522f840e41d20e310dea8fc492fb1b7dc398c4d35490e19a38ac715"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:5977923a15c2c1668f8258047a642204042d09b07236bf4befea7702d41be3fb"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6bf3cb635fbe8c2737a6514a38c4091b3a571b173febd0e8feeac2af8dcee1b4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6c2b952591071b26350b0fcce1c9902a7834862ec24008c1cfa422124b422f6d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:70908b639ba6090f5833ed32bd1c7e739927b2330630756f862d2e14e296102c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:716131b22248f40f1fe5a422fa97b4fbcf0e018a30596235a467533c3097a51c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:71a98505bb3b9bd9b76b685c2bd9e88c90f59f03ae1a405dfef7c21d230b3de9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:72cb02c4c6e179b7a187e90ba22f60417d4d083270570b2175dc50bf86b98ffc"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:759349ac115cd07dc5a6ae9553aa1fb00eb7da1f53c3a036ca0e86c731dc4cd5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:81086775ccb34eb68458d13813b173f547648a18453570aff35d5772a2f7b75a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:86df0a4b93ddc36afcb89d411f038f6bb8bd4c9c7456b33fda2b2c5134939d43"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8935063a98d823e2460cd3e1526debbf32300f02988086774776c3d74945be05"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:89a663b182f412cf6e242c93f06ac2b18b9204dfb8807b2deb8e9e62a2028ca2"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8aeee38c0aaf472832d68fc9ffc809ff5d9b07a7c6db6d48a2e98e2ca932db8f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8e996d7568cb75fe93dd88a1fa613fe38a2fdab9ea556b275ba0dd28c6a30672"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:911d4fb10eeb9b4c808e6623e290a2b39deda70fe809c97d8a0d731181c3c999"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:92883c0367ff5477d8fdbbe49584c80384d81a4d4b2682118265c3b18165c6f4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:980c21ce7f2d443ad0ba71b50be43be92963f7751b6c7f72c737f5ce88729523"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9c8947c8dbf8cb505b4d054d63bc2ddc3c791f2ff9a982841cc950baed7516c9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a26061646b3768f0f3f0248207ba8796a1a84eb6725d83d57882fabc5fc17c8a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a3c0d44980201d30e58f76aebf3b62427fc7bae3caadf270e7c3bc988b29a7af"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a4b5785c022a6a1360a3cbcef667610a5a1d342b40fcf118edc0f4aaa339b1e4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b3d77bd109e5b7d066d1b35ee1a351bf2e2022a064592197b22895bf48410d27"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b45c9c99e08dab848660dcea9a2ddd353831116cb9baff980e79a0758d07c652"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b6e4d088bd292612b052888f655d838d0278383d23040068797cec09d62d7888"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c12e62cd88e64b89835d82aec320705b1309ace0bd203546f723607d6880085f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d3f9399d6477f621701d3653951b12cb9421f6d5f131f38bfbafbf500ee5b58b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e32de86d59d8016c6b029577e50bee832a33ab884fb80a931f541f694a77f4ac"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e3fbfd13371008959d17f7bdc83cbe978c4dbf57905083d82a9351e6a1853f54"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e451087d238064bd63ed861f5b2320ff9f9a280a608b9aeeefbb3623fad937ab"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ed53e37731b54ee10ade37097ed0033afb8622fd3ca6718868a885fddbf609c7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:negative_word_count:v2:surge_direction:b69c1ce1ccd9ba47f9dc6aec81edee56b2cddab74fb68cffc655b14fb9b95527"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1114758774448469c721d13879ef9d0d44780838ac6e47b64ad0e46f610f9ba9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:19a463661ed7a58bccac4ced890d5086b4dce52fa1ae162644e9ce01ffb40f32"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:280a01c7a333e70f6359edbb594ff9483cc5d42aeaeea4a5a1f8c34095516df4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:304e6d0d24a72dfab26dede4feb982abeea766f29d7b84718fdaa3ca1d2a1dc6"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a36f9a2c9851e96fc102b293682c447fad95042d3bb48fb9205c5ecaabe2577e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d8333537b1f12c08bd15c5b0ef2dfde4d9314c5fea21af7e7d1cc6bcfce23fe9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fc5e943d94c0fe8d7a6cea0750137119ef2b574eec4623bb39407ef706fa5ae9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:net_share_retirement_yoy:v2:surge_direction:cba1ae9c21fcafc9ade865a42b01a58341783f1425ebc92bf04b93b2b422aa06"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0867975c55f3321a476956dec06faaabf93a9c15f356f0cb5597d44c2d0b4653"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1199ebf9052d533cae2e43dd63d51e00935dfd46360d36ce0e61f36a44292a8a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:3640972eae7c701140de783b50a6d78b0327c6e3ab9cf3f8387342d2d06723a8"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:52ae0236e424a19700fbad3b5591ae97872e5bb8f6b9b9e2e460e4b07feab5fb"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:61e0572e38872d973816bfe2ef39335520b344b832ac990e676a4807648bfc3e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6d836ebcb7c30294955baffc70cd03666d7ae0909f9539fb412070385157c17e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9e75de6170ac2abea1bca8aecaf457e0dd61a8dccd1bca7b5b6cdd98b855e851"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a13f2b918bf3855966c6dae09cc0d1ef2bfc98fc78956a4f64ef95876a105653"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c05c6d41650e4c2210552587d5bcc250b600491c3f0197fa5248b444255863bb"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ed7a2c053983f154d209d012ce3c2cc3ccb800a8b5297fc97bbd743c7a9cde85"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f0cbd879ec3fd41e76e71af6279e40cab1ea578eb5c6794b9f6e9389e3e9a736"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:operating_cash_flow_margin:v2:surge_direction:8c7ce2e7668f1cae949f525a559e9ebc1b3e7a0f07a48ec76da6d1260346262d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:007d1449d70a6b32f806f8a62bf9b90f5ea70d6d7917a3e024855d91811b267b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1052816fe93d2328289ecc0d8dc489cf345bc88e24f7e151a92a888cca7a2f9a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:42c59a367f8c8eeb9b256325fcafe6100563da6273b7ba153bada6723392baec"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:53bc975dd458b92a83bf037d5f6c316bf9a5a8d153323e18b53cd6a269a40974"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:56e29902a58ad43419b7423e93d26367710fc6f4133a7b7858d86db3c9504bc3"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:721b34ea2aa33285930766e7d67f24d6b4b687b85b4fde20d867565c773d0a0f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a7f9309b6ceae760d0e8d92d2bfeaffce3a78906f2e330da43ba537c37d9cc82"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b528c205b245f264a56cb4293912cb1f9cba22e62940c537878b2d27256fff1e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c60161be5bb3b1b9f39c12f76935883ee1c4df2a1af6355bad6adea173706697"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f0ae7a9a55829692d2e5da323744b8716fba78842910e6418598e988be6bb90f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:order_confirmation_disclosed:v2:surge_direction:70840c28c8c926bd4f1816e9e44d892ffd6386e38db26e9fd9c9c905958b80aa"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:032eaf978da99451562f4115a5d2ea4db6709077c12b7f05197d16caa31aa657"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:09961e4e4d79d90fbaa04e4f59f2357d46c66fdced804f5f798d27e624c71e72"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1a1cf403907a75c809a5c5ddff187e6b58e5daf83978b8ee2f35e6bb103e5d8a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:217ce2136c1da5c921167647c37899003515a1850f7a0a233302b299d9556467"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:36bc144b6652861b75f4c08580073bc2b0f66ebcba31a88c917bc8ebb34658de"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:3c9f66964a7c32cf1c5f20cb84869063dd85515a8cc9dcee5c23f510b0375e2c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4c267453a777add0122e93ae237b5fc85052b28ac80e8d011bd470a1975d9b61"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:5eb74915e7bcdfb9d0a0d9490be12e9e24cf335e58eea7f9622f26b85f114aa5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:61d61e842c437104831536f53db80533e0a826b711289252caefe70fb53bde63"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:625e59f4536bb143f7cabc6425d5ca0fdd4e88c5f89ba0b77fcec30ebafc44d3"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:798034d4aa80d76d048a89901755a332604ac6bd2f641c75f476e0ae2fc782db"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7a7ac078e22aef971acef99e3d73ea261694acf5d3c8194c71735200988a21e1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7e327db99c077a694c59ffcc9f4604c13c5740f957c21a90d209bdc2670963dd"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:86c1bad735906ef1e8ce3847727db13c94fee90a9771d343d76d28aca52af0f1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8e02d7c86aff9b8dad2f43c142c16e88d27a916fdf4e41341ab0224a23b91632"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:98d5f11bc4d5a59b177587ee0935e06dfdcc1ffe29f5add023b895c60b78041b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b4c1929c4912e9f2fdb6c4351653b4514d6269ad5b512dbfe7901202e91f274c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:bd6c31f31a211c77da822300caeab215aeb7c87a194badd87a8eb5f344612bf9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:cf471f652cfed69d35e7bffc71504ef2f4eac3b8511bd0dded3ef8be631a74a0"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d403b61afa8317bec51b28054fa99a2f5b9352627522095005260bff98c24e1b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:da6b52cd0d3373b5d1523833d1e056401653ff4fbe8c4bc6cdc2cc1e7cc3ad2e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e47d6c2ef61155a987e38ab3e82e2f090854163bb3393c1c98668744a2c0e843"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e58202102af545fef9d652878eed5d7e0950e498ec979493b9a81119cd6aabb4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e74d4887a3b33ec67fd6b3c0abda665ab1562340a4289d46495b06c3da6cd20a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e9b64c97034fd4b665397b91da7eeca499fde74c89cad1a0831d2e8743e5eba4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ea5e04f999cdf6ffb38eaa6fa51ed9d4ca96fa384be2c28d7df27b97413a06a2"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f1fb8ffc95dfd8dad1f4d8ad5d94a1b35069b25b5300d2f1ebabd0a9251aa218"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f4023317777b848b5b8813591f46447528eefe939f9ab95bda32642ee9688312"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f4bc0c9813948e4c0889ce42dbfcd4e96bb94b813c4dd5b499b458782b037c11"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fb9ba9ff0149ee986ad335fed0497a5db72607aaf3194f59328fa1f29aa5edb7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fc56520155ccccdc03b6c86b518f841c1520715977cf5ca324afa8b5e0f2a2b9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fec687b027ba2b7d9f91da20b54338a7aad4748442ef4f5276e157591315f010"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:order_quality:v2:surge_direction:19e5937744f81088f69ad039eae7915a1cc6b475bca3328bc8fe51493054f817"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4ef7514d1c806747e158f822d8258895a079519bd8e90bd7f4dad3d1792ed015"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b5ed9c736639bd6bc895cbd7ec4db09871d7d628265ca62bceabb8c013a0e9d9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:price_momentum_126d:v2:surge_direction:24034b262b8f4d601c9aa2e1841fb5d0581223b15efbb95ce5b46a52b1bf7864"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:04c6ab4a323960a1b0699f3a1b7b1ca54863de23ad0e3aaa9537cfad8c93867a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9272dbaeee9e320c2e0998a2ce9237264ca0418380a9bf3bade84dc68eadd43f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d996ab914aca9110f8b1cb096efe06ec7df49cd2f9e6a59fb9cd86d4cc04bdb6"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:revenue_acceleration:v2:surge_direction:b06ad6a5e2466127a4beb0c4024540222b05d34c7eb087c0f08cba2b04d55ff5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:34ebf559938d9f5acb7440df26d4c6d50c1e8c6b5f05908ec407cc9f20318611"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d5091e11ebda3ce2c348ab43c59eb95cc40ae1d1e0c12e38b67d97315bed8562"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:revenue_growth_yoy:v2:surge_direction:579ce126cee46b7232f8540b15bd40a1b0e51aff4bc0a86f42f7005ca01e9ca6"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:00a367520fd9bfffc5827f4f36425883d8080a4716f4a413866f1a8787e00d96"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0975a4544c18effc74ce6b7b30f661ab54b0d0b3e59e83108cd49c637c858301"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:112ec5e89b99a85f0ae8bd42012d55731d4251ba82f3fb1e591e498f02f57a67"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:15536cc910d2e754957cd608aa1d2e3128865a9a29ab3695e272d7df94631953"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1e9086935c63d3520ded29d55b4a204c452112bd8fc28863f1dc8ac257a935cf"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:2386f7414fadcbdffe00f0477af91d51bee63eba1c0698b7213a57e14a860799"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:296ecbcc0e7ca109ec32cca8507d2f9b3a84056b55e2fb54418c350b889ebe61"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:2e7de4727cc64d160f11b77b023a4c9db730ad23b4f29409af5f738a0c5228fd"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:43d9f6ea1ce68a40ca2bfdecfed30db47a084bc4a07a5413e52ee2542af8b7f1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:447d99dbfcafa8d7def438e5f9eedea084c1fff49436614d1e0a52a3307a8727"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4f5506269c9f7e6c13fe79f99778980855253512f5ec1244631be69c97eaf380"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:53c62a015a4694b725ac313cad219a31c31c3a6ce2c50e3231edcb9b38b8373e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:5eb418e7877645d0e90af9eb0ed983ca69481566c8af75dd7c367570ecf46048"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:60505fcdb539cad37817555efe4badfed850a30d38821f538af8df08e6ff5b06"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:78da72945dfa4d8217643bf80542d741aa9542a05eb710a0ac314d1265b187a0"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8e2632ad263db64fefcad949c7c22e804098dc46b9876a71482cd41a3c6d0ed4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:96799d19f48dbd4e545f5a820b288e473f809dd2c41a33434c40332ef04fa57f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:989b7f03aa94935899f9ed2e9b6286ffa74f456d9129a1c0064a4df151a123ef"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9a5f078fceebda5d3002171819820d82a2000d07501f8bba6e652072296bf945"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9c5ec306004cb1abc7c87275ed63bf3762dfde6eadd4e83079974699fda79a34"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9dbf32971c755d5aa5c61d19e46b93859e1b6600b657ae8545cc228f9fd2c351"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a34a4d66efd23288243023aa4ccf19a36f992e6bd4035eb9e7f9092f7735146a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a7ec83df7373fbd00bcb027df8fef5a69cc3501dbbeef34c9be74a0a533fae60"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a89f4ba62a2ea231fbc3fbbc5d5c4afe478976ae5f4b8fcd1dfb9bdaab8a46ee"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ac6e12759bbe16a06e15030c788b5a2bc87f3a9258d85524dd221c26d056a1da"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ad5774d1ca77e4dad7288b6b2fa9a7dd00162c23ec6a737eb991f47d748a121c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b3a04b72d28d87b49912521725f22f9ba4ff377298719b7d1b917d238c6e799d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b528af40d9148b2ba24611f45995e3f71a858503dbc9ba0964ff82f5b036f7a4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c27d1cd1d65a5a3d586d9374c6855169a1e2a4b1e64ccdba7df160f19773e85a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c348b9ebfb9b5cf2a2ded80b2b847f6aff8e33ba92a92de5e38a31b88ea9069d"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c640ae4b2a6044e3aa6f135ad5aae54a176e5dedbe96f902586516c09fcc7389"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c727aa4e772a62200f5a45b0679b9b93f25293c1f63ffff5874745676aed8062"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e67c1391981991af29284c91e17e67a4abdbd79b1c6ada5e74b24ad1e72b1488"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f0e703a5426e2135f605aef8ef296d7f6e3d6572b46a3a19e86de06b6b29837e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f37269ef34a105340f26c060c24e8108c08a6d7355fcd00e9c56215d671efcf3"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fc8f2632859eda3148d793ecca17e1ddd6459e68adaafda72ff4d0ba92684ffa"
+      }
+    ],
+    "deferred_count": 535,
+    "included_count": 3,
+    "included_hashes": {
+      "prediction_comparison:7117f1b4dcc90ad9d3819863f2bc26a44f359cd6dbb8f1dc0cab602fd99ed068": "f7d1ada1dd02b553e6c38142d1513d019d2aee362de69e05b16ac04560a399e5",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_result:summary": "b2a5fc4617cc7da6c43175d491e9c35d295212dc58080d4ab2b8a05eed069970",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_validation:summary": "e813a858e2c28c89f0eadd2361eec7ca9e415df5b000af2901f9335f634ecc2c"
+    },
+    "included_refs": [
+      "prediction_comparison:7117f1b4dcc90ad9d3819863f2bc26a44f359cd6dbb8f1dc0cab602fd99ed068",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_result:summary",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_validation:summary"
+    ],
+    "max_items": 3,
+    "prior_memory_view": {
+      "budget_bytes": 32000,
+      "bytes": 224,
+      "deferred": [],
+      "included_hashes": {},
+      "included_refs": [],
+      "requested_refs": [],
+      "schema_version": "slow-method-memory-view-v1",
+      "source_memory_hashes": []
+    },
+    "prior_original_reads": {
+      "available_count": 0,
+      "budget_bytes": 32000,
+      "bytes": 0,
+      "deferred": [],
+      "deferred_count": 0,
+      "included_count": 0,
+      "included_hashes": {},
+      "included_refs": [],
+      "max_items": null,
+      "requested_refs": [],
+      "required_refs": [],
+      "role_scope": "reflection",
+      "schema_version": "slow-source-view-v1"
+    },
+    "requested_refs": [
+      "prediction_comparison:7117f1b4dcc90ad9d3819863f2bc26a44f359cd6dbb8f1dc0cab602fd99ed068",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_result:summary",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_validation:summary",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_validation:effect-1af6e9c35ae7",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_validation:effect-bc7bdb076f5b",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-target-001",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-target-002",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-target-003",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-summary",
+      "slow-history:source-175e61eae26433b3:1:slow_memory:summary",
+      "slow-history:source-175e61eae26433b3:1:slow_memory:lesson-001",
+      "slow-history:source-175e61eae26433b3:1:slow_memory:lesson-002",
+      "slow-history:source-175e61eae26433b3:1:slow_memory:episode-001",
+      "slow-history:source-175e61eae26433b3:1:slow_memory:episode-002",
+      "slow-history:source-175e61eae26433b3:1:slow_memory:episode-003",
+      "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-001",
+      "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-002",
+      "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-003",
+      "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-004",
+      "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-005",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-001",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-002",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-003",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-004",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-005",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-006",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-007",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-008",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-009",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-010",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-011",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-012",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-013",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-014",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-015",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-016",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-017",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-018",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-019",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-020",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-021",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-022",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-023",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-024",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-025",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-026",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-027",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-028",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-029",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-030",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-031",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-032",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-033",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-034",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-035",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-036",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-037",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-038",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-039",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-040",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-041",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-042",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-043",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-044",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-045",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-046",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-047",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-048",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-049",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-050",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-051",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-052",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-053",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-054",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-055",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-056",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-057",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-058",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-059",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-060",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-061",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-062",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-063",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-064",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-065",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-066",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-067",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-068",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-069",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-070",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-071",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-072",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-073",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-074",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-075",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-076",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-077",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-078",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-079",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-080",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-081",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-082",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-083",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-084",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-085",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-086",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-087",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-088",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-089",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-090",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-091",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-092",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-093",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-094",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-095",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-096",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-097",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-098",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-099",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-100",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-101",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-102",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-103",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-104",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-105",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-106",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-107",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-108",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-109",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-110",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-111",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-112",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-113",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-114",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-115",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-116",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-117",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-118",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-119",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-120",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-121",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-122",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-123",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-124",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-125",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-126",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-127",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-128",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-129",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-130",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-131",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-132",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-133",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-134",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-135",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-136",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-137",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-138",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-139",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-140",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-141",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-142",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-143",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-144",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-145",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-146",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-147",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-148",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-149",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-150",
+      "slow-history:source-175e61eae26433b3:1:slow_input:feedback-151",
+      "slow-history:source-175e61eae26433b3:1:slow_loop_validation:mining",
+      "magnitude:plan_r0001_c01",
+      "magnitude:plan_r0001_c02",
+      "prediction_comparison:c039214748cffc52906f4d22e28a13f24a3224abae16b48bf707d14846dc19d5",
+      "target-use:cash_burn_rate_elevated:v2:surge_direction:12af5ae9b34d3686c05dc30292e46235d3ebbb54e484002f1bbb0e6ab491e583",
+      "usage:17077ba0e6aa73110069f58e75bf24b1bc9df74a411563a2434cabe92cb3266a",
+      "usage:1f809f7ab543acfbda0b5efdd7967c7a995cc14dab4665c91c17a79643f4e6d8",
+      "usage:5f54e9997227928d2a637e260edd68847ad5e151957a9ba0080e3d4202ccfb5d",
+      "usage:6b6c0602ca6ae3f6ea895e71d0b78df2956890b7e7aff33c2b20ab3e04a389b5",
+      "usage:71f9c4fdfbb66221394e2e118b338210288fd78de0643cad9cda5615a6649dad",
+      "usage:746798389312f62b5c7f70668f4451161d678ec9b49376b0ecc66d56b5b24ce8",
+      "usage:7ef7eea8215e04f32cdc95a2c564f350e30aa7c6a3c0a62b924938441fd04898",
+      "usage:826ab9c93603accc692fb6256e8383b1099ebf16aeaf57a5a11a38b44af092ae",
+      "usage:9ef172ccd38d80f9d5588274c8aeea9b8eff738edf988afc50d759a01ce297d2",
+      "usage:ed917a0993d35eeaa080fbe8630143d7fd9f7cbfa7f4fe6d58530bac7b97ec1e",
+      "usage:fc13b8f0a267a9f443b7550ce33b1a82a4cc1615a7edfe74db15ba00e5c8b60a",
+      "target-use:cash_reserves:v2:surge_direction:163d5364afa6045c78406eb277456197a06972eca05126f4d9b48fa09eb4e3a1",
+      "usage:010b146506ab9f19873733f9cced882d4e4839295170c0bf2216b9830d44aeda",
+      "usage:0555f05c310ed8651e8bce9fcc7dbc78bde3027d196b7e0a801325baea2eac88",
+      "usage:0b36ea503d31a6a2cad6e8b7c84baa739cfa7afc10b600f221905599b73a21b3",
+      "usage:16b83bb63098b345464a61c059d4d58b0e01d20ac0b30ab7cc13477651d93bd1",
+      "usage:1a9137d85701cbb6fdd77a44de664f92f912ff51ae03564e3ffdc4fd565d9c81",
+      "usage:1ba9d087831e431d24ef35d1a2810b7ebaad116631b930173ceae9c49874a759",
+      "usage:1c2003d9ad32e208d15bce780f8bedbef950f2ae117d643d86a2f68750d4ad21",
+      "usage:213d0c9a87ed654f7b7fbc4442dea3617bbdc649eec8817af22013a0de65b5d7",
+      "usage:221206a55e5361011d9b68fe7d7133eda5fd05e2bdd921ef7d6bb85f1f6c9ade",
+      "usage:23cd2793b2bf02acc0ce45228c0f6c771cdb3dde872b35e4f4cd30b56edc5dac",
+      "usage:24ddad9822a290d46c41b01836d8793e7e60cdfbaa772f70cce841c81f33b469",
+      "usage:274442175e9919e529a80619f917b70d046d17f666330296d085fc239b83f713",
+      "usage:29addb75c1387b402ec8d6e1e8764875f3cc662594c873129333510970f2c435",
+      "usage:43ee817ffe640269eac22992a6e61a8259b94ac991edc7fc5e43fc4bdbd82d21",
+      "usage:468d328626b3db8184698f6d50be08ae9858ace91df8e3c102fb501898c88057",
+      "usage:4901f8157bb38c05dfed814c0491ddc55477029c1c2051f5fa86cae9d2b3b4e0",
+      "usage:569cf5c425982ef1fe881eb2296efb57e89a770a42c9df08bc10f8db8dbf797e",
+      "usage:629d570409860ba07304cee404c006d7cfbf9700f025235ef0e3ee70cac79a24",
+      "usage:6a66d370870f9239ef47ba5873c02fc20ba265d16560630d563ce8bd2a510b43",
+      "usage:6e7dabcee5356810f3eb0810f43fb314c228e520744d75f2d0a7e24a44575e03",
+      "usage:704e0f7c0733107120ee189f55572468794471a62d33225f0807034502ea7494",
+      "usage:70a929a181ee5d11b5b39df3978d43957ba8c3c7cc398735da6e58d8dde086db",
+      "usage:721693f576a34f1a56d182839758ecdfe2d76b5e783f797e5d3d8ee529448efe",
+      "usage:77993aff7062a7fd8ce3bfed0bdf2e3212da2d58c7d770c568c1352e7fc9a446",
+      "usage:798f8c42d7a71197a6edd248f3e64c574dc41eb29ef874a23284e78b8633d649",
+      "usage:7d3062fcb91d9d753da74de7dcad05c5d540a893d858857807822be2df0fd5c1",
+      "usage:865039e19c79f168276199aaefc8708a237ea068ae560d91855c869f45d8c607",
+      "usage:88cbbf247be411abf2df0bc39047d5c3f75b04b2a2f199f92e45fd32650cfe82",
+      "usage:9348543f24434c44e084065cfbdaeb55e6fd99d9a9a1520e106d40e4b06bf97c",
+      "usage:94e376a90b1011721f075dafdbca16bebcf35134daa63f619d752bff4f5c8676",
+      "usage:9530dd650090e2881bee67263d9a975ec21b95cdbc6d39ec6779246f274bb65d",
+      "usage:9582a7940be24a7c82d2e0db78b9859c376dfa6e3c987598bb4d1e3088d59ecc",
+      "usage:984e7525e7617aa9430e9bd3687c6ab098c2ee5187773a1f84b227eeb91e3fdb",
+      "usage:9c16820ad5e7f9e38203a0d1a0a64a458b7fadd916bf2f0e3b82739a6dfcd8b0",
+      "usage:9e9cd8239b33854044f3f1416a4f3a5a0feef3e37c678d6de8d4317cfad97e32",
+      "usage:9ed1c7edfefb6d899e7c622278a53c89b6a3fbaa01508f4046a6f021e8f2c8a9",
+      "usage:a3d72ef6ca7259eaf930b2a1a1070a92f36ce460eabe3fc0f94b1e66b9885857",
+      "usage:b222a9e4bfe4fc4297ce7d57d1c2df0624536a41f1fbc02b30b6d927b8b39fb2",
+      "usage:ba16baf429a21d3a11551720219e1c4a38f3e0f62c67f0e92388feba49890f03",
+      "usage:c24fa4507949a52115ce25b0ccff4a1ad3d97b3c0d1d12945becd8733c0a7592",
+      "usage:c3b2dffb5292c55940a9ee410d2be6c72aba95133fc62440571148d7ee612711",
+      "usage:c4a74eda07dac79c742604e0086707c5a5a40c6a6b920ad4e86768d3f62fc72f",
+      "usage:c554b33f785bef94b4d0691f632fd0402e9b2249cfb61966deddf4af43be1366",
+      "usage:d6d3a4c10aff29ce419878a9d09769178a1de01615f00ee126ddfe4325d5c3c4",
+      "usage:d75ed77c79e2233792fad26626b5b58222dc0d76819c05513a739fb4a9e03f2f",
+      "usage:d94413241ab863b72170685c4d716504175d410bb9a8a63a2d8cd4ca2ffec99c",
+      "usage:e272c21ba3f6e38bfe7b304399c270debf46e594d7141537856b1f6ec764ee43",
+      "usage:e9e91b80529ebda69e76458a22e955bf7b4a15edcb09b8c22a3e016583249fe2",
+      "usage:ee739f3846be091cd38d8dd939a0c262ceb5df3dee6f173a9afa2b6062a555e7",
+      "usage:f035c8fef5572582f278820ef889f652c0431a8ae454531ecbf2e75983990abc",
+      "usage:f413445051d2142bb350099a3f1bd26a56d1579cac3db91f2a2dbfcdb97e4be7",
+      "usage:f5ba528db1fccfcf2b865e5dbc08a0423eb59701c1ce8a8c0e0a7aa876dcc189",
+      "target-use:cash_to_current_liabilities_ratio:v2:surge_direction:5176d9433c07c727a7826f7a667e9c31d9e034de63f6d3bec1e71b38f05ea1a4",
+      "usage:03f1ef4ac5598f0e82047c92e6114e5af4f6030334f653149956d19388bfa7cb",
+      "usage:5d2a18f3744f1e2b8fa825245f1de905f8992e64b4f5d9a9cd5a00eddf02a59b",
+      "usage:7b2edae4d86c73a045a61dfbbf7283b96a244d79e6f607ecd2777f6df18f5d72",
+      "usage:a24f879bc7ea291ee97818648aa543a60be7b11b7d287d85b92bc6f626b3e359",
+      "usage:a2f29c96d62019728481d8f926cf89f91f028b92d10afc02a4436ee0b128a6b2",
+      "usage:bdd3999a54d0c315c76354c04539dd7b95cdc88e4f9eee0123113cd165d37aa7",
+      "usage:c85975177e8ebb06601380b41bc9169b73858174cb224ec7323a406b360c9e81",
+      "usage:c8839ffc9f648d63b2fcbb97212de70806d85d868d82efb90af2449f47e3ca75",
+      "usage:d805df823076b13a523b4256a068f4d11e75d15e7a5090a380fa977925f747b4",
+      "target-use:commercialization_status:v2:surge_direction:ba98ae6981daecac77d60a0c63ba5360faf3055d0ca10e62d4d3d8914770e88e",
+      "usage:3b62dc9cbc462ef2d9a0f8ec8a8039fc175a6f0145d6991e0d350d0337faf88b",
+      "usage:4c7652916ff82dc27a4cbf93070afd8f6c8a0007d7d6bc7d8695198d82abf4a3",
+      "usage:4e1a52109926e9d23d115ff99620c10a376d8cd6e2962627f8a0c9d308cec68a",
+      "usage:5ee2c698cda48412aec70848a5ee65740ce5fccc38afeff7c8f15abb378831a6",
+      "usage:5fc215d3f35caa02ef1325d6946b9b8a3b6430de33a0388f44544a4f1dff0089",
+      "usage:64a7fafd0d674aa8416e293517916ed68f154d1a7e3aaa7df5e039b2f0257ae1",
+      "usage:65effa2227f4effc5f204b61ed628db9a55bf294caa390b8d7902dd7ff40169b",
+      "usage:6f6ec4c157e15499c1463e81bd2ec83a50f60296ca3c07fc83c340e11ec15c33",
+      "usage:7b4b839aec401c113203d6a993309b2c06deacd82917a31242a82b4b015ca978",
+      "usage:8596ab1c8143a1c134e07187cee533f4419f0a76d410f90672676e456a96907b",
+      "usage:8cf3cc4f26f432f7e4a6e6c97caaea239329e70c7f2d94d9c394d6a1c1e43c70",
+      "usage:cd1a98b21f5187ed27c52d8a49352537be61ac8c73ead9279bf004000e3003c5",
+      "usage:d12fe7014579ba0fdcff061b98490f674b04e65439b4a0745de1d234178ada84",
+      "usage:d172f6bee8cf174bf3e814164c4c6ec108f13decc1363fa5570492a687969c8d",
+      "usage:e049ffef0c5f3dc099ba18bf7c0e281da82d1e5983faffac750a0bc73d1acd6b",
+      "target-use:customer_concentration:v2:surge_direction:d534d606ce8e48be80ab9f9b788e24b2ea70507d17fce3a80ec32b6230124629",
+      "usage:05f613a43ae720eb8486fda6b91a7ba8e7a5a862884ce3a15372314061446ec9",
+      "usage:30d52ae3f124d9879b3b1e4e8636fd67eb8464798c362ca3d7f34f8943252fdf",
+      "usage:4505f32edf672041fb08b6fd45ebc54ad2b3f562c8e3ad160bd21e68aacfcec8",
+      "usage:4864351f83a6b28bf07b5b094fe5d26d3c339ad0a2dd346a4fccfaff0ad6a776",
+      "usage:48ff19d843962fa2802ba98eb9a97fb1d3dbc7dad710a3e0e005fb8d64335641",
+      "usage:4c2c1a4c0e40e66c4ba71b77b231909c7c664c72353b69a06cf92c776fdb0a1c",
+      "usage:7fdcccc0fca9dc4f66ac95f4d67594cd4e0188a865cd06a45a7405f5c8d9e9f9",
+      "usage:7fdd832bacd99fa11dc58f2cdb1df7712a3b4440418a2cc6a42f360e7dec4871",
+      "usage:84ac5eac55e1ec6cfe1f8d14785502ec0e6f80d667bdb2f26b83e10e11e4cfa1",
+      "usage:8b8e928cf1dd6b4a65e84c93df3a527615df5829317cc69c8e2ee03dec8e5b7e",
+      "usage:a2e9ccce63f18311dd3da6beeda2d1de9bf96104e01c4c1b73b6a55eecbda0ff",
+      "usage:adaeeef057d7cb2effc7798589be038197acc97ea9db75567e744967c3136b89",
+      "usage:e22481a47fa8d59cffc33985542166620572fc9d0fa03d2b819d2a2d591a072f",
+      "usage:fdb717f7e0dd719504b0ad10c851bbdc7bb6364957af7f50d8803de8d5fdc95d",
+      "target-use:financing_listing_action:v3:surge_direction:a41a1b8d64caf2b66c8b12fd79a7515643c1fc26d688536a8ffc0adc8c3455b8",
+      "usage:0647493a7bedb9f2949a28f33cb344d45988067dbd54c565b530840b8f01bf4b",
+      "usage:1a316555425e2fadb14c43cb589832c44e42641e1e0eb22c3b8703d494730899",
+      "usage:1fbf7948eecefa68f8255d0eb8fa6b75e1a3987c135f336420290474927cf71f",
+      "usage:2ae414fc3ef0c82300fe2064cbf4f996dc923864d382f8b59f70d2b92cf2fa90",
+      "usage:306c85a0de33c9f836f79add330d541cef2b78f474c1d463b301508fd095232c",
+      "usage:3828588a2486315ac3a99403cee54b9acd003f83023dc2ac8dde26292cb00af3",
+      "usage:60dfd77f713505207023803805cf5339fd01d6721115e00d252f995d48124a1a",
+      "usage:6ae9fc849fb8290f86d13ebea990381f7ba0b2fa07b3cd9c2a89438571e6dc7a",
+      "usage:74e3d59bd3f2f07c557616720e0609988793c2dc1951b4987fc5ebcc6a47d8c7",
+      "usage:7e1c8ab23c7e68e2a96bb0fedd28af79f59eaead78f621c9b7671f2f6a8b636e",
+      "usage:87a015a54f07faf1460e5b962266949b9aa77b398e9a003aa818d79403729dc4",
+      "usage:9af4839aba3539e587f851e4653f330c2e28cf73cbb94f3a967895152439e020",
+      "usage:aa4a06923c59f112baaadaa0469249b284b86f960c8e4902daded11d204f8bb4",
+      "usage:adb7c9e87b5325f0c492f8b2c162e7a8f29b5760540610edfdd2db263756584e",
+      "usage:b3032f46ff942ae9979e341c39d189a25b73870e55202884c4b7329d35a7c258",
+      "usage:dd5ccb152c440f1acc8397cb3901853bdb57e23c6e7c5f9d0f341b13be90b5c6",
+      "usage:e8c4d5b10d694cf3856fd72ca549d7cef407f2a441765b48345448c35297c3b7",
+      "target-use:financing_listing_action:v4:surge_direction:9153c439bb4387065f5392b9f1612b5774c7aa2bbd8a7ec010f5dba8ab9cd8ca",
+      "usage:0c26525c1aa54a82482dcdb3b915f79c9b26c73a2c5acb86aa9e16434b96d476",
+      "usage:0ed098761602bdd42b072dc3b845c40605e20236ec004102fc7bbe0700296fd2",
+      "usage:17d5a4eaf72d5a2b29e265488ebb897a818b93d7226562caf83bfb5791634c8d",
+      "usage:19929712f998bd171f099ff00b17bb78954edd6134353bce98a8ad95d94ff9e4",
+      "usage:203d19f9f210a48ea4e8b44d8693746fd6431a68d5de113ccd1d556feddc5f7e",
+      "usage:34f9ef11127da415d42b85a9be5a218912de7db3f4fba06e75650d8f19606ea1",
+      "usage:38a82ed0da073e1889fead2cb94b6fd7dec50107a668fe1bc00c09402bb666cf",
+      "usage:3e469591936e9abcd2dd0cfea619794211669b6b0b944f5639feb378b4b0b390",
+      "usage:440cfd2121d76f7ca364d5b4a97579e48a6d0d714872833fd4fb228021d91f2a",
+      "usage:443aac8034dc2b2de9321c5684aacbd09d3939d00bca0cfbc050ca00cbd691d7",
+      "usage:495b6f648a3ba713651710ddd00b4ef6efcdde7bcfe1e54667b7efb1879664af",
+      "usage:4b9997dc1fe3d71852cd98891da35ed416d815cd94931adddf1b1772faab4079",
+      "usage:4eed90f102f60946d993702aaf2ad6b20987a31b9e6b558958e4d442e328ed89",
+      "usage:613a736979fcfdc9384b3f93bbcfc4f8eb498e6f8168d09c87239ce0afd59356",
+      "usage:6dab69c1ff5e6794e43a140fa827a7fd9f3bc5ece2caea379380a2d5cd8ca98b",
+      "usage:6fd7a6639f7395191917d9bc06b091a15154fc7acba3a7038d47f8564ba3a649",
+      "usage:7014ff0916e3ce7774ae7490e4e077a60ff3f1c07d738dd92c26a471cd4d7e56",
+      "usage:7d195babee13a196cb79f4d84c219fc388edd313287c6832ec07903ec517e96b",
+      "usage:7f94fb4645ee0534233f9afaeddab8f52608fa1137ec013719fbfcaaf4f43504",
+      "usage:8abb65ccf49b9b178e6b8d715dbc490bd75481f385cbe4336cd407c4b400559e",
+      "usage:8b33fb638c879f21ac42a57be1aa9b67f708bfb006ea665ff56d45ecfc24f921",
+      "usage:8ca42762e2dcb938b252e057fb6ea2bd659b9b394bcb8f4dee3d065513175200",
+      "usage:8d292bdc57fc887a22950bed9fd8e589808f1aeeaac1339b4cd991935c494f7b",
+      "usage:912b9a3199af36cc642348d50f582a767efa2c0f03dd020f23bf8533b2952167",
+      "usage:991b7ebfe23f37efc9d146e3e9e65942d95a78782a38c92a8e43e0bfeec958b7",
+      "usage:b305aac882ca18df2722853b5fb0c14d1d9ed2c81a35dd34fab2d263bfa5248e",
+      "usage:b586d34f54de224577685640b524002fa0070f8dff8d0fb0a1b83fe97b6e567c",
+      "usage:bf426b6b57d57adf6da3043abb5c762c74dc38a504007b91a2f37fb88cc5e6da",
+      "usage:ccad099bc98e9181c9c9ddaec54800be9dde75fccfa3c31509b26c2e58e285ae",
+      "usage:cfa530f273631ba956270890e50d27574acf83720246e146a7e4c86c39f29edd",
+      "usage:d65d46eff2d4b02d1465f4401b78c7a1540eae1d38edb005b00e686838f42c50",
+      "usage:e54ffa4a2bf6eb3b5c5bbf1faca7cec3a132d89df2a5e543c9fd8c25769b442f",
+      "usage:ecb656b40dadf21d0e41e12d1ada2207e789d79600b88f445bb518882ea6ec66",
+      "usage:f706a5a0660f7ecd85727768fb8c99679140663bd2ba64d8f544b0fcfb485db2",
+      "usage:f84e8fc6701123ef7f1ddee9e5f2d0b9c423e41937c35f56ffb7974e3172220b",
+      "usage:fda6696a57bec4c3ff84af04fb997aa4e0962b333ee7259e2bd1df2036b0d608",
+      "usage:ff3f3207d8a5a19f867aa3c488888bce47972eae8cf41d5702f6f2a9b3d18039",
+      "target-use:gross_margin_change:v3:surge_direction:4e28ff6592b017a3caebea14a528bdfe6d30e8b57783fa9c7eb6a0d89b533f3f",
+      "usage:1fb867b5a388aa4cbaed93541c72efa87137c51eb422333758248ef145a2b5ab",
+      "usage:2be8d2caf84f02b7371d6aec56595c71a680261f7b389ac6d3a0debebc24083d",
+      "usage:3551c16d63c44334f70112e61ffcfa9de5c9c5aec1528f1896de4f735f0632e0",
+      "usage:369ac719bf7b03c38ed0678f1747f489dd200e449d1547932db10647aec3ef63",
+      "usage:4910544080a51aae583782f24b76d402befde110d49182d7a9cd7ea501caaab7",
+      "usage:5114902ff15359b3d7095e912e372b375a395396cdc63cf00f15ef5f9bf4d1c0",
+      "usage:6fff56b8aefe94959d72c35f506a49a1ee404361da873bda12c0dd144c36fcc1",
+      "usage:7bd116d14218429c4e69d4cbf360e0263efc87db76981c556189dcf427acaadc",
+      "usage:a102a7df429e1097a1bf60c75b404dbd5c8f6fcc5b66df450b73e4ddc8175263",
+      "usage:a39d5eabd38f2f44a962fe7aef27dd1d664c6954a76499f091d1a034525cfec6",
+      "usage:a90cb86fb39e078f0ac269368407a39e8ad2d62a0b3c11710ff4ea3af6afea2a",
+      "usage:b9a69e74b3fa027a97c41be861f6e43e456968948b9087ea42d6009c5277efb6",
+      "target-use:guidance_acceleration:v2:surge_direction:01d3327be171a8d87859f9b9b73d1287d40e5dc3a5c1a954d0f6535c8a913a30",
+      "usage:0a4fb66eba62d09d0d1c3c49d555ac3996b555f87557fac8145c8177d62d9a26",
+      "usage:1dc2dd3fcb7a0a714f7fb2311d15e95f31af2e9419c41e692181f98fc3d0ba22",
+      "usage:34e243031d1271b844474f8cd744044f2d4e2aa17f37cba66655df0d3f80c264",
+      "usage:50c1bd0c6659639891682a1a1ad189f8068265e6f1b3e04b8531973d16a11236",
+      "usage:6e696970013f6a759de4f2c8654411be756f2c74661e076023c6239894b9cf0c",
+      "usage:7eb30e9c6921a424030aeac23d1ff69adad72a2692477dea1af622f4a2e412e0",
+      "usage:b531f594ab708ebe6bf60f52214eec45b2ee8eee4a15970cbdad97dc7e5c3e61",
+      "usage:bf33fd08a50151ee7a488f4f135c1b459de28f4a5c172afb644cee75d75b9c44",
+      "usage:c06dea57bef5dd69de7d71e419669a380a568387d8e952286b74ca8828e2882a",
+      "usage:c1d5f56de66dd61e5d8fe71f0b10ed308fa03cc97c87192bc1b9e2fa38a3bfdf",
+      "usage:d701fd7af32ff3e3ea26723d80dde77022e29acd6f0ba401c8677cb03f4935e9",
+      "usage:fb1d4c479fdca8a003e5b9f0327ed7a74ebfb1ab2cbb16e43237f26a8cabb344",
+      "usage:fb644170769f48e4e5bd365244e34126022924c0d6ad5c66a71d4e206fe63ea7",
+      "usage:fedb661fad283b5e2e3df60cfd12e9da6306a4ae2235afb1653150f4d5fefb39",
+      "target-use:guidance_acceleration:v3:surge_direction:082a548a60a47aa997cb546452666f1124bb171d0eb96f43102bad997b45186b",
+      "usage:01484b8dc471c06b63f31ee264a3bf2d6385aa293ea6015f5806d1271e9b2382",
+      "usage:01e8dbdf7969f7f8457837360e6ce5f791b1ec89c1020aa13d22f2d74df953e7",
+      "usage:1dbfa2b542ec1d56866b63ae38bec0dce30fd34a287f8f406b1d81da8b1b7ca8",
+      "usage:300a8a174bde079f437748fbc863f72ba5db7c8311bedce2d5eb3626e6d817e3",
+      "usage:411f9b1cec52e46a75581885d19e90e9d65e2da6667aca3719bd4c94e3d91102",
+      "usage:49bd2e38493ff23566fc542f1beacecb134d174758459723c13c31208e3290a5",
+      "usage:70dd43b15d3b1167b3bbc0278dac6d6e5eefd94dd21eac692106bd9af5573f1b",
+      "usage:8430b7cd0dad266f9bdb2e7172d56a119a66cc53b748e2e34d69f34bfdde3d10",
+      "usage:87e4895307d74bb20dbd0dccbf28cbacaefdc371120514e553d735cfacc9c1cd",
+      "usage:88702977b409ff5da65d165c380082d58843b8fae959c44cdee8e890c7193249",
+      "usage:9db150085e7fbb42a88db0a8178882f0b8aa336147c8f4f86b421f2475e6695f",
+      "usage:a04d266bf8d0ed80150bbaec300452cab70b04293ec62a3bec2f366d9cf28d94",
+      "usage:b56be1dcb429f40ebf9199ae6041d1b6a68d6d46af5bf3b3e20c4455561d5ceb",
+      "usage:bf11e170a6b6b60c643c02322f7af65ae63794d877fd4ae08af5dfec7616d8aa",
+      "usage:c32181237885f8f2f6a2bc3a6a7c24340b3443cfd295dc25702899624a8f183e",
+      "usage:c384408827fa7edd853151e63552e37a202cfb2a735a411b9a464d0e973633d7",
+      "usage:c9afa07ae313468b8d48cd3f2e33031e541aed26bc2c9b103e25aa04bcf786cb",
+      "usage:d1588b67aa6a1932f9def06ca8e7c62637777d6a630b95672866500fef2d7ed2",
+      "usage:e06336c83d1761a6f3dd1de507aefb26ad40c82ebdf036586daf4f366b381261",
+      "usage:fd02fc3d2b5d4611587ef810e57c89391ca27fd98559767f60325104f620f6e5",
+      "usage:fdfeb9d54f94293e8e227852e6e95f6ffcab6db0b2af806735e275320bea4db7",
+      "target-use:liquidity_runway_months:v2:surge_direction:34fb17cb570bd143dd2a0c50fd0b5d89a811137e47bc242435111646843dd121",
+      "usage:06fa81fb402febf33a76072a0da52689a90e36b808d3152633ba4b0e91cd6d12",
+      "usage:0d0fc008ac42db9159797627cadeaaa3f1ccdfaf7ebfa16dcff9b790a5cd5b2d",
+      "usage:1428817ea1dd8b507d275cbcfda13793ef01d933b828849d531d89a55774dc02",
+      "usage:1768b21569566cd2365db20aa08b91600382fd7303cbf4d0cda8661891d60ccc",
+      "usage:18327c02aed84abe696aa471f4d0bf0ecd4d0f2b31d35c0cb82bbb1d34c99020",
+      "usage:1a3413e49814f6657cece09163c2d597664aa46fff55b4df515073b9d51c8242",
+      "usage:1f9ca6198c54226a7510c6e76ffba7c3852623fe037cb746cf80b544cbf83b5b",
+      "usage:25aa68a4e96aeb8b6e6873442a4ce090b4dc8d7026ddc26dd24fe5b7ab782147",
+      "usage:465df386e522f840e41d20e310dea8fc492fb1b7dc398c4d35490e19a38ac715",
+      "usage:5977923a15c2c1668f8258047a642204042d09b07236bf4befea7702d41be3fb",
+      "usage:6bf3cb635fbe8c2737a6514a38c4091b3a571b173febd0e8feeac2af8dcee1b4",
+      "usage:6c2b952591071b26350b0fcce1c9902a7834862ec24008c1cfa422124b422f6d",
+      "usage:70908b639ba6090f5833ed32bd1c7e739927b2330630756f862d2e14e296102c",
+      "usage:716131b22248f40f1fe5a422fa97b4fbcf0e018a30596235a467533c3097a51c",
+      "usage:71a98505bb3b9bd9b76b685c2bd9e88c90f59f03ae1a405dfef7c21d230b3de9",
+      "usage:72cb02c4c6e179b7a187e90ba22f60417d4d083270570b2175dc50bf86b98ffc",
+      "usage:759349ac115cd07dc5a6ae9553aa1fb00eb7da1f53c3a036ca0e86c731dc4cd5",
+      "usage:81086775ccb34eb68458d13813b173f547648a18453570aff35d5772a2f7b75a",
+      "usage:86df0a4b93ddc36afcb89d411f038f6bb8bd4c9c7456b33fda2b2c5134939d43",
+      "usage:8935063a98d823e2460cd3e1526debbf32300f02988086774776c3d74945be05",
+      "usage:89a663b182f412cf6e242c93f06ac2b18b9204dfb8807b2deb8e9e62a2028ca2",
+      "usage:8aeee38c0aaf472832d68fc9ffc809ff5d9b07a7c6db6d48a2e98e2ca932db8f",
+      "usage:8e996d7568cb75fe93dd88a1fa613fe38a2fdab9ea556b275ba0dd28c6a30672",
+      "usage:911d4fb10eeb9b4c808e6623e290a2b39deda70fe809c97d8a0d731181c3c999",
+      "usage:92883c0367ff5477d8fdbbe49584c80384d81a4d4b2682118265c3b18165c6f4",
+      "usage:980c21ce7f2d443ad0ba71b50be43be92963f7751b6c7f72c737f5ce88729523",
+      "usage:9c8947c8dbf8cb505b4d054d63bc2ddc3c791f2ff9a982841cc950baed7516c9",
+      "usage:a26061646b3768f0f3f0248207ba8796a1a84eb6725d83d57882fabc5fc17c8a",
+      "usage:a3c0d44980201d30e58f76aebf3b62427fc7bae3caadf270e7c3bc988b29a7af",
+      "usage:a4b5785c022a6a1360a3cbcef667610a5a1d342b40fcf118edc0f4aaa339b1e4",
+      "usage:b3d77bd109e5b7d066d1b35ee1a351bf2e2022a064592197b22895bf48410d27",
+      "usage:b45c9c99e08dab848660dcea9a2ddd353831116cb9baff980e79a0758d07c652",
+      "usage:b6e4d088bd292612b052888f655d838d0278383d23040068797cec09d62d7888",
+      "usage:c12e62cd88e64b89835d82aec320705b1309ace0bd203546f723607d6880085f",
+      "usage:d3f9399d6477f621701d3653951b12cb9421f6d5f131f38bfbafbf500ee5b58b",
+      "usage:e32de86d59d8016c6b029577e50bee832a33ab884fb80a931f541f694a77f4ac",
+      "usage:e3fbfd13371008959d17f7bdc83cbe978c4dbf57905083d82a9351e6a1853f54",
+      "usage:e451087d238064bd63ed861f5b2320ff9f9a280a608b9aeeefbb3623fad937ab",
+      "usage:ed53e37731b54ee10ade37097ed0033afb8622fd3ca6718868a885fddbf609c7",
+      "target-use:negative_word_count:v2:surge_direction:b69c1ce1ccd9ba47f9dc6aec81edee56b2cddab74fb68cffc655b14fb9b95527",
+      "usage:1114758774448469c721d13879ef9d0d44780838ac6e47b64ad0e46f610f9ba9",
+      "usage:19a463661ed7a58bccac4ced890d5086b4dce52fa1ae162644e9ce01ffb40f32",
+      "usage:280a01c7a333e70f6359edbb594ff9483cc5d42aeaeea4a5a1f8c34095516df4",
+      "usage:304e6d0d24a72dfab26dede4feb982abeea766f29d7b84718fdaa3ca1d2a1dc6",
+      "usage:a36f9a2c9851e96fc102b293682c447fad95042d3bb48fb9205c5ecaabe2577e",
+      "usage:d8333537b1f12c08bd15c5b0ef2dfde4d9314c5fea21af7e7d1cc6bcfce23fe9",
+      "usage:fc5e943d94c0fe8d7a6cea0750137119ef2b574eec4623bb39407ef706fa5ae9",
+      "target-use:net_share_retirement_yoy:v2:surge_direction:cba1ae9c21fcafc9ade865a42b01a58341783f1425ebc92bf04b93b2b422aa06",
+      "usage:0867975c55f3321a476956dec06faaabf93a9c15f356f0cb5597d44c2d0b4653",
+      "usage:1199ebf9052d533cae2e43dd63d51e00935dfd46360d36ce0e61f36a44292a8a",
+      "usage:3640972eae7c701140de783b50a6d78b0327c6e3ab9cf3f8387342d2d06723a8",
+      "usage:52ae0236e424a19700fbad3b5591ae97872e5bb8f6b9b9e2e460e4b07feab5fb",
+      "usage:61e0572e38872d973816bfe2ef39335520b344b832ac990e676a4807648bfc3e",
+      "usage:6d836ebcb7c30294955baffc70cd03666d7ae0909f9539fb412070385157c17e",
+      "usage:9e75de6170ac2abea1bca8aecaf457e0dd61a8dccd1bca7b5b6cdd98b855e851",
+      "usage:a13f2b918bf3855966c6dae09cc0d1ef2bfc98fc78956a4f64ef95876a105653",
+      "usage:c05c6d41650e4c2210552587d5bcc250b600491c3f0197fa5248b444255863bb",
+      "usage:ed7a2c053983f154d209d012ce3c2cc3ccb800a8b5297fc97bbd743c7a9cde85",
+      "usage:f0cbd879ec3fd41e76e71af6279e40cab1ea578eb5c6794b9f6e9389e3e9a736",
+      "target-use:operating_cash_flow_margin:v2:surge_direction:8c7ce2e7668f1cae949f525a559e9ebc1b3e7a0f07a48ec76da6d1260346262d",
+      "usage:007d1449d70a6b32f806f8a62bf9b90f5ea70d6d7917a3e024855d91811b267b",
+      "usage:1052816fe93d2328289ecc0d8dc489cf345bc88e24f7e151a92a888cca7a2f9a",
+      "usage:42c59a367f8c8eeb9b256325fcafe6100563da6273b7ba153bada6723392baec",
+      "usage:53bc975dd458b92a83bf037d5f6c316bf9a5a8d153323e18b53cd6a269a40974",
+      "usage:56e29902a58ad43419b7423e93d26367710fc6f4133a7b7858d86db3c9504bc3",
+      "usage:721b34ea2aa33285930766e7d67f24d6b4b687b85b4fde20d867565c773d0a0f",
+      "usage:a7f9309b6ceae760d0e8d92d2bfeaffce3a78906f2e330da43ba537c37d9cc82",
+      "usage:b528c205b245f264a56cb4293912cb1f9cba22e62940c537878b2d27256fff1e",
+      "usage:c60161be5bb3b1b9f39c12f76935883ee1c4df2a1af6355bad6adea173706697",
+      "usage:f0ae7a9a55829692d2e5da323744b8716fba78842910e6418598e988be6bb90f",
+      "target-use:order_confirmation_disclosed:v2:surge_direction:70840c28c8c926bd4f1816e9e44d892ffd6386e38db26e9fd9c9c905958b80aa",
+      "usage:032eaf978da99451562f4115a5d2ea4db6709077c12b7f05197d16caa31aa657",
+      "usage:09961e4e4d79d90fbaa04e4f59f2357d46c66fdced804f5f798d27e624c71e72",
+      "usage:1a1cf403907a75c809a5c5ddff187e6b58e5daf83978b8ee2f35e6bb103e5d8a",
+      "usage:217ce2136c1da5c921167647c37899003515a1850f7a0a233302b299d9556467",
+      "usage:36bc144b6652861b75f4c08580073bc2b0f66ebcba31a88c917bc8ebb34658de",
+      "usage:3c9f66964a7c32cf1c5f20cb84869063dd85515a8cc9dcee5c23f510b0375e2c",
+      "usage:4c267453a777add0122e93ae237b5fc85052b28ac80e8d011bd470a1975d9b61",
+      "usage:5eb74915e7bcdfb9d0a0d9490be12e9e24cf335e58eea7f9622f26b85f114aa5",
+      "usage:61d61e842c437104831536f53db80533e0a826b711289252caefe70fb53bde63",
+      "usage:625e59f4536bb143f7cabc6425d5ca0fdd4e88c5f89ba0b77fcec30ebafc44d3",
+      "usage:798034d4aa80d76d048a89901755a332604ac6bd2f641c75f476e0ae2fc782db",
+      "usage:7a7ac078e22aef971acef99e3d73ea261694acf5d3c8194c71735200988a21e1",
+      "usage:7e327db99c077a694c59ffcc9f4604c13c5740f957c21a90d209bdc2670963dd",
+      "usage:86c1bad735906ef1e8ce3847727db13c94fee90a9771d343d76d28aca52af0f1",
+      "usage:8e02d7c86aff9b8dad2f43c142c16e88d27a916fdf4e41341ab0224a23b91632",
+      "usage:98d5f11bc4d5a59b177587ee0935e06dfdcc1ffe29f5add023b895c60b78041b",
+      "usage:b4c1929c4912e9f2fdb6c4351653b4514d6269ad5b512dbfe7901202e91f274c",
+      "usage:bd6c31f31a211c77da822300caeab215aeb7c87a194badd87a8eb5f344612bf9",
+      "usage:cf471f652cfed69d35e7bffc71504ef2f4eac3b8511bd0dded3ef8be631a74a0",
+      "usage:d403b61afa8317bec51b28054fa99a2f5b9352627522095005260bff98c24e1b",
+      "usage:da6b52cd0d3373b5d1523833d1e056401653ff4fbe8c4bc6cdc2cc1e7cc3ad2e",
+      "usage:e47d6c2ef61155a987e38ab3e82e2f090854163bb3393c1c98668744a2c0e843",
+      "usage:e58202102af545fef9d652878eed5d7e0950e498ec979493b9a81119cd6aabb4",
+      "usage:e74d4887a3b33ec67fd6b3c0abda665ab1562340a4289d46495b06c3da6cd20a",
+      "usage:e9b64c97034fd4b665397b91da7eeca499fde74c89cad1a0831d2e8743e5eba4",
+      "usage:ea5e04f999cdf6ffb38eaa6fa51ed9d4ca96fa384be2c28d7df27b97413a06a2",
+      "usage:f1fb8ffc95dfd8dad1f4d8ad5d94a1b35069b25b5300d2f1ebabd0a9251aa218",
+      "usage:f4023317777b848b5b8813591f46447528eefe939f9ab95bda32642ee9688312",
+      "usage:f4bc0c9813948e4c0889ce42dbfcd4e96bb94b813c4dd5b499b458782b037c11",
+      "usage:fb9ba9ff0149ee986ad335fed0497a5db72607aaf3194f59328fa1f29aa5edb7",
+      "usage:fc56520155ccccdc03b6c86b518f841c1520715977cf5ca324afa8b5e0f2a2b9",
+      "usage:fec687b027ba2b7d9f91da20b54338a7aad4748442ef4f5276e157591315f010",
+      "target-use:order_quality:v2:surge_direction:19e5937744f81088f69ad039eae7915a1cc6b475bca3328bc8fe51493054f817",
+      "usage:4ef7514d1c806747e158f822d8258895a079519bd8e90bd7f4dad3d1792ed015",
+      "usage:b5ed9c736639bd6bc895cbd7ec4db09871d7d628265ca62bceabb8c013a0e9d9",
+      "target-use:price_momentum_126d:v2:surge_direction:24034b262b8f4d601c9aa2e1841fb5d0581223b15efbb95ce5b46a52b1bf7864",
+      "usage:04c6ab4a323960a1b0699f3a1b7b1ca54863de23ad0e3aaa9537cfad8c93867a",
+      "usage:9272dbaeee9e320c2e0998a2ce9237264ca0418380a9bf3bade84dc68eadd43f",
+      "usage:d996ab914aca9110f8b1cb096efe06ec7df49cd2f9e6a59fb9cd86d4cc04bdb6",
+      "target-use:revenue_acceleration:v2:surge_direction:b06ad6a5e2466127a4beb0c4024540222b05d34c7eb087c0f08cba2b04d55ff5",
+      "usage:34ebf559938d9f5acb7440df26d4c6d50c1e8c6b5f05908ec407cc9f20318611",
+      "usage:d5091e11ebda3ce2c348ab43c59eb95cc40ae1d1e0c12e38b67d97315bed8562",
+      "target-use:revenue_growth_yoy:v2:surge_direction:579ce126cee46b7232f8540b15bd40a1b0e51aff4bc0a86f42f7005ca01e9ca6",
+      "usage:00a367520fd9bfffc5827f4f36425883d8080a4716f4a413866f1a8787e00d96",
+      "usage:0975a4544c18effc74ce6b7b30f661ab54b0d0b3e59e83108cd49c637c858301",
+      "usage:112ec5e89b99a85f0ae8bd42012d55731d4251ba82f3fb1e591e498f02f57a67",
+      "usage:15536cc910d2e754957cd608aa1d2e3128865a9a29ab3695e272d7df94631953",
+      "usage:1e9086935c63d3520ded29d55b4a204c452112bd8fc28863f1dc8ac257a935cf",
+      "usage:2386f7414fadcbdffe00f0477af91d51bee63eba1c0698b7213a57e14a860799",
+      "usage:296ecbcc0e7ca109ec32cca8507d2f9b3a84056b55e2fb54418c350b889ebe61",
+      "usage:2e7de4727cc64d160f11b77b023a4c9db730ad23b4f29409af5f738a0c5228fd",
+      "usage:43d9f6ea1ce68a40ca2bfdecfed30db47a084bc4a07a5413e52ee2542af8b7f1",
+      "usage:447d99dbfcafa8d7def438e5f9eedea084c1fff49436614d1e0a52a3307a8727",
+      "usage:4f5506269c9f7e6c13fe79f99778980855253512f5ec1244631be69c97eaf380",
+      "usage:53c62a015a4694b725ac313cad219a31c31c3a6ce2c50e3231edcb9b38b8373e",
+      "usage:5eb418e7877645d0e90af9eb0ed983ca69481566c8af75dd7c367570ecf46048",
+      "usage:60505fcdb539cad37817555efe4badfed850a30d38821f538af8df08e6ff5b06",
+      "usage:78da72945dfa4d8217643bf80542d741aa9542a05eb710a0ac314d1265b187a0",
+      "usage:8e2632ad263db64fefcad949c7c22e804098dc46b9876a71482cd41a3c6d0ed4",
+      "usage:96799d19f48dbd4e545f5a820b288e473f809dd2c41a33434c40332ef04fa57f",
+      "usage:989b7f03aa94935899f9ed2e9b6286ffa74f456d9129a1c0064a4df151a123ef",
+      "usage:9a5f078fceebda5d3002171819820d82a2000d07501f8bba6e652072296bf945",
+      "usage:9c5ec306004cb1abc7c87275ed63bf3762dfde6eadd4e83079974699fda79a34",
+      "usage:9dbf32971c755d5aa5c61d19e46b93859e1b6600b657ae8545cc228f9fd2c351",
+      "usage:a34a4d66efd23288243023aa4ccf19a36f992e6bd4035eb9e7f9092f7735146a",
+      "usage:a7ec83df7373fbd00bcb027df8fef5a69cc3501dbbeef34c9be74a0a533fae60",
+      "usage:a89f4ba62a2ea231fbc3fbbc5d5c4afe478976ae5f4b8fcd1dfb9bdaab8a46ee",
+      "usage:ac6e12759bbe16a06e15030c788b5a2bc87f3a9258d85524dd221c26d056a1da",
+      "usage:ad5774d1ca77e4dad7288b6b2fa9a7dd00162c23ec6a737eb991f47d748a121c",
+      "usage:b3a04b72d28d87b49912521725f22f9ba4ff377298719b7d1b917d238c6e799d",
+      "usage:b528af40d9148b2ba24611f45995e3f71a858503dbc9ba0964ff82f5b036f7a4",
+      "usage:c27d1cd1d65a5a3d586d9374c6855169a1e2a4b1e64ccdba7df160f19773e85a",
+      "usage:c348b9ebfb9b5cf2a2ded80b2b847f6aff8e33ba92a92de5e38a31b88ea9069d",
+      "usage:c640ae4b2a6044e3aa6f135ad5aae54a176e5dedbe96f902586516c09fcc7389",
+      "usage:c727aa4e772a62200f5a45b0679b9b93f25293c1f63ffff5874745676aed8062",
+      "usage:e67c1391981991af29284c91e17e67a4abdbd79b1c6ada5e74b24ad1e72b1488",
+      "usage:f0e703a5426e2135f605aef8ef296d7f6e3d6572b46a3a19e86de06b6b29837e",
+      "usage:f37269ef34a105340f26c060c24e8108c08a6d7355fcd00e9c56215d671efcf3",
+      "usage:fc8f2632859eda3148d793ecca17e1ddd6459e68adaafda72ff4d0ba92684ffa"
+    ],
+    "required_refs": [],
+    "role_scope": "reflection",
+    "schema_version": "slow-source-view-v1",
+    "source_read_mode": "kept_default_view",
+    "source_read_request_refs": [
+      "0a6a60f42dc002f0585cea73172400b7ab56dc6b8752443de1566c5ed6bb3f5c"
+    ],
+    "source_read_usage": {
+      "cost": 0.0035966000000000006,
+      "llm_calls": 1,
+      "tokens": 12837
+    }
+  },
+  "parent_memory_hash": "",
+  "pending_feedback_refs": [
+    "slow-history:source-175e61eae26433b3:1:slow_loop_validation:effect-1af6e9c35ae7",
+    "slow-history:source-175e61eae26433b3:1:slow_loop_validation:effect-bc7bdb076f5b",
+    "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-target-001",
+    "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-target-002",
+    "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-target-003",
+    "slow-history:source-175e61eae26433b3:1:slow_loop_validation:update-summary",
+    "slow-history:source-175e61eae26433b3:1:slow_memory:summary",
+    "slow-history:source-175e61eae26433b3:1:slow_memory:lesson-001",
+    "slow-history:source-175e61eae26433b3:1:slow_memory:lesson-002",
+    "slow-history:source-175e61eae26433b3:1:slow_memory:episode-001",
+    "slow-history:source-175e61eae26433b3:1:slow_memory:episode-002",
+    "slow-history:source-175e61eae26433b3:1:slow_memory:episode-003",
+    "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-001",
+    "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-002",
+    "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-003",
+    "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-004",
+    "slow-history:source-175e61eae26433b3:1:slow_experiments:attempt-005",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-001",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-002",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-003",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-004",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-005",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-006",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-007",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-008",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-009",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-010",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-011",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-012",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-013",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-014",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-015",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-016",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-017",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-018",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-019",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-020",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-021",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-022",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-023",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-024",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-025",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-026",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-027",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-028",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-029",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-030",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-031",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-032",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-033",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-034",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-035",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-036",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-037",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-038",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-039",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-040",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-041",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-042",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-043",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-044",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-045",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-046",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-047",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-048",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-049",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-050",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-051",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-052",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-053",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-054",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-055",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-056",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-057",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-058",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-059",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-060",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-061",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-062",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-063",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-064",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-065",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-066",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-067",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-068",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-069",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-070",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-071",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-072",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-073",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-074",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-075",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-076",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-077",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-078",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-079",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-080",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-081",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-082",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-083",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-084",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-085",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-086",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-087",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-088",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-089",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-090",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-091",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-092",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-093",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-094",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-095",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-096",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-097",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-098",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-099",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-100",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-101",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-102",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-103",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-104",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-105",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-106",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-107",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-108",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-109",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-110",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-111",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-112",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-113",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-114",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-115",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-116",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-117",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-118",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-119",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-120",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-121",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-122",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-123",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-124",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-125",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-126",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-127",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-128",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-129",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-130",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-131",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-132",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-133",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-134",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-135",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-136",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-137",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-138",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-139",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-140",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-141",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-142",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-143",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-144",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-145",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-146",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-147",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-148",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-149",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-150",
+    "slow-history:source-175e61eae26433b3:1:slow_input:feedback-151",
+    "slow-history:source-175e61eae26433b3:1:slow_loop_validation:mining",
+    "magnitude:plan_r0001_c01",
+    "magnitude:plan_r0001_c02",
+    "prediction_comparison:c039214748cffc52906f4d22e28a13f24a3224abae16b48bf707d14846dc19d5",
+    "target-use:cash_burn_rate_elevated:v2:surge_direction:12af5ae9b34d3686c05dc30292e46235d3ebbb54e484002f1bbb0e6ab491e583",
+    "usage:17077ba0e6aa73110069f58e75bf24b1bc9df74a411563a2434cabe92cb3266a",
+    "usage:1f809f7ab543acfbda0b5efdd7967c7a995cc14dab4665c91c17a79643f4e6d8",
+    "usage:5f54e9997227928d2a637e260edd68847ad5e151957a9ba0080e3d4202ccfb5d",
+    "usage:6b6c0602ca6ae3f6ea895e71d0b78df2956890b7e7aff33c2b20ab3e04a389b5",
+    "usage:71f9c4fdfbb66221394e2e118b338210288fd78de0643cad9cda5615a6649dad",
+    "usage:746798389312f62b5c7f70668f4451161d678ec9b49376b0ecc66d56b5b24ce8",
+    "usage:7ef7eea8215e04f32cdc95a2c564f350e30aa7c6a3c0a62b924938441fd04898",
+    "usage:826ab9c93603accc692fb6256e8383b1099ebf16aeaf57a5a11a38b44af092ae",
+    "usage:9ef172ccd38d80f9d5588274c8aeea9b8eff738edf988afc50d759a01ce297d2",
+    "usage:ed917a0993d35eeaa080fbe8630143d7fd9f7cbfa7f4fe6d58530bac7b97ec1e",
+    "usage:fc13b8f0a267a9f443b7550ce33b1a82a4cc1615a7edfe74db15ba00e5c8b60a",
+    "target-use:cash_reserves:v2:surge_direction:163d5364afa6045c78406eb277456197a06972eca05126f4d9b48fa09eb4e3a1",
+    "usage:010b146506ab9f19873733f9cced882d4e4839295170c0bf2216b9830d44aeda",
+    "usage:0555f05c310ed8651e8bce9fcc7dbc78bde3027d196b7e0a801325baea2eac88",
+    "usage:0b36ea503d31a6a2cad6e8b7c84baa739cfa7afc10b600f221905599b73a21b3",
+    "usage:16b83bb63098b345464a61c059d4d58b0e01d20ac0b30ab7cc13477651d93bd1",
+    "usage:1a9137d85701cbb6fdd77a44de664f92f912ff51ae03564e3ffdc4fd565d9c81",
+    "usage:1ba9d087831e431d24ef35d1a2810b7ebaad116631b930173ceae9c49874a759",
+    "usage:1c2003d9ad32e208d15bce780f8bedbef950f2ae117d643d86a2f68750d4ad21",
+    "usage:213d0c9a87ed654f7b7fbc4442dea3617bbdc649eec8817af22013a0de65b5d7",
+    "usage:221206a55e5361011d9b68fe7d7133eda5fd05e2bdd921ef7d6bb85f1f6c9ade",
+    "usage:23cd2793b2bf02acc0ce45228c0f6c771cdb3dde872b35e4f4cd30b56edc5dac",
+    "usage:24ddad9822a290d46c41b01836d8793e7e60cdfbaa772f70cce841c81f33b469",
+    "usage:274442175e9919e529a80619f917b70d046d17f666330296d085fc239b83f713",
+    "usage:29addb75c1387b402ec8d6e1e8764875f3cc662594c873129333510970f2c435",
+    "usage:43ee817ffe640269eac22992a6e61a8259b94ac991edc7fc5e43fc4bdbd82d21",
+    "usage:468d328626b3db8184698f6d50be08ae9858ace91df8e3c102fb501898c88057",
+    "usage:4901f8157bb38c05dfed814c0491ddc55477029c1c2051f5fa86cae9d2b3b4e0",
+    "usage:569cf5c425982ef1fe881eb2296efb57e89a770a42c9df08bc10f8db8dbf797e",
+    "usage:629d570409860ba07304cee404c006d7cfbf9700f025235ef0e3ee70cac79a24",
+    "usage:6a66d370870f9239ef47ba5873c02fc20ba265d16560630d563ce8bd2a510b43",
+    "usage:6e7dabcee5356810f3eb0810f43fb314c228e520744d75f2d0a7e24a44575e03",
+    "usage:704e0f7c0733107120ee189f55572468794471a62d33225f0807034502ea7494",
+    "usage:70a929a181ee5d11b5b39df3978d43957ba8c3c7cc398735da6e58d8dde086db",
+    "usage:721693f576a34f1a56d182839758ecdfe2d76b5e783f797e5d3d8ee529448efe",
+    "usage:77993aff7062a7fd8ce3bfed0bdf2e3212da2d58c7d770c568c1352e7fc9a446",
+    "usage:798f8c42d7a71197a6edd248f3e64c574dc41eb29ef874a23284e78b8633d649",
+    "usage:7d3062fcb91d9d753da74de7dcad05c5d540a893d858857807822be2df0fd5c1",
+    "usage:865039e19c79f168276199aaefc8708a237ea068ae560d91855c869f45d8c607",
+    "usage:88cbbf247be411abf2df0bc39047d5c3f75b04b2a2f199f92e45fd32650cfe82",
+    "usage:9348543f24434c44e084065cfbdaeb55e6fd99d9a9a1520e106d40e4b06bf97c",
+    "usage:94e376a90b1011721f075dafdbca16bebcf35134daa63f619d752bff4f5c8676",
+    "usage:9530dd650090e2881bee67263d9a975ec21b95cdbc6d39ec6779246f274bb65d",
+    "usage:9582a7940be24a7c82d2e0db78b9859c376dfa6e3c987598bb4d1e3088d59ecc",
+    "usage:984e7525e7617aa9430e9bd3687c6ab098c2ee5187773a1f84b227eeb91e3fdb",
+    "usage:9c16820ad5e7f9e38203a0d1a0a64a458b7fadd916bf2f0e3b82739a6dfcd8b0",
+    "usage:9e9cd8239b33854044f3f1416a4f3a5a0feef3e37c678d6de8d4317cfad97e32",
+    "usage:9ed1c7edfefb6d899e7c622278a53c89b6a3fbaa01508f4046a6f021e8f2c8a9",
+    "usage:a3d72ef6ca7259eaf930b2a1a1070a92f36ce460eabe3fc0f94b1e66b9885857",
+    "usage:b222a9e4bfe4fc4297ce7d57d1c2df0624536a41f1fbc02b30b6d927b8b39fb2",
+    "usage:ba16baf429a21d3a11551720219e1c4a38f3e0f62c67f0e92388feba49890f03",
+    "usage:c24fa4507949a52115ce25b0ccff4a1ad3d97b3c0d1d12945becd8733c0a7592",
+    "usage:c3b2dffb5292c55940a9ee410d2be6c72aba95133fc62440571148d7ee612711",
+    "usage:c4a74eda07dac79c742604e0086707c5a5a40c6a6b920ad4e86768d3f62fc72f",
+    "usage:c554b33f785bef94b4d0691f632fd0402e9b2249cfb61966deddf4af43be1366",
+    "usage:d6d3a4c10aff29ce419878a9d09769178a1de01615f00ee126ddfe4325d5c3c4",
+    "usage:d75ed77c79e2233792fad26626b5b58222dc0d76819c05513a739fb4a9e03f2f",
+    "usage:d94413241ab863b72170685c4d716504175d410bb9a8a63a2d8cd4ca2ffec99c",
+    "usage:e272c21ba3f6e38bfe7b304399c270debf46e594d7141537856b1f6ec764ee43",
+    "usage:e9e91b80529ebda69e76458a22e955bf7b4a15edcb09b8c22a3e016583249fe2",
+    "usage:ee739f3846be091cd38d8dd939a0c262ceb5df3dee6f173a9afa2b6062a555e7",
+    "usage:f035c8fef5572582f278820ef889f652c0431a8ae454531ecbf2e75983990abc",
+    "usage:f413445051d2142bb350099a3f1bd26a56d1579cac3db91f2a2dbfcdb97e4be7",
+    "usage:f5ba528db1fccfcf2b865e5dbc08a0423eb59701c1ce8a8c0e0a7aa876dcc189",
+    "target-use:cash_to_current_liabilities_ratio:v2:surge_direction:5176d9433c07c727a7826f7a667e9c31d9e034de63f6d3bec1e71b38f05ea1a4",
+    "usage:03f1ef4ac5598f0e82047c92e6114e5af4f6030334f653149956d19388bfa7cb",
+    "usage:5d2a18f3744f1e2b8fa825245f1de905f8992e64b4f5d9a9cd5a00eddf02a59b",
+    "usage:7b2edae4d86c73a045a61dfbbf7283b96a244d79e6f607ecd2777f6df18f5d72",
+    "usage:a24f879bc7ea291ee97818648aa543a60be7b11b7d287d85b92bc6f626b3e359",
+    "usage:a2f29c96d62019728481d8f926cf89f91f028b92d10afc02a4436ee0b128a6b2",
+    "usage:bdd3999a54d0c315c76354c04539dd7b95cdc88e4f9eee0123113cd165d37aa7",
+    "usage:c85975177e8ebb06601380b41bc9169b73858174cb224ec7323a406b360c9e81",
+    "usage:c8839ffc9f648d63b2fcbb97212de70806d85d868d82efb90af2449f47e3ca75",
+    "usage:d805df823076b13a523b4256a068f4d11e75d15e7a5090a380fa977925f747b4",
+    "target-use:commercialization_status:v2:surge_direction:ba98ae6981daecac77d60a0c63ba5360faf3055d0ca10e62d4d3d8914770e88e",
+    "usage:3b62dc9cbc462ef2d9a0f8ec8a8039fc175a6f0145d6991e0d350d0337faf88b",
+    "usage:4c7652916ff82dc27a4cbf93070afd8f6c8a0007d7d6bc7d8695198d82abf4a3",
+    "usage:4e1a52109926e9d23d115ff99620c10a376d8cd6e2962627f8a0c9d308cec68a",
+    "usage:5ee2c698cda48412aec70848a5ee65740ce5fccc38afeff7c8f15abb378831a6",
+    "usage:5fc215d3f35caa02ef1325d6946b9b8a3b6430de33a0388f44544a4f1dff0089",
+    "usage:64a7fafd0d674aa8416e293517916ed68f154d1a7e3aaa7df5e039b2f0257ae1",
+    "usage:65effa2227f4effc5f204b61ed628db9a55bf294caa390b8d7902dd7ff40169b",
+    "usage:6f6ec4c157e15499c1463e81bd2ec83a50f60296ca3c07fc83c340e11ec15c33",
+    "usage:7b4b839aec401c113203d6a993309b2c06deacd82917a31242a82b4b015ca978",
+    "usage:8596ab1c8143a1c134e07187cee533f4419f0a76d410f90672676e456a96907b",
+    "usage:8cf3cc4f26f432f7e4a6e6c97caaea239329e70c7f2d94d9c394d6a1c1e43c70",
+    "usage:cd1a98b21f5187ed27c52d8a49352537be61ac8c73ead9279bf004000e3003c5",
+    "usage:d12fe7014579ba0fdcff061b98490f674b04e65439b4a0745de1d234178ada84",
+    "usage:d172f6bee8cf174bf3e814164c4c6ec108f13decc1363fa5570492a687969c8d",
+    "usage:e049ffef0c5f3dc099ba18bf7c0e281da82d1e5983faffac750a0bc73d1acd6b",
+    "target-use:customer_concentration:v2:surge_direction:d534d606ce8e48be80ab9f9b788e24b2ea70507d17fce3a80ec32b6230124629",
+    "usage:05f613a43ae720eb8486fda6b91a7ba8e7a5a862884ce3a15372314061446ec9",
+    "usage:30d52ae3f124d9879b3b1e4e8636fd67eb8464798c362ca3d7f34f8943252fdf",
+    "usage:4505f32edf672041fb08b6fd45ebc54ad2b3f562c8e3ad160bd21e68aacfcec8",
+    "usage:4864351f83a6b28bf07b5b094fe5d26d3c339ad0a2dd346a4fccfaff0ad6a776",
+    "usage:48ff19d843962fa2802ba98eb9a97fb1d3dbc7dad710a3e0e005fb8d64335641",
+    "usage:4c2c1a4c0e40e66c4ba71b77b231909c7c664c72353b69a06cf92c776fdb0a1c",
+    "usage:7fdcccc0fca9dc4f66ac95f4d67594cd4e0188a865cd06a45a7405f5c8d9e9f9",
+    "usage:7fdd832bacd99fa11dc58f2cdb1df7712a3b4440418a2cc6a42f360e7dec4871",
+    "usage:84ac5eac55e1ec6cfe1f8d14785502ec0e6f80d667bdb2f26b83e10e11e4cfa1",
+    "usage:8b8e928cf1dd6b4a65e84c93df3a527615df5829317cc69c8e2ee03dec8e5b7e",
+    "usage:a2e9ccce63f18311dd3da6beeda2d1de9bf96104e01c4c1b73b6a55eecbda0ff",
+    "usage:adaeeef057d7cb2effc7798589be038197acc97ea9db75567e744967c3136b89",
+    "usage:e22481a47fa8d59cffc33985542166620572fc9d0fa03d2b819d2a2d591a072f",
+    "usage:fdb717f7e0dd719504b0ad10c851bbdc7bb6364957af7f50d8803de8d5fdc95d",
+    "target-use:financing_listing_action:v3:surge_direction:a41a1b8d64caf2b66c8b12fd79a7515643c1fc26d688536a8ffc0adc8c3455b8",
+    "usage:0647493a7bedb9f2949a28f33cb344d45988067dbd54c565b530840b8f01bf4b",
+    "usage:1a316555425e2fadb14c43cb589832c44e42641e1e0eb22c3b8703d494730899",
+    "usage:1fbf7948eecefa68f8255d0eb8fa6b75e1a3987c135f336420290474927cf71f",
+    "usage:2ae414fc3ef0c82300fe2064cbf4f996dc923864d382f8b59f70d2b92cf2fa90",
+    "usage:306c85a0de33c9f836f79add330d541cef2b78f474c1d463b301508fd095232c",
+    "usage:3828588a2486315ac3a99403cee54b9acd003f83023dc2ac8dde26292cb00af3",
+    "usage:60dfd77f713505207023803805cf5339fd01d6721115e00d252f995d48124a1a",
+    "usage:6ae9fc849fb8290f86d13ebea990381f7ba0b2fa07b3cd9c2a89438571e6dc7a",
+    "usage:74e3d59bd3f2f07c557616720e0609988793c2dc1951b4987fc5ebcc6a47d8c7",
+    "usage:7e1c8ab23c7e68e2a96bb0fedd28af79f59eaead78f621c9b7671f2f6a8b636e",
+    "usage:87a015a54f07faf1460e5b962266949b9aa77b398e9a003aa818d79403729dc4",
+    "usage:9af4839aba3539e587f851e4653f330c2e28cf73cbb94f3a967895152439e020",
+    "usage:aa4a06923c59f112baaadaa0469249b284b86f960c8e4902daded11d204f8bb4",
+    "usage:adb7c9e87b5325f0c492f8b2c162e7a8f29b5760540610edfdd2db263756584e",
+    "usage:b3032f46ff942ae9979e341c39d189a25b73870e55202884c4b7329d35a7c258",
+    "usage:dd5ccb152c440f1acc8397cb3901853bdb57e23c6e7c5f9d0f341b13be90b5c6",
+    "usage:e8c4d5b10d694cf3856fd72ca549d7cef407f2a441765b48345448c35297c3b7",
+    "target-use:financing_listing_action:v4:surge_direction:9153c439bb4387065f5392b9f1612b5774c7aa2bbd8a7ec010f5dba8ab9cd8ca",
+    "usage:0c26525c1aa54a82482dcdb3b915f79c9b26c73a2c5acb86aa9e16434b96d476",
+    "usage:0ed098761602bdd42b072dc3b845c40605e20236ec004102fc7bbe0700296fd2",
+    "usage:17d5a4eaf72d5a2b29e265488ebb897a818b93d7226562caf83bfb5791634c8d",
+    "usage:19929712f998bd171f099ff00b17bb78954edd6134353bce98a8ad95d94ff9e4",
+    "usage:203d19f9f210a48ea4e8b44d8693746fd6431a68d5de113ccd1d556feddc5f7e",
+    "usage:34f9ef11127da415d42b85a9be5a218912de7db3f4fba06e75650d8f19606ea1",
+    "usage:38a82ed0da073e1889fead2cb94b6fd7dec50107a668fe1bc00c09402bb666cf",
+    "usage:3e469591936e9abcd2dd0cfea619794211669b6b0b944f5639feb378b4b0b390",
+    "usage:440cfd2121d76f7ca364d5b4a97579e48a6d0d714872833fd4fb228021d91f2a",
+    "usage:443aac8034dc2b2de9321c5684aacbd09d3939d00bca0cfbc050ca00cbd691d7",
+    "usage:495b6f648a3ba713651710ddd00b4ef6efcdde7bcfe1e54667b7efb1879664af",
+    "usage:4b9997dc1fe3d71852cd98891da35ed416d815cd94931adddf1b1772faab4079",
+    "usage:4eed90f102f60946d993702aaf2ad6b20987a31b9e6b558958e4d442e328ed89",
+    "usage:613a736979fcfdc9384b3f93bbcfc4f8eb498e6f8168d09c87239ce0afd59356",
+    "usage:6dab69c1ff5e6794e43a140fa827a7fd9f3bc5ece2caea379380a2d5cd8ca98b",
+    "usage:6fd7a6639f7395191917d9bc06b091a15154fc7acba3a7038d47f8564ba3a649",
+    "usage:7014ff0916e3ce7774ae7490e4e077a60ff3f1c07d738dd92c26a471cd4d7e56",
+    "usage:7d195babee13a196cb79f4d84c219fc388edd313287c6832ec07903ec517e96b",
+    "usage:7f94fb4645ee0534233f9afaeddab8f52608fa1137ec013719fbfcaaf4f43504",
+    "usage:8abb65ccf49b9b178e6b8d715dbc490bd75481f385cbe4336cd407c4b400559e",
+    "usage:8b33fb638c879f21ac42a57be1aa9b67f708bfb006ea665ff56d45ecfc24f921",
+    "usage:8ca42762e2dcb938b252e057fb6ea2bd659b9b394bcb8f4dee3d065513175200",
+    "usage:8d292bdc57fc887a22950bed9fd8e589808f1aeeaac1339b4cd991935c494f7b",
+    "usage:912b9a3199af36cc642348d50f582a767efa2c0f03dd020f23bf8533b2952167",
+    "usage:991b7ebfe23f37efc9d146e3e9e65942d95a78782a38c92a8e43e0bfeec958b7",
+    "usage:b305aac882ca18df2722853b5fb0c14d1d9ed2c81a35dd34fab2d263bfa5248e",
+    "usage:b586d34f54de224577685640b524002fa0070f8dff8d0fb0a1b83fe97b6e567c",
+    "usage:bf426b6b57d57adf6da3043abb5c762c74dc38a504007b91a2f37fb88cc5e6da",
+    "usage:ccad099bc98e9181c9c9ddaec54800be9dde75fccfa3c31509b26c2e58e285ae",
+    "usage:cfa530f273631ba956270890e50d27574acf83720246e146a7e4c86c39f29edd",
+    "usage:d65d46eff2d4b02d1465f4401b78c7a1540eae1d38edb005b00e686838f42c50",
+    "usage:e54ffa4a2bf6eb3b5c5bbf1faca7cec3a132d89df2a5e543c9fd8c25769b442f",
+    "usage:ecb656b40dadf21d0e41e12d1ada2207e789d79600b88f445bb518882ea6ec66",
+    "usage:f706a5a0660f7ecd85727768fb8c99679140663bd2ba64d8f544b0fcfb485db2",
+    "usage:f84e8fc6701123ef7f1ddee9e5f2d0b9c423e41937c35f56ffb7974e3172220b",
+    "usage:fda6696a57bec4c3ff84af04fb997aa4e0962b333ee7259e2bd1df2036b0d608",
+    "usage:ff3f3207d8a5a19f867aa3c488888bce47972eae8cf41d5702f6f2a9b3d18039",
+    "target-use:gross_margin_change:v3:surge_direction:4e28ff6592b017a3caebea14a528bdfe6d30e8b57783fa9c7eb6a0d89b533f3f",
+    "usage:1fb867b5a388aa4cbaed93541c72efa87137c51eb422333758248ef145a2b5ab",
+    "usage:2be8d2caf84f02b7371d6aec56595c71a680261f7b389ac6d3a0debebc24083d",
+    "usage:3551c16d63c44334f70112e61ffcfa9de5c9c5aec1528f1896de4f735f0632e0",
+    "usage:369ac719bf7b03c38ed0678f1747f489dd200e449d1547932db10647aec3ef63",
+    "usage:4910544080a51aae583782f24b76d402befde110d49182d7a9cd7ea501caaab7",
+    "usage:5114902ff15359b3d7095e912e372b375a395396cdc63cf00f15ef5f9bf4d1c0",
+    "usage:6fff56b8aefe94959d72c35f506a49a1ee404361da873bda12c0dd144c36fcc1",
+    "usage:7bd116d14218429c4e69d4cbf360e0263efc87db76981c556189dcf427acaadc",
+    "usage:a102a7df429e1097a1bf60c75b404dbd5c8f6fcc5b66df450b73e4ddc8175263",
+    "usage:a39d5eabd38f2f44a962fe7aef27dd1d664c6954a76499f091d1a034525cfec6",
+    "usage:a90cb86fb39e078f0ac269368407a39e8ad2d62a0b3c11710ff4ea3af6afea2a",
+    "usage:b9a69e74b3fa027a97c41be861f6e43e456968948b9087ea42d6009c5277efb6",
+    "target-use:guidance_acceleration:v2:surge_direction:01d3327be171a8d87859f9b9b73d1287d40e5dc3a5c1a954d0f6535c8a913a30",
+    "usage:0a4fb66eba62d09d0d1c3c49d555ac3996b555f87557fac8145c8177d62d9a26",
+    "usage:1dc2dd3fcb7a0a714f7fb2311d15e95f31af2e9419c41e692181f98fc3d0ba22",
+    "usage:34e243031d1271b844474f8cd744044f2d4e2aa17f37cba66655df0d3f80c264",
+    "usage:50c1bd0c6659639891682a1a1ad189f8068265e6f1b3e04b8531973d16a11236",
+    "usage:6e696970013f6a759de4f2c8654411be756f2c74661e076023c6239894b9cf0c",
+    "usage:7eb30e9c6921a424030aeac23d1ff69adad72a2692477dea1af622f4a2e412e0",
+    "usage:b531f594ab708ebe6bf60f52214eec45b2ee8eee4a15970cbdad97dc7e5c3e61",
+    "usage:bf33fd08a50151ee7a488f4f135c1b459de28f4a5c172afb644cee75d75b9c44",
+    "usage:c06dea57bef5dd69de7d71e419669a380a568387d8e952286b74ca8828e2882a",
+    "usage:c1d5f56de66dd61e5d8fe71f0b10ed308fa03cc97c87192bc1b9e2fa38a3bfdf",
+    "usage:d701fd7af32ff3e3ea26723d80dde77022e29acd6f0ba401c8677cb03f4935e9",
+    "usage:fb1d4c479fdca8a003e5b9f0327ed7a74ebfb1ab2cbb16e43237f26a8cabb344",
+    "usage:fb644170769f48e4e5bd365244e34126022924c0d6ad5c66a71d4e206fe63ea7",
+    "usage:fedb661fad283b5e2e3df60cfd12e9da6306a4ae2235afb1653150f4d5fefb39",
+    "target-use:guidance_acceleration:v3:surge_direction:082a548a60a47aa997cb546452666f1124bb171d0eb96f43102bad997b45186b",
+    "usage:01484b8dc471c06b63f31ee264a3bf2d6385aa293ea6015f5806d1271e9b2382",
+    "usage:01e8dbdf7969f7f8457837360e6ce5f791b1ec89c1020aa13d22f2d74df953e7",
+    "usage:1dbfa2b542ec1d56866b63ae38bec0dce30fd34a287f8f406b1d81da8b1b7ca8",
+    "usage:300a8a174bde079f437748fbc863f72ba5db7c8311bedce2d5eb3626e6d817e3",
+    "usage:411f9b1cec52e46a75581885d19e90e9d65e2da6667aca3719bd4c94e3d91102",
+    "usage:49bd2e38493ff23566fc542f1beacecb134d174758459723c13c31208e3290a5",
+    "usage:70dd43b15d3b1167b3bbc0278dac6d6e5eefd94dd21eac692106bd9af5573f1b",
+    "usage:8430b7cd0dad266f9bdb2e7172d56a119a66cc53b748e2e34d69f34bfdde3d10",
+    "usage:87e4895307d74bb20dbd0dccbf28cbacaefdc371120514e553d735cfacc9c1cd",
+    "usage:88702977b409ff5da65d165c380082d58843b8fae959c44cdee8e890c7193249",
+    "usage:9db150085e7fbb42a88db0a8178882f0b8aa336147c8f4f86b421f2475e6695f",
+    "usage:a04d266bf8d0ed80150bbaec300452cab70b04293ec62a3bec2f366d9cf28d94",
+    "usage:b56be1dcb429f40ebf9199ae6041d1b6a68d6d46af5bf3b3e20c4455561d5ceb",
+    "usage:bf11e170a6b6b60c643c02322f7af65ae63794d877fd4ae08af5dfec7616d8aa",
+    "usage:c32181237885f8f2f6a2bc3a6a7c24340b3443cfd295dc25702899624a8f183e",
+    "usage:c384408827fa7edd853151e63552e37a202cfb2a735a411b9a464d0e973633d7",
+    "usage:c9afa07ae313468b8d48cd3f2e33031e541aed26bc2c9b103e25aa04bcf786cb",
+    "usage:d1588b67aa6a1932f9def06ca8e7c62637777d6a630b95672866500fef2d7ed2",
+    "usage:e06336c83d1761a6f3dd1de507aefb26ad40c82ebdf036586daf4f366b381261",
+    "usage:fd02fc3d2b5d4611587ef810e57c89391ca27fd98559767f60325104f620f6e5",
+    "usage:fdfeb9d54f94293e8e227852e6e95f6ffcab6db0b2af806735e275320bea4db7",
+    "target-use:liquidity_runway_months:v2:surge_direction:34fb17cb570bd143dd2a0c50fd0b5d89a811137e47bc242435111646843dd121",
+    "usage:06fa81fb402febf33a76072a0da52689a90e36b808d3152633ba4b0e91cd6d12",
+    "usage:0d0fc008ac42db9159797627cadeaaa3f1ccdfaf7ebfa16dcff9b790a5cd5b2d",
+    "usage:1428817ea1dd8b507d275cbcfda13793ef01d933b828849d531d89a55774dc02",
+    "usage:1768b21569566cd2365db20aa08b91600382fd7303cbf4d0cda8661891d60ccc",
+    "usage:18327c02aed84abe696aa471f4d0bf0ecd4d0f2b31d35c0cb82bbb1d34c99020",
+    "usage:1a3413e49814f6657cece09163c2d597664aa46fff55b4df515073b9d51c8242",
+    "usage:1f9ca6198c54226a7510c6e76ffba7c3852623fe037cb746cf80b544cbf83b5b",
+    "usage:25aa68a4e96aeb8b6e6873442a4ce090b4dc8d7026ddc26dd24fe5b7ab782147",
+    "usage:465df386e522f840e41d20e310dea8fc492fb1b7dc398c4d35490e19a38ac715",
+    "usage:5977923a15c2c1668f8258047a642204042d09b07236bf4befea7702d41be3fb",
+    "usage:6bf3cb635fbe8c2737a6514a38c4091b3a571b173febd0e8feeac2af8dcee1b4",
+    "usage:6c2b952591071b26350b0fcce1c9902a7834862ec24008c1cfa422124b422f6d",
+    "usage:70908b639ba6090f5833ed32bd1c7e739927b2330630756f862d2e14e296102c",
+    "usage:716131b22248f40f1fe5a422fa97b4fbcf0e018a30596235a467533c3097a51c",
+    "usage:71a98505bb3b9bd9b76b685c2bd9e88c90f59f03ae1a405dfef7c21d230b3de9",
+    "usage:72cb02c4c6e179b7a187e90ba22f60417d4d083270570b2175dc50bf86b98ffc",
+    "usage:759349ac115cd07dc5a6ae9553aa1fb00eb7da1f53c3a036ca0e86c731dc4cd5",
+    "usage:81086775ccb34eb68458d13813b173f547648a18453570aff35d5772a2f7b75a",
+    "usage:86df0a4b93ddc36afcb89d411f038f6bb8bd4c9c7456b33fda2b2c5134939d43",
+    "usage:8935063a98d823e2460cd3e1526debbf32300f02988086774776c3d74945be05",
+    "usage:89a663b182f412cf6e242c93f06ac2b18b9204dfb8807b2deb8e9e62a2028ca2",
+    "usage:8aeee38c0aaf472832d68fc9ffc809ff5d9b07a7c6db6d48a2e98e2ca932db8f",
+    "usage:8e996d7568cb75fe93dd88a1fa613fe38a2fdab9ea556b275ba0dd28c6a30672",
+    "usage:911d4fb10eeb9b4c808e6623e290a2b39deda70fe809c97d8a0d731181c3c999",
+    "usage:92883c0367ff5477d8fdbbe49584c80384d81a4d4b2682118265c3b18165c6f4",
+    "usage:980c21ce7f2d443ad0ba71b50be43be92963f7751b6c7f72c737f5ce88729523",
+    "usage:9c8947c8dbf8cb505b4d054d63bc2ddc3c791f2ff9a982841cc950baed7516c9",
+    "usage:a26061646b3768f0f3f0248207ba8796a1a84eb6725d83d57882fabc5fc17c8a",
+    "usage:a3c0d44980201d30e58f76aebf3b62427fc7bae3caadf270e7c3bc988b29a7af",
+    "usage:a4b5785c022a6a1360a3cbcef667610a5a1d342b40fcf118edc0f4aaa339b1e4",
+    "usage:b3d77bd109e5b7d066d1b35ee1a351bf2e2022a064592197b22895bf48410d27",
+    "usage:b45c9c99e08dab848660dcea9a2ddd353831116cb9baff980e79a0758d07c652",
+    "usage:b6e4d088bd292612b052888f655d838d0278383d23040068797cec09d62d7888",
+    "usage:c12e62cd88e64b89835d82aec320705b1309ace0bd203546f723607d6880085f",
+    "usage:d3f9399d6477f621701d3653951b12cb9421f6d5f131f38bfbafbf500ee5b58b",
+    "usage:e32de86d59d8016c6b029577e50bee832a33ab884fb80a931f541f694a77f4ac",
+    "usage:e3fbfd13371008959d17f7bdc83cbe978c4dbf57905083d82a9351e6a1853f54",
+    "usage:e451087d238064bd63ed861f5b2320ff9f9a280a608b9aeeefbb3623fad937ab",
+    "usage:ed53e37731b54ee10ade37097ed0033afb8622fd3ca6718868a885fddbf609c7",
+    "target-use:negative_word_count:v2:surge_direction:b69c1ce1ccd9ba47f9dc6aec81edee56b2cddab74fb68cffc655b14fb9b95527",
+    "usage:1114758774448469c721d13879ef9d0d44780838ac6e47b64ad0e46f610f9ba9",
+    "usage:19a463661ed7a58bccac4ced890d5086b4dce52fa1ae162644e9ce01ffb40f32",
+    "usage:280a01c7a333e70f6359edbb594ff9483cc5d42aeaeea4a5a1f8c34095516df4",
+    "usage:304e6d0d24a72dfab26dede4feb982abeea766f29d7b84718fdaa3ca1d2a1dc6",
+    "usage:a36f9a2c9851e96fc102b293682c447fad95042d3bb48fb9205c5ecaabe2577e",
+    "usage:d8333537b1f12c08bd15c5b0ef2dfde4d9314c5fea21af7e7d1cc6bcfce23fe9",
+    "usage:fc5e943d94c0fe8d7a6cea0750137119ef2b574eec4623bb39407ef706fa5ae9",
+    "target-use:net_share_retirement_yoy:v2:surge_direction:cba1ae9c21fcafc9ade865a42b01a58341783f1425ebc92bf04b93b2b422aa06",
+    "usage:0867975c55f3321a476956dec06faaabf93a9c15f356f0cb5597d44c2d0b4653",
+    "usage:1199ebf9052d533cae2e43dd63d51e00935dfd46360d36ce0e61f36a44292a8a",
+    "usage:3640972eae7c701140de783b50a6d78b0327c6e3ab9cf3f8387342d2d06723a8",
+    "usage:52ae0236e424a19700fbad3b5591ae97872e5bb8f6b9b9e2e460e4b07feab5fb",
+    "usage:61e0572e38872d973816bfe2ef39335520b344b832ac990e676a4807648bfc3e",
+    "usage:6d836ebcb7c30294955baffc70cd03666d7ae0909f9539fb412070385157c17e",
+    "usage:9e75de6170ac2abea1bca8aecaf457e0dd61a8dccd1bca7b5b6cdd98b855e851",
+    "usage:a13f2b918bf3855966c6dae09cc0d1ef2bfc98fc78956a4f64ef95876a105653",
+    "usage:c05c6d41650e4c2210552587d5bcc250b600491c3f0197fa5248b444255863bb",
+    "usage:ed7a2c053983f154d209d012ce3c2cc3ccb800a8b5297fc97bbd743c7a9cde85",
+    "usage:f0cbd879ec3fd41e76e71af6279e40cab1ea578eb5c6794b9f6e9389e3e9a736",
+    "target-use:operating_cash_flow_margin:v2:surge_direction:8c7ce2e7668f1cae949f525a559e9ebc1b3e7a0f07a48ec76da6d1260346262d",
+    "usage:007d1449d70a6b32f806f8a62bf9b90f5ea70d6d7917a3e024855d91811b267b",
+    "usage:1052816fe93d2328289ecc0d8dc489cf345bc88e24f7e151a92a888cca7a2f9a",
+    "usage:42c59a367f8c8eeb9b256325fcafe6100563da6273b7ba153bada6723392baec",
+    "usage:53bc975dd458b92a83bf037d5f6c316bf9a5a8d153323e18b53cd6a269a40974",
+    "usage:56e29902a58ad43419b7423e93d26367710fc6f4133a7b7858d86db3c9504bc3",
+    "usage:721b34ea2aa33285930766e7d67f24d6b4b687b85b4fde20d867565c773d0a0f",
+    "usage:a7f9309b6ceae760d0e8d92d2bfeaffce3a78906f2e330da43ba537c37d9cc82",
+    "usage:b528c205b245f264a56cb4293912cb1f9cba22e62940c537878b2d27256fff1e",
+    "usage:c60161be5bb3b1b9f39c12f76935883ee1c4df2a1af6355bad6adea173706697",
+    "usage:f0ae7a9a55829692d2e5da323744b8716fba78842910e6418598e988be6bb90f",
+    "target-use:order_confirmation_disclosed:v2:surge_direction:70840c28c8c926bd4f1816e9e44d892ffd6386e38db26e9fd9c9c905958b80aa",
+    "usage:032eaf978da99451562f4115a5d2ea4db6709077c12b7f05197d16caa31aa657",
+    "usage:09961e4e4d79d90fbaa04e4f59f2357d46c66fdced804f5f798d27e624c71e72",
+    "usage:1a1cf403907a75c809a5c5ddff187e6b58e5daf83978b8ee2f35e6bb103e5d8a",
+    "usage:217ce2136c1da5c921167647c37899003515a1850f7a0a233302b299d9556467",
+    "usage:36bc144b6652861b75f4c08580073bc2b0f66ebcba31a88c917bc8ebb34658de",
+    "usage:3c9f66964a7c32cf1c5f20cb84869063dd85515a8cc9dcee5c23f510b0375e2c",
+    "usage:4c267453a777add0122e93ae237b5fc85052b28ac80e8d011bd470a1975d9b61",
+    "usage:5eb74915e7bcdfb9d0a0d9490be12e9e24cf335e58eea7f9622f26b85f114aa5",
+    "usage:61d61e842c437104831536f53db80533e0a826b711289252caefe70fb53bde63",
+    "usage:625e59f4536bb143f7cabc6425d5ca0fdd4e88c5f89ba0b77fcec30ebafc44d3",
+    "usage:798034d4aa80d76d048a89901755a332604ac6bd2f641c75f476e0ae2fc782db",
+    "usage:7a7ac078e22aef971acef99e3d73ea261694acf5d3c8194c71735200988a21e1",
+    "usage:7e327db99c077a694c59ffcc9f4604c13c5740f957c21a90d209bdc2670963dd",
+    "usage:86c1bad735906ef1e8ce3847727db13c94fee90a9771d343d76d28aca52af0f1",
+    "usage:8e02d7c86aff9b8dad2f43c142c16e88d27a916fdf4e41341ab0224a23b91632",
+    "usage:98d5f11bc4d5a59b177587ee0935e06dfdcc1ffe29f5add023b895c60b78041b",
+    "usage:b4c1929c4912e9f2fdb6c4351653b4514d6269ad5b512dbfe7901202e91f274c",
+    "usage:bd6c31f31a211c77da822300caeab215aeb7c87a194badd87a8eb5f344612bf9",
+    "usage:cf471f652cfed69d35e7bffc71504ef2f4eac3b8511bd0dded3ef8be631a74a0",
+    "usage:d403b61afa8317bec51b28054fa99a2f5b9352627522095005260bff98c24e1b",
+    "usage:da6b52cd0d3373b5d1523833d1e056401653ff4fbe8c4bc6cdc2cc1e7cc3ad2e",
+    "usage:e47d6c2ef61155a987e38ab3e82e2f090854163bb3393c1c98668744a2c0e843",
+    "usage:e58202102af545fef9d652878eed5d7e0950e498ec979493b9a81119cd6aabb4",
+    "usage:e74d4887a3b33ec67fd6b3c0abda665ab1562340a4289d46495b06c3da6cd20a",
+    "usage:e9b64c97034fd4b665397b91da7eeca499fde74c89cad1a0831d2e8743e5eba4",
+    "usage:ea5e04f999cdf6ffb38eaa6fa51ed9d4ca96fa384be2c28d7df27b97413a06a2",
+    "usage:f1fb8ffc95dfd8dad1f4d8ad5d94a1b35069b25b5300d2f1ebabd0a9251aa218",
+    "usage:f4023317777b848b5b8813591f46447528eefe939f9ab95bda32642ee9688312",
+    "usage:f4bc0c9813948e4c0889ce42dbfcd4e96bb94b813c4dd5b499b458782b037c11",
+    "usage:fb9ba9ff0149ee986ad335fed0497a5db72607aaf3194f59328fa1f29aa5edb7",
+    "usage:fc56520155ccccdc03b6c86b518f841c1520715977cf5ca324afa8b5e0f2a2b9",
+    "usage:fec687b027ba2b7d9f91da20b54338a7aad4748442ef4f5276e157591315f010",
+    "target-use:order_quality:v2:surge_direction:19e5937744f81088f69ad039eae7915a1cc6b475bca3328bc8fe51493054f817",
+    "usage:4ef7514d1c806747e158f822d8258895a079519bd8e90bd7f4dad3d1792ed015",
+    "usage:b5ed9c736639bd6bc895cbd7ec4db09871d7d628265ca62bceabb8c013a0e9d9",
+    "target-use:price_momentum_126d:v2:surge_direction:24034b262b8f4d601c9aa2e1841fb5d0581223b15efbb95ce5b46a52b1bf7864",
+    "usage:04c6ab4a323960a1b0699f3a1b7b1ca54863de23ad0e3aaa9537cfad8c93867a",
+    "usage:9272dbaeee9e320c2e0998a2ce9237264ca0418380a9bf3bade84dc68eadd43f",
+    "usage:d996ab914aca9110f8b1cb096efe06ec7df49cd2f9e6a59fb9cd86d4cc04bdb6",
+    "target-use:revenue_acceleration:v2:surge_direction:b06ad6a5e2466127a4beb0c4024540222b05d34c7eb087c0f08cba2b04d55ff5",
+    "usage:34ebf559938d9f5acb7440df26d4c6d50c1e8c6b5f05908ec407cc9f20318611",
+    "usage:d5091e11ebda3ce2c348ab43c59eb95cc40ae1d1e0c12e38b67d97315bed8562",
+    "target-use:revenue_growth_yoy:v2:surge_direction:579ce126cee46b7232f8540b15bd40a1b0e51aff4bc0a86f42f7005ca01e9ca6",
+    "usage:00a367520fd9bfffc5827f4f36425883d8080a4716f4a413866f1a8787e00d96",
+    "usage:0975a4544c18effc74ce6b7b30f661ab54b0d0b3e59e83108cd49c637c858301",
+    "usage:112ec5e89b99a85f0ae8bd42012d55731d4251ba82f3fb1e591e498f02f57a67",
+    "usage:15536cc910d2e754957cd608aa1d2e3128865a9a29ab3695e272d7df94631953",
+    "usage:1e9086935c63d3520ded29d55b4a204c452112bd8fc28863f1dc8ac257a935cf",
+    "usage:2386f7414fadcbdffe00f0477af91d51bee63eba1c0698b7213a57e14a860799",
+    "usage:296ecbcc0e7ca109ec32cca8507d2f9b3a84056b55e2fb54418c350b889ebe61",
+    "usage:2e7de4727cc64d160f11b77b023a4c9db730ad23b4f29409af5f738a0c5228fd",
+    "usage:43d9f6ea1ce68a40ca2bfdecfed30db47a084bc4a07a5413e52ee2542af8b7f1",
+    "usage:447d99dbfcafa8d7def438e5f9eedea084c1fff49436614d1e0a52a3307a8727",
+    "usage:4f5506269c9f7e6c13fe79f99778980855253512f5ec1244631be69c97eaf380",
+    "usage:53c62a015a4694b725ac313cad219a31c31c3a6ce2c50e3231edcb9b38b8373e",
+    "usage:5eb418e7877645d0e90af9eb0ed983ca69481566c8af75dd7c367570ecf46048",
+    "usage:60505fcdb539cad37817555efe4badfed850a30d38821f538af8df08e6ff5b06",
+    "usage:78da72945dfa4d8217643bf80542d741aa9542a05eb710a0ac314d1265b187a0",
+    "usage:8e2632ad263db64fefcad949c7c22e804098dc46b9876a71482cd41a3c6d0ed4",
+    "usage:96799d19f48dbd4e545f5a820b288e473f809dd2c41a33434c40332ef04fa57f",
+    "usage:989b7f03aa94935899f9ed2e9b6286ffa74f456d9129a1c0064a4df151a123ef",
+    "usage:9a5f078fceebda5d3002171819820d82a2000d07501f8bba6e652072296bf945",
+    "usage:9c5ec306004cb1abc7c87275ed63bf3762dfde6eadd4e83079974699fda79a34",
+    "usage:9dbf32971c755d5aa5c61d19e46b93859e1b6600b657ae8545cc228f9fd2c351",
+    "usage:a34a4d66efd23288243023aa4ccf19a36f992e6bd4035eb9e7f9092f7735146a",
+    "usage:a7ec83df7373fbd00bcb027df8fef5a69cc3501dbbeef34c9be74a0a533fae60",
+    "usage:a89f4ba62a2ea231fbc3fbbc5d5c4afe478976ae5f4b8fcd1dfb9bdaab8a46ee",
+    "usage:ac6e12759bbe16a06e15030c788b5a2bc87f3a9258d85524dd221c26d056a1da",
+    "usage:ad5774d1ca77e4dad7288b6b2fa9a7dd00162c23ec6a737eb991f47d748a121c",
+    "usage:b3a04b72d28d87b49912521725f22f9ba4ff377298719b7d1b917d238c6e799d",
+    "usage:b528af40d9148b2ba24611f45995e3f71a858503dbc9ba0964ff82f5b036f7a4",
+    "usage:c27d1cd1d65a5a3d586d9374c6855169a1e2a4b1e64ccdba7df160f19773e85a",
+    "usage:c348b9ebfb9b5cf2a2ded80b2b847f6aff8e33ba92a92de5e38a31b88ea9069d",
+    "usage:c640ae4b2a6044e3aa6f135ad5aae54a176e5dedbe96f902586516c09fcc7389",
+    "usage:c727aa4e772a62200f5a45b0679b9b93f25293c1f63ffff5874745676aed8062",
+    "usage:e67c1391981991af29284c91e17e67a4abdbd79b1c6ada5e74b24ad1e72b1488",
+    "usage:f0e703a5426e2135f605aef8ef296d7f6e3d6572b46a3a19e86de06b6b29837e",
+    "usage:f37269ef34a105340f26c060c24e8108c08a6d7355fcd00e9c56215d671efcf3",
+    "usage:fc8f2632859eda3148d793ecca17e1ddd6459e68adaafda72ff4d0ba92684ffa"
+  ],
+  "processed_feedback_refs": [
+    "prediction_comparison:7117f1b4dcc90ad9d3819863f2bc26a44f359cd6dbb8f1dc0cab602fd99ed068",
+    "slow-history:source-175e61eae26433b3:1:slow_loop_result:summary",
+    "slow-history:source-175e61eae26433b3:1:slow_loop_validation:summary"
+  ],
+  "reflection_work_hash": "dae87e574aee2baa0cca70c7b02dbd39c33488c633718300926dbb1b703656c2",
+  "schema_version": "slow-memory-v1",
+  "status": "appended",
+  "usage_ref": "684125d0b63176a0e5486b8882e12cb2428305500de3e1fdfcd8f28c46de1259"
+}

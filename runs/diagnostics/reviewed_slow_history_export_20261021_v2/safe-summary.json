@@ -1,0 +1,29 @@
+{
+  "actual_stage_exists": false,
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/export_history.py": "83c186f6630816d91f48b9f977dcbf7720b1e41a6c11c8b169d31bb881f8419a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/harness-lineage.json": "7f118c228b5859ce9029126176f1731a1f840701248725ef288c895f5e7897b8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/native-restore-controls.log": "9044999107d24ae78005f7fa54eace48aceaf9da9cbaeef15a017f8147afd658",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/native-restore-controls.py": "8f52a2fba72ac8c7a9413fbb55ee07bf4cf3437305620d621687d8244ebbecee"
+  },
+  "native_export_sequence_ast_unchanged": true,
+  "safe_tests": {
+    "Signal_or_audit_or_model_calls": 0,
+    "adjacent_forbidden_reads": 5,
+    "committed_prediction_count": 1,
+    "committed_rounds": [
+      1
+    ],
+    "debug_round2_context_disclosure": false,
+    "high_debug_sequence": 99999,
+    "methods": 2,
+    "native_connection": "Actual synthetic EvolutionWorkspace constructor/restore_archive/restore_meta/committed and imported prediction observations/_load_slow_fast_context; no mocks of these methods",
+    "passed": 2,
+    "seconds": 0.018,
+    "source_tree_before_after_equal": true,
+    "source_write_rejected": true
+  },
+  "script_sha256": "83c186f6630816d91f48b9f977dcbf7720b1e41a6c11c8b169d31bb881f8419a",
+  "source_only_change": "One exact hash-bound operational trajectory.jsonl sidecar; not research input/manifest evidence",
+  "status": "prepared_not_executed"
+}

@@ -1,0 +1,69 @@
+{
+  "status": "PASS_bounded_preflight_no_actual_export",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py",
+    "sha256": "297702302cd8f4150d20866234353c1bdf7f66df12e7ad3078d3c06e262157c6"
+  },
+  "control": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+    "sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d"
+  },
+  "temporary_controls": [
+    "authorized read plans/p1/record.json",
+    "authorized read knowledge/observations/e26b532ef1e67223a9e53f0cc9bdb5b9103acec99d7fbe597a585fda0996fd53.json",
+    "authorized read signals_candidates/financial/candidate/versions/v1/spec.json",
+    "authorized read slow_history/source-abc/cycle.json",
+    "reject out-of-scope read spec.json",
+    "reject out-of-scope read checkpoint.json",
+    "reject out-of-scope read data.json",
+    "reject out-of-scope read test.json",
+    "reject source write",
+    "reject global write",
+    "reject outside mkdir",
+    "allow stage exclusive write",
+    "forbid freeze",
+    "forbid _audit_deterministic_fixture",
+    "forbid execute_batch",
+    "forbid prepare_inputs",
+    "forbid load",
+    "forbid __init__",
+    "forbid complete_json",
+    "forbid socket",
+    "forbid prepare",
+    "all temporary source bytes unchanged"
+  ],
+  "temporary_control_count": 22,
+  "static_connections": {
+    "fixed_source_and_stage": true,
+    "expected_HEAD_control_and_committed_self_before_stage_creation": true,
+    "git_diff_src_scripts_before_stage_creation": true,
+    "existing_stage_rejected_before_marker": true,
+    "native_sequence": [
+      "load_frozen_source_contract",
+      "declare_pointer_bound_reads",
+      "build_slow_history_manifest",
+      "validate_slow_history_manifest(in_memory_replace_carrier)",
+      "apply_slow_history_manifest",
+      "pure_historical_registry_snapshot"
+    ],
+    "no_new_contract_or_pointer_write": true,
+    "terminal_success_or_failure_saved_with_source_before_after_hashes": true
+  },
+  "limits": [
+    "Actual source export was not executed or imported through a production entry point. Synthetic guards validate the wrapper, not actual source completeness.",
+    "Runner must be committed unchanged before sole execution; execute verifies its exact committed bytes and caller-supplied HEAD/control SHA.",
+    "In-memory replaced contract supplies validator identity only; no new execution authorization, reused research budget, capability certificate, fresh Signal result, learned profile or benefit is established.",
+    "Source read audit covers observed guarded runtime source opens; module imports and code identity hashes are separate.",
+    "Copy/event/candidate counts and native target identity still require inspection of the actual terminal products after the sole execution.",
+    "No OS-crash recovery claim; every existing stage/attempt is terminal."
+  ],
+  "real_actions": {
+    "export": 0,
+    "Signal": 0,
+    "models": 0,
+    "GET": 0,
+    "LabelStore": 0,
+    "actual_source_deserialization": 0,
+    "real_stage_created": false
+  }
+}

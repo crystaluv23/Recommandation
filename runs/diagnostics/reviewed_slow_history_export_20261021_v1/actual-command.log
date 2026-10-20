@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py", line 271, in <module>
+    result = execute(args.expected_revision, args.expected_control_sha, args.expected_script_sha)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py", line 227, in execute
+    digest = control.build_slow_history_manifest(workspace=STAGE, source_workspace=SOURCE,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py", line 1780, in build_slow_history_manifest
+    "fast_context": dict(_load_slow_fast_context(source_root, source_contract)),
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py", line 1557, in _load_slow_fast_context
+    workspace = EvolutionWorkspace(source_root)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py", line 666, in __init__
+    self._event_sequence = _last_event_sequence(self.trajectory_events_path)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 8371, in _last_event_sequence
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py", line 115, in io_opened
+    (writable if any(c in mode for c in 'wax+') else readable)(file)
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py", line 99, in readable
+    raise ScopeStop('source read outside committed S1 prefix: ' + str(path))
+ScopeStop: source read outside committed S1 prefix: /Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectory.jsonl

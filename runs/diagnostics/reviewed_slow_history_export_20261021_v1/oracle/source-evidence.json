@@ -1,0 +1,586 @@
+{
+  "status": "preflight_original_material_only",
+  "committed_plans": [
+    {
+      "plan_id": "plan_r0001_c01",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+      "record_hash": "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4",
+      "case_count": 24,
+      "unique_case_ids": 24,
+      "signal_result_execution_counts": {
+        "success": 91,
+        "domain_unavailable": 8,
+        "validation_failed": 3
+      },
+      "unresolved_need_count": 124,
+      "magnitude_diagnostics": {
+        "conditional_accuracy_on_tp": 0.36363636363636365,
+        "confusion_matrix": {
+          "10x+": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 2,
+            "predicted_3-10x": 0,
+            "predicted_negative": 0
+          },
+          "2-3x": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 4,
+            "predicted_3-10x": 0,
+            "predicted_negative": 3
+          },
+          "3-10x": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 5,
+            "predicted_3-10x": 0,
+            "predicted_negative": 0
+          },
+          "non_surge": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 3,
+            "predicted_3-10x": 0,
+            "predicted_negative": 7
+          }
+        },
+        "diagnostic_population": "research_completed",
+        "excluded_technical_case_count": 0,
+        "magnitude_correct_count": 4,
+        "missed_surge_count": 3,
+        "overestimate_count": 0,
+        "per_class_support": {
+          "10x+": 2,
+          "2-3x": 7,
+          "3-10x": 5
+        },
+        "prediction_distribution": {
+          "predicted_10x+": 0,
+          "predicted_2-3x": 14,
+          "predicted_3-10x": 0
+        },
+        "research_completed_case_count": 24,
+        "scored_case_count": 24,
+        "surge_case_count": 14,
+        "tp_denominator": 11,
+        "truth_distribution": {
+          "10x+": 2,
+          "2-3x": 7,
+          "3-10x": 5,
+          "non_surge": 10
+        },
+        "undefined_reason": null,
+        "underestimate_count": 7
+      }
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "record_hash": "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e",
+      "case_count": 24,
+      "unique_case_ids": 24,
+      "signal_result_execution_counts": {
+        "success": 68,
+        "validation_failed": 3,
+        "domain_unavailable": 7
+      },
+      "unresolved_need_count": 135,
+      "magnitude_diagnostics": {
+        "conditional_accuracy_on_tp": 0.4166666666666667,
+        "confusion_matrix": {
+          "10x+": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 2,
+            "predicted_3-10x": 0,
+            "predicted_negative": 0
+          },
+          "2-3x": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 5,
+            "predicted_3-10x": 0,
+            "predicted_negative": 2
+          },
+          "3-10x": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 5,
+            "predicted_3-10x": 0,
+            "predicted_negative": 0
+          },
+          "non_surge": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 3,
+            "predicted_3-10x": 0,
+            "predicted_negative": 7
+          }
+        },
+        "diagnostic_population": "research_completed",
+        "excluded_technical_case_count": 0,
+        "magnitude_correct_count": 5,
+        "missed_surge_count": 2,
+        "overestimate_count": 0,
+        "per_class_support": {
+          "10x+": 2,
+          "2-3x": 7,
+          "3-10x": 5
+        },
+        "prediction_distribution": {
+          "predicted_10x+": 0,
+          "predicted_2-3x": 15,
+          "predicted_3-10x": 0
+        },
+        "research_completed_case_count": 24,
+        "scored_case_count": 24,
+        "surge_case_count": 14,
+        "tp_denominator": 12,
+        "truth_distribution": {
+          "10x+": 2,
+          "2-3x": 7,
+          "3-10x": 5,
+          "non_surge": 10
+        },
+        "undefined_reason": null,
+        "underestimate_count": 7
+      }
+    }
+  ],
+  "signal_validation_failures": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+      "json_locator": "/trajectories/2/signal_rounds/0/batch/results/0",
+      "case_id": "cik_0000701818:20250930",
+      "plan_id": "plan_r0001_c01",
+      "signal_ref": "financing_listing_action:v5",
+      "source": {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+          "status": "validation_failed"
+        },
+        "interpretation": {
+          "summary": "Signal execution failed strict validation or execution: signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+        },
+        "signal_id": "financing_listing_action",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 5
+      }
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+      "json_locator": "/trajectories/21/signal_rounds/0/batch/results/1",
+      "case_id": "cik_0001920294:20250530",
+      "plan_id": "plan_r0001_c01",
+      "signal_ref": "guidance_acceleration:v3",
+      "source": {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "status": "validation_failed"
+        },
+        "interpretation": {
+          "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+        },
+        "signal_id": "guidance_acceleration",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 3
+      }
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+      "json_locator": "/trajectories/22/signal_rounds/0/batch/results/1",
+      "case_id": "cik_0000839470:20250731",
+      "plan_id": "plan_r0001_c01",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "source": {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "status": "validation_failed"
+        },
+        "interpretation": {
+          "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+        },
+        "signal_id": "order_confirmation_disclosed",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 2
+      }
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "json_locator": "/trajectories/0/signal_rounds/0/batch/results/1",
+      "case_id": "cik_0000895728:20250930",
+      "plan_id": "plan_r0001_c02",
+      "signal_ref": "guidance_acceleration:v3",
+      "source": {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[2] on projection 'projection_90df5b2232cbb16caa3810c5' touches internal projection edge=['start']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_90df5b2232cbb16caa3810c5\": \"The balance sheet is also in great shape.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "status": "validation_failed"
+        },
+        "interpretation": {
+          "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[2] on projection 'projection_90df5b2232cbb16caa3810c5' touches internal projection edge=['start']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_90df5b2232cbb16caa3810c5\": \"The balance sheet is also in great shape.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+        },
+        "signal_id": "guidance_acceleration",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 3
+      }
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "json_locator": "/trajectories/10/signal_rounds/0/batch/results/1",
+      "case_id": "cik_0001801368:20250331",
+      "plan_id": "plan_r0001_c02",
+      "signal_ref": "guidance_acceleration:v3",
+      "source": {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "signal guidance_acceleration:v3 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['guidance', 'outlook', 'forecast', 'we expect', 'management expects', 'company expects', 'now expects', 'raises its', 'raised its', 'lowers its', 'lowered its', 'reaffirms', 'reaffirmed', 'on track to']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+          "status": "validation_failed"
+        },
+        "interpretation": {
+          "summary": "Signal execution failed strict validation or execution: signal guidance_acceleration:v3 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['guidance', 'outlook', 'forecast', 'we expect', 'management expects', 'company expects', 'now expects', 'raises its', 'raised its', 'lowers its', 'lowered its', 'reaffirms', 'reaffirmed', 'on track to']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+        },
+        "signal_id": "guidance_acceleration",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 3
+      }
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "json_locator": "/trajectories/19/signal_rounds/0/batch/results/1",
+      "case_id": "cik_0001309402:20250530",
+      "plan_id": "plan_r0001_c02",
+      "signal_ref": "guidance_acceleration:v3",
+      "source": {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[2] on projection 'projection_874cd1cef2816c1d0d7b0acc' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_874cd1cef2816c1d0d7b0acc\": \"As part of this initiative, the company has identified early in 2025 approximately $30 million of financial improvement annually, inclusive of savings from idling the Fairmont facility and realigning corporate and trade group selling, general and administrative functions to reflect current strategic priorities, and is continuing to identify more opportunities that may reduce selling, general and administrative functions further.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "status": "validation_failed"
+        },
+        "interpretation": {
+          "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[2] on projection 'projection_874cd1cef2816c1d0d7b0acc' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_874cd1cef2816c1d0d7b0acc\": \"As part of this initiative, the company has identified early in 2025 approximately $30 million of financial improvement annually, inclusive of savings from idling the Fairmont facility and realigning corporate and trade group selling, general and administrative functions to reflect current strategic priorities, and is continuing to identify more opportunities that may reduce selling, general and administrative functions further.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+        },
+        "signal_id": "guidance_acceleration",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 3
+      }
+    }
+  ],
+  "provider_gaps": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+      "json_locator": "/trajectories/13/basic_info_bundle/requests/2/data_gap",
+      "case_id": "cik_0002023554:20250930",
+      "plan_id": "plan_r0001_c01",
+      "source": {
+        "message": "Authorized acquisition adapters did not resolve the request (alpha_vantage:quota_deferred).",
+        "provider": "alpha_vantage",
+        "reason": "quota_deferred",
+        "request_id": "management_commentary",
+        "source_types": [
+          "earnings_call",
+          "earnings_transcript"
+        ]
+      }
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+      "json_locator": "/trajectories/22/basic_info_bundle/requests/2/data_gap",
+      "case_id": "cik_0000839470:20250731",
+      "plan_id": "plan_r0001_c01",
+      "source": {
+        "message": "Authorized acquisition adapters did not resolve the request (alpha_vantage:quota_deferred).",
+        "provider": "alpha_vantage",
+        "reason": "quota_deferred",
+        "request_id": "management_commentary",
+        "source_types": [
+          "earnings_call",
+          "earnings_transcript"
+        ]
+      }
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "json_locator": "/trajectories/13/basic_info_bundle/requests/2/data_gap",
+      "case_id": "cik_0002023554:20250930",
+      "plan_id": "plan_r0001_c02",
+      "source": {
+        "message": "Authorized acquisition adapters did not resolve the request (alpha_vantage:quota_deferred).",
+        "provider": "alpha_vantage",
+        "reason": "quota_deferred",
+        "request_id": "recent_management_commentary",
+        "source_types": [
+          "earnings_call",
+          "earnings_transcript"
+        ]
+      }
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "json_locator": "/trajectories/22/basic_info_bundle/requests/2/data_gap",
+      "case_id": "cik_0000839470:20250731",
+      "plan_id": "plan_r0001_c02",
+      "source": {
+        "message": "Authorized acquisition adapters did not resolve the request (alpha_vantage:quota_deferred).",
+        "provider": "alpha_vantage",
+        "reason": "quota_deferred",
+        "request_id": "recent_management_commentary",
+        "source_types": [
+          "earnings_call",
+          "earnings_transcript"
+        ]
+      }
+    }
+  ],
+  "domain_unavailable_examples": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+      "json_locator": "/trajectories/1/signal_rounds/0/batch/results/1",
+      "case_id": "cik_0001830043:20250930",
+      "plan_id": "plan_r0001_c01",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "source": {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        },
+        "interpretation": {
+          "summary": "The visible projections contain no disclosure of a new customer order, contract, offtake agreement, or binding award with a named counterparty or program and a stated or implied value, volume, or delivery schedule. The available text covers litigation, annual meeting voting results, related-party transactions, executive compensation, cost-reduction and marketing-spend commentary, layoffs, a securities-fraud investigation, and financial statements, none of which confirms a qualifying order or contract event. Because the visible text does not address a new customer order or contract award at all, the skill cannot be applied to a measured object."
+        },
+        "signal_id": "order_confirmation_disclosed",
+        "state": {
+          "confidence": 0.5,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 2
+      }
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+      "json_locator": "/trajectories/2/signal_rounds/1/batch/results/3",
+      "case_id": "cik_0000701818:20250930",
+      "plan_id": "plan_r0001_c01",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "source": {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        },
+        "interpretation": {
+          "summary": "The visible projections consist solely of Form 6-K cover pages and exhibit indices referencing press releases and Early Warning Reports concerning share purchase agreement amendments, share sales in Asante Gold Corporation and White Gold Corp., quarterly results, and a dividend declaration. None of the cited spans disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or program and a stated or implied value, volume, or delivery schedule. The available text is insufficient to apply the order-confirmation skill."
+        },
+        "signal_id": "order_confirmation_disclosed",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 2
+      }
+    }
+  ],
+  "new_measurement_need_candidates": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+      "json_locator": "/trajectories/8/final_state/next_information_needs/2",
+      "case_id": "cik_0000936395:20250930",
+      "plan_id": "plan_r0001_c01",
+      "need": "What customer concentration, backlog, or book-to-bill metrics were disclosed in the most recent quarterly filing or earnings call available before the prediction time?"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "json_locator": "/trajectories/2/final_state/next_information_needs/1",
+      "case_id": "cik_0000701818:20250930",
+      "plan_id": "plan_r0001_c02",
+      "need": "What are the latest analyst consensus estimates and price targets for the target issuer as of the prediction time, and how have they changed over the past quarter?"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "json_locator": "/trajectories/11/final_state/next_information_needs/3",
+      "case_id": "cik_0001018963:20250930",
+      "plan_id": "plan_r0001_c02",
+      "need": "What is the issuer's current backlog and book-to-bill ratio, and how does it compare to historical levels?"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "json_locator": "/trajectories/14/final_state/next_information_needs/0",
+      "case_id": "cik_0000723125:20250731",
+      "plan_id": "plan_r0001_c02",
+      "need": "Comparison of management's fiscal Q4 guidance to analyst consensus estimates available at the prediction time."
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "json_locator": "/trajectories/14/final_state/next_information_needs/1",
+      "case_id": "cik_0000723125:20250731",
+      "plan_id": "plan_r0001_c02",
+      "need": "Comparison of management's fiscal Q4 guidance to analyst consensus estimates available at the prediction time."
+    }
+  ],
+  "knowledge_references": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/knowledge/observations/583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4.json",
+      "plan_id": "plan_r0001_c01",
+      "record_hash": "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4",
+      "rows": 24,
+      "authored_experience_refs": {
+        "item_refs": [
+          "reflection:aff76126df0d2f8d853686ca1a789b264a5a079c3d15c360576b209c5c75dfe4",
+          "reflection:b0ca37baa514f7486490ce9d285464e36165bf626ef733f4517d9ce1b2385df0",
+          "reflection:cfde39ade2218b16a03df86d98c150da6a2a10987bd317b38fecbcecd31e4f6b",
+          "reflection:8f4a61115e6d0b3f81fd9d1cc1f12f6a21e6e38cb8f2af3adef75958025e4379"
+        ],
+        "snapshot_hash": "e034866d22eec42c2ca1315b6568f517a23c351d30d857591addd39fbe8544cd"
+      },
+      "meaning": "Declared exact-reference exposure/adoption derivative only; not independent benefit or proof of use-caused correctness."
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/knowledge/observations/354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e.json",
+      "plan_id": "plan_r0001_c02",
+      "record_hash": "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e",
+      "rows": 24,
+      "authored_experience_refs": {
+        "item_refs": [
+          "reflection:aff76126df0d2f8d853686ca1a789b264a5a079c3d15c360576b209c5c75dfe4",
+          "reflection:8f4a61115e6d0b3f81fd9d1cc1f12f6a21e6e38cb8f2af3adef75958025e4379",
+          "reflection:cfde39ade2218b16a03df86d98c150da6a2a10987bd317b38fecbcecd31e4f6b",
+          "reflection:80fd3f0e70c1d39350e52be82be37882c483240614d2be42fdeb6fe7db12be66",
+          "reflection:b0ca37baa514f7486490ce9d285464e36165bf626ef733f4517d9ce1b2385df0"
+        ],
+        "snapshot_hash": "e034866d22eec42c2ca1315b6568f517a23c351d30d857591addd39fbe8544cd"
+      },
+      "meaning": "Declared exact-reference exposure/adoption derivative only; not independent benefit or proof of use-caused correctness."
+    }
+  ],
+  "historical_slow_failure": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/cycles/cycle-0001/slow_memory.json",
+    "status": "failed",
+    "failure_ref": "CandidateExecutionRejected: signal_mining_reflect failed validation after one correction: episode_reflections source_refs must cover every selected top-level feedback_ref; no unused episode slot remains, so merge the missing refs and their reflection into one or more existing valid episodes without adding a row",
+    "processed": 0,
+    "pending": 3518,
+    "selected_refs": [
+      "slow-history:source-66d93955caf3fdec:1:slow_input:feedback-002",
+      "slow-history:source-66d93955caf3fdec:1:slow_loop_result:summary",
+      "slow-history:source-66d93955caf3fdec:1:slow_loop_validation:summary"
+    ],
+    "included_count": 3,
+    "deferred_count": 3515
+  },
+  "approved_import": {
+    "manifest_hash": "20eb20c14a8895bcc6b6b7bc23f1a6cad1a553259901394c063e1f4bff3ba395",
+    "namespace": "source-66d93955caf3fdec",
+    "committed_fast_round": 1,
+    "committed_slow_cycle": 1,
+    "cycle_artifacts": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/source-66d93955caf3fdec/experiments/cycles/cycle-0001/slow_input.json",
+        "sha256": "7ac0e1dcc1b52ed6c9b96f4c90c0926797a90457bcf36478ccafc0e99c5811c6"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/source-66d93955caf3fdec/experiments/cycles/cycle-0001/slow_memory.json",
+        "sha256": "923cb650372dab48b47673eea8f909fe87c356977488f2f46ed68d5c44e6e2bc"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/source-66d93955caf3fdec/experiments/cycles/cycle-0001/slow_experiments.json",
+        "sha256": "e3175ccf13974abc77ce57d5e0844b27bd4a7098a84602d9e7f424c13e0c4321"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/source-66d93955caf3fdec/experiments/cycles/cycle-0001/slow_loop_validation.json",
+        "sha256": "469cde4ce3b0a6de039c43448f8fdeb2c48792d34010b6b5cb7341cb84bad7a8"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/source-66d93955caf3fdec/experiments/cycles/cycle-0001/slow_loop_result.json",
+        "sha256": "79e2f3faad2a2af0db3e815c2f1ebfd20a6c153770cf8c1eeddc3857fc3ba154"
+      }
+    ],
+    "imported_fast_meta_entries": 1,
+    "capability_backlog": {
+      "open_count": 134,
+      "ordinary_items": 1,
+      "signal_need_items": 133
+    }
+  },
+  "denominator": {
+    "feedback_units": 3518,
+    "kind_counts": {
+      "magnitude_feedback": 8,
+      "prediction_comparison": 69,
+      "candidate_result": 59,
+      "signal_target_observation": 126,
+      "signal_usage": 3229,
+      "search_result": 27
+    },
+    "feedback_hash": "307f729fd8c2fcf6a9fc824f89dcedcf20bec4257da50491be4a75e08952f0c2",
+    "sorted_ref_set_hash": "14a62497bbe2c767d491f84e368d21220e203b0f29e872aa6d2940d67c99b7cd",
+    "processed_ref_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "pending_ref_set_hash": "14a62497bbe2c767d491f84e368d21220e203b0f29e872aa6d2940d67c99b7cd",
+    "source_manifest_count": 3518,
+    "note": "This is the historical committed cycle1 universe. The not-yet-executed new export/input may add the newly imported local cycle units; its own denominator must be derived/frozen from actual export, never guessed as3518 or reduced to3 selected items."
+  }
+}

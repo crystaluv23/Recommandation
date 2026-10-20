@@ -1,0 +1,42 @@
+{
+  "schema_version": "source-only-oracle-preflight-freeze-v1",
+  "status": "preflight_not_live_acceptance",
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/README.md",
+      "sha256": "f8022b937bf5a4f6ae1e094f4252d33985f5b88433c87a236f6aaa65b0e97ef1",
+      "bytes": 2606
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/preflight-oracle.json",
+      "sha256": "df8c8e22128feb701c1f2b5ad597c6efa76f79226f6da11c52de76225fdb2a6e",
+      "bytes": 16093
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/read-bindings.json",
+      "sha256": "44036701a97b031d182a0af9c80e289874083a14973b9ca4c6d5f0dea52c00de",
+      "bytes": 6972
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/readability-preflight.json",
+      "sha256": "ae0451d29f06a1bb7d683aa60b5bea19fffd1264b9be01fbe22b1a251e6f52ea",
+      "bytes": 4966
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/source-evidence.json",
+      "sha256": "32c7fb8662ed47140c907ffe712a61f8e25c211c94567ad84b0f8c4980ab72bf",
+      "bytes": 30923
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/source-preflight.log",
+      "sha256": "06f2ff6b2ffe2030d1b15834399935a96cf520c046519c2ad1676baf3750d44d",
+      "bytes": 233
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/source_preflight.py",
+      "sha256": "ca4841de75043084d0fd07ca8adec75fb69e72d8c93be56f4b3c33fa77a7b275",
+      "bytes": 8543
+    }
+  ],
+  "manifest_hash": "a2a3c52439cf96ff145b4b039d95c80ce4bcff9fdb51f071871c4bea89a0accd"
+}

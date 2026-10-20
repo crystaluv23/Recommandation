@@ -1,0 +1,129 @@
+{
+  "status": "preflight_verified_before_after",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cycle_state.json",
+      "sha256": "5619ac234153d2946c4d186e18a04043d4bf7e0739ae75859a6c91180fb00bf6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/cycles/cycle-0001/slow_experiments.json",
+      "sha256": "403201412387ca06faa052cd785eb09bc719550bc6811135727266b5c331b569"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/cycles/cycle-0001/slow_input.json",
+      "sha256": "82bc8f5f11f1f9694aa6c583a7ecf6107d42d7e5a57c0546335c7afa6ab2d69c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/cycles/cycle-0001/slow_loop_result.json",
+      "sha256": "c8b53992c67cfaf139581b617069da8233dd02632923e35e20deea24f69c75bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/cycles/cycle-0001/slow_loop_validation.json",
+      "sha256": "41b5886f28f7b2640cd063365a6909e8a803a8a001688d54dedc733070c77222"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/cycles/cycle-0001/slow_memory.json",
+      "sha256": "e056b9a626138c7f6e17a90291a3da33dfb3b5176d98a2701688a6e94ceafe87"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/round-0001/checkpoint.json",
+      "sha256": "e367d783ae4060a9c21b4a5d6066eb118dbc58c24464931954bfff5ddae652a3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/knowledge/observations/354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e.json",
+      "sha256": "111cf678d4f9619a03e2879f7e7b377123625c4ca308f18df81f4b287b099591"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/knowledge/observations/583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4.json",
+      "sha256": "de6d36efd4d16b9829dde47a39538feb48b25018a00002b166bc4e32a505a98e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/meta/round-0001.json",
+      "sha256": "e2de8017cf4825e70ffde11ce75e7e26558573a1f8fd33a13848d69692f4cf78"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c01/record.json",
+      "sha256": "67c75ec03242fa451589848dae6f703ba381004dab786c5c678dff18e48551ad"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/plans/plan_r0001_c02/record.json",
+      "sha256": "4ab4569fb7482d069a2e7d1fb5b95b8a9fcb2f79bd28cac77fcfec22b6878ab6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/run_contract.json",
+      "sha256": "5789b5a8512556b614949b3705ced68968aeec78df801e2912f008369a700d81"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/manifest.json",
+      "sha256": "1be5e1fd4d41471cfd0240f44c9ea56d4d07698d2fc618d67b1ffcc16275de4e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/source-66d93955caf3fdec/experiments/cycles/cycle-0001/slow_experiments.json",
+      "sha256": "e3175ccf13974abc77ce57d5e0844b27bd4a7098a84602d9e7f424c13e0c4321"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/source-66d93955caf3fdec/experiments/cycles/cycle-0001/slow_input.json",
+      "sha256": "7ac0e1dcc1b52ed6c9b96f4c90c0926797a90457bcf36478ccafc0e99c5811c6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/source-66d93955caf3fdec/experiments/cycles/cycle-0001/slow_loop_result.json",
+      "sha256": "79e2f3faad2a2af0db3e815c2f1ebfd20a6c153770cf8c1eeddc3857fc3ba154"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/source-66d93955caf3fdec/experiments/cycles/cycle-0001/slow_loop_validation.json",
+      "sha256": "469cde4ce3b0a6de039c43448f8fdeb2c48792d34010b6b5cb7341cb84bad7a8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/slow_history/source-66d93955caf3fdec/experiments/cycles/cycle-0001/slow_memory.json",
+      "sha256": "923cb650372dab48b47673eea8f909fe87c356977488f2f46ed68d5c44e6e2bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/state.json",
+      "sha256": "e2cb3bbef7bfcfa62c4a1c218c181ac49796e6ebbd94851224ddbe1ed8dc2de9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/engineering-mvp.md",
+      "sha256": "5f8d9f326530cd2f4545f0036516b2b17efdd0631d83214b36d359afcd761947"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md",
+      "sha256": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "e8eb9604cf3819b9c0d8f64adb1d09a5b87790ef26ea5406e3aeb4eaff5ca459"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/knowledge.py",
+      "sha256": "df57838ed67bdb86abd99ea95594ec1239d968877ef8fa63bfce0c8848af4eca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "4abcf50e9831364afa838526de7c54958f9cdddca0f4d88f46c95b5ba31a5d24"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "48bc084ca33c095f0ecc0e93404b4d17eb580f1364defa758a8375fd7c93d4a6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "3f3723a2008d8e2aa1e2f30d5fff03d76e10e55595833f909a46aafe0bdd99ca"
+    }
+  ],
+  "product_imports": 0,
+  "Slow_executions": 0,
+  "model_calls": 0,
+  "GET": 0,
+  "global_LabelStore_reads": 0,
+  "LockedTest_reads": 0,
+  "round2_reads": 0,
+  "source_mutations": 0
+}

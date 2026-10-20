@@ -1,0 +1,73 @@
+{
+  "status": "PASS_exact_source_history_materialization_only",
+  "manifest_hash": "ba60fd7c7aa4472900ef26c8068deee66e9d4e51c8a699455432f7eed626bc55",
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/result.json": "f1976d7436f09eec046ded35c74cfa00318a66426455e214dcfe9e0fa9608d6e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/manifest.json": "2584bb7e28173412a79ad0520b80d13ca4711074ad663baccc4d24600bdba438",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/completed-files.json": "af51a017053d258b15b2bda7defcf73bbd86bf76c11b790e2fa2d4bff927352c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/export_history.py": "83c186f6630816d91f48b9f977dcbf7720b1e41a6c11c8b169d31bb881f8419a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/actual-command.json": "ac2e715a4d3435bb2bd87fe2bff34a144f19e5c583e84540361d1244958fb0f1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/actual-command-result.json": "b337b879d08f31591e0d1dc2dcf257895b11b4c13426423ec5f2de5076b2a5bb"
+  },
+  "actual_source_reads": 210,
+  "source_before_after_current_equal": true,
+  "source_fast_slow_pointers": [
+    1,
+    1
+  ],
+  "source_active_cycle": null,
+  "blocked_reads": 0,
+  "blocked_writes": 0,
+  "forbidden_calls": 0,
+  "terminal_stage_files": 228,
+  "result_preinventory_files": 227,
+  "sealed_current_target_all_bytes_equal": true,
+  "definition_copies": 137,
+  "registry": {
+    "version": 12,
+    "refs": 18,
+    "hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+    "identity_recomputed_without_registry_or_audit": true
+  },
+  "current_cycle_exact_copies": 5,
+  "candidate_exact_copies": 7,
+  "carried_imported_namespace_exact_file_copies": 25,
+  "learning_events": {
+    "manifest": 914,
+    "target": 914,
+    "target_unique_ids": 914,
+    "inherited_authorized": 740,
+    "current_pointer_eligible": 174,
+    "all_canonical_rows_exact": true,
+    "noneligible_source_events_excluded": 0
+  },
+  "knowledge_observations": {
+    "total": 192,
+    "source_imported": 144,
+    "current_committed": 48,
+    "all_exact_saved_source_derivative_rows": true,
+    "external_knowledge_files_copied": false
+  },
+  "fast_context": {
+    "meta_entries": 1,
+    "prediction_observations": 192,
+    "imported_exact": 144,
+    "current_committed_source_tuple_verified": 48,
+    "debug_log_or_round2_not_used_as_input": true
+  },
+  "failed_memory_preserved": {
+    "status": "failed",
+    "processed_count": 0,
+    "pending_count": 3518
+  },
+  "previous_v1_failure_unchanged": true,
+  "new_execution_contract_or_fast_slow_pointer": false,
+  "limits": [
+    "This is source metadata/event/definition materialization, not fresh capability audit, Signal execution, new S1/S2 model behavior, semantic learning or independent research benefit.",
+    "Knowledge rows in the manifest are not a claim that all external knowledge derivative files were copied; the target has no knowledge/ directory or frozen run contract.",
+    "Native apply regenerates per-version learning/profile.json and target-evaluation derivatives from the exact imported events. These are historical-event aggregates, not new learned research outcomes or current capability certificates.",
+    "No build/apply/freeze/Signal/model/network/LabelStore/Store constructor was invoked by this read-only audit. Retrospective source records were compared in memory; no outcome values are copied to this review.",
+    "All observed source read hashes and target seal are verified; the guarded command provides source write evidence, not a universal filesystem-monitor guarantee.",
+    "No OS crash recovery or fresh Fast/Slow budget authorization is claimed."
+  ]
+}

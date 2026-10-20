@@ -1,0 +1,60 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Read the latest point-in-time cash and equivalents balance."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "financial.cash_reserves",
+    "type": "deterministic"
+  },
+  "parameters": {
+    "negative_max": 10000000,
+    "positive_min": 100000000,
+    "routing_answer_need_phrases": [
+      "cash reserves",
+      "cash balance",
+      "cash and equivalents",
+      "cash position",
+      "liquidity"
+    ]
+  },
+  "raw_retrieval": {
+    "minimum_distinct_periods": 1,
+    "query_terms": [
+      "cash and equivalents",
+      "cash balance",
+      "liquidity"
+    ],
+    "required_source_groups": [
+      [
+        "financials",
+        "filing"
+      ]
+    ],
+    "source_types": [
+      "financials",
+      "filing"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "cash_reserves",
+  "version": 1
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py",
+    "--execute",
+    "--expected-revision",
+    "6a5cac5f9e0f1b5e4ebd7382bd1fd26d566927e0",
+    "--expected-control-sha",
+    "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+    "--expected-script-sha",
+    "9fc0977424ca744895be84415a984275fadeacd1bc11c67e94f292e423bdfa85"
+  ],
+  "review_sha256": "f6c364ace6c0b3ecec2faa5cf0301e3ddcdd0cc3ad3b0dc950337fefce429384"
+}

@@ -1,0 +1,56 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Measure cash runway in months from the latest negative operating cash flow duration and closest same-currency cash balance."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "financial.liquidity_runway_months",
+    "type": "deterministic"
+  },
+  "modality": "structured",
+  "parameters": {
+    "max_period_age_days": 550,
+    "negative_runway_min_months": 12,
+    "positive_runway_max_months": 6
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "Use the latest point-in-time cash and equivalents and operating cash flow facts for the same reporting entity and period; when multiple facts conflict, prefer the most recent available_at.",
+    "lookback_days": 550,
+    "query_terms": [
+      "CashAndCashEquivalentsAtCarryingValue",
+      "CashAndCashEquivalents",
+      "CashEquivalents",
+      "NetCashProvidedByUsedInOperatingActivities",
+      "CashFlowsFromUsedInOperatingActivities",
+      "liquidity runway",
+      "operating cash flow",
+      "cash burn",
+      "months"
+    ],
+    "source_types": [
+      "financials",
+      "company_facts"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "liquidity_runway_months",
+  "version": 3
+}

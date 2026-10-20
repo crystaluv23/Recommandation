@@ -1,0 +1,15 @@
+{
+  "correction": "Only declare and freeze the exact native-constructor sequence sidecar. Previous failed attempt is immutable and never reentered. No source/product/budget/answer change. Operational sidecar is not committed research input or exported manifest evidence.",
+  "previous_script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py",
+    "sha256": "9fc0977424ca744895be84415a984275fadeacd1bc11c67e94f292e423bdfa85"
+  },
+  "previous_terminal_failure": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/stage/failure.json",
+    "sha256": "1ef26e1add644d69a5c7905d82bd98a68f27dc13e900fcac60e54d8727790421"
+  },
+  "sidecar": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectory.jsonl",
+    "sha256": "669e245e6735a2af4256ea2fec267c02af40745ca699144dd09010c22ea3efa7"
+  }
+}

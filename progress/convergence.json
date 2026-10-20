@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T20:57:09+00:00",
+    "checked_at": "2026-10-20T21:11:02+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal after final historical reader65/independent10 controls; full MVP remains open, no budget limit"
+    "source": "Actual root get_goal during bounded historical materialization work; full MVP remains open and unbudgeted, no full successor."
   },
   "acceptance": [
     {
@@ -185,9 +185,19 @@
         "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-independent-review.json",
         "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/pointer-counterexample.json",
         "runs/diagnostics/slow_history_import_boundary_20261021_v1/root/connected-final-result.json",
-        "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair-review.json"
+        "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair-review.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/stage/failure.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/actual-failure-review.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-preflight-review.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/result.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/completed-byte-verification.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/preflight-oracle.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/readability-preflight.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-actual-review.json",
+        "runs/diagnostics/imported_feedback_readability_20261021_v1/result.json",
+        "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json"
       ],
-      "remaining": "Engineering content chain remains local/open. Actual currentv12 financial9 has6strictpasses/1prior original-row alternative mismatch/2definition-policyunknown;7numeric/state/unit/currentperiod match source oracle,9projections exact, completedrestore24bytes preserved, not fresh model consumption. Bounded lexical selection fails latest/comparison/currency/conflict witnesses; no callback installed, native LLM bounded-reading design pending. Typed reader local repair63associated/13independent holds; historicalv6 unchanged. FreshF7 temporal target3of3 and downstream/restores narrow, original0of1 preserved/mirrorunexercised; priorp01 auxiliary atomic quarantine is authorized, unavailable topic/provenance guard locally repaired282/31 but fresh behavior unverified. S5 independent tests-author2of2 is not Mining/newmeasurement implementation. Original40 readiness670of720 each/BasicInfoallpartial/newsunknown;BURUbaseline/FTItype/MSclock/26transcriptpublictimeproof remain. F10/Slowfeedback/direction+magnitude discovery/admission/exactreuse/wholeloop unverified. No benefit claim. Historical Registry metadata reader locally repaired at5source/materialization checks and typedversion producer/consumer authorities,65associated/10independent controls pass; freshcapabilityaudit preserved. Corrected realhistoryexport and actualS1/S2memory/taskconsumption remain unverified. Readable history is not current executable capability."
+      "remaining": "Engineering content chain remains local/open. Actual currentv12 financial9 has6strictpasses/1prior original-row alternative mismatch/2definition-policyunknown;7numeric/state/unit/currentperiod match source oracle,9projections exact, completedrestore24bytes preserved, not fresh model consumption. Bounded lexical selection fails latest/comparison/currency/conflict witnesses; no callback installed, native LLM bounded-reading design pending. Typed reader local repair63associated/13independent holds; historicalv6 unchanged. FreshF7 temporal target3of3 and downstream/restores narrow, original0of1 preserved/mirrorunexercised; priorp01 auxiliary atomic quarantine is authorized, unavailable topic/provenance guard locally repaired282/31 but fresh behavior unverified. S5 independent tests-author2of2 is not Mining/newmeasurement implementation. Original40 readiness670of720 each/BasicInfoallpartial/newsunknown;BURUbaseline/FTItype/MSclock/26transcriptpublictimeproof remain. F10/Slowfeedback/direction+magnitude discovery/admission/exactreuse/wholeloop unverified. No benefit claim. Historical Registry metadata reader locally repaired at5source/materialization checks and typedversion producer/consumer authorities,65associated/10independent controls pass; freshcapabilityaudit preserved. Corrected realhistoryexport/validate/materialization now succeeds with228byte-identical completedfiles and210unchangedsource reads; no freshS1/S2memory/taskconsumption. Importedfailure summary expected847019bytes exceeds64KB; actual imported producer/64KB reader confirms failedunit847019bytes is whole_entry_budget;3531importunits are not full S1 denominator. Readable history is not current executable capability."
     },
     {
       "id": "feedback_consumption",
@@ -198,9 +208,20 @@
         "reports/v182-terminal-slow-and-source-partition-audit-20261007.md",
         "reports/reviewed-posthoc-stage-20261020.md",
         "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/independent-review.json",
-        "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/execution_summary.json"
+        "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/execution_summary.json",
+        "reports/historical-registry-definition-reading-20261021.md",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/stage/failure.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/actual-failure-review.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-preflight-review.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/result.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/completed-byte-verification.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/preflight-oracle.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/readability-preflight.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-actual-review.json",
+        "runs/diagnostics/imported_feedback_readability_20261021_v1/result.json",
+        "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json"
       ],
-      "remaining": "Native case Posthoc one sample independently accepted and durable/restored; no committed Fast feedback submission, authorized Slow ingestion or downstream use. Historical v182 memory failed remains unchanged."
+      "remaining": "Historical input materialization now passed native build/validate/apply with unchanged source and exact v12 definitions/events/artifacts. Old v182 failed memory remains processed0/pending3518. Native imported producer/reader confirms847019byte failure unit unreadable under64KB, while2312byte positive reads. Full S1 admission, fresh accepted reflection, correct task routing and observed downstream consumption remain unverified. Posthoc remains a narrow independently accepted durable stage, not a committed Fast feedback submission."
     },
     {
       "id": "new_magnitude_reuse",
@@ -1202,10 +1223,33 @@
         "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair-review.json"
       ],
       "result": "Original minimalcopy freeze stops at missing knowledgecheckpoint, not real source fault; direct2oldpositives failissuer and memory-onlyCIK controls pass(4audits/batches/functions). Unique actual source builder passes knowledge and then9financiallegacyfixtures failissuer,3otherdetpass(12audits/functions),93readbytes unchanged/no write/export. Spec-first privatepure reader replaces5historicalfreeze only; freshcycle AST/3freeze unchanged. Independent bool/floatpointer counter accepts old andfirstcandidate, fixedtypedRegistry authorities through source/apply-before-write/history/bootstrapproducer+validator. Final65associated and10independent groups pass; no fresh model/GET/LabelStore/actual corrected export or S1/S2 closure. Published sourcefixtures/oldpointers unchanged; definitionread supplies no profiles/current capability."
+    },
+    {
+      "id": "engineering-mvp-actual-history-materialization-20261021",
+      "strategy": "actual_history_export_and_pointer_bound_materialization",
+      "failure_families": [
+        "harness_native_constructor_operational_read_omitted",
+        "imported_failed_memory_complete_unit_exceeds_source_read_budget"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/historical-registry-definition-reading-20261021.md",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/stage/failure.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/actual-failure-review.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-preflight-review.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/result.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/completed-byte-verification.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/preflight-oracle.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/readability-preflight.json",
+        "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-actual-review.json",
+        "runs/diagnostics/imported_feedback_readability_20261021_v1/result.json",
+        "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json"
+      ],
+      "result": "Unique v1 terminal guard failure after181unchangedsource reads: native Workspace constructor needs exact operational trajectory maximumsequence; not committed research evidence. Independently diagnosed, oldfailedstage unchanged. v2 only binds/permits that sidecar; native fullsyntheticrestore excludes highsequence round2decoy/5neighborpaths/sourcewrites. Sole actualbuild/validate/apply1.810s succeeds: ba60fd7c manifest, exactv12/18refs/137definitions/914events/192knowledge-records/5localcycle/7candidatefiles,210sourcebytes same,0forbidden/blocked reads/writes/Signal/model/GET/labels. 228completedfiles reopened identically with0newnativecalls, not OScrash/researchrecovery. Metadata import only; originalmemoryfailed processed0/pending3518 preserved. Source-only oracle exposes expected847019byte importedfailureunit above64KB; nativecatalog/readability and fresh memory/taskconsumption still unverified. Subsequent actualnative imported producer returns3531units(notfullS1universe), targetfailedmemory847019bytes rejectedby64KB reader aswhole_entry_budget; small2312byteunitincluded. Sealed228files unchanged. This confirms the reading-granularity frontier without a model or runtime constructor."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-historical-definition-reading-20261021",
+    "after_iteration": "engineering-mvp-actual-history-materialization-20261021",
     "evidence": [
       "reports/historical-registry-definition-reading-20261021.md",
       "runs/diagnostics/current_financial_apply_20261021_v1/driver/next-slow-boundary-review.json",
@@ -1215,7 +1259,17 @@
       "runs/diagnostics/slow_history_import_boundary_20261021_v1/actual-source-independent-review.json",
       "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair/pointer-counterexample.json",
       "runs/diagnostics/slow_history_import_boundary_20261021_v1/root/connected-final-result.json",
-      "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair-review.json"
+      "runs/diagnostics/slow_history_import_boundary_20261021_v1/independent-repair-review.json",
+      "runs/diagnostics/reviewed_slow_history_export_20261021_v1/stage/failure.json",
+      "runs/diagnostics/reviewed_slow_history_export_20261021_v1/actual-failure-review.json",
+      "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-preflight-review.json",
+      "runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/result.json",
+      "runs/diagnostics/reviewed_slow_history_export_20261021_v2/completed-byte-verification.json",
+      "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/preflight-oracle.json",
+      "runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/readability-preflight.json",
+      "runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-actual-review.json",
+      "runs/diagnostics/imported_feedback_readability_20261021_v1/result.json",
+      "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1287,22 +1341,23 @@
       "Independent actual audit initially treated optional null instant-period start as a required key and then required dict identity against start:null. It now checks optionalstart semantically while tag/value/unit/end remain exact; original audit failures are retained, and none warrants product period correction.",
       "The earlier seed/author identity repair deliberately preserved published fixtures, but history export still called current capability freeze. Input-only snapshot diagnostics never entered this importer. A minimalcopy omitted the knowledge checkpoint and failed even before audit; native actual source with valid committed knowledge was necessary to identify the real fixture gate.",
       "A pure definition reader implemented through list_signal_cards would still depend on KnowledgeUseStore.profiles and repeat the incomplete-copy failure at materialization. The private reader enumerates stable manifests/specs/skills directly; existing knowledge/event source validation remains separate and fresh execution still audits capabilities.",
-      "Nine focused candidate tests validated rawheader/stabletype but missed authority pointer int coercion. Independent complete source controls demonstrate True/1.9 accepted by both old and firstcandidate. Root initially enumerated five freeze callsites too mechanically; the bootstrap manifest validator is the actual downstream consumer and now shares strictRegistryversion identity. No claim is made about all runtime numeric coercions."
+      "Nine focused candidate tests validated rawheader/stabletype but missed authority pointer int coercion. Independent complete source controls demonstrate True/1.9 accepted by both old and firstcandidate. Root initially enumerated five freeze callsites too mechanically; the bootstrap manifest validator is the actual downstream consumer and now shares strictRegistryversion identity. No claim is made about all runtime numeric coercions.",
+      "Guard-only preflights missed the real Workspace constructor event-sequence read; complete native temporary restore graph was needed. The exact sidecar is operational metadata, never committed research authority. File preservation also cannot establish reading: failed memory is one oversized imported unit, while compact local method delta is not automatically supplied to an imported-only successor. Do not spend a fresh role before measuring the actual native catalog/read path."
     ],
     "decision": {
-      "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "actual_history_export_before_fresh_slow_memory",
-      "action": "After a scoped code/spec/test checkpoint, execute one fixed v182 committed-source history build, native manifest validation and new-target materialization with no model or Signal execution. Freeze code/source identity, forbid source/global writes and global LabelStore/LockedTest, log actual authorized committed/namespaced reads and their before/after hashes. Verify exact v12 definition identity and preserve old pending/failed records.",
-      "stop": "One bounded export/materialization attempt; native failure is terminal, no source edits, retries, hand-authored replacement manifests, capability-audit bypass for fresh runs or full successor. No production role dispatch until real input and request budget are separately frozen; metadata import grants no executable capability or benefit.",
-      "question": "Does the repaired historical reader let the actual committed source produce and materialize an exact authorized history manifest without mutating source bytes or invoking current Signal/model execution?",
-      "pass": "Native build/validate/materialization complete with exact v12 version/hash, preserved source/pointer/definition bytes, authorized committed source reads only,0model/GET/LabelStore/Signal/audit/freshfreeze and a durable new manifest whose files/events match source authority.",
-      "fail": "Any native schema/provenance/identity gate fails, an undeclared/staged/LockedTest source is requested, source/global write is attempted, or a current capability/execution call occurs during metadata import.",
-      "on_pass": "Freeze a finite native S1/S2 source-view/reflection preflight and independent semantic oracle, then use fresh exact-inbox subagents and inspect actual task handoff; do not mark a Slow cycle complete from memory alone.",
-      "on_fail": "Preserve the unique native frontier and first exact cause; choose the smallest source/reader repair supported by original evidence without filling missing data or weakening current admission.",
-      "new_evidence": "Actualsource3slice diagnosis distinguishes incompletecopy knowledge from9legacyissuer failures; newpuremetadata+typedauthority repair passes65associated/10independent groups while fresh audit still refuses oldfixtures. The prior import assumption is now locally repaired but actual full export/materialization remains untested.",
-      "distinguishing_variable": "Real committed source export/materialization under corrected code versus old freshaudit-coupled source read, with source records/hash/pointers held fixed; historical readability, event authority and current executability remain separate.",
-      "authorization_evidence": "Active engineering MVP goal, independent subagents replace production LLM API, externalLLMAPI prohibited. S1 permits retrospective committed Fast/Slow history; no blind role/LockedTest/globalLabelStore. This is a new isolated metadata stage with0role/network/Signal budget, not a full successor or old-run resume."
+      "acceptance_id": "feedback_consumption",
+      "kind": "repair",
+      "strategy": "reuse_compact_method_projection_for_imported_feedback",
+      "action": "Read the owning contracts first, then repair the imported-memory producer/read granularity using the existing versioned compact method-memory projection where compatible. Preserve original immutable artifacts, original complete summary/refs, pending partitions, source-file/locator/hash authority and role scopes. Cover producer→catalog→bounded reader→reflection/method consumer→persistence/multihop boundaries with original failure, normal/empty/oversized/visibility counterexamples before fresh roles. Prepare any substantive upper-contract tradeoff for user decision rather than changing it silently.",
+      "stop": "No source or completed-stage rewrite, pending-to-processed shortcut, larger budget, hand-authored feedback, externalLLMAPI, full successor or old-run resume. Stop if existing source/projection authority cannot represent the fix without a material design decision; local controls are not actual S1/S2 consumption.",
+      "question": "Can the existing approved compact method-memory representation expose imported failed status/cause within the bounded reader while retaining full immutable history, stable source authority and accurate pending/processed state?",
+      "pass": "Original failure has an owner-produced, provenance-bound complete compact method unit accepted by the unchanged64KB reader; full original unit and pending remain, success/empty/largehistory/role/multihop controls preserve meaning and later actual request contains the exact view.",
+      "fail": "Projection hides required failure meaning, changes old refs or processing state, widens role/temporal scope, requires unapproved schema/budget semantics, or remains invisible at the actual reflection consumer.",
+      "on_pass": "Freeze finite S1/S2 actual request budget and source-derived semantic oracle, dispatch fresh exact-inbox subagents, and verify accepted reflection plus actual task consumer. Keep wholeMVP/feedback consumption open until those live connections pass.",
+      "on_fail": "Preserve the demonstrated producer/consumer frontier and ask only for concrete material contract choices if needed; do not claim unrelated smallunit success or fabricate consumed feedback.",
+      "new_evidence": "Actual export materializes exact history and228files; native imported producer produces3531units, exact failedsummary847019bytes is deferred whole_entry_budget under64KB while2312byte positive reads. Existing local compact method view is541bytes but not automatically provided to first imported cycle.",
+      "distinguishing_variable": "Existing versioned compact method projection through the real imported producer/catalog/reader and actual reflection consumer, with full original artifacts/source authority/64KB budget/pending held fixed.",
+      "authorization_evidence": "Active full engineering MVP goal; public readonly source verification allowed; productionLLM must use independent exact-inbox subagents and externalLLMAPI prohibited. This diagnostic uses0role/Signal/network budget, does not resume v182 or create a full successor."
     }
   },
   "successor_prerequisites": [

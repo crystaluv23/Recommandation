@@ -1,0 +1,45 @@
+{
+  "command": [
+    "runs/diagnostics/reviewed_slow_history_export_20261021_v2/export_history.py",
+    "--execute",
+    "--expected-revision",
+    "6a5cac5f9e0f1b5e4ebd7382bd1fd26d566927e0",
+    "--expected-control-sha",
+    "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+    "--expected-script-sha",
+    "83c186f6630816d91f48b9f977dcbf7720b1e41a6c11c8b169d31bb881f8419a"
+  ],
+  "control_sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+  "pid": 9548,
+  "python": "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "revision": "6a5cac5f9e0f1b5e4ebd7382bd1fd26d566927e0",
+  "scope": "S1 history-only, no new execution contract or pointer advancement",
+  "script_sha256": "83c186f6630816d91f48b9f977dcbf7720b1e41a6c11c8b169d31bb881f8419a",
+  "source_authority": {
+    "bindings": {
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cycle_state.json": "5619ac234153d2946c4d186e18a04043d4bf7e0739ae75859a6c91180fb00bf6",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectory.jsonl": "669e245e6735a2af4256ea2fec267c02af40745ca699144dd09010c22ea3efa7",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/run_contract.json": "5789b5a8512556b614949b3705ced68968aeec78df801e2912f008369a700d81",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/registry.json": "41da62a18a371e11376933fb7dfe57f22440f3129467e2248a8c5d45d63ee0f4",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/state.json": "e2cb3bbef7bfcfa62c4a1c218c181ac49796e6ebbd94851224ddbe1ed8dc2de9"
+    },
+    "checkpoint": {
+      "keys": [
+        "meta_ref",
+        "plan_ids",
+        "round_id",
+        "run_contract_hash",
+        "signal_learning_hash",
+        "signal_registry_hash",
+        "signal_registry_version"
+      ],
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/round-0001/checkpoint.json",
+      "run_contract_hash_matches": true,
+      "sha256": "e367d783ae4060a9c21b4a5d6066eb118dbc58c24464931954bfff5ddae652a3"
+    },
+    "meta": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/meta/round-0001.json",
+      "sha256": "e2de8017cf4825e70ffde11ce75e7e26558573a1f8fd33a13848d69692f4cf78"
+    }
+  }
+}

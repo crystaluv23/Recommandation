@@ -1,0 +1,62 @@
+{
+  "status": "PASS_bounded_v2_exact_sidecar_preflight_not_actual_export",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/export_history.py",
+    "sha256": "83c186f6630816d91f48b9f977dcbf7720b1e41a6c11c8b169d31bb881f8419a"
+  },
+  "control_sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+  "four_plus_one_current_source_authorities": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/run_contract.json": "5789b5a8512556b614949b3705ced68968aeec78df801e2912f008369a700d81",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/state.json": "e2cb3bbef7bfcfa62c4a1c218c181ac49796e6ebbd94851224ddbe1ed8dc2de9",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cycle_state.json": "5619ac234153d2946c4d186e18a04043d4bf7e0739ae75859a6c91180fb00bf6",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/registry.json": "41da62a18a371e11376933fb7dfe57f22440f3129467e2248a8c5d45d63ee0f4",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectory.jsonl": "669e245e6735a2af4256ea2fec267c02af40745ca699144dd09010c22ea3efa7"
+  },
+  "lineage_verified": {
+    "correction": "Only declare and freeze the exact native-constructor sequence sidecar. Previous failed attempt is immutable and never reentered. No source/product/budget/answer change. Operational sidecar is not committed research input or exported manifest evidence.",
+    "previous_script": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py",
+      "sha256": "9fc0977424ca744895be84415a984275fadeacd1bc11c67e94f292e423bdfa85"
+    },
+    "previous_terminal_failure": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/stage/failure.json",
+      "sha256": "1ef26e1add644d69a5c7905d82bd98a68f27dc13e900fcac60e54d8727790421"
+    },
+    "sidecar": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectory.jsonl",
+      "sha256": "669e245e6735a2af4256ea2fec267c02af40745ca699144dd09010c22ea3efa7"
+    }
+  },
+  "AST_delta": "Only source_only gains one exact permitted file; every other function including execute/source_authorities is structurally unchanged. Fixed source SHA table adds only that exact sidecar.",
+  "independently_reexecuted_temporary_controls": {
+    "methods": 2,
+    "passed": 2,
+    "log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/independent-native-restore-controls.log",
+      "sha256": "9044999107d24ae78005f7fa54eace48aceaf9da9cbaeef15a017f8147afd658"
+    },
+    "native_edges_not_mocked": [
+      "EvolutionWorkspace constructor",
+      "restore_archive",
+      "restore_meta",
+      "committed_prediction_observations",
+      "imported_prediction_observations",
+      "_load_slow_fast_context"
+    ],
+    "high_sequence_round2_decoy": "99999 initializes append counter only; round1 archive/meta/prediction context excludes debug payload and uncommitted Plan.",
+    "adjacent_forbidden_reads": 5,
+    "source_write_rejected": true,
+    "source_tree_hashes_unchanged": true,
+    "actual_new_stage_created": false
+  },
+  "reviewed_control_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/native-restore-controls.py",
+    "sha256": "8f52a2fba72ac8c7a9413fbb55ee07bf4cf3437305620d621687d8244ebbecee"
+  },
+  "limits": [
+    "No actual export/build/validate/apply or production Store/Signal/model/GET/LabelStore invoked. Temporary native restore controls and fixed source hashes do not substitute for actual terminal materialization audit.",
+    "The exact operational log is now authorized solely for unmodified constructor initialization. It is not committed research evidence and does not expand permission to its directory, round2 records or other logs.",
+    "Prior v1 failure and reviews remain immutable; this separate root is the sole proposed new attempt, not a resume.",
+    "Source contract carrier still only supplies in-memory manifest-validation identity, not execution or budget authority; no Fast/Slow pointer advancement, capability admission, learned profile or benefit established."
+  ]
+}

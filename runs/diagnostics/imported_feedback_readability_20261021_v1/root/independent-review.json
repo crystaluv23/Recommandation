@@ -1,0 +1,140 @@
+{
+  "status": "PASS_saved_native_probe_independent_review",
+  "scope": "Retained-file/stdlib and static code audit only; no probe/native helper/model/export/Engine/Workspace/Signal/label execution by reviewer.",
+  "checks": {
+    "script_and_native_source_bound_to_execution_start": true,
+    "canonical_export_manifest_and_seal_match": true,
+    "all228_files_independently_match_seal_before_after_review": true,
+    "original7_oracle_files_unchanged": true,
+    "complete_summary_equal_original_minus_only_episode_lesson_collections": true,
+    "namespace_source_SHA_locator_role_and_exact_entry_shape_match": true,
+    "no_hand_truncation_or_manual_source_unit_in_probe": true,
+    "same_original_native_path_positive_control": true,
+    "command_log_agrees_with_result": true
+  },
+  "findings": {
+    "native_imported_unit_count": 3531,
+    "independent_natural_unit_counts": {
+      "slow_input": 3518,
+      "slow_memory": 1,
+      "slow_experiments": 4,
+      "slow_loop_validation": 7,
+      "slow_loop_result": 1
+    },
+    "validation_unit_breakdown": {
+      "summary": 1,
+      "mining": 1,
+      "update_summary": 1,
+      "update_targets": 3,
+      "mapping_fixture_values": 0,
+      "mapping_effect_values": 1
+    },
+    "failed_memory": {
+      "entry_bytes": 847019,
+      "role": "reflection",
+      "budget_bytes": 64000,
+      "max_items": 3,
+      "included": 0,
+      "deferred_reason": "whole_entry_budget",
+      "status": "failed",
+      "historical_pending": 3518,
+      "historical_processed": 0,
+      "artifact_hash": "9ffa34ee54b5067b68ab75977b48306fb6efb654d721fa0da023614d96096fbd"
+    },
+    "small_result_summary": {
+      "entry_bytes": 2312,
+      "included": 1,
+      "preserved_unit_hash": "bb603b9fa09ff35cc11a28e26d8cc079ede6120a078a9349d504e22a9ba04b65"
+    },
+    "stage_files": 228,
+    "forbidden_calls_in_guarded_phase": 0
+  },
+  "limits": [
+    "3531 is solely imported feedback projection; no complete new Slow input/denominator was constructed. Full committed-feedback producer also has other local/imported usage, comparison and profile channels.",
+    "No model received/interpreted these sources. A future accepted summary-unit reflection would not process its3518 nested oldpending refs.",
+    "Independent review matches current bytes to seal and retained root before/after assertion; no OS-crash reliability claim.",
+    "Imports and initial/final hash checks are outside root probe guards. Constructor/transport/Signal/LabelStore tripwires and stage-only runs reads cover actual guarded native producer/reader phase, not a process-wide syscall audit.",
+    "One reviewer-only assertion used an incorrect mapping assumption; original failure retained, fixed by inspecting original candidate-evaluation string versus effect Mapping. Product/probe/stage never rerun."
+  ],
+  "next_repair": {
+    "family": "Imported Slow-memory work-unit granularity across producer/catalog/reader/method-view consumers, including large failed/reused/appended histories.",
+    "first_loss": "Imported summary repeats operational ref arrays and full model_view_manifest as one847019-byte unit; small failure fact cannot reach role under existing64000-byte whole-unit read.",
+    "reuse_existing_compact_view": "Existing project_slow_method_memory delta header already exposes cycle/status/memory_hash/failure_ref while retaining full originals. Share its owner-defined projection semantics with imported memory, with exact namespace/sourceSHA/JSONlocator and explicit pending/processed counts or local membership access, rather than adding another canonical business schema. This is feasibility guidance, not implementation or approval to rewrite source units.",
+    "preserve": [
+      "Original source bytes, old frozen inputs/reflections and pending sets remain immutable.",
+      "Keep complete episode/lesson work units and lower-level source links; no model-authored condensation, substring clipping or fabricated failure cause.",
+      "Summary consumption cannot confer processed status on nested feedback; preserve full failure denominator independently.",
+      "Role-hidden source references must not leak via reused header or counts/provenance.",
+      "Future code/input/probe freezes must be new; never hotfix or reenter this completed probe."
+    ],
+    "verification_needed": [
+      "Spec-first owner-defined projection and complete-unit provenance contract.",
+      "Original large failed case plus small/large appended/reused, missing/hash-conflict, role scope and nested pending counterexamples.",
+      "Native producer/catalog/selector/read at original64KB/3 limit exposes complete diagnostic header, with full originals reachable under explicit approved read units.",
+      "Then fresh independent reflection and exact downstream routing verify actual interpretation/consumption."
+    ],
+    "avoid": "Do not raise budgets, handcraft a model source unit, mutate old history/Registry, or run fullSlow as diagnosis."
+  },
+  "read_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_feedback_readability_20261021_v1/probe.py",
+      "sha256": "f6cf1b34ddaffdc863ebafbc58ffd8a5f94b350c75b19ff3ea1be889ef53fa61"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_feedback_readability_20261021_v1/result.json",
+      "sha256": "c2223bbb23aa3f3df6e9dd3748e432ef50a94ac4310dc4010d7c8e1d059ceab6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_feedback_readability_20261021_v1/execution-start.json",
+      "sha256": "8eab1f9c5aab613f32e0623340964afac53c7062eba2614d809db61c4f4be789"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/imported_feedback_readability_20261021_v1/command.log",
+      "sha256": "d81bfed9ab6dbaebd2138867abc874a62250f473185ed1a7ec464d6cc93eff5e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/completed-files.json",
+      "sha256": "af51a017053d258b15b2bda7defcf73bbd86bf76c11b790e2fa2d4bff927352c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/manifest.json",
+      "sha256": "2584bb7e28173412a79ad0520b80d13ca4711074ad663baccc4d24600bdba438"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_input.json",
+      "sha256": "82bc8f5f11f1f9694aa6c583a7ecf6107d42d7e5a57c0546335c7afa6ab2d69c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_memory.json",
+      "sha256": "e056b9a626138c7f6e17a90291a3da33dfb3b5176d98a2701688a6e94ceafe87"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_experiments.json",
+      "sha256": "403201412387ca06faa052cd785eb09bc719550bc6811135727266b5c331b569"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_loop_validation.json",
+      "sha256": "41b5886f28f7b2640cd063365a6909e8a803a8a001688d54dedc733070c77222"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v2/stage/slow_history/source-12a50702a856ddc3/experiments/cycles/cycle-0001/slow_loop_result.json",
+      "sha256": "c8b53992c67cfaf139581b617069da8233dd02632923e35e20deea24f69c75bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/readability-preflight.json",
+      "sha256": "ae0451d29f06a1bb7d683aa60b5bea19fffd1264b9be01fbe22b1a251e6f52ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/oracle/preflight-manifest.json",
+      "sha256": "45b9b4dfdcbc94b2060312e5c62479df3020ab60e3dffeae90e7106448427c71"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "3f3723a2008d8e2aa1e2f30d5fff03d76e10e55595833f909a46aafe0bdd99ca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a"
+    }
+  ]
+}

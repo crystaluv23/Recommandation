@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "documents": [
+        {
+          "content": "One customer represented 72 percent of revenue.",
+          "source_type": "filing"
+        }
+      ],
+      "expected": "negative",
+      "name": "single customer majority"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "status": "PASS_bounded_v2_preflight_no_actual_export",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_history_export_20261021_v1/export_history.py",
+    "sha256": "9fc0977424ca744895be84415a984275fadeacd1bc11c67e94f292e423bdfa85"
+  },
+  "control": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+    "sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d"
+  },
+  "supersedes_only": [
+    "v1 self-git-show/committed-script prerequisite: v2 explicitly pins caller-supplied expected-script-sha; product HEAD/control/src+scripts remain checked"
+  ],
+  "unchanged_function_AST": [
+    "sha",
+    "read",
+    "save",
+    "file_inventory",
+    "ScopeStop",
+    "source_only"
+  ],
+  "delta_review": [
+    "four fixed source hashes verified before any stage mkdir",
+    "checkpoint contract hash, nonempty plan IDs and exact existing meta_ref validated before any stage mkdir",
+    "explicit script SHA checked before source authority and stage creation; fixed product revision/control/diff checks retained"
+  ],
+  "independent_temporary_controls": [
+    "synthetic exact four SHA + checkpoint/meta positive",
+    "wrong revision rejected before stage/marker/native calls",
+    "wrong control SHA rejected before stage/marker/native calls",
+    "wrong script SHA rejected before stage/marker/native calls",
+    "wrong fixed source SHA rejected before stage/marker/native calls",
+    "wrong checkpoint contract rejected before stage/marker/native calls",
+    "wrong checkpoint meta_ref rejected before stage/marker/native calls",
+    "empty checkpoint plan list rejected before stage/marker/native calls",
+    "missing declared meta file rejected before stage/marker/native calls"
+  ],
+  "control_count": 9,
+  "scope": [
+    "No actual source authority JSON was deserialized by this independent temp probe.",
+    "No native export/build/validate/apply was invoked. All execute probes stop at prewrite guards using synthetic files and subprocess identity mocks.",
+    "Original v1 review/source retained byte-identically. Existing native build/validate/apply, source-only restrictions and terminal output logic remain AST unchanged outside execute preamble/receipt metadata.",
+    "No actual stage exists. This is preflight, not source export/materialization success, fresh capability, new budget authority or research benefit.",
+    "Root may use fixed HEAD6a5cac5f/control593283/script9fc097 arguments for the sole authorized export; no separate script commit prerequisite remains."
+  ]
+}

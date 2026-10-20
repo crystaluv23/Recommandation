@@ -1,0 +1,124 @@
+{
+  "tests": [
+    {
+      "as_of": "2025-05-20T00:00:00+00:00",
+      "company_id": "c-001",
+      "documents": [
+        {
+          "available_at": "2025-05-15T00:00:00+00:00",
+          "content": "Quarterly report facts: {\"accn\":\"0001628280-25-026025\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"val\":8422000} and {\"accn\":\"0001628280-25-026025\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-18238000}. Cash and cash equivalents are 8,422,000; net cash used in operating activities is 18,238,000 for the three months ended March 31, 2025.",
+          "document_id": "doc-confirmed-q1-2025",
+          "published_at": "2025-05-15T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "positive",
+      "name": "confirmed_low_runway_positive"
+    },
+    {
+      "as_of": "2025-05-20T00:00:00+00:00",
+      "company_id": "c-001",
+      "documents": [
+        {
+          "available_at": "2025-05-10T00:00:00+00:00",
+          "content": "Management memorandum: management is considering a plan to improve liquidity, but no completed financing, no point-in-time operating cash flow measure, and no binding commitment exist. For reference, cash and cash equivalents were {\"accn\":\"0001628280-25-026025\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"val\":8422000}.",
+          "document_id": "doc-proposal",
+          "published_at": "2025-05-10T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "neutral",
+      "name": "mere_proposal_or_memorandum_neutral"
+    },
+    {
+      "as_of": "2025-05-20T00:00:00+00:00",
+      "company_id": "c-001",
+      "documents": [
+        {
+          "available_at": "2025-05-08T00:00:00+00:00",
+          "content": "Management explicitly denied and cancelled the previously disclosed liquidity runway concern. The company states it has sufficient cash and no operating cash burn risk. Reference facts: {\"accn\":\"0001558370-25-002265\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-05\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":36102000} and {\"accn\":\"0001558370-25-002265\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-05\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":41850000}. Also current company facts: {\"accn\":\"0001558370-25-006993\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-08\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"frame\":\"CY2025Q1I\",\"val\":30357000} and {\"accn\":\"0001558370-25-006993\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-08\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-13057000}.",
+          "document_id": "doc-denial",
+          "published_at": "2025-05-08T00:00:00+00:00",
+          "source_type": "company_facts"
+        }
+      ],
+      "expected": "negative",
+      "name": "cancellation_or_denial_negative"
+    },
+    {
+      "as_of": "2025-05-20T00:00:00+00:00",
+      "company_id": "c-001",
+      "documents": [
+        {
+          "available_at": "2025-05-08T00:00:00+00:00",
+          "content": "Reported facts: {\"accn\":\"0001558370-25-006993\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-08\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"frame\":\"CY2025Q1I\",\"val\":30357000} and {\"accn\":\"0001558370-25-006993\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-08\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-13057000}. Cash and cash equivalents are 30,357,000; operating cash burn is 13,057,000 for the quarter.",
+          "document_id": "doc-below-threshold",
+          "published_at": "2025-05-08T00:00:00+00:00",
+          "source_type": "company_facts"
+        }
+      ],
+      "expected": "neutral",
+      "name": "below_threshold_amount_neutral"
+    },
+    {
+      "as_of": "2025-05-20T00:00:00+00:00",
+      "company_id": "c-001",
+      "documents": [
+        {
+          "available_at": "2025-05-15T00:00:00+00:00",
+          "content": "The company's cash reserves cover only about one and a half months of operating cash burn at the current rate. Data: {\"accn\":\"0001628280-25-026025\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"val\":8422000} and {\"accn\":\"0001628280-25-026025\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-18238000}.",
+          "document_id": "doc-paraphrase",
+          "published_at": "2025-05-15T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "positive",
+      "name": "paraphrase_positive"
+    },
+    {
+      "as_of": "2025-05-20T00:00:00+00:00",
+      "company_id": "c-001",
+      "documents": [
+        {
+          "available_at": "2025-05-15T00:00:00+00:00",
+          "content": "The company's budgeted cash runway is 18 months, which is not a measure of operating cash burn and does not include NetCashProvidedByUsedInOperatingActivities. Reference cash balance only: {\"accn\":\"0001628280-25-026025\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"val\":8422000}.",
+          "document_id": "doc-lookalike",
+          "published_at": "2025-05-15T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "neutral",
+      "name": "lookalike_neutral"
+    },
+    {
+      "as_of": "2025-05-20T00:00:00+00:00",
+      "company_id": "c-001",
+      "documents": [
+        {
+          "available_at": "2025-06-01T00:00:00+00:00",
+          "content": "Post-cutoff filing facts: {\"accn\":\"0001628280-25-026025\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"val\":8422000} and {\"accn\":\"0001628280-25-026025\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-18238000}.",
+          "document_id": "doc-post-cutoff",
+          "published_at": "2025-06-01T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "unavailable",
+      "name": "post_cutoff_only_unavailable"
+    },
+    {
+      "as_of": "2025-05-20T00:00:00+00:00",
+      "company_id": "c-001",
+      "documents": [
+        {
+          "available_at": "2025-05-15T00:00:00+00:00",
+          "content": "{\"accn\":\"0001628280-25-026025\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"val\":8422000}",
+          "document_id": "doc-insufficient",
+          "published_at": "2025-05-15T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "unavailable",
+      "name": "evidence_insufficient_unavailable"
+    }
+  ]
+}
