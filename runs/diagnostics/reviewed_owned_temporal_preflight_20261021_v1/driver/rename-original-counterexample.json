@@ -1,0 +1,65 @@
+{
+  "source_sha256": "939a3c80cda3f4e4621255cbcc26a22f6569bd9853ee896e788039ade31d8e25",
+  "coherent_renamed_oracle": {
+    "profile": "owned_partial_temporal_controls",
+    "fixed_denominator": 3,
+    "sample_ids": [
+      "p01",
+      "p02",
+      "p03"
+    ],
+    "questions": {
+      "p01": "What did annual and subsequent disclosures available by prediction time establish about operating cash flow, capital expenditure, debt balances and maturities, covenants, tax-related cash obligations and prospective equity dilution? Direct annual-report coverage remains unverified.",
+      "p02": "By prediction time, what financial covenant terms and compliance through the six months ended June 30, 2025 and afterwards had been disclosed?",
+      "p03": "By prediction time, what revolving credit availability at June 30, 2025 and covenant compliance during the six months then ended had been disclosed?"
+    },
+    "stage_roots": {
+      "p01": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpqf3azavp/renamed/p01",
+      "p02": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpqf3azavp/renamed/p02",
+      "p03": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpqf3azavp/renamed/p03"
+    },
+    "source_profile": "gpre_capture_1780",
+    "source_commit": "263d16ab18b8712f91a11c121b125f951dbbb05f",
+    "limits": {
+      "max_local_calls": 6,
+      "max_request_tokens": 131072,
+      "max_case_tokens": 512000,
+      "max_case_llm_calls": 6,
+      "max_structured_corrections": 1,
+      "structured_reasoning_token_reserve": 0,
+      "finalization_reserve": 64000
+    },
+    "total_limits": {
+      "max_local_calls": 18,
+      "max_case_tokens": 1536000
+    }
+  },
+  "accepted": true,
+  "returned_control_set": {
+    "sample_ids": [
+      "p01",
+      "p02",
+      "p03"
+    ],
+    "stage_roots": {
+      "p01": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpqf3azavp/renamed/p01",
+      "p02": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpqf3azavp/renamed/p02",
+      "p03": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpqf3azavp/renamed/p03"
+    },
+    "per_case_limits": {
+      "max_local_calls": 6,
+      "max_request_tokens": 131072,
+      "max_case_tokens": 512000,
+      "max_case_llm_calls": 6,
+      "max_structured_corrections": 1,
+      "structured_reasoning_token_reserve": 0,
+      "finalization_reserve": 64000
+    },
+    "total_limits": {
+      "max_local_calls": 18,
+      "max_case_tokens": 1536000
+    }
+  },
+  "root_exists": false,
+  "prepare_or_dispatch_called": false
+}

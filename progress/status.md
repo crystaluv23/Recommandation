@@ -66,6 +66,7 @@ FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍un
 
 源capture、F7旧stage和新input-only检查均保持完成、不重入；选文修复已完成独立终态审查。
 issuer fixture生产者局部修复已过真实CLI与158关联检查，旧Registry字节/失败保留；默认LLM选文剩余缺口另保留。
-F7提示局部17safe已过；下一为新1780来源冻结原问题/部分变体/充分答案三控制，先离线预检再独立角色验收。
+[F7三控制适配](../reports/reviewed-owned-temporal-controls-20261021.md)及私有oracle已就绪，17安全测试通过；独立审发现同步改oracle/目录可复设额度，已固定三root并加拒绝反例。
+尚未正式prepare/新角色；下一冻结新1780来源原问题/部分变体/充分答案三控制，再独立角色验收。
 原0/1与未触发mirror保留，unanswered安全保留不替代有答案能力通过；不以输入检查替代模型行为。
 LLM节点继续exact inbox独立subagent；0外部LLM API。不恢复旧运行或启动完整后继，不以0.8/输入resolved替代测量或MVP关闭。

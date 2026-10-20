@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：F7新三控制ownspec先行，capture1780 profile按263d16核原plan/116历史code，prefix按ddeae204，当前code另freeze；原问题/部分变体/充分答案仅改sampleID/need4。私有oracle按actual Reflect六既有引文+两Signal/四counter核充分性，17卡仅后继可见；partial/partial/full不以unanswered替代。独立发现coherent oracle+root改名可重置18请求，改固定三个目的地、原候选误接保留、新拒在seed/write前；每case6/512k合计18/1536k不互借。原12+新5安全检查17/17/root复核过，未正式prepare/派角色，不关闭F7原0/1或整体MVP。
+
 - 2026-10-21：按spec修六future seed与具名numeric/card/runtime/candidate正控生产者，显式body/metadata CIK一致，严格consumer/auditor及所有测量/clock/assertions不改；原CLI exit2→新exit0/14enabled。原115失败与初155暴露的runtime漏项保留，最终158关联检查全过；独立原生2runtime+candidate与missing/conflict反例通过。旧Registry重放0安装/全字节不变，不迁移历史或以合成CIK准入真实来源。0GET/model/labels/realwrite/fullprepare，S5共享prompt身份义务/fresh创作、F7原0/1及全闭环仍open；下一1780来源新F7三控制冻结与有界验收。
 
 - 2026-10-21：计算器共享纯operand helper经既有callback保最新/比较期，10份/PIT/单位不改；独立反例揭露generic fill导致可行basis弃答及必要dominance见证丢失，修为可行minimal安全填充/一次反rank消减，原红保留。resolver改回调前typed canonical快照、候选隔离、按原ID回映，阻断四类metadata原误接。159数值/异常等旧HEAD；新11/旧财务28、数据resolver及边界98项过，115关联仍2fail/12error，定位issuer fixture生产者漏迁移，含seed能力审计，不报全绿。新plan9c9b5eaf/4265绑定唯一input-only23.755s/exit0，1780view不变；v6确定性6/6与v12 9/9选typedQ1、现金parser latest2025-03-31USD，财务来源8/9与9/9，默认LLM cash_ratio仍缺，各17/18/news未知、LLM顺序保持。0模型/GET/labels/Signal算术/append/fullprepare，不重入旧stage，独立终态4265绑定/25原件核过，不关F5/F7/MVP；下一issuer fixture链修复。

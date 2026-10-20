@@ -1,0 +1,136 @@
+{
+  "profile": "owned_partial_temporal_controls",
+  "fixed_denominator": 3,
+  "sample_ids": [
+    "p01",
+    "p02",
+    "p03"
+  ],
+  "stage_roots": {
+    "p01": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01",
+    "p02": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02",
+    "p03": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03"
+  },
+  "questions": {
+    "p01": "What did annual and subsequent disclosures available by prediction time establish about operating cash flow, capital expenditure, debt balances and maturities, covenants, tax-related cash obligations and prospective equity dilution? Direct annual-report coverage remains unverified.",
+    "p02": "By prediction time, what financial covenant terms and compliance through the six months ended June 30, 2025 and afterwards had been disclosed?",
+    "p03": "By prediction time, what revolving credit availability at June 30, 2025 and covenant compliance during the six months then ended had been disclosed?"
+  },
+  "source_profile": "gpre_capture_1780",
+  "source_commit": "263d16ab18b8712f91a11c121b125f951dbbb05f",
+  "declared_before_fresh_roles": true,
+  "bindings": {
+    "fixture": {
+      "path": "/Users/l/Project/Recommandation/tests/fixtures/owned_partial_residual_mirror.json",
+      "sha256": "a82f60a4ea67e4312ab07b420225d9b5e1aa1d456ead5b7bd50dd92f7946522a"
+    },
+    "completed_source_result": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/result.json",
+      "sha256": "2c6e706bad8a63742f3f50b812d6e9aca6a4a27b7d557734ce2609c2e6580cfb"
+    },
+    "source_review": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json",
+      "sha256": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57"
+    },
+    "actual_cited_body": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0001.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    "historical_prefix_inputs": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/inputs.json",
+      "sha256": "bf8783f057a11522d58e8e1568435d47335d78c5a08702e962987abc55a5507b"
+    },
+    "historical_prefix_completion": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/completion.json",
+      "sha256": "ead7b7f6a07edb58334959003d6866f98461f52a798f8a57b5e7b46d8b1d0d52"
+    }
+  },
+  "assertions": {
+    "cases": {
+      "p01": {
+        "question": "What did annual and subsequent disclosures available by prediction time establish about operating cash flow, capital expenditure, debt balances and maturities, covenants, tax-related cash obligations and prospective equity dilution? Direct annual-report coverage remains unverified.",
+        "question_characters": 282,
+        "input_origin": "Exact accepted historical need4; same historical two Signal results and selection intents.",
+        "expected_answer_scope": "partial",
+        "supported_facets": [
+          "H1 completed term-loan repayment/repurchases/treasury retirement; not complete debt obligations or prospective net dilution.",
+          "June30 revolver availability and financial debt-covenant compliance at June30 and throughout H1."
+        ],
+        "required_unknown_facets": [
+          "operating cash flow",
+          "capital expenditure",
+          "debt balances and maturities",
+          "covenant terms and compliance after the disclosed interim period",
+          "tax-related cash obligations",
+          "prospective net equity dilution",
+          "direct annual-report reading remains unverified within this historical seed"
+        ],
+        "pass": "Adopt pertinent current-batch evidence and provide proper partial with one genuinely narrower1-300character residual retaining ALL unknown facets and original disclosure/public-cutoff scope. Reason also explains actual answered/missing scope but does not replace residual. Wording is free.",
+        "safe_not_pass": "unanswered/null preserves the original282characters safely but cannot pass proper-partial capability.",
+        "fail": [
+          "Lose post-interim compliance while retaining only terms, as old0/1.",
+          "Lose another required unknown facet, claimfull, reason-only unknowns, or duplicate long/short residual."
+        ]
+      },
+      "p02": {
+        "question": "By prediction time, what financial covenant terms and compliance through the six months ended June 30, 2025 and afterwards had been disclosed?",
+        "question_characters": 142,
+        "input_origin": "Only sample_id and prior need4 controlled; preserve historical prospective selection intents.",
+        "expected_answer_scope": "partial",
+        "supported_facets": [
+          "Counter[3] directly establishes financial debt-covenant compliance atJune30 and at all times inH1."
+        ],
+        "required_unknown_facets": [
+          "Financial covenant terms/requirements.",
+          "Later compliance/status afterJune30 through September30 cutoff as disclosed by cutoff."
+        ],
+        "pass": "Proper partial adopts H1/June30 compliance with exact source and retains BOTH unknown static terms and later dynamic status in one residual, without extending coverage to publication/cutoff.",
+        "safe_not_pass": "unanswered/null is safe retention, not short proper-partial ability.",
+        "fail": [
+          "Full onH1-only evidence.",
+          "Omit either terms or later compliance.",
+          "Treat afterwards as postcutoff futureactuals or ignore knownH1 answer."
+        ]
+      },
+      "p03": {
+        "question": "By prediction time, what revolving credit availability at June 30, 2025 and covenant compliance during the six months then ended had been disclosed?",
+        "question_characters": 148,
+        "input_origin": "Only sample_id and prior need4 controlled; same actual batch.",
+        "expected_answer_scope": "full",
+        "supported_facets": [
+          "Counter[3]: Revolving Credit Facility availability$50.0million atJune30,2025.",
+          "Counter[3]: financial debt-covenant compliance atJune30 and at all times during sixmonths then ended."
+        ],
+        "required_unknown_facets": [],
+        "pass": "Full answer citing actual counter[3], exactamount/status/period; removeonly ownedneed4 and preserve0-3. Global Signal coveragepartial doesnot preclude full answer to this exact narrower question.",
+        "safe_not_pass": "Partial/unanswered fails sufficient-evidence full-answer ability.",
+        "fail": [
+          "Confuse$50.1million repurchaseauthorization with$50.0million revolveravailability.",
+          "Extend to complete covenantterms or postJune30 compliance.",
+          "Ignore literal evidence because Signalneutral/coveragepartial."
+        ]
+      }
+    },
+    "unowned_needs": "Preserve prior needs0-3 by occurrence; no unrelated newneed substitutes for unsupported residualfacets.",
+    "time": "Cutoff2025-09-30T00:00:00+00:00. Published2025-08-07T20:05:33+00:00 doesnot extend statecoverage endingJune30. p02 afterwards means afterJune30 and knownbycutoff, not futureactuals aftercutoff.",
+    "visibility": "Reflect sees6 prior BasicInfo quotes plus2Signalresults/4financingcounterspans; inbox hasno basic_info/document_channel. All17Bootstrapcards are retained for final-context/Predictor. Full-source presence isnot evidence of Reflectreading.",
+    "freshness": "Historical accepted prior/batch/bootstrap are seed, not freshF6. Newexactinbox fork-none Reflect/optionalclosure/Predictor only. Oracle/expectedfacets/private feasibilitywitness/oldanswer/prediction/raw49/raw50 neverenterroles.",
+    "correction": "Correctfirstanswer valid. Mirror not_exercised unless naturallyreached and authored within existingonecorrection authority. Do not induceoverlength or injectoldfirstanswer.",
+    "consumer": "Persist/reread acceptedstate+dispositions before nativefinalcontext/Predictor; inspect actualwire/originalanswer/correction/sink/completedrestore. Noexpected predictionclass/value or labels.",
+    "limits": "Percontrol initialReflect2+optionalclosure2+Predictor2 max6requests, each<=131072 and case<=512000 including64000finalizationreserve. Threecontrols total<=18requests/1536000casebudget; no transfer/retrynewroot.",
+    "acceptance": "Fixed3; score p01/p02 properpartial and p03full separately. Unanswered isnot promoted to properpartial. Historical0/1 unchanged; no wholeF7/FastSlow/MVP or independentgain."
+  },
+  "limits": {
+    "max_local_calls": 6,
+    "max_request_tokens": 131072,
+    "max_case_tokens": 512000,
+    "max_case_llm_calls": 6,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0,
+    "finalization_reserve": 64000
+  },
+  "total_limits": {
+    "max_local_calls": 18,
+    "max_case_tokens": 1536000
+  }
+}

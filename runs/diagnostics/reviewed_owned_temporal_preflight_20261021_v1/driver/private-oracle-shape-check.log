@@ -1,0 +1,8 @@
+oracle keys ['profile', 'fixed_denominator', 'sample_ids', 'stage_roots', 'questions', 'source_profile', 'source_commit', 'declared_before_fresh_roles', 'bindings', 'assertions', 'limits', 'total_limits']
+binding keys ['fixture', 'completed_source_result', 'source_review', 'actual_cited_body', 'historical_prefix_inputs', 'historical_prefix_completion']
+three pure oracle-control checks passed; no prepare/dispatch/source loader
+{
+  "scripts/run_reviewed_owned_partial_stage.py": "01c058eb996805c86bc12e1e27b4005b82d0ab19e5b8f7c517d5544c59001d16",
+  "spec/scripts/run_reviewed_owned_partial_stage.md": "17cecbe427230c0ab6a189f9b79709e41d85bb79daffb697b7089438eb7fce47",
+  "tests/test_reviewed_owned_partial_stage.py": "d60c9abf14ed0cbe0566341f8dececdae7d996c972b33cccb33e9fd125e87d12"
+}

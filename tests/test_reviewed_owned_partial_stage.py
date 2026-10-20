@@ -17,6 +17,9 @@ from stock_opportunity_agent.research.local_role_exchange import LocalRoleExchan
 class ReviewedOwnedPartialStageTests(TestCase):
     def setUp(self):
         temp=tempfile.TemporaryDirectory();self.addCleanup(temp.cleanup);self.base=Path(temp.name).resolve()
+        self.control_root=self.base/'temporal-controls'
+        control_root_patch=patch.object(stage,'CONTROL_STAGE_ROOT',self.control_root)
+        control_root_patch.start();self.addCleanup(control_root_patch.stop)
         self.data=json.loads((Path(__file__).parent/'fixtures/owned_partial_residual_mirror.json').read_text())
         self.sample={'sample_id':'p01','company_id':'cik_0001830043','identity':{'ticker':'BMBL','identity_aliases':['BMBL','Bumble Inc.']},
             'prediction_time':'2025-09-30T00:00:00+00:00','plan':self.data['plan'],'prior_state':self.data['prior'],
@@ -257,3 +260,181 @@ class ReviewedOwnedPartialStageTests(TestCase):
         self.assertEqual(exported,self.sample)
         for secret in ('OLD_FINAL_STATE','FUTURE_SECRET','OLD_PREDICTION','OLD_RAW_ANSWER'):
             self.assertNotIn(secret,json.dumps(exported))
+
+    def temporal_oracle(self):
+        value=json.loads(self.oracle.read_text())
+        value.update(profile=stage.CONTROL_PROFILE,fixed_denominator=3,
+            sample_ids=list(stage.CONTROL_NEEDS),questions=stage.CONTROL_NEEDS,
+            stage_roots={name:str(self.control_root/name) for name in stage.CONTROL_NEEDS},
+            source_profile=stage.CAPTURE_SOURCE_PROFILE,source_commit=stage.CAPTURE_SOURCE_COMMIT,
+            total_limits={'max_local_calls':18,'max_case_tokens':1536000})
+        value.pop('sample_id',None);self.write(self.oracle,value)
+        return value
+
+    def prepare_temporal(self,name):
+        # Source admission/lineage is a temporary double here; native transport,
+        # controller, budgeting, persistence and restoration remain real.
+        root=self.control_root/name
+        history={'commit':stage.CAPTURE_SOURCE_COMMIT,'plan':stage.binding(self.source),
+                 'code_files':[stage.binding(self.code)]}
+        with patch.object(stage,'SEED',self.seed),patch.object(stage,'_seed',return_value=(deepcopy(self.sample),[])), \
+                patch.object(stage,'_capture_source',return_value=({'root':str(self.base/'not-opened-view')},[stage.binding(self.source)],history)), \
+                patch.object(stage,'_preflight',return_value={'source_documents':1780}), \
+                patch.object(stage.prefix,'_code_bindings',return_value=[stage.binding(self.code)]):
+            stage.prepare(root,self.oracle,self.source,stage.CONTROL_SEED_COMMIT,sample_id=name,
+                source_profile=stage.CAPTURE_SOURCE_PROFILE,source_commit=stage.CAPTURE_SOURCE_COMMIT)
+        return root
+
+    def test_three_temporal_controls_freeze_only_owned_need_and_native_pending_then_restore(self):
+        expected=self.temporal_oracle();self.sample['prior_state']['next_information_needs'][4]=stage.CONTROL_NEEDS['p01']
+        original=deepcopy(self.sample);requests=[];roots=[]
+        with patch.object(stage,'_historical_code_check') as history_check:
+            for name in stage.CONTROL_NEEDS:
+                root=self.prepare_temporal(name);roots.append(root)
+                inputs=stage.read(root/'inputs.json');contract=stage.read(root/'contract.json')
+                sample=deepcopy(inputs['sample'])
+                self.assertEqual(sample['sample_id'],name)
+                self.assertEqual(sample['prior_state']['next_information_needs'][4],stage.CONTROL_NEEDS[name])
+                sample['sample_id']='p01';sample['prior_state']['next_information_needs'][4]=stage.CONTROL_NEEDS['p01']
+                self.assertEqual(sample,original)
+                self.assertEqual(contract['control_set']['stage_roots'],expected['stage_roots'])
+                self.assertEqual(contract['control_set']['total_limits'],expected['total_limits'])
+                result=stage.resume(root);self.assertEqual(result['fixed_denominator'],3)
+                self.assertEqual(result['sample_id'],name)
+                self.assertEqual(result['status'],'pending_independent_role')
+                pending=result['pending'];requests.append(pending['request_hash'])
+                payload=json.loads(stage.read(pending['inbox_path'])['messages'][1]['content'])
+                self.assertEqual(payload['research_state']['next_information_needs'][4],stage.CONTROL_NEEDS[name])
+                self.assertNotIn('ORACLE_NOT_FOR_ROLE',json.dumps(payload))
+                self.assertNotIn('basic_info',payload)
+                repeat=stage._files(root);stage.resume(root);self.assertEqual(stage._files(root),repeat)
+                self.assertFalse(any((root/'exchange/receipts').glob('*')))
+            self.assertEqual(len(set(requests)),3)
+            # Existing offline author exercises the original need's actual
+            # Reflect/closure/Predictor path, not semantic success on p02/p03.
+            result=self.complete(roots[0]);self.assertEqual(result['fixed_denominator'],3)
+            self.assertEqual(result['mirror_correction_branch'],'not_exercised')
+            before=stage._files(roots[0]);restored=stage.resume(roots[0])
+            self.assertTrue(restored['restored_without_execution']);self.assertEqual(stage._files(roots[0]),before)
+            self.assertTrue(history_check.called)
+            for call in history_check.call_args_list:self.assertEqual(call.args[1],stage.CAPTURE_SOURCE_COMMIT)
+        self.assertEqual(self.sample,original)
+
+    def test_temporal_roots_questions_totals_and_exact_lineage_reject_before_seed_or_write(self):
+        expected=self.temporal_oracle();root=Path(expected['stage_roots']['p01'])
+        variants=[]
+        for field,value in (('fixed_denominator',True),('source_commit','a'*40),
+                            ('source_profile','another-view')):
+            changed=deepcopy(expected);changed[field]=value;variants.append(changed)
+        changed=deepcopy(expected);changed['total_limits']['max_local_calls']=19;variants.append(changed)
+        changed=deepcopy(expected);changed['limits']['max_case_tokens']=True;variants.append(changed)
+        changed=deepcopy(expected);changed['stage_roots']['p02']=str(root);variants.append(changed)
+        changed=deepcopy(expected);changed['stage_roots']['p02']=str(root/'nested');variants.append(changed)
+        changed=deepcopy(expected);changed['questions']['p02']+=' FUTURE_GOLD_RESIDUAL';variants.append(changed)
+        with patch.object(stage,'_seed',side_effect=AssertionError('invalid controls must fail before seed')):
+            for value in variants:
+                self.write(self.oracle,value)
+                with self.assertRaises(ValidationError):
+                    stage.prepare(root,self.oracle,self.source,stage.CONTROL_SEED_COMMIT,sample_id='p01',
+                        source_profile=stage.CAPTURE_SOURCE_PROFILE,source_commit=stage.CAPTURE_SOURCE_COMMIT)
+                self.assertFalse(root.exists())
+            renamed=deepcopy(expected)
+            renamed['stage_roots']={name:str(self.base/'renamed'/name) for name in stage.CONTROL_NEEDS}
+            self.write(self.oracle,renamed)
+            renamed_root=Path(renamed['stage_roots']['p01'])
+            with self.assertRaises(ValidationError):
+                stage.prepare(renamed_root,self.oracle,self.source,stage.CONTROL_SEED_COMMIT,sample_id='p01',
+                    source_profile=stage.CAPTURE_SOURCE_PROFILE,source_commit=stage.CAPTURE_SOURCE_COMMIT)
+            self.assertFalse(renamed_root.exists())
+            self.write(self.oracle,expected)
+            for sample_id,seed in (('p02',stage.CONTROL_SEED_COMMIT),('p01','b'*40)):
+                with self.assertRaises(ValidationError):
+                    stage.prepare(root,self.oracle,self.source,seed,sample_id=sample_id,
+                        source_profile=stage.CAPTURE_SOURCE_PROFILE,source_commit=stage.CAPTURE_SOURCE_COMMIT)
+                self.assertFalse(root.exists())
+
+    def test_capture_source_serialized_chain_preserves_historical_git_vs_current_code(self):
+        view,plan,review,proof=self.source_metadata_chain()
+        code_binding=stage.binding(self.code)
+        plan_value={'schema_version':'gpre-capture-source-plan-v1',
+            'source_bindings':[stage.binding(proof)],'code_bindings':[code_binding]}
+        plan_value['plan_hash']=stage.digest(plan_value);self.write(plan,plan_value)
+        review_value=stage.read(review);review_value['records']=[{'verdict':'admitted'} for _ in range(1780)]
+        review_value['records']+=[{'verdict':'unknown'} for _ in range(5)];self.write(review,review_value)
+        inputs=stage.read(self.source.parent/'input_manifest.json');inputs.update(plan=stage.binding(plan),source_review=stage.binding(review))
+        self.write(self.source.parent/'input_manifest.json',inputs)
+        result={'status':'completed','products':57,'new_capture_versions':4,'retained_legacy_products':53,
+            'labels':False,'models':0,'GETs':0,'Signal_apply':False,'fullprepare':False,
+            'old_global_bytes_preserved':True,'old_review_rows_preserved':True,
+            'snapshot_reopen_canonical_equal':True,'plan_hash':plan_value['plan_hash'],
+            'reviewed_source_snapshot':view,'source_review':stage.binding(review)}
+        self.write(self.source,result)
+        self.code.write_text('# current successor intentionally differs from historical code\n')
+        with patch.object(stage,'_historical_code_check') as checker:
+            actual,bindings,history=stage._capture_source(self.source,stage.CAPTURE_SOURCE_COMMIT)
+        self.assertEqual(actual,view);self.assertNotIn(code_binding,bindings);stage._check(bindings)
+        self.assertEqual(history['code_files'],[code_binding]);self.assertEqual(history['plan'],stage.binding(plan))
+        checker.assert_called_once_with([stage.binding(plan),code_binding],stage.CAPTURE_SOURCE_COMMIT)
+        with self.assertRaises(ValidationError):stage._capture_source(self.source,'a'*40)
+        with patch.object(stage,'_historical_code_check',side_effect=ValidationError('historical Git mismatch')):
+            with self.assertRaisesRegex(ValidationError,'Git mismatch'):
+                stage._capture_source(self.source,stage.CAPTURE_SOURCE_COMMIT)
+        self.write(review,{'records':[]})
+        with self.assertRaisesRegex(ValidationError,'bound stage source/code changed'):
+            stage._capture_source(self.source,stage.CAPTURE_SOURCE_COMMIT)
+
+    def test_three_case_budgets_have_hard_independent_call_and_token_ceilings(self):
+        self.temporal_oracle()
+        budgets=[stage._Budget({'limits':stage.LIMITS}) for _ in stage.CONTROL_NEEDS]
+        journal=self.base/'budget-request.json'
+        self.write(journal,{'request':{'stage':'blind_predictor_predict','messages':[], 'max_output_tokens':1}})
+        event={'event_type':'request_ready','request_path':str(journal)}
+        for budget in budgets:
+            for _ in range(6):budget(event)
+            with self.assertRaises(RuntimeBudgetExceeded):budget(event)
+        self.assertEqual(sum(b.calls for b in budgets),18)
+        self.assertEqual([b.calls for b in budgets],[6,6,6])
+        self.write(journal,{'request':{'stage':'blind_predictor_predict','messages':[{'content':'x'*130900}], 'max_output_tokens':1}})
+        for _ in range(3):
+            budget=stage._Budget({'limits':stage.LIMITS})
+            for _ in range(3):budget(event)
+            self.assertLess(budget.tokens,512000)
+            with self.assertRaises(RuntimeBudgetExceeded):budget(event)
+
+    def test_offline_p02_unanswered_and_p03_full_reach_exact_final_consumers(self):
+        self.temporal_oracle();self.sample['prior_state']['next_information_needs'][4]=stage.CONTROL_NEEDS['p01']
+        with patch.object(stage,'_historical_code_check'):
+            for name in ('p02','p03'):
+                root=self.prepare_temporal(name)
+                for _ in range(6):
+                    result=stage.resume(root)
+                    if result['status']!='pending_independent_role':break
+                    pending=result['pending']
+                    if pending['stage']=='blind_predictor_predict':
+                        self.author(pending);continue
+                    self.assertEqual(pending['stage'],'research_controller_reflect')
+                    payload=json.loads(stage.read(pending['inbox_path'])['messages'][1]['content'])
+                    row={'need_index':4,'answer_scope':'unanswered' if name=='p02' else 'full',
+                        'residual_need':None,'evidence_refs':[],
+                        'reason':'The supplied evidence does not establish the requested later-period status.'}
+                    operations=[{'op':'replace','path':'decision','value':'finalize'}]
+                    if name=='p03':
+                        operations.append(deepcopy(self.data['raw49']['operations'][1]))
+                        operations.append({'op':'remove','path':'next_information_needs[4]'})
+                        row.update(evidence_refs=[deepcopy(self.data['raw49']['operations'][4]['value']['evidence_refs'][1])],
+                            reason='The cited span directly reports June 30 availability and compliance throughout the six months then ended.')
+                    operations.append({'op':'append','path':'need_dispositions','value':row})
+                    raw={'base_hash':payload['output_patch_contract']['base_hash'],'operations':operations}
+                    Path(pending['outbox_path']).write_text(json.dumps(raw))
+                    LocalRoleExchange(root/'exchange',max_calls=6).submit(pending['request_hash'],agent_id='offline-control-not-fresh-model')
+                self.assertEqual(result['status'],'prediction_persisted_requires_independent_review')
+                self.assertEqual(result['sample_id'],name);self.assertEqual(result['fixed_denominator'],3)
+                self.assertEqual(result['independent_receipts'],2)
+                context=stage.read(root/'final-context.json')
+                self.assertEqual(context,stage.read(root/'prediction.json')['final_context'])
+                needs=context['final_research_state']['next_information_needs']
+                self.assertEqual(needs[:4],self.sample['prior_state']['next_information_needs'][:4])
+                self.assertEqual(len(needs),5 if name=='p02' else 4)
+                if name=='p02':self.assertEqual(needs[4],stage.CONTROL_NEEDS[name])
+                row=stage.read(root/'reflect.json')['metadata']['need_dispositions']['items'][0]
+                self.assertEqual(row['answer_scope'],'unanswered' if name=='p02' else 'full')

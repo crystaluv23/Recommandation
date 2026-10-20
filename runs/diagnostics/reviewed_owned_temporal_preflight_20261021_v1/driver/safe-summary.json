@@ -1,0 +1,57 @@
+{
+  "status": "development candidate; no actual prepare or dispatch",
+  "tests": 17,
+  "passed": true,
+  "test_runtime_seconds": 0.607,
+  "evidence_persistence": "Exact prior execution stdout/command recovered; tests not rerun to produce logs.",
+  "logs": {
+    "799620": {
+      "timestamp": "2026-10-20T18:21:15.925Z",
+      "exit_code": 0,
+      "log": "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/initial-sixteen-tests.log",
+      "sha256": "215ed635caf619fdb48529da42e49c94c1309beaa9259ce0045f7ac8df625ae7"
+    },
+    "88ed15": {
+      "timestamp": "2026-10-20T18:24:14.902Z",
+      "exit_code": 0,
+      "log": "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/final-seventeen-tests.log",
+      "sha256": "7c7e2757f3cfb70f7d4a9ff55bb72ee7f3ac55565e1724cc945c26d77c10837c"
+    },
+    "a77b28": {
+      "timestamp": "2026-10-20T18:24:47.235Z",
+      "exit_code": 0,
+      "log": "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/private-oracle-shape-check.log",
+      "sha256": "5ca1c5dd449a1bc3db9c044b80a104c8b0c24696cf28bab62252854e383484a5"
+    }
+  },
+  "bindings": {
+    "scripts/run_reviewed_owned_partial_stage.py": "01c058eb996805c86bc12e1e27b4005b82d0ab19e5b8f7c517d5544c59001d16",
+    "spec/scripts/run_reviewed_owned_partial_stage.md": "17cecbe427230c0ab6a189f9b79709e41d85bb79daffb697b7089438eb7fce47",
+    "tests/test_reviewed_owned_partial_stage.py": "d60c9abf14ed0cbe0566341f8dececdae7d996c972b33cccb33e9fd125e87d12"
+  },
+  "original_coherent_rename_false_admit": {
+    "source": "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/pre-fixed-root-original.py",
+    "source_sha256": "939a3c80cda3f4e4621255cbcc26a22f6569bd9853ee896e788039ade31d8e25",
+    "result": "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/rename-original-counterexample.json"
+  },
+  "current_control_roots": "Fixed profile-owned parent; temporary tests patch that constant, never create formal roots.",
+  "new_temp_controls": [
+    "three independent pending requests / exact sample delta / repeated pending no dispatch",
+    "p01 native closure+Predictor+completion restore",
+    "p02 scripted unanswered and p03 scripted full reach exact final sink; not new model compliance",
+    "wrong questions/roots/coherent rename/limits/source or seed commit reject before seed/write",
+    "capture metadata reader keeps historical Git code separate from current files",
+    "six calls and512000 units per case, request131072 retained; no borrowing among three roots"
+  ],
+  "limitations": [
+    "Source admission and historical Git are mocked only in temporary transport/consumer controls; separate metadata-reader tests assert actual historical call arguments, not real source qualification.",
+    "Reflect does not receive BasicInfo cards; actual native final assembler discloses them to Predictor.",
+    "p02 scripted unanswered proves safety/wiring only, not proper-partial capability.",
+    "Old p01 semantic0/1 remains unchanged; no production role has answered these three controls."
+  ],
+  "actual_stage_prepare": false,
+  "new_GETs": 0,
+  "new_models": 0,
+  "labels": 0,
+  "Signal_apply": false
+}

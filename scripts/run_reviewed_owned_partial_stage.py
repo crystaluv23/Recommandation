@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from contextlib import contextmanager, ExitStack
+from copy import deepcopy
 from dataclasses import asdict
 from datetime import datetime
 import fcntl
@@ -14,7 +15,7 @@ from unittest.mock import patch
 
 import run_minimal_rounds as minimal
 import run_reviewed_fast_prefix as prefix
-from run_reviewed_posthoc_stage import _parent_snapshot, _verified_responses
+from run_reviewed_posthoc_stage import _historical_code_check, _parent_snapshot, _verified_responses
 from diagnose_executed_answer_scope import StageContract
 from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash as digest
 from stock_opportunity_agent.cases.label_store import LabelStore
@@ -36,6 +37,16 @@ REPO = Path(__file__).resolve().parents[1]
 SPEC = REPO/'spec/scripts/run_reviewed_owned_partial_stage.md'
 SEED = REPO/'runs/diagnostics/reviewed_fast_prefix_20261020_v1'
 VIEW_DOCUMENTS = 1776
+CAPTURE_SOURCE_PROFILE = 'gpre_capture_1780'
+CAPTURE_SOURCE_COMMIT = '263d16ab18b8712f91a11c121b125f951dbbb05f'
+CONTROL_SEED_COMMIT = 'ddeae204566d2d9f9cce29de1ab535902ef46bd5'
+CONTROL_PROFILE = 'owned_partial_temporal_controls'
+CONTROL_STAGE_ROOT = REPO/'runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1'
+CONTROL_NEEDS = {
+    'p01': 'What did annual and subsequent disclosures available by prediction time establish about operating cash flow, capital expenditure, debt balances and maturities, covenants, tax-related cash obligations and prospective equity dilution? Direct annual-report coverage remains unverified.',
+    'p02': 'By prediction time, what financial covenant terms and compliance through the six months ended June 30, 2025 and afterwards had been disclosed?',
+    'p03': 'By prediction time, what revolving credit availability at June 30, 2025 and covenant compliance during the six months then ended had been disclosed?',
+}
 LIMITS = {'max_request_tokens':131072,'max_case_tokens':512000,'max_case_llm_calls':6,
     'max_structured_corrections':1,'structured_reasoning_token_reserve':0,'finalization_reserve':64000}
 EXCLUDED = {'progress.json','completion.json','.stage.lock','exchange/.dispatch.lock'}
@@ -129,9 +140,66 @@ def _source(path):
     return view,_unique(rows)
 
 
-def _preflight(sample,view):
+def _capture_source(path,commit):
+    """Bind completed capture data and its exact historical execution code separately."""
+    if commit!=CAPTURE_SOURCE_COMMIT:
+        raise ValidationError('capture source requires its exact execution commit')
+    result=read(path);parent=path.parent;inputs=read(parent/'input_manifest.json')
+    _check([inputs['plan'],result['source_review']])
+    plan=read(inputs['plan']['path']);view=result['reviewed_source_snapshot']
+    if (result.get('status')!='completed' or result.get('products')!=57
+            or result.get('new_capture_versions')!=4 or result.get('retained_legacy_products')!=53
+            or any(result.get(key) is not False for key in ('labels','Signal_apply','fullprepare'))
+            or any(type(result.get(key)) is not int or result[key]!=0 for key in ('models','GETs'))
+            or result.get('old_global_bytes_preserved') is not True
+            or result.get('old_review_rows_preserved') is not True
+            or result.get('snapshot_reopen_canonical_equal') is not True
+            or result['plan_hash']!=plan['plan_hash']
+            or digest({k:v for k,v in plan.items() if k!='plan_hash'})!=plan['plan_hash']
+            or plan.get('schema_version')!='gpre-capture-source-plan-v1'
+            or view!=inputs['reviewed_source_snapshot'] or result['source_review']!=inputs['source_review']):
+        raise ValidationError('completed capture source scope/plan differs')
+    _historical_code_check([inputs['plan'],*plan['code_bindings']],commit)
+    review=read(result['source_review']['path'])
+    if (len(review['records'])!=1785
+            or sum(row['verdict']=='admitted' for row in review['records'])!=1780):
+        raise ValidationError('completed capture source membership differs')
+    rows=[binding(path),binding(parent/'input_manifest.json'),*_nested(inputs),*_nested(review),
+        *plan['source_bindings'],*[binding(p) for p in sorted(Path(view['root']).rglob('*')) if p.is_file()]]
+    return view,_unique(rows),{'commit':commit,'plan':inputs['plan'],'code_files':plan['code_bindings']}
+
+
+def _control_set(expected,root,sample_id,source_profile,source_commit):
+    """Freeze three distinct destinations with non-transferable native case ceilings."""
+    roots=expected.get('stage_roots',{})
+    fixed_roots={name:str((CONTROL_STAGE_ROOT/name).resolve()) for name in CONTROL_NEEDS}
+    total={'max_local_calls':18,'max_case_tokens':1536000}
+    if (expected.get('profile')!=CONTROL_PROFILE or type(expected.get('fixed_denominator')) is not int
+            or expected['fixed_denominator']!=3 or expected.get('sample_ids')!=list(CONTROL_NEEDS)
+            or expected.get('questions')!=CONTROL_NEEDS or roots!=fixed_roots
+            or source_profile!=CAPTURE_SOURCE_PROFILE or expected.get('source_profile')!=source_profile
+            or source_commit!=CAPTURE_SOURCE_COMMIT or expected.get('source_commit')!=source_commit
+            or digest(expected.get('limits'))!=digest({'max_local_calls':6,**LIMITS})
+            or digest(expected.get('total_limits'))!=digest(total)
+            or sample_id not in CONTROL_NEEDS):
+        raise ValidationError('temporal control oracle scope/limits differ')
+    paths=[]
+    for name in CONTROL_NEEDS:
+        value=roots[name]
+        if not isinstance(value,str) or str(Path(value).resolve())!=value:
+            raise ValidationError('temporal control roots must be exact absolute paths')
+        paths.append(Path(value))
+    if (len(set(paths))!=3 or str(root)!=roots[sample_id]
+            or any(a.is_relative_to(b) or b.is_relative_to(a)
+                   for i,a in enumerate(paths) for b in paths[i+1:])):
+        raise ValidationError('temporal control destination differs or overlaps')
+    return {'sample_ids':list(CONTROL_NEEDS),'stage_roots':roots,
+            'per_case_limits':{'max_local_calls':6,**LIMITS},'total_limits':total}
+
+
+def _preflight(sample,view,*,expected_documents=VIEW_DOCUMENTS):
     store=open_raw_info_store(view['root'],reviewed_snapshot=view)
-    if len(store.documents)!=VIEW_DOCUMENTS: raise ValidationError('completed source membership differs')
+    if len(store.documents)!=expected_documents: raise ValidationError('completed source membership differs')
     prior=ResearchState.from_dict(sample['prior_state']); plan=InformationPlan.from_dict(sample['plan'])
     round_row=SignalRound.from_dict({'information_needs':list(prior.next_information_needs),
         'selections':sample['selections'],'batch':{'results':sample['results'],'signal_calls':2}})
@@ -146,39 +214,62 @@ def _preflight(sample,view):
         'plan_hash':digest(plan.to_dict()),'source_batch_hash':digest(sample['results'])}
 
 
-def prepare(root,expectations,source_result,seed_commit):
+def prepare(root,expectations,source_result,seed_commit,*,sample_id='p01',source_profile=None,source_commit=None):
     """Freeze one seed and current completed source view without model dispatch."""
     root=Path(root).resolve()
     with _guard():
         if root.exists(): raise ValidationError('owned partial destination must be new')
         expected=read(expectations)
-        if expected.get('profile')!='owned_partial_historical_seed' or expected.get('fixed_denominator')!=1 or expected.get('sample_id')!='p01' or expected.get('limits')!={'max_local_calls':6,**LIMITS}:
+        controls=None;history=None
+        if expected.get('profile')==CONTROL_PROFILE:
+            controls=_control_set(expected,root,sample_id,source_profile,source_commit)
+            if seed_commit!=CONTROL_SEED_COMMIT:
+                raise ValidationError('temporal controls require the exact historical seed commit')
+        elif (sample_id!='p01' or source_profile is not None or source_commit is not None
+                or expected.get('profile')!='owned_partial_historical_seed' or expected.get('fixed_denominator')!=1
+                or expected.get('sample_id')!='p01' or expected.get('limits')!={'max_local_calls':6,**LIMITS}):
             raise ValidationError('independent oracle scope/limits differ')
         oracle_bindings=list(_nested(expected['bindings']));_check(oracle_bindings)
         authorities={'completed_source_result':binding(source_result),'historical_prefix_inputs':binding(SEED/'inputs.json'),
             'historical_prefix_completion':binding(SEED/'completion.json')}
         if any(expected['bindings'].get(key)!=value for key,value in authorities.items()):
             raise ValidationError('independent oracle source/seed authority differs')
-        sample,old_files=_seed(seed_commit);view,source_files=_source(Path(source_result).resolve())
+        sample,old_files=_seed(seed_commit)
+        if controls is None:
+            view,source_files=_source(Path(source_result).resolve())
+        else:
+            view,source_files,history=_capture_source(Path(source_result).resolve(),source_commit)
+            if sample['prior_state']['next_information_needs'][4]!=CONTROL_NEEDS['p01']:
+                raise ValidationError('historical original need differs')
+            sample=deepcopy(sample);sample['sample_id']=sample_id
+            sample['prior_state']['next_information_needs'][4]=CONTROL_NEEDS[sample_id]
         for key in ('source_review','actual_cited_body'):
             if key in expected['bindings'] and expected['bindings'][key] not in source_files:
                 raise ValidationError('independent oracle body/review not in completed source inventory')
         protected=[SEED,Path(source_result).resolve().parent,Path(view['root']),
             *[Path(b['path']).parent for b in source_files if Path(b['path']).name=='oracle.json']]
-        if any(root.is_relative_to(p) or p.is_relative_to(root) for p in protected):
+        destinations=[root] if controls is None else [Path(p) for p in controls['stage_roots'].values()]
+        if any(d.is_relative_to(p) or p.is_relative_to(d) for p in protected for d in destinations):
             raise ValidationError('new stage overlaps historical/source oracle or view')
-        preflight=_preflight(sample,view)
+        preflight=(_preflight(sample,view) if controls is None
+                   else _preflight(sample,view,expected_documents=1780))
         inputs={'sample':sample,'reviewed_source_snapshot':view,'historical_seed_not_new_F6':True}
         contract={'schema_version':'reviewed-owned-partial-stage-v1','backend':'independent-subagent','actual_model_version':None,
             'fixed_denominator':1,'max_local_calls':6,'max_external_api_calls':0,'limits':LIMITS,
             'input_hash':digest(inputs),'expectations_hash':digest(expected),'preflight_hash':digest(preflight)}
-        code=_unique([*prefix._code_bindings(),binding(__file__),binding(SPEC)])
+        if controls is not None:
+            contract.update(fixed_denominator=3,control_set=controls,source_profile=source_profile)
+        code=_unique([*prefix._code_bindings(),binding(__file__),binding(SPEC),
+            binding(REPO/'scripts/run_reviewed_posthoc_stage.py'),binding(REPO/'spec/scripts/run_reviewed_posthoc_stage.md'),
+            *[binding(REPO/'spec/src/stock_opportunity_agent/data'/name) for name in
+              ('raw_info.md','reviewed_snapshot.md','reviewed_companyfacts_profile.md','sec_company_facts.md')]])
         originals=_unique([binding(expectations),*oracle_bindings,*old_files,*source_files]);_check(code+originals)
         manifest={'root':str(root),'contract_hash':digest(contract),'code_files':code,'originals':originals,'seed_commit':seed_commit}
+        if history is not None:manifest['historical_source_code']=history
         manifest['manifest_hash']=digest(manifest)
         for name,value in (('inputs',inputs),('expectations',expected),('contract',contract),('preflight',preflight),('manifest',manifest)):
             atomic_write_json(root/(name+'.json'),value)
-        return {'manifest_hash':manifest['manifest_hash'],'fixed_denominator':1,'role_dispatches':0}
+        return {'manifest_hash':manifest['manifest_hash'],'fixed_denominator':contract['fixed_denominator'],'role_dispatches':0}
 
 
 def _verify(root):
@@ -187,6 +278,17 @@ def _verify(root):
             or digest(read(root/'expectations.json'))!=contract['expectations_hash'] or digest(read(root/'preflight.json'))!=contract['preflight_hash']):
         raise ValidationError('owned partial frozen inputs changed')
     _check(manifest['code_files']+manifest['originals'])
+    if 'historical_source_code' in manifest:
+        history=manifest['historical_source_code']
+        controls=_control_set(read(root/'expectations.json'),root,inputs['sample']['sample_id'],
+            contract.get('source_profile'),history['commit'])
+        if controls!=contract.get('control_set') or contract.get('fixed_denominator')!=3:
+            raise ValidationError('frozen temporal control set differs')
+        if manifest['seed_commit']!=CONTROL_SEED_COMMIT:
+            raise ValidationError('temporal control seed lineage changed')
+        _historical_code_check([history['plan'],*history['code_files']],CAPTURE_SOURCE_COMMIT)
+    elif 'control_set' in contract:
+        raise ValidationError('temporal control source lineage missing')
     return h,inputs,contract
 
 
@@ -238,7 +340,7 @@ def _run(root,h,inputs,contract):
     sample=inputs['sample'];prior=ResearchState.from_dict(sample['prior_state']);plan=InformationPlan.from_dict(sample['plan'])
     round_row=SignalRound.from_dict({'information_needs':list(prior.next_information_needs),'selections':sample['selections'],
         'batch':{'results':sample['results'],'signal_calls':2}});batch=round_row.batch
-    result={'fixed_denominator':1,'sample_id':'p01','external_api_calls':0,'labels_read':0,'new_Signal_apply':0,
+    result={'fixed_denominator':contract['fixed_denominator'],'sample_id':sample['sample_id'],'external_api_calls':0,'labels_read':0,'new_Signal_apply':0,
         'historical_seed_not_new_F6':True,'actual_host_tokens':None,'actual_host_cost':None,'engineering_mvp_closed':False}
     try:
         with client.anonymous_case(aliases=tuple(sample['identity']['identity_aliases']),company_id=sample['company_id'],ticker=sample['identity']['ticker']):
@@ -307,10 +409,12 @@ def main():
     modes=parser.add_mutually_exclusive_group(required=True)
     modes.add_argument('--prepare',action='store_true');modes.add_argument('--resume',action='store_true');modes.add_argument('--submit',action='store_true')
     parser.add_argument('--expectations',type=Path);parser.add_argument('--source-result',type=Path);parser.add_argument('--seed-commit')
+    parser.add_argument('--sample-id',default='p01');parser.add_argument('--source-profile');parser.add_argument('--source-commit')
     parser.add_argument('--request-hash');parser.add_argument('--agent-id');args=parser.parse_args()
     if args.prepare:
         if not all((args.expectations,args.source_result,args.seed_commit)):parser.error('prepare needs expectations/source-result/seed-commit')
-        value=prepare(args.root,args.expectations,args.source_result,args.seed_commit)
+        value=prepare(args.root,args.expectations,args.source_result,args.seed_commit,
+            sample_id=args.sample_id,source_profile=args.source_profile,source_commit=args.source_commit)
     elif args.submit:
         with _guard():
             _h,_inputs,contract=_verify(args.root.resolve())

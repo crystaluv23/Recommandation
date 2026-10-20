@@ -1,0 +1,568 @@
+{
+  "review_type": "independent_readonly_source_and_oracle_review",
+  "status": "adequate_inputs_not_fresh_behavior",
+  "fixed_denominator": 3,
+  "source": {
+    "result": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/result.json",
+      "sha256": "2c6e706bad8a63742f3f50b812d6e9aca6a4a27b7d557734ce2609c2e6580cfb"
+    },
+    "plan": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/plan.json",
+      "sha256": "e82e93a5fae343890c04c95c4c8794b2860ce06c261484c3c922b31a26ff042c"
+    },
+    "input_manifest": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/input_manifest.json",
+      "sha256": "adc9016202dca388fd7417c19c3f7a1590b591a9bb8e36f54d3829e04e029e56"
+    },
+    "review": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json",
+      "sha256": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57"
+    },
+    "snapshot_descriptor": {
+      "manifest_sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+      "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot",
+      "store_type": "reviewed"
+    },
+    "documents": 1780,
+    "BMBL_body": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0001.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    "old1776_body": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/snapshot/documents/0001.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    "byteidentical": true,
+    "document_id": "sec:cik_0001830043:000162828025038861",
+    "published_at": "2025-08-07T20:05:33+00:00",
+    "available_at": "2025-08-07T20:05:33+00:00",
+    "four_literal_spans_verified": true,
+    "source_bindings_checked": 5869,
+    "source_binding_sha_all_equal": true,
+    "historical_code_lineage": {
+      "commit": "263d16ab18b8712f91a11c121b125f951dbbb05f",
+      "bindings_checked": 116,
+      "git_show_exact_blob_sha_all_equal": true,
+      "note": "All116were checked read-only in this review before report serialization. Currentcode is intentionally different; do not restore old source or demand old-current equality. Newstage freezes current code separately.",
+      "current_drift_paths": [
+        "spec/src/stock_opportunity_agent/data/sec_company_facts.md",
+        "spec/src/stock_opportunity_agent/signal_library.md",
+        "src/stock_opportunity_agent/data/resolution.py",
+        "src/stock_opportunity_agent/signal_library.py"
+      ]
+    }
+  },
+  "bindings": {
+    "old_inbox": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/exchange/inbox/f2d4e96545e9617ce846a919fffb2f8e1389fab2151a9d38650be416dd148ac2.json",
+      "sha256": "36ccbd143dc1ca5cb13a764fe46a654563d7d12e36d629cad736d0f6c7db2819"
+    },
+    "historical_stage_inputs": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/inputs.json",
+      "sha256": "bb0655415ce9242be06c58d04609f4220dbb0a38f3c8802df99664efd083e134"
+    },
+    "canonical_bootstrap": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/preflight.json",
+      "sha256": "b89e499bfeb4d07a5464c152d675f1ad80040345c7122e85ada38db1db3615c6"
+    },
+    "old_oracle": {
+      "path": "/Users/l/Project/Recommandation/reports/reviewed-owned-partial-expectations-20261020.json",
+      "sha256": "e5569e23a250ac0ac7e792459b9a0856b086f4d841e8842abc44e433235eae2f"
+    },
+    "old_stage_report": {
+      "path": "/Users/l/Project/Recommandation/reports/reviewed-owned-partial-stage-20261020.md",
+      "sha256": "813cb0fbb1470dd27588e625a2bc1ea4271e1c108884fc0d42f727c02c0e3be8"
+    },
+    "prompt_fix_report": {
+      "path": "/Users/l/Project/Recommandation/reports/reflect-facet-scope-20261021.md",
+      "sha256": "87354dc2420958763f73a7abac0032c9f44c94c09ed00a5761b8642bc0abb671"
+    }
+  },
+  "model_visible": {
+    "Reflect_user_keys": [
+      "computed_metrics",
+      "evaluation_anchor",
+      "evaluation_context",
+      "executed_selection_intents",
+      "need_transition_contract",
+      "output_patch_base",
+      "output_patch_contract",
+      "reflection_runtime",
+      "reflection_skill",
+      "research_state",
+      "research_state_capacity",
+      "signal_batch",
+      "signal_evidence_ref_catalog",
+      "signal_research_status",
+      "validation_feedback"
+    ],
+    "Reflect_basic_info_present": false,
+    "Reflect_document_channel_present": false,
+    "Reflect_prior_six_refs": [
+      {
+        "claim": "Management disclosed a shift away from paid member acquisition and performance marketing toward brand and organic investment, while warning of short-term pressure on revenue and paying users.",
+        "exact_text": "To align with these priorities, we have strategically shifted away from paid member acquisition and performance marketing in favor of brand and organic investment. As we address these areas of focus, our member growth and success in attracting new members, member engagement and monetization may be negatively impacted. In addition, efforts to improve the health of our membership base, including the removal of bad actors from our apps and strategically reducing paid performance marketing for member acquisition, may adversely affect revenue and paying users in the short term.",
+        "kind": "basic_info",
+        "projection_id": "projection_f8d7793d8a50c9c91d62edc1"
+      },
+      {
+        "claim": "As of June 30, 2025, cash and cash equivalents were $261.7 million; management believed available resources sufficient for its business plans during the next twelve months, based on conditions then.",
+        "exact_text": "As of June 30, 2025, we had $261.7 million of cash and cash equivalents, an increase of $57.4 million from December 31, 2024. Our principal sources of liquidity are our cash and cash equivalents and cash generated from operations. Our primary uses of liquidity are operating expenses and capital expenditures, acquisition of businesses, funding of our debt obligations, partnership tax distributions, paying income taxes and obligations under our tax receivable agreement and effectuating share repurchases as discussed below. Based on current conditions, we believe that we have sufficient financial resources to fund our activities and execute our business plans during the next twelve months.",
+        "kind": "basic_info",
+        "projection_id": "projection_11e722831b03f2831c1c8d2d"
+      },
+      {
+        "claim": "In June 2025, management announced a global workforce reduction of approximately 240 roles, representing approximately 30% of employees.",
+        "exact_text": "In June 2025, we announced our decision to reduce our global workforce by approximately 240 roles, representing approximately 30% of our employees, as we realign our operating structure to optimize execution on our strategic priorities.",
+        "kind": "basic_info",
+        "projection_id": "projection_11e722831b03f2831c1c8d2d"
+      },
+      {
+        "claim": "For the three months ended June 30, 2025 and 2024, respectively, total revenue was $248.2 million and $268.6 million.",
+        "exact_text": "For the three months ended June 30, 2025 and 2024, we generated: • Total revenue of $248.2 million and $268.6 million, respectively;",
+        "kind": "basic_info",
+        "projection_id": "projection_53f0208217c26e1d3d9b97e2"
+      },
+      {
+        "claim": "For the three months ended June 30, 2025 and 2024, respectively, Total Paying Users were 3,777.2 and 4,138.6 (in thousands), while Total Average Revenue per Paying User was $21.69 and $21.37.",
+        "exact_text": "(In thousands, except ARPPU) Three Months Ended June 30, 2025 Three Months Ended June 30, 2024 Six Months Ended June 30, 2025 Six Months Ended June 30, 2024 [ANON_ID_0000] App Paying Users 2,499.8 2,817.2 2,604.1 2,773.6 Badoo App and Other Paying Users 1,277.4 1,321.4 1,291.9 1,307.9 Total Paying Users 3,777.2 4,138.6 3,896.0 4,081.5 [ANON_ID_0000] App Average Revenue per Paying User $ 26.85 $ 25.79 $ 25.81 $ 26.06 Badoo App and Other Average Revenue per Paying User $ 11.57 $ 11.93 $ 11.14 $ 12.14 Total Average Revenue per Paying User $ 21.69 $ 21.37 $ 20.94 $ 21.60",
+        "kind": "basic_info",
+        "projection_id": "projection_857e47898275a58b1c86dc0a"
+      },
+      {
+        "claim": "Management warned that restructuring costs could exceed expectations or fall in different periods, and that intended benefits might arrive less fully or less quickly than anticipated.",
+        "exact_text": "the risk that the costs and charges related to our recently announced plan to implement a global workforce reduction and restructuring of our operations may be greater than anticipated or incurred in different periods than anticipated • the risk that our restructuring efforts may not generate their intended benefits to the extent or as quickly as anticipated",
+        "kind": "basic_info",
+        "projection_id": "projection_f5e5258464d4602a2ffccc9e"
+      }
+    ],
+    "Reflect_two_results": [
+      {
+        "evidence": {
+          "counter": [
+            {
+              "available_at": "2025-08-07T20:05:33+00:00",
+              "evidence_index": 0,
+              "model_evidence_text": "During each of the six months ended June 30, 2025 and 2024, we used $2.9 million to repay a portion of the outstanding indebtedness under our Original Term Loan."
+            },
+            {
+              "available_at": "2025-08-07T20:05:33+00:00",
+              "evidence_index": 1,
+              "model_evidence_text": "During the six months ended June 30, 2025, the Company repurchased 4.7 million shares of Class A common stock for $ 28.7 million, excluding excise tax obligations."
+            },
+            {
+              "available_at": "2025-08-07T20:05:33+00:00",
+              "evidence_index": 2,
+              "model_evidence_text": "There were no share repurchases during the three months ended June 30, 2025 and 2024. As of June 30, 2025, all treasury shares were retired, and a total of $ 50.1 million remained available for repurchase under the repurchase program."
+            },
+            {
+              "available_at": "2025-08-07T20:05:33+00:00",
+              "evidence_index": 3,
+              "model_evidence_text": "As of June 30, 2025, amounts available under the Revolving Credit Facility were $ 50.0 million. As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants."
+            }
+          ],
+          "supporting": []
+        },
+        "interpretation": {
+          "measurement_context": {
+            "categorical_value_is_not_stock_direction": true
+          },
+          "summary": "Neutral capital-structure facts: the issuer completed first-half 2025 share repurchases of 4.7 million shares for $28.7 million, excluding excise tax obligations, and repaid $2.9 million under its Original Term Loan. All treasury shares were retired by June 30, with no second-quarter repurchases. These historical actions document repayment and share retirement, but the cited spans do not establish a prospective net-dilution change or a within-horizon change in runway, distress, or tradability relevant to the fixed surge target. Revolving credit availability and covenant compliance describe the existing position rather than an independently established directional catalyst. Additional evidence may exist in omitted text."
+        },
+        "signal_id": "financing_listing_action",
+        "signal_ref": "financing_listing_action:v5",
+        "state": {
+          "confidence": 0.93,
+          "value": "neutral"
+        },
+        "status": {
+          "coverage": "partial"
+        },
+        "version": 5
+      },
+      {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "interpretation": {
+          "summary": "domain_unavailable: a normal domain coverage outcome, not a technical execution gap or failure. Visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+        },
+        "signal_id": "operating_cash_flow_margin",
+        "signal_ref": "operating_cash_flow_margin:v2",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 2
+      }
+    ],
+    "canonical_source_links": [
+      {
+        "signal_ref": "financing_listing_action:v5",
+        "type": "counter",
+        "index": 0,
+        "canonical": {
+          "document_id": "sec:cik_0001830043:000162828025038861",
+          "exact_span": "During each of the six months ended June&#160;30, 2025 and 2024, we used $2.9 million to repay a portion of the outstanding indebtedness under our Original Term Loan.",
+          "timestamp": "2025-08-07T20:05:33+00:00"
+        },
+        "model_visible": {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "evidence_index": 0,
+          "model_evidence_text": "During each of the six months ended June 30, 2025 and 2024, we used $2.9 million to repay a portion of the outstanding indebtedness under our Original Term Loan."
+        },
+        "raw_body_start_offset": 1674416
+      },
+      {
+        "signal_ref": "financing_listing_action:v5",
+        "type": "counter",
+        "index": 1,
+        "canonical": {
+          "document_id": "sec:cik_0001830043:000162828025038861",
+          "exact_span": "During the six months ended June&#160;30, 2025, the Company repurchased <ix:nonFraction unitRef=\"shares\" contextRef=\"c-91\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodShares\" scale=\"6\" id=\"f-544\">4.7</ix:nonFraction> million shares of Class A common stock for $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-92\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodValue\" scale=\"6\" id=\"f-545\"><ix:nonFraction unitRef=\"usd\" contextRef=\"c-93\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodValue\" scale=\"6\" id=\"f-546\">28.7</ix:nonFraction></ix:nonFraction> million, excluding excise tax obligations.",
+          "timestamp": "2025-08-07T20:05:33+00:00"
+        },
+        "model_visible": {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "evidence_index": 1,
+          "model_evidence_text": "During the six months ended June 30, 2025, the Company repurchased 4.7 million shares of Class A common stock for $ 28.7 million, excluding excise tax obligations."
+        },
+        "raw_body_start_offset": 768647
+      },
+      {
+        "signal_ref": "financing_listing_action:v5",
+        "type": "counter",
+        "index": 2,
+        "canonical": {
+          "document_id": "sec:cik_0001830043:000162828025038861",
+          "exact_span": "There were <ix:nonFraction unitRef=\"shares\" contextRef=\"c-96\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodShares\" format=\"ixt:fixed-zero\" scale=\"0\" id=\"f-550\"><ix:nonFraction unitRef=\"shares\" contextRef=\"c-97\" decimals=\"-5\" name=\"us-gaap:StockRepurchasedDuringPeriodShares\" format=\"ixt:fixed-zero\" scale=\"0\" id=\"f-551\">no</ix:nonFraction></ix:nonFraction> share repurchases during the three months ended June&#160;30, 2025 and 2024. As of June&#160;30, 2025, all treasury shares were retired, and a total of $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-90\" decimals=\"-5\" name=\"us-gaap:StockRepurchaseProgramRemainingAuthorizedRepurchaseAmount1\" scale=\"6\" id=\"f-552\">50.1</ix:nonFraction> million remained available for repurchase under the repurchase program.",
+          "timestamp": "2025-08-07T20:05:33+00:00"
+        },
+        "model_visible": {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "evidence_index": 2,
+          "model_evidence_text": "There were no share repurchases during the three months ended June 30, 2025 and 2024. As of June 30, 2025, all treasury shares were retired, and a total of $ 50.1 million remained available for repurchase under the repurchase program."
+        },
+        "raw_body_start_offset": 769918
+      },
+      {
+        "signal_ref": "financing_listing_action:v5",
+        "type": "counter",
+        "index": 3,
+        "canonical": {
+          "document_id": "sec:cik_0001830043:000162828025038861",
+          "exact_span": "As of June&#160;30, 2025, amounts available under the Revolving Credit Facility were $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-232\" decimals=\"-5\" name=\"us-gaap:LineOfCreditFacilityRemainingBorrowingCapacity\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-872\">50.0</ix:nonFraction>&#160;million. As of June&#160;30, 2025, and at all times during the six months ended June&#160;30, 2025, the Company was in compliance with the financial debt covenants.",
+          "timestamp": "2025-08-07T20:05:33+00:00"
+        },
+        "model_visible": {
+          "available_at": "2025-08-07T20:05:33+00:00",
+          "evidence_index": 3,
+          "model_evidence_text": "As of June 30, 2025, amounts available under the Revolving Credit Facility were $ 50.0 million. As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants."
+        },
+        "raw_body_start_offset": 1026761
+      }
+    ],
+    "Bootstrap_and_Predictor_17cards": [
+      {
+        "projection_id": "projection_f8d7793d8a50c9c91d62edc1",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "c07dc72e748847e8890bdc211db7fb24a1bbd182e142403305c2e7c79d67e5ac",
+        "characters": 1946
+      },
+      {
+        "projection_id": "projection_d84bdae2cd1041d8970aaed9",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "7a11e9ce186db139404b61c631f8696b21c09dac90f4c81382a52b811dada28b",
+        "characters": 1982
+      },
+      {
+        "projection_id": "projection_72c7dd5608b151dc514a11f5",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "3ccface9ec3135b6512b0c652030d2b8a8a8317f465d9c976368e8e75917f71c",
+        "characters": 1907
+      },
+      {
+        "projection_id": "projection_1a176aa5c11237ff05bbd475",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "a2688989e2b377872759ad11ab3ff29840d77b4a65925825f018db5363de795f",
+        "characters": 1929
+      },
+      {
+        "projection_id": "projection_bc120412c765a8ad3d6afeba",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "68454a981243690140b7f5b866616963763b8d8717b04ca2db2dbf1f0ace7ebe",
+        "characters": 1891
+      },
+      {
+        "projection_id": "projection_13e6480ddb0d6ae44577f7ea",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "01c76514dee91feca04a804b377a81e19c6d964b5a5b358dd0a2b306a59c8a0b",
+        "characters": 1926
+      },
+      {
+        "projection_id": "projection_c363263f9720e19bd29d557f",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "1bfb943ad9dc4d1c27a02fd7acd2c0ffbadf6bd3aa7cf7b5c560c4c2f6aa2edc",
+        "characters": 1878
+      },
+      {
+        "projection_id": "projection_857e47898275a58b1c86dc0a",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "2d1da28d4256cee7f6e32ed2a72c0c2ced073fe336e27bd70aed4c32f3d128b7",
+        "characters": 1821
+      },
+      {
+        "projection_id": "projection_661ec66810d9066226619755",
+        "document_id": "sec:cik_0001830043:000119312525146199",
+        "available_at": "2025-06-25T12:20:35+00:00",
+        "request_index": 0,
+        "text_sha256": "e990ab1eb8931d7fab69823d187e1cb0c6dd3cac0d6a0da17cce728420574a58",
+        "characters": 1707
+      },
+      {
+        "projection_id": "projection_fd3d1caf13ac99d7a6654456",
+        "document_id": "sec:cik_0001830043:000119312525146199",
+        "available_at": "2025-06-25T12:20:35+00:00",
+        "request_index": 0,
+        "text_sha256": "a9a9fb1a73d9e28522de8554e7e8e22e27a0963cf7c24a1180384711ec54b7f5",
+        "characters": 1713
+      },
+      {
+        "projection_id": "projection_f5e5258464d4602a2ffccc9e",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "2553a51efa6343b8bcf47cf93e2f333dde27f925dd98489d7d1246ea456b30b4",
+        "characters": 1736
+      },
+      {
+        "projection_id": "projection_11e722831b03f2831c1c8d2d",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "ed6d24af1a45a5d36488f56227831ced2e6cf7744d15305f6a617f02fef41e2b",
+        "characters": 1970
+      },
+      {
+        "projection_id": "projection_907da1a0881fb4891fdeaaf7",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "32c3a563a3ec6b0880c3101b49f8087510a58ea1d9f2cc3f4a3c5c8cd52aacf5",
+        "characters": 1937
+      },
+      {
+        "projection_id": "projection_53f0208217c26e1d3d9b97e2",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "97ce1048d5180431c61378297a401704120670c811e091af9a9255cd093f83cf",
+        "characters": 1959
+      },
+      {
+        "projection_id": "projection_d5f66354c516bb7a572fd8b4",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "3458e9bfb881193378ff67a265057d9fff363176cca173d6c73a7f4e53ff04f6",
+        "characters": 1935
+      },
+      {
+        "projection_id": "projection_7da50e986ef20021090aa4f8",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "request_index": 0,
+        "text_sha256": "dd104a6defb6fa0fe2216c941e75a3054d153219c8346e5bffe1e06d90b28f60",
+        "characters": 2000
+      },
+      {
+        "projection_id": "projection_e885fe196b2d87d88a643882",
+        "document_id": "massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e",
+        "available_at": "2025-09-30T00:00:00+00:00",
+        "request_index": 1,
+        "text_sha256": "71957c362e19429d99afc578aafaa35bd2af114f4fb30effcd70ebae05bba742",
+        "characters": 1055
+      }
+    ],
+    "Bootstrap_visibility": [
+      {
+        "status": "resolved",
+        "projection_status": "partial_context_budget",
+        "available_projection_count": 23,
+        "visible_projection_count": 16,
+        "omitted_projection_count": 7,
+        "source_context_truncated": true,
+        "projection_context_truncated": true,
+        "effective_context_truncated": true,
+        "omitted_context_markers": [
+          "illar Two minimum taxes and valuation allowance recorded against certain deferred tax assets arising in the cu",
+          "gn markets, primarily in the United Kingdom and the European Union. For the three months ended June&#160;30, 2",
+          "and certain outstanding Class B Units were reclassified into a new class of limited partnership interests that",
+          "vable agreement liability remeasurement (benefit) expense, impairment loss, and restructuring costs. Adjusted ",
+          "ts, furniture and fixtures, developed technology, user base, white label contracts, trademarks and other defin",
+          "their Unruh Act claims in the Superior Court of the State of California for the County of Riverside, this time",
+          "31, 2021, quarterly installment payments on the Incremental Term Loan Facility are no longer required for the ",
+          "tter comparison of our performance across periods. We believe Adjusted EBITDA provides visibility to the under"
+        ]
+      },
+      {
+        "status": "resolved",
+        "projection_status": "partial_context_budget",
+        "available_projection_count": 1,
+        "visible_projection_count": 1,
+        "omitted_projection_count": 0,
+        "source_context_truncated": true,
+        "projection_context_truncated": false,
+        "effective_context_truncated": true,
+        "omitted_context_markers": [
+          "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+          "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+          "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+        ]
+      }
+    ],
+    "selected_relevant_card_texts": [
+      {
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "exact_text": "ough third parties, such as Apple App Store or Google Play Store, and offset related fees • our ability to attract, hire and retain a highly qualified and diverse workforce, or maintain our corporate culture, including as such factors may be impacted by our global workforce reductions and efforts to restructure our operations • our ability to maintain the value and reputation of our brands • risks relating to changes to our existing brands and products, or the introduction or acquisition of new brands or products • risks relating to certain of our international operations, including geopolitical conditions and successful expansion into new markets • the impact of data security breaches or cyber attacks on our systems and the costs of remediation related to any such incidents • challenges with properly managing the use of artificial intelligence • our ability to obtain, maintain, protect and enforce intellectual property rights and successfully defend against claims of infringement, misappropriation or other violations of third-party intellectual property • our ability to comply with complex and evolving U.S. and international laws and regulations relating to our business, including data privacy laws • our substantial indebtedness • control of us by Blackstone and our Founder (each, as defined below) • the outsized voting rights of Blackstone and our Founder • the risk that we may experience impairments to our goodwill and intangible assets as a result of a number of factors, some of which are beyond our control • risks relating to the market price volatility of our Class A common stock, which could limit our ability to make acquisitions and retain key personnel and employees, and result in dilution if our stock-based compensation programs issue increased numbers of shares because of a depressed stock price or could result in increased cash compensation expense in the event t",
+        "projection_id": "projection_72c7dd5608b151dc514a11f5"
+      },
+      {
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "exact_text": "le in the second quarter of 2025. 43 Liquidity and Capital Resources Overview As of June 30, 2025, we had $261.7 million of cash and cash equivalents, an increase of $57.4 million from December 31, 2024. Our principal sources of liquidity are our cash and cash equivalents and cash generated from operations. Our primary uses of liquidity are operating expenses and capital expenditures, acquisition of businesses, funding of our debt obligations, partnership tax distributions, paying income taxes and obligations under our tax receivable agreement and effectuating share repurchases as discussed below. Based on current conditions, we believe that we have sufficient financial resources to fund our activities and execute our business plans during the next twelve months. We have a share repurchase program of up to $450.0 million of our outstanding Class A common stock with repurchases under the program to be made on a discretionary basis from time to time, subject to general business and market conditions and other investment opportunities, through open market purchases or other means, including privately negotiated transactions. During the six months ended June 30, 2025, we repurchased 4.7 million shares of Class A common stock for $28.7 million, excluding excise tax obligations. During the six months ended June 30, 2024, we repurchased 5.3 million shares of Class A common stock and 2.0 million Common Units for $84.4 million, excluding excise tax obligations. There were no share repurchases during the three months ended June 30, 2025 and 2024. As of June 30, 2025, all treasury shares were retired, and a total of $50.1 million remained available for repurchase under the repurchase program. In June 2025, we announced our decision to reduce our global workforce by approximately 240 roles, representing approximately 30% of our employees, as we realign our operating structure to optimize execution on our strategic priorities. As a result, we expect",
+        "projection_id": "projection_11e722831b03f2831c1c8d2d"
+      },
+      {
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "exact_text": "ution if our stock-based compensation programs issue increased numbers of shares because of a depressed stock price or could result in increased cash compensation expense in the event that we shift the mix of incentive compensation in favor of cash-based awards over equity-based awards • changes in business or macroeconomic conditions, including the impact of lower consumer confidence in our business or in the online dating industry generally, recessionary conditions, increased unemployment rates, stagnant or declining wages, changes in inflation or interest rates, geopolitical events (such as trade wars), political unrest, armed conflicts, including conflicts in Eastern Europe and the Middle East, widespread health emergencies or pandemics and measures taken in response, extreme weather events or natural disasters 1 Table of Contents • foreign currency exchange rate fluctuations For more information regarding these and other risks and uncertainties that we face, see Part I, “Item 1A—Risk Factors” of our Annual Report on Form 10-K for the year ended December 31, 2024 (“2024 Form 10-K”). These factors should not be construed as exhaustive and we caution you that the important factors referenced above may not contain all of the factors that are important to you. Bumble Inc. undertakes no obligation to publicly update or review any forward-looking statements, whether as a result of new information, future developments or otherwise, except as required by law. Website and Social Media Disclosure We use our websites (www.bumble.com and ir.bumble.com) and at times our corporate X account (formerly known as Twitter) (@bumble) and LinkedIn (www.linkedin.com/company/bumble) to distribute company information. The information we post through these channels may be deemed material. Accordingly, investors should monitor these channels, in addition to following our press releases, Securities and Exchange Commission (the",
+        "projection_id": "projection_907da1a0881fb4891fdeaaf7"
+      }
+    ],
+    "semantic_limits": "Liquidityuses categories do not measure OCF/capex/taxobligations. Conditional12month resourcesbelief isnot later covenantcompliance. Stockcompensation risk isnot complete prospective netdilution. Annualcrossreference isnot directannualreading. No17card contains covenant/compliance/revolving wording; unknown assessment also checks actual paragraphscope, not keywordabsencealone."
+  },
+  "controls": {
+    "p01": {
+      "question": "What did annual and subsequent disclosures available by prediction time establish about operating cash flow, capital expenditure, debt balances and maturities, covenants, tax-related cash obligations and prospective equity dilution? Direct annual-report coverage remains unverified.",
+      "question_characters": 282,
+      "input_origin": "Exact accepted historical need4; same historical two Signal results and selection intents.",
+      "expected_answer_scope": "partial",
+      "supported_facets": [
+        "H1 completed term-loan repayment/repurchases/treasury retirement; not complete debt obligations or prospective net dilution.",
+        "June30 revolver availability and financial debt-covenant compliance at June30 and throughout H1."
+      ],
+      "required_unknown_facets": [
+        "operating cash flow",
+        "capital expenditure",
+        "debt balances and maturities",
+        "covenant terms and compliance after the disclosed interim period",
+        "tax-related cash obligations",
+        "prospective net equity dilution",
+        "direct annual-report reading remains unverified within this historical seed"
+      ],
+      "pass": "Adopt pertinent current-batch evidence and provide proper partial with one genuinely narrower1-300character residual retaining ALL unknown facets and original disclosure/public-cutoff scope. Reason also explains actual answered/missing scope but does not replace residual. Wording is free.",
+      "safe_not_pass": "unanswered/null preserves the original282characters safely but cannot pass proper-partial capability.",
+      "fail": [
+        "Lose post-interim compliance while retaining only terms, as old0/1.",
+        "Lose another required unknown facet, claimfull, reason-only unknowns, or duplicate long/short residual."
+      ]
+    },
+    "p02": {
+      "question": "By prediction time, what financial covenant terms and compliance through the six months ended June 30, 2025 and afterwards had been disclosed?",
+      "question_characters": 142,
+      "input_origin": "Only sample_id and prior need4 controlled; preserve historical prospective selection intents.",
+      "expected_answer_scope": "partial",
+      "supported_facets": [
+        "Counter[3] directly establishes financial debt-covenant compliance atJune30 and at all times inH1."
+      ],
+      "required_unknown_facets": [
+        "Financial covenant terms/requirements.",
+        "Later compliance/status afterJune30 through September30 cutoff as disclosed by cutoff."
+      ],
+      "pass": "Proper partial adopts H1/June30 compliance with exact source and retains BOTH unknown static terms and later dynamic status in one residual, without extending coverage to publication/cutoff.",
+      "safe_not_pass": "unanswered/null is safe retention, not short proper-partial ability.",
+      "fail": [
+        "Full onH1-only evidence.",
+        "Omit either terms or later compliance.",
+        "Treat afterwards as postcutoff futureactuals or ignore knownH1 answer."
+      ]
+    },
+    "p03": {
+      "question": "By prediction time, what revolving credit availability at June 30, 2025 and covenant compliance during the six months then ended had been disclosed?",
+      "question_characters": 148,
+      "input_origin": "Only sample_id and prior need4 controlled; same actual batch.",
+      "expected_answer_scope": "full",
+      "supported_facets": [
+        "Counter[3]: Revolving Credit Facility availability$50.0million atJune30,2025.",
+        "Counter[3]: financial debt-covenant compliance atJune30 and at all times during sixmonths then ended."
+      ],
+      "required_unknown_facets": [],
+      "pass": "Full answer citing actual counter[3], exactamount/status/period; removeonly ownedneed4 and preserve0-3. Global Signal coveragepartial doesnot preclude full answer to this exact narrower question.",
+      "safe_not_pass": "Partial/unanswered fails sufficient-evidence full-answer ability.",
+      "fail": [
+        "Confuse$50.1million repurchaseauthorization with$50.0million revolveravailability.",
+        "Extend to complete covenantterms or postJune30 compliance.",
+        "Ignore literal evidence because Signalneutral/coveragepartial."
+      ]
+    }
+  },
+  "contract_feasibility": {
+    "p01_original_chars": 282,
+    "p01_lossless_narrower_residual_possible": true,
+    "private_feasibility_witness": "By prediction time, what annual/subsequent disclosures establish operating cash flow, capex, debt balances/maturities, covenant terms and post-June30 compliance, tax cash obligations and prospective net equity dilution? Direct annual-report reading remains unverified.",
+    "witness_chars": 268,
+    "witness_scope": "Audit-only demonstration that300chars isnot impossible; NOT expectedwording/modelanswer/validator. Neverincludeinroleinput. Originalunknownfacets remain binding.",
+    "p02_short_partial_possible": true,
+    "p03_actual_Reflect_evidence_sufficient_for_full": true,
+    "unsatisfiable_contract_found": false
+  },
+  "weakening_risks": [
+    "Countunanswered asproperpartial becausep01long despite268charfeasibility.",
+    "Drop latercompliance or keepit onlyinreason.",
+    "Publicationdate mistakenfor statecoverage.",
+    "Claim17Bootstrapcards areallReflectvisible.",
+    "Usefullsource factsunexposedtoReflect.",
+    "Leakprivateoracle/prospectiveresidualtoroles.",
+    "Rejectp03full simplybecauseSignalcoveragepartial.",
+    "TreatoldOCFunavailableasfreshF6failure.",
+    "Replaceold0/1orclaimmirrortriggeredwithoutactualcorrection."
+  ],
+  "actions": {
+    "GET": 0,
+    "model_calls": 0,
+    "labels": 0,
+    "store_constructed": false,
+    "append": 0,
+    "Signal_apply": 0,
+    "formal_prepare_or_resume": 0,
+    "code_edits": 0,
+    "written_files": [
+      "oracle-review.json",
+      "expectations.json"
+    ]
+  },
+  "scope_limit": "Inputadequacy/privateoracle only, notfreshobedience/whole-reportcomprehension/wholeF7/MVP/predictivegain."
+}

@@ -85,3 +85,58 @@ Tests use temporary fixtures and fake offline role authors at actual transport,
 parser and sink boundaries. They prove wiring, budget-before-receive, failure
 terminality, no oracle/raw-answer leakage and exact completed restoration, not
 fresh model compliance. Implementation tests never prepare the actual stage.
+
+## Three temporal controls on the completed capture view
+
+The explicit `owned_partial_temporal_controls` oracle profile adds p01/p02/p03,
+each in a different, frozen absolute stage root under the profile-owned
+`runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/{p01,p02,p03}`.
+The oracle must agree with these destinations; it cannot authorize a renamed
+group by changing its own root mappings. A later experiment needs an explicit
+new code/contract revision, not a new directory under this profile. It requires
+`source_profile=gpre_capture_1780` and source execution commit
+`263d16ab18b8712f91a11c121b125f951dbbb05f`; the historical seed commit remains
+independently verified. The original one-sample profile and defaults retain
+their contract. No completed stage is upgraded, copied, or resumed as a control.
+
+Prepare takes a `sample_id` and freezes a readable `control_set`: all three
+sample/root mappings, per-case limits and totals18 requests/1536000 reservation
+units. The oracle must declare exactly these three distinct roots and totals.
+Only the assigned root can prepare or execute that case; each exclusive new
+root has its own native six-call exchange and512000 cumulative budget, request
+cap131072 and reserve64000. Pending reentry rebuilds that case's logical usage;
+no other case's spare calls or units can be borrowed. One case's completion is
+not completion of the fixed three-case denominator. Root dispatches sequentially.
+
+All controls use the same historical Plan,17-card BasicInfo, two actual Signal
+results, portfolio, prior fields and four untargeted needs. Only `sample_id` and
+owned `next_information_needs[4]` differ: p01 preserves the exact original282
+characters; p02 is “By prediction time, what financial covenant terms and
+compliance through the six months ended June 30, 2025 and afterwards had been
+disclosed?”; p03 is “By prediction time, what revolving credit availability at
+June 30, 2025 and covenant compliance during the six months then ended had been
+disclosed?”. No expected answer or future residual enters a model request.
+The oracle stores these questions, exact roots and independent semantic
+expectations separately. Prepare rejects any other question, scope or limits.
+Reflect receives its native prior and Signal batch; its request does not include
+the17 BasicInfo cards. The unchanged cards are assembled later into the final
+context and disclosed to Predictor. An owned routing intent of partial does not
+cap Reflect's answer scope when actual cited material answers a narrower need.
+
+The new source loader verifies completed capture result→input-manifest→plan
+and review→1780-document snapshot, full source/proof bytes and exact historical
+code against the specified Git commit. Historical code bindings are not checked
+against today's changed implementation; every resume rechecks their frozen Git
+lineage. Current executable code, reused helper scripts and owning specs are
+bound separately and checked against current files. This is not an exemption
+from either historical source identity or current execution drift checks.
+
+Historical evidence still has to exist verbatim in admitted PIT originals.
+The existing financing result directly quotes June30 revolving availability
+and compliance at June30 and throughout H1 from the August7 accepted10-Q, which
+can support p03 without extending its reporting period. It does not establish
+compliance afterwards. Semantic review distinguishes p01 proper-partial
+capability, p02 temporal residual preservation and p03 sufficient-period answer;
+conservative unanswered can be safe but does not substitute for a required
+partial/full capability result. Original p01 failure0/1 stays unchanged. Mirror
+repair is not_exercised unless a real native correction actually triggers it.
