@@ -1,6 +1,11 @@
 # Fixed40 source proofs and operating content
 
-2026-10-20. The full engineering MVP remains open. Previous turn made progress:
+2026-10-20. The original40 source-consumption stage completed under c9ad66e8:
+both exact Registry groups resolve670/720 inputs and all40 meet the existing0.8
+threshold. Independent review checks the full saved input/BasicInfo connection;
+this does not close the full engineering MVP or establish measurement correctness.
+The following records retain the preparation and original failure boundaries.
+Previous turn made progress:
 the sole fixed40 preappend diagnosis completed, preserved all families, and
 identified exact proof deficits, canonical record conflicts and a producer type
 defect. The completed stages and eight unrelated user modifications remain
@@ -101,8 +106,8 @@ The new [consumer contract](../spec/scripts/diagnose_reviewed_frozen_source_comp
 preserves all842 financial-product,24 market-family and41 operating-target
 dispositions. Its separate freeze and single execution will verify the complete
 batch before any append, preserve original records, materialize a new view and
-run both original720 input matrices plus40 BasicInfo projections. It has not
-been prepared or executed on actual data.
+run both original720 input matrices plus40 BasicInfo projections. At this earlier
+preparation boundary it had not run; the actual completed execution is below.
 
 Independent temporary counterexample testing found that its first semantic-review
 branch accepted a submissions JSON artifact as the reviewed body carrier. The
@@ -168,6 +173,59 @@ prepare permissions are false. Plan file SHA256:
 `b099d0af1ecc3720faaa23b884cb810122408c2b7470d494a81b7e4195987761`;
 canonical hash:
 `114a50b2b037409e36eee1439ca1497d94d183df8d342ba984b3f6b8e2ffeb50`.
-Global append, reviewed-view materialization and actual input consumption have
-not yet run. A summary-only list/dict display error was repaired without
+At that freeze boundary, append/view/input consumption had not run. A summary-only
+list/dict display error was repaired without
 repeating the successful prepare; its failed summary output is preserved.
+
+## Actual original40 source consumption
+
+The sole frozen execution under c9ad66e80f9b4f72438f5be93496dbaaa9410e92
+ended2026-10-20T01:13:22UTC/exit0 after1253.520s. Its
+[execution summary](../runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/execution-summary.json)
+binds the result, input manifest and3027 terminal stage files. All1123 native
+append calls received complete canonical readback:853 new records (838 financial,
+14 operating,1 market) and270 exact existing records. The old15640 global files
+and658 review rows remain byte/row-identical. The new review has1781 rows,
+1776 admitted documents; all six target-level unknowns remain explicit.
+
+Each exact Registry now has670resolved/50gap of720, versus262/458 previously.
+All40 pass the existing0.8 input threshold (previously15):31cases17/18,
+8cases16/18 and BURU15/18. Per group, Anchor271/288, Discovery265/288 and
+evolution_validation134/144 resolve. Counts agree across groups but their exact
+refs remain distinct. Fifty gaps comprise40 news requests,3 order-confirmation,
+6 momentum and1 drawdown; the saved
+[gap details](../runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/input-gap-details.json)
+retain each case/version/request/coverage. An unmatched query is not evidence
+that orders or negative news do not exist. BURU's missing market baseline still
+prevents treating its threshold pass as complete research readiness.
+
+BasicInfo has119resolved requests of160:40 operating,40 financial and39 market;
+40 news and1 market remain unavailable. All119 resolved model projections retain
+partial_context_budget, all40 cases have effective truncation, and593 omission
+markers remain. This compares with47 resolved/113 unavailable in the old stage;
+neither resolved count establishes that all facts or full source windows were read.
+
+The [independent actual-consumer audit](../runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json)
+checks all3230 source/114 code bindings, both297-file collector inventories,
+all1123 candidates/receipts/canonical originals, every1776 view document, all
+1440 Signal input resolutions (company/cutoff/source family/literal spans/exact
+versions), and recomputed40 BasicInfo projections/lineage. It found no blocking
+finding. Its first harness used new summary field names against old baseline
+files; that KeyError log is retained, the old field mapping was corrected, and
+the complete read-only audit then passed without product or source changes.
+
+Native store.snapshot() and newly reopened reviewed store have equal canonical
+membership and type. The independent reviewer checked persisted manifest and
+canonical files without instantiating a Store; this is not OS crash recovery or
+a complete research restore. Actual consumption made0 GET/model/Signal apply/
+label/fullprepare calls. Result SHA256:
+`e712f77a96278f2f1f41e63131ccee87714e2db487c82789c719daf8728e5dd4`;
+input manifest SHA256:
+`853be82912ec717f4b7779d6b0562b3d1792d6ed88602b3c9eb58076498edc73`.
+
+The source-consumption boundary is now evidenced, while GPRE's latest Q1,
+FTI's full-year market span, transcript/public-time proof, model semantic
+correctness, feedback/Mining/admission/reuse and whole-MVP closure remain open.
+The next bounded role stage uses explicitly historical accepted prior/batch
+seeds for fresh Reflect and Predictor consumption; it cannot claim a fresh F6
+measurement, and a correct first answer leaves typed mirror repair unexercised.

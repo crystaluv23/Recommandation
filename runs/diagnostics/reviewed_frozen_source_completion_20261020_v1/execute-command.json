@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/diagnose_reviewed_frozen_source_completion.py",
+    "--execute",
+    "--output",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage",
+    "--expected-plan-hash",
+    "114a50b2b037409e36eee1439ca1497d94d183df8d342ba984b3f6b8e2ffeb50"
+  ],
+  "cwd": "/Users/l/Project/Recommandation",
+  "PYTHONPATH": "src:scripts",
+  "head": "c9ad66e80f9b4f72438f5be93496dbaaa9410e92",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_source_completion.py",
+    "sha256": "3771191d0df656526c77bfb8a75d6c62bbe50ebecf853c960a644892c81b9c7c"
+  },
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/plan.json",
+    "sha256": "b099d0af1ecc3720faaa23b884cb810122408c2b7470d494a81b7e4195987761"
+  },
+  "started_at_utc": "2026-10-20T00:52:29.306881+00:00"
+}

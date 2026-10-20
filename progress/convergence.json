@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T00:29:23.435699+00:00",
+    "checked_at": "2026-10-20T01:17:25.077390+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Root actual get_goal in current fixed40 source proof turn; active goal, historical experiment unchanged"
+    "source": "Root actual get_goal after completed fixed40 source consumption; active goal, old experiments remain terminal"
   },
   "acceptance": [
     {
@@ -110,9 +110,16 @@
         "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/prepare-summary.json",
         "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/root-terminal-binding-check.json",
         "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-operating-collision-review.json",
-        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-actual-review.json"
+        "runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/independent-actual-review.json",
+        "reports/frozen40-source-proofs-20261020.md",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/result.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/input_manifest.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/execution-summary.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/terminal-file-bindings.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/input-gap-details.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json"
       ],
-      "remaining": "Original40 actualdual720 remains262resolved/458gap eachv6/v12,15/40>=.8. Completepreappend842financialproducts passnativeprofile but4metadata collisions,0newappend/view/matrix. Market23families requireproof/FTIwindowaftercutoff; operatingwholebodyreviewpending andFTIwrongtypeoriginal correctlyrejects. Transcriptcompletepublicproofs,freshF7/fullF10/Slow/direction+magnitudeadmission+reuse/wholeloop open; originalFYbasic0/3 retained. Independentbenefitlaterunknown."
+      "remaining": "Original40 source-only actualdual720 now670resolved/50gap eachv6/v12,40/40>=.8, with1776admittedview and119partialBasicInfo/41unavailable. Source-resolution threshold does not establish measurement/semantic/model completeness: BURU baseline absent,GPRElatestQ1 conflicting IDs,FTIfull-year window and6unknown targets retained. Transcript complete-public proof,freshF7/fullF10/Slow/direction+magnitudeadmission+reuse/wholeloop open; originalFYbasic0/3 retained. Independentbenefitlaterunknown."
     },
     {
       "id": "feedback_consumption",
@@ -869,28 +876,37 @@
         "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/prepare-summary.json"
       ],
       "result": "Sole frozen8a01eb96 collector terminal95 GET/open/reservation/retained,94received+1unsupported nonempty split ledger,0retry/redirect/hostfailure. All533source/102code bindings unchanged;277terminal files. Fixed92requests/1928associations unchanged plusFTI daily/HITI2. Actual10primary scope8full reports/2wrappers(TGB,SLF); HITI2full exhibit scope but parentreceipt stillmissing and textdate/index conflicts retained. FTI existing400day request yielded151actualbars2024Oct21..2025May29, actualclock native canonical normalization passed, no admission. Localconsumer wrongbodycarrier counterexample reproduced/fixed,11temp+independent samecounterexample passed;assembler partial-host failure boundary repaired. Supplemental7exactrequests prepared,not executed. No newglobalappend/view/matrix/model/labels/fullprepare orMVPclose. GPRE4ID conflicts/FTIwrongtype remain excluded; useridentitydecision pending. Supplemental sole7GET completed/exit0,7HTTP200,0retry/redirect/failure; all297collectionfiles unchanged. Actual6exhibits finalnativepass, oldcode HITI/SLF4pass/TGB2reject; numeric-sup/order repair scoped to literal unique index cells. Assembly907targets/1123qualified candidates,6unknown;270canonicalexisting/853expectednew paths independentlychecked. Formal soleprepare20.076s/exit0 plan114a50b2,3230source+114code frozen,0append/view/matrix. Added actualpreappendhelper/ownspec/marketprofile codebindings afteroldcode3drift acceptance reproduced;14safe pass. NoMVPclosure."
+    },
+    {
+      "id": "engineering-mvp-fixed40-actual-source-consumption-20261020",
+      "strategy": "single_original40_qualified_source_view_and_dual_registry_inputs",
+      "failure_families": [
+        "source_resolution_is_not_complete_semantic_reading",
+        "fixed_cohort_and_exact_version_consumption"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/frozen40-source-proofs-20261020.md",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/result.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/input_manifest.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/execution-summary.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/terminal-file-bindings.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/input-gap-details.json",
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json"
+      ],
+      "result": "Sole c9ad66e8 execute1253.520s/exit0:1123nativeappend+canonicalreadbacks,853new/270existing;15640oldglobalbytes/658oldreviewrows unchanged;1776admittedview/1781reviewrows. Both exactRegistry groups670/720resolved,50gap,40/40>=.8 vs262/720,15/40;all40/1440denominators retained.40BasicInfo119resolved-allpartial/41unavailable,593omissionmarkers. Independent all3344freeze/297collectorfiles/canonicalview/PIT+literalinputs/projections checked,0blocking. Reviewer oldbaseline field KeyError retained/fixed before fullpass; notproductfailure. Native snapshot/reopen equality is not OS crash recovery.0GET/model/apply/labels/fullprepare;6unknown/latestGPREQ1/FTIfull-year/wholecontentchain/MVP remainopen."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-fixed40-source-proofs-20261020",
+    "after_iteration": "engineering-mvp-fixed40-actual-source-consumption-20261020",
     "evidence": [
       "reports/frozen40-source-proofs-20261020.md",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/collection-summary.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/source-final-candidate-fragments.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-consumer-original-counterexample.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-consumer-fixed-review.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/independent-assembler-review.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/tgb-exhibit-index-native-boundary.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/fti-normalization-v1/normalization.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/request-plan.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/terminal-independent-review.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/supplemental-v1/execute-summary.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/supplemental-six-exhibit-candidate-fragments.json",
-      "runs/diagnostics/frozen40_source_proofs_20261020_v1/completion-freeze-dependencies-v1/result.json",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/assembly-summary.json",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/actual-bundle-preappend-final-code-review.json",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/plan.json",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/prepare-summary.json"
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/result.json",
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/input_manifest.json",
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/execution-summary.json",
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/terminal-file-bindings.json",
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/input-gap-details.json",
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -938,21 +954,22 @@
       "A restricted cache-root inventory hid19validCompanyFacts proofchains. Exactrequest-key census across retained roots changed the hypothesis; one realGPREGET supplied the remainingchain, not25newGETs.",
       "Legal typedSEC aliases were supported by acquisition but qualification requiredfiling; original10-k proof passed after sharedexactformpredicate. Final independent rehashedreceipt controls exposed method/status/counter contradictions absent from positivefixtures.",
       "Supplemental lookup still omitted4existing exactIDs acrosstyped namespaces. Prototypecollision is not originalfailure:3originals mechanicallypassas-is,whileFTIinterim10-k type conflictswith10-Q proof. Outerloop firstsupportedsource selection is a producer recurrence risk, not a reason to weaken qualification.",
-      "Successful primary-body GETs do not guarantee operating content: two actual40F wrappers require literal incorporated reports. Source-review byte binding must designate the actual decoded body, not merely any proof artifact. Requested400days and151retained daily observations are distinct coverage facts."
+      "Successful primary-body GETs do not guarantee operating content: two actual40F wrappers require literal incorporated reports. Source-review byte binding must designate the actual decoded body, not merely any proof artifact. Requested400days and151retained daily observations are distinct coverage facts.",
+      "The fixed0.8 input fraction can pass all40 while BURU lacks a market baseline, GPRE lacks known latestQ1 and every resolved BasicInfo projection is partial. Reaching the administrative readiness threshold cannot erase semantic/source gaps or authorize a full successor. A completed native snapshot/reopen guard is not OS interruption recovery."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "single_original40_qualified_source_view_and_dual_registry_inputs",
-      "action": "Both collectors are terminal102GETs. Following actualbodyreview, nativeindex repair and complete1123candidate canonical preflight, execute only the separately frozen114a50b2 source-only plan once: nativeappend/exactreadback, preserve alloldbytes, newreview/view/worker/restart, bothoriginal720inputs and40BasicInfo. Keep6unknown targetdispositions/GPRElatestQ1 gap explicit. No model/fullprepare/fullsuccessor or historicalrun resume.",
-      "stop": "No oldstage reentry or implicit extraGET; no hotpatch during source freeze; no metadata/type/ID rewrite, changedcutoff/lookback/refs, labels/LockedTest/model/fullprepare. GPRE identitydecision not inferred from silence.",
-      "question": "Do exact missing proofs and qualified whole reports permit honest native source admission and original40 input consumption without replacing canonical originals or reducing denominators?",
-      "pass": "Complete fixed842/24/41 target dispositions retained; qualified native source chains use actualbody and actualretrieval/availability clocks; collisions remainunknown; exactv6/v12 consumers observe the newview and preserve gaps.",
-      "fail": "Admission depends on wrongbody artifact, guessedform/date/endpoint, overwrittenIDs, futurebars, or cohort/source filtering.",
-      "on_pass": "Independently audit actualsource insertion, preservedoldrows/bytes, canonicalview/recovery and complete40case input statuses; choose the smallest remaining fresh MVP role stage without claiming latestQ1/wholebody/model completeness from a readiness fraction.",
-      "on_fail": "Keep the terminalstage and any actualqualifiedappends explicit; diagnose the first concrete boundary, do not reenter/reset/copyretry the frozenstage or hide affectedcases.",
-      "new_evidence": "Actual102proofGETs,6exhibit old/new nativecounterchecks, complete907target/1123candidate preflight and3344current source/codebindings distinguish qualified originals/newproducts from6unresolved targetconflicts. Allactualconsumer behavior beyond prepare remains unverified.",
-      "distinguishing_variable": "Actual source content/provenance/native canonical reconstruction and downstream input status, versus filenames, HTTPsuccess, modelselfreported completeness or synthetic replay."
+      "strategy": "single_historical_seed_fresh_reflect_and_predictor_consumption",
+      "action": "Prepare one separately frozen label-free F7 stage using explicit historical accepted prior/Plan/selections/batch and whitelisted BasicInfo/baseline only; fresh native Reflect, optional one terminal closure, persisted reread/finalcontext and fresh Predictor/durable sink. Every actual LLM node uses exactinbox isolatedsubagent starting role66; max6requests,512000case logicalreservations,131072perrequest and one native correction. No new data/Signalapply/labels/oldrunresume/fullsuccessor. Source-only completedstage never reenters.",
+      "stop": "Stop on source/code/provenance drift,budget ceiling,unknown/missingbindings,semantic need loss or duplicate residual; preserve failed denominator. No induced overlong answer,no newroot retry to chase typedrepair,no oracle/oldprediction/raw49/raw50 in roles. Identitypolicydecision remains pending,not inferred from silence.",
+      "question": "Does current native Reflect faithfully retain all unsupported facets of a known partially answered need, and do the durable finalcontext and actual fresh Predictor consume the identical accepted state/dispositions?",
+      "pass": "Unowned needs retained by occurrence, historicalbatch unsupported facets remain explicit without duplicate mirrors; accepted state/metadata survive reread, actual Predictor input and sink; completedrestore hashes unchanged and0newdispatch. If firstanswer valid, typedmirrorbranch explicitly not_exercised.",
+      "fail": "Wrong or ungrounded closure,dropped modifiers/facets,duplicate long/short mirrors,unauthorized state edits,evidence mismatch,consumer loss,budget stop or restore drift.",
+      "on_pass": "Record only this fresh F7/consumer control with actual firstanswer/correction counts, then target the next unclosed supported-capability or feedback/Mining boundary; do not close wholeMVP or declare a freshF6 from seeded results.",
+      "on_fail": "Retain original raw/typedcorrection/accepted-or-rejected artifacts; identify first actual producer/validator/consumer boundary and fix the applicable family before another separately frozen test. No wholeprefix rerun by default.",
+      "new_evidence": "Actual fixed40sourceview now reaches both720 inputs and independent literal/PIT+projection review; prior narrow ownedmirror repair has only offline typed-correction proof while latest positive controls did not exercise that compound residual. A fresh bounded native role can distinguish current prompt compliance from scripted reachability.",
+      "distinguishing_variable": "New exact native role outputs and actual persisted/Predictor consumption versus historical replies, scripted synchronized patches or readiness counts."
     }
   },
   "successor_prerequisites": [

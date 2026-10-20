@@ -1,0 +1,213 @@
+{
+  "head": "c9ad66e80f9b4f72438f5be93496dbaaa9410e92",
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/result.json",
+    "sha256": "e712f77a96278f2f1f41e63131ccee87714e2db487c82789c719daf8728e5dd4"
+  },
+  "input_manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/input_manifest.json",
+    "sha256": "853be82912ec717f4b7779d6b0562b3d1792d6ed88602b3c9eb58076498edc73"
+  },
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/plan.json",
+    "sha256": "b099d0af1ecc3720faaa23b884cb810122408c2b7470d494a81b7e4195987761"
+  },
+  "plan_hash": "114a50b2b037409e36eee1439ca1497d94d183df8d342ba984b3f6b8e2ffeb50",
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/source-review.json",
+    "sha256": "46e80d6bc24b7455844560050879f7db3248ece16f2b3d9d90a268477fd2646f"
+  },
+  "snapshot": {
+    "manifest_sha256": "de1f3b439e91af3681d0003093018f1929f9ec80680636376e08a22b4ea96bbd",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/snapshot",
+    "store_type": "reviewed"
+  },
+  "exit": {
+    "exit_code": 0,
+    "finished_at_utc": "2026-10-20T01:13:22.872137+00:00",
+    "wall_seconds": 1253.520295334
+  },
+  "groups": {
+    "default_v6": {
+      "cases": 40,
+      "denominator": 720,
+      "resolved": 670,
+      "gap": 50,
+      "meets_existing_0_8": 40,
+      "resolved_per_case_distribution": {
+        "16": 8,
+        "17": 31,
+        "15": 1
+      },
+      "by_split": {
+        "anchor": {
+          "cases": 16,
+          "resolved": 271,
+          "gap": 17,
+          "meets_existing_0_8": 16
+        },
+        "discovery": {
+          "cases": 16,
+          "resolved": 265,
+          "gap": 23,
+          "meets_existing_0_8": 16
+        },
+        "evolution_validation": {
+          "cases": 8,
+          "resolved": 134,
+          "gap": 10,
+          "meets_existing_0_8": 8
+        }
+      },
+      "gaps_by_exact_ref": {
+        "negative_word_count:v1": 40,
+        "order_confirmation_disclosed:v1": 3,
+        "price_momentum_126d:v1": 6,
+        "max_drawdown_1y:v1": 1
+      },
+      "gap_requested_source_types": {
+        "news": 40,
+        "filing,news,transcript,10-k,10-q,8-k,company_news,sec_filing,earnings_call": 3,
+        "market_data": 7
+      },
+      "prior_resolved": 262,
+      "prior_gap": 458,
+      "resolved_change": 408,
+      "gap_change": -408,
+      "current_coverage_is_input_readiness_not_measurement_or_effect": true
+    },
+    "latest_v12": {
+      "cases": 40,
+      "denominator": 720,
+      "resolved": 670,
+      "gap": 50,
+      "meets_existing_0_8": 40,
+      "resolved_per_case_distribution": {
+        "16": 8,
+        "17": 31,
+        "15": 1
+      },
+      "by_split": {
+        "anchor": {
+          "cases": 16,
+          "resolved": 271,
+          "gap": 17,
+          "meets_existing_0_8": 16
+        },
+        "discovery": {
+          "cases": 16,
+          "resolved": 265,
+          "gap": 23,
+          "meets_existing_0_8": 16
+        },
+        "evolution_validation": {
+          "cases": 8,
+          "resolved": 134,
+          "gap": 10,
+          "meets_existing_0_8": 8
+        }
+      },
+      "gaps_by_exact_ref": {
+        "negative_word_count:v2": 40,
+        "order_confirmation_disclosed:v3": 3,
+        "price_momentum_126d:v2": 6,
+        "max_drawdown_1y:v2": 1
+      },
+      "gap_requested_source_types": {
+        "news": 40,
+        "filing,news,transcript,10-k,10-q,8-k,company_news,sec_filing,earnings_call": 3,
+        "market_data": 7
+      },
+      "prior_resolved": 262,
+      "prior_gap": 458,
+      "resolved_change": 408,
+      "gap_change": -408,
+      "current_coverage_is_input_readiness_not_measurement_or_effect": true
+    }
+  },
+  "basic_info": {
+    "cases": 40,
+    "requests": 160,
+    "statuses": {
+      "resolved": 119,
+      "unresolved": 41
+    },
+    "by_request": {
+      "orientation.v1.operating_report": {
+        "resolved": 40
+      },
+      "orientation.v1.scoped_news": {
+        "unresolved": 40
+      },
+      "orientation.v1.financial_facts": {
+        "resolved": 40
+      },
+      "orientation.v1.market_backbone": {
+        "resolved": 39,
+        "unresolved": 1
+      }
+    },
+    "omitted_context_markers": 593,
+    "model_projection_statuses": {
+      "partial_context_budget": 119,
+      "unavailable": 41
+    },
+    "model_request_statuses": {
+      "resolved": 119,
+      "unresolved": 41
+    },
+    "model_projection_statuses_by_request": {
+      "orientation.v1.operating_report": {
+        "partial_context_budget": 40
+      },
+      "orientation.v1.scoped_news": {
+        "unavailable": 40
+      },
+      "orientation.v1.financial_facts": {
+        "partial_context_budget": 40
+      },
+      "orientation.v1.market_backbone": {
+        "partial_context_budget": 39,
+        "unavailable": 1
+      }
+    },
+    "cases_with_effective_truncation": 40,
+    "requests_with_effective_truncation": 119,
+    "visible_projection_count": 666,
+    "omitted_projection_count": 294,
+    "all_resolved_not_implied_fully_visible": true
+  },
+  "append": {
+    "candidates": 1123,
+    "inserted": 853,
+    "existing": 270,
+    "canonical_load_equal": 1123,
+    "global_additions": 853
+  },
+  "old_review_rows_preserved": true,
+  "old_global_hashes_preserved": true,
+  "worker_restart_equal": true,
+  "worker_restart_scope": "Native store.snapshot() versus a newly open_raw_info_store: canonical documents and Python type equal; no OS interruption/crash or whole research recovery test.",
+  "all_3344_frozen_source_code_bindings_current_equal": true,
+  "gap_details": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/input-gap-details.json",
+    "sha256": "ef83e0a463d85a58cac14cd0f0cfc20035224ec712daf6294cc6f41a8df7448b"
+  },
+  "GETs": 0,
+  "models": 0,
+  "labels": false,
+  "Signal_apply": false,
+  "fullprepare": false,
+  "MVP_closed": false,
+  "semantic_measurement_and_gain_not_tested": true,
+  "FTI_full_year_coverage_not_inferred": true,
+  "GPRE_latest_Q1_missing_collision_disposition_preserved": true,
+  "terminal_file_bindings": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/terminal-file-bindings.json",
+    "sha256": "c46b681e5b65c77b4d9ceb140a0cc869ebf4fd22d86fa1c2889b42c5cd2a0336"
+  },
+  "terminal_files": 3027,
+  "global_old_files_native_protected": 15640,
+  "source_review_rows": 1781,
+  "admitted_view_documents": 1776
+}

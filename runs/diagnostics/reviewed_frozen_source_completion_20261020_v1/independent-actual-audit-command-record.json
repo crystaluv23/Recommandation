@@ -1,0 +1,33 @@
+{
+  "schema_version": "independent-actual-audit-command-record-v1",
+  "scope": "Read-only completed-artifact audit; no producer prepare/execute rerun.",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 /Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.py",
+    "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 /Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/finalize-independent-actual-review.py"
+  ],
+  "audit_helper": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.py",
+    "sha256": "ce2a17948a2d7bb01fa8fbec99eeca8a72d75cc2036a94ad5914913b446503f9"
+  },
+  "finalization_helper": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/finalize-independent-actual-review.py",
+    "sha256": "45cf0e1bc51fb4949e63e1facb44029cea5b03bcdc102673fa117f1b44f22cfc"
+  },
+  "original_harness_failure_log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-original-harness.log",
+    "sha256": "7899f9d70a9792581db9f7db080eda261c5d53d139b22b8f2e4f9804968b89d9"
+  },
+  "original_harness_failure": "Oldbaseline summary fields differ from newstage fields; reviewer KeyError corrected after reading original baseline schema. Product execute remained exit0 and unchanged.",
+  "successful_main_audit_log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.log",
+    "sha256": "c532aa8ab62f53ef1d0932e594a3a38cb8323d7fb0aed8de635a500de3568b67"
+  },
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json",
+    "sha256": "8dc969c802659a78deb19b0268fab77b1e522f24eec926ea8f83850786767e86"
+  },
+  "terminal_stage_bindings": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/terminal-file-bindings.json",
+    "sha256": "c46b681e5b65c77b4d9ceb140a0cc869ebf4fd22d86fa1c2889b42c5cd2a0336"
+  }
+}

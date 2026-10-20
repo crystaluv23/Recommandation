@@ -1,0 +1,7 @@
+{
+  "initial_assertion": "expected stage child only plan.json; found additional empty unused_candidates directories",
+  "prelaunch_harness_failure_only": true,
+  "unused_candidates_files": 0,
+  "execution_start_before_launch": false,
+  "nothing_removed": true
+}

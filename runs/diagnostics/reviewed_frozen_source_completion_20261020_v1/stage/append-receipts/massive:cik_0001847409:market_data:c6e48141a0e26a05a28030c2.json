@@ -1,0 +1,9 @@
+{
+  "canonical_load_equal": true,
+  "document_id": "massive:cik_0001847409:market_data:c6e48141a0e26a05a28030c2",
+  "inserted": false,
+  "original_record": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001847409/massive:cik_0001847409:market_data:c6e48141a0e26a05a28030c2.json",
+    "sha256": "ed1364c1a1382a58898c2d30803b4b3ab2ff61581541f9143e58e7cfb82a6e2b"
+  }
+}

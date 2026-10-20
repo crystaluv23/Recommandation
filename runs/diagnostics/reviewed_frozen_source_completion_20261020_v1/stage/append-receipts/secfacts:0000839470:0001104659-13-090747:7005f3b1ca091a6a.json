@@ -1,0 +1,9 @@
+{
+  "canonical_load_equal": true,
+  "document_id": "secfacts:0000839470:0001104659-13-090747:7005f3b1ca091a6a",
+  "inserted": true,
+  "original_record": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0000839470/secfacts:0000839470:0001104659-13-090747:7005f3b1ca091a6a.json",
+    "sha256": "60694e4f3cb1ed6e05aa9f9b529f11c16078f7a3d455e28cdf2e5982a71a3567"
+  }
+}

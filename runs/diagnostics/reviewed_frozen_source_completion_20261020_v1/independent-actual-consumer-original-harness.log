@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.py", line 87, in <module>
+    oldrows=[read(baseline/name/'cases'/(c['case_id']+'.json')) for c in cases];oldready=sum(x['summary']['resolved'] for x in oldrows);oldmeet=sum(x['summary']['meets_existing_0_8'] for x in oldrows);assert oldready==262 and oldmeet==15
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.py", line 87, in <genexpr>
+    oldrows=[read(baseline/name/'cases'/(c['case_id']+'.json')) for c in cases];oldready=sum(x['summary']['resolved'] for x in oldrows);oldmeet=sum(x['summary']['meets_existing_0_8'] for x in oldrows);assert oldready==262 and oldmeet==15
+                                                                                             ~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'resolved'

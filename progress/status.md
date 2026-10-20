@@ -14,16 +14,17 @@ TGB同行编号列序/数字sup脚注误拒已修，旧同材料4pass/2reject→
 HITI AIF文内日期/编号冲突原样保留，不由parent接受时间改写事实日期。
 
 整批assembly保907目标（842财务/24行情家族/41经营），1123合格候选：838财务、242行情、43经营。
-独立核270原件canonical等价、853预计新文件；6 unknown保留：GPRE四ID冲突、BURU拆股、FTI季报错type。
+独立核270原件canonical等价；6 unknown保留：GPRE四ID冲突、BURU拆股、FTI季报错type。
 FTI新400日请求实际151bars，2024-10-21至2025-05-29；原生规范化与3实际proof通过，未称400日覆盖完整。
 唯一正式source-only prepare20.076s/exit0，plan114a50b2，3230source+114code逐项冻结一致。
 新增执行器先整批资格/ID检查再append，包含实际helper/ownspec/marketprofile冻结；原漂移漏拒保留，14safe过。
-原40身份/时间/split、v6/v12各18精确refs、各720输入及40BasicInfo保持；尚未实际append/view/matrix。
-
-当前已执行输入基线仍是 [原双Registry检查](../reports/frozen40-dual-registry-source-inputs-20261020.md)：
-v6/v12各262resolved/458gap、15/40达到既有0.8；24非Anchor全0，BMBL8/18、KGC16/18，其余14Anchor17/18。
-40BasicInfo160请求中47resolved均partial_context_budget，其余113unavailable；0模型，不以来源候选替代新消费结果。
-原653doc view、658审查行及旧stage不改；全部旧global文件要在新实际执行前后核对。
+唯一实际source-only执行1253.520s/exit0：853新增/270既有，1123完整canonical回读；新view1776docs。
+原40身份/时间/split、v6/v12各18精确refs保持；各720输入现670resolved/50gap，40/40达既有0.8。
+对照 [旧基线](../reports/frozen40-dual-registry-source-inputs-20261020.md) 各262/458、15/40，实际各增加408resolved。
+每组50gap=40news+3订单+6momentum+1drawdown；BURU15/18且基线仍缺，不能靠0.8放行完整研究。
+40BasicInfo160请求119resolved均partial_context_budget、41unavailable，593遗漏标记保留；不称全文已读。
+独立审查全3344冻结绑定、297采集终态文件、15640旧global字节/658旧审查行及全部输入/PIT/投影一致。
+source snapshot/reopen canonical相等仅证明本阶段重开store，非OS中断/完整research恢复；0新GET/model/apply/labels。
 
 ## 已有局部证据与限制
 
@@ -55,7 +56,7 @@ FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍un
 
 ## 下一步
 
-独立审核/提交当前冻结后，仅执行plan114a50b2一次：native append与精确回读，旧bytes/rows保持，
-新review/view/worker/restart、双720及40BasicInfo实际读取；保6unknown及全部材料/上下文覆盖限制。
-不调用模型、Signal apply、标签、fullprepare，不恢复旧运行或启动完整后继。
-新消费结果决定下一最小MVP阶段，不以0.8分数替代语义、最新Q1完整性或整体MVP关闭。
+来源stage已完成，不重入。下一最小阶段：历史合法prior/batch显式作seed，fresh Reflect→持久化→final context→fresh Predictor/sink。
+每次生产LLM请求仍由exact inbox的独立subagent处理；首答正确则typed镜像纠错标not_exercised，不追触发。
+最多6请求、512000逻辑reservation、131072/请求；0GET/labels/Signal apply，不恢复旧运行或启动完整后继。
+保6unknown/完整失败分母/上下文限制，不以0.8替代测量、最新Q1完整性或整体MVP关闭。
