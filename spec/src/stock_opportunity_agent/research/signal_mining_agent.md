@@ -50,6 +50,14 @@ The role adapter selects one output grammar before sending the request: an
 ordinary step emits an action with a non-empty rationale array; a step with an
 issued `output_patch_contract` emits only `base_hash` and `operations`. The
 correction system prompt must not simultaneously require a full action object.
+The shared initial Controller prompt and its native
+`need_disposition_contract.row_rationale` disclose the same explicit nested
+field contract: every `need_dispositions` row's `rationale` is a non-empty array
+of nonblank strings; a single reason still uses a one-element array. The row
+validator's error repeats that same declaration. This is authoring disclosure,
+not a new schema or repair permission: scalar, empty or nested-array row values
+remain invalid, valid siblings retain their original persistence semantics, and
+only the existing top-level scalar rationale may be mechanically wrapped.
 Domain/tool rules remain visible, and the controller still rejects full-object
 corrections and validates the assembled action before any tool executes.
 

@@ -1,0 +1,28 @@
+{
+  "four_bindings_exact": true,
+  "two_original_rows": [
+    {
+      "source_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+        "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+      },
+      "fact_locator": "/facts/118",
+      "whole_row_exact": true,
+      "content_hash_exact": true,
+      "source_cutoff_check": true,
+      "value_only": true
+    },
+    {
+      "source_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+        "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+      },
+      "fact_locator": "/facts/119",
+      "whole_row_exact": true,
+      "content_hash_exact": true,
+      "source_cutoff_check": true,
+      "value_only": true
+    }
+  ],
+  "scope": "JSON-only raw-source and hash/cutoff verification. No native fact/context/fetch helper, constructor, model or GET invoked."
+}

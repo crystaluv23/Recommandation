@@ -17,6 +17,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _SOURCE_FACT_RELATION_INSTRUCTION,
 )
 from stock_opportunity_agent.research.evolution_state_patch import PATCH_INSTRUCTION
+from stock_opportunity_agent.research.stage_contracts import NEED_ROW_RATIONALE_CONTRACT
 
 MINING_CONTROLLER_STAGE = "mining_controller_step"
 
@@ -121,7 +122,8 @@ _MINING_CONTROLLER_PROMPT = (
     "assembles saved rows and checks the entire backlog exactly once (new_measurement, "
     "deferred_measurement, update_existing, repair_dependency, not_testable, "
     "fast_plan_action); each row is {need_refs, disposition, signal_refs, "
-    "rationale} where only update_existing cites exactly one existing signal "
+    "rationale}. For every need_dispositions row, "
+    + NEED_ROW_RATIONALE_CONTRACT + " Only update_existing cites exactly one existing signal "
     "ref and every other disposition cites none. "
     "Need source_scope distinguishes original case examples from current dev "
     "cases; case_prediction_times supplies the actual dev cutoffs. Outside-cohort "

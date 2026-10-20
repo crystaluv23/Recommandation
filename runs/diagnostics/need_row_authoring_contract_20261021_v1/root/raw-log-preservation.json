@@ -1,0 +1,8 @@
+{
+  "raw_path": "runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/original-tests.log",
+  "raw_sha256": "5796c687d9f7fe118549a116d4917a27fab8f4e3df9128422f212b9e63d710dd",
+  "lossless_archive": "runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/original-tests.log.gz",
+  "archive_sha256": "fd12b3b228bedd6e52f42564f95c8b3f4c60b8f9140e17a9eef2af3e020415d8",
+  "byte_exact_roundtrip": true,
+  "reason": "Original unittest subcase heading includes trailing whitespace. Raw failure log is unchanged and remains on disk; commit its lossless binary archive instead of modifying raw evidence or weakening lint."
+}

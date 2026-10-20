@@ -1,5 +1,9 @@
 # Changelog
 
+- 2026-10-21：方向/magnitude正控前置只读审查绑定14代码/spec及4来源：批准dev8共240财务doc/83629原始row均value、0val，现Mining投影却只取val；目录7of8概念不证明EvidenceFact可达。另分开无query旧文顺序/query升序tie及index派prior的期间歧义，两实际反例只证同end不同duration，不报已执行错关系或同duration冲突。12函数有horizon/terms真实参数化空间，不据数量断言无新测量；幅度axis/sampling仍须原合同。0helper/model/GET/全跑，下一冻结最小原生fetch/read探针，前置失败即停。
+
+- 2026-10-21：assigned阶段封存提交后，spec-first以单一纯声明补初始Controller system/native row_rationale/精确错误的嵌套非空array[str]义务；严格list/strip谓词、partial sibling/sink/hash、顶层only机械wrap与纠错权限保持，Legacy H1字节同。81关联全过/0network或LabelStore；独立旧新三实际作者路径、11坏shape仍拒、3合法数组保原字及mixed sibling原sink保真。旧7方法13断言红是披露/错误期待，非13unsafe accepts；当前无fresh角色/旧stage重入，不以声明证明模型服从。下一查原生Mining能力正控材料可达性，不完整重跑。
+
 - 2026-10-21：55ec6245后assigned child唯一prepare15.759s/manifest7f39f03f，完整265/0staged/六原件/603908 memory及首userwire保持，仅ref指派。fresh85选对技术target但row rationale string原生拒；fresh86一次无patch续步后原sink存唯一7d repair_dependency/[]，其余264pending。独立纠后1of1/首答0of1，旧v1 0of1永保；2响应185245预留/0source或Reflect/外部LLMAPI/GET。父272/178代码/223副本保真，子247+completion唯一terminal reopen全等且0runtime入口/业务指针0of0。仅repair意图分流与持久化；未实施修复或关闭全S1/S2。重复格式失败另定位初始嵌套row合同未声明数组，下一最小authoring合同修复，不热改/重入当前stage。
 
 - 2026-10-21：为原技术target的明确任务指派提取原生Controller constructor/sink及完整comparison memory index，生产axis算法保持；新Controller-only child从首请求前265pending/0staged分支，原603908反思/六原件和旧0of1保留，不重跑source/Reflect、不送答案。唯一实际临时preflight15.848s通过真实Engine到request_ready，完整首userwire与封存前沿canonical同，0dispatch、4代码/spec/test绑定保真；221关联测试全过/0network或LabelStore.load，正式阶段尚未prepare，独立审查后冻结最多3响应独立预算。仅验收输入连接，不关S1/S2或MVP。

@@ -82,7 +82,11 @@ Controller首答另选68e... Plan-action但row rationale string被拒；允许�
 fresh85首答选对repair_dependency/[]但row rationale string拒；fresh86一次原生无patch续步array合法，原sink保存唯一7d unit/其余264pending。独立原材料终审纠后1/1、首答0/1；旧v1的0/1不改。
 2响应/185245逻辑预留/0source或Reflect重跑/0外部LLMAPI；178代码/223副本/父272保真，子247files+completion唯一terminal reopen全同/0runtime入口。业务指针仍0/0。
 221关联测试全过；只证明明确任务→有据repair-route intent→原sink，不证明修复实施、全S1/S2或收益。
-重复row类型拒已定位初始合同未明示嵌套rationale数组（顶层有声明），不能直接归模型无视指令；下一补共享authoring合同，保严格validator/旧失败/纠错权限，不重入已完成stage。
+重复row类型拒已定位初始合同未明示嵌套rationale数组（顶层有声明）；现共享声明贯穿system/native contract/精确错误，81关联全过及独立三路径/11坏shape/有效sibling原sink保真。
+validator谓词/权限/哈希/旧stage未改，fresh新声明首答遵循仍未验。
+[Mining正控前置静态诊断](../runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/preflight-diagnosis.json)：批准dev8均有财务，共240doc/83629原始row（非独立事实数），全用value/无val；现Mining adapter却只接val。
+选文旧文优先、index>0当prior与同end不同duration另须区分；尚未执行native helper，不能报实际零facts或已错配。12函数存在真实参数化空间，不能据数量宣布无新测量。
+下一冻结0LLM原生fetch/read探针，分核选文、原row投影和期间/单位/PIT/关系；前置失败就停，不用完整Mining找错。
 LLM阅读接口方案待设计决策；两财务期间定义需具体政策/新版本，不能由当前计算结果倒推答案。
 完整反馈消费、新方向/magnitude Mining→忠实实现→准入发布→后继精确使用、完整恢复及双环均未验证。
 旧v182权威Fast/Slow=1/1完成不恢复；memory失败processed0/pending3518不改成功。不启动完整后继，整体MVP保持open。

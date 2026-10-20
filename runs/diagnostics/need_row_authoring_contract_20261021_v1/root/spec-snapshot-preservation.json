@@ -1,0 +1,18 @@
+{
+  "snapshots": [
+    {
+      "raw_path": "runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/before-signal_mining_agent.md",
+      "sha256": "558cee902d54738f196dfbac3eeb2fa1f81ad226a9032eb0ffb15a5655826f6d",
+      "lossless_archive": "runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/before-signal_mining_agent.md.gz",
+      "archive_sha256": "af7e606c9cd498bd85803d774eba42d47e58c7e55e889a2c1039ab424ab1faa6"
+    },
+    {
+      "raw_path": "runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/before-stage_contracts.md",
+      "sha256": "5d49c2428ae9d670e192dd97d20dcb4321b7a49d0f5dc122516a771ffc1f2168",
+      "lossless_archive": "runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/before-stage_contracts.md.gz",
+      "archive_sha256": "bce7573680f5bf7fe6038a9af8375ed9cc47458c0917ed547a09450f7c316cb3"
+    }
+  ],
+  "byte_exact_roundtrip": true,
+  "reason": "Historical source spec snapshots retain original relative links and bytes; they are raw archives, not current Markdown documents in their diagnostic directory. Live owning specs remain ordinary linted Markdown."
+}

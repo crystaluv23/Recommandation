@@ -1,0 +1,60 @@
+{
+  "status": "PASS_bounded_authoring_contract_and_unchanged_strict_validation",
+  "old_before": {
+    "three_native_authoring_paths_missing_row_declaration": true,
+    "result_sha256": "9cc3db40b27789265c7c0994bccf913f27ffebadd4191981f4482f960cf04065",
+    "old_validator_strictness_correct": true
+  },
+  "candidate": {
+    "same_complete_declaration_in_initial_continuation_terminal_system_and_native_view": true,
+    "same_declaration_in_all_11_bad_shape_errors": true,
+    "declaration": "rationale must be a non-empty array of nonblank strings; a single reason uses a one-element array.",
+    "valid_array_controls": 3,
+    "ordinary_continuation_remains_no_patch": true,
+    "whole_backlog_terminal_row_validator_passes": true,
+    "durable_mixed_sibling_controls": [
+      {
+        "version": "old",
+        "accepted_original_whitespace_exact": true,
+        "invalid_scalar_preserved_not_wrapped": true,
+        "real_shared_sink_files": 1,
+        "pending": 1
+      },
+      {
+        "version": "candidate",
+        "accepted_original_whitespace_exact": true,
+        "invalid_scalar_preserved_not_wrapped": true,
+        "real_shared_sink_files": 1,
+        "pending": 1
+      }
+    ]
+  },
+  "unchanged_policy": {
+    "strict_rationale_predicate_AST_exact": true,
+    "record_need_dispositions_AST_exact": true,
+    "top_level_action_validator_AST_exact": true,
+    "no_new_row_wrap_or_typed_patch_authority": true,
+    "legacy_H1_not_modified": true
+  },
+  "limits": [
+    "All cases are synthetic local native controls with empty in-memory raw stores and zero case labels. No API/network/fresh agent/real-stage/LabelStore/Signal/fullprepare invoked.",
+    "Six offline role-adapter callbacks across old/current runs are scripted data, not model behavior.",
+    "Native record_deferred completes the terminal authoring path. Whole-backlog proposal/no-pattern row validation is separately checked; no evidence-backed domain terminal or candidate admission is claimed.",
+    "Pure shared sink runs on an object.__new__ Engine with a temporary workspace; this proves exact native persistence behavior, not a full Engine constructor connection.",
+    "This fixes the field-contract disclosure gap. No fresh model obedience or recurrence reduction is established; prior completed stages and their rejected first answers remain unchanged."
+  ],
+  "bindings": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py": "f8d427c31b5f68f8b527de0954e97b40140a62bb57664c68100e5df796b17ddb",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py": "eebdf896ee94507fb2485b87fb090702a2844996e3ab34bc0e6b1644fb8b0be3",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md": "377e43cfc449953fc6e5335e3b1eb362526e09c0060c9b64ea6c78efa939639d",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "c8f85be907f0627a6639eaacf4052779a939b98266d71e6507f394f7127361a8",
+    "/Users/l/Project/Recommandation/tests/test_need_row_authoring_contract.py": "a2ad76ec8ef4c139be7b0b909715acb09dbd050630a2b946ff9a8642ee8944d0",
+    "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/probe.py": "de2ba60c8a2fedeff24db1916fd3d52f10f30b89d977f4fe1ec092b55f0e1481",
+    "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/final-review-audit.py": "773387ce44b9cb990cdb84f9f5b943d62579c85a721dd68f3b6eeeb34bc925bb",
+    "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/old-before-results.json": "9cc3db40b27789265c7c0994bccf913f27ffebadd4191981f4482f960cf04065",
+    "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/candidate-final-results.json": "4b314d58ff3fdfdc683ea30e6f722211de7a98ad555e42926a8f11e16853bd6e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/old-before.log": "eb2a3157f0ae8a490cf157cf58c273815acd85ad62e46c671dfd8200df965c33",
+    "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/candidate-final.log": "5e28e0d2747cdcc54eb5517b39c58b57a4f16c15d8addd1991f0a9a718e5cceb"
+  }
+}

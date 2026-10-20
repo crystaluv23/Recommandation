@@ -1,0 +1,458 @@
+{
+  "status": "source-only preflight; no S3-S8 live closure claimed",
+  "scope": {
+    "read": "existing approved dev8 identity/cutoff, qualified1780 original documents, Registry18 definitions, native source code and existing persisted value-free measurable manifest",
+    "not_performed": [
+      "native helper or Engine construction",
+      "Signal execution",
+      "model dispatch or response",
+      "GET or new source acquisition",
+      "global LabelStore, check labels or LockedTest reads",
+      "old stage entry or source mutation"
+    ],
+    "oracle_role_visibility": "outside role only; do not send oracle or candidate answers to a production role"
+  },
+  "conclusion": [
+    "Current common financial material exists, but a value-free manifest does not prove Mining EvidenceFact reachability. Selection/order, typed-row adaptation, and period/role pairing are three separate unverified or deficient links.",
+    "No currently verified source-backed nonduplicate positive measurement has traversed fresh Mining -> faithful implementation -> exact technical admission -> successor use. This audit is not a no-pattern research result.",
+    "Next step is one bounded deterministic label-free native fetch/read probe, before any fresh Mining call. Preserve its first result; do not infer progress from static counts."
+  ],
+  "actual_source_coverage": {
+    "snapshot_documents": 1780,
+    "source_types": {
+      "10-k": 5,
+      "filing": 66,
+      "market_data": 259,
+      "sec_company_facts": 1449,
+      "sec_filing": 1
+    },
+    "dev8_financial_documents": 240,
+    "original_typed_rows": 83629,
+    "value_keys": 83629,
+    "val_keys": 0,
+    "per_dev": [
+      {
+        "case_ref": "case-001",
+        "case_id": "cik_0001951089:20250530",
+        "cutoff": "2025-05-30T00:00:00+00:00",
+        "financial_documents": 2,
+        "rows": 438,
+        "value_keys": 438,
+        "val_keys": 0,
+        "pit_types": {
+          "filing": 1,
+          "market_data": 1,
+          "sec_company_facts": 2
+        }
+      },
+      {
+        "case_ref": "case-002",
+        "case_id": "cik_0001746129:20250731",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "financial_documents": 27,
+        "rows": 9496,
+        "value_keys": 9496,
+        "val_keys": 0,
+        "pit_types": {
+          "filing": 2,
+          "market_data": 1,
+          "sec_company_facts": 27
+        }
+      },
+      {
+        "case_ref": "case-003",
+        "case_id": "cik_0002009312:20250930",
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "financial_documents": 4,
+        "rows": 1034,
+        "value_keys": 1034,
+        "val_keys": 0,
+        "pit_types": {
+          "10-k": 1,
+          "filing": 1,
+          "market_data": 3,
+          "sec_company_facts": 4
+        }
+      },
+      {
+        "case_ref": "case-004",
+        "case_id": "cik_0001361658:20250131",
+        "cutoff": "2025-01-31T00:00:00+00:00",
+        "financial_documents": 59,
+        "rows": 28833,
+        "value_keys": 28833,
+        "val_keys": 0,
+        "pit_types": {
+          "filing": 2,
+          "market_data": 1,
+          "sec_company_facts": 59
+        }
+      },
+      {
+        "case_ref": "case-005",
+        "case_id": "cik_0001814215:20250530",
+        "cutoff": "2025-05-30T00:00:00+00:00",
+        "financial_documents": 30,
+        "rows": 5272,
+        "value_keys": 5272,
+        "val_keys": 0,
+        "pit_types": {
+          "filing": 2,
+          "sec_company_facts": 30
+        }
+      },
+      {
+        "case_ref": "case-006",
+        "case_id": "cik_0001946703:20250731",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "financial_documents": 4,
+        "rows": 1268,
+        "value_keys": 1268,
+        "val_keys": 0,
+        "pit_types": {
+          "filing": 1,
+          "market_data": 1,
+          "sec_company_facts": 4
+        }
+      },
+      {
+        "case_ref": "case-007",
+        "case_id": "cik_0001065059:20250131",
+        "cutoff": "2025-01-31T00:00:00+00:00",
+        "financial_documents": 58,
+        "rows": 16506,
+        "value_keys": 16506,
+        "val_keys": 0,
+        "pit_types": {
+          "10-k": 1,
+          "market_data": 1,
+          "sec_company_facts": 58,
+          "sec_filing": 1
+        }
+      },
+      {
+        "case_ref": "case-008",
+        "case_id": "cik_0000800457:20250731",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "financial_documents": 56,
+        "rows": 20782,
+        "value_keys": 20782,
+        "val_keys": 0,
+        "pit_types": {
+          "filing": 2,
+          "market_data": 1,
+          "sec_company_facts": 56
+        }
+      }
+    ],
+    "actual_native_manifest": "static-inventory.json/actual_native_measurable_manifest; persisted old native output, not rerun here",
+    "common_7of8_concepts": [
+      "NetCashProvidedByUsedInOperatingActivities/USD",
+      "PaymentsToAcquirePropertyPlantAndEquipment/USD",
+      "NetIncomeLoss/USD"
+    ],
+    "qualification": [
+      "All8 have PIT financial documents; 7/8 refers to individual common concept coverage, not count of cases with any financial data.",
+      "Manifest cases_with_comparable_records uses context record count >=2; it does not establish a unique comparable period pair.",
+      "1780 has no news/transcript. Native manifest records filing7, 10-k2, sec_filing1, price7; overlapping families must not be added as cases.",
+      "Source hash binds the actual stored view; it is not independent verification of provider truth, historical price adjustment or current freshness."
+    ]
+  },
+  "separate_frontiers": [
+    {
+      "family": "selection/order",
+      "code": "mining_agent_tools.py:fetch_case_evidence; raw_info.py:documents",
+      "finding": "No query takes first max_documents from document-ID order. With query: overlap descending, then available_at ascending and document_id ascending. Old available documents can precede recent evidence.",
+      "evidence": "static-inventory.json/dev8/*/first2_noquery_financial_documents; case008 examples are available2011-08-10 before cutoff2025-07-31.",
+      "limit": "Those two rows are shape and original-period witnesses, not a fresh candidate input or a claim that every query chooses stale data."
+    },
+    {
+      "family": "typed row projection",
+      "code": "mining_agent_tools.py:_facts_from_document lines133-187; evolution_core.py:_company_facts_context/_typed_company_facts_context lines6752/6974",
+      "finding": "Typed SEC original spans retain value; Mining adapter requires val and takes parsed[val]. Any such value-only row reaching this branch is skipped.",
+      "evidence": "static-inventory.json/typed_original_row_examples: original0671 /facts/118 and119, whole USD half-year cash-flow rows with hashes and source ID.",
+      "limit": "Static conditional implication only. This audit has not observed an actual zero-EvidenceFact helper result. Selected documents, projection budget and shape must be measured separately."
+    },
+    {
+      "family": "role/period/conflict preservation",
+      "code": "mining_agent_tools.py:_facts_from_document/build_same_concept_relations/compute_statistic; evolution_core.py:_typed_company_facts_context",
+      "finding": "Typed producer retains all latest-end alternatives then nearest duration-comparable prior rows; records carry exact spans/offsets but no selection role. Adapter labels index0 latest and every subsequent record comparable_prior. A second latest alternative can therefore be mislabeled prior. Relation builder last-writes each role per case/concept/unit across documents; compute_statistic does not validate period comparability.",
+      "evidence": "static-inventory.json/same_end_or_duration_ambiguity_examples; original0671 BenefitsLossesAndExpenses end2010-06-30 has Jan-Jun and Apr-Jun rows, and0674 AllocatedShareBasedCompensationExpense likewise.",
+      "limit": "These actual examples prove same end/different durations, not a demonstrated same-duration value conflict. Presence of an earlier end or record index alone cannot establish a valid prior. Preserve units, source identities and alternative operands."
+    },
+    {
+      "family": "formula implementation",
+      "code": "signal_evolution.py:_materialize_spec_module; signal_library.py registered function contracts",
+      "finding": "Structured candidates must name an existing deterministic function matching the measurement. The present module materializes a spec/skill/tests, not arbitrary new deterministic formula code. A genuinely new ratio/formula would need a separately reviewed faithful implementation capability if none registered matches.",
+      "limit": "This is independent of fetch adaptation and does not establish all new measurements impossible."
+    }
+  ],
+  "function_scope": {
+    "registered_count": 12,
+    "stable_registry_count": 18,
+    "covered_registered_functions": [
+      {
+        "function": "financial.revenue_growth_yoy",
+        "covered_by_stable": [
+          "revenue_growth_yoy:v3"
+        ],
+        "parameter_names": [
+          "positive_min",
+          "negative_max",
+          "plausible_abs_max",
+          "max_period_age_days"
+        ]
+      },
+      {
+        "function": "financial.revenue_acceleration",
+        "covered_by_stable": [
+          "revenue_acceleration:v2"
+        ],
+        "parameter_names": [
+          "positive_min",
+          "negative_max",
+          "plausible_abs_max",
+          "max_period_age_days"
+        ]
+      },
+      {
+        "function": "financial.gross_margin_change",
+        "covered_by_stable": [
+          "gross_margin_change:v3"
+        ],
+        "parameter_names": [
+          "positive_min",
+          "negative_max",
+          "plausible_abs_max",
+          "max_period_age_days"
+        ]
+      },
+      {
+        "function": "financial.operating_cash_flow_margin",
+        "covered_by_stable": [
+          "operating_cash_flow_margin:v2"
+        ],
+        "parameter_names": [
+          "positive_min",
+          "negative_max",
+          "plausible_abs_max",
+          "max_period_age_days"
+        ]
+      },
+      {
+        "function": "financial.net_share_retirement_yoy",
+        "covered_by_stable": [
+          "net_share_retirement_yoy:v3"
+        ],
+        "parameter_names": [
+          "positive_min",
+          "negative_max",
+          "plausible_abs_max",
+          "max_period_age_days"
+        ]
+      },
+      {
+        "function": "financial.cash_to_current_liabilities_ratio",
+        "covered_by_stable": [
+          "cash_to_current_liabilities_ratio:v2"
+        ],
+        "parameter_names": [
+          "positive_min",
+          "negative_max",
+          "plausible_abs_max",
+          "max_period_age_days"
+        ]
+      },
+      {
+        "function": "financial.cash_burn_rate_elevated",
+        "covered_by_stable": [
+          "cash_burn_rate_elevated:v2"
+        ],
+        "parameter_names": [
+          "burn_threshold",
+          "max_period_age_days"
+        ]
+      },
+      {
+        "function": "financial.liquidity_runway_months",
+        "covered_by_stable": [
+          "liquidity_runway_months:v3"
+        ],
+        "parameter_names": [
+          "positive_runway_max_months",
+          "negative_runway_min_months",
+          "max_period_age_days"
+        ]
+      },
+      {
+        "function": "market.max_drawdown_1y",
+        "covered_by_stable": [
+          "max_drawdown_1y:v2"
+        ],
+        "parameter_names": [
+          "positive_min",
+          "negative_max",
+          "plausible_abs_max"
+        ]
+      },
+      {
+        "function": "market.price_momentum_126d",
+        "covered_by_stable": [
+          "price_momentum_126d:v2"
+        ],
+        "parameter_names": [
+          "positive_min",
+          "negative_max",
+          "plausible_abs_max",
+          "lookback_observations"
+        ]
+      },
+      {
+        "function": "financial.cash_reserves",
+        "covered_by_stable": [
+          "cash_reserves:v2"
+        ],
+        "parameter_names": [
+          "positive_min",
+          "negative_max",
+          "plausible_abs_max",
+          "max_period_age_days"
+        ]
+      },
+      {
+        "function": "news.negative_word_count",
+        "covered_by_stable": [
+          "negative_word_count:v2"
+        ],
+        "parameter_names": [
+          "terms",
+          "negative_count_min"
+        ]
+      }
+    ],
+    "interpretation": [
+      "All12 function identities already have a stable measurement, but name count is not semantic exhaustion. Exact behavior identity includes parameters/retrieval/source types; semantic duplicate checks remain necessary.",
+      "Most financial parameters change thresholds, plausibility or freshness; none make the function an arbitrary concept/ratio formula interpreter. Those changes alone are not a new measurement.",
+      "market.price_momentum_126d lookback_observations is a positive integer actually used as a different trailing observation horizon. This can change the measurement; retrieval must prove dates/adjustment convention and semantic novelty. Current fetch does not project market_data into structured facts. No candidate horizon is selected here.",
+      "news.negative_word_count terms is actually used for case-insensitive literal substring counts over supplied document.content. Different terms can alter a lexical measurement, but not create semantic sentiment/event severity. Filings are available; a news namespace alone does not prove only news text can be counted. No term dictionary or purported new Signal is authored here.",
+      "market.max_drawdown_1y uses the supplied price sequence; retrieval owns its window. Renaming or thresholds do not create a new formula."
+    ]
+  },
+  "axis_boundaries": {
+    "direction": "Existing accepted needs-only Controller input binds approved direction dev8. It is not a fresh Mining generation run. Native discovery-seed and hypothesis-seed paths exist; hypothesis proposal requires complete need dispositions, so265 unresolved needs must not be silently dropped or replaced with a fabricated one. A future bounded discovery-seed control must explicitly use that existing seed authority.",
+    "magnitude": "Native _run_controller_mining can supply a separate ResearchTargetContract/sampling/reveal and high/low magnitude axis. Current direction dev8 binary labels are not that contract. Current approved magnitude group/sampling sufficiency is unknown in this read-only audit; check labels were not read and no groups were fabricated. Same structured fetch/role gaps affect either axis.",
+    "gain": "Neither source shape nor successful technical admission would establish direction or magnitude predictive benefit. Admission is effect-unverified under the current2026-10-02 owning spec."
+  },
+  "production_chain_and_missing_proof": [
+    {
+      "acceptance": "S3",
+      "native": "_run_controller_mining -> _run_controller_mining_axis -> LabelAwareMiningController, measurable manifest -> fetch/ledger",
+      "missing": "Actual bounded dev source selection, typed facts, correct periods/units and unique identities at Controller tools. Magnitude needs explicit approved axis/sampling input; no new sampling was built."
+    },
+    {
+      "acceptance": "S4",
+      "native": "Controller._execute_propose: evidence_ready/fetch, modality, measurement, falsifiers, ledger refs, existing observable rejection",
+      "missing": "Fresh source-backed genuinely new reusable measurement with unavailable/counterevidence; no authored candidate oracle in inbox."
+    },
+    {
+      "acceptance": "S5",
+      "native": "_materialize_controller_candidate -> _materialize_spec_module -> skill when applicable -> tests module -> fixture validation",
+      "missing": "Faithful implementation of a freshly accepted measurement. Existing reviewed fixture-author stage only fixed seeded revenue tests; it is not fresh Mining or full S5."
+    },
+    {
+      "acceptance": "S6-S7",
+      "native": "_technical_candidate_validation -> record_candidate_admission -> run_cycle atomic promote_validated_batch",
+      "missing": "Exact new candidate technical/semantic/PIT and family nonregression proof, then exact atomic publication. Local seeded admission tests are wiring evidence, not this positive control. Do not call whole Slow merely to reach this transition."
+    },
+    {
+      "acceptance": "S8",
+      "native": "LLMSignalRetrievalAgent exact registry cards -> SignalExecutor -> Reflect/context/use record",
+      "missing": "An actual successor retrieves/executes the newly published exact version. Existing reviewed apply/Reflect stage binds old stable versions; it does not connect fresh Mining publication to reuse."
+    }
+  ],
+  "existing_harness_limits": [
+    "run_assigned_slow_target_stage.py is needs-only and intentionally forbids candidate/fetch/Signal work; cannot relabel its success S4.",
+    "run_mining_replay.py uses historical/scripted arrivals; cannot prove fresh model obedience.",
+    "run_mining_shadow.py uses older remote/raw-store and dataset-loader paths; not a safe as-is current0-external-LLM/1780-view bounded harness.",
+    "run_reviewed_fixture_author_stage.py and run_reviewed_signal_stage.py provide native local boundaries to reuse later; neither establishes fresh full S3-S8."
+  ],
+  "next_unique_minimal_probe": {
+    "status": "proposal only; not implemented or executed by this oracle",
+    "purpose": "Separate selected-document reachability from exact original row adaptation and valid relation construction, using native deterministic functions before any LLM.",
+    "input": "New separate diagnostic/temp root, exact approved qualified1780 read-only source binding and label-free existing dev company_id/cutoff metadata. No completed-stage reentry, source append, acquisition, check/global labels or new cohort.",
+    "ordered_checks": [
+      "1. Call actual native fetch_case_evidence with explicitly frozen family/query/max_documents, recording complete selected/excluded IDs, source SHA, available_at/order and cutoff. Include no-query and a bounded query tie check as distinct selection controls; do not silently impose latest-first or rewrite source order.",
+      "2. Independently feed already-selected original typed source document(s) through native project_facts_from_documents. Keep full exact spans/hashes, actual fact/skip counts and projection-budget exclusions. Direct selected-document check isolates row adapter from fetch ranking; it is not an autonomous retrieval success.",
+      "3. Exercise value-only original and legacy val shape control. If no eligible legacy original exists, a clearly marked in-memory variant is a parser counterexample only, never append to the approved view or call it new research material.",
+      "4. Preserve real same-end/different-duration alternatives and comparable-duration different-end originals; test a clearly labeled synthetic same-period conflicting-value counterexample plus unit mismatch and post-cutoff/future-filed variants. Require original offsets/values/units/periods and no index-based invented prior; do not normalize away alternatives.",
+      "5. Inspect actual build_same_concept_relations/compute output only after recording originals and role assignments. Ambiguous same-end alternatives must not be passed off as earlier comparable periods. Retain fail-closed unknowns; a new canonical pairing policy, if needed, is a separate spec decision."
+    ],
+    "stop": "Record first native result and source before/after bindings. If fetch, typed shape, periods/units/PIT or pair identity fails, stop before any fresh Mining role; prepare a spec-first family repair rather than patch-and-full-rerun. If these pass, separately freeze a small fresh Mining candidate boundary/budget and novelty oracle. No automatic S4-S8 execution or claim of predictive validity."
+  },
+  "unknowns": [
+    "Native selected/fetched/EvidenceFact counts under current tools were not measured.",
+    "Semantically novel, sufficient fresh positive measurement for either axis remains unproven; finite inspection is not global absence.",
+    "Magnitude approved target group/sampling sufficiency and historical price-adjustment proof remain unknown.",
+    "Source filing inputs may support narrative measurements, but no independent fresh narrative candidate/coverage/novelty has been demonstrated here."
+  ],
+  "bindings": [
+    {
+      "path": "spec/engineering-mvp.md",
+      "sha256": "5f8d9f326530cd2f4545f0036516b2b17efdd0631d83214b36d359afcd761947"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "b1d0009516ede8d40c673e64bbe15dc0a509dd4113d959e859a8f64a84a5d715"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "5b4688501d929c982dbe13f6ebc464784134d6c76f454191312af69ddd64d395"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/research_targets.py",
+      "sha256": "6d4ef5f618dd20aa5b7658623f904a30465a18640bba7023ac43dad8fa9ee925"
+    },
+    {
+      "path": "src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    },
+    {
+      "path": "scripts/run_assigned_slow_target_stage.py",
+      "sha256": "a9a1d9e0ecca0ce48f1fe4e7f5248770b6a0aa2b2a70cd00870def6be7a4cdda"
+    },
+    {
+      "path": "scripts/run_reviewed_fixture_author_stage.py",
+      "sha256": "9d4bbfd7e05ac80759eab9011b6b86e1001d979b85cf1eeb9050c653c5255ba2"
+    },
+    {
+      "path": "scripts/run_reviewed_signal_stage.py",
+      "sha256": "fa623d128b481ecf7a8c6d97174866c50553e9dfde8f47eba55a108b01781def"
+    },
+    {
+      "path": "scripts/run_mining_shadow.py",
+      "sha256": "b1287a12b8aa426e8df778f089e7c14d7653abf0286e16bbf7ecf89095a6aad0"
+    },
+    {
+      "path": "scripts/run_mining_replay.py",
+      "sha256": "15a6cd119915373bc0335b2405152fae7baa0b48c0ddb32d158d5c58744d0dcc"
+    }
+  ],
+  "inventory_sha256": "9be1e6776429ef5d8d77c5cbdfbf7f2c5ce7e37447fea2ca043d5cdfb504f3b4",
+  "head_observed": "34364f67e4fd11cfd4d63b9db5c8c2564a9ab7fa"
+}

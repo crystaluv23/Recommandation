@@ -1,0 +1,1412 @@
+{
+  "actual_native_measurable_manifest": {
+    "cohort_case_count": 8,
+    "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort.",
+    "narrative_source_families": [
+      {
+        "case_count": 7,
+        "source_type": "filing"
+      },
+      {
+        "case_count": 2,
+        "source_type": "10-k"
+      },
+      {
+        "case_count": 1,
+        "source_type": "sec_filing"
+      }
+    ],
+    "pre_cutoff_price_series_cases": 7,
+    "schema_version": "h1-measurable-evidence-manifest-v1",
+    "structured_financial_concepts": [
+      {
+        "case_count": 7,
+        "cases_with_comparable_records": 7,
+        "concept": "NetCashProvidedByUsedInOperatingActivities",
+        "source_display_name": "Net Cash Provided by (Used in) Operating Activities",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 7,
+        "cases_with_comparable_records": 7,
+        "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+        "source_display_name": "Payments to Acquire Property, Plant, and Equipment",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 7,
+        "cases_with_comparable_records": 7,
+        "concept": "NetIncomeLoss",
+        "source_display_name": "Net Income (Loss) Attributable to Parent",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 6,
+        "cases_with_comparable_records": 6,
+        "concept": "CashAndCashEquivalentsAtCarryingValue",
+        "source_display_name": "Cash and Cash Equivalents, at Carrying Value",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 5,
+        "cases_with_comparable_records": 5,
+        "concept": "OperatingIncomeLoss",
+        "source_display_name": "Operating Income (Loss)",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 5,
+        "cases_with_comparable_records": 5,
+        "concept": "InventoryNet",
+        "source_display_name": "Inventory, Net",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 5,
+        "cases_with_comparable_records": 5,
+        "concept": "Revenues",
+        "source_display_name": "Revenues",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 5,
+        "cases_with_comparable_records": 5,
+        "concept": "AssetsCurrent",
+        "source_display_name": "Assets, Current",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 5,
+        "cases_with_comparable_records": 5,
+        "concept": "StockholdersEquity",
+        "source_display_name": "Stockholders' Equity Attributable to Parent",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 4,
+        "cases_with_comparable_records": 4,
+        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "source_display_name": "Revenue from Contract with Customer, Excluding Assessed Tax",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 4,
+        "cases_with_comparable_records": 4,
+        "concept": "LiabilitiesCurrent",
+        "source_display_name": "Liabilities, Current",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 3,
+        "cases_with_comparable_records": 3,
+        "concept": "GrossProfit",
+        "source_display_name": "Gross Profit",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 3,
+        "cases_with_comparable_records": 3,
+        "concept": "UnrecognizedTaxBenefits",
+        "source_display_name": "Unrecognized Tax Benefits",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 3,
+        "cases_with_comparable_records": 2,
+        "concept": "ShortTermInvestments",
+        "source_display_name": "Short-term Investments",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 2,
+        "cases_with_comparable_records": 2,
+        "concept": "ResearchAndDevelopmentExpense",
+        "source_display_name": "Research and Development Expense",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 2,
+        "cases_with_comparable_records": 2,
+        "concept": "LongTermDebtNoncurrent",
+        "source_display_name": "Long-term Debt, Excluding Current Maturities",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 2,
+        "cases_with_comparable_records": 2,
+        "concept": "CommonStockSharesOutstanding",
+        "source_display_name": "Common Stock, Shares, Outstanding",
+        "taxonomy": "us-gaap",
+        "unit": "shares"
+      },
+      {
+        "case_count": 2,
+        "cases_with_comparable_records": 2,
+        "concept": "TreasuryStockValue",
+        "source_display_name": "Treasury Stock, Value",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 2,
+        "cases_with_comparable_records": 2,
+        "concept": "UnrecognizedTaxBenefitsIncomeTaxPenaltiesAndInterestAccrued",
+        "source_display_name": "Unrecognized Tax Benefits, Income Tax Penalties and Interest Accrued",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 2,
+        "cases_with_comparable_records": 2,
+        "concept": "ValuationAllowanceDeferredTaxAssetChangeInAmount",
+        "source_display_name": "Valuation Allowance, Deferred Tax Asset, Increase (Decrease), Amount",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 2,
+        "cases_with_comparable_records": 2,
+        "concept": "WeightedAverageNumberOfSharesOutstandingBasic",
+        "source_display_name": "Weighted Average Number of Shares Outstanding, Basic",
+        "taxonomy": "us-gaap",
+        "unit": "shares"
+      },
+      {
+        "case_count": 3,
+        "cases_with_comparable_records": 1,
+        "concept": "StockIssuedDuringPeriodValueNewIssues",
+        "source_display_name": "Stock Issued During Period, Value, New Issues",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      },
+      {
+        "case_count": 3,
+        "cases_with_comparable_records": 1,
+        "concept": "WeightedAverageNumberOfDilutedSharesOutstanding",
+        "source_display_name": "Weighted Average Number of Shares Outstanding, Diluted",
+        "taxonomy": "us-gaap",
+        "unit": "shares"
+      },
+      {
+        "case_count": 2,
+        "cases_with_comparable_records": 1,
+        "concept": "RetainedEarningsAccumulatedDeficit",
+        "source_display_name": "Retained Earnings (Accumulated Deficit)",
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      }
+    ]
+  },
+  "all_snapshot_source_types": {
+    "10-k": 5,
+    "filing": 66,
+    "market_data": 259,
+    "sec_company_facts": 1449,
+    "sec_filing": 1
+  },
+  "case_selection": "Only sampling_manifest subobject and prior opaque dev8 Controller label map/time metadata parsed. Original40 ground_truth/check labels not deserialized. Features/coverage not selected by outcomes.",
+  "dev8": [
+    {
+      "case_id": "cik_0001951089:20250530",
+      "case_ref": "case-001",
+      "cutoff": "2025-05-30T00:00:00+00:00",
+      "financial_document_count": 2,
+      "financial_schemas": {
+        "sec-company-facts-document-v1": 2
+      },
+      "first2_noquery_financial_documents": [
+        {
+          "available_at": "2024-10-31T00:00:00+00:00",
+          "document_id": "secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1179.json",
+            "sha256": "4e03393bbff52aef5bca7b324502266842811d03f7611c9f28962cfd0ae0379a"
+          },
+          "source_type": "sec_company_facts"
+        },
+        {
+          "available_at": "2025-03-20T00:00:00+00:00",
+          "document_id": "secfacts:0001951089:0001213900-25-024970:1c3850c9cb8ad739",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1180.json",
+            "sha256": "e96bf0bc650e8110cfa5fab2a392b40d34b1807dc6c4ebdb113c7668720a1125"
+          },
+          "source_type": "sec_company_facts"
+        }
+      ],
+      "latest_financial_available_at": "2025-03-20T00:00:00+00:00",
+      "period_forms": {
+        "duration": 222,
+        "instant": 216
+      },
+      "pit_types": {
+        "filing": 1,
+        "market_data": 1,
+        "sec_company_facts": 2
+      },
+      "typed_fact_rows": 438,
+      "units": [
+        "AUD",
+        "EUR",
+        "USD",
+        "USD/shares",
+        "pure",
+        "shares"
+      ],
+      "val_keys": 0,
+      "value_keys": 438
+    },
+    {
+      "case_id": "cik_0001746129:20250731",
+      "case_ref": "case-002",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "financial_document_count": 27,
+      "financial_schemas": {
+        "sec-company-facts-document-v1": 27
+      },
+      "first2_noquery_financial_documents": [
+        {
+          "available_at": "2018-11-15T00:00:00+00:00",
+          "document_id": "secfacts:0001746129:0001140361-18-043119:4cb97d2eee42f5ca",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0770.json",
+            "sha256": "6d4348d8c1a7f99f64a93238a7ea770d21307d56f2ee560101a7c17622dcc0bd"
+          },
+          "source_type": "sec_company_facts"
+        },
+        {
+          "available_at": "2019-03-30T00:00:00+00:00",
+          "document_id": "secfacts:0001746129:0001140361-19-006071:6f98bdf34c46706e",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0771.json",
+            "sha256": "cd456ffa385e03b1076b88678d28b6408978387892a6a41603bb2b2712e79f32"
+          },
+          "source_type": "sec_company_facts"
+        }
+      ],
+      "latest_financial_available_at": "2025-05-13T00:00:00+00:00",
+      "period_forms": {
+        "duration": 5559,
+        "instant": 3937
+      },
+      "pit_types": {
+        "filing": 2,
+        "market_data": 1,
+        "sec_company_facts": 27
+      },
+      "typed_fact_rows": 9496,
+      "units": [
+        "Contract",
+        "Party",
+        "Segment",
+        "USD",
+        "USD/bbl",
+        "USD/shares",
+        "pure",
+        "shares"
+      ],
+      "val_keys": 0,
+      "value_keys": 9496
+    },
+    {
+      "case_id": "cik_0002009312:20250930",
+      "case_ref": "case-003",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "financial_document_count": 4,
+      "financial_schemas": {
+        "sec-company-facts-document-v1": 4
+      },
+      "first2_noquery_financial_documents": [
+        {
+          "available_at": "2024-12-14T00:00:00+00:00",
+          "document_id": "secfacts:0002009312:0001493152-24-049927:f88e12462ec31fd0",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0949.json",
+            "sha256": "4c412c064ef6a1756e3c4a2d1d6302914db625b831433a099a70b71b95072efe"
+          },
+          "source_type": "sec_company_facts"
+        },
+        {
+          "available_at": "2025-08-15T00:00:00+00:00",
+          "document_id": "secfacts:0002009312:0001493152-25-011966:b7851e0c447d9e8f",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0950.json",
+            "sha256": "1f1fb9f418df4e8b394a0930d4e62dc572a9d94b2235092139c72538eef16a43"
+          },
+          "source_type": "sec_company_facts"
+        }
+      ],
+      "latest_financial_available_at": "2025-08-15T00:00:00+00:00",
+      "period_forms": {
+        "duration": 522,
+        "instant": 512
+      },
+      "pit_types": {
+        "10-k": 1,
+        "filing": 1,
+        "market_data": 3,
+        "sec_company_facts": 4
+      },
+      "typed_fact_rows": 1034,
+      "units": [
+        "USD",
+        "USD/shares",
+        "acre",
+        "pure",
+        "shares"
+      ],
+      "val_keys": 0,
+      "value_keys": 1034
+    },
+    {
+      "case_id": "cik_0001361658:20250131",
+      "case_ref": "case-004",
+      "cutoff": "2025-01-31T00:00:00+00:00",
+      "financial_document_count": 59,
+      "financial_schemas": {
+        "sec-company-facts-document-v1": 59
+      },
+      "first2_noquery_financial_documents": [
+        {
+          "available_at": "2010-07-31T00:00:00+00:00",
+          "document_id": "secfacts:0001361658:0000950123-10-070354:eeaf03ebe5055bbf",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0830.json",
+            "sha256": "4b24cbc7af7d154977dab3097af9b3ba25343d8844b8bb9500c0cddc278a5bc4"
+          },
+          "source_type": "sec_company_facts"
+        },
+        {
+          "available_at": "2010-10-29T00:00:00+00:00",
+          "document_id": "secfacts:0001361658:0000950123-10-097538:9b85c3d68de35aa7",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0831.json",
+            "sha256": "a5ef63cae672c6413bb1d5bcc87ca4f65580e9e34d5aae2c8bca0e708a1e3038"
+          },
+          "source_type": "sec_company_facts"
+        }
+      ],
+      "latest_financial_available_at": "2024-10-24T00:00:00+00:00",
+      "period_forms": {
+        "duration": 18160,
+        "instant": 10673
+      },
+      "pit_types": {
+        "filing": 2,
+        "market_data": 1,
+        "sec_company_facts": 59
+      },
+      "typed_fact_rows": 28833,
+      "units": [
+        "Acquisition",
+        "USD",
+        "USD/shares",
+        "USD/shares_unit",
+        "USD/warrant",
+        "properties",
+        "pure",
+        "segment",
+        "shares",
+        "years"
+      ],
+      "val_keys": 0,
+      "value_keys": 28833
+    },
+    {
+      "case_id": "cik_0001814215:20250530",
+      "case_ref": "case-005",
+      "cutoff": "2025-05-30T00:00:00+00:00",
+      "financial_document_count": 30,
+      "financial_schemas": {
+        "sec-company-facts-document-v1": 30
+      },
+      "first2_noquery_financial_documents": [
+        {
+          "available_at": "2023-04-01T00:00:00+00:00",
+          "document_id": "secfacts:0001814215:0000950170-23-011357:606cb9f3b45f83f5",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1065.json",
+            "sha256": "a15df6c87e3b0a279d9308179245a011f1628eba0e2e83e8636cc23a781d26ac"
+          },
+          "source_type": "sec_company_facts"
+        },
+        {
+          "available_at": "2023-05-13T00:00:00+00:00",
+          "document_id": "secfacts:0001814215:0000950170-23-021765:56a1f74ce431a487",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1066.json",
+            "sha256": "a0de3bff30a7239d6dca0eae115945b3621be3bd4b47f755b7fcbd882e3f12ad"
+          },
+          "source_type": "sec_company_facts"
+        }
+      ],
+      "latest_financial_available_at": "2025-05-21T00:00:00+00:00",
+      "period_forms": {
+        "duration": 2589,
+        "instant": 2683
+      },
+      "pit_types": {
+        "filing": 2,
+        "sec_company_facts": 30
+      },
+      "typed_fact_rows": 5272,
+      "units": [
+        "Segment",
+        "USD",
+        "USD/shares",
+        "pure",
+        "shares"
+      ],
+      "val_keys": 0,
+      "value_keys": 5272
+    },
+    {
+      "case_id": "cik_0001946703:20250731",
+      "case_ref": "case-006",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "financial_document_count": 4,
+      "financial_schemas": {
+        "sec-company-facts-document-v1": 4
+      },
+      "first2_noquery_financial_documents": [
+        {
+          "available_at": "2023-12-08T00:00:00+00:00",
+          "document_id": "secfacts:0001946703:0001213900-23-093893:be015188fb00b788",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0945.json",
+            "sha256": "8515ae4ce0caa22cddaf31518dc0d0bf91bbc6b3a85884349b80da7789a13d45"
+          },
+          "source_type": "sec_company_facts"
+        },
+        {
+          "available_at": "2024-04-16T00:00:00+00:00",
+          "document_id": "secfacts:0001946703:0001213900-24-032987:6b22706bc05df95f",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0946.json",
+            "sha256": "c1e13cb7c39d57a5221a77595d1cc77960d2f169979283a8b3dc86bb3fdf0669"
+          },
+          "source_type": "sec_company_facts"
+        }
+      ],
+      "latest_financial_available_at": "2025-04-23T00:00:00+00:00",
+      "period_forms": {
+        "duration": 639,
+        "instant": 629
+      },
+      "pit_types": {
+        "filing": 1,
+        "market_data": 1,
+        "sec_company_facts": 4
+      },
+      "typed_fact_rows": 1268,
+      "units": [
+        "SGD",
+        "USD",
+        "USD/shares",
+        "pure",
+        "shares"
+      ],
+      "val_keys": 0,
+      "value_keys": 1268
+    },
+    {
+      "case_id": "cik_0001065059:20250131",
+      "case_ref": "case-007",
+      "cutoff": "2025-01-31T00:00:00+00:00",
+      "financial_document_count": 58,
+      "financial_schemas": {
+        "sec-company-facts-document-v1": 58
+      },
+      "first2_noquery_financial_documents": [
+        {
+          "available_at": "2010-08-06T00:00:00+00:00",
+          "document_id": "secfacts:0001065059:0001065059-10-000020:ce6a6599d2fa64e6",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0953.json",
+            "sha256": "3fa38a70b6dad94c1e45ca67c72c244ecf668f4f2f9dc3638f8997bc27298468"
+          },
+          "source_type": "sec_company_facts"
+        },
+        {
+          "available_at": "2010-11-04T00:00:00+00:00",
+          "document_id": "secfacts:0001065059:0001065059-10-000033:02bf0227b4bec0e8",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0954.json",
+            "sha256": "77b1f095700a9cc5dc20c839b110c0b115582ac97f0670a35ca0904ec324eaca"
+          },
+          "source_type": "sec_company_facts"
+        }
+      ],
+      "latest_financial_available_at": "2024-10-30T00:00:00+00:00",
+      "period_forms": {
+        "duration": 10136,
+        "instant": 6370
+      },
+      "pit_types": {
+        "10-k": 1,
+        "market_data": 1,
+        "sec_company_facts": 58,
+        "sec_filing": 1
+      },
+      "typed_fact_rows": 16506,
+      "units": [
+        "USD",
+        "USD/shares",
+        "USD/shares_unit",
+        "pure",
+        "shares"
+      ],
+      "val_keys": 0,
+      "value_keys": 16506
+    },
+    {
+      "case_id": "cik_0000800457:20250731",
+      "case_ref": "case-008",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "financial_document_count": 56,
+      "financial_schemas": {
+        "sec-company-facts-document-v1": 56
+      },
+      "first2_noquery_financial_documents": [
+        {
+          "available_at": "2011-08-10T00:00:00+00:00",
+          "document_id": "secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+            "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+          },
+          "source_type": "sec_company_facts"
+        },
+        {
+          "available_at": "2022-03-08T00:00:00+00:00",
+          "document_id": "secfacts:0000800457:0001140361-22-008115:c78018912da79c09",
+          "file": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0672.json",
+            "sha256": "be256b45d9eb2368673a24e39c1aa572a88eacb963818215145ff15154e56b77"
+          },
+          "source_type": "sec_company_facts"
+        }
+      ],
+      "latest_financial_available_at": "2025-05-07T00:00:00+00:00",
+      "period_forms": {
+        "duration": 12511,
+        "instant": 8271
+      },
+      "pit_types": {
+        "filing": 2,
+        "market_data": 1,
+        "sec_company_facts": 56
+      },
+      "typed_fact_rows": 20782,
+      "units": [
+        "Segment",
+        "USD",
+        "USD/shares",
+        "pure",
+        "shares"
+      ],
+      "val_keys": 0,
+      "value_keys": 20782
+    }
+  ],
+  "native_fetch_not_executed": true,
+  "registered_functions12": [
+    {
+      "contract_docstring": "Measure revenue_growth_yoy as current / comparable prior-year revenue - 1. Requires\nSEC duration facts from the per-issuer canonical total series (dominance-resolved;\npartial or zero same-period tag values never displace the total), matching units\nand comparable year-over-year periods; zero prior revenue or missing/stale\ncurrent facts yields unavailable. Numeric states use\npositive_min (default 0) and negative_max (default positive_min): value >=\npositive_min is positive, otherwise value <= negative_max is negative, otherwise\nneutral. Thresholds do not change the measurement. Values beyond\nplausible_abs_max (default 5) are downgraded to partial coverage at 0.5\nconfidence with an implausible_value marker. max_period_age_days (default 550)\nbounds current SEC period age; older comparative periods remain allowed.",
+      "covered_by_stable": [
+        "revenue_growth_yoy:v3"
+      ],
+      "function": "financial.revenue_growth_yoy",
+      "line": 4108,
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max",
+        "max_period_age_days"
+      ],
+      "python_function": "_revenue_growth_signal"
+    },
+    {
+      "contract_docstring": "Measure revenue acceleration as latest year-over-year revenue growth minus an earlier\ncomparable growth rate. Requires two supported revenue year-over-year pairs from the\nper-issuer canonical total series (dominance-resolved; never mixed-basis), with\nmatching units and nonzero denominators; incomplete/stale current facts yield\nunavailable. Numeric states use positive_min (default 0) and negative_max (default\npositive_min): value >= positive_min is positive, otherwise value <= negative_max is\nnegative, otherwise neutral. Thresholds do not change the measurement. Values beyond\nplausible_abs_max (default 5) are downgraded to partial coverage at 0.5 confidence\nwith an implausible_value marker. max_period_age_days (default 550) bounds current\nSEC period age; older comparative periods remain allowed.",
+      "covered_by_stable": [
+        "revenue_acceleration:v2"
+      ],
+      "function": "financial.revenue_acceleration",
+      "line": 4147,
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max",
+        "max_period_age_days"
+      ],
+      "python_function": "_revenue_acceleration_signal"
+    },
+    {
+      "contract_docstring": "Measure gross-margin change: latest GrossProfit / revenue minus the previous\ncomparable-duration margin. GrossProfit and revenue must match start, end and units\nwithin each period, and revenue comes from the per-issuer canonical total series\n(dominance-resolved; partial or zero same-period tag values never displace the\ntotal). Missing matched periods, zero revenue or stale current facts yield\nunavailable. Numeric states use positive_min (default 0) and negative_max (default\npositive_min): value >= positive_min is positive, otherwise value <= negative_max is\nnegative, otherwise neutral. Thresholds do not change the measurement. Values beyond\nplausible_abs_max (default 2) are downgraded to partial coverage at 0.5 confidence\nwith an implausible_value marker. max_period_age_days (default 550) bounds current\nSEC period age; older comparative periods remain allowed.",
+      "covered_by_stable": [
+        "gross_margin_change:v3"
+      ],
+      "function": "financial.gross_margin_change",
+      "line": 4187,
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max",
+        "max_period_age_days"
+      ],
+      "python_function": "_gross_margin_change_signal"
+    },
+    {
+      "contract_docstring": "Measure operating cash flow margin as operating cash flow / positive revenue for the\nlatest matching SEC duration period (same start, end and units). Revenue comes from\nthe per-issuer canonical total series (dominance-resolved; partial or zero\nsame-period tag values never displace the total). Requires both revenue\nand operating-cash-flow facts. This does not measure operating-income alignment or\ncash runway. Missing/mismatched/stale facts yield unavailable. Numeric states use\npositive_min (default 0) and negative_max (default positive_min): value >=\npositive_min is positive, otherwise value <= negative_max is negative, otherwise\nneutral. Thresholds do not change the measurement. Values beyond plausible_abs_max\n(default 1.5) are downgraded to partial coverage at 0.5 confidence with an\nimplausible_value marker. max_period_age_days (default 550) bounds current SEC\nperiod age; older comparative periods remain allowed.",
+      "covered_by_stable": [
+        "operating_cash_flow_margin:v2"
+      ],
+      "function": "financial.operating_cash_flow_margin",
+      "line": 4229,
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max",
+        "max_period_age_days"
+      ],
+      "python_function": "_operating_cash_flow_margin_signal"
+    },
+    {
+      "contract_docstring": "Measure net share retirement as 1 - current / prior-year weighted-average shares over\ncomparable periods. Positive means net retirement and negative means dilution; this is\nnot a cash buyback amount. Missing comparable or stale current facts yield\nunavailable. Numeric states use positive_min (default 0) and negative_max (default\npositive_min): value >= positive_min is positive, otherwise value <= negative_max is\nnegative, otherwise neutral. Thresholds do not change the measurement.\nValues beyond plausible_abs_max (default 1) retain their measurement and categorical\nstate, but are downgraded to partial coverage at 0.5 confidence with an\nimplausible_value marker; this is not an unavailable guard or numeric clamp.\nmax_period_age_days (default 550) bounds current SEC period age; older comparative\nperiods remain allowed.",
+      "covered_by_stable": [
+        "net_share_retirement_yoy:v3"
+      ],
+      "function": "financial.net_share_retirement_yoy",
+      "line": 4269,
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max",
+        "max_period_age_days"
+      ],
+      "python_function": "_net_share_retirement_yoy_signal"
+    },
+    {
+      "contract_docstring": "Measure latest cash and equivalents / current liabilities for the same SEC\ninstant period and reported currency. Non-positive liabilities and missing,\nmismatched, or stale facts yield unavailable. Numeric states use positive_min\n(default 0) and negative_max (default positive_min).\nOptional plausible_abs_max has no default bound; when configured and exceeded,\nthe shared numeric builder retains value/state with partial coverage, 0.5\nconfidence and implausible_value. It is not an unavailable guard or clamp.",
+      "covered_by_stable": [
+        "cash_to_current_liabilities_ratio:v2"
+      ],
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "line": 4344,
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max",
+        "max_period_age_days"
+      ],
+      "python_function": "_cash_to_current_liabilities_ratio_signal"
+    },
+    {
+      "contract_docstring": "Measure cash burn as absolute negative operating cash flow / cash for the latest\nSEC duration, using the closest same-currency cash instant at or before period end.\nNon-negative operating cash flow is a zero burn ratio. Missing, non-positive cash,\nmismatched, or stale facts yield unavailable. burn_threshold defaults to 0.10;\nqualifying burn is positive, observed zero burn is negative, and an observed\nbelow-threshold positive burn is neutral.",
+      "covered_by_stable": [
+        "cash_burn_rate_elevated:v2"
+      ],
+      "function": "financial.cash_burn_rate_elevated",
+      "line": 4377,
+      "parameter_names": [
+        "burn_threshold",
+        "max_period_age_days"
+      ],
+      "python_function": "_cash_burn_rate_elevated_signal"
+    },
+    {
+      "contract_docstring": "Measure cash runway in months from the latest SEC operating cash flow\nduration and the closest same-currency cash instant at or before its end. Monthly\nburn is absolute cash flow divided by the rounded reported duration in months.\nMissing, non-positive, mismatched, or stale facts yield unavailable. Runway <=\npositive_runway_max_months (default 6) is positive,\nrunway >= negative_runway_min_months (default 12) is negative, and values between\nare neutral. Non-negative operating cash flow is negative evidence of a\nlow-runway condition (an effectively unbounded burn runway).",
+      "covered_by_stable": [
+        "liquidity_runway_months:v3"
+      ],
+      "function": "financial.liquidity_runway_months",
+      "line": 4416,
+      "parameter_names": [
+        "positive_runway_max_months",
+        "negative_runway_min_months",
+        "max_period_age_days"
+      ],
+      "python_function": "_liquidity_runway_months_signal"
+    },
+    {
+      "contract_docstring": "Measure the minimum price / preceding running peak - 1 over all observations in the\nlatest supplied metadata.prices series. This function does not itself restrict dates\nto one year; retrieval owns the point-in-time series window. Missing prices yield\nunavailable; invalid or nonpositive prices fail validation. Numeric states use\npositive_min (default 0) and negative_max (default positive_min): value >=\npositive_min is positive, otherwise value <= negative_max is negative, otherwise\nneutral. Thresholds do not change the measurement.\nOptional plausible_abs_max has no default bound; when configured and exceeded,\nthe shared numeric builder retains value/state with partial coverage, 0.5\nconfidence and implausible_value. It is not an unavailable guard or clamp.",
+      "covered_by_stable": [
+        "max_drawdown_1y:v2"
+      ],
+      "function": "market.max_drawdown_1y",
+      "line": 4934,
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max"
+      ],
+      "python_function": "_max_drawdown_signal"
+    },
+    {
+      "contract_docstring": "Measure last / first price - 1 over the final lookback_observations + 1 supplied\nmetadata.prices values (default lookback_observations=126, positive integer). Fewer\nobservations yield unavailable; prices must be finite positive numbers. Retrieval owns\ndates and adjustment convention. Numeric states use positive_min (default 0) and\nnegative_max (default positive_min): value >= positive_min is positive, otherwise\nvalue <= negative_max is negative, otherwise neutral. Thresholds do not change the\nmeasurement. Values beyond plausible_abs_max (default 50) retain their measurement\nand categorical state, but are downgraded to partial coverage at 0.5 confidence\nwith an implausible_value marker; this is not an unavailable guard or numeric clamp.",
+      "covered_by_stable": [
+        "price_momentum_126d:v2"
+      ],
+      "function": "market.price_momentum_126d",
+      "line": 4984,
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max",
+        "lookback_observations"
+      ],
+      "python_function": "_price_momentum_signal"
+    },
+    {
+      "contract_docstring": "Measure the latest SEC instant cash and equivalents balance, in its reported currency\nunits, without normalizing by burn, revenue or company size. Missing or stale current\ncash facts yield unavailable. Numeric states use positive_min (default 0) and\nnegative_max (default positive_min): value >= positive_min is positive, otherwise\nvalue <= negative_max is negative, otherwise neutral. Thresholds do not change the\nmeasurement. max_period_age_days (default 550) bounds current SEC period age; older\ncomparative periods remain allowed.\nOptional plausible_abs_max has no default bound; when configured and exceeded,\nthe shared numeric builder retains value/state with partial coverage, 0.5\nconfidence and implausible_value. It is not an unavailable guard or clamp.",
+      "covered_by_stable": [
+        "cash_reserves:v2"
+      ],
+      "function": "financial.cash_reserves",
+      "line": 4308,
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max",
+        "max_period_age_days"
+      ],
+      "python_function": "_cash_reserves_signal"
+    },
+    {
+      "contract_docstring": "Count case-insensitive literal substring occurrences across input documents.\n\nterms defaults to decline, loss, risk, delay, investigation, default.\nCount >= negative_count_min (default 1) is negative; otherwise neutral.\nThis measures lexical frequency, not semantic sentiment or event severity.",
+      "covered_by_stable": [
+        "negative_word_count:v2"
+      ],
+      "function": "news.negative_word_count",
+      "line": 5041,
+      "parameter_names": [
+        "terms",
+        "negative_count_min"
+      ],
+      "python_function": "_negative_word_count_signal"
+    }
+  ],
+  "same_end_or_duration_ambiguity_examples": [
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "document_id": "secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "end": "2010-06-30",
+      "relation_uncertainty": "Same end is not sufficient to identify a unique latest or a comparable prior. Values may belong to different duration starts or conflicting same-duration alternatives; no relation is assigned by this static review.",
+      "rows": [
+        {
+          "end": "2010-06-30",
+          "locator": "/facts/21",
+          "start": "2010-01-01",
+          "value": 197229788
+        },
+        {
+          "end": "2010-06-30",
+          "locator": "/facts/22",
+          "start": "2010-04-01",
+          "value": 99654478
+        }
+      ],
+      "source_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+        "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+      },
+      "tag": "BenefitsLossesAndExpenses",
+      "unit": "USD"
+    },
+    {
+      "available_at": "2022-08-06T00:00:00+00:00",
+      "case_ref": "case-008",
+      "document_id": "secfacts:0000800457:0001140361-22-028276:1973d45045d70850",
+      "end": "2021-06-30",
+      "relation_uncertainty": "Same end is not sufficient to identify a unique latest or a comparable prior. Values may belong to different duration starts or conflicting same-duration alternatives; no relation is assigned by this static review.",
+      "rows": [
+        {
+          "end": "2021-06-30",
+          "locator": "/facts/18",
+          "start": "2021-01-01",
+          "value": 597168
+        },
+        {
+          "end": "2021-06-30",
+          "locator": "/facts/19",
+          "start": "2021-04-01",
+          "value": 304373
+        }
+      ],
+      "source_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0674.json",
+        "sha256": "6f7c133162f95ee42b379130961c9ee18a22dfc8600ab971ba856316422eea45"
+      },
+      "tag": "AllocatedShareBasedCompensationExpense",
+      "unit": "USD"
+    }
+  ],
+  "scope": "stdlib-only JSON/AST/static source review; no native helper/constructor/model/GET/Signal/check labels/global LabelStore/LockedTest execution",
+  "shape_inference": "For any typed context record preserving these original row keys, current _facts_from_document requires val and will skip value-only rows. This is a static conditional implication, not an observed executed EvidenceFact count.",
+  "snapshot_documents": 1780,
+  "sources": {
+    "first_native_manifest_wire": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json",
+      "sha256": "f20fbbe47e5e16a31e2cbd11400d7a7ab239d39d8964438f02375e720b62a304"
+    },
+    "reviewed_snapshot": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json",
+      "sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a"
+    },
+    "signal_library": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    "source_input": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/experiments/cycles/cycle-0001/slow_input.json",
+      "sha256": "ab4625bb8d5c39a3ae7c3fc65fd4d5b4a94c4827c655e24acaef96ad72c9fe74"
+    }
+  },
+  "stable_registry18": [
+    {
+      "definition": {
+        "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."
+      },
+      "execution": {
+        "skill_file": "skill.md",
+        "type": "llm"
+      },
+      "parameters": {
+        "result_required_evidence_phrases": [
+          "financing",
+          "refinancing",
+          "debt",
+          "restructuring",
+          "listing",
+          "dilution",
+          "redemption",
+          "reverse split",
+          "share sale",
+          "offering",
+          "placement",
+          "credit facility",
+          "loan",
+          "convertible",
+          "PIPE",
+          "securities purchase agreement"
+        ],
+        "routing_answer_need_phrases": [
+          "financing",
+          "refinancing",
+          "debt restructuring",
+          "listing",
+          "dilution",
+          "runway",
+          "redemption",
+          "reverse split",
+          "share sale",
+          "share offering",
+          "equity offering",
+          "debt maturity",
+          "debt maturities",
+          "PIPE",
+          "securities purchase agreement"
+        ]
+      },
+      "signal_ref": "financing_listing_action:v5",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/catalysts/financing_listing_action/versions/v5/spec.json",
+        "sha256": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1"
+      }
+    },
+    {
+      "definition": {
+        "description": "Measure absolute negative operating cash flow divided by the closest same-currency cash balance at or before the reported period end."
+      },
+      "execution": {
+        "function": "financial.cash_burn_rate_elevated",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "burn_threshold": 0.1,
+        "lookback_days": 550,
+        "max_period_age_days": 550
+      },
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/financial/cash_burn_rate_elevated/versions/v2/spec.json",
+        "sha256": "c8a90a2f7c4b0000c038f547efd2012414abb1c57fcf457c9bc56a9e9dd823fb"
+      }
+    },
+    {
+      "definition": {
+        "description": "Read the latest point-in-time cash and equivalents balance."
+      },
+      "execution": {
+        "function": "financial.cash_reserves",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "negative_max": 10000000,
+        "positive_min": 100000000,
+        "routing_answer_need_phrases": [
+          "cash reserves",
+          "cash balance",
+          "cash and equivalents",
+          "cash position",
+          "liquidity"
+        ]
+      },
+      "signal_ref": "cash_reserves:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/financial/cash_reserves/versions/v2/spec.json",
+        "sha256": "00a4595fe13d41e8bc0e972ef99fe6f9a8e5c46988aa47a667d8bf8816b309da"
+      }
+    },
+    {
+      "definition": {
+        "description": "Measure the ratio of latest cash and equivalents to current liabilities for the same point-in-time period and reported currency."
+      },
+      "execution": {
+        "function": "financial.cash_to_current_liabilities_ratio",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "negative_max": 1.0,
+        "positive_min": 1.0
+      },
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/financial/cash_to_current_liabilities_ratio/versions/v2/spec.json",
+        "sha256": "a4c30faa11f819b8f677939b56e0d1a92c2f3cfc1f798fe9d01714ffacd9c885"
+      }
+    },
+    {
+      "definition": {
+        "description": "Measure the latest point-in-time change in gross margin."
+      },
+      "execution": {
+        "function": "financial.gross_margin_change",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "negative_max": -0.02,
+        "positive_min": 0.08
+      },
+      "signal_ref": "gross_margin_change:v3",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/financial/gross_margin_change/versions/v3/spec.json",
+        "sha256": "7f442b11c3fb3407ad0d7726e4fb28cbaa9f33c7c76ce6b52eaa1c9331bb6f60"
+      }
+    },
+    {
+      "definition": {
+        "description": "Measure cash runway in months from the latest negative operating cash flow duration and closest same-currency cash balance."
+      },
+      "execution": {
+        "function": "financial.liquidity_runway_months",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "max_period_age_days": 550,
+        "negative_runway_min_months": 12,
+        "positive_runway_max_months": 6
+      },
+      "signal_ref": "liquidity_runway_months:v3",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/financial/liquidity_runway_months/versions/v3/spec.json",
+        "sha256": "19197cadb4729a131cf3c968ccc369ee0c7c0054ca95b719f7ff247f1b75613e"
+      }
+    },
+    {
+      "definition": {
+        "description": "Measure year-over-year net share retirement, with dilution represented as a negative value."
+      },
+      "execution": {
+        "function": "financial.net_share_retirement_yoy",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "negative_max": -0.05,
+        "positive_min": 0.02
+      },
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/financial/net_share_retirement_yoy/versions/v3/spec.json",
+        "sha256": "e8e10fd2221aba605e4a2128340680e5f1c86d241504105580760ace96067505"
+      }
+    },
+    {
+      "definition": {
+        "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration."
+      },
+      "execution": {
+        "function": "financial.operating_cash_flow_margin",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "negative_max": 0.0,
+        "positive_min": 0.1,
+        "routing_answer_need_phrases": [
+          "operating cash flow margin"
+        ]
+      },
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/financial/operating_cash_flow_margin/versions/v2/spec.json",
+        "sha256": "cccc639ea02b2aaad172239a438bd429b950116a5d2a2d33f2aa0d677901d276"
+      }
+    },
+    {
+      "definition": {
+        "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period."
+      },
+      "execution": {
+        "function": "financial.revenue_acceleration",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "negative_max": -0.05,
+        "positive_min": 0.05
+      },
+      "signal_ref": "revenue_acceleration:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/financial/revenue_acceleration/versions/v2/spec.json",
+        "sha256": "e2852a024a76e9b1b7f836c101ca02e09150727bbba93dbc6b1d077da76e4a1a"
+      }
+    },
+    {
+      "definition": {
+        "description": "Measure the latest point-in-time year-over-year revenue growth."
+      },
+      "execution": {
+        "function": "financial.revenue_growth_yoy",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "negative_max": 0.0,
+        "plausible_abs_max": 5.0,
+        "positive_min": 0.25,
+        "routing_answer_need_phrases": [
+          "revenue growth",
+          "year-over-year revenue",
+          "year over year revenue",
+          "yoy revenue"
+        ]
+      },
+      "signal_ref": "revenue_growth_yoy:v3",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/financial/revenue_growth_yoy/versions/v3/spec.json",
+        "sha256": "91acc7bf052c8a39114c5a119e6a9bec9c6093ccaf4ae65ea832d605255636cf"
+      }
+    },
+    {
+      "definition": {
+        "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."
+      },
+      "execution": {
+        "skill_file": "skill.md",
+        "type": "llm"
+      },
+      "parameters": {
+        "result_required_evidence_phrases": [
+          "guidance",
+          "outlook",
+          "forecast",
+          "we expect",
+          "management expects",
+          "company expects",
+          "now expects",
+          "raises its",
+          "raised its",
+          "lowers its",
+          "lowered its",
+          "reaffirms",
+          "reaffirmed",
+          "on track to"
+        ],
+        "routing_answer_need_phrases": [
+          "guidance",
+          "outlook",
+          "forecast"
+        ],
+        "routing_need_phrases": [
+          "guidance update",
+          "guidance updates",
+          "updated guidance",
+          "guidance change",
+          "guidance changes",
+          "revised guidance",
+          "guidance revision",
+          "guidance revisions"
+        ]
+      },
+      "signal_ref": "guidance_acceleration:v3",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/management/guidance_acceleration/versions/v3/spec.json",
+        "sha256": "27ddc4483007f747f6a0aa7d7618ad2da560151f2d12b51ef8d5847b3c83d400"
+      }
+    },
+    {
+      "definition": {
+        "description": "Measure maximum drawdown from the point-in-time one-year price series."
+      },
+      "execution": {
+        "function": "market.max_drawdown_1y",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "negative_max": -0.5,
+        "positive_min": -0.2
+      },
+      "signal_ref": "max_drawdown_1y:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/market/max_drawdown_1y/versions/v2/spec.json",
+        "sha256": "98bd4cbc4aaf1b7fca8bfaa8d14f0167da52f4a3cd94e9caa09b3bdec1536786"
+      }
+    },
+    {
+      "definition": {
+        "description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series."
+      },
+      "execution": {
+        "function": "market.price_momentum_126d",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "lookback_observations": 126,
+        "negative_max": -0.2,
+        "positive_min": 0.2
+      },
+      "signal_ref": "price_momentum_126d:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/market/price_momentum_126d/versions/v2/spec.json",
+        "sha256": "5fdc0c057e2c419f84b81ce8f384768c6c138b28e47e24851aeed6164c7c8d1b"
+      }
+    },
+    {
+      "definition": {
+        "description": "Count configured negative terms in complete point-in-time company news source documents."
+      },
+      "execution": {
+        "function": "news.negative_word_count",
+        "type": "deterministic"
+      },
+      "parameters": {
+        "negative_count_min": 1,
+        "terms": [
+          "decline",
+          "loss",
+          "risk",
+          "delay",
+          "investigation",
+          "default"
+        ]
+      },
+      "signal_ref": "negative_word_count:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/news/negative_word_count/versions/v2/spec.json",
+        "sha256": "32213a3e163e264e5a98e085c547d872609c2c60b23fd6bd3c8cae961112d025"
+      }
+    },
+    {
+      "definition": {
+        "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units."
+      },
+      "execution": {
+        "skill_file": "order_confirmation_disclosed.md",
+        "type": "llm"
+      },
+      "parameters": {},
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/order_confirmation/order_confirmation_disclosed/versions/v3/spec.json",
+        "sha256": "07d2fefcaeb8930c21c5c881f9fc32b3096542634e04bdacc19d40d01bce8387"
+      }
+    },
+    {
+      "definition": {
+        "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."
+      },
+      "execution": {
+        "skill_file": "skill.md",
+        "type": "llm"
+      },
+      "parameters": {
+        "routing_required_research_phrases": [
+          "purchase order",
+          "purchase orders",
+          "customer order",
+          "customer orders",
+          "order backlog",
+          "funded backlog",
+          "contract award",
+          "customer commitment"
+        ]
+      },
+      "signal_ref": "order_quality:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/orders/order_quality/versions/v2/spec.json",
+        "sha256": "b604c5c835f5203be8ef191d03b474698ee26a0c805d46ff1470803c80727d70"
+      }
+    },
+    {
+      "definition": {
+        "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."
+      },
+      "execution": {
+        "skill_file": "skill.md",
+        "type": "llm"
+      },
+      "parameters": {
+        "routing_excluded_context_tags": [
+          "mature_operations"
+        ],
+        "routing_required_research_phrases": [
+          "product",
+          "technology",
+          "prototype",
+          "commercialization",
+          "commercial launch",
+          "commercially available",
+          "sellable",
+          "repeatable"
+        ]
+      },
+      "signal_ref": "commercialization_status:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/product/commercialization_status/versions/v2/spec.json",
+        "sha256": "56325ffe9f5bed14256073f640fece46ba4957d8bb56ecf838ebae173e8d109b"
+      }
+    },
+    {
+      "definition": {
+        "description": "Judge whether the growth thesis depends excessively on one customer or one customer program."
+      },
+      "execution": {
+        "skill_file": "skill.md",
+        "type": "llm"
+      },
+      "parameters": {
+        "result_required_evidence_phrases": [
+          "customer",
+          "customers",
+          "client",
+          "clients",
+          "buyer",
+          "buyers",
+          "offtake",
+          "backlog",
+          "order",
+          "orders",
+          "account",
+          "accounts",
+          "program"
+        ],
+        "routing_answer_need_phrases": [
+          "customer concentration",
+          "customer dependency",
+          "customer dependence",
+          "single customer",
+          "one customer",
+          "largest customer",
+          "major customer",
+          "revenue concentration",
+          "customer diversification",
+          "customer diversity",
+          "diversified customers",
+          "customer mix"
+        ],
+        "routing_required_research_phrases": [
+          "customer",
+          "client",
+          "buyer",
+          "offtake",
+          "backlog",
+          "order",
+          "customer program"
+        ]
+      },
+      "signal_ref": "customer_concentration:v2",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/risks/customer_concentration/versions/v2/spec.json",
+        "sha256": "30548fdbcb6d1ede05b3c5c703eaafdbaeed117e9ea1aa99a7c0667708b89c32"
+      }
+    }
+  ],
+  "typed_original_row_examples": [
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "content_schema": "sec-company-facts-document-v1",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "document_id": "secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "fact_locator": "/facts/118",
+      "note": "Original typed row copied as source evidence, not a new fact/Signal or executed parser output.",
+      "row_canonical_sha256": "1ba26ebb8ecab8c367dd2178646fd045340e71df36591e4cd551e42bed8eee86",
+      "source_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+        "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+      },
+      "whole_row": {
+        "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+        "end": "2010-06-30",
+        "fiscal_period": "Q2",
+        "fiscal_year": 2011,
+        "frame": null,
+        "label": "Net Cash Provided by (Used in) Operating Activities",
+        "start": "2010-01-01",
+        "tag": "NetCashProvidedByUsedInOperatingActivities",
+        "taxonomy": "us-gaap",
+        "unit": "USD",
+        "value": 4342261
+      }
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "content_schema": "sec-company-facts-document-v1",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "document_id": "secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "fact_locator": "/facts/119",
+      "note": "Original typed row copied as source evidence, not a new fact/Signal or executed parser output.",
+      "row_canonical_sha256": "4ddbe4f40edfc3364932f8b81df96eccb4c6f8fb5ce5b419d0d0c7d573140544",
+      "source_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+        "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+      },
+      "whole_row": {
+        "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+        "end": "2011-06-30",
+        "fiscal_period": "Q2",
+        "fiscal_year": 2011,
+        "frame": null,
+        "label": "Net Cash Provided by (Used in) Operating Activities",
+        "start": "2011-01-01",
+        "tag": "NetCashProvidedByUsedInOperatingActivities",
+        "taxonomy": "us-gaap",
+        "unit": "USD",
+        "value": 9506313
+      }
+    }
+  ],
+  "unknowns": [
+    "Native fetch actual fact/relation outputs were not run.",
+    "All eight cases were checked for source-file shapes, but no full concept/period/currency canonical admission or novelty proof was attempted.",
+    "No check-group availability/labels were inspected and no magnitude positive-control effect was inferred."
+  ]
+}

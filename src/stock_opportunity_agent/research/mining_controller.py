@@ -33,7 +33,9 @@ from stock_opportunity_agent.research.evolution_core import (
     _mask_identity_values,
     _opaque_slow_case_ref,
 )
-from stock_opportunity_agent.research.stage_contracts import bounded_entry_page, budget_claim_issues, json_bytes, read_whole_entries
+from stock_opportunity_agent.research.stage_contracts import (
+    NEED_ROW_RATIONALE_CONTRACT, bounded_entry_page, budget_claim_issues, json_bytes, read_whole_entries,
+)
 from stock_opportunity_agent.research.mining_agent_tools import (
     COMPUTE_RULES,
     EvidenceFact,
@@ -556,6 +558,7 @@ class LabelAwareMiningController:
                 "pending_count": len(self._pending_need_refs()),
                 "staged_count": len(self._backlog_by_ref) - len(self._pending_need_refs()),
                 "dispositions": sorted(ALLOWED_DISPOSITIONS),
+                "row_rationale": NEED_ROW_RATIONALE_CONTRACT,
             }
         return view
 
@@ -1615,7 +1618,7 @@ class LabelAwareMiningController:
                 continue
             rationale = row["rationale"]
             if not isinstance(rationale, list) or not rationale or any(not isinstance(text, str) or not text.strip() for text in rationale):
-                row_issues.append(f"row[{index}] rationale must be non-empty strings")
+                row_issues.append(f"row[{index}] {NEED_ROW_RATIONALE_CONTRACT}")
                 continue
             issues = budget_claim_issues(
                 [(f"row[{index}].rationale[{i}]", text) for i, text in enumerate(rationale)],

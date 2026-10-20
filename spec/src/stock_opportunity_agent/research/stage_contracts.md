@@ -10,6 +10,13 @@ The user authorized the integrated design and implementation on 2026-10-01.
 
 ## Stage dependencies and boundaries
 
+The module also owns a single pure need-row rationale description shared by
+the Controller's initial system prompt, native input contract and precise row
+error text: `rationale` is a non-empty array of nonblank strings, including when
+there is only one reason. Domain validators still enforce the existing type
+checks; this declaration adds no canonical output field, generic validation
+engine, mechanical conversion or additional correction budget.
+
 Runtime-owned named remaining-action counters also own any explicit authored
 counter or exhaustion claim. A shared bounded text check compares named
 `*_remaining` counts and dimension-specific exhausted/zero-budget statements to

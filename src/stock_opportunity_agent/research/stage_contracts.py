@@ -15,6 +15,11 @@ from typing import Any, Mapping, Sequence
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.models import ValidationError, ValidationIssue
 
+NEED_ROW_RATIONALE_CONTRACT = (
+    "rationale must be a non-empty array of nonblank strings; "
+    "a single reason uses a one-element array."
+)
+
 # Required top-level dependencies; each owning role validates their contents.
 _STAGE_INPUTS: dict[str, tuple[str, ...]] = {
     "information_plan_propose": ("proposal_context",),

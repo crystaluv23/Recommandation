@@ -1,0 +1,32 @@
+{
+  "revision": "34364f67e4fd11cfd4d63b9db5c8c2564a9ab7fa",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py",
+      "sha256": "07d697e30483b37703cecf9355783148fd9e616ed9f9d907ce612a0ffa655e43",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/before-stage_contracts.py"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "48bc084ca33c095f0ecc0e93404b4d17eb580f1364defa758a8375fd7c93d4a6",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/before-mining_controller.py"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "c4bba21b5ec197a4f99fb2cefb5e8b2256dfc72dc92c9feffd47f455c4ddb917",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/before-mining_role_model.py"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md",
+      "sha256": "5d49c2428ae9d670e192dd97d20dcb4321b7a49d0f5dc122516a771ffc1f2168",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/before-stage_contracts.md"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "558cee902d54738f196dfbac3eeb2fa1f81ad226a9032eb0ffb15a5655826f6d",
+      "copy": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/before-signal_mining_agent.md"
+    }
+  ],
+  "old_actual_evidence": "runs/diagnostics/assigned_slow_target_20261021_v1/driver/row-rationale-contract-diagnosis.json",
+  "scope": "No old stage execution or write; preservation only."
+}

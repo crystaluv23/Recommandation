@@ -1,0 +1,72 @@
+{
+  "associated": {
+    "passed": true,
+    "seconds": 0.2650278750807047,
+    "tests": 81,
+    "tripwires": {
+      "LabelStore.load": 0,
+      "network": 0
+    },
+    "unchanged": true
+  },
+  "baseline": {
+    "errors": 0,
+    "interpretation": "Producer lacked explicit nested shape and exact error wording; bad rows were already correctly rejected. Not thirteen unsafe accepts or independent runtime defects.",
+    "methods": 7,
+    "new_declaration_assertion_failures_including_subcases": 13
+  },
+  "candidate_bindings": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "c8f85be907f0627a6639eaacf4052779a939b98266d71e6507f394f7127361a8",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md": "377e43cfc449953fc6e5335e3b1eb362526e09c0060c9b64ea6c78efa939639d",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py": "eebdf896ee94507fb2485b87fb090702a2844996e3ab34bc0e6b1644fb8b0be3",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py": "f8d427c31b5f68f8b527de0954e97b40140a62bb57664c68100e5df796b17ddb",
+    "/Users/l/Project/Recommandation/tests/test_need_row_authoring_contract.py": "a2ad76ec8ef4c139be7b0b909715acb09dbd050630a2b946ff9a8642ee8944d0"
+  },
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/baseline.json",
+      "sha256": "2768e4ef8b3425ea9d6da72214a919c4de7c15133908ca5e4fef26bd44f7afd2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/original-tests.log",
+      "sha256": "5796c687d9f7fe118549a116d4917a27fab8f4e3df9128422f212b9e63d710dd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/final-focused.log",
+      "sha256": "2c990d05184228207e0c7e95461ae9f2c024f1cd5c338e84c7ce8865a3c7b30e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/connected-result.json",
+      "sha256": "7ef36caa4d94c5e4460e75948146abde2274c3e4257cd9707888416f35a8f7e0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/connected-tests.log",
+      "sha256": "e11b54765c25f8f3c19d4e07b483a0301dcbd2d74b9a29bd47fb360cfac2e1e2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/run-connected.py",
+      "sha256": "7656a0012730d4deb8407c3820883c86163e6ff1efac92816c02d28e4d69b0eb"
+    }
+  ],
+  "implementation": "One pure shared constant in stage_contracts; native initial row_rationale description and Controller system prompt use it; invalid row error repeats it.",
+  "limitations": [
+    "Fresh initial role adherence to this new declaration remains unverified.",
+    "Current completed83/85/86 stages retain their old frozen contract and results; no rerun or prompt hotpatch.",
+    "No mechanical nested scalar wrapping, new typed permission, new correction budget or canonical schema change."
+  ],
+  "revision": "34364f67e4fd11cfd4d63b9db5c8c2564a9ab7fa",
+  "scope": "Local declaration fix only; no fresh model/read/production-stage run or completed-stage mutation.",
+  "unchanged_evidence": {
+    "canonical_unit_and_need_hash_fields_not_extended": true,
+    "controller_methods_ast_identical": [
+      "_need_state_hash",
+      "_record_need_dispositions",
+      "_decide",
+      "_validate_action_shape"
+    ],
+    "legacy_h1_sha256": "4abcf50e9831364afa838526de7c54958f9cdddca0f4d88f46c95b5ba31a5d24",
+    "legacy_h1_source_exact_git_bytes": true,
+    "row_rationale_predicate_ast_identical": true
+  }
+}

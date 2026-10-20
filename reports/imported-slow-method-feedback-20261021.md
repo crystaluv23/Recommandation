@@ -246,3 +246,64 @@ does not close initial row-authoring compliance. The next local repair should
 make the existing nested array obligation explicit before another consumer,
 without scalar wrapping,weaker validation,extra corrections or completed-stage
 reentry. A prompt declaration by itself will not prove fresh model compliance.
+
+## Local nested authoring-contract alignment after execution
+
+After the assigned stage was complete,sealed and committed at `34364f67…`,a
+single pure `NEED_ROW_RATIONALE_CONTRACT` declaration is shared by the initial
+Controller system prompt,native `need_disposition_contract.row_rationale` and
+precise validation error. It explicitly requires a nonempty array of nonblank
+strings,including a one-element array for one reason. This changes authoring
+disclosure only;the strict predicate,accepted-row unit/state hashes,partial
+siblings,top-level-only mechanical wrapping and native correction permissions
+remain unchanged. Legacy H1 already stated every rationale is an array and is
+byte-identical. The earlier real requests and failures are not rewritten or
+reexecuted with this later code.
+
+Associated tests pass81/81 with zero network/LabelStore loads. The original
+seven methods had13 failing new declaration/error assertions;bad shapes were
+already rejected,so these were not13 unsafe accepts. The
+[independent before/after review](../runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/final-review.json)
+checks actual native Controller→role-adapter outgoing first,ordinary no-patch
+continuation and terminal-authoring views. All three previously lacked the
+nested declaration;all three now carry the same complete declaration. Eleven
+bad shapes still reject,three valid arrays retain exact authored whitespace,
+and old/current mixed-sibling controls use the shared original sink:valid rows
+persist unchanged,invalid scalar siblings remain pending and unwrapped.
+These are offline scripted callbacks and temporary fixtures,not fresh model
+responses or evidence-backed candidate terminals. Initial model adherence to
+the corrected declaration remains unverified. The next source-only check
+examines whether approved dev cases and native Mining tools can actually reach
+sufficient material for direction/magnitude capability controls before any
+new full discovery or implementation run.
+
+## Source-only Mining capability preflight
+
+The [frozen source-only diagnosis](../runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/preflight-diagnosis.json)
+and [inventory](../runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/static-inventory.json)
+find240 PIT financial documents across all8 approved dev cases,with83629
+original rows using `value` and none using `val`. These are rows across
+historical capture documents,not that many independent facts. The prior native
+value-free manifest advertises common concepts for7/8 cases,but Mining's
+`_facts_from_document` requires `val` inside each exact original span. This is
+a concrete static producer/consumer mismatch;no native helper was run and an
+actual EvidenceFact count has not yet been observed.
+
+Three layers must be distinguished before any model:default selection can
+start from old document-ID order (query ties use availability ascending),the
+typed row adapter can discard reachable spans,and index-based latest/prior
+assignment can mislabel retained latest-end alternatives. Two original
+same-end/different-duration examples support the period ambiguity;they do not
+prove a same-duration value conflict or an already executed wrong relation.
+The twelve registered functions do not implement arbitrary new formula code,
+but some parameters genuinely alter horizon or lexical measurement. Function
+count alone is not evidence that no novel legal measurement exists. Magnitude
+requires its own approved axis/sampling contract;direction dev labels do not
+silently provide it.
+
+The next action is a bounded deterministic native fetch/read probe separating
+selected originals,projected facts and valid period/unit/PIT relations. No
+completed stage is reentered and no source is appended. A failed prerequisite
+stops before new Mining roles;it is not a no-pattern research outcome. This
+source-only audit used14 code/spec and4 source bindings,zero helpers,
+constructors,models,GETs or check/global label reads. S3–S8 remain open.

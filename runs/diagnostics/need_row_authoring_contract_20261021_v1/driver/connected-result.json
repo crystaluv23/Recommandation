@@ -1,0 +1,37 @@
+{
+  "bindings_after": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "c8f85be907f0627a6639eaacf4052779a939b98266d71e6507f394f7127361a8",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md": "377e43cfc449953fc6e5335e3b1eb362526e09c0060c9b64ea6c78efa939639d",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py": "eebdf896ee94507fb2485b87fb090702a2844996e3ab34bc0e6b1644fb8b0be3",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py": "f8d427c31b5f68f8b527de0954e97b40140a62bb57664c68100e5df796b17ddb",
+    "/Users/l/Project/Recommandation/tests/test_need_row_authoring_contract.py": "a2ad76ec8ef4c139be7b0b909715acb09dbd050630a2b946ff9a8642ee8944d0"
+  },
+  "bindings_before": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "c8f85be907f0627a6639eaacf4052779a939b98266d71e6507f394f7127361a8",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md": "377e43cfc449953fc6e5335e3b1eb362526e09c0060c9b64ea6c78efa939639d",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py": "eebdf896ee94507fb2485b87fb090702a2844996e3ab34bc0e6b1644fb8b0be3",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py": "f8d427c31b5f68f8b527de0954e97b40140a62bb57664c68100e5df796b17ddb",
+    "/Users/l/Project/Recommandation/tests/test_need_row_authoring_contract.py": "a2ad76ec8ef4c139be7b0b909715acb09dbd050630a2b946ff9a8642ee8944d0"
+  },
+  "errors": [],
+  "failures": [],
+  "passed": true,
+  "seconds": 0.2650278750807047,
+  "selectors": [
+    "tests.test_need_row_authoring_contract",
+    "tests.test_mining_controller",
+    "tests.test_mining_role_model",
+    "tests.test_mining_tool_contracts",
+    "tests.test_stage_contracts",
+    "tests.test_assigned_slow_target_stage",
+    "tests.test_reviewed_slow_feedback_stage"
+  ],
+  "tests": 81,
+  "tripwires": {
+    "LabelStore.load": 0,
+    "network": 0
+  },
+  "unchanged": true
+}

@@ -1,0 +1,22 @@
+{
+  "candidate_bindings": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "c8f85be907f0627a6639eaacf4052779a939b98266d71e6507f394f7127361a8",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md": "377e43cfc449953fc6e5335e3b1eb362526e09c0060c9b64ea6c78efa939639d",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "71f55fb13cbf3344dc241db7a04187bd4f7c99e72dca0a292f795cef87b555e9",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py": "eebdf896ee94507fb2485b87fb090702a2844996e3ab34bc0e6b1644fb8b0be3",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py": "f8d427c31b5f68f8b527de0954e97b40140a62bb57664c68100e5df796b17ddb",
+    "/Users/l/Project/Recommandation/tests/test_need_row_authoring_contract.py": "a2ad76ec8ef4c139be7b0b909715acb09dbd050630a2b946ff9a8642ee8944d0"
+  },
+  "original_six_files_unchanged": true,
+  "original_owning_spec_dirty_preserved": true,
+  "old_stages_272_and247_seals_unchanged": true,
+  "runtime_code_changes_after_stage_completion_only": [
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py"
+  ],
+  "old_execution_revision": "55ec6245178631094bb8b43d91f67362ff234b96",
+  "current_local_patch_has_no_new_role_response": true
+}

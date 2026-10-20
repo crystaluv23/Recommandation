@@ -1,0 +1,12 @@
+test_actual_first_and_correction_requests_share_explicit_nested_contract (tests.test_need_row_authoring_contract.NeedRowAuthoringContractTests.test_actual_first_and_correction_requests_share_explicit_nested_contract) ... ok
+test_actual_terminal_row_authoring_uses_the_same_contract (tests.test_need_row_authoring_contract.NeedRowAuthoringContractTests.test_actual_terminal_row_authoring_uses_the_same_contract) ... ok
+test_existing_top_level_scalar_wrap_does_not_wrap_a_need_row (tests.test_need_row_authoring_contract.NeedRowAuthoringContractTests.test_existing_top_level_scalar_wrap_does_not_wrap_a_need_row) ... ok
+test_legacy_h1_existing_all_rationale_obligation_is_unchanged (tests.test_need_row_authoring_contract.NeedRowAuthoringContractTests.test_legacy_h1_existing_all_rationale_obligation_is_unchanged) ... ok
+test_runtime_description_matches_shared_pure_declaration (tests.test_need_row_authoring_contract.NeedRowAuthoringContractTests.test_runtime_description_matches_shared_pure_declaration) ... ok
+test_scalar_empty_nested_and_wrong_members_stay_invalid_without_progress (tests.test_need_row_authoring_contract.NeedRowAuthoringContractTests.test_scalar_empty_nested_and_wrong_members_stay_invalid_without_progress) ... ok
+test_valid_siblings_keep_original_unit_and_hash_semantics (tests.test_need_row_authoring_contract.NeedRowAuthoringContractTests.test_valid_siblings_keep_original_unit_and_hash_semantics) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.011s
+
+OK
