@@ -238,6 +238,17 @@ follow [stage contracts](stage_contracts.md).
   citations map the complete record back to original raw offsets. Structured
   records are indivisible under both character and request-token budgets. Empty
   eligible fact selections must not fall back to unfiltered future records.
+  This includes the accession-scoped `sec-company-facts-document-v1` array
+  produced by the SEC adapter. Same-period alternatives retain `latest`
+  selection labels; an earlier comparable period is not inferred from array
+  position. Each typed fact context also forwards the helper's actual
+  `source_context_partial` and `omitted_concept_count` disclosure; subsequent
+  projection/request fitting adds any whole groups it omits from that document.
+  These flags describe only this bounded read path, not complete retrieval
+  coverage or authority to read another document. A typed
+  taxonomy/tag/unit group's selected alternatives stay together through both
+  character and request-token fitting; an over-budget minimum cannot retain
+  just one conflicting value as if it were the only available fact.
 - Every shared payload declares each Signal's own eligible projection refs.
   Initial validation isolates omitted, cross-Signal, edge, and shape failures;
   Whitespace before or after a quote cannot turn an internal projection-edge

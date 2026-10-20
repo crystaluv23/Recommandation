@@ -57,6 +57,7 @@ from stock_opportunity_agent.research.evolution_settings import (
 )
 from stock_opportunity_agent.research.evolution_core import (
     _company_facts_context,
+    _optional_iso_date,
     _mask_identity_values,
     _project_slow_case_refs,
 )
@@ -4414,6 +4415,8 @@ def _single_llm_signal_projection(
         ]
     ] = []
     fact_contexts: dict[tuple[str, int, int], dict[str, Any]] = {}
+    typed_groups: dict[tuple[str, int, int], tuple[str, str, str, str]] = {}
+    atomic_candidates: dict[tuple[str, str, str, str], list[Any]] = {}
     step = LLM_SIGNAL_CONTEXT_CHUNK_CHARS - LLM_SIGNAL_CONTEXT_CHUNK_OVERLAP
     for document in documents_by_identity.values():
         queries = sorted({
@@ -4430,7 +4433,10 @@ def _single_llm_signal_projection(
             if facts is None:
                 break
             structured = True
+            typed = json.loads(document.content).get("schema_version") == "sec-company-facts-document-v1"
             for concept in facts["concepts"]:
+                latest_end = max((_optional_iso_date(json.loads(record["exact_span"]).get("end"))
+                                  for record in concept["records"]), default=None) if typed else None
                 for record_index, record in enumerate(concept["records"]):
                     start, end = record["start"], record["end"]
                     key = (document.document_id, start, end)
@@ -4440,13 +4446,26 @@ def _single_llm_signal_projection(
                         name: concept[name] for name in ("taxonomy", "concept", "unit")
                     } | {
                         "concept_description": concept["label"],
-                        "record_selection": "latest" if record_index == 0 else "comparable_prior",
+                        "record_selection": (
+                            "latest" if _optional_iso_date(json.loads(record["exact_span"]).get("end")) == latest_end
+                            else "comparable_prior"
+                        ) if typed else ("latest" if record_index == 0 else "comparable_prior"),
                     }
+                    if typed:
+                        fact_contexts[key].update(
+                            source_context_partial=facts["partial"],
+                            omitted_concept_count=facts["omitted_concept_count"],
+                        )
                     rank = (-document.available_at.timestamp(), document.document_id, record_index, start)
-                    candidates.append((
+                    candidate = (
                         rank, document, document.content,
                         ((0, len(document.content), 0, len(document.content)),), start, end,
-                    ))
+                    )
+                    candidates.append(candidate)
+                    if typed:
+                        group = (document.document_id, concept["taxonomy"], concept["concept"], concept["unit"])
+                        typed_groups[key] = group
+                        atomic_candidates.setdefault(group, []).append(candidate)
         if structured:
             continue
         normalized, runs = _normalized_projection_text(
@@ -4502,12 +4521,15 @@ def _single_llm_signal_projection(
     selected = set()
     visited_documents = set()
     ordered_chars = 0
+    def bundle(candidate):
+        group = typed_groups.get((candidate[1].document_id, candidate[4], candidate[5]))
+        return atomic_candidates[group] if group is not None else [candidate]
     while any(queues) and ordered_chars < MAX_LLM_SIGNAL_CONTEXT_CHARS:
         for queue in queues:
             queue[:] = [
                 c for c in queue
                 if (c[1].document_id, c[4]) not in selected
-                and c[5] - c[4] <= MAX_LLM_SIGNAL_CONTEXT_CHARS - ordered_chars
+                and sum(part[5] - part[4] for part in bundle(c)) <= MAX_LLM_SIGNAL_CONTEXT_CHARS - ordered_chars
             ]
             if not queue:
                 continue
@@ -4517,10 +4539,14 @@ def _single_llm_signal_projection(
                 0,
             )
             candidate = queue.pop(index)
-            ordered.append(candidate)
-            ordered_chars += candidate[5] - candidate[4]
-            selected.add((candidate[1].document_id, candidate[4]))
+            for part in bundle(candidate):
+                ordered.append(part)
+                ordered_chars += part[5] - part[4]
+                selected.add((part[1].document_id, part[4]))
             visited_documents.add(candidate[1].document_id)
+    selected_groups = {typed_groups[(c[1].document_id, c[4], c[5])] for c in ordered
+                       if (c[1].document_id, c[4], c[5]) in typed_groups}
+    omitted_groups = set(atomic_candidates) - selected_groups
     for _rank, document, normalized, runs, start, end in ordered:
         text_value = normalized[start:end]
         if not text_value or used + len(text_value) > MAX_LLM_SIGNAL_CONTEXT_CHARS:
@@ -4539,6 +4565,11 @@ def _single_llm_signal_projection(
             rebase=start,
         )
         fact_context = fact_contexts.get((document.document_id, start, end))
+        if fact_context is not None and "source_context_partial" in fact_context:
+            omitted = sum(group[0] == document.document_id for group in omitted_groups)
+            fact_context = {**fact_context,
+                            "source_context_partial": bool(fact_context["source_context_partial"] or omitted),
+                            "omitted_concept_count": fact_context["omitted_concept_count"] + omitted}
         payload.append(
             {
                 "projection_id": projection_id,
@@ -4564,6 +4595,35 @@ def _single_llm_signal_projection(
         )
         used += len(text_value)
     return payload, lineage
+
+
+def _projection_units(documents: list[dict[str, Any]]) -> list[list[dict[str, Any]]]:
+    """Keep typed source groups atomic; ordinary projections remain individual."""
+
+    units: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
+    for row in documents:
+        context = row.get("fact_context", {})
+        key = (row["document_id"], row["content_hash"], context["taxonomy"],
+               context["concept"], context["unit"]) if "source_context_partial" in context else (row["projection_id"],)
+        units.setdefault(key, []).append(row)
+    return list(units.values())
+
+
+def _projection_omissions(
+    selected: list[dict[str, Any]], original: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Carry source omission disclosure through request fitting, without authority."""
+
+    ids = {row["projection_id"] for row in selected}
+    omitted: dict[str, int] = {}
+    for unit in _projection_units(original):
+        if "source_context_partial" in unit[0].get("fact_context", {}) and not any(row["projection_id"] in ids for row in unit):
+            document_id = unit[0]["document_id"]
+            omitted[document_id] = omitted.get(document_id, 0) + 1
+    return [dict(row, fact_context={**row["fact_context"],
+                 "source_context_partial": bool(row["fact_context"]["source_context_partial"] or omitted.get(row["document_id"], 0)),
+                 "omitted_concept_count": row["fact_context"]["omitted_concept_count"] + omitted.get(row["document_id"], 0)})
+            if "source_context_partial" in row.get("fact_context", {}) else row for row in selected]
 
 
 def _shared_llm_signal_projection(
@@ -5286,6 +5346,8 @@ class StructuredLLMSignalRunner:
             *,
             trimmed: bool,
         ) -> tuple[dict[str, Any], dict[str, _SignalProjectionLineage]]:
+            if trimmed:
+                selected_documents = _projection_omissions(selected_documents, documents)
             selected_ids = {
                 str(document["projection_id"]) for document in selected_documents
             }
@@ -5314,6 +5376,8 @@ class StructuredLLMSignalRunner:
         if full_reservation <= budget:
             return documents, full_lineage, False
 
+        units = _projection_units(documents)
+        unit_by_id = {str(row["projection_id"]): unit for unit in units for row in unit}
         essential_ids: set[str] = set()
         for item in inputs:
             identities = {
@@ -5325,7 +5389,7 @@ class StructuredLLMSignalRunner:
                     projection.document.document_id,
                     projection.document.content_hash,
                 ) in identities and (not projection.eligible_signal_refs or item.spec.ref in projection.eligible_signal_refs):
-                    essential_ids.add(projection_id)
+                    essential_ids.update(str(row["projection_id"]) for row in unit_by_id[projection_id])
                     break
         selected = [
             document
@@ -5340,7 +5404,7 @@ class StructuredLLMSignalRunner:
             max_output_tokens=4_000,
         )
         if minimum_reservation > budget:
-            return selected, minimum_lineage, True
+            return _projection_omissions(selected, documents), minimum_lineage, True
 
         selected_ids = {
             str(document["projection_id"]) for document in selected
@@ -5349,11 +5413,11 @@ class StructuredLLMSignalRunner:
             str(document["projection_id"]): index
             for index, document in enumerate(documents)
         }
-        for document in documents:
-            projection_id = str(document["projection_id"])
-            if projection_id in selected_ids:
+        for unit in units:
+            unit_ids = {str(row["projection_id"]) for row in unit}
+            if unit_ids <= selected_ids:
                 continue
-            trial = [*selected, document]
+            trial = [*selected, *(row for row in unit if str(row["projection_id"]) not in selected_ids)]
             trial.sort(
                 key=lambda item: projection_order[str(item["projection_id"])]
             )
@@ -5366,9 +5430,9 @@ class StructuredLLMSignalRunner:
             )
             if reservation <= budget:
                 selected = trial
-                selected_ids.add(projection_id)
+                selected_ids.update(unit_ids)
         _payload, selected_lineage = payload_for(selected, trimmed=True)
-        return selected, selected_lineage, True
+        return _projection_omissions(selected, documents), selected_lineage, True
 
     def execute(
         self,

@@ -1,0 +1,113 @@
+{
+  "appended_documents": [],
+  "context_spans": [],
+  "coverage": {
+    "context_truncated": null,
+    "contract_satisfied": true,
+    "deduplicated_document_count": 0,
+    "eligible_document_count": 57,
+    "missing_requirements": [],
+    "observed_distinct_period_count": 58,
+    "observed_observation_count": 0,
+    "observed_period_span_days": 5149,
+    "query_evaluated": true,
+    "query_matched_document_count": 57,
+    "query_requested": true,
+    "query_status": "matched",
+    "required_source_group_count": 0,
+    "satisfied_source_group_count": 0,
+    "selected_document_count": 10,
+    "selection_truncated": true,
+    "visible_span_count": 0
+  },
+  "data_gap": null,
+  "documents": [
+    {
+      "available_at": "2021-02-17T00:00:00+00:00",
+      "content_hash": "1f19eaf394ce9e02a4f76765e7f90c85800fa7c9aa804369382a41c0adec0c7e",
+      "document_id": "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02"
+    },
+    {
+      "available_at": "2020-02-21T00:00:00+00:00",
+      "content_hash": "ba303ecd89c32d2d517f07f5b52f5009d30c81a01f65011b3a8e9b1e82b5b8d4",
+      "document_id": "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d"
+    },
+    {
+      "available_at": "2022-02-19T00:00:00+00:00",
+      "content_hash": "897a7957ef2a7219cfb8cbff416729435b791dcbdb3d4737c64bdf88309efb59",
+      "document_id": "secfacts:0001309402:0001309402-22-000008:897a7957ef2a7219"
+    },
+    {
+      "available_at": "2023-02-11T00:00:00+00:00",
+      "content_hash": "21b32f10cee71e8c390be33274b28ee2895ade12e91f3e572c2479aefb36cefc",
+      "document_id": "secfacts:0001309402:0001309402-23-000012:21b32f10cee71e8c"
+    },
+    {
+      "available_at": "2019-02-21T00:00:00+00:00",
+      "content_hash": "8322f0b00f926f9cb9331f360d7e9bdb6aff742dab8da2c38ba58882ea32c62e",
+      "document_id": "secfacts:0001309402:0001309402-19-000024:8322f0b00f926f9c"
+    },
+    {
+      "available_at": "2018-02-15T00:00:00+00:00",
+      "content_hash": "a6c8d5f922c154a1d409ccb58889ab9bda40bba9ca94fe1708c6fadba97f490d",
+      "document_id": "secfacts:0001309402:0001309402-18-000045:a6c8d5f922c154a1"
+    },
+    {
+      "available_at": "2024-02-10T00:00:00+00:00",
+      "content_hash": "a940180e1345eff4cc5540d3ca668447559f1b2757d87915179da56ee8e5dcfc",
+      "document_id": "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4"
+    },
+    {
+      "available_at": "2020-11-07T00:00:00+00:00",
+      "content_hash": "0f4bc9b57dfe740cb5270b2eaa53198945ac91219dae23ede45fd09e820e4b4f",
+      "document_id": "secfacts:0001309402:0001309402-20-000116:0f4bc9b57dfe740c"
+    },
+    {
+      "available_at": "2019-11-08T00:00:00+00:00",
+      "content_hash": "9ab33b4752f88e9e83201d5f2ce1cb9f20779da89132c5307d45e8025da76bf7",
+      "document_id": "secfacts:0001309402:0001309402-19-000146:9ab33b4752f88e9e"
+    },
+    {
+      "available_at": "2013-02-16T00:00:00+00:00",
+      "content_hash": "c017c478dd4814d74b2cd866d9608155db5f0dffd55b1351e37a0c3ad1e68ee1",
+      "document_id": "secfacts:0001309402:0001309402-13-000021:c017c478dd4814d7"
+    }
+  ],
+  "events": [
+    {
+      "details": {
+        "matched_document_ids": [
+          "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02",
+          "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d",
+          "secfacts:0001309402:0001309402-22-000008:897a7957ef2a7219",
+          "secfacts:0001309402:0001309402-23-000012:21b32f10cee71e8c",
+          "secfacts:0001309402:0001309402-19-000024:8322f0b00f926f9c",
+          "secfacts:0001309402:0001309402-18-000045:a6c8d5f922c154a1",
+          "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4",
+          "secfacts:0001309402:0001309402-20-000116:0f4bc9b57dfe740c",
+          "secfacts:0001309402:0001309402-19-000146:9ab33b4752f88e9e",
+          "secfacts:0001309402:0001309402-13-000021:c017c478dd4814d7"
+        ],
+        "phase": "initial",
+        "request_id": "signal:cash_to_current_liabilities_ratio:v1",
+        "source_types": [
+          "company_facts",
+          "financials"
+        ]
+      },
+      "kind": "local_query"
+    }
+  ],
+  "omitted_context_markers": [],
+  "request": {
+    "description": "Measure the ratio of latest CashAndCashEquivalentsAtCarryingValue to latest LiabilitiesCurrent for a company as of a point in time. Higher values indicate stronger short-term liquidity.",
+    "max_documents": 10,
+    "query": "CashAndCashEquivalentsAtCarryingValue LiabilitiesCurrent cash current liabilities liquidity ratio 10-Q 10-K 20-F SEC company facts USD",
+    "request_id": "signal:cash_to_current_liabilities_ratio:v1",
+    "source_types": [
+      "company_facts",
+      "financials"
+    ]
+  },
+  "status": "resolved"
+}

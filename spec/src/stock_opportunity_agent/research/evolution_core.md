@@ -262,6 +262,20 @@ but are not independently citable facts. Ambiguous raw matches, future-filed
 records, unknown shapes, and budget omissions remain explicitly partial. The
 combined structured view, including parent fields and record literals, stays
 inside the existing document character bound and does not alter Raw Info.
+The same selector reads the existing accession-scoped
+`sec-company-facts-document-v1` body with a `facts` array. Its `tag`, `unit`,
+`value`, and period fields remain source literals; no synthetic `val`, issuer,
+filing date, or converted fact record is inserted. The enclosing `filing_date`
+must be valid and no later than the document's availability date. Within each
+taxonomy/tag/unit group, preserve all alternatives at the latest period end,
+including different duration starts and conflicting values, together with the
+nearest earlier comparable period for each latest duration. Budget selection
+admits or omits that complete group, never just one conflicting alternative.
+Invalid rows and excluded or omitted records keep the view partial. Unsupported
+array schemas retain the existing generic text path. Exact record offsets must
+survive braces, quotes, and escapes in string values. This is a source-format
+read repair: retrieval ranking, published Signal definitions, source admission,
+and completed artifacts remain unchanged.
 After ordinary target aliases are masked, a proper-name phrase explicitly described
 as a division, subsidiary, brand, business, unit, or segment of the masked target is
 also masked in model-facing evidence. This relation-based rule covers target

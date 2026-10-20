@@ -1,0 +1,61 @@
+{
+  "results": {
+    "native": {
+      "latest_operand_whole_literals_visible": {
+        "CashAndCashEquivalentsAtCarryingValue": 0,
+        "LiabilitiesCurrent": 0
+      },
+      "selected_order_unchanged": true,
+      "projection_count": 52,
+      "visible_characters": 31968,
+      "fact_context_count": 52
+    },
+    "counter": {
+      "latest_operand_whole_literals_visible": {
+        "CashAndCashEquivalentsAtCarryingValue": 1,
+        "LiabilitiesCurrent": 1
+      },
+      "selected_order_unchanged": true,
+      "projection_count": 52,
+      "visible_characters": 31986,
+      "fact_context_count": 52
+    }
+  },
+  "bindings": {
+    "runs/diagnostics/default_llm_financial_read_20261021_v1/driver/result.json": "b77a82e394ed489a533ff871ab65ddc73f179e8b5d68a6c289c6714b0151d550",
+    "runs/diagnostics/measurement_input_selection_20261021_v1/plan.json": "4d392d1ba3a326a05b2fda304cbd5a6c8f266e7ae98672df852ca404249e3403",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_to_current_liabilities_ratio/versions/v1/spec.json": "fa9c01516ad10b31c164542589a6b92d1904bd38a1127dc7c3a51fb7d2881909",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_to_current_liabilities_ratio/versions/v1/skill.md": "b2378e03613546a77f0e586052c18512dfb3ee535f7a0e694e5fd7beb0df3ce0",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1289.json": "ce8e9970805b60eee87c661bef6c3b78afe1ab285846f01dee47535c5ccaeec5",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1290.json": "eba93bef24e0f67a85e1c59f279de2a806d326d1dde208bb174ae0d13033e676",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1291.json": "a3d78198964e6840f2bd5dd9658fe3c6dcf1d5aeb67777b37be30f7caddc9dc4",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1310.json": "d513ed0b87315ead8f9de12ae1b7fee9d4b0ff420fa80530d919af39314fc3e1",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1314.json": "0e8b219b559d41b4b48a563ab13ce4f49347d224d4ffb62b2c3844ed2dee7de1",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1317.json": "009979469c7ec7821431bee8cad2a43c00fb9661b07a51f088f4b040eaa399df",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1318.json": "362dc8d9bce1b3fcbcd572d3bc244de737f246b1b986da6cce50b259037a2574",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1321.json": "8bf8ab51c929ca5673268f596d8d91090d644cfedaef6ff27db7b98ac9f889db",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1322.json": "b770b94c970981e75f24adce4d229a7c19cbf605dd1ad24043052081fd9e06f6",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1326.json": "d3b0d087f656521a3bdc7a7b6f51040ced3e5328170824c889006923c2da069c",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1330.json": "993e42e05f25b08e7f9d358489e64fcf5b0b55f6b3ee9d687fe19c4cc8fb36c8",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1333.json": "293e81334364830e7882c0cc94975c120ebd876cecc5608cc8ab32e74dda6ba1",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1334.json": "3da987fe0163aa81c64b8ef1dfa8d625a49ef06157c043945367055ff953f663",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1335.json": "0c21414abab8a073ec072eec952885ac9f48cc0bec767868bba3fe89e8188aa7",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1776.json": "9df665e5ea1b21744280b37592afd5d5a0426b0d871a0cb52b6a334264f8edd8",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1777.json": "03249d39e41d743380efb37a00c0bf032a202a55f2102335d12f069191b35750",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1778.json": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4",
+    "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+    "src/stock_opportunity_agent/research/evolution_core.py": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1",
+    "src/stock_opportunity_agent/research/evolution_signal_roles.py": "4abcf50e9831364afa838526de7c54958f9cdddca0f4d88f46c95b5ba31a5d24",
+    "/Users/l/Project/Recommandation/runs/diagnostics/typed_company_facts_projection_20261021_v1/root/pure-read-check.py": "8cfd0bf02303de7c4b957addfa667e127b5e86f06fd85f51853ac8b1afaf2dcc"
+  },
+  "source_files_unchanged": true,
+  "source_schema": "sec-company-facts-document-v1",
+  "helper_partial": true,
+  "helper_omitted_concepts": 134,
+  "limits": [
+    "pure local projection only; no transmitted prompt or model output",
+    "counter selection is previously frozen diagnostic; production ranking unchanged",
+    "no ratio, Signal execution, new source admission or complete-stage restore"
+  ]
+}

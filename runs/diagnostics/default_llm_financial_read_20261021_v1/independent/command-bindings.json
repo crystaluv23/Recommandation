@@ -1,0 +1,23 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/default_llm_financial_read_20261021_v1/independent/read-path-probe.py > runs/diagnostics/default_llm_financial_read_20261021_v1/independent/read-path-first.log 2>&1",
+  "exit_code": 0,
+  "artifacts": {
+    "read-path-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/independent/read-path-probe.py",
+      "sha256": "4154424440264a539de71bea39f773b8d153aea6ea05bb0658b44939c086bac0"
+    },
+    "read-path-first.log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/independent/read-path-first.log",
+      "sha256": "571c363311a6fd9f62db1c78350acd37b288143e7e92ff902963be8be7b7a48d"
+    },
+    "read-path-results.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/independent/read-path-results.json",
+      "sha256": "4b1eed6b552a8e6bd632a9d5a98666e355be6b0d5d2412c4c0894cc6ec1fc24b"
+    },
+    "scope-and-interface-review.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/independent/scope-and-interface-review.json",
+      "sha256": "7cd4149784f3cdc27ae5b465b0bef09e11b2b47d6a8c5edf3e58a6f98c31a9dc"
+    }
+  },
+  "scope": "Source JSON reads + pure rank/projection only; no Store/Signal/caller/prepare invocation; entrypoint/version review performed statically from code and Registry metadata only."
+}

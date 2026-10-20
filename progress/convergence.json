@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T19:35:10+00:00",
+    "checked_at": "2026-10-20T19:55:25+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal after first-answer fixture stage and independent actual review; no budget limit; full MVP remains open"
+    "source": "Actual root get_goal after typed source reader and independent actual read review; no budget limit; full MVP remains open"
   },
   "acceptance": [
     {
@@ -1121,18 +1121,37 @@
         "runs/diagnostics/s5_fixture_authoring_20261021_v1/initial-error-root-actual-audit.json"
       ],
       "result": "Actual one fresh exact-inbox role78 first answer accepted0correction, two schema fixed controls independently pass2of2. Actual native strict validator/isolated staging/load preserve raw/cache/staged/loaded tests; literal USD120/150 operands, canonical syntheticCIK, publication cutoff and2024duration give0.25 positive under unchanged seed parameters.177frozen codebindings verified,20stagefiles unique completedrestore equal/0newdispatch;14241logical reservation, hostcostunknown. Root initial audit wrongly assumed flat saved result then bare tests list; both corrected read-only and20sealedfiles unchanged. No externalLLMAPI/GET/real labels/stablepublication/fullMining/newmeasurementimplementation/reuse/fullS5/MVP/benefit. Private stage exacttimestamp-string comparison remains an untested equivalent-Z/offset boundary, unaffected current+00controls, no frozen hotfix. Next diagnose actual defaultLLM57to10 source selection/read access before broader Slow work."
+    },
+    {
+      "id": "engineering-mvp-typed-companyfacts-reading-20261021",
+      "strategy": "typed_source_reader_before_bounded_llm_projection",
+      "failure_families": [
+        "normalized_companyfacts_array_bypasses_structured_read",
+        "bounded_projection_can_hide_conflicting_fact_alternatives"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/gpre-readable-period-selection-20261021.md",
+        "runs/diagnostics/default_llm_financial_read_20261021_v1/driver/findings.json",
+        "runs/diagnostics/default_llm_financial_read_20261021_v1/independent/scope-and-interface-review.json",
+        "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/actual-read-result.json",
+        "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-tests.json",
+        "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/final-review.json",
+        "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/actual-read-review.json"
+      ],
+      "result": "Local format/atomicity repair: actual SEC producer reaches structured shared projection, payload and raw citation; typed groups retain latest conflicts/durations/units/comparable periods through32k/token budgets. Old nested helper unchanged. Original producer2red, final63associated and13independent tests pass; initial7fail are root overbroad complete_json guard blocking local pending tests, retained and corrected at actual HTTP layer. Actual fixed10 counter has both Q1 latest whole literals once within31986chars; native stillzero within31968because selection unchanged.52structured records each; helper partial134omitted groups disclosed. Qualified sources/definitions unchanged. No model, ratio, Signal execution, GET, labels, append, publication or completedstage reentry. Pure projection does not establish sent model behavior/fullF5/MVP. Entry scope distinguishes no-override minimal v143/v6, explicitv182/v12 and generalinit; no silent Registry substitution."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-s5-fixture-author-actual-20261021",
+    "after_iteration": "engineering-mvp-typed-companyfacts-reading-20261021",
     "evidence": [
-      "reports/s5-fixture-authoring-contract-20261021.md",
-      "runs/diagnostics/s5_fixture_authoring_20261021_v1/root-actual-result.json",
-      "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-completed-restore.json",
-      "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-review.json",
-      "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-command-bindings.json",
-      "runs/diagnostics/s5_fixture_authoring_20261021_v1/initial-error-root-actual-audit.json",
-      "reports/gpre-readable-period-selection-20261021.md"
+      "reports/gpre-readable-period-selection-20261021.md",
+      "runs/diagnostics/default_llm_financial_read_20261021_v1/driver/findings.json",
+      "runs/diagnostics/default_llm_financial_read_20261021_v1/independent/scope-and-interface-review.json",
+      "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/actual-read-result.json",
+      "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-tests.json",
+      "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/final-review.json",
+      "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/actual-read-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1195,22 +1214,24 @@
       "Checking residual scope, adopted evidence and downstream exactness alone misses auxiliary raw operations deleted by deterministic repair. Actual first answer p01 contains a truthful coverage-only mixed belief; topic subset plus any negative marker misclassifies the explicit negation of economic absence. Native acceptance with0model corrections can include mechanical deletion. Independent raw-to-state delta and exact helper reproduction expose it; target3of3 is scoped separately. Root terminal audit also initially ignored the existing identity mask and was corrected without product rerun.",
       "Correction to preceding p01 diagnosis: existing field placement and atomic quarantine authorize removal; raw deletion alone did not prove critical information loss. The demonstrated new bugs are marker-free weak acceptance and same-topic exact-source misattribution. Initial13/28 missed the no-unavailable adjacent restoration path; root281 exposed2 eager-projection regressions, final282 and independent31 now cover it. S5 shared execution instructions also never reached the separate tests-materialization request, so only editing that helper would not fix the actual producer.",
       "Shared authoring text only reached spec/legacy roles, not the independent tests author; even new schema field documentation required explicit tests_schema forwarding. str(dict) converted an invalid fixture shape to parse-skip/unavailable, so instruction presence was weaker than consumer enforcement. Prior158 numeric/runtime selectors missed two Slow producers still omitting metadata; current66 covers them. A private stage oracle accepted supplied fact literals in an unrelated JSON carrier while executable rows lacked source fields, so whole-body substring and same-ratio success are weaker than actual row lineage.",
-      "Actual first answer obeys explicit shared fixture semantics/schema and both supplied schemas, but accepted known spec/hand-frozen synthetic facts prove tests-author behavior only. Root twice assumed saved data shape instead of inspecting it (nested state, tests wrapper); correction was read-only with all20 sealed bytes unchanged. Diagnostic timestamp-string equality may reject equivalent instants; current exact+00success cannot close that family. Default cash_ratio LLM receives only ten frequency-ranked docs, no tool to retrieve unselectedQ1, so source existence and resolved status do not prove model access."
+      "Actual first answer obeys explicit shared fixture semantics/schema and both supplied schemas, but accepted known spec/hand-frozen synthetic facts prove tests-author behavior only. Root twice assumed saved data shape instead of inspecting it (nested state, tests wrapper); correction was read-only with all20 sealed bytes unchanged. Diagnostic timestamp-string equality may reject equivalent instants; current exact+00success cannot close that family. Default cash_ratio LLM receives only ten frequency-ranked docs, no tool to retrieve unselectedQ1, so source existence and resolved status do not prove model access.",
+      "Earlier projection controls used nested SEC fixtures while real acquisition produces a typed facts array; numeric parser/input preparation success did not enter the model projection. Same-period conflicts also need to survive later character and token fitting, not only the source helper.",
+      "A root network safety guard on public complete_json blocks legitimate offline pending/cache tests; initial7fail reflect harness placement, not product regression. Block actual HTTP/network and real labels while permitting native local transport. Existing producer permits numeric strings; the initial independent rejection expectation was too narrow and was corrected against source contract."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "default_llm_financial_source_selection_and_access_before_model",
-      "action": "Use the completed qualified GPRE view and actual default_v6 cash_to_current_liabilities_ratio:v1 request/skill to bind the57eligible/10selected pool, exact latest concept/period/unit witnesses and ranking causes. Trace actual StructuredLLMSignalRunner payload/read capabilities for unselected sources. Compare bounded generic selection counterexamples without changing old Registry, executing model/ratio, appending sources or reading labels.",
-      "stop": "No hardcoded Signal/company/schema bypass, prose parsed as an invented measurement contract, silent switch to v12, rewritten published skill, global ranking change or new LLM role before evidence identifies a necessary producer/read fix. Completed S5/F7/source stages remain immutable; no full successor.",
-      "question": "Is the default LLM financial gap caused by unavailable qualifying source data, selection under the10-doc cap, or a reading channel that can already reach the omitted latest source?",
-      "pass": "Exact qualified source contains both needed latest concepts at legal issuer/period/unit/PIT and actual ranking excludes it; outgoing role/read channels prove whether it can recover the omitted source. Representative long-old-text/keyword/dominance controls distinguish the producer/read cause without using an output score.",
-      "fail": "Latest qualified source lacks a required concept/period or actual supported read channel already exposes it; the previous typed-Q1 membership flag alone overstates a measurement gap.",
-      "on_pass": "Prepare the smallest spec-first repair at the first failing selection/read boundary, preserving generic source types and bounded budgets, then validate actual current-payload consumption before a fresh Signal apply.",
-      "on_fail": "Keep honest specific input/readability gap and inspect the real available measurement basis; do not hardcode a newer document or declare model failure without an actual call.",
-      "new_evidence": "Fresh fixture author first answer passes2schema native controls and completedrestore; broader Slow capability remains open. Actual default cash_ratio has57matched eligible/10selected all older; generic query count ranks before availability, LLM has no deterministic callable-owned selector and native runner only projects selected docs. Old published skill accession-prefix identity wording is a separate unexecuted risk.",
-      "distinguishing_variable": "All qualified eligible source facts versus exact selected and model-visible documents, with fixed ref/version/query/cap and no model output; actual recovery channel existence is checked separately from local retention.",
-      "authorization_evidence": "Active user engineering MVP goal, public read-only sources permitted, externalLLMAPI prohibited; this next step is local read-only diagnosis with no new role/GET/label/publication or full successor. No old experiment resume."
+      "strategy": "bounded_actual_llm_source_selection_before_apply",
+      "action": "Use the already qualified pool and exact native LLM request/runner scope to evaluate one bounded source-selection policy at existing EvidenceResolver.select_documents. Keep original v6 versus explicit v12 evidence distinct. Check long-old repetition, new irrelevant documents, required source/period coverage and necessary conflict/comparison witnesses. Only after a feasible selected set exposes both complete latest literals under unchanged caps prepare a separately frozen fresh exact-inbox Signal call.",
+      "stop": "No new acquisition/model/labels/full successor during selection diagnosis; no prose-to-formula invention, company/Signal hardcoding, silent Registry switch, published-v1 hot edit, global rank rewrite or tuning successive policies to obtain one pass. Counter failures preserve the gap and change the hypothesis instead of extending a framework.",
+      "question": "Can a bounded opt-in selection within the actual LLM runner preserve required source/period/conflict evidence while correcting the observed long-old-document exclusion, now that typed source reading works?",
+      "pass": "The fixed policy selects an unchanged eligible set of at most10, satisfies original required coverage, preserves independently specified comparison/conflict witnesses and exposes both latest original literals within32000characters across the original and fixed counterexamples.",
+      "fail": "Any required witness is lost, irrelevant new text evicts actual evidence, or the latest complete source facts still cannot reach the view; improving Q1 document membership alone is insufficient.",
+      "on_pass": "Implement only the justified existing-boundary policy with exact source identity and unknown/custom runner compatibility; validate native current payload before a separately frozen fresh subagent apply.",
+      "on_fail": "Keep the exact family open and inspect the first missing witness or unsupported source contract; do not compensate with a new model layer, a Registry substitution or larger budgets.",
+      "new_evidence": "Typed reader now passes actual producer/consumer and source10 counter controls; old production selection still lacksQ1. Entry-point review proves v143/v6 is specific to no-override minimal prepare, not universal default. Source data is sufficient and the reading defect is locally repaired, separating selection from model behavior.",
+      "distinguishing_variable": "Eligible pool versus selected original records versus whole model-visible fact literals, holding exact version/query/source scope/caps fixed; source and period/conflict witness preservation is measured separately from lexical relevance.",
+      "authorization_evidence": "User active engineering MVP goal; production LLM nodes use fresh independent subagents, externalLLMAPI prohibited, public read-only sourcing permitted. This next step is local bounded selection diagnosis, with completed runs and stages immutable."
     }
   },
   "successor_prerequisites": [

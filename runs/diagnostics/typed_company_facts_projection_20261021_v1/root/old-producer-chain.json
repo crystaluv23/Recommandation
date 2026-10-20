@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_company_facts_projection_producer_chain",
+    "-v"
+  ],
+  "returncode": 1,
+  "bindings": {
+    "src/stock_opportunity_agent/research/evolution_core.py": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d",
+    "src/stock_opportunity_agent/research/evolution_signal_roles.py": "1ef644e6041ee93d46db1098b4058eca4a4bae35019bef5dd61694e86610303a",
+    "tests/test_company_facts_projection_producer_chain.py": "791ec6d09ffcabcee03ff5ee4350acfa2e3d5ef447d44fcae8c8d3bfc626c50a"
+  }
+}

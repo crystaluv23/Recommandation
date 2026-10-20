@@ -1,0 +1,66 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/counterfactual-projection.json",
+      "sha256": "1752724cffc7a0938efe817950d154e629c4317bd67670a1828e0fff5cb2c615"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/counterfactual-resolution.json",
+      "sha256": "cb2df78bafd00500ea6ef8375a1a8964678c78e992aab282b6e6b2fcb86baafa"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/findings.json",
+      "sha256": "7a86186f5bc1d8b6d2bfa3c400b0ff0300794de731c6db63efe7b9d66db73a00"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/latest-facts.json",
+      "sha256": "de76459fc7e446ca616ac71a782b01149e0b9c9dcf4d6434842580c3bca0a20c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/native-projection.json",
+      "sha256": "6f2bc4d3dc38567432c6a68935c41a080db88168ae069870f19e27230a8089de"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/native-resolution.json",
+      "sha256": "7e371eb77c854ab953c0440b82afd5d68692d3db72166f8253e88c9ecb60bec4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/probe-v2.log",
+      "sha256": "33c6f0e96201fd8c1af252628d8818cc0e1728ff51782ba3b881073a5a49f115"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/probe-v2.py",
+      "sha256": "f8027f270c6b86dce75bc02f033e3acf4721bda8ab32a05d36bf890ffba42b23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/probe.log",
+      "sha256": "ceb4ee6a8a6da9dac2df0895b20bfa4d1a407594986ae879bc974c7647d3522e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/probe.py",
+      "sha256": "8307545eeadf0028ef39ef296b55f9deb0f515b98f1b2f9a27bd211009fff180"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/ranked-documents.json",
+      "sha256": "8718e6d08a8294f9299bc597e8bdf8cab9075c7e9e607868989952f4dab5c99e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/readability-check.json",
+      "sha256": "e02c75729255eaa67f5de5fa227d58412093d42ae0868b3b8e71ef480782a5fe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/readability-check.log",
+      "sha256": "0cbc901d556e98f49ab2be1103728355d5127acf59a3e0aab7d59682914883cd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/readability-check.py",
+      "sha256": "370e539fe339bc93682077bb8903ad54af05fbe011937a6ac39f482184e6a9cc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/driver/result.json",
+      "sha256": "b77a82e394ed489a533ff871ab65ddc73f179e8b5d68a6c289c6714b0151d550"
+    }
+  ],
+  "limits": "No ratio/Signal execution, model, GET, labels, append, Registry writes, fullprepare or old stage reentry.",
+  "forbidden_calls": []
+}

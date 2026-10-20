@@ -1,0 +1,23 @@
+test_native_producer_reaches_structured_payload_and_raw_citation (tests.test_company_facts_projection_producer_chain.CompanyFactsProjectionProducerChainTests.test_native_producer_reaches_structured_payload_and_raw_citation) ... FAIL
+test_shared_payload_has_no_cross_signal_citation_eligibility (tests.test_company_facts_projection_producer_chain.CompanyFactsProjectionProducerChainTests.test_shared_payload_has_no_cross_signal_citation_eligibility) ... FAIL
+
+======================================================================
+FAIL: test_native_producer_reaches_structured_payload_and_raw_citation (tests.test_company_facts_projection_producer_chain.CompanyFactsProjectionProducerChainTests.test_native_producer_reaches_structured_payload_and_raw_citation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_company_facts_projection_producer_chain.py", line 63, in test_native_producer_reaches_structured_payload_and_raw_citation
+    self.assertEqual(len(rows), 4)
+AssertionError: 1 != 4
+
+======================================================================
+FAIL: test_shared_payload_has_no_cross_signal_citation_eligibility (tests.test_company_facts_projection_producer_chain.CompanyFactsProjectionProducerChainTests.test_shared_payload_has_no_cross_signal_citation_eligibility)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_company_facts_projection_producer_chain.py", line 100, in test_shared_payload_has_no_cross_signal_citation_eligibility
+    self.assertEqual(len(rows), 4)
+AssertionError: 1 != 4
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.002s
+
+FAILED (failures=2)

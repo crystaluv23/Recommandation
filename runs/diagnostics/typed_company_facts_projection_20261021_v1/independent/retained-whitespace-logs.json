@@ -1,0 +1,33 @@
+{
+  "reason": "Original test progress and lint echoes contain trailing spaces; preserve exact bytes in compressed tracked artifacts, originals unchanged locally",
+  "logs": [
+    {
+      "original": "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/original-corrected-harness-tests.log",
+      "original_sha256": "74fe55bab1c81bc9b4d8cf73f1db5aea02e19c0c7dabc961c4bd14406f7986a1",
+      "archive": "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/original-corrected-harness-tests.log.gz",
+      "archive_sha256": "a4660f9c03c9486093ee438e2a77c8d3445b162e868f8989d42cfe48cd51acfe",
+      "original_preserved_locally": true
+    },
+    {
+      "original": "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/original-tests.log",
+      "original_sha256": "bd9ffd20e18f818d35844489950bcd8b435e016ceccfe224cd9b02e481030039",
+      "archive": "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/original-tests.log.gz",
+      "archive_sha256": "2a4bbb36b0df0410e0de59cb0fd3165e9b0fceaf6755e89cbef8b1b1fba393c1",
+      "original_preserved_locally": true
+    },
+    {
+      "original": "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/initial-lint.log",
+      "original_sha256": "ef620767152e4d626b9c86628d2ef8ed944dbc468d665906ca6a2652d3711a93",
+      "archive": "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/initial-lint.log.gz",
+      "archive_sha256": "22886ec2d998fb068590d5a3ca83db148d1da7986cd4df0ea1447c6fda34a191",
+      "original_preserved_locally": true
+    },
+    {
+      "original": "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/second-lint.log",
+      "original_sha256": "3287d0ead6b1c7a38fcc8deabd75a3991c6df6dbdc4e3491f2d3113fcc5c0ae9",
+      "archive": "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/second-lint.log.gz",
+      "archive_sha256": "5671f8ff7a4d5f599752239aa80eac9bf6cf4800984aa87cf86338906a64f90d",
+      "original_preserved_locally": true
+    }
+  ]
+}

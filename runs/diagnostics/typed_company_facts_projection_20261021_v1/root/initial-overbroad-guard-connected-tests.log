@@ -1,0 +1,222 @@
+test_native_producer_reaches_structured_payload_and_raw_citation (tests.test_company_facts_projection_producer_chain.CompanyFactsProjectionProducerChainTests.test_native_producer_reaches_structured_payload_and_raw_citation) ... ok
+test_request_budget_cannot_keep_only_one_conflicting_alternative (tests.test_company_facts_projection_producer_chain.CompanyFactsProjectionProducerChainTests.test_request_budget_cannot_keep_only_one_conflicting_alternative) ... ok
+test_shared_payload_deduplicates_facts_and_retains_both_owners (tests.test_company_facts_projection_producer_chain.CompanyFactsProjectionProducerChainTests.test_shared_payload_deduplicates_facts_and_retains_both_owners) ... ok
+test_braces_quotes_escapes_and_unicode_preserve_exact_offsets (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_braces_quotes_escapes_and_unicode_preserve_exact_offsets) ... ok
+test_future_and_invalid_rows_cannot_borrow_valid_parent (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_future_and_invalid_rows_cannot_borrow_valid_parent) ... ok
+test_future_or_invalid_parent_is_empty_partial_not_generic (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_future_or_invalid_parent_is_empty_partial_not_generic) ... ok
+test_latest_cash_and_liabilities_use_complete_typed_literals (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_latest_cash_and_liabilities_use_complete_typed_literals) ... ok
+test_latest_same_end_conflicts_and_distinct_durations_survive (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_latest_same_end_conflicts_and_distinct_durations_survive) ... ok
+test_nearest_comparable_prior_per_latest_duration_not_nearest_end_only (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_nearest_comparable_prior_per_latest_duration_not_nearest_end_only) ... ok
+test_producer_supported_numeric_string_is_retained_verbatim (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_producer_supported_numeric_string_is_retained_verbatim) ... ok
+test_projection_character_cap_does_not_split_an_alternative_group (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_projection_character_cap_does_not_split_an_alternative_group) ... ok
+test_projection_latest_labels_disclosures_and_shared_ownership (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_projection_latest_labels_disclosures_and_shared_ownership) ... ok
+test_small_budget_omits_complete_conflicting_group_and_discloses_partial (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_small_budget_omits_complete_conflicting_group_and_discloses_partial) ... ok
+test_structured_read_never_mutates_raw_identity_or_records (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_structured_read_never_mutates_raw_identity_or_records) ... ok
+test_units_are_separate_groups_not_a_currency_preference (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_units_are_separate_groups_not_a_currency_preference) ... ok
+test_unknown_array_schema_keeps_generic_path_without_fact_authority (tests.test_typed_company_facts_projection_boundaries.TypedCompanyFactsProjectionBoundariesTests.test_unknown_array_schema_keeps_generic_path_without_fact_authority) ... ok
+test_absence_guard_is_named_case_local_and_semantic_not_mechanical (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_absence_guard_is_named_case_local_and_semantic_not_mechanical) ... ok
+test_adapter_discloses_prior_and_corrects_only_false_gap (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_adapter_discloses_prior_and_corrects_only_false_gap) ... ok
+test_comparison_inventory_requires_executed_scope_dates_and_cutoff (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_comparison_inventory_requires_executed_scope_dates_and_cutoff) ... ok
+test_duplicate_case_can_be_removed_without_reassigning_identity (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_duplicate_case_can_be_removed_without_reassigning_identity) ... ok
+test_gap_patch_cannot_rewrite_an_existing_fact (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_gap_patch_cannot_rewrite_an_existing_fact) ... ok
+test_insufficient_verdict_can_change_when_every_gap_is_proven_false (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_insufficient_verdict_can_change_when_every_gap_is_proven_false) ... ok
+test_invalid_extra_diagnostic_is_not_silently_discarded (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_invalid_extra_diagnostic_is_not_silently_discarded) ... ok
+test_leaf_permission_and_snapshot_are_required (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_leaf_permission_and_snapshot_are_required) ... ok
+test_mixed_defect_correction_base_preserves_restored_literal (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_mixed_defect_correction_base_preserves_restored_literal) ... ok
+test_other_case_source_does_not_grant_literal_restoration (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_other_case_source_does_not_grant_literal_restoration) ... ok
+test_update_restores_same_scope_before_any_llm_correction (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_update_restores_same_scope_before_any_llm_correction) ... ok
+test_whole_typed_equivalence_and_ambiguity (tests.test_source_json_literal_contract.SourceJsonLiteralTests.test_whole_typed_equivalence_and_ambiguity) ... ok
+test_active_case_scope_takes_precedence_over_aggregate_guard (tests.test_case_identity_transport.CaseIdentityTransportTests.test_active_case_scope_takes_precedence_over_aggregate_guard) ... ok
+test_all_caps_formal_name_brand_masks_mixed_case_prose_without_folding_tickers (tests.test_case_identity_transport.CaseIdentityTransportTests.test_all_caps_formal_name_brand_masks_mixed_case_prose_without_folding_tickers) ... ok
+test_already_disclosed_tail_survives_predictor_assembly (tests.test_case_identity_transport.CaseIdentityTransportTests.test_already_disclosed_tail_survives_predictor_assembly) ... ok
+test_case_scope_unwinds_and_is_not_shared_between_workers (tests.test_case_identity_transport.CaseIdentityTransportTests.test_case_scope_unwinds_and_is_not_shared_between_workers) ... ok
+test_derived_brand_estimation_wire_cache_and_original_restore_agree (tests.test_case_identity_transport.CaseIdentityTransportTests.test_derived_brand_estimation_wire_cache_and_original_restore_agree) ... FAIL
+test_explicit_short_identity_fields_do_not_use_prose_exception (tests.test_case_identity_transport.CaseIdentityTransportTests.test_explicit_short_identity_fields_do_not_use_prose_exception) ... ok
+test_generic_business_words_survive_derived_brand_masking (tests.test_case_identity_transport.CaseIdentityTransportTests.test_generic_business_words_survive_derived_brand_masking) ... ok
+test_negated_future_results_scope_does_not_reject_pit_event_question (tests.test_case_identity_transport.CaseIdentityTransportTests.test_negated_future_results_scope_does_not_reject_pit_event_question) ... ok
+test_persisted_actual_wire_is_blind_and_cached_quote_restores_exactly (tests.test_case_identity_transport.CaseIdentityTransportTests.test_persisted_actual_wire_is_blind_and_cached_quote_restores_exactly) ... FAIL
+test_predictor_estimate_equals_prepared_wire_with_incremental_instructions (tests.test_case_identity_transport.CaseIdentityTransportTests.test_predictor_estimate_equals_prepared_wire_with_incremental_instructions) ... FAIL
+test_predictor_estimator_shares_actual_prompt_payload_and_output_headroom (tests.test_case_identity_transport.CaseIdentityTransportTests.test_predictor_estimator_shares_actual_prompt_payload_and_output_headroom) ... ok
+test_projection_preserves_snapshot_patch_authority_and_untouched_siblings (tests.test_case_identity_transport.CaseIdentityTransportTests.test_projection_preserves_snapshot_patch_authority_and_untouched_siblings) ... ok
+test_projection_roundtrip_preserves_financial_numbers_and_literal_case (tests.test_case_identity_transport.CaseIdentityTransportTests.test_projection_roundtrip_preserves_financial_numbers_and_literal_case) ... ok
+test_real_terminal_needs_cannot_request_post_cutoff_actuals (tests.test_case_identity_transport.CaseIdentityTransportTests.test_real_terminal_needs_cannot_request_post_cutoff_actuals) ... ok
+test_runtime_scopes_every_distinct_caller_and_unwinds_cancellation (tests.test_case_identity_transport.CaseIdentityTransportTests.test_runtime_scopes_every_distinct_caller_and_unwinds_cancellation) ... ok
+test_security_table_estimate_wire_and_token_copy_restore_agree (tests.test_case_identity_transport.CaseIdentityTransportTests.test_security_table_estimate_wire_and_token_copy_restore_agree) ... FAIL
+test_short_alias_inventory_wire_estimate_cache_and_restore_agree (tests.test_case_identity_transport.CaseIdentityTransportTests.test_short_alias_inventory_wire_estimate_cache_and_restore_agree) ... FAIL
+test_short_identity_json_metadata_preserves_syntax_and_nonidentity_values (tests.test_case_identity_transport.CaseIdentityTransportTests.test_short_identity_json_metadata_preserves_syntax_and_nonidentity_values) ... ok
+test_short_ticker_security_table_positions_share_mask_and_guard (tests.test_case_identity_transport.CaseIdentityTransportTests.test_short_ticker_security_table_positions_share_mask_and_guard) ... ok
+test_standalone_slow_runner_uses_bound_owner_for_actual_request (tests.test_case_identity_transport.CaseIdentityTransportTests.test_standalone_slow_runner_uses_bound_owner_for_actual_request) ... FAIL
+test_unscoped_guard_inventory_projects_sec_handles_at_common_boundary (tests.test_case_identity_transport.CaseIdentityTransportTests.test_unscoped_guard_inventory_projects_sec_handles_at_common_boundary) ... FAIL
+test_shared_projection_preserves_short_sources_and_independent_signals (tests.test_evolution_execution_roles.SignalExecutionAndInitializeRoleTests.test_shared_projection_preserves_short_sources_and_independent_signals) ... ok
+test_structured_facts_bind_complete_records_to_concept_and_period (tests.test_evolution_execution_roles.SignalExecutionAndInitializeRoleTests.test_structured_facts_bind_complete_records_to_concept_and_period) ... ok
+test_llm_signal_runner_projects_large_raw_info_to_exact_bounded_spans (tests.test_evolution_execution_roles.SignalExecutionAndInitializeRoleTests.test_llm_signal_runner_projects_large_raw_info_to_exact_bounded_spans) ... ok
+test_company_facts_context_preserves_semantics_offsets_and_periods (tests.test_signal_evolution_engine.SignalEvolutionTests.test_company_facts_context_preserves_semantics_offsets_and_periods) ... ok
+test_company_facts_context_marks_bounded_omissions_partial (tests.test_signal_evolution_engine.SignalEvolutionTests.test_company_facts_context_marks_bounded_omissions_partial) ... ok
+test_queryless_company_facts_prefers_comparable_operating_concepts (tests.test_signal_evolution_engine.SignalEvolutionTests.test_queryless_company_facts_prefers_comparable_operating_concepts) ... ok
+test_company_facts_identity_masking_drops_nonliteral_records (tests.test_signal_evolution_engine.SignalEvolutionTests.test_company_facts_identity_masking_drops_nonliteral_records) ... ok
+test_exploration_company_facts_citations_stay_inside_one_record (tests.test_signal_evolution_engine.SignalEvolutionTests.test_exploration_company_facts_citations_stay_inside_one_record) ... ok
+test_signal_internal_edges_ignore_surrounding_whitespace (tests.test_evolution_reflection_roles.ReflectionRoleAdapterTests.test_signal_internal_edges_ignore_surrounding_whitespace) ... ok
+test_signal_document_boundaries_and_interior_literals_remain_valid (tests.test_evolution_reflection_roles.ReflectionRoleAdapterTests.test_signal_document_boundaries_and_interior_literals_remain_valid) ... ok
+test_v12_signal_evidence_rejects_internal_projection_edge_fragment (tests.test_evolution_reflection_roles.ReflectionRoleAdapterTests.test_v12_signal_evidence_rejects_internal_projection_edge_fragment) ... ok
+test_v103_signal_raw_mapping_is_exact_quote_not_projection_window (tests.test_evolution_reflection_roles.ReflectionRoleAdapterTests.test_v103_signal_raw_mapping_is_exact_quote_not_projection_window) ... ok
+test_two_soft_signals_share_one_projection_call_and_map_to_raw (tests.test_evolution_reflection_roles.ReflectionRoleAdapterTests.test_two_soft_signals_share_one_projection_call_and_map_to_raw) ... ok
+test_v30_shared_soft_projection_preserves_per_signal_document_scope (tests.test_evolution_reflection_roles.ReflectionRoleAdapterTests.test_v30_shared_soft_projection_preserves_per_signal_document_scope) ... ok
+
+======================================================================
+FAIL: test_derived_brand_estimation_wire_cache_and_original_restore_agree (tests.test_case_identity_transport.CaseIdentityTransportTests.test_derived_brand_estimation_wire_cache_and_original_restore_agree)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_case_identity_transport.py", line 137, in test_derived_brand_estimation_wire_cache_and_original_restore_agree
+    client.complete_json(**kwargs)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-check.py", line 45, in forbidden
+    raise AssertionError('External network/model and real labels forbidden in offline checks')
+AssertionError: External network/model and real labels forbidden in offline checks
+
+======================================================================
+FAIL: test_persisted_actual_wire_is_blind_and_cached_quote_restores_exactly (tests.test_case_identity_transport.CaseIdentityTransportTests.test_persisted_actual_wire_is_blind_and_cached_quote_restores_exactly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_case_identity_transport.py", line 349, in test_persisted_actual_wire_is_blind_and_cached_quote_restores_exactly
+    client.complete_json(**kwargs)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-check.py", line 45, in forbidden
+    raise AssertionError('External network/model and real labels forbidden in offline checks')
+AssertionError: External network/model and real labels forbidden in offline checks
+
+======================================================================
+FAIL: test_predictor_estimate_equals_prepared_wire_with_incremental_instructions (tests.test_case_identity_transport.CaseIdentityTransportTests.test_predictor_estimate_equals_prepared_wire_with_incremental_instructions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_case_identity_transport.py", line 283, in test_predictor_estimate_equals_prepared_wire_with_incremental_instructions
+    predictor.predict(context)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py", line 2038, in predict
+    prediction, usage = _complete_parsed_role(
+                        ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 3976, in _complete_parsed_role
+    return _complete_parsed_role_impl(caller, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py", line 4157, in _complete_parsed_role_impl
+    value, step_usage = _complete_json_with_invalid_value(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1672, in _complete_json_with_invalid_value
+    return caller.complete_json(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-check.py", line 45, in forbidden
+    raise AssertionError('External network/model and real labels forbidden in offline checks')
+AssertionError: External network/model and real labels forbidden in offline checks
+
+======================================================================
+FAIL: test_security_table_estimate_wire_and_token_copy_restore_agree (tests.test_case_identity_transport.CaseIdentityTransportTests.test_security_table_estimate_wire_and_token_copy_restore_agree)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_case_identity_transport.py", line 65, in test_security_table_estimate_wire_and_token_copy_restore_agree
+    client.complete_json(**kwargs)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-check.py", line 45, in forbidden
+    raise AssertionError('External network/model and real labels forbidden in offline checks')
+AssertionError: External network/model and real labels forbidden in offline checks
+
+======================================================================
+FAIL: test_short_alias_inventory_wire_estimate_cache_and_restore_agree (tests.test_case_identity_transport.CaseIdentityTransportTests.test_short_alias_inventory_wire_estimate_cache_and_restore_agree)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_case_identity_transport.py", line 176, in test_short_alias_inventory_wire_estimate_cache_and_restore_agree
+    client.complete_json(**kwargs)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-check.py", line 45, in forbidden
+    raise AssertionError('External network/model and real labels forbidden in offline checks')
+AssertionError: External network/model and real labels forbidden in offline checks
+
+======================================================================
+FAIL: test_standalone_slow_runner_uses_bound_owner_for_actual_request (tests.test_case_identity_transport.CaseIdentityTransportTests.test_standalone_slow_runner_uses_bound_owner_for_actual_request)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_case_identity_transport.py", line 448, in test_standalone_slow_runner_uses_bound_owner_for_actual_request
+    runner.execute_many((LLMSignalBatchInput(spec, (document,), "Inspect the literal."),), as_of)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py", line 5469, in execute_many
+    return self._execute_many(inputs, as_of)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py", line 5553, in _execute_many
+    value, step_usage = _complete_json_with_invalid_value(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1672, in _complete_json_with_invalid_value
+    return caller.complete_json(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-check.py", line 45, in forbidden
+    raise AssertionError('External network/model and real labels forbidden in offline checks')
+AssertionError: External network/model and real labels forbidden in offline checks
+
+======================================================================
+FAIL: test_unscoped_guard_inventory_projects_sec_handles_at_common_boundary (tests.test_case_identity_transport.CaseIdentityTransportTests.test_unscoped_guard_inventory_projects_sec_handles_at_common_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_case_identity_transport.py", line 200, in test_unscoped_guard_inventory_projects_sec_handles_at_common_boundary
+    client.complete_json(**kwargs)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-check.py", line 45, in forbidden
+    raise AssertionError('External network/model and real labels forbidden in offline checks')
+AssertionError: External network/model and real labels forbidden in offline checks
+
+----------------------------------------------------------------------
+Ran 63 tests in 0.362s
+
+FAILED (failures=7)

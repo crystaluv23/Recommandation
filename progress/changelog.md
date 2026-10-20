@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：F5只读native诊断区分57→10词频选文（Q1原rank46）与typed facts数组被nested-only reader跳过两门；限定入口v143默认/显式v182/一般init差异，不换Registry或改历史v1。spec-first扩既有reader，原row/value/string/offset及同end冲突、duration/币种/可比prior保留，整组贯穿32k/token预算，遗漏显式partial；旧nested逻辑不变。生产者链旧2红、最终63关联及13独立边界过；初7fail为root拦截公开complete_json误挡本地pending测试，保原log并仅下移HTTP guard，零外部/标签tripwire。实际预定10文档counter两最新完整literal各1/31986chars，native仍0/31968，源码外来源/定义字节保真；仅纯投影，0模型/Signal测量/GET/labels/append/重入。局部读取修复不关整体F5/MVP，下一有界选文及fresh apply前置。
+
 - 2026-10-21：c81c1986/cadf061d唯一prepare并freeze073309b8后，fresh role78 exactinbox唯一首答0纠错，原生tests作者→validator→隔离candidate→load实际双schema正控2/2。两组USD120/150→0.25fraction/2024duration与CIK/PIT/4事实literal/实际证据逐项独立核过；原答/cache/staged/loaded全等，177codebindings与20files唯一completed restore保真/0新派发，14241逻辑预留/host成本未知。root两次审计shape误读保留，未改产品/重跑；诊断oracle等价Z/offset边界未验，实际+00通过不外推。0外部LLMAPI/GET/real labels/稳定发布；关闭仅本bounded fixture作者控制，Mining/新测量实现/复用/全S5/MVP open，下一默认LLM选文入口诊断。
 
 - 2026-10-21：单次原生S5 tests作者runner/ownspec按固定独立root与1请求/131072逻辑预留/4000output/0纠错实现，隔离candidate Registry、两完整schema synthetic原件及实际native load/恢复。初16safe遗漏dead JSON载体可替实际facts字面量，独立旧770控制实际accepted但ratio本身正确；仅私有oracle改实际fact-row+selected evidence归属，并对每schema独立执行，拒同ratio其他basis。最终root18safe及独立14完整控通过；公开完整单文档样本条件、合法CIK表示保留，未改生产parser/作者原答。正式prepare/fresh模型尚0，所有历史/原红/审查harness错保留，不关S5/Mining/发布/复用/MVP。

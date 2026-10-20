@@ -31,10 +31,16 @@ v6确定性6/6、v12确定性9/9选typedQ1，现金parser latest由2023末到202
 [S5 fixture作者合同](../reports/s5-fixture-authoring-contract-20261021.md)已接真正独立tests作者，含shared CIK/既有literal义务及tests schema。
 独立发现object content经str变伪JSON而冒充unavailable成功，现构造前拒非string，不自动补值；22独立控过。
 root66另暴露两个旧Slow正控漏metadata，旧HEAD同2fail；仅具名producer补3行后66全过/五tripwire0。
-fresh authoring仍未验；单次诊断actual-row与非facts载体混淆已修，18safe/14独立预审过。
+单次诊断actual-row与非facts载体混淆已修，18safe/14独立预审过。
 c81c1986/cadf061d下fresh role78唯一首答0纠错，native双schema正控2/2，14241逻辑预留；原答→cache→候选→load全等。
 177冻结binding/20files唯一完成restore保真、0新派发；仅测试作者模块，非Mining/新测量实现/发布/复用或全S5。
 诊断oracle等价Z/offset字符串边界未验，实际+00输入不受影响，完成阶段不重入。
+
+[LLM选文/阅读诊断与修复](../reports/gpre-readable-period-selection-20261021.md)：旧v6 cash-ratio的Q1原件rank46/57未入10；固定词频饱和对照rank4仍漏现金literal。
+首次阅读丢失为真实typed facts数组被只认nested的helper跳过；现同reader支持typed原literal/offset、冲突/单位/可比期，组原子贯穿32k与token预算。
+63关联测试及13独立边界通过；初7失败为root过高guard拦本地pending transport，原log保留、改HTTP层后零tripwire。
+真实固定10文档对照：两最新完整operand均可见/31986chars；原native10仍均不可见/31968，排序未改。仅纯投影，0模型/测量/GET/labels。
+“默认v6”限run_minimal无override入口；显式v182用stable v12，一般init另有catalog，不能互代或称全系统默认。整体F5仍open。
 
 ## 已有局部证据与限制
 
@@ -81,5 +87,6 @@ issuer fixture生产者局部修复已过真实CLI与158关联检查，旧Regist
 unavailable局部修复关联检查已过，不改冻结产物；新模型行为和mirror触发仍未验。
 S5作者既有身份/literal/schema义务已接，非string content漏门已修；严格issuer/测量/PIT不放宽。
 fresh S5测试作者固定控制已独立审过2/2、20files恢复完成，不重入；新测量定义/实现生成仍未验。
-下一诊断默认LLM cash_ratio的57→10选文及未选资料可读性，保持旧版本/原始顺序失败证据；Slow发现/准入/后继使用仍待验。
+typed阅读局部缺陷已验；下一按实际LLM入口评估既有resolver callback内的有界选文，保持旧版本/原始顺序与counter差异，先证最新完整facts可读再fresh apply。
+Slow发现/准入/后继使用仍待验；不以修复typed读取代替选文、模型服从或完整闭环。
 LLM节点继续exact inbox独立subagent；0外部LLM API。不恢复旧运行或启动完整后继，不以0.8/输入resolved替代测量或MVP关闭。

@@ -116,3 +116,75 @@ fixtures, making this a real fixture-producer gap. Future positive fixtures need
 explicit consistent synthetic issuer declarations in body and metadata; do not
 guess an issuer in the auditor or rewrite published tests/spec versions. No
 all-green suite or complete F5/F6/F7/MVP closure is claimed.
+
+## LLM selection diagnosis and typed reading repair
+
+The completed [read-only diagnosis](../runs/diagnostics/default_llm_financial_read_20261021_v1/driver/findings.json)
+separates two losses. The qualified Q1 source contains both March 31, 2025 USD
+operands, but ranks46/57 under raw substring frequency and misses the ten-document
+selection. One fixed distinct-term/capped-frequency counterfactual ranks it4,
+without changing the required-source selector or cap. Even there, the original
+32,000-character projection exposes the complete liabilities fact but not cash.
+The shared structured reader returns `None` for the actual adapter's
+`sec-company-facts-document-v1` facts array: it only recognized nested facts.
+
+[Entry-point review](../runs/diagnostics/default_llm_financial_read_20261021_v1/independent/scope-and-interface-review.json)
+also limits the term "default": `run_minimal_rounds prepare` without overrides
+still copies v143/v6, while an explicit v182 seed uses its stable deterministic
+cash-ratio v2. General workspace initialization uses a different current catalog.
+The two frozen comparison groups remain distinct; no Registry or published v1
+was rewritten or substituted.
+
+The spec-first repair extends the existing reader to the adapter's typed array,
+keeping exact whole-record raw offsets and original `value` fields, including
+supported numeric strings. It retains latest-end alternatives, different
+duration starts, units and nearest comparable prior periods. Invalid/future
+records and omissions remain partial. Typed taxonomy/tag/unit groups stay atomic
+through helper, source-character selection and request-token fitting, so a budget
+cannot silently select just one conflicting alternative. Existing nested helper
+behavior stays unchanged; no source qualification, query ranking, issuer rule,
+Signal definition or canonical business schema changes.
+
+The [production-shape connection tests](../tests/test_company_facts_projection_producer_chain.py)
+run actual SEC normalization through shared projection, native payload assembly
+and raw citation mapping. Original code fails both format controls; the new
+reader passes these and the token-budget conflict control. The independent
+[13 boundary tests](../runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/final-review.json)
+cover duration/conflicts, currencies, future/invalid facts, escaped string spans,
+whole-group budgets, unsupported schema fallback and immutable capture identity.
+The original tests exercised nested fixtures, while earlier financial-parser
+checks never entered the model projector; I missed that producer/consumer shape
+split. One independent test initially rejected a supported numeric string; its
+expectation was corrected against the existing materializer contract, with the
+original test hash and red output retained.
+
+The [63-test connected check](../runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-tests.json)
+passes with zero network/HTTP/real-label tripwire calls. The initial run's seven
+failures were a root harness error: blocking `complete_json` also blocked local
+pending-request/cache tests. The retained initial log and script show that error;
+moving the guard to actual HTTP transport permits the existing local tests
+without changing product code or removing their assertions.
+Original subtest logs and lint echoes contain trailing whitespace; their exact
+bytes are retained in the [compressed-log manifest](../runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/retained-whitespace-logs.json),
+with unchanged originals also kept locally. This avoids rewriting old evidence
+to satisfy repository text lint.
+
+The [actual retained-source projection](../runs/diagnostics/typed_company_facts_projection_20261021_v1/root/actual-read-result.json)
+checks the exact original and fixed-counterfactual ten-document lists. With the
+counterfactual list, both complete Q1 literals now appear once, inside31,986
+characters. Original production selection still exposes neither Q1 operand,
+inside31,968 characters, because ranking is deliberately unchanged. Both emit52
+structured fact records and preserve selected order. The source helper explicitly
+reports partial with134 omitted concept groups; this is not a full-document read.
+Source and definition file hashes remain unchanged.
+The [independent actual-read review](../runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/actual-read-review.json)
+checks those complete source literals, hashes, fixed selected orders and both
+character totals without rerunning the stage or a model.
+
+This closes only the local typed-format reading/atomicity defect. It executes no
+model, arithmetic Signal, GET, label read, append, promotion or completed-stage
+reentry. The counterfactual is not production selection or a transmitted prompt.
+F5's unselected-source access/selection, fresh F6 behavior and the full MVP remain
+open. Any next selection repair must use the actual runner/entry-point scope and
+existing bounded resolver callback, preserve required groups and period/conflict
+witnesses, and prove both operands visible before spending a fresh model call.

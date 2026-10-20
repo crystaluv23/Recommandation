@@ -6762,6 +6762,10 @@ def _company_facts_context(
     except (json.JSONDecodeError, TypeError):
         return None
     facts = payload.get("facts") if isinstance(payload, Mapping) else None
+    if isinstance(payload, Mapping) and payload.get("schema_version") == "sec-company-facts-document-v1":
+        return _typed_company_facts_context(
+            document, payload, max_content_chars=max_content_chars, query=query
+        )
     if not isinstance(facts, Mapping):
         return None
 
@@ -6917,6 +6921,131 @@ def _company_facts_context(
     context["partial"] = bool(
         context["omitted_concept_count"] or selected_partial
     )
+    return context
+
+
+def _typed_company_fact_rows(
+    content: str,
+) -> list[tuple[Any, dict[str, Any]]] | None:
+    """Locate the unique top-level facts array using JSON's own string parser."""
+
+    decoder = json.JSONDecoder()
+    position = len(content) - len(content.lstrip()) + 1
+    arrays: list[int] = []
+    while True:
+        while position < len(content) and content[position].isspace():
+            position += 1
+        if content[position] == "}":
+            break
+        key, position = decoder.raw_decode(content, position)
+        while content[position].isspace():
+            position += 1
+        position += 1  # The enclosing JSON object was already parsed successfully.
+        while content[position].isspace():
+            position += 1
+        if key == "facts":
+            arrays.append(position)
+        _value, position = decoder.raw_decode(content, position)
+        while content[position].isspace():
+            position += 1
+        if content[position] == "}":
+            break
+        position += 1
+    if len(arrays) != 1 or content[arrays[0]] != "[":
+        return None
+    position = arrays[0] + 1
+    rows = []
+    while True:
+        while content[position].isspace():
+            position += 1
+        if content[position] == "]":
+            return rows
+        start = position
+        value, position = decoder.raw_decode(content, position)
+        rows.append((value, {"exact_span": content[start:position],
+                             "start": start, "end": position}))
+        while content[position].isspace():
+            position += 1
+        if content[position] == "]":
+            return rows
+        position += 1
+
+
+def _typed_company_facts_context(
+    document: RawInfoDocument,
+    payload: Mapping[str, Any],
+    *, max_content_chars: int, query: str | None,
+) -> dict[str, Any]:
+    """Read accession rows without losing same-period alternatives or literals."""
+
+    context: dict[str, Any] = {
+        "schema_version": "sec-company-facts-context-v1", "concepts": [],
+        "omitted_concept_count": 0, "partial": True,
+    }
+    cutoff = utc_day_of_instant(document.available_at)
+    filed = _optional_iso_date(payload.get("filing_date"))
+    if filed is None or filed > cutoff or not isinstance(payload.get("facts"), list):
+        return context
+    located = _typed_company_fact_rows(document.content)
+    if located is None:
+        return context
+    groups: dict[tuple[str, str, str], list[tuple[Mapping[str, Any], dict[str, Any], date]]] = {}
+    discarded = False
+    for row, view in located:
+        if not isinstance(row, Mapping):
+            discarded = True
+            continue
+        names = tuple(row.get(key) for key in ("taxonomy", "tag", "unit"))
+        end = _optional_iso_date(row.get("end"))
+        start = _optional_iso_date(row.get("start"))
+        row_filed = _optional_iso_date(row.get("filed"))
+        value = row.get("value")
+        if (
+            any(not isinstance(name, str) or not name.strip() for name in names)
+            or type(value) not in (int, float, str)
+            or (type(value) is float and not math.isfinite(value))
+            or end is None or end > cutoff
+            or (row.get("start") is not None and (start is None or start > end))
+            or ("filed" in row and (row_filed is None or row_filed > cutoff))
+        ):
+            discarded = True
+            continue
+        groups.setdefault(names, []).append((row, view, end))
+    query_terms = _h3_content_terms(query or "", exclude_generic=True)
+    candidates = []
+    for (taxonomy, tag, unit), rows in groups.items():
+        latest_end = max(item[2] for item in rows)
+        latest = [item for item in rows if item[2] == latest_end]
+        selected_offsets = {item[1]["start"] for item in latest}
+        for current, _view, _end in latest:
+            comparable = [item for item in rows if item[2] < latest_end
+                          and _company_fact_periods_comparable(current, item[0])]
+            if comparable:
+                prior_end = max(item[2] for item in comparable)
+                selected_offsets.update(item[1]["start"] for item in comparable if item[2] == prior_end)
+        selected = sorted((item for item in rows if item[1]["start"] in selected_offsets),
+                          key=lambda item: (-item[2].toordinal(), item[1]["start"]))
+        label = latest[0][0].get("label", "")
+        label = label if isinstance(label, str) else ""
+        entry = {"taxonomy": taxonomy, "concept": tag, "label": label, "unit": unit,
+                 "records": [item[1] for item in selected]}
+        terms = _h3_content_terms(f"{taxonomy} {tag} {label}", exclude_generic=True)
+        priority = _QUERYLESS_COMPANY_FACT_PRIORITY.get(tag.casefold(), 0)
+        score = ((len(query_terms.intersection(terms)), 0, latest_end.isoformat())
+                 if query_terms else (int(priority > 0), latest_end.isoformat(), priority))
+        candidates.append((score + (taxonomy, tag, unit), entry, len(selected) < len(rows)))
+    candidates.sort(key=lambda item: item[0], reverse=True)
+    context["omitted_concept_count"] = len(candidates)
+    selected_partial = discarded
+    for _score, entry, entry_partial in candidates:
+        trial = {**context, "concepts": [*context["concepts"], entry],
+                 "omitted_concept_count": context["omitted_concept_count"] - 1,
+                 "partial": bool(context["omitted_concept_count"] > 1 or selected_partial or entry_partial)}
+        if len(json.dumps(trial, ensure_ascii=False, separators=(",", ":"))) > max_content_chars:
+            continue
+        context = trial
+        selected_partial = selected_partial or entry_partial
+    context["partial"] = bool(not candidates or context["omitted_concept_count"] or selected_partial)
     return context
 
 

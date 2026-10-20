@@ -1,0 +1,212 @@
+{
+  "scope": "Read-only legacy LLM input/selection/interface diagnosis, not an execution or request to extend supported historical versions.",
+  "frozen_groups": [
+    {
+      "name": "default_v6",
+      "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals",
+      "version": 6,
+      "registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+      "cash_ref": "cash_to_current_liabilities_ratio:v1"
+    },
+    {
+      "name": "latest_v12",
+      "root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals",
+      "version": 12,
+      "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+      "cash_ref": "cash_to_current_liabilities_ratio:v2"
+    }
+  ],
+  "entrypoint_distinction": [
+    {
+      "entrypoint": "scripts/run_minimal_rounds.py prepare() with no source override",
+      "authority": "HISTORY at71; registry_source at153; copy/freeze at316; run freeze at348",
+      "selection": "v143 Registry6; cash_to_current_liabilities_ratio:v1 is current stable inside that source. This diagnostic script default remains historical; no fresh execution performed."
+    },
+    {
+      "entrypoint": "same prepare() with explicit v182 signals seed",
+      "authority": "existing --seed-registry at504; v182 registry.json12 and ratio manifest stable_version2",
+      "selection": "deterministic cash_to_current_liabilities_ratio:v2; no historical v1 update occurs."
+    },
+    {
+      "entrypoint": "general init_workspace using current configs/signals_v1.json",
+      "authority": "scripts/evolve_information_schemes.py365-377",
+      "selection": "catalog does not contain cash_to_current_liabilities_ratio; no universal v1 default can be inferred."
+    },
+    {
+      "entrypoint": "SignalRegistry.freeze()",
+      "authority": "signal_library.py2320-2335, list_signal_cards1935",
+      "selection": "current per-Signal manifest stable_version; no automatic migration or history-version parameter."
+    }
+  ],
+  "legacy_copy_identity": {
+    "v143_and_v182_v1_spec_bytes_equal": true,
+    "v143_and_v182_v1_skill_bytes_equal": true,
+    "bindings": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_to_current_liabilities_ratio/versions/v1/spec.json",
+        "sha256": "fa9c01516ad10b31c164542589a6b92d1904bd38a1127dc7c3a51fb7d2881909"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_to_current_liabilities_ratio/versions/v1/skill.md",
+        "sha256": "b2378e03613546a77f0e586052c18512dfb3ee535f7a0e694e5fd7beb0df3ce0"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v1/spec.json",
+        "sha256": "fa9c01516ad10b31c164542589a6b92d1904bd38a1127dc7c3a51fb7d2881909"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v1/skill.md",
+        "sha256": "b2378e03613546a77f0e586052c18512dfb3ee535f7a0e694e5fd7beb0df3ce0"
+      }
+    ]
+  },
+  "actual_source_findings": {
+    "eligible": 57,
+    "selected": 10,
+    "unselected": 47,
+    "selection_status": "resolved is coarse retrieval coverage, not semantic latest-measurement completeness",
+    "source_period_latest_in_selected": "2023-12-31",
+    "q1_source_period": "2025-03-31",
+    "q1_source_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+    "q1_source_type": "sec_company_facts",
+    "q1_actual_required_facts": [
+      {
+        "tag": "CashAndCashEquivalentsAtCarryingValue",
+        "unit": "USD",
+        "start": null,
+        "end": "2025-03-31",
+        "value": 98610000
+      },
+      {
+        "tag": "LiabilitiesCurrent",
+        "unit": "USD",
+        "start": null,
+        "end": "2025-03-31",
+        "value": 325735000
+      }
+    ],
+    "selected_rank_hit_range": [
+      9078,
+      13031
+    ],
+    "q1_rank_hits": 5428,
+    "source_ordering": "Raw substring frequency before available_at; document length/repeated financial terms can dominate recency."
+  },
+  "producer_to_reader": [
+    {
+      "boundary": "SignalExecutor._resolve_input",
+      "authority": "signal_library.py3515-3548",
+      "behavior": "max_documents10; callable-owned selector wired only for deterministic. LLM has no callback passed."
+    },
+    {
+      "boundary": "EvidenceResolver.resolve(select_documents=...)",
+      "authority": "resolution.py1692-1745",
+      "behavior": "existing optional callback receives full filtered/deduplicated eligible ranked pool, deepcopied. Return unique unchanged full canonical records within10; original store objects restored. Reusable selection boundary without adding a model."
+    },
+    {
+      "boundary": "SignalExecutor.execute_batch",
+      "authority": "signal_library.py3380-3455",
+      "behavior": "load only resolution documents; fingerprint only selected id+content hashes; LLMSignalBatchInput holds spec/docs/skill, not RawInfoResolution coverage or omitted source catalog."
+    },
+    {
+      "boundary": "_single_llm_signal_projection/_batch_payload",
+      "authority": "evolution_signal_roles.py4394-4566 and5196-5263",
+      "behavior": "only selected docs; actual pure producer inspection of selected10 emits16windows/32000chars/10sources/zero fact_context. These selected docs are typed bodies; _company_facts_context only recognizes nested Mapping facts and typed falls back to generic text windows. This is a derived pure projection, not an actual sent role wire."
+    },
+    {
+      "boundary": "source omissions",
+      "authority": "evolution_core.py6752-6929; evolution_signal_roles.py4427-4453",
+      "behavior": "nested fact helper has partial/omitted_concept_count but caller forwards only records/fact_context. Payload has generic omitted-text warning, not57eligible/47unselected source identities/addresses. budget_trimmed false does not prove source completeness."
+    },
+    {
+      "boundary": "existing correction/read",
+      "authority": "evolution_signal_roles.py4588-4677 and5478-5504",
+      "behavior": "only verified existing projection lineage with same docid/hash and source-boundary coordinates; no fetch/catalog/read_refs action to obtain unselected sources. Peers may show shared projections but own eligibility still restricts citations."
+    }
+  ],
+  "skill_risks_not_observed_model_errors": {
+    "exact_v1": "procedure expects val records + concept labels; accession prefix matching or assuming same issuer is not modern body/metadata issuer proof. Typed v1 bodies use value/tag/unit, and generic projection may not fit that exact described input format. No actual LLM result was obtained; do not claim the model mismeasured or that adding Q1 alone guarantees capability.",
+    "version_permission": "Published v1 must remain unchanged; v2 deterministic migration already exists in successor Registry. Reconstructing an old snapshot is distinct from committing to support new executions of every historical skill."
+  },
+  "minimal_next_steps_ordered": [
+    "First bind the intended new-run entrypoint and Registry source. If authorized successor already uses v12, retain old v6 diagnostic/gap without building new support for a retired historical skill. Existing --seed-registry is a selection mechanism, not permission to silently swap a frozen cohort.",
+    "Only if new LLM source-read behavior remains in scope: reuse resolver select_documents for a narrowly disclosed source-selection policy, retaining PIT/source eligibility/whole canonical identity/10 limit/required groups. Read supported fact records with existing strict issuer/PIT parser; reserve exact query-relevant concept/period/unit and conflicting-basis witnesses before optional generic fill. Do not execute the Signal or infer a full formula from free query/comparison prose.",
+    "Unknown/narrative/unsupported formats retain declared behavior; a skill that only supports one source format is not made compatible by source_type aliases. Clarifying measurement/issuer/format behavior requires a new version through authorized existing version mechanisms, not a v1 skill overwrite.",
+    "Carry omission/truncation facts into input context using existing coverage fields. This is honest disclosure, not a substitute for making a feasible <=10 source witness available. Do not add47opaque handles without a real bounded read route, or add a second LLM selector by default.",
+    "After source-selection scope is fixed, use one data-only counterfactual <=10 fixture: same rank corpus with latest required concepts plus comparison/conflict witnesses; inspect selected IDs and pure projection, without using missingtypedQ1flag alone as pass/fail. Fresh model behavior would need later separately frozen exact-inbox execution."
+  ],
+  "representative_counterexamples": [
+    {
+      "case": "new but irrelevant source",
+      "requirement": "A newly available unrelated disclosure or only a cash-word mention must not evict the actual cash/liability operand witnesses merely by recency."
+    },
+    {
+      "case": "long old repeated terms",
+      "requirement": "The observed high-frequency2013-2024 sources must not exclude sufficient Q1 concepts when <=10 can retain necessary source witnesses; no global timestamp-only sort."
+    },
+    {
+      "case": "comparative duration",
+      "requirement": "Latest quarter must not evict a needed comparable annual/prior duration. Respect exact version-owned measurement periods rather than latest-any-period."
+    },
+    {
+      "case": "conflicting period/currency or amendment",
+      "requirement": "Do not silently choose USD, a tag, a restatement or matched older period to manufacture a basis. Preserve necessary conflict/currency/dominance witnesses within10, or retain the genuine gap."
+    },
+    {
+      "case": "generic fill changes canonical basis",
+      "requirement": "Operand witnesses alone may not suffice; preserve nonoperand dominance/context witnesses. Optional generic fill must not alter an otherwise feasible basis or force abstention."
+    },
+    {
+      "case": "skill format mismatch",
+      "requirement": "Supported source-family aliases do not imply a val-only skill can consume typed value/tag/unit bodies. Source presence/projectionability and correct model execution are distinct."
+    }
+  ],
+  "bindings": {
+    "scripts/run_minimal_rounds.py": {
+      "path": "/Users/l/Project/Recommandation/scripts/run_minimal_rounds.py",
+      "sha256": "84c13d56ee0056947ae6da990a43e29c52be17fe2e61127c868152e037282ed2"
+    },
+    "scripts/diagnose_reviewed_frozen_case_inputs.py": {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_case_inputs.py",
+      "sha256": "e5aeabdabb69dd49507f8bc12c59ab199a4b6a5b4e5600402ff6170d9d1752bc"
+    },
+    "scripts/evolve_information_schemes.py": {
+      "path": "/Users/l/Project/Recommandation/scripts/evolve_information_schemes.py",
+      "sha256": "b5196a3c97a87e68a32e5fa9530c64f03b6848cf3bf096bf94961f9263e694a0"
+    },
+    "src/stock_opportunity_agent/signal_library.py": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    "src/stock_opportunity_agent/data/resolution.py": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "bc3eaae3e96cec370ed0094a9a51d5928e181f5c2a40b22faf0557083ce28ae0"
+    },
+    "src/stock_opportunity_agent/research/evolution_signal_roles.py": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "1ef644e6041ee93d46db1098b4058eca4a4bae35019bef5dd61694e86610303a"
+    },
+    "src/stock_opportunity_agent/research/evolution_core.py": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d"
+    },
+    "spec/src/stock_opportunity_agent/signal_library.md": {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "19af9fb78157b0b6c60ec27a8c0bbf6307a78b6568838150d3058d9f890b603e"
+    },
+    "configs/signals_v1.json": {
+      "path": "/Users/l/Project/Recommandation/configs/signals_v1.json",
+      "sha256": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae"
+    }
+  },
+  "raw_read_proof": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/default_llm_financial_read_20261021_v1/independent/read-path-results.json",
+    "sha256": "4b1eed6b552a8e6bd632a9d5a98666e355be6b0d5d2412c4c0894cc6ec1fc24b"
+  },
+  "no_modifications": [
+    "production code/spec/Registry/old stages/sources unchanged",
+    "no GET/model/LabelStore/LockedTest/label-bearing split reads",
+    "no Store/SignalExecutor/prepare_inputs/fullprepare or stage reentry",
+    "only source JSON parsing, pure ranking/projection and new diagnostic files"
+  ]
+}

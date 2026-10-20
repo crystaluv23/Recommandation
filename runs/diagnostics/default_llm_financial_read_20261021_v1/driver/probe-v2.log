@@ -1,0 +1,104 @@
+{
+  "head": "586370de51504b7500d8100699a87d99f9fc0332",
+  "signal_ref": "cash_to_current_liabilities_ratio:v1",
+  "case": {
+    "case_id": "cik_0001309402:20250530",
+    "company_id": "cik_0001309402",
+    "order": 35,
+    "prediction_time": "2025-05-30T00:00:00+00:00",
+    "split": "evolution_validation",
+    "split_case_index": 3
+  },
+  "snapshot": {
+    "manifest_sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot",
+    "store_type": "reviewed"
+  },
+  "snapshot_documents": 1780,
+  "pit_company_documents": 61,
+  "source_filtered": 57,
+  "deduplicated": 57,
+  "duplicate_ids": [],
+  "ranked": 57,
+  "selected": 10,
+  "request": {
+    "request_id": "signal:cash_to_current_liabilities_ratio:v1",
+    "description": "Measure the ratio of latest CashAndCashEquivalentsAtCarryingValue to latest LiabilitiesCurrent for a company as of a point in time. Higher values indicate stronger short-term liquidity.",
+    "source_types": [
+      "company_facts",
+      "financials"
+    ],
+    "max_documents": 10,
+    "query": "CashAndCashEquivalentsAtCarryingValue LiabilitiesCurrent cash current liabilities liquidity ratio 10-Q 10-K 20-F SEC company facts USD"
+  },
+  "native_resolution_exact_saved_matrix": true,
+  "native_coverage": {
+    "eligible_document_count": 57,
+    "selected_document_count": 10,
+    "query_matched_document_count": 57,
+    "query_status": "matched",
+    "query_requested": true,
+    "query_evaluated": true,
+    "selection_truncated": true,
+    "deduplicated_document_count": 0,
+    "visible_span_count": 0,
+    "context_truncated": null,
+    "required_source_group_count": 0,
+    "satisfied_source_group_count": 0,
+    "observed_distinct_period_count": 58,
+    "observed_period_span_days": 5149,
+    "observed_observation_count": 0,
+    "contract_satisfied": true,
+    "missing_requirements": []
+  },
+  "counter_coverage": {
+    "eligible_document_count": 57,
+    "selected_document_count": 10,
+    "query_matched_document_count": 57,
+    "query_status": "matched",
+    "query_requested": true,
+    "query_evaluated": true,
+    "selection_truncated": true,
+    "deduplicated_document_count": 0,
+    "visible_span_count": 0,
+    "context_truncated": null,
+    "required_source_group_count": 0,
+    "satisfied_source_group_count": 0,
+    "observed_distinct_period_count": 40,
+    "observed_period_span_days": 5604,
+    "observed_observation_count": 0,
+    "contract_satisfied": true,
+    "missing_requirements": []
+  },
+  "latest_periods_in_qualified_pool": {
+    "CashAndCashEquivalentsAtCarryingValue": "2025-03-31",
+    "LiabilitiesCurrent": "2025-03-31"
+  },
+  "native_latest_periods": {
+    "CashAndCashEquivalentsAtCarryingValue": "2023-12-31",
+    "LiabilitiesCurrent": "2023-12-31"
+  },
+  "counter_latest_periods": {
+    "CashAndCashEquivalentsAtCarryingValue": "2025-03-31",
+    "LiabilitiesCurrent": "2025-03-31"
+  },
+  "counter_policy": "Only diagnostic: full-document word tokens; projection policy distinct coverage, per-term min(count,3), available_at desc, ID; unchanged required-source/period selector. No production rank changed.",
+  "counter_terms": [
+    "cash",
+    "cashandcashequivalentsatcarryingvalue",
+    "company",
+    "current",
+    "facts",
+    "liabilities",
+    "liabilitiescurrent",
+    "liquidity",
+    "ratio",
+    "sec",
+    "usd"
+  ],
+  "bindings_unchanged": true,
+  "view_records_unchanged": true,
+  "forbidden_calls": [],
+  "elapsed_seconds": 16.376668416894972,
+  "limits": "No ratio/Signal execution, model, GET, labels, append, Registry writes, fullprepare or old stage reentry."
+}

@@ -1,0 +1,90 @@
+{
+  "counts": {
+    "deduplicated": 57,
+    "pit_company_documents": 61,
+    "ranked": 57,
+    "selected": 10,
+    "snapshot_documents": 1780,
+    "source_filtered": 57
+  },
+  "evidence_notes": [
+    "Original probe manifest.json pathname error occurred before Store open; original code/log retained. Corrected probe used native reviewed_snapshot.json.",
+    "Initial saved projection equality test compared a whole fact row to a 2000-char chunk. readability-check.json corrects the criterion to whole literal containment; no false claim of full-row absence from equality alone.",
+    "No actual sent prompt or response exists in this diagnostic; projections are native pure local planning output, and token-budget fitting/model edge correction were not executed."
+  ],
+  "existing_v1_skill_limits": [
+    "Skill expects per-concept JSON val/end; admitted typed accession rows use tag/unit/value. The existing context contract can disclose raw typed facts without rewriting the published skill, but actual model compliance is untested.",
+    "Skill legacy accn-prefix heuristic is not source issuer proof; actual source identity is independently verified. Do not weaken it by treating any ref as semantic support.",
+    "The written rule selects latest cash and latest current-liabilities independently; this diagnostic found an actual same-period USD pair, without changing that published measurement rule."
+  ],
+  "latest_valid_source": {
+    "available_at": "2025-05-09T00:00:00+00:00",
+    "body_and_metadata_match_canonical_company": true,
+    "cash": 98610000,
+    "current_liabilities": 325735000,
+    "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+    "exact_whole_fact_literals_contained": true,
+    "filed": "2025-05-08",
+    "issuer": "0001309402",
+    "period_end": "2025-03-31",
+    "ratio_not_computed": true,
+    "record": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json",
+      "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+    },
+    "unit": "USD"
+  },
+  "minimal_candidate_interfaces_for_root_decision": [
+    "Extend existing _company_facts_context to the already-supported normalized typed accession shape, preserving its existing context schema, exact raw offsets/whole literals, concept/unit and latest/comparable disclosure. Share the source-owned reader before any bounded LLM projection; never wrap or expose whole raw-response proof as a financial document.",
+    "Use the existing EvidenceResolver.select_documents optional callback for the actual LLM runner rather than changing global resolver query ranking or routing to deterministic v12. A runner-owned opt-in pure bounded lexical policy is supported by the single counterfactual, not yet selected as a universal policy. Unknown/custom runner fallback and unaffected paths retain original behavior.",
+    "Preserve source qualification, canonical record identity, PIT/lookback, dedup, required groups/period obligations, 10-doc cap and 32000 visible chars. No company/factor hardcoding, comparison-prose evaluator, new canonical fields or in-place published-v1 edit.",
+    "Before any fresh model test, an isolated input-only check must show both latest literal operands at actual source projection under the same cap; a Q1 document membership check alone is insufficient. Later model behavior requires a separately frozen bounded fresh role and native evidence validation; not inferred here."
+  ],
+  "native_saved_resolution_exact": true,
+  "one_counterfactual": {
+    "contract_satisfied": true,
+    "no_parameters_tuned": true,
+    "not_a_production_fix_or_semantic_pass": true,
+    "policy": "Only diagnostic: full-document word tokens; projection policy distinct coverage, per-term min(count,3), available_at desc, ID; unchanged required-source/period selector. No production rank changed.",
+    "q1_rank": 4,
+    "q1_selected": true,
+    "selected_latest_periods": {
+      "CashAndCashEquivalentsAtCarryingValue": "2025-03-31",
+      "LiabilitiesCurrent": "2025-03-31"
+    }
+  },
+  "rank_mechanism": {
+    "PIT_did_not_filter_q1": true,
+    "content_dedup_did_not_drop_q1": true,
+    "current": "Uncapped substring content.count over all request tokens, then availability desc and ID. Short tokens f/k/q/10/20 contribute unrelated repeats; long old annual bodies dominate.",
+    "native_selected_latest_periods": {
+      "CashAndCashEquivalentsAtCarryingValue": "2023-12-31",
+      "LiabilitiesCurrent": "2023-12-31"
+    },
+    "q1_native_rank": 46,
+    "q1_raw_hits": 5428,
+    "query_did_not_filter_q1": true
+  },
+  "readability_boundary": {
+    "counter_latest_cash_literal_visible": false,
+    "counter_latest_liabilities_literal_visible": true,
+    "counter_q1_windows": 2,
+    "edge_correction_scope": "Existing selected-source boundary overlap only; not arbitrary full-pool retrieval. No actual correction executed.",
+    "fact_context_rows": 0,
+    "initial_projection_chars": 32000,
+    "native_source_document_count_q1_windows": 0,
+    "reason": "_company_facts_context requires facts Mapping, while all these admitted accession products use facts list; structured per-concept latest/comparable projection is bypassed.",
+    "typed_companyfacts_helper_returns_none": true
+  },
+  "request_contract": {
+    "lexical_contract_satisfied_is_not_latest_operand_completeness": true,
+    "lookback_days": null,
+    "maximum_documents": 10,
+    "minimum_distinct_periods": null,
+    "minimum_observations": null,
+    "minimum_period_span_days": null,
+    "required_source_groups": []
+  },
+  "scope": "Only exact frozen default_v6 cash_to_current_liabilities_ratio:v1 for GPRE at 2025-05-30T00:00Z; no Signal/model/ratio run.",
+  "stop": "Two discriminating causes established; no broader cohort scan, more ranking tuning, GET or model justified in this diagnostic."
+}

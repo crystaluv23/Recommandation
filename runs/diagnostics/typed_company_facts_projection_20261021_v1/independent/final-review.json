@@ -1,0 +1,45 @@
+{
+  "status": "PASS_bounded_13_synthetic_controls",
+  "candidate_bindings": {
+    "src/stock_opportunity_agent/research/evolution_core.py": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1",
+    "src/stock_opportunity_agent/research/evolution_signal_roles.py": "4abcf50e9831364afa838526de7c54958f9cdddca0f4d88f46c95b5ba31a5d24",
+    "tests/test_typed_company_facts_projection_boundaries.py": "9acc15384aad3b825c4f6de340c8fab5eca5174e36d976659ab7c0171e1f36ce",
+    "spec/src/stock_opportunity_agent/research/evolution_core.md": "2d9c3fc3bed43c72c3de7fb48b919d8b37a6d7a89dd3337c883f67e11735fd39",
+    "spec/src/stock_opportunity_agent/research/evolution_signal_roles.md": "dcfaf204bf7424f02c6793b2d7ef861d7309724f18760c23812c091640dcfe77"
+  },
+  "bindings_unchanged_during_tests": true,
+  "old_evidence": {
+    "log": "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/original-corrected-harness-tests.log",
+    "sha256": "74fe55bab1c81bc9b4d8cf73f1db5aea02e19c0c7dabc961c4bd14406f7986a1",
+    "result": "12 methods,14 subcase failures,0 errors; supported typed helper returned None; generic projection did not preserve structured records",
+    "first_harness_log": "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/original-tests.log",
+    "corrections": [
+      "instructions -> skill (actual LLMSignalBatchInput field)",
+      "unsupported generic fallback preserves native normalized text, not forced raw whitespace"
+    ]
+  },
+  "final_evidence": {
+    "log": "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/candidate-tests.log",
+    "sha256": "65a196e1cb90d97cf42eef122b31d866fb6b24b2e86ac6fff3860064c1cf4cc5",
+    "result": "13/13 methods PASS; command and before/after bindings in candidate-command-bindings.json"
+  },
+  "expectation_correction": "Original producer supports int/float/str values, rejects bool. Parent identified mistaken string-negative before implementation was tested. Removed that negative, added independent verbatim-string positive and None negative. Original red evidence not overwritten.",
+  "coverage": [
+    "latest cash/liabilities literal fields",
+    "same-end conflicting values and different starts retained together",
+    "nearest prior for each latest duration; noncomparable/older omitted and partial disclosed",
+    "USD/CAD separate groups",
+    "future/invalid parent structured empty without generic bypass",
+    "future/invalid rows cannot borrow valid parent",
+    "braces/quotes/escape/Unicode literal offset and evidence mapping",
+    "helper and final projection character budgets keep alternatives atomic",
+    "single/shared latest labels, source partial/omission flags, ownership union",
+    "unsupported array schema retains generic path without fact authority",
+    "raw capture identity/content/metadata unchanged"
+  ],
+  "limitations": [
+    "synthetic pure helper/projection controls only; no actual Signal/model/caller/Store/source admission/GET/labels/prepare/fullprepare",
+    "no claim of whole F5 closure, numeric measurement correctness, new model obedience or benefit",
+    "final 13 count differs from original 12 only because producer-supported string value received an explicit standalone positive"
+  ]
+}

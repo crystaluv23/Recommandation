@@ -1,0 +1,63 @@
+"""Explicit offline tests with network, external model and labels tripwires."""
+from contextlib import ExitStack
+import io
+import json
+from pathlib import Path
+import socket
+import unittest
+from unittest.mock import patch
+
+from stock_opportunity_agent.cases.label_store import LabelStore
+from stock_opportunity_agent.llm.openai import UrllibTransport
+
+OUT = Path(__file__).resolve().parent
+selectors = [
+    'tests.test_company_facts_projection_producer_chain',
+    'tests.test_typed_company_facts_projection_boundaries',
+    'tests.test_source_json_literal_contract',
+    'tests.test_case_identity_transport',
+]
+selectors += ['tests.test_evolution_execution_roles.SignalExecutionAndInitializeRoleTests.' + name for name in (
+    'test_shared_projection_preserves_short_sources_and_independent_signals',
+    'test_structured_facts_bind_complete_records_to_concept_and_period',
+    'test_llm_signal_runner_projects_large_raw_info_to_exact_bounded_spans',
+)]
+selectors += ['tests.test_signal_evolution_engine.SignalEvolutionTests.' + name for name in (
+    'test_company_facts_context_preserves_semantics_offsets_and_periods',
+    'test_company_facts_context_marks_bounded_omissions_partial',
+    'test_queryless_company_facts_prefers_comparable_operating_concepts',
+    'test_company_facts_identity_masking_drops_nonliteral_records',
+    'test_exploration_company_facts_citations_stay_inside_one_record',
+)]
+selectors += ['tests.test_evolution_reflection_roles.ReflectionRoleAdapterTests.' + name for name in (
+    'test_signal_internal_edges_ignore_surrounding_whitespace',
+    'test_signal_document_boundaries_and_interior_literals_remain_valid',
+    'test_v12_signal_evidence_rejects_internal_projection_edge_fragment',
+    'test_v103_signal_raw_mapping_is_exact_quote_not_projection_window',
+    'test_two_soft_signals_share_one_projection_call_and_map_to_raw',
+    'test_v30_shared_soft_projection_preserves_per_signal_document_scope',
+)]
+hits = []
+
+
+def forbidden(*args, **kwargs):
+    hits.append('forbidden')
+    raise AssertionError('External network/model and real labels forbidden in offline checks')
+
+
+stream = io.StringIO()
+with ExitStack() as guards:
+    for owner, name in ((socket, 'socket'), (socket, 'create_connection'),
+                        (LabelStore, '__init__'), (LabelStore, 'load'), (LabelStore, 'record'),
+                        (UrllibTransport, 'post_json')):
+        guards.enter_context(patch.object(owner, name, side_effect=forbidden))
+    suite = unittest.defaultTestLoader.loadTestsFromNames(selectors)
+    result = unittest.TextTestRunner(stream=stream, verbosity=2).run(suite)
+(OUT / 'connected-tests.log').write_text(stream.getvalue())
+(OUT / 'connected-tests.json').write_text(json.dumps({
+    'selectors': selectors, 'run': result.testsRun,
+    'failures': len(result.failures), 'errors': len(result.errors),
+    'forbidden_calls': hits, 'success': result.wasSuccessful(),
+}, indent=2) + '\n')
+print(stream.getvalue())
+raise SystemExit(0 if result.wasSuccessful() and not hits else 1)

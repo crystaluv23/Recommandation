@@ -1,0 +1,79 @@
+{
+  "source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json",
+    "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+  },
+  "schema_version": "sec-company-facts-document-v1",
+  "facts_shape": "list",
+  "native_company_facts_context_returns_none": true,
+  "native_helper_source": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+    "sha256": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d"
+  },
+  "single_projection_source": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+    "sha256": "1ef644e6041ee93d46db1098b4058eca4a4bae35019bef5dd61694e86610303a"
+  },
+  "actual_readable_character_cap": 32000,
+  "projection_checks": {
+    "native-projection.json": {
+      "projection_count": 16,
+      "projection_characters": 32000,
+      "rows_with_fact_context": 0,
+      "latest_fact_visibility": [
+        {
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "period_end": "2025-03-31",
+          "unit": "USD",
+          "same_document_windows": [],
+          "whole_literal_contained_in_windows": [],
+          "tag_visible_in_windows": []
+        },
+        {
+          "tag": "LiabilitiesCurrent",
+          "period_end": "2025-03-31",
+          "unit": "USD",
+          "same_document_windows": [],
+          "whole_literal_contained_in_windows": [],
+          "tag_visible_in_windows": []
+        }
+      ]
+    },
+    "counterfactual-projection.json": {
+      "projection_count": 16,
+      "projection_characters": 32000,
+      "rows_with_fact_context": 0,
+      "latest_fact_visibility": [
+        {
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "period_end": "2025-03-31",
+          "unit": "USD",
+          "same_document_windows": [
+            "projection_8d395125790a74a836aa3092",
+            "projection_f4e86924fd156b132d9ca23c"
+          ],
+          "whole_literal_contained_in_windows": [],
+          "tag_visible_in_windows": []
+        },
+        {
+          "tag": "LiabilitiesCurrent",
+          "period_end": "2025-03-31",
+          "unit": "USD",
+          "same_document_windows": [
+            "projection_8d395125790a74a836aa3092",
+            "projection_f4e86924fd156b132d9ca23c"
+          ],
+          "whole_literal_contained_in_windows": [
+            "projection_8d395125790a74a836aa3092"
+          ],
+          "tag_visible_in_windows": [
+            "projection_8d395125790a74a836aa3092"
+          ]
+        }
+      ]
+    }
+  },
+  "measurement_not_executed": true,
+  "precision_note": "Initial probe latest_exact_fact_projection_matches used chunk equality and was insufficient as a visibility test; this artifact uses complete fact literal containment within the same bound document window. Neither is a transmitted model request.",
+  "scope_limit": "Generic edge correction may disclose bounded overlaps only from current selected-source lineage; it cannot retrieve an unselected document. No correction/model behavior was executed."
+}

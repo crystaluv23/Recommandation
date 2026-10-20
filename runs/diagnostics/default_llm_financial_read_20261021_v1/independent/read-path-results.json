@@ -1,0 +1,309 @@
+{
+  "exact_ref": "cash_to_current_liabilities_ratio:v1",
+  "source_ranking_evidence": [
+    {
+      "document_id": "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02",
+      "selected": true,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2021-02-17T00:00:00+00:00",
+      "query_hit_count": 13031,
+      "content_bytes": 320190,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2020-12-31",
+        "LiabilitiesCurrent": "2020-12-31"
+      },
+      "q1_named_facts": []
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d",
+      "selected": true,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2020-02-21T00:00:00+00:00",
+      "query_hit_count": 12872,
+      "content_bytes": 344178,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2019-12-31",
+        "LiabilitiesCurrent": "2019-12-31"
+      },
+      "q1_named_facts": []
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-22-000008:897a7957ef2a7219",
+      "selected": true,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2022-02-19T00:00:00+00:00",
+      "query_hit_count": 10546,
+      "content_bytes": 271004,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2021-12-31",
+        "LiabilitiesCurrent": "2021-12-31"
+      },
+      "q1_named_facts": []
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-23-000012:21b32f10cee71e8c",
+      "selected": true,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2023-02-11T00:00:00+00:00",
+      "query_hit_count": 10517,
+      "content_bytes": 268063,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2022-12-31",
+        "LiabilitiesCurrent": "2022-12-31"
+      },
+      "q1_named_facts": []
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-19-000024:8322f0b00f926f9c",
+      "selected": true,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2019-02-21T00:00:00+00:00",
+      "query_hit_count": 9823,
+      "content_bytes": 266647,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2018-12-31",
+        "LiabilitiesCurrent": "2018-12-31"
+      },
+      "q1_named_facts": []
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-18-000045:a6c8d5f922c154a1",
+      "selected": true,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2018-02-15T00:00:00+00:00",
+      "query_hit_count": 9421,
+      "content_bytes": 257498,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2017-12-31",
+        "LiabilitiesCurrent": "2017-12-31"
+      },
+      "q1_named_facts": []
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4",
+      "selected": true,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2024-02-10T00:00:00+00:00",
+      "query_hit_count": 9363,
+      "content_bytes": 249207,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2023-12-31",
+        "LiabilitiesCurrent": "2023-12-31"
+      },
+      "q1_named_facts": []
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-20-000116:0f4bc9b57dfe740c",
+      "selected": true,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2020-11-07T00:00:00+00:00",
+      "query_hit_count": 9211,
+      "content_bytes": 227115,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2020-09-30",
+        "LiabilitiesCurrent": "2020-09-30"
+      },
+      "q1_named_facts": []
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-19-000146:9ab33b4752f88e9e",
+      "selected": true,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2019-11-08T00:00:00+00:00",
+      "query_hit_count": 9198,
+      "content_bytes": 246744,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2019-09-30",
+        "LiabilitiesCurrent": "2019-09-30"
+      },
+      "q1_named_facts": []
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-13-000021:c017c478dd4814d7",
+      "selected": true,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2013-02-16T00:00:00+00:00",
+      "query_hit_count": 9078,
+      "content_bytes": 240818,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2012-12-31",
+        "LiabilitiesCurrent": "2012-12-31"
+      },
+      "q1_named_facts": []
+    },
+    {
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "selected": false,
+      "source_type": "sec_company_facts",
+      "body_schema": "sec-company-facts-document-v1",
+      "available_at": "2025-05-09T00:00:00+00:00",
+      "query_hit_count": 5428,
+      "content_bytes": 145678,
+      "latest_concept_end": {
+        "CashAndCashEquivalentsAtCarryingValue": "2025-03-31",
+        "LiabilitiesCurrent": "2025-03-31"
+      },
+      "q1_named_facts": [
+        {
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "unit": "USD",
+          "start": null,
+          "end": "2025-03-31",
+          "value": 98610000
+        },
+        {
+          "tag": "LiabilitiesCurrent",
+          "unit": "USD",
+          "start": null,
+          "end": "2025-03-31",
+          "value": 325735000
+        }
+      ]
+    }
+  ],
+  "selected_count": 10,
+  "eligible_count": 57,
+  "unselected_count": 47,
+  "actual_input_only_resolution_status": "resolved",
+  "actual_coverage": {
+    "context_truncated": null,
+    "contract_satisfied": true,
+    "deduplicated_document_count": 0,
+    "eligible_document_count": 57,
+    "missing_requirements": [],
+    "observed_distinct_period_count": 58,
+    "observed_observation_count": 0,
+    "observed_period_span_days": 5149,
+    "query_evaluated": true,
+    "query_matched_document_count": 57,
+    "query_requested": true,
+    "query_status": "matched",
+    "required_source_group_count": 0,
+    "satisfied_source_group_count": 0,
+    "selected_document_count": 10,
+    "selection_truncated": true,
+    "visible_span_count": 0
+  },
+  "q1_named_facts_exist_in_qualified_source": true,
+  "projection_inspection": {
+    "kind": "pure existing projection over previously selected10; not actual transmitted wire",
+    "payload_keys": [
+      "batch_signal_refs",
+      "signals",
+      "as_of",
+      "source_projection",
+      "context_contract"
+    ],
+    "context_contract": {
+      "kind": "bounded_normalized_raw_info_projection",
+      "max_source_characters": 32000,
+      "visible_source_characters": 32000,
+      "budget_trimmed": false,
+      "complete_documents_retained_locally": true,
+      "omitted_text_may_contain_additional_evidence": true,
+      "citation_fields": [
+        "projection_id",
+        "exact_text"
+      ],
+      "structured_facts": "fact_context binds each literal record to its source taxonomy, concept and unit; record_selection distinguishes latest from comparable_prior. Cite exact_text, not metadata. Selected records are not exhaustive."
+    },
+    "projection_count": 16,
+    "projected_source_count": 10,
+    "projected_source_ids": [
+      "secfacts:0001309402:0001309402-13-000021:c017c478dd4814d7",
+      "secfacts:0001309402:0001309402-18-000045:a6c8d5f922c154a1",
+      "secfacts:0001309402:0001309402-19-000024:8322f0b00f926f9c",
+      "secfacts:0001309402:0001309402-19-000146:9ab33b4752f88e9e",
+      "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d",
+      "secfacts:0001309402:0001309402-20-000116:0f4bc9b57dfe740c",
+      "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02",
+      "secfacts:0001309402:0001309402-22-000008:897a7957ef2a7219",
+      "secfacts:0001309402:0001309402-23-000012:21b32f10cee71e8c",
+      "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4"
+    ],
+    "fact_context_projection_count": 0,
+    "q1_unselected_source_not_addressed": true,
+    "original_resolution_coverage_not_in_payload": true,
+    "no_catalog_fetch_read_refs_keys": true
+  },
+  "bindings": {
+    "spec": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v1/spec.json",
+      "sha256": "fa9c01516ad10b31c164542589a6b92d1904bd38a1127dc7c3a51fb7d2881909"
+    },
+    "skill": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v1/skill.md",
+      "sha256": "b2378e03613546a77f0e586052c18512dfb3ee535f7a0e694e5fd7beb0df3ce0"
+    },
+    "prior_input_rows": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/default_v6.json",
+      "sha256": "1d925b8038c66e39ca009ef3edff85088da5e09347d686a66078a38db4e1d044"
+    },
+    "reviewed_snapshot": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json",
+      "sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a"
+    },
+    "inspected_documents": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1322.json",
+        "sha256": "b770b94c970981e75f24adce4d229a7c19cbf605dd1ad24043052081fd9e06f6"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1318.json",
+        "sha256": "362dc8d9bce1b3fcbcd572d3bc244de737f246b1b986da6cce50b259037a2574"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1326.json",
+        "sha256": "d3b0d087f656521a3bdc7a7b6f51040ced3e5328170824c889006923c2da069c"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1330.json",
+        "sha256": "993e42e05f25b08e7f9d358489e64fcf5b0b55f6b3ee9d687fe19c4cc8fb36c8"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1314.json",
+        "sha256": "0e8b219b559d41b4b48a563ab13ce4f49347d224d4ffb62b2c3844ed2dee7de1"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1310.json",
+        "sha256": "d513ed0b87315ead8f9de12ae1b7fee9d4b0ff420fa80530d919af39314fc3e1"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1334.json",
+        "sha256": "3da987fe0163aa81c64b8ef1dfa8d625a49ef06157c043945367055ff953f663"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1321.json",
+        "sha256": "8bf8ab51c929ca5673268f596d8d91090d644cfedaef6ff27db7b98ac9f889db"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1317.json",
+        "sha256": "009979469c7ec7821431bee8cad2a43c00fb9661b07a51f088f4b040eaa399df"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1290.json",
+        "sha256": "eba93bef24e0f67a85e1c59f279de2a806d326d1dde208bb174ae0d13033e676"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json",
+        "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+      }
+    ]
+  },
+  "limits": [
+    "No new model/GET/LabelStore/Store/Signal application/prepare_inputs/fullprepare/stage reentry.",
+    "No claim that the old skill actually misused accession prefixes or produced a wrong measurement; no LLM output was obtained.",
+    "Q1 source membership is necessary data availability evidence, not proof of model-readable compatibility or correct measurement.",
+    "Generic selection and inner projection are separate truncation layers. Existing edge repair addresses only selected source lineage, not the47unselected source documents."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/actual-read-audit.py",
+  "exit_code": 0,
+  "bindings": {
+    "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/actual-read-audit.py": "9ab4c95f318b1db3cc07550a3a4b2629a01afd192a0cbe7db119c7f82dd070a6",
+    "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/actual-read-audit.log": "ec4ff300db07ead7477e207905d4f2603ff2f55513f440163e609eab444240e7",
+    "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/actual-read-review.json": "2a6f7d9afd1e440abffdd50c95c524cc7a4f7b4d238c52c9eefcabfecdbcd3d0",
+    "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-check.py": "d30c0a8d1f76fb7612ec73ce8a464d4edb6f6d10341373cf0ea9f83b2f3a1aa7",
+    "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-tests.log": "b18d0725decbf53ece68c1bb545d59c70befb0e50cb7b0d8ee0a5a224f83a7cf",
+    "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/initial-overbroad-guard-connected-check.py.txt": "eabd16988f81d90933efbed598810e2133798ddd8be77e6ae19143cd7b762663",
+    "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/initial-overbroad-guard-connected-tests.log": "4f13b67c809e27b30f91d662f80fd18117d123fc8899e13a0aa00c58590f5a8b"
+  },
+  "scope": "read saved artifacts only; no native stage or constructor/validator rerun"
+}
