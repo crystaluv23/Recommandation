@@ -1,0 +1,80 @@
+{
+  "scope": "Local F7 authoring-contract clarification only; no fresh model/source stage",
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_plan_roles.md",
+      "sha256": "cdb6fc1591fbe4752f48a28e7b56ff800e82f99df23df69e13870d3fd12e01c9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_runtime.md",
+      "sha256": "8113d663efb7d800cb04b866e6eae1e9a2f40f434aef01ef91ae5fd49c032e85"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "d54ce84f0afbc385758af9323e806f7096e5f892a1fc29349fbda4a9ecb611cd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reflect_facet_scope.py",
+      "sha256": "88aa640ea63589e425bb3772455c70d675ffca8b7782fe426491145a500c9cdd"
+    }
+  ],
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reflect_facet_scope_20261021_v1/candidate-safe-tests.log",
+    "sha256": "3b0be2b22466ca8e9377baa22bf10c29712e3ab91e62bb5038ff1b523613e651"
+  },
+  "runner": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reflect_facet_scope_20261021_v1/run-safe.py",
+    "sha256": "6a7069cfb48b5f2208033a6e7d9a54d5f2f0c8a58ec20fa2193e7e8a4fea7e66"
+  },
+  "safe_result": {
+    "selectors": [
+      "tests.test_reflect_facet_scope",
+      "tests.test_owned_partial_residual_mirror"
+    ],
+    "tests": 17,
+    "success": true,
+    "tripwires": {
+      "socket": 0,
+      "labels": 0,
+      "source_append": 0,
+      "fullprepare": 0
+    }
+  },
+  "original_wire": {
+    "log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reflect_facet_scope_20261021_v1/original-wire-tests.log",
+      "sha256": "4bfada6209fa42968bee9e18e227d0fb4e7289dc6fd091f611128072b2fdf541"
+    },
+    "expected_exit_code": 1,
+    "finding": "The new actual-request contract assertion fails on all three original-controller input variants; this proves missing guidance, not old model behavior"
+  },
+  "change_boundary": {
+    "only_string_constant_ast_changes": true,
+    "validator_schema_typed_permissions_fallback_consumer": "unchanged",
+    "diff_check": "PASS"
+  },
+  "historical_failure": {
+    "request": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/exchange/inbox/f2d4e96545e9617ce846a919fffb2f8e1389fab2151a9d38650be416dd148ac2.json",
+      "sha256": "36ccbd143dc1ca5cb13a764fe46a654563d7d12e36d629cad736d0f6c7db2819"
+    },
+    "answer": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/exchange/outbox/f2d4e96545e9617ce846a919fffb2f8e1389fab2151a9d38650be416dd148ac2.txt",
+      "sha256": "b1cbdfcb38e19640caf7a9dd34472a3b3935ade68d560b75532108aab4e8e064"
+    },
+    "oracle": {
+      "path": "/Users/l/Project/Recommandation/reports/reviewed-owned-partial-expectations-20261020.json",
+      "sha256": "e5569e23a250ac0ac7e792459b9a0856b086f4d841e8842abc44e433235eae2f"
+    },
+    "owned_prior_need": "What did annual and subsequent disclosures available by prediction time establish about operating cash flow, capital expenditure, debt balances and maturities, covenants, tax-related cash obligations and prospective equity dilution? Direct annual-report coverage remains unverified.",
+    "actual_partial_residual": "By prediction time, what annual and subsequent disclosures established operating cash flow, capex, debt balances/maturities, covenant terms, tax cash obligations and prospective equity dilution beyond historical repurchases? Direct annual-report coverage remains unverified.",
+    "failure": "The initial partial residual reduces a broad topic to static terms and drops unknown compliance/status beyond the cited interim period. The fact coverage is June30/H1; August public availability and September cutoff do not extend it.",
+    "why_old_guidance_missed": "Earlier-period warning existed, but did not explicitly separate static attributes from dynamic status within an umbrella need. Prior wiring/length/mirror tests and scripted residuals did not establish fresh semantic completeness.",
+    "unchanged_result": "Historical semantic denominator remains1, pass0; role66/oracle/stage untouched."
+  },
+  "limits": [
+    "New scripted native parser tests establish reachable unanswered+adoption, sufficient exact-period full answer, and persisted final consumer wiring, not model obedience.",
+    "The existing14 mirror tests retain authorized partial synchronization and forbidden-write controls.",
+    "No new keyword gate or runtime-authored facet is introduced; fresh semantics still needs independent evidence after source work completes."
+  ]
+}

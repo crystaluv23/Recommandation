@@ -1,0 +1,78 @@
+{
+  "verdict": "PASS_bounded_actual57_temp_profile",
+  "full_reconstructed_products": 57,
+  "legacy_default_and_explicit_exact_frozen57": true,
+  "new_capture_same_record_except_ID": 57,
+  "admitted_temporary_subset": 4,
+  "complete_expected57_required_reduced4_rejected": true,
+  "legacy_profile_capture_recipe_mix_rejected": true,
+  "legacy_raw_response_proof_unchanged_no_repack": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/raw-response-proof.json",
+    "sha256": "81baee446ae7f9d4f58d23b925cd576b2254dd419770823b666ce44ec19ebea6"
+  },
+  "temporary_materialize_restart_snapshot4_exact": true,
+  "temporary_append_recorded_replay_false": true,
+  "actual_old_4_metadata_conflicts_still_rejected": [
+    "secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79",
+    "secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268",
+    "secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03",
+    "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+  ],
+  "input_bindings_before_after_equal": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/normalization.json",
+      "sha256": "ec8b8004b33fb651bf7d0c1ce4b026751267fdab1a2705e177a9bafed8488dc1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/cache/data/sec_edgar/financial_statements/dba16fe3ea281103d64c3364.json",
+      "sha256": "02e05b3f33613f698acad65a8565d3bba8a5897d0eab17ae0939736f62f9287e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/raw-response-proof.json",
+      "sha256": "81baee446ae7f9d4f58d23b925cd576b2254dd419770823b666ce44ec19ebea6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79.json",
+      "sha256": "959d933f40ae6fd5f0a5e227263923ac6a7f23c34e31a95f92986ec273e66fcb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268.json",
+      "sha256": "bf933c3448c23792e6eec867ea946de401839d70d374ae2c742ece195524865c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03.json",
+      "sha256": "e45cd385e61a5c0f8057dda6e8fa16058357a7b30924a7f653a359aff10acace"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47.json",
+      "sha256": "f7511fb374afaf01a49ce89726d3a66a73080862c364406f55d5ead6900aa03e"
+    }
+  ],
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "882f765da65b3352cb638290378b1bebb5d7afaee4f656c9664d10b4a4eaf092"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "07bd13d8cf2e6546a96b05a83879e3d58ba271a0c93e7535a307b17481bd595d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "907c12e3d8fb010ae6c1606d3b494db6bf90750c3718f9135a61896f25f8e45b"
+    }
+  ],
+  "scope": "Read-only actual GPRE cache/raw/57 original normalized products and4 old global records. All new records/normalization/view were temporary only. No actual source qualification/admission/global append, GET, models, labels, prepare or historical-stage resume.",
+  "limits": [
+    "No independent fact/coverage/research gain from duplicate capture provenance.",
+    "This reader reconstruction is not source signature authentication or primary-filing audit."
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "verdict": "PASS_bounded_capture_identity_family_no_remaining_concrete_blocker",
+  "core_commit": "519f95a8",
+  "independent_core": {
+    "typed_record": "Complete serialized record except document_id includes metadata, content/content_hash, issuer/source and both public times.12 JSON typed value/order variants have distinct IDs; object-key reordering is stable. Nonfinite and non-JSON/key types reject.",
+    "forgery_replay_load": "Forged rawcap versions/digests, changed same-ID typed metadata/extra/body and on-disk altered capture reject. Exact capture replay is appendFalse. Legacy same-content refetch behavior is preserved.",
+    "concrete_intermediate_gap_fixed": "Before search/documents guards, mutated nested metadata made load reject but search/documents/real EvidenceResolver still return the drifted capture. Current load/search/documents/resolver all reject.",
+    "old_source_provenance": "Counterexample source is explicitly a reconstruction by removing two outlet guards, not a contemporaneous capture. Exact source copy retained here.",
+    "deduplication": "Two distinct captures of byte-identical content remain two auditable IDs but one resolver fact after existing content dedup. No new evidence independence or source coverage is inferred."
+  },
+  "actual_GPRE_native_temp_profile": {
+    "real_response_products": 57,
+    "legacy_default_explicit_frozen57_canonical_equal": true,
+    "capture_records_equal_legacy_except_ID": 57,
+    "temporary_admitted_subset": 4,
+    "expected_denominator_still_required": 57,
+    "reduced_expected4_rejected": true,
+    "legacy_capture_recipe_mixing_rejected": true,
+    "retained_legacy_raw_proof_no_repack": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_completion_20261020_v1/companyfacts-fetch-v1/raw-response-proof.json",
+      "sha256": "81baee446ae7f9d4f58d23b925cd576b2254dd419770823b666ce44ec19ebea6"
+    },
+    "temp_native_materialize_snapshot_restart_canonical_exact": true,
+    "temp_recorded_capture_appendFalse": true,
+    "old4_legacy_metadata_conflicts_still_rejected": [
+      "secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79",
+      "secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268",
+      "secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03",
+      "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47"
+    ],
+    "meaning": "Capture identity gives distinct canonical records; it does not change old content/public clocks or wash old metadata conflicts into qualified originals."
+  },
+  "producer_and_compatibility_code_review": {
+    "acquisition": "Typed products and whole-response capture explicitly select CAPTURE_IDENTITY_POLICY. One acquired materialization uses one recorded clock; a later new acquisition can intentionally be a distinct recorded capture. Reappend the recorded record for replay rather than calling now to recreate it.",
+    "backfill": "New plan schema v2 binds capture identity; v1 explicitly excludes the new field and keeps legacy recipe. Runner selects the bound recipe and cached retrieval time. Wrapper default remains legacy. New/unknown policy cannot silently change frozen v1 reconstruction.",
+    "profile": "New normalization schema/profile is explicit and requires full reconstructed expected set. Memo key includes identity policy and is per-review; old profile requires legacy schema/recipe and raw identity. Read-only qualification is reconstruction, not source signing/authentication.",
+    "evidence_limit": "Producer/runner flow reviewed directly and supported by owner33safe evidence; independent executed controls are the typed core and actual57 temporary profile, not a real backfill/acquisition/source-stage run."
+  },
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "882f765da65b3352cb638290378b1bebb5d7afaee4f656c9664d10b4a4eaf092"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "07bd13d8cf2e6546a96b05a83879e3d58ba271a0c93e7535a307b17481bd595d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "907c12e3d8fb010ae6c1606d3b494db6bf90750c3718f9135a61896f25f8e45b"
+    }
+  ],
+  "owner_safe_summary": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/companyfacts_capture_identity_20261021_v1/safe-summary.json",
+    "sha256": "8a89854b4a27fcc850ad551239cdcb6817457b2c7c616c91526143a67f10e2e0"
+  },
+  "reviewer_harness_failure": "The first actual57 temp probe omitted RawInfoOracle.load_or_create, so marker oid was undefined before profile qualification. That NameError/log is retained; it is not a product/source failure. After explicit temporary marker creation, full probe completed exit0.",
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/companyfacts_capture_identity_boundary_20261021_v1/core-probe.py",
+      "sha256": "bf4479ca281a0b3801eae90e1ad0196b526d3953820b9d92be508c216fb25b29"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/companyfacts_capture_identity_boundary_20261021_v1/core-probe.log",
+      "sha256": "02fccca3a6f48d6bf5c075e31680ea9cd1a1c1ecc26c41c1d1e1714d2840499b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/companyfacts_capture_identity_boundary_20261021_v1/core-results.json",
+      "sha256": "02fccca3a6f48d6bf5c075e31680ea9cd1a1c1ecc26c41c1d1e1714d2840499b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/companyfacts_capture_identity_boundary_20261021_v1/profile-probe.py",
+      "sha256": "b71ac1028d8eff0e623a8f4da96e2f62f9949439759f30dd82a1783ca95f1319"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/companyfacts_capture_identity_boundary_20261021_v1/profile-probe-original-harness.log",
+      "sha256": "49ed8766a7772cdb55cef2337cf7c6704b8f1f98577628a9066af055a3642848"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/companyfacts_capture_identity_boundary_20261021_v1/profile-probe.log",
+      "sha256": "442502d7cb5681ed08441682a053faf9978b776fc707d00649984053ae2220bf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/companyfacts_capture_identity_boundary_20261021_v1/profile-results.json",
+      "sha256": "442502d7cb5681ed08441682a053faf9978b776fc707d00649984053ae2220bf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/companyfacts_capture_identity_boundary_20261021_v1/reconstructed-pre-search-raw_info.py.txt",
+      "sha256": "7db97b9be1a136adacf092762f8e287eaccf3f0f7eb074c130c25a5da056231f"
+    }
+  ],
+  "scope": "Only read-only actual cache/raw/old records plus synthetic/temp native stores, resolver and reviewed view. No global append, real source admission, actual prepare/GET/models/LabelStore/LockedTest/fullprepare or old-stage resume.",
+  "residual_risks": [
+    "GPRE-only production freeze/append/review and any full expected-set/downstream evidence remain separately authorized root/sole-driver work; this review grants no run permission.",
+    "Old references/IDs remain permanent; new document-ID-dependent Signal fingerprints can change and must be frozen anew. That is provenance/version change, not predictive or independent research gain.",
+    "New captures do not prove API vintage or primary filing audit; whole-graph self-consistent forgery is not solved by hashes. Existing filed-next-UTC-day policy is unchanged."
+  ]
+}

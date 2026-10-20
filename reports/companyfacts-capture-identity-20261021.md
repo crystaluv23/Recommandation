@@ -32,6 +32,12 @@ do not count as independent facts.
   replay and source-copy deduplication tests: all three passed, zero network
   attempts. Existing PIT tests changed only their recorded test clock and the
   expected identity recipe; source values, periods and public-time oracles remain.
+- [Subsequent independent actual57 review](../runs/diagnostics/companyfacts_capture_identity_boundary_20261021_v1/profile-independent-review.json)
+  reconstructs all 57 retained products exactly under the legacy recipe and
+  confirms capture changes only IDs. A temporary four-product native view passes
+  snapshot/reopen/replay; reducing the expected set to four or mixing recipes
+  rejects. The old raw proof and four conflicting global records remain unchanged.
+  Its first temporary-oracle setup error is retained as a review harness failure.
 
 ## Remaining acceptance
 

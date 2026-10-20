@@ -1,0 +1,24 @@
+{
+  "admitted_rows": 1776,
+  "case_id": "cik_0001309402:20250530",
+  "elapsed_seconds": 3.569228,
+  "groups": [
+    {
+      "name": "default_v6",
+      "refs": 18
+    },
+    {
+      "name": "latest_v12",
+      "refs": 18
+    }
+  ],
+  "products": 57,
+  "review_rows": 1781,
+  "scope": "Actual retained authority helper only under source prepare guards, temp destination; no stage prepare/derive/global Store/append/view/consumer/GET/LLM/labels/fullprepare.",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_gpre_capture_snapshot.py",
+    "sha256": "c6544d2583a7bc4c86bc373a3db724a24c5c19f7507a9764ba827a9588a9713a"
+  },
+  "source_bindings": 5869,
+  "status": "passed"
+}

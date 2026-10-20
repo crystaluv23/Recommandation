@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/companyfacts_capture_identity_boundary_20261021_v1/profile-probe.py", line 46, in <module>
+    review={'schema_version':'reviewed-raw-info-snapshot-v1','oracle_identity':oid,'scope':{'as_of':norm['selection']['available_at_through'],
+                                                                               ^^^
+NameError: name 'oid' is not defined. Did you mean: 'id'?

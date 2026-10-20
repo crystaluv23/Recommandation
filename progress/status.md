@@ -38,6 +38,8 @@ source snapshot/reopen canonical相等仅证明本阶段重开store，非OS中�
   225关联测试/独立14项过，旧49/50仍6行，离线同步后5行进入持久化/Predictor；fresh触发仍待验。
 - [fresh F7→Predictor](../reports/reviewed-owned-partial-stage-20261020.md)：3独立首答/0纠错、17cards及32文件restore保真；
   预冻完整语义0/1：残项漏披露期后covenant compliance，未宣称未来合规仍不能通过。mirror not_exercised。
+- [F7 facets提示修复](../reports/reflect-facet-scope-20261021.md)：保静态属性/动态状态/覆盖期与公开日区别、已有unanswered保原need路径；
+  17安全测试通过，validator/typed权限未变；fresh语义未验，旧0/1保持。
 - [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)：apply neutral→Reflect partial→Predictor/sink实际连接，
   7新角色/1纠错、52文件恢复；仍6行needs含长短镜像，不等于整体F4/F6/F7或完整F9。
 - [native Posthoc](../reports/reviewed-posthoc-stage-20261020.md)：首答拒、唯一typed纠错后2items窄审通过，19文件恢复；

@@ -1441,7 +1441,13 @@ narrowed residual authored after execution and validated by the existing target/
 bounds. Full/unanswered requires null residual. Unanswered and every untargeted
 occurrence retain exact text and multiplicity; full removes its occurrence; partial
 replaces its occurrence with its validated actual residual. Coverage alone never
-proves semantic completeness. Missing/invalid metadata receives typed correction,
+proves semantic completeness. Authoring preserves the requested object, static
+attributes, dynamic status and unsupported coverage periods separately; public
+availability does not extend a fact's observation period. See the role contract's
+lossless residual rule: if a genuinely narrower residual cannot retain every
+unsupported facet/time scope within 300 characters, existing unanswered/null
+preserves the exact original need while evidence may still be adopted. No new
+schema, semantic gate, repair permission or inferred fallback is introduced. Missing/invalid metadata receives typed correction,
 never an invented fallback disposition. Calls without metadata and legacy unindexed
 selections preserve prior needs conservatively. Immutable historical records remain
 readable without retroactively acquiring actual-answer attestations. Accepted rows

@@ -31,6 +31,22 @@ An unanswered disposition preserves the need exactly. Its evidence refs may be
 empty or cite valid adopted current-batch evidence explaining a period or scope
 mismatch; those refs do not claim the need was answered or authorize closure.
 
+Judge the requested object, static attributes/terms, dynamic status and actual
+fact-coverage period separately from source public availability. An umbrella
+question cannot be narrowed to static attributes while silently dropping its
+unsupported dynamic state or later, cutoff-bounded coverage. A public timestamp
+does not extend the observation period. Already-public forecasts remain valid
+answers to questions about those forecasts, not proof of later realized states.
+A partial residual must preserve every unsupported requested facet and time scope.
+The reason must explain which requested facets/coverage the actual evidence
+answers and what remains missing; it never substitutes for the residual.
+If that cannot be expressed losslessly as a genuinely narrower 1–300 character
+residual, use existing `unanswered` with null residual and retain the original
+need byte-for-byte. Valid evidence can still be adopted independently. Do not
+lose a facet to satisfy the length bound, move it only into the reason or create
+an unowned substitute need. These are authoring duties, not new semantic fields,
+keyword gates or authority for runtime to invent missing facets.
+
 The prompt uses `need_transition_contract.required_disposition_need_indices` as
 the exhaustive current-invocation target set. An empty set requires
 `need_dispositions=[]`, even when a terminal closure sees the previous Signal

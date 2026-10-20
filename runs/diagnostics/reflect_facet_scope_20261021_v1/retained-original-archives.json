@@ -1,0 +1,26 @@
+{
+  "scope": "Byte-exact archival copies of raw diagnostic output and historical specs; original local bytes remain unchanged. Archived Markdown is historical source, not a live relative-link document.",
+  "files": [
+    {
+      "original_path": "/Users/l/Project/Recommandation/runs/diagnostics/reflect_facet_scope_20261021_v1/original-wire-tests.log",
+      "original_sha256": "4bfada6209fa42968bee9e18e227d0fb4e7289dc6fd091f611128072b2fdf541",
+      "archive_path": "/Users/l/Project/Recommandation/runs/diagnostics/reflect_facet_scope_20261021_v1/original-wire-tests.log.gz",
+      "archive_sha256": "bc4a107781527438c2ac02256548853995609dbc3471e9dd4a7d8773775173c7",
+      "decompressed_bytes_equal": true
+    },
+    {
+      "original_path": "/Users/l/Project/Recommandation/runs/diagnostics/reflect_facet_scope_20261021_v1/original-evolution_plan_roles.md",
+      "original_sha256": "5b362001794e32fc07f23e32483ecc58254f22f500964f4fde7146ae72850df2",
+      "archive_path": "/Users/l/Project/Recommandation/runs/diagnostics/reflect_facet_scope_20261021_v1/original-evolution_plan_roles.md.gz",
+      "archive_sha256": "f28b98c9c2e9b5872fd14ae3259cdba957b95aa254540cb6cabc453c8ca36ac1",
+      "decompressed_bytes_equal": true
+    },
+    {
+      "original_path": "/Users/l/Project/Recommandation/runs/diagnostics/reflect_facet_scope_20261021_v1/original-evolution_runtime.md",
+      "original_sha256": "8489c561c715ba91663cd8f030a097aebc473e794dae6bcfee1befcf7fb74b04",
+      "archive_path": "/Users/l/Project/Recommandation/runs/diagnostics/reflect_facet_scope_20261021_v1/original-evolution_runtime.md.gz",
+      "archive_sha256": "8085edfb1745ce2190685e6218bddd8f437d3169c938f8f4cdc195987312d3df",
+      "decompressed_bytes_equal": true
+    }
+  ]
+}
