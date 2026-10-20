@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/probe.py", line 88, in <module>
+    projections,lineage=_single_llm_signal_projection((LLMSignalBatchInput(spec,tuple(selected),skill),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py", line 4404, in _single_llm_signal_projection
+    for document in item.documents:
+                    ^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'documents'

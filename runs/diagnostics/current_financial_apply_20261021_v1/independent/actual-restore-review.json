@@ -1,0 +1,22 @@
+{
+  "status": "PASS_readonly_completed_restore_fidelity",
+  "stage_file_count": 24,
+  "count_definition": "23 sealed files plus exact root completed-files.json seal",
+  "all_before_after_current_SHA_equal": true,
+  "returned_result_equals_original": true,
+  "original_acceptance_failure_preserved": true,
+  "strict_unique_passes_unchanged": 6,
+  "period_policy_ambiguous_unchanged": 2,
+  "fixed_denominator_unchanged": 9,
+  "restored_without_execution": true,
+  "new_batches": 0,
+  "root_restore_elapsed_seconds": 1.6362574170343578,
+  "independent_scope": "Read the sole executor completed-restore summary/log, sealed index and24current hashes only. No restore/stage command invoked, no4389rescan. Not OS-crash/research recovery.",
+  "bindings": {
+    "runs/diagnostics/current_financial_apply_20261021_v1/root/completed-restore.json": "28e05f7bca1c3cd7426b66dab7f530a2a5eb4b8dd9f3316509d5a777316b6d6f",
+    "runs/diagnostics/current_financial_apply_20261021_v1/root/native-restore.log": "98d81ad46135da44d7784c0035cc1264fa203f936fafc5b3b27bae49b7945881",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/completed-files.json": "58f28add6a504e3d58368cdc462603aeb49b99f4665132f10d3e5ed654efbf9c",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/result.json": "ae45992407417c919668f1738b185f92324753f84b6999ca77f0f596c83e503f",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-review.json": "5d094ce65c057004a45954cb5af9d7a8fa2fe1276cadea3f5244831b57f76ce5"
+  }
+}

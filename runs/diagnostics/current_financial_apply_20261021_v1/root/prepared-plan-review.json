@@ -1,0 +1,27 @@
+{
+  "prepared_plan_sha256": "7c1120ec07b149744ca9b69aeed7b21aa074f19ff1c83d23a410a54bb3be55b2",
+  "plan_hash": "8e8e406273d1f9805156e08d2f1155bf7da7044ddacc552d92c48da19239419a",
+  "bindings_verified": 4389,
+  "exact_refs": [
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "gross_margin_change:v3",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3"
+  ],
+  "limits": {
+    "batches": 1,
+    "label_reads": 0,
+    "model_calls": 0,
+    "network_calls": 0,
+    "signal_calls": 9
+  },
+  "state": "prepared_not_executed",
+  "fixed_denominator": 9,
+  "unique_oracle": 7,
+  "ambiguous_no_pass": 2
+}

@@ -1,0 +1,85 @@
+{
+  "evidence": {
+    "counter": [],
+    "supporting": [
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+        "timestamp": "2025-05-09T00:00:00+00:00"
+      },
+      {
+        "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+        "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+        "timestamp": "2024-05-04T00:00:00+00:00"
+      }
+    ]
+  },
+  "execution": {
+    "status": "success"
+  },
+  "input_evidence_available_at": [
+    "2025-05-09T00:00:00+00:00",
+    "2024-05-04T00:00:00+00:00"
+  ],
+  "interpretation": {
+    "measurement_context": {
+      "categorical_value_is_not_stock_direction": true,
+      "deferred_observation_count": 0,
+      "numeric_measurement": {
+        "categorical_state": "neutral",
+        "display": {
+          "unit": "%",
+          "value": 0.7201773568603631
+        },
+        "formula": "current / comparable prior-year revenue - 1",
+        "numeric_sign": "positive",
+        "period": {
+          "end": "2025-03-31",
+          "start": "2025-01-01"
+        },
+        "unit": "fraction",
+        "value": 0.007201773568603631
+      },
+      "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors.",
+      "source_observations": [
+        {
+          "end": "2025-03-31",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "start": "2025-01-01",
+          "tag": "Revenues",
+          "unit": "USD",
+          "value": 601515000
+        },
+        {
+          "end": "2024-03-31",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "start": "2024-01-01",
+          "tag": "Revenues",
+          "unit": "USD",
+          "value": 597214000
+        }
+      ]
+    },
+    "summary": "revenue_growth_yoy=0.00720177"
+  },
+  "measurement": {
+    "formula": "current / comparable prior-year revenue - 1",
+    "period": {
+      "end": "2025-03-31",
+      "start": "2025-01-01"
+    },
+    "unit": "fraction",
+    "value": 0.007201773568603631
+  },
+  "signal_id": "revenue_growth_yoy",
+  "state": {
+    "confidence": 1.0,
+    "value": "neutral"
+  },
+  "status": {
+    "coverage": "sufficient"
+  },
+  "version": 3
+}

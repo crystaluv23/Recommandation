@@ -1,0 +1,41 @@
+{
+  "evidence": {
+    "counter": [],
+    "supporting": [
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+        "timestamp": "2025-05-09T00:00:00+00:00"
+      },
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+        "timestamp": "2025-05-09T00:00:00+00:00"
+      }
+    ]
+  },
+  "execution": {
+    "status": "success"
+  },
+  "interpretation": {
+    "summary": "operating_cash_flow_margin=-0.091504"
+  },
+  "measurement": {
+    "formula": "operating cash flow / same-period revenue",
+    "period": {
+      "end": "2025-03-31",
+      "start": "2025-01-01"
+    },
+    "unit": "fraction",
+    "value": -0.09150395251988729
+  },
+  "signal_id": "operating_cash_flow_margin",
+  "state": {
+    "confidence": 1.0,
+    "value": "negative"
+  },
+  "status": {
+    "coverage": "sufficient"
+  },
+  "version": 2
+}

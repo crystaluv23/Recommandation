@@ -1,0 +1,9 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py",
+    "prepare"
+  ],
+  "returncode": 0,
+  "script_sha256": "2bb3d312545a859b91acd9f1286ce5c7cdf18ce09ebe7e68928df5885d131124"
+}

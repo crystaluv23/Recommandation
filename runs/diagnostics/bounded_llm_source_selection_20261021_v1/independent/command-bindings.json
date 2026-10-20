@@ -1,0 +1,10 @@
+{
+  "review_sha256": "14b8b955774b98a827625472dc73ce865ea0fa300fe1f1fc7731551771fd4301",
+  "artifacts": {
+    "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/interface-review.json": "14b8b955774b98a827625472dc73ce865ea0fa300fe1f1fc7731551771fd4301",
+    "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/probe.log": "4b4f361b26b6626e907ccbe3c415b61df0c04a740a9c50a6d88e8d83c51c0fa4",
+    "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/fixed-pools.json": "00f767d9c192af92baa1da26e72b28a880804007cf1cbe73d9b19893b9198ffe",
+    "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/probe-results.json": "2ef37837024cee7af69c244875af536ff5154027ae9a8b3d6b1394fd3684d615",
+    "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/probe.py": "f199c8d1e275fbc32434586ec522434c3f0da35dbf2395acd311024311b0d696"
+  }
+}

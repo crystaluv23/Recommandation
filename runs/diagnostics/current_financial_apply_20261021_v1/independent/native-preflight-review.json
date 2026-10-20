@@ -1,0 +1,18 @@
+{
+  "status": "PASS_bounded_runner_preflight",
+  "runner_sha256": "5ebe26fa354cdeb7057e5c95556b61c5aaab419686e34cc080a705bac141b9e8",
+  "controls_sha256": "9820c68d69889355fefe01b28b74dfec673533ebc7ea4e750c5603e77db89ff5",
+  "independent_checks": [
+    "native ReviewedStore constructor empty-parent connection; no filesystem source open",
+    "completed acceptance failure readback zero execution; added nested seal basename rejected",
+    "full operand tuple/literal and numeric/unit positive, four negative mutations, ambiguity record-only"
+  ],
+  "formal_stage_exists": false,
+  "static_findings": [
+    "Fixed output and oracle file+canonical authority before write; historical source/code separation; current code/spec frozen separately.",
+    "One irreversible execute marker before native batch; all native results persisted before oracle acceptance; failures never retried and two ambiguous rows record-only.",
+    "Actual selected resolutions/fingerprints are retained, but equality with old selected source IDs/order is not an acceptance assertion. Must independently audit actual batch after execution before claiming exact old selection.",
+    "Read-only restore hashes files/directories, excludes exact root seal only, never invokes batch. This is not OS-crash or research recovery."
+  ],
+  "limits": "Synthetic temp fixtures only; constructor refresh mocked. No actual prepare/execute/native financial batch/real source Store/GET/model/LabelStore/append. Driver10safe read but not rerun."
+}

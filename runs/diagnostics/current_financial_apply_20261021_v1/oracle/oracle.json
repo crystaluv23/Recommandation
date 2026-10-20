@@ -1,0 +1,1226 @@
+{
+  "schema_version": "independent-source-arithmetic-oracle-v1",
+  "scope": "Exact latest_v12 financial deterministic comparison group for qualified GPRE source view; not a replacement for old default_v6 or a current-run default claim.",
+  "fixed_denominator": 9,
+  "sufficient_unique": 7,
+  "period_policy_ambiguous": 2,
+  "threshold_source": "Exact frozen Signal specs; public owning contract/docstrings only, never execution or basis-helper output.",
+  "prior_native_execution_performed": false,
+  "models_executed": 0,
+  "network_calls": 0,
+  "real_label_reads": 0,
+  "source_append_calls": 0,
+  "rows": [
+    {
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "oracle_status": "sufficient_unique",
+      "formula": "abs(-55,041,000) / 98,610,000",
+      "expected_numeric": {
+        "exact_fraction": "18347/32870",
+        "decimal": "0.55816854274414359598418010343778521448128993002738"
+      },
+      "unit": "dimensionless ratio",
+      "expected_state": "positive",
+      "operands": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 174,
+          "raw_start": 91559,
+          "raw_end": 92064,
+          "literal": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+          "fact": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2025-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": -55041000
+          }
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 36,
+          "raw_start": 19452,
+          "raw_end": 20214,
+          "literal": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+          "fact": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          }
+        }
+      ],
+      "current_period_alternatives": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 36,
+          "raw_start": 19452,
+          "raw_end": 20214,
+          "literal": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+          "fact": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          }
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 174,
+          "raw_start": 91559,
+          "raw_end": 92064,
+          "literal": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+          "fact": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2025-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": -55041000
+          }
+        }
+      ],
+      "classification_reason": "Negative OCF and burn ratio >= frozen burn_threshold 0.1.",
+      "measurement_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "numeric_comparison_policy": {
+        "exact_operands_required": true,
+        "raw_numeric_absolute_tolerance": "1e-12",
+        "six_decimal_display_absolute_tolerance": "1e-6",
+        "note": "Display tolerance applies only when consumer explicitly retains only a six-decimal rendering; operand/period/unit/state checks still mandatory."
+      }
+    },
+    {
+      "signal_ref": "cash_reserves:v2",
+      "oracle_status": "sufficient_unique",
+      "formula": "latest USD cash balance",
+      "expected_numeric": {
+        "exact_fraction": "98610000/1",
+        "decimal": "98610000"
+      },
+      "unit": "USD",
+      "expected_state": "neutral",
+      "operands": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 36,
+          "raw_start": 19452,
+          "raw_end": 20214,
+          "literal": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+          "fact": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          }
+        }
+      ],
+      "current_period_alternatives": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 36,
+          "raw_start": 19452,
+          "raw_end": 20214,
+          "literal": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+          "fact": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          }
+        }
+      ],
+      "classification_reason": "98,610,000 is below positive_min 100,000,000 and above negative_max 10,000,000.",
+      "measurement_period": {
+        "start": null,
+        "end": "2025-03-31"
+      },
+      "numeric_comparison_policy": {
+        "exact_operands_required": true,
+        "raw_numeric_absolute_tolerance": "1e-12",
+        "six_decimal_display_absolute_tolerance": "1e-6",
+        "note": "Display tolerance applies only when consumer explicitly retains only a six-decimal rendering; operand/period/unit/state checks still mandatory."
+      }
+    },
+    {
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "oracle_status": "sufficient_unique",
+      "formula": "98,610,000 / 325,735,000",
+      "expected_numeric": {
+        "exact_fraction": "19722/65147",
+        "decimal": "0.30273074738667935591815432790458501542665049810429"
+      },
+      "unit": "dimensionless ratio",
+      "expected_state": "negative",
+      "operands": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 36,
+          "raw_start": 19452,
+          "raw_end": 20214,
+          "literal": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+          "fact": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          }
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 159,
+          "raw_start": 83600,
+          "raw_end": 83980,
+          "literal": "{\"description\":\"Total obligations incurred as part of normal operations that are expected to be paid during the following twelve months or within one business cycle, if longer.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Liabilities, Current\",\"start\":null,\"tag\":\"LiabilitiesCurrent\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":325735000}",
+          "fact": {
+            "description": "Total obligations incurred as part of normal operations that are expected to be paid during the following twelve months or within one business cycle, if longer.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Liabilities, Current",
+            "start": null,
+            "tag": "LiabilitiesCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 325735000
+          }
+        }
+      ],
+      "current_period_alternatives": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 36,
+          "raw_start": 19452,
+          "raw_end": 20214,
+          "literal": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+          "fact": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          }
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 159,
+          "raw_start": 83600,
+          "raw_end": 83980,
+          "literal": "{\"description\":\"Total obligations incurred as part of normal operations that are expected to be paid during the following twelve months or within one business cycle, if longer.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Liabilities, Current\",\"start\":null,\"tag\":\"LiabilitiesCurrent\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":325735000}",
+          "fact": {
+            "description": "Total obligations incurred as part of normal operations that are expected to be paid during the following twelve months or within one business cycle, if longer.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Liabilities, Current",
+            "start": null,
+            "tag": "LiabilitiesCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 325735000
+          }
+        }
+      ],
+      "classification_reason": "Same instant/date/currency; positive denominator; ratio below frozen negative_max=1.0.",
+      "measurement_period": {
+        "start": null,
+        "end": "2025-03-31"
+      },
+      "numeric_comparison_policy": {
+        "exact_operands_required": true,
+        "raw_numeric_absolute_tolerance": "1e-12",
+        "six_decimal_display_absolute_tolerance": "1e-6",
+        "note": "Display tolerance applies only when consumer explicitly retains only a six-decimal rendering; operand/period/unit/state checks still mandatory."
+      }
+    },
+    {
+      "signal_ref": "gross_margin_change:v3",
+      "oracle_status": "period_policy_ambiguous",
+      "expected_state": null,
+      "expected_numeric": null,
+      "reason": "Frozen definition and public callable docstring do not uniquely specify which earlier comparable period/growth pair; coverage span >=330 is an input coverage gate, not the mathematical comparison rule.",
+      "alternatives": [
+        {
+          "basis": "same_quarter_previous_year",
+          "computed": {
+            "exact_fraction": "-1072647553/119744393070",
+            "decimal": "-0.0089578102615038791978738282647508349010332496898429"
+          },
+          "state": "neutral",
+          "operands": [
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 103,
+              "raw_start": 59692,
+              "raw_end": 60030,
+              "literal": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}",
+              "fact": {
+                "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+                "end": "2025-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": null,
+                "label": "Gross Profit",
+                "start": "2025-01-01",
+                "tag": "GrossProfit",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 3039000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 267,
+              "raw_start": 131454,
+              "raw_end": 131972,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2025-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": null,
+                "label": "Revenues",
+                "start": "2025-01-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 601515000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 102,
+              "raw_start": 59347,
+              "raw_end": 59691,
+              "literal": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Gross Profit\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":8367000}",
+              "fact": {
+                "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+                "end": "2024-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": "CY2024Q1",
+                "label": "Gross Profit",
+                "start": "2024-01-01",
+                "tag": "GrossProfit",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 8367000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 266,
+              "raw_start": 130929,
+              "raw_end": 131453,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2024-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": "CY2024Q1",
+                "label": "Revenues",
+                "start": "2024-01-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 597214000
+              }
+            }
+          ]
+        },
+        {
+          "basis": "latest_earlier_reported_quarter_with_similar_duration",
+          "computed": {
+            "exact_fraction": "-2998789298/26415932235",
+            "decimal": "-0.11352199389831604025539324298618681704079560756793"
+          },
+          "state": "negative",
+          "operands": [
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 103,
+              "raw_start": 59692,
+              "raw_end": 60030,
+              "literal": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}",
+              "fact": {
+                "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+                "end": "2025-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": null,
+                "label": "Gross Profit",
+                "start": "2025-01-01",
+                "tag": "GrossProfit",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 3039000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 267,
+              "raw_start": 131454,
+              "raw_end": 131972,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2025-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": null,
+                "label": "Revenues",
+                "start": "2025-01-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 601515000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+              "document_sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4",
+              "content_hash": "cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+              "available_at": "2024-11-01T00:00:00+00:00",
+              "filing_date": "2024-10-31",
+              "fact_index": 130,
+              "raw_start": 72305,
+              "raw_end": 72644,
+              "literal": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2024-07-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":78109000}",
+              "fact": {
+                "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+                "end": "2024-09-30",
+                "fiscal_period": "Q3",
+                "fiscal_year": 2024,
+                "frame": null,
+                "label": "Gross Profit",
+                "start": "2024-07-01",
+                "tag": "GrossProfit",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 78109000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+              "document_sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4",
+              "content_hash": "cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+              "available_at": "2024-11-01T00:00:00+00:00",
+              "filing_date": "2024-10-31",
+              "fact_index": 384,
+              "raw_start": 182767,
+              "raw_end": 183285,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-07-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":658735000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2024-09-30",
+                "fiscal_period": "Q3",
+                "fiscal_year": 2024,
+                "frame": null,
+                "label": "Revenues",
+                "start": "2024-07-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 658735000
+              }
+            }
+          ]
+        }
+      ],
+      "acceptance_rule": "Record native output without pass credit; never choose oracle after observing implementation output. Alternative calculations illustrate ambiguity, not an any-of acceptance set."
+    },
+    {
+      "signal_ref": "liquidity_runway_months:v3",
+      "oracle_status": "sufficient_unique",
+      "formula": "98,610,000 / (55,041,000 / 3)",
+      "expected_numeric": {
+        "exact_fraction": "98610/18347",
+        "decimal": "5.3747206627786559110481277593066986428298904453044"
+      },
+      "unit": "months",
+      "expected_state": "positive",
+      "operands": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 36,
+          "raw_start": 19452,
+          "raw_end": 20214,
+          "literal": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+          "fact": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          }
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 174,
+          "raw_start": 91559,
+          "raw_end": 92064,
+          "literal": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+          "fact": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2025-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": -55041000
+          }
+        }
+      ],
+      "current_period_alternatives": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 36,
+          "raw_start": 19452,
+          "raw_end": 20214,
+          "literal": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+          "fact": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          }
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 174,
+          "raw_start": 91559,
+          "raw_end": 92064,
+          "literal": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+          "fact": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2025-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": -55041000
+          }
+        }
+      ],
+      "classification_reason": "Jan 1 through Mar 31 is one reported 3-month quarter; rounded months=3; runway <= frozen 6-month positive threshold.",
+      "measurement_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "numeric_comparison_policy": {
+        "exact_operands_required": true,
+        "raw_numeric_absolute_tolerance": "1e-12",
+        "six_decimal_display_absolute_tolerance": "1e-6",
+        "note": "Display tolerance applies only when consumer explicitly retains only a six-decimal rendering; operand/period/unit/state checks still mandatory."
+      }
+    },
+    {
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "oracle_status": "sufficient_unique",
+      "formula": "1 - 64,069,000 / 63,341,000",
+      "expected_numeric": {
+        "exact_fraction": "-728/63341",
+        "decimal": "-0.011493345542381711687532561847776321813675186687927"
+      },
+      "unit": "dimensionless fraction",
+      "expected_state": "neutral",
+      "operands": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 293,
+          "raw_start": 145008,
+          "raw_end": 145586,
+          "literal": "{\"description\":\"Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Weighted Average Number of Shares Outstanding, Basic\",\"start\":\"2025-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":64069000}",
+          "fact": {
+            "description": "Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Weighted Average Number of Shares Outstanding, Basic",
+            "start": "2025-01-01",
+            "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+            "taxonomy": "us-gaap",
+            "unit": "shares",
+            "value": 64069000
+          }
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 292,
+          "raw_start": 144423,
+          "raw_end": 145007,
+          "literal": "{\"description\":\"Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Weighted Average Number of Shares Outstanding, Basic\",\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":63341000}",
+          "fact": {
+            "description": "Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.",
+            "end": "2024-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2024Q1",
+            "label": "Weighted Average Number of Shares Outstanding, Basic",
+            "start": "2024-01-01",
+            "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+            "taxonomy": "us-gaap",
+            "unit": "shares",
+            "value": 63341000
+          }
+        }
+      ],
+      "current_period_alternatives": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 293,
+          "raw_start": 145008,
+          "raw_end": 145586,
+          "literal": "{\"description\":\"Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Weighted Average Number of Shares Outstanding, Basic\",\"start\":\"2025-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":64069000}",
+          "fact": {
+            "description": "Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Weighted Average Number of Shares Outstanding, Basic",
+            "start": "2025-01-01",
+            "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+            "taxonomy": "us-gaap",
+            "unit": "shares",
+            "value": 64069000
+          }
+        }
+      ],
+      "classification_reason": "Same-filing Q1 weighted-average basic shares in shares; diluted agrees; -5% < retirement < 2%.",
+      "measurement_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "numeric_comparison_policy": {
+        "exact_operands_required": true,
+        "raw_numeric_absolute_tolerance": "1e-12",
+        "six_decimal_display_absolute_tolerance": "1e-6",
+        "note": "Display tolerance applies only when consumer explicitly retains only a six-decimal rendering; operand/period/unit/state checks still mandatory."
+      }
+    },
+    {
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "oracle_status": "sufficient_unique",
+      "formula": "-55,041,000 / 601,515,000",
+      "expected_numeric": {
+        "exact_fraction": "-18347/200505",
+        "decimal": "-0.091503952519887284606368918480835889379317224009376"
+      },
+      "unit": "dimensionless fraction",
+      "expected_state": "negative",
+      "operands": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 174,
+          "raw_start": 91559,
+          "raw_end": 92064,
+          "literal": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+          "fact": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2025-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": -55041000
+          }
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 267,
+          "raw_start": 131454,
+          "raw_end": 131972,
+          "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+          "fact": {
+            "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Revenues",
+            "start": "2025-01-01",
+            "tag": "Revenues",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 601515000
+          }
+        }
+      ],
+      "current_period_alternatives": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 174,
+          "raw_start": 91559,
+          "raw_end": 92064,
+          "literal": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+          "fact": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2025-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": -55041000
+          }
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 267,
+          "raw_start": 131454,
+          "raw_end": 131972,
+          "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+          "fact": {
+            "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Revenues",
+            "start": "2025-01-01",
+            "tag": "Revenues",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 601515000
+          }
+        }
+      ],
+      "classification_reason": "Exact same reported Q1 duration/USD, total revenue positive; margin <= frozen negative_max 0.0.",
+      "measurement_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "numeric_comparison_policy": {
+        "exact_operands_required": true,
+        "raw_numeric_absolute_tolerance": "1e-12",
+        "six_decimal_display_absolute_tolerance": "1e-6",
+        "note": "Display tolerance applies only when consumer explicitly retains only a six-decimal rendering; operand/period/unit/state checks still mandatory."
+      }
+    },
+    {
+      "signal_ref": "revenue_acceleration:v2",
+      "oracle_status": "period_policy_ambiguous",
+      "expected_state": null,
+      "expected_numeric": null,
+      "reason": "Frozen definition and public callable docstring do not uniquely specify which earlier comparable period/growth pair; coverage span >=330 is an input coverage gate, not the mathematical comparison rule.",
+      "alternatives": [
+        {
+          "basis": "same_quarter_previous_year_growth",
+          "computed": {
+            "exact_fraction": "144366755939/497448804086",
+            "decimal": "0.29021429894530728490947095230685386892921460772491"
+          },
+          "state": "positive",
+          "operands": [
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 267,
+              "raw_start": 131454,
+              "raw_end": 131972,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2025-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": null,
+                "label": "Revenues",
+                "start": "2025-01-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 601515000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 266,
+              "raw_start": 130929,
+              "raw_end": 131453,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2024-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": "CY2024Q1",
+                "label": "Revenues",
+                "start": "2024-01-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 597214000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 266,
+              "raw_start": 130929,
+              "raw_end": 131453,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2024-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": "CY2024Q1",
+                "label": "Revenues",
+                "start": "2024-01-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 597214000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+              "document_sha256": "9df665e5ea1b21744280b37592afd5d5a0426b0d871a0cb52b6a334264f8edd8",
+              "content_hash": "aa05ed7e72b76d7930e5411dbe4c3314c0f0186a7917d0b950bc6f3ada19df12",
+              "available_at": "2024-05-04T00:00:00+00:00",
+              "filing_date": "2024-05-03",
+              "fact_index": 269,
+              "raw_start": 132057,
+              "raw_end": 132581,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2023-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":\"CY2023Q1\",\"label\":\"Revenues\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":832949000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2023-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2024,
+                "frame": "CY2023Q1",
+                "label": "Revenues",
+                "start": "2023-01-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 832949000
+              }
+            }
+          ],
+          "all_operands_in_actual_selected_set": true
+        },
+        {
+          "basis": "latest_earlier_reported_quarter_growth",
+          "computed": {
+            "exact_fraction": "7180439113/26658737139",
+            "decimal": "0.26934655889965185946162383967531118541481335846259"
+          },
+          "state": "positive",
+          "operands": [
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 267,
+              "raw_start": 131454,
+              "raw_end": 131972,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2025-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": null,
+                "label": "Revenues",
+                "start": "2025-01-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 601515000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+              "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+              "available_at": "2025-05-09T00:00:00+00:00",
+              "filing_date": "2025-05-08",
+              "fact_index": 266,
+              "raw_start": 130929,
+              "raw_end": 131453,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2024-03-31",
+                "fiscal_period": "Q1",
+                "fiscal_year": 2025,
+                "frame": "CY2024Q1",
+                "label": "Revenues",
+                "start": "2024-01-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 597214000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+              "document_sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4",
+              "content_hash": "cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+              "available_at": "2024-11-01T00:00:00+00:00",
+              "filing_date": "2024-10-31",
+              "fact_index": 384,
+              "raw_start": 182767,
+              "raw_end": 183285,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-07-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":658735000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2024-09-30",
+                "fiscal_period": "Q3",
+                "fiscal_year": 2024,
+                "frame": null,
+                "label": "Revenues",
+                "start": "2024-07-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 658735000
+              }
+            },
+            {
+              "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+              "document_sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4",
+              "content_hash": "cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+              "available_at": "2024-11-01T00:00:00+00:00",
+              "filing_date": "2024-10-31",
+              "fact_index": 382,
+              "raw_start": 181722,
+              "raw_end": 182246,
+              "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2023-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2024,\"frame\":\"CY2023Q3\",\"label\":\"Revenues\",\"start\":\"2023-07-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":892770000}",
+              "fact": {
+                "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+                "end": "2023-09-30",
+                "fiscal_period": "Q3",
+                "fiscal_year": 2024,
+                "frame": "CY2023Q3",
+                "label": "Revenues",
+                "start": "2023-07-01",
+                "tag": "Revenues",
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": 892770000
+              }
+            }
+          ],
+          "all_operands_in_actual_selected_set": false
+        }
+      ],
+      "acceptance_rule": "Record native output without pass credit; never choose oracle after observing implementation output. Alternative calculations illustrate ambiguity, not an any-of acceptance set."
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v3",
+      "oracle_status": "sufficient_unique",
+      "formula": "601,515,000 / 597,214,000 - 1",
+      "expected_numeric": {
+        "exact_fraction": "4301/597214",
+        "decimal": "0.0072017735686035491465370872082704022343749476736982"
+      },
+      "unit": "dimensionless fraction",
+      "expected_state": "neutral",
+      "operands": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 267,
+          "raw_start": 131454,
+          "raw_end": 131972,
+          "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+          "fact": {
+            "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Revenues",
+            "start": "2025-01-01",
+            "tag": "Revenues",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 601515000
+          }
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 266,
+          "raw_start": 130929,
+          "raw_end": 131453,
+          "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+          "fact": {
+            "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+            "end": "2024-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2024Q1",
+            "label": "Revenues",
+            "start": "2024-01-01",
+            "tag": "Revenues",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 597214000
+          }
+        }
+      ],
+      "current_period_alternatives": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "filing_date": "2025-05-08",
+          "fact_index": 267,
+          "raw_start": 131454,
+          "raw_end": 131972,
+          "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+          "fact": {
+            "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Revenues",
+            "start": "2025-01-01",
+            "tag": "Revenues",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 601515000
+          }
+        }
+      ],
+      "classification_reason": "Same-filing comparable Q1 total revenue, USD; 0 < growth < frozen positive_min 0.25.",
+      "measurement_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "numeric_comparison_policy": {
+        "exact_operands_required": true,
+        "raw_numeric_absolute_tolerance": "1e-12",
+        "six_decimal_display_absolute_tolerance": "1e-6",
+        "note": "Display tolerance applies only when consumer explicitly retains only a six-decimal rendering; operand/period/unit/state checks still mandatory."
+      }
+    }
+  ],
+  "notes": [
+    "Latest current ends 2025-03-31, 60 days before 2025-05-30, within 550-day freshness bound.",
+    "All seven unique controls have complete operands in their own actual selected sources; basic and diluted share counts agree at both Q1 ends.",
+    "Total revenue is Revenues 601,515,000/597,214,000; same-period revenue-from-contract 35,846,000/41,559,000 is >3x smaller. Literal/tag conflicts remain in raw-materials; do not mix bases.",
+    "These predictions concern measurement outputs/categories, not future price outcomes or independent predictive benefit.",
+    "No root/source/Registry/product file is modified; source/definition hashes verified before and after extraction."
+  ]
+}

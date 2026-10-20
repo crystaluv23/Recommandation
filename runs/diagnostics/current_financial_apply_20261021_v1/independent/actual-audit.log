@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit.py", line 97, in <module>
+    assert all(observation[key] == fact.get(key) for key in ("tag", "unit", "value", "start", "end"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit.py", line 97, in <genexpr>
+    assert all(observation[key] == fact.get(key) for key in ("tag", "unit", "value", "start", "end"))
+               ~~~~~~~~~~~^^^^^
+KeyError: 'start'

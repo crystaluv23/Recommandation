@@ -1,0 +1,12 @@
+{
+  "head": "6b7205ec15785851da9c0009dcda124eec9f498a",
+  "real_basis_literals_both_visible": true,
+  "real_selection_contract_preserved": true,
+  "representative_controls_passed": true,
+  "semantic_counterexample_fails_candidate_as_intended": true,
+  "candidate_sufficient_for_general_latest_or_comparison_semantics": false,
+  "source_records_unchanged": true,
+  "forbidden_calls": [],
+  "seconds": 0.9190104168374091,
+  "scope": "Pure candidate/source projection only; no Store, model/Signal, GET, labels, append, Registry writes, fullprepare or completed-pipeline reentry."
+}

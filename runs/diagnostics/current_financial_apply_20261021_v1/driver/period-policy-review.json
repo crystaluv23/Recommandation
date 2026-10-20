@@ -1,0 +1,589 @@
+{
+  "schema_version": "financial-period-definition-proposal-v1",
+  "status": "proposal_requires_research_definition_decision_not_implemented",
+  "scope": "Two next-version measurement policies only; old definitions, frozen oracle, native failed stage, Registry, thresholds, scoring, PIT and technical admission stay unchanged.",
+  "findings": [
+    {
+      "signal_ref": "gross_margin_change:v3",
+      "classification": "published_definition_ambiguous",
+      "contract": "Latest gross margin versus prior comparable period; public callable says previous comparable-duration margin.",
+      "actual_read_only_algorithm": "Build exact start/end/unit revenue+GrossProfit pairs, sort end descending; current=first; prior=first remaining pair with equal currency and duration difference <=45 days. No year/quarter positioning and no explicit prior.end < current.end predicate.",
+      "consequence": "Latest earlier Q3 can replace same-quarter prior-year Q1. Same-end alternative starts can in principle satisfy comparator; that last structural risk is inferred from code, not an executed counterexample.",
+      "existing_fixture_limit": "Only FY2023/FY2024 annual margins 0.5/0.6; all plausible annual/YoY/previous-duration definitions coincide at +0.1 positive. Fixture has no issuer declaration and must remain historical, not be silently repaired."
+    },
+    {
+      "signal_ref": "revenue_acceleration:v2",
+      "classification": "published_definition_ambiguous",
+      "contract": "Year-over-year revenue growth versus prior comparable period; public callable says earlier comparable growth rate.",
+      "actual_read_only_algorithm": "Each inner pair has end separation330..400 days, same currency and duration difference<=45 days. Outer prior is first earlier growth pair in same currency; it does not require current/prior growth durations to agree or require adjacency or prior-year alignment.",
+      "consequence": "Annual and quarterly growth rates may be subtracted. A missing latest prior-year partner may cause the latest supported older pair to become current. These are under-specified/current implementation choices, not proof of a single already-explicit QoQ/YoY contract being violated.",
+      "existing_fixture_limit": "Only FY2022/FY2023/FY2024 revenues80/100/150; both annual-adjacent and same-year-position policies yield0.25 positive. No competing cadence or incomplete-current case."
+    }
+  ],
+  "recommendation": {
+    "name": "Explicit same-fiscal-window year-over-year changes",
+    "decision_summary": "Use prior fiscal-year matching reporting windows for gross-margin change, and year-over-year change of year-over-year revenue growth for acceleration. This is a concrete research-definition choice, not retrospective reinterpretation of old versions.",
+    "why": "A year-separated same fiscal window gives a stable comparison for standalone quarters, cumulative YTD windows and fiscal annual windows, avoids mixing seasonal positions/aggregation lengths, and admits a single three-window chain for acceleration. It intentionally measures change over one fiscal year, not immediate-quarter acceleration. Selection is driven by the definition, not by whether GPRE currently passes.",
+    "gross_margin_next_version": {
+      "proposed_ref": "gross_margin_change:v4_if_unallocated",
+      "formula": "GrossProfit(W_t)/Revenue(W_t) - GrossProfit(W_t_minus_one_fiscal_year)/Revenue(W_t_minus_one_fiscal_year)",
+      "current_anchor": "Newest eligible canonical total revenue reporting window, not the newest older window that happens to have both operands. Current GrossProfit must match that exact start/end/unit; missing current profit is unavailable.",
+      "prior_anchor": "Same issuer, same canonical currency/accounting basis and same reported fiscal window one fiscal year earlier. Annual compares annual, standalone quarter compares same fiscal quarter, YTD compares same fiscal-year-to-date endpoint. Do not substitute a more recent other quarter or relabel YTD as a quarter.",
+      "state_thresholds": "Keep version3 positive_min0.08, negative_max-0.02 and existing magnitude/freshness policy; unit fraction_difference."
+    },
+    "revenue_acceleration_next_version": {
+      "proposed_ref": "revenue_acceleration:v3_if_unallocated",
+      "formula": "[Revenue(W_t)/Revenue(W_t_minus_one_fiscal_year)-1] - [Revenue(W_t_minus_one_fiscal_year)/Revenue(W_t_minus_two_fiscal_years)-1]",
+      "current_anchor": "Newest eligible canonical total revenue window; require the two preceding matching fiscal windows. Never demote the current anchor to an older complete growth pair when its own comparison is missing.",
+      "prior_anchor": "The shared middle window is exactly the same canonical measurement in both ratios. Require three windows in the same fiscal position, duration basis and currency; no current-quarter/previous-annual subtraction, no missing-quarter gap filling.",
+      "state_thresholds": "Keep version2 positive_min0.05, negative_max-0.05 and existing magnitude/freshness policy; unit fraction_difference."
+    },
+    "matching_and_conflict_policy": [
+      "Use source-declared fiscal windows and complete reported starts/ends to prove correspondence. Exact one-year shifted starts/ends prove ordinary calendar cases; explicit52/53-week fiscal calendars may prove the equivalent fiscal position. Existing330..400-day/45-day checks can be rejection screens but are not sufficient proof of the same fiscal position.",
+      "If fiscal-window correspondence is ambiguous or a transition/stub period cannot be matched, return unavailable with the specific period gap; do not invent a calendar or choose nearest duration alone.",
+      "Keep existing issuer/PIT/source/canonical total-tag/currency/freshness policies. Retain exact source literals and revisions. An accepted canonical revision follows existing source resolution; genuinely unresolved same-window contradictions remain unavailable/conflict and cannot be broken merely by document ID.",
+      "Do not difference cumulative values into standalone quarters, convert currencies, annualize a quarter, raise document limits or add a canonical business field as part of this decision. Any derived-period capability is separate future scope."
+    ],
+    "alternative_for_user_review": {
+      "name": "Adjacent reporting-window acceleration",
+      "meaning": "Current standalone quarter YoY growth minus immediately previous standalone quarter YoY growth; fiscal annual growth minus immediately previous fiscal annual growth.",
+      "tradeoff": "Responds to the most recent change but needs four quarter revenue windows, explicit adjacency and a standalone prior quarter. GPRE Q12025 cannot silently use Q32024 when Q42024 standalone revenue is absent. YTD windows require a separately defined policy; never switch formulas based on available data.",
+      "why_not_default_recommendation": "The current generic financial source contract supports both quarterly and cumulative windows and does not uniquely encode adjacency; adopting this alternative is a different valid research question with a larger explicit calendar/window dependency. It should be deliberately named/scoped and separately admitted."
+    }
+  },
+  "source_example": {
+    "issuer": "cik_0001309402",
+    "as_of": "2025-05-30T00:00:00+00:00",
+    "operands": [
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+        "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "filing_date": "2025-05-08",
+        "fact_index": 103,
+        "raw_start": 59692,
+        "raw_end": 60030,
+        "literal": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}",
+        "fact": {
+          "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+          "end": "2025-03-31",
+          "fiscal_period": "Q1",
+          "fiscal_year": 2025,
+          "frame": null,
+          "label": "Gross Profit",
+          "start": "2025-01-01",
+          "tag": "GrossProfit",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 3039000
+        }
+      },
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+        "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "filing_date": "2025-05-08",
+        "fact_index": 267,
+        "raw_start": 131454,
+        "raw_end": 131972,
+        "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+        "fact": {
+          "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+          "end": "2025-03-31",
+          "fiscal_period": "Q1",
+          "fiscal_year": 2025,
+          "frame": null,
+          "label": "Revenues",
+          "start": "2025-01-01",
+          "tag": "Revenues",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 601515000
+        }
+      },
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+        "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "filing_date": "2025-05-08",
+        "fact_index": 102,
+        "raw_start": 59347,
+        "raw_end": 59691,
+        "literal": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Gross Profit\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":8367000}",
+        "fact": {
+          "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+          "end": "2024-03-31",
+          "fiscal_period": "Q1",
+          "fiscal_year": 2025,
+          "frame": "CY2024Q1",
+          "label": "Gross Profit",
+          "start": "2024-01-01",
+          "tag": "GrossProfit",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 8367000
+        }
+      },
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+        "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "filing_date": "2025-05-08",
+        "fact_index": 266,
+        "raw_start": 130929,
+        "raw_end": 131453,
+        "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+        "fact": {
+          "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+          "end": "2024-03-31",
+          "fiscal_period": "Q1",
+          "fiscal_year": 2025,
+          "frame": "CY2024Q1",
+          "label": "Revenues",
+          "start": "2024-01-01",
+          "tag": "Revenues",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 597214000
+        }
+      },
+      {
+        "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+        "document_sha256": "9df665e5ea1b21744280b37592afd5d5a0426b0d871a0cb52b6a334264f8edd8",
+        "content_hash": "aa05ed7e72b76d7930e5411dbe4c3314c0f0186a7917d0b950bc6f3ada19df12",
+        "available_at": "2024-05-04T00:00:00+00:00",
+        "filing_date": "2024-05-03",
+        "fact_index": 269,
+        "raw_start": 132057,
+        "raw_end": 132581,
+        "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2023-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":\"CY2023Q1\",\"label\":\"Revenues\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":832949000}",
+        "fact": {
+          "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+          "end": "2023-03-31",
+          "fiscal_period": "Q1",
+          "fiscal_year": 2024,
+          "frame": "CY2023Q1",
+          "label": "Revenues",
+          "start": "2023-01-01",
+          "tag": "Revenues",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 832949000
+        }
+      }
+    ],
+    "proposed_gross_margin": {
+      "decimal": "-0.008957810261503879197873828264750834901033",
+      "state": "neutral",
+      "unit": "fraction_difference"
+    },
+    "proposed_acceleration": {
+      "decimal": "0.2902142989453072849094709523068538689292",
+      "state": "positive",
+      "unit": "fraction_difference"
+    },
+    "warning": "Pure arithmetic illustrating proposed semantics. These values are not new native results or retroactive acceptance of the2 record-only rows; no completed stage or oracle is changed.",
+    "preexisting_gross_contrast": [
+      {
+        "basis": "same_quarter_previous_year",
+        "computed": {
+          "exact_fraction": "-1072647553/119744393070",
+          "decimal": "-0.0089578102615038791978738282647508349010332496898429"
+        },
+        "state": "neutral",
+        "operands": [
+          {
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+            "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "filing_date": "2025-05-08",
+            "fact_index": 103,
+            "raw_start": 59692,
+            "raw_end": 60030,
+            "literal": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}",
+            "fact": {
+              "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+              "end": "2025-03-31",
+              "fiscal_period": "Q1",
+              "fiscal_year": 2025,
+              "frame": null,
+              "label": "Gross Profit",
+              "start": "2025-01-01",
+              "tag": "GrossProfit",
+              "taxonomy": "us-gaap",
+              "unit": "USD",
+              "value": 3039000
+            }
+          },
+          {
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+            "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "filing_date": "2025-05-08",
+            "fact_index": 267,
+            "raw_start": 131454,
+            "raw_end": 131972,
+            "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+            "fact": {
+              "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+              "end": "2025-03-31",
+              "fiscal_period": "Q1",
+              "fiscal_year": 2025,
+              "frame": null,
+              "label": "Revenues",
+              "start": "2025-01-01",
+              "tag": "Revenues",
+              "taxonomy": "us-gaap",
+              "unit": "USD",
+              "value": 601515000
+            }
+          },
+          {
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+            "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "filing_date": "2025-05-08",
+            "fact_index": 102,
+            "raw_start": 59347,
+            "raw_end": 59691,
+            "literal": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Gross Profit\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":8367000}",
+            "fact": {
+              "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+              "end": "2024-03-31",
+              "fiscal_period": "Q1",
+              "fiscal_year": 2025,
+              "frame": "CY2024Q1",
+              "label": "Gross Profit",
+              "start": "2024-01-01",
+              "tag": "GrossProfit",
+              "taxonomy": "us-gaap",
+              "unit": "USD",
+              "value": 8367000
+            }
+          },
+          {
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+            "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "filing_date": "2025-05-08",
+            "fact_index": 266,
+            "raw_start": 130929,
+            "raw_end": 131453,
+            "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+            "fact": {
+              "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+              "end": "2024-03-31",
+              "fiscal_period": "Q1",
+              "fiscal_year": 2025,
+              "frame": "CY2024Q1",
+              "label": "Revenues",
+              "start": "2024-01-01",
+              "tag": "Revenues",
+              "taxonomy": "us-gaap",
+              "unit": "USD",
+              "value": 597214000
+            }
+          }
+        ]
+      },
+      {
+        "basis": "latest_earlier_reported_quarter_with_similar_duration",
+        "computed": {
+          "exact_fraction": "-2998789298/26415932235",
+          "decimal": "-0.11352199389831604025539324298618681704079560756793"
+        },
+        "state": "negative",
+        "operands": [
+          {
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+            "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "filing_date": "2025-05-08",
+            "fact_index": 103,
+            "raw_start": 59692,
+            "raw_end": 60030,
+            "literal": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}",
+            "fact": {
+              "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+              "end": "2025-03-31",
+              "fiscal_period": "Q1",
+              "fiscal_year": 2025,
+              "frame": null,
+              "label": "Gross Profit",
+              "start": "2025-01-01",
+              "tag": "GrossProfit",
+              "taxonomy": "us-gaap",
+              "unit": "USD",
+              "value": 3039000
+            }
+          },
+          {
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "document_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+            "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "filing_date": "2025-05-08",
+            "fact_index": 267,
+            "raw_start": 131454,
+            "raw_end": 131972,
+            "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+            "fact": {
+              "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+              "end": "2025-03-31",
+              "fiscal_period": "Q1",
+              "fiscal_year": 2025,
+              "frame": null,
+              "label": "Revenues",
+              "start": "2025-01-01",
+              "tag": "Revenues",
+              "taxonomy": "us-gaap",
+              "unit": "USD",
+              "value": 601515000
+            }
+          },
+          {
+            "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+            "document_sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4",
+            "content_hash": "cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+            "available_at": "2024-11-01T00:00:00+00:00",
+            "filing_date": "2024-10-31",
+            "fact_index": 130,
+            "raw_start": 72305,
+            "raw_end": 72644,
+            "literal": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2024-07-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":78109000}",
+            "fact": {
+              "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+              "end": "2024-09-30",
+              "fiscal_period": "Q3",
+              "fiscal_year": 2024,
+              "frame": null,
+              "label": "Gross Profit",
+              "start": "2024-07-01",
+              "tag": "GrossProfit",
+              "taxonomy": "us-gaap",
+              "unit": "USD",
+              "value": 78109000
+            }
+          },
+          {
+            "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+            "document_sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4",
+            "content_hash": "cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+            "available_at": "2024-11-01T00:00:00+00:00",
+            "filing_date": "2024-10-31",
+            "fact_index": 384,
+            "raw_start": 182767,
+            "raw_end": 183285,
+            "literal": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-07-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":658735000}",
+            "fact": {
+              "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+              "end": "2024-09-30",
+              "fiscal_period": "Q3",
+              "fiscal_year": 2024,
+              "frame": null,
+              "label": "Revenues",
+              "start": "2024-07-01",
+              "tag": "Revenues",
+              "taxonomy": "us-gaap",
+              "unit": "USD",
+              "value": 658735000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "required_counterexamples_before_new_version_admission": [
+    {
+      "case": "gross annual positive",
+      "input": "Prior GP50/R100; current GP90/R150, matching fiscal years",
+      "expected": "+0.10 fraction_difference, positive"
+    },
+    {
+      "case": "gross same fiscal quarter plus nearer competing quarter",
+      "input": "Prior-year Q1 GP50/R100; current Q1 GP60/R100; preceding Q3 GP80/R100",
+      "expected": "+0.10 positive; ignore Q3 as comparator rather than report-0.20 negative"
+    },
+    {
+      "case": "gross explicit negative",
+      "input": "Prior matching margin0.50; current matching margin0.20",
+      "expected": "-0.30 negative"
+    },
+    {
+      "case": "gross only unrelated recent window",
+      "input": "Current Q1 complete, only preceding Q3 complete, no prior-year Q1",
+      "expected": "unavailable: missing same-fiscal-window comparator; do not compareQ1/Q3"
+    },
+    {
+      "case": "gross latest profit missing but older pair complete",
+      "input": "Newest canonical revenue period has no exact GP; older periods have complete pairs",
+      "expected": "unavailable for latest measurement, not stale fallback success"
+    },
+    {
+      "case": "gross same-end unequal starts",
+      "input": "Two current-end windows have similar lengths but different declared fiscal/window scope",
+      "expected": "Never use a same-end window as previous fiscal year; unavailable unless proper prior-year match exists"
+    },
+    {
+      "case": "acc annual positive",
+      "input": "Matching annual revenues80,100,150 oldest to newest",
+      "expected": "(150/100-1)-(100/80-1)=0.25 positive"
+    },
+    {
+      "case": "acc negative",
+      "input": "Matching annual revenues100,150,180 oldest to newest",
+      "expected": "0.20-0.50=-0.30 negative"
+    },
+    {
+      "case": "acc neutral",
+      "input": "Matching same-fiscal-quarter revenues100,120,144 oldest to newest",
+      "expected": "0.20-0.20=0 neutral"
+    },
+    {
+      "case": "acc mixed cadence distractor",
+      "input": "Three matchingQ1 revenues80,100,150 plus nearer annual growth-0.20",
+      "expected": "0.25 positive usingQ1 chain, never0.70 from annual distractor"
+    },
+    {
+      "case": "acc missing newest partner but older growth pairs complete",
+      "input": "Newest revenue lacks matching previous-year window; older annual/quarter pairs exist",
+      "expected": "unavailable; retain newest anchor and exact missing-window reason"
+    },
+    {
+      "case": "YTD window integrity",
+      "input": "Current Jan-Sep and matching prior fiscal-year Jan-Sep complete, plus individualQ3 facts",
+      "expected": "Gross compares Jan-Sep to Jan-Sep; acceleration requires third Jan-Sep window; no subtraction-as-quarter"
+    },
+    {
+      "case": "currency/issuer/PIT mismatch",
+      "input": "Required comparison operand only in another currency/issuer or available after as-of",
+      "expected": "Unavailable; no conversion, substitution or future leakage"
+    },
+    {
+      "case": "revision and unresolved conflict",
+      "input": "Same semantic window appears with different fiscal labels/frame copies; separately equal-priority contradictory values",
+      "expected": "Equivalent tuple copies remain legitimate literal alternatives; accepted canonical revision follows existing policy; unresolved contradictory measurement cannot become a unique answer via ID tie-break"
+    },
+    {
+      "case": "leap/52-53-week and transition period",
+      "input": "Proved same fiscal position under disclosed52/53-week calendar versus unidentified stub window",
+      "expected": "Admit proved equivalent fiscal window; unidentified transition/stub unavailable rather than loose45-day similarity"
+    }
+  ],
+  "implementation_boundary_if_approved": [
+    "Update owning measurement spec and new-version definition first; retain published v3/v2 and historical frozen failures byte-for-byte.",
+    "Use explicitly named new deterministic callables or version-bound pure operand selectors so new policy cannot change old frozen specs merely because they share a function name.",
+    "Existing bounded resolver callback must reserve all required matching-window operands and conflict witnesses within existing ten-document limit; absence remains explicit. No global rank rewrite.",
+    "New explicit issuer-bound fixtures cover normal, partial, negative, neutral, competing periods, conflicting copies, fiscal calendar and missing-latest cases; original old fixtures remain historical.",
+    "Freeze independent operands/literal alternatives and definition first, then execute exact new refs once and check persistence/consumer provenance. Do not rerun completed current9 stage or replace its6pass/2record-only/1strict-fail denominator.",
+    "No scoring/PIT/admission rewrite; ordinary existing technical validation and atomic publication apply after the research-definition decision."
+  ],
+  "operations": {
+    "signal_calls": 0,
+    "basis_helper_calls": 0,
+    "models": 0,
+    "GET": 0,
+    "label_reads": 0,
+    "product_changes": 0,
+    "oracle_changes": 0
+  },
+  "read_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "19af9fb78157b0b6c60ec27a8c0bbf6307a78b6568838150d3058d9f890b603e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/oracle.json",
+      "sha256": "596816095cb1526b1e631ede4fa836bc7d26f7ecbb836fdadd7610b59fe75449"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/raw-materials.json",
+      "sha256": "50c4c054708bc9ca18d32886d4899c329726c33e2babfc74d54060ee088cfa4a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/frozen-manifest.json",
+      "sha256": "475f89606878bdc808fcdcc34e8890a2e937c29f680ade1450211f6e69db595e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-review.json",
+      "sha256": "5d094ce65c057004a45954cb5af9d7a8fa2fe1276cadea3f5244831b57f76ce5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/spec.json",
+      "sha256": "7f442b11c3fb3407ad0d7726e4fb28cbaa9f33c7c76ce6b52eaa1c9331bb6f60"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/tests.json",
+      "sha256": "2e8e776e595d8de360bf0a9a78f1ad479efe1b45e0a60af839452f45dc23169c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/spec.json",
+      "sha256": "e2852a024a76e9b1b7f836c101ca02e09150727bbba93dbc6b1d077da76e4a1a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/tests.json",
+      "sha256": "601ee1eb6e868ba9b65e0de5a7c5df9ae7af5bda21b48578d0062b59748b12be"
+    }
+  ],
+  "static_function_review": {
+    "_revenue_acceleration_input_facts": {
+      "line": 3970,
+      "end_line": 3983,
+      "source": "def _revenue_acceleration_input_facts(spec, documents, as_of):\n    series = _canonical_series(_sec_facts(documents, as_of), _REVENUE_TAGS)\n    pairs = _yoy_pairs(series)\n    if len(pairs) < 2:\n        return _SecInputBasis(tuple(f for pair in pairs for f in pair), \"Two comparable SEC revenue growth periods were unavailable.\")\n    current = pairs[0]\n    if not _current_sec_fact_is_fresh(spec, current[0], as_of):\n        return _SecInputBasis(tuple(current), f\"Latest supported SEC revenue period ended {current[0].end} and is stale.\")\n    prior = next((pair for pair in pairs[1:] if pair[0].end < current[0].end\n                  and pair[0].unit.casefold() == current[0].unit.casefold()), None)\n    facts = (*current, *(prior or ()))\n    if prior is None or current[1].value == 0 or prior[1].value == 0:\n        return _SecInputBasis(facts, \"Revenue acceleration history was incomplete.\")\n    return _SecInputBasis(facts)",
+      "docstring": null
+    },
+    "_gross_margin_input_facts": {
+      "line": 3986,
+      "end_line": 4002,
+      "source": "def _gross_margin_input_facts(spec, documents, as_of):\n    facts = _sec_facts(documents, as_of)\n    revenues = _canonical_series(facts, _REVENUE_TAGS)\n    gross = _canonical_series(facts, (\"GrossProfit\",))\n    by_period = {(f.start, f.end, f.unit.casefold()): f for f in gross}\n    margins = [(r, by_period[(r.start, r.end, r.unit.casefold())]) for r in revenues\n               if (r.start, r.end, r.unit.casefold()) in by_period and r.value != 0]\n    margins.sort(key=lambda pair: pair[0].end, reverse=True)\n    if len(margins) < 2:\n        return _SecInputBasis(tuple(f for pair in margins for f in pair), \"Comparable SEC gross-margin periods were unavailable.\")\n    current = margins[0]\n    if not _current_sec_fact_is_fresh(spec, current[0], as_of):\n        return _SecInputBasis(current, f\"Latest matched SEC gross-margin period ended {current[0].end} and is stale.\")\n    prior = next((pair for pair in margins[1:] if _comparable_duration(current[0], pair[0])), None)\n    if prior is None:\n        return _SecInputBasis(current, \"Comparable SEC gross-margin periods were unavailable.\")\n    return _SecInputBasis((*current, *prior))",
+      "docstring": null
+    },
+    "_revenue_acceleration_signal": {
+      "line": 4147,
+      "end_line": 4182,
+      "source": "def _revenue_acceleration_signal(\n    spec: SignalSpec,\n    documents: tuple[RawInfoDocument, ...],\n    as_of: datetime,\n) -> SignalResult:\n    \"\"\"Measure revenue acceleration as latest year-over-year revenue growth minus an earlier\n    comparable growth rate. Requires two supported revenue year-over-year pairs from the\n    per-issuer canonical total series (dominance-resolved; never mixed-basis), with\n    matching units and nonzero denominators; incomplete/stale current facts yield\n    unavailable. Numeric states use positive_min (default 0) and negative_max (default\n    positive_min): value >= positive_min is positive, otherwise value <= negative_max is\n    negative, otherwise neutral. Thresholds do not change the measurement. Values beyond\n    plausible_abs_max (default 5) are downgraded to partial coverage at 0.5 confidence\n    with an implausible_value marker. max_period_age_days (default 550) bounds current\n    SEC period age; older comparative periods remain allowed.\n    \"\"\"\n\n    basis = _revenue_acceleration_input_facts(spec, documents, as_of)\n    if basis.unavailable_reason is not None:\n        return _unavailable_result(spec, basis.unavailable_reason)\n    current_pair, prior_pair = basis.facts[:2], basis.facts[2:]\n    current_growth = current_pair[0].value / current_pair[1].value - 1.0\n    prior_growth = prior_pair[0].value / prior_pair[1].value - 1.0\n    facts = (*current_pair, *prior_pair)\n    return _numeric_result(\n        spec,\n        current_growth - prior_growth,\n        current_pair[0].document,\n        as_of,\n        label=\"revenue_acceleration\",\n        measurement_unit='fraction_difference',\n        measurement_formula='latest year-over-year growth - earlier year-over-year growth',\n        measurement_period=current_pair[0],\n        evidence=_fact_evidence(facts, as_of),\n        plausible_abs_max=5.0,\n    )",
+      "docstring": "Measure revenue acceleration as latest year-over-year revenue growth minus an earlier\ncomparable growth rate. Requires two supported revenue year-over-year pairs from the\nper-issuer canonical total series (dominance-resolved; never mixed-basis), with\nmatching units and nonzero denominators; incomplete/stale current facts yield\nunavailable. Numeric states use positive_min (default 0) and negative_max (default\npositive_min): value >= positive_min is positive, otherwise value <= negative_max is\nnegative, otherwise neutral. Thresholds do not change the measurement. Values beyond\nplausible_abs_max (default 5) are downgraded to partial coverage at 0.5 confidence\nwith an implausible_value marker. max_period_age_days (default 550) bounds current\nSEC period age; older comparative periods remain allowed."
+    },
+    "_gross_margin_change_signal": {
+      "line": 4187,
+      "end_line": 4224,
+      "source": "def _gross_margin_change_signal(\n    spec: SignalSpec,\n    documents: tuple[RawInfoDocument, ...],\n    as_of: datetime,\n) -> SignalResult:\n    \"\"\"Measure gross-margin change: latest GrossProfit / revenue minus the previous\n    comparable-duration margin. GrossProfit and revenue must match start, end and units\n    within each period, and revenue comes from the per-issuer canonical total series\n    (dominance-resolved; partial or zero same-period tag values never displace the\n    total). Missing matched periods, zero revenue or stale current facts yield\n    unavailable. Numeric states use positive_min (default 0) and negative_max (default\n    positive_min): value >= positive_min is positive, otherwise value <= negative_max is\n    negative, otherwise neutral. Thresholds do not change the measurement. Values beyond\n    plausible_abs_max (default 2) are downgraded to partial coverage at 0.5 confidence\n    with an implausible_value marker. max_period_age_days (default 550) bounds current\n    SEC period age; older comparative periods remain allowed.\n    \"\"\"\n\n    basis = _gross_margin_input_facts(spec, documents, as_of)\n    if basis.unavailable_reason is not None:\n        return _unavailable_result(spec, basis.unavailable_reason)\n    r, g, prior_r, prior_g = basis.facts\n    current = (r.end, g.value / r.value, r, g)\n    previous = (prior_r.end, prior_g.value / prior_r.value, prior_r, prior_g)\n    return _numeric_result(\n        spec,\n        current[1] - previous[1],\n        current[2].document,\n        as_of,\n        label=\"gross_margin_change\",\n        measurement_unit='fraction_difference',\n        measurement_formula='current gross profit / revenue - previous gross profit / revenue',\n        measurement_period=current[2],\n        evidence=_fact_evidence(\n            (current[2], current[3], previous[2], previous[3]), as_of\n        ),\n        plausible_abs_max=2.0,\n    )",
+      "docstring": "Measure gross-margin change: latest GrossProfit / revenue minus the previous\ncomparable-duration margin. GrossProfit and revenue must match start, end and units\nwithin each period, and revenue comes from the per-issuer canonical total series\n(dominance-resolved; partial or zero same-period tag values never displace the\ntotal). Missing matched periods, zero revenue or stale current facts yield\nunavailable. Numeric states use positive_min (default 0) and negative_max (default\npositive_min): value >= positive_min is positive, otherwise value <= negative_max is\nnegative, otherwise neutral. Thresholds do not change the measurement. Values beyond\nplausible_abs_max (default 2) are downgraded to partial coverage at 0.5 confidence\nwith an implausible_value marker. max_period_age_days (default 550) bounds current\nSEC period age; older comparative periods remain allowed."
+    },
+    "_canonical_series": {
+      "line": 4605,
+      "end_line": 4712,
+      "source": "def _canonical_series(\n    facts: Iterable[_SecFact],\n    tags: tuple[str, ...],\n    *,\n    dominance: bool = True,\n) -> list[_SecFact]:\n    \"\"\"Resolve one canonical per-currency series for an issuer's concept total.\n\n    A tag whose same-period value is at least _PARTIAL_VALUE_RATIO times\n    smaller than a co-occurring value (or zero beside a nonzero value) is a\n    disaggregation partial and is excluded entirely, including periods no other\n    tag covers; detection is direction-free and runs before ranking so a\n    coverage tie can never promote a partial tag. Among remaining total tags\n    the canonical basis is the coverage-ranked one: latest period end, then\n    distinct period count, then the declared tag order. A period key covered by\n    the canonical tag keeps the canonical fact; remaining trusted tags fill only\n    uncovered keys, so a tag switch or a percent-level restatement crossover\n    stitches into one series while a partial slice never enters it. When no\n    fact is eligible, or every present tag is partial, the series is empty and\n    callers fail closed. With dominance disabled the legacy priority order\n    stands per key, except a zero-valued preferred tag cannot displace a\n    nonzero same-period value. Returns one currency's series (USD preferred,\n    else latest period end, else unit name), latest end first.\n    \"\"\"\n\n    tag_priority = {tag: index for index, tag in enumerate(tags)}\n    eligible = [\n        fact\n        for fact in facts\n        if fact.tag in tag_priority\n        and fact.start is not None\n        and re.fullmatch(r\"[A-Za-z]{3}\", fact.unit) is not None\n    ]\n    by_key: dict[tuple[str, str, str], dict[str, _SecFact]] = {}\n    for fact in sorted(\n        eligible,\n        key=lambda item: (item.start or \"\", item.end, item.filed, item.document.document_id),\n    ):\n        key = (fact.start or \"\", fact.end, fact.unit.casefold())\n        by_key.setdefault(key, {}).setdefault(fact.tag, fact)\n\n    present = {fact.tag for fact in eligible}\n    if not present:\n        return []\n    # Direction-free partial detection: a tag at least _PARTIAL_VALUE_RATIO\n    # times smaller than a co-occurring same-period value is a disaggregation\n    # slice and is excluded entirely, before any canonical ranking can prefer\n    # it through a coverage tie.\n    partial_tags: set[str] = set()\n    if dominance:\n        for tag_map in by_key.values():\n            for tag, fact in tag_map.items():\n                if tag in partial_tags:\n                    continue\n                for other_tag, other in tag_map.items():\n                    if other_tag == tag:\n                        continue\n                    if abs(other.value) >= _PARTIAL_VALUE_RATIO * max(\n                        abs(fact.value), 1e-9\n                    ) or (other.value != 0 and fact.value == 0):\n                        partial_tags.add(tag)\n                        break\n    total_tags = present - partial_tags\n    if not total_tags:\n        return []\n    coverage = {\n        tag: (\n            max(fact.end for fact in eligible if fact.tag == tag),\n            sum(1 for key in by_key if tag in by_key[key]),\n        )\n        for tag in total_tags\n    }\n    canonical = max(\n        total_tags,\n        key=lambda tag: (coverage[tag][0], coverage[tag][1], -tag_priority[tag], tag),\n    )\n\n    selected: dict[tuple[str, str, str], _SecFact] = {}\n    for key, tag_map in by_key.items():\n        trusted = sorted(\n            (\n                (tag_priority[tag], fact)\n                for tag, fact in tag_map.items()\n                if tag not in partial_tags\n            ),\n            key=lambda row: (row[0], row[1].filed, row[1].document.document_id),\n        )\n        if not trusted:\n            continue\n        chosen = tag_map[canonical] if canonical in tag_map else trusted[0][1]\n        if chosen.value == 0:\n            nonzero = [row[1] for row in trusted if row[1].value != 0]\n            if nonzero:\n                chosen = nonzero[0]\n        selected[key] = chosen\n\n    by_unit: dict[str, list[_SecFact]] = {}\n    for fact in selected.values():\n        by_unit.setdefault(fact.unit.casefold(), []).append(fact)\n    unit = min(\n        by_unit,\n        key=lambda name: (\n            name != \"usd\",\n            max(fact.end for fact in by_unit[name]),\n            name,\n        ),\n    )\n    return sorted(by_unit[unit], key=lambda fact: fact.end, reverse=True)",
+      "docstring": "Resolve one canonical per-currency series for an issuer's concept total.\n\nA tag whose same-period value is at least _PARTIAL_VALUE_RATIO times\nsmaller than a co-occurring value (or zero beside a nonzero value) is a\ndisaggregation partial and is excluded entirely, including periods no other\ntag covers; detection is direction-free and runs before ranking so a\ncoverage tie can never promote a partial tag. Among remaining total tags\nthe canonical basis is the coverage-ranked one: latest period end, then\ndistinct period count, then the declared tag order. A period key covered by\nthe canonical tag keeps the canonical fact; remaining trusted tags fill only\nuncovered keys, so a tag switch or a percent-level restatement crossover\nstitches into one series while a partial slice never enters it. When no\nfact is eligible, or every present tag is partial, the series is empty and\ncallers fail closed. With dominance disabled the legacy priority order\nstands per key, except a zero-valued preferred tag cannot displace a\nnonzero same-period value. Returns one currency's series (USD preferred,\nelse latest period end, else unit name), latest end first."
+    },
+    "_comparable_duration": {
+      "line": 4837,
+      "end_line": 4847,
+      "source": "def _comparable_duration(left: _SecFact, right: _SecFact) -> bool:\n    if (left.start is None or right.start is None\n            or left.unit.casefold() != right.unit.casefold()):\n        return False\n    left_days = (\n        datetime.fromisoformat(left.end) - datetime.fromisoformat(left.start)\n    ).days\n    right_days = (\n        datetime.fromisoformat(right.end) - datetime.fromisoformat(right.start)\n    ).days\n    return abs(left_days - right_days) <= 45",
+      "docstring": null
+    },
+    "_yoy_pairs": {
+      "line": 4850,
+      "end_line": 4863,
+      "source": "def _yoy_pairs(series: list[_SecFact]) -> list[tuple[_SecFact, _SecFact]]:\n    pairs: list[tuple[_SecFact, _SecFact]] = []\n    for current in series:\n        current_end = datetime.fromisoformat(current.end).date()\n        candidates = [\n            previous\n            for previous in series\n            if previous.end < current.end\n            and 330 <= (current_end - datetime.fromisoformat(previous.end).date()).days <= 400\n            and _comparable_duration(current, previous)\n        ]\n        if candidates:\n            pairs.append((current, max(candidates, key=lambda fact: fact.end)))\n    return pairs",
+      "docstring": null
+    }
+  },
+  "frozen_oracle_integrity": {
+    "files_unchanged": 10,
+    "manifest_hash": "ea0331399f394c7e8bc3c67877262ec6dd9c77febbb6da20d4cfc3e2f6f881e5"
+  }
+}

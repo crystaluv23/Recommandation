@@ -1,0 +1,30 @@
+{
+  "long_repetition": {
+    "candidate_first": "recent_basis",
+    "native_first": "long_old_basis",
+    "old_characters": 675360,
+    "recent_characters": 765
+  },
+  "newer_unrelated": {
+    "candidate_first": "recent_basis"
+  },
+  "queryless_candidate_explicit_native_fallback": true,
+  "required_source_and_period": {
+    "coverage": {
+      "contract_satisfied": true,
+      "missing_requirements": [],
+      "observed_distinct_period_count": 2,
+      "observed_observation_count": 0,
+      "observed_period_span_days": 365,
+      "required_source_group_count": 2,
+      "satisfied_source_group_count": 2
+    },
+    "selected": [
+      "recent_basis",
+      "required_news",
+      "low_rank_comparable"
+    ]
+  },
+  "synthetic_only_not_qualified_sources": true,
+  "unknown_runner": "Static future interface constraint only: do not install a callback for unknown/custom runners; no such production opt-in exists or was exercised here."
+}

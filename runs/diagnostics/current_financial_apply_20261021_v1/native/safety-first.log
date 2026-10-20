@@ -1,0 +1,4 @@
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety_controls.py", line 89
+    execution_error_code='fixture','execution_error_message':'synthetic'),)+results[1:]
+                                                            ^
+SyntaxError: positional argument follows keyword argument

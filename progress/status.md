@@ -1,92 +1,63 @@
 # 当前状态
 
-更新：2026-10-21。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛；
-独立预测收益为后续里程碑、未知。生产 LLM 节点使用独立 subagent，外部 LLM API 调用0。
-只读资料取证已授权：累计147 GET（115行情、32SEC）；规范web查阅另列。
-新F7三控制使用9个独立生产角色、0模型纠错；535373逻辑预留，host tokens/cost及资料API成本未测量。
+更新：2026-10-21。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛。
+独立预测收益是后续里程碑、未知；生产 LLM 节点由 exact inbox/outbox 独立 subagent 处理，外部 LLM API 调用0。
+公开资料只读取证已授权；累计147 GET（115行情、32SEC），本轮新增0。host模型tokens/费用及资料成本未测量。
 
-## 当前验收
+## 最新实证
 
-[原40案来源批次](../reports/frozen40-source-proofs-20261020.md) 的102GET/297终态文件保留，0重试/技术失败；
-907目标/1123候选的唯一执行853新增/270既有、1776doc view保持完成，不重入。
-旧双720输入各670resolved/50gap、40/40达0.8，对旧262/720增加408；不等于语义正确。
-每组50gap=40news+3订单+6momentum+1drawdown；BURU baseline仍缺。
-40BasicInfo119resolved均partial/41unavailable、593遗漏标记保持；TGB/HITI来源scope与原冲突详见报告。
-旧批6unknown及907目标历史不改；新GPRE采集版本另行准入，不重写旧ID或原元数据。
+[原生财务批次与阅读诊断](../reports/current-financial-apply-20261021.md)：当前比较用既有v12精确18版本，
+不替换历史v6。单GPRE/2025-05-30、1780来源view，冻结4389绑定，唯一native批次20.261s/exit0。
+9财务结果为6严格通过、1prior原文版本匹配失败、2期间政策unknown，终态completed_acceptance_failed保留。
+7个定义唯一项的数值/分类/单位/当前期间均同独立源oracle；失败项实际2024申报与oracle2025比较列同事实，
+只fiscal_year/frame不同，预冻清单漏列prior版本；不是改成7/7或9/9。gross_margin/revenue_acceleration定义仍多义。
+独立4389绑定、9实际选文/顺序/fingerprint、21完整证据、9消费者投影核过；仅公开投影，未fresh模型消费。
+唯一完成restore1.636s/24files字节同/0新batch，非OS中断或研究恢复。首prepare前置拒与审计harness错误均保留，不重入。
 
-[GPRE采集版本实际阶段](../reports/reviewed-gpre-capture-snapshot-20261021.md) 已完成：57全产品/53保留，4新版本append/readback及同capture重放False。
-119.682s/exit0，新view1780/审查1785；16493旧global字节/1781旧rows保留，独立22510绑定核过。
-仅本案双18输入各17resolved/1news缺失；BasicInfo3resolved/1news缺失、17投影且均保partial/遗漏。
-[旧选文缺口诊断](../reports/gpre-readable-period-selection-20261021.md)：修复前财务9请求各2个选typed Q1、7个未选。
-现金已选Q1 HTML，但native JSON parser不读；所选现金latest为2023末，库内typed Q1为2025-03-31，10份上限外被词频挤出。
-0新GET/model/labels/Signalapply/fullprepare；57distinct contents非独立收益，snapshot/reopen非OS恢复。两个来源阶段均不重入。
+[typed阅读修复](../reports/gpre-readable-period-selection-20261021.md)已让真实SEC facts数组保完整literal/offset、
+冲突、币种、duration/可比期，整组贯穿32k/token预算；63关联及13独立控制过，0新模型/资料。
+固定词频饱和排序令Q1原rank46→4且两完整operand在31986chars可见，但11文档反例仍漏rank11最新证据；
+独立比较期/币种/冲突见证反例同样失败，因此未装排序callback、未调参求过，整体F5仍open。
+[有界目录/按需阅读方案](../reports/llm-signal-bounded-source-reading-proposal-20261021.md)待用户设计决策，尚未改接口/预算。
+方案每Signal至多10正文/32000chars/2读取交换/4角色请求；双Signal需阅读时分别冻结、最坏8请求并受case余量限制。
+完整小输入保既有双Signal共享路径。v143/v6仅run_minimal无override入口，显式v182用v12，一般init另有catalog。
 
-[F5计算器选文修复](../reports/gpre-readable-period-selection-20261021.md)已完成新input-only消费：4265绑定、23.755s/exit0，原1780view不变。
-v6确定性6/6、v12确定性9/9选typedQ1，现金parser latest由2023末到2025-03-31USD；仍各17/18，LLM顺序原样。
-全部财务来源请求为8/9、9/9，默认LLM cash_ratio缺口仍留；未执行Signal计算/模型。
-独立159数值/异常等旧HEAD、两个dominance反例已修，metadata身份/隔离亦修；终态4265绑定/25原件核过，不关整体F5。
-[issuer fixture生产者修复](../reports/seed-fixture-issuer-binding-20261021.md)：六seed与具名正控显式声明一致CIK，严格issuer门不改。
-实际CLI旧模板exit2→新模板exit0/14enabled；158关联检查全过、独立反例/原生构造器复核通过。
-旧失败/已发布版本保留，不迁移历史；非全仓测试。
-[S5 fixture作者合同](../reports/s5-fixture-authoring-contract-20261021.md)已接真正独立tests作者，含shared CIK/既有literal义务及tests schema。
-独立发现object content经str变伪JSON而冒充unavailable成功，现构造前拒非string，不自动补值；22独立控过。
-root66另暴露两个旧Slow正控漏metadata，旧HEAD同2fail；仅具名producer补3行后66全过/五tripwire0。
-单次诊断actual-row与非facts载体混淆已修，18safe/14独立预审过。
-c81c1986/cadf061d下fresh role78唯一首答0纠错，native双schema正控2/2，14241逻辑预留；原答→cache→候选→load全等。
-177冻结binding/20files唯一完成restore保真、0新派发；仅测试作者模块，非Mining/新测量实现/发布/复用或全S5。
-诊断oracle等价Z/offset字符串边界未验，实际+00输入不受影响，完成阶段不重入。
+## 输入范围与剩余缺口
 
-[LLM选文/阅读诊断与修复](../reports/gpre-readable-period-selection-20261021.md)：旧v6 cash-ratio的Q1原件rank46/57未入10；固定词频饱和对照rank4仍漏现金literal。
-首次阅读丢失为真实typed facts数组被只认nested的helper跳过；现同reader支持typed原literal/offset、冲突/单位/可比期，组原子贯穿32k与token预算。
-63关联测试及13独立边界通过；初7失败为root过高guard拦本地pending transport，原log保留、改HTTP层后零tripwire。
-真实固定10文档对照：两最新完整operand均可见/31986chars；原native10仍均不可见/31968，排序未改。仅纯投影，0模型/测量/GET/labels。
-“默认v6”限run_minimal无override入口；显式v182用stable v12，一般init另有catalog，不能互代或称全系统默认。整体F5仍open。
+[原40案来源批次](../reports/frozen40-source-proofs-20261020.md)完成102GET/297终态文件，0重试/技术失败。
+907目标/1123候选、853新增/270既有、1776doc view均不重入；旧双720输入各670resolved/50gap、40/40达0.8，
+不代表语义正确。每组50gap=40news+3订单+6momentum+1drawdown；BURU baseline仍缺。
+40BasicInfo119resolved均partial/41unavailable、593遗漏保持；TGB/HITI scope冲突见报告。
+[GPRE采集版本](../reports/reviewed-gpre-capture-snapshot-20261021.md)实际57产品/53保留/4新版本append-readback，
+同capture重放False；1780view/审查1785，旧global16493字节/1781rows保留，独立22510绑定核过。
+仅本案双18输入各17resolved/1news缺，BasicInfo3resolved/1news缺、17投影均保partial/遗漏。
+确定性输入消费default6/6、current9/9选typedQ1；allfinancial来源请求8/9及9/9，defaultLLM cash_ratio选文缺口仍留。
+26 transcript完整公开内容时间证明仍0，按用户已选“核实完整公开内容时间”口径，不改旧记录/实验。
+FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/unknown不等于无事件。
+[案例边界](../reports/case-scope-and-blind-boundary-20261020.md)：fresh40=16Anchor+8Random+16Discovery，Fast24；
+旧48无清单支持，不推剩余8为LockedTest。失败分母、标签、身份屏蔽与LockedTest保持。
 
-## 已有局部证据与限制
+## 其他局部验收与限制
 
-- [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md)：新控制3/3窄通过，6独立角色/0纠错，
-  63文件恢复全等；原fixed-FY/basic0/3保留，不能外推整体F4/F7。
-- [BasicInfo菜单](../reports/basic-info-orientation-menu-20261020.md)/[orientation](../reports/reviewed-orientation-stage-20261020.md)：
-  1proposer+3H_init原生接受，5角色/唯一纠错，42文件恢复；不关闭整体F1/F2/F3。
-- [F4卡片scope](../reports/signal-card-measurement-scope-20261020.md)：selector/override接入，独立6及关联119通过；
-  原全量1867/1868旧prompt断言定向修后过，没有第二次全量绿，fresh行为待验。
-- [F7镜像纠错](../reports/owned-partial-residual-mirror-20261020.md)：提示和typed修复权限已接；
-  225关联测试/独立14项过，旧49/50仍6行，离线同步后5行进入持久化/Predictor；fresh触发仍待验。
-- [fresh F7→Predictor](../reports/reviewed-owned-partial-stage-20261020.md)：3独立首答/0纠错、17cards及32文件restore保真；
-  预冻完整语义0/1：残项漏披露期后covenant compliance，未宣称未来合规仍不能通过。mirror not_exercised。
-- [fresh F7三控制](../reports/reviewed-owned-temporal-controls-20261021.md)：预冻原问题/部分变体/充分答案，实际proper partial/partial/full目标3/3；
-  role69–77各首答接受、0模型纠错，原0–3needs/17后继cards/版本及实际Predictor/sink保真；各32files restore全等/0新派发。
-  p01一条混合belief含错placement的coverage诊断，按既有契约整成员隔离；前轮直接称unknown误判过早，事实/残项仍留。
-  [unavailable主题归因修复](../reports/unavailable-topic-grounding-20261021.md)阻断无依据weak判断，保独立exact来源；原子机械权限不改。
-  初281关联暴露无unavailable仍投影的2回归，改实际topic命中后惰性证明，最终282全过/五类tripwire0；整体F7仍open。
-  原0/1不改；所有mirror not_exercised，17cards仅最终/Predictor可见，Reflect只见6原引文+当前batch。
-- [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)：apply neutral→Reflect partial→Predictor/sink实际连接，
-  7新角色/1纠错、52文件恢复；仍6行needs含长短镜像，不等于整体F4/F6/F7或完整F9。
-- [native Posthoc](../reports/reviewed-posthoc-stage-20261020.md)：首答拒、唯一typed纠错后2items窄审通过，19文件恢复；
-  尚未提交Fast反馈或证明Slow消费，不等于完整F10。
-- [LabelStore](../reports/label-store-admission-20261020.md)：6554记录机械检查过，原18误放保留；
-  该批1806测试不证明provider价格/issuer真实性；当前来源工作不读LabelStore。
+- [F7三控制](../reports/reviewed-owned-temporal-controls-20261021.md)：partial/partial/full目标3/3，9独立首答/0模型纠错，
+  535373逻辑预留；state→17cards/版本→实际Predictor/sink及各32files恢复保真。原完整语义0/1不改，mirror均未触发。
+  p01混合belief的原子隔离符合既有placement权限，前轮直接称unknown误判过早；
+  [unavailable主题修复](../reports/unavailable-topic-grounding-20261021.md)另阻无依据weak/错provenance，282关联及31独立控制过，fresh新guard未验。
+- [S5测试作者](../reports/s5-fixture-authoring-contract-20261021.md)：共享CIK/literal/schema义务进入独立tests请求，
+  非string content伪unavailable漏洞已修；fresh role78首答0纠错、原生双schema正控2/2、20files恢复保真。
+  14241逻辑预留，仅固定测试作者能力，非新测量Mining/实现/发布/复用或全S5。
+- [F4卡片](../reports/signal-card-measurement-scope-20261020.md)已接精确measurement_scope，独立6及119关联通过；fresh路由行为未验。
+  [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md)新合成控制3/3窄通过，原fixed-FY/basic0/3保留。
+- [orientation](../reports/reviewed-orientation-stage-20261020.md)1proposer+3H_init原生接受、42files恢复；
+  [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)apply→Reflect partial→实际Predictor/sink、52files恢复，
+  均只局部连接，不关整体F1–F9。[镜像纠错](../reports/owned-partial-residual-mirror-20261020.md)仅离线触发通过。
+- [Posthoc](../reports/reviewed-posthoc-stage-20261020.md)唯一纠错后2items独立窄审/19files恢复，尚未提交Fast或证明Slow消费。
+  [LabelStore](../reports/label-store-admission-20261020.md)6554记录机械核过、原18误放保留，不证明provider价格/issuer真值。
 
-## 未关闭边界
+## 下一步与运行边界
 
-[案例合同](../reports/case-scope-and-blind-boundary-20261020.md)：真实fresh40=16Anchor+8Random+16Discovery，Fast24。
-旧“48”无案例清单支持，不能推剩余8为LockedTest；默认v6与本批v12的18版本不同，不能互代。
-26 transcript完整公开内容时间证明仍0；按用户已选口径取已核实完整公开内容时间，原记录/旧实验保留。
-历史news污染排除/unknown不表示无事件，所有失败分母及身份屏蔽保持。
-[采集版本ID](../reports/companyfacts-capture-identity-20261021.md)已真实准入4版本；旧recipe/ID及去重保持。
-确定性最新输入已接通；默认LLM cash_ratio选文仍缺，S5已具双schema fresh fixture局部证据，不用17/18替代语义。
-FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍unknown，不猜时区。
-旧v182权威Fast/Slow=1/1完成不可重启；memory失败processed0/pending3518未改作成功。
-新方向/magnitude Mining正控、忠实实现/准入、后继精确复用、完整反馈消费/闭环及独立收益均未验证。
-
-## 下一步
-
-源capture、F7旧stage和新input-only检查均保持完成、不重入；选文修复已完成独立终态审查。
-issuer fixture生产者局部修复已过真实CLI与158关联检查，旧Registry字节/失败保留；默认LLM选文剩余缺口另保留。
-新F7三控制已完成独立终态审查：目标3/3、9角色及3次唯一完成恢复；不重入、不以本批关闭整体F7。
-unavailable局部修复关联检查已过，不改冻结产物；新模型行为和mirror触发仍未验。
-S5作者既有身份/literal/schema义务已接，非string content漏门已修；严格issuer/测量/PIT不放宽。
-fresh S5测试作者固定控制已独立审过2/2、20files恢复完成，不重入；新测量定义/实现生成仍未验。
-typed阅读局部缺陷已验；下一按实际LLM入口评估既有resolver callback内的有界选文，保持旧版本/原始顺序与counter差异，先证最新完整facts可读再fresh apply。
-Slow发现/准入/后继使用仍待验；不以修复typed读取代替选文、模型服从或完整闭环。
-LLM节点继续exact inbox独立subagent；0外部LLM API。不恢复旧运行或启动完整后继，不以0.8/输入resolved替代测量或MVP关闭。
+新native财务/来源/input-only/F7/S5等已完成阶段保持完成，不因验收失败重跑；不调整冻结oracle或发布旧版本。
+先按既有接口核实Slow反馈的合法来源与方向/magnitude正控的真实Mining入口，区分已提交Fast与允许的冻结导入。
+LLM阅读接口方案待设计决策；两财务期间定义需具体政策/新版本，不能由当前计算结果倒推答案。
+完整反馈消费、新方向/magnitude Mining→忠实实现→准入发布→后继精确使用、完整恢复及双环均未验证。
+旧v182权威Fast/Slow=1/1完成不恢复；memory失败processed0/pending3518不改成功。不启动完整后继，整体MVP保持open。

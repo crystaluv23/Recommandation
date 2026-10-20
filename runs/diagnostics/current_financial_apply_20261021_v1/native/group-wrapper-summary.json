@@ -1,0 +1,46 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py",
+      "sha256": "2bb3d312545a859b91acd9f1286ce5c7cdf18ce09ebe7e68928df5885d131124"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety_controls.py",
+      "sha256": "ec9ae374260d3601430b3fb02e694a010555a92a874433c5be123340d09bf9cb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety-group-final.log",
+      "sha256": "5580ca350617698bd82e70219182b30348daa597142c936a43566b07c7f37623"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run-native-original-group-wrapper.py.txt",
+      "sha256": "5ebe26fa354cdeb7057e5c95556b61c5aaab419686e34cc080a705bac141b9e8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/read_authorities.py",
+      "sha256": "c76a42de58530112adf0f154f1f4b5a3afaa4c7bb81f51c4b86629b677d4b2c8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/read-authorities.log",
+      "sha256": "30e91562a500db719df6f7577e91a256abbb4f260fd5404a1deefc6ffe85147e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/read-authorities-result.json",
+      "sha256": "6d0bada4a9b5c20afa65ea3c457335f68701360b0a1cc30d7793806ae7b76c18"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/root/native-prepare-command.json",
+      "sha256": "fc5bcd02d3b443e0d4d3a39ebcc97f52a973100260a0374b7ddc925ffd95dc43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/root/native-prepare.log",
+      "sha256": "9b5a34f9ea2e24c3e37168cc915eb94d6f3384f189b8434a720031baad54e0ca"
+    }
+  ],
+  "original_actual_prepare": "One actual attempt failed before directory/marker writes; root command/log preserved",
+  "real_authorities_readonly": "verified_readonly;4136 source+253 code+43 definition bindings",
+  "real_stage_exists": false,
+  "safe_passed": 11,
+  "safe_tests": 11,
+  "scope": "Fix group-wrapper comparison; no new prepare invocation"
+}

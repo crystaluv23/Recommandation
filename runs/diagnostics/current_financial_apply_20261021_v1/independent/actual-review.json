@@ -1,0 +1,198 @@
+{
+  "status": "AUDIT_COMPLETE_stage_strict_failure_preserved",
+  "frozen_bindings_verified": {
+    "source": 4136,
+    "code": 253,
+    "total": 4389
+  },
+  "stage_sealed_files_verified": 23,
+  "case": "cik_0001309402:20250530",
+  "actual_selection": [
+    {
+      "ref": "cash_burn_rate_elevated:v2",
+      "count": 6,
+      "selected_ID_hash_available_order_equal_old": true,
+      "request_equal_old": true,
+      "fingerprint_equal_actual_selection": true
+    },
+    {
+      "ref": "cash_reserves:v2",
+      "count": 10,
+      "selected_ID_hash_available_order_equal_old": true,
+      "request_equal_old": true,
+      "fingerprint_equal_actual_selection": true
+    },
+    {
+      "ref": "cash_to_current_liabilities_ratio:v2",
+      "count": 10,
+      "selected_ID_hash_available_order_equal_old": true,
+      "request_equal_old": true,
+      "fingerprint_equal_actual_selection": true
+    },
+    {
+      "ref": "gross_margin_change:v3",
+      "count": 10,
+      "selected_ID_hash_available_order_equal_old": true,
+      "request_equal_old": true,
+      "fingerprint_equal_actual_selection": true
+    },
+    {
+      "ref": "liquidity_runway_months:v3",
+      "count": 6,
+      "selected_ID_hash_available_order_equal_old": true,
+      "request_equal_old": true,
+      "fingerprint_equal_actual_selection": true
+    },
+    {
+      "ref": "net_share_retirement_yoy:v3",
+      "count": 10,
+      "selected_ID_hash_available_order_equal_old": true,
+      "request_equal_old": true,
+      "fingerprint_equal_actual_selection": true
+    },
+    {
+      "ref": "operating_cash_flow_margin:v2",
+      "count": 10,
+      "selected_ID_hash_available_order_equal_old": true,
+      "request_equal_old": true,
+      "fingerprint_equal_actual_selection": true
+    },
+    {
+      "ref": "revenue_acceleration:v2",
+      "count": 10,
+      "selected_ID_hash_available_order_equal_old": true,
+      "request_equal_old": true,
+      "fingerprint_equal_actual_selection": true
+    },
+    {
+      "ref": "revenue_growth_yoy:v3",
+      "count": 10,
+      "selected_ID_hash_available_order_equal_old": true,
+      "request_equal_old": true,
+      "fingerprint_equal_actual_selection": true
+    }
+  ],
+  "unique_numeric_category_unit_current_period": [
+    {
+      "ref": "cash_burn_rate_elevated:v2",
+      "numeric_state_unit_current_period": true
+    },
+    {
+      "ref": "cash_reserves:v2",
+      "numeric_state_unit_current_period": true
+    },
+    {
+      "ref": "cash_to_current_liabilities_ratio:v2",
+      "numeric_state_unit_current_period": true
+    },
+    {
+      "ref": "liquidity_runway_months:v3",
+      "numeric_state_unit_current_period": true
+    },
+    {
+      "ref": "net_share_retirement_yoy:v3",
+      "numeric_state_unit_current_period": true
+    },
+    {
+      "ref": "operating_cash_flow_margin:v2",
+      "numeric_state_unit_current_period": true
+    },
+    {
+      "ref": "revenue_growth_yoy:v3",
+      "numeric_state_unit_current_period": true
+    }
+  ],
+  "strict_acceptance": {
+    "unique_pass": 6,
+    "unique_failed_literal_allowlist": 1,
+    "period_policy_ambiguous_record_only": 2,
+    "denominator": 9,
+    "original_stage_status": "completed_acceptance_failed",
+    "oracle_or_result_modified": false
+  },
+  "prior_literal_diagnostic": {
+    "ref": "revenue_growth_yoy:v3",
+    "oracle_document": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+    "actual_document": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+    "field_differences": {
+      "frame": [
+        "CY2024Q1",
+        null
+      ],
+      "fiscal_year": [
+        2025,
+        2024
+      ]
+    },
+    "semantic_measurement_tuple_equal": true,
+    "actual_prior_in_original_selected_set": true,
+    "actual_prior_was_in_preexisting_frozen_raw_materials": true,
+    "reason": "Oracle strict alternative inventory lists only current-period variants. Prior from2024 original filing is a complete same-value/tag/unit/duration source literal, whereas oracle operand specifies its2025 filing comparative copy. No evidence of numeric or revenue-total basis error; strict literal acceptance failure remains unchanged."
+  },
+  "consumer_projections_exact": 9,
+  "whole_source_evidence_items_verified": 21,
+  "execution": {
+    "native_batches_recorded": 1,
+    "native_result_count": 9,
+    "usage": {
+      "cost": 0.0,
+      "llm_calls": 0,
+      "tokens": 0
+    }
+  },
+  "limits": [
+    "Pure retained-file/stdlib audit; no stage commands, constructors, product helpers, Signal functions, model/GET/labels/append invoked.",
+    "No pass credit for2 ambiguous definitions, no oracle repair/re-execution, no overall9/9 or F5/MVP closure.",
+    "Native saved results and public consumer projections only, not fresh model consumption or OS-crash recovery. Completed restore separately performed by sole root executor."
+  ],
+  "read_bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/plan.json": "7c1120ec07b149744ca9b69aeed7b21aa074f19ff1c83d23a410a54bb3be55b2",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/completed-files.json": "58f28add6a504e3d58368cdc462603aeb49b99f4665132f10d3e5ed654efbf9c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/result.json": "ae45992407417c919668f1738b185f92324753f84b6999ca77f0f596c83e503f",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/native-batch.json": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769",
+    "runs/diagnostics/measurement_input_selection_20261021_v1/latest_v12.json": "6ab578283dac90aa9dc3a2c5909a921199869aa777459bee0b7492af6941cd00",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/raw-materials.json": "50c4c054708bc9ca18d32886d4899c329726c33e2babfc74d54060ee088cfa4a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1776.json": "9df665e5ea1b21744280b37592afd5d5a0426b0d871a0cb52b6a334264f8edd8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1778.json": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1777.json": "03249d39e41d743380efb37a00c0bf032a202a55f2102335d12f069191b35750",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1513.json": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1514.json": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1289.json": "ce8e9970805b60eee87c661bef6c3b78afe1ab285846f01dee47535c5ccaeec5",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1290.json": "eba93bef24e0f67a85e1c59f279de2a806d326d1dde208bb174ae0d13033e676",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1294.json": "5c453ecab817bd2f78009ed19fe2fb4568282c81f261e7069c4a0a6b1e703302",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1298.json": "455508a502445a5334930010033e9aa31178540378ee5087841649f16e57fdd7",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1302.json": "0b6272075d5b06ce23a7be889e5f8c3f1ec6d1b71b28b4463627b5d0b9de1cbb",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1306.json": "7baa5d50da0777e70d318178ae34704e55f4ac382717e717a4957e3e015f4746",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1310.json": "d513ed0b87315ead8f9de12ae1b7fee9d4b0ff420fa80530d919af39314fc3e1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1314.json": "0e8b219b559d41b4b48a563ab13ce4f49347d224d4ffb62b2c3844ed2dee7de1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1317.json": "009979469c7ec7821431bee8cad2a43c00fb9661b07a51f088f4b040eaa399df",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1318.json": "362dc8d9bce1b3fcbcd572d3bc244de737f246b1b986da6cce50b259037a2574",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1320.json": "c8d0021794d13971129135b6c1d635d31b4f944f4eae788b82a324051fb1e65e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1321.json": "8bf8ab51c929ca5673268f596d8d91090d644cfedaef6ff27db7b98ac9f889db",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1322.json": "b770b94c970981e75f24adce4d229a7c19cbf605dd1ad24043052081fd9e06f6",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1326.json": "d3b0d087f656521a3bdc7a7b6f51040ced3e5328170824c889006923c2da069c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1330.json": "993e42e05f25b08e7f9d358489e64fcf5b0b55f6b3ee9d687fe19c4cc8fb36c8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1334.json": "3da987fe0163aa81c64b8ef1dfa8d625a49ef06157c043945367055ff953f663",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1335.json": "0c21414abab8a073ec072eec952885ac9f48cc0bec767868bba3fe89e8188aa7",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/oracle.json": "596816095cb1526b1e631ede4fa836bc7d26f7ecbb836fdadd7610b59fe75449",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/00.json": "1def8b322b030f22ac3f4f8ed37b9f047173d99dbf624ceb4217d2a97847142b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/00.json": "72646922c1bb001ea1e8b70ef8f289bd2ff6fca49d2c846bb64fcde4971e696c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/01.json": "cb32bdf32e13ece629f8e2dd6b38436e3e5684dd6965b1df27b79144af4d3528",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/01.json": "aad11c7834f90c056c599814d9ac2f1cc1159dcfa8e7804660021c4e644a00ee",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/02.json": "80fc9b4d12f449f8bf1cb86dea063f491d1d2dce2e533512fc88e04462e4cb0b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/02.json": "f6280129ca4364718a0ffc367407d261629e1f06b10cd1c3c12633a3b324748d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/03.json": "7208290cc0ad3a3a35a46c4768be7585e03d3931d7e974caa48bc48aa7461c1e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/03.json": "ac781caef3214165f7f5b513f17fccb09b98a9e38f3d3ba36744a72c3ff6cd24",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/04.json": "1bb71d2a47a0b9c305ab5ec39858e090397201d04b9bc11bc4c7d5071b64ebf3",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/04.json": "5a5fb8567b14514f95665333d2191a979a1052226b305ef49be5d7dd0b3186f5",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/05.json": "229afeb8ae635aabd79fcca854912dc07bb22ac2ff170af458be781e68a2a43c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/05.json": "244d45b41450e34078d7a6ff95fee2b88409a8b19ed20a8a5a4f55834d51e713",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/06.json": "3510401879d45f9b72112bf78ccddbedcd6e4dfaffe20a94f4acca1647f1af58",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/06.json": "383a08f0398245f54dd6e380a3b31f6b2ebbccba4bfe7e8d5fab9d1de63bc693",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/07.json": "deaebf87f8c8334d5096c336fa9099f3c16e55a4e1d0cec52906781927114f96",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/07.json": "c3398b2408ac7b746f97bb2f01e172d6c36ed19c4709bf732467a064b11976eb",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/08.json": "423ccbd254647e6fe6db0475f8c29458f08747e71d92ed1832c778493394044f",
+    "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/08.json": "77539117ee799ca7269e7fea5ac9212810d4f864a0a11e0e0996ecf00c3b007b"
+  }
+}

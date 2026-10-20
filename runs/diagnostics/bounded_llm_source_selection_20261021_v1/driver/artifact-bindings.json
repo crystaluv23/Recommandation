@@ -1,0 +1,42 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/probe-v2.log",
+      "sha256": "cd9c58dd45e6d2427015c2b645d61367a5b68e1bc616145664b977ba7617a2c2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/probe-v2.py",
+      "sha256": "22513d9184e042dc8b7999bd596ec879a3e7c11e3209e9c299e9464ac0a50027"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/probe.log",
+      "sha256": "378baabe3b26a625ebc15aa524161840da76505895d5659b240f791c08817684"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/probe.py",
+      "sha256": "c4027f842ef5586fa0cca505b747e9f045df1dd2aa7c09ed6a0d89bc2533b50c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/real-projection.json",
+      "sha256": "e2d61a1810113c30c9e9d80fcfeb4dc8c661c0136368b7001e84495747a238d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/representative-controls.json",
+      "sha256": "f5891752f0b9d268c26a932d3a9e6121342da7fb5bac127744329f89e552c3c0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/result.json",
+      "sha256": "4ae081e1261d554c6862af3efb10b00db8a935d1a99f3b568f25e47fc083a810"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/semantic-counterexample.json",
+      "sha256": "61739382616d08cf93b7de0b4ecae68efc5ec4ff4096d1c4cc1ca0998a93bd20"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/summary.json",
+      "sha256": "22d03834dc75c3d2ed5f13fb0bd3d4d33904a9c21c05b18b10ecd52c8795a124"
+    }
+  ],
+  "source_and_code_bindings_still_equal": true,
+  "forbidden_calls": []
+}

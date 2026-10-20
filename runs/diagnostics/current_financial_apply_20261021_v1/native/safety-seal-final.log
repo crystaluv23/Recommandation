@@ -1,0 +1,15 @@
+test_actual_no_model_label_network_append_and_prepare_guards (__main__.SafetyControls.test_actual_no_model_label_network_append_and_prepare_guards) ... ok
+test_actual_reviewed_constructor_empty_parent_connection (__main__.SafetyControls.test_actual_reviewed_constructor_empty_parent_connection) ... ok
+test_exact_unit_period_numeric_and_ambiguity (__main__.SafetyControls.test_exact_unit_period_numeric_and_ambiguity) ... ok
+test_fixed_destination_and_invalid_plan_write_nothing (__main__.SafetyControls.test_fixed_destination_and_invalid_plan_write_nothing) ... ok
+test_operand_whole_literal_not_substring (__main__.SafetyControls.test_operand_whole_literal_not_substring) ... ok
+test_oracle_mismatch_preserves_nine_and_terminal_acceptance_failure (__main__.SafetyControls.test_oracle_mismatch_preserves_nine_and_terminal_acceptance_failure) ... ok
+test_persistent_prepopulated_and_direct_label_constructors_forbidden (__main__.SafetyControls.test_persistent_prepopulated_and_direct_label_constructors_forbidden) ... ok
+test_registry_requires_existing_dirs_and_detects_constructor_write (__main__.SafetyControls.test_registry_requires_existing_dirs_and_detects_constructor_write) ... ok
+test_single_batch_restore_and_immutable_inventory (__main__.SafetyControls.test_single_batch_restore_and_immutable_inventory) ... ok
+test_validation_failure_preserves_nine_and_terminal_acceptance_failure (__main__.SafetyControls.test_validation_failure_preserves_nine_and_terminal_acceptance_failure) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.354s
+
+OK

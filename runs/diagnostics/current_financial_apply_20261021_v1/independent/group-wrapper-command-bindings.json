@@ -1,0 +1,15 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/current_financial_apply_20261021_v1/independent/group-wrapper-probe.py",
+  "exit_code": 0,
+  "bindings": {
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/group-wrapper-probe.py": "35b06f0e5743b26ed4a01030b2b38f4448c1b761d6624999903221dca7f85551",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/group-wrapper-probe.log": "81e0b3b995fd2893a6ee912a2b6e57d53b2a1db815aae71facea527f7e7bc94a",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/group-wrapper-final-probe.log": "762494b7f2ef869ea00fa2ab953c6ea9956b73c87da81483e979f857b15656d5",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/group-wrapper-review.json": "15fc357f82d0ed453d7ee7cc14875da9021e4e6f30d7db3a52cfe28cb7235fb5",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py": "2bb3d312545a859b91acd9f1286ce5c7cdf18ce09ebe7e68928df5885d131124",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/safety_controls.py": "ec9ae374260d3601430b3fb02e694a010555a92a874433c5be123340d09bf9cb",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/run-native-original-group-wrapper.py.txt": "5ebe26fa354cdeb7057e5c95556b61c5aaab419686e34cc080a705bac141b9e8",
+    "runs/diagnostics/current_financial_apply_20261021_v1/root/native-prepare.log": "9b5a34f9ea2e24c3e37168cc915eb94d6f3384f189b8434a720031baad54e0ca"
+  },
+  "first_probe_harness_issue": "stage-not-exists assertion became stale while sole executor independently prepared; first log retained; no business call occurred."
+}

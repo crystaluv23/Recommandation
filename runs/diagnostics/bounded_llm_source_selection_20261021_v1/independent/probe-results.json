@@ -1,0 +1,282 @@
+{
+  "scope": "synthetic pure ranking/real required-selector only, no service or model execution",
+  "query": "cash current liabilities",
+  "results": {
+    "word_repetition": {
+      "native_substring": {
+        "selected": [
+          "old-word-pump-0",
+          "old-word-pump-1",
+          "old-word-pump-2",
+          "old-word-pump-3",
+          "old-word-pump-4",
+          "old-word-pump-5",
+          "old-word-pump-6",
+          "old-word-pump-7",
+          "old-word-pump-8",
+          "old-word-pump-9"
+        ],
+        "missing_semantically_needed": [
+          "latest-real-facts"
+        ],
+        "coverage": {
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "observed_distinct_period_count": 1,
+          "observed_period_span_days": null,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        }
+      },
+      "projection_style_candidate": {
+        "selected": [
+          "latest-real-facts",
+          "old-word-pump-0",
+          "old-word-pump-1",
+          "old-word-pump-2",
+          "old-word-pump-3",
+          "old-word-pump-4",
+          "old-word-pump-5",
+          "old-word-pump-6",
+          "old-word-pump-7",
+          "old-word-pump-8"
+        ],
+        "missing_semantically_needed": [],
+        "coverage": {
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "observed_distinct_period_count": 1,
+          "observed_period_span_days": null,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        }
+      }
+    },
+    "essential_old_witnesses": {
+      "native_substring": {
+        "selected": [
+          "latest-real-facts",
+          "irrelevant-new-0",
+          "irrelevant-new-1",
+          "irrelevant-new-2",
+          "irrelevant-new-3",
+          "irrelevant-new-4",
+          "irrelevant-new-5",
+          "irrelevant-new-6",
+          "irrelevant-new-7",
+          "necessary-conflict"
+        ],
+        "missing_semantically_needed": [
+          "necessary-comparable",
+          "necessary-currency-witness"
+        ],
+        "coverage": {
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "observed_distinct_period_count": 2,
+          "observed_period_span_days": 90,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        }
+      },
+      "projection_style_candidate": {
+        "selected": [
+          "latest-real-facts",
+          "irrelevant-new-0",
+          "irrelevant-new-1",
+          "irrelevant-new-2",
+          "irrelevant-new-3",
+          "irrelevant-new-4",
+          "irrelevant-new-5",
+          "irrelevant-new-6",
+          "irrelevant-new-7",
+          "necessary-conflict"
+        ],
+        "missing_semantically_needed": [
+          "necessary-comparable",
+          "necessary-currency-witness"
+        ],
+        "coverage": {
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "observed_distinct_period_count": 2,
+          "observed_period_span_days": 90,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        }
+      }
+    },
+    "one_extra_irrelevant": {
+      "native_substring": {
+        "selected": [
+          "latest-real-facts",
+          "irrelevant-extra",
+          "irrelevant-new-0",
+          "irrelevant-new-1",
+          "irrelevant-new-2",
+          "irrelevant-new-3",
+          "irrelevant-new-4",
+          "irrelevant-new-5",
+          "irrelevant-new-6",
+          "irrelevant-new-7"
+        ],
+        "missing_semantically_needed": [
+          "necessary-comparable",
+          "necessary-conflict",
+          "necessary-currency-witness"
+        ],
+        "coverage": {
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "observed_distinct_period_count": 2,
+          "observed_period_span_days": 90,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        }
+      },
+      "projection_style_candidate": {
+        "selected": [
+          "irrelevant-extra",
+          "latest-real-facts",
+          "irrelevant-new-0",
+          "irrelevant-new-1",
+          "irrelevant-new-2",
+          "irrelevant-new-3",
+          "irrelevant-new-4",
+          "irrelevant-new-5",
+          "irrelevant-new-6",
+          "irrelevant-new-7"
+        ],
+        "missing_semantically_needed": [
+          "necessary-comparable",
+          "necessary-conflict",
+          "necessary-currency-witness"
+        ],
+        "coverage": {
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "observed_distinct_period_count": 2,
+          "observed_period_span_days": 90,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        }
+      }
+    },
+    "query_underdetermines_currency": {
+      "native_substring": {
+        "selected": [
+          "a-unit-0",
+          "a-unit-1",
+          "a-unit-2",
+          "a-unit-3",
+          "a-unit-4",
+          "a-unit-5",
+          "a-unit-6",
+          "a-unit-7",
+          "a-unit-8",
+          "a-unit-9"
+        ],
+        "missing_semantically_needed": [
+          "z-unit-USD"
+        ],
+        "coverage": {
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "observed_distinct_period_count": 1,
+          "observed_period_span_days": null,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        }
+      },
+      "projection_style_candidate": {
+        "selected": [
+          "a-unit-0",
+          "a-unit-1",
+          "a-unit-2",
+          "a-unit-3",
+          "a-unit-4",
+          "a-unit-5",
+          "a-unit-6",
+          "a-unit-7",
+          "a-unit-8",
+          "a-unit-9"
+        ],
+        "missing_semantically_needed": [
+          "z-unit-USD"
+        ],
+        "coverage": {
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "observed_distinct_period_count": 1,
+          "observed_period_span_days": null,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        }
+      }
+    },
+    "version_skill_format": {
+      "native_substring": {
+        "selected": [
+          "new-format-0",
+          "new-format-1",
+          "new-format-2",
+          "new-format-3",
+          "new-format-4",
+          "new-format-5",
+          "new-format-6",
+          "new-format-7",
+          "new-format-8",
+          "new-format-9"
+        ],
+        "missing_semantically_needed": [
+          "legacy-readable"
+        ],
+        "coverage": {
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "observed_distinct_period_count": 1,
+          "observed_period_span_days": null,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        }
+      },
+      "projection_style_candidate": {
+        "selected": [
+          "new-format-0",
+          "new-format-1",
+          "new-format-2",
+          "new-format-3",
+          "new-format-4",
+          "new-format-5",
+          "new-format-6",
+          "new-format-7",
+          "new-format-8",
+          "new-format-9"
+        ],
+        "missing_semantically_needed": [
+          "legacy-readable"
+        ],
+        "coverage": {
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "observed_distinct_period_count": 1,
+          "observed_period_span_days": null,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        }
+      }
+    }
+  },
+  "raw_records_unchanged": true,
+  "interpretation": "Projection-style lexical ranking reduces repetition bias but cannot identify arbitrary tag/unit/period/conflict/skill-format witnesses from a query-only contract; required source/period counts can be satisfied by irrelevant periods."
+}

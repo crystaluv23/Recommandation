@@ -1,0 +1,18 @@
+{
+  "status": "audit_harness_issues_only_corrected_without_product_changes",
+  "initial_log": {
+    "path": "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit.log",
+    "sha256": "eb343ca65d117e9aab3418ab172de7fd2a903c931007dcfa284873a0242a2f38",
+    "cause": "source_observations of instant facts omit nullable start; strict key lookup raisedKeyError. Only start usesget afterward; tag/unit/value/end retain mandatory direct keys."
+  },
+  "second_log": {
+    "path": "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit-final.log",
+    "sha256": "ccfc9db2ef85f74343a9b3ed17e67c9064561bde3270db9d975bcf2ae5aa5c5c",
+    "cause": "cash_reserves and cash/current-liabilities rawmeasurement instant period omit nullable start, while oracle has explicitnull. Normalized only start/end presence forcomparison; original raw->consumer exactdict preservation still asserted."
+  },
+  "complete_log": {
+    "path": "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit-complete.log",
+    "sha256": "a607cb6a9444235cfd0d6d56947b5b2d433fb427d6e4fa9942f4e633fe26dd21"
+  },
+  "source_oracle_stage_modified": false
+}

@@ -1,0 +1,82 @@
+{
+  "status": "DIAGNOSTIC_counterexamples_confirmed_no_product_change",
+  "evidence": {
+    "fixed_pools": "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/fixed-pools.json",
+    "results": "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/probe-results.json",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/probe.py",
+    "exit_code": 0,
+    "scope": "Only synthetic RawInfoDocument construction, pure diagnostic rank analogue, native _rank_documents/_select_required_source_documents/_retrieval_contract_coverage. No Store/model/Signal execution/GET/labels/source append/fullprepare."
+  },
+  "candidate_definition": "Diagnostic document ordering (-whole-word distinct query coverage,-sum capped token frequency at3,-available_at,document_id), then unchanged native required selector capped10. It is not installed production source ranking, and structured projection searchable metadata differ from document-body search.",
+  "observations": [
+    "Long-old repeated query words exclude latest real facts in native substring rank; cap3/tie availability candidate recovers latest in the fixed repetition control.",
+    "With four semantically required sources and eight same-query newer irrelevant sources, candidate omits older comparable and currency witness although a four-document sufficient subset fits cap10. Native required selector still reports its declared source+two-period contract satisfied.",
+    "Adding one newer same-query irrelevant source additionally removes necessary same-period conflict witness. Distinct whole words and cap3 do not make new irrelevant harmless.",
+    "Eleven same-query/same-date currency alternatives tie on lexical score: ID order omits USD. A query that specifies neither unit nor reporting currency cannot guarantee the intended basis; a different intended currency has identical retrieval inputs.",
+    "Ten newer lexically relevant source-format alternatives exclude the older skill-readable format. A version-specific skill constraint cannot be inferred safely from relevance/recency alone. This is a synthetic format capability example, not an observed published-skill model failure."
+  ],
+  "existing_boundaries": [
+    {
+      "pointer": "spec/architecture.md:64-80; data/documents.md Disclosure Interface; data/disclosure.py:200,270,376",
+      "meaning": "Existing three-layer catalog/fetch/provenance design and pure APIs expose PIT filtered cards, omission/pagination and exact content-hash/span reads. Reusable plumbing exists; it is not proof of LLMSignal integration."
+    },
+    {
+      "pointer": "research/evolution_plan_roles.py:2619-2745; evolution_core.py:3641-3690",
+      "meaning": "Reflect _DocumentChannelCaller/provider actually implements catalog/fetch with its own two-exchange limits. Those limits and authority do not automatically apply to LLMSignal."
+    },
+    {
+      "pointer": "research/evolution_signal_roles.py:5256-5320,5530-5565; Source-bound edge correction spec",
+      "meaning": "LLMSignal takes supplied item.documents and visible source_projection only. Same-document exact boundary repair cannot load an unselected document; no catalog/fetch/read actions are accepted here."
+    },
+    {
+      "pointer": "data/resolution.py:1699-1757,1921-1970; signal_library.py:3512-3540,3730",
+      "meaning": "Existing pure callback may choose <=10 unchanged members after PIT/source/lookback/dedup. Deterministic callable owns its fact basis; LLM path currently does not use that helper. Required selector knows source groups and generic period/observation counts, not semantic currency/target period/conflicts."
+    },
+    {
+      "pointer": "signal_library.py:3388-3405,3450-3495",
+      "meaning": "Executor fingerprints selected docs and may skip before runner; it later validates against item.documents. Runner-only new reads would break evidence qualification, actual-source fingerprint and skip semantics."
+    }
+  ],
+  "minimal_options": [
+    {
+      "option": "Use already admitted deterministic successor for newly declared numeric run scope",
+      "scope": "Keeps existing callable-owned semantics and result contract. Do not swap a historical exact v6 freeze, rewrite v1 skill, or call historical input diagnostics current production default. Current v12 work can proceed independently."
+    },
+    {
+      "option": "Ordinary producer correction only",
+      "scope": "Whole-word/capped-frequency relevance and truthful omission visibility can be spec-first repairs on fresh freezes. They reduce lexical artifacts; these fixed counterexamples prohibit claiming semantic basis/coverage guarantee. Do not derive formulas or currency defaults from query prose."
+    },
+    {
+      "option": "Bounded native source reading for active LLM versions, only if that interface is explicitly chosen",
+      "scope": "Reuse three-layer disclosure and original role/caller; no new ranker agent or default extra LLM layer. Begin with metadata catalog, not ten already disclosed bodies; otherwise fetching an eleventh source silently changes the cap. Same Signal role may request bounded exact reads before returning unchanged canonical SignalResult."
+    }
+  ],
+  "concrete_interface_if_chosen": [
+    "Executor freezes the eligible immutable pool after issuer/PIT/source/lookback/dedup, and supplies only content-addressed catalog handles. Catalog pages disclose omitted counts; no filesystem paths or future/out-of-scope handles.",
+    "Define a single per-Signal bounded read contract: cumulative unique original bodies <=10, total character/request/case limits unchanged, explicit capped paging/fetch exchanges. Do not inherit Reflect exchange count without an owner decision.",
+    "Runner read outcomes carry runtime-owned exact consumed document identities back to Executor, separate from canonical SignalResult. Revalidate all fetched IDs/hashes/owner/cutoff; final evidence must be from that Signal actual read set and exact visible lineage.",
+    "Persist actual consumed document refs/coverage through existing resolution and returned batch provenance. Compute final actual-source fingerprint from that read set. Before a skip, also verify frozen eligible catalog identity/read-policy and prior read receipts so a newly eligible source cannot be invisible behind unchanged initial ten; do not relabel pool fingerprint as consumed evidence.",
+    "Every catalog/read exchange uses existing request journaling/cache/receipt and logical budget accounting. Recovery must reconstruct the same read set before validating result/fingerprint; cache miss cannot fetch freely on completed restore. Accepted siblings retain their own source permissions/results and are not rerun or given each other new documents."
+  ],
+  "decision_boundary": {
+    "ordinary": "Using pure existing APIs, fixing source-format reads/offsets/omission reporting, implementing agreed caps/guards, and choosing tokenization details do not require users to select implementation details. No research definition is supplied by a rank tweak.",
+    "substantive": "Architecture already endorses disclosure, but adding LLMSignal read actions over previously unselected sources changes an active caller interface, per-role source authority, max10 meaning and number of budgeted exchanges/skip-consumer semantics. Prepare one concrete owner proposal under AGENTS before changing it; do not silently widen authority because Reflect has a channel. New unit/comparison/schema policies absent from a version measurement contract are also substantive, not retrieval implementation defaults."
+  },
+  "limits": [
+    "No proposed option implemented. These are small synthetic counterexamples, not independent model/measurement benefit or evidence that every query rank fails.",
+    "No changed Registry, schema, source policy, published skill, default version or completed artifact.",
+    "No formula parser, automatic currency inference, new numeric LLM execution policy, or full F5/MVP closure."
+  ],
+  "bindings": {
+    "spec/architecture.md": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1",
+    "spec/src/stock_opportunity_agent/data/documents.md": "27f392775f0ba763d711b99c62f79dbc1b53d658652f6e62bcca38e4a3956f26",
+    "spec/src/stock_opportunity_agent/data/resolution.md": "89351b88124e75564b3e00854c00fc57056bbbc7ac6699a999f69642401844c8",
+    "spec/src/stock_opportunity_agent/research/evolution_signal_roles.md": "c90cbd88d2c21176fd4efcce94c881ee3254ffeed0d355c374f3c90c50afc026",
+    "src/stock_opportunity_agent/data/resolution.py": "bc3eaae3e96cec370ed0094a9a51d5928e181f5c2a40b22faf0557083ce28ae0",
+    "src/stock_opportunity_agent/data/disclosure.py": "207195fbf751d2bf69ffe3e8fdf11c23c16c2b6171457f250d4df67b760f2080",
+    "src/stock_opportunity_agent/signal_library.py": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb",
+    "src/stock_opportunity_agent/research/evolution_signal_roles.py": "4abcf50e9831364afa838526de7c54958f9cdddca0f4d88f46c95b5ba31a5d24",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "29f1b3c057dc825ca77bed377a3f3be329c9eb6914ad5ad24774f88281d8aa07",
+    "src/stock_opportunity_agent/research/evolution_core.py": "41003f95b4ca6843b32b8beb8231eede30adb395a93ac5d81cff36f50693f4f1"
+  }
+}

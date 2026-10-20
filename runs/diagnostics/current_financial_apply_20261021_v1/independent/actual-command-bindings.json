@@ -1,0 +1,16 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit.py",
+  "exit_code": 0,
+  "bindings": {
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit.py": "2778632def597000910dd1d2bc23ffc6853b04b9a9d63735165e00e9205ba936",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit.log": "eb343ca65d117e9aab3418ab172de7fd2a903c931007dcfa284873a0242a2f38",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit-final.log": "ccfc9db2ef85f74343a9b3ed17e67c9064561bde3270db9d975bcf2ae5aa5c5c",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit-complete.log": "a607cb6a9444235cfd0d6d56947b5b2d433fb427d6e4fa9942f4e633fe26dd21",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-review.json": "5d094ce65c057004a45954cb5af9d7a8fa2fe1276cadea3f5244831b57f76ce5",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-harness-notes.json": "f3cb6f1fe5d712ce8cbdb80fa735bd4b00d56d0e9c9f46e495ef58ac2d5be9d8",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/plan.json": "7c1120ec07b149744ca9b69aeed7b21aa074f19ff1c83d23a410a54bb3be55b2",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/result.json": "ae45992407417c919668f1738b185f92324753f84b6999ca77f0f596c83e503f",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/native-batch.json": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/completed-files.json": "58f28add6a504e3d58368cdc462603aeb49b99f4665132f10d3e5ed654efbf9c"
+  }
+}

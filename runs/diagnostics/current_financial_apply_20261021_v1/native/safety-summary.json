@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py",
+      "sha256": "2dfabba653632d0783ece06d36296b0a1df24ad49580182903365f994148ff6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety_controls.py",
+      "sha256": "9588a83fd6d08c573d7de26c7fbcfbba32dd7ed8eca428312c1bf42e24cd1d5f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety-first.log",
+      "sha256": "b3c7e5a13063e80362a1d69cdb7e537bf315e40725a844f91e9a12daf655d68e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety-current.log",
+      "sha256": "12490dca1fe5ddfced88031ca5971a724e51f773fb61d8816f9a5e7738ea0f06"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety-final.log",
+      "sha256": "474326d08f2cede3092467e51ef2a06c4e0a484ce2d3e1fdbbab3dc9a9f0b739"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety-controls-first-source.py.txt",
+      "sha256": "b0e94d6742f353104fbea7e5a881b53bd91665056981c3deb934640928b6ec2e"
+    }
+  ],
+  "initial_harness_failures": [
+    "SyntaxError in synthetic test keyword argument; preserved before correction",
+    "Unresolved macOS temporary path alias mismatched the intentionally resolved fixed destination; corrected fixture paths only"
+  ],
+  "passed": 8,
+  "real_stage_exists": false,
+  "scope": "Synthetic-only preflight; no real prepare/execute/Signal/source opening",
+  "seconds": 0.323,
+  "tests": 8
+}

@@ -1,0 +1,41 @@
+{
+  "evidence": {
+    "counter": [],
+    "supporting": [
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "exact_span": "{\"description\":\"Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Weighted Average Number of Shares Outstanding, Basic\",\"start\":\"2025-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":64069000}",
+        "timestamp": "2025-05-09T00:00:00+00:00"
+      },
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "exact_span": "{\"description\":\"Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Weighted Average Number of Shares Outstanding, Basic\",\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":63341000}",
+        "timestamp": "2025-05-09T00:00:00+00:00"
+      }
+    ]
+  },
+  "execution": {
+    "status": "success"
+  },
+  "interpretation": {
+    "summary": "net_share_retirement_yoy=-0.0114933"
+  },
+  "measurement": {
+    "formula": "1 - current weighted-average shares / prior-year shares",
+    "period": {
+      "end": "2025-03-31",
+      "start": "2025-01-01"
+    },
+    "unit": "fraction",
+    "value": -0.011493345542381794
+  },
+  "signal_id": "net_share_retirement_yoy",
+  "state": {
+    "confidence": 1.0,
+    "value": "neutral"
+  },
+  "status": {
+    "coverage": "sufficient"
+  },
+  "version": 3
+}

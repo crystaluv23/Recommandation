@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py", line 360, in <module>
+    main()
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py", line 351, in main
+    result = prepare(args.output)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py", line 199, in prepare
+    frozen = authorities()  # No writes until all protected authorities validate.
+             ^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py", line 157, in authorities
+    raise ValueError('exact original latest_v12 group differs')
+ValueError: exact original latest_v12 group differs

@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T19:55:25+00:00",
+    "checked_at": "2026-10-20T20:27:50+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal after typed source reader and independent actual read review; no budget limit; full MVP remains open"
+    "source": "Actual root get_goal after terminal native financial9 and unique completed restore; no budget limit; engineering MVP remains open"
   },
   "acceptance": [
     {
@@ -167,9 +167,18 @@
         "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-completed-restore.json",
         "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-review.json",
         "runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-independent-command-bindings.json",
-        "runs/diagnostics/s5_fixture_authoring_20261021_v1/initial-error-root-actual-audit.json"
+        "runs/diagnostics/s5_fixture_authoring_20261021_v1/initial-error-root-actual-audit.json",
+        "reports/current-financial-apply-20261021.md",
+        "reports/llm-signal-bounded-source-reading-proposal-20261021.md",
+        "runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/summary.json",
+        "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/interface-review.json",
+        "runs/diagnostics/current_financial_apply_20261021_v1/oracle/frozen-manifest.json",
+        "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/result.json",
+        "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-review.json",
+        "runs/diagnostics/current_financial_apply_20261021_v1/root/completed-restore.json",
+        "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-restore-review.json"
       ],
-      "remaining": "Actual deterministic input connection verified for default6/6 and latest9/9 within10, not Signal arithmetic/model semantics or wholeF5. Allfinancial-source membership8/9 and9/9;defaultLLM cashratio latestQ1 stillmissing withgenericselection unchanged.Future named positive fixture producers now explicitly bind CIK; actual old/new CLI2to0 with14enabled,158connected tests pass and independent strict negative/native constructor controls pass; historical failures/Registry bytes stay. Shared S5 execution-contract prompt still omits explicit CIK obligations; fresh model authoring unverified. Source57/4/53 and1780view preserve history; original40 readiness670/720 each is earlier1776-view evidence. BasicInfo partial/newsunknown;newfrozen F7 temporal target3of3 with9fresh roles andexact consumers/restores, original0of1 retained/mirrorunexercised. p01 auxiliary honest uncertainty belief mechanically deleted by unavailable token guard, exact purehelper/typedauthority reproduce; wholeF7 stillopen. F10/Slow/direction+magnitude discovery/admission/exactreuse/fullclosedloop unverified. BURUbaseline/FTItype/MSclock/transcriptpublictimeproof/retrospectivefinancialprimaryaudit limits persist;benefitlaterunknown."
+      "remaining": "Engineering content chain remains local/open. Actual currentv12 financial9 has6strictpasses/1prior original-row alternative mismatch/2definition-policyunknown;7numeric/state/unit/currentperiod match source oracle,9projections exact, completedrestore24bytes preserved, not fresh model consumption. Bounded lexical selection fails latest/comparison/currency/conflict witnesses; no callback installed, native LLM bounded-reading design pending. Typed reader local repair63associated/13independent holds; historicalv6 unchanged. FreshF7 temporal target3of3 and downstream/restores narrow, original0of1 preserved/mirrorunexercised; priorp01 auxiliary atomic quarantine is authorized, unavailable topic/provenance guard locally repaired282/31 but fresh behavior unverified. S5 independent tests-author2of2 is not Mining/newmeasurement implementation. Original40 readiness670of720 each/BasicInfoallpartial/newsunknown;BURUbaseline/FTItype/MSclock/26transcriptpublictimeproof remain. F10/Slowfeedback/direction+magnitude discovery/admission/exactreuse/wholeloop unverified. No benefit claim."
     },
     {
       "id": "feedback_consumption",
@@ -1140,18 +1149,42 @@
         "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/actual-read-review.json"
       ],
       "result": "Local format/atomicity repair: actual SEC producer reaches structured shared projection, payload and raw citation; typed groups retain latest conflicts/durations/units/comparable periods through32k/token budgets. Old nested helper unchanged. Original producer2red, final63associated and13independent tests pass; initial7fail are root overbroad complete_json guard blocking local pending tests, retained and corrected at actual HTTP layer. Actual fixed10 counter has both Q1 latest whole literals once within31986chars; native stillzero within31968because selection unchanged.52structured records each; helper partial134omitted groups disclosed. Qualified sources/definitions unchanged. No model, ratio, Signal execution, GET, labels, append, publication or completedstage reentry. Pure projection does not establish sent model behavior/fullF5/MVP. Entry scope distinguishes no-override minimal v143/v6, explicitv182/v12 and generalinit; no silent Registry substitution."
+    },
+    {
+      "id": "engineering-mvp-fixed-reading-and-financial-apply-20261021",
+      "strategy": "fixed_lexical_falsification_and_independent_native_financial_measurement",
+      "failure_families": [
+        "lexical_top10_loses_feasible_semantic_source_witness",
+        "published_comparison_period_policy_ambiguous",
+        "oracle_prior_source_alternative_inventory_too_narrow"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/current-financial-apply-20261021.md",
+        "reports/llm-signal-bounded-source-reading-proposal-20261021.md",
+        "runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/summary.json",
+        "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/interface-review.json",
+        "runs/diagnostics/current_financial_apply_20261021_v1/oracle/frozen-manifest.json",
+        "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/result.json",
+        "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-review.json",
+        "runs/diagnostics/current_financial_apply_20261021_v1/root/completed-restore.json",
+        "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-restore-review.json"
+      ],
+      "result": "Fixed lexical improvement recovers actualQ1 rank46to4 and complete literals but frozen11doc plus independent comparison/currency/conflict controls falsify semantic preservation. No ranking callback installed; bounded read proposal pending user design decision. Separate currentv12 deterministic financial9 executed once at6b7205ec with4389bindings:6strictpass/1prior literal fail/2predeclared period-policyunknown, fixed9 and completed_acceptance_failed preserved.7unique quantities/state/unit/currentperiod match frozen independent source oracle; actual prior is the same2024Q1 total revenue fact in original2024filing, omitted by oracle prior alternative list.9actual selected/order/fp and public consumer projections faithful; no fresh model consumption. One completed restore24files byte-identical/0newbatch.0model/GET/labels/append, no full successor. Source/current and historicalv6 frozen scopes remain distinct."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-typed-companyfacts-reading-20261021",
+    "after_iteration": "engineering-mvp-fixed-reading-and-financial-apply-20261021",
     "evidence": [
-      "reports/gpre-readable-period-selection-20261021.md",
-      "runs/diagnostics/default_llm_financial_read_20261021_v1/driver/findings.json",
-      "runs/diagnostics/default_llm_financial_read_20261021_v1/independent/scope-and-interface-review.json",
-      "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/actual-read-result.json",
-      "runs/diagnostics/typed_company_facts_projection_20261021_v1/root/connected-tests.json",
-      "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/final-review.json",
-      "runs/diagnostics/typed_company_facts_projection_20261021_v1/independent/actual-read-review.json"
+      "reports/current-financial-apply-20261021.md",
+      "reports/llm-signal-bounded-source-reading-proposal-20261021.md",
+      "runs/diagnostics/bounded_llm_source_selection_20261021_v1/driver/summary.json",
+      "runs/diagnostics/bounded_llm_source_selection_20261021_v1/independent/interface-review.json",
+      "runs/diagnostics/current_financial_apply_20261021_v1/oracle/frozen-manifest.json",
+      "runs/diagnostics/current_financial_apply_20261021_v1/native/stage/result.json",
+      "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-review.json",
+      "runs/diagnostics/current_financial_apply_20261021_v1/root/completed-restore.json",
+      "runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-restore-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1216,22 +1249,26 @@
       "Shared authoring text only reached spec/legacy roles, not the independent tests author; even new schema field documentation required explicit tests_schema forwarding. str(dict) converted an invalid fixture shape to parse-skip/unavailable, so instruction presence was weaker than consumer enforcement. Prior158 numeric/runtime selectors missed two Slow producers still omitting metadata; current66 covers them. A private stage oracle accepted supplied fact literals in an unrelated JSON carrier while executable rows lacked source fields, so whole-body substring and same-ratio success are weaker than actual row lineage.",
       "Actual first answer obeys explicit shared fixture semantics/schema and both supplied schemas, but accepted known spec/hand-frozen synthetic facts prove tests-author behavior only. Root twice assumed saved data shape instead of inspecting it (nested state, tests wrapper); correction was read-only with all20 sealed bytes unchanged. Diagnostic timestamp-string equality may reject equivalent instants; current exact+00success cannot close that family. Default cash_ratio LLM receives only ten frequency-ranked docs, no tool to retrieve unselectedQ1, so source existence and resolved status do not prove model access.",
       "Earlier projection controls used nested SEC fixtures while real acquisition produces a typed facts array; numeric parser/input preparation success did not enter the model projection. Same-period conflicts also need to survive later character and token fitting, not only the source helper.",
-      "A root network safety guard on public complete_json blocks legitimate offline pending/cache tests; initial7fail reflect harness placement, not product regression. Block actual HTTP/network and real labels while permitting native local transport. Existing producer permits numeric strings; the initial independent rejection expectation was too narrow and was corrected against source contract."
+      "A root network safety guard on public complete_json blocks legitimate offline pending/cache tests; initial7fail reflect harness placement, not product regression. Block actual HTTP/network and real labels while permitting native local transport. Existing producer permits numeric strings; the initial independent rejection expectation was too narrow and was corrected against source contract.",
+      "The lexical cap3 candidate improved one actual query but a fixed11source counterexample and independent older-comparison/unit/conflict witnesses falsify a semantic guarantee. Ranking alone is stopped, rather than tuned or installed after a favorable example. Runner-only reads would bypass actual-source evidence/fingerprint and skip contracts; the concrete bounded interface remains a human design choice.",
+      "The independent financial oracle enumerated current alternatives but omitted an already frozen original prior-filing row. Same-value/tag/unit/duration with different reporting-frame metadata caused a strict literal failure despite correct revenue math. Keep original failure and enumerate both prior/current variants before any future freeze; do not weaken whole-source validation or retrofit this result.",
+      "Private native preflight originally hashed a whole group wrapper against a five-field snapshot identity and forbade the ReviewedStore memory-only parent initializer; early synthetic fakes missed actual constructor composition. Original failures remain; strict identity plus43definition bindings, actual ReviewedStore and11safety controls now cover the harness. Root-only seal exclusion must compare its fullpath; same basename nested underresults must not evade restore.",
+      "Independent actual audit initially treated optional null instant-period start as a required key and then required dict identity against start:null. It now checks optionalstart semantically while tag/value/unit/end remain exact; original audit failures are retained, and none warrants product period correction."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "bounded_actual_llm_source_selection_before_apply",
-      "action": "Use the already qualified pool and exact native LLM request/runner scope to evaluate one bounded source-selection policy at existing EvidenceResolver.select_documents. Keep original v6 versus explicit v12 evidence distinct. Check long-old repetition, new irrelevant documents, required source/period coverage and necessary conflict/comparison witnesses. Only after a feasible selected set exposes both complete latest literals under unchanged caps prepare a separately frozen fresh exact-inbox Signal call.",
-      "stop": "No new acquisition/model/labels/full successor during selection diagnosis; no prose-to-formula invention, company/Signal hardcoding, silent Registry switch, published-v1 hot edit, global rank rewrite or tuning successive policies to obtain one pass. Counter failures preserve the gap and change the hypothesis instead of extending a framework.",
-      "question": "Can a bounded opt-in selection within the actual LLM runner preserve required source/period/conflict evidence while correcting the observed long-old-document exclusion, now that typed source reading works?",
-      "pass": "The fixed policy selects an unchanged eligible set of at most10, satisfies original required coverage, preserves independently specified comparison/conflict witnesses and exposes both latest original literals within32000characters across the original and fixed counterexamples.",
-      "fail": "Any required witness is lost, irrelevant new text evicts actual evidence, or the latest complete source facts still cannot reach the view; improving Q1 document membership alone is insufficient.",
-      "on_pass": "Implement only the justified existing-boundary policy with exact source identity and unknown/custom runner compatibility; validate native current payload before a separately frozen fresh subagent apply.",
-      "on_fail": "Keep the exact family open and inspect the first missing witness or unsupported source contract; do not compensate with a new model layer, a Registry substitution or larger budgets.",
-      "new_evidence": "Typed reader now passes actual producer/consumer and source10 counter controls; old production selection still lacksQ1. Entry-point review proves v143/v6 is specific to no-override minimal prepare, not universal default. Source data is sufficient and the reading defect is locally repaired, separating selection from model behavior.",
-      "distinguishing_variable": "Eligible pool versus selected original records versus whole model-visible fact literals, holding exact version/query/source scope/caps fixed; source and period/conflict witness preservation is measured separately from lexical relevance.",
-      "authorization_evidence": "User active engineering MVP goal; production LLM nodes use fresh independent subagents, externalLLMAPI prohibited, public read-only sourcing permitted. This next step is local bounded selection diagnosis, with completed runs and stages immutable."
+      "strategy": "existing_slow_entry_before_frozen_positive_control",
+      "action": "Read existing authorized committed Fast feedback or explicitly allowed frozen imports and native Slow Mining/materialization interfaces. Identify a minimal direction/magnitude capability positive control using sufficient PIT materials, exact producer/consumer handoff, existing resource limits and fresh independent production subagents. Do not implement pending LLM source-reading interface or change comparison-period policy.",
+      "stop": "No model/Signal/GET/labels/full successor or Registry writes during entry diagnosis. Stop if the source import/measurement definition is unauthorized, labels or LockedTest would leak, or the only available control preauthors the candidate instead of exercising Mining. Keep completed stages immutable and the current9 denominator unchanged.",
+      "question": "Can existing authorized Slow input and runtime boundaries support a finite actual discovery-to-admission positive control without depending on the pending LLM reading-interface or measurement-period decisions?",
+      "pass": "A concrete native producer/consumer entry, authorized sufficient sources, independent expected reusable measurement boundaries and existing bounded call/correction limits are identified; no handwritten candidate substitutes for Mining.",
+      "fail": "No authorized source/import or sufficient material is available, the boundary requires a new research/interface policy, or a proposed control only seeds/publishes a handwritten Signal.",
+      "on_pass": "Prepare only the existing bounded native entry with exact frozen inputs/oracle/budget, validate actual request and persistence, and then use independent exact-inbox subagents.",
+      "on_fail": "Name the missing input or substantive policy with a concrete reviewable proposal; continue other independent acceptance work instead of fabricating consumption, widening permission or running the whole loop.",
+      "new_evidence": "The current deterministic measurement and completed-restore batch is terminal and independently reviewed; the fixed lexical strategy is falsified and stopped. Neither missing LLM navigation nor two published period ambiguities can be solved by more identical calls. Existing Slow positive-control capability remains an independent required MVP frontier.",
+      "distinguishing_variable": "Actual authorized feedback/source artifact and native Mining request versus seeded handwritten measurement; input permission, sufficient source evidence and supported call interface are checked separately from schema/Registry visibility.",
+      "authorization_evidence": "Active user engineering MVP goal; independent production subagents replace LLM API, externalLLMAPI prohibited; read-only public sourcing permitted. This action is local read-only entry diagnosis under existing contracts, not a full successor or interface budget change."
     }
   },
   "successor_prerequisites": [

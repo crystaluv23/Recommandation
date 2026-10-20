@@ -1,0 +1,186 @@
+{
+  "oracle_manifest_sha256": "475f89606878bdc808fcdcc34e8890a2e937c29f680ade1450211f6e69db595e",
+  "all_oracle_files_unchanged": true,
+  "fixed_denominator": 9,
+  "unique_fraction_checks": [
+    {
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "exact_fraction_matches": true,
+      "expected_state": "positive",
+      "unit": "dimensionless ratio",
+      "measurement_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    },
+    {
+      "signal_ref": "cash_reserves:v2",
+      "exact_fraction_matches": true,
+      "expected_state": "neutral",
+      "unit": "USD",
+      "measurement_period": {
+        "start": null,
+        "end": "2025-03-31"
+      }
+    },
+    {
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "exact_fraction_matches": true,
+      "expected_state": "negative",
+      "unit": "dimensionless ratio",
+      "measurement_period": {
+        "start": null,
+        "end": "2025-03-31"
+      }
+    },
+    {
+      "signal_ref": "liquidity_runway_months:v3",
+      "exact_fraction_matches": true,
+      "expected_state": "positive",
+      "unit": "months",
+      "measurement_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    },
+    {
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "exact_fraction_matches": true,
+      "expected_state": "neutral",
+      "unit": "dimensionless fraction",
+      "measurement_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    },
+    {
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "exact_fraction_matches": true,
+      "expected_state": "negative",
+      "unit": "dimensionless fraction",
+      "measurement_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v3",
+      "exact_fraction_matches": true,
+      "expected_state": "neutral",
+      "unit": "dimensionless fraction",
+      "measurement_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      }
+    }
+  ],
+  "ambiguous_unjudged": 2,
+  "native_signal_executions": 0,
+  "source_operand_checks": [
+    {
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 91559,
+      "raw_end": 92064,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 19452,
+      "raw_end": 20214,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "cash_reserves:v2",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 19452,
+      "raw_end": 20214,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 19452,
+      "raw_end": 20214,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 83600,
+      "raw_end": 83980,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "liquidity_runway_months:v3",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 19452,
+      "raw_end": 20214,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "liquidity_runway_months:v3",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 91559,
+      "raw_end": 92064,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 145008,
+      "raw_end": 145586,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 144423,
+      "raw_end": 145007,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 91559,
+      "raw_end": 92064,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 131454,
+      "raw_end": 131972,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v3",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 131454,
+      "raw_end": 131972,
+      "literal_exact": true
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v3",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "raw_start": 130929,
+      "raw_end": 131453,
+      "literal_exact": true
+    }
+  ],
+  "source_manifest_sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a"
+}

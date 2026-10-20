@@ -1,0 +1,31 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py",
+      "sha256": "5ebe26fa354cdeb7057e5c95556b61c5aaab419686e34cc080a705bac141b9e8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety_controls.py",
+      "sha256": "9820c68d69889355fefe01b28b74dfec673533ebc7ea4e750c5603e77db89ff5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety-seal-final.log",
+      "sha256": "1aa695ebc17d2b6bcee4e5573978e31e48fed3d907c8b66024075207cc175f1e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run-native-original-seal-basename.py.txt",
+      "sha256": "9be259f02c2d98a3e088f745756db963497597f58e4043c05b5bce248476c0f4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/seal-basename-original-counterexample.log",
+      "sha256": "7431d029335b23a6ac844249defec4dc409fc77866e6c6d4c8b8a01af51f86b7"
+    }
+  ],
+  "fix": "Exclude only exact output/completed-files.json path",
+  "old_counterexample": "results/completed-files.json accepted by basename exclusion; actual assertion failure retained",
+  "passed": 10,
+  "real_stage_exists": false,
+  "scope": "Synthetic-only restore exact inventory; no actual source/stage",
+  "seconds": 0.354,
+  "tests": 10
+}

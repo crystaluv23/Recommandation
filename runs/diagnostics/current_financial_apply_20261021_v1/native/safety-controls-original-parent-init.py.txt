@@ -1,0 +1,133 @@
+"""Synthetic-only preflight: no real stage, Registry, source, or Signal calls."""
+from contextlib import ExitStack
+from dataclasses import replace
+from datetime import datetime, timezone
+import importlib.util
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from types import SimpleNamespace
+import unittest
+from unittest.mock import patch
+
+SPEC = importlib.util.spec_from_file_location('native_stage_candidate',Path(__file__).with_name('run_native.py'))
+m = importlib.util.module_from_spec(SPEC); SPEC.loader.exec_module(m)
+from stock_opportunity_agent.signal_library import (
+    NumericMeasurement, SignalBatchResult, SignalResult, SignalValue,
+    SignalCoverage, SignalExecutionStatus,
+)
+
+
+def oracle(ref='control_0:v1'):
+    return {'signal_ref':ref,'oracle_status':'sufficient_unique','expected_state':'neutral',
+        'unit':'dimensionless ratio','expected_numeric':{'decimal':'0.25'},
+        'measurement_period':{'start':None,'end':'2024-12-31'},'operands':[],
+        'numeric_comparison_policy':{'raw_numeric_absolute_tolerance':'1e-12'}}
+
+
+def native(index):
+    return SignalResult(f'control_{index}',1,SignalValue.NEUTRAL,0.5,
+        f'control_{index}=0.25; synthetic only',measurement=NumericMeasurement(0.25,'ratio','synthetic',period_end='2024-12-31'))
+
+
+class SafetyControls(unittest.TestCase):
+    def test_exact_unit_period_numeric_and_ambiguity(self):
+        expected, result = oracle(),native(0).to_dict()
+        self.assertTrue(m.compare(expected,result)['passed'])
+        for changed in (
+            {**result,'measurement':{**result['measurement'],'value':0.3}},
+            {**result,'measurement':{**result['measurement'],'unit':'fraction'}},
+            {**result,'measurement':{**result['measurement'],'period':{'end':'2023-12-31'}}},
+            {**result,'state':{'value':'positive'}},
+        ):
+            self.assertFalse(m.compare(expected,changed)['passed'])
+        self.assertIsNone(m.compare({'signal_ref':'x:v1','oracle_status':'period_policy_ambiguous'},result)['passed'])
+
+    def test_operand_whole_literal_not_substring(self):
+        expected,result=oracle(),native(0).to_dict()
+        expected['operands']=[{'document_id':'source','literal':'{"value":10}','fact':{'tag':'Cash','value':10}}]
+        result['evidence']['supporting']=[{'document_id':'source','exact_span':'prefix {"value":10}'}]
+        self.assertFalse(m.compare(expected,result)['passed'])
+        result['evidence']['supporting'][0]['exact_span']='{"value":10}'
+        self.assertTrue(m.compare(expected,result)['passed'])
+
+    def test_registry_requires_existing_dirs_and_detects_constructor_write(self):
+        with TemporaryDirectory() as temp:
+            root=Path(temp); registry=root/'registry'; candidates=root/'candidates'
+            group={'root':str(registry),'version':12,'refs':['x']*18,'registry_hash':'hash'}
+            with patch.object(m,'SignalRegistry') as ctor:
+                with self.assertRaises(ValueError): m.readonly_snapshot(group,candidates)
+                ctor.assert_not_called()
+            registry.mkdir(); candidates.mkdir(); m.write_new(registry/'registry.json',{'version':12})
+            snap=SimpleNamespace(registry_hash='hash',specs=tuple(range(18)))
+            with patch.object(m,'SignalRegistry',return_value=SimpleNamespace(snapshot_from_refs=lambda *_:snap)):
+                self.assertIs(m.readonly_snapshot(group,candidates),snap)
+            def mutate(*a,**kw):
+                m.write_new(candidates/'unexpected.json',{})
+                return SimpleNamespace(snapshot_from_refs=lambda *_:snap)
+            with patch.object(m,'SignalRegistry',side_effect=mutate):
+                with self.assertRaisesRegex(ValueError,'changed tree'):m.readonly_snapshot(group,candidates)
+
+    def test_fixed_destination_and_invalid_plan_write_nothing(self):
+        with TemporaryDirectory() as temp:
+            root=Path(temp); fixed=root/'stage'; wrong=root/'protected'/'new'
+            with patch.object(m,'OUTPUT',fixed),patch.object(m,'authorities') as authority:
+                with self.assertRaises(ValueError):m.prepare(wrong)
+                authority.assert_not_called();self.assertFalse(wrong.exists())
+                with self.assertRaises(FileNotFoundError):m.execute(fixed,'bad')
+                self.assertFalse(fixed.exists())
+
+    def integration(self, *, failed=False, technical=False):
+        temporary=TemporaryDirectory(); self.addCleanup(temporary.cleanup)
+        output=Path(temporary.name).resolve()/'stage';output.mkdir();(output/'readonly-candidates').mkdir()
+        rows=[oracle(f'control_{i}:v1') for i in range(9)]
+        for row in rows[-2:]:row['oracle_status']='period_policy_ambiguous'
+        results=tuple(native(i) for i in range(9))
+        if failed:rows[0]['expected_numeric']['decimal']='0.5'
+        if technical:
+            results=(SignalResult('control_0',1,SignalValue.UNAVAILABLE,0,'synthetic validation failure',
+                coverage=SignalCoverage.UNAVAILABLE,execution_status=SignalExecutionStatus.VALIDATION_FAILED,
+                execution_error_code='fixture',execution_error_message='synthetic'),)+results[1:]
+        plan={'output':str(output),'head':m.head(),'source_bindings':[],'code_bindings':[],
+            'limits':{'batches':1,'signal_calls':9,'model_calls':0,'network_calls':0,'label_reads':0},
+            'group':{},'signal_refs':[r['signal_ref'] for r in rows],'oracle':{'rows':rows},
+            'reviewed_source_snapshot':{'root':'synthetic-only'},
+            'case':{'company_id':'synthetic','prediction_time':'2025-05-30T00:00:00+00:00'},'identity':{}}
+        plan['plan_hash']=m.canonical_json_hash(plan);m.write_new(output/'plan.json',plan)
+        doc=SimpleNamespace(to_dict=lambda:{'synthetic':True})
+        batch=SignalBatchResult(results,9)
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(m,'OUTPUT',output))
+            stack.enter_context(patch.object(m,'readonly_snapshot',return_value=SimpleNamespace()))
+            stack.enter_context(patch.object(m,'open_raw_info_store',return_value=SimpleNamespace(documents=(doc,)*1780)))
+            stack.enter_context(patch.object(m.SignalExecutor,'execute_batch',return_value=batch))
+            result=m.execute(output,plan['plan_hash'])
+            self.assertEqual(len(list((output/'results').glob('*.json'))),9)
+            self.assertEqual(len(m.read(output/'native-batch.json')['results']),9)
+            self.assertEqual(result['signal_calls'],9)
+            with self.assertRaisesRegex(ValueError,'terminal'):m.execute(output,plan['plan_hash'])
+            with patch.object(m.SignalExecutor,'execute_batch',side_effect=AssertionError('restore must not execute')):
+                restored=m.restore(output)
+                self.assertTrue(restored['restored_without_execution']);self.assertEqual(restored['result'],result)
+            (output/'results'/'00.json').write_text('{}')
+            with self.assertRaisesRegex(ValueError,'inventory differs'):m.restore(output)
+        return result
+
+    def test_single_batch_restore_and_immutable_inventory(self):
+        self.assertEqual(self.integration()['status'],'completed')
+
+    def test_oracle_mismatch_preserves_nine_and_terminal_acceptance_failure(self):
+        self.assertEqual(self.integration(failed=True)['status'],'completed_acceptance_failed')
+
+    def test_validation_failure_preserves_nine_and_terminal_acceptance_failure(self):
+        self.assertEqual(self.integration(technical=True)['status'],'completed_acceptance_failed')
+
+    def test_actual_no_model_label_network_append_and_prepare_guards(self):
+        with m.bounded_operations():
+            for owner,name in ((m.socket,'create_connection'),(m.LabelStore,'record'),
+                (m.RawInfoStore,'__init__'),(m.ReviewedRawInfoStore,'append'),
+                (m.SignalExecutor,'prepare_inputs'),(m.StructuredRoleClient,'complete_json'),
+                (m.SignalRegistry,'freeze'),(m.run_minimal_rounds,'prepare')):
+                with self.subTest(name=name),self.assertRaises(RuntimeError):getattr(owner,name)()
+
+
+if __name__=='__main__':unittest.main(verbosity=2)

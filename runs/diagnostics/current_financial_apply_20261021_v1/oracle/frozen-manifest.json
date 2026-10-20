@@ -1,0 +1,60 @@
+{
+  "schema_version": "independent-oracle-freeze-v1",
+  "frozen_before_native_apply": true,
+  "fixed_denominator": 9,
+  "sufficient_unique": 7,
+  "period_policy_ambiguous": 2,
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/README.md",
+      "sha256": "cdaead0e16adeadc9b6b56e2d12f8c2875a5f0b3ea9c837939d1f76c5ecc4957",
+      "bytes": 3472
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/binding-audit.json",
+      "sha256": "f8e819638ee4ba43a7dbaec3fd9bfd0f068966eb13bd58e50596f77f423a2c58",
+      "bytes": 17535
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/build_oracle.log",
+      "sha256": "3237d94f6f5c6d1a54c6aa7cab43a575c5dc96332a9e9d35513f548f616a40f4",
+      "bytes": 2224
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/build_oracle.py",
+      "sha256": "b932cff59107609adcb3bf6a0b1ae59c8ea3639a6a967611b6892400150e8743",
+      "bytes": 9544
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/definitions.json",
+      "sha256": "2f9391c484d2886ceb268057dc0d62b428466244c6bb8e96a450092931eb9557",
+      "bytes": 23717
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/extract_raw_materials.log",
+      "sha256": "861d7ab7633ce0a8e2a31c7de6fbde4de5998ff2a07f8d77496a842a567e6100",
+      "bytes": 6444
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/extract_raw_materials.py",
+      "sha256": "0c412e9da10b5573ba9aae2b726f032b3cc30a81e8d878ca225bf5c01b54dedc",
+      "bytes": 5586
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/oracle.json",
+      "sha256": "596816095cb1526b1e631ede4fa836bc7d26f7ecbb836fdadd7610b59fe75449",
+      "bytes": 86088
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/primary-filing-corroboration.json",
+      "sha256": "e1a86c2ea93feef7a6110d8475d2da847855cb386ade910ee37a63fb7c3d9cb4",
+      "bytes": 6592
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/raw-materials.json",
+      "sha256": "50c4c054708bc9ca18d32886d4899c329726c33e2babfc74d54060ee088cfa4a",
+      "bytes": 908698
+    }
+  ],
+  "manifest_hash": "ea0331399f394c7e8bc3c67877262ec6dd9c77febbb6da20d4cfc3e2f6f881e5"
+}

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/independent/actual-audit.py", line 106, in <module>
+    assert raw["measurement"]["period"] == expected["measurement_period"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

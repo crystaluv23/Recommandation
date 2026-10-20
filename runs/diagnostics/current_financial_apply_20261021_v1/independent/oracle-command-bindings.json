@@ -1,0 +1,12 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/current_financial_apply_20261021_v1/independent/oracle-audit.py",
+  "exit_code": 0,
+  "final_review_sha256": "cb4c282317e2ad068371b05bf06d183ca802abe53ccb5b3e7e19ca370d85fd36",
+  "bindings": {
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/oracle-audit.py": "6ecd4abb7532f6e2b791d6d904603da10d16c432cb7e34758c2a594239844709",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/oracle-audit.log": "71355d05ad7d1e4fd8aa2d0186e8ca5a0c6c154dc5ac68a946f040a764296ae9",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/oracle-audit-final.log": "30e704a5af453328b7ca09c75768be4c5aacbd88b8e0baa2b1af7c97540e4430",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/oracle-review.json": "cb4c282317e2ad068371b05bf06d183ca802abe53ccb5b3e7e19ca370d85fd36"
+  },
+  "final_addition": "Final run additionally checked all23 source exact path/SHA membership in admitted snapshot manifest; first successful log retained. No oracle/native/SRC edited."
+}

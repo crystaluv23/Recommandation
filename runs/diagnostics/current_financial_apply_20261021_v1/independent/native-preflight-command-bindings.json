@@ -1,0 +1,13 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/current_financial_apply_20261021_v1/independent/native-preflight-probe.py",
+  "exit_code": 0,
+  "bindings": {
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py": "5ebe26fa354cdeb7057e5c95556b61c5aaab419686e34cc080a705bac141b9e8",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/safety_controls.py": "9820c68d69889355fefe01b28b74dfec673533ebc7ea4e750c5603e77db89ff5",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/safety-seal-final.log": "1aa695ebc17d2b6bcee4e5573978e31e48fed3d907c8b66024075207cc175f1e",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/safety-seal-summary.json": "cb5a2340bb2a8ca9248f4440383d0b00c024c11f0e57b67c963560b2f87e0670",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/native-preflight-probe.py": "b8cb0ae6e6d0b6cee7316a71b144bb98a62340ca5b7af8d2e6de5e99ef3c595b",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/native-preflight-probe.log": "248bd36a94431b40f7cf85a1d92fc69f47105191f432aa7c3cd2fd6bc56a606b",
+    "runs/diagnostics/current_financial_apply_20261021_v1/independent/native-preflight-review.json": "8c3812e3b2d43567b76b68011722ea46e2c91795c47ac64c1916cdeff9f0bf16"
+  }
+}

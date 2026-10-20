@@ -1,0 +1,116 @@
+{
+  "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1514.json",
+  "sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+  "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+  "records": [
+    {
+      "tag": "CashAndCashEquivalentsAtCarryingValue",
+      "context": "c-3",
+      "context_literal": "<xbrli:context id=\"c-3\"><xbrli:entity><xbrli:identifier scheme=\"http://www.sec.gov/CIK\">0001309402</xbrli:identifier></xbrli:entity><xbrli:period><xbrli:instant>2025-03-31</xbrli:instant></xbrli:period></xbrli:context>",
+      "facts": [
+        {
+          "raw_start": 218098,
+          "raw_end": 218284,
+          "literal": "<ix:nonFraction unitRef=\"usd\" contextRef=\"c-3\" decimals=\"-3\" name=\"us-gaap:CashAndCashEquivalentsAtCarryingValue\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-30\">98,610</ix:nonFraction>"
+        }
+      ]
+    },
+    {
+      "tag": "LiabilitiesCurrent",
+      "context": "c-3",
+      "context_literal": "<xbrli:context id=\"c-3\"><xbrli:entity><xbrli:identifier scheme=\"http://www.sec.gov/CIK\">0001309402</xbrli:identifier></xbrli:entity><xbrli:period><xbrli:instant>2025-03-31</xbrli:instant></xbrli:period></xbrli:context>",
+      "facts": [
+        {
+          "raw_start": 244680,
+          "raw_end": 244848,
+          "literal": "<ix:nonFraction unitRef=\"usd\" contextRef=\"c-3\" decimals=\"-3\" name=\"us-gaap:LiabilitiesCurrent\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-68\">325,735</ix:nonFraction>"
+        }
+      ]
+    },
+    {
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "context": "c-1",
+      "context_literal": "<xbrli:context id=\"c-1\"><xbrli:entity><xbrli:identifier scheme=\"http://www.sec.gov/CIK\">0001309402</xbrli:identifier></xbrli:entity><xbrli:period><xbrli:startDate>2025-01-01</xbrli:startDate><xbrli:endDate>2025-03-31</xbrli:endDate></xbrli:period></xbrli:context>",
+      "facts": [
+        {
+          "raw_start": 345187,
+          "raw_end": 345388,
+          "literal": "<ix:nonFraction unitRef=\"usd\" contextRef=\"c-1\" decimals=\"-3\" sign=\"-\" name=\"us-gaap:NetCashProvidedByUsedInOperatingActivities\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-196\">55,041</ix:nonFraction>"
+        }
+      ]
+    },
+    {
+      "tag": "Revenues",
+      "context": "c-1",
+      "context_literal": "<xbrli:context id=\"c-1\"><xbrli:entity><xbrli:identifier scheme=\"http://www.sec.gov/CIK\">0001309402</xbrli:identifier></xbrli:entity><xbrli:period><xbrli:startDate>2025-01-01</xbrli:startDate><xbrli:endDate>2025-03-31</xbrli:endDate></xbrli:period></xbrli:context>",
+      "facts": [
+        {
+          "raw_start": 272596,
+          "raw_end": 272755,
+          "literal": "<ix:nonFraction unitRef=\"usd\" contextRef=\"c-1\" decimals=\"-3\" name=\"us-gaap:Revenues\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-108\">601,515</ix:nonFraction>"
+        },
+        {
+          "raw_start": 459492,
+          "raw_end": 459651,
+          "literal": "<ix:nonFraction unitRef=\"usd\" contextRef=\"c-1\" decimals=\"-3\" name=\"us-gaap:Revenues\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-308\">601,515</ix:nonFraction>"
+        },
+        {
+          "raw_start": 589464,
+          "raw_end": 589623,
+          "literal": "<ix:nonFraction unitRef=\"usd\" contextRef=\"c-1\" decimals=\"-3\" name=\"us-gaap:Revenues\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-462\">601,515</ix:nonFraction>"
+        }
+      ]
+    },
+    {
+      "tag": "Revenues",
+      "context": "c-5",
+      "context_literal": "<xbrli:context id=\"c-5\"><xbrli:entity><xbrli:identifier scheme=\"http://www.sec.gov/CIK\">0001309402</xbrli:identifier></xbrli:entity><xbrli:period><xbrli:startDate>2024-01-01</xbrli:startDate><xbrli:endDate>2024-03-31</xbrli:endDate></xbrli:period></xbrli:context>",
+      "facts": [
+        {
+          "raw_start": 273370,
+          "raw_end": 273529,
+          "literal": "<ix:nonFraction unitRef=\"usd\" contextRef=\"c-5\" decimals=\"-3\" name=\"us-gaap:Revenues\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-109\">597,214</ix:nonFraction>"
+        },
+        {
+          "raw_start": 498522,
+          "raw_end": 498681,
+          "literal": "<ix:nonFraction unitRef=\"usd\" contextRef=\"c-5\" decimals=\"-3\" name=\"us-gaap:Revenues\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-354\">597,214</ix:nonFraction>"
+        },
+        {
+          "raw_start": 590406,
+          "raw_end": 590565,
+          "literal": "<ix:nonFraction unitRef=\"usd\" contextRef=\"c-5\" decimals=\"-3\" name=\"us-gaap:Revenues\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-463\">597,214</ix:nonFraction>"
+        }
+      ]
+    },
+    {
+      "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "context": "c-1",
+      "context_literal": "<xbrli:context id=\"c-1\"><xbrli:entity><xbrli:identifier scheme=\"http://www.sec.gov/CIK\">0001309402</xbrli:identifier></xbrli:entity><xbrli:period><xbrli:startDate>2025-01-01</xbrli:startDate><xbrli:endDate>2025-03-31</xbrli:endDate></xbrli:period></xbrli:context>",
+      "facts": [
+        {
+          "raw_start": 901594,
+          "raw_end": 901792,
+          "literal": "<ix:nonFraction unitRef=\"shares\" contextRef=\"c-1\" decimals=\"-3\" name=\"us-gaap:WeightedAverageNumberOfSharesOutstandingBasic\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-809\">64,069</ix:nonFraction>"
+        }
+      ]
+    },
+    {
+      "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "context": "c-5",
+      "context_literal": "<xbrli:context id=\"c-5\"><xbrli:entity><xbrli:identifier scheme=\"http://www.sec.gov/CIK\">0001309402</xbrli:identifier></xbrli:entity><xbrli:period><xbrli:startDate>2024-01-01</xbrli:startDate><xbrli:endDate>2024-03-31</xbrli:endDate></xbrli:period></xbrli:context>",
+      "facts": [
+        {
+          "raw_start": 302357,
+          "raw_end": 302555,
+          "literal": "<ix:nonFraction unitRef=\"shares\" contextRef=\"c-5\" decimals=\"-3\" name=\"us-gaap:WeightedAverageNumberOfSharesOutstandingBasic\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-147\">63,341</ix:nonFraction>"
+        },
+        {
+          "raw_start": 902449,
+          "raw_end": 902647,
+          "literal": "<ix:nonFraction unitRef=\"shares\" contextRef=\"c-5\" decimals=\"-3\" name=\"us-gaap:WeightedAverageNumberOfSharesOutstandingBasic\" format=\"ixt:num-dot-decimal\" scale=\"3\" id=\"f-811\">63,341</ix:nonFraction>"
+        }
+      ]
+    }
+  ]
+}

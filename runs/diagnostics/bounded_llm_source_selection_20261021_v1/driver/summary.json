@@ -1,0 +1,36 @@
+{
+  "decision": "Sufficient evidence of bounded lexical improvement for this request and the stated syntactic controls; insufficient as a guarantee of latest/semantic/comparison-basis preservation. No production callback implemented.",
+  "executed_candidate_controls": [
+    "long old repetition versus newer relevant",
+    "newer unrelated does not win",
+    "required source groups plus period/span retained by existing selector",
+    "queryless pure-candidate fallback equals native selection"
+  ],
+  "fixed_semantic_falsifier": {
+    "cap": 10,
+    "generic_coverage_satisfied": true,
+    "latest_rank": 11,
+    "latest_selected": false,
+    "no_policy_parameter_tuning": true,
+    "pool": 11,
+    "synthetic_not_real_source_admission": true
+  },
+  "harness_note": "Initial _single_llm_signal_projection tuple-versus-item invocation error is retained in probe.py/probe.log. Corrected probe-v2 calls the actual one-item API; it does not mutate production or reenter any completed pipeline.",
+  "interface_option_only": [
+    "If pursued, an explicit opt-in on known StructuredLLMSignalRunner may supply the existing EvidenceResolver.select_documents callback; generic resolver and unknown/custom runners retain original selection.",
+    "Reuse the fixed word-token policy and original required-source/period selection; keep unchanged-member validation, source/PIT/lookback filtering, dedup and max10.",
+    "Do not parse comparison prose into numerical/semantic rules, rewrite published v1, substitute v12, add factor/company ID branches or claim semantic completeness from lexical coverage."
+  ],
+  "not_exercised": "Unknown/custom-runner production fallback is only a design constraint; no new runtime opt-in exists in this diagnostic.",
+  "real_pool": {
+    "all_source_partial": true,
+    "both_latest_complete_literals_visible": true,
+    "eligible": 57,
+    "native_old_order_preserved": true,
+    "projection_characters": 31986,
+    "projection_rows": 52,
+    "q1_rank": 4,
+    "selected": 10
+  },
+  "stop": "Counterexample retained; no more policy tuning, source scans or models in this diagnostic."
+}

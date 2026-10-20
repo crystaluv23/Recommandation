@@ -1,0 +1,18 @@
+test_single_batch_restore_and_immutable_inventory (__main__.SafetyControls.test_single_batch_restore_and_immutable_inventory) ... FAIL
+
+======================================================================
+FAIL: test_single_batch_restore_and_immutable_inventory (__main__.SafetyControls.test_single_batch_restore_and_immutable_inventory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety_controls.py", line 120, in test_single_batch_restore_and_immutable_inventory
+    self.assertEqual(self.integration()['status'],'completed')
+                     ^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety_controls.py", line 113, in integration
+    with self.assertRaisesRegex(ValueError,'inventory differs'):m.restore(output)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.102s
+
+FAILED (failures=1)

@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py",
+      "sha256": "9be259f02c2d98a3e088f745756db963497597f58e4043c05b5bce248476c0f4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety_controls.py",
+      "sha256": "b91a4ab9cf926d0c3b83df635e63bfac82353e15dcdbea8899e8c061ba651cc7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety-parent-init-final.log",
+      "sha256": "98943c456cb4c25995a72b7c9441b9972a1b65305ebb1f3eb901238e4ec99502"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/run-native-original-parent-init.py.txt",
+      "sha256": "2dfabba653632d0783ece06d36296b0a1df24ad49580182903365f994148ff6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety-controls-original-parent-init.py.txt",
+      "sha256": "9588a83fd6d08c573d7de26c7fbcfbba32dd7ed8eca428312c1bf42e24cd1d5f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety-final.log",
+      "sha256": "474326d08f2cede3092467e51ef2a06c4e0a484ce2d3e1fdbbab3dc9a9f0b739"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/safety-summary.json",
+      "sha256": "f8e2d788c4394da4f82e3d16ad538f7314054e900ce066fd4bab3e937ef3ea63"
+    }
+  ],
+  "new_boundary": "Only root=None and zero initial documents allow RawInfoStore parent init; persistent/prepopulated/direct LabelStore constructors prohibited",
+  "passed": 10,
+  "prior_gap": "Original 8 synthetic controls replaced open_raw_info_store with fake and missed actual empty-parent initialization",
+  "real_stage_exists": false,
+  "scope": "Synthetic-only, actual ReviewedRawInfoStore constructor with refresh mocked; no real source opened",
+  "seconds": 0.3,
+  "tests": 10
+}

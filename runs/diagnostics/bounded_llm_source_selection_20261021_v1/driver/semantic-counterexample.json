@@ -1,0 +1,31 @@
+{
+  "cap": 10,
+  "generic_coverage": {
+    "contract_satisfied": true,
+    "missing_requirements": [],
+    "observed_distinct_period_count": 10,
+    "observed_observation_count": 0,
+    "observed_period_span_days": 3288,
+    "required_source_group_count": 0,
+    "satisfied_source_group_count": 0
+  },
+  "latest_basis_doc": "latest_pair_low_lexical",
+  "latest_basis_rank": 11,
+  "latest_basis_selected": false,
+  "meaning": "Full pool has a current same-period USD pair. Ten older valid pairs carry more distinct query prose; lexical policy excludes the current pair. Coverage can still pass. Lexical policy alone cannot guarantee latest measurement basis or semantic/comparison witnesses.",
+  "policy_tuned_after_counterexample": false,
+  "pool": 11,
+  "selected": [
+    "older_rich_09",
+    "older_rich_08",
+    "older_rich_07",
+    "older_rich_06",
+    "older_rich_05",
+    "older_rich_04",
+    "older_rich_03",
+    "older_rich_02",
+    "older_rich_01",
+    "older_rich_00"
+  ],
+  "synthetic_only_not_qualified_sources": true
+}

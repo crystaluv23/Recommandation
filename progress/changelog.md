@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：固定词频饱和选文使实际Q1 rank46→4/完整literal可见，但11文档及独立比较期/币种/冲突反例证伪语义保留，停止排序策略、未装callback；有界阅读具体方案待用户决策。独立源oracle预冻7唯一/2期间unknown后，6b7205ec当前v12唯一native财务9批次20.261s：6严格通过/1prior字面版本失败/2unknown，原completed_acceptance_failed及分母9保留；7数值/分类/单位/当前期间一致，失败为oracle漏列2024原申报同事实prior，非改算通过。4389绑定/9实际选文顺序-fp/21证据/9消费者投影独立核过，唯一restore24files全等/0新batch。首prepare前置拒及两audit可空instant字段误判保留；11私有安全控过，0模型/GET/labels/append/源码行为变更。仅真实计算/保存恢复局部证据，不关F5/F6/Slow/MVP，下一核既有Slow合法反馈与Mining正控入口。
+
 - 2026-10-21：F5只读native诊断区分57→10词频选文（Q1原rank46）与typed facts数组被nested-only reader跳过两门；限定入口v143默认/显式v182/一般init差异，不换Registry或改历史v1。spec-first扩既有reader，原row/value/string/offset及同end冲突、duration/币种/可比prior保留，整组贯穿32k/token预算，遗漏显式partial；旧nested逻辑不变。生产者链旧2红、最终63关联及13独立边界过；初7fail为root拦截公开complete_json误挡本地pending测试，保原log并仅下移HTTP guard，零外部/标签tripwire。实际预定10文档counter两最新完整literal各1/31986chars，native仍0/31968，源码外来源/定义字节保真；仅纯投影，0模型/Signal测量/GET/labels/append/重入。局部读取修复不关整体F5/MVP，下一有界选文及fresh apply前置。
 
 - 2026-10-21：c81c1986/cadf061d唯一prepare并freeze073309b8后，fresh role78 exactinbox唯一首答0纠错，原生tests作者→validator→隔离candidate→load实际双schema正控2/2。两组USD120/150→0.25fraction/2024duration与CIK/PIT/4事实literal/实际证据逐项独立核过；原答/cache/staged/loaded全等，177codebindings与20files唯一completed restore保真/0新派发，14241逻辑预留/host成本未知。root两次审计shape误读保留，未改产品/重跑；诊断oracle等价Z/offset边界未验，实际+00通过不外推。0外部LLMAPI/GET/real labels/稳定发布；关闭仅本bounded fixture作者控制，Mining/新测量实现/复用/全S5/MVP open，下一默认LLM选文入口诊断。

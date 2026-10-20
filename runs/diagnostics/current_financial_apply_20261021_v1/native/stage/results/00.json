@@ -1,0 +1,41 @@
+{
+  "evidence": {
+    "counter": [],
+    "supporting": [
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+        "timestamp": "2025-05-09T00:00:00+00:00"
+      },
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "exact_span": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+        "timestamp": "2025-05-09T00:00:00+00:00"
+      }
+    ]
+  },
+  "execution": {
+    "status": "success"
+  },
+  "interpretation": {
+    "summary": "cash_burn_rate_elevated=0.558169"
+  },
+  "measurement": {
+    "formula": "absolute negative operating cash flow / cash",
+    "period": {
+      "end": "2025-03-31",
+      "start": "2025-01-01"
+    },
+    "unit": "ratio",
+    "value": 0.5581685427441436
+  },
+  "signal_id": "cash_burn_rate_elevated",
+  "state": {
+    "confidence": 1.0,
+    "value": "positive"
+  },
+  "status": {
+    "coverage": "sufficient"
+  },
+  "version": 2
+}

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/independent/group-wrapper-probe.py", line 38, in <module>
+    assert not current.OUTPUT.exists()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -1,0 +1,592 @@
+{
+  "word_repetition": [
+    {
+      "document_id": "latest-real-facts",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities intended operands\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "aa1ec40b8a1ec496129ef4ad6ec1a3d920819f93e1c094d5ee4de74bdce2a5ea",
+      "metadata": {}
+    },
+    {
+      "document_id": "old-word-pump-0",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-01T00:00:00+00:00",
+      "available_at": "2025-02-01T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated boilerplate 0\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "99e6aed33be385640dda29e3b7dcc81716e9eef92086ca037c504e8f14776a37",
+      "metadata": {}
+    },
+    {
+      "document_id": "old-word-pump-1",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-01T00:00:00+00:00",
+      "available_at": "2025-02-01T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated boilerplate 1\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "94ac69397a6246d9633f52bb8cf72dbf3ab087419bc6d0e960f990c3fa6abb0e",
+      "metadata": {}
+    },
+    {
+      "document_id": "old-word-pump-2",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-01T00:00:00+00:00",
+      "available_at": "2025-02-01T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated boilerplate 2\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "12c7e542829185a87882cf00b6b41e0a1b744733b278ea388f4b258562533357",
+      "metadata": {}
+    },
+    {
+      "document_id": "old-word-pump-3",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-01T00:00:00+00:00",
+      "available_at": "2025-02-01T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated boilerplate 3\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "fd524647a5b95f273b2760ec956dcaf085ba50ace9e980edf03f9f016a8a57ef",
+      "metadata": {}
+    },
+    {
+      "document_id": "old-word-pump-4",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-01T00:00:00+00:00",
+      "available_at": "2025-02-01T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated boilerplate 4\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "0ee3da38f776687ec2271d27ee434016bcec6f2378a9cdd860ac84ff49f16bdb",
+      "metadata": {}
+    },
+    {
+      "document_id": "old-word-pump-5",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-01T00:00:00+00:00",
+      "available_at": "2025-02-01T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated boilerplate 5\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "77f1443ea9644be47adbeb267e8445363735c2659a5c90f11562125a0a10ca07",
+      "metadata": {}
+    },
+    {
+      "document_id": "old-word-pump-6",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-01T00:00:00+00:00",
+      "available_at": "2025-02-01T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated boilerplate 6\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "778c9553835d8bc6194df701541df743f4fa9fd1af5ab0b6ae2b04c46d5bda56",
+      "metadata": {}
+    },
+    {
+      "document_id": "old-word-pump-7",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-01T00:00:00+00:00",
+      "available_at": "2025-02-01T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated boilerplate 7\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "c86ca19d9cb83ed880df1dd4f555c82a6c26fe3ef4f32b3517d638bf10407ee9",
+      "metadata": {}
+    },
+    {
+      "document_id": "old-word-pump-8",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-01T00:00:00+00:00",
+      "available_at": "2025-02-01T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated boilerplate 8\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "73b2ab2f46b7525ef9780d555fae8c057e1c951ff1a26be153520598599f7598",
+      "metadata": {}
+    },
+    {
+      "document_id": "old-word-pump-9",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-01T00:00:00+00:00",
+      "available_at": "2025-02-01T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated boilerplate 9\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "060893e35a827673fa8fd7647e8f271c001ec0697ac1a5955ebeb4452fdc16d4",
+      "metadata": {}
+    }
+  ],
+  "essential_old_witnesses": [
+    {
+      "document_id": "latest-real-facts",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities intended operands\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "aa1ec40b8a1ec496129ef4ad6ec1a3d920819f93e1c094d5ee4de74bdce2a5ea",
+      "metadata": {}
+    },
+    {
+      "document_id": "necessary-conflict",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-20T00:00:00+00:00",
+      "available_at": "2025-05-20T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"same-period conflicting amount\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "3f73dec9860b7bb0517dcf99edcfe74ad225bc173c256965f3e85f5bdb8a989f",
+      "metadata": {}
+    },
+    {
+      "document_id": "necessary-comparable",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-15T00:00:00+00:00",
+      "available_at": "2025-02-15T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"same-duration prior\",\"unit\":\"USD\",\"end\":\"2024-03-31\",\"value\":110}",
+      "content_hash": "fc34f63ab26f13a7fe6f50b619bc6721847c0f859efe3b12cf22516ea8564b18",
+      "metadata": {}
+    },
+    {
+      "document_id": "necessary-currency-witness",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-10T00:00:00+00:00",
+      "available_at": "2025-02-10T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"currency reconciliation basis\",\"unit\":\"CAD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "6591e8be724243fd9fd1457696d1278f1875a9b41e654fefb1e979e0d0b21a24",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-0",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 0\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "61ba6cffd4d26783349bdf669f59ba6f1a69df391d1f8ce9e71b878d71100a38",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-1",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 1\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "857675f1889d992fbf96d68363b12444a8fee7e32ba4de1e9ab34fa869bdaf04",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-2",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 2\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "d6625595699a2f747e5e79dab70ea0c30a3368d13b18d6eb363bca65ac0041eb",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-3",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 3\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "0f94029896f07f916d50ca218e3e8e184a6fb03e20a686a6a1d537b009ccb662",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-4",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 4\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "113a9ff7a523e5653cb99b5733d8386a2fd5d344dde8dd947de2f43b5dc23192",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-5",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 5\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "12953e1483a8b952d0d0807dabeefee97439f2d99ac51bceb02f787c9b25db8f",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-6",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 6\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "a705d7a3daae5defda9ac596f20b295f5d12137d36747d7a8febb20298481e4a",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-7",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 7\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "4d8ce93f3389f3b729e5bfc5528a5ba3e4df64a5208a9de894f947244e0e5a83",
+      "metadata": {}
+    }
+  ],
+  "one_extra_irrelevant": [
+    {
+      "document_id": "latest-real-facts",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities intended operands\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "aa1ec40b8a1ec496129ef4ad6ec1a3d920819f93e1c094d5ee4de74bdce2a5ea",
+      "metadata": {}
+    },
+    {
+      "document_id": "necessary-conflict",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-20T00:00:00+00:00",
+      "available_at": "2025-05-20T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"same-period conflicting amount\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "3f73dec9860b7bb0517dcf99edcfe74ad225bc173c256965f3e85f5bdb8a989f",
+      "metadata": {}
+    },
+    {
+      "document_id": "necessary-comparable",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-15T00:00:00+00:00",
+      "available_at": "2025-02-15T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"same-duration prior\",\"unit\":\"USD\",\"end\":\"2024-03-31\",\"value\":110}",
+      "content_hash": "fc34f63ab26f13a7fe6f50b619bc6721847c0f859efe3b12cf22516ea8564b18",
+      "metadata": {}
+    },
+    {
+      "document_id": "necessary-currency-witness",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-10T00:00:00+00:00",
+      "available_at": "2025-02-10T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"currency reconciliation basis\",\"unit\":\"CAD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "6591e8be724243fd9fd1457696d1278f1875a9b41e654fefb1e979e0d0b21a24",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-0",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 0\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "61ba6cffd4d26783349bdf669f59ba6f1a69df391d1f8ce9e71b878d71100a38",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-1",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 1\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "857675f1889d992fbf96d68363b12444a8fee7e32ba4de1e9ab34fa869bdaf04",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-2",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 2\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "d6625595699a2f747e5e79dab70ea0c30a3368d13b18d6eb363bca65ac0041eb",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-3",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 3\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "0f94029896f07f916d50ca218e3e8e184a6fb03e20a686a6a1d537b009ccb662",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-4",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 4\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "113a9ff7a523e5653cb99b5733d8386a2fd5d344dde8dd947de2f43b5dc23192",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-5",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 5\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "12953e1483a8b952d0d0807dabeefee97439f2d99ac51bceb02f787c9b25db8f",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-6",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 6\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "a705d7a3daae5defda9ac596f20b295f5d12137d36747d7a8febb20298481e4a",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-new-7",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-25T00:00:00+00:00",
+      "available_at": "2025-05-25T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"ShareBasedCompensation unrelated disclosure 7\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "4d8ce93f3389f3b729e5bfc5528a5ba3e4df64a5208a9de894f947244e0e5a83",
+      "metadata": {}
+    },
+    {
+      "document_id": "irrelevant-extra",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-31T00:00:00+00:00",
+      "available_at": "2025-05-31T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"unrelated training text\",\"unit\":\"USD\",\"end\":\"2024-12-31\",\"value\":110}",
+      "content_hash": "6a4443610b9d5472eda50d142d0440f1ada489d21baf3e065c93cc9ba55d0307",
+      "metadata": {}
+    }
+  ],
+  "query_underdetermines_currency": [
+    {
+      "document_id": "a-unit-0",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"CAD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "995a3fa075593489634e23b45bd105b5b98b45072388ef80f89076d10ea69cba",
+      "metadata": {}
+    },
+    {
+      "document_id": "a-unit-1",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"EUR\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "78af8f42d893145b151c20374913d2072eb9e8b591608aabd8821b8a71b28321",
+      "metadata": {}
+    },
+    {
+      "document_id": "a-unit-2",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"GBP\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "fa0637f17994e17a77da9eeb876649a226afaf4a84d91d9faac8a75f147d9947",
+      "metadata": {}
+    },
+    {
+      "document_id": "a-unit-3",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"JPY\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "0932e212c976d825aecdd898a168f3ccfe7e4655f1cf74ac18308fde3d760d67",
+      "metadata": {}
+    },
+    {
+      "document_id": "a-unit-4",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"AUD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "79afb2b9e3fab940c1a04ffd6e9c8face94358a7d090e1b707c54c995fefe8fe",
+      "metadata": {}
+    },
+    {
+      "document_id": "a-unit-5",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"CHF\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "dc2e7d8c42f762b43c0f5d169e8b9dbc51f93ed66bc8203b5a18081045f1c053",
+      "metadata": {}
+    },
+    {
+      "document_id": "a-unit-6",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"CNY\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "422976e486d4199e75c19c115980597e5559efa4dee8692a19197bc7e1eac9f6",
+      "metadata": {}
+    },
+    {
+      "document_id": "a-unit-7",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"INR\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "03e0daf6356fcf1fc50c7f79cc2d23b2930d1fc55e4d89d35caaeebc40580e0c",
+      "metadata": {}
+    },
+    {
+      "document_id": "a-unit-8",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"BRL\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "c325e37bf3286bcbd33d122a8b645ec9e2c50339c1c8e2d31b6c6f2406c44fa0",
+      "metadata": {}
+    },
+    {
+      "document_id": "a-unit-9",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"MXN\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "cdd52fba9dfb866b447134b1b88d1262259fa72e8ed1fe83493fee58c0319b03",
+      "metadata": {}
+    },
+    {
+      "document_id": "z-unit-USD",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"cash/current-liabilities operands\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "21c0efd505dd65aa7426ad9f10fedf7b665f2757d0a14830ab9f93f590235c26",
+      "metadata": {}
+    }
+  ],
+  "version_skill_format": [
+    {
+      "document_id": "legacy-readable",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-02-15T00:00:00+00:00",
+      "available_at": "2025-02-15T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-nested\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-supported source format\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "83e7d4e83a02e3883e9d2759ac2e20be7f85a7845224c51b17f06bfa4c273ad6",
+      "metadata": {}
+    },
+    {
+      "document_id": "new-format-0",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-unsupported typed list 0\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "b1505ab2a69d9dbb3aa174a219e963c456b517809fffa447fb938df070ddf837",
+      "metadata": {}
+    },
+    {
+      "document_id": "new-format-1",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-unsupported typed list 1\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "937a3153d82d98d5f0a7201ee1c55bb8401ffa6416ea3e027e0311786bc66853",
+      "metadata": {}
+    },
+    {
+      "document_id": "new-format-2",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-unsupported typed list 2\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "1b726a580c27b7cb9d739f2444e41c2f411cdf1b8eed8c0ef1fa11428548b2d3",
+      "metadata": {}
+    },
+    {
+      "document_id": "new-format-3",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-unsupported typed list 3\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "31196fab1a4da974ed8124a9096261d4528b1c2820bafb905bcc6b3c21f22fff",
+      "metadata": {}
+    },
+    {
+      "document_id": "new-format-4",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-unsupported typed list 4\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "e0839ad8ca7a00a63a2673f4e9c3b9ae8d559d92b1ba0a1f823d6731a3836243",
+      "metadata": {}
+    },
+    {
+      "document_id": "new-format-5",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-unsupported typed list 5\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "6da441d01eda38549968b5a702e5b23d6c72ac1a63f548c24da1e2eb5f48db36",
+      "metadata": {}
+    },
+    {
+      "document_id": "new-format-6",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-unsupported typed list 6\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "9c529cfc2fb7b7a4b7d871026ac408b34d958ce1e7dba145e7a4c5d7da2e55a2",
+      "metadata": {}
+    },
+    {
+      "document_id": "new-format-7",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-unsupported typed list 7\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "04ff392ebdad9f2624c338c2615af5f46680dc3f01a00755e1684cc11289e4b5",
+      "metadata": {}
+    },
+    {
+      "document_id": "new-format-8",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-unsupported typed list 8\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "591ff723040fab727c23f58b718ba417260e07bd6c70c20d9f9022236ceb6215",
+      "metadata": {}
+    },
+    {
+      "document_id": "new-format-9",
+      "company_id": "synthetic-issuer",
+      "source_type": "filing",
+      "published_at": "2025-05-30T00:00:00+00:00",
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content": "{\"schema\":\"synthetic-row-list\",\"description\":\"cash current liabilities cash current liabilities cash current liabilities \",\"tag\":\"skill-unsupported typed list 9\",\"unit\":\"USD\",\"end\":\"2025-03-31\",\"value\":110}",
+      "content_hash": "99f54328493947e7f536f33f7207aaffe6cbb2d6223a44328f3581f8298e038a",
+      "metadata": {}
+    }
+  ]
+}

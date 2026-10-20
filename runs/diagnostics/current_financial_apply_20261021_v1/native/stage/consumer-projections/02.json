@@ -1,0 +1,77 @@
+{
+  "evidence": {
+    "counter": [],
+    "supporting": [
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "exact_span": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+        "timestamp": "2025-05-09T00:00:00+00:00"
+      },
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "exact_span": "{\"description\":\"Total obligations incurred as part of normal operations that are expected to be paid during the following twelve months or within one business cycle, if longer.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Liabilities, Current\",\"start\":null,\"tag\":\"LiabilitiesCurrent\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":325735000}",
+        "timestamp": "2025-05-09T00:00:00+00:00"
+      }
+    ]
+  },
+  "execution": {
+    "status": "success"
+  },
+  "input_evidence_available_at": [
+    "2025-05-09T00:00:00+00:00",
+    "2025-05-09T00:00:00+00:00"
+  ],
+  "interpretation": {
+    "measurement_context": {
+      "categorical_value_is_not_stock_direction": true,
+      "deferred_observation_count": 0,
+      "numeric_measurement": {
+        "categorical_state": "negative",
+        "formula": "cash / same-date current liabilities",
+        "numeric_sign": "positive",
+        "period": {
+          "end": "2025-03-31"
+        },
+        "unit": "ratio",
+        "value": 0.3027307473866794
+      },
+      "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors.",
+      "source_observations": [
+        {
+          "end": "2025-03-31",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "unit": "USD",
+          "value": 98610000
+        },
+        {
+          "end": "2025-03-31",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "tag": "LiabilitiesCurrent",
+          "unit": "USD",
+          "value": 325735000
+        }
+      ]
+    },
+    "summary": "cash_to_current_liabilities_ratio=0.302731"
+  },
+  "measurement": {
+    "formula": "cash / same-date current liabilities",
+    "period": {
+      "end": "2025-03-31"
+    },
+    "unit": "ratio",
+    "value": 0.3027307473866794
+  },
+  "signal_id": "cash_to_current_liabilities_ratio",
+  "state": {
+    "confidence": 1.0,
+    "value": "negative"
+  },
+  "status": {
+    "coverage": "sufficient"
+  },
+  "version": 2
+}

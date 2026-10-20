@@ -1,0 +1,16 @@
+{
+  "status": "PASS_group_wrapper_boundary_addendum",
+  "runner_sha256": "2bb3d312545a859b91acd9f1286ce5c7cdf18ce09ebe7e68928df5885d131124",
+  "controls_sha256": "ec9ae374260d3601430b3fb02e694a010555a92a874433c5be123340d09bf9cb",
+  "old_runner_sha256": "5ebe26fa354cdeb7057e5c95556b61c5aaab419686e34cc080a705bac141b9e8",
+  "actual_identity_fields_equal": 5,
+  "actual_historical_definition_bindings_verified": 43,
+  "temporary_positive": true,
+  "temporary_single_variable_rejections": 7,
+  "unchanged_other_runner_AST": true,
+  "formal_stage_exists": true,
+  "formal_stage_access": "Existence only; executor may prepare independently. No stage file read or mutation.",
+  "original_failure": "Actual prepare failed before writes; old authorities reproduced its group-wrapper mismatch. No Signal/data/model failure.",
+  "earlier_review_limit": "Earlier PASS covered guards/comparison/restore but missed actual oracle-vs-oldplan wrapper shape. It did not establish real prepare success; prior evidence is retained unchanged.",
+  "remaining": "Current authorities whole4136-source freeze was read-only checked by driver, not repeated here. Sole actual prepare/plan and execution remain independently authorized steps."
+}

@@ -1,0 +1,275 @@
+{
+  "after": {
+    "completed-files.json": "58f28add6a504e3d58368cdc462603aeb49b99f4665132f10d3e5ed654efbf9c",
+    "consumer-projections/00.json": "72646922c1bb001ea1e8b70ef8f289bd2ff6fca49d2c846bb64fcde4971e696c",
+    "consumer-projections/01.json": "aad11c7834f90c056c599814d9ac2f1cc1159dcfa8e7804660021c4e644a00ee",
+    "consumer-projections/02.json": "f6280129ca4364718a0ffc367407d261629e1f06b10cd1c3c12633a3b324748d",
+    "consumer-projections/03.json": "ac781caef3214165f7f5b513f17fccb09b98a9e38f3d3ba36744a72c3ff6cd24",
+    "consumer-projections/04.json": "5a5fb8567b14514f95665333d2191a979a1052226b305ef49be5d7dd0b3186f5",
+    "consumer-projections/05.json": "244d45b41450e34078d7a6ff95fee2b88409a8b19ed20a8a5a4f55834d51e713",
+    "consumer-projections/06.json": "383a08f0398245f54dd6e380a3b31f6b2ebbccba4bfe7e8d5fab9d1de63bc693",
+    "consumer-projections/07.json": "c3398b2408ac7b746f97bb2f01e172d6c36ed19c4709bf732467a064b11976eb",
+    "consumer-projections/08.json": "77539117ee799ca7269e7fea5ac9212810d4f864a0a11e0e0996ecf00c3b007b",
+    "execution-start.json": "23feded956e019cc634e63b236e8eeb6692890caa3c7ae39747be987a3c53b40",
+    "native-batch.json": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769",
+    "plan.json": "7c1120ec07b149744ca9b69aeed7b21aa074f19ff1c83d23a410a54bb3be55b2",
+    "preparation-start.json": "58c4db5ef8632efb5a8ca83710f7623ca2173a27a2fe1396cde6fd403f4e7b6b",
+    "result.json": "ae45992407417c919668f1738b185f92324753f84b6999ca77f0f596c83e503f",
+    "results/00.json": "1def8b322b030f22ac3f4f8ed37b9f047173d99dbf624ceb4217d2a97847142b",
+    "results/01.json": "cb32bdf32e13ece629f8e2dd6b38436e3e5684dd6965b1df27b79144af4d3528",
+    "results/02.json": "80fc9b4d12f449f8bf1cb86dea063f491d1d2dce2e533512fc88e04462e4cb0b",
+    "results/03.json": "7208290cc0ad3a3a35a46c4768be7585e03d3931d7e974caa48bc48aa7461c1e",
+    "results/04.json": "1bb71d2a47a0b9c305ab5ec39858e090397201d04b9bc11bc4c7d5071b64ebf3",
+    "results/05.json": "229afeb8ae635aabd79fcca854912dc07bb22ac2ff170af458be781e68a2a43c",
+    "results/06.json": "3510401879d45f9b72112bf78ccddbedcd6e4dfaffe20a94f4acca1647f1af58",
+    "results/07.json": "deaebf87f8c8334d5096c336fa9099f3c16e55a4e1d0cec52906781927114f96",
+    "results/08.json": "423ccbd254647e6fe6db0475f8c29458f08747e71d92ed1832c778493394044f"
+  },
+  "before": {
+    "completed-files.json": "58f28add6a504e3d58368cdc462603aeb49b99f4665132f10d3e5ed654efbf9c",
+    "consumer-projections/00.json": "72646922c1bb001ea1e8b70ef8f289bd2ff6fca49d2c846bb64fcde4971e696c",
+    "consumer-projections/01.json": "aad11c7834f90c056c599814d9ac2f1cc1159dcfa8e7804660021c4e644a00ee",
+    "consumer-projections/02.json": "f6280129ca4364718a0ffc367407d261629e1f06b10cd1c3c12633a3b324748d",
+    "consumer-projections/03.json": "ac781caef3214165f7f5b513f17fccb09b98a9e38f3d3ba36744a72c3ff6cd24",
+    "consumer-projections/04.json": "5a5fb8567b14514f95665333d2191a979a1052226b305ef49be5d7dd0b3186f5",
+    "consumer-projections/05.json": "244d45b41450e34078d7a6ff95fee2b88409a8b19ed20a8a5a4f55834d51e713",
+    "consumer-projections/06.json": "383a08f0398245f54dd6e380a3b31f6b2ebbccba4bfe7e8d5fab9d1de63bc693",
+    "consumer-projections/07.json": "c3398b2408ac7b746f97bb2f01e172d6c36ed19c4709bf732467a064b11976eb",
+    "consumer-projections/08.json": "77539117ee799ca7269e7fea5ac9212810d4f864a0a11e0e0996ecf00c3b007b",
+    "execution-start.json": "23feded956e019cc634e63b236e8eeb6692890caa3c7ae39747be987a3c53b40",
+    "native-batch.json": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769",
+    "plan.json": "7c1120ec07b149744ca9b69aeed7b21aa074f19ff1c83d23a410a54bb3be55b2",
+    "preparation-start.json": "58c4db5ef8632efb5a8ca83710f7623ca2173a27a2fe1396cde6fd403f4e7b6b",
+    "result.json": "ae45992407417c919668f1738b185f92324753f84b6999ca77f0f596c83e503f",
+    "results/00.json": "1def8b322b030f22ac3f4f8ed37b9f047173d99dbf624ceb4217d2a97847142b",
+    "results/01.json": "cb32bdf32e13ece629f8e2dd6b38436e3e5684dd6965b1df27b79144af4d3528",
+    "results/02.json": "80fc9b4d12f449f8bf1cb86dea063f491d1d2dce2e533512fc88e04462e4cb0b",
+    "results/03.json": "7208290cc0ad3a3a35a46c4768be7585e03d3931d7e974caa48bc48aa7461c1e",
+    "results/04.json": "1bb71d2a47a0b9c305ab5ec39858e090397201d04b9bc11bc4c7d5071b64ebf3",
+    "results/05.json": "229afeb8ae635aabd79fcca854912dc07bb22ac2ff170af458be781e68a2a43c",
+    "results/06.json": "3510401879d45f9b72112bf78ccddbedcd6e4dfaffe20a94f4acca1647f1af58",
+    "results/07.json": "deaebf87f8c8334d5096c336fa9099f3c16e55a4e1d0cec52906781927114f96",
+    "results/08.json": "423ccbd254647e6fe6db0475f8c29458f08747e71d92ed1832c778493394044f"
+  },
+  "bytes_unchanged": true,
+  "checks": {
+    "bytes_unchanged": true,
+    "failed_acceptance_preserved": true,
+    "new_batches_zero": true,
+    "restored_without_execution": true
+  },
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "runs/diagnostics/current_financial_apply_20261021_v1/native/run_native.py",
+    "restore"
+  ],
+  "elapsed_seconds": 1.6362574170343578,
+  "exit_code": 0,
+  "file_count": 24,
+  "returned": {
+    "new_batches": 0,
+    "restored_without_execution": true,
+    "result": {
+      "GET": 0,
+      "append": 0,
+      "at": "2026-10-20T20:21:23.934538+00:00",
+      "comparisons": [
+        {
+          "checks": {
+            "execution_success": true,
+            "numeric_raw_tolerance": true,
+            "period": true,
+            "state": true,
+            "unit": true,
+            "whole_operand_literals": true
+          },
+          "operand_matches": [
+            true,
+            true
+          ],
+          "passed": true,
+          "signal_ref": "cash_burn_rate_elevated:v2",
+          "status": "passed"
+        },
+        {
+          "checks": {
+            "execution_success": true,
+            "numeric_raw_tolerance": true,
+            "period": true,
+            "state": true,
+            "unit": true,
+            "whole_operand_literals": true
+          },
+          "operand_matches": [
+            true
+          ],
+          "passed": true,
+          "signal_ref": "cash_reserves:v2",
+          "status": "passed"
+        },
+        {
+          "checks": {
+            "execution_success": true,
+            "numeric_raw_tolerance": true,
+            "period": true,
+            "state": true,
+            "unit": true,
+            "whole_operand_literals": true
+          },
+          "operand_matches": [
+            true,
+            true
+          ],
+          "passed": true,
+          "signal_ref": "cash_to_current_liabilities_ratio:v2",
+          "status": "passed"
+        },
+        {
+          "passed": null,
+          "signal_ref": "gross_margin_change:v3",
+          "status": "record_only_period_policy_ambiguous"
+        },
+        {
+          "checks": {
+            "execution_success": true,
+            "numeric_raw_tolerance": true,
+            "period": true,
+            "state": true,
+            "unit": true,
+            "whole_operand_literals": true
+          },
+          "operand_matches": [
+            true,
+            true
+          ],
+          "passed": true,
+          "signal_ref": "liquidity_runway_months:v3",
+          "status": "passed"
+        },
+        {
+          "checks": {
+            "execution_success": true,
+            "numeric_raw_tolerance": true,
+            "period": true,
+            "state": true,
+            "unit": true,
+            "whole_operand_literals": true
+          },
+          "operand_matches": [
+            true,
+            true
+          ],
+          "passed": true,
+          "signal_ref": "net_share_retirement_yoy:v3",
+          "status": "passed"
+        },
+        {
+          "checks": {
+            "execution_success": true,
+            "numeric_raw_tolerance": true,
+            "period": true,
+            "state": true,
+            "unit": true,
+            "whole_operand_literals": true
+          },
+          "operand_matches": [
+            true,
+            true
+          ],
+          "passed": true,
+          "signal_ref": "operating_cash_flow_margin:v2",
+          "status": "passed"
+        },
+        {
+          "passed": null,
+          "signal_ref": "revenue_acceleration:v2",
+          "status": "record_only_period_policy_ambiguous"
+        },
+        {
+          "checks": {
+            "execution_success": true,
+            "numeric_raw_tolerance": true,
+            "period": true,
+            "state": true,
+            "unit": true,
+            "whole_operand_literals": false
+          },
+          "operand_matches": [
+            true,
+            false
+          ],
+          "passed": false,
+          "signal_ref": "revenue_growth_yoy:v3",
+          "status": "failed"
+        }
+      ],
+      "consumer_checks": [
+        {
+          "projection_fields_equal": true,
+          "saved_restore_equal": true,
+          "signal_ref": "cash_burn_rate_elevated:v2"
+        },
+        {
+          "projection_fields_equal": true,
+          "saved_restore_equal": true,
+          "signal_ref": "cash_reserves:v2"
+        },
+        {
+          "projection_fields_equal": true,
+          "saved_restore_equal": true,
+          "signal_ref": "cash_to_current_liabilities_ratio:v2"
+        },
+        {
+          "projection_fields_equal": true,
+          "saved_restore_equal": true,
+          "signal_ref": "gross_margin_change:v3"
+        },
+        {
+          "projection_fields_equal": true,
+          "saved_restore_equal": true,
+          "signal_ref": "liquidity_runway_months:v3"
+        },
+        {
+          "projection_fields_equal": true,
+          "saved_restore_equal": true,
+          "signal_ref": "net_share_retirement_yoy:v3"
+        },
+        {
+          "projection_fields_equal": true,
+          "saved_restore_equal": true,
+          "signal_ref": "operating_cash_flow_margin:v2"
+        },
+        {
+          "projection_fields_equal": true,
+          "saved_restore_equal": true,
+          "signal_ref": "revenue_acceleration:v2"
+        },
+        {
+          "projection_fields_equal": true,
+          "saved_restore_equal": true,
+          "signal_ref": "revenue_growth_yoy:v3"
+        }
+      ],
+      "consumer_scope": "Saved result.from_dict and public model projection only; no fresh model consumption.",
+      "fixed_denominator": 9,
+      "head": "6b7205ec15785851da9c0009dcda124eec9f498a",
+      "labels": 0,
+      "models": 0,
+      "native_batch": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/native-batch.json",
+        "sha256": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769"
+      },
+      "native_batches": 1,
+      "passed_unique": 6,
+      "period_policy_ambiguous": 2,
+      "plan_hash": "8e8e406273d1f9805156e08d2f1155bf7da7044ddacc552d92c48da19239419a",
+      "signal_calls": 9,
+      "signal_calls_semantics": "Native result count, not an instrumented callable invocation count.",
+      "source_documents_canonical_unchanged": true,
+      "sources_definitions_oracle_unchanged": true,
+      "status": "completed_acceptance_failed",
+      "sufficient_unique": 7
+    },
+    "scope": "Exact saved byte verification only; not OS-crash/research recovery."
+  }
+}
