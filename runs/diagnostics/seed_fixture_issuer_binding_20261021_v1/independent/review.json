@@ -1,0 +1,94 @@
+{
+  "verdict": "PASS_future_synthetic_issuer_fixture_template_only",
+  "stable_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/configs/signals_v1.json",
+      "sha256": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "19af9fb78157b0b6c60ec27a8c0bbf6307a78b6568838150d3058d9f890b603e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sec_company_facts.md",
+      "sha256": "3991e621dedc7b719aed86289b744f96ff1a9d1bee093c881b5dfb7969aaf859"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py",
+      "sha256": "ddc111335221ff1533afeb9900a1990bd74fd7ab6a61b4f09ed8d077e11d1296"
+    }
+  ],
+  "consumer_test_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_financials.py",
+      "sha256": "dba542d7bc20b008de9c3297d3a2a633455a9afaa5bf257d5360f0cbb3b55ba2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py",
+      "sha256": "8fbebf6b92b4d5b1859575b4032096b82f2524a3436affe90d1270571ab7b32a"
+    }
+  ],
+  "native_production_source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    }
+  ],
+  "independent_evidence": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/probe.py",
+      "sha256": "d79c821e93970861bd7402d0642b728fbda0bd27368fa516b638631ec17fe909"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/probe.log",
+      "sha256": "7c136e090bd2472890a5e4f91bd9a7b721f5e0a54d7505c90169d809fc9a102b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/results.json",
+      "sha256": "6b697c2c251ecddeb250aae907200afad51b7259ee5cc881269ee980222c7295"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/schema-probe.py",
+      "sha256": "cebc290f43f05c82131203bf22a1b5ef3a0f45ade81423e7cda7f6f440c24203"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/schema-probe.log",
+      "sha256": "f5bdf7a2c97d2dcbeec149669805148110457940d5c1d999cc04dff359f1a814"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/schema-results.json",
+      "sha256": "f5bdf7a2c97d2dcbeec149669805148110457940d5c1d999cc04dff359f1a814"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/original-catalog.json",
+      "sha256": "6775492b0754b4c97f4896b1a0c7fe991083fda71ca1da342ef8d4b286905d4a"
+    }
+  ],
+  "checks": {
+    "catalog_changes_exactly_six_body_and_metadata_CIK_bindings": true,
+    "entire_other_catalog_bytes_semantics_equal_after_stripping_CIK": true,
+    "values_tags_units_periods_sourceclocks_parameters_expected_unchanged": true,
+    "fresh_native_install_audit_freeze_validate_catalog_enabled": 14,
+    "old_template_native_audit_fails": true,
+    "new_template_replay_old_Registry_installs": 0,
+    "published_old_Registry_full_tree_unchanged": true,
+    "missing_body_metadata_mismatch_catalog_audit_and_freeze_and_validate_catalog_rejected": 3,
+    "typed_and_nested_schema_positive": 2,
+    "typed_and_nested_schema_missing_body_metadata_mismatch_rejected": 6,
+    "forbidden_network_model_label_calls": 0
+  },
+  "static_diff_review": "Catalog changes only six positive fixture body/metadata synthetic CIKs. The two card fixture producers add explicit body CIK; the unchanged shared document helper copies only an explicitly present body CIK and does not invent missing identity. Capability auditor and issuer gate production code unchanged. No published version/template install migration logic modified.",
+  "limits": [
+    "Synthetic CIK0000000001 is not an admitted real issuer/source. All Registry/install/execution writes were temporary and auto-removed.",
+    "This repairs future seed fixtures and local test producers only. Existing invalid published fixtures remain byte-identical and invalid; an explicit version successor is needed to change history.",
+    "No Mining/Slow/fresh-model capability, production source admission, research benefit or whole MVP closure is proved. Broader root association/CLI checks remain their own evidence, not silently inferred here."
+  ]
+}

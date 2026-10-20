@@ -1,0 +1,26 @@
+{
+  "phase": "final",
+  "selectors": [
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_candidate_identity_guard_preserves_ticker_case",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_unavailable_does_not_hide_technical_failure",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_failure_reports_pre_execution_coverage_gap"
+  ],
+  "tests": 3,
+  "success": true,
+  "errors": 0,
+  "failures": 0,
+  "native_validator": {
+    "accepted": true,
+    "reasons": [],
+    "executed_tests": 1
+  },
+  "tripwires": {
+    "network": 0,
+    "model": 0,
+    "labels": 0,
+    "real_store": 0,
+    "fullprepare": 0
+  },
+  "support_source_sha256": "9caf193e3098ce159b914ac1df598e3cd3aa6e13485315965bbc9510dca6cef9",
+  "fresh_model_following_demonstrated": false
+}

@@ -1,0 +1,60 @@
+{
+  "verdict": "PASS_three_named_positive_producers_only",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_information_plan_engine.py",
+      "sha256": "4723ab4c41e4671434921f5c626739ce4a9186e81192d4f7e4b7bc50a0a9490f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/scheme_evolution_test_support.py",
+      "sha256": "9caf193e3098ce159b914ac1df598e3cd3aa6e13485315965bbc9510dca6cef9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "64f05159c03e2cd4cf0b9b2587a4b5dd31a68371b4a3e17313bc4d3c7ac173f9"
+    }
+  ],
+  "original_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/consumer-runtime-controls/original-test-source.py",
+      "sha256": "424909a629d2cc2abd1798e75a97ff931c637aebaffd4318bc9760f0acfa9c22"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/candidate-controls/original-support-source.py",
+      "sha256": "879ce0f834d49861d0979b6d27f87edfd08805cdf0a26ca9310fd0426e3c15e9"
+    }
+  ],
+  "exact_bytes_restored_by_removing_only_three_metadata_lines": true,
+  "assertion_AST_sequences_identical": true,
+  "candidate_native_controls": [
+    {
+      "phase": "original",
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+      ]
+    },
+    {
+      "phase": "fixed",
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": []
+    }
+  ],
+  "candidate_all_but_metadata_exact": true,
+  "forbidden_calls": [],
+  "remaining_authoring_gap": "Shared signal_candidate_execution_contract does not explicitly disclose CIK binding obligations; no prompt repair or fresh S5 obedience is demonstrated here.",
+  "limits": [
+    "Only synthetic named positive fixtures were changed; no general helper, real source, issuer gate, existing published Registry, production code, assertions or clocks were changed.",
+    "This is isolated native fixture/runtime-input behavior and candidate validation, not fresh F7/S5 or Mining/Slow/research gain. No high-level evolution module/suite or real stage was executed."
+  ]
+}

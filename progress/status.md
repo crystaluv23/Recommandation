@@ -17,7 +17,7 @@
 [GPRE采集版本实际阶段](../reports/reviewed-gpre-capture-snapshot-20261021.md) 已完成：57全产品/53保留，4新版本append/readback及同capture重放False。
 119.682s/exit0，新view1780/审查1785；16493旧global字节/1781旧rows保留，独立22510绑定核过。
 仅本案双18输入各17resolved/1news缺失；BasicInfo3resolved/1news缺失、17投影且均保partial/遗漏。
-[最新可计算期间缺口](../reports/gpre-readable-period-selection-20261021.md)：财务9请求各2个选typed Q1、7个未选。
+[旧选文缺口诊断](../reports/gpre-readable-period-selection-20261021.md)：修复前财务9请求各2个选typed Q1、7个未选。
 现金已选Q1 HTML，但native JSON parser不读；所选现金latest为2023末，库内typed Q1为2025-03-31，10份上限外被词频挤出。
 0新GET/model/labels/Signalapply/fullprepare；57distinct contents非独立收益，snapshot/reopen非OS恢复。两个来源阶段均不重入。
 
@@ -25,7 +25,9 @@
 v6确定性6/6、v12确定性9/9选typedQ1，现金parser latest由2023末到2025-03-31USD；仍各17/18，LLM顺序原样。
 全部财务来源请求为8/9、9/9，默认LLM cash_ratio缺口仍留；未执行Signal计算/模型。
 独立159数值/异常等旧HEAD、两个dominance反例已修，metadata身份/隔离亦修；终态4265绑定/25原件核过，不关整体F5。
-115关联检查仍2fail/12error：issuer-bound fixture漏迁移，含生产seed capability audit；不放宽issuer门或报全绿。
+[issuer fixture生产者修复](../reports/seed-fixture-issuer-binding-20261021.md)：六seed与具名正控显式声明一致CIK，严格issuer门不改。
+实际CLI旧模板exit2→新模板exit0/14enabled；158关联检查全过、独立反例/原生构造器复核通过。
+旧失败/已发布版本保留，不迁移历史；非全仓测试，S5共享prompt尚缺显式CIK义务，fresh authoring仍未验。
 
 ## 已有局部证据与限制
 
@@ -55,7 +57,7 @@ v6确定性6/6、v12确定性9/9选typedQ1，现金parser latest由2023末到202
 26 transcript完整公开内容时间证明仍0；按用户已选口径取已核实完整公开内容时间，原记录/旧实验保留。
 历史news污染排除/unknown不表示无事件，所有失败分母及身份屏蔽保持。
 [采集版本ID](../reports/companyfacts-capture-identity-20261021.md)已真实准入4版本；旧recipe/ID及去重保持。
-确定性最新输入已接通；默认LLM cash_ratio选文、issuer-bound fixture producer仍缺，不用17/18替代语义。
+确定性最新输入已接通；默认LLM cash_ratio选文、fresh S5身份样本创作仍缺，不用17/18替代语义。
 FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍unknown，不猜时区。
 旧v182权威Fast/Slow=1/1完成不可重启；memory失败processed0/pending3518未改作成功。
 新方向/magnitude Mining正控、忠实实现/准入、后继精确复用、完整反馈消费/闭环及独立收益均未验证。
@@ -63,6 +65,7 @@ FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍un
 ## 下一步
 
 源capture、F7旧stage和新input-only检查均保持完成、不重入；选文修复已完成独立终态审查。
-下一核issuer fixture生产者、旧测试与已发布历史边界，修未来合格正控；默认LLM选文剩余缺口另保留。
-F7提示局部17safe已过，fresh原问题/部分变体/充分答案控制仍待验；不以输入检查替代模型行为。
+issuer fixture生产者局部修复已过真实CLI与158关联检查，旧Registry字节/失败保留；默认LLM选文剩余缺口另保留。
+F7提示局部17safe已过；下一为新1780来源冻结原问题/部分变体/充分答案三控制，先离线预检再独立角色验收。
+原0/1与未触发mirror保留，unanswered安全保留不替代有答案能力通过；不以输入检查替代模型行为。
 LLM节点继续exact inbox独立subagent；0外部LLM API。不恢复旧运行或启动完整后继，不以0.8/输入resolved替代测量或MVP关闭。

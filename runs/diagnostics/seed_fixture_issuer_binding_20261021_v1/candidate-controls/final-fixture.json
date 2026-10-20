@@ -1,0 +1,17 @@
+{
+  "name": "point-in-time positive growth",
+  "as_of": "2025-01-15T12:00:00+00:00",
+  "expected": "positive",
+  "documents": [
+    {
+      "document_id": "candidate_growth_fixture",
+      "source_type": "financials",
+      "metadata": {
+        "cik": "0000000001"
+      },
+      "published_at": "2025-01-15T12:00:00+00:00",
+      "available_at": "2025-01-15T12:00:00+00:00",
+      "content": "{\"cik\":1,\"facts\":{\"us-gaap\":{\"RevenueFromContractWithCustomerExcludingAssessedTax\":{\"units\":{\"USD\":[{\"accn\":\"fixture-1\",\"end\":\"2023-12-31\",\"filed\":\"2024-02-01\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"val\":100.0},{\"accn\":\"fixture-2\",\"end\":\"2024-12-31\",\"filed\":\"2025-01-10\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"val\":125.0}]}}}}}"
+    }
+  ]
+}

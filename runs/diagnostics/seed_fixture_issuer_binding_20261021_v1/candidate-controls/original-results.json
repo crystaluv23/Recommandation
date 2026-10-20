@@ -1,0 +1,26 @@
+{
+  "phase": "original",
+  "selectors": [
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_candidate_identity_guard_preserves_ticker_case"
+  ],
+  "tests": 1,
+  "success": false,
+  "errors": 0,
+  "failures": 1,
+  "native_validator": {
+    "accepted": false,
+    "reasons": [
+      "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+    ],
+    "executed_tests": 0
+  },
+  "tripwires": {
+    "network": 0,
+    "model": 0,
+    "labels": 0,
+    "real_store": 0,
+    "fullprepare": 0
+  },
+  "support_source_sha256": "879ce0f834d49861d0979b6d27f87edfd08805cdf0a26ca9310fd0426e3c15e9",
+  "fresh_model_following_demonstrated": false
+}

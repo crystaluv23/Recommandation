@@ -1,0 +1,158 @@
+{
+  "verdict": "PASS_future_fixture_identity_only_no_published_migration",
+  "code_and_inputs": [
+    {
+      "path": "/Users/l/Project/Recommandation/configs/signals_v1.json",
+      "sha256": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/evolve_information_schemes.py",
+      "sha256": "b5196a3c97a87e68a32e5fa9530c64f03b6848cf3bf096bf94961f9263e694a0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "19af9fb78157b0b6c60ec27a8c0bbf6307a78b6568838150d3058d9f890b603e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sec_company_facts.md",
+      "sha256": "3991e621dedc7b719aed86289b744f96ff1a9d1bee093c881b5dfb7969aaf859"
+    }
+  ],
+  "original_catalog_commit": "bf060c94c2d2496b50bd1fe9e3bd6a0934d9e5c5",
+  "original_catalog_sha256": "6775492b0754b4c97f4896b1a0c7fe991083fda71ca1da342ef8d4b286905d4a",
+  "changed_fixture_ids": [
+    "revenue_growth_yoy",
+    "revenue_acceleration",
+    "gross_margin_change",
+    "operating_cash_flow_margin",
+    "net_share_retirement_yoy",
+    "cash_reserves"
+  ],
+  "entire_catalog_equal_after_removing_only_body_and_metadata_CIK": true,
+  "values_tags_units_periods_expected_and_specs_unchanged": true,
+  "controls": [
+    {
+      "case": "fresh_native_install_audit_freeze_validate_catalog",
+      "installed": 14,
+      "audit_passed": true,
+      "snapshot_ref_count": 14,
+      "validate_catalog": {
+        "catalog": "/Users/l/Project/Recommandation/configs/signals_v1.json",
+        "valid": true,
+        "signal_count": 14,
+        "installed": 14,
+        "categories": [
+          "catalysts",
+          "financial",
+          "management",
+          "market",
+          "news",
+          "orders",
+          "product",
+          "risks"
+        ],
+        "registry_hash": "b7eac6c27f8d5f5a04dc0007188a2035638754b04b128f77bf8581c3ca41e159"
+      }
+    },
+    {
+      "case": "published_legacy_not_migrated",
+      "install_new_template_count": 0,
+      "published_tree_sha_equal": true,
+      "still_fails_legacy_identity_audit": true,
+      "disabled_refs": {
+        "schema_version": "signal-capability-audit-v1",
+        "enabled_refs": [
+          "financing_listing_action:v1",
+          "guidance_acceleration:v1",
+          "max_drawdown_1y:v1",
+          "price_momentum_126d:v1",
+          "negative_word_count:v1",
+          "order_quality:v1",
+          "commercialization_status:v1",
+          "customer_concentration:v1"
+        ],
+        "disabled": {
+          "cash_reserves:v1": [
+            "schema_fixture_failed: expected positive, received unavailable"
+          ],
+          "gross_margin_change:v1": [
+            "schema_fixture_failed: expected positive, received unavailable"
+          ],
+          "net_share_retirement_yoy:v1": [
+            "schema_fixture_failed: expected positive, received unavailable"
+          ],
+          "operating_cash_flow_margin:v1": [
+            "schema_fixture_failed: expected positive, received unavailable"
+          ],
+          "revenue_acceleration:v1": [
+            "schema_fixture_failed: expected positive, received unavailable"
+          ],
+          "revenue_growth_yoy:v1": [
+            "schema_fixture_failed: expected positive, received unavailable"
+          ]
+        },
+        "passed": false
+      }
+    },
+    {
+      "case": "missing_body_cik",
+      "native_audit_passed": false,
+      "errors": {
+        "freeze": {
+          "type": "ValidationError",
+          "message": "Signal capability audit failed: {\"disabled\": {\"revenue_growth_yoy:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"]}, \"enabled_refs\": [\"financing_listing_action:v1\", \"cash_reserves:v1\", \"gross_margin_change:v1\", \"net_share_retirement_yoy:v1\", \"operating_cash_flow_margin:v1\", \"revenue_acceleration:v1\", \"guidance_acceleration:v1\", \"max_drawdown_1y:v1\", \"price_momentum_126d:v1\", \"negative_word_count:v1\", \"order_quality:v1\", \"commercialization_status:v1\", \"customer_concentration:v1\"], \"passed\": false, \"schema_version\": \"signal-capability-audit-v1\"}"
+        },
+        "validate_catalog": {
+          "type": "ValidationError",
+          "message": "Signal capability audit failed: {\"disabled\": {\"revenue_growth_yoy:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"]}, \"enabled_refs\": [\"financing_listing_action:v1\", \"cash_reserves:v1\", \"gross_margin_change:v1\", \"net_share_retirement_yoy:v1\", \"operating_cash_flow_margin:v1\", \"revenue_acceleration:v1\", \"guidance_acceleration:v1\", \"max_drawdown_1y:v1\", \"price_momentum_126d:v1\", \"negative_word_count:v1\", \"order_quality:v1\", \"commercialization_status:v1\", \"customer_concentration:v1\"], \"passed\": false, \"schema_version\": \"signal-capability-audit-v1\"}"
+        }
+      }
+    },
+    {
+      "case": "missing_metadata_cik",
+      "native_audit_passed": false,
+      "errors": {
+        "freeze": {
+          "type": "ValidationError",
+          "message": "Signal capability audit failed: {\"disabled\": {\"revenue_growth_yoy:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"]}, \"enabled_refs\": [\"financing_listing_action:v1\", \"cash_reserves:v1\", \"gross_margin_change:v1\", \"net_share_retirement_yoy:v1\", \"operating_cash_flow_margin:v1\", \"revenue_acceleration:v1\", \"guidance_acceleration:v1\", \"max_drawdown_1y:v1\", \"price_momentum_126d:v1\", \"negative_word_count:v1\", \"order_quality:v1\", \"commercialization_status:v1\", \"customer_concentration:v1\"], \"passed\": false, \"schema_version\": \"signal-capability-audit-v1\"}"
+        },
+        "validate_catalog": {
+          "type": "ValidationError",
+          "message": "Signal capability audit failed: {\"disabled\": {\"revenue_growth_yoy:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"]}, \"enabled_refs\": [\"financing_listing_action:v1\", \"cash_reserves:v1\", \"gross_margin_change:v1\", \"net_share_retirement_yoy:v1\", \"operating_cash_flow_margin:v1\", \"revenue_acceleration:v1\", \"guidance_acceleration:v1\", \"max_drawdown_1y:v1\", \"price_momentum_126d:v1\", \"negative_word_count:v1\", \"order_quality:v1\", \"commercialization_status:v1\", \"customer_concentration:v1\"], \"passed\": false, \"schema_version\": \"signal-capability-audit-v1\"}"
+        }
+      }
+    },
+    {
+      "case": "mismatched_metadata_cik",
+      "native_audit_passed": false,
+      "errors": {
+        "freeze": {
+          "type": "ValidationError",
+          "message": "Signal capability audit failed: {\"disabled\": {\"revenue_growth_yoy:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"]}, \"enabled_refs\": [\"financing_listing_action:v1\", \"cash_reserves:v1\", \"gross_margin_change:v1\", \"net_share_retirement_yoy:v1\", \"operating_cash_flow_margin:v1\", \"revenue_acceleration:v1\", \"guidance_acceleration:v1\", \"max_drawdown_1y:v1\", \"price_momentum_126d:v1\", \"negative_word_count:v1\", \"order_quality:v1\", \"commercialization_status:v1\", \"customer_concentration:v1\"], \"passed\": false, \"schema_version\": \"signal-capability-audit-v1\"}"
+        },
+        "validate_catalog": {
+          "type": "ValidationError",
+          "message": "Signal capability audit failed: {\"disabled\": {\"revenue_growth_yoy:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"]}, \"enabled_refs\": [\"financing_listing_action:v1\", \"cash_reserves:v1\", \"gross_margin_change:v1\", \"net_share_retirement_yoy:v1\", \"operating_cash_flow_margin:v1\", \"revenue_acceleration:v1\", \"guidance_acceleration:v1\", \"max_drawdown_1y:v1\", \"price_momentum_126d:v1\", \"negative_word_count:v1\", \"order_quality:v1\", \"commercialization_status:v1\", \"customer_concentration:v1\"], \"passed\": false, \"schema_version\": \"signal-capability-audit-v1\"}"
+        }
+      }
+    }
+  ],
+  "forbidden_calls": [],
+  "limits": [
+    "Synthetic CIK0000000001 is fixture identity only, not a real-source qualification. All Registry and fixture execution writes were in temporary directories.",
+    "Native install_catalog publishes and freezes future valid fixtures only; an existing invalid published version remains unchanged and invalid. Fixing that history requires an explicit successor.",
+    "Capability audit/fixture arithmetic here does not prove fresh model behavior, Mining usefulness, research benefit, full F5 or MVP. No production source/Registry/old stage was modified or reentered."
+  ]
+}

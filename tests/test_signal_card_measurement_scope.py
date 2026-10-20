@@ -93,7 +93,7 @@ class SignalCardMeasurementScopeTests(TestCase):
             units.setdefault(prior_unit, []).append(
                 _row("2023-01-01", "2023-12-31", weighted_prior, "2024-02-01"))
             facts["WeightedAverageNumberOfSharesOutstandingBasic"] = {"units": units}
-        content = json.dumps({"facts": {"us-gaap": facts}}, sort_keys=True, separators=(",", ":"))
+        content = json.dumps({"cik": "0000000001", "facts": {"us-gaap": facts}}, sort_keys=True, separators=(",", ":"))
         return SignalExecutor(snapshot((spec,)), RawInfoStore(documents=(
             _document("scope-facts", content, source_type=spec.source_types[0]),
         ))).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
@@ -217,7 +217,7 @@ class SignalCardMeasurementScopeTests(TestCase):
             description="Measure original same-period cash and current liabilities.",
             execution_type=SignalExecutionType.DETERMINISTIC,
             function="financial.cash_to_current_liabilities_ratio", source_types=("financials",))
-        facts = {"facts": {"us-gaap": {
+        facts = {"cik": "0000000001", "facts": {"us-gaap": {
             "CashAndCashEquivalentsAtCarryingValue": {"units": {"USD": [
                 _row(None, "2024-12-31", 100, "2025-01-20")]}},
             "LiabilitiesCurrent": {"units": {"USD": [

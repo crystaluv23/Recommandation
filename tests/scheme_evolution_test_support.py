@@ -564,6 +564,7 @@ def candidate_growth_fixture() -> dict[str, Any]:
             {
                 "document_id": "candidate_growth_fixture",
                 "source_type": "financials",
+                "metadata": {"cik": "0000000001"},
                 "published_at": NOW.isoformat(),
                 "available_at": NOW.isoformat(),
                 "content": sec_company_facts_content(

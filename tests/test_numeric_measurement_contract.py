@@ -38,9 +38,9 @@ def financial_product(signal_id="gross_margin_change", function="financial.gross
             facts.append({"tag": tag, "unit": "USD", "start": start, "end": end, "value": number})
     facts += [{"tag": "CashAndCashEquivalentsAtCarryingValue", "unit": "USD", "end": "2024-12-31", "value": 50},
               {"tag": "LiabilitiesCurrent", "unit": "USD", "end": "2024-12-31", "value": 100}]
-    content = json.dumps({"schema_version": "sec-company-facts-document-v1", "filing_date": "2025-01-20", "form": "10-K", "facts": facts}, sort_keys=True, separators=(",", ":"))
+    content = json.dumps({"schema_version": "sec-company-facts-document-v1", "cik": "0000000001", "filing_date": "2025-01-20", "form": "10-K", "facts": facts}, sort_keys=True, separators=(",", ":"))
     document = RawInfoDocument.create(document_id="facts", company_id="issuer", source_type="sec_company_facts",
-        published_at=AS_OF, available_at=AS_OF, content=content)
+        published_at=AS_OF, available_at=AS_OF, content=content, metadata={"cik": "0000000001"})
     spec = SignalSpec(signal_id=signal_id, version=1, category="financial", description="Reported measurement.",
         execution_type=SignalExecutionType.DETERMINISTIC, modality=SignalModality.STRUCTURED,
         function=function, source_types=("sec_company_facts",), parameters={"positive_min": 1, "negative_max": 1})

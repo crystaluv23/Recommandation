@@ -1,0 +1,247 @@
+{
+  "catalog_version": 1,
+  "signals": [
+    {
+      "spec": {
+        "signal_id": "revenue_growth_yoy",
+        "version": 1,
+        "category": "financial",
+        "modality": "structured",
+        "definition": {"description": "Measure the latest point-in-time year-over-year revenue growth."},
+        "execution": {"type": "deterministic", "function": "financial.revenue_growth_yoy"},
+        "raw_retrieval": {"source_types": ["financials"], "query_terms": ["revenue", "sales"], "comparison_requirement": "Latest period versus prior-year comparable period.", "minimum_distinct_periods": 2, "minimum_period_span_days": 330},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 0.2, "negative_max": 0.0, "routing_answer_need_phrases": ["revenue growth", "year-over-year revenue", "year over year revenue", "yoy revenue"]}
+      },
+      "tests": [{"name": "positive growth", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":130}]}"}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "revenue_acceleration",
+        "version": 1,
+        "category": "financial",
+        "modality": "structured",
+        "definition": {"description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period."},
+        "execution": {"type": "deterministic", "function": "financial.revenue_acceleration"},
+        "raw_retrieval": {"source_types": ["financials"], "query_terms": ["revenue", "sales"], "comparison_requirement": "Current and prior comparable growth periods.", "minimum_distinct_periods": 3, "minimum_period_span_days": 330},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 0.05, "negative_max": -0.05}
+      },
+      "tests": [{"name": "growth acceleration", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2022-12-31\",\"start\":\"2022-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":80},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}]}"}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "gross_margin_change",
+        "version": 1,
+        "category": "financial",
+        "modality": "structured",
+        "definition": {"description": "Measure the latest point-in-time change in gross margin."},
+        "execution": {"type": "deterministic", "function": "financial.gross_margin_change"},
+        "raw_retrieval": {"source_types": ["financials"], "query_terms": ["revenue", "gross profit"], "comparison_requirement": "Latest gross margin versus prior comparable period.", "minimum_distinct_periods": 2, "minimum_period_span_days": 330},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 0.02, "negative_max": -0.02}
+      },
+      "tests": [{"name": "margin expansion", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":50},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":90}]}"}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "operating_cash_flow_margin",
+        "version": 1,
+        "category": "financial",
+        "modality": "structured",
+        "definition": {"description": "Measure operating cash flow as a share of revenue for the latest exact reported duration."},
+        "execution": {"type": "deterministic", "function": "financial.operating_cash_flow_margin"},
+        "raw_retrieval": {"source_types": ["financials"], "query_terms": ["operating cash flow", "revenue"], "comparison_requirement": "Operating cash flow and revenue for the same period.", "minimum_distinct_periods": 1},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 0.1, "negative_max": 0.0, "routing_answer_need_phrases": ["operating cash flow margin"]}
+      },
+      "tests": [{"name": "cash-generative revenue", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":30}]}"}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "net_share_retirement_yoy",
+        "version": 1,
+        "category": "financial",
+        "modality": "structured",
+        "definition": {"description": "Measure year-over-year net share retirement, with dilution represented as a negative value."},
+        "execution": {"type": "deterministic", "function": "financial.net_share_retirement_yoy"},
+        "raw_retrieval": {"source_types": ["financials"], "query_terms": ["weighted average shares", "shares outstanding"], "comparison_requirement": "Latest weighted-average shares versus prior-year comparable period.", "minimum_distinct_periods": 2, "minimum_period_span_days": 330},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 0.02, "negative_max": -0.05}
+      },
+      "tests": [{"name": "net share retirement", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":95}]}"}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "max_drawdown_1y",
+        "version": 1,
+        "category": "market",
+        "modality": "structured",
+        "definition": {"description": "Measure maximum drawdown from the point-in-time one-year price series."},
+        "execution": {"type": "deterministic", "function": "market.max_drawdown_1y"},
+        "raw_retrieval": {"source_types": ["market_data"], "query_terms": ["adjusted close", "price history"], "lookback_days": 400},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": -0.2, "negative_max": -0.5}
+      },
+      "tests": [{"name": "contained drawdown", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "market_data", "available_at": "2025-01-20T00:00:00+00:00", "content": "Point-in-time adjusted prices.", "metadata": {"prices": [10, 12, 11, 13]}}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "price_momentum_126d",
+        "version": 1,
+        "category": "market",
+        "modality": "structured",
+        "definition": {"description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series."},
+        "execution": {"type": "deterministic", "function": "market.price_momentum_126d"},
+        "raw_retrieval": {"source_types": ["market_data"], "query_terms": ["adjusted close", "price history"], "lookback_days": 400, "minimum_observations": 127},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"lookback_observations": 126, "positive_min": 0.2, "negative_max": -0.2}
+      },
+      "tests": [{"name": "positive intermediate momentum", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "market_data", "available_at": "2025-01-20T00:00:00+00:00", "content": "Point-in-time chronological adjusted prices.", "metadata": {"prices": [100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226]}}]}]
+    },
+    {
+      "enabled": false,
+      "spec": {
+        "signal_id": "market_cap",
+        "version": 1,
+        "category": "company",
+        "modality": "structured",
+        "definition": {"description": "Read the latest point-in-time market capitalization as research context."},
+        "execution": {"type": "deterministic", "function": "company.market_cap"},
+        "raw_retrieval": {"source_types": ["company_profile", "market_data"], "query_terms": ["market capitalization", "market cap"], "required_source_groups": [["company_profile", "market_data"]]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 5000000000, "negative_max": 500000000}
+      },
+      "tests": [{"name": "large company", "metadata_key": "market_cap", "value": 6000000000, "expected": "positive"}]
+    },
+    {
+      "spec": {
+        "signal_id": "cash_reserves",
+        "version": 1,
+        "category": "financial",
+        "modality": "structured",
+        "definition": {"description": "Read the latest point-in-time cash and equivalents balance."},
+        "execution": {"type": "deterministic", "function": "financial.cash_reserves"},
+        "raw_retrieval": {"source_types": ["financials", "filing"], "query_terms": ["cash and equivalents", "cash balance", "liquidity"], "required_source_groups": [["financials", "filing"]], "minimum_distinct_periods": 1},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 100000000, "negative_max": 10000000, "routing_answer_need_phrases": ["cash reserves", "cash balance", "cash and equivalents", "cash position", "liquidity"]}
+      },
+      "tests": [{"name": "cash buffer", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150000000}]}"}]}]
+    },
+    {
+      "enabled": false,
+      "spec": {
+        "signal_id": "pilot_to_volume",
+        "version": 1,
+        "category": "customers",
+        "modality": "narrative",
+        "definition": {"description": "Judge whether customers moved from pilot or validation into volume purchase or scaled deployment."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["earnings_call", "company_announcement", "customer_announcement"], "query_terms": ["pilot volume deployment", "qualification production", "repeat order"], "lookback_days": 730},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+      },
+      "skill": "Extract only explicit customer-stage evidence. Positive requires a stated move from trial, qualification, or pilot into repeat volume purchase or scaled deployment. Treat partnership language without deployment evidence as neutral. Return literal supporting and counter spans.",
+      "tests": [{"name": "partnership alone is not volume", "expected": "neutral"}]
+    },
+    {
+      "spec": {
+        "signal_id": "guidance_acceleration",
+        "version": 1,
+        "category": "management",
+        "modality": "narrative",
+        "definition": {"description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["earnings_call", "filing", "company_announcement"], "query_terms": ["guidance outlook forecast", "raises lowers reaffirms"], "lookback_days": 730, "comparison_requirement": "Current guidance versus explicit prior guidance."},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {
+          "routing_need_phrases": ["guidance update", "guidance updates", "updated guidance", "guidance change", "guidance changes", "revised guidance", "guidance revision", "guidance revisions"],
+          "routing_answer_need_phrases": ["guidance", "outlook", "forecast"],
+          "result_required_evidence_phrases": ["guidance", "outlook", "forecast", "we expect", "management expects", "company expects", "now expects", "raises its", "raised its", "lowers its", "lowered its", "reaffirms", "reaffirmed", "on track to"]
+        }
+      },
+      "skill": "Compare current guidance with explicit prior guidance available in the input. Positive requires a material upward change in level, timing, or conviction; generic optimism is neutral. Preserve contrary qualifiers and literal spans.",
+      "tests": [{"name": "generic optimism", "expected": "neutral", "documents": [{"source_type": "filing", "content": "Management remains optimistic but did not change guidance."}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "order_quality",
+        "version": 1,
+        "category": "orders",
+        "modality": "narrative",
+        "definition": {"description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"], "query_terms": ["purchase order backlog", "contract award", "customer commitment"], "lookback_days": 730},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"routing_required_research_phrases": ["purchase order", "purchase orders", "customer order", "customer orders", "order backlog", "funded backlog", "contract award", "customer commitment"]}
+      },
+      "skill": "Separate binding purchase orders and funded backlog from MOUs, framework agreements, maximum-ceiling awards, and non-binding pipeline. Evaluate amount, customer commitment, delivery timing, cancellation rights, and revenue conversion. Cite literal spans.",
+      "tests": [{"name": "non-binding MOU", "expected": "neutral", "documents": [{"source_type": "filing", "content": "The memorandum of understanding is non-binding."}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "commercialization_status",
+        "version": 1,
+        "category": "product",
+        "modality": "narrative",
+        "definition": {"description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"], "query_terms": ["commercial launch", "commercial shipment", "scaled sales"], "lookback_days": 1095},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"routing_excluded_context_tags": ["mature_operations"], "routing_required_research_phrases": ["product", "technology", "prototype", "commercialization", "commercial launch", "commercially available", "sellable", "repeatable"]}
+      },
+      "skill": "Distinguish laboratory demonstration, certification, pilot production, first commercial shipment, and repeatable scaled sales for a distinct previously non-commercial product or technology. Positive requires evidence of real commercial delivery or repeat revenue, not a roadmap claim. Ordinary production, throughput, cost, or guidance from an already mature mine, utility, financial institution, or established service is not a commercialization milestone; when the visible evidence shows only such mature operations, return unavailable with empty evidence. Cite literal spans.",
+      "tests": [{"name": "technical demo only", "expected": "neutral", "documents": [{"source_type": "filing", "content": "The product remains a laboratory demonstration."}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "customer_concentration",
+        "version": 1,
+        "category": "risks",
+        "modality": "narrative",
+        "definition": {"description": "Judge whether the growth thesis depends excessively on one customer or one customer program."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["filing", "earnings_call", "customer_announcement"], "query_terms": ["customer concentration", "major customer", "revenue customer"], "lookback_days": 1095},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {
+          "routing_required_research_phrases": ["customer", "client", "buyer", "offtake", "backlog", "order", "customer program"],
+          "routing_answer_need_phrases": ["customer concentration", "customer dependency", "customer dependence", "single customer", "one customer", "largest customer", "major customer", "revenue concentration", "customer diversification", "customer diversity", "diversified customers", "customer mix"],
+          "result_required_evidence_phrases": ["customer", "customers", "client", "clients", "buyer", "buyers", "offtake", "backlog", "order", "orders", "account", "accounts", "program"]
+        }
+      },
+      "skill": "Extract disclosed revenue, backlog, order, or deployment concentration. Negative means the growth thesis is materially dependent on one customer with limited replication evidence. Positive means adoption is demonstrably diversified. Unknown identity alone is unavailable, not neutral.",
+      "tests": [{"name": "single customer majority", "expected": "negative", "documents": [{"source_type": "filing", "content": "One customer represented 72 percent of revenue."}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "negative_word_count",
+        "version": 1,
+        "category": "news",
+        "modality": "structured",
+        "definition": {"description": "Count configured negative terms in complete point-in-time company news source documents."},
+        "execution": {"type": "deterministic", "function": "news.negative_word_count"},
+        "raw_retrieval": {"source_types": ["news"], "query_terms": ["risk loss delay", "decline warning"], "lookback_days": 365},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"terms": ["decline", "loss", "risk", "delay", "investigation", "default"], "negative_count_min": 1}
+      },
+      "tests": [{"name": "negative news terms", "expected": "negative", "documents": [{"source_type": "news", "content": "The company reported a loss and material delay."}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "financing_listing_action",
+        "version": 1,
+        "category": "catalysts",
+        "modality": "narrative",
+        "definition": {"description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["filing", "company_announcement", "news"], "query_terms": ["financing offering", "listing compliance", "reverse split"], "lookback_days": 730},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {
+          "routing_answer_need_phrases": ["financing", "refinancing", "debt restructuring", "listing", "dilution", "runway", "redemption", "reverse split", "share sale", "share offering", "equity offering", "debt maturity", "debt maturities"],
+          "result_required_evidence_phrases": ["financing", "refinancing", "debt", "restructuring", "listing", "dilution", "redemption", "reverse split", "share sale", "offering", "placement", "credit facility", "loan", "convertible"]
+        }
+      },
+      "skill": "Identify completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing actions. Separate completed actions from proposals. Explain whether the point-in-time effect supports runway/tradability or increases dilution/distress, with literal spans.",
+      "tests": [{"name": "proposed financing is not completed", "expected": "neutral", "documents": [{"source_type": "filing", "content": "The financing remains a proposal and has not closed."}]}]
+    }
+  ]
+}

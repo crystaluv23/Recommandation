@@ -1,0 +1,26 @@
+{
+  "selectors": [
+    "tests.test_signal_financials",
+    "tests.test_data_resolution",
+    "tests.test_document_selector_identity_boundary",
+    "tests.test_signal_measurement_input_selection",
+    "tests.test_signal_card_measurement_scope",
+    "tests.test_numeric_measurement_contract",
+    "tests.test_seed_fixture_issuer_binding",
+    "tests.test_information_plan_engine.InformationPlanRuntimeTests",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_candidate_identity_guard_preserves_ticker_case",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_unavailable_does_not_hide_technical_failure",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_failure_reports_pre_execution_coverage_gap"
+  ],
+  "tests": 158,
+  "success": true,
+  "failures": 0,
+  "errors": 0,
+  "tripwires": {
+    "network": 0,
+    "model": 0,
+    "labels": 0,
+    "real_store": 0,
+    "fullprepare": 0
+  }
+}

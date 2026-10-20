@@ -1,0 +1,14 @@
+[
+  {
+    "original_path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/connected-tests.log",
+    "original_sha256": "592e99d84bcd1d3a66bcc092cadb22eda23e238b757d0d54adb69a45ce520896",
+    "byte_identical_archive": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/connected-tests.log.gz",
+    "archive_sha256": "01b24df850f40792587d425f4d89e493af9a2ee0eedc4e66bd2d1c25762affbb"
+  },
+  {
+    "original_path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/driver-controls/initial-test-field-error.log",
+    "original_sha256": "1dbee8fcf3f0b866dce2802f2a2821d10c18552b23bc2930f716b50613423685",
+    "byte_identical_archive": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/driver-controls/initial-test-field-error.log.gz",
+    "archive_sha256": "5d925454d1509f06cab97f1039eaa71ebe5318c3ca729a579f9a9c8ae5995341"
+  }
+]

@@ -20,6 +20,12 @@ schemas must match a canonical `cik_##########` document company and any declare
 metadata CIK. Opaque company aliases require explicit metadata CIK; alias digits
 are not an identity proof. Missing, malformed or conflicting identity raises the
 existing technical validation failure, never a negative measurement or no-match.
+This also applies to synthetic capability and measurement fixtures: their authors
+must explicitly bind body CIK and document metadata CIK for an opaque alias.
+Positive fixture construction does not authorize inference in the normalizer,
+consumer or auditor. Missing or conflicting bindings remain negative validation
+controls for both legacy nested and typed accession bodies; historical source
+records and published Registry fixtures are not rewritten by a template repair.
 Preserve standard taxonomy/tag/unit, original values, start/end, filed/form and
 accession lineage. Historical products omit current `entityName`; the complete
 provider response remains a separately timestamped proof document.

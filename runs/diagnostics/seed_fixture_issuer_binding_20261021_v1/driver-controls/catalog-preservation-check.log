@@ -1,0 +1,28 @@
+{
+  "catalog_original_bytes_sha256": "6775492b0754b4c97f4896b1a0c7fe991083fda71ca1da342ef8d4b286905d4a",
+  "catalog_identity_only_change": true,
+  "code_changes": false,
+  "bindings": {
+    "configs/signals_v1.json": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae",
+    "spec/src/stock_opportunity_agent/signal_library.md": "19af9fb78157b0b6c60ec27a8c0bbf6307a78b6568838150d3058d9f890b603e",
+    "spec/src/stock_opportunity_agent/data/sec_company_facts.md": "3991e621dedc7b719aed86289b744f96ff1a9d1bee093c881b5dfb7969aaf859",
+    "tests/test_seed_fixture_issuer_binding.py": "ddc111335221ff1533afeb9900a1990bd74fd7ab6a61b4f09ed8d077e11d1296"
+  }
+}
+ configs/signals_v1.json                                    | 12 ++++++------
+ spec/src/stock_opportunity_agent/data/sec_company_facts.md |  6 ++++++
+ spec/src/stock_opportunity_agent/signal_library.md         | 13 ++++++++++++-
+ 3 files changed, 24 insertions(+), 7 deletions(-)
+ M configs/signals_v1.json
+ M runs/cold_start/minimal_rounds_v151/fast_summary.json
+ M runs/cold_start/minimal_rounds_v151/fast_trajectories.json
+ M spec/architecture.md
+ M spec/src/stock_opportunity_agent/data/sec_company_facts.md
+ M spec/src/stock_opportunity_agent/memory/knowledge.md
+ M spec/src/stock_opportunity_agent/research/evolution_control.md
+ M spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md
+ M spec/src/stock_opportunity_agent/research/plan_evolution.md
+ M spec/src/stock_opportunity_agent/research/signal_evolution.md
+ M spec/src/stock_opportunity_agent/signal_library.md
+ M tests/test_numeric_measurement_contract.py
+ M tests/test_signal_card_measurement_scope.py

@@ -1,0 +1,11 @@
+test_canonical_company_conflict_cannot_be_masked_by_matching_fixture_bindings (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_canonical_company_conflict_cannot_be_masked_by_matching_fixture_bindings) ... ok
+test_corrected_catalog_replay_leaves_existing_bad_versions_byte_identical (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_corrected_catalog_replay_leaves_existing_bad_versions_byte_identical) ... ok
+test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) ... ok
+test_native_install_audit_freeze_and_validate_catalog_expose_all_fourteen (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_native_install_audit_freeze_and_validate_catalog_expose_all_fourteen) ... ok
+test_six_financial_positives_reach_original_numeric_measurements (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_six_financial_positives_reach_original_numeric_measurements) ... ok
+test_valid_catalog_replay_preserves_every_version_file_and_frozen_identity (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_valid_catalog_replay_preserves_every_version_file_and_frozen_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.356s
+
+OK

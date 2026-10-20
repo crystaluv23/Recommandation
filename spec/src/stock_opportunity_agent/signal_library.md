@@ -307,6 +307,17 @@ contains 16 auditable definitions across financial, market, customers,
 management, orders, product, risk, and catalyst categories; 14 are enabled in
 the executable snapshot and two remain disabled.
 
+Future seed capability fixtures must carry explicit source identity. A Company
+Facts positive fixture supplies the same synthetic CIK in its JSON body and raw
+document `metadata.cik`; the audit's opaque company alias is not an issuer proof.
+Fixture authors must preserve measurement values, tags, periods, units,
+parameters and expected outcomes when adding this binding. Neither the auditor
+nor a shared test helper may guess an omitted CIK to make a fixture executable.
+Catalog installation is forward-only: replay skips already installed Signal IDs
+and leaves their complete version files unchanged. Correcting the source seed
+template does not repair published fixtures; those require an explicit successor
+under the existing immutable-version contract.
+
 Seed and runtime manifests carry an explicit enabled status. Structurally
 unsupported definitions remain auditable but disabled and are omitted from
 category/card/spec disclosure. They may be enabled only after the capability
@@ -366,7 +377,7 @@ verify prior inputs after valid publication; callers must compare with their
 frozen contract and cannot use it to invent commit authority or learned profiles.
 Freezing an empty Registry is invalid: a v4 run must contain at least one
 enabled, capability-audited stable Signal and the normal seed initialization
-contains all 11 enabled definitions.
+contains all 14 enabled definitions from the current seed catalog.
 Nested spec parameters and learned profile values are immutable inside the
 snapshot. Serialization returns detached mutable JSON values, so caller mutation
 cannot alter executor behavior or silently separate a snapshot from its hash.

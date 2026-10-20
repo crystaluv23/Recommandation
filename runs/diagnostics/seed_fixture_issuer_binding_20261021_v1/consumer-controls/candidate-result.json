@@ -1,0 +1,69 @@
+{
+  "selectors": [
+    "tests.test_numeric_measurement_contract",
+    "tests.test_signal_card_measurement_scope"
+  ],
+  "tests": 17,
+  "success": true,
+  "failures": 0,
+  "errors": 0,
+  "tripwires": {
+    "network": 0,
+    "model": 0,
+    "labels": 0,
+    "real_store": 0,
+    "fullprepare": 0
+  },
+  "bindings_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py",
+      "sha256": "f7e74a2ed2991c6e5ece688a29bb5828f5e86995a123a603dc451bb16066b4f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py",
+      "sha256": "8fbebf6b92b4d5b1859575b4032096b82f2524a3436affe90d1270571ab7b32a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_financials.py",
+      "sha256": "dba542d7bc20b008de9c3297d3a2a633455a9afaa5bf257d5360f0cbb3b55ba2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/configs/signals_v1.json",
+      "sha256": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae"
+    }
+  ],
+  "bindings_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py",
+      "sha256": "f7e74a2ed2991c6e5ece688a29bb5828f5e86995a123a603dc451bb16066b4f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py",
+      "sha256": "8fbebf6b92b4d5b1859575b4032096b82f2524a3436affe90d1270571ab7b32a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_financials.py",
+      "sha256": "dba542d7bc20b008de9c3297d3a2a633455a9afaa5bf257d5360f0cbb3b55ba2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/configs/signals_v1.json",
+      "sha256": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae"
+    }
+  ]
+}

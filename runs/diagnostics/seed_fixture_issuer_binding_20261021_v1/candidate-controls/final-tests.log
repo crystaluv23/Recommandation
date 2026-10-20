@@ -1,0 +1,8 @@
+test_candidate_identity_guard_preserves_ticker_case (tests.test_signal_evolution_engine.SignalEvolutionTests.test_candidate_identity_guard_preserves_ticker_case) ... ok
+test_fixture_unavailable_does_not_hide_technical_failure (tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_unavailable_does_not_hide_technical_failure) ... ok
+test_fixture_failure_reports_pre_execution_coverage_gap (tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_failure_reports_pre_execution_coverage_gap) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.178s
+
+OK

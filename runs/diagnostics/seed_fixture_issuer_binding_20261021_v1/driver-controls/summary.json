@@ -1,0 +1,38 @@
+{
+  "method": "preserved exact previously executed commands and stdout; no test rerun for persistence",
+  "test_result": "6/6 PASS0.356s",
+  "initial_test_error": "new test used nonexistent SignalResult.evidence; corrected assertion to supporting_evidence, no production change",
+  "catalog_preservation": "removing only the six metadata.cik/body.cik insertions reproduces original HEAD catalog bytes exactly",
+  "logs": {
+    "90026c": {
+      "timestamp": "2026-10-20T17:57:18.251Z",
+      "exit_code": 1,
+      "log": "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/driver-controls/initial-test-field-error.log",
+      "sha256": "1dbee8fcf3f0b866dce2802f2a2821d10c18552b23bc2930f716b50613423685"
+    },
+    "859238": {
+      "timestamp": "2026-10-20T17:57:26.788Z",
+      "exit_code": 0,
+      "log": "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/driver-controls/final-six-tests.log",
+      "sha256": "a7070fe85223fdc80a6510625e185a693e29a0009cca05f68c57434ffd13dbd5"
+    },
+    "7c0759": {
+      "timestamp": "2026-10-20T17:57:44.387Z",
+      "exit_code": 0,
+      "log": "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/driver-controls/catalog-preservation-check.log",
+      "sha256": "b8b6cf8358d5b73815bb97e74e6be895387a1e4787c45ba5529e2ddfd443e40f"
+    }
+  },
+  "bindings": {
+    "configs/signals_v1.json": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae",
+    "spec/src/stock_opportunity_agent/signal_library.md": "19af9fb78157b0b6c60ec27a8c0bbf6307a78b6568838150d3058d9f890b603e",
+    "spec/src/stock_opportunity_agent/data/sec_company_facts.md": "3991e621dedc7b719aed86289b744f96ff1a9d1bee093c881b5dfb7969aaf859",
+    "tests/test_seed_fixture_issuer_binding.py": "ddc111335221ff1533afeb9900a1990bd74fd7ab6a61b4f09ed8d077e11d1296"
+  },
+  "temporary_registry_only": true,
+  "GETs": 0,
+  "models": 0,
+  "labels": 0,
+  "real_source_writes": 0,
+  "fullprepare": false
+}

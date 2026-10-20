@@ -576,6 +576,7 @@ class InformationPlanRuntimeTests(TestCase):
                 ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
                 ("2024-01-01", "2024-12-31", 130.0, "2025-01-10"),
             ),
+            metadata={"cik": "0000000001"},
         )
         return registry, RawInfoStore(documents=(document,))
 
@@ -1617,6 +1618,7 @@ class InformationPlanRuntimeTests(TestCase):
                             ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
                             ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
                         ),
+                        metadata={"cik": "0000000001"},
                     ),
                 )
             )

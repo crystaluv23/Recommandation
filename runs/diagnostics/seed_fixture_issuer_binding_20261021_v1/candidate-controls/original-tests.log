@@ -1,0 +1,14 @@
+test_candidate_identity_guard_preserves_ticker_case (tests.test_signal_evolution_engine.SignalEvolutionTests.test_candidate_identity_guard_preserves_ticker_case) ... FAIL
+
+======================================================================
+FAIL: test_candidate_identity_guard_preserves_ticker_case (tests.test_signal_evolution_engine.SignalEvolutionTests.test_candidate_identity_guard_preserves_ticker_case)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_evolution_engine.py", line 2935, in test_candidate_identity_guard_preserves_ticker_case
+    self.assertTrue(validator.validate(candidate, skill=None, tests=(candidate_growth_fixture(),)).accepted)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.036s
+
+FAILED (failures=1)

@@ -1,0 +1,20 @@
+{
+  "selector": "tests.test_information_plan_engine.InformationPlanRuntimeTests",
+  "tests": 34,
+  "success": true,
+  "failures": 0,
+  "errors": 0,
+  "tripwires": {
+    "network": 0,
+    "model": 0,
+    "labels": 0,
+    "real_store": 0,
+    "fullprepare": 0
+  },
+  "original_source_sha256": "424909a629d2cc2abd1798e75a97ff931c637aebaffd4318bc9760f0acfa9c22",
+  "current_source_sha256": "4723ab4c41e4671434921f5c626739ce4a9186e81192d4f7e4b7bc50a0a9490f",
+  "only_two_explicit_metadata_bindings_added": true,
+  "existing_body_cik": 1,
+  "body_bytes_and_numeric_values_periods_clocks_assertions_unchanged": true,
+  "original_native_failure_results": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/consumer-runtime-controls/original-cause-results.json"
+}

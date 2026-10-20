@@ -13,7 +13,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.2, "negative_max": 0.0, "routing_answer_need_phrases": ["revenue growth", "year-over-year revenue", "year over year revenue", "yoy revenue"]}
       },
-      "tests": [{"name": "positive growth", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":130}]}"}]}]
+      "tests": [{"name": "positive growth", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "metadata": {"cik": "0000000001"}, "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"cik\":\"0000000001\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":130}]}"}]}]
     },
     {
       "spec": {
@@ -27,7 +27,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.05, "negative_max": -0.05}
       },
-      "tests": [{"name": "growth acceleration", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2022-12-31\",\"start\":\"2022-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":80},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}]}"}]}]
+      "tests": [{"name": "growth acceleration", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "metadata": {"cik": "0000000001"}, "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"cik\":\"0000000001\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2022-12-31\",\"start\":\"2022-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":80},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}]}"}]}]
     },
     {
       "spec": {
@@ -41,7 +41,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.02, "negative_max": -0.02}
       },
-      "tests": [{"name": "margin expansion", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":50},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":90}]}"}]}]
+      "tests": [{"name": "margin expansion", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "metadata": {"cik": "0000000001"}, "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"cik\":\"0000000001\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":50},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":90}]}"}]}]
     },
     {
       "spec": {
@@ -55,7 +55,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.1, "negative_max": 0.0, "routing_answer_need_phrases": ["operating cash flow margin"]}
       },
-      "tests": [{"name": "cash-generative revenue", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":30}]}"}]}]
+      "tests": [{"name": "cash-generative revenue", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "metadata": {"cik": "0000000001"}, "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"cik\":\"0000000001\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":30}]}"}]}]
     },
     {
       "spec": {
@@ -69,7 +69,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.02, "negative_max": -0.05}
       },
-      "tests": [{"name": "net share retirement", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":95}]}"}]}]
+      "tests": [{"name": "net share retirement", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "metadata": {"cik": "0000000001"}, "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"cik\":\"0000000001\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":95}]}"}]}]
     },
     {
       "spec": {
@@ -126,7 +126,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 100000000, "negative_max": 10000000, "routing_answer_need_phrases": ["cash reserves", "cash balance", "cash and equivalents", "cash position", "liquidity"]}
       },
-      "tests": [{"name": "cash buffer", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150000000}]}"}]}]
+      "tests": [{"name": "cash buffer", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "metadata": {"cik": "0000000001"}, "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"cik\":\"0000000001\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150000000}]}"}]}]
     },
     {
       "enabled": false,

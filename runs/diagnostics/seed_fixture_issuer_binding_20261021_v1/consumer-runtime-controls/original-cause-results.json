@@ -1,0 +1,62 @@
+{
+  "original_test_sha256": "424909a629d2cc2abd1798e75a97ff931c637aebaffd4318bc9760f0acfa9c22",
+  "cause": "Both intended numeric positives fail issuer validation before runtime Reflect/continuation behavior.",
+  "rows": [
+    {
+      "producer": "actual_registry_and_store",
+      "result": {
+        "signal_id": "revenue_growth_yoy",
+        "version": 1,
+        "state": {
+          "value": "unavailable",
+          "confidence": 0.0
+        },
+        "interpretation": {
+          "summary": "Signal execution failed strict validation or execution: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        "evidence": {
+          "supporting": [],
+          "counter": []
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "execution": {
+          "status": "validation_failed",
+          "error_code": "deterministic_result_validation_failed",
+          "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      }
+    },
+    {
+      "producer": "exact_shared_constructor",
+      "result": {
+        "signal_id": "revenue_growth_yoy",
+        "version": 1,
+        "state": {
+          "value": "unavailable",
+          "confidence": 0.0
+        },
+        "interpretation": {
+          "summary": "Signal execution failed strict validation or execution: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        "evidence": {
+          "supporting": [],
+          "counter": []
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "execution": {
+          "status": "validation_failed",
+          "error_code": "deterministic_result_validation_failed",
+          "error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      }
+    }
+  ],
+  "GETs": 0,
+  "models": 0,
+  "labels": 0,
+  "real_store_writes": 0
+}

@@ -1,0 +1,83 @@
+{
+  "verdict": "PASS_three_named_positive_producers_only",
+  "evidence": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/producer-addendum-probe.py",
+      "sha256": "85cdd94473c0057fc5a8cd5410965ea413fd29256d4bd775897c46926970262b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/producer-addendum-probe.log",
+      "sha256": "188676c6aad82b72bead44e282e8ac90cf85be260f42e596a2a3e62d02bb49a1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/producer-addendum-results.json",
+      "sha256": "e947135b10a0bfc1e30d02ba54c618b80f9bf07aa891c8d67345cbff42eb95cb"
+    }
+  ],
+  "original_review_unchanged": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/review.json",
+    "sha256": "bd13faf727978fe05178fe9d025db0b0e984029ccea9e7b87fd7521484e721b0"
+  },
+  "final_task_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/configs/signals_v1.json",
+      "sha256": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "19af9fb78157b0b6c60ec27a8c0bbf6307a78b6568838150d3058d9f890b603e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sec_company_facts.md",
+      "sha256": "3991e621dedc7b719aed86289b744f96ff1a9d1bee093c881b5dfb7969aaf859"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py",
+      "sha256": "ddc111335221ff1533afeb9900a1990bd74fd7ab6a61b4f09ed8d077e11d1296"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_financials.py",
+      "sha256": "dba542d7bc20b008de9c3297d3a2a633455a9afaa5bf257d5360f0cbb3b55ba2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py",
+      "sha256": "8fbebf6b92b4d5b1859575b4032096b82f2524a3436affe90d1270571ab7b32a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_information_plan_engine.py",
+      "sha256": "4723ab4c41e4671434921f5c626739ce4a9186e81192d4f7e4b7bc50a0a9490f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/scheme_evolution_test_support.py",
+      "sha256": "9caf193e3098ce159b914ac1df598e3cd3aa6e13485315965bbc9510dca6cef9"
+    }
+  ],
+  "production_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "64f05159c03e2cd4cf0b9b2587a4b5dd31a68371b4a3e17313bc4d3c7ac173f9"
+    }
+  ],
+  "exact_byte_and_AST_assertions_preserved": true,
+  "runtime_native_original_technical_failure_and_fixed_measurements": {
+    "registry_and_store": 0.3,
+    "shared_financials": 0.25
+  },
+  "candidate_original_rejected_executed0_fixed_accepted_executed1": true,
+  "all_body_values_CIK1_clock_and_expected_unchanged": true,
+  "remaining_S5_prompt_gap": "Shared signal_candidate_execution_contract does not explicitly disclose CIK binding obligations; no prompt repair or fresh S5 obedience is demonstrated here.",
+  "limits": [
+    "Only synthetic named positive fixtures were changed; no general helper, real source, issuer gate, existing published Registry, production code, assertions or clocks were changed.",
+    "This is isolated native fixture/runtime-input behavior and candidate validation, not fresh F7/S5 or Mining/Slow/research gain. No high-level evolution module/suite or real stage was executed."
+  ],
+  "audit_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 /Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/producer-addendum-probe.py > /Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/producer-addendum-probe.log 2>&1",
+  "audit_exit_code": 0
+}

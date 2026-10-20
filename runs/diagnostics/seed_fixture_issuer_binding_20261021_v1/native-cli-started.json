@@ -1,0 +1,32 @@
+{
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/native-cli-probe.py",
+      "sha256": "358421800814331680bdaf909ea06b6ce297ef4ad53e794bd25c4d5c1b446236"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/configs/signals_v1.json",
+      "sha256": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/evolve_information_schemes.py",
+      "sha256": "b5196a3c97a87e68a32e5fa9530c64f03b6848cf3bf096bf94961f9263e694a0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/legacy-catalog.json",
+      "sha256": "6775492b0754b4c97f4896b1a0c7fe991083fda71ca1da342ef8d4b286905d4a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    }
+  ],
+  "cases": [
+    "legacy_template",
+    "repaired_template"
+  ]
+}

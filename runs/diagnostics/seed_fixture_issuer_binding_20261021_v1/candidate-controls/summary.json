@@ -1,0 +1,25 @@
+{
+  "source_change": "Only candidate_growth_fixture documents[0] explicit metadata.cik; shared content producer and general document helper unchanged.",
+  "source_only_one_line_added": true,
+  "fixture_body_values_periods_clocks_expected_all_unchanged": true,
+  "original_native_failure": "opaque company has no explicit issuer binding; accepted false, executed_tests0",
+  "corrected_native_validator": "accepted true, executed_tests1",
+  "final_exact_selectors": [
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_candidate_identity_guard_preserves_ticker_case",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_unavailable_does_not_hide_technical_failure",
+    "tests.test_signal_evolution_engine.SignalEvolutionTests.test_fixture_failure_reports_pre_execution_coverage_gap"
+  ],
+  "final_tests": 3,
+  "passed": true,
+  "limitations": [
+    "Only the three specifically authorized test nodes ran, not the high-level module.",
+    "No fresh LLM behavior tested. Existing candidate execution_contract prompt does not explicitly state CIK fixture binding; that producer disclosure and fresh S5 verification remain a subsequent boundary."
+  ],
+  "bindings": {
+    "tests/scheme_evolution_test_support.py": "9caf193e3098ce159b914ac1df598e3cd3aa6e13485315965bbc9510dca6cef9",
+    "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/candidate-controls/original-results.json": "cb6a2a523ed83145ac7708f0c05d2377761e27f4e1be20d4abcb0c0c181bde17",
+    "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/candidate-controls/original-tests.log": "b45847d87c1b359ba8a3f900796072e00217eff78b8d81f71fb1d1d4e76e9915",
+    "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/candidate-controls/final-results.json": "e8bddc6665b235040857ee2075e6f8e313b347511c4b8aa8a70bd87636a93e87",
+    "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/candidate-controls/final-tests.log": "9a15c8adaa90b7297e2e4d03367e0ecceee710822e0554c7aa36827d972226d4"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "verdict": "PASS_both_synthetic_schemas_strict_without_gate_changes",
+  "controls": [
+    {
+      "schema": "typed",
+      "variant": "positive",
+      "native_capability_fixture_accepted": true,
+      "error": null
+    },
+    {
+      "schema": "typed",
+      "variant": "missing_body",
+      "native_capability_fixture_accepted": false,
+      "error": {
+        "type": "ValidationError",
+        "message": "expected positive, received unavailable"
+      }
+    },
+    {
+      "schema": "typed",
+      "variant": "missing_metadata",
+      "native_capability_fixture_accepted": false,
+      "error": {
+        "type": "ValidationError",
+        "message": "expected positive, received unavailable"
+      }
+    },
+    {
+      "schema": "typed",
+      "variant": "mismatch",
+      "native_capability_fixture_accepted": false,
+      "error": {
+        "type": "ValidationError",
+        "message": "expected positive, received unavailable"
+      }
+    },
+    {
+      "schema": "nested",
+      "variant": "positive",
+      "native_capability_fixture_accepted": true,
+      "error": null
+    },
+    {
+      "schema": "nested",
+      "variant": "missing_body",
+      "native_capability_fixture_accepted": false,
+      "error": {
+        "type": "ValidationError",
+        "message": "expected positive, received unavailable"
+      }
+    },
+    {
+      "schema": "nested",
+      "variant": "missing_metadata",
+      "native_capability_fixture_accepted": false,
+      "error": {
+        "type": "ValidationError",
+        "message": "expected positive, received unavailable"
+      }
+    },
+    {
+      "schema": "nested",
+      "variant": "mismatch",
+      "native_capability_fixture_accepted": false,
+      "error": {
+        "type": "ValidationError",
+        "message": "expected positive, received unavailable"
+      }
+    }
+  ],
+  "forbidden_calls": [],
+  "limits": "Only synthetic fixtures and native in-memory capability auditor. No real company/source, production Registry or model behavior established."
+}

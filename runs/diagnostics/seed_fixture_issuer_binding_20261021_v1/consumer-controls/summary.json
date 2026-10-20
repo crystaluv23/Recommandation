@@ -1,0 +1,101 @@
+{
+  "scope": "Synthetic issuer binding correction only in two consumer test modules",
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py",
+      "sha256": "f7e74a2ed2991c6e5ece688a29bb5828f5e86995a123a603dc451bb16066b4f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py",
+      "sha256": "8fbebf6b92b4d5b1859575b4032096b82f2524a3436affe90d1270571ab7b32a"
+    }
+  ],
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/consumer-controls/candidate-result.json",
+    "sha256": "9136651c0e310217c8124a63b454bd287a5dcedc5da5a21fbc4279c3c827c61d"
+  },
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/consumer-controls/candidate-tests.log",
+    "sha256": "03e79bbd419c7f9281827f8e8b21fda95001a4aa9b6ddac54c60b1b36b4040f7"
+  },
+  "safe_outcome": {
+    "tests": 17,
+    "success": true,
+    "failures": 0,
+    "errors": 0,
+    "tripwires": {
+      "network": 0,
+      "model": 0,
+      "labels": 0,
+      "real_store": 0,
+      "fullprepare": 0
+    }
+  },
+  "input_code_bindings_stable_during_run": true,
+  "original_failure_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/root-final-focused-tests.json",
+      "sha256": "7911e3c6b179872c683110165f6508680513fb97c411612897fcc57a2cc45440"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/root-final-focused-tests.log",
+      "sha256": "4350a1e66d6f28bd5c0b2c5d56908fd5b564a0ba500b94053dc30cd2e9a1157d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_20261021_v1/issuer-fixture-diagnosis/evidence-summary.json",
+      "sha256": "fc4229bda963fdded2278f801040d222734fb5f68f4af46a34ce9a7117bf4b34"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_20261021_v1/issuer-fixture-diagnosis/original-result.json",
+      "sha256": "b39ff52e5b16bd3e3f252f17d05ddeeac59d15706f23db6b81b145e46ca16b0f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_20261021_v1/issuer-fixture-diagnosis/artifact-bindings.json",
+      "sha256": "e6d2679ff2466a32d5ab920d410d15036b16ab407d44c33982cfac8a57583998"
+    }
+  ],
+  "baseline_reexecuted": false,
+  "original_failures": "Prior115 suite had2failures/12errors; prior14 selected nodes preserve same issuer/catalog failures. Referenced original artifacts are unchanged and not copied or rerun.",
+  "changes": "financial_product typed body+metadata share synthetic0000000001; card nested weighted-share/cash-ratio bodies explicitly carry same CIK and existing _document propagates it to metadata. Opaque company issuer/issuer_1 unchanged.",
+  "invariance_checks": [
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py",
+      "assertion_AST_unchanged": true,
+      "removed_literals": [],
+      "added_literals": [
+        {
+          "type": "str",
+          "value_repr": "'cik'",
+          "count": 2
+        },
+        {
+          "type": "str",
+          "value_repr": "'0000000001'",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py",
+      "assertion_AST_unchanged": true,
+      "removed_literals": [],
+      "added_literals": [
+        {
+          "type": "str",
+          "value_repr": "'cik'",
+          "count": 2
+        },
+        {
+          "type": "str",
+          "value_repr": "'0000000001'",
+          "count": 2
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Only these17 tests were executed; no new whole115-test pass is claimed.",
+    "No production guard, shared_document helper, catalog/spec/source implementation or original source artifact was modified by this agent.",
+    "Catalog-related test also passed against this run's stable bound code/catalog; driver owns its independent change and evidence."
+  ]
+}
