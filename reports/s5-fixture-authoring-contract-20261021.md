@@ -79,8 +79,13 @@ review-harness errors are retained. The [bounded native runner](../scripts/run_r
 permits one 4000-output request, at most 131072 logical reservation units and
 zero correction requests. Network/real labels/persistent source stores/seed
 installation are blocked. Scripted native pending/receipt/validator/staging/load
-and completed restore prove wiring only. No formal stage preparation or fresh
-response is yet claimed here.
+and completed restore prove wiring only. Under code checkpoint `c81c1986`, the
+unique formal prepare exits 0 with manifest
+`cadf061d99611e3dff7564f8357536a0d97b2f7f836a30643d0bf3f320b90f8e`.
+The [actual freeze review](../runs/diagnostics/s5_fixture_authoring_20261021_v1/actual-freeze-review.json)
+checks every bound code/source file, exact synthetic row/period/unit semantics,
+four stage JSON files and absence of an exchange/inbox. This is preparation,
+not fresh model acceptance.
 
 This does not test Mining discovery, a new measurement implementation,
 publication, effect, successor reuse or complete S5/MVP. The default LLM

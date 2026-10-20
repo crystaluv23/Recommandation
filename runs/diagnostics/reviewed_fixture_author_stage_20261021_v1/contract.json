@@ -1,0 +1,16 @@
+{
+  "external_llm_api_calls": 0,
+  "limits": {
+    "max_case_llm_calls": 1,
+    "max_case_tokens": 131072,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_calls": 1,
+  "max_output_tokens": 4000,
+  "module_only": true,
+  "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1",
+  "schema_version": "reviewed-fixture-author-stage-v1",
+  "stage": "mining_candidate_materialize_tests"
+}

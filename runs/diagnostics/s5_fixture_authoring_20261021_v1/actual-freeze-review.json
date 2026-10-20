@@ -1,0 +1,37 @@
+{
+  "stage_root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1",
+  "code_revision": "c81c1986cc2a05bc6605fce234ae671acfb35fd0",
+  "prepare_command": "PYTHONPATH=.:src:scripts:tests /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/run_reviewed_fixture_author_stage.py --root runs/diagnostics/reviewed_fixture_author_stage_20261021_v1 --prepare",
+  "prepare_exit": 0,
+  "manifest_hash": "cadf061d99611e3dff7564f8357536a0d97b2f7f836a30643d0bf3f320b90f8e",
+  "code_files": 177,
+  "stage_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/contract.json",
+      "sha256": "6e1b8e575de9cf7e92cbc86ef66a6ba7a7aaad2c4abf2f2966d5be58d461db31"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/expectations.json",
+      "sha256": "f6c8c5d8807586f54b09e44be029d9d157d8888f5b9790fd499d84c800336285"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/inputs.json",
+      "sha256": "cefe1ae2cb166466fc011d0f4f35ae8c78d2e53d651e726622a461f4ff026b6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fixture_author_stage_20261021_v1/manifest.json",
+      "sha256": "aa8e3b90bea07cc55da020a7dae9dddc5f5e360ac684808f34828fe6ec86cfc5"
+    }
+  ],
+  "synthetic_source": "Both schemas annual2023USD120/2024USD150, filed2025-02-15/public2025-02-16/cutoff2025-03-01; canonical rows whole-read under600 limit, no real issuer/outcome data.",
+  "pre_dispatch": true,
+  "exchange_exists": false,
+  "limits": {
+    "max_case_llm_calls": 1,
+    "max_case_tokens": 131072,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "proof_limit": "Prepared inputs and code verified; no fresh role/validation/staging/recovery/Mining or MVP acceptance."
+}

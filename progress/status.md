@@ -31,7 +31,8 @@ v6确定性6/6、v12确定性9/9选typedQ1，现金parser latest由2023末到202
 [S5 fixture作者合同](../reports/s5-fixture-authoring-contract-20261021.md)已接真正独立tests作者，含shared CIK/既有literal义务及tests schema。
 独立发现object content经str变伪JSON而冒充unavailable成功，现构造前拒非string，不自动补值；22独立控过。
 root66另暴露两个旧Slow正控漏metadata，旧HEAD同2fail；仅具名producer补3行后66全过/五tripwire0。
-fresh authoring仍未验；单次诊断actual-row与非facts载体混淆已修，18safe/14独立预审过，尚未正式freeze/派发。
+fresh authoring仍未验；单次诊断actual-row与非facts载体混淆已修，18safe/14独立预审过。
+c81c1986下唯一prepare exit0，cadf061d manifest全绑定核过，尚0inbox/角色；下一首次原生pending派发。
 
 ## 已有局部证据与限制
 

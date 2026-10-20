@@ -1,0 +1,144 @@
+{
+  "accepted": {
+    "skill": null,
+    "spec": {
+      "category": "financial",
+      "definition": {
+        "description": "Measure the latest point-in-time year-over-year revenue growth."
+      },
+      "evidence_policy": {
+        "require_exact_span": true,
+        "require_source": true,
+        "require_timestamp": true
+      },
+      "execution": {
+        "function": "financial.revenue_growth_yoy",
+        "type": "deterministic"
+      },
+      "modality": "structured",
+      "parameters": {
+        "negative_max": 0.0,
+        "positive_min": 0.2,
+        "routing_answer_need_phrases": [
+          "revenue growth",
+          "year-over-year revenue",
+          "year over year revenue",
+          "yoy revenue"
+        ]
+      },
+      "raw_retrieval": {
+        "comparison_requirement": "Latest period versus prior-year comparable period.",
+        "minimum_distinct_periods": 2,
+        "minimum_period_span_days": 330,
+        "query_terms": [
+          "revenue",
+          "sales"
+        ],
+        "source_types": [
+          "financials"
+        ]
+      },
+      "schema": {
+        "confidence": {
+          "type": "float"
+        },
+        "value": {
+          "type": "categorical",
+          "values": [
+            "positive",
+            "neutral",
+            "negative",
+            "unavailable"
+          ]
+        }
+      },
+      "signal_id": "fixture_author_revenue_growth",
+      "version": 1
+    }
+  },
+  "candidate": {
+    "evidence_refs": [
+      "synthetic-0",
+      "synthetic-1",
+      "synthetic-2",
+      "synthetic-3",
+      "synthetic-4",
+      "synthetic-5"
+    ],
+    "measurement": {
+      "kind": "structured",
+      "observable": "annual revenue growth",
+      "requirements": "Author one separate executable fixture per cited SEC document schema. Each schema fixture uses one complete financial document containing both corresponding fact rows. Copy the corresponding schema fact rows verbatim; do not copy typed value rows into legacy val rows or conversely. Filing date 2025-02-15; available 2025-02-16 UTC; cutoff 2025-03-01 UTC. Apply the accepted spec and function unchanged."
+    }
+  },
+  "evidence": {
+    "synthetic-0": {
+      "available_at": "2025-02-16T00:00:00+00:00",
+      "concept": "Revenues",
+      "document_ref": "document-fixture:masked:financials:synthetic",
+      "exact_span": "{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":120}",
+      "period": {
+        "end": "2023-12-31",
+        "start": "2023-01-01"
+      },
+      "published_at": "2025-02-16T00:00:00+00:00",
+      "title": "typed SEC fact row",
+      "unit": "USD",
+      "value": 120
+    },
+    "synthetic-1": {
+      "available_at": "2025-02-16T00:00:00+00:00",
+      "concept": "Revenues",
+      "document_ref": "document-fixture:masked:financials:synthetic",
+      "exact_span": "{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}",
+      "period": {
+        "end": "2024-12-31",
+        "start": "2024-01-01"
+      },
+      "published_at": "2025-02-16T00:00:00+00:00",
+      "title": "typed SEC fact row",
+      "unit": "USD",
+      "value": 150
+    },
+    "synthetic-2": {
+      "available_at": "2025-02-16T00:00:00+00:00",
+      "concept": "Revenues",
+      "document_ref": "document-fixture:masked:financials:synthetic",
+      "exact_span": "{\"end\":\"2023-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2023-01-01\",\"val\":120}",
+      "period": {
+        "end": "2023-12-31",
+        "start": "2023-01-01"
+      },
+      "published_at": "2025-02-16T00:00:00+00:00",
+      "title": "legacy SEC fact row",
+      "unit": "USD",
+      "value": 120
+    },
+    "synthetic-3": {
+      "available_at": "2025-02-16T00:00:00+00:00",
+      "concept": "Revenues",
+      "document_ref": "document-fixture:masked:financials:synthetic",
+      "exact_span": "{\"end\":\"2024-12-31\",\"filed\":\"2025-02-15\",\"form\":\"10-K\",\"start\":\"2024-01-01\",\"val\":150}",
+      "period": {
+        "end": "2024-12-31",
+        "start": "2024-01-01"
+      },
+      "published_at": "2025-02-16T00:00:00+00:00",
+      "title": "legacy SEC fact row",
+      "unit": "USD",
+      "value": 150
+    },
+    "synthetic-4": {
+      "available_at": "2025-02-16T00:00:00+00:00",
+      "document_ref": "document-fixture:masked:financials:synthetic",
+      "exact_span": "Legacy SEC schema: cik identifies synthetic issuer 0000000001; facts.us-gaap.Revenues.units.USD is an array of the cited legacy val fact rows. Copy only legacy rows into this schema.",
+      "published_at": "2025-02-16T00:00:00+00:00"
+    },
+    "synthetic-5": {
+      "available_at": "2025-02-16T00:00:00+00:00",
+      "document_ref": "document-fixture:masked:financials:synthetic",
+      "exact_span": "Typed SEC schema: schema_version=\"sec-company-facts-document-v1\"; cik identifies synthetic issuer 0000000001; filing_date=\"2025-02-15\"; form=\"10-K\"; facts is an array of the cited typed value fact rows. Copy only typed rows into this schema.",
+      "published_at": "2025-02-16T00:00:00+00:00"
+    }
+  }
+}

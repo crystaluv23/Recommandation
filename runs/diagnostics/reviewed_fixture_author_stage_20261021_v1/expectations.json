@@ -1,0 +1,12 @@
+{
+  "available_at": "2025-02-16T00:00:00+00:00",
+  "cik": "0000000001",
+  "cutoff": "2025-03-01T00:00:00+00:00",
+  "fixed_denominator": 2,
+  "positive_measurement": 0.25,
+  "schemas": [
+    "legacy",
+    "typed"
+  ],
+  "scope": "native tests-author module only; not Mining, publication, reuse or MVP"
+}
