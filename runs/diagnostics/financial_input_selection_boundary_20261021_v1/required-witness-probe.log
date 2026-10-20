@@ -1,0 +1,32 @@
+{
+  "finding": "FAIL_required_nonoperand_witness_lost_despite_feasible_two_document_subset",
+  "synthetic": true,
+  "full_pool_documents": 11,
+  "limit": 10,
+  "ranked_ids": [
+    "a-operands-and-competing-tag",
+    "n0",
+    "n1",
+    "n2",
+    "n3",
+    "n4",
+    "n5",
+    "n6",
+    "n7",
+    "n8",
+    "z-dominance-witness"
+  ],
+  "selector_ids": [],
+  "native_selector_status": "unresolved",
+  "alternative_ids": [
+    "a-operands-and-competing-tag",
+    "z-dominance-witness"
+  ],
+  "alternative_basis_equal": true,
+  "alternative_native_status": "resolved",
+  "code_binding": {
+    "path": "runs/diagnostics/financial_input_selection_boundary_20261021_v1/signal-library-original-c665.py",
+    "sha256": "c665144d4956db41847da1e61812da1504eb03b2a41dcc4fbe011fc19ac3ad5f"
+  },
+  "scope": "Only pure fact/operand matching and native input resolution. No Signal arithmetic/execution, Store, network, models, labels or actual stage."
+}

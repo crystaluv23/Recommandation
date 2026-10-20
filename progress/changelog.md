@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：计算器共享纯operand helper经既有callback保最新/比较期，10份/PIT/单位不改；独立反例揭露generic fill导致可行basis弃答及必要dominance见证丢失，修为可行minimal安全填充/一次反rank消减，原红保留。resolver改回调前typed canonical快照、候选隔离、按原ID回映，阻断四类metadata原误接。159数值/异常等旧HEAD；新11/旧财务28、数据resolver及边界98项过，115关联仍2fail/12error，定位issuer fixture生产者漏迁移，含seed能力审计，不报全绿。新plan9c9b5eaf/4265绑定唯一input-only23.755s/exit0，1780view不变；v6确定性6/6与v12 9/9选typedQ1、现金parser latest2025-03-31USD，财务来源8/9与9/9，默认LLM cash_ratio仍缺，各17/18/news未知、LLM顺序保持。0模型/GET/labels/Signal算术/append/fullprepare，不重入旧stage，独立终态4265绑定/25原件核过，不关F5/F7/MVP；下一issuer fixture链修复。
+
 - 2026-10-21：唯一GPRE execute119.682s/exit0，4new canonical+同capture replay False、新1780view/1785rows，旧16493global/1781rows保持；独立22510唯一绑定及1857终态文件核过，0GET/model/labels/apply/fullprepare。两组各17/18但typedQ1仅2/9；现金虽选Q1 HTML，native仅parse JSON，实际selected现金latest2023末而eligible Q1为2025-03-31。纯筛选/排序复现全部18refs，长旧annual词频在10limit前挤出typed新期；BasicInfo financial选Q1仍partial，source15/model17遗漏标记分层保留。capture身份链关闭到本阶段，F5测量可读期间选择漏接新诊断，不宣称7个实际测量失败或MVP关闭，下一复用既有selector做spec-first家族修复。
 
 - 2026-10-21：冻结eb0ef3d6后唯一GPRE prepare13.907s/exit0，57原生capture资格通过、4选定/53保留，plan b5b6002f、62stage文件/5869source/116code/16493旧global冻结；root核plan/映射/public clocks与代码绑定。launcher首次mkdir失败在Popen/marker前，证据保留、正式prepare仅一次。独立复核20715唯一路径/16493旧global全字节及57/4/53通过；未execute/append/consumer，下一唯一执行，原未知/MVP open不变。

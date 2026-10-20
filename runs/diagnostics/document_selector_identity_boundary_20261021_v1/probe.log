@@ -1,0 +1,55 @@
+{
+  "finding": "FAIL_unchanged_eligible_membership_is_Python_equality_not_typed_record_identity",
+  "controls": [
+    {
+      "name": "unchanged_positive",
+      "status": "accepted",
+      "typed_canonical_changed": false
+    },
+    {
+      "name": "legacy_bool_to_int",
+      "status": "accepted",
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "legacy_int_to_float",
+      "status": "accepted",
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "legacy_body_replacement_negative",
+      "status": "rejected",
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "legacy_other_id_negative",
+      "status": "rejected",
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "capture_metadata_replacement_negative",
+      "status": "rejected",
+      "typed_canonical_changed": null
+    },
+    {
+      "name": "legacy_metadata_in_place",
+      "status": "accepted",
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "capture_metadata_in_place",
+      "status": "accepted",
+      "typed_canonical_changed": true
+    }
+  ],
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    }
+  ]
+}

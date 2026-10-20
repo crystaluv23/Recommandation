@@ -1,0 +1,292 @@
+{
+  "subject": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/probe.py",
+    "sha256": "396e81f910c3101cb31e6638cde4732a0d170c5d93df85a9d6ff71f34e9b782e"
+  },
+  "controls": [
+    {
+      "name": "wrong_root_freeze",
+      "operation": "freeze",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fresh fixed diagnostic destination required before any Registry construction"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "wrong_root_run",
+      "operation": "run",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fixed unstarted diagnostic required; completed or attempted run cannot reenter"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "serialized_output_root_mismatch",
+      "operation": "run",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Exact frozen plan required"
+      },
+      "calls": {
+        "read": [
+          "output/plan.json"
+        ],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "freeze_existing_plan.json",
+      "operation": "freeze",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fresh fixed diagnostic destination required before any Registry construction"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "freeze_existing_started.json",
+      "operation": "freeze",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fresh fixed diagnostic destination required before any Registry construction"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "freeze_existing_result.json",
+      "operation": "freeze",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fresh fixed diagnostic destination required before any Registry construction"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "freeze_existing_failure.json",
+      "operation": "freeze",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fresh fixed diagnostic destination required before any Registry construction"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "freeze_existing_default_v6.json",
+      "operation": "freeze",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fresh fixed diagnostic destination required before any Registry construction"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "freeze_existing_latest_v12.json",
+      "operation": "freeze",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fresh fixed diagnostic destination required before any Registry construction"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "run_existing_started.json",
+      "operation": "run",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fixed unstarted diagnostic required; completed or attempted run cannot reenter"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "run_existing_result.json",
+      "operation": "run",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fixed unstarted diagnostic required; completed or attempted run cannot reenter"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "run_existing_failure.json",
+      "operation": "run",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fixed unstarted diagnostic required; completed or attempted run cannot reenter"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "run_existing_default_v6.json",
+      "operation": "run",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fixed unstarted diagnostic required; completed or attempted run cannot reenter"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "run_existing_latest_v12.json",
+      "operation": "run",
+      "expected_rejection": {
+        "type": "RuntimeError",
+        "message": "Fixed unstarted diagnostic required; completed or attempted run cannot reenter"
+      },
+      "calls": {
+        "read": [],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "canonical_drift",
+      "operation": "freeze",
+      "expected_rejection": {
+        "type": "AssertionError",
+        "message": ""
+      },
+      "calls": {
+        "read": [
+          "old-stage/result.json",
+          "old-stage/plan.json"
+        ],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    },
+    {
+      "name": "pointer_drift",
+      "operation": "freeze",
+      "expected_rejection": {
+        "type": "AssertionError",
+        "message": ""
+      },
+      "calls": {
+        "read": [
+          "old-stage/result.json",
+          "old-stage/plan.json"
+        ],
+        "snapshot": 0,
+        "write": 0,
+        "view": 0,
+        "network": 0,
+        "labels": 0
+      },
+      "temporary_tree_unchanged": true
+    }
+  ],
+  "count": 16,
+  "all_pass": true,
+  "scope": "Only temporary fixture roots passed to freeze/run; no actual source/view/Registry construction, append, network, models, labels or fullprepare",
+  "limits": "Preflight guards only. Not proof of actual input selection or native source-view success."
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "limited-original-library-node-baseline",
+  "business_stage_rerun": false,
+  "test_reexecuted_to_persist": false,
+  "source": "exact prior tool call and command event recovered from this agent session; selected record only, not whole session",
+  "execution_timestamp": "2026-10-20T17:47:52.748Z",
+  "baseline_commit": "ee6de356acba873a9ebc756c1ee9a48b07f80fcd",
+  "baseline_git_blob": "71c3d485c1ff627a1f0c8ac6bd24c76b12de0e5e",
+  "baseline_library_sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66",
+  "failure_selector_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/root-final-focused-tests.log",
+    "sha256": "4350a1e66d6f28bd5c0b2c5d56908fd5b564a0ba500b94053dc30cd2e9a1157d"
+  },
+  "selectors": [
+    "tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_registry_cards_and_real_selector_share_the_same_scope_projection",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_actual_final_assembly_retains_metadata_through_posthoc_projection",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_calculator_owns_units_for_arbitrary_signal_identity",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_legacy_result_does_not_gain_fabricated_metadata",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_llm_cannot_author_runtime_measurement",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_mixed_failure_keeps_mechanical_units_before_local_llm_price_repair",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_model_view_keeps_sign_state_period_and_exact_claim_distinct",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_numeric_schema_and_cited_period_fail_closed",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_predictor_repairs_only_the_proved_member",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_reflection_receives_metadata_and_revalidates_exact_detail",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_research_guard_authorizes_only_invalid_prose",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_unit_guard_is_local_and_preserves_scenarios_other_windows_and_versions",
+    "tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_cash_ratio_documented_default_matches_native_numeric_behavior",
+    "tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_weighted_average_basis_ending_and_unit_counterexamples_preserve_v3_definition"
+  ],
+  "tests_run": 14,
+  "errors": 12,
+  "failures": 2,
+  "limitations": [
+    "stock_opportunity_agent was imported with current dependencies before replacing the canonical signal_library module with the exact baseline Git blob. This is not a checkout-wide old-HEAD suite.",
+    "The fourteen selected failure nodes reached their original library fixture/issuer failures; no downstream passed path or whole 115-test baseline is claimed.",
+    "Original test runner stream stayed in io.StringIO and was not printed. original-stdout.log preserves only the actually emitted structured per-node exception tails, not fabricated full unittest traces.",
+    "Initial import-order harness failed before executing tests; retained separately.",
+    "No source/config/test/spec/report edits, model/network/labels, business-stage rerun or global writes were used for this persistence."
+  ],
+  "production_scope": {
+    "fresh_seed_capability_audit": "six financial fixtures are passed unchanged from source catalog to new version tests.json; opaque capability_fixture has no metadata CIK and bodies omit CIK",
+    "positive_test_builders": [
+      "tests/test_numeric_measurement_contract.py:financial_product (11 selected nodes)",
+      "tests/test_signal_card_measurement_scope.py legacy financial bodies (2 selected numeric nodes)"
+    ],
+    "card_registry_error": "one selected node invokes real catalog install/freeze and exposes the six seed fixture audit failures",
+    "strict_issuer_gate": "preserve data/sec_company_facts.py validate_company_fact_document_issuer; do not infer or fabricate missing identity in audit or general helper"
+  }
+}

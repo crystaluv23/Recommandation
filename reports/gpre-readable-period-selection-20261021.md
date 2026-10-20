@@ -52,3 +52,67 @@ variants, missing latest operands, incompatible units and incomplete comparison
 periods through the existing selector/consumer path. F7's original0/1 and its
 unverified prompt repair remain separate. No complete successor is authorized
 by this diagnosis.
+
+## Implemented repair and new bounded consumption
+
+The actual deterministic callable now declares the same pure operand helper used
+by its numeric implementation. The existing resolver callback reserves that
+basis within ten documents and checks it again after selection. Exact failure
+reasons, stale/latest unmatched operands, zero denominators, units and legitimate
+comparison periods remain intact. Unknown callables and LLM versions retain their
+original ordered selections; this is not a global recency rule.
+
+Independent counterexamples rejected the first candidate: generic filling could
+change revenue-tag dominance and abandon a feasible one-document basis, or omit
+a necessary nonoperand witness. The final selector keeps a feasible minimal
+basis with safe filling, or makes one bounded reverse-rank deletion pass while
+preserving basis and the original retrieval contract. This is not exhaustive
+subset search. [Original failures and final review](../runs/diagnostics/financial_input_selection_boundary_20261021_v1/final-review.json)
+also record159 complete old/new numeric outputs or exceptions agreeing with HEAD.
+
+The resolver now hashes complete canonical records before the callback, isolates
+candidate metadata by deep copy, validates returned records and remaps IDs to the
+original objects. This rejects Python-equal true/1 and1/1.0 changes and in-place
+metadata mutation without poisoning the store. Legacy JSON policy is unchanged.
+[Boundary evidence](../runs/diagnostics/document_selector_identity_boundary_20261021_v1/results.json)
+retains the original four wrongly accepted cases; repair tests and original red
+logs are preserved by the neighboring archive manifest.
+
+The new [input-only plan](../runs/diagnostics/measurement_input_selection_20261021_v1/plan.json)
+froze4265 code/source bindings after16 temporary preflight controls. Its unique
+native execution completed in23.754913 seconds with exit0:
+[actual result](../runs/diagnostics/measurement_input_selection_20261021_v1/result.json).
+The full qualified1780-document view remains unchanged. Default v6 has six
+deterministic financial requests and latest v12 has nine: all6/6 and9/9 select the
+typed Q1 source. Across all nine financial-source requests, selection is8/9 and9/9;
+default v6's LLM cash-ratio version still omits it. Cash's native selected latest
+period is now2025-03-31 USD instead of2023-12-31. The two groups still resolve17/18,
+news remains unavailable, six/seven selected sets change, all selections stay at
+most ten, and every LLM/undeclared selection retains the old ID order.
+
+[Independent terminal audit](../runs/diagnostics/measurement_input_selection_20261021_v1/independent/actual-results.json)
+checks all4265 frozen bindings before/after, exact request policies and25 distinct
+selected originals against the qualified view/global records. It independently
+parses old/new cash periods and currency. Two auditor-only harness failures
+(flat versus nested spec keys, then an overly broad path exclusion) are retained;
+the product phase executed once. No duplicate prepare or Store audit was used.
+
+This phase executes no Signal arithmetic, model, label, acquisition, append or
+fullprepare, and does not reenter the completed source stage. Q1 membership does
+not establish nine correct measurements or full LLM reading. The159 comparisons
+are offline regression evidence, not actual bounded measurements or model behavior.
+
+The [115-test connected check](../runs/diagnostics/measurement_input_selection_20261021_v1/root-final-focused-tests.json)
+retains2 failures and12 errors, all at SEC issuer-bound fixture construction:
+98 changed-path tests pass, three card tests pass, three card tests fail, and all
+11 numeric-contract tests error. The39 financial/selection tests pass.
+[The14 failing nodes](../runs/diagnostics/financial_input_selection_20261021_v1/issuer-fixture-diagnosis/evidence-summary.json)
+are also reproduced using the exact old HEAD library blob:2 failures/12 errors.
+Dependencies load from the current package first; this verifies the old issuer
+and fixture entry failures, not the whole old115-test suite or later consumers.
+The retained structured trace tails are original outputs, not a reconstructed
+full test log. Shipped catalog capability audits consume six such unbound seed
+fixtures, making this a real fixture-producer gap. Future positive fixtures need
+explicit consistent synthetic issuer declarations in body and metadata; do not
+guess an issuer in the auditor or rewrite published tests/spec versions. No
+all-green suite or complete F5/F6/F7/MVP closure is claimed.

@@ -1,0 +1,55 @@
+{
+  "finding": "PASS_fixed_original_typed_identity_and_nested_mutation_controls",
+  "controls": [
+    {
+      "name": "unchanged_positive",
+      "status": "accepted",
+      "typed_canonical_changed": false
+    },
+    {
+      "name": "legacy_bool_to_int",
+      "status": "rejected",
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "legacy_int_to_float",
+      "status": "rejected",
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "legacy_body_replacement_negative",
+      "status": "rejected",
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "legacy_other_id_negative",
+      "status": "rejected",
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "capture_metadata_replacement_negative",
+      "status": "rejected",
+      "typed_canonical_changed": null
+    },
+    {
+      "name": "legacy_metadata_in_place",
+      "status": "rejected",
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "capture_metadata_in_place",
+      "status": "rejected",
+      "typed_canonical_changed": true
+    }
+  ],
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "bc3eaae3e96cec370ed0094a9a51d5928e181f5c2a40b22faf0557083ce28ae0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    }
+  ]
+}

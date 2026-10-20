@@ -1,0 +1,215 @@
+{
+  "verdict": "PASS_bounded_offline_F5_identity_semantics_and_two_capability_repairs",
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "bc3eaae3e96cec370ed0094a9a51d5928e181f5c2a40b22faf0557083ce28ae0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "2676fef24ccc0fa8e40b6adb1f3fee7022bb5839db5cfe3be41427c5755de662"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/resolution.md",
+      "sha256": "89351b88124e75564b3e00854c00fc57056bbbc7ac6699a999f69642401844c8"
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/original-signal_library.py.txt",
+      "sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/signal-library-original-c665.py",
+      "sha256": "c665144d4956db41847da1e61812da1504eb03b2a41dcc4fbe011fc19ac3ad5f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/dominance-probe.py",
+      "sha256": "7e8a16467c02c679184d5fc632b5bf97abc5fd85d1fca01cd6d67d41e6895660"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/dominance-probe.log",
+      "sha256": "66c0b9ede78d76ea2a099110b01019b04205f40c1205b1de778ecac3538481ce"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/dominance-results.json",
+      "sha256": "09531258df8a9fe9a7b5186be9451bf0162046a71829a7769e793f7a6519a5b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/required-witness-probe.py",
+      "sha256": "ccbe752f9480318a23976ee8c149542e9eb4a4d4f30b42a401d6e6e9b701f186"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/required-witness-probe.log",
+      "sha256": "cf99c7141ad3d867993cc29b8b5b3d78364ddd3886f98b6d610093dbafc70d27"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/required-witness-results.json",
+      "sha256": "9ab9bb80e2192def09b85c74cd6c4b106af429ea16a50ab6a91b17011ca7fe4b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/numeric-regression.py",
+      "sha256": "98d9c1b50bc005827a859cdb5f5955a07e604dad6add02dbadca501f81d77e86"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/numeric-regression.log",
+      "sha256": "ffdde53a6f34a0d6b1caca4aeefb6ec853c2f5c6584a9ced2cd42464e0192916"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/numeric-regression-results.json",
+      "sha256": "adfe869e23bf0976a0187ba5c4f849dfad1f4325d0772dab623ac01d6cac99d9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/numeric-regression-final.py",
+      "sha256": "67986364583b0f87052db35c70481de4c6819844c7b15b702d6dbe9aefbb2c02"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/numeric-regression-final.log",
+      "sha256": "d564ff403b85e3a4d01457d166bb337c89f8f538459cde9012369f3e0e6864e3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/numeric-regression-final-results.json",
+      "sha256": "6acbc79ef74e539c612e6a15f178b8fd0eb66a4f82ff58e1e12af700543b1bc6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/ability-final-probe.py",
+      "sha256": "3b5439a311555023a7e561610912c24e7aad6514205933646b3b15c93ccd3b50"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/ability-final-probe.log",
+      "sha256": "f024abb5bcb6e0ad81949a8726aef459f6bc3272cc9bae15e1e2e698918f5470"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/ability-final-results.json",
+      "sha256": "f024abb5bcb6e0ad81949a8726aef459f6bc3272cc9bae15e1e2e698918f5470"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/probe.py",
+      "sha256": "6a35972a63f7a3cf070a7d60b4d91ee29bfa65c79fe28fad820923857662226a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/probe.log",
+      "sha256": "e11368938711748c33c70325e3b519154c85314fa5dcef5a3ff073393946c820"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/results.json",
+      "sha256": "05775da98d80fceef917d3831acf7414c7facead7216c77af1f5f9085ce935f6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/final-probe.py",
+      "sha256": "e48989424050f5d2efcc57e2ef67a32e0465f00f165e0bc3772c264fcf35b09d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/final-probe.log",
+      "sha256": "a21d77774dab2cc70e9a4cb4d9b1f23351823dfbe961d9c9b8e3997447466c41"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/final-results.json",
+      "sha256": "c08331cb8f021d449e388b6988e52f7e76f882b6b50ef3d77f9e55842c0e618e"
+    }
+  ],
+  "numeric_regression": {
+    "original_commit": "ee6de356acba873a9ebc756c1ee9a48b07f80fcd",
+    "original_library_sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66",
+    "complete_outputs_or_exception_type_message_equal": 159,
+    "actual_GPRE_full_filtered_pool_exactrefs": 15,
+    "actual_refs_by_group": {
+      "default_v6": 6,
+      "latest_v12": 9
+    },
+    "small_fixture_comparisons": 144,
+    "scope": "Direct old/new callable arithmetic is regression-only, not production selection or a >10 document Signal execution. Covers unavailable, missing matched currency, zero denominator/liabilities, nonnegative OCF, implausible partial, stale period and invalid freshness parameter."
+  },
+  "capability": {
+    "original_c665_failures_preserved": true,
+    "controls": [
+      {
+        "original_failure": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/dominance-results.json",
+          "sha256": "09531258df8a9fe9a7b5186be9451bf0162046a71829a7769e793f7a6519a5b2"
+        },
+        "old_selector_ids": [],
+        "old_native_status": "unresolved",
+        "new_selector_ids": [
+          "a-operands",
+          "n0",
+          "n1",
+          "n2",
+          "n3",
+          "n4",
+          "n5",
+          "n6",
+          "n7",
+          "z-dominance-witness"
+        ],
+        "new_native_status": "resolved",
+        "full_basis_exact": true,
+        "documents": 10,
+        "limit": 10
+      },
+      {
+        "original_failure": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/required-witness-results.json",
+          "sha256": "9ab9bb80e2192def09b85c74cd6c4b106af429ea16a50ab6a91b17011ca7fe4b"
+        },
+        "old_selector_ids": [],
+        "old_native_status": "unresolved",
+        "new_selector_ids": [
+          "a-operands-and-competing-tag",
+          "n0",
+          "n1",
+          "n2",
+          "n3",
+          "n4",
+          "n5",
+          "n6",
+          "n7",
+          "z-dominance-witness"
+        ],
+        "new_native_status": "resolved",
+        "full_basis_exact": true,
+        "documents": 10,
+        "limit": 10
+      }
+    ],
+    "conclusion": "Two sufficient-source false abstentions are repaired: harmful optional filler, and necessary nonoperand dominance witness. Both preserve full-pool operand identity under native unchanged-member/10-document gates."
+  },
+  "resolver_identity": {
+    "original_resolution_sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5",
+    "controls": 8,
+    "unchanged_positive": 1,
+    "rejected": 7,
+    "formerly_accepted_typed_or_in_place_metadata_changes_now_rejected": 4,
+    "returned_pool_deepcopy_and_pre_callback_digest": "Read source confirms a pre-callback canonical snapshot, defensive deep copy and rebinding accepted copies to original eligible members."
+  },
+  "new_native_probe_static_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/probe.py",
+    "run_by_this_reviewer": false,
+    "protected_boundaries_read": "Current proposal checks historical plan canonical/result source authority, fixed output/attempt terminal, native model+LabelStore+socket+append+execute_batch/fullprepare tripwires; binds code/scripts/specs. Actual freeze/run remains root-owned.",
+    "correct_denominators": "Deterministic financial default6/latest9; financial-source requests9 each, expected typed Q1 membership8/9 vs9/9. LLM/unknown generic selected ID sequence remains exact old. Remaining v6 LLM gap is retained."
+  },
+  "harness_disclosures": [
+    "Initial numeric summary hardcoded18 actual/141 fixture while its saved comparison rows were15+144. Original result/log retained; final script uses actual row counts and reruns159 comparisons under stable source. This was reviewer metadata, not product regression.",
+    "The first necessary-witness probe reached an already changed intermediate live selector and its old-red assertion failed; that log is retained separately. The actual old-red was then reproduced using exact c665 bytes restored by inverse patch and full SHA match, without replacing working source.",
+    "The c665 old-reader copy is an exact-SHA reverse reconstruction, not a contemporaneous original capture; HEAD old numeric source is directly git-show extracted."
+  ],
+  "forbidden_actions_by_reviewer": {
+    "production_Store_or_append_or_stage_prepare_execute_resume": 0,
+    "network_GET_model_LabelStore_LockedTest": 0,
+    "frozen_product_edits": 0
+  },
+  "limits": [
+    "These controls establish bounded local matching/identity and numeric regression, not fresh model obedience, new source qualification, all-period readiness or investment benefit.",
+    "Two fixed sufficient-subset examples pass. The deterministic minimal/safe-fill/deletion strategy is not an exhaustive feasibility solver, so this evidence does not prove every possible <=10 preserving subset is discovered.",
+    "Actual new full1780 native prepare_inputs/Q1 consumer outcomes remain not executed by this reviewer; no old completed source stage was reentered.",
+    "Prior source qualification/retrospective extraction limits, exact Registry separation, unchanged canonical schema, original frozen failures and v6 LLM financial gap remain."
+  ]
+}

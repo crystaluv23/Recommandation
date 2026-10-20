@@ -21,6 +21,12 @@
 现金已选Q1 HTML，但native JSON parser不读；所选现金latest为2023末，库内typed Q1为2025-03-31，10份上限外被词频挤出。
 0新GET/model/labels/Signalapply/fullprepare；57distinct contents非独立收益，snapshot/reopen非OS恢复。两个来源阶段均不重入。
 
+[F5计算器选文修复](../reports/gpre-readable-period-selection-20261021.md)已完成新input-only消费：4265绑定、23.755s/exit0，原1780view不变。
+v6确定性6/6、v12确定性9/9选typedQ1，现金parser latest由2023末到2025-03-31USD；仍各17/18，LLM顺序原样。
+全部财务来源请求为8/9、9/9，默认LLM cash_ratio缺口仍留；未执行Signal计算/模型。
+独立159数值/异常等旧HEAD、两个dominance反例已修，metadata身份/隔离亦修；终态4265绑定/25原件核过，不关整体F5。
+115关联检查仍2fail/12error：issuer-bound fixture漏迁移，含生产seed capability audit；不放宽issuer门或报全绿。
+
 ## 已有局部证据与限制
 
 - [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md)：新控制3/3窄通过，6独立角色/0纠错，
@@ -49,14 +55,14 @@
 26 transcript完整公开内容时间证明仍0；按用户已选口径取已核实完整公开内容时间，原记录/旧实验保留。
 历史news污染排除/unknown不表示无事件，所有失败分母及身份屏蔽保持。
 [采集版本ID](../reports/companyfacts-capture-identity-20261021.md)已真实准入4版本；旧recipe/ID及去重保持。
-最新typed Q1已可用，7个有界财务输入选择仍缺；不能用17/18或叙述入选替代计算器可读性。
+确定性最新输入已接通；默认LLM cash_ratio选文、issuer-bound fixture producer仍缺，不用17/18替代语义。
 FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍unknown，不猜时区。
 旧v182权威Fast/Slow=1/1完成不可重启；memory失败processed0/pending3518未改作成功。
 新方向/magnitude Mining正控、忠实实现/准入、后继精确复用、完整反馈消费/闭环及独立收益均未验证。
 
 ## 下一步
 
-源capture与F7旧stage均已完成，不重入。先修复“计算器可读schema/最新与比较期需求→有界选文”的漏接。
-复用既有select_documents入口、实际callable语义与纯facts helper，保持10份上限/原PIT/旧输入历史与generic fallback；不全局改最新优先。
-先spec再原GPRE/长旧文变体/缺tag错unit比较期不足反例；F7提示局部修复17safe已过，fresh语义仍待来源链正确后验。
+源capture、F7旧stage和新input-only检查均保持完成、不重入；选文修复已完成独立终态审查。
+下一核issuer fixture生产者、旧测试与已发布历史边界，修未来合格正控；默认LLM选文剩余缺口另保留。
+F7提示局部17safe已过，fresh原问题/部分变体/充分答案控制仍待验；不以输入检查替代模型行为。
 LLM节点继续exact inbox独立subagent；0外部LLM API。不恢复旧运行或启动完整后继，不以0.8/输入resolved替代测量或MVP关闭。

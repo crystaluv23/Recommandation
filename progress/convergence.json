@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T17:17:13+00:00",
+    "checked_at": "2026-10-20T17:47:46+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal after terminal GPRE source stage and independent audit; no budget limit; old completed experiments unchanged"
+    "source": "Actual root get_goal at bounded input-consumption/independent-audit boundary; no budget limit; completed experiments remain completed"
   },
   "acceptance": [
     {
@@ -128,9 +128,16 @@
         "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/result.json",
         "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/driver-execute-v1/execution-summary.json",
         "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/actual-stage-review.json",
-        "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/root-cash-readability-result.json"
+        "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/root-cash-readability-result.json",
+        "runs/diagnostics/measurement_input_selection_20261021_v1/result.json",
+        "runs/diagnostics/measurement_input_selection_20261021_v1/independent/actual-results.json",
+        "runs/diagnostics/financial_input_selection_boundary_20261021_v1/final-review.json",
+        "runs/diagnostics/document_selector_identity_boundary_20261021_v1/final-results.json",
+        "runs/diagnostics/measurement_input_selection_20261021_v1/root-final-focused-tests.json",
+        "runs/diagnostics/financial_input_selection_20261021_v1/head-issuer-baseline-result.json",
+        "runs/diagnostics/financial_input_selection_20261021_v1/issuer-fixture-diagnosis/evidence-summary.json"
       ],
-      "remaining": "Capture identity is actual57/4/53 source-admitted with1780view/oldbytes preserved, not wholeF2/F5 closure. Original40 dual720 each670/50 and40of40>=.8 remain prior1776-view evidence;newphase reranonlyGPRE two18groups/4BasicInfo. Financial typedQ1 selected2of9each;cashQ1narrative cannot enter JSON-onlynativeparser and selectedcashlatest2023-12-31 despite available2025-03-31. Measurement-owned readable latest/comparable selection must connect at existing boundedselector,withoutglobalpriority/schema/Registry changes. BasicInfoallresolvedpartial/newsunknown. F7prompt local17safe but originalfreshcomplete0of1/mirrornot_exercised remains;fullF10/Slow/direction+magnitudeadmission+reuse/wholeloop remainopen;benefitlaterunknown. BURUbaseline/FTItype/MSclock/transcriptproof andretrospectivefinancialprimaryaudit limits unchanged."
+      "remaining": "Actual deterministic input connection verified for default6/6 and latest9/9 within10, not Signal arithmetic/model semantics or wholeF5. Allfinancial-source membership8/9 and9/9;defaultLLM cashratio latestQ1 stillmissing withgenericselection unchanged.115connected tests2fail12errors expose issuer-bound fixtureproducer migration gap including seed capabilityaudit; strict consumer gate stays. Source57/4/53 and1780view preserve history; original40 readiness670/720 each is earlier1776-view evidence. BasicInfo partial/newsunknown;F7prompt17safe but originalfresh0/1/mirrorunexercised remain. F10/Slow/direction+magnitude discovery/admission/exactreuse/fullclosedloop unverified. BURUbaseline/FTItype/MSclock/transcriptpublictimeproof/retrospectivefinancialprimaryaudit limits persist;benefitlaterunknown."
     },
     {
       "id": "feedback_consumption",
@@ -940,17 +947,40 @@
         "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/root-cash-readability-result.json"
       ],
       "result": "Sole263d16ab/planb5b6002f execute119.682473s/exit0:57fullproducts/53retained/4newcapturecanonicalappend+4samecapturereplayFalse;16493oldglobalbytes/1781oldrows preserved,new1785review/1780view. Independent22510uniqueSHA/1857terminalfiles/fullcanonical/actualspans+projectionschecked. Both exact18groups17resolved,newsunavailable. Eachfinancial9 only2selecttypedQ1;cashalsoselectsQ1HTML but nativeJSON-onlyparserignoresit. Rootpureparserprovesselectedcashlatest2023-12-31USD vs availabletyped2025-03-31USD;noSignalexecuted. BasicInfo3resolved/1newsunknown,17projections,source15/model17omissionmarkers,allresolvedpartial.0GET/model/labels/apply/fullprepare,nostagerestore/reentry. Captureidentity/sourceadmissionfamilyverified;latestreadableperiodconsumercoverage/F5/F7/MVPnotclosed. F7prompt17safe/oldsemantic0of1unchanged;newactualinputgapprioritizedbeforefreshLLM."
+    },
+    {
+      "id": "engineering-mvp-callable-input-selection-actual-20261021",
+      "strategy": "callable_owned_readable_basis_preservation_within_existing_limit",
+      "failure_families": [
+        "readable_latest_financial_period_displaced_at_document_limit",
+        "harmful_optional_fill_abandons_feasible_measurement_basis",
+        "selector_typed_identity_and_mutable_alias_leak"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/gpre-readable-period-selection-20261021.md",
+        "runs/diagnostics/measurement_input_selection_20261021_v1/result.json",
+        "runs/diagnostics/measurement_input_selection_20261021_v1/independent/actual-results.json",
+        "runs/diagnostics/financial_input_selection_boundary_20261021_v1/final-review.json",
+        "runs/diagnostics/document_selector_identity_boundary_20261021_v1/final-results.json",
+        "runs/diagnostics/measurement_input_selection_20261021_v1/root-final-focused-tests.json",
+        "runs/diagnostics/financial_input_selection_20261021_v1/head-issuer-baseline-result.json",
+        "runs/diagnostics/financial_input_selection_20261021_v1/issuer-fixture-diagnosis/evidence-summary.json"
+      ],
+      "result": "Spec-first shared pure operand/failure helpers preserve actual numeric semantics;159 offline old/new outputs/exceptions equal. Two initial dominance capability counterexamples now resolve with the same basis within10; callback prehash/deepcopy/remap rejects metadata drift. New native input-only plan9c9b5eaf/4265bindings unique run23.754913s exit0 on qualified1780view: default6of6 and latest9of9 deterministic refs select typedQ1, allfinancialsource8of9 and9of9, changed6/7sets, both17of18/newsunknown, LLM orderedIDs unchanged. Independent all4265/25actualoriginals/cashparser old2023-12-31USD versusnew2025-03-31USD passed.0GET/model/labels/Signalapply/append/fullprepare, no oldstage reentry. New11+financial28+resolver51+boundary8=98 pass;115connected suite retains2fail12errors at issuer fixtures, including productionseed capabilityaudit. Exact oldHEAD library independently reproduces all14failed nodes(2fail12errors), with current dependencies preloaded; not an oldwhole115-suite pass. FullF5/F7/MVP remainopen;defaultLLM cashratio gap and fixtureproducer are explicit next prerequisites."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-gpre-capture-actual-consumption-20261021",
+    "after_iteration": "engineering-mvp-callable-input-selection-actual-20261021",
     "evidence": [
-      "reports/reviewed-gpre-capture-snapshot-20261021.md",
       "reports/gpre-readable-period-selection-20261021.md",
-      "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/result.json",
-      "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/driver-execute-v1/execution-summary.json",
-      "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/actual-stage-review.json",
-      "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/root-cash-readability-result.json"
+      "runs/diagnostics/measurement_input_selection_20261021_v1/result.json",
+      "runs/diagnostics/measurement_input_selection_20261021_v1/independent/actual-results.json",
+      "runs/diagnostics/financial_input_selection_boundary_20261021_v1/final-review.json",
+      "runs/diagnostics/document_selector_identity_boundary_20261021_v1/final-results.json",
+      "runs/diagnostics/measurement_input_selection_20261021_v1/root-final-focused-tests.json",
+      "runs/diagnostics/financial_input_selection_20261021_v1/head-issuer-baseline-result.json",
+      "runs/diagnostics/financial_input_selection_20261021_v1/issuer-fixture-diagnosis/evidence-summary.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1004,22 +1034,25 @@
       "The bounded adapter initial source loader passed serialized str paths to a Path-only reader. Mocked _source tests and native budget/assembler probes did not cover real metadata entry; first formalprepare failed before plan/root creation. One local reader normalizes strings/Path; exact old plan and review failures plus real5979-binding read chain now verify the family, without changing sample/oracle/budget or erasing first failure.",
       "The first fresh residual preserved300char limit, exact mirror, five needs and evidence ownership but narrowed broad covenant inquiry to terms, omitting compliance after the disclosed interim through cutoff. Earlier mirror tests protected typed scope and count; latest3 controls covered share-basis facets, not one topic with static terms versus time-varying state. Exact downstream preservation faithfully propagates semantic loss; Predictor caveat is not restoration of the missing need.",
       "The temporary capture consumer fixture had two products below the ten-document ceiling. Full57/59 eligible actual inputs expose word-frequency ranking displacing structured Q1, despite allsource qualifications and17of18resolved. Minimum source/period counts and a latest narrative selected do not prove the actual hard parser can read the latest measurement operands.",
-      "The source-stage candidate initially created its marker before rejecting a protected destination. Exact old bytes and temporary negative controls preserved this ordering gap; current destination and bound-plan checks precede writes. Source-layer15 omission markers and model-layer17 after projection are separate counts, both preserved."
+      "The source-stage candidate initially created its marker before rejecting a protected destination. Exact old bytes and temporary negative controls preserved this ordering gap; current destination and bound-plan checks precede writes. Source-layer15 omission markers and model-layer17 after projection are separate counts, both preserved.",
+      "Dataclass equality after a callback misses typed true/1 and1/1.0 changes; postcallback hashing also misses aliased nested mutation. Isolate candidates and bind complete records before the callback, then remap validated IDs.",
+      "Fullpool/subset equality alone made the first candidate fail closed on a feasible one-doc basis when optional filling altered dominance, or lose a necessary nonoperand witness. Capability counterexamples require safe filling/bounded witness-preserving reduction as well as rejection.",
+      "Source issuer hardening was not followed through shipped capability fixtures and downstream numeric/card fixtures. The new115-test connected check exposes2fail12errors; prior focused successes must not stand for this producer/consumer chain. Default v6 also contains three LLM financial refs: its deterministic denominator is6, not9."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "repair",
-      "strategy": "measurement_owned_readable_period_selection_via_existing_callback",
-      "action": "Spec-first connect the actual deterministic callable readable schemas/operands/latest-comparable periods to the existing pure select_documents callback used after fullPITfilter/dedup and before the10documentlimit. Reuse native fact/period helpers and validate selector membership/bounds. First originalGPRE and longoldannualfrequency variants plus no-latest-tag/incompatibleunit/missingcomparison counterexamples, then one frozen input-only native consumer check against the completed1780view. Keep generic ranking/fallback unchanged for unaffected or unknown callables; no canonicalfield/Registry/source/measurementdefinition change. Do not resume source stage or run Signals/LLMs/fullsuccessor while the input gap remains. F7fresh follows only after readable input connection verification.",
-      "stop": "No source/oldID/publictime/body rewrite;no fullsource/oldstage reentry;no global recency-first switch/prose-parsed measurement contract/hardcoded company or Signal IDs;no expanded lookback/maxdocs;no invented missing operands/units/periods;no prediction/gain claim from input selection. If existing callable semantics or selector authority cannot determine a faithful bounded set, retain explicit gap and resolve that concrete contract instead of silently widening interfaces.",
-      "question": "Can the existing callable-owned selector retain the latest readable operands and necessary comparable periods within10 legal documents while preserving generic behavior, exact versions, missing states and all PIT/unit boundaries?",
-      "pass": "Originalcash selected input now contains parseable2025-03-31 USD fact instead of silently stopping at2023-12-31, comparable financial controls retain their required operands/periods, non-financial and explicit historical requests remain faithful, and absent/incompatible operands remain gaps. Actual frozen native prepare_inputs consumes those exact retained records with budgets/refs unchanged; no value or model behavior inferred from selection.",
-      "fail": "Latest/readable inputs still displaced;selector invents or loses comparisons,changes units/time scope,returns outsideeligible documents,exceeds10,or perturbs unrelated/historical selection without an explicit contract.",
-      "on_pass": "Record bounded actualF5input advance and remaining limits; return to predetermined freshF7 original/variant/sufficient-answer controls with independent semantic expectations. Do not authorize a fullFastSlow successor until remaining named gates hold.",
-      "on_fail": "Preserve exactrequest/candidate/selected traces and counterexample; isolate missing callable/inputcontract versus ranking mechanism, stop that repair strategy or resolve the specific substantive design choice. No repeatedfullrun or largerlimits.",
-      "new_evidence": "Actualsourcephase admitted completeGPRE57 but actualfinancialrequests2of9typedQ1selectedeach. CashselectedQ1narrative is ignored bynative_sec_facts; rootnativepureparser proves selectedlatestcash2023-12-31 versus eligible2025-03-31USD. Driverpurefilter/rank/select reproduces all18savedoutputs eachgroup; sevenstructuredQ1candidates fall beyond10 due oldlongdocumenttermcounts. Independentfull22510SHA/source/consumer audit passed.",
-      "distinguishing_variable": "Measurement-readable latest/comparable operand preservation through existing selector versus unchanged generic term-frequency selection on the same completePITcandidatepool; representative long-old-text, missinglatestoperand, unit and comparison controls distinguish accidental admission/count gains.",
-      "authorization_evidence": "User active engineeringMVP goal and request to iteratively fix applicable families; original latest/comparable measurement definitions and callable-owned existing selector are preserved. Capture-version approval covered the completed source-only phase; this next repair does not change sourceidentity/PIT/Registry/canonical schema or invoke externalLLM APIs."
+      "kind": "diagnose",
+      "strategy": "issuer_bound_fixture_producer_before_fresh_semantic_stage",
+      "action": "Trace shipped catalog and audit fixture construction through strict SEC issuer validation and connected numeric/card fixture builders. Distinguish invalid synthetic fixture inputs from runtime regression using precise old/current evidence; prepare the minimum spec-first correction for future valid fixtures while preserving published/frozen versions and the strict issuer gate. Keep the remaining defaultLLM cashratio selection gap explicit; do not substitute latestRegistry for default. No source-stage reentry, fresh model or full successor during this prerequisite diagnosis.",
+      "stop": "No invented real issuer identity, strict-gate bypass, historical fixture/spec rewrite, default/latest denominator merging, schema/measurement/PIT change or all-green claim by excluding failed checks. If a substantive identity/version contract choice is required, prepare the concrete alternatives rather than silently changing it.",
+      "question": "Do the remaining connected failures originate in fixture producers that omit explicit issuer identity required by the already strict consumer, and can future valid positive fixtures be produced without rewriting historical versions or weakening source validation?",
+      "pass": "Exact fixture paths/bodies/metadata and native audit/result failures identify missing issuer authority; a concrete construction/version correction preserves intended measurements and wrong-issuer rejection while restoring valid positive controls.",
+      "fail": "Failures persist with explicitly valid identity or require altering frozen definitions/real-source qualification, indicating a different runtime/contract defect.",
+      "on_pass": "Implement the scoped owning-spec/fixture-producer correction, verify positive controls and wrong/missing-issuer counterexamples through native audit and connected tests; then return to bounded freshF7 controls and remaining LLM input coverage.",
+      "on_fail": "Preserve exact failed payloads and isolate the first contradictory boundary before any model or whole-cycle run; request only a genuine unresolved substantive decision.",
+      "new_evidence": "Native input-only correction and independent4265binding audit pass, but115connected tests retain2fail12errors at SEC opaque-company issuer binding. Production seeded capabilityaudit also fails on its financial schema fixtures; all14failing nodes reproduce using the exact oldHEAD library with current dependencies preloaded; this is not a whole old115-suite replay. Six shipped seed fixtures have no body/metadataCIK.",
+      "distinguishing_variable": "Explicit fixture issuer declaration and fixture construction/version lineage versus unchanged strict SEC consumer validation, using identical measurement values and wrong/missing-issuer negatives.",
+      "authorization_evidence": "Active user Fast/Slow engineeringMVP goal authorizes source-backed diagnosis and systemic repairs; external LLM APIs remain forbidden, production semantic roles remain independent exact-inbox subagents. This diagnosis does not resume old experiments or authorize a full successor."
     }
   },
   "successor_prerequisites": [

@@ -1,0 +1,17 @@
+{
+  "selectors": [
+    "tests.test_signal_financials",
+    "tests.test_data_resolution",
+    "tests.test_document_selector_identity_boundary"
+  ],
+  "tests": 87,
+  "success": true,
+  "failures": 0,
+  "errors": 0,
+  "tripwires": {
+    "network": 0,
+    "labels": 0,
+    "real_store": 0,
+    "fullprepare": 0
+  }
+}

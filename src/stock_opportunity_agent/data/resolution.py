@@ -10,12 +10,14 @@ import math
 import threading
 import os
 import re
+from copy import deepcopy
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol
 
+from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.data.markup import nonvisible_html_ranges
 from stock_opportunity_agent.data.point_in_time import utc_day_of_instant
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
@@ -1714,18 +1716,25 @@ class EvidenceResolver:
             selected = _select_required_source_documents(ranked, request)
         else:
             try:
-                selected = list(select_documents(tuple(ranked), request))
                 available = {item.document_id: item for item in ranked}
+                original_records = {
+                    item.document_id: canonical_json_hash(item.to_dict()) for item in ranked
+                }
+                selected = list(select_documents(deepcopy(tuple(ranked)), request))
                 selected_ids = [item.document_id for item in selected]
                 if (
                     len(selected) > request.max_documents
                     or len(set(selected_ids)) != len(selected_ids)
-                    or any(available.get(item.document_id) != item for item in selected)
+                    or any(not isinstance(item, RawInfoDocument)
+                           or item.document_id not in original_records
+                           or canonical_json_hash(item.to_dict()) != original_records[item.document_id]
+                           for item in selected)
                 ):
                     raise _DocumentSelectionError(
                         "Document selector must return unique unchanged eligible "
                         "documents within the request limit"
                     )
+                selected = [available[document_id] for document_id in selected_ids]
             except _DocumentSelectionError:
                 raise
             except Exception as exc:

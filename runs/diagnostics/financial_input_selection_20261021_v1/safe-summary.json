@@ -1,0 +1,82 @@
+{
+  "GETs": 0,
+  "GPRE": {
+    "LLM_selected_ID_order_unchanged": true,
+    "exact_default_deterministic": 6,
+    "exact_latest_deterministic": 9,
+    "source_only": true,
+    "typed_Q1_all_financial_membership_default": 8,
+    "typed_Q1_all_financial_membership_latest": 9
+  },
+  "actual_stage_reentry": false,
+  "bindings_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "2676fef24ccc0fa8e40b6adb1f3fee7022bb5839db5cfe3be41427c5755de662"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py",
+      "sha256": "8334dc0f1e994555e4af5063476d75cad0bf51e8c9894062429f38738f357324"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "bc3eaae3e96cec370ed0094a9a51d5928e181f5c2a40b22faf0557083ce28ae0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/resolution.md",
+      "sha256": "89351b88124e75564b3e00854c00fc57056bbbc7ac6699a999f69642401844c8"
+    }
+  ],
+  "bindings_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "2676fef24ccc0fa8e40b6adb1f3fee7022bb5839db5cfe3be41427c5755de662"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py",
+      "sha256": "8334dc0f1e994555e4af5063476d75cad0bf51e8c9894062429f38738f357324"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "bc3eaae3e96cec370ed0094a9a51d5928e181f5c2a40b22faf0557083ce28ae0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/resolution.md",
+      "sha256": "89351b88124e75564b3e00854c00fc57056bbbc7ac6699a999f69642401844c8"
+    }
+  ],
+  "bindings_unchanged": true,
+  "card": 6,
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_signal_measurement_input_selection",
+    "tests.test_signal_financials",
+    "tests.test_signal_card_measurement_scope",
+    "-v"
+  ],
+  "exit_code": 1,
+  "expected_tests": 45,
+  "fullprepare": false,
+  "initial_test_fixture_correction": "First new9 run tool b506af had one nonexistent NumericMeasurement.period property assertion; corrected to period_end, no production behavior change.",
+  "labels": false,
+  "legacy_financial": 28,
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_20261021_v1/focused-tests.log",
+    "sha256": "89dada0d87d762c00e68191ae1e81394cc7970721e3c6a30b4facb506027dc59"
+  },
+  "models": 0,
+  "new_global_append": false,
+  "new_tests": 11,
+  "synthetic_only_numeric_consumers": true,
+  "wall_seconds": 12.35395275009796
+}

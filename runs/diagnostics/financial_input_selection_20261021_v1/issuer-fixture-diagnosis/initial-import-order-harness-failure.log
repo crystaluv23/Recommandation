@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "<stdin>", line 7, in <module>
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/__init__.py", line 24, in <module>
+    from stock_opportunity_agent.orchestration import ColdStartRunOutput, run_cold_start_case_learning
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/orchestration.py", line 21, in <module>
+    from stock_opportunity_agent.memory.playbooks import FilePlaybookLibrary
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/__init__.py", line 3, in <module>
+    from stock_opportunity_agent.memory.playbooks import FilePlaybookLibrary
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/playbooks.py", line 11, in <module>
+    from stock_opportunity_agent.research.playbooks import (
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/__init__.py", line 89, in <module>
+    from stock_opportunity_agent.research.scheme_evolution import (
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/scheme_evolution.py", line 3, in <module>
+    from stock_opportunity_agent.research.evolution_core import *  # noqa: F403
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 45, in <module>
+    from stock_opportunity_agent.signal_library import (
+ImportError: cannot import name 'FrozenSignalRegistry' from 'stock_opportunity_agent.signal_library' (src/stock_opportunity_agent/signal_library.py)

@@ -131,6 +131,77 @@ text remains an auditable explanation and is never parsed as executable logic.
 This module is separate from `signals.py`, whose existing rules measure fixed
 `ResearchPacket` features for the older cold-start path.
 
+## Callable-owned financial input selection
+
+For deterministic SEC financial functions, input preparation uses the actual
+final callable in `SignalExecutor.deterministic_functions`, including overrides.
+A callable may declare a lightweight `__signal_input_facts__` pure helper. The
+same helper owns operand/fact/period selection inside that numeric function;
+it is not a second approximate rule inferred from Signal IDs, descriptions,
+comparison prose, categorical results or a temporary execution of the Signal.
+This is runtime callable metadata, not a canonical Signal field or Registry.
+LLM functions and unknown/undeclared callables preserve generic selection.
+
+The helper reuses the actual SEC parsers and existing tag, currency, dominance,
+instant, duration and comparable-period algorithms. Separate matching from
+arithmetic only: thresholds, units, freshness, zero/missing denominators,
+unsupported facts, partial coverage and unavailable behavior remain owned by
+the current function and unchanged. A latest-supported pair must not be
+silently redefined as an arbitrary mandatory quarter or fiscal year. Current
+facts and older legitimate comparison facts can both be required.
+
+`_resolve_input` supplies the existing resolver `select_documents` callback for
+that declared callable. It receives only the complete already PIT/type/lookback
+filtered and content-deduplicated ranked pool. Prioritize the original documents
+of the helper-selected operands, then reuse required-source/period selection and
+generic ranking to fill remaining positions. Keep the ten-document ceiling,
+all unchanged eligible members, source-group requirements and generic fallback;
+do not globally switch query relevance to recency or widen the source window.
+A latest HTML report is not a substitute for typed facts when the actual
+calculator accepts only the two SEC Company Facts JSON schemas.
+
+Before returning a bounded subset, recompute the same pure helper on that
+subset in original ranked order. Require the identical full-pool operand and
+failure identity (source document, exact fact span/value, tag, unit, start/end,
+filed context and precise unavailable reason), and retain every operand source.
+This protects canonical-total, conflict and currency decisions from changed
+context after truncation. Preserve latest unmatched operands, zero denominators
+and stale-current facts when those determine the failure; never reduce every
+failure to an indistinguishable empty basis.
+
+Ordinary filling must not destroy a feasible measurement basis. If the minimal
+operand subset already preserves the full basis and existing retrieval contract,
+keep it and add only ranked documents that preserve both. Otherwise retain the
+full-pool basis witnesses and deterministically try deleting nonoperand sources
+in reverse rank order, at most one pass over candidates, only when the same
+basis and source/period/observation contract remain. Stop at the existing limit;
+this is not combination search. This preserves necessary nonoperand dominance,
+currency and comparable-period witnesses as well as operands. Only when this
+bounded reduction cannot preserve the basis within the limit return an empty
+selection through the existing acquisition/unresolved path. Do not silently
+execute an older/different basis, increase the limit, or construct a replacement
+result inside selection. A full pool with missing operands cannot become a
+successful different measurement by truncating its conflicting context.
+Malformed declared metadata retains the resolver's typed callback failure even
+below the limit. Basis shape is checked when the helper actually participates
+in bounded selection; below the limit the complete original consumer validation
+path remains unchanged.
+
+Both `prepare_inputs` and `execute_batch` use this one producer path. Persisted
+resolution refs/events/coverage describe the actual selected sources; resolved
+status alone does not establish a latest-period or valid measurement. Existing
+document-ID/content fingerprints remain the cache identity: unchanged selected
+sets retain no-op behavior, while newly selected current facts invalidate the
+prior fingerprint and require the existing exact-version execution. No prior
+frozen results, refs, source captures or cache records are rewritten.
+
+Offline acceptance covers the actual GPRE 59/57 eligible source pools and exact
+v6/v12 specs, more than ten long old high-frequency documents, preserved older
+comparisons, missing current concepts, incompatible units and incomplete pairs,
+actual override/unknown fallback, bounded callback membership, and fingerprint
+change versus unchanged-set no-op. Numeric consumers must use the same operand
+helper; source selection alone never establishes research benefit.
+
 ## Source-owned numeric measurement contract
 
 A newly computed deterministic numeric result carries an optional `measurement`

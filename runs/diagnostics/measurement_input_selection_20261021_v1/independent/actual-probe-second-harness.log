@@ -1,0 +1,10 @@
+PASS all4265 frozen bindings at audit start, exact plan and terminal markers
+PASS default_v6 actual IDs, canonical originals, exact versions, PIT/capacity/order; {"resolved": 17, "refs": 18, "deterministic_financial": 6, "deterministic_typed_q1_selected": 6, "financial_source_requests": 9, "financial_source_typed_q1_selected": 8, "changed_sets": 6}
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/independent/actual-probe.py", line 72, in <module>
+    spec=SignalSpec.from_dict(read(specbinding['path']));function=spec.function;assert function==row['function']
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/independent/actual-probe.py", line 13, in read
+    path=Path(path);assert 'minimal_rounds_v182_integrated' not in str(path),'Mixed origin JSON forbidden'
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Mixed origin JSON forbidden

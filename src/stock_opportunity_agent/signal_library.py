@@ -27,6 +27,8 @@ from stock_opportunity_agent.data.resolution import (
     EvidenceResolver,
     RawInfoRequest,
     RawInfoResolution,
+    _select_required_source_documents,
+    _retrieval_contract_coverage,
     source_types_compatible,
 )
 from stock_opportunity_agent.llm.agent import AgentUsage
@@ -3516,6 +3518,12 @@ class SignalExecutor:
         as_of: datetime,
         identity: Mapping[str, Any] | None,
     ) -> RawInfoResolution:
+        selection = {}
+        if spec.execution_type is SignalExecutionType.DETERMINISTIC:
+            function = self.deterministic_functions.get(str(spec.function))
+            selector = _measurement_input_selector(spec, function, as_of)
+            if selector is not None:
+                selection["select_documents"] = selector
         return self.resolver.resolve(
             RawInfoRequest(
                 request_id=f"signal:{spec.ref}",
@@ -3536,6 +3544,7 @@ class SignalExecutor:
             company_id=company_id,
             identity=dict(identity or {}),
             as_of=as_of,
+            **selection,
         )
 
 
@@ -3706,6 +3715,85 @@ def signal_parameter_names(*names: str) -> Callable[[DeterministicSignalFunction
     return declare
 
 
+def signal_input_facts(helper: Callable[..., Any]) -> Callable[[DeterministicSignalFunction], DeterministicSignalFunction]:
+    """Declare the pure operand helper also used by this actual numeric callable."""
+    if not callable(helper):
+        raise ValidationError("Signal input facts helper must be callable")
+
+    def declare(function: DeterministicSignalFunction) -> DeterministicSignalFunction:
+        function.__signal_input_facts__ = helper
+        return function
+
+    return declare
+
+
+def _measurement_input_selector(spec, function, as_of):
+    helper = getattr(function, "__signal_input_facts__", None)
+    if helper is None:
+        return None
+    def select(ranked, request):
+        if not callable(helper):
+            raise ValidationError("Signal input facts helper must be callable")
+        # No information is discarded below the limit. Keep the original consumer
+        # validation/technical failure path instead of parsing facts prematurely.
+        if len(ranked) <= request.max_documents:
+            return _select_required_source_documents(list(ranked), request)
+        basis = helper(spec, ranked, as_of)
+        if not isinstance(basis, _SecInputBasis):
+            raise ValidationError("Signal input facts helper returned an invalid basis")
+        needed = {fact.document.document_id for fact in basis.facts}
+        eligible = {document.document_id for document in ranked}
+        if not needed <= eligible:
+            raise ValidationError("Signal input facts helper referenced an ineligible source")
+        if len(needed) > request.max_documents:
+            return ()
+        prioritized = [d for d in ranked if d.document_id in needed]
+        prioritized.extend(d for d in ranked if d.document_id not in needed)
+        selected = _select_required_source_documents(prioritized, request)
+        selected_ids = {d.document_id for d in selected}
+        # Return/reparse in original ranked order, preserving tie/context order.
+        selected = [d for d in ranked if d.document_id in selected_ids]
+        def preserves(values):
+            subset = helper(spec, tuple(values), as_of)
+            if not isinstance(subset, _SecInputBasis):
+                raise ValidationError("Signal input facts helper returned an invalid basis")
+            return _input_basis_identity(basis) == _input_basis_identity(subset)
+
+        if needed <= selected_ids and preserves(selected):
+            return selected
+        minimal = [d for d in ranked if d.document_id in needed]
+        if preserves(minimal) and _retrieval_contract_coverage(minimal, request)["contract_satisfied"]:
+            # A harmful filler is optional; never throw away a feasible basis
+            # merely because ordinary relevance filling would alter it.
+            safe = list(minimal)
+            for document in ranked:
+                if len(safe) >= request.max_documents:
+                    break
+                if document.document_id not in needed:
+                    ids = {d.document_id for d in safe} | {document.document_id}
+                    candidate = [d for d in ranked if d.document_id in ids]
+                    if preserves(candidate):
+                        safe = candidate
+            return safe
+        # Context outside the operands can establish dominance/currency/basis.
+        # One deterministic deletion pass retains such witnesses; no search tree.
+        reduced = list(ranked)
+        for document in reversed(ranked):
+            if len(reduced) <= request.max_documents:
+                break
+            if document.document_id in needed:
+                continue
+            candidate = [d for d in reduced if d.document_id != document.document_id]
+            if _retrieval_contract_coverage(candidate, request)["contract_satisfied"] and preserves(candidate):
+                reduced = candidate
+        if len(reduced) <= request.max_documents:
+            return reduced
+        # Reuse the resolver's existing empty-selection acquisition/gap path.
+        return ()
+
+    return select
+
+
 def signal_measurement_scope(
     spec: SignalSpec, *,
     deterministic_functions: Mapping[str, DeterministicSignalFunction] | None = None,
@@ -3855,7 +3943,168 @@ _SHARE_COUNT_TAGS = (
 )
 
 
+@dataclass(frozen=True)
+class _SecInputBasis:
+    """Local pure operand/failure context, never a serialized Signal contract."""
+
+    facts: tuple[_SecFact, ...] = ()
+    unavailable_reason: str | None = None
+
+
+def _input_basis_identity(basis):
+    return (basis.unavailable_reason, tuple((fact.document.document_id,
+        fact.document.content_hash, fact.exact_span, fact.tag, fact.unit,
+        fact.start, fact.end, fact.filed, fact.form, fact.value) for fact in basis.facts))
+
+
+def _revenue_growth_input_facts(spec, documents, as_of):
+    series = _canonical_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
+    pair = _latest_yoy_pair(series)
+    if pair is None or pair[1].value == 0:
+        return _SecInputBasis(tuple(pair or ()), "Comparable SEC revenue periods were unavailable.")
+    if not _current_sec_fact_is_fresh(spec, pair[0], as_of):
+        return _SecInputBasis(tuple(pair), f"Latest supported SEC revenue period ended {pair[0].end} and is stale.")
+    return _SecInputBasis(tuple(pair))
+
+
+def _revenue_acceleration_input_facts(spec, documents, as_of):
+    series = _canonical_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
+    pairs = _yoy_pairs(series)
+    if len(pairs) < 2:
+        return _SecInputBasis(tuple(f for pair in pairs for f in pair), "Two comparable SEC revenue growth periods were unavailable.")
+    current = pairs[0]
+    if not _current_sec_fact_is_fresh(spec, current[0], as_of):
+        return _SecInputBasis(tuple(current), f"Latest supported SEC revenue period ended {current[0].end} and is stale.")
+    prior = next((pair for pair in pairs[1:] if pair[0].end < current[0].end
+                  and pair[0].unit.casefold() == current[0].unit.casefold()), None)
+    facts = (*current, *(prior or ()))
+    if prior is None or current[1].value == 0 or prior[1].value == 0:
+        return _SecInputBasis(facts, "Revenue acceleration history was incomplete.")
+    return _SecInputBasis(facts)
+
+
+def _gross_margin_input_facts(spec, documents, as_of):
+    facts = _sec_facts(documents, as_of)
+    revenues = _canonical_series(facts, _REVENUE_TAGS)
+    gross = _canonical_series(facts, ("GrossProfit",))
+    by_period = {(f.start, f.end, f.unit.casefold()): f for f in gross}
+    margins = [(r, by_period[(r.start, r.end, r.unit.casefold())]) for r in revenues
+               if (r.start, r.end, r.unit.casefold()) in by_period and r.value != 0]
+    margins.sort(key=lambda pair: pair[0].end, reverse=True)
+    if len(margins) < 2:
+        return _SecInputBasis(tuple(f for pair in margins for f in pair), "Comparable SEC gross-margin periods were unavailable.")
+    current = margins[0]
+    if not _current_sec_fact_is_fresh(spec, current[0], as_of):
+        return _SecInputBasis(current, f"Latest matched SEC gross-margin period ended {current[0].end} and is stale.")
+    prior = next((pair for pair in margins[1:] if _comparable_duration(current[0], pair[0])), None)
+    if prior is None:
+        return _SecInputBasis(current, "Comparable SEC gross-margin periods were unavailable.")
+    return _SecInputBasis((*current, *prior))
+
+
+def _operating_margin_input_facts(spec, documents, as_of):
+    facts = _sec_facts(documents, as_of)
+    revenues = _canonical_series(facts, _REVENUE_TAGS)
+    cash_flows = _canonical_series(facts, _OPERATING_CASH_FLOW_TAGS, dominance=False)
+    by_period = {(f.start, f.end, f.unit.casefold()): f for f in cash_flows}
+    pairs = [(r, by_period[(r.start, r.end, r.unit.casefold())]) for r in revenues
+             if (r.start, r.end, r.unit.casefold()) in by_period and r.value > 0]
+    pairs.sort(key=lambda pair: pair[0].end, reverse=True)
+    if not pairs:
+        return _SecInputBasis((), "Matching SEC operating-cash-flow and positive-revenue periods were unavailable.")
+    latest = pairs[0]
+    if not _current_sec_fact_is_fresh(spec, latest[0], as_of):
+        return _SecInputBasis(latest, f"Latest matched SEC operating-cash-flow period ended {latest[0].end} and is stale.")
+    return _SecInputBasis(latest)
+
+
+def _share_input_facts(spec, documents, as_of):
+    pair = _latest_share_yoy_pair(_share_duration_series(_sec_facts(documents, as_of)))
+    if pair is None:
+        return _SecInputBasis((), "Comparable point-in-time SEC weighted-average share periods were unavailable.")
+    if not _current_sec_fact_is_fresh(spec, pair[0], as_of):
+        return _SecInputBasis(pair, f"Latest comparable SEC share period ended {pair[0].end} and is stale.")
+    return _SecInputBasis(pair)
+
+
+def _cash_input_facts(spec, documents, as_of):
+    facts = [f for f in _sec_facts(documents, as_of) if f.tag in _CASH_TAGS and f.start is None]
+    if not facts:
+        return _SecInputBasis((), "Point-in-time SEC cash balance was unavailable.")
+    latest = max(facts, key=lambda f: (f.end, f.filed, f.document.document_id))
+    if not _current_sec_fact_is_fresh(spec, latest, as_of):
+        return _SecInputBasis((latest,), f"Latest SEC cash balance ended {latest.end} and is stale.")
+    return _SecInputBasis((latest,))
+
+
+def _cash_liability_input_facts(spec, documents, as_of):
+    facts = _sec_facts(documents, as_of)
+    cash = _instant_series(facts, _CASH_TAGS)
+    liabilities = _instant_series(facts, _CURRENT_LIABILITIES_TAGS)
+    by_period = {(f.end, f.unit.casefold()): f for f in liabilities}
+    pairs = [(f, by_period[(f.end, f.unit.casefold())]) for f in cash
+             if (f.end, f.unit.casefold()) in by_period and by_period[(f.end, f.unit.casefold())].value > 0]
+    if not pairs:
+        return _SecInputBasis((), "Matching SEC cash and positive current-liabilities instant facts were unavailable.")
+    pair = max(pairs, key=lambda pair: (pair[0].end, pair[0].unit.casefold() == "usd",
+                                       pair[0].filed, pair[0].document.document_id))
+    if not _current_sec_fact_is_fresh(spec, pair[0], as_of):
+        return _SecInputBasis(pair, f"Latest matched SEC liquidity period ended {pair[0].end} and is stale.")
+    return _SecInputBasis(pair)
+
+
+def _cash_flow_cash_input_facts(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> _SecInputBasis:
+    """Match latest operating cash flow with the closest prior cash instant."""
+
+    facts = _sec_facts(documents, as_of)
+    tag_priority = {
+        tag: index for index, tag in enumerate(_OPERATING_CASH_FLOW_TAGS)
+    }
+    cash_flows = [
+        fact
+        for fact in facts
+        if fact.tag in tag_priority
+        and fact.start is not None
+        and re.fullmatch(r"[A-Za-z]{3}", fact.unit) is not None
+    ]
+    if not cash_flows:
+        return _SecInputBasis((), "SEC operating-cash-flow duration facts were unavailable.")
+    cash_flow = max(
+        cash_flows,
+        key=lambda fact: (
+            fact.end,
+            fact.unit.casefold() == "usd",
+            -tag_priority[fact.tag],
+            fact.filed,
+            fact.document.document_id,
+        ),
+    )
+    if not _current_sec_fact_is_fresh(spec, cash_flow, as_of):
+        return _SecInputBasis((cash_flow,), f"Latest SEC operating-cash-flow period ended {cash_flow.end} and is stale.")
+    cash_candidates = [
+        fact
+        for fact in _instant_series(facts, _CASH_TAGS)
+        if fact.end <= cash_flow.end
+        and fact.unit.casefold() == cash_flow.unit.casefold()
+        and fact.value > 0
+    ]
+    if not cash_candidates:
+        return _SecInputBasis((cash_flow,), "A positive same-currency SEC cash instant at or before the latest operating-cash-flow period end was unavailable.")
+    cash = max(
+        cash_candidates,
+        key=lambda fact: (fact.end, fact.filed, fact.document.document_id),
+    )
+    if not _current_sec_fact_is_fresh(spec, cash, as_of):
+        return _SecInputBasis((cash_flow, cash), f"Latest matched SEC cash balance ended {cash.end} and is stale.")
+    return _SecInputBasis((cash_flow, cash))
+
+
 @signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_input_facts(_revenue_growth_input_facts)
 def _revenue_growth_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -3874,15 +4123,10 @@ def _revenue_growth_signal(
     bounds current SEC period age; older comparative periods remain allowed.
     """
 
-    series = _canonical_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
-    pair = _latest_yoy_pair(series)
-    if pair is None or pair[1].value == 0:
-        return _unavailable_result(spec, "Comparable SEC revenue periods were unavailable.")
-    current, previous = pair
-    if not _current_sec_fact_is_fresh(spec, current, as_of):
-        return _unavailable_result(
-            spec, f"Latest supported SEC revenue period ended {current.end} and is stale."
-        )
+    basis = _revenue_growth_input_facts(spec, documents, as_of)
+    if basis.unavailable_reason is not None:
+        return _unavailable_result(spec, basis.unavailable_reason)
+    current, previous = basis.facts
     value = current.value / previous.value - 1.0
     return _numeric_result(
         spec,
@@ -3899,6 +4143,7 @@ def _revenue_growth_signal(
 
 
 @signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_input_facts(_revenue_acceleration_input_facts)
 def _revenue_acceleration_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -3916,24 +4161,10 @@ def _revenue_acceleration_signal(
     SEC period age; older comparative periods remain allowed.
     """
 
-    series = _canonical_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
-    pairs = _yoy_pairs(series)
-    if len(pairs) < 2:
-        return _unavailable_result(spec, "Two comparable SEC revenue growth periods were unavailable.")
-    current_pair = pairs[0]
-    if not _current_sec_fact_is_fresh(spec, current_pair[0], as_of):
-        return _unavailable_result(
-            spec,
-            f"Latest supported SEC revenue period ended {current_pair[0].end} and is stale.",
-        )
-    prior_pair = next(
-        (pair for pair in pairs[1:]
-         if pair[0].end < current_pair[0].end
-         and pair[0].unit.casefold() == current_pair[0].unit.casefold()),
-        None,
-    )
-    if prior_pair is None or current_pair[1].value == 0 or prior_pair[1].value == 0:
-        return _unavailable_result(spec, "Revenue acceleration history was incomplete.")
+    basis = _revenue_acceleration_input_facts(spec, documents, as_of)
+    if basis.unavailable_reason is not None:
+        return _unavailable_result(spec, basis.unavailable_reason)
+    current_pair, prior_pair = basis.facts[:2], basis.facts[2:]
     current_growth = current_pair[0].value / current_pair[1].value - 1.0
     prior_growth = prior_pair[0].value / prior_pair[1].value - 1.0
     facts = (*current_pair, *prior_pair)
@@ -3952,6 +4183,7 @@ def _revenue_acceleration_signal(
 
 
 @signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_input_facts(_gross_margin_input_facts)
 def _gross_margin_change_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -3970,32 +4202,12 @@ def _gross_margin_change_signal(
     SEC period age; older comparative periods remain allowed.
     """
 
-    facts = _sec_facts(documents, as_of)
-    revenues = _canonical_series(facts, _REVENUE_TAGS)
-    gross_profit = _canonical_series(facts, ("GrossProfit",))
-    margins: list[tuple[str, float, _SecFact, _SecFact]] = []
-    gross_by_period = {
-        (fact.start, fact.end, fact.unit.casefold()): fact for fact in gross_profit
-    }
-    for revenue in revenues:
-        gross = gross_by_period.get((revenue.start, revenue.end, revenue.unit.casefold()))
-        if gross is not None and revenue.value != 0:
-            margins.append((revenue.end, gross.value / revenue.value, revenue, gross))
-    margins.sort(key=lambda item: item[0], reverse=True)
-    if len(margins) < 2:
-        return _unavailable_result(spec, "Comparable SEC gross-margin periods were unavailable.")
-    current = margins[0]
-    if not _current_sec_fact_is_fresh(spec, current[2], as_of):
-        return _unavailable_result(
-            spec,
-            f"Latest matched SEC gross-margin period ended {current[2].end} and is stale.",
-        )
-    previous = next(
-        (item for item in margins[1:] if _comparable_duration(current[2], item[2])),
-        None,
-    )
-    if previous is None:
-        return _unavailable_result(spec, "Comparable SEC gross-margin periods were unavailable.")
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+    if basis.unavailable_reason is not None:
+        return _unavailable_result(spec, basis.unavailable_reason)
+    r, g, prior_r, prior_g = basis.facts
+    current = (r.end, g.value / r.value, r, g)
+    previous = (prior_r.end, prior_g.value / prior_r.value, prior_r, prior_g)
     return _numeric_result(
         spec,
         current[1] - previous[1],
@@ -4013,6 +4225,7 @@ def _gross_margin_change_signal(
 
 
 @signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_input_facts(_operating_margin_input_facts)
 def _operating_cash_flow_margin_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4032,35 +4245,11 @@ def _operating_cash_flow_margin_signal(
     period age; older comparative periods remain allowed.
     """
 
-    facts = _sec_facts(documents, as_of)
-    revenues = _canonical_series(facts, _REVENUE_TAGS)
-    operating_cash_flows = _canonical_series(
-        facts, _OPERATING_CASH_FLOW_TAGS, dominance=False
-    )
-    cash_flow_by_period = {
-        (fact.start, fact.end, fact.unit.casefold()): fact for fact in operating_cash_flows
-    }
-    ratios: list[tuple[str, float, _SecFact, _SecFact]] = []
-    for revenue in revenues:
-        cash_flow = cash_flow_by_period.get(
-            (revenue.start, revenue.end, revenue.unit.casefold())
-        )
-        if cash_flow is not None and revenue.value > 0:
-            ratios.append(
-                (revenue.end, cash_flow.value / revenue.value, revenue, cash_flow)
-            )
-    ratios.sort(key=lambda item: item[0], reverse=True)
-    if not ratios:
-        return _unavailable_result(
-            spec,
-            "Matching SEC operating-cash-flow and positive-revenue periods were unavailable.",
-        )
-    latest = ratios[0]
-    if not _current_sec_fact_is_fresh(spec, latest[2], as_of):
-        return _unavailable_result(
-            spec,
-            f"Latest matched SEC operating-cash-flow period ended {latest[2].end} and is stale.",
-        )
+    basis = _operating_margin_input_facts(spec, documents, as_of)
+    if basis.unavailable_reason is not None:
+        return _unavailable_result(spec, basis.unavailable_reason)
+    revenue, cash_flow = basis.facts
+    latest = (revenue.end, cash_flow.value / revenue.value, revenue, cash_flow)
     return _numeric_result(
         spec,
         latest[1],
@@ -4076,6 +4265,7 @@ def _operating_cash_flow_margin_signal(
 
 
 @signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_input_facts(_share_input_facts)
 def _net_share_retirement_yoy_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4094,18 +4284,10 @@ def _net_share_retirement_yoy_signal(
     periods remain allowed.
     """
 
-    pair = _latest_share_yoy_pair(_share_duration_series(_sec_facts(documents, as_of)))
-    if pair is None:
-        return _unavailable_result(
-            spec,
-            "Comparable point-in-time SEC weighted-average share periods were unavailable.",
-        )
-    current, previous = pair
-    if not _current_sec_fact_is_fresh(spec, current, as_of):
-        return _unavailable_result(
-            spec,
-            f"Latest comparable SEC share period ended {current.end} and is stale.",
-        )
+    basis = _share_input_facts(spec, documents, as_of)
+    if basis.unavailable_reason is not None:
+        return _unavailable_result(spec, basis.unavailable_reason)
+    current, previous = basis.facts
     value = 1.0 - (current.value / previous.value)
     return _numeric_result(
         spec,
@@ -4122,6 +4304,7 @@ def _net_share_retirement_yoy_signal(
 
 
 @signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_input_facts(_cash_input_facts)
 def _cash_reserves_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4139,18 +4322,10 @@ def _cash_reserves_signal(
     confidence and implausible_value. It is not an unavailable guard or clamp.
     """
 
-    facts = [
-        fact
-        for fact in _sec_facts(documents, as_of)
-        if fact.tag in _CASH_TAGS and fact.start is None
-    ]
-    if not facts:
-        return _unavailable_result(spec, "Point-in-time SEC cash balance was unavailable.")
-    latest = max(facts, key=lambda fact: (fact.end, fact.filed, fact.document.document_id))
-    if not _current_sec_fact_is_fresh(spec, latest, as_of):
-        return _unavailable_result(
-            spec, f"Latest SEC cash balance ended {latest.end} and is stale."
-        )
+    basis = _cash_input_facts(spec, documents, as_of)
+    if basis.unavailable_reason is not None:
+        return _unavailable_result(spec, basis.unavailable_reason)
+    latest = basis.facts[0]
     return _numeric_result(
         spec,
         latest.value,
@@ -4165,6 +4340,7 @@ def _cash_reserves_signal(
 
 
 @signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_input_facts(_cash_liability_input_facts)
 def _cash_to_current_liabilities_ratio_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4179,37 +4355,10 @@ def _cash_to_current_liabilities_ratio_signal(
     confidence and implausible_value. It is not an unavailable guard or clamp.
     """
 
-    facts = _sec_facts(documents, as_of)
-    cash = _instant_series(facts, _CASH_TAGS)
-    liabilities = _instant_series(facts, _CURRENT_LIABILITIES_TAGS)
-    liabilities_by_period = {
-        (fact.end, fact.unit.casefold()): fact for fact in liabilities
-    }
-    pairs = [
-        (cash_fact, liabilities_by_period[(cash_fact.end, cash_fact.unit.casefold())])
-        for cash_fact in cash
-        if (cash_fact.end, cash_fact.unit.casefold()) in liabilities_by_period
-        and liabilities_by_period[(cash_fact.end, cash_fact.unit.casefold())].value > 0
-    ]
-    if not pairs:
-        return _unavailable_result(
-            spec,
-            "Matching SEC cash and positive current-liabilities instant facts were unavailable.",
-        )
-    cash_fact, liabilities_fact = max(
-        pairs,
-        key=lambda pair: (
-            pair[0].end,
-            pair[0].unit.casefold() == "usd",
-            pair[0].filed,
-            pair[0].document.document_id,
-        ),
-    )
-    if not _current_sec_fact_is_fresh(spec, cash_fact, as_of):
-        return _unavailable_result(
-            spec,
-            f"Latest matched SEC liquidity period ended {cash_fact.end} and is stale.",
-        )
+    basis = _cash_liability_input_facts(spec, documents, as_of)
+    if basis.unavailable_reason is not None:
+        return _unavailable_result(spec, basis.unavailable_reason)
+    cash_fact, liabilities_fact = basis.facts
     return _numeric_result(
         spec,
         cash_fact.value / liabilities_fact.value,
@@ -4224,6 +4373,7 @@ def _cash_to_current_liabilities_ratio_signal(
 
 
 @signal_parameter_names("burn_threshold", "max_period_age_days")
+@signal_input_facts(_cash_flow_cash_input_facts)
 def _cash_burn_rate_elevated_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4262,6 +4412,7 @@ def _cash_burn_rate_elevated_signal(
 
 
 @signal_parameter_names("positive_runway_max_months", "negative_runway_min_months", "max_period_age_days")
+@signal_input_facts(_cash_flow_cash_input_facts)
 def _liquidity_runway_months_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4599,64 +4750,13 @@ def _instant_series(
     )
 
 
-def _latest_cash_flow_and_cash(
-    spec: SignalSpec,
-    documents: tuple[RawInfoDocument, ...],
-    as_of: datetime,
-) -> tuple[_SecFact, _SecFact] | SignalResult:
-    """Match latest operating cash flow with the closest prior cash instant."""
+def _latest_cash_flow_and_cash(spec, documents, as_of):
+    """Keep the prior matching API while sharing the pure operand basis."""
+    basis = _cash_flow_cash_input_facts(spec, documents, as_of)
+    if basis.unavailable_reason is not None:
+        return _unavailable_result(spec, basis.unavailable_reason)
+    return basis.facts
 
-    facts = _sec_facts(documents, as_of)
-    tag_priority = {
-        tag: index for index, tag in enumerate(_OPERATING_CASH_FLOW_TAGS)
-    }
-    cash_flows = [
-        fact
-        for fact in facts
-        if fact.tag in tag_priority
-        and fact.start is not None
-        and re.fullmatch(r"[A-Za-z]{3}", fact.unit) is not None
-    ]
-    if not cash_flows:
-        return _unavailable_result(
-            spec, "SEC operating-cash-flow duration facts were unavailable."
-        )
-    cash_flow = max(
-        cash_flows,
-        key=lambda fact: (
-            fact.end,
-            fact.unit.casefold() == "usd",
-            -tag_priority[fact.tag],
-            fact.filed,
-            fact.document.document_id,
-        ),
-    )
-    if not _current_sec_fact_is_fresh(spec, cash_flow, as_of):
-        return _unavailable_result(
-            spec,
-            f"Latest SEC operating-cash-flow period ended {cash_flow.end} and is stale.",
-        )
-    cash_candidates = [
-        fact
-        for fact in _instant_series(facts, _CASH_TAGS)
-        if fact.end <= cash_flow.end
-        and fact.unit.casefold() == cash_flow.unit.casefold()
-        and fact.value > 0
-    ]
-    if not cash_candidates:
-        return _unavailable_result(
-            spec,
-            "A positive same-currency SEC cash instant at or before the latest operating-cash-flow period end was unavailable.",
-        )
-    cash = max(
-        cash_candidates,
-        key=lambda fact: (fact.end, fact.filed, fact.document.document_id),
-    )
-    if not _current_sec_fact_is_fresh(spec, cash, as_of):
-        return _unavailable_result(
-            spec, f"Latest matched SEC cash balance ended {cash.end} and is stale."
-        )
-    return cash_flow, cash
 
 
 def _share_duration_series(facts: Iterable[_SecFact]) -> list[_SecFact]:

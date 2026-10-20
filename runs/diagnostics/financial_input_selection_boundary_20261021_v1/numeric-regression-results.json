@@ -1,0 +1,5048 @@
+{
+  "verdict": "PASS_old_new_numeric_regression_only",
+  "original_HEAD": "ee6de356acba873a9ebc756c1ee9a48b07f80fcd",
+  "original_source_sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66",
+  "current_source_sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb",
+  "comparisons": 159,
+  "actual_full_pool_comparisons": 18,
+  "fixture_comparisons": 141,
+  "rows": [
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "default_v6",
+      "ref": "cash_reserves:v1",
+      "pool_size": 59,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "neutral",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_reserves=9.861e+07"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 98610000.0,
+            "unit": "USD",
+            "formula": "latest reported instant cash balance",
+            "period": {
+              "end": "2025-03-31"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "default_v6",
+      "ref": "gross_margin_change:v2",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 2,
+          "state": {
+            "value": "negative",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "gross_margin_change=-0.113522"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-07-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":658735000}",
+                "timestamp": "2024-11-01T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+                "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2024-07-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":78109000}",
+                "timestamp": "2024-11-01T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": -0.11352199389831603,
+            "unit": "fraction_difference",
+            "formula": "current gross profit / revenue - previous gross profit / revenue",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "default_v6",
+      "ref": "net_share_retirement_yoy:v1",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "neutral",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "net_share_retirement_yoy=-0.0114933"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Weighted Average Number of Shares Outstanding, Basic\",\"start\":\"2025-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":64069000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Weighted Average Number of Shares Outstanding, Basic\",\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":63341000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": -0.011493345542381794,
+            "unit": "fraction",
+            "formula": "1 - current weighted-average shares / prior-year shares",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "default_v6",
+      "ref": "operating_cash_flow_margin:v1",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "negative",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "operating_cash_flow_margin=-0.091504"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": -0.09150395251988729,
+            "unit": "fraction",
+            "formula": "operating cash flow / same-period revenue",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "default_v6",
+      "ref": "revenue_acceleration:v1",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "revenue_acceleration=0.26115"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+                "timestamp": "2024-05-04T00:00:00+00:00"
+              },
+              {
+                "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":2458796000}",
+                "timestamp": "2025-02-08T00:00:00+00:00"
+              },
+              {
+                "document_id": "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2023-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2023,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3295743000}",
+                "timestamp": "2024-02-10T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.26114966938450923,
+            "unit": "fraction_difference",
+            "formula": "latest year-over-year growth - earlier year-over-year growth",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "default_v6",
+      "ref": "revenue_growth_yoy:v1",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "neutral",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "revenue_growth_yoy=0.00720177"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+                "timestamp": "2024-05-04T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.007201773568603631,
+            "unit": "fraction",
+            "formula": "current / comparable prior-year revenue - 1",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "latest_v12",
+      "ref": "cash_burn_rate_elevated:v2",
+      "pool_size": 6,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 2,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_burn_rate_elevated=0.558169"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.5581685427441436,
+            "unit": "ratio",
+            "formula": "absolute negative operating cash flow / cash",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "latest_v12",
+      "ref": "cash_reserves:v2",
+      "pool_size": 59,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 2,
+          "state": {
+            "value": "neutral",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_reserves=9.861e+07"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 98610000.0,
+            "unit": "USD",
+            "formula": "latest reported instant cash balance",
+            "period": {
+              "end": "2025-03-31"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "latest_v12",
+      "ref": "cash_to_current_liabilities_ratio:v2",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 2,
+          "state": {
+            "value": "negative",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_to_current_liabilities_ratio=0.302731"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Total obligations incurred as part of normal operations that are expected to be paid during the following twelve months or within one business cycle, if longer.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Liabilities, Current\",\"start\":null,\"tag\":\"LiabilitiesCurrent\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":325735000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.3027307473866794,
+            "unit": "ratio",
+            "formula": "cash / same-date current liabilities",
+            "period": {
+              "end": "2025-03-31"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "latest_v12",
+      "ref": "gross_margin_change:v3",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 3,
+          "state": {
+            "value": "negative",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "gross_margin_change=-0.113522"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-07-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":658735000}",
+                "timestamp": "2024-11-01T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+                "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2024-07-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":78109000}",
+                "timestamp": "2024-11-01T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": -0.11352199389831603,
+            "unit": "fraction_difference",
+            "formula": "current gross profit / revenue - previous gross profit / revenue",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "latest_v12",
+      "ref": "liquidity_runway_months:v3",
+      "pool_size": 6,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 3,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "liquidity_runway_months=5.37472"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 5.374720662778656,
+            "unit": "months",
+            "formula": "cash / (absolute negative operating cash flow / reported months)",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "latest_v12",
+      "ref": "net_share_retirement_yoy:v3",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 3,
+          "state": {
+            "value": "neutral",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "net_share_retirement_yoy=-0.0114933"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Weighted Average Number of Shares Outstanding, Basic\",\"start\":\"2025-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":64069000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2024Q1\",\"label\":\"Weighted Average Number of Shares Outstanding, Basic\",\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":63341000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": -0.011493345542381794,
+            "unit": "fraction",
+            "formula": "1 - current weighted-average shares / prior-year shares",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "latest_v12",
+      "ref": "operating_cash_flow_margin:v2",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 2,
+          "state": {
+            "value": "negative",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "operating_cash_flow_margin=-0.091504"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": -0.09150395251988729,
+            "unit": "fraction",
+            "formula": "operating cash flow / same-period revenue",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "latest_v12",
+      "ref": "revenue_acceleration:v2",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 2,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "revenue_acceleration=0.26115"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+                "timestamp": "2024-05-04T00:00:00+00:00"
+              },
+              {
+                "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":2458796000}",
+                "timestamp": "2025-02-08T00:00:00+00:00"
+              },
+              {
+                "document_id": "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2023-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2023,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3295743000}",
+                "timestamp": "2024-02-10T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.26114966938450923,
+            "unit": "fraction_difference",
+            "formula": "latest year-over-year growth - earlier year-over-year growth",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "actual_GPRE_full_filtered_pool",
+      "group": "latest_v12",
+      "ref": "revenue_growth_yoy:v3",
+      "pool_size": 57,
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 3,
+          "state": {
+            "value": "neutral",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "revenue_growth_yoy=0.00720177"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+                "timestamp": "2025-05-09T00:00:00+00:00"
+              },
+              {
+                "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+                "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+                "timestamp": "2024-05-04T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.007201773568603631,
+            "unit": "fraction",
+            "formula": "current / comparable prior-year revenue - 1",
+            "period": {
+              "end": "2025-03-31",
+              "start": "2025-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_burn_rate_elevated=0.5"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"unit\":\"USD\",\"value\":-10}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"unit\":\"USD\",\"value\":20}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.5,
+            "unit": "ratio",
+            "formula": "absolute negative operating cash flow / cash",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.cash_reserves",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_reserves=20"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"unit\":\"USD\",\"value\":20}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 20.0,
+            "unit": "USD",
+            "formula": "latest reported instant cash balance",
+            "period": {
+              "end": "2024-12-31"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.cash_reserves",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_to_current_liabilities_ratio=2"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"unit\":\"USD\",\"value\":20}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"LiabilitiesCurrent\",\"unit\":\"USD\",\"value\":10}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 2.0,
+            "unit": "ratio",
+            "formula": "cash / same-date current liabilities",
+            "period": {
+              "end": "2024-12-31"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.gross_margin_change",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "gross_margin_change=0.15"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":40}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":80}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":20}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.15000000000000002,
+            "unit": "fraction_difference",
+            "formula": "current gross profit / revenue - previous gross profit / revenue",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.gross_margin_change",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "negative",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "liquidity_runway_months=24"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"unit\":\"USD\",\"value\":-10}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"unit\":\"USD\",\"value\":20}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 24.0,
+            "unit": "months",
+            "formula": "cash / (absolute negative operating cash flow / reported months)",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "net_share_retirement_yoy=0.1"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"unit\":\"shares\",\"value\":90}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"unit\":\"shares\",\"value\":100}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.09999999999999998,
+            "unit": "fraction",
+            "formula": "1 - current weighted-average shares / prior-year shares",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "negative",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "operating_cash_flow_margin=-0.1"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"unit\":\"USD\",\"value\":-10}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": -0.1,
+            "unit": "fraction",
+            "formula": "operating cash flow / same-period revenue",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.revenue_acceleration",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "revenue_acceleration=0.107143"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":80}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2022-12-31\",\"start\":\"2022-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":70}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.1071428571428572,
+            "unit": "fraction_difference",
+            "formula": "latest year-over-year growth - earlier year-over-year growth",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.revenue_acceleration",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "revenue_growth_yoy=0.25"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-complete",
+                "exact_span": "{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":80}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.25,
+            "unit": "fraction",
+            "formula": "current / comparable prior-year revenue - 1",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "complete",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.cash_reserves",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Point-in-time SEC cash balance was unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.cash_reserves",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Point-in-time SEC cash balance was unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.gross_margin_change",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.gross_margin_change",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.revenue_acceleration",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.revenue_acceleration",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "empty",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.cash_reserves",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Point-in-time SEC cash balance was unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.cash_reserves",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Point-in-time SEC cash balance was unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.gross_margin_change",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.gross_margin_change",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.revenue_acceleration",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.revenue_acceleration",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_prior_revenue",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "A positive same-currency SEC cash instant at or before the latest operating-cash-flow period end was unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.cash_reserves",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_reserves=20"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-missing_same_currency_cash",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"unit\":\"EUR\",\"value\":20}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 20.0,
+            "unit": "EUR",
+            "formula": "latest reported instant cash balance",
+            "period": {
+              "end": "2024-12-31"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.cash_reserves",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.gross_margin_change",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.gross_margin_change",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "A positive same-currency SEC cash instant at or before the latest operating-cash-flow period end was unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.revenue_acceleration",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.revenue_acceleration",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing_same_currency_cash",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.cash_reserves",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_reserves=20"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-zero_liabilities",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"unit\":\"USD\",\"value\":20}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 20.0,
+            "unit": "USD",
+            "formula": "latest reported instant cash balance",
+            "period": {
+              "end": "2024-12-31"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.cash_reserves",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.gross_margin_change",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.gross_margin_change",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.revenue_acceleration",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.revenue_acceleration",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "zero_liabilities",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "negative",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_burn_rate_elevated=0"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-nonnegative_OCF",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"unit\":\"USD\",\"value\":10}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-nonnegative_OCF",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"unit\":\"USD\",\"value\":20}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 0.0,
+            "unit": "ratio",
+            "formula": "absolute negative operating cash flow / cash",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.cash_reserves",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "cash_reserves=20"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-nonnegative_OCF",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"unit\":\"USD\",\"value\":20}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 20.0,
+            "unit": "USD",
+            "formula": "latest reported instant cash balance",
+            "period": {
+              "end": "2024-12-31"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.cash_reserves",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.gross_margin_change",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.gross_margin_change",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "negative",
+            "confidence": 1.0
+          },
+          "interpretation": {
+            "summary": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-nonnegative_OCF",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"unit\":\"USD\",\"value\":10}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-nonnegative_OCF",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"unit\":\"USD\",\"value\":20}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "execution": {
+            "status": "success"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.revenue_acceleration",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.revenue_acceleration",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "nonnegative_OCF",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.cash_reserves",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Point-in-time SEC cash balance was unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.cash_reserves",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Point-in-time SEC cash balance was unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.gross_margin_change",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.gross_margin_change",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.revenue_acceleration",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.revenue_acceleration",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "positive",
+            "confidence": 0.5
+          },
+          "interpretation": {
+            "summary": "revenue_growth_yoy=9999; implausible_value"
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "fixture-implausible_revenue",
+                "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":10000}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "fixture-implausible_revenue",
+                "exact_span": "{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":1}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "partial"
+          },
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "value": 9999.0,
+            "unit": "fraction",
+            "formula": "current / comparable prior-year revenue - 1",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "implausible_revenue",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.cash_burn_rate_elevated",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_burn_rate_elevated",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.cash_reserves",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_reserves",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Latest SEC cash balance ended 2020-12-31 and is stale."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.cash_reserves",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "exception_type": "ValidationError",
+        "message": "max_period_age_days must be a positive integer"
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.cash_to_current_liabilities_ratio",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC cash and positive current-liabilities instant facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.gross_margin_change",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.gross_margin_change",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "gross_margin_change",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.liquidity_runway_months",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "liquidity_runway_months",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "SEC operating-cash-flow duration facts were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.net_share_retirement_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "net_share_retirement_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.operating_cash_flow_margin",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "operating_cash_flow_margin",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.revenue_acceleration",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.revenue_acceleration",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_acceleration",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Two comparable SEC revenue growth periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {},
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    },
+    {
+      "case": "stale_cash",
+      "function": "financial.revenue_growth_yoy",
+      "parameters": {
+        "max_period_age_days": true
+      },
+      "equal": true,
+      "output": {
+        "result": {
+          "signal_id": "revenue_growth_yoy",
+          "version": 1,
+          "state": {
+            "value": "unavailable",
+            "confidence": 0.0
+          },
+          "interpretation": {
+            "summary": "Comparable SEC revenue periods were unavailable."
+          },
+          "evidence": {
+            "supporting": [],
+            "counter": []
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          }
+        }
+      }
+    }
+  ],
+  "limits": "Full-pool arithmetic here is an isolated old/new regression only, not production selection, document-budget execution, model behavior, source admission or research gain. No Store/network/labels/SignalExecutor execution."
+}

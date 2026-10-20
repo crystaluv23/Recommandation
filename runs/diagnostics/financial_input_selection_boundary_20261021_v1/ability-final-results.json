@@ -1,0 +1,55 @@
+{
+  "verdict": "PASS_two_fixed_offline_capability_counterexamples",
+  "code_sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb",
+  "controls": [
+    {
+      "original_failure": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/dominance-results.json",
+        "sha256": "09531258df8a9fe9a7b5186be9451bf0162046a71829a7769e793f7a6519a5b2"
+      },
+      "old_selector_ids": [],
+      "old_native_status": "unresolved",
+      "new_selector_ids": [
+        "a-operands",
+        "n0",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "z-dominance-witness"
+      ],
+      "new_native_status": "resolved",
+      "full_basis_exact": true,
+      "documents": 10,
+      "limit": 10
+    },
+    {
+      "original_failure": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/required-witness-results.json",
+        "sha256": "9ab9bb80e2192def09b85c74cd6c4b106af429ea16a50ab6a91b17011ca7fe4b"
+      },
+      "old_selector_ids": [],
+      "old_native_status": "unresolved",
+      "new_selector_ids": [
+        "a-operands-and-competing-tag",
+        "n0",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "z-dominance-witness"
+      ],
+      "new_native_status": "resolved",
+      "full_basis_exact": true,
+      "documents": 10,
+      "limit": 10
+    }
+  ],
+  "limits": "Synthetic pure matching/native resolver only, not model behavior, actual source execution, full feasibility search or research gain. Original c665 failures remain unchanged."
+}

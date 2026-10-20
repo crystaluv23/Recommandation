@@ -108,13 +108,33 @@ literal spans from those partial documents together with the unresolved status;
 Signal execution records their fingerprint but does not execute until the
 contract is complete.
 
+Deterministic financial callers may use that existing callback to preserve the
+actual callable's readable latest/comparable operands before the bounded prefix.
+The callable, not the generic resolver, owns tag/period/currency semantics.
+PIT/source/lookback filtering and content deduplication still precede selection;
+unchanged member and document-limit validation still follows it. A caller that
+cannot preserve its full-pool measurement basis within the limit returns an
+empty subset, permitting the same authorized-acquisition/unresolved path. This
+does not change generic query ranking, add semantic readiness to lexical
+coverage, or authorize data acquisition.
+
 `resolve` optionally accepts a pure local `select_documents` callback. It receives
 the deterministic ranked pool only after issuer, exact source type, lookback, and
 availability filtering, plus the original request. It must return at most the
 request's document limit, using unique unchanged members of that pool. Invalid
 selection is a local contract error, never a provider error or an acquisition
-retry. The callback must perform no I/O. Without it, existing ranked-prefix
-selection is unchanged.
+retry. Before invoking the callback, snapshot each eligible ID and its complete
+record using the existing typed canonical JSON hash policy. Give the callback
+an isolated deep copy of the candidates, including nested metadata, so selected
+or unselected mutation cannot alter backing-store objects. Compare returned
+records against the pre-callback snapshots, not live post-callback objects:
+JSON true/1 and 1/1.0 are distinct. Unchanged clones are legal; changed IDs,
+content or provenance are not. After validation, remap selected IDs to the original
+eligible objects, so callback-held aliases cannot mutate subsequent consumers.
+This does not impose capture-only metadata/schema rules on legacy documents.
+Contract failures retain `_DocumentSelectionError`, never domain unavailability.
+The callback must perform no I/O. Without it, existing ranked-prefix selection
+is unchanged.
 
 An empty selected pool is an unresolved need. The same selection runs after each
 authorized acquisition, so a consumer can require a particular usable input when

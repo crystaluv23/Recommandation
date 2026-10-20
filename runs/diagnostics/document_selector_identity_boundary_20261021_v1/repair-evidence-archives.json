@@ -1,0 +1,32 @@
+[
+  {
+    "original_path": "/tmp/document-selector-identity-v1/candidate-tests.log",
+    "sha256": "c6352adff70a6982c739a1cd77bbb43d2425eefd2dc2112b92b0ceebf2a6ca31",
+    "retained_archive": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/candidate-tests.log.gz"
+  },
+  {
+    "original_path": "/tmp/document-selector-identity-v1/original-resolution.md",
+    "sha256": "9f740dac10747ab3bf3dba86213586cc0cab68be3f99e17032481c3c25aca4f0",
+    "retained_archive": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/original-resolution.md.gz"
+  },
+  {
+    "original_path": "/tmp/document-selector-identity-v1/run-safe.py",
+    "sha256": "ced839f4b388cacd7d8ea668f1e65bd0055730e7623e90553c250dbf1146861b",
+    "retained_archive": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/run-safe.py.gz"
+  },
+  {
+    "original_path": "/tmp/document-selector-identity-v1/original-resolution.py",
+    "sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5",
+    "retained_archive": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/original-resolution.py.gz"
+  },
+  {
+    "original_path": "/tmp/document-selector-identity-v1/final-tests.log",
+    "sha256": "aa151e8757231f01aa82372175d52538264fd2d3fb2ba0e3901797b333dfcc42",
+    "retained_archive": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/final-tests.log.gz"
+  },
+  {
+    "original_path": "/tmp/document-selector-identity-v1/original-tests.log",
+    "sha256": "178d71401852c759a9ce07fa5a51a24bb20e26e7cb57d78dfbab63cd5e673b6b",
+    "retained_archive": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/original-tests.log.gz"
+  }
+]

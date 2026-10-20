@@ -1,0 +1,21 @@
+{
+  "selectors": [
+    "tests.test_signal_financials",
+    "tests.test_data_resolution",
+    "tests.test_document_selector_identity_boundary",
+    "tests.test_signal_measurement_input_selection",
+    "tests.test_signal_card_measurement_scope",
+    "tests.test_numeric_measurement_contract"
+  ],
+  "tests": 115,
+  "success": false,
+  "failures": 2,
+  "errors": 12,
+  "tripwires": {
+    "network": 0,
+    "model": 0,
+    "labels": 0,
+    "real_store": 0,
+    "fullprepare": 0
+  }
+}

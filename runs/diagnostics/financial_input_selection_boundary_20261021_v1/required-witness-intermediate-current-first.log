@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/financial_input_selection_boundary_20261021_v1/required-witness-probe.py", line 33, in <module>
+    assert selected==() and r.status=='unresolved'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

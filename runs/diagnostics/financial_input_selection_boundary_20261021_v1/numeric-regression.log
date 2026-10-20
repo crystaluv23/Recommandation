@@ -1,0 +1,10 @@
+{
+  "verdict": "PASS_old_new_numeric_regression_only",
+  "original_HEAD": "ee6de356acba873a9ebc756c1ee9a48b07f80fcd",
+  "original_source_sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66",
+  "current_source_sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb",
+  "comparisons": 159,
+  "actual_full_pool_comparisons": 18,
+  "fixture_comparisons": 141,
+  "limits": "Full-pool arithmetic here is an isolated old/new regression only, not production selection, document-budget execution, model behavior, source admission or research gain. No Store/network/labels/SignalExecutor execution."
+}

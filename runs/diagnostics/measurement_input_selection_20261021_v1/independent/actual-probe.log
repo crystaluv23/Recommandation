@@ -1,0 +1,12 @@
+PASS all4265 frozen bindings at audit start, exact plan and terminal markers
+PASS default_v6 actual IDs, canonical originals, exact versions, PIT/capacity/order; {"resolved": 17, "refs": 18, "deterministic_financial": 6, "deterministic_typed_q1_selected": 6, "financial_source_requests": 9, "financial_source_typed_q1_selected": 8, "changed_sets": 6}
+PASS latest_v12 actual IDs, canonical originals, exact versions, PIT/capacity/order; {"resolved": 17, "refs": 18, "deterministic_financial": 9, "deterministic_typed_q1_selected": 9, "financial_source_requests": 9, "financial_source_typed_q1_selected": 9, "changed_sets": 7}
+PASS all4265 frozen bindings again at audit end
+{
+  "verdict": "PASS_actual_input_consumption_only_with_default_v6_LLM_gap_retained",
+  "audit_seconds": 2.038512,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/independent/actual-results.json",
+    "sha256": "da1139697b7eac5e20c1045ef4e36b2071b265dbf58a29939136e3bb7b3e7a1d"
+  }
+}

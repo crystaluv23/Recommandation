@@ -1,0 +1,6 @@
+PASS all4265 frozen bindings at audit start, exact plan and terminal markers
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/independent/actual-probe.py", line 79, in <module>
+    is_financial=source_types_compatible(('sec_company_facts',),spec['source_types']);assert is_financial==row['financial_source_request']
+                                                                ~~~~^^^^^^^^^^^^^^^^
+KeyError: 'source_types'

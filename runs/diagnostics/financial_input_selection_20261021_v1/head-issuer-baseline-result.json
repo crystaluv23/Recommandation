@@ -1,0 +1,21 @@
+{
+  "GETs": 0,
+  "actual_baseline_result": {
+    "execution_error_code": "deterministic_result_validation_failed",
+    "execution_error_message": "ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+    "execution_status": "validation_failed",
+    "value": "unavailable"
+  },
+  "classification": "Prior issuer-binding fixture-producer gap; do not weaken admission or attribute it to new F5 ranking. Other two card errors show the same current issuer cause; only cash-ratio fixture was separately replayed under HEAD here.",
+  "fixture_company_id": "issuer_1",
+  "fixture_metadata_has_cik": false,
+  "fixture_payload_has_cik": false,
+  "focused_suite_actual": "45 tests: new11+legacyfinancial28 passed; card6 had 3 passes/2 failures/1 error.",
+  "global_append": false,
+  "head_library_sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66",
+  "labels": false,
+  "models": 0,
+  "observed_tool_chunk": "9fdd49",
+  "production_stage_reentry": false,
+  "test_scope": "Exact cash-ratio card fixture; original HEAD library loaded into isolated module, no F5 source used."
+}

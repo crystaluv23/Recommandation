@@ -1,0 +1,367 @@
+test_accession_scoped_schema_is_supported_with_literal_fact_evidence (tests.test_signal_financials.SecFinancialSignalTests.test_accession_scoped_schema_is_supported_with_literal_fact_evidence) ... ok
+test_both_fact_schemas_enforce_issuer_as_technical_failure (tests.test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) ... ok
+test_canonical_basis_excludes_same_period_partial_and_zero (tests.test_signal_financials.SecFinancialSignalTests.test_canonical_basis_excludes_same_period_partial_and_zero) ... ok
+test_canonical_basis_uses_total_for_cash_flow_margin (tests.test_signal_financials.SecFinancialSignalTests.test_canonical_basis_uses_total_for_cash_flow_margin) ... ok
+test_cash_flow_margin_requires_the_same_reported_duration (tests.test_signal_financials.SecFinancialSignalTests.test_cash_flow_margin_requires_the_same_reported_duration) ... ok
+test_function_contracts_follow_actual_registry_overrides (tests.test_signal_financials.SecFinancialSignalTests.test_function_contracts_follow_actual_registry_overrides) ... ok
+test_ifrs_cash_and_weighted_shares_aliases (tests.test_signal_financials.SecFinancialSignalTests.test_ifrs_cash_and_weighted_shares_aliases) ... ok
+test_ifrs_namespace_and_revenue_aliases_preserve_pit_gross_margin (tests.test_signal_financials.SecFinancialSignalTests.test_ifrs_namespace_and_revenue_aliases_preserve_pit_gross_margin) ... ok
+test_implausible_values_are_downgraded_not_deleted (tests.test_signal_financials.SecFinancialSignalTests.test_implausible_values_are_downgraded_not_deleted) ... ok
+test_market_history_selection_is_order_independent_and_conflicts_fail (tests.test_signal_financials.SecFinancialSignalTests.test_market_history_selection_is_order_independent_and_conflicts_fail) ... ok
+test_market_measurements_cite_actual_adjusted_price_anchors (tests.test_signal_financials.SecFinancialSignalTests.test_market_measurements_cite_actual_adjusted_price_anchors) ... ok
+test_model_view_keeps_numeric_periods_without_changing_result_or_reflection_claim (tests.test_signal_financials.SecFinancialSignalTests.test_model_view_keeps_numeric_periods_without_changing_result_or_reflection_claim) ... ok
+test_numeric_model_context_does_not_invent_undated_or_invalid_observations (tests.test_signal_financials.SecFinancialSignalTests.test_numeric_model_context_does_not_invent_undated_or_invalid_observations) ... ok
+test_numeric_model_context_supports_both_fact_schemas_and_price_anchors (tests.test_signal_financials.SecFinancialSignalTests.test_numeric_model_context_supports_both_fact_schemas_and_price_anchors) ... ok
+test_partial_tag_is_excluded_even_for_uncovered_periods (tests.test_signal_financials.SecFinancialSignalTests.test_partial_tag_is_excluded_even_for_uncovered_periods) ... ok
+test_price_momentum_uses_exact_observation_lookback_and_fails_closed (tests.test_signal_financials.SecFinancialSignalTests.test_price_momentum_uses_exact_observation_lookback_and_fails_closed) ... ok
+test_production_companyfacts_normalization_keeps_actual_share_basis_through_consumers (tests.test_signal_financials.SecFinancialSignalTests.test_production_companyfacts_normalization_keeps_actual_share_basis_through_consumers) ... ok
+test_ratios_accept_same_currency_but_never_mix_currencies (tests.test_signal_financials.SecFinancialSignalTests.test_ratios_accept_same_currency_but_never_mix_currencies) ... ok
+test_raw_financial_namespaces_are_not_mixed (tests.test_signal_financials.SecFinancialSignalTests.test_raw_financial_namespaces_are_not_mixed) ... ok
+test_restatement_crossover_keeps_the_ongoing_basis (tests.test_signal_financials.SecFinancialSignalTests.test_restatement_crossover_keeps_the_ongoing_basis) ... ok
+test_scoped_sec_api_drives_six_financial_signals_and_excludes_future (tests.test_signal_financials.SecFinancialSignalTests.test_scoped_sec_api_drives_six_financial_signals_and_excludes_future) ... ok
+test_share_dilution_is_negative (tests.test_signal_financials.SecFinancialSignalTests.test_share_dilution_is_negative) ... ok
+test_share_retirement_prefers_split_comparable_same_filing_facts (tests.test_signal_financials.SecFinancialSignalTests.test_share_retirement_prefers_split_comparable_same_filing_facts) ... ok
+test_signal_modality_is_explicit_without_rewriting_legacy_specs (tests.test_signal_financials.SecFinancialSignalTests.test_signal_modality_is_explicit_without_rewriting_legacy_specs) ... ok
+test_structured_liquidity_migrations_use_exact_sec_facts (tests.test_signal_financials.SecFinancialSignalTests.test_structured_liquidity_migrations_use_exact_sec_facts) ... ok
+test_unchanged_document_fingerprint_skips_repeat_then_oracle_growth_reexecutes (tests.test_signal_financials.SecFinancialSignalTests.test_unchanged_document_fingerprint_skips_repeat_then_oracle_growth_reexecutes) ... ok
+test_v18_current_revenue_alias_wins_and_stale_fallback_is_unavailable (tests.test_signal_financials.SecFinancialSignalTests.test_v18_current_revenue_alias_wins_and_stale_fallback_is_unavailable) ... ok
+test_zero_cash_instant_cannot_displace_nonzero_balance (tests.test_signal_financials.SecFinancialSignalTests.test_zero_cash_instant_cannot_displace_nonzero_balance) ... ok
+test_bad_provider_cik_is_technical_gap_and_persists_no_source (tests.test_data_resolution.CompanyFactsProviderIdentityTests.test_bad_provider_cik_is_technical_gap_and_persists_no_source) ... ok
+test_provider_cik_is_a_positive_integer_or_plain_digit_string (tests.test_data_resolution.CompanyFactsProviderIdentityTests.test_provider_cik_is_a_positive_integer_or_plain_digit_string) ... ok
+test_basic_info_context_budget_keeps_one_span_per_resolved_request (tests.test_data_resolution.EvidenceResolverTests.test_basic_info_context_budget_keeps_one_span_per_resolved_request) ... ok
+test_broad_research_policy_accepts_a_future_registered_data_type (tests.test_data_resolution.EvidenceResolverTests.test_broad_research_policy_accepts_a_future_registered_data_type) ... ok
+test_broad_research_policy_covers_every_historical_signal_route (tests.test_data_resolution.EvidenceResolverTests.test_broad_research_policy_covers_every_historical_signal_route) ... ok
+test_cached_market_context_projects_rows_to_requested_lookback (tests.test_data_resolution.EvidenceResolverTests.test_cached_market_context_projects_rows_to_requested_lookback) ... ok
+test_can_acquire_is_side_effect_free_and_honors_availability_and_policy (tests.test_data_resolution.EvidenceResolverTests.test_can_acquire_is_side_effect_free_and_honors_availability_and_policy) ... ok
+test_canonical_cik_routes_company_facts_and_archives_as_of_subset (tests.test_data_resolution.EvidenceResolverTests.test_canonical_cik_routes_company_facts_and_archives_as_of_subset) ... ok
+test_capability_backlog_aggregates_gaps_and_marks_added_adapter_resolved (tests.test_data_resolution.EvidenceResolverTests.test_capability_backlog_aggregates_gaps_and_marks_added_adapter_resolved) ... ok
+test_capability_backlog_separates_signal_technical_failures (tests.test_data_resolution.EvidenceResolverTests.test_capability_backlog_separates_signal_technical_failures) ... ok
+test_document_selector_falls_through_and_rejects_invented_documents (tests.test_data_resolution.EvidenceResolverTests.test_document_selector_falls_through_and_rejects_invented_documents) ... ok
+test_empty_local_selection_continues_to_authorized_acquisition (tests.test_data_resolution.EvidenceResolverTests.test_empty_local_selection_continues_to_authorized_acquisition) ... ok
+test_enabled_policy_requires_explicit_allowlists_and_real_boolean (tests.test_data_resolution.EvidenceResolverTests.test_enabled_policy_requires_explicit_allowlists_and_real_boolean) ... ok
+test_exact_original_spans_are_deterministic_and_never_rewritten (tests.test_data_resolution.EvidenceResolverTests.test_exact_original_spans_are_deterministic_and_never_rewritten) ... ok
+test_file_backed_oracle_growth_does_not_create_evolution_state (tests.test_data_resolution.EvidenceResolverTests.test_file_backed_oracle_growth_does_not_create_evolution_state) ... ok
+test_filing_markup_uses_readable_query_windows_with_raw_lineage (tests.test_data_resolution.EvidenceResolverTests.test_filing_markup_uses_readable_query_windows_with_raw_lineage) ... ok
+test_finnhub_news_fallback_preserves_window_identity_and_literal_content (tests.test_data_resolution.EvidenceResolverTests.test_finnhub_news_fallback_preserves_window_identity_and_literal_content) ... ok
+test_foreign_sec_forms_match_generic_but_not_other_exact_forms (tests.test_data_resolution.EvidenceResolverTests.test_foreign_sec_forms_match_generic_but_not_other_exact_forms) ... ok
+test_generic_filing_request_prefers_core_forms_and_skips_failed_body (tests.test_data_resolution.EvidenceResolverTests.test_generic_filing_request_prefers_core_forms_and_skips_failed_body) ... ok
+test_incomplete_period_contract_continues_authorized_acquisition (tests.test_data_resolution.EvidenceResolverTests.test_incomplete_period_contract_continues_authorized_acquisition) ... ok
+test_legacy_news_json_ignores_secondary_ticker_association (tests.test_data_resolution.EvidenceResolverTests.test_legacy_news_json_ignores_secondary_ticker_association) ... ok
+test_local_hit_skips_api_and_miss_appends_for_same_and_later_execution (tests.test_data_resolution.EvidenceResolverTests.test_local_hit_skips_api_and_miss_appends_for_same_and_later_execution) ... ok
+test_operating_menu_acquisition_append_and_cached_pool_agree (tests.test_data_resolution.EvidenceResolverTests.test_operating_menu_acquisition_append_and_cached_pool_agree) ... ok
+test_partial_basic_info_is_visible_but_signal_does_not_execute (tests.test_data_resolution.EvidenceResolverTests.test_partial_basic_info_is_visible_but_signal_does_not_execute) ... ok
+test_provider_miss_falls_through_to_next_authorized_adapter (tests.test_data_resolution.EvidenceResolverTests.test_provider_miss_falls_through_to_next_authorized_adapter) ... ok
+test_provider_ticker_news_requires_visible_issuer_match (tests.test_data_resolution.EvidenceResolverTests.test_provider_ticker_news_requires_visible_issuer_match) ... ok
+test_quota_failure_retries_after_known_reset (tests.test_data_resolution.EvidenceResolverTests.test_quota_failure_retries_after_known_reset) ... ok
+test_quota_failure_reuse_preserves_unknown_retry_time (tests.test_data_resolution.EvidenceResolverTests.test_quota_failure_reuse_preserves_unknown_retry_time) ... ok
+test_refetch_replays_idempotently_for_identical_content (tests.test_data_resolution.EvidenceResolverTests.test_refetch_replays_idempotently_for_identical_content) ... ok
+test_resolution_reports_query_coverage_and_deduplicates_source_copies (tests.test_data_resolution.EvidenceResolverTests.test_resolution_reports_query_coverage_and_deduplicates_source_copies) ... ok
+test_retrieval_contract_preserves_old_comparison_period_before_limit (tests.test_data_resolution.EvidenceResolverTests.test_retrieval_contract_preserves_old_comparison_period_before_limit) ... ok
+test_retrieval_contract_preserves_required_sources_before_limit (tests.test_data_resolution.EvidenceResolverTests.test_retrieval_contract_preserves_required_sources_before_limit) ... ok
+test_retrieval_contract_round_trips_in_signal_spec (tests.test_data_resolution.EvidenceResolverTests.test_retrieval_contract_round_trips_in_signal_spec) ... ok
+test_sec_history_manifest_recovers_foreign_issuer_generic_filing (tests.test_data_resolution.EvidenceResolverTests.test_sec_history_manifest_recovers_foreign_issuer_generic_filing) ... ok
+test_sec_history_page_failure_and_cap_remain_auditable (tests.test_data_resolution.EvidenceResolverTests.test_sec_history_page_failure_and_cap_remain_auditable) ... ok
+test_sec_history_scan_deduplicates_accessions_before_body_fetch (tests.test_data_resolution.EvidenceResolverTests.test_sec_history_scan_deduplicates_accessions_before_body_fetch) ... ok
+test_signal_computes_negative_word_count_while_basic_info_stays_raw (tests.test_data_resolution.EvidenceResolverTests.test_signal_computes_negative_word_count_while_basic_info_stays_raw) ... ok
+test_signal_resolution_control_failure_is_not_domain_unavailable (tests.test_data_resolution.EvidenceResolverTests.test_signal_resolution_control_failure_is_not_domain_unavailable) ... ok
+test_source_alias_authorization_matches_signal_request_semantics (tests.test_data_resolution.EvidenceResolverTests.test_source_alias_authorization_matches_signal_request_semantics) ... ok
+test_specific_sec_forms_do_not_substitute_for_each_other (tests.test_data_resolution.EvidenceResolverTests.test_specific_sec_forms_do_not_substitute_for_each_other) ... ok
+test_stable_signal_source_aliases_route_and_materialize_price_metadata (tests.test_data_resolution.EvidenceResolverTests.test_stable_signal_source_aliases_route_and_materialize_price_metadata) ... ok
+test_transcript_adapter_maps_fiscal_quarters_and_excludes_future_reports (tests.test_data_resolution.EvidenceResolverTests.test_transcript_adapter_maps_fiscal_quarters_and_excludes_future_reports) ... ok
+test_truncated_history_without_body_is_coverage_incomplete (tests.test_data_resolution.EvidenceResolverTests.test_truncated_history_without_body_is_coverage_incomplete) ... ok
+test_unknown_provider_errors_remain_retryable (tests.test_data_resolution.EvidenceResolverTests.test_unknown_provider_errors_remain_retryable) ... ok
+test_unknown_unauthorized_quota_provider_and_historical_gaps (tests.test_data_resolution.EvidenceResolverTests.test_unknown_unauthorized_quota_provider_and_historical_gaps) ... ok
+test_visible_issuer_match_is_case_insensitive_for_name_derived_brand (tests.test_data_resolution.EvidenceResolverTests.test_visible_issuer_match_is_case_insensitive_for_name_derived_brand) ... ok
+test_v144_markup_budget_bills_visible_characters (tests.test_data_resolution.SpanSelectionVisibilityTests.test_v144_markup_budget_bills_visible_characters) ... ok
+test_v144_near_duplicate_windows_do_not_repeat (tests.test_data_resolution.SpanSelectionVisibilityTests.test_v144_near_duplicate_windows_do_not_repeat) ... ok
+test_v144_omission_markers_disclose_unfunded_ranked_spans (tests.test_data_resolution.SpanSelectionVisibilityTests.test_v144_omission_markers_disclose_unfunded_ranked_spans) ... ok
+test_v144_rarity_weighting_funds_substantive_over_boilerplate (tests.test_data_resolution.SpanSelectionVisibilityTests.test_v144_rarity_weighting_funds_substantive_over_boilerplate) ... ok
+test_v145_document_heads_are_retained_deterministically (tests.test_data_resolution.SpanSelectionVisibilityTests.test_v145_document_heads_are_retained_deterministically) ... ok
+test_callback_failure_remains_contract_error_not_domain_unavailability (tests.test_document_selector_identity_boundary.DocumentSelectorIdentityBoundaryTests.test_callback_failure_remains_contract_error_not_domain_unavailability) ... ok
+test_empty_subset_and_legacy_json_policy_remain_compatible (tests.test_document_selector_identity_boundary.DocumentSelectorIdentityBoundaryTests.test_empty_subset_and_legacy_json_policy_remain_compatible) ... ok
+test_limit_unique_and_pre_filtered_eligibility_stay_in_force (tests.test_document_selector_identity_boundary.DocumentSelectorIdentityBoundaryTests.test_limit_unique_and_pre_filtered_eligibility_stay_in_force) ... ok
+test_python_equal_metadata_clone_changes_are_not_record_identity (tests.test_document_selector_identity_boundary.DocumentSelectorIdentityBoundaryTests.test_python_equal_metadata_clone_changes_are_not_record_identity) ... ok
+test_selected_nested_mutation_rejects_without_poisoning_legacy_or_capture_store (tests.test_document_selector_identity_boundary.DocumentSelectorIdentityBoundaryTests.test_selected_nested_mutation_rejects_without_poisoning_legacy_or_capture_store) ... ok
+test_unchanged_and_cloned_returns_remap_to_original_eligible_objects (tests.test_document_selector_identity_boundary.DocumentSelectorIdentityBoundaryTests.test_unchanged_and_cloned_returns_remap_to_original_eligible_objects) ... ok
+test_unselected_and_later_callback_alias_mutation_never_reaches_store_or_consumer (tests.test_document_selector_identity_boundary.DocumentSelectorIdentityBoundaryTests.test_unselected_and_later_callback_alias_mutation_never_reaches_store_or_consumer) ... ok
+test_wrong_id_body_company_source_or_time_are_local_contract_errors (tests.test_document_selector_identity_boundary.DocumentSelectorIdentityBoundaryTests.test_wrong_id_body_company_source_or_time_are_local_contract_errors) ... ok
+test_actual_gpre_two_exact_groups_preserve_full_pool_basis_within_ten (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_actual_gpre_two_exact_groups_preserve_full_pool_basis_within_ten) ... ok
+test_actual_override_unknown_callable_and_malformed_declaration_paths (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_actual_override_unknown_callable_and_malformed_declaration_paths) ... ok
+test_changed_selected_sources_invalidate_fingerprint_unchanged_replay_skips (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_changed_selected_sources_invalidate_fingerprint_unchanged_replay_skips) ... ok
+test_comparison_source_and_exact_share_unit_preserved (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_comparison_source_and_exact_share_unit_preserved) ... ok
+test_harmful_optional_fill_does_not_discard_feasible_minimal_operands (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_harmful_optional_fill_does_not_discard_feasible_minimal_operands) ... ok
+test_latest_unmatched_cashflow_cannot_be_hidden_to_resurrect_old_pair (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_latest_unmatched_cashflow_cannot_be_hidden_to_resurrect_old_pair) ... ok
+test_long_old_repetition_no_longer_displaces_current_readable_cash (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_long_old_repetition_no_longer_displaces_current_readable_cash) ... ok
+test_necessary_nonoperand_dominance_witness_survives_bounded_reduction (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_necessary_nonoperand_dominance_witness_survives_bounded_reduction) ... ok
+test_unrepresentable_basis_uses_original_authorized_acquisition_then_gap (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_unrepresentable_basis_uses_original_authorized_acquisition_then_gap) ... ok
+test_usd_basis_and_same_filing_comparison_preference_are_not_replaced (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_usd_basis_and_same_filing_comparison_preference_are_not_replaced) ... ok
+test_zero_denominator_and_stale_current_keep_failure_basis (tests.test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_zero_denominator_and_stale_current_keep_failure_basis) ... ok
+test_actual_core_undocumented_or_missing_callable_does_not_claim_builtin (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_actual_core_undocumented_or_missing_callable_does_not_claim_builtin) ... ok
+test_actual_core_uses_override_contract_and_only_declared_configured_parameters (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_actual_core_uses_override_contract_and_only_declared_configured_parameters) ... ok
+test_actual_selector_wire_preserves_complete_eligible_scopes_and_versions (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_actual_selector_wire_preserves_complete_eligible_scopes_and_versions) ... ok
+test_cash_ratio_documented_default_matches_native_numeric_behavior (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_cash_ratio_documented_default_matches_native_numeric_behavior) ... FAIL
+test_registry_cards_and_real_selector_share_the_same_scope_projection (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_registry_cards_and_real_selector_share_the_same_scope_projection) ... ERROR
+test_weighted_average_basis_ending_and_unit_counterexamples_preserve_v3_definition (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_weighted_average_basis_ending_and_unit_counterexamples_preserve_v3_definition) ... FAIL
+test_actual_final_assembly_retains_metadata_through_posthoc_projection (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_actual_final_assembly_retains_metadata_through_posthoc_projection) ... ERROR
+test_calculator_owns_units_for_arbitrary_signal_identity (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_calculator_owns_units_for_arbitrary_signal_identity) ... ERROR
+test_legacy_result_does_not_gain_fabricated_metadata (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_legacy_result_does_not_gain_fabricated_metadata) ... ERROR
+test_llm_cannot_author_runtime_measurement (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_llm_cannot_author_runtime_measurement) ... ERROR
+test_mixed_failure_keeps_mechanical_units_before_local_llm_price_repair (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_mixed_failure_keeps_mechanical_units_before_local_llm_price_repair) ... ERROR
+test_model_view_keeps_sign_state_period_and_exact_claim_distinct (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_model_view_keeps_sign_state_period_and_exact_claim_distinct) ... ERROR
+test_numeric_schema_and_cited_period_fail_closed (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_numeric_schema_and_cited_period_fail_closed) ... ERROR
+test_predictor_repairs_only_the_proved_member (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_predictor_repairs_only_the_proved_member) ... ERROR
+test_reflection_receives_metadata_and_revalidates_exact_detail (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_reflection_receives_metadata_and_revalidates_exact_detail) ... ERROR
+test_research_guard_authorizes_only_invalid_prose (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_research_guard_authorizes_only_invalid_prose) ... ERROR
+test_unit_guard_is_local_and_preserves_scenarios_other_windows_and_versions (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_unit_guard_is_local_and_preserves_scenarios_other_windows_and_versions) ... ERROR
+
+======================================================================
+ERROR: test_registry_cards_and_real_selector_share_the_same_scope_projection (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_registry_cards_and_real_selector_share_the_same_scope_projection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py", line 182, in test_registry_cards_and_real_selector_share_the_same_scope_projection
+    frozen = registry.freeze()
+             ^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 2325, in freeze
+    raise ValidationError(
+stock_opportunity_agent.models.ValidationError: Signal capability audit failed: {"disabled": {"cash_reserves:v1": ["schema_fixture_failed: expected positive, received unavailable"], "gross_margin_change:v1": ["schema_fixture_failed: expected positive, received unavailable"], "net_share_retirement_yoy:v1": ["schema_fixture_failed: expected positive, received unavailable"], "operating_cash_flow_margin:v1": ["schema_fixture_failed: expected positive, received unavailable"], "revenue_acceleration:v1": ["schema_fixture_failed: expected positive, received unavailable"], "revenue_growth_yoy:v1": ["schema_fixture_failed: expected positive, received unavailable"]}, "enabled_refs": ["financing_listing_action:v1", "guidance_acceleration:v1", "max_drawdown_1y:v1", "price_momentum_126d:v1", "negative_word_count:v1", "order_quality:v1", "commercialization_status:v1", "customer_concentration:v1"], "passed": false, "schema_version": "signal-capability-audit-v1"}
+
+======================================================================
+ERROR: test_actual_final_assembly_retains_metadata_through_posthoc_projection (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_actual_final_assembly_retains_metadata_through_posthoc_projection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 185, in test_actual_final_assembly_retains_metadata_through_posthoc_projection
+    _, _, result = financial_product()
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4205, in _gross_margin_change_signal
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3987, in _gross_margin_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+ERROR: test_calculator_owns_units_for_arbitrary_signal_identity (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_calculator_owns_units_for_arbitrary_signal_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 66, in test_calculator_owns_units_for_arbitrary_signal_identity
+    _, _, result = financial_product("custom_margin_delta")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4205, in _gross_margin_change_signal
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3987, in _gross_margin_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+ERROR: test_legacy_result_does_not_gain_fabricated_metadata (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_legacy_result_does_not_gain_fabricated_metadata)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 87, in test_legacy_result_does_not_gain_fabricated_metadata
+    _, _, result = financial_product()
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4205, in _gross_margin_change_signal
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3987, in _gross_margin_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+ERROR: test_llm_cannot_author_runtime_measurement (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_llm_cannot_author_runtime_measurement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 221, in test_llm_cannot_author_runtime_measurement
+    _, document, deterministic = financial_product()
+                                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4205, in _gross_margin_change_signal
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3987, in _gross_margin_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+ERROR: test_mixed_failure_keeps_mechanical_units_before_local_llm_price_repair (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_mixed_failure_keeps_mechanical_units_before_local_llm_price_repair)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 205, in test_mixed_failure_keeps_mechanical_units_before_local_llm_price_repair
+    _, _, result = financial_product()
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4205, in _gross_margin_change_signal
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3987, in _gross_margin_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+ERROR: test_model_view_keeps_sign_state_period_and_exact_claim_distinct (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_model_view_keeps_sign_state_period_and_exact_claim_distinct)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 75, in test_model_view_keeps_sign_state_period_and_exact_claim_distinct
+    _, _, result = financial_product("liquidity_ratio", "financial.cash_to_current_liabilities_ratio")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4358, in _cash_to_current_liabilities_ratio_signal
+    basis = _cash_liability_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4041, in _cash_liability_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+ERROR: test_numeric_schema_and_cited_period_fail_closed (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_numeric_schema_and_cited_period_fail_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 94, in test_numeric_schema_and_cited_period_fail_closed
+    _, _, result = financial_product()
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4205, in _gross_margin_change_signal
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3987, in _gross_margin_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+ERROR: test_predictor_repairs_only_the_proved_member (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_predictor_repairs_only_the_proved_member)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 134, in test_predictor_repairs_only_the_proved_member
+    _, _, result = financial_product()
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4205, in _gross_margin_change_signal
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3987, in _gross_margin_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+ERROR: test_reflection_receives_metadata_and_revalidates_exact_detail (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_reflection_receives_metadata_and_revalidates_exact_detail)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 149, in test_reflection_receives_metadata_and_revalidates_exact_detail
+    _, _, result = financial_product()
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4205, in _gross_margin_change_signal
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3987, in _gross_margin_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+ERROR: test_research_guard_authorizes_only_invalid_prose (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_research_guard_authorizes_only_invalid_prose)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 171, in test_research_guard_authorizes_only_invalid_prose
+    _, _, result = financial_product()
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4205, in _gross_margin_change_signal
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3987, in _gross_margin_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+ERROR: test_unit_guard_is_local_and_preserves_scenarios_other_windows_and_versions (tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_unit_guard_is_local_and_preserves_scenarios_other_windows_and_versions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 111, in test_unit_guard_is_local_and_preserves_scenarios_other_windows_and_versions
+    _, _, result = financial_product()
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_numeric_measurement_contract.py", line 47, in financial_product
+    result = default_deterministic_signal_functions()[function](spec, (document,), AS_OF)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4205, in _gross_margin_change_signal
+    basis = _gross_margin_input_facts(spec, documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3987, in _gross_margin_input_facts
+    facts = _sec_facts(documents, as_of)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4507, in _sec_facts
+    raise ValidationError(str(error)) from None
+stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+======================================================================
+FAIL: test_cash_ratio_documented_default_matches_native_numeric_behavior (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_cash_ratio_documented_default_matches_native_numeric_behavior)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py", line 232, in test_cash_ratio_documented_default_matches_native_numeric_behavior
+    self.assertEqual(result.value, expected)
+AssertionError: <SignalValue.UNAVAILABLE: 'unavailable'> != <SignalValue.POSITIVE: 'positive'>
+
+======================================================================
+FAIL: test_weighted_average_basis_ending_and_unit_counterexamples_preserve_v3_definition (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_weighted_average_basis_ending_and_unit_counterexamples_preserve_v3_definition)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py", line 198, in test_weighted_average_basis_ending_and_unit_counterexamples_preserve_v3_definition
+    self.assertEqual(result.value, SignalValue.NEGATIVE)
+AssertionError: <SignalValue.UNAVAILABLE: 'unavailable'> != <SignalValue.NEGATIVE: 'negative'>
+
+----------------------------------------------------------------------
+Ran 115 tests in 12.031s
+
+FAILED (failures=2, errors=12)

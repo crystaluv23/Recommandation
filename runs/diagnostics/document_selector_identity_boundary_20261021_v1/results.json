@@ -1,0 +1,362 @@
+{
+  "finding": "FAIL_unchanged_eligible_membership_is_Python_equality_not_typed_record_identity",
+  "controls": [
+    {
+      "name": "unchanged_positive",
+      "capture": false,
+      "status": "accepted",
+      "error": null,
+      "before": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": true
+          }
+        }
+      },
+      "returned": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": true
+          }
+        }
+      },
+      "original_and_returned_python_equal": true,
+      "typed_canonical_changed": false,
+      "resolution": {
+        "status": "resolved",
+        "document_ids": [
+          "legacy-fixture"
+        ],
+        "literal_context": [
+          "Actual immutable retained disclosure."
+        ]
+      }
+    },
+    {
+      "name": "legacy_bool_to_int",
+      "capture": false,
+      "status": "accepted",
+      "error": null,
+      "before": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": true
+          }
+        }
+      },
+      "returned": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": 1
+          }
+        }
+      },
+      "original_and_returned_python_equal": true,
+      "typed_canonical_changed": true,
+      "resolution": {
+        "status": "resolved",
+        "document_ids": [
+          "legacy-fixture"
+        ],
+        "literal_context": [
+          "Actual immutable retained disclosure."
+        ]
+      }
+    },
+    {
+      "name": "legacy_int_to_float",
+      "capture": false,
+      "status": "accepted",
+      "error": null,
+      "before": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": 1
+          }
+        }
+      },
+      "returned": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": 1.0
+          }
+        }
+      },
+      "original_and_returned_python_equal": true,
+      "typed_canonical_changed": true,
+      "resolution": {
+        "status": "resolved",
+        "document_ids": [
+          "legacy-fixture"
+        ],
+        "literal_context": [
+          "Actual immutable retained disclosure."
+        ]
+      }
+    },
+    {
+      "name": "legacy_body_replacement_negative",
+      "capture": false,
+      "status": "rejected",
+      "error": {
+        "type": "_DocumentSelectionError",
+        "message": "Document selector must return unique unchanged eligible documents within the request limit"
+      },
+      "before": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": true
+          }
+        }
+      },
+      "returned": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Changed retained disclosure.",
+        "content_hash": "bf2619b22e6f604346e35552e5ca4a028d53981cf5cd02986ee2a756e5b1b0cf",
+        "metadata": {
+          "selection": {
+            "value": true
+          }
+        }
+      },
+      "original_and_returned_python_equal": false,
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "legacy_other_id_negative",
+      "capture": false,
+      "status": "rejected",
+      "error": {
+        "type": "_DocumentSelectionError",
+        "message": "Document selector must return unique unchanged eligible documents within the request limit"
+      },
+      "before": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": true
+          }
+        }
+      },
+      "returned": {
+        "document_id": "new-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": true
+          }
+        }
+      },
+      "original_and_returned_python_equal": false,
+      "typed_canonical_changed": true
+    },
+    {
+      "name": "capture_metadata_replacement_negative",
+      "capture": true,
+      "status": "rejected",
+      "error": {
+        "type": "_DocumentSelectionError",
+        "message": "Local document selection failed (ValidationError)"
+      },
+      "before": {
+        "document_id": "rawcap:v1:a45c8a71fe93b5b8b3cc23f69ed5a283c7fc14e116374bbb08de1bda232c8e20",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": true
+          }
+        }
+      },
+      "returned": null,
+      "original_and_returned_python_equal": null,
+      "typed_canonical_changed": null
+    },
+    {
+      "name": "legacy_metadata_in_place",
+      "capture": false,
+      "status": "accepted",
+      "error": null,
+      "before": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": true
+          }
+        }
+      },
+      "returned": {
+        "document_id": "legacy-fixture",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": 1
+          }
+        }
+      },
+      "original_and_returned_python_equal": true,
+      "typed_canonical_changed": true,
+      "resolution": {
+        "status": "resolved",
+        "document_ids": [
+          "legacy-fixture"
+        ],
+        "literal_context": [
+          "Actual immutable retained disclosure."
+        ]
+      }
+    },
+    {
+      "name": "capture_metadata_in_place",
+      "capture": true,
+      "status": "accepted",
+      "error": null,
+      "before": {
+        "document_id": "rawcap:v1:a45c8a71fe93b5b8b3cc23f69ed5a283c7fc14e116374bbb08de1bda232c8e20",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": true
+          }
+        }
+      },
+      "returned": {
+        "document_id": "rawcap:v1:a45c8a71fe93b5b8b3cc23f69ed5a283c7fc14e116374bbb08de1bda232c8e20",
+        "company_id": "issuer",
+        "source_type": "filing",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "content": "Actual immutable retained disclosure.",
+        "content_hash": "4429cb7432a979201ec84cdb172bd1dc6d9df7cb6610b28967b63eabcaa09a05",
+        "metadata": {
+          "selection": {
+            "value": 1
+          }
+        }
+      },
+      "original_and_returned_python_equal": true,
+      "typed_canonical_changed": true,
+      "resolution": {
+        "status": "resolved",
+        "document_ids": [
+          "rawcap:v1:a45c8a71fe93b5b8b3cc23f69ed5a283c7fc14e116374bbb08de1bda232c8e20"
+        ],
+        "literal_context": [
+          "Actual immutable retained disclosure."
+        ]
+      }
+    }
+  ],
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    }
+  ],
+  "spec": "spec/src/stock_opportunity_agent/data/resolution.md:111-119",
+  "forbidden_operations": {
+    "Store_construction": 0,
+    "append_prepare_execute_GET_model_labels": 0
+  },
+  "limits": "Synthetic in-memory raw documents through actual EvidenceResolver.resolve/select_documents. No production sources, stores or measurements were executed.",
+  "minimal_fix": "Before invoking the selector, snapshot each eligible document_id and typed canonical complete-record digest. Afterwards compare each returned record against that pre-callback digest; do not digest the available live objects only after the callback, because nested metadata may be mutated in place. Preserve limit, uniqueness, eligible source/PIT restrictions and local contract-error behavior.",
+  "existing_semantics": "The owning spec explicitly requires unique unchanged members; accepting typed metadata changes violates that existing contract. No new RawInfo schema or identity policy is needed.",
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/probe.py",
+      "sha256": "6a35972a63f7a3cf070a7d60b4d91ee29bfa65c79fe28fad820923857662226a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/document_selector_identity_boundary_20261021_v1/probe.log",
+      "sha256": "e11368938711748c33c70325e3b519154c85314fa5dcef5a3ff073393946c820"
+    }
+  ]
+}

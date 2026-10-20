@@ -1,0 +1,111 @@
+HEAD_BASELINE {
+  "commit": "ee6de356acba873a9ebc756c1ee9a48b07f80fcd",
+  "library_sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66",
+  "selected_old_failure_nodes": [
+    "tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_registry_cards_and_real_selector_share_the_same_scope_projection",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_actual_final_assembly_retains_metadata_through_posthoc_projection",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_calculator_owns_units_for_arbitrary_signal_identity",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_legacy_result_does_not_gain_fabricated_metadata",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_llm_cannot_author_runtime_measurement",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_mixed_failure_keeps_mechanical_units_before_local_llm_price_repair",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_model_view_keeps_sign_state_period_and_exact_claim_distinct",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_numeric_schema_and_cited_period_fail_closed",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_predictor_repairs_only_the_proved_member",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_reflection_receives_metadata_and_revalidates_exact_detail",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_research_guard_authorizes_only_invalid_prose",
+    "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_unit_guard_is_local_and_preserves_scenarios_other_windows_and_versions",
+    "tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_cash_ratio_documented_default_matches_native_numeric_behavior",
+    "tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_weighted_average_basis_ending_and_unit_counterexamples_preserve_v3_definition"
+  ],
+  "tests_run": 14,
+  "errors": 12,
+  "failures": 2,
+  "rows": [
+    {
+      "node": "tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_registry_cards_and_real_selector_share_the_same_scope_projection",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: Signal capability audit failed: {\"disabled\": {\"cash_reserves:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"gross_margin_change:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"net_share_retirement_yoy:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"operating_cash_flow_margin:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"revenue_acceleration:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"], \"revenue_growth_yoy:v1\": [\"schema_fixture_failed: expected positive, received unavailable\"]}, \"enabled_refs\": [\"financing_listing_action:v1\", \"guidance_acceleration:v1\", \"max_drawdown_1y:v1\", \"price_momentum_126d:v1\", \"negative_word_count:v1\", \"order_quality:v1\", \"commercialization_status:v1\", \"customer_concentration:v1\"], \"passed\": false, \"schema_version\": \"signal-capability-audit-v1\"}",
+      "issuer_exception_in_trace": false
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_actual_final_assembly_retains_metadata_through_posthoc_projection",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_calculator_owns_units_for_arbitrary_signal_identity",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_legacy_result_does_not_gain_fabricated_metadata",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_llm_cannot_author_runtime_measurement",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_mixed_failure_keeps_mechanical_units_before_local_llm_price_repair",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_model_view_keeps_sign_state_period_and_exact_claim_distinct",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_numeric_schema_and_cited_period_fail_closed",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_predictor_repairs_only_the_proved_member",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_reflection_receives_metadata_and_revalidates_exact_detail",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_research_guard_authorizes_only_invalid_prose",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_numeric_measurement_contract.NumericMeasurementContractTests.test_unit_guard_is_local_and_preserves_scenarios_other_windows_and_versions",
+      "status": "error",
+      "trace_tail": "stock_opportunity_agent.models.ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+      "issuer_exception_in_trace": true
+    },
+    {
+      "node": "tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_cash_ratio_documented_default_matches_native_numeric_behavior",
+      "status": "failure",
+      "trace_tail": "AssertionError: <SignalValue.UNAVAILABLE: 'unavailable'> != <SignalValue.POSITIVE: 'positive'>",
+      "issuer_exception_in_trace": false
+    },
+    {
+      "node": "tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_weighted_average_basis_ending_and_unit_counterexamples_preserve_v3_definition",
+      "status": "failure",
+      "trace_tail": "AssertionError: <SignalValue.UNAVAILABLE: 'unavailable'> != <SignalValue.NEGATIVE: 'negative'>",
+      "issuer_exception_in_trace": false
+    }
+  ],
+  "actual_stage_reentry": false,
+  "GETs_or_production_models_or_labels": 0
+}

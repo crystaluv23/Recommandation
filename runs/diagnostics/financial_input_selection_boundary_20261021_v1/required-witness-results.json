@@ -1,0 +1,167 @@
+{
+  "finding": "FAIL_required_nonoperand_witness_lost_despite_feasible_two_document_subset",
+  "synthetic": true,
+  "full_pool_documents": 11,
+  "limit": 10,
+  "ranked_ids": [
+    "a-operands-and-competing-tag",
+    "n0",
+    "n1",
+    "n2",
+    "n3",
+    "n4",
+    "n5",
+    "n6",
+    "n7",
+    "n8",
+    "z-dominance-witness"
+  ],
+  "full_basis": "(None, (('a-operands-and-competing-tag', '5e062c340631291baf73d5178ad596749150fb122118cc6486b0726d01ff5415', '{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}', 'Revenues', 'USD', '2024-01-01', '2024-12-31', '2025-01-20', '10-K', 100.0), ('a-operands-and-competing-tag', '5e062c340631291baf73d5178ad596749150fb122118cc6486b0726d01ff5415', '{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":80}', 'Revenues', 'USD', '2023-01-01', '2023-12-31', '2025-01-20', '10-K', 80.0)))",
+  "selector_ids": [],
+  "native_selector_status": "unresolved",
+  "alternative_ids": [
+    "a-operands-and-competing-tag",
+    "z-dominance-witness"
+  ],
+  "alternative_basis_equal": true,
+  "alternative_native_status": "resolved",
+  "source_records": [
+    {
+      "document_id": "a-operands-and-competing-tag",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":80},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"RevenueFromContractWithCustomerExcludingAssessedTax\",\"unit\":\"USD\",\"value\":110},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"RevenueFromContractWithCustomerExcludingAssessedTax\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"fixture\":\"a-operands-and-competing-tag\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "5e062c340631291baf73d5178ad596749150fb122118cc6486b0726d01ff5415",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    {
+      "document_id": "n0",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[],\"filing_date\":\"2025-01-20\",\"fixture\":\"n0\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "b610a5b2b2874a3caead5c43df1cb56bedab17ec8d0facfa84f7be5fd8d1a73f",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    {
+      "document_id": "n1",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[],\"filing_date\":\"2025-01-20\",\"fixture\":\"n1\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "ccc14d97f1e6b46d38a3cdca9085855f735eca7461db5ea3085b7abd5f839052",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    {
+      "document_id": "n2",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[],\"filing_date\":\"2025-01-20\",\"fixture\":\"n2\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "584bddffef18f5f172169c6a2d8579adc8ab1cd61c91558fabe9d4e061a54e05",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    {
+      "document_id": "n3",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[],\"filing_date\":\"2025-01-20\",\"fixture\":\"n3\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "f6a8a6711eb0053ee999b92af0c052b1d58477ed919889a671170501b13f7640",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    {
+      "document_id": "n4",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[],\"filing_date\":\"2025-01-20\",\"fixture\":\"n4\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "bdfa05fbac4d8ab784470b7ba52ab7ed4d2a315a319d612ca26f3452c1531b9e",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    {
+      "document_id": "n5",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[],\"filing_date\":\"2025-01-20\",\"fixture\":\"n5\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "b75a57bcbf7a03d693c1a5aabb1afc1731331c73cffb59536ac4112991f5f4bd",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    {
+      "document_id": "n6",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[],\"filing_date\":\"2025-01-20\",\"fixture\":\"n6\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "31321f3370db5afd9c841da3f591a861bbb27bb44a40367cacd266a8348858b9",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    {
+      "document_id": "n7",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[],\"filing_date\":\"2025-01-20\",\"fixture\":\"n7\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "cbc6e6d157f71c613661d2657faaed27c04cfdf0c2617a4374af6d9c8c9de53f",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    {
+      "document_id": "n8",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[],\"filing_date\":\"2025-01-20\",\"fixture\":\"n8\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "decbb9b5b31549b6a31c352fcdf85486e2861d2f429b137614d256b65dda33d4",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    },
+    {
+      "document_id": "z-dominance-witness",
+      "company_id": "cik_0000000001",
+      "source_type": "sec_company_facts",
+      "published_at": "2025-01-21T00:00:00+00:00",
+      "available_at": "2025-01-21T00:00:00+00:00",
+      "content": "{\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2010-12-31\",\"start\":\"2010-01-01\",\"tag\":\"RevenueFromContractWithCustomerExcludingAssessedTax\",\"unit\":\"USD\",\"value\":1},{\"end\":\"2010-12-31\",\"start\":\"2010-01-01\",\"tag\":\"SalesRevenueNet\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"fixture\":\"z-dominance-witness\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+      "content_hash": "9fb9ec7fb5c9e020ed0ba0c036573430967ffbefb09392c60b55684e37d03d10",
+      "metadata": {
+        "cik": "0000000001"
+      }
+    }
+  ],
+  "code_binding": {
+    "path": "runs/diagnostics/financial_input_selection_boundary_20261021_v1/signal-library-original-c665.py",
+    "sha256": "c665144d4956db41847da1e61812da1504eb03b2a41dcc4fbe011fc19ac3ad5f"
+  },
+  "scope": "Only pure fact/operand matching and native input resolution. No Signal arithmetic/execution, Store, network, models, labels or actual stage."
+}

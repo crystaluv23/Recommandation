@@ -1,0 +1,133 @@
+{
+  "path": "/Users/l/Project/Recommandation/configs/signals_v1.json",
+  "sha256": "6775492b0754b4c97f4896b1a0c7fe991083fda71ca1da342ef8d4b286905d4a",
+  "catalog_version": 1,
+  "fixtures": [
+    {
+      "signal_id": "revenue_growth_yoy",
+      "fixture_pointer": "/signals/0/tests/0",
+      "document_pointer": "/signals/0/tests/0/documents/0",
+      "document_keys": [
+        "source_type",
+        "available_at",
+        "content"
+      ],
+      "body_keys": [
+        "schema_version",
+        "filing_date",
+        "form",
+        "facts"
+      ],
+      "body_schema_version": "sec-company-facts-document-v1",
+      "body_cik_present": false,
+      "metadata_present": false,
+      "metadata_cik_present": false,
+      "content_sha256": "f5ad5eb66729dc4e6817983fa17ffacafd505eae6137b294bbb244cf765fa0af"
+    },
+    {
+      "signal_id": "revenue_acceleration",
+      "fixture_pointer": "/signals/1/tests/0",
+      "document_pointer": "/signals/1/tests/0/documents/0",
+      "document_keys": [
+        "source_type",
+        "available_at",
+        "content"
+      ],
+      "body_keys": [
+        "schema_version",
+        "filing_date",
+        "form",
+        "facts"
+      ],
+      "body_schema_version": "sec-company-facts-document-v1",
+      "body_cik_present": false,
+      "metadata_present": false,
+      "metadata_cik_present": false,
+      "content_sha256": "fd5a84c45689acd6d6d116902750afd4bbd9f9507024f71e7c905bbf4a1bf296"
+    },
+    {
+      "signal_id": "gross_margin_change",
+      "fixture_pointer": "/signals/2/tests/0",
+      "document_pointer": "/signals/2/tests/0/documents/0",
+      "document_keys": [
+        "source_type",
+        "available_at",
+        "content"
+      ],
+      "body_keys": [
+        "schema_version",
+        "filing_date",
+        "form",
+        "facts"
+      ],
+      "body_schema_version": "sec-company-facts-document-v1",
+      "body_cik_present": false,
+      "metadata_present": false,
+      "metadata_cik_present": false,
+      "content_sha256": "98843c4d20d1b73ecaeee8ea1ab369e9a211b85c9f446249e2e14db55767a6fd"
+    },
+    {
+      "signal_id": "operating_cash_flow_margin",
+      "fixture_pointer": "/signals/3/tests/0",
+      "document_pointer": "/signals/3/tests/0/documents/0",
+      "document_keys": [
+        "source_type",
+        "available_at",
+        "content"
+      ],
+      "body_keys": [
+        "schema_version",
+        "filing_date",
+        "form",
+        "facts"
+      ],
+      "body_schema_version": "sec-company-facts-document-v1",
+      "body_cik_present": false,
+      "metadata_present": false,
+      "metadata_cik_present": false,
+      "content_sha256": "926eb274cdeaaa61576a6bbeeb4a43ca0e60e23d65f50ce26ba3a74476962fc0"
+    },
+    {
+      "signal_id": "net_share_retirement_yoy",
+      "fixture_pointer": "/signals/4/tests/0",
+      "document_pointer": "/signals/4/tests/0/documents/0",
+      "document_keys": [
+        "source_type",
+        "available_at",
+        "content"
+      ],
+      "body_keys": [
+        "schema_version",
+        "filing_date",
+        "form",
+        "facts"
+      ],
+      "body_schema_version": "sec-company-facts-document-v1",
+      "body_cik_present": false,
+      "metadata_present": false,
+      "metadata_cik_present": false,
+      "content_sha256": "b65d64942e22b1249a35efb435decb24a5c224617dde2d8563743368042e3905"
+    },
+    {
+      "signal_id": "cash_reserves",
+      "fixture_pointer": "/signals/8/tests/0",
+      "document_pointer": "/signals/8/tests/0/documents/0",
+      "document_keys": [
+        "source_type",
+        "available_at",
+        "content"
+      ],
+      "body_keys": [
+        "schema_version",
+        "filing_date",
+        "form",
+        "facts"
+      ],
+      "body_schema_version": "sec-company-facts-document-v1",
+      "body_cik_present": false,
+      "metadata_present": false,
+      "metadata_cik_present": false,
+      "content_sha256": "29366d6f862e9e5f0acb975bcadbfb217c648bfc3b483668fae557771bcd2c05"
+    }
+  ]
+}

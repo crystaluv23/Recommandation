@@ -1,0 +1,29 @@
+{
+  "bindings_unchanged": true,
+  "elapsed_seconds": 23.7549126658123,
+  "forbidden_calls": [],
+  "groups": {
+    "default_v6": {
+      "changed_sets": 6,
+      "deterministic_financial": 6,
+      "deterministic_typed_q1_selected": 6,
+      "financial_source_requests": 9,
+      "financial_source_typed_q1_selected": 8,
+      "refs": 18,
+      "resolved": 17
+    },
+    "latest_v12": {
+      "changed_sets": 7,
+      "deterministic_financial": 9,
+      "deterministic_typed_q1_selected": 9,
+      "financial_source_requests": 9,
+      "financial_source_typed_q1_selected": 9,
+      "refs": 18,
+      "resolved": 17
+    }
+  },
+  "limits": "Input preparation only. No Signal execution, model, label, acquisition, append, fullprepare or old-stage reentry.",
+  "plan_hash": "9c9b5eafa9c33ea8ad465b0eed8ea663294bae2902e4234d7488a44e3f7faa69",
+  "reviewed_view_records_unchanged": true,
+  "status": "completed"
+}
