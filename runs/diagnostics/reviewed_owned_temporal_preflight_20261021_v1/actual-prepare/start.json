@@ -1,0 +1,11 @@
+{
+  "revision": "d15b335562328ed0f4112eaf418271488c47e2bc",
+  "goal_observation": {
+    "status": "active",
+    "checked_at": "2026-10-20T18:28:01+00:00",
+    "source": "actual root get_goal"
+  },
+  "prepares": [],
+  "role_dispatches": 0,
+  "driver_pid": 63680
+}

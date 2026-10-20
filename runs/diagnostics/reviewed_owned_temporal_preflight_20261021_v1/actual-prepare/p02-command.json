@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/run_reviewed_owned_partial_stage.py",
+    "--root",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02",
+    "--prepare",
+    "--expectations",
+    "/Users/l/Project/Recommandation/runs/diagnostics/owned_partial_three_controls_20261021_v1/expectations.json",
+    "--source-result",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/result.json",
+    "--seed-commit",
+    "ddeae204566d2d9f9cce29de1ab535902ef46bd5",
+    "--sample-id",
+    "p02",
+    "--source-profile",
+    "gpre_capture_1780",
+    "--source-commit",
+    "263d16ab18b8712f91a11c121b125f951dbbb05f"
+  ],
+  "cwd": "/Users/l/Project/Recommandation"
+}

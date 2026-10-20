@@ -42,8 +42,19 @@ Scripted p02 unanswered and p03 full demonstrate consumer wiring only; they do
 not count as fresh partial/full capability acceptance. No production source,
 schema, typed correction authority or old stage changes.
 
-At this checkpoint there has been no formal prepare or fresh role dispatch.
-Next freeze the implementation, prepare the unique three stages serially and
-verify the saved inputs/manifests before new exact-inbox independent subagents.
+Under d15b3355 all three unique formal prepares completed serially: p01
+16.675 seconds, p02 16.465 seconds, p03 16.733 seconds, all exit0.
+The [actual freeze review](../runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-frozen-input-review.json)
+checks all8045 unique current bindings. Each manifest has107 executable and7938
+original rows, with116 historical code bindings retained separately. Each
+sample equals the old sample except its controlled ID/question; all five
+preparation files are present, with no exchange/request yet. Manifest hashes
+are7d7f06ca (p01),23f6410b (p02),ccdbdee0 (p03). This preparation establishes
+input freezing, not fresh semantic behavior.
+
+The [bounded independent preflight review](../runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-review.json)
+checks24 negative/positive controls and native legal partial/partial/full
+representations. Next execute each new case serially with exact-inbox
+independent subagents and judge the original answers against the frozen oracle.
 No GET, external LLM API, Signal apply, labels or full successor is involved.
 Whole F7/Fast/Slow/MVP and independent benefit remain open.

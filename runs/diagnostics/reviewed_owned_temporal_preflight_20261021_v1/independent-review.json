@@ -1,0 +1,187 @@
+{
+  "verdict": "PASS_bounded_three_control_prefreeze_review",
+  "stable_sources": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "01c058eb996805c86bc12e1e27b4005b82d0ab19e5b8f7c517d5544c59001d16"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "17cecbe427230c0ab6a189f9b79709e41d85bb79daffb697b7089438eb7fce47"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py",
+      "sha256": "d60c9abf14ed0cbe0566341f8dececdae7d996c972b33cccb33e9fd125e87d12"
+    }
+  ],
+  "oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/owned_partial_three_controls_20261021_v1/expectations.json",
+    "sha256": "a5d5d3049ce6efaa1bc2609824d277ed29d55e074160bd4c89d97617097714d8"
+  },
+  "oracle_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/owned_partial_three_controls_20261021_v1/oracle-review.json",
+    "sha256": "f2f5344c99cacf1a3196df901077b7d278f3055725775b74893d58fd2a263852"
+  },
+  "controls": [
+    {
+      "case": "fixed_root_positive_p01",
+      "accepted": true
+    },
+    {
+      "case": "fixed_root_positive_p02",
+      "accepted": true
+    },
+    {
+      "case": "fixed_root_positive_p03",
+      "accepted": true
+    },
+    {
+      "case": "same_original_coherent_rename",
+      "original_accepted": true,
+      "current_accepted": false
+    },
+    {
+      "case": "wrong_profile",
+      "rejected": true
+    },
+    {
+      "case": "missing_case",
+      "rejected": true
+    },
+    {
+      "case": "duplicate_root",
+      "rejected": true
+    },
+    {
+      "case": "changed_question",
+      "rejected": true
+    },
+    {
+      "case": "case_calls7",
+      "rejected": true
+    },
+    {
+      "case": "case_tokens_more",
+      "rejected": true
+    },
+    {
+      "case": "perrequest_more",
+      "rejected": true
+    },
+    {
+      "case": "reserve_changed",
+      "rejected": true
+    },
+    {
+      "case": "total_calls19",
+      "rejected": true
+    },
+    {
+      "case": "total_tokens_more",
+      "rejected": true
+    },
+    {
+      "case": "denominator_true",
+      "rejected": true
+    },
+    {
+      "case": "denominator1",
+      "rejected": true
+    },
+    {
+      "case": "case_root_mismatch",
+      "rejected": true
+    },
+    {
+      "case": "unknown_case",
+      "rejected": true
+    },
+    {
+      "case": "wrong_sourceprofile",
+      "rejected": true
+    },
+    {
+      "case": "omitted_sourceprofile",
+      "rejected": true
+    },
+    {
+      "case": "wrong_sourcecommit",
+      "rejected": true
+    },
+    {
+      "case": "capture_wrong_commit_pre_read",
+      "rejected": true
+    },
+    {
+      "case": "wrong_seed_commit_rejected_before_seed_or_stage_write",
+      "rejected": true
+    },
+    {
+      "case": "native_budget6calls_perrequest131072_case512k",
+      "rejected_excesses": 3
+    }
+  ],
+  "feasibility": [
+    {
+      "case": "p01",
+      "routing_scope": "partial",
+      "native_actual_disposition_scope_accepted": "partial",
+      "private_witness_not_in_role_request": true,
+      "scope": "Mechanical feasibility only; future actual model answer still independently judged."
+    },
+    {
+      "case": "p02",
+      "routing_scope": "partial",
+      "native_actual_disposition_scope_accepted": "partial",
+      "private_witness_not_in_role_request": true,
+      "scope": "Mechanical feasibility only; future actual model answer still independently judged."
+    },
+    {
+      "case": "p03",
+      "routing_scope": "partial",
+      "native_actual_disposition_scope_accepted": "full",
+      "private_witness_not_in_role_request": true,
+      "scope": "Mechanical feasibility only; future actual model answer still independently judged."
+    }
+  ],
+  "original_rename_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/pre-fixed-root-original.py",
+    "sha256": "939a3c80cda3f4e4621255cbcc26a22f6569bd9853ee896e788039ade31d8e25"
+  },
+  "original_rename_evidence": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/rename-original-counterexample.json",
+    "sha256": "d6deeae697c8103922005366e94c1ebaf2c206f00a427973ee6b7483f5582c08"
+  },
+  "native_capture_loader_initial_read": {
+    "passed": true,
+    "historical_commit": "263d16ab18b8712f91a11c121b125f951dbbb05f",
+    "historical_code_bindings": 116,
+    "data_source_bindings_returned": 7660,
+    "four_current_drift_paths_not_in_data_current_checks": true,
+    "final_loader_AST_exact_original_read_logic": true,
+    "note": "One actual source loader read was completed during preflight before final code binding additions; current loader function AST is identical. No repeated5869 source scan or Store call."
+  },
+  "semantic_limits": [
+    "p01 and p02 require proper partial, p03 requires full based on literal counter[3]; unanswered can be safe but is not capability success. Original p01 semantic0/1 remains unchanged.",
+    "Reflect actual visible input is prior6quotes plus2Signals/4financingcounter spans, not17 BasicInfo cards. Those17 belong to finalcontext/Predictor preservation.",
+    "No new routing, H_init, F6 or model compliance has been tested; no forced long residual or fresh mirror correction.",
+    "Three fixed roots keep percase6/512k and aggregate18/1536k; no arbitrarysourcecommit/legacy profile route or coherent oracle/root rename accepted.",
+    "Temporary native validator witnesses only establish legal representation, not a suggested model answer. Oracle/private witness remains separate from actual inputs."
+  ],
+  "forbidden_activity": {
+    "formal_prepare_resume_role_dispatch": 0,
+    "GET_Store_Signalapply_labels": 0,
+    "production_or_frozen_edits": 0
+  },
+  "audit_script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-probe.py",
+    "sha256": "328d16117ff1642467af44bf5d5f72a62d2f39df42ba18be27b54b39924c2a2a"
+  },
+  "audit_log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-probe.log",
+    "sha256": "1f7a7c106af8c86f05dc5d80f8ae486684196593c25f5ccdd5008a20ec587e7f",
+    "note": "Native pure/temp audit exit0; review SHA printed in log precedes this command/log metadata only."
+  },
+  "audit_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 /Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-probe.py > /Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-probe.log 2>&1",
+  "audit_exit_code": 0
+}

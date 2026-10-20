@@ -1,0 +1,29 @@
+{
+  "revision": "d15b335562328ed0f4112eaf418271488c47e2bc",
+  "goal_observation": {
+    "status": "active",
+    "checked_at": "2026-10-20T18:28:01+00:00",
+    "source": "actual root get_goal"
+  },
+  "prepares": [
+    {
+      "sample_id": "p01",
+      "pid": 63681,
+      "exit_code": 0,
+      "seconds": 16.67528570909053
+    },
+    {
+      "sample_id": "p02",
+      "pid": 63907,
+      "exit_code": 0,
+      "seconds": 16.465130708180368
+    },
+    {
+      "sample_id": "p03",
+      "pid": 64145,
+      "exit_code": 0,
+      "seconds": 16.733299999963492
+    }
+  ],
+  "role_dispatches": 0
+}

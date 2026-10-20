@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T18:14:25+00:00",
+    "checked_at": "2026-10-20T18:28:01+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal at issuer fixture repair checkpoint; no budget limit; old completed stages remain completed"
+    "source": "Actual root get_goal at bounded F7 three-control execution freeze; no budget limit; no old-stage resume"
   },
   "acceptance": [
     {
@@ -140,7 +140,14 @@
         "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/native-cli-result.json",
         "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/connected-final-158-tests.json",
         "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/review.json",
-        "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/producer-addendum-review.json"
+        "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/producer-addendum-review.json",
+        "reports/reviewed-owned-temporal-controls-20261021.md",
+        "runs/diagnostics/owned_partial_three_controls_20261021_v1/expectations.json",
+        "runs/diagnostics/owned_partial_three_controls_20261021_v1/oracle-review.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/safe-summary.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-review.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-prepare/summary.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-frozen-input-review.json"
       ],
       "remaining": "Actual deterministic input connection verified for default6/6 and latest9/9 within10, not Signal arithmetic/model semantics or wholeF5. Allfinancial-source membership8/9 and9/9;defaultLLM cashratio latestQ1 stillmissing withgenericselection unchanged.Future named positive fixture producers now explicitly bind CIK; actual old/new CLI2to0 with14enabled,158connected tests pass and independent strict negative/native constructor controls pass; historical failures/Registry bytes stay. Shared S5 execution-contract prompt still omits explicit CIK obligations; fresh model authoring unverified. Source57/4/53 and1780view preserve history; original40 readiness670/720 each is earlier1776-view evidence. BasicInfo partial/newsunknown;F7prompt17safe but originalfresh0/1/mirrorunexercised remain. F10/Slow/direction+magnitude discovery/admission/exactreuse/fullclosedloop unverified. BURUbaseline/FTItype/MSclock/transcriptpublictimeproof/retrospectivefinancialprimaryaudit limits persist;benefitlaterunknown."
     },
@@ -989,16 +996,37 @@
         "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/producer-addendum-review.json"
       ],
       "result": "Spec-first six future seed positives and named numeric/card/runtime/candidate constructors explicitly bind synthetic issuer authority, preserving every fact/clock/assertion and unchanged strict consumer/auditor. Native oldCLI exit2 versus new exit0/14enabled. Original115 errors and first155 runtime omissions retained; final158 connected tests pass, independent typed/nested missing/conflict negatives and actual runtime/candidate originals contrast pass. OldRegistry replay installs0 and all published bytes/failures remain. No productionSRC change, GET/model/labels/realwrite/fullprepare or fullMVP closure. Shared S5 authoring prompt identity obligation remains unimplemented. Next prepare a fresh F7 original/partial/full three-control stage on qualified1780view; no oldstage reentry."
+    },
+    {
+      "id": "engineering-mvp-owned-temporal-controls-frozen-20261021",
+      "strategy": "fixed_three_temporal_controls_on_qualified_source_and_current_code",
+      "failure_families": [
+        "residual_static_dynamic_facet_loss",
+        "self_declared_rootset_budget_reset_before_freeze"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-owned-temporal-controls-20261021.md",
+        "runs/diagnostics/owned_partial_three_controls_20261021_v1/expectations.json",
+        "runs/diagnostics/owned_partial_three_controls_20261021_v1/oracle-review.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/safe-summary.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-review.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-prepare/summary.json",
+        "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-frozen-input-review.json"
+      ],
+      "result": "Spec-first bounded source profile preserves original failed umbrella plus partial/full variations. Oracle sees actual Reflect prior6quotes+2Signals, not all17bootstrapcards; properpartial/partial/full required, private268char feasibility only. Initial oracle/root coherent rename admitted a fresh budget group; fixed diagnostic destinations now reject before seed/write, original red retained.17safe/root and24independent controls pass. Under d15b3355 three unique serial prepares16.675/16.465/16.733s exit0, code107/original7938 each, all8045 unique bindings and exact sample delta checked; historical source plan+116code verified separately at263d16/prefixddeae204. No fresh request/model/GET/labels/Signal/fullrun, original0of1 and fullMVP open. Next exact-inbox independent fresh roles with fixed18request/1536000total and no borrowed limits."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-issuer-fixture-producers-20261021",
+    "after_iteration": "engineering-mvp-owned-temporal-controls-frozen-20261021",
     "evidence": [
-      "reports/seed-fixture-issuer-binding-20261021.md",
-      "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/native-cli-result.json",
-      "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/connected-final-158-tests.json",
-      "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/review.json",
-      "runs/diagnostics/seed_fixture_issuer_binding_20261021_v1/independent/producer-addendum-review.json"
+      "reports/reviewed-owned-temporal-controls-20261021.md",
+      "runs/diagnostics/owned_partial_three_controls_20261021_v1/expectations.json",
+      "runs/diagnostics/owned_partial_three_controls_20261021_v1/oracle-review.json",
+      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/driver/safe-summary.json",
+      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-review.json",
+      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/actual-prepare/summary.json",
+      "runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/root-frozen-input-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1056,22 +1084,23 @@
       "Dataclass equality after a callback misses typed true/1 and1/1.0 changes; postcallback hashing also misses aliased nested mutation. Isolate candidates and bind complete records before the callback, then remap validated IDs.",
       "Fullpool/subset equality alone made the first candidate fail closed on a feasible one-doc basis when optional filling altered dominance, or lose a necessary nonoperand witness. Capability counterexamples require safe filling/bounded witness-preserving reduction as well as rejection.",
       "Source issuer hardening was not followed through shipped capability fixtures and downstream numeric/card fixtures. The new115-test connected check exposes2fail12errors; prior focused successes must not stand for this producer/consumer chain. Default v6 also contains three LLM financial refs: its deterministic denominator is6, not9.",
-      "The connected115 repair did not initially cover two runtime positive constructors whose body already declared CIK but metadata omitted it; all-unavailable batches skipped reflection and repeated a scripted ref. Fixing runtime selection would mask the invalid producer. Exact original failures and final158 plus independent native producer controls now distinguish the boundary. Fresh model-authored fixture compliance remains outside this local result."
+      "The connected115 repair did not initially cover two runtime positive constructors whose body already declared CIK but metadata omitted it; all-unavailable batches skipped reflection and repeated a scripted ref. Fixing runtime selection would mask the invalid producer. Exact original failures and final158 plus independent native producer controls now distinguish the boundary. Fresh model-authored fixture compliance remains outside this local result.",
+      "An oracle with self-declared distinct roots only protected postfreeze relocation; coherently changing oracle and roots before freeze could create another budget group. Root initially advised against fixed roots and missed this distinction. Independent original/native counterexample now contrasts old admission with profile-owned fixed-root rejection; no generic budget mechanism was added. Reflect visibility is prior6quotes plus current results; seventeen bootstrap cards belong to final consumers."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "repair",
-      "strategy": "fresh_f7_three_control_source_bound_preflight",
-      "action": "Spec-first extend the bounded owned-partial stage with a separately frozen qualified1780 source profile and three controls: exact original, proper partial variation, and sufficient full-answer control. Validate historical source bindings against their exact Git lineage while separately freezing current execution code. Preserve all untargeted needs, original0of1 failure and per-case budget. Complete safe preflight and independent source/oracle review before exact-inbox fresh subagents. Do not reenter completed stages or start a full successor.",
-      "stop": "Stop before dispatch on changed historical source bytes, unsupported oracle, ambiguous time coverage, code drift, missing source authority or budget breach. No oracle residual in role context, induced correction, label access, weakened partial capability criterion or repeat-until-pass.",
-      "question": "Can the current prompt preserve all unanswered facets on the exact umbrella question and a partial variation, while closing a sufficient answer, under the same source/state and actual native downstream contract?",
-      "pass": "Separate frozen controls and source/code/budget authority are valid through native safe preparation; later new raw role outputs can be judged independently for partial residual completeness and full-answer closure through persisted state and Predictor input.",
-      "fail": "A control lacks source support, its expected behavior cannot fit the unchanged contract, or source/code isolation/prepare fails before new model behavior can be assessed.",
-      "on_pass": "Freeze a unique new stage and execute the three controls serially with independent exact-inbox subagents, report first answers/corrections/final failures separately and retain original failure.",
-      "on_fail": "Retain the failed preflight and isolate its first contradictory source/contract boundary before dispatch; do not relax semantic gold or restart an old completed stage.",
-      "new_evidence": "Fixture prerequisite restored by actual CLI and158 scoped connected tests with independent strict issuer controls. Old freshF7 still0of1 despite durable transport, and facet prompt has only local17safe evidence. Qualified1780view retains the BMBL literal source needed for contrastive partial/full controls.",
-      "distinguishing_variable": "Question facet coverage changes across three fixed controls while source, Plan,17BasicInfo, historical Signal results and four untargeted needs stay constant; old versus current source code authority is checked separately.",
-      "authorization_evidence": "Active user engineeringMVP goal and explicit independent-subagent production LLM authorization; public read-only queries allowed, external LLM APIs prohibited. Bounded stage only, not old experiment resume or full successor."
+      "kind": "diagnose",
+      "strategy": "fresh_f7_frozen_temporal_controls_exact_inbox",
+      "action": "Execute the three already frozen new controls serially using independent fork-none subagents and only exact native inboxes. Preserve native raw first answers and any single typed correction, optional one closure, accepted state/dispositions, final context, actual Predictor request/sink and completed restoration. Judge partial/partial/full semantics independently against the predeclared oracle; safe unanswered is separate from capability. Do not alter frozen code/inputs/oracle, induce corrections or reenter old completed stages.",
+      "stop": "Each fixedcase stops on terminal failure or its6request/512000unit ceiling; perrequest131072 and finalizationreserve64000 stay. Three controls total18/1536000 without borrowing/newroots. Stop on input/code drift, control-plane or source authority failure; no externalLLMAPI/GET/labels/newSignalapply/fullsuccessor.",
+      "question": "Does the repaired prompt preserve every unsupported static and time-varying facet while adopting actual known evidence, and close the sufficiently answered narrow question through persisted state and real Predictor consumption?",
+      "pass": "Frozen p01/p02 achieve grounded properpartial with complete residuals, p03 achieves grounded full and removes only ownedneed4; untargeted needs/provenance/17 finalcards persist through actual consumers and bounded completed restore. First/corrected/final results reported independently.",
+      "fail": "Any accepted answer loses a required facet, overextends H1 coverage, treats domainunavailable as negative, fails a normal capability control or changes consumer meaning; mechanical execution alone is not a semantic pass.",
+      "on_pass": "Record the bounded F7 family evidence with its three-case scope and mirror branch disposition, then address remaining input/S5/Slow discovery-admission-reuse blockers before any fullloop run.",
+      "on_fail": "Preserve original and new complete denominators/raw answers, locate the first source/prompt/validator/consumer loss using the fixed contrasts; do not add repeated calls or change expected answers until a separate justified repair boundary.",
+      "new_evidence": "Three actual prepared stages and8045verifiedunique bindings, independent source adequacy/private feasible residual and24gatecontrols make fresh stage behavior interpretable; earlier mirror/prompt tests and old0of1 cannot establish new compliance.",
+      "distinguishing_variable": "Original282char broad question versus142char temporal partial and148char full-answer control with identical historical source/prior/portfolio/results and only controlled need4/sampleID changes.",
+      "authorization_evidence": "User active engineeringMVP goal, explicit independent-subagent replacement for LLM API nodes, and previously frozen percase bounded stages; external LLM API calls remain0. Actual get_goal active2026-10-20T18:28:01Z, no token budget. This is not a full successor or restoration of old experiments."
     }
   },
   "successor_prerequisites": [

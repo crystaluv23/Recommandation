@@ -1,0 +1,45 @@
+{
+  "actual_model_version": null,
+  "backend": "independent-subagent",
+  "control_set": {
+    "per_case_limits": {
+      "finalization_reserve": 64000,
+      "max_case_llm_calls": 6,
+      "max_case_tokens": 512000,
+      "max_local_calls": 6,
+      "max_request_tokens": 131072,
+      "max_structured_corrections": 1,
+      "structured_reasoning_token_reserve": 0
+    },
+    "sample_ids": [
+      "p01",
+      "p02",
+      "p03"
+    ],
+    "stage_roots": {
+      "p01": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p01",
+      "p02": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p02",
+      "p03": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_stage_20261021_v1/p03"
+    },
+    "total_limits": {
+      "max_case_tokens": 1536000,
+      "max_local_calls": 18
+    }
+  },
+  "expectations_hash": "9f6aa71da4d677558b2a66f61b01333ad7eb6a4dd61c1801364c2becf0b303fc",
+  "fixed_denominator": 3,
+  "input_hash": "965a4d565b99ff64b29632406868b85aaef0bf133378f4b56eb45e3f435591d7",
+  "limits": {
+    "finalization_reserve": 64000,
+    "max_case_llm_calls": 6,
+    "max_case_tokens": 512000,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_external_api_calls": 0,
+  "max_local_calls": 6,
+  "preflight_hash": "4487a4074377c1e3887b2f35dbb3e2eb968fb6eacb9ef54d6e9af689375207fd",
+  "schema_version": "reviewed-owned-partial-stage-v1",
+  "source_profile": "gpre_capture_1780"
+}

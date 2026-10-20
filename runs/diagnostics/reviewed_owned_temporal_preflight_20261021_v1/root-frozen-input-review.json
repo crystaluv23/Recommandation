@@ -1,0 +1,38 @@
+{
+  "status": "PASS_actual_three_prepares_only",
+  "samples": [
+    {
+      "sample_id": "p01",
+      "manifest_hash": "7d7f06ca17ce9ff8c57f1a868f7a3d37e43ade8c6245ad67c56dfffbd6117f90",
+      "code_rows": 107,
+      "original_rows": 7938,
+      "exact_original_sample_except_owned_question": true,
+      "private_oracle_absent_from_inputs": true,
+      "no_exchange_or_request": true
+    },
+    {
+      "sample_id": "p02",
+      "manifest_hash": "23f6410b7d3fc7bba07b5a7f07b68aff3e85bfa96c37a0d02965fa258f08838a",
+      "code_rows": 107,
+      "original_rows": 7938,
+      "exact_original_sample_except_owned_question": true,
+      "private_oracle_absent_from_inputs": true,
+      "no_exchange_or_request": true
+    },
+    {
+      "sample_id": "p03",
+      "manifest_hash": "ccdbdee02e91f9c6b619c3b84858dac4d98075e8e3dafae8c9f661cbc5f4eaf5",
+      "code_rows": 107,
+      "original_rows": 7938,
+      "exact_original_sample_except_owned_question": true,
+      "private_oracle_absent_from_inputs": true,
+      "no_exchange_or_request": true
+    }
+  ],
+  "unique_current_file_bindings_checked": 8045,
+  "role_dispatches": 0,
+  "models": 0,
+  "GETs": 0,
+  "labels": 0,
+  "MVP_closed": false
+}

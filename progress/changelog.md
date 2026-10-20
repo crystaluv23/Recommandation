@@ -1,6 +1,6 @@
 # Changelog
 
-- 2026-10-21：F7新三控制ownspec先行，capture1780 profile按263d16核原plan/116历史code，prefix按ddeae204，当前code另freeze；原问题/部分变体/充分答案仅改sampleID/need4。私有oracle按actual Reflect六既有引文+两Signal/四counter核充分性，17卡仅后继可见；partial/partial/full不以unanswered替代。独立发现coherent oracle+root改名可重置18请求，改固定三个目的地、原候选误接保留、新拒在seed/write前；每case6/512k合计18/1536k不互借。原12+新5安全检查17/17/root复核过，未正式prepare/派角色，不关闭F7原0/1或整体MVP。
+- 2026-10-21：F7新三控制ownspec先行，capture1780 profile按263d16核原plan/116历史code，prefix按ddeae204，当前code另freeze；原问题/部分变体/充分答案仅改sampleID/need4。私有oracle按actual Reflect六既有引文+两Signal/四counter核充分性，17卡仅后继可见；partial/partial/full不以unanswered替代。独立发现coherent oracle+root改名可重置18请求，改固定三个目的地、原候选误接保留、新拒在seed/write前；每case6/512k合计18/1536k不互借。原12+新5安全检查17/17/root复核过，d15b3355下三root唯一prepare各16.675/16.465/16.733s均exit0，107code/7938original各manifest、8045unique全绑定及精确输入差异核过；独立24预审过，尚0新角色，不关闭F7原0/1或整体MVP。
 
 - 2026-10-21：按spec修六future seed与具名numeric/card/runtime/candidate正控生产者，显式body/metadata CIK一致，严格consumer/auditor及所有测量/clock/assertions不改；原CLI exit2→新exit0/14enabled。原115失败与初155暴露的runtime漏项保留，最终158关联检查全过；独立原生2runtime+candidate与missing/conflict反例通过。旧Registry重放0安装/全字节不变，不迁移历史或以合成CIK准入真实来源。0GET/model/labels/realwrite/fullprepare，S5共享prompt身份义务/fresh创作、F7原0/1及全闭环仍open；下一1780来源新F7三控制冻结与有界验收。
 

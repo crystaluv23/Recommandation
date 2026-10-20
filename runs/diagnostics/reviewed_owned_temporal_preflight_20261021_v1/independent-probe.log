@@ -1,0 +1,31 @@
+{
+  "verdict": "PASS_bounded_three_control_prefreeze_review",
+  "controls": 24,
+  "feasibility": [
+    {
+      "case": "p01",
+      "routing_scope": "partial",
+      "native_actual_disposition_scope_accepted": "partial",
+      "private_witness_not_in_role_request": true,
+      "scope": "Mechanical feasibility only; future actual model answer still independently judged."
+    },
+    {
+      "case": "p02",
+      "routing_scope": "partial",
+      "native_actual_disposition_scope_accepted": "partial",
+      "private_witness_not_in_role_request": true,
+      "scope": "Mechanical feasibility only; future actual model answer still independently judged."
+    },
+    {
+      "case": "p03",
+      "routing_scope": "partial",
+      "native_actual_disposition_scope_accepted": "full",
+      "private_witness_not_in_role_request": true,
+      "scope": "Mechanical feasibility only; future actual model answer still independently judged."
+    }
+  ],
+  "review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_temporal_preflight_20261021_v1/independent-review.json",
+    "sha256": "1cda5eadb10846cc4fd7e1f9570a8daac0c7eb858fe7d43501a451705fae0351"
+  }
+}
