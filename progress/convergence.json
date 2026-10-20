@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T03:11:02.746866+00:00",
+    "checked_at": "2026-10-20T17:17:13+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Actual root get_goal after terminal owned-partial stage; user capture-ID approval received; historical experiments unchanged"
+    "source": "Actual root get_goal after terminal GPRE source stage and independent audit; no budget limit; old completed experiments unchanged"
   },
   "acceptance": [
     {
@@ -122,9 +122,15 @@
         "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/independent-review.json",
         "runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/completion.json",
         "runs/diagnostics/reviewed_owned_partial_driver_20261020_v1/completed-restore-summary.json",
-        "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-independent-review.json"
+        "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-independent-review.json",
+        "reports/reviewed-gpre-capture-snapshot-20261021.md",
+        "reports/gpre-readable-period-selection-20261021.md",
+        "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/result.json",
+        "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/driver-execute-v1/execution-summary.json",
+        "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/actual-stage-review.json",
+        "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/root-cash-readability-result.json"
       ],
-      "remaining": "Original40 dual720 each670resolved/50gap and40/40>=.8 remain source-resolution evidence only;119partial BasicInfo/41unavailable. Fresh historicalseed F7/Predictor3firstanswers0corr preserve5needs/17cards/consumer/restore but frozen complete semantic0/1: post-interim covenant-compliance inquiry lost. Typedmirror not_exercised. User now explicitly approved capture-version identity;GPRE4conflicts/latestQ1 remain unresolved until implemented/admitted, BURUbaseline/FTItype/transcriptpublictime separate. FullF10/Slow/direction+magnitudeadmission+reuse/wholeloop and originalFYbasic0/3 remain open; predictivebenefit laterunknown."
+      "remaining": "Capture identity is actual57/4/53 source-admitted with1780view/oldbytes preserved, not wholeF2/F5 closure. Original40 dual720 each670/50 and40of40>=.8 remain prior1776-view evidence;newphase reranonlyGPRE two18groups/4BasicInfo. Financial typedQ1 selected2of9each;cashQ1narrative cannot enter JSON-onlynativeparser and selectedcashlatest2023-12-31 despite available2025-03-31. Measurement-owned readable latest/comparable selection must connect at existing boundedselector,withoutglobalpriority/schema/Registry changes. BasicInfoallresolvedpartial/newsunknown. F7prompt local17safe but originalfreshcomplete0of1/mirrornot_exercised remains;fullF10/Slow/direction+magnitudeadmission+reuse/wholeloop remainopen;benefitlaterunknown. BURUbaseline/FTItype/MSclock/transcriptproof andretrospectivefinancialprimaryaudit limits unchanged."
     },
     {
       "id": "feedback_consumption",
@@ -916,15 +922,35 @@
         "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-independent-review.json"
       ],
       "result": "3isolated firstanswers66/67/68 actualnative accepted0correction,180233logicalreservation/hosttokenscostunknown,0externalAPI/GET/labels/Signalapply. Firstcontinue+closurefinalize retain5needs,one274char ownedpartial. Raw-to-accepted exactly and actualPredictorwire=finalcontext=sink;17cards/allvisibility/versions/evidence retained.6264frozenpaths/28nativeimmutable checked, singlecompletedrestore32allfiles equal0newdispatch. Frozen semanticdenominator1 completepasses0: residual/reason preservecovenantterms but omit post-H1 compliance. Predictor correctly limitsJune30 facts but cannotrepairloststatequestion. mirrorbranch not_exercised; noF6/wholeF7/FastSlow/MVP/gainclosure."
+    },
+    {
+      "id": "engineering-mvp-gpre-capture-actual-consumption-20261021",
+      "strategy": "approved_capture_versions_and_bounded_actual_source_consumption",
+      "failure_families": [
+        "complete_capture_identity_collision_repaired",
+        "readable_latest_financial_period_displaced_at_document_limit"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-gpre-capture-snapshot-20261021.md",
+        "reports/gpre-readable-period-selection-20261021.md",
+        "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/result.json",
+        "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/driver-execute-v1/execution-summary.json",
+        "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/actual-stage-review.json",
+        "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/root-cash-readability-result.json"
+      ],
+      "result": "Sole263d16ab/planb5b6002f execute119.682473s/exit0:57fullproducts/53retained/4newcapturecanonicalappend+4samecapturereplayFalse;16493oldglobalbytes/1781oldrows preserved,new1785review/1780view. Independent22510uniqueSHA/1857terminalfiles/fullcanonical/actualspans+projectionschecked. Both exact18groups17resolved,newsunavailable. Eachfinancial9 only2selecttypedQ1;cashalsoselectsQ1HTML but nativeJSON-onlyparserignoresit. Rootpureparserprovesselectedcashlatest2023-12-31USD vs availabletyped2025-03-31USD;noSignalexecuted. BasicInfo3resolved/1newsunknown,17projections,source15/model17omissionmarkers,allresolvedpartial.0GET/model/labels/apply/fullprepare,nostagerestore/reentry. Captureidentity/sourceadmissionfamilyverified;latestreadableperiodconsumercoverage/F5/F7/MVPnotclosed. F7prompt17safe/oldsemantic0of1unchanged;newactualinputgapprioritizedbeforefreshLLM."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-owned-partial-fresh-stage-20261020",
+    "after_iteration": "engineering-mvp-gpre-capture-actual-consumption-20261021",
     "evidence": [
-      "reports/reviewed-owned-partial-stage-20261020.md",
-      "runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/completion.json",
-      "runs/diagnostics/reviewed_owned_partial_driver_20261020_v1/completed-restore-summary.json",
-      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-independent-review.json"
+      "reports/reviewed-gpre-capture-snapshot-20261021.md",
+      "reports/gpre-readable-period-selection-20261021.md",
+      "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/result.json",
+      "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/driver-execute-v1/execution-summary.json",
+      "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/actual-stage-review.json",
+      "runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/root-cash-readability-result.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -976,22 +1002,24 @@
       "The fixed0.8 input fraction can pass all40 while BURU lacks a market baseline, GPRE lacks known latestQ1 and every resolved BasicInfo projection is partial. Reaching the administrative readiness threshold cannot erase semantic/source gaps or authorize a full successor. A completed native snapshot/reopen guard is not OS interruption recovery.",
       "The new bounded adapter initially reused final-context BasicInfo as bootstrap input:17cards silently became0 in the native constructor, and empty-BasicInfo tests missed the loss. Frozen canonical bootstrap preserves17; anonymous wire tokens are not canonical input. Reusing a per-request token limit as the whole native invocation budget also excluded otherwise legal correction pairs; a real186487-unit native two-request counterexample now distinguishes the layers.",
       "The bounded adapter initial source loader passed serialized str paths to a Path-only reader. Mocked _source tests and native budget/assembler probes did not cover real metadata entry; first formalprepare failed before plan/root creation. One local reader normalizes strings/Path; exact old plan and review failures plus real5979-binding read chain now verify the family, without changing sample/oracle/budget or erasing first failure.",
-      "The first fresh residual preserved300char limit, exact mirror, five needs and evidence ownership but narrowed broad covenant inquiry to terms, omitting compliance after the disclosed interim through cutoff. Earlier mirror tests protected typed scope and count; latest3 controls covered share-basis facets, not one topic with static terms versus time-varying state. Exact downstream preservation faithfully propagates semantic loss; Predictor caveat is not restoration of the missing need."
+      "The first fresh residual preserved300char limit, exact mirror, five needs and evidence ownership but narrowed broad covenant inquiry to terms, omitting compliance after the disclosed interim through cutoff. Earlier mirror tests protected typed scope and count; latest3 controls covered share-basis facets, not one topic with static terms versus time-varying state. Exact downstream preservation faithfully propagates semantic loss; Predictor caveat is not restoration of the missing need.",
+      "The temporary capture consumer fixture had two products below the ten-document ceiling. Full57/59 eligible actual inputs expose word-frequency ranking displacing structured Q1, despite allsource qualifications and17of18resolved. Minimum source/period counts and a latest narrative selected do not prove the actual hard parser can read the latest measurement operands.",
+      "The source-stage candidate initially created its marker before rejecting a protected destination. Exact old bytes and temporary negative controls preserved this ordering gap; current destination and bound-plan checks precede writes. Source-layer15 omission markers and model-layer17 after projection are separate counts, both preserved."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "repair",
-      "strategy": "approved_capture_version_identity_with_legacy_source_compatibility",
-      "action": "Implement the user-approved shared capture-version ID namespace from complete typed canonical RawInfo record excluding document_id; first owning specs then producer/store/qualification/legacy recipe compatibility and focused tests. New acquisition/newbackfill use explicit capture policy; old IDs/profile/backfillv1 keep exact legacy recipes. After checkpoint and independent review, freeze one source-only GPRE case: complete57 products retained, only4conflicting newversions appended/readback/idempotent replay, newview and both18refs/BasicInfo nativeconsumption. NoGET/model/labels/Signalapply/fullprepare or oldstage resume. F7 later-compliance failure staysopen for a separate smallest repair; this source fix does not solve it.",
-      "stop": "No oldID/record/publictime/content rewrite,no newrootretry tohidefailure,no legacy reconstruction drift,no samecontent versions counted as independentfacts/no alteredresolverpriority orRegistry. FTImislabeledsource/MSclock/BURUsplit remain separate. Freeze code/inputs before actualappend and stop on proof/collision/typedidentity failure.",
-      "question": "Can complete capture identity preserve same-content different-provenance records and admit the4validGPRE products including latestQ1 without altering legacy records or inflating consumed evidence?",
-      "pass": "Same recorded capture yieldsstable ID/exactreplay; distinct fullmetadata typed payload yieldsdistinct version; oldv1recipes remaincanonicalequal. All57expectedproducts retained,4actualnewcanonicalrecords qualified withunchangedbody/publictimes/values/unit/period. Newview preservesoldrows, nativeGPREconsumers selectlatestQ1 legally and dedup samecontent correctly.",
-      "fail": "A caller silently changes oldrecipes,usesnow onreplay,collapsesbool/int/float/null distinctions,accepts ID/payload mismatch,overwritesoldrecords,changespublictimes or counts captures asnewfacts.",
-      "on_pass": "Record only actualGPREsource completeness/identity andconsumeradvance; retainotherunknowns and return to temporal-facet F7 repair before any wholeloop successor.",
-      "on_fail": "Preserve exactold/new payloads and source-only terminal artifacts; isolate producer/qualification/store/consumer mismatch, do not widennamespace semantics or rewriteorigins to forcepass.",
-      "new_evidence": "User answered capture-versionID question affirmatively in currentchat. Actual4GPRE pairs have identicalbody/contenthash/publictimes and differ in acquisitionselection/policy/retrieval metadata; currentcontentID blocksqualified latestQ1. Current F7 stage terminal/audited/restored before releasingcodefreeze.",
-      "distinguishing_variable": "Complete recordedcapture identity and legacy-versioned reconstruction versus content-only ID/ignoredmetadata; actuallatestQ1 nativeconsumption versus unchanged readinessfractions.",
-      "authorization_evidence": "Direct user asynchronous answer: 采用采集版本ID，修复这类重复采集冲突（推荐）; fullsource/collection metadata,oldIDs/refs/history retained,samecapture replay idempotent."
+      "strategy": "measurement_owned_readable_period_selection_via_existing_callback",
+      "action": "Spec-first connect the actual deterministic callable readable schemas/operands/latest-comparable periods to the existing pure select_documents callback used after fullPITfilter/dedup and before the10documentlimit. Reuse native fact/period helpers and validate selector membership/bounds. First originalGPRE and longoldannualfrequency variants plus no-latest-tag/incompatibleunit/missingcomparison counterexamples, then one frozen input-only native consumer check against the completed1780view. Keep generic ranking/fallback unchanged for unaffected or unknown callables; no canonicalfield/Registry/source/measurementdefinition change. Do not resume source stage or run Signals/LLMs/fullsuccessor while the input gap remains. F7fresh follows only after readable input connection verification.",
+      "stop": "No source/oldID/publictime/body rewrite;no fullsource/oldstage reentry;no global recency-first switch/prose-parsed measurement contract/hardcoded company or Signal IDs;no expanded lookback/maxdocs;no invented missing operands/units/periods;no prediction/gain claim from input selection. If existing callable semantics or selector authority cannot determine a faithful bounded set, retain explicit gap and resolve that concrete contract instead of silently widening interfaces.",
+      "question": "Can the existing callable-owned selector retain the latest readable operands and necessary comparable periods within10 legal documents while preserving generic behavior, exact versions, missing states and all PIT/unit boundaries?",
+      "pass": "Originalcash selected input now contains parseable2025-03-31 USD fact instead of silently stopping at2023-12-31, comparable financial controls retain their required operands/periods, non-financial and explicit historical requests remain faithful, and absent/incompatible operands remain gaps. Actual frozen native prepare_inputs consumes those exact retained records with budgets/refs unchanged; no value or model behavior inferred from selection.",
+      "fail": "Latest/readable inputs still displaced;selector invents or loses comparisons,changes units/time scope,returns outsideeligible documents,exceeds10,or perturbs unrelated/historical selection without an explicit contract.",
+      "on_pass": "Record bounded actualF5input advance and remaining limits; return to predetermined freshF7 original/variant/sufficient-answer controls with independent semantic expectations. Do not authorize a fullFastSlow successor until remaining named gates hold.",
+      "on_fail": "Preserve exactrequest/candidate/selected traces and counterexample; isolate missing callable/inputcontract versus ranking mechanism, stop that repair strategy or resolve the specific substantive design choice. No repeatedfullrun or largerlimits.",
+      "new_evidence": "Actualsourcephase admitted completeGPRE57 but actualfinancialrequests2of9typedQ1selectedeach. CashselectedQ1narrative is ignored bynative_sec_facts; rootnativepureparser proves selectedlatestcash2023-12-31 versus eligible2025-03-31USD. Driverpurefilter/rank/select reproduces all18savedoutputs eachgroup; sevenstructuredQ1candidates fall beyond10 due oldlongdocumenttermcounts. Independentfull22510SHA/source/consumer audit passed.",
+      "distinguishing_variable": "Measurement-readable latest/comparable operand preservation through existing selector versus unchanged generic term-frequency selection on the same completePITcandidatepool; representative long-old-text, missinglatestoperand, unit and comparison controls distinguish accidental admission/count gains.",
+      "authorization_evidence": "User active engineeringMVP goal and request to iteratively fix applicable families; original latest/comparable measurement definitions and callable-owned existing selector are preserved. Capture-version approval covered the completed source-only phase; this next repair does not change sourceidentity/PIT/Registry/canonical schema or invoke externalLLM APIs."
     }
   },
   "successor_prerequisites": [

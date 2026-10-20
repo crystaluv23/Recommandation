@@ -1,0 +1,175 @@
+{
+  "GETs": 0,
+  "Signal_apply": false,
+  "actual_consumer_scope_statuses": {
+    "basic_info": {
+      "latest_q1_selected": 1,
+      "not_applicable": 3
+    },
+    "default_v6": {
+      "gap_latest_q1_not_selected": 7,
+      "latest_q1_selected": 2,
+      "not_applicable": 9
+    },
+    "latest_v12": {
+      "gap_latest_q1_not_selected": 7,
+      "latest_q1_selected": 2,
+      "not_applicable": 9
+    }
+  },
+  "all_canonical_readbacks": true,
+  "basic_request_statuses": [
+    {
+      "context_truncated": true,
+      "omitted_markers": 6,
+      "request_id": "orientation.v1.operating_report",
+      "status": "resolved"
+    },
+    {
+      "context_truncated": false,
+      "omitted_markers": 0,
+      "request_id": "orientation.v1.scoped_news",
+      "status": "unresolved"
+    },
+    {
+      "context_truncated": true,
+      "omitted_markers": 6,
+      "request_id": "orientation.v1.financial_facts",
+      "status": "resolved"
+    },
+    {
+      "context_truncated": true,
+      "omitted_markers": 3,
+      "request_id": "orientation.v1.market_backbone",
+      "status": "resolved"
+    }
+  ],
+  "execution_summary": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/driver-execute-v1/execution-summary.json",
+    "sha256": "823e4c4ebfbe93e5b54064c10ef08a8281df1305175d0fc98f17dcf35617e1af"
+  },
+  "exit_code": 0,
+  "financial_requests_not_selecting_Q1": {
+    "basic_info": [],
+    "default_v6": [
+      "cash_reserves:v1",
+      "cash_to_current_liabilities_ratio:v1",
+      "gross_margin_change:v2",
+      "net_share_retirement_yoy:v1",
+      "operating_cash_flow_margin:v1",
+      "revenue_acceleration:v1",
+      "revenue_growth_yoy:v1"
+    ],
+    "latest_v12": [
+      "cash_reserves:v2",
+      "cash_to_current_liabilities_ratio:v2",
+      "gross_margin_change:v3",
+      "net_share_retirement_yoy:v3",
+      "operating_cash_flow_margin:v2",
+      "revenue_acceleration:v2",
+      "revenue_growth_yoy:v3"
+    ]
+  },
+  "fullprepare": false,
+  "groups": {
+    "default_v6": {
+      "denominator": 18,
+      "resolved": 17
+    },
+    "latest_v12": {
+      "denominator": 18,
+      "resolved": 17
+    }
+  },
+  "inserted_count": 4,
+  "labels": false,
+  "limitations": [
+    "Seven of nine financial Signal requests in each exact group did not select latest Q1 despite view availability; gap preserved, not consumer-wide latest-Q1 pass.",
+    "BasicInfo selected Q1 document; bounded projection remains partial and does not prove every fact visible.",
+    "Native store snapshot/reopen equality, not OS crash or full research recovery.",
+    "Capture version replay adds no independent corroboration; 57 is distinct content count, not independent facts or research gain.",
+    "Primary-filing audit/API vintage limits unchanged; no full MVP closure."
+  ],
+  "models": 0,
+  "new_original_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130.json",
+      "sha256": "9df665e5ea1b21744280b37592afd5d5a0426b0d871a0cb52b6a334264f8edd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877.json",
+      "sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902.json",
+      "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b.json",
+      "sha256": "03249d39e41d743380efb37a00c0bf032a202a55f2102335d12f069191b35750"
+    }
+  ],
+  "new_view_documents": 1780,
+  "old_global_bytes_preserved": true,
+  "old_global_files": 16493,
+  "old_review_rows_preserved": true,
+  "products": 57,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/result.json",
+    "sha256": "2c6e706bad8a63742f3f50b812d6e9aca6a4a27b7d557734ce2609c2e6580cfb"
+  },
+  "review_dispositions": {
+    "admitted": 1780,
+    "excluded": 1,
+    "unknown": 4
+  },
+  "review_rows": 1785,
+  "same_capture_replay_inserted_count": 0,
+  "selected_new_capture_versions": 4,
+  "snapshot": {
+    "manifest_sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot",
+    "store_type": "reviewed"
+  },
+  "snapshot_reopen_canonical_equal": true,
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json",
+    "sha256": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57"
+  },
+  "stage_files": 1857,
+  "stage_reentered": false,
+  "status": "completed",
+  "unresolved_refs": {
+    "default_v6": [
+      {
+        "gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "alpha_vantage",
+          "reason": "external_not_authorized",
+          "request_id": "signal:negative_word_count:v1",
+          "source_types": [
+            "news"
+          ]
+        },
+        "signal_ref": "negative_word_count:v1"
+      }
+    ],
+    "latest_v12": [
+      {
+        "gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "alpha_vantage",
+          "reason": "external_not_authorized",
+          "request_id": "signal:negative_word_count:v2",
+          "source_types": [
+            "news"
+          ]
+        },
+        "signal_ref": "negative_word_count:v2"
+      }
+    ]
+  },
+  "visible_duplicate_ids": [],
+  "visible_financial_independent_content_units": 57,
+  "wall_seconds": 119.68247254216112
+}

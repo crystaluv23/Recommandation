@@ -7,24 +7,19 @@
 
 ## 当前验收
 
-[原40案来源批次](../reports/frozen40-source-proofs-20261020.md) 已完成102有界GET：
-95主批+7补证，全部响应保留；0重试/重定向/技术失败，BURU非空拆股清单暂不支持。
-297采集终态文件保持；真实经营正文/附件按材料审查，不以HTTP200、form或TOC冒充充分内容。
-TGB同行编号列序/数字sup脚注误拒已修，旧同材料4pass/2reject→新6pass；错编号等负控仍拒。
-HITI AIF文内日期/编号冲突原样保留，不由parent接受时间改写事实日期。
+[原40案来源批次](../reports/frozen40-source-proofs-20261020.md) 的102GET/297终态文件保留，0重试/技术失败；
+907目标/1123候选的唯一执行853新增/270既有、1776doc view保持完成，不重入。
+旧双720输入各670resolved/50gap、40/40达0.8，对旧262/720增加408；不等于语义正确。
+每组50gap=40news+3订单+6momentum+1drawdown；BURU baseline仍缺。
+40BasicInfo119resolved均partial/41unavailable、593遗漏标记保持；TGB/HITI来源scope与原冲突详见报告。
+旧批6unknown及907目标历史不改；新GPRE采集版本另行准入，不重写旧ID或原元数据。
 
-整批assembly保907目标（842财务/24行情家族/41经营），1123合格候选：838财务、242行情、43经营。
-独立核270原件canonical等价；6 unknown保留：GPRE四ID冲突、BURU拆股、FTI季报错type。
-FTI新400日请求实际151bars，2024-10-21至2025-05-29；原生规范化与3实际proof通过，未称400日覆盖完整。
-唯一正式source-only prepare20.076s/exit0，plan114a50b2，3230source+114code逐项冻结一致。
-新增执行器先整批资格/ID检查再append，包含实际helper/ownspec/marketprofile冻结；原漂移漏拒保留，14safe过。
-唯一实际source-only执行1253.520s/exit0：853新增/270既有，1123完整canonical回读；新view1776docs。
-原40身份/时间/split、v6/v12各18精确refs保持；各720输入现670resolved/50gap，40/40达既有0.8。
-对照 [旧基线](../reports/frozen40-dual-registry-source-inputs-20261020.md) 各262/458、15/40，实际各增加408resolved。
-每组50gap=40news+3订单+6momentum+1drawdown；BURU15/18且基线仍缺，不能靠0.8放行完整研究。
-40BasicInfo160请求119resolved均partial_context_budget、41unavailable，593遗漏标记保留；不称全文已读。
-独立审查全3344冻结绑定、297采集终态文件、15640旧global字节/658旧审查行及全部输入/PIT/投影一致。
-source snapshot/reopen canonical相等仅证明本阶段重开store，非OS中断/完整research恢复；0新GET/model/apply/labels。
+[GPRE采集版本实际阶段](../reports/reviewed-gpre-capture-snapshot-20261021.md) 已完成：57全产品/53保留，4新版本append/readback及同capture重放False。
+119.682s/exit0，新view1780/审查1785；16493旧global字节/1781旧rows保留，独立22510绑定核过。
+仅本案双18输入各17resolved/1news缺失；BasicInfo3resolved/1news缺失、17投影且均保partial/遗漏。
+[最新可计算期间缺口](../reports/gpre-readable-period-selection-20261021.md)：财务9请求各2个选typed Q1、7个未选。
+现金已选Q1 HTML，但native JSON parser不读；所选现金latest为2023末，库内typed Q1为2025-03-31，10份上限外被词频挤出。
+0新GET/model/labels/Signalapply/fullprepare；57distinct contents非独立收益，snapshot/reopen非OS恢复。两个来源阶段均不重入。
 
 ## 已有局部证据与限制
 
@@ -53,18 +48,15 @@ source snapshot/reopen canonical相等仅证明本阶段重开store，非OS中�
 旧“48”无案例清单支持，不能推剩余8为LockedTest；默认v6与本批v12的18版本不同，不能互代。
 26 transcript完整公开内容时间证明仍0；按用户已选口径取已核实完整公开内容时间，原记录/旧实验保留。
 历史news污染排除/unknown不表示无事件，所有失败分母及身份屏蔽保持。
-[采集版本ID](../reports/companyfacts-capture-identity-20261021.md)已实现：33安全测试及独立typed/恢复/消费负控通过；实际GPRE准入待验。
-旧recipe/ID和相同正文去重保留。当前GPRE53合法subset仍缺最新Q1，不称完整。
+[采集版本ID](../reports/companyfacts-capture-identity-20261021.md)已真实准入4版本；旧recipe/ID及去重保持。
+最新typed Q1已可用，7个有界财务输入选择仍缺；不能用17/18或叙述入选替代计算器可读性。
 FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍unknown，不猜时区。
 旧v182权威Fast/Slow=1/1完成不可重启；memory失败processed0/pending3518未改作成功。
 新方向/magnitude Mining正控、忠实实现/准入、后继精确复用、完整反馈消费/闭环及独立收益均未验证。
 
 ## 下一步
 
-来源与F7单样本stage均已完成，不重入；F7的temporal-facet未达保留，capture版本身份局部修复已验证。
-[GPRE source-only入口](../reports/reviewed-gpre-capture-snapshot-20261021.md)已过9临时测试/独立目录与漂移反例；
-唯一正式prepare13.907s/exit0：57原生profile通过、62stage文件/5869source/116code/16493旧global冻结。
-plan b5b6002f，独立冻结复核20715唯一绑定通过；下一仅4GPRE新版本追加/实际消费，尚无execution marker/global append。
-旧ID/引用/原件/实验不改；同已记录capture replay幂等，采集版本不能增加独立证据数量。0GET/model/labels/apply。
-后续LLM节点仍由exact inbox独立subagent处理；不恢复旧运行或启动完整后继。
-保6unknown/完整失败分母/上下文限制，不以0.8替代测量、最新Q1完整性或整体MVP关闭。
+源capture与F7旧stage均已完成，不重入。先修复“计算器可读schema/最新与比较期需求→有界选文”的漏接。
+复用既有select_documents入口、实际callable语义与纯facts helper，保持10份上限/原PIT/旧输入历史与generic fallback；不全局改最新优先。
+先spec再原GPRE/长旧文变体/缺tag错unit比较期不足反例；F7提示局部修复17safe已过，fresh语义仍待来源链正确后验。
+LLM节点继续exact inbox独立subagent；0外部LLM API。不恢复旧运行或启动完整后继，不以0.8/输入resolved替代测量或MVP关闭。

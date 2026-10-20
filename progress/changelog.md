@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：唯一GPRE execute119.682s/exit0，4new canonical+同capture replay False、新1780view/1785rows，旧16493global/1781rows保持；独立22510唯一绑定及1857终态文件核过，0GET/model/labels/apply/fullprepare。两组各17/18但typedQ1仅2/9；现金虽选Q1 HTML，native仅parse JSON，实际selected现金latest2023末而eligible Q1为2025-03-31。纯筛选/排序复现全部18refs，长旧annual词频在10limit前挤出typed新期；BasicInfo financial选Q1仍partial，source15/model17遗漏标记分层保留。capture身份链关闭到本阶段，F5测量可读期间选择漏接新诊断，不宣称7个实际测量失败或MVP关闭，下一复用既有selector做spec-first家族修复。
+
 - 2026-10-21：冻结eb0ef3d6后唯一GPRE prepare13.907s/exit0，57原生capture资格通过、4选定/53保留，plan b5b6002f、62stage文件/5869source/116code/16493旧global冻结；root核plan/映射/public clocks与代码绑定。launcher首次mkdir失败在Popen/marker前，证据保留、正式prepare仅一次。独立复核20715唯一路径/16493旧global全字节及57/4/53通过；未execute/append/consumer，下一唯一执行，原未知/MVP open不变。
 
 - 2026-10-21：新增独立GPRE source-only prepare/execute入口，冻结57/4/53、旧1776view/1781rows及实际36inputs/默认BasicInfo选择证据，0GET/model/labels/apply。初8safe漏目录先写marker再拒，执行前审发现并修为写前目的地/既有plan校验；9safe及独立14反例通过，旧候选保留，helper/ownspec漂移与已有capture拒绝接通。真实authority5869绑定已核，尚未正式prepare/append，不以预检当实际准入。

@@ -45,13 +45,13 @@ norm=read(plan['normalization']['path']);mapping=read(plan['mapping']['path']);a
 assert [r['capture_id'] for r in mapping if r['selected']] == plan['selected_ids']
 assert norm['schema_version']=='sec-companyfacts-normalization-v2' and norm['normalizer_profile']=='sec_companyfacts_capture_filed_next_utc_day_v1' and norm['identity_policy']=='raw-info-capture-v1'
 oldbase=R/'runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530';oldnorm=read(oldbase/'normalization.json')
-assert {k:v for k,v in norm.items() if k not in ('schema_version','normalizer_profile','identity_policy','expected_products')}=={k:v for k,v in oldnorm.items() if k not in ('schema_version','normalizer_profile','expected_products')}
+assert digest({k:v for k,v in norm.items() if k not in ('schema_version','normalizer_profile','identity_policy','expected_products')})==digest({k:v for k,v in oldnorm.items() if k not in ('schema_version','normalizer_profile','expected_products')})
 assert len(norm['expected_products'])==57
 oldrows={r['document_id']:r for r in oldreview['records']};selected_legacy=[];identities=[]
 for b,m in zip(plan['products'],mapping,strict=True):
  doc=read(b['path']);old=read(oldbase/'products'/(m['legacy_id']+'.json'))
  assert capture_document_id(doc)==doc['document_id']==m['capture_id'] and m['content_hash']==doc['content_hash']
- assert {k:v for k,v in doc.items() if k!='document_id'}=={k:v for k,v in old.items() if k!='document_id'}
+ assert digest({k:v for k,v in doc.items() if k!='document_id'})==digest({k:v for k,v in old.items() if k!='document_id'})
  assert doc['published_at']==old['published_at'] and doc['available_at']==old['available_at']
  assert datetime.fromisoformat(doc['available_at'])<=datetime.fromisoformat(plan['case']['prediction_time'])
  identities.append({'document_id':doc['document_id'],'content_hash':doc['content_hash'],'canonical_record_hash':digest(doc)})
@@ -72,7 +72,7 @@ assert all(bind(p) in plan['code_bindings'] for p in required)
 out={'verdict':'PASS_actual_frozen_plan_only','plan':bind(P/'plan.json'),'plan_hash':plan['plan_hash'],'prepare_summary':bind(summary_path),
  'stage_files_verified':62,'source_bindings':5869,'code_bindings':116,'global_before_files_membership_and_SHA_verified':16493,'unique_all_binding_paths_verified':len(by_path),
  'historical_source_code_checked_against_git':'c9ad66e80f9b4f72438f5be93496dbaaa9410e92','full_products':57,'selected_new_capture_ids':plan['selected_ids'],'selected_legacy_ids':selected_legacy,'retained_exact_legacy_admitted':53,
- 'new_capture_all_records_except_ID_equal_frozen_legacy':True,'public_times_and_normalization_clock_unchanged':True,'expected_product_full_set_matches_all57':True,'old_raw_proof_reused_exact':norm['raw_response'],
+ 'new_capture_all_records_except_ID_equal_frozen_legacy':True,'typed_canonical_comparison_not_Python_numeric_equality':True,'public_times_and_normalization_clock_unchanged':True,'expected_product_full_set_matches_all57':True,'old_raw_proof_reused_exact':norm['raw_response'],
  'old_view_documents':1776,'old_review_rows':1781,'group_versions_and_denominators':[(g['name'],g['version'],len(g['refs']),g['registry_hash']) for g in plan['groups']],
  'no_execution_marker_or_append_or_newview':True,'qualify_evidence_scope':'Actual frozen code calls the complete native profile on all57 before plan creation; frozen v2 expected set/cache/raw/item/selection/provenance/clock all match this prior independently verified actual57 temporary profile. No Store or stage helper/materializer was rerun in this audit.',
  'elapsed_seconds':round(time.monotonic()-start,6),'limits':['This is a prepare-only freeze, not actual4 insertion/1780view or consumer-Q1 selection success.','No Store/append/prepare/execute/GET/models/LabelStore/LockedTest or old-stage resume.','The first metadata-only inspection mistakenly requested registry_version instead of actual version and raised KeyError; no audit success was inferred and no frozen file was written.']}

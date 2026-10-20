@@ -1,0 +1,54 @@
+{
+  "available_at": "2022-07-29T00:00:00+00:00",
+  "company_id": "cik_0001164727",
+  "content": "{\"accession_number\":\"0001164727-22-000028\",\"cik\":\"0001164727\",\"facts\":[{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"end\":\"2022-07-18\",\"fiscal_period\":\"FY\",\"fiscal_year\":2021,\"frame\":\"CY2022Q2I\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"start\":null,\"tag\":\"EntityCommonStockSharesOutstanding\",\"taxonomy\":\"dei\",\"unit\":\"shares\",\"value\":793680485},{\"description\":\"The aggregate market value of the voting and non-voting common equity held by non-affiliates computed by reference to the price at which the common equity was last sold, or the average bid and asked price of such common equity, as of the last business day of the registrant's most recently completed second fiscal quarter.\",\"end\":\"2021-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2021,\"frame\":\"CY2021Q2I\",\"label\":\"Entity Public Float\",\"start\":null,\"tag\":\"EntityPublicFloat\",\"taxonomy\":\"dei\",\"unit\":\"USD\",\"value\":50629300966}],\"filing_date\":\"2022-07-28\",\"form\":\"10-K/A\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+  "content_hash": "985bfd6cbc347e653071c38a59898592025f557aca8b35d986bf7e533caaa579",
+  "document_id": "secfacts:0001164727:0001164727-22-000028:985bfd6cbc347e65",
+  "metadata": {
+    "accession_number": "0001164727-22-000028",
+    "acquisition_policy_hash": "8b8fbfbd4bf57efe1adcf7a40ee035479d2d07ecaccc601728c0beea6b4ae295",
+    "acquisition_selection": {
+      "available_at_through": "2025-07-31T00:00:00+00:00",
+      "form_allowlist": [
+        "10-K",
+        "10-K/A",
+        "10-Q",
+        "10-Q/A",
+        "20-F",
+        "20-F/A",
+        "40-F",
+        "40-F/A",
+        "6-K",
+        "6-K/A",
+        "8-K",
+        "8-K/A"
+      ],
+      "period_end_from": "0001-01-01",
+      "period_end_through": "2025-07-31",
+      "taxonomy_allowlist": [
+        "dei",
+        "ifrs-full",
+        "srt",
+        "us-gaap"
+      ]
+    },
+    "availability_policy": "next_utc_day_after_companyfacts_filed_date",
+    "cik": "0001164727",
+    "content_scope": "standard_taxonomy_facts_for_accession",
+    "fact_count": 2,
+    "form": "10-K/A",
+    "period_end_from": "0001-01-01",
+    "period_end_through": "2025-07-31",
+    "requires_primary_filing_audit": true,
+    "retrieved_at": "2026-10-19T21:39:41.428588+00:00",
+    "retrospective_api_extraction": true,
+    "source_key": "sec_edgar",
+    "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001164727.json",
+    "symbol": "NEM",
+    "taxonomy_namespaces": [
+      "dei"
+    ]
+  },
+  "published_at": "2022-07-28T00:00:00+00:00",
+  "source_type": "sec_company_facts"
+}

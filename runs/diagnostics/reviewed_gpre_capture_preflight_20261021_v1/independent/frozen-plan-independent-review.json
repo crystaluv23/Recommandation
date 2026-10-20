@@ -30,6 +30,7 @@
   ],
   "retained_exact_legacy_admitted": 53,
   "new_capture_all_records_except_ID_equal_frozen_legacy": true,
+  "typed_canonical_comparison_not_Python_numeric_equality": true,
   "public_times_and_normalization_clock_unchanged": true,
   "expected_product_full_set_matches_all57": true,
   "old_raw_proof_reused_exact": {
@@ -54,7 +55,7 @@
   ],
   "no_execution_marker_or_append_or_newview": true,
   "qualify_evidence_scope": "Actual frozen code calls the complete native profile on all57 before plan creation; frozen v2 expected set/cache/raw/item/selection/provenance/clock all match this prior independently verified actual57 temporary profile. No Store or stage helper/materializer was rerun in this audit.",
-  "elapsed_seconds": 11.676307,
+  "elapsed_seconds": 10.695431,
   "limits": [
     "This is a prepare-only freeze, not actual4 insertion/1780view or consumer-Q1 selection success.",
     "No Store/append/prepare/execute/GET/models/LabelStore/LockedTest or old-stage resume.",

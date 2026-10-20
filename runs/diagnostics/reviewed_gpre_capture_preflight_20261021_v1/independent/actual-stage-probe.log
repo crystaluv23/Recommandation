@@ -1,0 +1,29 @@
+PASS frozen sources/code, original62, terminal1857 and all16493 prior global SHA
+PASS only4 global additions and complete canonical append receipts/readback
+PASS old1781 rows,1776 view prefix, full1780 original/view canonical equality
+PASS both exact18 input resolutions, document identity/PIT and actual facts/periods/units; typed Q1 2/9 each
+PASS BasicInfo4 original spans and pure model/lineage reconstruction17; financial Q1 partial1999 chars; visible57 distinct content
+{
+  "verdict": "PASS_bounded_actual_capture_source_stage_with_consumer_recency_limits",
+  "counts": {
+    "original_prepared_files": 62,
+    "source_bindings": 5869,
+    "code_bindings": 116,
+    "old_global_files_byte_preserved": 16493,
+    "new_global_files_only": 4,
+    "terminal_stage_files": 1857,
+    "unique_SHA_paths_checked": 22510,
+    "canonical_products": 57,
+    "new_capture_versions_inserted": 4,
+    "retained_legacy_products": 53,
+    "old_review_rows_prefix": 1781,
+    "new_review_rows": 1785,
+    "old_view_documents": 1776,
+    "new_view_documents": 1780
+  },
+  "elapsed_seconds": 12.483779,
+  "review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_preflight_20261021_v1/independent/actual-stage-review.json",
+    "sha256": "0557d48ba09877fd180784067d2eb80e90d92c8120dbbceca7a07f07ea04851e"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "canonical_load_equal": true,
+  "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+  "inserted": true,
+  "original_record": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877.json",
+    "sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4"
+  },
+  "same_capture_replay_inserted": false
+}

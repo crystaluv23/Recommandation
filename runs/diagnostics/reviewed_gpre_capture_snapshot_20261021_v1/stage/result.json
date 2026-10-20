@@ -1,0 +1,95 @@
+{
+  "GETs": 0,
+  "MVP_closed": false,
+  "Signal_apply": false,
+  "append_receipts": [
+    {
+      "canonical_load_equal": true,
+      "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+      "inserted": true,
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130.json",
+        "sha256": "9df665e5ea1b21744280b37592afd5d5a0426b0d871a0cb52b6a334264f8edd8"
+      },
+      "same_capture_replay_inserted": false
+    },
+    {
+      "canonical_load_equal": true,
+      "document_id": "rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b",
+      "inserted": true,
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b.json",
+        "sha256": "03249d39e41d743380efb37a00c0bf032a202a55f2102335d12f069191b35750"
+      },
+      "same_capture_replay_inserted": false
+    },
+    {
+      "canonical_load_equal": true,
+      "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+      "inserted": true,
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877.json",
+        "sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4"
+      },
+      "same_capture_replay_inserted": false
+    },
+    {
+      "canonical_load_equal": true,
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "inserted": true,
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902.json",
+        "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+      },
+      "same_capture_replay_inserted": false
+    }
+  ],
+  "fullprepare": false,
+  "global_additions": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130.json",
+      "sha256": "9df665e5ea1b21744280b37592afd5d5a0426b0d871a0cb52b6a334264f8edd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877.json",
+      "sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902.json",
+      "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b.json",
+      "sha256": "03249d39e41d743380efb37a00c0bf032a202a55f2102335d12f069191b35750"
+    }
+  ],
+  "groups": {
+    "default_v6": {
+      "denominator": 18,
+      "resolved": 17
+    },
+    "latest_v12": {
+      "denominator": 18,
+      "resolved": 17
+    }
+  },
+  "labels": false,
+  "models": 0,
+  "new_capture_versions": 4,
+  "old_global_bytes_preserved": true,
+  "old_review_rows_preserved": true,
+  "plan_hash": "b5b6002f65216e0ea36c6d8e6e23258a060ac360cc722b7e956ab344758bef3e",
+  "products": 57,
+  "retained_legacy_products": 53,
+  "reviewed_source_snapshot": {
+    "manifest_sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot",
+    "store_type": "reviewed"
+  },
+  "snapshot_reopen_canonical_equal": true,
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json",
+    "sha256": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57"
+  },
+  "status": "completed"
+}

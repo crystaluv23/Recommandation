@@ -1,0 +1,54 @@
+{
+  "available_at": "2025-01-31T00:00:00+00:00",
+  "company_id": "cik_0001847409",
+  "content": "{\"accession_number\":\"0001628280-25-003171\",\"cik\":\"0001847409\",\"facts\":[{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"end\":\"2024-10-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Entity Common Stock, Shares Outstanding\",\"start\":null,\"tag\":\"EntityCommonStockSharesOutstanding\",\"taxonomy\":\"dei\",\"unit\":\"shares\",\"value\":80787017}],\"filing_date\":\"2025-01-30\",\"form\":\"40-F/A\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+  "content_hash": "cae32556a3c3d0d17b5eacd1e77fa5acd54606ce553f6775a21b0e8c5f329915",
+  "document_id": "secfacts:0001847409:0001628280-25-003171:cae32556a3c3d0d1",
+  "metadata": {
+    "accession_number": "0001628280-25-003171",
+    "acquisition_policy_hash": "c52b30dc9674206c5cc3694cfa0fe32eb184ef62b89f94d392cc0b99e9acc63b",
+    "acquisition_selection": {
+      "available_at_through": "2025-01-31T00:00:00+00:00",
+      "form_allowlist": [
+        "10-K",
+        "10-K/A",
+        "10-Q",
+        "10-Q/A",
+        "20-F",
+        "20-F/A",
+        "40-F",
+        "40-F/A",
+        "6-K",
+        "6-K/A",
+        "8-K",
+        "8-K/A"
+      ],
+      "period_end_from": "0001-01-01",
+      "period_end_through": "2025-01-31",
+      "taxonomy_allowlist": [
+        "dei",
+        "ifrs-full",
+        "srt",
+        "us-gaap"
+      ]
+    },
+    "availability_policy": "next_utc_day_after_companyfacts_filed_date",
+    "cik": "0001847409",
+    "content_scope": "standard_taxonomy_facts_for_accession",
+    "fact_count": 1,
+    "form": "40-F/A",
+    "period_end_from": "0001-01-01",
+    "period_end_through": "2025-01-31",
+    "requires_primary_filing_audit": true,
+    "retrieved_at": "2026-10-19T23:39:01.857416+00:00",
+    "retrospective_api_extraction": true,
+    "source_key": "sec_edgar",
+    "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001847409.json",
+    "symbol": "HITI",
+    "taxonomy_namespaces": [
+      "dei"
+    ]
+  },
+  "published_at": "2025-01-30T00:00:00+00:00",
+  "source_type": "sec_company_facts"
+}
