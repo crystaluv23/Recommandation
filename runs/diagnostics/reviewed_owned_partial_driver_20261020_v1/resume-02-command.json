@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/run_reviewed_owned_partial_stage.py",
+    "--resume",
+    "--root",
+    "runs/diagnostics/reviewed_owned_partial_stage_20261020_v1"
+  ],
+  "PYTHONPATH": ".:src:scripts",
+  "started_at_utc": "2026-10-20T01:49:45.156242+00:00",
+  "after_submit_agent": "/root/role_67"
+}

@@ -36,6 +36,8 @@ source snapshot/reopen canonical相等仅证明本阶段重开store，非OS中�
   原全量1867/1868旧prompt断言定向修后过，没有第二次全量绿，fresh行为待验。
 - [F7镜像纠错](../reports/owned-partial-residual-mirror-20261020.md)：提示和typed修复权限已接；
   225关联测试/独立14项过，旧49/50仍6行，离线同步后5行进入持久化/Predictor；fresh触发仍待验。
+- [fresh F7→Predictor](../reports/reviewed-owned-partial-stage-20261020.md)：3独立首答/0纠错、17cards及32文件restore保真；
+  预冻完整语义0/1：残项漏披露期后covenant compliance，未宣称未来合规仍不能通过。mirror not_exercised。
 - [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)：apply neutral→Reflect partial→Predictor/sink实际连接，
   7新角色/1纠错、52文件恢复；仍6行needs含长短镜像，不等于整体F4/F6/F7或完整F9。
 - [native Posthoc](../reports/reviewed-posthoc-stage-20261020.md)：首答拒、唯一typed纠错后2items窄审通过，19文件恢复；
@@ -49,15 +51,15 @@ source snapshot/reopen canonical相等仅证明本阶段重开store，非OS中�
 旧“48”无案例清单支持，不能推剩余8为LockedTest；默认v6与本批v12的18版本不同，不能互代。
 26 transcript完整公开内容时间证明仍0；按用户已选口径取已核实完整公开内容时间，原记录/旧实验保留。
 历史news污染排除/unknown不表示无事件，所有失败分母及身份屏蔽保持。
-GPRE采集版本ID设计仍待用户决策；未答前不改ID/原件，53合法subset缺已知最新Q1，不能声称最新财务完整。
+用户已批准采集版本ID修复重复采集冲突；实现/实际准入尚待验证。当前GPRE53合法subset仍缺最新Q1，不称完整。
 FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍unknown，不猜时区。
 旧v182权威Fast/Slow=1/1完成不可重启；memory失败processed0/pending3518未改作成功。
 新方向/magnitude Mining正控、忠实实现/准入、后继精确复用、完整反馈消费/闭环及独立收益均未验证。
 
 ## 下一步
 
-来源stage已完成，不重入。下一最小阶段：历史合法prior/batch显式作seed，fresh Reflect→持久化→final context→fresh Predictor/sink。
-[单样本stage](../reports/reviewed-owned-partial-stage-20261020.md) 首prepare路径失败保留；统一reader后12safe/实际5979绑定/独立复核过。新版prepare25.984s完成，plan f1f9316a/6264unique绑定全等、0角色，待新调用。
-每次生产LLM请求仍由exact inbox的独立subagent处理；首答正确则typed镜像纠错标not_exercised，不追触发。
-最多6请求、512000逻辑reservation、131072/请求；0GET/labels/Signal apply，不恢复旧运行或启动完整后继。
+来源与F7单样本stage均已完成，不重入；F7的temporal-facet未达保留，先做源capture版本身份修复。
+按已批准设计，先spec再实现共享ID/生产/旧recipe兼容/准入/去重消费；完整57产品重建、仅4GPRE新版本拟实证。
+旧ID/引用/原件/实验不改；同已记录capture replay幂等，采集版本不能增加独立证据数量。0GET/model/labels/apply。
+后续LLM节点仍由exact inbox独立subagent处理；不恢复旧运行或启动完整后继。
 保6unknown/完整失败分母/上下文限制，不以0.8替代测量、最新Q1完整性或整体MVP关闭。

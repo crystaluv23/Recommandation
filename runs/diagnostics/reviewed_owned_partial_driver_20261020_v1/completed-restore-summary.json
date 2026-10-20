@@ -1,0 +1,64 @@
+{
+  "before": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_driver_20261020_v1/completed-restore-before.json",
+    "sha256": "4b2701c2633c3bc27fba31b8b357faf9ef2d49136ebab5bf34b008cc529f8dbc"
+  },
+  "after": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_driver_20261020_v1/completed-restore-after.json",
+    "sha256": "4b2701c2633c3bc27fba31b8b357faf9ef2d49136ebab5bf34b008cc529f8dbc"
+  },
+  "all_32_files_current_exact_equal": true,
+  "file_count": 32,
+  "counts_before": {
+    "requests": 3,
+    "inboxes": 3,
+    "raw_outboxes": 3,
+    "receipts": 3,
+    "parsed_cache": 3
+  },
+  "counts_after": {
+    "requests": 3,
+    "inboxes": 3,
+    "raw_outboxes": 3,
+    "receipts": 3,
+    "parsed_cache": 3
+  },
+  "new_requests": 0,
+  "new_receipts": 0,
+  "new_raws": 0,
+  "new_dispatches": 0,
+  "logical_reservation_before": 180233,
+  "logical_reservation_after": 180233,
+  "restored_without_execution": true,
+  "restore_result": {
+    "actual_host_cost": null,
+    "actual_host_tokens": null,
+    "engineering_mvp_closed": false,
+    "external_api_calls": 0,
+    "fixed_denominator": 1,
+    "historical_seed_not_new_F6": true,
+    "independent_receipts": 3,
+    "labels_read": 0,
+    "logical_reservation": 180233,
+    "mirror_correction_branch": "not_exercised",
+    "new_Signal_apply": 0,
+    "prediction_ref": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/prediction.json",
+      "sha256": "986e8bbd8b29b067aac7355b4af1eb9216e768341906bbbd652fe28234be4a04"
+    },
+    "sample_id": "p01",
+    "status": "prediction_persisted_requires_independent_review",
+    "restored_without_execution": true
+  },
+  "exit": {
+    "exit_code": 0,
+    "wall_seconds": 3.6225465839999997,
+    "finished_at_utc": "2026-10-20T02:33:23.480971+00:00"
+  },
+  "only_one_completed_restore_executed": true,
+  "GETs": 0,
+  "labels": false,
+  "Signal_apply": 0,
+  "host_tokens_cost_unknown": true,
+  "semantic_review_pending": true
+}

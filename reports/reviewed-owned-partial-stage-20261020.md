@@ -1,6 +1,9 @@
 # Bounded owned-partial Reflect and Predictor stage
 
-2026-10-20. The new single-case stage is implemented and independently reviewed.
+2026-10-20. The actual three-role stage completed and restored, but its frozen
+semantic control passes0/1: the remaining question lost the post-interim covenant
+compliance facet. Mechanical execution and exact consumers pass; F7/MVP remain open.
+The following preparation records retain their original evidence boundaries.
 At the initial prefreeze boundary no formal prepare or fresh role had run. It tests a known
 historical accepted prior/batch through fresh Reflect, durable reread, native
 final assembly and fresh Predictor/sink. It cannot establish a fresh F6 result,
@@ -68,3 +71,40 @@ receipt yet; this successful preparation is not a fresh role or semantic result.
 The independent frozen-plan audit verifies every6264 unique binding and the exact
 input whitelist/17 canonical projections/four admitted quotes. Its verdict is
 PASS_frozen_inputs_only; no role behavior is established by that audit.
+
+## Actual execution and semantic result
+
+Under b03deaf2, fresh isolated roles66/67/68 consumed only their exact inboxes.
+Native Reflect accepted the first answer (`continue`), its mandatory closure
+accepted a first-answer `finalize`, and the actual blind Predictor first answer
+was durably saved. There were3 first answers,0 corrections,0 discarded or
+rewritten authored operations. Reservations53952+54943+71338 total180233;
+host actual tokens/cost remain unknown. External API/GET/labels/Signal apply0.
+
+The [independent actual review](../runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-independent-review.json)
+compares literal source meaning, authored operations, accepted state, reread
+metadata, final context, actual Predictor wire and sink. Prior needs0–3 retain
+their occurrences; need4 has one274-character residual and one partial row,
+five needs total. All17 BasicInfo cards and omission descriptors, exact Signal
+versions, evidence periods/units/excise-tax exclusion and computed inputs remain.
+The historical batch is still a seed, not a new F6 measurement.
+
+The frozen oracle requires both covenant terms and compliance after the disclosed
+interim period to remain unknown. The authored residual and unanswered reason
+list retain only terms. Evidence establishes compliance at June30/duringH1,
+not later through the cutoff. Closure preserves that omission. Predictor does
+state that June30 financing context does not prove September30 conditions, but
+this caution cannot restore the missing state need. The complete semantic
+denominator remains1 and passes0; no expected answer is relaxed or new role
+added. This is a temporal-facet loss, despite correct count/length/mirror shape.
+
+The single completed restore returns without execution: all32 files (including
+operational files) match before/after/current, all3 request/inbox/raw/receipt/
+cache sets remain, and0 new dispatch occurs. The native28 immutable artifacts
+and6264 frozen bindings were independently checked before the code freeze was
+released. Typed mirror correction remains `not_exercised`; no general crash
+recovery, completed Fast/Slow, prediction accuracy or research gain is claimed.
+
+The user subsequently approved capture-version IDs for GPRE's repeated-source
+conflicts. That separate source repair proceeds with legacy preservation; this
+F7 failure remains in the backlog and its completed artifacts are not resumed.

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/run_reviewed_owned_partial_stage.py",
+    "--submit",
+    "--root",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1",
+    "--request-hash",
+    "a91c39827ac0f8a71089e388f2f6cc28b77c9ab3501874d67ba5855c7fcbc674",
+    "--agent-id",
+    "/root/role_67"
+  ],
+  "raw_sha256": "d890e0206cbb628c9844947fb6f864cfeb3f2d679bbe958874c87beeb09777cb",
+  "agent_id": "/root/role_67",
+  "started_at_utc": "2026-10-20T01:49:32.029714+00:00"
+}

@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "need_dispositions": {
+      "items": [],
+      "prior_state_hash": "1f4a3fe3e39391b180b2369dc833a79e20bd8f57dbcac40ab307cdbc7d0c5f44"
+    }
+  },
+  "request_hashes": [
+    "a91c39827ac0f8a71089e388f2f6cc28b77c9ab3501874d67ba5855c7fcbc674"
+  ],
+  "state": {
+    "contradictions": [
+      "For the three months ended June 30, 2025 and 2024, respectively, total revenue was $248.2 million and $268.6 million.",
+      "For the three months ended June 30, 2025 and 2024, respectively, Total Paying Users were 3,777.2 and 4,138.6 (in thousands), while Total Average Revenue per Paying User was $21.69 and $21.37.",
+      "Management warned that restructuring costs could exceed expectations or fall in different periods, and that intended benefits might arrive less fully or less quickly than anticipated."
+    ],
+    "current_beliefs": [
+      "Management disclosed a shift away from paid member acquisition and performance marketing toward brand and organic investment, while warning of short-term pressure on revenue and paying users.",
+      "As of June 30, 2025, cash and cash equivalents were $261.7 million; management believed available resources sufficient for its business plans during the next twelve months, based on conditions then.",
+      "In June 2025, management announced a global workforce reduction of approximately 240 roles, representing approximately 30% of employees.",
+      "Inference: historical repurchases and reported covenant compliance contextualize financing capacity, but do not establish prospective net dilution, self-funding capacity or a directional catalyst. Technical admission leaves predictive effect unverified."
+    ],
+    "decision": "finalize",
+    "hypotheses": [
+      "Inference: an organic-acquisition and product-quality turnaround could change expectations within the six-month horizon if retention and payer conversion stabilize while monetization holds. No delivery schedule is visible; continued deterioration in retained paying cohorts would weaken this mechanism.",
+      "Inference: workforce restructuring could protect cash generation and support a reassessment within the horizon if savings arrive before revenue erosion absorbs them. Timing remains unestablished; delayed savings, excess cash charges or impaired product delivery would weaken this mechanism.",
+      "Inference: reported contraction may reflect persistent demand weakness rather than a temporary acquisition reset, preventing a durable operating reassessment within the horizon. Sustained organic cohort growth and cash generation after restructuring costs would weaken this explanation."
+    ],
+    "next_information_needs": [
+      "By prediction time, what cohort retention, engagement, organic acquisition and payer-conversion evidence had been disclosed that distinguishes deliberate removal of low-quality users from persistent underlying demand deterioration?",
+      "What product or monetization milestones, launch schedules and measurable adoption tests had been disclosed by prediction time that could change expectations within the forecast horizon, beyond general strategic intentions?",
+      "By prediction time, what savings estimates, implementation timetable, cash restructuring charges and realized progress had been disclosed, and what evidence showed that reduced staffing could preserve product delivery and member safety?",
+      "What available disclosures explain the payer and monetization trends through pricing, mix, churn and geographic or app-level differences, including whether monetization improvement came at the expense of retention?",
+      "By prediction time, what annual and subsequent disclosures established operating cash flow, capex, debt balances/maturities, covenant terms, tax cash obligations and prospective equity dilution beyond historical repurchases? Direct annual-report coverage remains unverified."
+    ],
+    "open_questions": [],
+    "resolved_questions": [
+      "The business monetizes online dating and social networking through subscriptions and in-app purchases. The visible interim report supplies operating evidence; references to annual filings do not establish that annual-report content was reviewed."
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "Management disclosed a shift away from paid member acquisition and performance marketing toward brand and organic investment, while warning of short-term pressure on revenue and paying users.",
+        "exact_text": "To align with these priorities, we have strategically shifted away from paid member acquisition and performance marketing in favor of brand and organic investment. As we address these areas of focus, our member growth and success in attracting new members, member engagement and monetization may be negatively impacted. In addition, efforts to improve the health of our membership base, including the removal of bad actors from our apps and strategically reducing paid performance marketing for member acquisition, may adversely affect revenue and paying users in the short term.",
+        "kind": "basic_info",
+        "projection_id": "projection_f8d7793d8a50c9c91d62edc1"
+      },
+      {
+        "claim": "As of June 30, 2025, cash and cash equivalents were $261.7 million; management believed available resources sufficient for its business plans during the next twelve months, based on conditions then.",
+        "exact_text": "As of June 30, 2025, we had $261.7 million of cash and cash equivalents, an increase of $57.4 million from December 31, 2024. Our principal sources of liquidity are our cash and cash equivalents and cash generated from operations. Our primary uses of liquidity are operating expenses and capital expenditures, acquisition of businesses, funding of our debt obligations, partnership tax distributions, paying income taxes and obligations under our tax receivable agreement and effectuating share repurchases as discussed below. Based on current conditions, we believe that we have sufficient financial resources to fund our activities and execute our business plans during the next twelve months.",
+        "kind": "basic_info",
+        "projection_id": "projection_11e722831b03f2831c1c8d2d"
+      },
+      {
+        "claim": "In June 2025, management announced a global workforce reduction of approximately 240 roles, representing approximately 30% of employees.",
+        "exact_text": "In June 2025, we announced our decision to reduce our global workforce by approximately 240 roles, representing approximately 30% of our employees, as we realign our operating structure to optimize execution on our strategic priorities.",
+        "kind": "basic_info",
+        "projection_id": "projection_11e722831b03f2831c1c8d2d"
+      },
+      {
+        "claim": "For the three months ended June 30, 2025 and 2024, respectively, total revenue was $248.2 million and $268.6 million.",
+        "exact_text": "For the three months ended June 30, 2025 and 2024, we generated: \u2022 Total revenue of $248.2 million and $268.6 million, respectively;",
+        "kind": "basic_info",
+        "projection_id": "projection_53f0208217c26e1d3d9b97e2"
+      },
+      {
+        "claim": "For the three months ended June 30, 2025 and 2024, respectively, Total Paying Users were 3,777.2 and 4,138.6 (in thousands), while Total Average Revenue per Paying User was $21.69 and $21.37.",
+        "exact_text": "(In thousands, except ARPPU) Three Months Ended June 30, 2025 Three Months Ended June 30, 2024 Six Months Ended June 30, 2025 Six Months Ended June 30, 2024 Bumble App Paying Users 2,499.8 2,817.2 2,604.1 2,773.6 Badoo App and Other Paying Users 1,277.4 1,321.4 1,291.9 1,307.9 Total Paying Users 3,777.2 4,138.6 3,896.0 4,081.5 Bumble App Average Revenue per Paying User $ 26.85 $ 25.79 $ 25.81 $ 26.06 Badoo App and Other Average Revenue per Paying User $ 11.57 $ 11.93 $ 11.14 $ 12.14 Total Average Revenue per Paying User $ 21.69 $ 21.37 $ 20.94 $ 21.60",
+        "kind": "basic_info",
+        "projection_id": "projection_857e47898275a58b1c86dc0a"
+      },
+      {
+        "claim": "Management warned that restructuring costs could exceed expectations or fall in different periods, and that intended benefits might arrive less fully or less quickly than anticipated.",
+        "exact_text": "the risk that the costs and charges related to our recently announced plan to implement a global workforce reduction and restructuring of our operations may be greater than anticipated or incurred in different periods than anticipated \u2022 the risk that our restructuring efforts may not generate their intended benefits to the extent or as quickly as anticipated",
+        "kind": "basic_info",
+        "projection_id": "projection_f5e5258464d4602a2ffccc9e"
+      },
+      {
+        "claim": "During the six months ended June 30, 2025, the Company repurchased 4.7 million shares of Class A common stock for $ 28.7 million, excluding excise tax obligations.",
+        "evidence_group": "counter",
+        "evidence_index": 1,
+        "kind": "signal",
+        "signal_ref": "financing_listing_action:v5"
+      },
+      {
+        "claim": "As of June 30, 2025, amounts available under the Revolving Credit Facility were $ 50.0 million. As of June 30, 2025, and at all times during the six months ended June 30, 2025, the Company was in compliance with the financial debt covenants.",
+        "evidence_group": "counter",
+        "evidence_index": 3,
+        "kind": "signal",
+        "signal_ref": "financing_listing_action:v5"
+      }
+    ]
+  }
+}

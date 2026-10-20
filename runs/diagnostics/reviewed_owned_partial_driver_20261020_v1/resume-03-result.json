@@ -1,0 +1,25 @@
+{
+  "progress": {
+    "actual_host_cost": null,
+    "actual_host_tokens": null,
+    "engineering_mvp_closed": false,
+    "external_api_calls": 0,
+    "fixed_denominator": 1,
+    "historical_seed_not_new_F6": true,
+    "independent_receipts": 3,
+    "labels_read": 0,
+    "logical_reservation": 180233,
+    "mirror_correction_branch": "not_exercised",
+    "new_Signal_apply": 0,
+    "prediction_ref": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/prediction.json",
+      "sha256": "986e8bbd8b29b067aac7355b4af1eb9216e768341906bbbd652fe28234be4a04"
+    },
+    "sample_id": "p01",
+    "status": "prediction_persisted_requires_independent_review"
+  },
+  "completion_exists": true,
+  "failure_exists": false,
+  "completed_restore_executed": false,
+  "no_answer_authored_or_modified_by_executor": true
+}

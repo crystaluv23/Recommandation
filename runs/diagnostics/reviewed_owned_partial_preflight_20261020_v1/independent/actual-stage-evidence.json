@@ -1,0 +1,69 @@
+{
+  "mechanical_verdict": "PASS_exact_native_authored_outputs_and_consumers",
+  "semantic_verdict": "FAIL_one_later_compliance_facet",
+  "fixed_denominator": 1,
+  "frozen_unique_SHA_verified": 6264,
+  "native_immutable_files": 28,
+  "restore_all_files_current_verified": 32,
+  "restore_before_after_equal": true,
+  "restore_new_dispatches": 0,
+  "completion_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/completion.json",
+    "sha256": "5ca0b25907a5c11fb256d2df31484b93089f0429bb5624bc54616c47529974aa"
+  },
+  "restore_summary_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_driver_20261020_v1/completed-restore-summary.json",
+    "sha256": "c31d8b15d35b1c0f3eb06dc803640a9b389b1e611a71c460a431c24533c27d83"
+  },
+  "trace": [
+    {
+      "request_hash": "f2d4e96545e9617ce846a919fffb2f8e1389fab2151a9d38650be416dd148ac2",
+      "stage": "research_controller_reflect",
+      "agent_id": "/root/role_66",
+      "reservation": 53952,
+      "raw_sha256": "b1cbdfcb38e19640caf7a9dd34472a3b3935ade68d560b75532108aab4e8e064"
+    },
+    {
+      "request_hash": "a91c39827ac0f8a71089e388f2f6cc28b77c9ab3501874d67ba5855c7fcbc674",
+      "stage": "research_controller_reflect",
+      "agent_id": "/root/role_67",
+      "reservation": 54943,
+      "raw_sha256": "d890e0206cbb628c9844947fb6f864cfeb3f2d679bbe958874c87beeb09777cb"
+    },
+    {
+      "request_hash": "76cbdcb8a84905462848031684107afe6e4cae87de447afe35eb0c18d4dfcda4",
+      "stage": "blind_predictor_predict",
+      "agent_id": "/root/role_68",
+      "reservation": 71338,
+      "raw_sha256": "87bf015deecedd3c9f9c375d9012cda61cd5d569cb586a8203a6cfc5dab127e0"
+    }
+  ],
+  "logical_reservation": 180233,
+  "raw_to_accepted_exact": true,
+  "correction_requests": 0,
+  "no_authored_output_salvage": "Reflect exact authored operations reproduce accepted state+row; closure only authored decision replace; Predictor exact raw fields retained with native derived is_surge only. Events are not persisted here, so event absence is not used as evidence.",
+  "partial_residual": "By prediction time, what annual and subsequent disclosures established operating cash flow, capex, debt balances/maturities, covenant terms, tax cash obligations and prospective equity dilution beyond historical repurchases? Direct annual-report coverage remains unverified.",
+  "prior_needs0_3_exact": true,
+  "one_residual_five_needs_no_duplicate": true,
+  "final_context_equals_predictor_wire_and_sink": true,
+  "BasicInfo17_cards_and_visibility_exact": true,
+  "runtime_termination": {
+    "phase": "prediction_ready",
+    "stop_reason": "finalized",
+    "termination_trigger": "max_signal_rounds"
+  },
+  "historical_signal_refs": [
+    "financing_listing_action:v5",
+    "operating_cash_flow_margin:v2"
+  ],
+  "prediction_authored": {
+    "candidate_judgment": "possible",
+    "magnitude": "2-3x",
+    "confidence": {
+      "level": "low"
+    }
+  },
+  "missing_semantic_facet": "Oracle requires covenant terms AND compliance after the disclosed interim period. Authored residual and its unanswered reason list retain terms but do not retain later compliance. Predictor June30-not-Sep30 financing caveat does not restore the lost state need.",
+  "elapsed_seconds": 3.347601,
+  "scope": "Read-only files/stream SHA and pure JSON comparisons/presentation helpers. No Store/GET/LabelStore/prepare/resume/parser/model call. Historical batch only seed; no fresh F6 or accuracy/gain conclusion."
+}

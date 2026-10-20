@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T01:17:25.077390+00:00",
+    "checked_at": "2026-10-20T03:11:02.746866+00:00",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "Root actual get_goal after completed fixed40 source consumption; active goal, old experiments remain terminal"
+    "source": "Actual root get_goal after terminal owned-partial stage; user capture-ID approval received; historical experiments unchanged"
   },
   "acceptance": [
     {
@@ -119,9 +119,12 @@
         "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/input-gap-details.json",
         "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json",
         "reports/reviewed-owned-partial-stage-20261020.md",
-        "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/independent-review.json"
+        "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/independent-review.json",
+        "runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/completion.json",
+        "runs/diagnostics/reviewed_owned_partial_driver_20261020_v1/completed-restore-summary.json",
+        "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-independent-review.json"
       ],
-      "remaining": "Original40 source-only actualdual720 now670resolved/50gap eachv6/v12,40/40>=.8, with1776admittedview and119partialBasicInfo/41unavailable. Source-resolution threshold does not establish measurement/semantic/model completeness: BURU baseline absent,GPRElatestQ1 conflicting IDs,FTIfull-year window and6unknown targets retained. Transcript complete-public proof,freshF7/fullF10/Slow/direction+magnitudeadmission+reuse/wholeloop open; originalFYbasic0/3 retained. Independentbenefitlaterunknown."
+      "remaining": "Original40 dual720 each670resolved/50gap and40/40>=.8 remain source-resolution evidence only;119partial BasicInfo/41unavailable. Fresh historicalseed F7/Predictor3firstanswers0corr preserve5needs/17cards/consumer/restore but frozen complete semantic0/1: post-interim covenant-compliance inquiry lost. Typedmirror not_exercised. User now explicitly approved capture-version identity;GPRE4conflicts/latestQ1 remain unresolved until implemented/admitted, BURUbaseline/FTItype/transcriptpublictime separate. FullF10/Slow/direction+magnitudeadmission+reuse/wholeloop and originalFYbasic0/3 remain open; predictivebenefit laterunknown."
     },
     {
       "id": "feedback_consumption",
@@ -897,26 +900,31 @@
         "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json"
       ],
       "result": "Sole c9ad66e8 execute1253.520s/exit0:1123nativeappend+canonicalreadbacks,853new/270existing;15640oldglobalbytes/658oldreviewrows unchanged;1776admittedview/1781reviewrows. Both exactRegistry groups670/720resolved,50gap,40/40>=.8 vs262/720,15/40;all40/1440denominators retained.40BasicInfo119resolved-allpartial/41unavailable,593omissionmarkers. Independent all3344freeze/297collectorfiles/canonicalview/PIT+literalinputs/projections checked,0blocking. Reviewer oldbaseline field KeyError retained/fixed before fullpass; notproductfailure. Native snapshot/reopen equality is not OS crash recovery.0GET/model/apply/labels/fullprepare;6unknown/latestGPREQ1/FTIfull-year/wholecontentchain/MVP remainopen."
+    },
+    {
+      "id": "engineering-mvp-owned-partial-fresh-stage-20261020",
+      "strategy": "single_historical_seed_fresh_reflect_and_predictor_consumption",
+      "failure_families": [
+        "partial_residual_omits_temporal_facet",
+        "mechanical_preservation_does_not_prove_complete_answer_scope"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-owned-partial-stage-20261020.md",
+        "runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/completion.json",
+        "runs/diagnostics/reviewed_owned_partial_driver_20261020_v1/completed-restore-summary.json",
+        "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-independent-review.json"
+      ],
+      "result": "3isolated firstanswers66/67/68 actualnative accepted0correction,180233logicalreservation/hosttokenscostunknown,0externalAPI/GET/labels/Signalapply. Firstcontinue+closurefinalize retain5needs,one274char ownedpartial. Raw-to-accepted exactly and actualPredictorwire=finalcontext=sink;17cards/allvisibility/versions/evidence retained.6264frozenpaths/28nativeimmutable checked, singlecompletedrestore32allfiles equal0newdispatch. Frozen semanticdenominator1 completepasses0: residual/reason preservecovenantterms but omit post-H1 compliance. Predictor correctly limitsJune30 facts but cannotrepairloststatequestion. mirrorbranch not_exercised; noF6/wholeF7/FastSlow/MVP/gainclosure."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-fixed40-actual-source-consumption-20261020",
+    "after_iteration": "engineering-mvp-owned-partial-fresh-stage-20261020",
     "evidence": [
-      "reports/frozen40-source-proofs-20261020.md",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/result.json",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/input_manifest.json",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/execution-summary.json",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/terminal-file-bindings.json",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/input-gap-details.json",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json",
       "reports/reviewed-owned-partial-stage-20261020.md",
-      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/independent-review.json",
-      "runs/diagnostics/reviewed_owned_partial_prepare_20261020_v1/failure-summary.json",
-      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/source-read-final-review.json",
-      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/root-actual-source-read-boundary.json",
-      "runs/diagnostics/reviewed_owned_partial_prepare_20261020_v2/prepare-summary.json",
-      "runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/manifest.json",
-      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/frozen-plan-independent-review.json"
+      "runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/completion.json",
+      "runs/diagnostics/reviewed_owned_partial_driver_20261020_v1/completed-restore-summary.json",
+      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-independent-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -967,21 +975,23 @@
       "Successful primary-body GETs do not guarantee operating content: two actual40F wrappers require literal incorporated reports. Source-review byte binding must designate the actual decoded body, not merely any proof artifact. Requested400days and151retained daily observations are distinct coverage facts.",
       "The fixed0.8 input fraction can pass all40 while BURU lacks a market baseline, GPRE lacks known latestQ1 and every resolved BasicInfo projection is partial. Reaching the administrative readiness threshold cannot erase semantic/source gaps or authorize a full successor. A completed native snapshot/reopen guard is not OS interruption recovery.",
       "The new bounded adapter initially reused final-context BasicInfo as bootstrap input:17cards silently became0 in the native constructor, and empty-BasicInfo tests missed the loss. Frozen canonical bootstrap preserves17; anonymous wire tokens are not canonical input. Reusing a per-request token limit as the whole native invocation budget also excluded otherwise legal correction pairs; a real186487-unit native two-request counterexample now distinguishes the layers.",
-      "The bounded adapter initial source loader passed serialized str paths to a Path-only reader. Mocked _source tests and native budget/assembler probes did not cover real metadata entry; first formalprepare failed before plan/root creation. One local reader normalizes strings/Path; exact old plan and review failures plus real5979-binding read chain now verify the family, without changing sample/oracle/budget or erasing first failure."
+      "The bounded adapter initial source loader passed serialized str paths to a Path-only reader. Mocked _source tests and native budget/assembler probes did not cover real metadata entry; first formalprepare failed before plan/root creation. One local reader normalizes strings/Path; exact old plan and review failures plus real5979-binding read chain now verify the family, without changing sample/oracle/budget or erasing first failure.",
+      "The first fresh residual preserved300char limit, exact mirror, five needs and evidence ownership but narrowed broad covenant inquiry to terms, omitting compliance after the disclosed interim through cutoff. Earlier mirror tests protected typed scope and count; latest3 controls covered share-basis facets, not one topic with static terms versus time-varying state. Exact downstream preservation faithfully propagates semantic loss; Predictor caveat is not restoration of the missing need."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "single_historical_seed_fresh_reflect_and_predictor_consumption",
-      "action": "Revised e09806a4 formalprepare completed25.984s/exit0 with canonical f1f9316a manifest and6264 unique paths. Preserve prior failedprepare and immutable five-file freeze. After independent plan review, run only this one historical accepted-seed case via serial LocalRoleExchange: fresh native Reflect, optional one terminal closure, persisted reread/finalcontext and fresh Predictor/durable sink. Every actual LLM request uses exact-inbox isolatedsubagent from role66; max6requests,512000case/131072request logical reservations,64k finalization reserve and one native correction. No new data/Signalapply/labels/oldrunresume/fullsuccessor; no completed source-stage reentry.",
-      "stop": "Stop on source/code/provenance drift,budget ceiling,unknown/missingbindings,semantic need loss or duplicate residual; preserve failed denominator. No induced overlong answer,no newroot retry to chase typedrepair,no oracle/oldprediction/raw49/raw50 in roles. Identitypolicydecision remains pending,not inferred from silence.",
-      "question": "Does current native Reflect faithfully retain all unsupported facets of a known partially answered need, and do the durable finalcontext and actual fresh Predictor consume the identical accepted state/dispositions?",
-      "pass": "Unowned needs retained by occurrence, historicalbatch unsupported facets remain explicit without duplicate mirrors; accepted state/metadata survive reread, actual Predictor input and sink; completedrestore hashes unchanged and0newdispatch. If firstanswer valid, typedmirrorbranch explicitly not_exercised.",
-      "fail": "Wrong or ungrounded closure,dropped modifiers/facets,duplicate long/short mirrors,unauthorized state edits,evidence mismatch,consumer loss,budget stop or restore drift.",
-      "on_pass": "Record only this fresh F7/consumer control with actual firstanswer/correction counts, then target the next unclosed supported-capability or feedback/Mining boundary; do not close wholeMVP or declare a freshF6 from seeded results.",
-      "on_fail": "Retain original raw/typedcorrection/accepted-or-rejected artifacts; identify first actual producer/validator/consumer boundary and fix the applicable family before another separately frozen test. No wholeprefix rerun by default.",
-      "new_evidence": "Actual fixed40sourceview now reaches both720 inputs and independent literal/PIT+projection review; prior narrow ownedmirror repair has only offline typed-correction proof while latest positive controls did not exercise that compound residual. A fresh bounded native role can distinguish current prompt compliance from scripted reachability. The separately reviewed adapter now preserves the actual17canonical bootstrap cards/visibility and independently accepts a186487-unit native correction pair while rejecting an oversize request before receive; formal freeze and fresh role behavior remain unexecuted. Actual revisedprepare25.984s completed after the failedserialized-path prepare, with1776view and6264unique path bindings verified; no role has run yet.",
-      "distinguishing_variable": "New exact native role outputs and actual persisted/Predictor consumption versus historical replies, scripted synchronized patches or readiness counts."
+      "kind": "repair",
+      "strategy": "approved_capture_version_identity_with_legacy_source_compatibility",
+      "action": "Implement the user-approved shared capture-version ID namespace from complete typed canonical RawInfo record excluding document_id; first owning specs then producer/store/qualification/legacy recipe compatibility and focused tests. New acquisition/newbackfill use explicit capture policy; old IDs/profile/backfillv1 keep exact legacy recipes. After checkpoint and independent review, freeze one source-only GPRE case: complete57 products retained, only4conflicting newversions appended/readback/idempotent replay, newview and both18refs/BasicInfo nativeconsumption. NoGET/model/labels/Signalapply/fullprepare or oldstage resume. F7 later-compliance failure staysopen for a separate smallest repair; this source fix does not solve it.",
+      "stop": "No oldID/record/publictime/content rewrite,no newrootretry tohidefailure,no legacy reconstruction drift,no samecontent versions counted as independentfacts/no alteredresolverpriority orRegistry. FTImislabeledsource/MSclock/BURUsplit remain separate. Freeze code/inputs before actualappend and stop on proof/collision/typedidentity failure.",
+      "question": "Can complete capture identity preserve same-content different-provenance records and admit the4validGPRE products including latestQ1 without altering legacy records or inflating consumed evidence?",
+      "pass": "Same recorded capture yieldsstable ID/exactreplay; distinct fullmetadata typed payload yieldsdistinct version; oldv1recipes remaincanonicalequal. All57expectedproducts retained,4actualnewcanonicalrecords qualified withunchangedbody/publictimes/values/unit/period. Newview preservesoldrows, nativeGPREconsumers selectlatestQ1 legally and dedup samecontent correctly.",
+      "fail": "A caller silently changes oldrecipes,usesnow onreplay,collapsesbool/int/float/null distinctions,accepts ID/payload mismatch,overwritesoldrecords,changespublictimes or counts captures asnewfacts.",
+      "on_pass": "Record only actualGPREsource completeness/identity andconsumeradvance; retainotherunknowns and return to temporal-facet F7 repair before any wholeloop successor.",
+      "on_fail": "Preserve exactold/new payloads and source-only terminal artifacts; isolate producer/qualification/store/consumer mismatch, do not widennamespace semantics or rewriteorigins to forcepass.",
+      "new_evidence": "User answered capture-versionID question affirmatively in currentchat. Actual4GPRE pairs have identicalbody/contenthash/publictimes and differ in acquisitionselection/policy/retrieval metadata; currentcontentID blocksqualified latestQ1. Current F7 stage terminal/audited/restored before releasingcodefreeze.",
+      "distinguishing_variable": "Complete recordedcapture identity and legacy-versioned reconstruction versus content-only ID/ignoredmetadata; actuallatestQ1 nativeconsumption versus unchanged readinessfractions.",
+      "authorization_evidence": "Direct user asynchronous answer: 采用采集版本ID，修复这类重复采集冲突（推荐）; fullsource/collection metadata,oldIDs/refs/history retained,samecapture replay idempotent."
     }
   },
   "successor_prerequisites": [

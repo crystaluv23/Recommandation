@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/run_reviewed_owned_partial_stage.py",
+    "--resume",
+    "--root",
+    "runs/diagnostics/reviewed_owned_partial_stage_20261020_v1"
+  ],
+  "cwd": "/Users/l/Project/Recommandation",
+  "PYTHONPATH": ".:src:scripts",
+  "head": "b03deaf25026eefb5c82cd53c37371b023e61356",
+  "started_at_utc": "2026-10-20T01:45:32.190732+00:00"
+}

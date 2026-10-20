@@ -1,0 +1,1 @@
+{"base_hash":"6928397eaf412224ce9f7dc2273723a3b5657f3645b56c4990a8857600c7332a","operations":[{"op":"replace","path":"decision","value":"finalize"}]}

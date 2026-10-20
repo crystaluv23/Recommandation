@@ -1,0 +1,30 @@
+{
+  "result": {
+    "actual_host_cost": null,
+    "actual_host_tokens": null,
+    "engineering_mvp_closed": false,
+    "external_api_calls": 0,
+    "fixed_denominator": 1,
+    "historical_seed_not_new_F6": true,
+    "labels_read": 0,
+    "new_Signal_apply": 0,
+    "pending": {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/exchange/inbox/f2d4e96545e9617ce846a919fffb2f8e1389fab2151a9d38650be416dd148ac2.json",
+      "inbox_sha256": "36ccbd143dc1ca5cb13a764fe46a654563d7d12e36d629cad736d0f6c7db2819",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/exchange/outbox/f2d4e96545e9617ce846a919fffb2f8e1389fab2151a9d38650be416dd148ac2.txt",
+      "request_hash": "f2d4e96545e9617ce846a919fffb2f8e1389fab2151a9d38650be416dd148ac2",
+      "stage": "research_controller_reflect"
+    },
+    "sample_id": "p01",
+    "status": "pending_independent_role"
+  },
+  "logical_requests_observed": 1,
+  "logical_reservation_observed": 53952,
+  "case_ceiling": 512000,
+  "per_request_ceiling": 131072,
+  "finalization_reserve": 64000,
+  "local_call_ceiling": 6,
+  "receipts": 0,
+  "raw_outboxes": 0,
+  "no_answer_authored_or_submitted": true
+}

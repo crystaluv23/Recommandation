@@ -1,0 +1,90 @@
+{
+  "overall_verdict": "FAIL_one_later_compliance_facet",
+  "fixed_denominator": 1,
+  "complete_semantic_passes": 0,
+  "mechanical_and_consumer_verdict": "PASS_exact_native_authorship_persistence_Predictor_sink_and_completed_restore",
+  "semantic_failure": {
+    "oracle_required": "covenant terms and compliance after the disclosed interim period",
+    "actual_residual": "By prediction time, what annual and subsequent disclosures established operating cash flow, capex, debt balances/maturities, covenant terms, tax cash obligations and prospective equity dilution beyond historical repurchases? Direct annual-report coverage remains unverified.",
+    "finding": "The residual and unanswered reason list preserve covenant terms, but omit later covenant-compliance inquiry. The quoted source establishes compliance only at June30 and during H1. The unsupported interval after that disclosure through the forecast cutoff must remain a question. Closure preserves the omission. Predictor correctly cautions June30 is not proof of September30 financing conditions, but that narrative does not restore the state need.",
+    "disposition": "Keep the original result, oracle and denominator; do not hot-edit, add a role or call this complete unknown-facet preservation."
+  },
+  "other_semantics": {
+    "new_adopted_facts": "The raw first Reflect adopts financing:v5 counter1 (H1 2025 repurchase4.7m ClassA shares/$28.7m excluding excise tax obligations) and counter3 (June30 revolver availability$50m and compliance at June30/duringH1). Periods, share/currency units, exclusion and source handles are preserved. Adopting2of4 available spans is legitimate; the other2 are not compulsory findings.",
+    "inference": "Historical repurchases/compliance are financing context only; no prospective net-dilution, self-funding capacity, directional catalyst or verified predictive effect is inferred. OCF domain_unavailable remains a domain-information limitation, not negative cash flow or a technical execution failure.",
+    "other_unknown_facets": "OCF/capex, debt balances and maturities, covenant terms, tax cash obligations, prospective equity dilution, direct annual-report coverage remain explicit. Only later covenant compliance is missing from the residual scope.",
+    "needs": "Prior needs0-3 survive in original occurrence order; need4 becomes one grounded partial row and one same-text residual, total5needs with no long/short surplus. The authored first answer is within300characters; native correction is not exercised.",
+    "closure": "Empty-owner mandatory finalization authors only decision=finalize. It neither closes needs nor adds dispositions; runtime finalized/max_signal_rounds remains separate from evidentiary completeness.",
+    "Predictor": "Actual first answer possible/2-3x/low is preserved with native-derived is_surge=true. Its conditional mechanism and competing demand/restructuring risks are explicit; oracle prescribed no class or accuracy outcome. No label or research-gain evaluation was performed."
+  },
+  "actual_consumers": {
+    "raw_to_accepted": "Pure data replay of all original operations exactly equals accepted state/row; closure only changes decision; Predictor raw fields are unchanged except native-derived is_surge. No correction request, no authored text discarded or replaced. Event absence was not used as no-salvage proof.",
+    "state_metadata_to_final": "Both per-stage state/prior hashes and disposition metadata remain in actual final state_evolution; unique need4 and all5needs reach finalcontext.",
+    "Predictor_wire_and_sink": "Actual Predictor request.final_context is exactly equal to reread final-context.json and durable prediction.json.final_context. Supporting finance evidence keeps exactversions and original spans/availability; finance neutral/success/partial and OCF unavailable/domain_unavailable remain distinct.",
+    "BasicInfo": "All17cards with exactprojection IDs/full visible text/time/order and2request visibility descriptors survive. Operating23available/16visible/7omitted and source+projection truncation; market1visible with source truncation/markers remain.17cards does not mean full sources read.",
+    "computed_inputs": "Five-session baseline6.494, threshold12.988, recent6.3; runtime180-trading-session card Jan10–Sep29 return_pct=-16.6667 unchanged."
+  },
+  "counts_and_freeze": {
+    "fresh_first_answers": 3,
+    "agent_ids": [
+      "/root/role_66",
+      "/root/role_67",
+      "/root/role_68"
+    ],
+    "fresh_corrections": 0,
+    "mirror_correction_branch": "not_exercised",
+    "logical_reservation": 180233,
+    "host_actual_tokens": null,
+    "host_actual_cost": null,
+    "6264_unique_frozen_bindings_current_SHA_equal": true,
+    "native_immutable_files_current_equal": 28,
+    "restore_all_files_before_after_current_equal": 32,
+    "request_inbox_raw_receipt_cache_each": 3,
+    "restore_new_dispatches": 0,
+    "historical_Signal_batch_only_seed_not_fresh_F6": true
+  },
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-probe.py",
+      "sha256": "364a4bf57de2c2f747f29a670063abda05fad04a0e6fe0cb600e5dbb3833b138"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-probe.log",
+      "sha256": "45870fcaa44cdcaf64513a6feb14427cea4f4d4af595107d9c283b482293e04c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-evidence.json",
+      "sha256": "45870fcaa44cdcaf64513a6feb14427cea4f4d4af595107d9c283b482293e04c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/completion.json",
+      "sha256": "5ca0b25907a5c11fb256d2df31484b93089f0429bb5624bc54616c47529974aa"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/reflect.json",
+      "sha256": "0458dfe57a14c8ef9c743b162edc32d0d17d3124c330d8a50012704f4f80befa"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/closure.json",
+      "sha256": "29f5506277d3605e684dbcebaca9621e8f32c45fcd5a4ab7ee9c082404b98e7c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/final-context.json",
+      "sha256": "37aa38fa859f0e86662b33e055b23a2c78647a081b88bb98b8c8526c03502a55"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/prediction.json",
+      "sha256": "986e8bbd8b29b067aac7355b4af1eb9216e768341906bbbd652fe28234be4a04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_driver_20261020_v1/completed-restore-summary.json",
+      "sha256": "c31d8b15d35b1c0f3eb06dc803640a9b389b1e611a71c460a431c24533c27d83"
+    }
+  ],
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/actual-stage-probe.py",
+  "review_execution": "Audit exit0; no new harness failure. Read-only SHA/files and pure JSON/presentation comparisons; no Store, prepare/resume, GET, LabelStore, Signalapply, parser or model call.",
+  "limits": [
+    "Mechanical acceptance and exact consumption do not repair the one predeclared semantic failure. Fixed denominator1 remains not fully passed.",
+    "No fresh typed mirror correction behavior was exercised; offline repair evidence is separate. No wholeF7/F6/F9/FastSlow/MVP closure or independent predictive benefit."
+  ]
+}
