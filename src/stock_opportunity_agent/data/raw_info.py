@@ -38,6 +38,40 @@ _FORBIDDEN_OUTCOME_FIELDS = frozenset(
 _ORACLE_METADATA_NAME = "oracle.json"
 _ORACLE_SCHEMA = "raw-info-oracle-v1"
 _APPEND_LOCK_NAME = ".raw-info-append.lock"
+_CAPTURE_PREFIX = "rawcap:v1:"
+_CAPTURE_FIELDS = {"document_id", "company_id", "source_type", "published_at",
+                   "available_at", "content", "content_hash", "metadata"}
+
+
+def _strict_capture_json(value: Any) -> str:
+    """Encode JSON without collapsing typed metadata or permitting NaN."""
+    def check(item):
+        if type(item) is dict:
+            if any(type(key) is not str for key in item):
+                raise ValidationError("capture JSON object keys must be strings")
+            for child in item.values():
+                check(child)
+        elif type(item) is list:
+            for child in item:
+                check(child)
+        elif item is not None and type(item) not in (str, bool, int, float):
+            raise ValidationError("capture metadata must use JSON types")
+    try:
+        encoded = json.dumps(value, sort_keys=True, separators=(",", ":"),
+                             ensure_ascii=False, allow_nan=False)
+        check(value)
+        return encoded
+    except (TypeError, ValueError, RecursionError) as exc:
+        raise ValidationError("capture record must be finite, strict JSON") from exc
+
+
+def capture_document_id(record: Mapping[str, Any]) -> str:
+    """Derive a capture ID from the complete typed record except its ID."""
+    if set(record) != _CAPTURE_FIELDS:
+        raise ValidationError("capture identity requires the complete Raw Info record")
+    payload = {key: value for key, value in record.items() if key != "document_id"}
+    return _CAPTURE_PREFIX + hashlib.sha256(_strict_capture_json(payload).encode("utf-8")).hexdigest()
+
 
 
 @dataclass(frozen=True)
@@ -134,6 +168,7 @@ class RawInfoDocument:
         except (TypeError, ValueError) as exc:
             raise ValidationError("raw info metadata must be JSON-serializable") from exc
         object.__setattr__(self, "metadata", dict(self.metadata))
+        self._validate_capture_identity()
 
     @classmethod
     def create(
@@ -160,6 +195,16 @@ class RawInfoDocument:
             metadata=dict(metadata or {}),
         )
 
+    def as_capture(self) -> "RawInfoDocument":
+        """Version this exact recorded capture without altering its facts or clocks."""
+        record = json.loads(_strict_capture_json(self.to_dict()))
+        record["document_id"] = capture_document_id(record)
+        return type(self).from_dict(record)
+
+    def _validate_capture_identity(self) -> None:
+        if self.document_id.startswith("rawcap:") and self.document_id != capture_document_id(self.to_dict()):
+            raise ValidationError("raw info capture identity differs from complete record")
+
     def to_dict(self) -> dict[str, Any]:
         """Return a JSON-compatible representation."""
 
@@ -178,6 +223,8 @@ class RawInfoDocument:
     def from_dict(cls, data: Mapping[str, Any]) -> "RawInfoDocument":
         """Restore a document from :meth:`to_dict` output."""
 
+        if str(data["document_id"]).startswith("rawcap:") and data["document_id"] != capture_document_id(data):
+            raise ValidationError("serialized capture identity differs from complete record")
         return cls(
             document_id=str(data["document_id"]),
             company_id=str(data["company_id"]),
@@ -219,6 +266,7 @@ class RawInfoStore:
         provides no update or delete operation.
         """
 
+        document._validate_capture_identity()
         if self.root is None:
             return self._append_in_memory(document)
 
@@ -270,6 +318,7 @@ class RawInfoStore:
             document = self._documents[document_id]
         except KeyError as exc:
             raise ValidationError(f"unknown raw info document: {document_id}") from exc
+        document._validate_capture_identity()
         if as_of is not None:
             _require_aware(as_of, "as_of")
             if document.available_at > as_of:
@@ -299,6 +348,8 @@ class RawInfoStore:
             and (allowed_types is None or document.source_type in allowed_types)
             and (query_lower is None or query_lower in document.content.casefold())
         ]
+        for document in selected:
+            document._validate_capture_identity()
         return sorted(
             selected,
             key=lambda document: (
@@ -312,7 +363,10 @@ class RawInfoStore:
     def documents(self) -> tuple[RawInfoDocument, ...]:
         """Return all immutable documents in deterministic id order."""
 
-        return tuple(self._documents[key] for key in sorted(self._documents))
+        documents = tuple(self._documents[key] for key in sorted(self._documents))
+        for document in documents:
+            document._validate_capture_identity()
+        return documents
 
     def snapshot(self) -> "RawInfoStore":
         """Return an isolated in-memory view of the documents seen so far."""
@@ -395,6 +449,12 @@ class RawInfoStore:
         *,
         idempotent_refetch: bool = False,
     ) -> bool:
+        if incoming.document_id.startswith("rawcap:") or existing.document_id.startswith("rawcap:"):
+            existing._validate_capture_identity()
+            incoming._validate_capture_identity()
+            if _strict_capture_json(existing.to_dict()) == _strict_capture_json(incoming.to_dict()):
+                return False
+            raise ValidationError("raw info capture replay differs from complete record")
         if existing == incoming:
             return False
         if (

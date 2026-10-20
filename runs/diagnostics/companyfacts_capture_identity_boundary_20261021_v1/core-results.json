@@ -1,0 +1,35 @@
+{
+  "verdict": "PASS_bounded_capture_core",
+  "mutation_resolver_comparison": [
+    {
+      "version": "reconstructed_pre_search_candidate",
+      "load_reject": true,
+      "search_reject": false,
+      "documents_reject": false,
+      "native_resolver_reject": false
+    },
+    {
+      "version": "current",
+      "load_reject": true,
+      "search_reject": true,
+      "documents_reject": true,
+      "native_resolver_reject": true
+    }
+  ],
+  "typed_variant_distinct_count": 12,
+  "strict_invalid_JSON_rejected": 5,
+  "forged_namespace_record_and_disk_load_rejected": true,
+  "recorded_replay_idempotent": true,
+  "legacy_same_content_refetch_unchanged": true,
+  "two_captures_one_deduplicated_fact": true,
+  "current_source": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+    "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+  },
+  "old_counterexample_source": {
+    "path": "/tmp/recommandation-capture-id-v1/candidate-before-search-guard-raw_info.py",
+    "sha256": "7db97b9be1a136adacf092762f8e287eaccf3f0f7eb074c130c25a5da056231f",
+    "provenance": "Owner reconstructed pre-search-guard intermediate by removing only two guards; not a contemporaneous byte capture."
+  },
+  "scope": "Only synthetic in-memory/temp records and real resolver; no global/actual append, network, models, LabelStore, prepare or old-stage resume."
+}

@@ -15,9 +15,10 @@ from dataclasses import replace
 from datetime import datetime
 from pathlib import Path
 from unittest import TestCase, SkipTest
+from unittest.mock import patch
 
 from stock_opportunity_agent.data.acquisition import SecCompanyFactsAdapter
-from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore, capture_document_id
 from stock_opportunity_agent.data.resolution import RawInfoRequest
 from stock_opportunity_agent.data.sources.core import DataSourceError
 from stock_opportunity_agent.signal_library import _sec_facts
@@ -86,8 +87,14 @@ class SecFinancialAvailabilityBoundaryTests(TestCase):
 
     def _acquire(self, as_of, *, body=None, company=COMPANY, cik="0001590364"):
         client = _OfflineClient(self.bodies["FTAI"] if body is None else body)
-        result = SecCompanyFactsAdapter(client).acquire(
-            REQUEST, company_id=company, identity={"cik": cik}, as_of=as_of)
+        class RecordedCaptureClock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                # Fixed test capture only; PIT/value/date expectations remain raw-row oracles.
+                return _instant("2026-10-20T00:00:00+00:00")
+        with patch("stock_opportunity_agent.data.acquisition.datetime", RecordedCaptureClock):
+            result = SecCompanyFactsAdapter(client).acquire(
+                REQUEST, company_id=company, identity={"cik": cik}, as_of=as_of)
         self.assertEqual(client.calls, [cik])
         return result.documents
 
@@ -171,7 +178,7 @@ class SecFinancialAvailabilityBoundaryTests(TestCase):
                              _instant("2025-07-31T00:00:00+00:00"))
             derived = [d for d in self._acquire(cutoff) if d.source_type != "sec_company_facts_raw_response"]
             self.assertTrue(derived)
-            self.assertTrue(all(d.document_id.startswith("secfacts:0001590364:") for d in derived))
+            self.assertTrue(all(d.document_id == capture_document_id(d.to_dict()) for d in derived))
             self.assertTrue(all(d.document_id != self.legacy.document_id for d in derived))
             for document in derived:
                 self.assertTrue(store.append(document))

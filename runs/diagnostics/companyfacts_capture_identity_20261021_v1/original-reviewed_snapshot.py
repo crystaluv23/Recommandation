@@ -1,0 +1,736 @@
+"""Proof-bound, read-only Raw Info snapshots for explicitly reviewed local scope."""
+from __future__ import annotations
+
+import hashlib
+import json
+import math
+import re
+from urllib.parse import quote, urljoin
+from html.parser import HTMLParser
+from datetime import date, datetime, time, timedelta, timezone
+from functools import wraps
+from pathlib import Path
+from typing import Any, Mapping
+
+from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore, content_sha256
+from stock_opportunity_agent.data.filing_orientation import filing_source_matches_form
+from stock_opportunity_agent.data.sec_company_facts import (
+    STANDARD_FORMS, STANDARD_TAXONOMIES, materialize_company_fact_documents,
+    validate_company_facts_response,
+)
+from stock_opportunity_agent.data.sources.core import DataSourceError, decode_response_text
+from stock_opportunity_agent.models import ValidationError
+
+
+_MANIFEST = "reviewed_snapshot.json"
+
+
+class ReviewedSourceRejected(RuntimeError):
+    """A source-boundary failure, never a research-negative observation."""
+
+
+def _source_boundary(function):
+    """Keep malformed/missing local proof failures on the source boundary."""
+    @wraps(function)
+    def checked(*args, **kwargs):
+        try:
+            return function(*args, **kwargs)
+        except (KeyError, IndexError, TypeError, ValueError, OverflowError, AttributeError, OSError, ValidationError, DataSourceError) as exc:
+            raise ReviewedSourceRejected(f"invalid reviewed source artifact: {exc}") from exc
+    return checked
+
+
+@_source_boundary
+def _read_bound_bytes(binding: Mapping[str, Any]) -> bytes:
+    path = Path(str(binding["path"]))
+    try:
+        raw = path.read_bytes()
+    except OSError as exc:
+        raise ReviewedSourceRejected(f"reviewed source artifact missing: {path}") from exc
+    if hashlib.sha256(raw).hexdigest() != binding["sha256"]:
+        raise ReviewedSourceRejected(f"reviewed source artifact changed: {path}")
+    return raw
+
+
+@_source_boundary
+def _read_bound(binding: Mapping[str, Any]) -> tuple[bytes, Any]:
+    raw = _read_bound_bytes(binding)
+    return raw, json.loads(raw)
+
+
+def _instant(value: Any) -> datetime:
+    try:
+        result = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        raise ReviewedSourceRejected("reviewed source time is invalid") from None
+    if result.tzinfo is None or result.utcoffset() is None:
+        raise ReviewedSourceRejected("reviewed source time must be aware")
+    return result
+
+
+def _verify_sec_document(document, row, proofs, cutoff):
+    if set(proofs) != {"sec_static_archive_body", "sec_submissions_acceptance"}:
+        raise ReviewedSourceRejected("admitted source requires retained SEC body and acceptance proof")
+    body_proof, body = proofs["sec_static_archive_body"]
+    acceptance, submissions = proofs["sec_submissions_acceptance"]
+    if not filing_source_matches_form(document.source_type, acceptance["form"]):
+        raise ReviewedSourceRejected("static SEC source type differs from proved filing form")
+    if (body.get("endpoint") != body_proof["endpoint"] or body.get("body") != document.content
+            or content_sha256(body["body"]) != body_proof["expected_content_hash"]):
+        raise ReviewedSourceRejected("static SEC body differs from admitted original")
+    source = submissions["body"]
+    if submissions.get("endpoint") != "https://data.sec.gov/submissions/CIK" + acceptance["issuer_cik"] + ".json":
+        raise ReviewedSourceRejected("SEC submissions endpoint differs from reviewed issuer")
+    recent = source["filings"]["recent"]
+    accession = acceptance["accession_number"]
+    matches = [i for i, value in enumerate(recent["accessionNumber"]) if value == accession]
+    if (str(source["cik"]).zfill(10) != acceptance["issuer_cik"] or len(matches) != 1
+            or document.company_id != "cik_" + acceptance["issuer_cik"]
+            or document.document_id != "sec:" + document.company_id + ":" + accession.replace("-", "")):
+        raise ReviewedSourceRejected("SEC issuer/accession identity differs")
+    index = matches[0]
+    accepted = _instant(recent["acceptanceDateTime"][index])
+    expected_endpoint = ("https://www.sec.gov/Archives/edgar/data/" + str(int(acceptance["issuer_cik"]))
+        + "/" + accession.replace("-", "") + "/" + acceptance["primary_document"])
+    expected_metadata = {"source_url": expected_endpoint, "accession_number": accession,
+        "form": acceptance["form"], "provider": "sec_edgar", "cik": acceptance["issuer_cik"]}
+    if any(key in document.metadata and document.metadata[key] != expected
+           for key, expected in expected_metadata.items()):
+        raise ReviewedSourceRejected("SEC source metadata differs from retained proof")
+    if (recent["form"][index] != acceptance["form"]
+            or recent["primaryDocument"][index] != acceptance["primary_document"]
+            or body_proof["endpoint"] != expected_endpoint
+            or accepted != _instant(acceptance["accepted_at"])
+            or accepted != _instant(row["reviewed_available_at"])
+            or document.available_at != accepted or document.published_at != accepted
+            or accepted > cutoff):
+        raise ReviewedSourceRejected("SEC availability/filing proof differs from original or scope")
+
+
+def _sec_response_text(proof, receipt, endpoint, raw_memo):
+    """Read an exact successful retained SEC GET without repackaging its bytes."""
+    requests = receipt["requests"]
+    if (not isinstance(requests, list) or any(not isinstance(item, Mapping) for item in requests)
+            or any(type(receipt.get(key)) is not int or receipt[key] != 0
+                   for key in ("automatic_retries", "redirects_followed"))):
+        raise ReviewedSourceRejected("SEC receipt retry/redirect/request shape differs")
+    matches = [item for item in requests if item.get("name") == proof["entry_name"]]
+    if len(matches) != 1 or sum(item.get("url") == endpoint for item in requests) != 1:
+        raise ReviewedSourceRejected("SEC receipt request identity is ambiguous")
+    request = matches[0]
+    if (proof["endpoint"] != endpoint or request.get("method") != "GET" or request.get("url") != endpoint
+            or request.get("response_url") != endpoint or request.get("status") != "http_response_retained"
+            or type(request.get("http_status")) is not int or request["http_status"] != 200
+            or _instant(request["started_at_utc"]) > _instant(request["retrieved_at_utc"])):
+        raise ReviewedSourceRejected("SEC retained response request/status/clock differs")
+    raw_binding = proof["raw_response"]
+    raw_path = Path(request["raw_response"])
+    if not raw_path.is_absolute():
+        raw_path = Path(proof["artifact"]["path"]).resolve().parent / raw_path
+    if (raw_path.resolve() != Path(raw_binding["path"]).resolve()
+            or request["raw_sha256"] != raw_binding["sha256"]):
+        raise ReviewedSourceRejected("SEC receipt raw response binding differs")
+    key = (str(raw_path.resolve()), raw_binding["sha256"])
+    if key not in raw_memo:
+        raw_memo[key] = _read_bound_bytes(raw_binding)
+    raw = raw_memo[key]
+    if type(request.get("bytes")) is not int or request["bytes"] != len(raw):
+        raise ReviewedSourceRejected("SEC receipt raw response byte count differs")
+    headers = request["response_headers"]
+    if not isinstance(headers, Mapping):
+        raise ReviewedSourceRejected("SEC receipt response headers are malformed")
+    encodings = [value for name, value in headers.items() if name.casefold() == "content-encoding"]
+    if len(encodings) > 1 or (encodings and not isinstance(encodings[0], str)):
+        raise ReviewedSourceRejected("SEC response content encoding is ambiguous")
+    try:
+        return decode_response_text(raw, encodings[0] if encodings else None)
+    except EOFError as exc:
+        raise ReviewedSourceRejected("SEC compressed response is truncated") from exc
+
+
+def _sec_json_payload(proof, artifact, endpoint, payload_memo, raw_memo):
+    """Decode one explicit managed or HTTP-response submissions carrier."""
+    key = (canonical_json_hash(proof), endpoint)
+    if key not in payload_memo:
+        if proof["kind"].endswith("_response"):
+            payload = json.loads(_sec_response_text(proof, artifact, endpoint, raw_memo))
+        else:
+            if (artifact.get("endpoint") != endpoint or artifact.get("source_key") != "sec_edgar"
+                    or artifact.get("capability") != "filing_documents" or artifact.get("payload_kind") != "json"
+                    or artifact.get("params") != [["method", "GET"]]):
+                raise ReviewedSourceRejected("SEC managed submissions request differs")
+            _instant(artifact["retrieved_at"])
+            payload = artifact["body"]
+        if not isinstance(payload, Mapping):
+            raise ReviewedSourceRejected("SEC submissions payload must be an object")
+        payload_memo[key] = payload
+    return payload_memo[key]
+
+
+def _sec_source_cik(value):
+    if type(value) is int and 0 < value < 10**10:
+        return str(value).zfill(10)
+    if isinstance(value, str) and re.fullmatch(r"[0-9]{1,10}", value.strip()) and int(value.strip()) > 0:
+        return value.strip().zfill(10)
+    raise ReviewedSourceRejected("SEC submissions CIK is malformed")
+
+
+class _SecExhibitLinks(HTMLParser):
+    """Retain literal links, row cells and explicit superscript provenance."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.links, self.rows, self.stack = [], [], []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "tr":
+            self.stack.append({"cells": [], "links": [], "cell": None})
+        if tag in {"td", "th"} and self.stack:
+            cell = {"text": [], "parts": [], "sup_depth": 0}
+            self.stack[-1]["cells"].append(cell)
+            self.stack[-1]["cell"] = cell
+        if tag == "sup" and self.stack and self.stack[-1]["cell"] is not None:
+            cell = self.stack[-1]["cell"]
+            if cell["sup_depth"] == 0:
+                cell["parts"].append({"sup": [], "closed": False})
+            cell["sup_depth"] += 1
+        if tag == "a":
+            for name, value in attrs:
+                if name == "href" and isinstance(value, str):
+                    self.links.append(value)
+                    if self.stack:
+                        self.stack[-1]["links"].append(value)
+
+    def handle_data(self, data):
+        if self.stack and self.stack[-1]["cell"] is not None:
+            cell = self.stack[-1]["cell"]
+            cell["text"].append(data)
+            if cell["sup_depth"]:
+                cell["parts"][-1]["sup"].append(data)
+            else:
+                cell["parts"].append(data)
+
+    def handle_endtag(self, tag):
+        if tag == "sup" and self.stack and self.stack[-1]["cell"] is not None:
+            cell = self.stack[-1]["cell"]
+            if cell["sup_depth"]:
+                cell["sup_depth"] -= 1
+                if cell["sup_depth"] == 0:
+                    cell["parts"][-1]["closed"] = True
+        elif tag == "tr" and self.stack:
+            self.rows.append(self.stack.pop())
+        elif tag in {"td", "th"} and self.stack:
+            self.stack[-1]["cell"] = None
+
+
+def _proved_sec_exhibit_code(parser, parent_endpoint, target_endpoint, claimed):
+    """Require an unambiguous index-number cell, never descriptive cross-references."""
+    proved = set()
+    for row in parser.rows:
+        links = {urljoin(parent_endpoint, link) for link in row["links"]}
+        if target_endpoint not in links:
+            continue
+        codes = []
+        for cell in row["cells"]:
+            superscripts = [part for part in cell["parts"] if isinstance(part, dict)]
+            if any(not part["closed"] or not re.fullmatch(r"(?:[0-9]+|\([0-9]+\))", "".join(part["sup"]).strip())
+                   for part in superscripts):
+                continue
+            # Superscripts may only follow a complete code. Keep positions
+            # structural rather than joining digits across an annotation.
+            split = next((i for i, part in enumerate(cell["parts"]) if isinstance(part, dict)), len(cell["parts"]))
+            if any(isinstance(part, str) and part.strip() for part in cell["parts"][split:]):
+                continue
+            text = "".join(cell["parts"][:split]).strip()
+            match = re.fullmatch(r"(?:Exhibit\s+)?([0-9]+(?:\.[0-9]+)?)", text, re.IGNORECASE)
+            if match:
+                codes.append(match.group(1))
+        if not codes:
+            continue
+        if len(links) != 1 or len(codes) != 1:
+            return False
+        proved.add(codes[0])
+    return proved == {claimed}
+
+
+def _verify_sec_response_document(document, row, proofs, cutoff, payload_memo, raw_memo, *, exhibit=False):
+    """Verify an explicit root/recent or truly root-linked SEC response chain."""
+    roots = set(proofs) & {"sec_submissions_root", "sec_submissions_root_response"}
+    archives = set(proofs) & {"sec_submissions_linked_archive", "sec_submissions_linked_archive_response"}
+    body_kinds = {"sec_static_archive_body_response"}
+    if exhibit:
+        body_kinds.add("sec_parent_primary_response")
+    if (len(roots) != 1 or len(archives) > 1 or set(proofs) != body_kinds | roots | archives):
+        raise ReviewedSourceRejected("SEC response profile proof kinds differ")
+    root_proof, root_artifact = proofs[next(iter(roots))]
+    cik = _sec_source_cik(root_proof["issuer_cik"])
+    if root_proof["issuer_cik"] != cik:
+        raise ReviewedSourceRejected("SEC proof issuer must be canonical")
+    root_endpoint = "https://data.sec.gov/submissions/CIK" + cik + ".json"
+    source = _sec_json_payload(root_proof, root_artifact, root_endpoint, payload_memo, raw_memo)
+    if _sec_source_cik(source.get("cik")) != cik:
+        raise ReviewedSourceRejected("SEC root issuer differs")
+    linked = None
+    if archives:
+        archive_proof, artifact = proofs[next(iter(archives))]
+        filename = archive_proof["filename"]
+        if not isinstance(filename, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*\.json", filename):
+            raise ReviewedSourceRejected("SEC linked archive filename is unsafe")
+        files = source["filings"]["files"]
+        if not isinstance(files, list) or any(not isinstance(item, Mapping) for item in files):
+            raise ReviewedSourceRejected("SEC root history links are malformed")
+        links = [item for item in files if item.get("name") == filename]
+        if len(links) != 1:
+            raise ReviewedSourceRejected("SEC archive requires a unique root link")
+        linked = links[0]
+        arrays = _sec_json_payload(archive_proof, artifact,
+            "https://data.sec.gov/submissions/" + filename, payload_memo, raw_memo)
+    else:
+        arrays = source["filings"]["recent"]
+    required = ("accessionNumber", "filingDate", "form", "primaryDocument", "acceptanceDateTime")
+    if not isinstance(arrays, Mapping) or any(not isinstance(arrays.get(key), list) for key in required):
+        raise ReviewedSourceRejected("SEC target filing arrays are malformed")
+    count = len(arrays["accessionNumber"])
+    if any(not isinstance(values, list) or len(values) != count for values in arrays.values()):
+        raise ReviewedSourceRejected("SEC parallel filing arrays have inconsistent lengths")
+    accession = root_proof["accession_number"]
+    if not isinstance(accession, str) or not re.fullmatch(r"[0-9]{10}-[0-9]{2}-[0-9]{6}", accession):
+        raise ReviewedSourceRejected("SEC target accession is malformed")
+    matches = [i for i, value in enumerate(arrays["accessionNumber"]) if value == accession]
+    if len(matches) != 1:
+        raise ReviewedSourceRejected("SEC exact target is missing or ambiguous")
+    index = matches[0]
+    if any(not isinstance(arrays[key][index], str) or not arrays[key][index] for key in required):
+        raise ReviewedSourceRejected("SEC target filing fields are malformed")
+    filed = date.fromisoformat(arrays["filingDate"][index])
+    primary, form = arrays["primaryDocument"][index], arrays["form"][index]
+    if not filing_source_matches_form(document.source_type, form):
+        raise ReviewedSourceRejected("SEC response source type differs from proved filing form")
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", primary):
+        raise ReviewedSourceRejected("SEC primary document filename is unsafe")
+    if linked is not None:
+        lower, upper = date.fromisoformat(linked["filingFrom"]), date.fromisoformat(linked["filingTo"])
+        if (type(linked.get("filingCount")) is not int or linked["filingCount"] != count
+                or not lower <= filed <= upper):
+            raise ReviewedSourceRejected("SEC linked count or target date window differs")
+    accepted = _instant(arrays["acceptanceDateTime"][index]).astimezone(timezone.utc)
+    endpoint = "https://www.sec.gov/Archives/edgar/data/" + str(int(cik)) + "/" + accession.replace("-", "") + "/" + primary
+    body_proof, receipt = proofs["sec_static_archive_body_response"]
+    role = "incorporated_exhibit" if exhibit else "primary"
+    if body_proof.get("document_role") != role:
+        raise ReviewedSourceRejected("SEC response document role differs")
+    document_id = "sec:cik_" + cik + ":" + accession.replace("-", "")
+    metadata = {"source_url": endpoint, "accession_number": accession,
+        "form": form, "provider": "sec_edgar", "cik": cik}
+    if exhibit:
+        parent_proof, parent_receipt = proofs["sec_parent_primary_response"]
+        parent = _sec_response_text(parent_proof, parent_receipt, endpoint, raw_memo)
+        if (parent_proof.get("document_role") != "primary"
+                or content_sha256(parent) != parent_proof["expected_content_hash"]):
+            raise ReviewedSourceRejected("SEC exhibit parent response differs")
+        filename = body_proof["exhibit_document"]
+        if (not isinstance(filename, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", filename)
+                or filename == primary):
+            raise ReviewedSourceRejected("SEC exhibit filename is unsafe or equals primary")
+        parser = _SecExhibitLinks()
+        parser.feed(parent)
+        exhibit_endpoint = endpoint.rsplit("/", 1)[0] + "/" + filename
+        if not any(urljoin(endpoint, link) == exhibit_endpoint for link in parser.links):
+            raise ReviewedSourceRejected("SEC exhibit is not linked by the proved parent")
+        exhibit_type = body_proof["exhibit_type"]
+        if exhibit_type is not None:
+            if (not isinstance(exhibit_type, str) or not re.fullmatch(r"[0-9]+(?:\.[0-9]+)?", exhibit_type)
+                    or not _proved_sec_exhibit_code(parser, endpoint, exhibit_endpoint, exhibit_type)):
+                raise ReviewedSourceRejected("SEC exhibit type is not proved by its parent index row")
+        endpoint = exhibit_endpoint
+        document_id = "sec-exhibit:cik_" + cik + ":" + accession.replace("-", "") + ":" + filename
+        metadata.update(source_url=endpoint, parent_form=form, parent_primary_document=primary,
+            exhibit_document=filename, document_role=role, exhibit_type=exhibit_type)
+    content = _sec_response_text(body_proof, receipt, endpoint, raw_memo)
+    expected = RawInfoDocument.create(document_id=document_id,
+        company_id="cik_" + cik, source_type=document.source_type, published_at=accepted, available_at=accepted,
+        content=content, metadata=metadata)
+    if (form != root_proof["form"] or primary != root_proof["primary_document"]
+            or filed.isoformat() != root_proof["filing_date"] or accepted != _instant(root_proof["accepted_at"])
+            or accepted != _instant(row["reviewed_available_at"]) or accepted > cutoff
+            or content_sha256(content) != body_proof["expected_content_hash"]
+            or canonical_json_hash(expected.to_dict()) != canonical_json_hash(document.to_dict())):
+        raise ReviewedSourceRejected("SEC response target/body/original availability differs")
+
+
+def _market_response(proof, endpoint, expected_query, *, not_before=None):
+    """Match retained response bytes to the exact sanitized successful request."""
+    raw, body = _read_bound(proof["artifact"])
+    _bytes, records = _read_bound(proof["request_record"])
+    matches = [item for item in records if item["name"] == proof["entry_name"]]
+    if len(matches) != 1:
+        raise ReviewedSourceRejected("market proof request identity is ambiguous")
+    request = matches[0]
+    expected_path = Path(proof["request_record"]["path"]).resolve().parent / request["raw_response"]
+    if (request["endpoint"] != endpoint or request["query"] != expected_query
+            or request["http_status"] != 200 or request["provider_status"] != "OK"
+            or request["next_page_present"] is not False
+            or expected_path.resolve() != Path(proof["artifact"]["path"]).resolve()
+            or request["sha256"] != hashlib.sha256(raw).hexdigest()):
+        raise ReviewedSourceRejected("market proof response differs from retained request")
+    _complete_market_body(body)
+    retrieved_at = _instant(request["retrieved_at"])
+    if not_before is not None and retrieved_at < not_before:
+        raise ReviewedSourceRejected("market proof was retrieved before its covered interval ended")
+    return body
+
+
+def _complete_market_body(body):
+    if (not isinstance(body, dict) or body.get("status") != "OK" or "error" in body
+            or any(key in body and body[key] is not None for key in ("next_url", "next_page", "next_page_token"))):
+        raise ReviewedSourceRejected("market proof requires a successful complete page")
+
+
+def _daily_market_rows(body, symbol, adjusted, start, end):
+    """Check bounded daily shape before calling the production numeric parser."""
+    _complete_market_body(body)
+    rows = body.get("results")
+    if body.get("ticker") != symbol or body.get("adjusted") is not adjusted or not isinstance(rows, list) or not rows:
+        raise ReviewedSourceRejected("market aggregate identity/basis/rows differ")
+    for key in ("count", "resultsCount"):
+        if key in body and (type(body[key]) is not int or body[key] != len(rows)):
+            raise ReviewedSourceRejected("market aggregate row count differs")
+    days = []
+    for row in rows:
+        if not isinstance(row, dict):
+            raise ReviewedSourceRejected("market aggregate row must be an object")
+        if type(row["t"]) is not int:
+            raise ReviewedSourceRejected("market observation timestamp must be integer milliseconds")
+        day = datetime.fromtimestamp(row["t"] / 1000, timezone.utc).date()
+        if not start <= day <= end:
+            raise ReviewedSourceRejected("market aggregate observation exceeds request window")
+        if any(isinstance(row[key], bool) or not math.isfinite(float(row[key])) or float(row[key]) < 0 for key in ("o", "h", "l", "c", "v")):
+            raise ReviewedSourceRejected("market aggregate contains invalid numeric values")
+        days.append(day)
+    if days != sorted(set(days)):
+        raise ReviewedSourceRejected("market aggregate dates repeat or are unordered")
+    return rows, days
+
+
+def _verify_market_document(document, row, proofs, cutoff):
+    """Verify one original daily aggregate using retained local provider proofs."""
+    from stock_opportunity_agent.data.acquisition import HistoricalPriceAdapter
+    from stock_opportunity_agent.data.resolution import RawInfoRequest
+    from stock_opportunity_agent.data.sources.core import DataSourceError
+    from stock_opportunity_agent.data.sources.massive import _price_bar_from_result
+
+    required = {"massive_daily_origin", "massive_historical_issuer", "massive_no_post_cutoff_splits"}
+    if not required <= set(proofs) or set(proofs) - required - {"massive_unadjusted_overlap"}:
+        raise ReviewedSourceRejected("market source requires origin, issuer and split-basis proofs")
+    if document.source_type != "market_data" or document.metadata.get("provider") != "massive":
+        raise ReviewedSourceRejected("market proof requires Massive market_data source")
+    origin, cache = proofs["massive_daily_origin"]
+    symbol = document.metadata["symbol"]
+    start, end = date.fromisoformat(document.metadata["start"]), date.fromisoformat(document.metadata["end"])
+    if start > end or end >= cutoff.astimezone(timezone.utc).date() or not isinstance(symbol, str) or not symbol or symbol != symbol.upper():
+        raise ReviewedSourceRejected("market source symbol/window is invalid")
+    endpoint = f"https://api.massive.com/v2/aggs/ticker/{quote(symbol, safe='')}/range/1/day/{start.isoformat()}/{end.isoformat()}"
+    params = cache.get("params")
+    if (cache.get("endpoint") != endpoint or cache.get("source_key") != "massive"
+            or cache.get("capability") != "price_daily" or cache.get("payload_kind") != "json"
+            or not isinstance(params, list) or any(not isinstance(p, list) or len(p) != 2 for p in params)
+            or len({p[0] for p in params}) != len(params)
+            or dict(params) != {"method": "GET", "adjusted": "true", "limit": "50000", "sort": "asc"}):
+        raise ReviewedSourceRejected("market origin endpoint or sanitized parameters differ")
+    cached_at = _instant(cache["retrieved_at"])
+    normalized_at = _instant(origin["normalization_retrieved_at"])
+    if cached_at != _instant(origin["provider_retrieved_at"]) or normalized_at < cached_at:
+        raise ReviewedSourceRejected("market cache/normalization clocks differ")
+    canonical_bars = json.loads(document.content)
+    if (not isinstance(canonical_bars, list) or not canonical_bars
+            or any(_instant(bar["retrieved_at"]) != normalized_at for bar in canonical_bars)):
+        raise ReviewedSourceRejected("market canonical bars require one bound normalization clock")
+    raw_rows, days = _daily_market_rows(cache["body"], symbol, True, start, end)
+    if days[-1] >= cutoff.astimezone(timezone.utc).date() or document.available_at > cutoff:
+        raise ReviewedSourceRejected("market observations exceed prediction cutoff")
+    if document.available_at != _instant(row["reviewed_available_at"]):
+        raise ReviewedSourceRejected("market reviewed availability differs from original")
+    source_as_of = datetime.combine(end + timedelta(days=1), time.min, tzinfo=timezone.utc)
+    try:
+        bars = [_price_bar_from_result(symbol, item, normalized_at.astimezone(timezone.utc), adjusted=True) for item in raw_rows]
+        adapter = HistoricalPriceAdapter("massive", lambda _symbol, _start, _end: bars)
+        reconstructed = adapter.acquire(RawInfoRequest("reviewed_market_origin", "Reconstruct retained daily provider input.",
+            (document.source_type,), lookback_days=(source_as_of.date() - start).days, max_documents=1),
+            company_id=document.company_id, identity={"ticker": symbol}, as_of=source_as_of).documents
+    except DataSourceError as exc:
+        raise ReviewedSourceRejected(f"market production normalization rejected: {exc}") from exc
+    if len(reconstructed) != 1 or reconstructed[0].to_dict() != document.to_dict():
+        raise ReviewedSourceRejected("market complete production reconstruction differs from original")
+
+    issuer_proof, _issuer_body = proofs["massive_historical_issuer"]
+    issuer = _market_response(issuer_proof, f"https://api.massive.com/v3/reference/tickers/{quote(symbol, safe='')}",
+        {"date": days[-1].isoformat()})["results"]
+    expected_identity = issuer_proof["expected_identity"]
+    keys = {"ticker", "cik", "market", "locale", "primary_exchange", "type", "currency_name"}
+    if (set(expected_identity) != keys or any(issuer.get(k) != expected_identity[k] for k in keys)
+            or issuer.get("ticker") != symbol or not str(issuer.get("cik", "")).isdigit()
+            or document.company_id != "cik_" + str(issuer["cik"]).zfill(10)
+            or issuer.get("market") != "stocks" or issuer.get("locale") != "us"
+            or issuer.get("type") != "CS" or issuer.get("currency_name") != "usd"
+            or not issuer.get("primary_exchange")):
+        raise ReviewedSourceRejected("historical market issuer identity differs")
+
+    split_proof, _split_body = proofs["massive_no_post_cutoff_splits"]
+    _data, request_records = _read_bound(split_proof["request_record"])
+    split_requests = [r for r in request_records if r["name"] == split_proof["entry_name"]]
+    if len(split_requests) != 1:
+        raise ReviewedSourceRejected("split proof request identity is ambiguous")
+    query = split_requests[0]["query"]
+    expected_keys = {"ticker", "execution_date.gte", "execution_date.lte", "sort", "limit"}
+    if (not isinstance(query, dict) or set(query) != expected_keys
+            or query["ticker"] != symbol or query["sort"] != "execution_date.asc"):
+        raise ReviewedSourceRejected("split proof requires exact all-type request identity")
+    limit = query["limit"]
+    if not isinstance(limit, str) or not limit.isdigit() or int(limit) <= 0:
+        raise ReviewedSourceRejected("split proof query limit is invalid")
+    begin = date.fromisoformat(query["execution_date.gte"])
+    end_day = date.fromisoformat(query["execution_date.lte"])
+    required_begin = document.available_at.astimezone(timezone.utc).date()
+    required_end = max(cached_at, normalized_at).astimezone(timezone.utc).date()
+    if (begin.isoformat() != query["execution_date.gte"] or end_day.isoformat() != query["execution_date.lte"]
+            or begin > required_begin or end_day < required_end or required_end < required_begin):
+        raise ReviewedSourceRejected("split proof does not cover earliest allowed consumer through original fetch")
+    splits = _market_response(split_proof, "https://api.massive.com/stocks/v1/splits", query,
+        not_before=max(cached_at, normalized_at))
+    if splits.get("results") != []:
+        raise ReviewedSourceRejected("this market profile requires an empty complete post-cutoff split ledger")
+
+    if "massive_unadjusted_overlap" in proofs:
+        extra_proof, _extra = proofs["massive_unadjusted_overlap"]
+        extra = _market_response(extra_proof, endpoint, {"adjusted": "false", "sort": "asc", "limit": "50000"})
+        extra_rows, extra_days = _daily_market_rows(extra, symbol, False, start, end)
+        original_by_day = dict(zip(days, raw_rows, strict=True))
+        overlap = [(day, item) for day, item in zip(extra_days, extra_rows, strict=True) if day in original_by_day]
+        if not overlap or any(float(item[key]) != float(original_by_day[day][key])
+                for day, item in overlap for key in ("o", "h", "l", "c", "v")):
+            raise ReviewedSourceRejected("market unadjusted overlap differs from original basis")
+
+
+def _verify_companyfacts_document(document, row, proofs, cutoff, memo):
+    """Rebuild a complete bound accession group once within one review call."""
+    required = {"sec_companyfacts_cache", "sec_companyfacts_raw_response", "sec_companyfacts_normalization"}
+    if set(proofs) != required:
+        raise ReviewedSourceRejected("Company Facts requires cache, raw response and normalization proofs")
+    key = tuple((kind, str(Path(proofs[kind][0]["artifact"]["path"]).resolve()),
+                 proofs[kind][0]["artifact"]["sha256"]) for kind in sorted(required))
+    if key not in memo:
+        cache_proof, cache = proofs["sec_companyfacts_cache"]
+        raw_proof, raw_record = proofs["sec_companyfacts_raw_response"]
+        _normalization_proof, normalization = proofs["sec_companyfacts_normalization"]
+        if (normalization["schema_version"] != "sec-companyfacts-normalization-v1"
+                or normalization["normalizer_profile"] != "sec_companyfacts_filed_next_utc_day_v1"
+                or normalization["source_cache"] != cache_proof["artifact"]
+                or normalization["raw_response"] != raw_proof["artifact"]):
+            raise ReviewedSourceRejected("Company Facts normalization source identity differs")
+        item, selection, provenance = (normalization[name] for name in ("item", "selection", "provenance"))
+        cik = item["cik"]
+        endpoint = "https://data.sec.gov/api/xbrl/companyfacts/CIK" + cik + ".json"
+        validate_company_facts_response(cache["body"], cik)
+        if (len(cik) != 10 or not cik.isascii() or not cik.isdigit()
+                or item["company_id"] != "cik_" + cik or item["source_url"] != endpoint
+                or cache.get("endpoint") != endpoint or cache.get("source_key") != "sec_edgar"
+                or cache.get("capability") != "financial_statements" or cache.get("payload_kind") != "json"
+                or cache.get("params") != [["method", "GET"]]):
+            raise ReviewedSourceRejected("Company Facts managed cache request differs")
+        raw = RawInfoDocument.from_dict(raw_record)
+        raw_content = json.dumps(cache["body"], sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        raw_id = "sec_edgar:" + item["company_id"] + ":sec_company_facts_raw_response:" + content_sha256(raw_content)[:24]
+        if (raw.source_type != "sec_company_facts_raw_response" or raw.document_id != raw_id
+                or raw.company_id != item["company_id"] or raw.content != raw_content
+                or raw.metadata.get("provider") != "sec_edgar" or raw.metadata.get("cik") != cik):
+            raise ReviewedSourceRejected("Company Facts retained raw response differs")
+        cached_at, normalized_at = _instant(cache["retrieved_at"]), _instant(normalization["normalized_at"])
+        if raw.available_at != raw.published_at or not cached_at <= raw.available_at <= normalized_at:
+            raise ReviewedSourceRejected("Company Facts cache/normalization clocks differ")
+        selected_at = _instant(selection["available_at_through"])
+        if (selection["period_end_from"] != date.min.isoformat()
+                or selection["period_end_through"] != selected_at.astimezone(timezone.utc).date().isoformat()
+                or selected_at > cutoff
+                or selection["taxonomy_allowlist"] != list(STANDARD_TAXONOMIES)
+                or selection["form_allowlist"] != list(STANDARD_FORMS)):
+            raise ReviewedSourceRejected("Company Facts selection differs from supported acquisition scope")
+        policy_hash = canonical_json_hash({"schema_version": "sec-company-facts-acquisition-v1", "selection": selection})
+        if provenance != {"acquisition_policy_hash": policy_hash, "acquisition_selection": selection}:
+            raise ReviewedSourceRejected("Company Facts acquisition provenance differs")
+        products, _stats = materialize_company_fact_documents(cache["body"], item=item,
+            selection=selection, provenance=provenance, retrieved_at=normalized_at)
+        expected = normalization["expected_products"]
+        expected_by_id = {entry["document_id"]: entry for entry in expected}
+        reconstructed = {product.document_id: {"document_id": product.document_id,
+            "content_hash": product.content_hash, "canonical_record_hash": canonical_json_hash(product.to_dict())}
+            for product in products}
+        if len(expected_by_id) != len(expected) or expected_by_id != reconstructed:
+            raise ReviewedSourceRejected("Company Facts complete normalized product set differs")
+        memo[key] = {product.document_id: product for product in products}
+    if (document.source_type != "sec_company_facts" or document.document_id not in memo[key]
+            or canonical_json_hash(document.to_dict()) != canonical_json_hash(memo[key][document.document_id].to_dict())
+            or document.available_at != _instant(row["reviewed_available_at"])
+            or document.available_at > cutoff):
+        raise ReviewedSourceRejected("Company Facts admitted original differs from complete reconstruction")
+
+
+@_source_boundary
+def _verified_review(binding: Mapping[str, Any]) -> tuple[dict, list[RawInfoDocument]]:
+    decoded, companyfacts, sec_payloads, sec_raw = {}, {}, {}, {}
+
+    def read_bound(artifact):
+        key = (str(Path(artifact["path"]).resolve()), artifact["sha256"])
+        if key not in decoded:
+            decoded[key] = _read_bound(artifact)
+        return decoded[key]
+
+    _raw, review = read_bound(binding)
+    if review.get("schema_version") != "reviewed-raw-info-snapshot-v1":
+        raise ReviewedSourceRejected("unsupported reviewed source manifest")
+    unhashed = {key: value for key, value in review.items() if key != "manifest_hash"}
+    if canonical_json_hash(unhashed) != review.get("manifest_hash"):
+        raise ReviewedSourceRejected("reviewed source manifest identity differs")
+    scope = review["scope"]
+    if scope.get("acquisition_allowed") is not False:
+        raise ReviewedSourceRejected("this reviewed snapshot forbids acquisition")
+    cutoff = _instant(scope["as_of"])
+    read_bound(review["oracle_identity"])
+    oracle_root = Path(review["oracle_identity"]["path"]).resolve().parent
+    documents, seen = [], set()
+    for row in review["records"]:
+        if row["document_id"] in seen:
+            raise ReviewedSourceRejected("duplicate reviewed document")
+        seen.add(row["document_id"])
+        if not Path(row["original_record"]["path"]).resolve().is_relative_to(oracle_root):
+            raise ReviewedSourceRejected("original record is outside the declared oracle root")
+        _record_bytes, record = read_bound(row["original_record"])
+        document = RawInfoDocument.from_dict(record)
+        if (document.document_id != row["document_id"] or document.company_id != row["company_id"]
+                or document.content_hash != row["content_hash"] or document.company_id not in scope["company_ids"]):
+            raise ReviewedSourceRejected("reviewed document identity/scope differs")
+        kinds = [item["kind"] for item in row["proofs"]]
+        if len(kinds) != len(set(kinds)):
+            raise ReviewedSourceRejected("duplicate reviewed proof kind")
+        proofs = {item["kind"]: (item, read_bound(item["artifact"])[1]) for item in row["proofs"]}
+        if row["verdict"] in {"unknown", "excluded"}:
+            continue
+        if row["verdict"] != "admitted":
+            raise ReviewedSourceRejected("unknown reviewed disposition")
+        profile = row.get("proof_profile", "sec_archive_acceptance_v1")
+        if profile == "sec_archive_acceptance_v1":
+            _verify_sec_document(document, row, proofs, cutoff)
+        elif profile == "massive_daily_no_post_cutoff_split_v1":
+            _verify_market_document(document, row, proofs, cutoff)
+        elif profile == "sec_companyfacts_filed_next_utc_day_v1":
+            _verify_companyfacts_document(document, row, proofs, cutoff, companyfacts)
+        elif profile == "sec_filing_response_acceptance_v1":
+            _verify_sec_response_document(document, row, proofs, cutoff, sec_payloads, sec_raw)
+        elif profile == "sec_filing_exhibit_response_v1":
+            _verify_sec_response_document(document, row, proofs, cutoff, sec_payloads, sec_raw, exhibit=True)
+        else:
+            raise ReviewedSourceRejected("unsupported reviewed proof profile")
+        documents.append(document)
+    return review, documents
+
+
+@_source_boundary
+def materialize_reviewed_snapshot(review_path: str | Path, root: str | Path) -> dict:
+    """Verify retained review proofs and materialize a new isolated input view."""
+    root = Path(root).resolve()
+    if root.exists():
+        raise ReviewedSourceRejected("reviewed snapshot destination must be new")
+    review_path = Path(review_path).resolve()
+    review_binding = {"path": str(review_path), "sha256": hashlib.sha256(review_path.read_bytes()).hexdigest()}
+    review, documents = _verified_review(review_binding)
+    oracle_root = Path(review["oracle_identity"]["path"]).resolve().parent
+    if root.is_relative_to(oracle_root):
+        raise ReviewedSourceRejected("reviewed snapshot must be outside the original oracle root")
+    root.mkdir(parents=True)
+    rows = []
+    for index, document in enumerate(documents):
+        path = root / "documents" / f"{index:04d}.json"
+        atomic_write_json(path, document.to_dict())
+        rows.append({"document_id": document.document_id, "path": str(path.relative_to(root)),
+                     "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+    oracle_raw, _oracle = _read_bound(review["oracle_identity"])
+    (root / "oracle.json").write_bytes(oracle_raw)
+    manifest = {"schema_version": "materialized-reviewed-raw-info-v1", "root": str(root),
+                "source_review": review_binding, "scope": review["scope"], "documents": rows,
+                "oracle_sha256": hashlib.sha256(oracle_raw).hexdigest()}
+    atomic_write_json(root / _MANIFEST, manifest)
+    return {"store_type": "reviewed", "root": str(root),
+            "manifest_sha256": hashlib.sha256((root / _MANIFEST).read_bytes()).hexdigest()}
+
+
+class ReviewedRawInfoStore(RawInfoStore):
+    """RawInfoStore-compatible view that never widens beyond an explicit binding."""
+
+    acquisition_allowed = False
+
+    def __init__(self, binding: Mapping[str, Any]) -> None:
+        if binding.get("store_type") != "reviewed":
+            raise ReviewedSourceRejected("reviewed store type is required")
+        if not all(isinstance(binding.get(key), str) and binding[key] for key in ("root", "manifest_sha256")):
+            raise ReviewedSourceRejected("reviewed root and manifest hash are required")
+        self.binding = dict(binding)
+        super().__init__()
+        self.root = Path(str(binding["root"])).resolve()
+        self.refresh()
+
+    def append(self, document: RawInfoDocument) -> bool:
+        """Allow only an exact admitted replay, without writing anything."""
+        self.refresh()
+        existing = self._documents.get(document.document_id)
+        if existing is None or canonical_json_hash(existing.to_dict()) != canonical_json_hash(document.to_dict()):
+            raise ReviewedSourceRejected("document is outside the immutable reviewed input set")
+        return False
+
+    @_source_boundary
+    def refresh(self) -> int:
+        """Reverify the exact manifest, all original proofs and admitted files."""
+        if self.root is None:
+            return 0
+        _raw, manifest = _read_bound({"path": str(self.root / _MANIFEST), "sha256": self.binding["manifest_sha256"]})
+        if manifest.get("schema_version") != "materialized-reviewed-raw-info-v1" or manifest["root"] != str(self.root):
+            raise ReviewedSourceRejected("reviewed snapshot root/type differs")
+        review, documents = _verified_review(manifest["source_review"])
+        if manifest["scope"] != review["scope"]:
+            raise ReviewedSourceRejected("reviewed snapshot scope differs")
+        _read_bound({"path": str(self.root / "oracle.json"), "sha256": manifest["oracle_sha256"]})
+        expected = {self.root / _MANIFEST, self.root / "oracle.json"}
+        loaded = {}
+        by_id = {document.document_id: document for document in documents}
+        for row in manifest["documents"]:
+            path = self.root / row["path"]
+            if not path.resolve().is_relative_to(self.root) or path in expected:
+                raise ReviewedSourceRejected("reviewed document path escapes or repeats")
+            expected.add(path)
+            _raw, value = _read_bound({"path": str(path), "sha256": row["sha256"]})
+            document = RawInfoDocument.from_dict(value)
+            original = by_id.get(document.document_id)
+            if (document.document_id in loaded or document.document_id != row["document_id"]
+                    or original is None or canonical_json_hash(document.to_dict()) != canonical_json_hash(original.to_dict())):
+                raise ReviewedSourceRejected("materialized document differs from admitted original")
+            loaded[document.document_id] = document
+        if set(loaded) != set(by_id) or set(self.root.rglob("*.json")) != expected:
+            raise ReviewedSourceRejected("reviewed snapshot document membership differs")
+        added = len(set(loaded) - set(self._documents))
+        self._documents = loaded
+        return added
+
+    def snapshot(self) -> "ReviewedRawInfoStore":
+        """Retain read-only review qualification in an isolated worker view."""
+        return ReviewedRawInfoStore(self.binding)
+
+
+def open_raw_info_store(root: str | Path, *, reviewed_snapshot: Mapping[str, Any] | None = None) -> RawInfoStore:
+    """Open an explicitly frozen reviewed view or a legacy ordinary oracle."""
+    root = Path(root).resolve()
+    if reviewed_snapshot is not None:
+        if str(root) != reviewed_snapshot.get("root"):
+            raise ReviewedSourceRejected("frozen reviewed root differs from requested source root")
+        return ReviewedRawInfoStore(reviewed_snapshot)
+    if (root / _MANIFEST).exists():
+        raise ReviewedSourceRejected("reviewed source requires an explicit frozen binding")
+    return RawInfoStore(root)

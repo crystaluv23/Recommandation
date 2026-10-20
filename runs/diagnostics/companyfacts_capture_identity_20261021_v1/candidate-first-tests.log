@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/tmp/recommandation-capture-id-v1/run-safe.py", line 26, in <module>
+    stack.enter_context(patch.object(minimal, '_prepare_workspace', blocked('fullprepare')))
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py", line 526, in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'run_minimal_rounds' from '/Users/l/Project/Recommandation/scripts/run_minimal_rounds.py'> does not have the attribute '_prepare_workspace'

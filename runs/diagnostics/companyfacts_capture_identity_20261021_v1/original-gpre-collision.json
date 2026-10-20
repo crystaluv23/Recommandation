@@ -1,0 +1,70 @@
+{
+  "evidence": "offline original collision, temporary store only; not source admission",
+  "rows": [
+    {
+      "document_id": "secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79",
+      "old": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79.json",
+        "sha256": "959d933f40ae6fd5f0a5e227263923ac6a7f23c34e31a95f92986ec273e66fcb"
+      },
+      "candidate": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-24-000092:aa05ed7e72b76d79.json",
+        "sha256": "88dcb0c51ac4d2c74bb20874678396d9f06f1300906284b3bd3f7a0e28622011"
+      },
+      "content_equal": true,
+      "public_clocks_equal": true,
+      "metadata_equal": false,
+      "candidate_append_result": false,
+      "persisted_complete_record_is_old": true
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268",
+      "old": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268.json",
+        "sha256": "bf933c3448c23792e6eec867ea946de401839d70d374ae2c742ece195524865c"
+      },
+      "candidate": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-24-000114:b0c4c525055d1268.json",
+        "sha256": "52258727ab2e2b7a0701dc0f160b609fae21bba0b434537e5d8eef92bb6a8940"
+      },
+      "content_equal": true,
+      "public_clocks_equal": true,
+      "metadata_equal": false,
+      "candidate_append_result": false,
+      "persisted_complete_record_is_old": true
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03",
+      "old": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03.json",
+        "sha256": "e45cd385e61a5c0f8057dda6e8fa16058357a7b30924a7f653a359aff10acace"
+      },
+      "candidate": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-24-000129:cedad9eff3b39e03.json",
+        "sha256": "04439ceea8deb80e326b24608aefdc36e6f78cbea831147f4017b0eec1c17acc"
+      },
+      "content_equal": true,
+      "public_clocks_equal": true,
+      "metadata_equal": false,
+      "candidate_append_result": false,
+      "persisted_complete_record_is_old": true
+    },
+    {
+      "document_id": "secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47",
+      "old": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0001309402/secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47.json",
+        "sha256": "f7511fb374afaf01a49ce89726d3a66a73080862c364406f55d5ead6900aa03e"
+      },
+      "candidate": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_snapshot_20261020_v1/stage/cases/cik_0001309402:20250530/products/secfacts:0001309402:0001309402-25-000089:eab48ba69f5ebb47.json",
+        "sha256": "c4673a4862425ecfda881a5edbbfbcf6619ae890a389e79063a3fb80efa0cc09"
+      },
+      "content_equal": true,
+      "public_clocks_equal": true,
+      "metadata_equal": false,
+      "candidate_append_result": false,
+      "persisted_complete_record_is_old": true
+    }
+  ],
+  "source_sha256": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1"
+}

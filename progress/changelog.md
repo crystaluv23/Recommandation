@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：按用户批准完成共享rawcap:v1完整typed记录身份，采集/backfill v2显式使用、v1及旧profile精确兼容，新capture profile完整重建；相同正文仍去重。33安全测试及独立typed/forged/replay控制过，发现并补齐search/documents→resolver嵌套metadata漂移漏门；四类tripwire全0。旧PIT测试仅固定测试capture clock/适配ID，值与日期预期不变。仅临时保存四对实际GPRE冲突，未实际准入/GET/LLM/标签；下一冻结57全产品、仅4新增版本source-only消费阶段，F7原0/1与MVP open保留。
+
 - 2026-10-20：冻结b03deaf2单case fresh66/67/68原生首答接受、0纠错，180233逻辑预留/host成本未知；17cards、raw→state→实际Predictor/sink及一次32files restore全等/0新派发。独立按预冻oracle完整语义0/1：274字残项漏H1后covenant compliance追问，closure保留遗漏，Predictor谨慎措辞不能补回state；mirror not_exercised，原分母/原答保留，不关闭F7/MVP。用户另已明确批准GPRE采集版本ID，下一共享身份/legacy兼容修复及仅四版来源实证，0额外LLM/GET/标签，不重入旧stage。
 
 - 2026-10-20：单样本b417正式prepare1.669s/exit1，plan/root前因serialized字符串路径传Path-only helper失败、0角色；旧10safe把_source stub掉漏此链，原失败/源码保留。先补spec再统一本诊断read→Path边界，旧plan与review两处独立红；不stub的Temp完整来源链/漂移与root12safe通过，真实来源5979绑定核过。独立AST核除reader无变化、原预算/17cards修复保持。新e09806a4 prepare25.984s/exit0，固定同1case/预算/预期，plan f1f9316a、6264unique路径全等；尚0角色，下一审核冻结后新调用。

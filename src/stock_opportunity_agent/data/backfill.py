@@ -20,6 +20,7 @@ from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.sec_company_facts import (
     materialize_company_fact_documents, validate_company_facts_response,
     STANDARD_TAXONOMIES as _SEC_FACT_TAXONOMIES, STANDARD_FORMS as _SEC_FACT_FORMS,
+    LEGACY_IDENTITY_POLICY, CAPTURE_IDENTITY_POLICY,
 )
 from stock_opportunity_agent.data.sources.catalog import DataCapability
 from stock_opportunity_agent.data.sources.core import DataSourceError, FilingMetadata
@@ -35,7 +36,8 @@ SEC_PLAN_SCHEMA = "sec-filing-backfill-plan-v1"
 SEC_PROGRESS_SCHEMA = "sec-filing-backfill-progress-v1"
 SEC_SUBMISSIONS_PLAN_SCHEMA = "sec-submissions-backfill-plan-v1"
 SEC_SUBMISSIONS_PROGRESS_SCHEMA = "sec-submissions-backfill-progress-v1"
-SEC_COMPANY_FACTS_PLAN_SCHEMA = "sec-company-facts-backfill-plan-v1"
+SEC_COMPANY_FACTS_PLAN_SCHEMA = "sec-company-facts-backfill-plan-v2"
+_SEC_COMPANY_FACTS_LEGACY_PLAN_SCHEMA = "sec-company-facts-backfill-plan-v1"
 SEC_COMPANY_FACTS_PROGRESS_SCHEMA = "sec-company-facts-backfill-progress-v1"
 SEC_HISTORICAL_SUBMISSIONS_PLAN_SCHEMA = "sec-historical-submissions-plan-v1"
 SEC_HISTORICAL_SUBMISSIONS_PROGRESS_SCHEMA = "sec-historical-submissions-progress-v1"
@@ -798,6 +800,7 @@ def write_sec_company_facts_backfill_plan(
     items = sorted(items_by_cik.values(), key=lambda item: str(item["cik"]))
     payload: dict[str, Any] = {
         "schema_version": SEC_COMPANY_FACTS_PLAN_SCHEMA,
+        "identity_policy": CAPTURE_IDENTITY_POLICY,
         "source_artifact": _artifact_identity(source_path),
         "selection": {
             "kind": "sec_company_facts",
@@ -829,8 +832,12 @@ def load_sec_company_facts_backfill_plan(path: str | Path) -> dict[str, Any]:
     """Load and validate one exact SEC Company Facts plan."""
 
     payload = _read_json(Path(path))
-    if payload.get("schema_version") != SEC_COMPANY_FACTS_PLAN_SCHEMA:
+    schema = payload.get("schema_version")
+    if schema not in (SEC_COMPANY_FACTS_PLAN_SCHEMA, _SEC_COMPANY_FACTS_LEGACY_PLAN_SCHEMA):
         raise ValidationError("unsupported SEC Company Facts backfill plan schema")
+    if ((schema == SEC_COMPANY_FACTS_PLAN_SCHEMA and payload.get("identity_policy") != CAPTURE_IDENTITY_POLICY)
+            or (schema == _SEC_COMPANY_FACTS_LEGACY_PLAN_SCHEMA and "identity_policy" in payload)):
+        raise ValidationError("SEC Company Facts plan identity policy differs")
     supplied_hash = str(payload.get("plan_hash", ""))
     without_hash = dict(payload)
     without_hash.pop("plan_hash", None)
@@ -975,6 +982,8 @@ def run_sec_company_facts_backfill(
                 selection=plan["selection"],
                 plan_hash=plan_hash,
                 retrieved_at=retrieved_at,
+                identity_policy=(CAPTURE_IDENTITY_POLICY if plan["schema_version"] == SEC_COMPANY_FACTS_PLAN_SCHEMA
+                                 else LEGACY_IDENTITY_POLICY),
             )
             appended = 0
             reused = 0
@@ -2006,10 +2015,12 @@ def _validate_company_facts_response(response: Any, expected_cik: str) -> None:
 def _company_fact_documents(
     response: Mapping[str, Any], *, item: Mapping[str, Any],
     selection: Mapping[str, Any], plan_hash: str, retrieved_at: datetime,
+    identity_policy: str = LEGACY_IDENTITY_POLICY,
 ) -> tuple[list[RawInfoDocument], dict[str, Any]]:
     """Preserve the backfill contract through the shared pure normalizer."""
     return materialize_company_fact_documents(response, item=item, selection=selection,
-        provenance={"backfill_plan_hash": plan_hash}, retrieved_at=retrieved_at)
+        provenance={"backfill_plan_hash": plan_hash}, retrieved_at=retrieved_at,
+        identity_policy=identity_policy)
 
 def _validate_submissions_response(response: Any, expected_cik: str) -> None:
     if not isinstance(response, Mapping):

@@ -15,7 +15,7 @@ from typing import Any, Callable, Iterable, Mapping
 from stock_opportunity_agent.data.point_in_time import utc_day_of_instant
 from stock_opportunity_agent.data.sec_company_facts import (
     materialize_company_fact_documents, validate_company_facts_response,
-    STANDARD_TAXONOMIES, STANDARD_FORMS,
+    STANDARD_TAXONOMIES, STANDARD_FORMS, CAPTURE_IDENTITY_POLICY,
 )
 from stock_opportunity_agent.data.raw_info import RawInfoDocument
 from stock_opportunity_agent.data.resolution import (
@@ -96,7 +96,7 @@ class SecCompanyFactsAdapter:
             content=raw_content,
             metadata={"provider": self.provider, "cik": cik},
         )
-        documents = [raw_document]
+        documents = [raw_document.as_capture()]
         selection = {"period_end_from": date.min.isoformat(),
             "period_end_through": cutoff_day.isoformat(),
             "available_at_through": as_of.astimezone(timezone.utc).isoformat(),
@@ -106,7 +106,7 @@ class SecCompanyFactsAdapter:
             item={"cik": cik, "company_id": company_id,
                 "symbol": identity.get("ticker") or identity.get("symbol"),
                 "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK" + cik + ".json"},
-            selection=selection, retrieved_at=retrieved_at,
+            selection=selection, retrieved_at=retrieved_at, identity_policy=CAPTURE_IDENTITY_POLICY,
             provenance={"acquisition_policy_hash": hashlib.sha256(_canonical_json(policy).encode()).hexdigest(),
                 "acquisition_selection": selection})
         documents.extend(products)

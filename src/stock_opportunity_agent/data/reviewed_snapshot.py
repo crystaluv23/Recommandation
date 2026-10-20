@@ -17,7 +17,7 @@ from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore,
 from stock_opportunity_agent.data.filing_orientation import filing_source_matches_form
 from stock_opportunity_agent.data.sec_company_facts import (
     STANDARD_FORMS, STANDARD_TAXONOMIES, materialize_company_fact_documents,
-    validate_company_facts_response,
+    validate_company_facts_response, LEGACY_IDENTITY_POLICY, CAPTURE_IDENTITY_POLICY,
 )
 from stock_opportunity_agent.data.sources.core import DataSourceError, decode_response_text
 from stock_opportunity_agent.models import ValidationError
@@ -517,14 +517,18 @@ def _verify_companyfacts_document(document, row, proofs, cutoff, memo):
     required = {"sec_companyfacts_cache", "sec_companyfacts_raw_response", "sec_companyfacts_normalization"}
     if set(proofs) != required:
         raise ReviewedSourceRejected("Company Facts requires cache, raw response and normalization proofs")
-    key = tuple((kind, str(Path(proofs[kind][0]["artifact"]["path"]).resolve()),
-                 proofs[kind][0]["artifact"]["sha256"]) for kind in sorted(required))
+    capture = row["proof_profile"] == "sec_companyfacts_capture_filed_next_utc_day_v1"
+    identity_policy = CAPTURE_IDENTITY_POLICY if capture else LEGACY_IDENTITY_POLICY
+    key = (identity_policy, tuple((kind, str(Path(proofs[kind][0]["artifact"]["path"]).resolve()),
+                 proofs[kind][0]["artifact"]["sha256"]) for kind in sorted(required)))
     if key not in memo:
         cache_proof, cache = proofs["sec_companyfacts_cache"]
         raw_proof, raw_record = proofs["sec_companyfacts_raw_response"]
         _normalization_proof, normalization = proofs["sec_companyfacts_normalization"]
-        if (normalization["schema_version"] != "sec-companyfacts-normalization-v1"
-                or normalization["normalizer_profile"] != "sec_companyfacts_filed_next_utc_day_v1"
+        if (normalization["schema_version"] != ("sec-companyfacts-normalization-v2" if capture else "sec-companyfacts-normalization-v1")
+                or normalization["normalizer_profile"] != row["proof_profile"]
+                or (capture and normalization.get("identity_policy") != CAPTURE_IDENTITY_POLICY)
+                or (not capture and "identity_policy" in normalization)
                 or normalization["source_cache"] != cache_proof["artifact"]
                 or normalization["raw_response"] != raw_proof["artifact"]):
             raise ReviewedSourceRejected("Company Facts normalization source identity differs")
@@ -541,7 +545,8 @@ def _verify_companyfacts_document(document, row, proofs, cutoff, memo):
         raw = RawInfoDocument.from_dict(raw_record)
         raw_content = json.dumps(cache["body"], sort_keys=True, separators=(",", ":"), ensure_ascii=False)
         raw_id = "sec_edgar:" + item["company_id"] + ":sec_company_facts_raw_response:" + content_sha256(raw_content)[:24]
-        if (raw.source_type != "sec_company_facts_raw_response" or raw.document_id != raw_id
+        valid_raw_id = raw.document_id == raw_id or (capture and raw.document_id.startswith("rawcap:v1:"))
+        if (raw.source_type != "sec_company_facts_raw_response" or not valid_raw_id
                 or raw.company_id != item["company_id"] or raw.content != raw_content
                 or raw.metadata.get("provider") != "sec_edgar" or raw.metadata.get("cik") != cik):
             raise ReviewedSourceRejected("Company Facts retained raw response differs")
@@ -559,7 +564,8 @@ def _verify_companyfacts_document(document, row, proofs, cutoff, memo):
         if provenance != {"acquisition_policy_hash": policy_hash, "acquisition_selection": selection}:
             raise ReviewedSourceRejected("Company Facts acquisition provenance differs")
         products, _stats = materialize_company_fact_documents(cache["body"], item=item,
-            selection=selection, provenance=provenance, retrieved_at=normalized_at)
+            selection=selection, provenance=provenance, retrieved_at=normalized_at,
+            identity_policy=identity_policy)
         expected = normalization["expected_products"]
         expected_by_id = {entry["document_id"]: entry for entry in expected}
         reconstructed = {product.document_id: {"document_id": product.document_id,
@@ -622,7 +628,7 @@ def _verified_review(binding: Mapping[str, Any]) -> tuple[dict, list[RawInfoDocu
             _verify_sec_document(document, row, proofs, cutoff)
         elif profile == "massive_daily_no_post_cutoff_split_v1":
             _verify_market_document(document, row, proofs, cutoff)
-        elif profile == "sec_companyfacts_filed_next_utc_day_v1":
+        elif profile in {"sec_companyfacts_filed_next_utc_day_v1", "sec_companyfacts_capture_filed_next_utc_day_v1"}:
             _verify_companyfacts_document(document, row, proofs, cutoff, companyfacts)
         elif profile == "sec_filing_response_acceptance_v1":
             _verify_sec_response_document(document, row, proofs, cutoff, sec_payloads, sec_raw)

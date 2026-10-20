@@ -24,8 +24,11 @@ Preserve standard taxonomy/tag/unit, original values, start/end, filed/form and
 accession lineage. Historical products omit current `entityName`; the complete
 provider response remains a separately timestamped proof document.
 
-Use existing `sec-company-facts-document-v1` bodies and `secfacts:` accession/
-content-version identities. These differ from old content-only aggregate IDs,
+Use existing `sec-company-facts-document-v1` bodies. The pure normalizer has an
+explicit `identity_policy`: `legacy_content_v1` preserves the existing `secfacts:`
+accession/content identities and remains the compatibility default;
+`raw-info-capture-v1` derives the complete record's capture ID after materializing
+identical content, metadata and public times. These differ from old content-only aggregate IDs,
 so append-only refetch cannot silently preserve an old unsafe availability
 under the corrected identity. Old originals and completed runs remain unchanged;
 new products require separate source qualification and an explicit reviewed view.
@@ -38,3 +41,13 @@ period boundary and availability are the actual cutoff. Request publication
 lookback still belongs to resolver selection and does not truncate comparison
 rows inside a selected accession. Acquisition records its exact selection and
 policy hash rather than inventing a backfill plan.
+
+New acquisition explicitly requests `raw-info-capture-v1` for typed products and
+its retained whole-response document. Each new acquisition records its actual
+materialization time once; a cached response is not a new HTTP request. Replaying
+that recorded capture uses the same time/selection/provenance, without obtaining a
+fresh clock. New selection, provenance or recorded time creates a new capture
+version even when the selected facts are byte-identical. Existing raw proof
+artifacts retain their old IDs and clocks. Source qualification explicitly
+selects a legacy or capture recipe; changing the normalizer must never silently
+change a frozen v1 reconstruction.

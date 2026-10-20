@@ -13,7 +13,8 @@ filing prose. It validates issuer CIK, excludes date-only facts until next UTC
 midnight, retains all supported historical comparison periods and separately
 archives the complete raw response. Old aggregate records are not rewritten or
 implicitly source-qualified; a corrected product uses the distinct existing
-accession/content ID. Request lookback remains a publication filter, not an
+accession/content ID for legacy recipes; new explicitly versioned acquisition
+uses a complete-record capture ID. Request lookback remains a publication filter, not an
 additional fact-history limit.
 
 ## Status
@@ -79,6 +80,13 @@ RawInfoRequest
 -> still unresolved: try the next authorized adapter
 -> complete resolved documents, or partial document refs plus DataGap
 ```
+
+Capture-version IDs preserve separate source/acquisition provenance in the
+oracle and reviewed view. The existing identical-content deduplication below
+still runs before request limits, so multiple captures do not become independent
+facts, extra source coverage or duplicate measurement inputs. Duplicate IDs stay
+auditable; no newest-capture preference or sorting change is introduced. Exact
+historical references continue resolving their original IDs, never a replacement.
 
 Before any request limit is applied, the resolver filters the complete PIT
 eligible pool and removes byte-identical copies within the same canonical source

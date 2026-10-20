@@ -1,6 +1,6 @@
 # 当前状态
 
-更新：2026-10-20。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛；
+更新：2026-10-21。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛；
 独立预测收益为后续里程碑、未知。生产 LLM 节点使用独立 subagent，外部 LLM API 调用0。
 只读资料取证已授权：累计147 GET（115行情、32SEC）；规范web查阅另列。
 当前来源批次0新生产LLM节点，host tokens/cost及资料API成本未测量。
@@ -51,15 +51,16 @@ source snapshot/reopen canonical相等仅证明本阶段重开store，非OS中�
 旧“48”无案例清单支持，不能推剩余8为LockedTest；默认v6与本批v12的18版本不同，不能互代。
 26 transcript完整公开内容时间证明仍0；按用户已选口径取已核实完整公开内容时间，原记录/旧实验保留。
 历史news污染排除/unknown不表示无事件，所有失败分母及身份屏蔽保持。
-用户已批准采集版本ID修复重复采集冲突；实现/实际准入尚待验证。当前GPRE53合法subset仍缺最新Q1，不称完整。
+[采集版本ID](../reports/companyfacts-capture-identity-20261021.md)已实现：33安全测试及独立typed/恢复/消费负控通过；实际GPRE准入待验。
+旧recipe/ID和相同正文去重保留。当前GPRE53合法subset仍缺最新Q1，不称完整。
 FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍unknown，不猜时区。
 旧v182权威Fast/Slow=1/1完成不可重启；memory失败processed0/pending3518未改作成功。
 新方向/magnitude Mining正控、忠实实现/准入、后继精确复用、完整反馈消费/闭环及独立收益均未验证。
 
 ## 下一步
 
-来源与F7单样本stage均已完成，不重入；F7的temporal-facet未达保留，先做源capture版本身份修复。
-按已批准设计，先spec再实现共享ID/生产/旧recipe兼容/准入/去重消费；完整57产品重建、仅4GPRE新版本拟实证。
+来源与F7单样本stage均已完成，不重入；F7的temporal-facet未达保留，capture版本身份局部修复已验证。
+下一独立冻结新的source-only入口：完整57产品重建、保留53既有产品、仅4GPRE新版本准入与实际选择拟实证。
 旧ID/引用/原件/实验不改；同已记录capture replay幂等，采集版本不能增加独立证据数量。0GET/model/labels/apply。
 后续LLM节点仍由exact inbox独立subagent处理；不恢复旧运行或启动完整后继。
 保6unknown/完整失败分母/上下文限制，不以0.8替代测量、最新Q1完整性或整体MVP关闭。

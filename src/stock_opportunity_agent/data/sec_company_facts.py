@@ -14,6 +14,10 @@ from stock_opportunity_agent.data.sources.core import DataSourceError
 from stock_opportunity_agent.models import ValidationError
 
 
+LEGACY_IDENTITY_POLICY = "legacy_content_v1"
+CAPTURE_IDENTITY_POLICY = "raw-info-capture-v1"
+
+
 STANDARD_TAXONOMIES = ("dei", "ifrs-full", "srt", "us-gaap")
 STANDARD_FORMS = ("10-K", "10-K/A", "10-Q", "10-Q/A", "20-F", "20-F/A",
                   "40-F", "40-F/A", "6-K", "6-K/A", "8-K", "8-K/A")
@@ -64,8 +68,11 @@ def materialize_company_fact_documents(
     selection: Mapping[str, Any],
     provenance: Mapping[str, Any],
     retrieved_at: datetime,
+    identity_policy: str = LEGACY_IDENTITY_POLICY,
 ) -> tuple[list[RawInfoDocument], dict[str, Any]]:
-    """Build existing typed accession documents under an explicit selection."""
+    """Build typed accession products under an explicit selection and ID recipe."""
+    if identity_policy not in (LEGACY_IDENTITY_POLICY, CAPTURE_IDENTITY_POLICY):
+        raise ValidationError("unsupported Company Facts identity policy")
     cik = str(item["cik"])
     validate_company_facts_response(response, cik)
     if set(provenance) - {"backfill_plan_hash", "acquisition_policy_hash", "acquisition_selection"}:
@@ -257,6 +264,8 @@ def materialize_company_fact_documents(
                 },
             )
         )
+    if identity_policy == CAPTURE_IDENTITY_POLICY:
+        documents = [document.as_capture() for document in documents]
     return documents, {
         "raw_fact_row_count": raw_fact_rows,
         "selected_fact_row_count": selected_fact_rows,

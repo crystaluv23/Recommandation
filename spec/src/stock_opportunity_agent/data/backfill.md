@@ -87,7 +87,8 @@ issuers to US-GAAP concepts.
 
 Raw responses remain in the managed source cache. The materializer groups
 selected fact rows by filing accession and appends one immutable
-`source_type=sec_company_facts` Raw Info document per accession/content version.
+`source_type=sec_company_facts` Raw Info document per accession/capture version
+for newly written v2 plans; historical v1 plans retain accession/content IDs.
 Each document contains the complete selected standard-taxonomy fact rows for
 that accession; it does not copy the response's current entity name into
 historical content. Rows must have:
@@ -107,7 +108,13 @@ API extraction remains auditable against the primary filing.
 
 The pure `data.sec_company_facts` normalizer and date-only availability helper
 are also used by live acquisition. Backfill's existing private wrapper preserves
-the frozen selection, `backfill_plan_hash`, IDs and complete records. It does
+the frozen v1 selection, `backfill_plan_hash`, IDs and complete records.
+New plans use `sec-company-facts-backfill-plan-v2` and bind
+`identity_policy=raw-info-capture-v1`; loaders/runners still accept v1 explicitly
+as `legacy_content_v1`. The plan hash binds that choice, and resume cannot switch
+identity policy. The shared wrapper defaults to legacy for historical direct
+callers; a v2 runner passes capture explicitly. Both use the recorded managed
+cache retrieval instant, not a fresh normalization clock on cache replay. It does
 not import acquisition or research orchestration. Extraction validates response
 CIK itself, including direct calls outside the backfill runner.
 
@@ -137,7 +144,8 @@ policy, and the as-of dates for which the filing was selected.
   each invocation. Cache hits do not consume that invocation limit.
 - Progress is written atomically after every completed item.
 - An interrupted response already present in the raw cache is reused on
-  restart; an appended Raw Info record is idempotent by content-derived id.
+  restart; an appended Raw Info record is idempotent by its recorded identity
+  recipe (capture-version ID for new Company Facts v2 plans).
 - Failed or quota-deferred items remain pending and are eligible for a later
   bounded retry. They are never silently marked complete.
 - Reusing a progress file with a different plan hash fails closed.

@@ -68,6 +68,29 @@ available_at <= prediction_time
 - Provider responses retain the complete response body (text or canonical raw
   JSON). Derived Signal values never enter this store.
 
+## Capture-version identity
+
+New capture products explicitly use `rawcap:v1:<full SHA-256>`. The digest is
+strict, deterministic JSON of the complete typed `to_dict()` record except
+`document_id`: company/source identity, exact content and content hash, both
+public timestamps and every source/acquisition metadata field. Object key order
+is insignificant; JSON bool/int/float/null, missing fields and array order remain
+distinct. Non-finite numbers, non-string object keys and non-JSON values are
+rejected, without adding a new financial-content or credential heuristic.
+
+`as_capture()` derives this identity without changing body, public availability
+or metadata. Creation, serialized restore, append, exact load, search and document enumeration
+validate the capture digest. A repeated complete recorded capture is idempotent; a changed
+capture has a distinct ID. Same-ID canonical differences fail closed even when
+Python numeric equality or the legacy same-content refetch rule would equate
+them. Nested metadata mutations cannot bypass append/load validation.
+
+Legacy IDs retain their existing replay behavior and original files. No old
+record, citation, source view or completed experiment is rewritten or redirected.
+Recovery reuses the recorded capture metadata/times; it does not call `now()` to
+mint a replacement identity. Content deduplication is a separate consumer policy,
+not a rule for dropping capture provenance from this append-only store.
+
 ## Dependencies
 
 Uses only standard-library persistence and shared validation errors. It feeds

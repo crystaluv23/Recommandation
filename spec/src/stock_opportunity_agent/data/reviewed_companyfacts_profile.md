@@ -94,3 +94,26 @@ reuse, exact cutoff/equivalent offsets, issuer/request/body/record/clock changes
 unit/value/period/filed or premature availability, missing/extra expected ids,
 whole raw rejection, and changed proof/manifest/files at refresh. Use isolated
 fixtures and temporary oracles only; no network, labels or actual source append.
+
+## Explicit capture profile
+
+`sec_companyfacts_capture_filed_next_utc_day_v1` uses normalization schema
+`sec-companyfacts-normalization-v2` with mandatory
+`identity_policy=raw-info-capture-v1`. All three proof kinds, source/CIK/clock/PIT
+checks, full comparative selection, provenance and limitations above remain.
+Reconstruct the complete expected product set using that explicit identity policy;
+each expected ID and complete canonical record hash must match. Review admission
+may select any explicit subset, but the expected set must retain every product
+from the complete reconstruction, including all products not admitted. Capture metadata/type or ID drift rejects
+at restore as well as initial qualification.
+
+The retained whole-response proof may be the exact historical legacy raw ID or
+a validated capture ID under this new profile. This does not rewrite an existing
+raw proof or admit it as historical financial facts. The old profile continues to
+require its original schema/legacy raw ID and reconstruct with explicit
+`legacy_content_v1`; no failed-profile fallback is allowed. Memoization includes
+the selected profile, so identical proof bindings cannot substitute a different
+identity recipe within one review. There is no cross-refresh memo.
+
+The GPRE regression retains the complete 57-product denominator while qualifying
+only four new capture versions; the other 53 remain explicit expected products.
