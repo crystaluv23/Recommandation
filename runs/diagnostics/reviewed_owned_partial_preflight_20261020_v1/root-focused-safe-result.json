@@ -1,0 +1,8 @@
+{
+  "tests": 10,
+  "failures": 0,
+  "errors": 0,
+  "forbidden_operation_counts": {},
+  "fresh_model_calls": 0,
+  "formal_prepare": false
+}

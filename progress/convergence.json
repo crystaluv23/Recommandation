@@ -117,7 +117,9 @@
         "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/execution-summary.json",
         "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/terminal-file-bindings.json",
         "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/input-gap-details.json",
-        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json"
+        "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json",
+        "reports/reviewed-owned-partial-stage-20261020.md",
+        "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/independent-review.json"
       ],
       "remaining": "Original40 source-only actualdual720 now670resolved/50gap eachv6/v12,40/40>=.8, with1776admittedview and119partialBasicInfo/41unavailable. Source-resolution threshold does not establish measurement/semantic/model completeness: BURU baseline absent,GPRElatestQ1 conflicting IDs,FTIfull-year window and6unknown targets retained. Transcript complete-public proof,freshF7/fullF10/Slow/direction+magnitudeadmission+reuse/wholeloop open; originalFYbasic0/3 retained. Independentbenefitlaterunknown."
     },
@@ -906,7 +908,9 @@
       "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/execution-summary.json",
       "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/terminal-file-bindings.json",
       "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/input-gap-details.json",
-      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json"
+      "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/independent-actual-consumer-review.json",
+      "reports/reviewed-owned-partial-stage-20261020.md",
+      "runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/independent-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -955,7 +959,8 @@
       "Legal typedSEC aliases were supported by acquisition but qualification requiredfiling; original10-k proof passed after sharedexactformpredicate. Final independent rehashedreceipt controls exposed method/status/counter contradictions absent from positivefixtures.",
       "Supplemental lookup still omitted4existing exactIDs acrosstyped namespaces. Prototypecollision is not originalfailure:3originals mechanicallypassas-is,whileFTIinterim10-k type conflictswith10-Q proof. Outerloop firstsupportedsource selection is a producer recurrence risk, not a reason to weaken qualification.",
       "Successful primary-body GETs do not guarantee operating content: two actual40F wrappers require literal incorporated reports. Source-review byte binding must designate the actual decoded body, not merely any proof artifact. Requested400days and151retained daily observations are distinct coverage facts.",
-      "The fixed0.8 input fraction can pass all40 while BURU lacks a market baseline, GPRE lacks known latestQ1 and every resolved BasicInfo projection is partial. Reaching the administrative readiness threshold cannot erase semantic/source gaps or authorize a full successor. A completed native snapshot/reopen guard is not OS interruption recovery."
+      "The fixed0.8 input fraction can pass all40 while BURU lacks a market baseline, GPRE lacks known latestQ1 and every resolved BasicInfo projection is partial. Reaching the administrative readiness threshold cannot erase semantic/source gaps or authorize a full successor. A completed native snapshot/reopen guard is not OS interruption recovery.",
+      "The new bounded adapter initially reused final-context BasicInfo as bootstrap input:17cards silently became0 in the native constructor, and empty-BasicInfo tests missed the loss. Frozen canonical bootstrap preserves17; anonymous wire tokens are not canonical input. Reusing a per-request token limit as the whole native invocation budget also excluded otherwise legal correction pairs; a real186487-unit native two-request counterexample now distinguishes the layers."
     ],
     "decision": {
       "acceptance_id": "content_chain",
@@ -968,7 +973,7 @@
       "fail": "Wrong or ungrounded closure,dropped modifiers/facets,duplicate long/short mirrors,unauthorized state edits,evidence mismatch,consumer loss,budget stop or restore drift.",
       "on_pass": "Record only this fresh F7/consumer control with actual firstanswer/correction counts, then target the next unclosed supported-capability or feedback/Mining boundary; do not close wholeMVP or declare a freshF6 from seeded results.",
       "on_fail": "Retain original raw/typedcorrection/accepted-or-rejected artifacts; identify first actual producer/validator/consumer boundary and fix the applicable family before another separately frozen test. No wholeprefix rerun by default.",
-      "new_evidence": "Actual fixed40sourceview now reaches both720 inputs and independent literal/PIT+projection review; prior narrow ownedmirror repair has only offline typed-correction proof while latest positive controls did not exercise that compound residual. A fresh bounded native role can distinguish current prompt compliance from scripted reachability.",
+      "new_evidence": "Actual fixed40sourceview now reaches both720 inputs and independent literal/PIT+projection review; prior narrow ownedmirror repair has only offline typed-correction proof while latest positive controls did not exercise that compound residual. A fresh bounded native role can distinguish current prompt compliance from scripted reachability. The separately reviewed adapter now preserves the actual17canonical bootstrap cards/visibility and independently accepts a186487-unit native correction pair while rejecting an oversize request before receive; formal freeze and fresh role behavior remain unexecuted.",
       "distinguishing_variable": "New exact native role outputs and actual persisted/Predictor consumption versus historical replies, scripted synchronized patches or readiness counts."
     }
   },

@@ -1,0 +1,69 @@
+{
+  "selectors": [
+    "tests.test_reviewed_owned_partial_stage"
+  ],
+  "expanded_test_ids": [
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_actual_canonical_bootstrap_keeps_all17_cards_and_visibility_at_native_assembly",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_budget_guard_runs_before_any_receive_and_counts_replayed_logical_requests",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_frozen_destination_cannot_be_copied_to_reset_stage",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_invocation_budget_is_remaining_while_callback_enforces_each_request",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_native_reflect_closure_predictor_sink_and_exact_completed_restore",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_offline_overlength_fixture_exercises_native_mirror_correction_not_claimed_fresh",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_oracle_authorities_reject_other_source_path_before_seed_or_transport",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_seed_exports_only_accepted_first_round_and_allowlisted_context",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_source_code_or_oracle_drift_rejects_before_transport",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_terminal_failure_cannot_restart_or_replace_ceiling"
+  ],
+  "tests": 10,
+  "passed": true,
+  "failures": 0,
+  "errors": 0,
+  "tripwire_calls": {
+    "labels": 0,
+    "socket": 0,
+    "fullprepare": 0,
+    "store": 0
+  },
+  "before": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "b417da2c5150f5486c78745198b889a768ada308eaf695410133dd9c265239b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "8bc1ce045ca79319e2de010ed52c9d9d5d8180c8caa77362ed687eefe340d242"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py",
+      "sha256": "5137c5326700ed06a3461f501c63ccc450ced85b4d53ed5093ab9f859ce71ef5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+    }
+  ],
+  "after": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "b417da2c5150f5486c78745198b889a768ada308eaf695410133dd9c265239b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "8bc1ce045ca79319e2de010ed52c9d9d5d8180c8caa77362ed687eefe340d242"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py",
+      "sha256": "5137c5326700ed06a3461f501c63ccc450ced85b4d53ed5093ab9f859ce71ef5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+    }
+  ],
+  "source_stable": true,
+  "log": {
+    "path": "/tmp/reviewed-owned-partial-stage-basic-info-safe.log",
+    "sha256": "2d1c02f306ec574bfb60fbc19257b73677eaeda1c279776a4bcef4f385116df0"
+  },
+  "evidence_scope": "Native temp transport/parser/sink, offline authors only; no fresh model/actual prepare/source store or future data. Historical failure/raw fixtures confined to offline tests; production _seed allowlists accepted state/first batch/context fields."
+}

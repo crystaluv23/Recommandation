@@ -1,0 +1,68 @@
+{
+  "selectors": [
+    "tests.test_reviewed_owned_partial_stage"
+  ],
+  "expanded_test_ids": [
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_budget_guard_runs_before_any_receive_and_counts_replayed_logical_requests",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_frozen_destination_cannot_be_copied_to_reset_stage",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_invocation_budget_is_remaining_while_callback_enforces_each_request",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_native_reflect_closure_predictor_sink_and_exact_completed_restore",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_offline_overlength_fixture_exercises_native_mirror_correction_not_claimed_fresh",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_oracle_authorities_reject_other_source_path_before_seed_or_transport",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_seed_exports_only_accepted_first_round_and_allowlisted_context",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_source_code_or_oracle_drift_rejects_before_transport",
+    "tests.test_reviewed_owned_partial_stage.ReviewedOwnedPartialStageTests.test_terminal_failure_cannot_restart_or_replace_ceiling"
+  ],
+  "tests": 9,
+  "passed": true,
+  "failures": 0,
+  "errors": 0,
+  "tripwire_calls": {
+    "labels": 0,
+    "socket": 0,
+    "fullprepare": 0,
+    "store": 0
+  },
+  "before": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "9809788c31ade5300d71400757af4e6c2f40e1f3fb10e8773f0cb9681fde4a13"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "4ce5e2388665f1a0756a618c893cb833ea0190a6cce6f6dddc12c1afb1128056"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py",
+      "sha256": "fc58f1c3e7ca93ce7f43b4c183e60d86e575bb13a2e3e528747cd60d15eeb734"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+    }
+  ],
+  "after": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "9809788c31ade5300d71400757af4e6c2f40e1f3fb10e8773f0cb9681fde4a13"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "4ce5e2388665f1a0756a618c893cb833ea0190a6cce6f6dddc12c1afb1128056"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py",
+      "sha256": "fc58f1c3e7ca93ce7f43b4c183e60d86e575bb13a2e3e528747cd60d15eeb734"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "12fcc4307e7252d88377ec5b0f3b3c185502a44081058cea90e746e9bdd25f84"
+    }
+  ],
+  "source_stable": true,
+  "log": {
+    "path": "/tmp/reviewed-owned-partial-stage-safe.log",
+    "sha256": "cbfeb53012ab6fffea49efe901c0683b28c6c91cfd1c8e412e8bf1ba739fddd3"
+  },
+  "evidence_scope": "Native temp transport/parser/sink, offline authors only; no fresh model/actual prepare/source store or future data. Historical failure/raw fixtures confined to offline tests; production _seed allowlists accepted state/first batch/context fields."
+}

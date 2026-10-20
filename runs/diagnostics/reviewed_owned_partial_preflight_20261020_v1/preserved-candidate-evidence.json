@@ -1,0 +1,17 @@
+{
+  "scope": "Candidate before actual BasicInfo consumer-shape repair, not formal stage or fresh model proof",
+  "artifacts": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/pre-basicinfo-fix-candidate.py",
+      "sha256": "9809788c31ade5300d71400757af4e6c2f40e1f3fb10e8773f0cb9681fde4a13"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/pre-basicinfo-fix-safe-tests.log",
+      "sha256": "cbfeb53012ab6fffea49efe901c0683b28c6c91cfd1c8e412e8bf1ba739fddd3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/pre-basicinfo-fix-safe-bindings.json",
+      "sha256": "4d47a81afa74d842586c8e4a216962e994d188bed9aed9dab369b9ece3c5900c"
+    }
+  ]
+}

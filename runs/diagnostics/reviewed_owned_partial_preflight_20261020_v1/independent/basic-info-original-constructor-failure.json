@@ -1,0 +1,21 @@
+{
+  "scope": "Native projection constructor only; actual historical source-owner allowlisted envelopes; no prepare/Store/GET/labels/models",
+  "original_basic_shape": [
+    "data_gaps",
+    "projection_card_counts",
+    "projection_cards",
+    "source_index"
+  ],
+  "retained_old_cards": 17,
+  "reassembled_from_old_final": 0,
+  "bootstrap_shape": [
+    "max_normalized_characters",
+    "requests"
+  ],
+  "reassembled_from_initial_wire": 17,
+  "initial_request_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/requests/e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578.json",
+    "sha256": "bc556b1c3bf522737b9d81a79a29f8dceeb7053d23f866fd7ebad609bc74a861"
+  },
+  "bootstrap_cards_equal_old_visible_cards": false
+}

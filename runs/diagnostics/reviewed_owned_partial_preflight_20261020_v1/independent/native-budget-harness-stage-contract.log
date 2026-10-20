@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/native-budget-probe.py", line 63, in <module>
+    client._complete_json_request(stage='research_controller_reflect',system_prompt='offline',payload={'offline_padding':'x'*131073},allow_outcomes=False,
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1188, in _complete_json_request
+    stage_contract = validate_stage_input(stage, payload, allow_outcomes=allow_outcomes)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py", line 146, in validate_stage_input
+    raise ValidationError(f"{stage} input dependency missing: {missing}")
+stock_opportunity_agent.models.ValidationError: research_controller_reflect input dependency missing: ['research_state', 'signal_batch', 'need_transition_contract']

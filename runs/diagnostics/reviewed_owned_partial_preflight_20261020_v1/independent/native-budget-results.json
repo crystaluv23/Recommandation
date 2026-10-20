@@ -1,0 +1,80 @@
+{
+  "scope": "Offline scripted native transport/parser fixture, no fresh model/production prepare/GET/labels/Store.",
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "b417da2c5150f5486c78745198b889a768ada308eaf695410133dd9c265239b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "8bc1ce045ca79319e2de010ed52c9d9d5d8180c8caa77362ed687eefe340d242"
+    }
+  ],
+  "comparison": [
+    {
+      "mode": "prior_min_cap",
+      "pad": 40000,
+      "requests": [
+        {
+          "stage": "research_controller_reflect_correction",
+          "reservation": 93709
+        },
+        {
+          "stage": "research_controller_reflect",
+          "reservation": 92778
+        }
+      ],
+      "inboxes": 1,
+      "receipts": 1,
+      "outcome": {
+        "status": "RuntimeBudgetExceeded",
+        "error": "research_controller_reflect_correction was not sent because its exact reservation exceeded the remaining budget: local role request reservation exceeds remaining case budget; last_validation_error=Actual partial answer requires a 1-300 character residual; author an actual disposition, never infer it from routing scope or measurement coverage; if replacing this residual, synchronize its unique exact mirror at next_information_needs[4] with the same new residual using replace only; preserve every other need",
+        "callback_calls": 2,
+        "callback_tokens": 186487
+      }
+    },
+    {
+      "mode": "current_remaining",
+      "pad": 40000,
+      "requests": [
+        {
+          "stage": "research_controller_reflect_correction",
+          "reservation": 93709
+        },
+        {
+          "stage": "research_controller_reflect",
+          "reservation": 92778
+        }
+      ],
+      "inboxes": 2,
+      "receipts": 2,
+      "outcome": {
+        "status": "accepted",
+        "usage": {
+          "llm_calls": 2,
+          "tokens": 186487,
+          "cost": 0.0
+        },
+        "need_count": 5
+      }
+    }
+  ],
+  "oversized_native": {
+    "mode": "oversized_current",
+    "pad": 140000,
+    "requests": [
+      {
+        "stage": "research_controller_reflect",
+        "reservation": 192778
+      }
+    ],
+    "inboxes": 0,
+    "receipts": 0,
+    "outcome": {
+      "status": "RuntimeBudgetExceeded",
+      "error": "research_controller_reflect was not sent because its exact reservation exceeded the remaining budget: owned partial frozen request/case ceiling; last_validation_error=None",
+      "callback_calls": 0,
+      "callback_tokens": 0
+    }
+  }
+}

@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：新增单历史seed的fresh Reflect/Predictor诊断及spec，最多6角色/512000case/131072request，不称新F6。派发前抓到旧final-BasicInfo进bootstrap导致17→0，改用canonical preflight后17条全文/ID/可见性精确保留；空fixture9绿旧检查与源码保留。native纠错反例92778+93709旧单请求额度误当step失败、修后两条通过；192778单条仍receive前拒。root10safe及独立原生/盲界预审通过，0正式prepare/模型/GET/labels；下一独立冻结后看fresh实际行为。
+
 - 2026-10-20：冻结c9ad66e8唯一原40来源消费1253.520s/exit0；1123原生append/canonical回读（853新增/270既有），旧15640global字节/658审查行保持、新1776doc view。双Registry各670/720resolved、40/40达原0.8，对旧262/720各增408；50gap=40news+3订单+6momentum+1drawdown，BURU基线仍缺。40BasicInfo119resolved均partial/41unavailable、593遗漏标记保留。独立全3344冻结/297采集终态/1440输入及40投影核验过；首审旧字段harness错误原log保留，不是产品失败。snapshot/reopen相等不冒称OS恢复；0新GET/model/apply/labels/fullprepare，6unknown/最新GPREQ1/MVP仍open。下一单样本fresh Reflect与Predictor消费，不重入来源stage。
 
 - 2026-10-20：补充唯一7GET全部200、297终态文件/绑定保持；实际6附件scope及native profile通过，原HITI日期/编号矛盾保留。修TGB同行编号列序/明确数字sup脚注，旧同材料4pass/2reject→新6pass，安全8及root21关联通过。整批assembly21.717s保907目标/1123候选及6unknown，独立核270既有/853预计新文件；再补consumer遗漏的实际helper/ownspec/marketprofile冻结及原40双Registry purpose，旧漂移漏拒复现、14safe通过。唯一正式prepare20.076s完成、plan114a50b2/3344绑定全等；尚未append/view/双720消费，无MVP关闭。

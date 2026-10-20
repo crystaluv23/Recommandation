@@ -1,0 +1,67 @@
+{
+  "profile": "owned_partial_historical_seed",
+  "fixed_denominator": 1,
+  "sample_id": "p01",
+  "declared_before_fresh_roles": true,
+  "evidence_scope": "Known historical accepted seed and source-backed partial-answer positive control; fresh Reflect/Predictor behavior only, no fresh F6 or independent predictive effect.",
+  "bindings": {
+    "fixture": {
+      "path": "/Users/l/Project/Recommandation/tests/fixtures/owned_partial_residual_mirror.json",
+      "sha256": "a82f60a4ea67e4312ab07b420225d9b5e1aa1d456ead5b7bd50dd92f7946522a"
+    },
+    "completed_source_result": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/result.json",
+      "sha256": "e712f77a96278f2f1f41e63131ccee87714e2db487c82789c719daf8728e5dd4"
+    },
+    "source_review": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/source-review.json",
+      "sha256": "46e80d6bc24b7455844560050879f7db3248ece16f2b3d9d90a268477fd2646f"
+    },
+    "actual_cited_body": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/snapshot/documents/0001.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    "historical_prefix_inputs": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/inputs.json",
+      "sha256": "bf8783f057a11522d58e8e1568435d47335d78c5a08702e962987abc55a5507b"
+    },
+    "historical_prefix_completion": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/completion.json",
+      "sha256": "ead7b7f6a07edb58334959003d6866f98461f52a798f8a57b5e7b46d8b1d0d52"
+    }
+  },
+  "assertions": {
+    "preserved_unowned_needs": "Prior needs0–3 survive by occurrence; no disposition may close them using this batch.",
+    "owned_positive_control": "Need4 can be answered only partially. The current batch includes literal June30 revolver availability and financial-covenant compliance for the interim period, plus completed historical repurchases and loan repayment. Adopted statements must retain their exact periods, scope and source handles.",
+    "required_unknown_facets": [
+      "operating cash flow",
+      "capital expenditure",
+      "debt balances and maturities",
+      "covenant terms and compliance after the disclosed interim period",
+      "tax-related cash obligations",
+      "prospective net equity dilution",
+      "direct annual-report reading remains unverified within this historical seed"
+    ],
+    "partial_disposition": "A grounded partial disposition cites actual newly adopted current-batch evidence and keeps the complete unsupported question within the existing 1–300 character contract. Wording is free; an owned residual must have one state representation, without a long/short duplicate or restoration of the entire replaced owner. Distinct unrelated needs, if any, require their own evidence and cannot substitute for residual facets.",
+    "prohibited_inference": [
+      "historical repurchases prove no prospective dilution",
+      "interim covenant compliance establishes future compliance or complete debt terms",
+      "domain_unavailable OCF is a negative cash-flow finding",
+      "source presence establishes annual report or every fact was read",
+      "prior selection residual is an answer or independent expected truth"
+    ],
+    "freshness": "Only actual new Reflect/optional terminal closure and Predictor requests count as fresh; raw49/raw50, old accepted final state and old prediction never enter a role. Historical domain_unavailable describes only that saved batch.",
+    "correction_reporting": "Correct first answer is valid success; mirror typed correction remains not_exercised unless naturally requested and actually authored. Preserve initial failure/correction/final failure separately; no induced failure or root retry.",
+    "consumer": "Persist and reread accepted state/metadata before assembly. Actual Predictor request, durable sink and completed restore preserve need/disposition/version/evidence semantics. Predictor judgment has no oracle numeric/class expectation; no labels are read.",
+    "acceptance_limits": "This one known-source control cannot close wholeF7/F6/F9/FastSlow/MVP or establish independent gain."
+  },
+  "limits": {
+    "max_local_calls": 6,
+    "max_request_tokens": 131072,
+    "max_case_tokens": 512000,
+    "max_case_llm_calls": 6,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0,
+    "finalization_reserve": 64000
+  }
+}

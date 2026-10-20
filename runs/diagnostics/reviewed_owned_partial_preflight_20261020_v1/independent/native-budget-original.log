@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/native-budget-probe.py", line 63, in <module>
+    client._complete_json_request(stage='research_controller_reflect',messages=[{'role':'user','content':'x'*131073}],
+TypeError: StructuredRoleClient._complete_json_request() got an unexpected keyword argument 'messages'

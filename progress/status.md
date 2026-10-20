@@ -57,6 +57,7 @@ FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍un
 ## 下一步
 
 来源stage已完成，不重入。下一最小阶段：历史合法prior/batch显式作seed，fresh Reflect→持久化→final context→fresh Predictor/sink。
+[单样本stage](../reports/reviewed-owned-partial-stage-20261020.md) 已预审；17→0形状误接修后17→17，原生纠错预算反例过、root10safe过；尚未正式prepare/派角色。
 每次生产LLM请求仍由exact inbox的独立subagent处理；首答正确则typed镜像纠错标not_exercised，不追触发。
 最多6请求、512000逻辑reservation、131072/请求；0GET/labels/Signal apply，不恢复旧运行或启动完整后继。
 保6unknown/完整失败分母/上下文限制，不以0.8替代测量、最新Q1完整性或整体MVP关闭。

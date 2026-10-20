@@ -1,0 +1,49 @@
+{
+  "scope": "Actual historical canonical bootstrap and native final constructor only. Provenance helper mocked to avoid historical Git replay in this bounded constructor check. State decision set to finalize in memory only; no accepted/new role state, formal prepare, source store or model.",
+  "historical_bootstrap": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/preflight.json",
+    "sha256": "b89e499bfeb4d07a5464c152d675f1ad80040345c7122e85ada38db1db3615c6"
+  },
+  "code": {
+    "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+    "sha256": "b417da2c5150f5486c78745198b889a768ada308eaf695410133dd9c265239b7"
+  },
+  "wrong_already_assembled_shape_input_cards": 17,
+  "wrong_reassembled_output_cards": 0,
+  "canonical_bootstrap_input_cards": 17,
+  "canonical_output_cards": 17,
+  "native_masked_ids_text_times_exact": true,
+  "canonical_card_hash": "c525d290a42f9a936a6649998c81c49404a8e3b1e9ce219cb7beb16a001d58ed",
+  "source_index_hash": "64689d882e1c15358f9c82ff1fda7e06712c099d187db268808f91074a5da587",
+  "visible_counts": [
+    16,
+    1
+  ],
+  "omitted_counts": [
+    7,
+    0
+  ],
+  "projection_ids": [
+    "projection_f8d7793d8a50c9c91d62edc1",
+    "projection_d84bdae2cd1041d8970aaed9",
+    "projection_72c7dd5608b151dc514a11f5",
+    "projection_1a176aa5c11237ff05bbd475",
+    "projection_bc120412c765a8ad3d6afeba",
+    "projection_13e6480ddb0d6ae44577f7ea",
+    "projection_c363263f9720e19bd29d557f",
+    "projection_857e47898275a58b1c86dc0a",
+    "projection_661ec66810d9066226619755",
+    "projection_fd3d1caf13ac99d7a6654456",
+    "projection_f5e5258464d4602a2ffccc9e",
+    "projection_11e722831b03f2831c1c8d2d",
+    "projection_907da1a0881fb4891fdeaaf7",
+    "projection_53f0208217c26e1d3d9b97e2",
+    "projection_d5f66354c516bb7a572fd8b4",
+    "projection_7da50e986ef20021090aa4f8",
+    "projection_e885fe196b2d87d88a643882"
+  ],
+  "models": 0,
+  "GETs": 0,
+  "formal_prepare": false,
+  "LabelStore": false
+}

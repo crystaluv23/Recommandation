@@ -1,0 +1,124 @@
+{
+  "verdict": "PASS_bounded_prefreeze_review_no_remaining_concrete_blocker",
+  "scope": "One historical accepted seed; offline native boundary probes and read-only material/implementation review. No formal prepare, fresh role, GET, LabelStore, Signal apply, source append or global-store mutation.",
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "b417da2c5150f5486c78745198b889a768ada308eaf695410133dd9c265239b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "8bc1ce045ca79319e2de010ed52c9d9d5d8180c8caa77362ed687eefe340d242"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py",
+      "sha256": "5137c5326700ed06a3461f501c63ccc450ced85b4d53ed5093ab9f859ce71ef5"
+    }
+  ],
+  "independent_oracle": {
+    "path": "/Users/l/Project/Recommandation/reports/reviewed-owned-partial-expectations-20261020.json",
+    "sha256": "e5569e23a250ac0ac7e792459b9a0856b086f4d841e8842abc44e433235eae2f"
+  },
+  "oracle_material_review": {
+    "result": "The four actual Q2 financing spans support a partial historical answer, not full compound need4 closure.",
+    "supported": [
+      "During each six months ended June30,2025/2024, original term-loan repayment was $2.9m.",
+      "H1 2025 repurchases were 4.7m Class A shares/$28.7m, excluding excise-tax obligations.",
+      "No repurchases occurred in Q2 2025/2024; treasury shares were retired as of June30; authorization remaining was $50.1m.",
+      "Revolver availability was $50m at June30,2025; disclosed covenant compliance covers June30 and H1 only."
+    ],
+    "must_remain_unknown": [
+      "operating cash flow amount and capex",
+      "complete debt balances/maturity and covenant terms",
+      "compliance after the stated interim period",
+      "tax cash obligations",
+      "prospective equity dilution",
+      "direct annual-report reading"
+    ],
+    "no_overreach": "Historical debt repayment, treasury retirement, authorization and interim compliance do not establish future net dilution or complete compound need4. OCF domain_unavailable is an information limitation, not a negative cash-flow result. Needs0-3 must survive by occurrence. No unique hypothesis/decision/numeric Predictor answer is prescribed."
+  },
+  "provenance_and_blind_boundary_static_review": {
+    "oracle": "Every nested oracle binding is checked and retained; actual source_result and seed inputs/completion must equal declared exact path+SHA; body/review must belong to verified completed-source inventory.",
+    "historical_seed": "Parent checkpoint/raw/receipt/cache/historical code are verified by existing parent helper. Source-owner reads old prediction envelope only to export allowlisted baseline/computed-metric context; BasicInfo now uses canonical frozen preflight.model_context. Old prediction, final state, raw49/50 operations and oracle assertions are not exported.",
+    "no_truth_helper_call": "The imported module contains _qualified_truth, but this stage calls _parent_snapshot/_verified_responses only; no LabelStore/trajectory/score path is invoked.",
+    "native_flow": "Initial Reflect retains actual owner selections; optional one closure has empty owners/must_finalize. Accepted state/meta are persisted and reread, checked against their own prior, assembled into actual Predictor context, persisted sink reread, then exact immutable completion inventory/raw-receipt-cache validation. No wrapper fabricates an accepted research state.",
+    "restore_limits": "Completed restore is immutable inventory and native cached-answer validation, not OS interruption recovery or model-effect evidence."
+  },
+  "native_budget_counterexample": {
+    "implementation": "Real StructuredRoleClient/LocalRoleExchange/native Reflect parser and unique typed correction; offline fixture author only. Prior min behavior is recreated by clamping the real controller setter, not by executing an entire historical source file.",
+    "first_request": 92778,
+    "correction_request": 93709,
+    "sum": 186487,
+    "single_limit": 131072,
+    "reflect_available_case": 448000,
+    "prior_min_behavior": "One inbox/receipt then RuntimeBudgetExceeded although each request fits; correction was not dispatched.",
+    "current_behavior": "Two inboxes/receipts accepted, native usage2/186487, five needs retained.",
+    "oversized_request": 192778,
+    "oversized_behavior": "RuntimeBudgetExceeded at request_ready; receive has an assertion sentinel and was not called; zero inbox/receipt/counted calls.",
+    "full_probe": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/native-budget-results.json",
+      "sha256": "dff942a42d6db2fdacdbef4d7278f12aa23d17e83ad1402bfe89de3572f6e807"
+    }
+  },
+  "actual_BasicInfo_connection": {
+    "original_failure": "Feeding old final-context BasicInfo shape back into native assembler drops17 cards to0.",
+    "wire_is_not_canonical": "Initial journal has17 projections but anonymous ANON tokens; it is not directly copied or treated as canonical source.",
+    "current_positive": "Canonical frozen preflight.model_context has2 requests/17 projections; native assembler produces17, and full final basic_info equals historical final BasicInfo, including exact ID/text/time/order and visibility/omission source_index.",
+    "full_probe": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/basic-info-final-results.json",
+      "sha256": "a9972eaacd77eda9fade5b9102761a494599538574b4b9b939751796be15697b"
+    }
+  },
+  "reviewer_harness_errors_preserved": [
+    "The first oversized-only probe incorrectly passed messages to a private method; TypeError was a review harness error, not product failure.",
+    "The next oversized-only private-call probe lacked native stage dependencies and was rejected as such. The final probe uses the same real controller path for oversized and ordinary requests. Both original logs are retained."
+  ],
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/native-budget-probe.py",
+    "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/basic-info-final-probe.py"
+  ],
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/native-budget-probe.py",
+      "sha256": "c3523cf4c19f417a6000aa4425ddab3f6e0cba8db07f50e8f07b054a20296867"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/native-budget-original.log",
+      "sha256": "87ed366d9337a731183169ed92189ef8cdd15ef8996e0f7bb2bfdbe56f80c413"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/native-budget-harness-stage-contract.log",
+      "sha256": "dbc4fa722ef63c3c8f910485df11c884f605acd6160612760aaf6268b690ba2c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/native-budget-final.log",
+      "sha256": "dff942a42d6db2fdacdbef4d7278f12aa23d17e83ad1402bfe89de3572f6e807"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/native-budget-results.json",
+      "sha256": "dff942a42d6db2fdacdbef4d7278f12aa23d17e83ad1402bfe89de3572f6e807"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/basic-info-original-constructor-failure.json",
+      "sha256": "1bdc164ac4baa9f577e4b7434db7b2b00936e0448f89e81f615f9235d4c46375"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/basic-info-final-probe.py",
+      "sha256": "c3043fd86d996aabcd1ba91ca2c3966acb94ba662920805c5840ff4e154bc9de"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/basic-info-final.log",
+      "sha256": "a9972eaacd77eda9fade5b9102761a494599538574b4b9b939751796be15697b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/basic-info-final-results.json",
+      "sha256": "a9972eaacd77eda9fade5b9102761a494599538574b4b9b939751796be15697b"
+    }
+  ],
+  "limits": [
+    "No formal frozen plan or actual fresh inbox has yet been independently reviewed. Root authorization is still required for formal dispatch.",
+    "Offline old49/50 fixture replay proves native wiring/typed authority only; it does not prove fresh model compliance or require an induced correction.",
+    "Historical Signal results are seeds, not a fresh F6 execution. Fresh first-valid residual should leave correction branch not_exercised.",
+    "This is not source requalification, overall F7/F9/MVP closure, predictive accuracy or independent research gain."
+  ]
+}

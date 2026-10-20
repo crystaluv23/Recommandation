@@ -1,0 +1,28 @@
+{
+  "scope": "Pure native final constructor; no production prepare/GET/Store/labels/model. Historical prediction envelope source-owner read only for BasicInfo reference.",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "b417da2c5150f5486c78745198b889a768ada308eaf695410133dd9c265239b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "8bc1ce045ca79319e2de010ed52c9d9d5d8180c8caa77362ed687eefe340d242"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py",
+      "sha256": "5137c5326700ed06a3461f501c63ccc450ced85b4d53ed5093ab9f859ce71ef5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261020_v1/preflight.json",
+      "sha256": "b89e499bfeb4d07a5464c152d675f1ad80040345c7122e85ada38db1db3615c6"
+    }
+  ],
+  "old_final_reassembled_cards": 0,
+  "canonical_initial_projection_count": 17,
+  "new_final_projection_count": 17,
+  "full_basic_info_equal_old_final": true,
+  "projection_id_text_available_request_id_order_equal": true,
+  "source_index_counts_flags_omission_markers_equal": true,
+  "canonical_bootstrap_without_anonymous_wire_tokens": true
+}
