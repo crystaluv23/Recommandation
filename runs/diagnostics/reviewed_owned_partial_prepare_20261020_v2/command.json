@@ -1,0 +1,38 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/run_reviewed_owned_partial_stage.py",
+    "--prepare",
+    "--root",
+    "runs/diagnostics/reviewed_owned_partial_stage_20261020_v1",
+    "--expectations",
+    "reports/reviewed-owned-partial-expectations-20261020.json",
+    "--source-result",
+    "runs/diagnostics/reviewed_frozen_source_completion_20261020_v1/stage/result.json",
+    "--seed-commit",
+    "ddeae204566d2d9f9cce29de1ab535902ef46bd5"
+  ],
+  "cwd": "/Users/l/Project/Recommandation",
+  "PYTHONPATH": ".:src:scripts",
+  "head": "e09806a4c61d247449cf598adffc38b30a69194e",
+  "started_at_utc": "2026-10-20T01:40:01.978668+00:00",
+  "formal_root_absent_before_launch": true,
+  "inputs": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_reviewed_owned_partial_stage.py",
+      "sha256": "877578e8f17fa98cc11a7e41d71b3cae6a46fcac3300bd6bc07fa779178ecfaf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_reviewed_owned_partial_stage.md",
+      "sha256": "f34eddf40f5e0e7242082e9d3c629ec96461b706a726536670f8df7fc8f4662f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_owned_partial_stage.py",
+      "sha256": "4176a996dd16aa3488bbe6f314eb4c71e8433da9ba3c50755bf6134b2c0f1a82"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/reviewed-owned-partial-expectations-20261020.json",
+      "sha256": "e5569e23a250ac0ac7e792459b9a0856b086f4d841e8842abc44e433235eae2f"
+    }
+  ]
+}

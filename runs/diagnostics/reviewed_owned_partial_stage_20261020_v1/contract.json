@@ -1,0 +1,19 @@
+{
+  "actual_model_version": null,
+  "backend": "independent-subagent",
+  "expectations_hash": "1d7948dcaa20e63040774a9d24f2d4a56a1b8cbc1a385f00d225ba7962311b0a",
+  "fixed_denominator": 1,
+  "input_hash": "3c5656e55f446a856eaa4a5b9e0ec66c26ec1ad09a0d03bc8c40edec4e5f343b",
+  "limits": {
+    "finalization_reserve": 64000,
+    "max_case_llm_calls": 6,
+    "max_case_tokens": 512000,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_external_api_calls": 0,
+  "max_local_calls": 6,
+  "preflight_hash": "4e2856d0e27d3e94412c6fcbd992195fbedd253a1bac2897da573ae063225aa7",
+  "schema_version": "reviewed-owned-partial-stage-v1"
+}

@@ -1,0 +1,74 @@
+{
+  "status": "prepared_without_resume_or_dispatch",
+  "head": "e09806a4c61d247449cf598adffc38b30a69194e",
+  "exit": {
+    "exit_code": 0,
+    "wall_seconds": 25.983820875000003,
+    "finished_at_utc": "2026-10-20T01:40:27.963569+00:00"
+  },
+  "formal_root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1",
+  "manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/manifest.json",
+    "sha256": "c0f0a3bf3e50058df3a45d7113ce0b61278aad58ada93a92d44e1cebf35867b1"
+  },
+  "manifest_hash": "f1f9316ae2a1de5d21559fee7d04eddb9b28d6176fd1ba63205cdf343d41c7d3",
+  "contract": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/contract.json",
+    "sha256": "bb9a8f8389854cdb9c44b8fe4d2287fc8820ce71e58eb0b26c09dc65bf9b94e8"
+  },
+  "contract_hash": "dfb2c96d79e7ae0450f7bdbb187ea82ed5f50349823ee132f1e5a906e600ddb6",
+  "inputs": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/inputs.json",
+    "sha256": "bb0655415ce9242be06c58d04609f4220dbb0a38f3c8802df99664efd083e134"
+  },
+  "input_hash": "3c5656e55f446a856eaa4a5b9e0ec66c26ec1ad09a0d03bc8c40edec4e5f343b",
+  "expectations": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/expectations.json",
+    "sha256": "378b2a875ea9c0602c6a38c48c095a1baa9691d4c00bf70dceb850a90eff5d13"
+  },
+  "expectations_hash": "1d7948dcaa20e63040774a9d24f2d4a56a1b8cbc1a385f00d225ba7962311b0a",
+  "source_oracle": {
+    "path": "/Users/l/Project/Recommandation/reports/reviewed-owned-partial-expectations-20261020.json",
+    "sha256": "e5569e23a250ac0ac7e792459b9a0856b086f4d841e8842abc44e433235eae2f"
+  },
+  "preflight": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/preflight.json",
+    "sha256": "5f72d51e557fedd5a17395e27acdd6182e1cb784504378a8afb230dc7bfcf761"
+  },
+  "preflight_value": {
+    "historical_seed_not_new_F6": true,
+    "plan_hash": "703729317b9e48593a46711bab597d79aa01b2669a5e3a1da64869a9de39074b",
+    "prior_hash": "6c63db7d2061c8227eab1a323c4ec717a793c456004a4e16b5de03cdcc07b8d8",
+    "source_batch_hash": "08774683ffd6d8ab033b7f35f300da42d2941cc5e3fd515d8d613a4f90fddf04",
+    "source_documents": 1776
+  },
+  "code_bindings": 102,
+  "original_source_bindings": 6257,
+  "unique_bound_paths": 6264,
+  "all_bindings_current_equal": true,
+  "limits": {
+    "finalization_reserve": 64000,
+    "max_case_llm_calls": 6,
+    "max_case_tokens": 512000,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_local_calls": 6,
+  "max_external_api_calls": 0,
+  "formal_files": [
+    "contract.json",
+    "expectations.json",
+    "inputs.json",
+    "manifest.json",
+    "preflight.json"
+  ],
+  "request_journals": 0,
+  "inboxes": 0,
+  "receipts": 0,
+  "role_dispatches": 0,
+  "GETs": 0,
+  "labels_loaded": false,
+  "Signal_apply": 0,
+  "prepare_attempt_v1_failure_preserved": true
+}

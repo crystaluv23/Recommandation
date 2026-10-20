@@ -57,7 +57,7 @@ FTI原10-Q误标10-k仍拒，未重写旧type；MSannual旧/新时间冲突仍un
 ## 下一步
 
 来源stage已完成，不重入。下一最小阶段：历史合法prior/batch显式作seed，fresh Reflect→持久化→final context→fresh Predictor/sink。
-[单样本stage](../reports/reviewed-owned-partial-stage-20261020.md) 首prepare在plan/root前因str→Path接口失败、0角色；原失败保留。统一reader修复，12safe/实际5979来源绑定/独立复核过；待新冻结。
+[单样本stage](../reports/reviewed-owned-partial-stage-20261020.md) 首prepare路径失败保留；统一reader后12safe/实际5979绑定/独立复核过。新版prepare25.984s完成，plan f1f9316a/6264unique绑定全等、0角色，待新调用。
 每次生产LLM请求仍由exact inbox的独立subagent处理；首答正确则typed镜像纠错标not_exercised，不追触发。
 最多6请求、512000逻辑reservation、131072/请求；0GET/labels/Signal apply，不恢复旧运行或启动完整后继。
 保6unknown/完整失败分母/上下文限制，不以0.8替代测量、最新Q1完整性或整体MVP关闭。

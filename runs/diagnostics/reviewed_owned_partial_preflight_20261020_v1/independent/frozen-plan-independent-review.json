@@ -1,0 +1,42 @@
+{
+  "verdict": "PASS_frozen_inputs_only",
+  "manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_owned_partial_stage_20261020_v1/manifest.json",
+    "sha256": "c0f0a3bf3e50058df3a45d7113ce0b61278aad58ada93a92d44e1cebf35867b1"
+  },
+  "manifest_canonical_hash": "f1f9316ae2a1de5d21559fee7d04eddb9b28d6176fd1ba63205cdf343d41c7d3",
+  "formal_files": 5,
+  "source_original_bindings": 6257,
+  "code_bindings": 102,
+  "unique_current_SHA_verified": 6264,
+  "contract_limits": {
+    "finalization_reserve": 64000,
+    "max_case_llm_calls": 6,
+    "max_case_tokens": 512000,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_local_calls": 6,
+  "external_api_calls": 0,
+  "fixed_denominator": 1,
+  "oracle_report": {
+    "path": "/Users/l/Project/Recommandation/reports/reviewed-owned-partial-expectations-20261020.json",
+    "sha256": "e5569e23a250ac0ac7e792459b9a0856b086f4d841e8842abc44e433235eae2f"
+  },
+  "oracle_only_expectations_not_model_inputs": true,
+  "historical_exact_allowlist": "Plan/identity/cutoff, accepted initial prior, routing selections, exact financing:v5 and OCF:v2 first batch, canonical preflight BasicInfo, old computed/baseline metadata only. No old prediction/finalstate/49/50 operations exported.",
+  "canonical_BasicInfo_requests": 2,
+  "canonical_BasicInfo_projections": 17,
+  "view_documents": 1776,
+  "exact_current_body_quotes": 4,
+  "baseline_and_evaluation_anchor_exact_historical": true,
+  "history_seed_commit": "ddeae204566d2d9f9cce29de1ab535902ef46bd5",
+  "no_requests_or_exchange": true,
+  "scope": "Read-only files/stream SHA. Did not instantiate Store or execute stage helpers/prepare/resume/GET/models/labels. Old prediction envelope parsed only to compare explicitly allowlisted baseline/computed metadata; its prediction/final state were not used.",
+  "limits": [
+    "Legal native preflight is the frozen producer result checked against exact inputs and1776-member view; no independent Store reload in this audit.",
+    "Fresh Reflect/Predictor behavior, typed correction exercise, persistence and completed restore are not yet executed here. Does not close F7/F9/MVP or establish research benefit."
+  ],
+  "elapsed_seconds": 1.75004
+}

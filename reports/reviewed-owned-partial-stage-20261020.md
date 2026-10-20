@@ -54,3 +54,17 @@ Root additionally reads the actual completed source metadata and verifies all
 The [source-read review](../runs/diagnostics/reviewed_owned_partial_preflight_20261020_v1/independent/source-read-final-review.json)
 confirms no other adapter AST changed. This repair does not erase the failed
 prepare or prove fresh role behavior; the same sample, oracle and budget remain.
+
+Under e09806a4 the revised formal prepare completed in25.984s/exit0, preserving
+the first failure and using the same previously nonexistent formal destination.
+The new manifest canonical hash is
+`f1f9316ae2a1de5d21559fee7d04eddb9b28d6176fd1ba63205cdf343d41c7d3`;
+its6257 original/source and102 code rows cover6264 unique paths, all matching.
+The saved preflight verifies the1776-document view and exact historical prior/
+Plan/batch. Inputs contain canonical2-request/17-projection BasicInfo and the
+declared whitelist only. The five frozen files have no exchange/request/inbox/
+receipt yet; this successful preparation is not a fresh role or semantic result.
+
+The independent frozen-plan audit verifies every6264 unique binding and the exact
+input whitelist/17 canonical projections/four admitted quotes. Its verdict is
+PASS_frozen_inputs_only; no role behavior is established by that audit.
