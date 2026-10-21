@@ -1,0 +1,10 @@
+{
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-axis-results.json",
+    "sha256": "df9b0293e2d43feb77120fb79e30e5638868c43211a4d126968d9536a5059e82",
+    "bytes": 11708
+  },
+  "passed": 1,
+  "total": 1,
+  "mismatches": []
+}

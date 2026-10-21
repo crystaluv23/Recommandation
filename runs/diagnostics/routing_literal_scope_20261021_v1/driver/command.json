@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "runs/diagnostics/routing_literal_scope_20261021_v1/driver/probe.py"
+  ],
+  "cwd": "/Users/l/Project/Recommandation",
+  "script_sha256": "4e4000333e0a45fad0e5d4409ca5e17fd171db797fbb6c1079f385700d43d972",
+  "exit_code": 0,
+  "wall_seconds": 0.4070010185241699,
+  "environment": {
+    "PYTHONPATH": ".:src:scripts",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  }
+}

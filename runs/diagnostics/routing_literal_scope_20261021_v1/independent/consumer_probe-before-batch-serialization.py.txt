@@ -1,0 +1,42 @@
+"""Offline actual-disposition validator seam; no Controller or research execution."""
+import sys
+sys.dont_write_bytecode=True
+import argparse,hashlib,importlib.util,json,socket
+from pathlib import Path
+from datetime import datetime,timezone
+from contextlib import ExitStack
+from unittest.mock import patch
+from stock_opportunity_agent.research.evolution_core import ResearchState,ResearchEvidenceRef,SignalSelectionDecision
+from stock_opportunity_agent.signal_library import SignalResult,SignalValue,SignalCoverage,SignalEvidence,SignalBatchResult,SignalExecutor
+from stock_opportunity_agent.data.raw_info import RawInfoStore
+from stock_opportunity_agent.cases.label_store import LabelStore
+R=Path('/Users/l/Project/Recommandation');O=R/'runs/diagnostics/routing_literal_scope_20261021_v1/independent'
+def b(p):
+ s=p.read_bytes();return dict(path=str(p),sha256=hashlib.sha256(s).hexdigest(),bytes=len(s))
+p=argparse.ArgumentParser();p.add_argument('--source-file',type=Path,required=True);p.add_argument('--expected-sha',required=True);p.add_argument('--prefix',required=True);args=p.parse_args();assert b(args.source_file)['sha256']==args.expected_sha
+name='stock_opportunity_agent.research._independent_consumer_validation';sp=importlib.util.spec_from_file_location(name,args.source_file);m=importlib.util.module_from_spec(sp);sys.modules[name]=m;sp.loader.exec_module(m)
+f=O/'frozen-consumer-expectations.json';assert b(f)['sha256']=='00b05747d0834337b2eab846abb0958a23346ba2c922e46c0eecfd20bf1890b1';x=json.loads(f.read_text());out=[];trips=[]
+def forbidden(*a,**kw):trips.append('forbidden');raise AssertionError('forbidden effect')
+with ExitStack() as st:
+ for ob,method in ((socket,'socket'),(socket,'create_connection'),(RawInfoStore,'__init__'),(RawInfoStore,'append'),(LabelStore,'__init__'),(LabelStore,'load'),(LabelStore,'record'),(SignalExecutor,'execute_batch'),(SignalExecutor,'prepare_inputs')):st.enter_context(patch.object(ob,method,forbidden))
+ for c in x['controls']:
+  base=x['base_cases'][c['base']];need=base['target_need'];res=base['residual_need'];other='What customer qualification progress was disclosed by 2025-05-30?';prior=ResearchState(hypotheses=('Disclosure may affect funding continuity.',),next_information_needs=(need,other))
+  literal=('Orion Data disclosed binding offtake commitments on 2025-05-29.' if c['base']==0 else 'Carbon capture module disclosed binding offtake commitments on 2025-04-15.')
+  result=SignalResult(signal_id='order_confirmation_disclosed',version=3,value=SignalValue.POSITIVE,confidence=.7,interpretation='order_confirmation_disclosed=positive',coverage=SignalCoverage.SUFFICIENT,supporting_evidence=(SignalEvidence(document_id='synthetic-complete-operating-body',exact_span=literal,timestamp=datetime(2025,5,29,tzinfo=timezone.utc)),))
+  batch=SignalBatchResult(results=(result,),signal_calls=1);owner=1 if c['variant']=='wrong_owner' else 0
+  selection=SignalSelectionDecision(signal_ref=result.ref,reason_code='answer_need',selection_reason=base['selection_reason'],applicability_hypothesis='A current available synthetic disclosure can answer only its indexed scope.',expected_role='primary',context_tags=('general',),target_need_indices=(owner,),answer_scope='partial',residual_need=res)
+  unanswered=c['variant'].startswith('unanswered');scope='unanswered' if unanswered else 'partial';refs=[] if unanswered else [{'signal_ref':result.ref,'evidence_group':'supporting','evidence_index':0}]
+  adopted=() if unanswered else (ResearchEvidenceRef(kind='signal',claim=literal,signal_ref=result.ref,evidence_group='supporting',evidence_index=0),)
+  nextneeds=(need,other) if c['variant']=='unanswered_keep' else ((other,) if c['variant']=='unanswered_drop' else (res+(' Extra wording.' if c['variant']=='modified_mirror' else ''),other))
+  state=ResearchState(hypotheses=prior.hypotheses,supporting_evidence=adopted,next_information_needs=nextneeds)
+  row={'need_index':0,'answer_scope':scope,'residual_need':None if unanswered else res,'evidence_refs':refs,'reason':'The newly adopted literal answers only the stated object/disclosure interval; other target scope remains unresolved.' if not unanswered else 'No answer adopted; retain the original occurrence.'}
+  if c['variant']=='no_batch':batch=None
+  resultstate=None;error=None
+  try:resultstate=m._validate_research_state_refs(state,phase='reflect',previous_state=prior,batch=batch,selections=(selection,),need_dispositions=[row],evaluation_context={'prediction_time':'2025-05-30T00:00:00+00:00'})
+  except Exception as e:error={'type':type(e).__name__,'message':str(e),'issues':[{'code':i.code,'paths':list(i.paths),'message':i.message} for i in getattr(e,'issues',())]}
+  accepted=resultstate is not None;preserved=accepted and need in resultstate.next_information_needs
+  expected=c['expected_accept'];ok=(accepted and resultstate.next_information_needs==nextneeds) if expected else (not accepted or preserved)
+  out.append(dict(case_id=c['id'],expected_accept=expected,accepted=accepted,original_need_preserved=preserved,state_before=state.to_dict(),actual_dispositions=[row],selection=selection.to_dict(),batch=None if batch is None else batch.to_dict(),error=error,state_after=None if resultstate is None else resultstate.to_dict(),pass_=ok))
+ assert not trips
+report=dict(source=b(args.source_file),module_file=m.__file__,validator_code_file=m._validate_research_state_refs.__code__.co_filename,expectations=b(f),results=out,passed=sum(y['pass_'] for y in out),total=len(out),forbidden=trips,limits='Direct complete native ref/disposition/transition validator seam only; no Controller prompt/structured parser/Signal execution/Store/model. Prior and result explicitly synthetic, not accepted historical research.')
+dest=O/(args.prefix+'consumer-results.json');assert not dest.exists();dest.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps(dict(result=b(dest),passed=report['passed'],total=len(out),failures=[y['case_id'] for y in out if not y['pass_']]),indent=2));sys.exit(0 if all(y['pass_'] for y in out) else 1)

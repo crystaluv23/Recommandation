@@ -1,0 +1,24 @@
+status: 1
+
+Pre-push lint feedback
+timestamp_utc: 2026-10-21T17:17:43Z
+repo: /Users/l/Project/Recommandation
+command: scripts/lint_repo.sh
+
+Repository lint
+root: /Users/l/Project/Recommandation
+
+PASS: required meta and lint files exist
+FAIL: progress/status.md: current entry exceeds 100 lines; move history out
+FAIL: meta convergence check failed
+PASS: .githooks/pre-push is executable
+PASS: scripts/lint_repo.sh is executable
+PASS: git core.hooksPath is .githooks
+PASS: no merge conflict markers
+PASS: no trailing whitespace
+PASS: no hand-written outcome label constants
+PASS: local markdown links resolve
+
+Lint result: FAIL (1 issue(s))
+
+Push blocked: pre-push lint failed. Latest feedback: /Users/l/Project/Recommandation/.lint-feedback/pre-push-last.log

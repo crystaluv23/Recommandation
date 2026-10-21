@@ -1,0 +1,80 @@
+{
+  "reviewed_at_utc": "2026-10-21T01:50:27.473016+00:00",
+  "phase": "PRE_CANDIDATE_F7_CONSUMER_EXPECTATIONS_AND_BASELINE",
+  "candidate_read": false,
+  "scope_cases": {
+    "total": 19,
+    "positive": 5,
+    "negative": 14,
+    "original18_preserved": true,
+    "last_case": "n14_disjoint_but_target_middle_lost",
+    "last_case_not_run_on_new_roles_as_old_baseline": true
+  },
+  "consumer_cases": {
+    "total": 7,
+    "baseline_pass": 6,
+    "baseline_fail": [
+      "date_actual_partial"
+    ],
+    "object_actual_partial_accepted": true,
+    "unanswered_with_original_preserved_accepted": true,
+    "unanswered_without_original_rejected": true,
+    "no_batch_rejected": true,
+    "wrong_owner_rejected": true,
+    "modified_mirror_rejected": true
+  },
+  "specific_downstream_block": "Even with available executed synthetic batch, correct owner and newly adopted exact supporting tuple, date partial with exact residual mirror is rejected by _collect_need_dispositions near-total prior/residual token overlap. Narrowness of disclosure intervals is lost there too. Shared target partition proof may establish narrowness but never substitutes provenance/ownership/actual disposition authority.",
+  "native_scope": "Full _validate_research_state_refs validator seam from saved92ca module, including its actual disposition and transition checks. No Controller or parser claim. This does not emulate or modify actual GPRE research, prior state or Signal execution.",
+  "harness_error_preserved": "First consumer run finished its first native case but failed while serializing SignalBatchResult.to_dict (no such method). Old script/log preserved. Replaced reporting serialization with results[].to_dict plus signal_calls; no fixture/expected/native validation changes. First harness failure is not product red.",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/frozen-expectations-v3.json",
+      "sha256": "48ba8e81b326cb15b5302840c8236f49fa123848ea4f94a49bd929e2ecc2e927",
+      "bytes": 17510
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/frozen-consumer-expectations.json",
+      "sha256": "00b05747d0834337b2eab846abb0958a23346ba2c922e46c0eecfd20bf1890b1",
+      "bytes": 2801
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/consumer_probe.py",
+      "sha256": "36b1e3ccb3df11600e010048a5da6e60214e0c401d40482ef037d1a37f84221d",
+      "bytes": 6148
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/consumer_probe-before-batch-serialization.py.txt",
+      "sha256": "4bb9277453e467f6bab17f98c87478a60789e1716234477c4f41b8d58ae811c7",
+      "bytes": 6075
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-consumer.log",
+      "sha256": "373c43d34c06c7d29d5f490ddf7fcbf7d633ec59941364c67e3bc3ef1efc129c",
+      "bytes": 831
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-consumer-final.log",
+      "sha256": "c03e4b16234d9d519a50c0e9b4e67221b6a73c3d18c60802cee18c88bc39634e",
+      "bytes": 340
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-consumer-results.json",
+      "sha256": "46a3af42effa0f1c475e02011bc5ef6d87c71e265f627b339652a949ed597c88",
+      "bytes": 32480
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/root-cause-review.json",
+      "sha256": "2de7c57e48f78e08d8cd3de17891abe5d2efa76e59df5bf1eefbbb18a5097ef9",
+      "bytes": 8720
+    }
+  ],
+  "effects": {
+    "Store": 0,
+    "Signal_execution": 0,
+    "LLM_or_fresh_role": 0,
+    "network": 0,
+    "LabelStore": 0,
+    "formal_stage_entry": 0,
+    "product_edit": 0
+  }
+}

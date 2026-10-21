@@ -1,0 +1,151 @@
+{
+  "source_sha256": "a5ba1a7a3f078f8a0338e2c55e2910605346214cad8ade17968ac8e3f6721660",
+  "roles_sha256": "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1",
+  "review": "Root self-review of inherited predeclared independent controls; not a new independent reviewer or fresh model result",
+  "jobs": [
+    {
+      "name": "scope19",
+      "argv": [
+        "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/final_native_probe.py",
+        "--mode",
+        "candidate",
+        "--expected-sha",
+        "a5ba1a7a3f078f8a0338e2c55e2910605346214cad8ade17968ac8e3f6721660",
+        "--roleshash",
+        "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1",
+        "--casefile",
+        "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/frozen-expectations-v3.json",
+        "--casehash",
+        "48ba8e81b326cb15b5302840c8236f49fa123848ea4f94a49bd929e2ecc2e927",
+        "--output-prefix",
+        "root-current-20261022-scope19-",
+        "--skip-extras"
+      ],
+      "exit_code": 0,
+      "log": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261022_verification/scope19.log",
+      "log_sha256": "06a1b0ccb148148c9839476744f07328d0d82f54c9f5445a873d0e622df0670c"
+    },
+    {
+      "name": "prior14",
+      "argv": [
+        "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/final_native_probe.py",
+        "--mode",
+        "candidate",
+        "--expected-sha",
+        "a5ba1a7a3f078f8a0338e2c55e2910605346214cad8ade17968ac8e3f6721660",
+        "--roleshash",
+        "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1",
+        "--casefile",
+        "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases-v3.json",
+        "--casehash",
+        "6de09ea83f854dd541a65e1927e832e3a3b14dbe75b423c3020a2cf65790a258",
+        "--output-prefix",
+        "root-current-20261022-prior14-"
+      ],
+      "exit_code": 0,
+      "log": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261022_verification/prior14.log",
+      "log_sha256": "dafba97b1b265b34035f0bafa6bf526d50f2d3d5d7a98ca655bf8a83a91edb43"
+    },
+    {
+      "name": "supplement",
+      "argv": [
+        "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/final_native_probe.py",
+        "--mode",
+        "candidate",
+        "--expected-sha",
+        "a5ba1a7a3f078f8a0338e2c55e2910605346214cad8ade17968ac8e3f6721660",
+        "--roleshash",
+        "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1",
+        "--casefile",
+        "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/candidate-discovered-supplement.json",
+        "--casehash",
+        "a6300ad766d2e537f265ad32115562be45b947c23de0445a5d09cfec2cdd4b4d",
+        "--output-prefix",
+        "root-current-20261022-supplement-",
+        "--skip-extras"
+      ],
+      "exit_code": 0,
+      "log": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261022_verification/supplement.log",
+      "log_sha256": "5ad0e2d267a71f8892409f3f807f0e6b3c6b8db59a8f6cf5e4b2327305087ee8"
+    },
+    {
+      "name": "north-negative",
+      "argv": [
+        "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/final_native_probe.py",
+        "--mode",
+        "candidate",
+        "--expected-sha",
+        "a5ba1a7a3f078f8a0338e2c55e2910605346214cad8ade17968ac8e3f6721660",
+        "--roleshash",
+        "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1",
+        "--casefile",
+        "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/candidate-discovered-north-negative.json",
+        "--casehash",
+        "bb794b59e52bde9f98da9450e929137dcc0c3d3a97956e019764a59023d6d5d0",
+        "--output-prefix",
+        "root-current-20261022-north-negative-",
+        "--skip-extras"
+      ],
+      "exit_code": 0,
+      "log": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261022_verification/north-negative.log",
+      "log_sha256": "f3c94c8d89e5385fc5bf3b6bdcb870c35a86cad0616f04880a8fadf28347512d"
+    },
+    {
+      "name": "consumer",
+      "argv": [
+        "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/consumer_probe.py",
+        "--source-file",
+        "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+        "--expected-sha",
+        "a5ba1a7a3f078f8a0338e2c55e2910605346214cad8ade17968ac8e3f6721660",
+        "--prefix",
+        "root-current-20261022-"
+      ],
+      "exit_code": 0,
+      "log": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261022_verification/consumer.log",
+      "log_sha256": "fe5ca6184f45119b3f116a485227764ea076031998ce982ae8e258230b19dbeb"
+    },
+    {
+      "name": "connected",
+      "argv": [
+        "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/root/run-connected-checks.py"
+      ],
+      "exit_code": 0,
+      "log": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261022_verification/connected.log",
+      "log_sha256": "2cc5b2f96ff9501cf62aaf1200a5491d113d4dbf1475baa54ac4abe6d2957c01"
+    }
+  ],
+  "source_unchanged": true,
+  "roles_unchanged": true,
+  "passed": true,
+  "final_connected": {
+    "path": "runs/diagnostics/routing_literal_scope_20261022_verification/connected-final.log",
+    "tests_run": 300,
+    "passed": true
+  },
+  "review_type": "Root self-review, inherited predeclared independent controls; no new independent reviewer or fresh role",
+  "bindings": [
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "a5ba1a7a3f078f8a0338e2c55e2910605346214cad8ade17968ac8e3f6721660"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "sha256": "9453679f3e3970340f72a8ba066507433a8a3b6729b8173ab19610d8956b56dc"
+    },
+    {
+      "path": "tests/test_routing_literal_scope.py",
+      "sha256": "82b604f6c3cd51fe6ccf1b6d68143fd4f72be75896f09819fb47c57f6b8ba835"
+    }
+  ]
+}

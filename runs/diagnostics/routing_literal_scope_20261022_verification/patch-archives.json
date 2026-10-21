@@ -1,0 +1,16 @@
+[
+  {
+    "original": "runs/diagnostics/routing_literal_scope_20261021_v1/driver/candidate-0ce-before-common-descriptor.patch.txt",
+    "original_sha256": "354ad557e086ecb5721707241fd1963448b313cebd6b8d43a8b305026a371a55",
+    "archive": "runs/diagnostics/routing_literal_scope_20261021_v1/driver/candidate-0ce-before-common-descriptor.patch.txt.gz",
+    "archive_sha256": "10f36758f57a1cbfd5565c0bf9b9f996aa6483bfeceadbe7ed3b55c93c8c7e8a",
+    "note": "Exact bytes retained in gzip; original local text unchanged. Patch context blank lines must not be rewritten to satisfy repository trailing-whitespace lint."
+  },
+  {
+    "original": "runs/diagnostics/routing_literal_scope_20261021_v1/driver/candidate-1de2-before-ordered-subject.patch.txt",
+    "original_sha256": "8c69638f5f11873ee08f40dd12bd2c4e3de1bcec0217e47ba35bf0bf82d5bcc1",
+    "archive": "runs/diagnostics/routing_literal_scope_20261021_v1/driver/candidate-1de2-before-ordered-subject.patch.txt.gz",
+    "archive_sha256": "01f245ed28bfc51430d38ce7897ed4b640077752b4b3a792f3bd99b72c9f21bd",
+    "note": "Exact bytes retained in gzip; original local text unchanged. Patch context blank lines must not be rewritten to satisfy repository trailing-whitespace lint."
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "scope": "break complete object/facet attachment while keeping the same token bag; true literal partition must reject",
+  "target": "What binding offtake commitments for carbon capture module were disclosed within the 180-day window ending at prediction time, and what still-effective binding offtake commitments were disclosed before that window?",
+  "reason": "Check binding offtake commitments for carbon capture module disclosed within the 180-day window ending at prediction time.",
+  "residual": "Using disclosures available by 2025-05-30, establish still-effective binding offtake module for carbon capture commitments disclosed before the 180-day window.",
+  "expected_partition": false,
+  "observed": true,
+  "source_sha256": "1de2ea49f0785e75846442aaaa7fd9d02bff4f0b8dcc39c608154668905c53bc"
+}

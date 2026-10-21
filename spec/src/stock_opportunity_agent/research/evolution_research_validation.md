@@ -482,3 +482,34 @@ matches discovered while the prior occurrence is missing also require semantic
 correction; no fallback guesses which slot to delete or accepts restoration that
 hides that ambiguity. Reserved exact siblings and genuine coordinated facets are
 excluded. This is a narrow consistency rule, not general semantic need deduplication.
+
+## Literal object and disclosure-window partitions
+
+A private literal partition proof may distinguish coordinated target arms with
+the same repeated facet but different complete explicit objects, or the same
+facet/object disclosed within one complete target window versus strictly before
+that window. Explicit ISO date intervals require the same complete target
+endpoints. Merely different words, dates or window lengths do not prove a split:
+overlapping windows and omitted middle ranges remain invalid. Qualifiers must
+attach locally to the disclosure claim, not delivery timing, a negation, another
+sentence or an unrelated object. Every asserted occurrence must respect the
+partition; an answered arm cannot exempt another retained-arm claim. Ambiguous
+syntax remains unproved. This establishes literal attribution, not issuer-alias
+equivalence or economic completeness.
+
+Routing computes this one proof for both its earlier cosmetic-residual check
+and its shared-phrase check. Existing grounding, whole-word, modifier, cutoff,
+typed correction and context-fallback contracts remain independent. The global
+coordinated temporal-token helper is not broadened into a general scope parser.
+
+Actual Reflect partial dispositions may use the same proof with their authored
+disposition reason, or the accepted indexed partial selection's exact structural
+split when that residual is unchanged. The latter proves only the question's
+partition, never an answer. Exact current-batch evidence, newly adopted ownership,
+an actual partial disposition and PIT checks must still pass independently; a
+generic actual reason need not copy routing wording. A permitted changed need must be the exact mirror
+of that validated actual partial residual. Routing expectations alone, unanswered
+rows, absent/unavailable batches, wrong owners and changed mirrors grant no such
+exception. Other prior occurrences and untargeted needs retain their existing
+occurrence-aware preservation obligations. No evidence, answer, field or patch
+authority is synthesized by this proof.

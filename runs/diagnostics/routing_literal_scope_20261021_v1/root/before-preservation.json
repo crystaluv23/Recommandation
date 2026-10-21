@@ -1,0 +1,542 @@
+{
+  "scope": "original user deltas and previous completed stages/repair evidence; production helper/spec/tests recorded separately if later authorized to change",
+  "head": "096f02d752b4471f266e1e5be708efeebdc52c91",
+  "files": [
+    {
+      "path": "reports/routing-shared-object-repair-20261021.md",
+      "sha256": "59c49e187c02abcf19dc4d651264bd39361d6294a6c6de329a3a8f848dc52920"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v151/fast_summary.json",
+      "sha256": "441c565efda31b60453837ce8d405a951bcc19f6c8691604a3abc18710475c77"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v151/fast_trajectories.json",
+      "sha256": "4734ab1a71ee3c20231e38a860e8176bdc4976816c8019d674cd887b144dd140"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v182_integrated/cycle_state.json",
+      "sha256": "5619ac234153d2946c4d186e18a04043d4bf7e0739ae75859a6c91180fb00bf6"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v182_integrated/state.json",
+      "sha256": "e2cb3bbef7bfcfa62c4a1c218c181ac49796e6ebbd94851224ddbe1ed8dc2de9"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json",
+      "sha256": "455ca111aedd1f8e107de32b023f51ebb4003e3650bdd3ad980f8b15005090d2"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-native-review.json",
+      "sha256": "5df8021c85ac69817491247578409a17a11a26c7d9499bdea8af08766dfae463"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+      "sha256": "0bce2212dfad502f8ad7adf8ac36661ff3da8bc43cb735cef633f9f9663d8189"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/cache/responses/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+      "sha256": "0d968db42be05dfbc357f7d9092afc077e4c94c40707319372d7ce60acc3891a"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/completion.json",
+      "sha256": "58082055515d8809e51a0ba897378cc9fb39c4fc61c426867c514c44c0ab5ec0"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/contract.json",
+      "sha256": "83988f3e644cb8a4f1ef6fce0425660373736f80552950adf0698446d9a7454b"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/contract.json",
+      "sha256": "0d04e730b34258841a1fa4f2cf61896cfea1943a9bc7e828958a6326fce507f4"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/inbox/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+      "sha256": "bd54c8ea3b994e94b712cf0a02f10c713fc3f0f257062364d06a98664a7fddde"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/outbox/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.txt",
+      "sha256": "687ae13a4e3385e7442a38de00705e8b9f10992e12faf0babc2ddd0eb8dccde1"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/receipts/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+      "sha256": "649e00ed7c440d51ab3065fd21d4085c47d0ce31d080b3c8e9cb724a9050b7df"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/inputs.json",
+      "sha256": "a75322d2af9d2abc43d9f4b9479608e6630f38a72d0714bf4e8f37d81750a50f"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/manifest.json",
+      "sha256": "5b1d736a76fb7e7d8e31395d76cd0ee4d94463cb8ee90c1ae79ef7f8298e9570"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/request-reservations.json",
+      "sha256": "f0d805630476819f256cacd5fbac42fe4a1ddc3bbe1a68eb395f0b101c321cc5"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/requests/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+      "sha256": "37d7278086f6e4c3ee183f4fe227230a470e0647aacc648eaf8b68177d3592c7"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/bootstrap.json",
+      "sha256": "32ce837eaf66c7e8d20c41469ebca8120def925767a5176536fd825a580cd60e"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/initial_state.json",
+      "sha256": "9fdacbae3b14e3cf2cb42de3acabcf20ae584d4a8b18e11414b944f11480cab9"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/parsed_step.json",
+      "sha256": "563a9f29cbdfc86517efb32ee9cead0c04be3cac4326027d60405cf8e914012c"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/unused_external_attempts.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/actual-routing-review.json",
+      "sha256": "629e83e1231eb07ca3122269d7b9951f955fd05ceacd9b05b6c6175f5cc4c0da"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-budget-amendment.json",
+      "sha256": "f34cc8b2da4a3f8cecb6ed3851b75312b3004573b25097c5329b8d5c41e0f086"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-native-review.json",
+      "sha256": "9115654a1ef1b0bd238d4d1c95dc03962445a8c36dac06a0c183cad02231004d"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-routing-oracle.json",
+      "sha256": "9ba88dc139e18e0e50142ea68f17cfd73e76de56ae19dcf1f6d4c51facd930df"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/accepted-selection.json",
+      "sha256": "6dc28a13a4811968dbfcf05954abd8c574a773a331586a865322e9c126ef9ab3"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/cache/responses/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+      "sha256": "0049313285d1352399ceaefe152b5e88efb5f03debd0b54e22c96a28fac96bd1"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/completion.json",
+      "sha256": "2c0c476a4ec7d46e05e0a17ec45463fbcf5e0cd62e876d725e01144a5aa31ad4"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/contract.json",
+      "sha256": "43a4fd3cfaadfbba804fedb1e26fc181efaa9dd095d292e8bf0f9cad964e8e8c"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/exchange/contract.json",
+      "sha256": "0d04e730b34258841a1fa4f2cf61896cfea1943a9bc7e828958a6326fce507f4"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/exchange/inbox/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+      "sha256": "7404e51bc9b498d408b5fb90b6085ee7acb7d5bb068d981652a7628751656ff9"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/exchange/outbox/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.txt",
+      "sha256": "a388947bb9fbcabee75ee4445497a15545bf44649fc8fa4ce26e7554c794be91"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/exchange/receipts/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+      "sha256": "883f6946c0dd2b187fc5c84f961cf32c964a58e99d22e4fc626dc6e75c69cef9"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/inputs.json",
+      "sha256": "41397c612732ca3e81a71ec15758fcd80b770827fcf750d056650732f189e8d5"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/manifest.json",
+      "sha256": "03fd388f0a40e391b2da9fdf0df1057b48a6391f1c3244b121c4d361e01049aa"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/native-predictor-reservation.json",
+      "sha256": "44586883a92fdb61f0dbf35b1b6e60e0643a36722f8f4e1e192daad47a02a6bb"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/native-select-context.json",
+      "sha256": "2a11a7ade8ccd2b6d15fa0be5af4cde4a331d7284f6ff87a6881e16afac743f2"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/recomputed-bootstrap.json",
+      "sha256": "32ce837eaf66c7e8d20c41469ebca8120def925767a5176536fd825a580cd60e"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/request-reservations.json",
+      "sha256": "156dfe9c29d51131e824c3359c350dabc2985fed504627a40f9a7f366c38b45b"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/requests/3b4e9ca097b8a894319b9d665263d15d20ece751898522559b91e78c34e801be.json",
+      "sha256": "b9b33a90cea039afb673f8bc93c733603c70eea420462873a8c83d42420d51e0"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/requests/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+      "sha256": "43dc70285fe6a8cf3fd5f636fa3b6c394da09727f4a6114f252def6a51817bd6"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/routing-boundary.json",
+      "sha256": "19b48780ba2f6b1381e58d0f5f6a04275887646f83f5a9ce81e5447cc2edf10b"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/stage/unused_external_attempts.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    },
+    {
+      "path": "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/completed-files.json",
+      "sha256": "2b06a96555177a84df077fdc45698e29eca92f38607ff31450ac6e4c6d7e0720"
+    },
+    {
+      "path": "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/execution-start.json",
+      "sha256": "a50656f950bd00e491467ac5e0acafc740de4a64de9160e2d07576a1c3daf941"
+    },
+    {
+      "path": "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/observations.json",
+      "sha256": "0472edbe90bc4b0a6876aedde9328ba0ea281efe3328c9c15db0fa814380c228"
+    },
+    {
+      "path": "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/result.json",
+      "sha256": "bc5e9263a071691a30546d9d595e05d941aacae0aeafa8655e2fad0d7e887871"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/candidate-71731-helper.py",
+      "sha256": "d320bb8a07a0c4f9608d5c8f62bc41c719a602250a14520783ec936f0709f650"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/candidate-71731-sole-retained-head-red.json",
+      "sha256": "afff39362570d8be3bf53b1a09e10fcc28225f8636394ba41b0ee2da0471a33f"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/candidate-before-retained-head-fix.py.txt",
+      "sha256": "1e6bfe8548b2264bf5de1e9566a544ce32c4afceb7fcb087ab30c5753f732b0b"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/candidate-summary-before-snapshot-suffix.json",
+      "sha256": "9a798acbbd5806de1b832a6eb54009f98d8e0c7fda87f3a9fa3b79a5b67d6933"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/candidate-summary.json",
+      "sha256": "a5f74e362d1a9c33f1090c5e56d1e57f5a0120ca193394072aff138259e0da42"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-candidate-result.json",
+      "sha256": "3e851321ab1cc37b44bdd6970f3a803e6569109a43139d48ff018a1022f0492d"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-candidate-v2-result.json",
+      "sha256": "51cd30743499541dd2275effd065ce765e61f57a97c00d243e4d8ba8c128678c"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-candidate-v2.log",
+      "sha256": "a2d8c1a56b729cc2a895f1e2af3fcaa778213a0a3f372a2cc877126561c6ca5d"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-candidate.log",
+      "sha256": "fec06c27f09243a9a9ac716cb9badb5c8f64a50ca959e121bc30674ad0d69f6e"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-original-result.json",
+      "sha256": "799484be7f23291e9c9fabf0825291be6083b8420600fc9f6a1c7a6e71d34bb9"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-original.log.gz",
+      "sha256": "df39737571089eff9a44bdec62f4b4f66aded776483ddd18731f62c727f8b102"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-evolution_research_validation.md.txt",
+      "sha256": "595444a271fcfc4d9a7fac672db85827298bad3b05bf2d2f6392a1e23d9170b3"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-evolution_research_validation.py.txt",
+      "sha256": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-portfolio-replay-v2.json",
+      "sha256": "b97ef97bec6b753bd890b14fc095321b312c5ce5e72d78ebdad372f1723a384e"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-portfolio-replay-v2.log",
+      "sha256": "a47185e15c9b2979626f8f7fd1b059911b91ecd71a1be3dcf27997a1aae2cd24"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-portfolio-replay.json",
+      "sha256": "d9c9af527732850e4a092fda7c2b60bd80f2469610ae451be774b6d792b479e1"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-portfolio-replay.log",
+      "sha256": "70173fc97466167c5eb76029795ea43144bd5625c392fba9cfacf79f7cb5f614"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-test_evolution_routing_plan_roles.py.txt",
+      "sha256": "689b5099ecf6e9b4396e19974c7bab327df30a8c3041fe390c154e9a15873c3c"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/replay-original-portfolio-v2.py",
+      "sha256": "1c00afe35a2804b1f0095095bce194cda5c766b9283b2d55de539c320914ffd2"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/replay-original-portfolio.py",
+      "sha256": "ee76fe7728331af241c3f883dc491a82040c17e5cddd6889b14b86eb64d358b7"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/run-focused-v2.py",
+      "sha256": "83e504f9caf8cd0ca4c00712c0a3b380b80f5087c17a35bcd3289110b5e7ce6c"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/run-focused.py",
+      "sha256": "ad2fc203afae415ee3cce281be80e10ffc57fa3f3f21f6ce64e8245696938805"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/baseline-9ac-results.json",
+      "sha256": "d556d69074038a63d2b6c88c09874c4c1d3edcb69076ccbb0390084cb40d4351"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/baseline-9ac-typed-head-results.json",
+      "sha256": "79633731de6d3686c5b7f66d6e2e03351bd27a4a357e6b62008393960ec56ac4"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/baseline-9ac-typed-head.log",
+      "sha256": "72f88c9d0871192af605548a116af8af812a9a21d64e58ed9dda3c57c7f988dc"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/baseline-9ac.log",
+      "sha256": "f8d3850ce8e7faa36f8d9061714120889379d8c865ba860f9c1603cb958e43da"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-before-sole-head.py",
+      "sha256": "71731eab6ccb0d4567eedbb964de714780d296e58a49a23089aeb4ae5905675a"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-clockaligned-sole-head-baseline-9ac-results.json",
+      "sha256": "ecddd8eaf054cea857c144eb0a43606da96914b4624879bc6c5abca6bf09fe91"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-sole-clockaligned.log",
+      "sha256": "f106fe86cfaa7be50c043e1a7862ca9ff7156fd2dee7aff89035f072ff4c9bfe"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-sole-head-baseline-9ac-results.json",
+      "sha256": "4400c5bde8fee33967f4a42cdf7df348e38565c5132dcf175e0a9c3f62bc1c1e"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-sole-head.log",
+      "sha256": "9e6e09c68ebc7ad3480224a6b0d768f293d8bc9c105bec4f8a07e91366f1ee57"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-results.json",
+      "sha256": "ef2ea954a4d95dc595882dd02d8d4155f6bc53d8278cda9805c9c9016639e7b5"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-typed-head-results.json",
+      "sha256": "f0e38dac08755e6369e9e9986d5cd177a8cd036dde47225de6d3cf68bafb5b2c"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-typed-head.log",
+      "sha256": "e45fe2033107337a992c5b9a0aec097723d853abf315d1891cfef8c1cf657e55"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate.log",
+      "sha256": "63641980ef030f8b1974d806d27c2e3d5db11cb599422d8150984fb742787d1e"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate-results.json",
+      "sha256": "f932590d33ceea74ea820432d412ffc92c0afcaed37aa0e53f1fbeead83b4839"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate-sole-head.log",
+      "sha256": "ed196e5133fadabb03402f2f11b536d2343264cec535acd6c65579ee5d469798"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate-typed-head-results.json",
+      "sha256": "a7aa3ea9c15965a713f69b85f1ea4516c02cce66059dae4957c05e612029fc3a"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate-typed-head.log",
+      "sha256": "5ab3b52e5957758c34034294765e7d7472c6bea346e227609598de768ad63c74"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate.log",
+      "sha256": "699c9436c51ff0ee8f3b4133c705ead3b86aa7073ac0ab4ed326de72d14d145d"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-review-before-archive-wrapper.json",
+      "sha256": "f905a86cadbc808f56d5b2c61fa915cd4d1b8c08d1b22e13a9bb24d528b93ff3"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-review.json",
+      "sha256": "73b509e451189fd43ffe6c665016aded7bae15534edd6d1135250b46985caddc"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-sole-head-candidate-results.json",
+      "sha256": "4823f8ade7a0a0ba9bd64b99067bc06a626d8265cd2148974ea692baa40fc27e"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/finalize-review.log",
+      "sha256": "5b1eb03a5303eebc1703ef7883505c02fef8cfe5fa14ad17bb827845b9323489"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/finalize-review.py",
+      "sha256": "f8b08c4aaaff3bc8d23cf7840a66811ceb7ea0a6d91011aba167724dce0f4ee1"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/freeze-cases.log",
+      "sha256": "4c305523a5b951b4029f20cf5cbb41180a4e4478bc8a26c2c97a94689e7f1e27"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/freeze-cases.py",
+      "sha256": "8be212b045b92ddc6d4226e5fcfd87ec87aa4670f4a3e3d996b19baec645f726"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases-v2.json",
+      "sha256": "82b07b85c2365f0562c4b8c600ae5e080ccb0b2fd42b1a988446b6c7abe188a6"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases-v3.json",
+      "sha256": "6de09ea83f854dd541a65e1927e832e3a3b14dbe75b423c3020a2cf65790a258"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases.json",
+      "sha256": "c2d2c52500bea136c457e04e2e2a02cb89db67d1fc8ed7a1da2a088ede45bc31"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/original-9ac20df4-validation.py",
+      "sha256": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/probe-before-sole-clock-fix.py",
+      "sha256": "8669bb16763c308ae26fb8ac9129f21f2096adddaedbaea9111b85ec9f27e4cc"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/probe-before-sole-head.py",
+      "sha256": "868f8c77cb40421df8828483eab9903c667892f3f2290c2f7e1ce7d5764b9d89"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/probe-before-typed-head.py",
+      "sha256": "ca0162c6ccff194294723e24ed81e209134782246da81a13b6fe1917e83560c5"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/probe.py",
+      "sha256": "d37fb855fa9f17395d0cb6166e0a049be8e1790f22723e7807c7cc17c45752e2"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/rootexact-717-sole-head-baseline-9ac-results.json",
+      "sha256": "ecddd8eaf054cea857c144eb0a43606da96914b4624879bc6c5abca6bf09fe91"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/rootexact-717-sole-head.log",
+      "sha256": "95b788211207f29a3619c04757a8955337042542ae207b540c354c5f09b799ad"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/sole-retained-head-expectation-root-exact.json",
+      "sha256": "985ed32c8feb0bb7cc0c5ebc62a7d7d6d6f2f616af68d3f1e3699eeed4e9b662"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/sole-retained-head-expectation-v2.json",
+      "sha256": "9853249f5214aa3b2cfd6837e51383b364fc58efab1ced72458d4b17b62544d0"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/sole-retained-head-expectation.json",
+      "sha256": "e05ae492d6c18caf36b4203cc19ad45013f4b670209d6585637b66875eaa5c79"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/typed-head-attack-expectation.json",
+      "sha256": "16bb49a10c36363c3b6d695458e41909e45be9b5042d1d64b90db7262dcb5661"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/before-preservation.json",
+      "sha256": "a964d98a5159eb9350ba4de2bb2decee63b0121b647b6fef94588fd8bc9b230a"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/candidate-71731-connected-results.json",
+      "sha256": "289c649b36d90fff8a22a1c7df88b88c6c5d24dbbbf6f429730b6f7a2f37c244"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/candidate-71731-connected-tests.log",
+      "sha256": "7483a000427b127628dff753f35ef93c3fbf0edeb76113a27d5883b856b2b40b"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/connected-results.json",
+      "sha256": "2de8c421e3ed6c4b9c3a70f626f093289ad310e82037dcbd98ed5ba0b2e6ab0b"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/connected-tests.log",
+      "sha256": "71a6ffdada18ad2b2c188ff9b4fcd67746d6ee70df6cfb4c44dd0513362facc3"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/final-preservation.json",
+      "sha256": "59f7c8d2d94901dde678090efa7627c5a8befb141864389d19d29241781cf866"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/first-candidate-evolution_research_validation.py.txt",
+      "sha256": "1e6bfe8548b2264bf5de1e9566a544ce32c4afceb7fcb087ab30c5753f732b0b"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/first-connected-results.json",
+      "sha256": "e48051a57158edfab315a082d5bff7cda3e3dddc817b794ed17ebc2cf05c647b"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/first-connected-tests.log",
+      "sha256": "37e7f943af4a07730c2cf541197dc18b3a891ec838490cca5b60b6c8760dfda0"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/frozen-retained-heads.json",
+      "sha256": "2c8295f6c5aea3cca21200cb4382386801365de0930dd05565fb44854e34de85"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/log-archives.json",
+      "sha256": "f1e55f2e852d9211518010240bb976064052e2004d3d3c4c21ad4e30a8d5ec1f"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/pre-push-lint-first.log.gz",
+      "sha256": "5bfd2701b23b076cdda54e50c6cc0d8290edf080192af6b9d8c8d26090b07504"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/pre-push-lint.log",
+      "sha256": "005aca2a24df2971fc51773fde31cb0c5c4460f8b13bf968ace44607fcbbba80"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/pure-intermediate-14.json",
+      "sha256": "2ad3dd64197fe6f87541cb2b1bc296169fd20bbde6f7f5b5e97dea56f8b2b20c"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/retained-heads-first-candidate.json",
+      "sha256": "058abbeeb7428914366b23243b2e9f2ec8cc583b9e33cf22dd99aae5c1d8bb90"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/retained-heads-second-candidate.json",
+      "sha256": "c4c1df52011cd457ad715c094a01a898527476f767e5196433d995bd1d5a3a73"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/run-connected-checks.py",
+      "sha256": "2798d0198e479d7e74a01901a6fe81c01c4334ac38adc782a777b2d1c3eff775"
+    },
+    {
+      "path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/sole-retained-head-first-candidate.json",
+      "sha256": "25254d27ab4f0783d58fe374f887145a2427fe7cacdfbb259ec0dc4b20bace05"
+    },
+    {
+      "path": "spec/architecture.md",
+      "sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/memory/knowledge.md",
+      "sha256": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_control.md",
+      "sha256": "6551ca4ccffe2aaedb72d967d1905a40bd214206d93f794f3b73720c89222c83"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md",
+      "sha256": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/plan_evolution.md",
+      "sha256": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08"
+    }
+  ]
+}

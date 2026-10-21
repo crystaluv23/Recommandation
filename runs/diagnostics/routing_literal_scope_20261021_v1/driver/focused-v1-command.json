@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_routing_literal_scope",
+    "tests.test_evolution_routing_plan_roles.RoutingResidualFacetContrastTests",
+    "tests.test_evolution_routing_plan_roles.RoutingSharedObjectListContrastTests",
+    "tests.test_need_dispositions",
+    "-v"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 0.47991275787353516
+}

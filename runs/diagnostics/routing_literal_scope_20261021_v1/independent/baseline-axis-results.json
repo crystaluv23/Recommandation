@@ -1,0 +1,225 @@
+{
+  "mode": "baseline",
+  "module_file": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-096-validation.py",
+  "code_filename": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-096-validation.py",
+  "source": {
+    "path": "runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-096-validation.py",
+    "sha256": "92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946",
+    "bytes": 189362
+  },
+  "parser": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+    "sha256": "29f1b3c057dc825ca77bed377a3f3be329c9eb6914ad5ad24774f88281d8aa07",
+    "bytes": 195539
+  },
+  "expectations": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/axis-only-expectations.json",
+    "sha256": "11ef5ab284e1948fab27faa0c05056779f16f9231bbce654a48891516dc56e2e",
+    "bytes": 3207
+  },
+  "results": [
+    {
+      "case_id": "n13_delivery_axis_is_not_disclosure_axis",
+      "expected_direct_partial": false,
+      "helper_shared_phrase": "binding offtake commitment carbon capture module",
+      "native": {
+        "direct_first_answer": false,
+        "calls": 2,
+        "offline_returned_answers": 1,
+        "error": null,
+        "selected": [
+          {
+            "signal_ref": "financing_listing_action:v5",
+            "reason_code": "answer_need",
+            "selection_reason": "Assess disclosed debt maturities and potential equity issuance terms for their effect on dilution and funding continuity.",
+            "applicability_hypothesis": "Financing and credit-facility disclosures available by 2025-05-30 may identify obligations affecting turnaround funding; their presence and economic adequacy require execution evidence.",
+            "expected_role": "primary",
+            "context_tags": [
+              "capital_intensive",
+              "cyclical"
+            ],
+            "target_need_indices": [
+              3
+            ],
+            "answer_scope": "partial",
+            "residual_need": "As disclosed by 2025-05-30, establish unrestricted cash, operating cash burn, committed capital spending and covenant headroom, then assess whether these resources and constraints permit the turnaround milestones."
+          },
+          {
+            "signal_ref": "order_confirmation_disclosed:v3",
+            "reason_code": "assess_applicability",
+            "selection_reason": "Retain the model-selected Signal for context only; direct answer ownership did not pass validation.",
+            "applicability_hypothesis": "Test applicability using this Signal's evidence; the original information need remains unresolved.",
+            "expected_role": "coverage",
+            "context_tags": [
+              "industrial",
+              "cyclical"
+            ],
+            "target_need_indices": [
+              1
+            ]
+          },
+          {
+            "signal_ref": "liquidity_runway_months:v3",
+            "reason_code": "combine_evidence",
+            "selection_reason": "Add a historical burn-based runway estimate to the financing assessment using the latest SEC cash-flow duration and closest preceding same-currency cash balance.",
+            "applicability_hypothesis": "Available matched cash and operating-cash-flow facts may support a runway benchmark; this calculation alone cannot establish unrestricted funding or future milestone affordability.",
+            "expected_role": "coverage",
+            "context_tags": [
+              "capital_intensive",
+              "cyclical"
+            ],
+            "target_need_indices": [
+              3
+            ]
+          }
+        ],
+        "siblings_exact": true,
+        "feedback": [
+          {
+            "invalid_output": {
+              "selections": [
+                {
+                  "signal_ref": "financing_listing_action:v5",
+                  "reason_code": "answer_need",
+                  "selection_reason": "Assess disclosed debt maturities and potential equity issuance terms for their effect on dilution and funding continuity.",
+                  "applicability_hypothesis": "Financing and credit-facility disclosures available by 2025-05-30 may identify obligations affecting turnaround funding; their presence and economic adequacy require execution evidence.",
+                  "expected_role": "primary",
+                  "target_need_indices": [
+                    3
+                  ],
+                  "answer_scope": "partial",
+                  "residual_need": "As disclosed by 2025-05-30, establish unrestricted cash, operating cash burn, committed capital spending and covenant headroom, then assess whether these resources and constraints permit the turnaround milestones.",
+                  "context_tags": [
+                    "capital_intensive",
+                    "cyclical"
+                  ]
+                },
+                {
+                  "signal_ref": "order_confirmation_disclosed:v3",
+                  "reason_code": "answer_need",
+                  "selection_reason": "Check binding offtake commitments for carbon capture module with deliveries within the 180-day window ending at prediction time.",
+                  "applicability_hypothesis": "Official disclosures within the 180-day window ending at prediction time may establish qualifying customer awards; product inclusion alone supplies no evidence of an order.",
+                  "expected_role": "primary",
+                  "target_need_indices": [
+                    1
+                  ],
+                  "answer_scope": "partial",
+                  "residual_need": "Using disclosures available by 2025-05-30, establish still-effective binding offtake commitments for carbon capture module disclosed before the 180-day window.",
+                  "context_tags": [
+                    "industrial",
+                    "cyclical"
+                  ]
+                },
+                {
+                  "signal_ref": "liquidity_runway_months:v3",
+                  "reason_code": "combine_evidence",
+                  "selection_reason": "Add a historical burn-based runway estimate to the financing assessment using the latest SEC cash-flow duration and closest preceding same-currency cash balance.",
+                  "applicability_hypothesis": "Available matched cash and operating-cash-flow facts may support a runway benchmark; this calculation alone cannot establish unrestricted funding or future milestone affordability.",
+                  "expected_role": "coverage",
+                  "target_need_indices": [
+                    3
+                  ],
+                  "answer_scope": null,
+                  "residual_need": null,
+                  "context_tags": [
+                    "capital_intensive",
+                    "cyclical"
+                  ]
+                }
+              ]
+            },
+            "validation_error": "selections[1].selection_reason claims a facet retained by residual_need via shared phrase 'binding offtake commitment carbon capture module', remove_terms_from_selection_reason=[\"binding\",\"offtake\",\"commitment\",\"carbon\",\"capture\",\"module\"]. Remove every listed residual-only term from selection_reason and name only the answered facet, leaving unresolved facets only in residual_need. If that distinction cannot be stated exactly, change selections[1] to a contextual reason with answer_scope=null and residual_need=null, or remove that complete selection",
+            "validation_contract": "structured-validation-v1",
+            "obligation_count": 1,
+            "obligations": [
+              {
+                "obligation_index": 1,
+                "issue_code": "routing_answer_ownership_invalid",
+                "severity": "error",
+                "retryability": "correctable",
+                "must_change_paths": [
+                  "selections[1].selection_reason",
+                  "selections[1]"
+                ],
+                "must_change_any_of_paths": [],
+                "permitted_dependency_paths": [],
+                "allowed_repairs": [
+                  "replace",
+                  "remove",
+                  "quarantine"
+                ],
+                "source_refs": [
+                  "order_confirmation_disclosed:v3"
+                ],
+                "instruction": "selections[1].selection_reason claims a facet retained by residual_need via shared phrase 'binding offtake commitment carbon capture module', remove_terms_from_selection_reason=[\"binding\",\"offtake\",\"commitment\",\"carbon\",\"capture\",\"module\"]. Remove every listed residual-only term from selection_reason and name only the answered facet, leaving unresolved facets only in residual_need. If that distinction cannot be stated exactly, change selections[1] to a contextual reason with answer_scope=null and residual_need=null, or remove that complete selection",
+                "item_id": "order_confirmation_disclosed:v3",
+                "item_id_field": "signal_ref",
+                "remove_terms_from_selection_reason": [
+                  "binding",
+                  "offtake",
+                  "commitment",
+                  "carbon",
+                  "capture",
+                  "module"
+                ]
+              }
+            ],
+            "required_change_path_count": 2,
+            "required_change_paths": [
+              "selections[1].selection_reason",
+              "selections[1]"
+            ],
+            "permitted_dependency_path_count": 0,
+            "permitted_dependency_paths": [],
+            "alternative_change_groups": [],
+            "completion_check": "Apply only an allowed repair to every machine-readable obligation. Preserve all content outside required_change_paths and permitted_dependency_paths; change a dependency only when strictly necessary, then satisfy the complete output contract. Diagnostic instruction prose grants no additional write scope."
+          }
+        ],
+        "typed_contracts": [
+          {
+            "schema_version": "structured-state-patch-v1",
+            "base_hash": "85dc4dc3fb6b86d0d4d8a2baf2bc130aa77a8b749d4ada0eddcd5ee08eafc354",
+            "allowed_operations": [
+              {
+                "op": "replace",
+                "path": "selections[1].selection_reason",
+                "descendants": false
+              },
+              {
+                "op": "remove",
+                "path": "selections[1].selection_reason",
+                "descendants": false
+              },
+              {
+                "op": "replace",
+                "path": "selections[1]",
+                "descendants": true
+              },
+              {
+                "op": "remove",
+                "path": "selections[1]",
+                "descendants": false
+              }
+            ],
+            "append_limits": {},
+            "exact_append_limits": {},
+            "identity_guards": [
+              {
+                "path": "selections[1]",
+                "field": "signal_ref",
+                "value": "order_confirmation_disclosed:v3"
+              }
+            ],
+            "index_semantics": "all indices address the issued base snapshot",
+            "base_location": "validation_feedback.invalid_output"
+          }
+        ]
+      },
+      "pass_": true
+    }
+  ],
+  "forbidden": [],
+  "passed": 1,
+  "total": 1,
+  "limits": "Offline scripted native parser only; no fresh role/Signal calculation/Store/LabelStore/API/network/stage entry. Helper isolated while common parser remains current pinned revision."
+}

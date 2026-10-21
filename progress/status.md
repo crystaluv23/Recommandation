@@ -1,6 +1,6 @@
 # 当前状态
 
-更新：2026-10-21。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛。
+更新：2026-10-22。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛。
 独立预测收益是后续里程碑、未知；生产 LLM 节点由 exact inbox/outbox 独立 subagent 处理，外部 LLM API 调用0。
 公开资料只读取证已授权；累计147 managed-provider GET（115行情、32SEC），本轮新增0。
 另公开web取证累计2search/4queries、9web导航+1browser导航尝试，底层HTTP数未知，不混入provider计数。host模型tokens/费用及资料成本未测量。
@@ -57,6 +57,8 @@ shared产品名UHP被误当residual-only，54598纠错请求超过18995余量未
 既保合法partial，又阻“按纠错删产品名仍认领premiums”；唯一短head残余漏门另补，旧候选失败保留。
 242关联通过；独立原14控核心4正/8负通过，另2个不同对象/不重叠披露窗正控仍误拒，不报14/14或fresh通过。
 FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/unknown不等于无事件。
+[literal范围修复](../reports/routing-literal-scope-repair-20261022.md)局部关闭两误拒，连接routing两gate与owned partial精确残余；保持完整目标对象/窗口/词序、PIT/typed权限。
+旧独立final属1de2；root当前a5ba复验scope19/19、原14/14+typed、补充2/2、反例1/1、consumer7/7和300关联，134原件保真；非新版独立fresh审查，原native0/1保持。
 [案例边界](../reports/case-scope-and-blind-boundary-20261020.md)：fresh40=16Anchor+8Random+16Discovery，Fast24；
 旧48无清单支持，不推剩余8为LockedTest。失败分母、标签、身份屏蔽与LockedTest保持。
 
@@ -90,8 +92,9 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   value/val、期间/单位/冲突及派生关系连接已修，原0671现在19facts逐literal核真；102关联/独立21×2及日期7控过。
   H1改共享row级合法pair存在性，205关联及独立控制过；实际dev8/qualified1780的24目录项/计数未变，观察增益0。
   legacy Fact leaf丢taxonomy的真实错配仍open；可选taxonomy字段/原文索引方案待答，不默改schema或启动Mining能力stage。
-- 下一诊断routing同facet不同明示对象/不重叠披露窗两误拒；保原0/1及原答，局部修复不等新模型遵循，不重入completed stage或重置预算。
+- routing两literal范围误拒已局部修复，停止继续词面补丁；保原0/1及原答，局部修复不等新模型遵循，不重入completed stage或重置预算。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
-  有界LLM阅读接口、gross_margin/revenue_acceleration期间定义也待设计决策；不由现有结果倒推答案。
+  已请用户选择有界LLM阅读（每Signal最多4角色请求、仍守case预算）与可选taxonomy/原文查询两方案；答复前不改接口/schema。
+  gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
 - 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

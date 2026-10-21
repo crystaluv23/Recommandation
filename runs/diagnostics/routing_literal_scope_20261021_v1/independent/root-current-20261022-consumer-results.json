@@ -1,0 +1,754 @@
+{
+  "source": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+    "sha256": "a5ba1a7a3f078f8a0338e2c55e2910605346214cad8ade17968ac8e3f6721660",
+    "bytes": 199150
+  },
+  "module_file": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+  "validator_code_file": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+  "expectations": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/frozen-consumer-expectations.json",
+    "sha256": "00b05747d0834337b2eab846abb0958a23346ba2c922e46c0eecfd20bf1890b1",
+    "bytes": 2801
+  },
+  "results": [
+    {
+      "case_id": "object_actual_partial",
+      "expected_accept": true,
+      "accepted": true,
+      "original_need_preserved": false,
+      "state_before": {
+        "hypotheses": [
+          "Disclosure may affect funding continuity."
+        ],
+        "current_beliefs": [],
+        "supporting_evidence": [
+          {
+            "kind": "signal",
+            "claim": "Orion Data disclosed binding offtake commitments on 2025-05-29.",
+            "signal_ref": "order_confirmation_disclosed:v3",
+            "evidence_group": "supporting",
+            "evidence_index": 0
+          }
+        ],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+          "What customer qualification progress was disclosed by 2025-05-30?"
+        ],
+        "decision": "continue"
+      },
+      "actual_dispositions": [
+        {
+          "need_index": 0,
+          "answer_scope": "partial",
+          "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+          "evidence_refs": [
+            {
+              "signal_ref": "order_confirmation_disclosed:v3",
+              "evidence_group": "supporting",
+              "evidence_index": 0
+            }
+          ],
+          "reason": "The newly adopted literal answers only the stated object/disclosure interval; other target scope remains unresolved."
+        }
+      ],
+      "selection": {
+        "signal_ref": "order_confirmation_disclosed:v3",
+        "reason_code": "answer_need",
+        "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+        "applicability_hypothesis": "A current available synthetic disclosure can answer only its indexed scope.",
+        "expected_role": "primary",
+        "context_tags": [
+          "general"
+        ],
+        "target_need_indices": [
+          0
+        ],
+        "answer_scope": "partial",
+        "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments."
+      },
+      "batch": {
+        "results": [
+          {
+            "signal_id": "order_confirmation_disclosed",
+            "version": 3,
+            "state": {
+              "value": "positive",
+              "confidence": 0.7
+            },
+            "interpretation": {
+              "summary": "order_confirmation_disclosed=positive"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "synthetic-complete-operating-body",
+                  "exact_span": "Orion Data disclosed binding offtake commitments on 2025-05-29.",
+                  "timestamp": "2025-05-29T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            }
+          }
+        ],
+        "signal_calls": 1
+      },
+      "error": null,
+      "state_after": {
+        "hypotheses": [
+          "Disclosure may affect funding continuity."
+        ],
+        "current_beliefs": [],
+        "supporting_evidence": [
+          {
+            "kind": "signal",
+            "claim": "Orion Data disclosed binding offtake commitments on 2025-05-29.",
+            "signal_ref": "order_confirmation_disclosed:v3",
+            "evidence_group": "supporting",
+            "evidence_index": 0
+          }
+        ],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+          "What customer qualification progress was disclosed by 2025-05-30?"
+        ],
+        "decision": "continue"
+      },
+      "pass_": true
+    },
+    {
+      "case_id": "date_actual_partial",
+      "expected_accept": true,
+      "accepted": true,
+      "original_need_preserved": false,
+      "state_before": {
+        "hypotheses": [
+          "Disclosure may affect funding continuity."
+        ],
+        "current_beliefs": [],
+        "supporting_evidence": [
+          {
+            "kind": "signal",
+            "claim": "Carbon capture module disclosed binding offtake commitments on 2025-04-15.",
+            "signal_ref": "order_confirmation_disclosed:v3",
+            "evidence_group": "supporting",
+            "evidence_index": 0
+          }
+        ],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "Using disclosures available by 2025-05-30, establish still-effective carbon capture module binding offtake commitments disclosed before 2025-01-01.",
+          "What customer qualification progress was disclosed by 2025-05-30?"
+        ],
+        "decision": "continue"
+      },
+      "actual_dispositions": [
+        {
+          "need_index": 0,
+          "answer_scope": "partial",
+          "residual_need": "Using disclosures available by 2025-05-30, establish still-effective carbon capture module binding offtake commitments disclosed before 2025-01-01.",
+          "evidence_refs": [
+            {
+              "signal_ref": "order_confirmation_disclosed:v3",
+              "evidence_group": "supporting",
+              "evidence_index": 0
+            }
+          ],
+          "reason": "The newly adopted literal answers only the stated object/disclosure interval; other target scope remains unresolved."
+        }
+      ],
+      "selection": {
+        "signal_ref": "order_confirmation_disclosed:v3",
+        "reason_code": "answer_need",
+        "selection_reason": "Check carbon capture module binding offtake commitments disclosed from 2025-01-01 through 2025-05-30.",
+        "applicability_hypothesis": "A current available synthetic disclosure can answer only its indexed scope.",
+        "expected_role": "primary",
+        "context_tags": [
+          "general"
+        ],
+        "target_need_indices": [
+          0
+        ],
+        "answer_scope": "partial",
+        "residual_need": "Using disclosures available by 2025-05-30, establish still-effective carbon capture module binding offtake commitments disclosed before 2025-01-01."
+      },
+      "batch": {
+        "results": [
+          {
+            "signal_id": "order_confirmation_disclosed",
+            "version": 3,
+            "state": {
+              "value": "positive",
+              "confidence": 0.7
+            },
+            "interpretation": {
+              "summary": "order_confirmation_disclosed=positive"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "synthetic-complete-operating-body",
+                  "exact_span": "Carbon capture module disclosed binding offtake commitments on 2025-04-15.",
+                  "timestamp": "2025-05-29T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            }
+          }
+        ],
+        "signal_calls": 1
+      },
+      "error": null,
+      "state_after": {
+        "hypotheses": [
+          "Disclosure may affect funding continuity."
+        ],
+        "current_beliefs": [],
+        "supporting_evidence": [
+          {
+            "kind": "signal",
+            "claim": "Carbon capture module disclosed binding offtake commitments on 2025-04-15.",
+            "signal_ref": "order_confirmation_disclosed:v3",
+            "evidence_group": "supporting",
+            "evidence_index": 0
+          }
+        ],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "Using disclosures available by 2025-05-30, establish still-effective carbon capture module binding offtake commitments disclosed before 2025-01-01.",
+          "What customer qualification progress was disclosed by 2025-05-30?"
+        ],
+        "decision": "continue"
+      },
+      "pass_": true
+    },
+    {
+      "case_id": "unanswered_preserves_original",
+      "expected_accept": true,
+      "accepted": true,
+      "original_need_preserved": true,
+      "state_before": {
+        "hypotheses": [
+          "Disclosure may affect funding continuity."
+        ],
+        "current_beliefs": [],
+        "supporting_evidence": [],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+          "What customer qualification progress was disclosed by 2025-05-30?"
+        ],
+        "decision": "continue"
+      },
+      "actual_dispositions": [
+        {
+          "need_index": 0,
+          "answer_scope": "unanswered",
+          "residual_need": null,
+          "evidence_refs": [],
+          "reason": "No answer adopted; retain the original occurrence."
+        }
+      ],
+      "selection": {
+        "signal_ref": "order_confirmation_disclosed:v3",
+        "reason_code": "answer_need",
+        "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+        "applicability_hypothesis": "A current available synthetic disclosure can answer only its indexed scope.",
+        "expected_role": "primary",
+        "context_tags": [
+          "general"
+        ],
+        "target_need_indices": [
+          0
+        ],
+        "answer_scope": "partial",
+        "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments."
+      },
+      "batch": {
+        "results": [
+          {
+            "signal_id": "order_confirmation_disclosed",
+            "version": 3,
+            "state": {
+              "value": "positive",
+              "confidence": 0.7
+            },
+            "interpretation": {
+              "summary": "order_confirmation_disclosed=positive"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "synthetic-complete-operating-body",
+                  "exact_span": "Orion Data disclosed binding offtake commitments on 2025-05-29.",
+                  "timestamp": "2025-05-29T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            }
+          }
+        ],
+        "signal_calls": 1
+      },
+      "error": null,
+      "state_after": {
+        "hypotheses": [
+          "Disclosure may affect funding continuity."
+        ],
+        "current_beliefs": [],
+        "supporting_evidence": [],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+          "What customer qualification progress was disclosed by 2025-05-30?"
+        ],
+        "decision": "continue"
+      },
+      "pass_": true
+    },
+    {
+      "case_id": "unanswered_cannot_delete_original",
+      "expected_accept": false,
+      "accepted": false,
+      "original_need_preserved": false,
+      "state_before": {
+        "hypotheses": [
+          "Disclosure may affect funding continuity."
+        ],
+        "current_beliefs": [],
+        "supporting_evidence": [],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "What customer qualification progress was disclosed by 2025-05-30?"
+        ],
+        "decision": "continue"
+      },
+      "actual_dispositions": [
+        {
+          "need_index": 0,
+          "answer_scope": "unanswered",
+          "residual_need": null,
+          "evidence_refs": [],
+          "reason": "No answer adopted; retain the original occurrence."
+        }
+      ],
+      "selection": {
+        "signal_ref": "order_confirmation_disclosed:v3",
+        "reason_code": "answer_need",
+        "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+        "applicability_hypothesis": "A current available synthetic disclosure can answer only its indexed scope.",
+        "expected_role": "primary",
+        "context_tags": [
+          "general"
+        ],
+        "target_need_indices": [
+          0
+        ],
+        "answer_scope": "partial",
+        "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments."
+      },
+      "batch": {
+        "results": [
+          {
+            "signal_id": "order_confirmation_disclosed",
+            "version": 3,
+            "state": {
+              "value": "positive",
+              "confidence": 0.7
+            },
+            "interpretation": {
+              "summary": "order_confirmation_disclosed=positive"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "synthetic-complete-operating-body",
+                  "exact_span": "Orion Data disclosed binding offtake commitments on 2025-05-29.",
+                  "timestamp": "2025-05-29T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            }
+          }
+        ],
+        "signal_calls": 1
+      },
+      "error": {
+        "type": "StructuredValidationError",
+        "message": "research_controller_reflect violated the supplied need transition contract: {'prior_state_path': 'next_information_needs[0]', 'value': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'issue': 'untargeted need changed or was removed', 'required_action': 'restore_exactly', 'required_need': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'required_need_occurrences': 1}. Preserve every untargeted prior need exactly",
+        "issues": [
+          {
+            "code": "research_need_transition_invalid",
+            "paths": [
+              "next_information_needs[0]"
+            ],
+            "message": "research_controller_reflect violated the supplied need transition contract: {'prior_state_path': 'next_information_needs[0]', 'value': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'issue': 'untargeted need changed or was removed', 'required_action': 'restore_exactly', 'required_need': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'required_need_occurrences': 1}. Preserve every untargeted prior need exactly"
+          }
+        ]
+      },
+      "state_after": null,
+      "pass_": true
+    },
+    {
+      "case_id": "no_current_batch_not_actual_answer",
+      "expected_accept": false,
+      "accepted": false,
+      "original_need_preserved": false,
+      "state_before": {
+        "hypotheses": [
+          "Disclosure may affect funding continuity."
+        ],
+        "current_beliefs": [],
+        "supporting_evidence": [
+          {
+            "kind": "signal",
+            "claim": "Orion Data disclosed binding offtake commitments on 2025-05-29.",
+            "signal_ref": "order_confirmation_disclosed:v3",
+            "evidence_group": "supporting",
+            "evidence_index": 0
+          }
+        ],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+          "What customer qualification progress was disclosed by 2025-05-30?"
+        ],
+        "decision": "continue"
+      },
+      "actual_dispositions": [
+        {
+          "need_index": 0,
+          "answer_scope": "partial",
+          "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+          "evidence_refs": [
+            {
+              "signal_ref": "order_confirmation_disclosed:v3",
+              "evidence_group": "supporting",
+              "evidence_index": 0
+            }
+          ],
+          "reason": "The newly adopted literal answers only the stated object/disclosure interval; other target scope remains unresolved."
+        }
+      ],
+      "selection": {
+        "signal_ref": "order_confirmation_disclosed:v3",
+        "reason_code": "answer_need",
+        "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+        "applicability_hypothesis": "A current available synthetic disclosure can answer only its indexed scope.",
+        "expected_role": "primary",
+        "context_tags": [
+          "general"
+        ],
+        "target_need_indices": [
+          0
+        ],
+        "answer_scope": "partial",
+        "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments."
+      },
+      "batch": null,
+      "error": {
+        "type": "StructuredValidationError",
+        "message": "supporting_evidence[0] cited Signal 'order_confirmation_disclosed:v3' outside the current batch; use one exact signal_ref supplied by signal_batch; Evidence tuple must be unique, available, in the executed batch and newly adopted by current state; author an actual disposition, never infer it from routing scope or measurement coverage; research_controller_reflect violated the supplied need transition contract: {'prior_state_path': 'next_information_needs[0]', 'value': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'issue': 'untargeted need changed or was removed', 'required_action': 'restore_exactly', 'required_need': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'required_need_occurrences': 1}. Preserve every untargeted prior need exactly",
+        "issues": [
+          {
+            "code": "signal_reference_unknown",
+            "paths": [
+              "supporting_evidence[0].signal_ref",
+              "supporting_evidence[0].evidence_group",
+              "supporting_evidence[0].evidence_index"
+            ],
+            "message": "supporting_evidence[0] cited Signal 'order_confirmation_disclosed:v3' outside the current batch; use one exact signal_ref supplied by signal_batch"
+          },
+          {
+            "code": "research_need_disposition_invalid",
+            "paths": [
+              "need_dispositions[0].evidence_refs[0]"
+            ],
+            "message": "Evidence tuple must be unique, available, in the executed batch and newly adopted by current state; author an actual disposition, never infer it from routing scope or measurement coverage"
+          },
+          {
+            "code": "research_need_transition_invalid",
+            "paths": [
+              "next_information_needs[0]"
+            ],
+            "message": "research_controller_reflect violated the supplied need transition contract: {'prior_state_path': 'next_information_needs[0]', 'value': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'issue': 'untargeted need changed or was removed', 'required_action': 'restore_exactly', 'required_need': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'required_need_occurrences': 1}. Preserve every untargeted prior need exactly"
+          }
+        ]
+      },
+      "state_after": null,
+      "pass_": true
+    },
+    {
+      "case_id": "wrong_owner_tuple_not_actual_answer",
+      "expected_accept": false,
+      "accepted": false,
+      "original_need_preserved": false,
+      "state_before": {
+        "hypotheses": [
+          "Disclosure may affect funding continuity."
+        ],
+        "current_beliefs": [],
+        "supporting_evidence": [
+          {
+            "kind": "signal",
+            "claim": "Orion Data disclosed binding offtake commitments on 2025-05-29.",
+            "signal_ref": "order_confirmation_disclosed:v3",
+            "evidence_group": "supporting",
+            "evidence_index": 0
+          }
+        ],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+          "What customer qualification progress was disclosed by 2025-05-30?"
+        ],
+        "decision": "continue"
+      },
+      "actual_dispositions": [
+        {
+          "need_index": 0,
+          "answer_scope": "partial",
+          "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+          "evidence_refs": [
+            {
+              "signal_ref": "order_confirmation_disclosed:v3",
+              "evidence_group": "supporting",
+              "evidence_index": 0
+            }
+          ],
+          "reason": "The newly adopted literal answers only the stated object/disclosure interval; other target scope remains unresolved."
+        }
+      ],
+      "selection": {
+        "signal_ref": "order_confirmation_disclosed:v3",
+        "reason_code": "answer_need",
+        "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+        "applicability_hypothesis": "A current available synthetic disclosure can answer only its indexed scope.",
+        "expected_role": "primary",
+        "context_tags": [
+          "general"
+        ],
+        "target_need_indices": [
+          1
+        ],
+        "answer_scope": "partial",
+        "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments."
+      },
+      "batch": {
+        "results": [
+          {
+            "signal_id": "order_confirmation_disclosed",
+            "version": 3,
+            "state": {
+              "value": "positive",
+              "confidence": 0.7
+            },
+            "interpretation": {
+              "summary": "order_confirmation_disclosed=positive"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "synthetic-complete-operating-body",
+                  "exact_span": "Orion Data disclosed binding offtake commitments on 2025-05-29.",
+                  "timestamp": "2025-05-29T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            }
+          }
+        ],
+        "signal_calls": 1
+      },
+      "error": {
+        "type": "StructuredValidationError",
+        "message": "This row has no direct-answer ownership; remove it without reindexing. Allowed prior need indices are [1]; missing targets have separate append obligations; Missing actual disposition for prior need index 1; append its one row; author an actual disposition, never infer it from routing scope or measurement coverage; research_controller_reflect violated the supplied need transition contract: {'prior_state_path': 'next_information_needs[0]', 'value': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'issue': 'untargeted need changed or was removed', 'required_action': 'restore_exactly', 'required_need': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'required_need_occurrences': 1}. Preserve every untargeted prior need exactly",
+        "issues": [
+          {
+            "code": "research_need_disposition_invalid",
+            "paths": [
+              "need_dispositions[0]"
+            ],
+            "message": "This row has no direct-answer ownership; remove it without reindexing. Allowed prior need indices are [1]; missing targets have separate append obligations"
+          },
+          {
+            "code": "research_need_disposition_invalid",
+            "paths": [
+              "need_dispositions"
+            ],
+            "message": "Missing actual disposition for prior need index 1; append its one row; author an actual disposition, never infer it from routing scope or measurement coverage"
+          },
+          {
+            "code": "research_need_transition_invalid",
+            "paths": [
+              "next_information_needs[0]"
+            ],
+            "message": "research_controller_reflect violated the supplied need transition contract: {'prior_state_path': 'next_information_needs[0]', 'value': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'issue': 'untargeted need changed or was removed', 'required_action': 'restore_exactly', 'required_need': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'required_need_occurrences': 1}. Preserve every untargeted prior need exactly"
+          }
+        ]
+      },
+      "state_after": null,
+      "pass_": true
+    },
+    {
+      "case_id": "modified_residual_mirror_rejected",
+      "expected_accept": false,
+      "accepted": false,
+      "original_need_preserved": false,
+      "state_before": {
+        "hypotheses": [
+          "Disclosure may affect funding continuity."
+        ],
+        "current_beliefs": [],
+        "supporting_evidence": [
+          {
+            "kind": "signal",
+            "claim": "Orion Data disclosed binding offtake commitments on 2025-05-29.",
+            "signal_ref": "order_confirmation_disclosed:v3",
+            "evidence_group": "supporting",
+            "evidence_index": 0
+          }
+        ],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": [
+          "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments. Extra wording.",
+          "What customer qualification progress was disclosed by 2025-05-30?"
+        ],
+        "decision": "continue"
+      },
+      "actual_dispositions": [
+        {
+          "need_index": 0,
+          "answer_scope": "partial",
+          "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+          "evidence_refs": [
+            {
+              "signal_ref": "order_confirmation_disclosed:v3",
+              "evidence_group": "supporting",
+              "evidence_index": 0
+            }
+          ],
+          "reason": "The newly adopted literal answers only the stated object/disclosure interval; other target scope remains unresolved."
+        }
+      ],
+      "selection": {
+        "signal_ref": "order_confirmation_disclosed:v3",
+        "reason_code": "answer_need",
+        "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+        "applicability_hypothesis": "A current available synthetic disclosure can answer only its indexed scope.",
+        "expected_role": "primary",
+        "context_tags": [
+          "general"
+        ],
+        "target_need_indices": [
+          0
+        ],
+        "answer_scope": "partial",
+        "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments."
+      },
+      "batch": {
+        "results": [
+          {
+            "signal_id": "order_confirmation_disclosed",
+            "version": 3,
+            "state": {
+              "value": "positive",
+              "confidence": 0.7
+            },
+            "interpretation": {
+              "summary": "order_confirmation_disclosed=positive"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "synthetic-complete-operating-body",
+                  "exact_span": "Orion Data disclosed binding offtake commitments on 2025-05-29.",
+                  "timestamp": "2025-05-29T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            }
+          }
+        ],
+        "signal_calls": 1
+      },
+      "error": {
+        "type": "StructuredValidationError",
+        "message": "research_controller_reflect violated the supplied need transition contract: {'prior_state_path': 'next_information_needs[0]', 'value': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'signal_refs': ['order_confirmation_disclosed:v3'], 'issue': 'partial-answer target omitted its exact residual', 'required_action': 'replace_with_exact_residual', 'required_need': 'Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.', 'required_residual_need': 'Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.', 'required_need_occurrences': 1}. Preserve every untargeted prior need exactly",
+        "issues": [
+          {
+            "code": "research_need_transition_invalid",
+            "paths": [
+              "next_information_needs[0]"
+            ],
+            "message": "research_controller_reflect violated the supplied need transition contract: {'prior_state_path': 'next_information_needs[0]', 'value': 'What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?', 'signal_refs': ['order_confirmation_disclosed:v3'], 'issue': 'partial-answer target omitted its exact residual', 'required_action': 'replace_with_exact_residual', 'required_need': 'Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.', 'required_residual_need': 'Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.', 'required_need_occurrences': 1}. Preserve every untargeted prior need exactly"
+          }
+        ]
+      },
+      "state_after": null,
+      "pass_": true
+    }
+  ],
+  "passed": 7,
+  "total": 7,
+  "forbidden": [],
+  "limits": "Direct complete native ref/disposition/transition validator seam only; no Controller prompt/structured parser/Signal execution/Store/model. Prior and result explicitly synthetic, not accepted historical research."
+}

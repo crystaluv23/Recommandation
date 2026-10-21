@@ -201,7 +201,8 @@
         "reports/gpre-native-initial-20261021.md",
         "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json",
         "reports/gpre-native-routing-20261021.md",
-        "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/actual-routing-review.json"
+        "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/actual-routing-review.json",
+        "reports/routing-literal-scope-repair-20261022.md"
       ],
       "remaining": "Content chain local/open. GPRE actual H_init1of1 is sourcefaithful, but actual routing strictfirstportfolio0of1 exposes sharednamedobject falsepositive: orderpartial downgraded after budgetblocked correction; valid financepartial reaches corefirstentry with0calculation, all5needs unresolved. Native consumed111032 must not be replaced by observer165630 prepared sum. Actualnumeric6-result Reflect wire remains serialization only; no fresh owned result consumption. Financial9 remains6strict/1priorliteral mismatch/2period-policyunknown; F5 boundedreading design and Fact namespace choice pending. Source40 gaps/partial BasicInfo andtranscript publictimeproof0of26/normalpositive unresolved. ScopedF7controls/S5author not wholecontentchain. Fullfeedback consumption, direction+magnitude discovery/faithfulimplementation/admission/exactsuccessorreuse, interruption/recovery anddual-loop unverified; independentbenefit unknown."
     },
@@ -1508,17 +1509,32 @@
         "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/final-preservation.json"
       ],
       "result": "Spec-first local helper repair only; native role prompt/schema/typed permissions/fallback unchanged. Bounded literal prefix/list witnesses preserve actual source-valid originalthree-row portfolio through native selector offline on exact18defs; finance/liquidity siblings exact. Independent14 controls core4positive/8negative pass, two adjacent explicitobject/disjointwindow positives still reject, not14of14. Old9ac8of14 and typed objectdelete premium unsafeaccept preserved. Firstcandidate blocked multi-residual shorthead but root sole-head counter still leaked afterobjectdeletion; final92ca negativepath no longer requires a different strong retainedarm while positiveexemption remains strict. Actualtyped corrections/reparse/fallback and persistence checked, no scriptedresponse claims of fresh model. Finalroot242 connected pass/zero network orrealLabelStore tripwire. Original54 delta/stage artifacts preserved; originalnativeportfolio0of1, financial6strict/1literal/2unknown and transcript0of26 unchanged. No models/GET/productionSignal/labels/oldstageentry/fullsuccessor. WholeF4/contentchain/MVP/newcapabilityreuse/gain remainopen."
+    },
+    {
+      "id": "engineering-mvp-routing-literal-scope-local-20261022",
+      "strategy": "exact_literal_partition_across_routing_and_actual_partial_consumers",
+      "failure_families": [
+        "literal_shared_facet_with_different_objects_or_disjoint_disclosure_windows_still_false_rejected",
+        "earlier_candidate_review_incorrectly_treated_as_current_exact_code_review",
+        "scope_partition_does_not_override_actual_evidence_or_occurrence_ownership"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/routing-literal-scope-repair-20261022.md",
+        "runs/diagnostics/routing_literal_scope_20261022_verification/result.json",
+        "runs/diagnostics/routing_literal_scope_20261022_verification/connected-final.log",
+        "runs/diagnostics/routing_literal_scope_20261022_verification/preservation.json"
+      ],
+      "result": "Inherited spec-first candidate completed locally: complete ordered object arms or exact complementary disclosure windows supply one bounded proof before routing cosmetic/overlap checks and actual partial exact-mirror validation. Current validation a5ba1a7a/roles06a38e29 verified; earlier independent final records bind1de2, not current. Root self-reruns frozen scope19/19, prior14/14 plus typed repair, supplement2/2, negative1/1 and actual-consumer7/7; sets overlap, not pooled. Connected300 pass/zero network or real LabelStore; new duplicate-occurrence and unavailable controls. Initial added fixture retainedSUCCESS and failed construction, preserved then fixed fixture without product/expectation change.134 prior/user artifact bindings exact. No freshmodel/GET/productionSignal/labels/completedstageentry/fullsuccessor. Original freshportfolio0of1, financial9 and transcript0of26 remain; wholeF4/F7/MVP/benefit open. Stop literal-patch strategy; pending bounded-reading interface/resource and Fact namespace-provenance decisions explicitly requested."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-routing-shared-object-repair-20261021",
+    "after_iteration": "engineering-mvp-routing-literal-scope-local-20261022",
     "evidence": [
-      "reports/routing-shared-object-repair-20261021.md",
-      "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/candidate-summary.json",
-      "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-portfolio-replay-v2.json",
-      "runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-review.json",
-      "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/connected-results.json",
-      "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/final-preservation.json"
+      "reports/routing-literal-scope-repair-20261022.md",
+      "runs/diagnostics/routing_literal_scope_20261022_verification/result.json",
+      "runs/diagnostics/routing_literal_scope_20261022_verification/connected-final.log",
+      "runs/diagnostics/routing_literal_scope_20261022_verification/preservation.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1611,19 +1627,15 @@
       "Root and author initially checked data projection semantics but failed to validate the native carrier and parser configuration: default empty continue requires needs, and zero actual corrections is not a valid max_structured_corrections0 configuration. The first two captures yielded no wire. A full temporary native-chain preflight, not successive narrow constructor patches or a fake need, now proves both legal input shapes and budget-stop callback before actual source capture.",
       "Native RuntimeLimits requires three scaffold slots even for a bounded initial-only stage; author count must remain separately frozen at two. Actor wrapper paths also carry identity: anonymized messages alone are insufficient if the actor sees an issuer-bearing path. Full actual-source temporary chain and neutral byte-exact handoff establish this boundary before an answer; neither proves whole research capability.",
       "A valid H_init-only Predictor stub stops before reservations, but reusing it for routing silently omits the real dynamic Predictor reserve. A prepared correction journal can exceed the remaining native chain budget and never get an inbox; observer sums must not replace consumed usage. The existing literal-clause contrast still treats a shared multiword product as a retained facet in a nested compound target; conservative fallback does not prove that this rejection was correct or that the source-valid partial survived.",
-      "A conservative initial rejection can issue the wrong typed remedy: sharedproduct terms were reported instead of actualretained premium, so native reason-only replacement removedobject and hid a trueclaim under generic threeword threshold. Firstcandidate checks with several long residualarms still missed a sole shortened residualhead because negative detection incorrectly required another strong retainedarm. Preserve both failedcandidates; separate strong positiveproof from literal negativeconflict, and exercise actual issuedpatch/reparse rather than bad,bad fallback alone. Independent fixed controls also demonstrate two adjacent scopefalsepositives; twelve passing controls cannot close fourteen or freshbehavior."
+      "A conservative initial rejection can issue the wrong typed remedy: sharedproduct terms were reported instead of actualretained premium, so native reason-only replacement removedobject and hid a trueclaim under generic threeword threshold. Firstcandidate checks with several long residualarms still missed a sole shortened residualhead because negative detection incorrectly required another strong retainedarm. Preserve both failedcandidates; separate strong positiveproof from literal negativeconflict, and exercise actual issuedpatch/reparse rather than bad,bad fallback alone. Independent fixed controls also demonstrate two adjacent scopefalsepositives; twelve passing controls cannot close fourteen or freshbehavior.",
+      "Inherited final independent scope controls bound1de2 while current helper was subsequentlya5ba after ordered-subject repair. Root checked exact hashes and reran fixed native/consumer controls before carrying the conclusion; this is self-review, not fresh independent endorsement. Actualduplicate occurrences and unavailable results also require paired consumer controls; the first addedfixture mistakenly retainedSUCCESS and failed before the gate."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "routing_literal_object_and_disclosure_window_scope",
-      "question": "Can existing native literal/temporal ownership inputs distinguish the two frozen valid partials with different explicit objects or non-overlapping disclosure windows without semantic guessing or weakening retained-facet rejection?",
-      "pass": "Exact helper/caller traces on both frozen positives identify a contract-supported literal scope distinction, and paired same-object/same-window or true retained-facet controls remain rejected. Original and representative shared-prefix repair controls stay intact.",
-      "fail": "Inputs cannot uniquely distinguish the cases, the candidate needs invented object/time semantics, or a paired unsafe overclaim is accepted.",
-      "on_pass": "Prepare the smallest owning-spec-first repair and independent counterexamples before any fresh semantic trigger. Preserve all old0of1 and offline/fresh evidence separation.",
-      "on_fail": "Stop the literal scope hypothesis with exact failure evidence; prepare a concrete interface or research-definition decision only if genuinely required, without a domain dictionary or model/fullrun to search for a pass.",
-      "action": "Inspect independent frozen p05/p06 and their actual native validation/typed-feedback paths against same-facet same-object/same-window negatives. Diagnose two scopes separately; no newmodel/sourcequery/Signalexecution/completedstageentry or broad successor. Final shared-prefix/shorthead local repair is a checkpoint, not wholeF4 completion.",
-      "stop": "Stop on ambiguity, regression or no new distinguishing information. Do not rewrite predeclared cases/expectations, grow lexical lists, force saved financialresults into unrelated selectedsignals, or count script replay as fresh obedience."
+      "kind": "human_decision",
+      "strategy": "bounded_reading_interface_and_mining_namespace_provenance",
+      "action": "Stop additional literal-string tuning after local fixed controls pass. User has concrete bounded LLM reading proposal (2 read exchanges/10 bodies/32000chars/up to4 role requests perSignal, within original case budget) and optional EvidenceFact.taxonomy versus original-source lookup choices. Await substantive interface/resource/schema choices before installing either. Preserve old failures; any futurefresh stage uses a new freeze, never completedstage reentry.",
+      "stop": "Do not silently change public input interfaces, resource ceilings, canonical Fact provenance or pending gross_margin/revenue_acceleration definitions; do not use localPASS as fresh compliance, fullsuccessor authorization or MVPclosure."
     }
   },
   "successor_prerequisites": [

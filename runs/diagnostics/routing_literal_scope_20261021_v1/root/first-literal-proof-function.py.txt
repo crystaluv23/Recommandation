@@ -1,0 +1,135 @@
+def _literal_need_partition(target: str, answered: str, residual: str) -> bool:
+    """Prove a complete local literal partition, not general semantic coverage.
+
+    Recognize repeated-facet object arms or complementary disclosure windows.
+    Unsupported attachment and partial target intervals deliberately prove nothing.
+    """
+
+    def tokens(text: str) -> tuple[str, ...]:
+        return tuple(re.findall(r"[a-z0-9]+", text.casefold()))
+
+    def contains(sequence: tuple[str, ...], phrase: tuple[str, ...]) -> bool:
+        return any(sequence[i:i + len(phrase)] == phrase
+                   for i in range(len(sequence) - len(phrase) + 1))
+
+    # Negation is not positive attribution. A second sentence cannot lend its
+    # object/window to an earlier unqualified claim.
+    if any(re.search(r"\b(?:not|no|neither|without)\b", value, re.I)
+           for value in (target, answered, residual)):
+        return False
+
+    object_target = re.fullmatch(
+        r"what\s+([\w -]+?)\s+and\s+([\w -]+?)\s+"
+        r"(?:were|are|had been)\s+disclosed\s+by\s+[^?]+\??",
+        target.strip(), re.I,
+    )
+    if object_target:
+        arms = [tokens(arm) for arm in object_target.groups()]
+        common = 0
+        while (common < min(map(len, arms))
+               and arms[0][-1 - common] == arms[1][-1 - common]):
+            common += 1
+        if common >= 2:
+            objects = [arm[:-common] for arm in arms]
+            # Modifier loss is not a different object. Require independently
+            # witnessed complete spans, without classifying names or brands.
+            if all(len(set(obj) - set(objects[1 - i])) >= 2
+                   for i, obj in enumerate(objects)):
+                facet = arms[0][-common:]
+
+                def only_arm(text: str, index: int) -> bool:
+                    words = tokens(text)
+                    if contains(words, objects[1 - index]):
+                        return False
+                    positions = [i for i in range(len(words) - len(facet) + 1)
+                                 if words[i:i + len(facet)] == facet]
+                    return bool(positions) and all(
+                        i >= len(objects[index])
+                        and words[i - len(objects[index]):i] == objects[index]
+                        for i in positions
+                    )
+
+                if any(only_arm(answered, i) and only_arm(residual, 1 - i)
+                       for i in (0, 1)):
+                    return True
+
+    # One coordinated disclosure predicate, with a uniquely established window.
+    # Keep the interval separate from its local subject; do not borrow chart,
+    # delivery or other sentences' time qualifiers.
+    iso = r"20\d{2}-\d{2}-\d{2}"
+    interval = (
+        r"within\s+the\s+\d+[ -]day\s+window\s+ending\s+at\s+prediction\s+time"
+        r"|before\s+(?:that\s+window|the\s+\d+[ -]day\s+window)"
+        rf"|from\s+{iso}\s+through\s+{iso}|before\s+{iso}"
+    )
+
+    def claim(text: str):
+        text = re.sub(
+            rf"^using\s+(?:only\s+)?disclosures\s+available\s+by\s+{iso},\s*",
+            "", text.strip(), flags=re.I,
+        )
+        match = re.fullmatch(
+            rf"(?:what|check|establish|assess|measure|measures|identify)\s+"
+            rf"([\w -]+?)\s+(?:(?:were|are|had been)\s+)?disclosed\s+"
+            rf"({interval})(\s+for\s+[\w -]+)?[.?]?", text, re.I,
+        )
+        if not match:
+            return None
+        subject = tuple(word for word in tokens(match[1] + (match[3] or ""))
+                        if word not in _NEED_RESIDUAL_GENERIC_TOKENS)
+        scope = tokens(match[2])
+        if scope[:1] == ("within",):
+            scope = ("within", scope[2])
+        elif scope[:2] == ("before", "that"):
+            scope = ("before", "that")
+        elif scope[:2] == ("before", "the"):
+            scope = ("before", scope[2])
+        else:
+            dates = re.findall(iso, match[2])
+            try:
+                parsed = tuple(date.fromisoformat(value) for value in dates)
+            except ValueError:
+                return None
+            if scope[0] == "from" and parsed[0] <= parsed[1]:
+                scope = ("range", *parsed)
+            elif scope[0] == "before":
+                scope = ("before_date", *parsed)
+            else:
+                return None
+        return subject, scope
+
+    sides = re.split(r"[,;]\s*(?:and\s+)?(?=what\b)", target.strip(), flags=re.I)
+    if len(sides) != 2:
+        return False
+    parsed = [claim(side) for side in sides]
+    actual_answer, actual_residual = claim(answered), claim(residual)
+    if any(value is None for value in (*parsed, actual_answer, actual_residual)):
+        return False
+    first, second = parsed
+    first_subject, first_scope = first
+    second_subject, second_scope = second
+    if first_scope[0] == "within":
+        if (second_scope[0] != "before"
+                or second_scope[1] not in ("that", first_scope[1])):
+            return False
+        retained_scope = ("before", first_scope[1])
+    elif first_scope[0] == "range":
+        if second_scope != ("before_date", first_scope[1]):
+            return False
+        retained_scope = second_scope
+    else:
+        return False
+    # The second arm may elide only the already explicit common object, while
+    # retaining its literal still-effective qualifier. No invented topic.
+    unqualified_second = (second_subject[2:] if second_subject[:2] == ("still", "effective")
+                          else second_subject)
+    if len(unqualified_second) < 2 or not contains(first_subject, unqualified_second):
+        return False
+    expected_residual = set(first_subject) | set(second_subject)
+    answer_subject, answer_scope = actual_answer
+    residual_subject, residual_scope = actual_residual
+    if residual_scope == ("before", "that"):
+        residual_scope = retained_scope
+    return (answer_scope == first_scope and residual_scope == retained_scope
+            and answer_subject == first_subject
+            and set(residual_subject) == expected_residual)

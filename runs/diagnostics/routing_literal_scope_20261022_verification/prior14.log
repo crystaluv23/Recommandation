@@ -1,0 +1,12 @@
+{
+  "mode": "candidate",
+  "passed": 14,
+  "total": 14,
+  "extras": 1,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/root-current-20261022-prior14-candidate-results.json",
+    "sha256": "256e922ba9629e1b187aa9668b3d84fab82e7fc624db894221ceb22d4c037049",
+    "bytes": 116140
+  },
+  "failures": []
+}

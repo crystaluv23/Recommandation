@@ -1,0 +1,95 @@
+{
+  "head": "096f02d752b4471f266e1e5be708efeebdc52c91",
+  "source": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "a5ba1a7a3f078f8a0338e2c55e2910605346214cad8ade17968ac8e3f6721660",
+      "bytes": 199150
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1",
+      "bytes": 195814
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "sha256": "9453679f3e3970340f72a8ba066507433a8a3b6729b8173ab19610d8956b56dc",
+      "bytes": 34397
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_routing_literal_scope.py",
+      "sha256": "9f9843e0c4f03bb21b14dd037a6297c62ab9262de89ffc0f91694358b19d0d01",
+      "bytes": 16763
+    }
+  ],
+  "focused": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/focused-final-v3-result.json",
+    "sha256": "c4177d9b113be8072e11ff9c43471dee8cd2cf03485296dc9b6afbaab897f216",
+    "bytes": 2261
+  },
+  "focused_log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/focused-final-v3.log",
+    "sha256": "e945546754f83bdb90dc503c73711a9a6724003d633db71b687669aeedbb082d",
+    "bytes": 8521
+  },
+  "original_diagnosis": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/result.json",
+    "sha256": "921759bd59f49d8fd5963c383fe09ecca73ad176285ae307afdaf83aa51118af",
+    "bytes": 1014941
+  },
+  "preserved_previous_green": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/focused-final-result.json",
+    "sha256": "fa6da12a429cd4eaaf0434506b91651fb8a12fff951a222937ab2e91b96c486c",
+    "bytes": 2261
+  },
+  "intermediate_reconstruction": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/candidate-0ce-preservation.json",
+    "sha256": "c4fded9dd99da98ad465affbb7a6d0b07bc36a1cd19c00e626442c22a9e70463",
+    "bytes": 949
+  },
+  "pre_candidate_native_baselines": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-results.json",
+      "sha256": "e2f5fd8f8f98fe6d082fdbc66424fa3628a910e59df5acfb0b293b944eb82f78",
+      "bytes": 174802
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-consumer-results.json",
+      "sha256": "46a3af42effa0f1c475e02011bc5ef6d87c71e265f627b339652a949ed597c88",
+      "bytes": 32480
+    }
+  ],
+  "behavior": [
+    "One bounded private full-target literal partition proof, consumed before both routing cosmetic and overlap guards.",
+    "Complete repeated-facet object spans may share descriptors; whole-word object identity and at least two independent anchors remain required. Every common facet/head occurrence must stay in an asserted complete answered span.",
+    "Complementary disclosure intervals must match complete target sides; no disjoint-but-incomplete ranges, delivery-axis substitution or unrelated sentence attachment.",
+    "Actual partial current-batch/adopted exact tuple/PIT plus exact residual mirror retains its normal authoring reason. Accepted partial scope supplies only structural fallback, never actual answer authority.",
+    "Untargeted/unanswered/no-batch/wrong-owner/changed mirror and old typed permissions are preserved."
+  ],
+  "boundaries": [
+    "No general NLP/issuer-alias/economic-semantic entailment; unsupported literal syntax remains conservative.",
+    "No fresh model compliance, source sufficiency, new Signal result or old portfolio verdict implied.",
+    "No global coordinated-temporal helper, canonical schema, measurement, PIT policy, prompt budget, outputvalidation or old completed stage changed."
+  ],
+  "effects": {
+    "network": 0,
+    "model": 0,
+    "Signal": 0,
+    "LabelStore": 0,
+    "RawInfoStore": 0,
+    "Registry_freeze": 0,
+    "completed_stage_entry": 0
+  },
+  "status": "STABLE_FOR_INDEPENDENT_COUNTER_REVIEW_NOT_FULL_ACCEPTANCE",
+  "parent_summary": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/candidate-summary.json",
+    "sha256": "60cff9e273c75b5fdf167a5d5467b2b4d56fc456a8dd67107a3edd12ca79438a",
+    "bytes": 4346
+  },
+  "preserved_1de2": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/candidate-1de2-preservation.json",
+    "sha256": "0b186fae846dfd86169b8e1e77a4272c2cc5a58ab1eded45c2dcef4c24519a6d",
+    "bytes": 949
+  },
+  "ordered_subject_correction": "A same-word-set scrambled facet/object residual is no proof. Time partition now requires exact ordered target subject, with only its explicit retained still-effective qualifier."
+}

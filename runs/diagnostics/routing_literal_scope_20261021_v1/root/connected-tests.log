@@ -1,0 +1,31 @@
+..........................................................................................................................................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 298 tests in 3.433s
+
+OK
+{
+  "scope": "connected offline tests; fixtures are not production Signal execution or fresh model obedience",
+  "source_sha256": "a5ba1a7a3f078f8a0338e2c55e2910605346214cad8ade17968ac8e3f6721660",
+  "role_sha256": "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1",
+  "roles_unchanged": true,
+  "source_unchanged_during_tests": true,
+  "modules": [
+    "tests.test_evolution_routing_plan_roles",
+    "tests.test_evolution_output_validation",
+    "tests.test_need_dispositions",
+    "tests.test_owned_partial_residual_mirror",
+    "tests.test_signal_edge_correction",
+    "tests.test_signal_correction_reservation",
+    "tests.test_signal_card_measurement_scope",
+    "tests.test_routing_literal_scope",
+    "tests.test_evolution_state_patch",
+    "tests.test_reflection_correction_frontier",
+    "tests.test_reflect_facet_scope"
+  ],
+  "tests_run": 298,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "tripwires": [],
+  "passed": true
+}

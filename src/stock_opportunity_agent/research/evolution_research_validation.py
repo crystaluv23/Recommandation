@@ -33,6 +33,7 @@ from stock_opportunity_agent.signal_library import (
     SignalValue,
     SignalModelInputRejected,
     signal_result_model_view,
+    require_signal_result_pit,
 )
 from stock_opportunity_agent.research.evolution_output_validation import (
     _CLAIM_QUANTITY,
@@ -2492,6 +2493,7 @@ def _collect_need_dispositions(
         if not isinstance(reason, str) or not reason.strip():
             invalid(path + ".reason", "Disposition reason must be nonblank text grounded in executed evidence")
         residual = raw["residual_need"]
+        literal_partition = False
         if scope == "partial":
             if not isinstance(residual, str) or not residual.strip() or len(residual) > 300:
                 invalid(path + ".residual_need", "Actual partial answer requires a 1-300 character residual")
@@ -2500,9 +2502,18 @@ def _collect_need_dispositions(
                 prior_terms = _normalized_need_content_tokens(prior)
                 residual_terms = _normalized_need_content_tokens(residual)
                 overlap = prior_terms & residual_terms
+                literal_partition = (
+                    state is not None and prediction_date is not None
+                    and state.next_information_needs.count(residual) == 1
+                    and isinstance(reason, str)
+                    and _owned_literal_need_partition(
+                        prior, reason, residual, index, selections,
+                    )
+                )
                 if (residual.strip() == prior or not residual_terms
                         or len(overlap) / len(residual_terms) < 0.5
                         or (prior_terms and len(overlap) / len(prior_terms) >= 0.9
+                            and not literal_partition
                             and not _coordinated_residual_facet_terms(prior, residual))):
                     invalid(path + ".residual_need", "Residual must genuinely narrow its own prior need, not repeat it or copy another need")
                 bounded = _bounded_residual_need(residual, prior, prediction_date)
@@ -2537,6 +2548,11 @@ def _collect_need_dispositions(
                 if (key in ref_keys or (state is not None and key not in adopted) or result is None
                         or not _signal_result_has_adoptable_evidence(result) or offset >= len(spans)):
                     invalid(ref_path, "Evidence tuple must be unique, available, in the executed batch and newly adopted by current state")
+                if literal_partition and result is not None:
+                    try:
+                        require_signal_result_pit(result, as_of=prediction_date)
+                    except (ValidationError, SignalModelInputRejected):
+                        invalid(ref_path, "Literal partial scope requires current evidence within the runtime prediction boundary")
                 ref_keys.add(key)
                 normalized_refs.append(dict(ref))
         row_issues = issues[issue_count:]
@@ -3317,6 +3333,19 @@ def _validate_research_state_refs(
         previous_state.next_information_needs if previous_state else (),
         state.next_information_needs,
     )
+    literal_partial_mirrors = {
+        (previous_state.next_information_needs[row["need_index"]], row["residual_need"])
+        for row in actual_dispositions
+        if row["answer_scope"] == "partial" and previous_state is not None
+        and state.next_information_needs.count(row["residual_need"]) == 1
+        and _owned_literal_need_partition(
+            previous_state.next_information_needs[row["need_index"]],
+            row["reason"], row["residual_need"], row["need_index"], selections,
+        )
+    }
+    cosmetic_needs = [error for error in cosmetic_needs
+                      if (error["prior_need"], error["current_need"])
+                      not in literal_partial_mirrors]
     stale_resolved_needs = _stale_resolved_information_needs(
         previous_state,
         state,
@@ -3639,6 +3668,179 @@ def _coordinated_residual_facet_terms(
     return tuple(dict.fromkeys(retained))
 
 
+def _owned_literal_need_partition(
+    target: str, reason: str, residual: str, index: int,
+    selections: tuple[SignalSelectionDecision, ...],
+) -> bool:
+    """Prove only structure; callers must separately validate actual evidence."""
+
+    reasons = (reason, *(selection.selection_reason for selection in selections
+                        if selection.reason_code == "answer_need"
+                        and index in selection.target_need_indices
+                        and selection.answer_scope == "partial"
+                        and selection.residual_need == residual))
+    return any(_literal_need_partition(target, text, residual) for text in reasons)
+
+
+def _literal_need_partition(target: str, answered: str, residual: str) -> bool:
+    """Prove a complete local literal partition, not general semantic coverage.
+
+    Recognize repeated-facet object arms or complementary disclosure windows.
+    Unsupported attachment and partial target intervals deliberately prove nothing.
+    """
+
+    def tokens(text: str) -> tuple[str, ...]:
+        return tuple(re.findall(r"[a-z0-9]+", text.casefold()))
+
+    def contains(sequence: tuple[str, ...], phrase: tuple[str, ...]) -> bool:
+        return any(sequence[i:i + len(phrase)] == phrase
+                   for i in range(len(sequence) - len(phrase) + 1))
+
+    # Negation is not positive attribution. A second sentence cannot lend its
+    # object/window to an earlier unqualified claim.
+    if any(re.search(r"\b(?:not|no|neither|without)\b", value, re.I)
+           for value in (target, answered, residual)):
+        return False
+
+    object_target = re.fullmatch(
+        r"what\s+([\w -]+?)\s+and\s+([\w -]+?)\s+"
+        r"(?:were|are|had been)\s+disclosed\s+by\s+[^?]+\??",
+        target.strip(), re.I,
+    )
+    if object_target:
+        arms = [tokens(arm) for arm in object_target.groups()]
+        common = 0
+        while (common < min(map(len, arms))
+               and arms[0][-1 - common] == arms[1][-1 - common]):
+            common += 1
+        if common >= 2:
+            objects = [arm[:-common] for arm in arms]
+            # Modifier loss is not a different object. Require independently
+            # witnessed complete spans, without classifying names or brands.
+            if all(len(set(obj) - set(objects[1 - i])) >= 2
+                   for i, obj in enumerate(objects)):
+                facet = arms[0][-common:]
+
+                def only_arm(text: str, index: int, *, answer: bool) -> bool:
+                    text = re.sub(
+                        r"^using\s+(?:only\s+)?disclosures\s+available\s+by\s+"
+                        r"20\d{2}-\d{2}-\d{2},\s*", "", text.strip(), flags=re.I,
+                    )
+                    # Require the explicit positive authoring construction, not
+                    # a quoted title or an object mentioned in another sentence.
+                    verbs = "check|measure|measures|assess|identify" if answer else "establish|what"
+                    claim_start = re.match(rf"(?:{verbs})\s+", text, re.I)
+                    if claim_start is None:
+                        return False
+                    text = text[claim_start.end():]
+                    words = tokens(text)
+                    if words[:len(arms[index])] != arms[index]:
+                        return False
+                    if contains(words, objects[1 - index]):
+                        return False
+                    positions = [i for i in range(len(words) - len(facet) + 1)
+                                 if words[i:i + len(facet)] == facet]
+                    if not positions or not all(
+                        i >= len(objects[index])
+                        and words[i - len(objects[index]):i] == objects[index]
+                        for i in positions
+                    ):
+                        return False
+                    bound = {j for i in positions
+                             for j in range(i - len(objects[index]), i + len(facet))}
+                    # A complete answered arm cannot shield a later shortened
+                    # shared head such as "also measures commitments".
+                    return not any(word in facet and i not in bound
+                                   for i, word in enumerate(words))
+
+                if any(only_arm(answered, i, answer=True)
+                       and only_arm(residual, 1 - i, answer=False)
+                       for i in (0, 1)):
+                    return True
+
+    # One coordinated disclosure predicate, with a uniquely established window.
+    # Keep the interval separate from its local subject; do not borrow chart,
+    # delivery or other sentences' time qualifiers.
+    iso = r"20\d{2}-\d{2}-\d{2}"
+    interval = (
+        r"within\s+the\s+\d+[ -]day\s+window\s+ending\s+at\s+prediction\s+time"
+        r"|before\s+(?:that\s+window|the\s+\d+[ -]day\s+window)"
+        rf"|from\s+{iso}\s+through\s+{iso}|before\s+{iso}"
+    )
+
+    def claim(text: str):
+        text = re.sub(
+            rf"^using\s+(?:only\s+)?disclosures\s+available\s+by\s+{iso},\s*",
+            "", text.strip(), flags=re.I,
+        )
+        match = re.fullmatch(
+            rf"(?:what|check|establish|assess|measure|measures|identify)\s+"
+            rf"([\w -]+?)\s+(?:(?:were|are|had been)\s+)?disclosed\s+"
+            rf"({interval})(\s+for\s+[\w -]+)?[.?]?", text, re.I,
+        )
+        if not match:
+            return None
+        subject = tuple(word for word in tokens(match[1] + (match[3] or ""))
+                        if word not in _NEED_RESIDUAL_GENERIC_TOKENS)
+        scope = tokens(match[2])
+        if scope[:1] == ("within",):
+            scope = ("within", scope[2])
+        elif scope[:2] == ("before", "that"):
+            scope = ("before", "that")
+        elif scope[:2] == ("before", "the"):
+            scope = ("before", scope[2])
+        else:
+            dates = re.findall(iso, match[2])
+            try:
+                parsed = tuple(date.fromisoformat(value) for value in dates)
+            except ValueError:
+                return None
+            if scope[0] == "from" and parsed[0] <= parsed[1]:
+                scope = ("range", *parsed)
+            elif scope[0] == "before":
+                scope = ("before_date", *parsed)
+            else:
+                return None
+        return subject, scope
+
+    sides = re.split(r"[,;]\s*(?:and\s+)?(?=what\b)", target.strip(), flags=re.I)
+    if len(sides) != 2:
+        return False
+    parsed = [claim(side) for side in sides]
+    actual_answer, actual_residual = claim(answered), claim(residual)
+    if any(value is None for value in (*parsed, actual_answer, actual_residual)):
+        return False
+    first, second = parsed
+    first_subject, first_scope = first
+    second_subject, second_scope = second
+    if first_scope[0] == "within":
+        if (second_scope[0] != "before"
+                or second_scope[1] not in ("that", first_scope[1])):
+            return False
+        retained_scope = ("before", first_scope[1])
+    elif first_scope[0] == "range":
+        if second_scope != ("before_date", first_scope[1]):
+            return False
+        retained_scope = second_scope
+    else:
+        return False
+    # The second arm may elide only the already explicit common object, while
+    # retaining its literal still-effective qualifier. No invented topic.
+    unqualified_second = (second_subject[2:] if second_subject[:2] == ("still", "effective")
+                          else second_subject)
+    if len(unqualified_second) < 2 or not contains(first_subject, unqualified_second):
+        return False
+    qualifier = second_subject[:2] if second_subject[:2] == ("still", "effective") else ()
+    expected_residual = (*qualifier, *first_subject)
+    answer_subject, answer_scope = actual_answer
+    residual_subject, residual_scope = actual_residual
+    if residual_scope == ("before", "that"):
+        residual_scope = retained_scope
+    return (answer_scope == first_scope and residual_scope == retained_scope
+            and answer_subject == first_subject
+            and residual_subject == expected_residual)
+
+
 def _shared_distinctive_phrase(
     left: str,
     right: str,
@@ -3647,6 +3849,9 @@ def _shared_distinctive_phrase(
     target_need: str | None = None,
 ) -> str | None:
     """Return one shared ordered or reordered topic, ignoring routing filler."""
+
+    if target_need is not None and _literal_need_partition(target_need, left, right):
+        return None
 
     def words(value: str) -> tuple[str, ...]:
         normalized: list[str] = []

@@ -1,0 +1,16 @@
+{
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-results.json",
+    "sha256": "e2f5fd8f8f98fe6d082fdbc66424fa3628a910e59df5acfb0b293b944eb82f78",
+    "bytes": 174802
+  },
+  "passed": 12,
+  "total": 17,
+  "mismatches": [
+    "literal_p05_same_facet_distinct_explicit_objects",
+    "literal_p06_same_facet_disjoint_literal_time_windows",
+    "p03_reverse_lowercase_objects",
+    "p04_explicit_disjoint_date_intervals",
+    "p05_object_after_facet_with_local_window"
+  ]
+}

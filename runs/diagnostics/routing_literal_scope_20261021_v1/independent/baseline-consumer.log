@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/consumer_probe.py", line 39, in <module>
+    out.append(dict(case_id=c['id'],expected_accept=expected,accepted=accepted,original_need_preserved=preserved,state_before=state.to_dict(),actual_dispositions=[row],selection=selection.to_dict(),batch=None if batch is None else batch.to_dict(),error=error,state_after=None if resultstate is None else resultstate.to_dict(),pass_=ok))
+                                                                                                                                                                                                                                       ^^^^^^^^^^^^^
+AttributeError: 'SignalBatchResult' object has no attribute 'to_dict'

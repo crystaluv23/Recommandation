@@ -1,0 +1,23 @@
+{
+  "head": "096f02d752b4471f266e1e5be708efeebdc52c91",
+  "files": [
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "1de2ea49f0785e75846442aaaa7fd9d02bff4f0b8dcc39c608154668905c53bc"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "sha256": "9453679f3e3970340f72a8ba066507433a8a3b6729b8173ab19610d8956b56dc"
+    },
+    {
+      "path": "tests/test_routing_literal_scope.py",
+      "sha256": "0b97b61a0da05ace42febb013bd047c301f8b9391871914719515f30c8aa5666"
+    }
+  ],
+  "patch_sha256": "8c69638f5f11873ee08f40dd12bd2c4e3de1bcec0217e47ba35bf0bf82d5bcc1",
+  "44_green_result_sha256": "938ccb5afcea8cd66e04a554b848176921dfe0c34f1a9d02c017341f45af90ed"
+}

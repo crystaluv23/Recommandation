@@ -1,0 +1,65 @@
+{
+  "frozen_at_utc": "2026-10-21T01:48:25.326940+00:00",
+  "candidate_inspected": false,
+  "source": "Synthetic independent available result and whole literal, May29 publication before May30 cutoff; no RawInfoStore or Signal execution. This is a validator seam authority fixture, not an historical issuer assertion.",
+  "gold_boundary": "Routing partial is expectation only. Actual newly adopted exact supporting tuple from the current available batch and indexed owner supplies permission; partial requires its exact residual mirror and unchanged unrelated occurrence.",
+  "base_cases": [
+    {
+      "case_id": "literal_p05_same_facet_distinct_explicit_objects",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+      "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules."
+    },
+    {
+      "case_id": "p04_explicit_disjoint_date_intervals",
+      "target_need": "What carbon capture module binding offtake commitments were disclosed from 2025-01-01 through 2025-05-30, and what still-effective binding offtake commitments were disclosed before 2025-01-01?",
+      "residual_need": "Using disclosures available by 2025-05-30, establish still-effective carbon capture module binding offtake commitments disclosed before 2025-01-01.",
+      "selection_reason": "Check carbon capture module binding offtake commitments disclosed from 2025-01-01 through 2025-05-30."
+    }
+  ],
+  "controls": [
+    {
+      "id": "object_actual_partial",
+      "base": 0,
+      "variant": "partial",
+      "expected_accept": true
+    },
+    {
+      "id": "date_actual_partial",
+      "base": 1,
+      "variant": "partial",
+      "expected_accept": true
+    },
+    {
+      "id": "unanswered_preserves_original",
+      "base": 0,
+      "variant": "unanswered_keep",
+      "expected_accept": true
+    },
+    {
+      "id": "unanswered_cannot_delete_original",
+      "base": 0,
+      "variant": "unanswered_drop",
+      "expected_accept": false
+    },
+    {
+      "id": "no_current_batch_not_actual_answer",
+      "base": 0,
+      "variant": "no_batch",
+      "expected_accept": false
+    },
+    {
+      "id": "wrong_owner_tuple_not_actual_answer",
+      "base": 0,
+      "variant": "wrong_owner",
+      "expected_accept": false
+    },
+    {
+      "id": "modified_residual_mirror_rejected",
+      "base": 0,
+      "variant": "modified_mirror",
+      "expected_accept": false
+    }
+  ],
+  "limits": "Native ref/disposition/need-transition validators only. No fresh Reflect/Controller/model or actual source/Signal. No whole-model outcome claim."
+}

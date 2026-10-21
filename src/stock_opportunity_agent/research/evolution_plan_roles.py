@@ -125,6 +125,7 @@ from stock_opportunity_agent.research.evolution_research_validation import (
     _normalize_information_plan_output,
     _normalize_research_state_output,
     _normalized_need_content_tokens,
+    _literal_need_partition,
     _prediction_time_from_context,
     _reflection_need_transition_contract,
     _reflection_selection_intents,
@@ -1318,7 +1319,10 @@ class LLMSignalRetrievalAgent:
                                 )
                             )
                             removed_content = target_content - residual_content
-                            cosmetic_residual = (
+                            literal_partition = _literal_need_partition(
+                                target_need, item["selection_reason"], residual_need,
+                            )
+                            cosmetic_residual = not literal_partition and (
                                 residual_need.strip() == target_need
                                 or (
                                     target_content
@@ -1563,7 +1567,7 @@ class LLMSignalRetrievalAgent:
                                     if cosmetic_residual
                                     else (residual_need,)
                                 )
-                                shared_residual_phrase = next(
+                                shared_residual_phrase = None if literal_partition else next(
                                     (
                                         phrase
                                         for residual_scope in residual_scope_values

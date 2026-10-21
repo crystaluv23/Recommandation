@@ -1,0 +1,6 @@
+{
+  "checked": 134,
+  "mismatches": [],
+  "scope": "original user deltas and previous completed stages/repair evidence; production helper/spec/tests recorded separately if later authorized to change",
+  "baseline_manifest_sha256": "658c560254c6512b049b09f23b5e87d2b34c41e2bc1242031127f1cad4f2dc60"
+}

@@ -1,0 +1,12 @@
+{
+  "mode": "candidate",
+  "passed": 1,
+  "total": 1,
+  "extras": 0,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/root-current-20261022-north-negative-candidate-results.json",
+    "sha256": "764b7ce02e50747e4beaf92e9ceadc64890ab315f7b0a824f1cb57b00fb9783b",
+    "bytes": 12184
+  },
+  "failures": []
+}

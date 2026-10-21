@@ -1,0 +1,12 @@
+{
+  "mode": "candidate",
+  "passed": 0,
+  "total": 0,
+  "extras": 1,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/final-shorthead-candidate-results.json",
+    "sha256": "8e7f56f1cf878b6d258e8ca84af1f1bae6ceacd3fb662500cea381dd8cdcc484",
+    "bytes": 12135
+  },
+  "failures": []
+}

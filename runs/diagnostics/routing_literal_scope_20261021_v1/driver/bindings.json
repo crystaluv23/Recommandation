@@ -1,0 +1,37 @@
+[
+  {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/command.json",
+    "sha256": "d2a0e9aa2c32e151002532cffc0eb8204d1582cd0bc19b6d4db559432e4c85b1",
+    "bytes": 468
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/function-sources.json",
+    "sha256": "04e5968ae03fe3e88f25cd93320dfef131f76301b3803adfbe5553011380f32c",
+    "bytes": 33408
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/inputs.json",
+    "sha256": "f276dcab422e8d858dde736b60e18f020105b61b23414fdf6537b07cee9814cb",
+    "bytes": 9919
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/probe.log",
+    "sha256": "ec3d6bd8457e0c42ef8f55fd98ffdc90613f93e57561a980a35831b01891dac9",
+    "bytes": 3055
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/probe.py",
+    "sha256": "4e4000333e0a45fad0e5d4409ca5e17fd171db797fbb6c1079f385700d43d972",
+    "bytes": 10925
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/proposal.md",
+    "sha256": "93c088c1227117cfe16253d15c1e749c7072d0a2068afc0f90f149bd4c39a2c7",
+    "bytes": 7985
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/result.json",
+    "sha256": "921759bd59f49d8fd5963c383fe09ecca73ad176285ae307afdaf83aa51118af",
+    "bytes": 1014941
+  }
+]

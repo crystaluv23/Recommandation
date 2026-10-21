@@ -1,0 +1,140 @@
+{
+  "reviewed_at_utc": "2026-10-21T01:44:28.906820+00:00",
+  "status": "BASELINE_DIAGNOSED_PRE_CANDIDATE_EXPECTATIONS_FROZEN",
+  "baseline_revision": "096f02d752b4471f266e1e5be708efeebdc52c91",
+  "candidate_read": false,
+  "expected_cases": {
+    "positive": 5,
+    "negative": 13,
+    "total": 18,
+    "original14_gold_unchanged": true
+  },
+  "baseline_native": {
+    "positive_direct_partial": 0,
+    "positive_expected": 5,
+    "negative_rejected": 13,
+    "negative_expected": 13,
+    "siblings_exact": 18,
+    "forbidden_calls": 0
+  },
+  "root_cause": [
+    {
+      "finding": "Scope information is removed before overlap comparison",
+      "source": "_shared_distinctive_phrase topic_words strips numeric and temporal tokens, then intersects whole-reason and whole-residual sets. Two distinct objects with one common facet and two disjoint disclosure intervals collapse into the same overlap. Local clause attachment cannot be recovered from that global bag.",
+      "observed_cases": [
+        "literal_p05_same_facet_distinct_explicit_objects",
+        "literal_p06_same_facet_disjoint_literal_time_windows",
+        "p03_reverse_lowercase_objects",
+        "p04_explicit_disjoint_date_intervals",
+        "p05_object_after_facet_with_local_window"
+      ]
+    },
+    {
+      "finding": "Native cosmetic-progress guard is a second consumer of flattened scope",
+      "observed_case": "p04_explicit_disjoint_date_intervals",
+      "first_validation_error": "selections[1].residual_need must remove the answered facet rather than retain the target cosmetically, and selections[1].answer_scope must change from partial: use full with a null residual only if the card covers the complete target, otherwise use a contextual reason or remove the selection. If exact scope remains uncertain, change selections[1] to a contextual reason with answer_scope=null and residual_need=null, or remove that complete selection",
+      "implication": "Fixing helper alone does not establish direct partial acceptance: full native parser must preserve and validate the same literal scope distinction before cosmetic-progress fallback."
+    }
+  ],
+  "literal_provable_boundary": [
+    "Complete explicit different noun phrases locally modifying the same requested facet; no proper-name list, no issuer alias/equivalence inference.",
+    "The same disclosed predicate, same clock and same numeric window, one within and the other strictly before its start; or explicit nonintersecting date intervals.",
+    "Object/facet/window tokens must be in the actual claimed clause or a locally proven shared modifier; unrelated or negative sentence tokens cannot supply a witness."
+  ],
+  "not_provable_from_token_presence": [
+    "Unequal window lengths: within90days overlaps within180days.",
+    "Delivery/production/effective windows are not publication/disclosure windows.",
+    "A named object only in a negation or another descriptive sentence does not scope an otherwise generic claim.",
+    "A one-word adjective difference does not establish two nonoverlapping economic facets; retain conservative rejection."
+  ],
+  "minimal_repair_boundary": "Add a narrow target-derived local scope witness to both overlap and residual-progress decisions. Only exempt the exact object/facet or same-axis disjoint time scope proven. Reject any separate retained-facet claim in the remaining reason; retain whole-word/PIT/typed checks and full native reparse/fallback. No general semantic interpreter or scope-based global stopword removal.",
+  "binding_and_limits": {
+    "helper_module": {
+      "path": "runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-096-validation.py",
+      "sha256": "92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946",
+      "bytes": 189362
+    },
+    "active_native_parser": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "29f1b3c057dc825ca77bed377a3f3be329c9eb6914ad5ad24774f88281d8aa07",
+      "bytes": 195539
+    },
+    "baseline_isolation": "Exact saved 92ca helper loaded by own module path; native parser common/current. Source module __file__ and code filename stored in results. Not a full isolated checkout.",
+    "effects": "No fresh model/API/network/Signal/Store/LabelStore/research stage execution. Offline scripted caller allows native corrective fallback; second answer deliberately unavailable. Tests prove validation behavior, not fresh author obedience.",
+    "typed_and_PIT": "Their negative controls reject for native type/PIT obligations, not evidence that the overlap helper alone understands those dimensions."
+  },
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/frozen-expectations.json",
+      "sha256": "033f38cd27a724d674e716841dbbce450263cdfd01824b9b0c58dc278bf4f6b9",
+      "bytes": 14986
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/frozen-expectations-v2.json",
+      "sha256": "af8917544640e3390b30757e581545df321317cfb02fec949c6edf46977447ee",
+      "bytes": 16266
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/axis-only-expectations.json",
+      "sha256": "11ef5ab284e1948fab27faa0c05056779f16f9231bbce654a48891516dc56e2e",
+      "bytes": 3207
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/freeze_expectations.py",
+      "sha256": "e6fbc3d08c0859622a8b440766d5a358955b3bee84046fa6a552a1011b905af7",
+      "bytes": 7743
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/native_probe.py",
+      "sha256": "2a2b8c150a795d3fd654377fccc4442019a3cc0bde309b4ab5a68e3a3915edfe",
+      "bytes": 7651
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/axis_probe.py",
+      "sha256": "a9019a34035910da665dcaab0f29386dffa4ff71feef7a3a5b203dcd733524f8",
+      "bytes": 7654
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-096-validation.py",
+      "sha256": "92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946",
+      "bytes": 189362
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-results.json",
+      "sha256": "e2f5fd8f8f98fe6d082fdbc66424fa3628a910e59df5acfb0b293b944eb82f78",
+      "bytes": 174802
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-axis-results.json",
+      "sha256": "df9b0293e2d43feb77120fb79e30e5638868c43211a4d126968d9536a5059e82",
+      "bytes": 11708
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline.log",
+      "sha256": "e198c1cbc8127670555c85d461f87b3de9ab9fe68cf260d9d7486d4e8b66628c",
+      "bytes": 554
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-axis.log",
+      "sha256": "516177613c389326d28b13b66887366e9d5784f4875419aec1eb406119c9b0b3",
+      "bytes": 309
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases-v3.json",
+      "sha256": "6de09ea83f854dd541a65e1927e832e3a3b14dbe75b423c3020a2cf65790a258",
+      "bytes": 15238
+    }
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests:. /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12 /Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/native_probe.py --mode baseline --source-file /Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-096-validation.py --expected-sha 92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946 --output-prefix baseline-",
+      "exit_code": 1,
+      "meaning": "Expected five baseline capability failures, no harness exception."
+    },
+    {
+      "command": "same environment and interpreter axis_probe.py --mode baseline --source-file baseline-096-validation.py --expected-sha 92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946 --output-prefix baseline-axis-",
+      "exit_code": 0,
+      "meaning": "Delivery-axis negative rejected with siblings retained."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "frozen_at_utc": "2026-10-21T01:56:24.093378+00:00",
+  "phase": "CANDIDATE_DISCOVERED_SUPPLEMENT_NOT_PRE_CANDIDATE_GOLD",
+  "case_origin": "Root found original candidate shorthead false exemption and shared-descriptor false rejection; preserve discovery timing. Original19 and7 unchanged.",
+  "cases": [
+    {
+      "case_id": "literal_p05_same_facet_distinct_explicit_objects",
+      "expected_direct_partial": true,
+      "helper_conflict_expectation": "none",
+      "independent_reason": "Samefacettext attached to explicitlydifferent literalobjects is not duplicatedcoverage. Do not inferpropernoun or collapse the twoobjects intoone.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+      "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?"
+    },
+    {
+      "case_id": "north_shared_descriptor_distinct_complete_objects",
+      "target_need": "What North optical module binding offtake commitments and North capture unit binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check North optical module binding offtake commitments for named counterparties and delivery schedules.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish North capture unit binding offtake commitments.",
+      "expected_direct_partial": true,
+      "helper_conflict_expectation": "none",
+      "independent_reason": "North is a shared descriptor. Whole different object spans remain explicit and locally bind the same facet; neither aliases nor lexical whitelist inferred."
+    }
+  ],
+  "typed_shorthead_attack": {
+    "first_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules. Also measures commitments.",
+    "second_typed_reason": "Check binding offtake commitments for named counterparties and delivery schedules. Also measures commitments.",
+    "residual": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+    "expected": "Reject first retained generichead claim. Removing answered object only cannot rescue retained commitments claim; preserve sibling rows and native typed boundaries."
+  }
+}

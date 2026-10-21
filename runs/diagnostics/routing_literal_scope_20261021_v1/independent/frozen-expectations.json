@@ -1,0 +1,190 @@
+{
+  "frozen_at_utc": "2026-10-21T01:42:23.841389+00:00",
+  "head": "096f02d752b4471f266e1e5be708efeebdc52c91",
+  "phase": "PRE_CANDIDATE_EXPECTATIONS",
+  "candidate_source_inspected": false,
+  "old14_unchanged_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases-v3.json",
+    "sha256": "6de09ea83f854dd541a65e1927e832e3a3b14dbe75b423c3020a2cf65790a258",
+    "bytes": 15238
+  },
+  "baseline_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "sha256": "fe287bfc2572685dde82b474e5830602032bd072cde05512bb639be45fe9840a",
+      "bytes": 32343
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946",
+      "bytes": 189362
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "literal_p05_same_facet_distinct_explicit_objects",
+      "expected_direct_partial": true,
+      "helper_conflict_expectation": "none",
+      "independent_reason": "Samefacettext attached to explicitlydifferent literalobjects is not duplicatedcoverage. Do not inferpropernoun or collapse the twoobjects intoone.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+      "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?"
+    },
+    {
+      "case_id": "literal_p06_same_facet_disjoint_literal_time_windows",
+      "expected_direct_partial": true,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Sameobject/facet but expresslydisjoint disclosedtimewindow;180daySignalanswersrecentonly. Nativecoordinatedscopehandling may bypasshelper; demand fullparser directpartial, not helper-only generalizedtemporalpolicy.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish still-effective binding offtake commitments for carbon capture module disclosed before the 180-day window.",
+      "selection_reason": "Check binding offtake commitments for carbon capture module disclosed within the 180-day window ending at prediction time.",
+      "target_need": "What binding offtake commitments for carbon capture module were disclosed within the 180-day window ending at prediction time, and what still-effective binding offtake commitments were disclosed before that window?"
+    },
+    {
+      "case_id": "p03_reverse_lowercase_objects",
+      "target_need": "What optical sensor binding offtake commitments and carbon capture module binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check carbon capture module binding offtake commitments for named counterparties and delivery schedules.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish optical sensor binding offtake commitments.",
+      "expected_direct_partial": true,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Distinct complete literal noun phrases, reversed answered arm; neither capitalization nor proper-name inventory proves attribution."
+    },
+    {
+      "case_id": "p04_explicit_disjoint_date_intervals",
+      "target_need": "What carbon capture module binding offtake commitments were disclosed from 2025-01-01 through 2025-05-30, and what still-effective binding offtake commitments were disclosed before 2025-01-01?",
+      "selection_reason": "Check carbon capture module binding offtake commitments disclosed from 2025-01-01 through 2025-05-30.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish still-effective carbon capture module binding offtake commitments disclosed before 2025-01-01.",
+      "expected_direct_partial": true,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Closed Jan1..May30 versus strictly before Jan1 is disjoint. Date predicate qualifies disclosure, not contract effective period. Card180day scope contains answered interval."
+    },
+    {
+      "case_id": "p05_object_after_facet_with_local_window",
+      "target_need": "What binding offtake commitments for carbon capture module were disclosed within the 180-day window ending at prediction time, and what still-effective binding offtake commitments were disclosed before that window?",
+      "selection_reason": "Check binding offtake commitments disclosed within the 180-day window ending at prediction time for carbon capture module.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish still-effective binding offtake commitments for carbon capture module disclosed before the 180-day window.",
+      "expected_direct_partial": true,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Same relative interval as original p06; local attachment survives noun/preposition order."
+    },
+    {
+      "case_id": "n01_same_object_same_facet",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Orion Data binding offtake commitments.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Reason repeats the same object and facet retained unresolved; an extra different target arm cannot exempt it."
+    },
+    {
+      "case_id": "n02_modifier_only_difference",
+      "target_need": "What Orion Data binding offtake commitments and Orion Data material binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Orion Data material binding offtake commitments.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Dropping material cannot prove nonoverlap; ordinary commitments include material commitments."
+    },
+    {
+      "case_id": "n03_reason_explicitly_claims_both_objects",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules. Also measures Aurora Sensor binding offtake commitments.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "A valid answered arm cannot shield a separate explicit retained-arm claim."
+    },
+    {
+      "case_id": "n04_object_words_only_in_unrelated_sentence",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check binding offtake commitments for named counterparties and delivery schedules. The words Orion Data identify the document title.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "An unrelated sentence naming an object does not locally bind the generic claimed facet to that object."
+    },
+    {
+      "case_id": "n05_object_only_in_negated_scope",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check binding offtake commitments for named counterparties and delivery schedules. This is not an Orion Data measurement.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Object appears only under negation; cannot be borrowed as positive answered-arm attribution."
+    },
+    {
+      "case_id": "n06_nested_90_vs_180_windows",
+      "target_need": "What binding offtake commitments for carbon capture module were disclosed within the 180-day window ending at prediction time, and what still-effective binding offtake commitments were disclosed before that window?",
+      "selection_reason": "Check binding offtake commitments for carbon capture module disclosed within the 90-day window ending at prediction time.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish binding offtake commitments for carbon capture module disclosed within the 180-day window ending at prediction time.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "90day is a subset of180day, not disjoint; different digits alone cannot exempt overlap."
+    },
+    {
+      "case_id": "n07_overlapping_explicit_intervals",
+      "target_need": "What carbon capture module binding offtake commitments were disclosed from 2025-01-01 through 2025-05-30, and what still-effective binding offtake commitments were disclosed before 2025-01-01?",
+      "selection_reason": "Check carbon capture module binding offtake commitments disclosed from 2025-01-01 through 2025-05-30.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish carbon capture module binding offtake commitments disclosed from 2025-03-01 through 2025-05-30.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "March..May intersects Jan..May; explicit unequal ranges do not prove disjointness."
+    },
+    {
+      "case_id": "n08_window_in_unrelated_sentence",
+      "target_need": "What binding offtake commitments for carbon capture module were disclosed within the 180-day window ending at prediction time, and what still-effective binding offtake commitments were disclosed before that window?",
+      "selection_reason": "Check binding offtake commitments for carbon capture module. The 180-day window ending at prediction time is the market-chart display period.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish still-effective binding offtake commitments for carbon capture module disclosed before the 180-day window.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "A chart-period sentence cannot qualify the unbounded commitment disclosure claim."
+    },
+    {
+      "case_id": "n09_wholeword_object_near_match",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check Orion Database binding offtake commitments for named counterparties and delivery schedules.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Database is not Data at a whole-word boundary; no literal target object match."
+    },
+    {
+      "case_id": "n10_cosmetic_full_residual",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Residual retains both target arms; wrapper does not create narrower progress."
+    },
+    {
+      "case_id": "n11_future_request_and_typed_scope",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+      "residual_need": "Establish Aurora Sensor binding offtake commitments disclosed after 2025-05-30, including June 2025 actual disclosures.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Literal scope contrast never exempts future actual data; PIT validator remains independently authoritative."
+    },
+    {
+      "case_id": "n12_invalid_typed_partial_scope",
+      "target_need": "What Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments were disclosed by 2025-05-30?",
+      "selection_reason": "Check Orion Data binding offtake commitments for named counterparties and delivery schedules.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish Aurora Sensor binding offtake commitments.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "not_asserted",
+      "independent_reason": "Otherwise valid object contrast cannot make a noncanonical answer_scope type legal.",
+      "row_overrides": {
+        "answer_scope": [
+          "partial"
+        ]
+      }
+    }
+  ],
+  "counts": {
+    "positive": 5,
+    "negative": 12
+  },
+  "scope": "Synthetic local input strings on unchanged native parser and exact previously frozen definitions; no assertions that synthetic names are historical facts. No source/model/Signal/Store/LabelStore/stage entry.",
+  "expectation_boundary": "Literal syntax can prove local complete object attachment or disjoint disclosure intervals under one clock. It does not prove issuer identity equivalence, economic entailment, arbitrary pronoun attachment, different-window nonoverlap, source existence, or actual evidence. Global word bags cannot certify scope attribution.",
+  "native_check": "Real offline parser: positive requires direct first answer partial with unchanged row and siblings; negative cannot silently retain answer ownership. Existing typed correction/fallback allowed. Typed invalid control may reject outside overlap helper; record that cause separately."
+}

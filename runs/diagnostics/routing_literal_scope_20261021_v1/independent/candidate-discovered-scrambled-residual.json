@@ -1,0 +1,19 @@
+{
+  "phase": "POST_CANDIDATE_ROOT_DISCOVERED_COUNTEREXAMPLE",
+  "frozen_at_utc": "2026-10-21T01:59:38.052703+00:00",
+  "source_root_artifact": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/root/residual-wordbag-attachment-probe.json",
+    "sha256": "2d0eb76a9633af4858fa726d01c2ff833bc44b437d2c35fc3a9945bdd5b5fdd7"
+  },
+  "cases": [
+    {
+      "case_id": "scrambled_residual_same_token_bag_not_literal_scope",
+      "target_need": "What binding offtake commitments for carbon capture module were disclosed within the 180-day window ending at prediction time, and what still-effective binding offtake commitments were disclosed before that window?",
+      "selection_reason": "Check binding offtake commitments for carbon capture module disclosed within the 180-day window ending at prediction time.",
+      "residual_need": "Using disclosures available by 2025-05-30, establish still-effective binding offtake module for carbon capture commitments disclosed before the 180-day window.",
+      "expected_direct_partial": false,
+      "helper_conflict_expectation": "conflict",
+      "independent_reason": "Commitments/module swapped across facet/object boundary; equal token bags do not preserve either complete ordered noun phrase."
+    }
+  ]
+}

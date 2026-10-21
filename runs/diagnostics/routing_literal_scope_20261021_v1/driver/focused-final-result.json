@@ -1,0 +1,52 @@
+{
+  "selectors": [
+    "tests.test_routing_literal_scope",
+    "tests.test_evolution_routing_plan_roles.RoutingResidualFacetContrastTests",
+    "tests.test_evolution_routing_plan_roles.RoutingSharedObjectListContrastTests",
+    "tests.test_need_dispositions"
+  ],
+  "tests": 43,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "forbidden": [],
+  "source_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "0ce33c24adaf65a04f698ecaea04eafd9e5019776d23e2b0665e23b2119c7ece"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "sha256": "9453679f3e3970340f72a8ba066507433a8a3b6729b8173ab19610d8956b56dc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_routing_literal_scope.py",
+      "sha256": "b1c03bbee9ff484afc49827d9ec8acf526eb2bfdd653d7e394314ecb22781b54"
+    }
+  ],
+  "source_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "0ce33c24adaf65a04f698ecaea04eafd9e5019776d23e2b0665e23b2119c7ece"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "06a38e29144261f8f1abad255cde1bdbdfae8eb464a2c32f871b10b66953d8f1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "sha256": "9453679f3e3970340f72a8ba066507433a8a3b6729b8173ab19610d8956b56dc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_routing_literal_scope.py",
+      "sha256": "b1c03bbee9ff484afc49827d9ec8acf526eb2bfdd653d7e394314ecb22781b54"
+    }
+  ],
+  "sources_equal": true,
+  "wall_seconds": 0.31023874995298684,
+  "scope": "Native offline units; existing catalog writes only to test temporary directories; no Registry.freeze, RawInfoStore or Signal calculation."
+}

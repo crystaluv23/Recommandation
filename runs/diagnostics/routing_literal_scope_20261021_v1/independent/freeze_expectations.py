@@ -1,0 +1,38 @@
+"""Freeze source-only literal-scope cases before inspecting a repair candidate."""
+from pathlib import Path
+from datetime import datetime, timezone
+from copy import deepcopy
+import hashlib,json,subprocess
+R=Path('/Users/l/Project/Recommandation'); O=R/'runs/diagnostics/routing_literal_scope_20261021_v1/independent'
+def binding(p):
+ b=p.read_bytes();return dict(path=str(p),sha256=hashlib.sha256(b).hexdigest(),bytes=len(b))
+old=R/'runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases-v3.json'
+prior=json.loads(old.read_text()); by={x['case_id']:x for x in prior['cases']}
+cases=[]
+def case(id,target,reason,residual,expected,why,**extra):
+ cases.append(dict(case_id=id,target_need=target,selection_reason=reason,residual_need=residual,expected_direct_partial=expected,helper_conflict_expectation='not_asserted',independent_reason=why,**extra))
+for name in ['p05_same_facet_distinct_explicit_objects','p06_same_facet_disjoint_literal_time_windows']:
+ x=deepcopy(by[name]);x['case_id']='literal_'+name;cases.append(x)
+a=by['p05_same_facet_distinct_explicit_objects']; t=a['target_need']; r=a['selection_reason']; u=a['residual_need']
+case('p03_reverse_lowercase_objects',t.replace('Orion Data','optical sensor').replace('Aurora Sensor','carbon capture module'),'Check carbon capture module binding offtake commitments for named counterparties and delivery schedules.','Using disclosures available by 2025-05-30, establish optical sensor binding offtake commitments.',True,'Distinct complete literal noun phrases, reversed answered arm; neither capitalization nor proper-name inventory proves attribution.')
+tdate='What carbon capture module binding offtake commitments were disclosed from 2025-01-01 through 2025-05-30, and what still-effective binding offtake commitments were disclosed before 2025-01-01?'
+rdate='Check carbon capture module binding offtake commitments disclosed from 2025-01-01 through 2025-05-30.'
+udate='Using disclosures available by 2025-05-30, establish still-effective carbon capture module binding offtake commitments disclosed before 2025-01-01.'
+case('p04_explicit_disjoint_date_intervals',tdate,rdate,udate,True,'Closed Jan1..May30 versus strictly before Jan1 is disjoint. Date predicate qualifies disclosure, not contract effective period. Card180day scope contains answered interval.')
+b=by['p06_same_facet_disjoint_literal_time_windows']
+case('p05_object_after_facet_with_local_window',b['target_need'], 'Check binding offtake commitments disclosed within the 180-day window ending at prediction time for carbon capture module.',b['residual_need'],True,'Same relative interval as original p06; local attachment survives noun/preposition order.')
+case('n01_same_object_same_facet',t,r,u.replace('Aurora Sensor','Orion Data'),False,'Reason repeats the same object and facet retained unresolved; an extra different target arm cannot exempt it.')
+case('n02_modifier_only_difference', 'What Orion Data binding offtake commitments and Orion Data material binding offtake commitments were disclosed by 2025-05-30?',r,'Using disclosures available by 2025-05-30, establish Orion Data material binding offtake commitments.',False,'Dropping material cannot prove nonoverlap; ordinary commitments include material commitments.')
+case('n03_reason_explicitly_claims_both_objects',t,r+' Also measures Aurora Sensor binding offtake commitments.',u,False,'A valid answered arm cannot shield a separate explicit retained-arm claim.')
+case('n04_object_words_only_in_unrelated_sentence',t,'Check binding offtake commitments for named counterparties and delivery schedules. The words Orion Data identify the document title.',u,False,'An unrelated sentence naming an object does not locally bind the generic claimed facet to that object.')
+case('n05_object_only_in_negated_scope',t,'Check binding offtake commitments for named counterparties and delivery schedules. This is not an Orion Data measurement.',u,False,'Object appears only under negation; cannot be borrowed as positive answered-arm attribution.')
+case('n06_nested_90_vs_180_windows',b['target_need'],'Check binding offtake commitments for carbon capture module disclosed within the 90-day window ending at prediction time.','Using disclosures available by 2025-05-30, establish binding offtake commitments for carbon capture module disclosed within the 180-day window ending at prediction time.',False,'90day is a subset of180day, not disjoint; different digits alone cannot exempt overlap.')
+case('n07_overlapping_explicit_intervals',tdate,rdate,'Using disclosures available by 2025-05-30, establish carbon capture module binding offtake commitments disclosed from 2025-03-01 through 2025-05-30.',False,'March..May intersects Jan..May; explicit unequal ranges do not prove disjointness.')
+case('n08_window_in_unrelated_sentence',b['target_need'],'Check binding offtake commitments for carbon capture module. The 180-day window ending at prediction time is the market-chart display period.',b['residual_need'],False,'A chart-period sentence cannot qualify the unbounded commitment disclosure claim.')
+case('n09_wholeword_object_near_match',t,r.replace('Orion Data','Orion Database'),u,False,'Database is not Data at a whole-word boundary; no literal target object match.')
+case('n10_cosmetic_full_residual',t,r,'Using disclosures available by 2025-05-30, establish Orion Data binding offtake commitments and Aurora Sensor binding offtake commitments.',False,'Residual retains both target arms; wrapper does not create narrower progress.')
+case('n11_future_request_and_typed_scope',t,r,'Establish Aurora Sensor binding offtake commitments disclosed after 2025-05-30, including June 2025 actual disclosures.',False,'Literal scope contrast never exempts future actual data; PIT validator remains independently authoritative.')
+# Typed invalid row is a separate contract contrast, not a semantic overlap test.
+case('n12_invalid_typed_partial_scope',t,r,u,False,'Otherwise valid object contrast cannot make a noncanonical answer_scope type legal.',row_overrides={'answer_scope':['partial']})
+out=dict(frozen_at_utc=datetime.now(timezone.utc).isoformat(),head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip(),phase='PRE_CANDIDATE_EXPECTATIONS',candidate_source_inspected=False,old14_unchanged_binding=binding(old),baseline_bindings=[binding(R/'spec/src/stock_opportunity_agent/research/evolution_research_validation.md'),binding(R/'src/stock_opportunity_agent/research/evolution_research_validation.py')],cases=cases,counts={'positive':sum(x['expected_direct_partial'] for x in cases),'negative':sum(not x['expected_direct_partial'] for x in cases)},scope='Synthetic local input strings on unchanged native parser and exact previously frozen definitions; no assertions that synthetic names are historical facts. No source/model/Signal/Store/LabelStore/stage entry.',expectation_boundary='Literal syntax can prove local complete object attachment or disjoint disclosure intervals under one clock. It does not prove issuer identity equivalence, economic entailment, arbitrary pronoun attachment, different-window nonoverlap, source existence, or actual evidence. Global word bags cannot certify scope attribution.',native_check='Real offline parser: positive requires direct first answer partial with unchanged row and siblings; negative cannot silently retain answer ownership. Existing typed correction/fallback allowed. Typed invalid control may reject outside overlap helper; record that cause separately.')
+p=O/'frozen-expectations.json';assert not p.exists();p.write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'binding':binding(p),'counts':out['counts'],'total':len(cases)},indent=2))

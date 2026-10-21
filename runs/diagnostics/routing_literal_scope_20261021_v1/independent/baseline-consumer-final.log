@@ -1,0 +1,12 @@
+{
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/independent/baseline-consumer-results.json",
+    "sha256": "46a3af42effa0f1c475e02011bc5ef6d87c71e265f627b339652a949ed597c88",
+    "bytes": 32480
+  },
+  "passed": 6,
+  "total": 7,
+  "failures": [
+    "date_actual_partial"
+  ]
+}

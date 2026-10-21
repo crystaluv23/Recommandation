@@ -1,0 +1,99 @@
+{
+  "cases": 11,
+  "outcomes": [
+    {
+      "case_id": "p05_same_facet_distinct_explicit_objects",
+      "helper_phrase": "binding offtake commitment",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "p06_same_facet_disjoint_literal_time_windows",
+      "helper_phrase": "binding offtake commitment carbon capture module",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "n_object_same",
+      "helper_phrase": "aurora sensor binding offtake commitment",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "n_object_claims_both",
+      "helper_phrase": "aurora sensor binding offtake commitment",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "n_object_missing_answer_anchor",
+      "helper_phrase": "binding offtake commitment",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "n_object_substring_anchor",
+      "helper_phrase": "binding offtake commitment",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "n_window_same",
+      "helper_phrase": "still effective binding offtake commitment carbon capture module before window",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "n_window_claims_both",
+      "helper_phrase": "binding offtake commitment carbon capture module",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "n_window_missing_anchor",
+      "helper_phrase": "binding offtake commitment carbon capture module",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "n_window_overlapping",
+      "helper_phrase": "binding offtake commitment carbon capture module within window ending prediction time",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "n_window_unattached_other_sentence",
+      "helper_phrase": "binding offtake commitment carbon capture module",
+      "coordinated_terms": [],
+      "direct_partial": false,
+      "offline_calls": 2,
+      "siblings_exact": true
+    }
+  ],
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_literal_scope_20261021_v1/driver/result.json",
+    "sha256": "921759bd59f49d8fd5963c383fe09ecca73ad176285ae307afdaf83aa51118af",
+    "bytes": 1014941
+  },
+  "forbidden_calls": []
+}
