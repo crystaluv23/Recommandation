@@ -1,0 +1,53 @@
+[
+  {
+    "url": "https://s201.q4cdn.com/120229500/files/doc_events/2025/May/08/GPRE-First-Quarter-2025-Earnings-Transcript.pdf",
+    "status": 200,
+    "response_headers": {
+      "Date": "Wed, 21 Oct 2026 17:25:25 GMT",
+      "Content-Type": "application/pdf",
+      "Content-Length": "212407",
+      "Last-Modified": "Fri, 09 May 2025 17:43:04 GMT",
+      "ETag": "\"77173e9b92b0ea7bf01a01472af65eb7\"",
+      "Cache-Control": "max-age=3600"
+    },
+    "body_path": "runs/diagnostics/transcript_official_archive_20261022_v1/gpre-q1-official.pdf",
+    "body_sha256": "645d5c573ffaaf1b5f3df17140d69e7fe503f7bcfe7a6dd466ffbe1ceea95b8b",
+    "extracted_text_path": "runs/diagnostics/transcript_official_archive_20261022_v1/gpre-q1-official.txt",
+    "extracted_text_sha256": "e64cfa9079784d5c48423f24ab134da6509a755b21ab85a592b7016739ea3e39",
+    "pages": 19,
+    "pdf_metadata": {
+      "/ModDate": "D:20250508224244",
+      "/Author": "",
+      "/CreationDate": "D:20250508224242Z",
+      "/Title": "",
+      "/Creator": "Aspose Ltd.",
+      "/Subject": "",
+      "/Producer": "Aspose.Pdf for .NET 7.0"
+    },
+    "metadata_clock_is_publication_proof": false
+  },
+  {
+    "url": "https://www.enbridge.com/~/media/Enb/Documents/Investor-Relations/2025/2025_Q1_Transcript_FINAL.pdf",
+    "status": 200,
+    "response_headers": {
+      "Date": "Wed, 21 Oct 2026 17:25:28 GMT",
+      "Content-Type": "application/pdf",
+      "Content-Length": "340136",
+      "Cache-Control": "private, max-age=604800",
+      "Last-Modified": "Mon, 11 May 2026 20:39:07 GMT"
+    },
+    "body_path": "runs/diagnostics/transcript_official_archive_20261022_v1/enb-q1-official.pdf",
+    "body_sha256": "59edcaea492d3bc0a3bf83b36b278424f01230b53a2c36eee97ee59a11d566e0",
+    "extracted_text_path": "runs/diagnostics/transcript_official_archive_20261022_v1/enb-q1-official.txt",
+    "extracted_text_sha256": "4ea3c326cba4d407606beb92997717b91f3e75ce658ebd552d44355bd80fce98",
+    "pages": 23,
+    "pdf_metadata": {
+      "/CreationDate": "D:20250509171945-04'00'",
+      "/Creator": "Microsoft\u00ae Word 2016",
+      "/ModDate": "D:20250514144726-06'00'",
+      "/Producer": "Microsoft\u00ae Word 2016",
+      "/Title": "2025 Q1 Transcript"
+    },
+    "metadata_clock_is_publication_proof": false
+  }
+]

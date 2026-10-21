@@ -1,0 +1,498 @@
+{
+  "schema_version": "transcript-official-archive-source-review-v1",
+  "scope": "source evidence only; root self-review, no production source admission or semantic full-body equivalence",
+  "inventory_binding": {
+    "path": "reports/transcript-proof-inventory-20261019.json",
+    "sha256": "c998c06077fc2bed98ea8db29073d6981c00a66fa8974ecdddf3175bcfee8256"
+  },
+  "fixed_denominator": 26,
+  "accepted_public_content_time_proofs": 0,
+  "new_first_party_body_comparisons": 2,
+  "source_reviews": [
+    {
+      "original_document_id": "alpha_vantage:cik_0001309402:earnings_call:c24a7e3f69c8213549547c34",
+      "original_sha256": "2aa98d39ed282fbe18afc49a4c158d05a41aace67e64ac1a3d33518cf7123c2e",
+      "official_pdf": {
+        "url": "https://s201.q4cdn.com/120229500/files/doc_events/2025/May/08/GPRE-First-Quarter-2025-Earnings-Transcript.pdf",
+        "status": 200,
+        "response_headers": {
+          "Date": "Wed, 21 Oct 2026 17:25:25 GMT",
+          "Content-Type": "application/pdf",
+          "Content-Length": "212407",
+          "Last-Modified": "Fri, 09 May 2025 17:43:04 GMT",
+          "ETag": "\"77173e9b92b0ea7bf01a01472af65eb7\"",
+          "Cache-Control": "max-age=3600"
+        },
+        "body_path": "runs/diagnostics/transcript_official_archive_20261022_v1/gpre-q1-official.pdf",
+        "body_sha256": "645d5c573ffaaf1b5f3df17140d69e7fe503f7bcfe7a6dd466ffbe1ceea95b8b",
+        "extracted_text_path": "runs/diagnostics/transcript_official_archive_20261022_v1/gpre-q1-official.txt",
+        "extracted_text_sha256": "e64cfa9079784d5c48423f24ab134da6509a755b21ab85a592b7016739ea3e39",
+        "pages": 19,
+        "pdf_metadata": {
+          "/ModDate": "D:20250508224244",
+          "/Author": "",
+          "/CreationDate": "D:20250508224242Z",
+          "/Title": "",
+          "/Creator": "Aspose Ltd.",
+          "/Subject": "",
+          "/Producer": "Aspose.Pdf for .NET 7.0"
+        },
+        "metadata_clock_is_publication_proof": false
+      },
+      "selected_anchor_review": [
+        {
+          "kind": "speaker_identity",
+          "official_extracted_offset": 1049,
+          "provider_turn_indices": [
+            0,
+            2,
+            4,
+            6,
+            31,
+            46,
+            54,
+            58
+          ],
+          "judgment": "selected content anchor corroborated, not full-text identity or historical availability"
+        },
+        {
+          "kind": "protein_volume",
+          "official_extracted_offset": 12152,
+          "provider_turn_indices": [
+            4
+          ],
+          "judgment": "selected content anchor corroborated, not full-text identity or historical availability"
+        },
+        {
+          "kind": "closing",
+          "official_extracted_offset": 57007,
+          "provider_turn_indices": [
+            65
+          ],
+          "judgment": "selected content anchor corroborated, not full-text identity or historical availability"
+        }
+      ],
+      "public_content_time_status": "unknown",
+      "admitted": false
+    },
+    {
+      "original_document_id": "alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af",
+      "original_sha256": "9d4f14509352afdb8a3a7aab51be6d43d2a07fab229c0251501f14fff6cb63e0",
+      "official_pdf": {
+        "url": "https://www.enbridge.com/~/media/Enb/Documents/Investor-Relations/2025/2025_Q1_Transcript_FINAL.pdf",
+        "status": 200,
+        "response_headers": {
+          "Date": "Wed, 21 Oct 2026 17:25:28 GMT",
+          "Content-Type": "application/pdf",
+          "Content-Length": "340136",
+          "Cache-Control": "private, max-age=604800",
+          "Last-Modified": "Mon, 11 May 2026 20:39:07 GMT"
+        },
+        "body_path": "runs/diagnostics/transcript_official_archive_20261022_v1/enb-q1-official.pdf",
+        "body_sha256": "59edcaea492d3bc0a3bf83b36b278424f01230b53a2c36eee97ee59a11d566e0",
+        "extracted_text_path": "runs/diagnostics/transcript_official_archive_20261022_v1/enb-q1-official.txt",
+        "extracted_text_sha256": "4ea3c326cba4d407606beb92997717b91f3e75ce658ebd552d44355bd80fce98",
+        "pages": 23,
+        "pdf_metadata": {
+          "/CreationDate": "D:20250509171945-04'00'",
+          "/Creator": "Microsoft\u00ae Word 2016",
+          "/ModDate": "D:20250514144726-06'00'",
+          "/Producer": "Microsoft\u00ae Word 2016",
+          "/Title": "2025 Q1 Transcript"
+        },
+        "metadata_clock_is_publication_proof": false
+      },
+      "selected_anchor_review": [
+        {
+          "kind": "speaker_identity",
+          "official_extracted_offset": 398,
+          "provider_turn_indices": [
+            0,
+            1,
+            65
+          ],
+          "judgment": "selected content anchor corroborated, not full-text identity or historical availability"
+        },
+        {
+          "kind": "performance",
+          "official_extracted_offset": 16946,
+          "provider_turn_indices": [
+            2
+          ],
+          "judgment": "selected content anchor corroborated, not full-text identity or historical availability"
+        },
+        {
+          "kind": "closing",
+          "official_extracted_offset": 90468,
+          "provider_turn_indices": [
+            67
+          ],
+          "judgment": "selected content anchor corroborated, not full-text identity or historical availability"
+        }
+      ],
+      "public_content_time_status": "unknown",
+      "admitted": false
+    }
+  ],
+  "gpre_clock_discrepancy": {
+    "event_page_local": "2025-05-08T09:00:00 America/New_York",
+    "utc_conversion": "2025-05-08T13:00:00+00:00",
+    "official_pdf_cover": "2025-05-08 14:00 GMT",
+    "resolved": false,
+    "schedule_used_as_actual_start": false
+  },
+  "original_records": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b.json",
+      "sha256": "1e548ac54d38a9c4a38a6763410bda767f57d2c23a47f207ad051527f397289d",
+      "document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b",
+      "fiscal_period_clue": "2025Q1",
+      "turn_count": 61,
+      "first_turn_sha256": "adf110f37991001d2ee67baa01c8c97202f266f0717a6b54513e6c5699006ce5",
+      "last_turn_sha256": "607f8d4312f36fabc84c46d6382a5b360b2871c6cddcd30bc25e49c5d1f65ffe",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665.json",
+      "sha256": "764e4d75432a1e94414ab848598da741fca4ed6502d7c10aaeeee3172dffee13",
+      "document_id": "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665",
+      "fiscal_period_clue": "2025Q2",
+      "turn_count": 38,
+      "first_turn_sha256": "48b0ff7f80e465e8e3c7905aacef6b39ea3ae064baa5b5e7f37e54116b974b32",
+      "last_turn_sha256": "3faeb4c6c78f45321a689e8121941f0dfb7aa6f7a0017319dcae18aa42d8b1c5",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000860413/alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a.json",
+      "sha256": "5103acfc4c4987c36f42f83e93840aad7d4403d14cce45099afd4bf4f4b012aa",
+      "document_id": "alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a",
+      "fiscal_period_clue": "2025Q1",
+      "turn_count": 81,
+      "first_turn_sha256": "82d12634a8443938c6d77b332ac63c50b5919017392b29247b65459aa6c2acde",
+      "last_turn_sha256": "67687a7928dcf62058dcf77031cedfb54e44e9d8dfe4ecc5b72032f326b22535",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000860413/alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e.json",
+      "sha256": "a2ed0b264e6597d7994792b2581ba1c1d865d6a004e1df7174d2fef16854ba59",
+      "document_id": "alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e",
+      "fiscal_period_clue": "2025Q2",
+      "turn_count": 50,
+      "first_turn_sha256": "c297ef09bb568e5ba5052b1a8f80106f43069f5f296d9953913214a6091fe701",
+      "last_turn_sha256": "f3b6fafc79b7652fb00b5cf1975ea8036664ce5d66ff409bfd0197cacf74bbcc",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000895421/alpha_vantage:cik_0000895421:earnings_call:4991cd407c0da0768c268d49.json",
+      "sha256": "5b05465542ec6e704ad6c9a0167210dd4beeb6d9fe0944b47564bf3fa12e7d74",
+      "document_id": "alpha_vantage:cik_0000895421:earnings_call:4991cd407c0da0768c268d49",
+      "fiscal_period_clue": "2025Q2",
+      "turn_count": 33,
+      "first_turn_sha256": "0a3a5a39023c1690c12442d94704e826656df7163525061152ce18608db8012f",
+      "last_turn_sha256": "b61ff06d4a7ea72deda313cecd11eac1dd1aa4964c33701746e0f9182bd4a0c8",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000895421/alpha_vantage:cik_0000895421:earnings_call:5d4f3600f93dd9c8e001d802.json",
+      "sha256": "e93a59ec12c1695b882fa18fb55c2a389321ec9f4013726e47a10feeec6d9a4c",
+      "document_id": "alpha_vantage:cik_0000895421:earnings_call:5d4f3600f93dd9c8e001d802",
+      "fiscal_period_clue": "2025Q1",
+      "turn_count": 47,
+      "first_turn_sha256": "fdfff8271ec9f34d6a8343f97ff909915dc46b3e41ee413734b85c52a52e3465",
+      "last_turn_sha256": "5dc00454801f302157d9a13d22c5ab019822c69e4155001f7c71d5ebae0fcdaa",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000895728/alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d.json",
+      "sha256": "3311b695c2c9cd0a92c03b37a8fb31fc266e38915fd3749b5c432d605b184fcc",
+      "document_id": "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d",
+      "fiscal_period_clue": "2025Q2",
+      "turn_count": 77,
+      "first_turn_sha256": "e9b6df0bc23a22a75ae1775e1896b88011158cddd99438182bc8feb4ff91f10c",
+      "last_turn_sha256": "6e8ae1b8eea5301b54a69861e309df1e9492a928e04a404d0b05136b6e424b2f",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000895728/alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af.json",
+      "sha256": "9d4f14509352afdb8a3a7aab51be6d43d2a07fab229c0251501f14fff6cb63e0",
+      "document_id": "alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af",
+      "fiscal_period_clue": "2025Q1",
+      "turn_count": 68,
+      "first_turn_sha256": "d18fe10f4b1607af92edb2153c999a10db07eb7b2ad76e0d576b30163ba6a869",
+      "last_turn_sha256": "6e8ae1b8eea5301b54a69861e309df1e9492a928e04a404d0b05136b6e424b2f",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000936395/alpha_vantage:cik_0000936395:earnings_call:20258bddd129b37a173d7a2e.json",
+      "sha256": "c8cca552e2bdbc86fc9d90847e819a7ba846b90a58e8d3d0cbe38b38a7818538",
+      "document_id": "alpha_vantage:cik_0000936395:earnings_call:20258bddd129b37a173d7a2e",
+      "fiscal_period_clue": "2025Q3",
+      "turn_count": 88,
+      "first_turn_sha256": "2581e74497e4ef0818c07eee79b44abba30d5094360257c2cf150536c4790b47",
+      "last_turn_sha256": "c9df0f8c51e42cea50e960e34d5a9c7207ffece1e3ac06fc06c50ed654f5f1fc",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000936395/alpha_vantage:cik_0000936395:earnings_call:5ccd7fe1e6f86751f3d011c4.json",
+      "sha256": "1ea50ca0ff0e41d9b463a93c7ab8a394858a0e13e6be94d5bc22571f25657ba0",
+      "document_id": "alpha_vantage:cik_0000936395:earnings_call:5ccd7fe1e6f86751f3d011c4",
+      "fiscal_period_clue": "2025Q2",
+      "turn_count": 70,
+      "first_turn_sha256": "f9cc537851d9e0e320cb59db829488c831864e684edffc38855db3b2ec33b789",
+      "last_turn_sha256": "a8afab4bf426c506bfb377b0cc949dd05bef40fbc28f7968326b1f984f938d06",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001018963/alpha_vantage:cik_0001018963:earnings_call:7e2a69eede1c1b4c9695b46a.json",
+      "sha256": "772489f923a9561dc1a1355286a8211b7e1bd0459651c0556ace53320e51e12c",
+      "document_id": "alpha_vantage:cik_0001018963:earnings_call:7e2a69eede1c1b4c9695b46a",
+      "fiscal_period_clue": "2025Q1",
+      "turn_count": 93,
+      "first_turn_sha256": "a4410166636f826a5aecc96db2ff19fb2e988f49fc16103c82436a024ffe5a43",
+      "last_turn_sha256": "b5e4f8112bf709dfc866071b3ba111d5f405fed297068661db84ccf40f8612c4",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001018963/alpha_vantage:cik_0001018963:earnings_call:b0b34701653d7e0a2cd607ef.json",
+      "sha256": "7c7921e6bf00befef5853de57faef82fdba71c0881859862dcd1f45734009890",
+      "document_id": "alpha_vantage:cik_0001018963:earnings_call:b0b34701653d7e0a2cd607ef",
+      "fiscal_period_clue": "2025Q2",
+      "turn_count": 51,
+      "first_turn_sha256": "679bb5e0902696da579162acf75ef5b1c7d775e47a6a3068dd6b4933322ba415",
+      "last_turn_sha256": "f79ab17e279785bddd32514fb14cd4929f55cb9d60d8ab10ce74089da52032ee",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001051627/alpha_vantage:cik_0001051627:earnings_call:2ee31980cdce97120fff94ad.json",
+      "sha256": "931cdc4c7b2633ff39e4ae71626068098b7572d97f2fa7c45b07cade2849ecc6",
+      "document_id": "alpha_vantage:cik_0001051627:earnings_call:2ee31980cdce97120fff94ad",
+      "fiscal_period_clue": "2024Q4",
+      "turn_count": 48,
+      "first_turn_sha256": "e37710de4c19c4668680d609d30cac1574a8eeda699c85ee9978020c0e41bcf8",
+      "last_turn_sha256": "a9829e9917e2bcbb5ee934909c375509195748dd0fdc5e07e2bf0ae71e89acdc",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001051627/alpha_vantage:cik_0001051627:earnings_call:cca0e576bc815687121312f0.json",
+      "sha256": "b93d11103743ec0682bc094151a517dec1d5a109b2f796a656e802cba9b9b0de",
+      "document_id": "alpha_vantage:cik_0001051627:earnings_call:cca0e576bc815687121312f0",
+      "fiscal_period_clue": "2025Q2",
+      "turn_count": 26,
+      "first_turn_sha256": "8dd0c7be7c4cfd34b759fa50e8d9daf72584e68a2a7c52b9e1b57eef31591338",
+      "last_turn_sha256": "7aea71303d8b992a809c16f160dc5b41539925bee3f018d76138a168b4b04c62",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001114995/alpha_vantage:cik_0001114995:earnings_call:56963e7fdddc4c2a731ab0cb.json",
+      "sha256": "739c3b90d6c4814dcd1b7633aa63f3629334957054284a202426ec600aea88b3",
+      "document_id": "alpha_vantage:cik_0001114995:earnings_call:56963e7fdddc4c2a731ab0cb",
+      "fiscal_period_clue": "2024Q3",
+      "turn_count": 74,
+      "first_turn_sha256": "1e4ca955bfe26514099e81e3bc4877183e3cff06f9b33e8629fd2161577185ee",
+      "last_turn_sha256": "a8afab4bf426c506bfb377b0cc949dd05bef40fbc28f7968326b1f984f938d06",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001114995/alpha_vantage:cik_0001114995:earnings_call:8fb807995bdde614fddde66d.json",
+      "sha256": "aa74da6312554392e505e4b42a26c5986b4e62263ecb9679f5ec92dc254e4919",
+      "document_id": "alpha_vantage:cik_0001114995:earnings_call:8fb807995bdde614fddde66d",
+      "fiscal_period_clue": "2024Q4",
+      "turn_count": 47,
+      "first_turn_sha256": "2f6d8457ef230888c1d0596a36b23abf306a942a6356704aca0284cc9523cb71",
+      "last_turn_sha256": "81e3f11426afc6c286268094ee7a5e64e7e9bef3ae77b76c78fd089de7473f66",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001174922/alpha_vantage:cik_0001174922:earnings_call:d7b5b20f33fc541b281aa4fc.json",
+      "sha256": "dd275f6678ca5c6c3724907f81d4189702c4742c4e374fe1844ebbe507e72ccc",
+      "document_id": "alpha_vantage:cik_0001174922:earnings_call:d7b5b20f33fc541b281aa4fc",
+      "fiscal_period_clue": "2025Q1",
+      "turn_count": 79,
+      "first_turn_sha256": "8daf3091f0eb0069234f2c18a330b4231bc3238befead873303a388fea935916",
+      "last_turn_sha256": "8faecb5b0852695ac9bb5fc05b6bd0b9a81055d4f80d8899a2f7646559930010",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001309402/alpha_vantage:cik_0001309402:earnings_call:c24a7e3f69c8213549547c34.json",
+      "sha256": "2aa98d39ed282fbe18afc49a4c158d05a41aace67e64ac1a3d33518cf7123c2e",
+      "document_id": "alpha_vantage:cik_0001309402:earnings_call:c24a7e3f69c8213549547c34",
+      "fiscal_period_clue": "2025Q1",
+      "turn_count": 66,
+      "first_turn_sha256": "034f5dc952d64d12deaf7e3835313116a9bb773c78527b8e7fd569faa4a2a26a",
+      "last_turn_sha256": "32ed14b69e974c029f0ed8164820c758630ccd404f4b3bfc04bcdac01b621735",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001309402/alpha_vantage:cik_0001309402:earnings_call:fc2a37b31742bfbc3b48bc14.json",
+      "sha256": "5ae219f38631df6a272bb3da5d2416bc40216b2de1847e96068b04b6f91e5cc7",
+      "document_id": "alpha_vantage:cik_0001309402:earnings_call:fc2a37b31742bfbc3b48bc14",
+      "fiscal_period_clue": "2024Q4",
+      "turn_count": 37,
+      "first_turn_sha256": "f42f99a27f53953ff2314dd0f8e98648c55f79eaba9058057e944506ef12653b",
+      "last_turn_sha256": "6e8ae1b8eea5301b54a69861e309df1e9492a928e04a404d0b05136b6e424b2f",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001576942/alpha_vantage:cik_0001576942:earnings_call:4c59689781c1f6e972246d25.json",
+      "sha256": "f4300f4fdeacbf84ba1e88afc9e86c4ac0736844484b856fd87df7c532b267ca",
+      "document_id": "alpha_vantage:cik_0001576942:earnings_call:4c59689781c1f6e972246d25",
+      "fiscal_period_clue": "2025Q1",
+      "turn_count": 34,
+      "first_turn_sha256": "a9d8da05ec21b93787da6e42bc2e4e9e3a3f6b5bf538525ec14a33752fa7fc64",
+      "last_turn_sha256": "0c761f7fa1356204dc3c172b7ab412be0a1261117558dcdf0c41e6334aebab9d",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001576942/alpha_vantage:cik_0001576942:earnings_call:e32acd3fe08e04908e514cc9.json",
+      "sha256": "ea6068f6440bfddb949810c579e7a1fa80684f89202df1d4891184277d410887",
+      "document_id": "alpha_vantage:cik_0001576942:earnings_call:e32acd3fe08e04908e514cc9",
+      "fiscal_period_clue": "2025Q2",
+      "turn_count": 28,
+      "first_turn_sha256": "8cf51d7f7faaf12f3328ee1f97ca4f9e4b31be913a56c54984e1822cba599356",
+      "last_turn_sha256": "6c26f532c9b81f3a22365663666eb697d10cbfd79910d13f2432e512707b5a54",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001590364/alpha_vantage:cik_0001590364:earnings_call:1d83f5b836b1615c722d8f29.json",
+      "sha256": "2fef52e5ea401960bb72fec66e81d56c88463efef31ac322112a7389e47529a0",
+      "document_id": "alpha_vantage:cik_0001590364:earnings_call:1d83f5b836b1615c722d8f29",
+      "fiscal_period_clue": "2025Q1",
+      "turn_count": 95,
+      "first_turn_sha256": "4a20895c069357e1251f98e646330a449f85b27eaf4188dab5c8b4bc74f0d494",
+      "last_turn_sha256": "e1c29d3c329a761ec677827a46a58336ba7021f045938e67a558775388255b7d",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001590364/alpha_vantage:cik_0001590364:earnings_call:55324a9027cb59212ffea652.json",
+      "sha256": "5a7a47d6e8dd9ef20d6c6be6c78885c70dd72ac3685c2749019b161b922609d8",
+      "document_id": "alpha_vantage:cik_0001590364:earnings_call:55324a9027cb59212ffea652",
+      "fiscal_period_clue": "2025Q2",
+      "turn_count": 66,
+      "first_turn_sha256": "b43a339aa30041c028e7e303763fdf8c40a38c57d3d1f9eca748950479429cf7",
+      "last_turn_sha256": "af57597c2781323ed69cfddcdb5b9dfffdcb9ce00acb5583c043cd5ef7a4b112",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001830043/alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e.json",
+      "sha256": "f23c7887094f0cb484d053e6d04aab37e6f6a98d8e6bd7ad2c73b3ef2d718bc3",
+      "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+      "fiscal_period_clue": "2025Q1",
+      "turn_count": 27,
+      "first_turn_sha256": "f87d79d421a0fe8b02d7e812b9f8ee4bc66ee94ea7889fe397924b0481dec6c3",
+      "last_turn_sha256": "a8a678cd05c933aa1801bd6725f9e236bfb1a7cbec453d5cd65fe8a91fc9d6bd",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001869198/alpha_vantage:cik_0001869198:earnings_call:aa8f522e8e241985b6e59a83.json",
+      "sha256": "4a604ae944f31a07babaa4f1a17126ea13d72b854ffdd17f08e46ef9d027b395",
+      "document_id": "alpha_vantage:cik_0001869198:earnings_call:aa8f522e8e241985b6e59a83",
+      "fiscal_period_clue": "2024Q4",
+      "turn_count": 82,
+      "first_turn_sha256": "4985ec2e3d2b74711505ed00a0ba9a8325f08725163347b3fc569215a25dc8c9",
+      "last_turn_sha256": "ce1173168702b46ad4577dc63ac22f688815d136581e0090c09c489908b7f08a",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001920294/alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324.json",
+      "sha256": "f7f6a3842330a156e2ac7f4acb4a2d885b07ab098251254dc4d45625a2f9775e",
+      "document_id": "alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324",
+      "fiscal_period_clue": "2024Q4",
+      "turn_count": 27,
+      "first_turn_sha256": "5930e7a8732f2ab2254bdf543eeabce4d03c3dd9cfaf576c430437e6abc1a8c9",
+      "last_turn_sha256": "82035f2feb0c998db287bf94019fc757d36786cb406352f4d3c7d8a80d643044",
+      "scope": "first/last turns inspected; not complete semantic admission"
+    }
+  ],
+  "protected_bindings": [
+    {
+      "path": "runs/cold_start/minimal_rounds_v151/fast_summary.json",
+      "sha256": "441c565efda31b60453837ce8d405a951bcc19f6c8691604a3abc18710475c77"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v151/fast_trajectories.json",
+      "sha256": "4734ab1a71ee3c20231e38a860e8176bdc4976816c8019d674cd887b144dd140"
+    },
+    {
+      "path": "spec/architecture.md",
+      "sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/memory/knowledge.md",
+      "sha256": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_control.md",
+      "sha256": "6551ca4ccffe2aaedb72d967d1905a40bd214206d93f794f3b73720c89222c83"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md",
+      "sha256": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/plan_evolution.md",
+      "sha256": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v182_integrated/state.json",
+      "sha256": "e2cb3bbef7bfcfa62c4a1c218c181ac49796e6ebbd94851224ddbe1ed8dc2de9"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v182_integrated/cycle_state.json",
+      "sha256": "5619ac234153d2946c4d186e18a04043d4bf7e0739ae75859a6c91180fb00bf6"
+    }
+  ],
+  "raw_archives": [
+    {
+      "original": "runs/diagnostics/transcript_official_archive_20261022_v1/enb-q1-official.txt",
+      "original_sha256": "4ea3c326cba4d407606beb92997717b91f3e75ce658ebd552d44355bd80fce98",
+      "archive": "runs/diagnostics/transcript_official_archive_20261022_v1/enb-q1-official.txt.gz",
+      "archive_sha256": "1e8a09e2358ce2fc0aeeaa6ed46c13ab9c944dedf58329552b09a7c57b961028"
+    },
+    {
+      "original": "runs/diagnostics/transcript_official_archive_20261022_v1/gpre-q1-official.txt",
+      "original_sha256": "e64cfa9079784d5c48423f24ab134da6509a755b21ab85a592b7016739ea3e39",
+      "archive": "runs/diagnostics/transcript_official_archive_20261022_v1/gpre-q1-official.txt.gz",
+      "archive_sha256": "b9ae84c9f11bb29512d62ae3f3c50f3e7fdfaeb2b277b0d5eadf47e124d4332c"
+    },
+    {
+      "original": "runs/diagnostics/transcript_official_archive_20261022_v1/gpre-webcast-page.html",
+      "original_sha256": "d0cd19389fd197410ecec7ef2a6fe1714e3f2f6deebd3a1ba6945b4cf2bdac2f",
+      "archive": "runs/diagnostics/transcript_official_archive_20261022_v1/gpre-webcast-page.html.gz",
+      "archive_sha256": "1fbdc7af45a2103ea8f20fbd835535accb4b3b842021fe47dfb27e4fd4d44058"
+    },
+    {
+      "original": "runs/diagnostics/transcript_official_archive_20261022_v1/q4-app.js",
+      "original_sha256": "55ddd4b2bf0ea18313328f392e2e27229c8a4c1d90f1822f99aa51060b6619e1",
+      "archive": "runs/diagnostics/transcript_official_archive_20261022_v1/q4-app.js.gz",
+      "archive_sha256": "3af41a0391730bee8474a1bef3767dcef98f3b97eb77d1afade7e11350ef8fcc"
+    }
+  ],
+  "public_source_calls": {
+    "web_search_calls": 4,
+    "web_query_strings": 11,
+    "new_web_navigations": 4,
+    "existing_page_operations": 7,
+    "direct_public_GETs": 6,
+    "managed_provider_GETs_added": 0,
+    "underlying_web_HTTP_count": null
+  },
+  "prohibited_effects": {
+    "production_model_calls": 0,
+    "external_LLM_API_calls": 0,
+    "label_store_reads": 0,
+    "oracle_appends": 0,
+    "normalizations": 0,
+    "admitted_manifests": 0,
+    "completed_stage_reentries": 0,
+    "full_successors": 0
+  },
+  "strategy_disposition": "stop this metadata attempt; do not guess endpoints/authenticate/extend archive searches until pass",
+  "known_root_errors": [
+    "An initial query included DLocal outside the fixed inventory; no result adopted.",
+    "Shared-bundle getEvent query is not supported by the chosen attendee endpoint: missing Apollo headers first, then unsupported Query field. This is not an event-absence verdict."
+  ]
+}

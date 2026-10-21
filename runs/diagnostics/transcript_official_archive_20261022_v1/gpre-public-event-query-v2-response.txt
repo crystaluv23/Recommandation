@@ -1,0 +1,1 @@
+{"errors":[{"message":"Cannot query field \"getEvent\" on type \"Query\".","locations":[{"line":1,"column":35}],"extensions":{"code":"GRAPHQL_VALIDATION_FAILED"}}]}

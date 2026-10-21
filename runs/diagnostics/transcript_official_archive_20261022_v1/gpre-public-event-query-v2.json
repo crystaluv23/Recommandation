@@ -1,0 +1,15 @@
+{
+  "url": "https://attendees.events.q4inc.com/graphql?query=query+getEvent%28%24meetingId%3A+Int%29+%7B+getEvent%28meetingId%3A+%24meetingId%29+%7B+title+meetingId+eventStart+eventEnd+eventTz+status+%7D+%7D&variables=%7B%22meetingId%22%3A+587614500%7D",
+  "method": "GET",
+  "query": "query getEvent($meetingId: Int) { getEvent(meetingId: $meetingId) { title meetingId eventStart eventEnd eventTz status } }",
+  "status": 400,
+  "response_headers": {
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Length": "165",
+    "Date": "Wed, 21 Oct 2026 17:24:15 GMT",
+    "ETag": "W/\"a5-2c5edG2wfPYtzHYp0OFd0ZS6EBA\"",
+    "cache-control": "no-store"
+  },
+  "response_sha256": "e507d715d0bb0c3098d4a3fc95b5f05c34c09f532b159f021b17f96615ba12f3",
+  "scope": "Same read-only query with normal Apollo CSRF content headers; no authentication or mutation."
+}

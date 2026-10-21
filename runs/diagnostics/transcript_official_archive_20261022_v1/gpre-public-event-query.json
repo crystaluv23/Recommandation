@@ -1,0 +1,14 @@
+{
+  "url": "https://attendees.events.q4inc.com/graphql?query=query+getEvent%28%24meetingId%3A+Int%29+%7B+getEvent%28meetingId%3A+%24meetingId%29+%7B+title+meetingId+eventStart+eventEnd+eventTz+status+%7D+%7D&variables=%7B%22meetingId%22%3A+587614500%7D",
+  "method": "GET",
+  "query": "query getEvent($meetingId: Int) { getEvent(meetingId: $meetingId) { title meetingId eventStart eventEnd eventTz status } }",
+  "status": 400,
+  "response_headers": {
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Length": "406",
+    "Date": "Wed, 21 Oct 2026 17:23:58 GMT",
+    "ETag": "W/\"196-HUCJKwlQurC5GNaaJnH0d+HOnRw\""
+  },
+  "response_sha256": "f65c7ac74f7050b8b26c6c67b39d4a4e0d0b2da89af7b2667462fbcc1d50743b",
+  "scope": "Read-only minimal public event fields already present in app query; no guest-auth, registration, mutation or credentials."
+}

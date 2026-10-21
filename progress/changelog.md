@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-22：来源只读取证留GPRE Q1官方19页与ENB Q1 corrected23页PDF/元数据及正文锚点，26原件首末段/hash核同；不是全turn语义等价或准入。GPRE官方09ET=13UTC与PDF14GMT差1h、ENB PDF May14修改晚于May9会期，不能以事件/CDN路径/CreationDate替代历史完整公开时间，0/26不改。Q4公开shell/bundle后两最小只读query先缺Apollo header、后错admin/attendee schema；root错误保留，不当事件不存在，不注册/认证/枚举，4GET后停策略，另2GET仅存已识别PDF。4search/11queries、4新web导航/7cached读及6直接公开GET分列，managed147未增；首DLocal越inventory query未采纳。旧原件/指针/用户delta保真，无模型/标签/normalization/append/旧stage/全跑。两接口决策仍待答；下一不延长此检索求过。
+
 - 2026-10-22：完成已有literal对象/互补披露窗候选的精确版本本地验收，证明同时接routing cosmetic/overlap与实际owned partial精确残余消费。旧独立final绿灯绑定1de2而非当前a5ba，故root重验预冻scope19/19、原14/14+typed、补充2/2、反例1/1、consumer7/7，不伪称新版独立审查。新增重复问题occurrence/不可得反例，300关联全过；首新增fixture继承SUCCESS构造错保留并修fixture，产品未改。134原件/用户delta逐hash同；无fresh模型/GET/Signal/完成stage重入，原native0/1及MVP open不改。停止该词面策略，已就有界阅读接口/资源与Mining namespace传递两具体取舍请求用户决策。
 
 - 2026-10-21：spec-first修routing共享对象/复合facet误拒，并沿真实typed纠错补阻“删产品名仍认领premiums”；首候选只验多残余arm，root唯一短head反例仍误接，保红后分离强正向豁免与负向literal定位。最终242关联/14聚焦通过；原三行portfolio以精确18defs离线原生解析1call全canonical保留，非fresh通过。独立预冻14控核心4正/8负通过，两个不同对象/不重叠披露窗合法partial仍误拒，保12/14边界；旧9ac误拒及typed误放、717候选漏口不改。原54/旧stage19/Registry198保真，0新模型/GET/外部LLMAPI/生产Signal/标签/旧阶段重入；原native0/1和全MVP保持open。下一分别诊断两literal scope，不堆对象词表或启动完整后继。

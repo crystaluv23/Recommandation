@@ -1,0 +1,10 @@
+{
+  "scope": "Root artifact integrity/self-review, not semantic or public-time admission",
+  "original_records_verified": 26,
+  "protected_files_verified": 10,
+  "raw_archives_verified": 4,
+  "official_pdf_bytes_verified": 2,
+  "accepted_public_content_time_proofs": 0,
+  "source_review_sha256": "c10bcacbcdf081fce1fff69d2de7c845df97cf180cae9e4d7a9e8898a858def9",
+  "passed": true
+}
