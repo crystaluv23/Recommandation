@@ -1,0 +1,30 @@
+{
+  "author_dispatches": 0,
+  "driver_summary": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/driver-summary.json",
+    "sha256": "8415557bf422dc92328854db778d0305e35fb0b1b1a9d2c04073ce41c5c9ba9c"
+  },
+  "formal_stage_exists": false,
+  "next_gate": "independent actual temporary wire/visibility review before formal prepare",
+  "original_preservation_files_verified": 14,
+  "review": "reuse native core and InitialBoundary; default research Plan; two author limit independent of native three-slot scaffold; request and case ceilings remain distinct; no source/Signal/label/remote effects allowed",
+  "safety_tests": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/root/safety-tests.log",
+    "sha256": "2c37d50a88147ca2ebd5197d74ee37d462dab650d793512e849814c28d5a38f0"
+  },
+  "scope": "root read-only review before formal prepare; no native source/model operation",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/scripts/run_gpre_native_initial_stage.py",
+    "sha256": "30e0c8f97f4a6ba8dd5dab3353fccd5d09bcda01ffe27fb7e092dc85b0c1cfc4"
+  },
+  "source_oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+    "sha256": "0bce2212dfad502f8ad7adf8ac36661ff3da8bc43cb735cef633f9f9663d8189"
+  },
+  "spec": {
+    "path": "/Users/l/Project/Recommandation/spec/scripts/run_gpre_native_initial_stage.md",
+    "sha256": "e4ba4962432c71b212d5c6dfefb7f482555faf9cb940e07f82a89bec1f89f28f"
+  },
+  "temporary_bound_code_files_verified": 103,
+  "temporary_bound_source_files_verified": 1827
+}

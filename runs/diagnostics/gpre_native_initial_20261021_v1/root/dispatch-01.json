@@ -1,0 +1,7 @@
+{
+  "agent_id": "/root/exact_initial_87",
+  "handoff": "handoff-01.json",
+  "fork_turns": "none",
+  "external_llm_api_calls": 0,
+  "author_dispatch_number": 1
+}

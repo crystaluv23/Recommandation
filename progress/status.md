@@ -44,7 +44,11 @@ resolve仍保既有1次adapter预算预留，不冒称零预算。proof-backed m
 [来源/消费前置](../reports/fibk-event-and-financial-wire-frontier-20261021.md)：正确FIBK IR静态未展开历史条目、动态读取超时，4导航后停止该策略；不是会议不存在证明，仍0/26。
 GPRE六strict-pass结果现经真实Reflect batch/egress到唯一journal，6值/单位/期间/状态/引文索引及11operand保真、60绑定同，独立终核过。
 两次诊断前置失败保留，先5项synthetic完整原生控制后才捕获；36318/131072逻辑预留，cache/receive前止、0生产模型/响应/dispatch。
-只是序列化；这条GPRE链尚无accepted H_init/研究Plan/needownership，原9分母/1literal失败/2政策unknown不改。
+该capture只证序列化、未建立研究prior；原9分母/1literal失败/2政策unknown不改。
+[GPRE原生初始化](../reports/gpre-native-initial-20261021.md)现以同1780来源view/default手工研究Plan真实bootstrap，
+核心计算anchor/171bars指标、4请求17投影保partial/news缺口；fresh独立subagent首答1/1、0纠错，61888逻辑预留。
+原答→cache→解析→落盘逐字段同，4引用/5needs独立源审通过；1930绑定及原14保留。中性路径交接避免目录名泄露身份。
+仅本案H_init，尚无routingownership/Reflect消费/恢复；上述序列化阶段的空carrier不追认为研究prior。
 FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/unknown不等于无事件。
 [案例边界](../reports/case-scope-and-blind-boundary-20261020.md)：fresh40=16Anchor+8Random+16Discovery，Fast24；
 旧48无清单支持，不推剩余8为LockedTest。失败分母、标签、身份屏蔽与LockedTest保持。
@@ -79,7 +83,7 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   value/val、期间/单位/冲突及派生关系连接已修，原0671现在19facts逐literal核真；102关联/独立21×2及日期7控过。
   H1改共享row级合法pair存在性，205关联及独立控制过；实际dev8/qualified1780的24目录项/计数未变，观察增益0。
   legacy Fact leaf丢taxonomy的真实错配仍open；可选taxonomy字段/原文索引方案待答，不默改schema或启动Mining能力stage。
-- 下一先准备同GPRE真实native bootstrap/H_init，再真实routing后才可谈owned Reflect消费；不造prior/问题，不重跑已完成F6。
+- 下一冻结同GPRE已接受H_init/手工Plan/精确Registry的真实routing，源审need匹配与精确版本后才可谈owned Reflect消费；不预定选金融Signal、不重跑已完成F6。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
   有界LLM阅读接口、gross_margin/revenue_acceleration期间定义也待设计决策；不由现有结果倒推答案。
 - 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。

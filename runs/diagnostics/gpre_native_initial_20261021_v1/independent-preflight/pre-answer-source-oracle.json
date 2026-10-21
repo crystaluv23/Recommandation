@@ -1,0 +1,442 @@
+{
+  "acceptance": [
+    "Actual execute_information_plan must use the declared manual/default InformationPlan and qualified PIT source view. Source acquisition plan is not an accepted research Plan.",
+    "Core, not wrapper or oracle, computes baseline/control cards from complete market sources. Compare private independent baseline only after native preflight; evaluation_anchor/computed_metrics remain control data, never numerical issuer beliefs/contradictions/evidence.",
+    "Every returned factual belief, contradiction and support citation must be grounded in exact actual visible BasicInfo projection identity/text/PIT. Metadata dates/forms alone are not quoted issuer evidence.",
+    "Hypotheses are uncertain propositions, not fabricated facts, guarantees, observed returns or causal/benefit claims. No prescribed hypothesis, count quota or need wording is imposed.",
+    "Needs request only material facts absent from actual visible BasicInfo and the returned state, potentially disclosed by cutoff. May ask then-disclosed future schedule; may not require post-cutoff actuals/results.",
+    "News unavailable/external_not_authorized and projection/source omissions are coverage limits, never evidence of no events/no debt/no catalyst or proof the omitted fact exists. Preserve actual partial/omission flags.",
+    "Period/issuer/unit/classification and integer versus thousands must stay exact; no Q1 annualization, partial revenue replacement, currentness beyond source availability or inference from mere document presence.",
+    "No six downstream Signal results are required or injected. This stage establishes H_init only; no genuine routing ownership, Reflect semantics, Predictor or benefit is established.",
+    "Canonical source-derived legal name/ticker/CIK must be masked in actual outgoing wire. Native paths must not leak identity through actor handoff: neutral exact inbox copy, neutral outbox, raw copy byte equal, no issuer/oracle/answer in role message.",
+    "Original raw, native acceptance/correction/mechanical disposition, persisted accepted state, reread evidence and final stop must be audited separately. Schema pass or hash alone is not semantic pass.",
+    "Frozen ceiling: at most two independent local author responses including one native structured correction; each reservation <=131072, case <=256000. Stop immediately after accepted InitialBoundary; no Signals/Predictor/labels/GET or complete successor."
+  ],
+  "case": {
+    "case_id": "cik_0001309402:20250530",
+    "company_id": "cik_0001309402",
+    "prediction_time": "2025-05-30T00:00:00+00:00"
+  },
+  "fixed_denominator": {
+    "native_bootstrap_and_H_init_case": 1
+  },
+  "frozen_at_utc": "2026-10-21T00:33:35.094709+00:00",
+  "historical_visibility": {
+    "basis": "Saved old source-stage BasicInfo, not the new bootstrap request",
+    "canonical_model_utf8_bytes": 39897,
+    "new_visibility_requirement": "Before role dispatch compare actual native model context. If producer changes visibility, bind a pre-answer visibility addendum; never require hidden old/new facts, handfill cards or treat the historical count as native proof.",
+    "projection_count": 17,
+    "requests": [
+      {
+        "available_projection_count": 22,
+        "data_gap": null,
+        "effective_context_truncated": true,
+        "omission_marker_count": 8,
+        "omitted_projection_count": 7,
+        "projection_context_truncated": true,
+        "projection_status": "partial_context_budget",
+        "projections": [
+          {
+            "available_at": "2025-05-08T20:34:28+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000089",
+            "exact_text_chars": 1785,
+            "exact_text_sha256": "abc3430ffa48cdafad90692322470ce844e5389d352ccbb2d0a70bae78ce2594",
+            "projection_id": "projection_01fe85919029e3da1c7a0940"
+          },
+          {
+            "available_at": "2025-05-08T20:34:28+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000089",
+            "exact_text_chars": 1930,
+            "exact_text_sha256": "81da7936a6a9f2bb97e08b615405cb7419d137858eafaf366cbcbf6c0f1e1d77",
+            "projection_id": "projection_912baac25f4dbe6b588b664a"
+          },
+          {
+            "available_at": "2025-05-08T20:34:28+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000089",
+            "exact_text_chars": 1970,
+            "exact_text_sha256": "4206a96656b5c54adf9b1a92e8855618a51c7c050b2dbc41b88cf7ae96c43927",
+            "projection_id": "projection_230c2716c36c73afad15f81b"
+          },
+          {
+            "available_at": "2025-02-07T20:20:08+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000008",
+            "exact_text_chars": 1994,
+            "exact_text_sha256": "95c246ad1b9ff758af989e808885435520369a301fffbaa741f95d989920846b",
+            "projection_id": "projection_683d823cc5e2131f37473241"
+          },
+          {
+            "available_at": "2025-02-07T20:20:08+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000008",
+            "exact_text_chars": 1989,
+            "exact_text_sha256": "855fc5d786bd58bf6a2c70b4a4ee18d26891b58861466af05a6061dc328ce02e",
+            "projection_id": "projection_1107279887425e5f0e7b3b45"
+          },
+          {
+            "available_at": "2025-02-07T20:20:08+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000008",
+            "exact_text_chars": 1988,
+            "exact_text_sha256": "ab20b23900e1b5409e01eed84aa927ceced1c30ba3dbec01e577a5cc6886e156",
+            "projection_id": "projection_e411cedbc6a819ffbfaf04bd"
+          },
+          {
+            "available_at": "2025-02-07T20:20:08+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000008",
+            "exact_text_chars": 1999,
+            "exact_text_sha256": "b3b4af5cbc27d07fa10bed5d3ee1187a6fd43ba7f7d60e0b2a52484250f9d8a2",
+            "projection_id": "projection_94fb829ff87c7df46a8c248f"
+          },
+          {
+            "available_at": "2025-02-07T20:20:08+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000008",
+            "exact_text_chars": 1955,
+            "exact_text_sha256": "2fde260b663bab01d9ff8c13c572a61e1e4a5a506ab2452a1df2c1b7b376fa5e",
+            "projection_id": "projection_c20cdef6eb43a8097bee9064"
+          },
+          {
+            "available_at": "2025-02-07T20:20:08+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000008",
+            "exact_text_chars": 1892,
+            "exact_text_sha256": "5ef578f3b0871a666217320f7676f25c995e4a685e3a49b9af356056703c3d2e",
+            "projection_id": "projection_3eca53710db08a542a074a4e"
+          },
+          {
+            "available_at": "2025-02-07T20:20:08+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000008",
+            "exact_text_chars": 1974,
+            "exact_text_sha256": "d4e8ee18a84fcc360ac7da3caba372a1f4df5b2fa188586380862f30ec0cc87f",
+            "projection_id": "projection_01deb59d54d5a7d0642e46fd"
+          },
+          {
+            "available_at": "2025-05-08T20:34:28+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000089",
+            "exact_text_chars": 1994,
+            "exact_text_sha256": "7513db98d655eb7ce31eb9bcc55b5ec73a4162daad84bc618f3029796a09f86f",
+            "projection_id": "projection_3e669c5732c7c9a0e9b0584f"
+          },
+          {
+            "available_at": "2025-05-08T20:34:28+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000089",
+            "exact_text_chars": 1844,
+            "exact_text_sha256": "08bb3f868f316f364912953021e0eb2603f6171fe644075fd3029f842c8a4e8c",
+            "projection_id": "projection_334f61f29c35b5a51b3700a5"
+          },
+          {
+            "available_at": "2025-05-08T20:34:28+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000089",
+            "exact_text_chars": 1994,
+            "exact_text_sha256": "2ce3482069c304b880f61b462e339e77421829d722d06a9e2c5cd2b1801ded3b",
+            "projection_id": "projection_d577be7d080627fa1c89be86"
+          },
+          {
+            "available_at": "2025-02-07T20:20:08+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000008",
+            "exact_text_chars": 1994,
+            "exact_text_sha256": "dc0ee2767b78728d894f9a2e40ce5c544f7e71d7a2e8af095772032c9e7e3d23",
+            "projection_id": "projection_381a2e850767d7425263a73f"
+          },
+          {
+            "available_at": "2025-02-07T20:20:08+00:00",
+            "document_id": "sec:cik_0001309402:000130940225000008",
+            "exact_text_chars": 1419,
+            "exact_text_sha256": "ab00225a6080a27d07e0fb856b020c8616f53dc873438a12a192727a421e86b8",
+            "projection_id": "projection_8d246ab16605e5fc3861b30e"
+          }
+        ],
+        "request": {
+          "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "query": "business operations segments products services customers risks",
+          "request_id": "orientation.v1.operating_report",
+          "required_source_groups": [
+            [
+              "10-K",
+              "10-Q",
+              "20-F",
+              "40-F"
+            ]
+          ],
+          "source_types": [
+            "filing"
+          ]
+        },
+        "source_context_truncated": true,
+        "status": "resolved",
+        "visible_projection_count": 15
+      },
+      {
+        "available_projection_count": 0,
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "alpha_vantage",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "effective_context_truncated": false,
+        "omission_marker_count": 0,
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "unavailable",
+        "projections": [],
+        "request": {
+          "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+          "lookback_days": 180,
+          "max_documents": 5,
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "source_context_truncated": false,
+        "status": "unresolved",
+        "visible_projection_count": 0
+      },
+      {
+        "available_projection_count": 1,
+        "data_gap": null,
+        "effective_context_truncated": true,
+        "omission_marker_count": 6,
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "partial_context_budget",
+        "projections": [
+          {
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "exact_text_chars": 1999,
+            "exact_text_sha256": "73727bc1853f50172103fc07d3efa15949777b00cf69dddb2d5c34a5f1fe8dd9",
+            "projection_id": "projection_a864a5b4d2c9074c7d3dc87a"
+          }
+        ],
+        "request": {
+          "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "request_id": "orientation.v1.financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "source_context_truncated": true,
+        "status": "resolved",
+        "visible_projection_count": 1
+      },
+      {
+        "available_projection_count": 1,
+        "data_gap": null,
+        "effective_context_truncated": true,
+        "omission_marker_count": 3,
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "partial_context_budget",
+        "projections": [
+          {
+            "available_at": "2025-05-30T00:00:00+00:00",
+            "document_id": "massive:cik_0001309402:market_data:044bcfc658f55e07be11a2c8",
+            "exact_text_chars": 1044,
+            "exact_text_sha256": "094c7405063b6766aad8009992512baa5ff31a2acdd4259cfd7d808cc0044d49",
+            "projection_id": "projection_e4277db0e0865b5916fc40e6"
+          }
+        ],
+        "request": {
+          "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+          "lookback_days": 45,
+          "max_documents": 1,
+          "request_id": "orientation.v1.market_backbone",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "source_context_truncated": true,
+        "status": "resolved",
+        "visible_projection_count": 1
+      }
+    ]
+  },
+  "limits": [
+    "Full source documents are oracle context; model obligations depend exclusively on actual visible projections.",
+    "Historical public clocks are accepted source-policy boundaries, not a new API-vintage or primary-audit guarantee.",
+    "No source-status or omission marker is evidence; source presence does not prove every fact read.",
+    "No accepted prior, H_init, ownership or fresh capability is claimed by this source-only freeze."
+  ],
+  "private_anchor_crosscheck": {
+    "actual_first_bar": "2024-09-23",
+    "actual_last_bar": "2025-05-29",
+    "adjusted_close_literals": [
+      "4.43",
+      "4.21",
+      "4.37",
+      "4.25",
+      "4.14"
+    ],
+    "caveat": "Native core must compute independently from complete PIT market documents. This check does not authenticate historical adjustment/split/provider truth. Metadata requested start is not actual bar coverage.",
+    "check_only_not_payload": true,
+    "doubling_threshold_decimal": "8.56",
+    "full_raw_bar_count": 171,
+    "mean_adjusted_close_decimal": "4.28",
+    "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+    "recent_close_date": "2025-05-29",
+    "recent_close_literal": "4.14",
+    "source_document_id": "massive:cik_0001309402:market_data:044bcfc658f55e07be11a2c8",
+    "trading_dates": [
+      "2025-05-22",
+      "2025-05-23",
+      "2025-05-27",
+      "2025-05-28",
+      "2025-05-29"
+    ]
+  },
+  "required_native_preflight_evidence": [
+    "exact current Plan/bundle/model/lineage",
+    "native core evaluation_context/anchor/computed_metrics",
+    "actual masked pre-egress and request-ready/journal reservations",
+    "source-derived identity aliases and neutral handoff plan",
+    "read-only guards for tail selection/Signal/Predictor/labels/network/global writes",
+    "actual accepted H_init raw→parser→persist→reread and bounded terminal restore after later authorization"
+  ],
+  "schema": "gpre-initial-source-only-independent-oracle-v1",
+  "source_alias_proofs": [
+    {
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "end": 211214,
+      "exact_text": "GREEN PLAINS INC.",
+      "offset_unit": "unicode_codepoints",
+      "source_field": "dei:EntityRegistrantName",
+      "start": 211197
+    },
+    {
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "end": 216950,
+      "exact_text": "GPRE",
+      "offset_unit": "unicode_codepoints",
+      "source_field": "dei:TradingSymbol",
+      "start": 216946
+    },
+    {
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "end": 142425,
+      "exact_text": "GREEN PLAINS INC.",
+      "offset_unit": "unicode_codepoints",
+      "source_field": "dei:EntityRegistrantName",
+      "start": 142408
+    },
+    {
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "end": 148156,
+      "exact_text": "GPRE",
+      "offset_unit": "unicode_codepoints",
+      "source_field": "dei:TradingSymbol",
+      "start": 148152
+    }
+  ],
+  "source_fact_boundaries_not_required_answer": [
+    {
+      "boundary": "Two reportable segments: ethanol production and agribusiness/energy services. Storage/transport/product detail may be stated only as actually visible. Intersegment activity is eliminated in consolidated results; segment totals are not consolidated revenue.",
+      "source_projection_indices": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10
+      ],
+      "topic": "business"
+    },
+    {
+      "boundary": "Do not confuse segment external/intersegment/including-intersegment figures or gross-margin dollars with percentage ratio. These values are permitted when exact current visible table/header supports them; none is a required answer.",
+      "period": "three months ended March 31, 2025 versus 2024",
+      "reported_consolidated_cost_of_goods_sold": [
+        598476,
+        588847
+      ],
+      "reported_consolidated_revenue": [
+        601515,
+        597214
+      ],
+      "reported_gross_margin_amount": [
+        3039,
+        8367
+      ],
+      "source_projection_indices": [
+        0,
+        11
+      ],
+      "topic": "Q1 reported table",
+      "unit": "USD thousands"
+    },
+    {
+      "ASC606_subtotal": 162973,
+      "ASC815_subtotal": 2295823,
+      "boundary": "ASC606 subtotal is not whole-company annual revenue. Preserve classification and eliminations; do not annualize the Q1 table.",
+      "combined_total": 2458796,
+      "period": "twelve months ended December 31, 2024",
+      "source_projection_indices": [
+        14
+      ],
+      "topic": "annual revenue classification",
+      "unit": "USD thousands"
+    },
+    {
+      "boundary": "Visible narrative identifies Birmingham terminal sale September 2024, Fairmont idling January 2025 and early-2025 restructuring/cost initiatives. Disclosure of initiatives is not realized savings or proof of later restart.",
+      "source_projection_indices": [
+        7,
+        10
+      ],
+      "topic": "operating comparability"
+    },
+    {
+      "boundary": "Tariff/export, commodity/supply-demand, regulatory/low-carbon and strategic-alternatives uncertainties can support qualitative risks/hypotheses. Forward-looking assumptions and merger benefits are not guarantees or demonstrated future results.",
+      "source_projection_indices": [
+        3,
+        10,
+        12,
+        13
+      ],
+      "topic": "risk versus outcome"
+    },
+    {
+      "boundary": "Old snippet contains shares outstanding 65,399,452 as of May 5, 2025 and accounts payable 154,817,000 end Dec 31,2024 /102,305,000 end Mar31,2025. Preserve stock/flow/as-of/unit differences. New typed projection may expose more/different complete rows; assess against actual new wire, never hidden whole document.",
+      "request_id": "orientation.v1.financial_facts",
+      "topic": "historical financial snippet"
+    }
+  ],
+  "sources": [
+    {
+      "bytes": 383839,
+      "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json",
+      "sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a"
+    },
+    {
+      "bytes": 646308,
+      "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/basic-info.json",
+      "sha256": "198c520b53d8c750fb33fd5df15f2060f4e025e6f27d5d183743a67d8fa5c0c5"
+    },
+    {
+      "bytes": 2323926,
+      "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1513.json",
+      "sha256": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8"
+    },
+    {
+      "bytes": 1399933,
+      "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1514.json",
+      "sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc"
+    },
+    {
+      "bytes": 41889,
+      "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1706.json",
+      "sha256": "18836733d4f651912096c475ca2a86122019cbf3923a4f22495b59c9ba753175"
+    },
+    {
+      "bytes": 158547,
+      "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json",
+      "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+    }
+  ],
+  "timing": "Before any new H_init model answer. No subsequent role output read, no native bootstrap/Store/helper/model executed by this script.",
+  "view_admitted_documents": 1780
+}

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight.py", line 37, in <module>
+    prepared = stage.prepare(expectations=expectation)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/scripts/run_gpre_native_initial_stage.py", line 167, in prepare
+    'limits': LIMITS, 'runtime_limits': asdict(replace(orientation.LIMITS, max_llm_calls=2)),
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 11, in __init__
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 2349, in __post_init__
+    raise ValidationError("runtime requires at least three LLM calls")
+stock_opportunity_agent.models.ValidationError: runtime requires at least three LLM calls

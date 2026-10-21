@@ -1,0 +1,60 @@
+{
+  "GET": 0,
+  "Store": 0,
+  "actor_message_issuer_or_oracle_or_repo_path_leak": false,
+  "actual_role": "/root/exact_initial_87",
+  "audited_at_utc": "2026-10-21T00:40:34.341580+00:00",
+  "author_answer_read": false,
+  "author_response_bytes_handoff_not_yet_checked": true,
+  "code_current_equal": 103,
+  "dispatch": {
+    "bytes": 161,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/root/dispatch-01.json",
+    "sha256": "437f5e67ebc7ba174e67e5d61a49c4b53f0d92bb339e983502fdf27bdbe9aaaf"
+  },
+  "fork_turns": "none",
+  "formal_bootstrap_inputs_contract_and_request_exact_temp": true,
+  "formal_manifest": {
+    "bytes": 459684,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/manifest.json",
+    "sha256": "5b1d736a76fb7e7d8e31395d76cd0ee4d94463cb8ee90c1ae79ef7f8298e9570"
+  },
+  "handoff": {
+    "bytes": 1532,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/root/handoff-01.json",
+    "sha256": "e91e5ef689e593f3db3b082d9d065b116e6e6de648ee830f735e04207dfae193"
+  },
+  "labels": 0,
+  "logical_reservation": 61888,
+  "model": 0,
+  "native_inbox": {
+    "bytes": 54223,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/inbox/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+    "sha256": "bd54c8ea3b994e94b712cf0a02f10c713fc3f0f257062364d06a98664a7fddde"
+  },
+  "native_messages_issuer_leak": false,
+  "neutral_inbox": {
+    "bytes": 54223,
+    "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/native-role-zix_9oor/inbox.json",
+    "sha256": "bd54c8ea3b994e94b712cf0a02f10c713fc3f0f257062364d06a98664a7fddde"
+  },
+  "oracle_unchanged": {
+    "bytes": 20691,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+    "sha256": "0bce2212dfad502f8ad7adf8ac36661ff3da8bc43cb735cef633f9f9663d8189"
+  },
+  "preanswer_review_unchanged": {
+    "bytes": 10201,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-native-review.json",
+    "sha256": "5df8021c85ac69817491247578409a17a11a26c7d9499bdea8af08766dfae463"
+  },
+  "request_journal": {
+    "bytes": 55652,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/requests/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+    "sha256": "37d7278086f6e4c3ee183f4fe227230a470e0647aacc648eaf8b68177d3592c7"
+  },
+  "reviewer_native_calls": 0,
+  "scope": "Formal frozen inputs/request/handoff only. No rawanswer read, native parser execution, acceptedstate or H_init semantic verdict. Actor policies in handoff verified, execution compliance not inferred from message alone.",
+  "source_current_equal": 1827,
+  "status": "PASS_FORMAL_PREANSWER_AND_NEUTRAL_HANDOFF"
+}

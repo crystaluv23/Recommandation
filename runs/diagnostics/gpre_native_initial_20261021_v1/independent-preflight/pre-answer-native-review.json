@@ -1,0 +1,218 @@
+{
+  "audited_at_utc": "2026-10-21T00:38:16.377380+00:00",
+  "bootstrap": {
+    "bytes": 650242,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/stage/samples/h01/bootstrap.json",
+    "sha256": "32ce837eaf66c7e8d20c41469ebca8120def925767a5176536fd825a580cd60e"
+  },
+  "code_bindings_current_equal": 103,
+  "context_spans_exact_raw_checked": 24,
+  "contract": {
+    "bytes": 655,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/stage/contract.json",
+    "sha256": "83988f3e644cb8a4f1ef6fce0425660373736f80552950adf0698446d9a7454b"
+  },
+  "core_anchor": "Native baseline matches independent full171bar Decimal last5 check within1e-12; not handfilled. Provider historicaladjustment truth not newlyauthenticated.",
+  "corrected_driver_summary_issue": "Original result.bundle_statuses.documents=0 reads nonexistentdocument_ids key; rawbundle has documents2/0/2/1. Summaryerror, not sourcefailure; original retained.",
+  "counts": {
+    "dispatch": 0,
+    "journal": 1,
+    "labels": 0,
+    "model_responses": 0,
+    "native_pending_receive_attempt_from_driver": 1,
+    "network": 0,
+    "reviewer_Store": 0,
+    "reviewer_nativecalls": 0
+  },
+  "gates_remaining": [
+    "Formalprepare must bind this opaque review as expectations and parent independentlyverify nestedoracle/addendumbindings.",
+    "Fresh actor must only receive neutralbyteexact nativeinbox copy/outbox; bindingandrawbytehandoffreview afteractualdelivery. No actor handoff exists yet.",
+    "FreshacceptedH_init raw→nativeparse/correction/mechanicaldisposition→persist/reread semanticreview andterminalseal remainunexercised."
+  ],
+  "inputs": {
+    "bytes": 16685,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/stage/inputs.json",
+    "sha256": "a75322d2af9d2abc43d9f4b9479608e6630f38a72d0714bf4e8f37d81750a50f"
+  },
+  "journal": {
+    "bytes": 55652,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/stage/requests/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+    "sha256": "37d7278086f6e4c3ee183f4fe227230a470e0647aacc648eaf8b68177d3592c7"
+  },
+  "lineage_entries_checked": 17,
+  "manifest": {
+    "bytes": 459718,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/stage/manifest.json",
+    "sha256": "7edf937ec7b82f46644bd6fd078be38883cb3d6135c1e2ac5dd20fcd9723311b"
+  },
+  "native_computed_cards": [
+    {
+      "readable": "price shape (window days 180): window trading days 171; first close $12.93; last close $4.14; high $13.55; low $3.30; return -67.98%; max drawdown -75.65%; daily volatility 4.67%; trend downtrend; observed endpoints 2024-09-23 to 2025-05-29."
+    }
+  ],
+  "native_inbox": {
+    "bytes": 54223,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/stage/exchange/inbox/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+    "sha256": "bd54c8ea3b994e94b712cf0a02f10c713fc3f0f257062364d06a98664a7fddde"
+  },
+  "native_visibility_addendum": {
+    "actual_17_projection_ids_text_available_at_exact_old": true,
+    "full_source_presence_not_visibility": true,
+    "news_gap_changed": "Old external_not_authorized/alpha_vantage becomes native no_matching_documents/provider null with no acquisitionadapter. Both coverage only, no event-absence implication. No oracle fact/gold change.",
+    "no_six_signal_results_added": true,
+    "requests": [
+      {
+        "actual_data_gap": null,
+        "available_projection_count": 22,
+        "effective_context_truncated": true,
+        "omission_marker_count": 8,
+        "omitted_projection_count": 7,
+        "projection_context_truncated": true,
+        "projection_status": "partial_context_budget",
+        "request_id": "orientation.v1.operating_report",
+        "selected_document_ids": [
+          "sec:cik_0001309402:000130940225000008",
+          "sec:cik_0001309402:000130940225000089"
+        ],
+        "source_context_truncated": true,
+        "status": "resolved",
+        "visible_projection_count": 15
+      },
+      {
+        "actual_data_gap": {
+          "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+          "provider": null,
+          "reason": "no_matching_documents",
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "available_projection_count": 0,
+        "effective_context_truncated": false,
+        "omission_marker_count": 0,
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "unavailable",
+        "request_id": "orientation.v1.scoped_news",
+        "selected_document_ids": [],
+        "source_context_truncated": false,
+        "status": "unresolved",
+        "visible_projection_count": 0
+      },
+      {
+        "actual_data_gap": null,
+        "available_projection_count": 1,
+        "effective_context_truncated": true,
+        "omission_marker_count": 6,
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "partial_context_budget",
+        "request_id": "orientation.v1.financial_facts",
+        "selected_document_ids": [
+          "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+        ],
+        "source_context_truncated": true,
+        "status": "resolved",
+        "visible_projection_count": 1
+      },
+      {
+        "actual_data_gap": null,
+        "available_projection_count": 1,
+        "effective_context_truncated": true,
+        "omission_marker_count": 3,
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "partial_context_budget",
+        "request_id": "orientation.v1.market_backbone",
+        "selected_document_ids": [
+          "massive:cik_0001309402:market_data:044bcfc658f55e07be11a2c8"
+        ],
+        "source_context_truncated": true,
+        "status": "resolved",
+        "visible_projection_count": 1
+      }
+    ]
+  },
+  "preflight": {
+    "bytes": 5574,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/result.json",
+    "sha256": "1fc804bdadca454c1108b8c00cc614e8abbb94c44c4c823873f1659bc650793b"
+  },
+  "scope": "Nativezero-answerpreflight only. DefaultmanualPlan notvalidatedresearchstrategy; noacceptedprior/H_init/needownership/Reflect/Predictor/Signal/freshbenefit. Noformalstage exists atreview.",
+  "selected_documents": [
+    {
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "file": {
+        "bytes": 2323926,
+        "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1513.json",
+        "sha256": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8"
+      },
+      "request_id": "orientation.v1.operating_report"
+    },
+    {
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "file": {
+        "bytes": 1399933,
+        "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1514.json",
+        "sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc"
+      },
+      "request_id": "orientation.v1.operating_report"
+    },
+    {
+      "available_at": "2025-05-09T00:00:00+00:00",
+      "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+      "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+      "file": {
+        "bytes": 158547,
+        "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json",
+        "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+      },
+      "request_id": "orientation.v1.financial_facts"
+    },
+    {
+      "available_at": "2025-02-08T00:00:00+00:00",
+      "content_hash": "02d135492926ac406154af88476b4235d6461873e97b5b963681adf7b39c696f",
+      "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40",
+      "file": {
+        "bytes": 260497,
+        "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1335.json",
+        "sha256": "0c21414abab8a073ec072eec952885ac9f48cc0bec767868bba3fe89e8188aa7"
+      },
+      "request_id": "orientation.v1.financial_facts"
+    },
+    {
+      "available_at": "2025-05-30T00:00:00+00:00",
+      "content_hash": "044bcfc658f55e07be11a2c8826617799e2dc942942bb5c2bd7fb811bb613995",
+      "document_id": "massive:cik_0001309402:market_data:044bcfc658f55e07be11a2c8",
+      "file": {
+        "bytes": 41889,
+        "path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1706.json",
+        "sha256": "18836733d4f651912096c475ca2a86122019cbf3923a4f22495b59c9ba753175"
+      },
+      "request_id": "orientation.v1.market_backbone"
+    }
+  ],
+  "source_bindings_current_equal": 1827,
+  "source_only_oracle": {
+    "bytes": 20691,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+    "sha256": "0bce2212dfad502f8ad7adf8ac36661ff3da8bc43cb735cef633f9f9663d8189"
+  },
+  "status": "PASS_PREPARE_READY_NOT_H_INIT_ACCEPTED",
+  "wire": {
+    "canonical_user_whole_exact_after_identity_inverse": true,
+    "logical_reservation": 61888,
+    "messages_utf8_bytes": 53888,
+    "opaque_token_count": 6,
+    "output_reservation": 8000,
+    "padded_unpadded_CIK_legalname_ticker_accession_URL_website_literal_leaks": [],
+    "private_oracle_data_in_payload": false,
+    "projection_ids_order_periods_units_dates_and_omission_flags_unchanged": true
+  }
+}

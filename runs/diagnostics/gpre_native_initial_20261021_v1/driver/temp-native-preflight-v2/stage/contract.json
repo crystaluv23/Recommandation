@@ -1,0 +1,24 @@
+{
+  "backend": "independent-subagent",
+  "fixed_denominator": 1,
+  "limits": {
+    "max_case_tokens": 256000,
+    "max_local_role_calls": 2,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "neutral_path_byte_exact_author_handoff_required": true,
+  "runtime_limits": {
+    "finalization_token_reserve": 64000,
+    "max_cost": 20.0,
+    "max_llm_calls": 3,
+    "max_llm_signals_per_round": 2,
+    "max_signal_calls": 1,
+    "max_signal_rounds": 1,
+    "max_signals_per_round": 4,
+    "max_tokens": 256000
+  },
+  "schema_version": "gpre-native-initial-v1",
+  "tail_forbidden": true
+}

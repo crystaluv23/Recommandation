@@ -1,0 +1,19 @@
+{
+  "Predictor": 0,
+  "Reflect": 0,
+  "Signal_execution": 0,
+  "initial_state": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/initial_state.json",
+    "sha256": "9fdacbae3b14e3cf2cb42de3acabcf20ae584d4a8b18e11414b944f11480cab9"
+  },
+  "logical_reservation": 61888,
+  "model_API": 0,
+  "requests": [
+    {
+      "request_hash": "66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181",
+      "reservation": 61888
+    }
+  ],
+  "routing": 0,
+  "status": "accepted_initial_requires_independent_review"
+}

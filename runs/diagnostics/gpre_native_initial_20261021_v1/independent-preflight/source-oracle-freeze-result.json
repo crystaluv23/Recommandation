@@ -1,0 +1,18 @@
+{
+  "labels": 0,
+  "models": 0,
+  "network": 0,
+  "oracle": {
+    "bytes": 20691,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+    "sha256": "0bce2212dfad502f8ad7adf8ac36661ff3da8bc43cb735cef633f9f9663d8189"
+  },
+  "production_helpers_executed": 0,
+  "script": {
+    "bytes": 11074,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/freeze-source-oracle.py",
+    "sha256": "119de2c993b14a0a9579cdc2bf000572064fc1e05c10338a87673e22892351f7"
+  },
+  "status": "source_only_oracle_frozen_native_preflight_required",
+  "stores_opened": 0
+}

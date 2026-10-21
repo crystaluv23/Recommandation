@@ -1,0 +1,7 @@
+Command: PYTHONPATH=.:src:scripts projectPython -c 'import run_gpre_native_initial_stage'
+Exit: 1
+Before any prepare, formal/temp stage creation, or actual source execution:
+  File scripts/run_gpre_native_initial_stage.py, line 27
+    from stock_opportunity_agent.labels import LabelStore
+ModuleNotFoundError: No module named 'stock_opportunity_agent.labels'
+This is a diagnostic harness import error, not a product failure.

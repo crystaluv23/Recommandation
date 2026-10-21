@@ -1,0 +1,10 @@
+{
+  "agent_id": "/root/exact_initial_87",
+  "byte_equal": true,
+  "modified_or_authored_by_root": false,
+  "native_outbox": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/outbox/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.txt",
+  "neutral_outbox": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/native-role-zix_9oor/outbox.txt",
+  "raw_bytes": 5901,
+  "raw_sha256": "687ae13a4e3385e7442a38de00705e8b9f10992e12faf0babc2ddd0eb8dccde1",
+  "request_hash": "66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181"
+}

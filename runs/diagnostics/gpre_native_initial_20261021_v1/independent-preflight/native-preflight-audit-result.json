@@ -1,0 +1,18 @@
+{
+  "oracle_unchanged": {
+    "bytes": 20691,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+    "sha256": "0bce2212dfad502f8ad7adf8ac36661ff3da8bc43cb735cef633f9f9663d8189"
+  },
+  "probe": {
+    "bytes": 11668,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/audit-native-preflight.py",
+    "sha256": "dec34d20611c36e9bd390093a9e62b30b8a48f46d22cdaa25a1fbea868b0c148"
+  },
+  "review": {
+    "bytes": 10201,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-native-review.json",
+    "sha256": "5df8021c85ac69817491247578409a17a11a26c7d9499bdea8af08766dfae463"
+  },
+  "status": "PASS"
+}

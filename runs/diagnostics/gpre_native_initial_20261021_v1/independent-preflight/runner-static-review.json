@@ -1,0 +1,79 @@
+{
+  "bindings": [
+    {
+      "bytes": 14601,
+      "path": "scripts/run_gpre_native_initial_stage.py",
+      "sha256": "30e0c8f97f4a6ba8dd5dab3353fccd5d09bcda01ffe27fb7e092dc85b0c1cfc4"
+    },
+    {
+      "bytes": 3612,
+      "path": "spec/scripts/run_gpre_native_initial_stage.md",
+      "sha256": "e4ba4962432c71b212d5c6dfefb7f482555faf9cb940e07f82a89bec1f89f28f"
+    },
+    {
+      "bytes": 19624,
+      "path": "scripts/run_reviewed_orientation_stage.py",
+      "sha256": "6a3b38543de998a75969592634a41fae615dbc9c3154a67fceaf6e4589d23fc0"
+    },
+    {
+      "bytes": 329921,
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+    },
+    {
+      "bytes": 195539,
+      "path": "src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "29f1b3c057dc825ca77bed377a3f3be329c9eb6914ad5ad24774f88281d8aa07"
+    },
+    {
+      "bytes": 78172,
+      "path": "src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "582d43a4912c1248866c3dddd8b15aed24e5f22a4f72ccde2f2f6d10cb740b77"
+    },
+    {
+      "bytes": 216289,
+      "path": "src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "4a7f169d9a7362ff75a64873aa2c02760e1e9a036e639daa3eea5d79a10b2bc0"
+    }
+  ],
+  "connections_read": {
+    "budget": "Outer two localrequests/131072 each/256000 sum enforced at actualrequest_ready including replay; nativeRuntimeLimits minimum3 retained only as structuralcarrier; exchange cap2 and observer retain actual diagnosticcap2. Native1structuredcorrection.",
+    "completion": "Failure/completion rejectreentry; submit usesverifiedmanifest. No acceptedstate/freshresponse/terminalrestore yet.",
+    "guards": "No network, labels, persistent/prepopulated RawInfoStore init, rawappend, Signal preparation/execution, Registryfreshfreeze/stable registration or externalreserve; reviewed store memoryparent permitted. Staticonly; actualtargets must be proven by nativepreflight.",
+    "identity": "Actual qualifiedQ1 SECcover fields plus qualified marketticker corroboration, fulllegalname/ticker/shortname only when literal. Exact sourcealias proofs independently frozen.",
+    "native": "Unchanged orientation._run_initial→execute_information_plan→resolve/projectBasicInfo→complete marketcoreanchor/computedcard→LLMResearchController.initialize→parsed_step/initial_state→InitialBoundary. Tail selector/Predictor/labels forbidden.",
+    "source": "Fixed prior resultSHA and reviewedmanifestSHA; readonlyopen and1780 count then freeze fullview files. Reviewer did not open Store."
+  },
+  "fixed_before_native_preflight": [
+    {
+      "evidence": "driver/temp-native-preflight-v1.log preserves actualtemp constructionfailure beforewritten stage; currentcode uses3 while outer2 remains.",
+      "issue": "RuntimeLimits(max_llm_calls=2) invalid minimum3"
+    },
+    {
+      "evidence": "Current whitelist includes research_controller_initialize_patch_mechanics_correction; parser actualstageat4134, stillouter2/totalbudget.",
+      "issue": "Native mechanics correction stage absent initial whitelist"
+    }
+  ],
+  "remaining_required_checks": [
+    "Actual new projectionmembership/text/PIT/omissions; historical17 notbindingnewcardcount.",
+    "Actual corecomputedbaseline compared with private independent sourcecrosscheck; no wrapperinsertion.",
+    "Actual masked outgoingwire including source-derived names/sourceIDs; neutral exactinbox/outbox handoff and rolemessage path discipline.",
+    "Actual journal/request reservation and0receive/dispatch forpreflight.",
+    "Exactcode/source pre/postbindings; no oracleinpayload."
+  ],
+  "reviewed_at_utc": "2026-10-21T00:34:46.404430+00:00",
+  "reviewer_execution": {
+    "GET": 0,
+    "formalprepare": 0,
+    "labels": 0,
+    "model": 0,
+    "nativecalls": 0,
+    "stores": 0
+  },
+  "source_oracle": {
+    "bytes": 20691,
+    "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+    "sha256": "0bce2212dfad502f8ad7adf8ac36661ff3da8bc43cb735cef633f9f9663d8189"
+  },
+  "status": "STATIC_NO_REMAINING_BLOCK_FOUND_ACTUAL_NATIVE_PREFLIGHT_PENDING"
+}

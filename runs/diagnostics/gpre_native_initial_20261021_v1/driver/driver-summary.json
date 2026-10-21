@@ -1,0 +1,133 @@
+{
+  "Signal_execution": 0,
+  "accepted_initial_state": false,
+  "actual_author_calls": 0,
+  "actual_pending_inbox_exists": true,
+  "actual_raw_or_receipt": false,
+  "all_frozen_bindings_rechecked_equal": true,
+  "attempts": [
+    {
+      "attempt": "import smoke",
+      "authors": 0,
+      "error": "ModuleNotFoundError: stock_opportunity_agent.labels; corrected to existing cases.label_store",
+      "journals": 0,
+      "status": "harness import failure before any stage/source execution",
+      "tool_output_transcription": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/import-first-error.log",
+        "sha256": "670930d50c7c40d25f74d7c5345d9ef9509db7ab290274133789de138d69a81f"
+      }
+    },
+    {
+      "attempt": "temp-native-preflight-v1",
+      "authors": 0,
+      "error": "runtime requires at least three LLM calls",
+      "error_type": "ValidationError",
+      "failure": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v1/preflight-error.json",
+        "sha256": "6a2228724d9a26adcd65b2c45512bc1f26f67dc05c7bd82d3a7ba934996075fb"
+      },
+      "journals": 0,
+      "log": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v1.log",
+        "sha256": "dde62ccb3098819617e5cc14193d4d6d7a78173fda2069fd61a781e87ed03b58"
+      },
+      "source_before_revision": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/candidate-before-runtime-limit.py",
+        "sha256": "022d7cb6bfa15fbe8628fcb1af29a862239daf932a6b774ba5c11b64ad52a829"
+      },
+      "status": "native configuration failure before journal"
+    },
+    {
+      "attempt": "temp-native-preflight-v2",
+      "authors": 0,
+      "corrected_summary": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/actual-native-preflight-summary.json",
+        "sha256": "436a992a95a1cb8f784ffc5c616fa4e064716801761371384253b208b9f6b8f3"
+      },
+      "journals": 1,
+      "log": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2.log",
+        "sha256": "69667375902bca3e84c45980db9a43c519575a9dd9174d8d24c978f5f6401731"
+      },
+      "result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/result.json",
+        "sha256": "1fc804bdadca454c1108b8c00cc614e8abbb94c44c4c823873f1659bc650793b"
+      },
+      "status": "complete native connection reached pending"
+    }
+  ],
+  "code_bindings": 103,
+  "core_anchor": {
+    "doubling_threshold": 8.559999999999999,
+    "mean_adjusted_close": 4.279999999999999,
+    "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+    "recent_close": 4.14,
+    "recent_close_date": "2025-05-29",
+    "status": "available",
+    "trading_dates": [
+      "2025-05-22",
+      "2025-05-23",
+      "2025-05-27",
+      "2025-05-28",
+      "2025-05-29"
+    ]
+  },
+  "cumulative_temporary_journals": 1,
+  "declared_identity_absent_in_anonymous_wire": true,
+  "external_model_API": 0,
+  "formal_stage_exists": false,
+  "labels": 0,
+  "native_budget": {
+    "author_calls_limit": 2,
+    "case_logical_limit": 256000,
+    "first_request_reservation": 61888,
+    "native_corrections_config": 1,
+    "request_logical_limit": 131072,
+    "runtime_scaffold_calls": 3
+  },
+  "native_model_BasicInfo": {
+    "projection_status": [
+      "partial_context_budget",
+      "unavailable",
+      "partial_context_budget",
+      "partial_context_budget"
+    ],
+    "projections": 17,
+    "requests": 4,
+    "selected_documents_by_request": [
+      2,
+      0,
+      2,
+      1
+    ],
+    "statuses": [
+      "resolved",
+      "unresolved",
+      "resolved",
+      "resolved"
+    ]
+  },
+  "new_source_acquisition": 0,
+  "next": "root and independent oracle review before formal prepare; no temp replay or formal execution by driver",
+  "outbox_parent_exists": true,
+  "scope": "candidate and temporary native preflight only; root is sole formal executor",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/scripts/run_gpre_native_initial_stage.py",
+    "sha256": "30e0c8f97f4a6ba8dd5dab3353fccd5d09bcda01ffe27fb7e092dc85b0c1cfc4"
+  },
+  "semantic_closure": false,
+  "source_bindings": 1827,
+  "spec": {
+    "path": "/Users/l/Project/Recommandation/spec/scripts/run_gpre_native_initial_stage.md",
+    "sha256": "e4ba4962432c71b212d5c6dfefb7f482555faf9cb940e07f82a89bec1f89f28f"
+  },
+  "tests": {
+    "command": "PYTHONPATH=.:src:scripts projectPython driver/test_safety.py",
+    "count": 3,
+    "log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/safety-tests.log",
+      "sha256": "2c37d50a88147ca2ebd5197d74ee37d462dab650d793512e849814c28d5a38f0"
+    },
+    "result": "PASS"
+  }
+}

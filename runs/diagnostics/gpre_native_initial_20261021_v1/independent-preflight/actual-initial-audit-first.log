@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/audit-actual-initial.py", line 46, in <module>
+    for need in raw['next_information_needs']:assert 'prediction time' in need
+AssertionError

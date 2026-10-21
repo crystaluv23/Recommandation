@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json",
+    "sha256": "455ca111aedd1f8e107de32b023f51ebb4003e3650bdd3ad980f8b15005090d2",
+    "bytes": 11855
+  },
+  "quote_count": 4,
+  "needs": 5,
+  "frozenbindings": 1930,
+  "originalpreservation": 14
+}

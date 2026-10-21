@@ -197,9 +197,11 @@
         "runs/diagnostics/imported_feedback_readability_20261021_v1/result.json",
         "runs/diagnostics/imported_feedback_readability_20261021_v1/root/independent-review.json",
         "reports/transcript-acquisition-boundary-20261021.md",
-        "reports/fibk-event-and-financial-wire-frontier-20261021.md"
+        "reports/fibk-event-and-financial-wire-frontier-20261021.md",
+        "reports/gpre-native-initial-20261021.md",
+        "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json"
       ],
-      "remaining": "Engineering content chain remains local/open. Actual currentv12 financial9 has6strictpasses/1prior original-row alternative mismatch/2definition-policyunknown;7numeric/state/unit/currentperiod match source oracle,9projections exact, completedrestore24bytes preserved, not fresh model consumption. Bounded lexical selection fails latest/comparison/currency/conflict witnesses; no callback installed, native LLM bounded-reading design pending. Typed reader local repair63associated/13independent holds; historicalv6 unchanged. FreshF7 temporal target3of3 and downstream/restores narrow, original0of1 preserved/mirrorunexercised; priorp01 auxiliary atomic quarantine is authorized, unavailable topic/provenance guard locally repaired282/31 but fresh behavior unverified. S5 independent tests-author2of2 is not Mining/newmeasurement implementation. Original40 readiness670of720 each/BasicInfoallpartial/newsunknown;BURUbaseline/FTItype/MSclock/26transcriptpublictimeproof remain. F10/Slowfeedback/direction+magnitude discovery/admission/exactreuse/wholeloop unverified. No benefit claim. Historical Registry metadata reader locally repaired at5source/materialization checks and typedversion producer/consumer authorities,65associated/10independent controls pass; freshcapabilityaudit preserved. Corrected realhistoryexport/validate/materialization now succeeds with228byte-identical completedfiles and210unchangedsource reads; no freshS1/S2memory/taskconsumption. Importedfailure summary expected847019bytes exceeds64KB; actual imported producer/64KB reader confirms failedunit847019bytes is whole_entry_budget;3531importunits are not full S1 denominator. Readable history is not current executable capability."
+      "remaining": "Engineering content chain remains local/open. Actual GPRE H_init now1of1 freshfirstanswer/0corrections,4quotes/5needs sourcefaithful and raw-to-persist exact. No genuine routingownership or sixfinancial-result model consumption yet. Currentv12 financial9 remains6strictpass/1prior literal-version mismatch/2period-policyunknown; F5 boundedreading interface pending and lexicalranking falsified. Original40 source gaps/partial BasicInfo, transcript publictimeproof0of26 and normal transcript positive remain. FreshF7 three scoped controls and S5 tests-author do not close whole contentchain or newmeasurement lifecycle. FullFast feedback/Slow consumption, newdirection+magnitude Mining-to-implementation-to-admission-to-exactsuccessorreuse, interruption/recovery and wholeloop unverified. Independentbenefit unknown."
     },
     {
       "id": "feedback_consumption",
@@ -1442,53 +1444,36 @@
         "runs/diagnostics/financial_reflect_wire_20261021_v1/root/final-preservation.json"
       ],
       "result": "Stopped declared4-navigation FIBK metadata strategy:3web+1browser creation, same-tab state read timeout after tab exists; no completion/public-time proof and no absence claim, fixed26 accepted0 remains. Current GPRE data-only artifacts have no accepted H_init/research Plan/needownership. Chose real6 strict-pass results as explicit consumer subset, preserving original9/1literal failure/2policyunknowns, rather than adding weakguard-opportunity stage with no same-topic positive. Original empty-continue carrier and correction-config0 each failed native prerequisites before any request; both retained. After5 synthetic complete native controls plus independent5, explicit legal empty-finalize serialization carrier/config1/byte-budget observer captured sole actualsource request atready before cache/receive.1journal,28318UTF8+8000output=36318of131072 logicalunits;0model/response/dispatch/forbidden. Independent originalgold confirms6rows/11sourceobservations, canonicalprecision-unit-period-state-formula-claim-index-PIT;21 originaloperand literals reachable and60bindings exact. Native outgoing contains no declared identity/privateoracle/excluded3, but preegress identical so remapping branch notexercised. Serialization only, not research state/model semantics/F7/Predictor/recovery. Original8 userdelta,oldauthority/completedprobe6 andoriginal26/inventory unchanged."
+    },
+    {
+      "id": "engineering-mvp-gpre-native-initial-20261021",
+      "strategy": "actual_core_bootstrap_before_owned_consumption",
+      "failure_families": [
+        "data_execution_plan_is_not_accepted_research_prior",
+        "issuer_bearing_handoff_path_breaks_anonymous_request_boundary",
+        "native_runtime_scaffold_limit_differs_from_frozen_author_ceiling"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/gpre-native-initial-20261021.md",
+        "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+        "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-native-review.json",
+        "runs/diagnostics/gpre_native_initial_20261021_v1/stage/completion.json",
+        "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json",
+        "runs/diagnostics/gpre_native_initial_20261021_v1/root/final-preservation.json"
+      ],
+      "result": "One actual GPRE native bootstrap/H_init at2025-05-30 from qualified1780 view and explicit default manual researchPlan. Reused real core/Controller/InitialBoundary; corecomputed anchor/171bar pricecontrol,4requests/17projections retained3partial+newsunknown. Sourceonlyoracle and1930 source/code bindings frozen before answer. Import error and firsttemp RuntimeLimits min3 error retained,0journals/answers; legalnative scaffold3 plus separate2author/131072request/256000case caps. Complete temporary zeroanswer chain then soleformal prepare/pending; actualwire equaltemp and neutralcopy, source-derived masks and neutral actor path avoid direct identity leak. Fresh fork_none exact_initial_87 firstanswer accepted1of1/0corrections,61888 logicalunits,4sourcequotes and5unansweredneeds independentlysource-reviewed; raw/cache/parsed/persist identical, no mechanical loss. Two independent audit harness mistakes preserved/corrected to existing hash and semantic cutoff contracts without changing product/source/oracle/answer/native execution. Original14 preservation and1930 currentbindings exact.0routing/Signal/Reflect/Predictor/labels/GET/externalLLMAPI. ManualPlan not independently validated strategy; not wholeF3/recovery/wholeMVP/benefit. Original9 financial verdict and transcript0of26 unchanged."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-financial-native-reflect-wire-20261021",
+    "after_iteration": "engineering-mvp-gpre-native-initial-20261021",
     "evidence": [
-      "reports/imported-slow-method-feedback-20261021.md",
-      "runs/diagnostics/assigned_slow_target_20261021_v1/stage/manifest.json",
-      "runs/diagnostics/assigned_slow_target_20261021_v1/stage/completion.json",
-      "runs/diagnostics/assigned_slow_target_20261021_v1/stage/controller-boundary.json",
-      "runs/diagnostics/assigned_slow_target_20261021_v1/independent/actual-stage-review.json",
-      "runs/diagnostics/assigned_slow_target_20261021_v1/root/formal-terminal-reopen.json",
-      "runs/diagnostics/assigned_slow_target_20261021_v1/driver/row-rationale-contract-diagnosis.json",
-      "runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/candidate-summary.json",
-      "runs/diagnostics/need_row_authoring_contract_20261021_v1/driver/connected-result.json",
-      "runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/old-before-results.json",
-      "runs/diagnostics/need_row_authoring_contract_20261021_v1/independent/final-review.json",
-      "runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/preflight-diagnosis.json",
-      "runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/static-inventory.json",
-      "reports/mining-native-fact-semantics-20261021.md",
-      "runs/diagnostics/mining_native_evidence_probe_20261021_v1/plan.json",
-      "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/result.json",
-      "runs/diagnostics/mining_native_evidence_probe_20261021_v1/independent/actual-review.json",
-      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/candidate-independent-review.json",
-      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/associated-tests.log",
-      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/producer-integration-final-tests.log",
-      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json",
-      "reports/mining-native-fact-semantics-20261021.md",
-      "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/candidate-independent-review.json",
-      "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/independent/h1-code-review.json",
-      "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/native/result.json",
-      "runs/diagnostics/h1_comparable_manifest_20261021_v1/independent/actual-native-review.json",
-      "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/final-associated-tests.log",
-      "runs/diagnostics/h1_comparable_manifest_20261021_v1/root/user-delta-preservation.json",
-      "reports/transcript-acquisition-boundary-20261021.md",
-      "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/associated-result.json",
-      "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/original26-preservation.json",
-      "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/root/final-preservation.json",
-      "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/source-only-expectations.json",
-      "runs/diagnostics/transcript_public_content_time_20261021_v1/independent/source-only-standards.json",
-      "runs/diagnostics/transcript_acquisition_boundary_20261021_v1/independent/final-review.json",
-      "reports/fibk-event-and-financial-wire-frontier-20261021.md",
-      "runs/diagnostics/fibk_event_metadata_20261021_v1/observations.json",
-      "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/pre-capture-expectations.json",
-      "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/third-candidate-preflight-review.json",
-      "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/result.json",
-      "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/actual-wire-review.json",
-      "runs/diagnostics/financial_reflect_wire_20261021_v1/root/final-preservation.json"
+      "reports/gpre-native-initial-20261021.md",
+      "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+      "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-native-review.json",
+      "runs/diagnostics/gpre_native_initial_20261021_v1/stage/completion.json",
+      "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json",
+      "runs/diagnostics/gpre_native_initial_20261021_v1/root/final-preservation.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1578,19 +1563,20 @@
       "A fail-closed unsupported producer does not satisfy the normal transcript capability. Existing local-source positives prove preservation only and cannot endorse legacy clocks; retain0of26 verified public-content proofs and explicit successor exclusions until independent source evidence and proof-backed materialization are implemented.",
       "Static officialIR headings and an existing browser tab are not historical conference metadata; when extraction/state reads fail, keep unknown and stop the bounded strategy rather than infer absence or launch an unbounded alternate crawl.",
       "The saved financial single-result model view is not the native Reflect batch view. Before adding a fresh semantic stage, measure the actual numeric batch producer and its request boundary. Its carrier is explicitly not an accepted research state, so successful serialization cannot manufacture H_init or need ownership.",
-      "Root and author initially checked data projection semantics but failed to validate the native carrier and parser configuration: default empty continue requires needs, and zero actual corrections is not a valid max_structured_corrections0 configuration. The first two captures yielded no wire. A full temporary native-chain preflight, not successive narrow constructor patches or a fake need, now proves both legal input shapes and budget-stop callback before actual source capture."
+      "Root and author initially checked data projection semantics but failed to validate the native carrier and parser configuration: default empty continue requires needs, and zero actual corrections is not a valid max_structured_corrections0 configuration. The first two captures yielded no wire. A full temporary native-chain preflight, not successive narrow constructor patches or a fake need, now proves both legal input shapes and budget-stop callback before actual source capture.",
+      "Native RuntimeLimits requires three scaffold slots even for a bounded initial-only stage; author count must remain separately frozen at two. Actor wrapper paths also carry identity: anonymized messages alone are insufficient if the actor sees an issuer-bearing path. Full actual-source temporary chain and neutral byte-exact handoff establish this boundary before an answer; neither proves whole research capability."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "native_gpre_bootstrap_before_fresh_owned_reflect",
-      "question": "Can the qualified GPRE source view and an explicitly manual/default Plan reach a source-faithful native bootstrap/H_init boundary, with core-owned anchors and actual anonymous request, without substituting a synthetic prior or source execution plan?",
-      "pass": "A bounded new native execute_information_plan bootstrap computes its own runtime context, freezes actual BasicInfo/omissions and source-derived identity mapping, then a fresh accepted H_init is independently source-reviewed and exactly persisted.",
-      "fail": "Native source/identity/runtime/prompt prerequisites fail, or fresh state contradicts the frozen available facts/gaps; no accepted GPRE prior is established.",
-      "on_pass": "Preserve accepted H_init with exact code/input lineage; next freeze native routing/needownership before exposing already-qualified6 results to a genuine owned Reflect. Original9 and3 unresolved results remain unchanged.",
-      "on_fail": "Keep original failure and pending stages; repair the specific demonstrated producer/consumer problem or stop that bounded stage. Never invent needs/anchors, relax oracle, reenter terminal attempts or start a full successor.",
-      "action": "Prepare a single-case GPRE bootstrap profile reusing actual execute_information_plan/InitialBoundary helpers, qualified1780 view and manualdefault Plan. Perform full temporary native preflight and source-only oracle before formal prepare/role dispatch. Freeze an explicit new budget at most2 local author requests with native one-correction configuration, per-request131072 and native case256000 logical limit. No external LLM API, labels, Signal rerun or full successor. Pending bounded-reading/financial-period/Fact-taxonomy decisions remain unanswered.",
-      "stop": "Stop if source ownership/PIT/identity masking or independent input oracle cannot be established, or at the frozen local limits. Do not reuse completed oldstage/target budget, treat the undispatched wire as model consumption, or claim wholeMVP/benefit."
+      "strategy": "native_gpre_routing_from_accepted_hinit",
+      "question": "Can actual native retrieval consume the exact accepted GPRE state/Plan and frozen Registry, match a genuinely unanswered need to a supported exact version, and retain legitimate unmatched portions without prescribing a financial selection?",
+      "pass": "A fresh bounded native selection is independently consistent with the original needs and actual capability/measurement cards; exact selected refs and need ownership persist, or an evidence-grounded no_match retains the unresolved need.",
+      "fail": "Wrong version/capability/ownership, hidden required scope, invented answered need or loss of unresolved portions, or actual native input/runtime/masking prerequisite failure.",
+      "on_pass": "Preserve exact routing decision and lineage. Only genuinely selected matching versions may proceed to qualified execution/result reuse and owned Reflect. If legitimate no_match, preserve the gap and investigate the actual capability limitation; do not force the six financial results.",
+      "on_fail": "Keep the original failure and remaining gaps. Repair the demonstrated producer/prompt/validator/consumer family; no completed-stage reentry, fabricated prior/need, relaxed oracle or full successor.",
+      "action": "Prepare a distinct single-case GPRE routing profile using this exact accepted initial state, manual Plan, qualified view and exact Registry definitions. Observe the genuine native retrieval context/cards before dispatch, freeze source-only matching expectations, use full temporary native preflight and neutral exact inbox/outbox handoff. Freeze at most2 local author responses/one native correction,131072 perrequest/256000 case logical cap. Stop before Signal execution, Reflect, Predictor or labels. No externalLLMAPI/sourcequeries/fullsuccessor, and do not reuse old terminal budgets. Pending reading/period/Fact-schema decisions remain unanswered.",
+      "stop": "Stop at frozen limits or any unresolved source/PIT/identity/input contract prerequisite. No_match is not problem resolution or proof of capability absence. Do not claim ownership or downstream consumption from catalog visibility or serialization."
     }
   },
   "successor_prerequisites": [

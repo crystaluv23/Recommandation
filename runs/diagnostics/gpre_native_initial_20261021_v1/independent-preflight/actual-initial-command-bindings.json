@@ -1,0 +1,37 @@
+{
+  "command": "python3 -B runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/audit-actual-initial.py > runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-audit.log 2>&1",
+  "exit_code": 0,
+  "files": [
+    {
+      "bytes": 11855,
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json",
+      "sha256": "455ca111aedd1f8e107de32b023f51ebb4003e3650bdd3ad980f8b15005090d2"
+    },
+    {
+      "bytes": 11326,
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/audit-actual-initial.py",
+      "sha256": "fd436e6dc4a781b75895758490733bee749818c77017789afb70e4e6b48f1ff1"
+    },
+    {
+      "bytes": 378,
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-audit.log",
+      "sha256": "c5d33a0ec46b57832ab99de423289d5d5b105e8b659e3c3613febe56f2259daa"
+    },
+    {
+      "bytes": 11253,
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/audit-actual-initial-first.py",
+      "sha256": "bfd63dea488af7618714aca2af1bd48b16989e93c9a883aae8c205104c3d92ee"
+    },
+    {
+      "bytes": 287,
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-audit-first.log",
+      "sha256": "427d1584789a89b19a953c6527238a4d2e4e151d0c83898ea5ac26b1565e5514"
+    },
+    {
+      "bytes": 452,
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-first-error.json",
+      "sha256": "9f8bd6371746868d13289b37666fe0929c44d340887ddb14dbcfe4aee4e4f567"
+    }
+  ],
+  "original_harness_failure_preserved": true
+}

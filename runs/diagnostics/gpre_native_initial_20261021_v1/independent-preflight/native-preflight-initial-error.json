@@ -1,0 +1,7 @@
+{
+  "kind": "independent_audit_harness_error",
+  "first_assertion": "digest(request)==q[request_hash]",
+  "cause": "Probe used ensure_ascii=False for native artifact hash; artifacts.canonical_json_hash defaults ensure_ascii=True. Budget UTF8 uses ensure_ascii=False intentionally. Correct hash only; no source/product/native run changed.",
+  "first_stdout": "native-preflight-audit-initial.log",
+  "first_probe": "audit-native-preflight-initial.py"
+}

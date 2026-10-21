@@ -1,0 +1,220 @@
+{
+  "author_raws": 0,
+  "bootstrap": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/stage/samples/h01/bootstrap.json",
+    "sha256": "32ce837eaf66c7e8d20c41469ebca8120def925767a5176536fd825a580cd60e"
+  },
+  "code_bindings": 103,
+  "computed_metric_count": 1,
+  "correction": "Original temporary result used missing document_ids instead of actual documents to count documents; native bundle unchanged.",
+  "document_channel_set_by_core": true,
+  "evaluation_anchor": {
+    "doubling_threshold": 8.559999999999999,
+    "mean_adjusted_close": 4.279999999999999,
+    "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+    "recent_close": 4.14,
+    "recent_close_date": "2025-05-29",
+    "status": "available",
+    "trading_dates": [
+      "2025-05-22",
+      "2025-05-23",
+      "2025-05-27",
+      "2025-05-28",
+      "2025-05-29"
+    ]
+  },
+  "formal_stage_exists": false,
+  "identity": {
+    "cik": "0001309402",
+    "company_name": "GREEN PLAINS INC.",
+    "identity_aliases": [
+      "GREEN PLAINS INC.",
+      "GPRE",
+      "GREEN PLAINS"
+    ],
+    "ticker": "GPRE"
+  },
+  "inbox": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/stage/exchange/inbox/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+    "sha256": "bd54c8ea3b994e94b712cf0a02f10c713fc3f0f257062364d06a98664a7fddde"
+  },
+  "initial_state_accepted": false,
+  "manual_plan_id": "plan_manual_v1",
+  "model_requests": 0,
+  "native_guard_no_forbidden_operation_reached": true,
+  "original_result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/result.json",
+    "sha256": "1fc804bdadca454c1108b8c00cc614e8abbb94c44c4c823873f1659bc650793b"
+  },
+  "request": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/temp-native-preflight-v2/stage/requests/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+    "sha256": "37d7278086f6e4c3ee183f4fe227230a470e0647aacc648eaf8b68177d3592c7"
+  },
+  "request_reservation": 61888,
+  "requests": [
+    {
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "data_gap": null,
+      "projection_disclosure": {
+        "available_projection_count": 22,
+        "effective_context_truncated": true,
+        "omitted_projection_count": 7,
+        "projection_context_truncated": true,
+        "projection_status": "partial_context_budget",
+        "source_context_truncated": true,
+        "visible_projection_count": 15
+      },
+      "projections": 15,
+      "request_id": "orientation.v1.operating_report",
+      "selected_document_ids": [
+        "sec:cik_0001309402:000130940225000008",
+        "sec:cik_0001309402:000130940225000089"
+      ],
+      "status": "resolved"
+    },
+    {
+      "coverage": {
+        "context_truncated": false,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": false,
+        "query_matched_document_count": null,
+        "query_requested": false,
+        "query_status": "not_requested",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+        "provider": null,
+        "reason": "no_matching_documents",
+        "request_id": "orientation.v1.scoped_news",
+        "source_types": [
+          "news"
+        ]
+      },
+      "projection_disclosure": {
+        "available_projection_count": 0,
+        "effective_context_truncated": false,
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "unavailable",
+        "source_context_truncated": false,
+        "visible_projection_count": 0
+      },
+      "projections": 0,
+      "request_id": "orientation.v1.scoped_news",
+      "selected_document_ids": [],
+      "status": "unresolved"
+    },
+    {
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 8,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 11,
+        "observed_observation_count": 0,
+        "observed_period_span_days": 1825,
+        "query_evaluated": false,
+        "query_matched_document_count": null,
+        "query_requested": false,
+        "query_status": "not_requested",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 2,
+        "selection_truncated": true,
+        "visible_span_count": 1
+      },
+      "data_gap": null,
+      "projection_disclosure": {
+        "available_projection_count": 1,
+        "effective_context_truncated": true,
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "partial_context_budget",
+        "source_context_truncated": true,
+        "visible_projection_count": 1
+      },
+      "projections": 1,
+      "request_id": "orientation.v1.financial_facts",
+      "selected_document_ids": [
+        "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+      ],
+      "status": "resolved"
+    },
+    {
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 171,
+        "observed_observation_count": 171,
+        "observed_period_span_days": 248,
+        "query_evaluated": false,
+        "query_matched_document_count": null,
+        "query_requested": false,
+        "query_status": "not_requested",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 1,
+        "selection_truncated": true,
+        "visible_span_count": 1
+      },
+      "data_gap": null,
+      "projection_disclosure": {
+        "available_projection_count": 1,
+        "effective_context_truncated": true,
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "partial_context_budget",
+        "source_context_truncated": true,
+        "visible_projection_count": 1
+      },
+      "projections": 1,
+      "request_id": "orientation.v1.market_backbone",
+      "selected_document_ids": [
+        "massive:cik_0001309402:market_data:044bcfc658f55e07be11a2c8"
+      ],
+      "status": "resolved"
+    }
+  ],
+  "scope": "read-only inspection of completed temporary native connection; no re-execution",
+  "source_bindings": 1827,
+  "tests": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/driver/safety-tests.log",
+    "sha256": "2c37d50a88147ca2ebd5197d74ee37d462dab650d793512e849814c28d5a38f0"
+  }
+}

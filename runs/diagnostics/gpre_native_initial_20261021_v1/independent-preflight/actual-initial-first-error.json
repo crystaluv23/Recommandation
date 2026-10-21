@@ -1,0 +1,6 @@
+{
+  "kind": "reviewer_harness_overstrict_wording",
+  "cause": "Initial audit imposed exact words prediction time on every need. Actual fifth need uses contemporaneous issuer disclosures and already-published guidance, a semantically cutoff-bounded form allowed by frozen oracle. Correct textual check with semantic review, no role or product change.",
+  "first_probe": "audit-actual-initial-first.py",
+  "first_log": "actual-initial-audit-first.log"
+}

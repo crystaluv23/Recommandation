@@ -1,0 +1,190 @@
+{
+  "actual_actor": "/root/exact_initial_87",
+  "actual_raw": {
+    "bytes": 5901,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/outbox/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.txt",
+    "sha256": "687ae13a4e3385e7442a38de00705e8b9f10992e12faf0babc2ddd0eb8dccde1"
+  },
+  "audited_at_utc": "2026-10-21T00:43:29.144097+00:00",
+  "cache": {
+    "bytes": 13072,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/cache/responses/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+    "sha256": "0d968db42be05dfbc357f7d9092afc077e4c94c40707319372d7ce60acc3891a"
+  },
+  "completion": {
+    "bytes": 578,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/completion.json",
+    "sha256": "58082055515d8809e51a0ba897378cc9fb39c4fc61c426867c514c44c0ab5ec0"
+  },
+  "exact_raw_cache_parsed_persisted_state_equal": true,
+  "fixed_denominator": {
+    "case": 1,
+    "passed": 1
+  },
+  "fork_none_handoff": {
+    "bytes": 161,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/root/dispatch-01.json",
+    "sha256": "437f5e67ebc7ba174e67e5d61a49c4b53f0d92bb339e983502fdf27bdbe9aaaf"
+  },
+  "formal_preanswer_review": {
+    "bytes": 2983,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/formal-preanswer-review.json",
+    "sha256": "53bfc9203a0b61db544debbe5ceebe2fadd33767daf40be40930bd63762dd743"
+  },
+  "frozen_code_current_equal": 103,
+  "frozen_source_current_equal": 1827,
+  "host_tokens_and_cost": "unknown; native cost0 means externalAPIcost0 accounting, not measured host cost",
+  "immutable_oracle_unchanged": true,
+  "logical_reservation": 61888,
+  "mechanical_loss_or_salvage": false,
+  "model_corrections": 0,
+  "native_first_answers": 1,
+  "needs_count": 5,
+  "neutral_raw": {
+    "bytes": 5901,
+    "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/native-role-zix_9oor/outbox.txt",
+    "sha256": "687ae13a4e3385e7442a38de00705e8b9f10992e12faf0babc2ddd0eb8dccde1"
+  },
+  "news_gap_and_partial_context_not_negative": true,
+  "original_preservation_files_current_equal": 14,
+  "parsed_step": {
+    "bytes": 6489,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/parsed_step.json",
+    "sha256": "563a9f29cbdfc86517efb32ee9cead0c04be3cac4326027d60405cf8e914012c"
+  },
+  "persisted_initial_state": {
+    "bytes": 6578,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/initial_state.json",
+    "sha256": "9fdacbae3b14e3cf2cb42de3acabcf20ae584d4a8b18e11414b944f11480cab9"
+  },
+  "preanswer_visibility_review": {
+    "bytes": 10201,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-native-review.json",
+    "sha256": "5df8021c85ac69817491247578409a17a11a26c7d9499bdea8af08766dfae463"
+  },
+  "raw_copy_byte_equal": true,
+  "raw_to_accepted_semantic_deltas": [],
+  "receipt": {
+    "bytes": 306,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/receipts/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+    "sha256": "649e00ed7c440d51ab3065fd21d4085c47d0ce31d080b3c8e9cb724a9050b7df"
+  },
+  "reopen_claim": "Only read persistedJSON files. No Store, constructor, native resume, restoration or interrupted-run recovery executed by reviewer.",
+  "reviewer_calls": {
+    "GET": 0,
+    "LabelStore": 0,
+    "Store": 0,
+    "model": 0,
+    "native": 0
+  },
+  "scope": [
+    "Freshactual H_init only; native default/manualInformationPlan remains manual, not independentlyvalidated strategy.",
+    "NoSignalbatch/routingownership/Reflect/Predictor/outcome/independentbenefit or wholeMVP claim.",
+    "Marketcondition framing stays hypothesis; historical adjustmenttruth/APIvintage/primaryaudit not re-proven.",
+    "No downstream use or terminalrestore has been executed or claimed by this audit."
+  ],
+  "semantic_reviews": [
+    {
+      "field": "current_beliefs[0]",
+      "reason": "Exact two-segment/product quote supports business description. The qualification explicitly avoids asserting UHP sales traction from product inclusion.",
+      "verdict": "PASS"
+    },
+    {
+      "field": "current_beliefs[1]",
+      "reason": "Exact Q1 comparability passage identifies January2025 Fairmont idling and early2025 restructuring. It does not quantify savings; answer says benefits unquantified, not that benefits are absent.",
+      "verdict": "PASS"
+    },
+    {
+      "field": "current_beliefs[2]",
+      "reason": "Exact current Q1 forward-looking disclosure establishes ongoing Board review/status/timing/outcome uncertainty only. It does not prove executable transaction or realized value; answer preserves this distinction.",
+      "verdict": "PASS"
+    },
+    {
+      "field": "contradictions[0]",
+      "reason": "Q1 table is USD thousands for three months endedMar31 2025/2024. Ethanol gross margin negative -5692 versus -2643 and consolidated3039 below8367 support weak contemporaneous economics. “Counter-evidence to an already-established turnaround” is read as counter to that proposition, not a factual assertion that turnaround has already occurred. No derived margin percentage, annualization or control-anchor restatement.",
+      "verdict": "PASS"
+    },
+    {
+      "field": "hypotheses[0]",
+      "reason": "Explicit inference/falsification, conditional cost and co-product commercialization→near-term cash-earnings possibility, not claimed realized savings/premium or guaranteed doubling.",
+      "verdict": "PASS_AS_HYPOTHESIS"
+    },
+    {
+      "field": "hypotheses[1]",
+      "reason": "Explicit inference/falsification with then-disclosed timetable/proceeds/financing prerequisites. “Market distressed expectations” is interpretive framing from weak operating/price-control context, not established market-consensus or valuation evidence; it earns no factual mispricing/benefit credit.",
+      "verdict": "PASS_AS_HYPOTHESIS"
+    },
+    {
+      "field": "open_questions[0]",
+      "reason": "Leaves materiality/credibility/expectations unresolved; explicitly price weakness alone cannot establish mispricing.",
+      "verdict": "PASS"
+    },
+    {
+      "field": "next_information_needs[0]",
+      "reason": "Visible passage names initiatives/idling dates, but lacks savings target, cost, implementation details/production effects and realized savings proof. Asks what had been disclosed by cutoff; not post-cutoff realized actuals.",
+      "verdict": "PASS"
+    },
+    {
+      "field": "next_information_needs[1]",
+      "reason": "Visible UHP inclusion does not provide volume/premium/cost/qualification/offtake metrics. Question requests then-published milestones only; no assumed contract or future actuals.",
+      "verdict": "PASS"
+    },
+    {
+      "field": "next_information_needs[2]",
+      "reason": "Visible review reference does not supply specific alternatives/terms/commitments/obstacles/date. It asks missing specificity, rather than repeating whether review exists.",
+      "verdict": "PASS"
+    },
+    {
+      "field": "next_information_needs[3]",
+      "reason": "Actual financial projection is clipped to DEIshares and accounts-payable rows; visible source does not provide unrestricted cash, OCF burn, capex commitments, maturities/covenants/issuance. These are genuine unresolved by-cutoff facts, not synthetic needownership or six Signal results.",
+      "verdict": "PASS"
+    },
+    {
+      "field": "next_information_needs[4]",
+      "reason": "Visible risk/hedging/low-carbon narrative does not quantify cash-earnings sensitivities or contracted margin economics. Requests contemporaneous disclosed quantities/guidance rather than future results or asserting missing source proves absence.",
+      "verdict": "PASS"
+    }
+  ],
+  "source_before_and_after_for_this_read_audit": "Current1930frozenbindings+14preservation checked; productflags are corroborated by actualsinglejournal/receipt/raw/cache/parsedfiles, not used alone.",
+  "source_oracle": {
+    "bytes": 20691,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+    "sha256": "0bce2212dfad502f8ad7adf8ac36661ff3da8bc43cb735cef633f9f9663d8189"
+  },
+  "source_quotes": [
+    {
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "claim": "The operating segments include ethanol and co-products, including Ultra-High Protein, plus grain handling, storage, marketing and merchant trading. Product inclusion alone does not establish premium-product commercial traction.",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "exact_quote_start_in_projection": 117,
+      "projection_id": "projection_230c2716c36c73afad15f81b",
+      "quote": "The company reports the financial and operating performance for the following two operating segments: (1) ethanol production, which includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil and (2) agribusiness and energy services, which includes grain handling and storage, commodity marketing and merchant trading for company-produced and third-party ethanol, distillers grains, Ultra-High Protein, renewable corn oil, natural gas and other commodities."
+    },
+    {
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "claim": "The interim report identifies Fairmont plant idling and corporate restructuring and cost-saving initiatives as events affecting operating comparability; the visible passage does not quantify their economic benefits.",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "exact_quote_start_in_projection": 560,
+      "projection_id": "projection_3e669c5732c7c9a0e9b0584f",
+      "quote": "There are various events that could affect comparability of our operating results, including fluctuations in our production rates in 2025 compared to 2024, along with the disposition of our Birmingham, Alabama terminal in September of 2024, the idling of our Fairmont, Minnesota plant in January of 2025 and our corporate restructuring and cost saving initiatives in early 2025."
+    },
+    {
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "claim": "The interim risk disclosure refers to a Board review of strategic alternatives, identifying its status, expected timing and outcome as uncertainties. This establishes disclosure of a review, without establishing an executable transaction.",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "exact_quote_start_in_projection": 103,
+      "projection_id": "projection_d577be7d080627fa1c89be86",
+      "quote": "the status, expected timing, and expected outcome of our Board of Directors' ongoing review of strategic alternatives;"
+    },
+    {
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "claim": "The reported interim table shows negative ethanol-production gross margin and lower consolidated gross margin than the comparative period, providing counter-evidence to an already-established operating turnaround.",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "exact_quote_start_in_projection": 1480,
+      "projection_id": "projection_01fe85919029e3da1c7a0940",
+      "quote": "Three Months Ended March 31, 2025 2024 Gross margin Ethanol production (1) $ ( 5,692 ) $ ( 2,643 ) Agribusiness and energy services 8,731 11,010 $ 3,039 $ 8,367"
+    }
+  ],
+  "status": "PASS_ONE_ACTUAL_NATIVE_H_INIT_SOURCE_FAITHFUL",
+  "visible_basic_info_projections_preserved": 17
+}
