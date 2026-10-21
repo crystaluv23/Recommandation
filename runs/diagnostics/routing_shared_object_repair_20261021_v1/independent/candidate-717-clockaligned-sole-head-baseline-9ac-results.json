@@ -1,0 +1,233 @@
+{
+  "active_parser": {
+    "bytes": 195539,
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+    "sha256": "29f1b3c057dc825ca77bed377a3f3be329c9eb6914ad5ad24774f88281d8aa07"
+  },
+  "case_count": 0,
+  "cases": {
+    "bytes": 15238,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases-v3.json",
+    "sha256": "6de09ea83f854dd541a65e1927e832e3a3b14dbe75b423c3020a2cf65790a258"
+  },
+  "current_helper_file_not_old_isolation": {
+    "bytes": 189362,
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+    "sha256": "92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946"
+  },
+  "extra_passed": 0,
+  "extras": [
+    {
+      "first_reason": "Check Ultra-High Protein sales volumes and binding offtake commitments. Also measures premiums.",
+      "name": "sole_head_typed_remove_object_still_overclaims",
+      "pass": false,
+      "residual": "Using disclosures available by 2025-05-30, establish Ultra-High Protein premiums.",
+      "result": {
+        "calls": 2,
+        "direct_first_answer": false,
+        "error": null,
+        "feedback": [
+          {
+            "alternative_change_groups": [],
+            "completion_check": "Apply only an allowed repair to every machine-readable obligation. Preserve all content outside required_change_paths and permitted_dependency_paths; change a dependency only when strictly necessary, then satisfy the complete output contract. Diagnostic instruction prose grants no additional write scope.",
+            "invalid_output": {
+              "selections": [
+                {
+                  "answer_scope": "partial",
+                  "applicability_hypothesis": "Financing and credit-facility disclosures available by 2025-05-30 may identify obligations affecting turnaround funding; their presence and economic adequacy require execution evidence.",
+                  "context_tags": [
+                    "capital_intensive",
+                    "cyclical"
+                  ],
+                  "expected_role": "primary",
+                  "reason_code": "answer_need",
+                  "residual_need": "As disclosed by 2025-05-30, establish unrestricted cash, operating cash burn, committed capital spending and covenant headroom, then assess whether these resources and constraints permit the turnaround milestones.",
+                  "selection_reason": "Assess disclosed debt maturities and potential equity issuance terms for their effect on dilution and funding continuity.",
+                  "signal_ref": "financing_listing_action:v5",
+                  "target_need_indices": [
+                    3
+                  ]
+                },
+                {
+                  "answer_scope": "partial",
+                  "applicability_hypothesis": "Official disclosures within the 180-day window ending at prediction time may establish qualifying customer awards; product inclusion alone supplies no evidence of an order.",
+                  "context_tags": [
+                    "industrial",
+                    "cyclical"
+                  ],
+                  "expected_role": "primary",
+                  "reason_code": "answer_need",
+                  "residual_need": "Using disclosures available by 2025-05-30, establish Ultra-High Protein premiums.",
+                  "selection_reason": "Check Ultra-High Protein sales volumes and binding offtake commitments. Also measures premiums.",
+                  "signal_ref": "order_confirmation_disclosed:v3",
+                  "target_need_indices": [
+                    1
+                  ]
+                },
+                {
+                  "answer_scope": null,
+                  "applicability_hypothesis": "Available matched cash and operating-cash-flow facts may support a runway benchmark; this calculation alone cannot establish unrestricted funding or future milestone affordability.",
+                  "context_tags": [
+                    "capital_intensive",
+                    "cyclical"
+                  ],
+                  "expected_role": "coverage",
+                  "reason_code": "combine_evidence",
+                  "residual_need": null,
+                  "selection_reason": "Add a historical burn-based runway estimate to the financing assessment using the latest SEC cash-flow duration and closest preceding same-currency cash balance.",
+                  "signal_ref": "liquidity_runway_months:v3",
+                  "target_need_indices": [
+                    3
+                  ]
+                }
+              ]
+            },
+            "obligation_count": 1,
+            "obligations": [
+              {
+                "allowed_repairs": [
+                  "replace",
+                  "remove",
+                  "quarantine"
+                ],
+                "instruction": "selections[1].selection_reason claims a facet retained by residual_need via shared phrase 'ultra high protein', remove_terms_from_selection_reason=[\"ultra\",\"high\",\"protein\"]. Remove every listed residual-only term from selection_reason and name only the answered facet, leaving unresolved facets only in residual_need. If that distinction cannot be stated exactly, change selections[1] to a contextual reason with answer_scope=null and residual_need=null, or remove that complete selection",
+                "issue_code": "routing_answer_ownership_invalid",
+                "item_id": "order_confirmation_disclosed:v3",
+                "item_id_field": "signal_ref",
+                "must_change_any_of_paths": [],
+                "must_change_paths": [
+                  "selections[1].selection_reason",
+                  "selections[1]"
+                ],
+                "obligation_index": 1,
+                "permitted_dependency_paths": [],
+                "remove_terms_from_selection_reason": [
+                  "ultra",
+                  "high",
+                  "protein"
+                ],
+                "retryability": "correctable",
+                "severity": "error",
+                "source_refs": [
+                  "order_confirmation_disclosed:v3"
+                ]
+              }
+            ],
+            "permitted_dependency_path_count": 0,
+            "permitted_dependency_paths": [],
+            "required_change_path_count": 2,
+            "required_change_paths": [
+              "selections[1].selection_reason",
+              "selections[1]"
+            ],
+            "validation_contract": "structured-validation-v1",
+            "validation_error": "selections[1].selection_reason claims a facet retained by residual_need via shared phrase 'ultra high protein', remove_terms_from_selection_reason=[\"ultra\",\"high\",\"protein\"]. Remove every listed residual-only term from selection_reason and name only the answered facet, leaving unresolved facets only in residual_need. If that distinction cannot be stated exactly, change selections[1] to a contextual reason with answer_scope=null and residual_need=null, or remove that complete selection"
+          }
+        ],
+        "offline_returned_answers": 2,
+        "selected": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Financing and credit-facility disclosures available by 2025-05-30 may identify obligations affecting turnaround funding; their presence and economic adequacy require execution evidence.",
+            "context_tags": [
+              "capital_intensive",
+              "cyclical"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "As disclosed by 2025-05-30, establish unrestricted cash, operating cash burn, committed capital spending and covenant headroom, then assess whether these resources and constraints permit the turnaround milestones.",
+            "selection_reason": "Assess disclosed debt maturities and potential equity issuance terms for their effect on dilution and funding continuity.",
+            "signal_ref": "financing_listing_action:v5",
+            "target_need_indices": [
+              3
+            ]
+          },
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Official disclosures within the 180-day window ending at prediction time may establish qualifying customer awards; product inclusion alone supplies no evidence of an order.",
+            "context_tags": [
+              "industrial",
+              "cyclical"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Using disclosures available by 2025-05-30, establish Ultra-High Protein premiums.",
+            "selection_reason": "Check sales volumes and binding offtake commitments. Also measures premiums.",
+            "signal_ref": "order_confirmation_disclosed:v3",
+            "target_need_indices": [
+              1
+            ]
+          },
+          {
+            "applicability_hypothesis": "Available matched cash and operating-cash-flow facts may support a runway benchmark; this calculation alone cannot establish unrestricted funding or future milestone affordability.",
+            "context_tags": [
+              "capital_intensive",
+              "cyclical"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "combine_evidence",
+            "selection_reason": "Add a historical burn-based runway estimate to the financing assessment using the latest SEC cash-flow duration and closest preceding same-currency cash balance.",
+            "signal_ref": "liquidity_runway_months:v3",
+            "target_need_indices": [
+              3
+            ]
+          }
+        ],
+        "siblings_exact": true,
+        "typed_contracts": [
+          {
+            "allowed_operations": [
+              {
+                "descendants": false,
+                "op": "replace",
+                "path": "selections[1].selection_reason"
+              },
+              {
+                "descendants": false,
+                "op": "remove",
+                "path": "selections[1].selection_reason"
+              },
+              {
+                "descendants": true,
+                "op": "replace",
+                "path": "selections[1]"
+              },
+              {
+                "descendants": false,
+                "op": "remove",
+                "path": "selections[1]"
+              }
+            ],
+            "append_limits": {},
+            "base_hash": "39741dfd892f2a75974b98b1fdfdf4542f9da146f61a7f7c53ac716d54794bbe",
+            "base_location": "validation_feedback.invalid_output",
+            "exact_append_limits": {},
+            "identity_guards": [
+              {
+                "field": "signal_ref",
+                "path": "selections[1]",
+                "value": "order_confirmation_disclosed:v3"
+              }
+            ],
+            "index_semantics": "all indices address the issued base snapshot",
+            "schema_version": "structured-state-patch-v1"
+          }
+        ]
+      },
+      "second_author_typed_reason": "Check sales volumes and binding offtake commitments. Also measures premiums."
+    }
+  ],
+  "forbidden_calls": [],
+  "helper_code_filename": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-before-sole-head.py",
+  "helper_module": "stock_opportunity_agent.research._independent_saved_validation",
+  "helper_module_file": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-before-sole-head.py",
+  "helper_module_file_binding": {
+    "bytes": 189380,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-before-sole-head.py",
+    "sha256": "71731eab6ccb0d4567eedbb964de714780d296e58a49a23089aeb4ae5905675a"
+  },
+  "limits": "Offline authors scripted, not fresh. Old9ac helper is isolated module with exactfile/hash and nativecurrentparser identical except helperbinding; no productionStore orSignalcalculation.",
+  "mode": "baseline",
+  "passed": 0,
+  "results": []
+}

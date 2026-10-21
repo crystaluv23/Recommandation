@@ -1,0 +1,8 @@
+{
+  "frozen_before_candidate_execution": true,
+  "first_reason": "actual reason + Also measures premiums.",
+  "residual": "actual residual with realized premiums changed to premiums",
+  "second_typed_answer": "replace only selection_reason: delete Ultra-High Protein but keep Also measures premiums.",
+  "expected": "Native fullreparse must rejectoverclaim and notkeepdirectanswerownership; validfinance/liquiditysiblingsunchanged.",
+  "not_model": "OfflineScriptedRoleCaller typedexactcontract; nofreshauthororstage."
+}

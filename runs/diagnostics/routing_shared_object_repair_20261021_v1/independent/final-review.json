@@ -1,0 +1,306 @@
+{
+  "archive_packaging_addendum": {
+    "body_byte_identical_to_9ac_original_spec": true,
+    "current_driver_summary": {
+      "bytes": 5340,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/candidate-summary.json",
+      "sha256": "a5f74e362d1a9c33f1090c5e56d1e57f5a0120ca193394072aff138259e0da42"
+    },
+    "old_spec_archive_new_suffix": {
+      "bytes": 30898,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-evolution_research_validation.md.txt",
+      "sha256": "595444a271fcfc4d9a7fac672db85827298bad3b05bf2d2f6392a1e23d9170b3"
+    },
+    "old_summary_was_not_bound_by_original_independent_review": true,
+    "original_review_preserved": {
+      "bytes": 16611,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-review-before-archive-wrapper.json",
+      "sha256": "f905a86cadbc808f56d5b2c61fa915cd4d1b8c08d1b22e13a9bb24d528b93ff3"
+    },
+    "reason": "Saved oldmodule Markdown contains originalrelative links, so .md.txt prevents treating it as an active newdoc with relocated links. No body or product/test/native result changed.",
+    "scope": "Archivefilename wrapper only; not productionrepair or retest."
+  },
+  "author_replay_corrob_only": {
+    "bytes": 18289,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-portfolio-replay-v2.json",
+    "sha256": "b97ef97bec6b753bd890b14fc095321b312c5ce5e72d78ebdad372f1723a384e"
+  },
+  "bindings": [
+    {
+      "bytes": 12491,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases.json",
+      "sha256": "c2d2c52500bea136c457e04e2e2a02cb89db67d1fc8ed7a1da2a088ede45bc31"
+    },
+    {
+      "bytes": 13221,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases-v2.json",
+      "sha256": "82b07b85c2365f0562c4b8c600ae5e080ccb0b2fd42b1a988446b6c7abe188a6"
+    },
+    {
+      "bytes": 15238,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases-v3.json",
+      "sha256": "6de09ea83f854dd541a65e1927e832e3a3b14dbe75b423c3020a2cf65790a258"
+    },
+    {
+      "bytes": 521,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/typed-head-attack-expectation.json",
+      "sha256": "16bb49a10c36363c3b6d695458e41909e45be9b5042d1d64b90db7262dcb5661"
+    },
+    {
+      "bytes": 1238,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/sole-retained-head-expectation.json",
+      "sha256": "e05ae492d6c18caf36b4203cc19ad45013f4b670209d6585637b66875eaa5c79"
+    },
+    {
+      "bytes": 1653,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/sole-retained-head-expectation-v2.json",
+      "sha256": "9853249f5214aa3b2cfd6837e51383b364fc58efab1ced72458d4b17b62544d0"
+    },
+    {
+      "bytes": 2157,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/sole-retained-head-expectation-root-exact.json",
+      "sha256": "985ed32c8feb0bb7cc0c5ebc62a7d7d6d6f2f616af68d3f1e3699eeed4e9b662"
+    },
+    {
+      "bytes": 10646,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/probe.py",
+      "sha256": "d37fb855fa9f17395d0cb6166e0a049be8e1790f22723e7807c7cc17c45752e2"
+    },
+    {
+      "bytes": 10562,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/probe-before-sole-clock-fix.py",
+      "sha256": "8669bb16763c308ae26fb8ac9129f21f2096adddaedbaea9111b85ec9f27e4cc"
+    },
+    {
+      "bytes": 185185,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/original-9ac20df4-validation.py",
+      "sha256": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f"
+    },
+    {
+      "bytes": 189380,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-before-sole-head.py",
+      "sha256": "71731eab6ccb0d4567eedbb964de714780d296e58a49a23089aeb4ae5905675a"
+    },
+    {
+      "bytes": 158410,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/baseline-9ac-results.json",
+      "sha256": "d556d69074038a63d2b6c88c09874c4c1d3edcb69076ccbb0390084cb40d4351"
+    },
+    {
+      "bytes": 1851,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/baseline-9ac.log",
+      "sha256": "f8d3850ce8e7faa36f8d9061714120889379d8c865ba860f9c1603cb958e43da"
+    },
+    {
+      "bytes": 13219,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/baseline-9ac-typed-head-results.json",
+      "sha256": "79633731de6d3686c5b7f66d6e2e03351bd27a4a357e6b62008393960ec56ac4"
+    },
+    {
+      "bytes": 361,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/baseline-9ac-typed-head.log",
+      "sha256": "72f88c9d0871192af605548a116af8af812a9a21d64e58ed9dda3c57c7f988dc"
+    },
+    {
+      "bytes": 130464,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-results.json",
+      "sha256": "ef2ea954a4d95dc595882dd02d8d4155f6bc53d8278cda9805c9c9016639e7b5"
+    },
+    {
+      "bytes": 894,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate.log",
+      "sha256": "63641980ef030f8b1974d806d27c2e3d5db11cb599422d8150984fb742787d1e"
+    },
+    {
+      "bytes": 12542,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-typed-head-results.json",
+      "sha256": "f0e38dac08755e6369e9e9986d5cd177a8cd036dde47225de6d3cf68bafb5b2c"
+    },
+    {
+      "bytes": 359,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-typed-head.log",
+      "sha256": "e45fe2033107337a992c5b9a0aec097723d853abf315d1891cfef8c1cf657e55"
+    },
+    {
+      "bytes": 14117,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-sole-head-baseline-9ac-results.json",
+      "sha256": "4400c5bde8fee33967f4a42cdf7df348e38565c5132dcf175e0a9c3f62bc1c1e"
+    },
+    {
+      "bytes": 374,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-sole-head.log",
+      "sha256": "9e6e09c68ebc7ad3480224a6b0d768f293d8bc9c105bec4f8a07e91366f1ee57"
+    },
+    {
+      "bytes": 12291,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-clockaligned-sole-head-baseline-9ac-results.json",
+      "sha256": "ecddd8eaf054cea857c144eb0a43606da96914b4624879bc6c5abca6bf09fe91"
+    },
+    {
+      "bytes": 387,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-sole-clockaligned.log",
+      "sha256": "f106fe86cfaa7be50c043e1a7862ca9ff7156fd2dee7aff89035f072ff4c9bfe"
+    },
+    {
+      "bytes": 12291,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/rootexact-717-sole-head-baseline-9ac-results.json",
+      "sha256": "ecddd8eaf054cea857c144eb0a43606da96914b4624879bc6c5abca6bf09fe91"
+    },
+    {
+      "bytes": 374,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/rootexact-717-sole-head.log",
+      "sha256": "95b788211207f29a3619c04757a8955337042542ae207b540c354c5f09b799ad"
+    },
+    {
+      "bytes": 130464,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate-results.json",
+      "sha256": "f932590d33ceea74ea820432d412ffc92c0afcaed37aa0e53f1fbeead83b4839"
+    },
+    {
+      "bytes": 900,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate.log",
+      "sha256": "699c9436c51ff0ee8f3b4133c705ead3b86aa7073ac0ab4ed326de72d14d145d"
+    },
+    {
+      "bytes": 12542,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate-typed-head-results.json",
+      "sha256": "a7aa3ea9c15965a713f69b85f1ea4516c02cce66059dae4957c05e612029fc3a"
+    },
+    {
+      "bytes": 365,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate-typed-head.log",
+      "sha256": "5ab3b52e5957758c34034294765e7d7472c6bea346e227609598de768ad63c74"
+    },
+    {
+      "bytes": 11882,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-sole-head-candidate-results.json",
+      "sha256": "4823f8ade7a0a0ba9bd64b99067bc06a626d8265cd2148974ea692baa40fc27e"
+    },
+    {
+      "bytes": 364,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate-sole-head.log",
+      "sha256": "ed196e5133fadabb03402f2f11b536d2343264cec535acd6c65579ee5d469798"
+    }
+  ],
+  "candidate": {
+    "AST_outside_shared_helper_identical_to_9ac": true,
+    "author_tests": {
+      "bytes": 177586,
+      "path": "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py",
+      "sha256": "57b25ae8236279ba92b2f1db4e210600dc59e49db9ef346a435c81f6bbf65431"
+    },
+    "source": {
+      "bytes": 189362,
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946"
+    },
+    "spec": {
+      "bytes": 32343,
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "sha256": "fe287bfc2572685dde82b474e5830602032bd072cde05512bb639be45fe9840a"
+    },
+    "unchanged_native_parser": {
+      "bytes": 195539,
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "29f1b3c057dc825ca77bed377a3f3be329c9eb6914ad5ad24774f88281d8aa07"
+    },
+    "unchanged_typed_repair_and_fallback": {
+      "bytes": 216289,
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "4a7f169d9a7362ff75a64873aa2c02760e1e9a036e639daa3eea5d79a10b2bc0"
+    }
+  },
+  "confirmed": [
+    "ActualsealedUHP row and lowercase/multiword/semicolon/reorderedobject variants now retain directpartial ononeofflinefirstanswer without propernounlookup.",
+    "True retainedsalesvolume/premium/multi-facet claims, missingmodifier, cosmeticresidual, substringlookalikes, no-literal-split and postcutoffactuals do not retain directownership.",
+    "Singleliteralretainedhead now generates premium feedback rather than sharedobject; native typed secondanswer thatonlydeletesobject still fails completevalidation and usesexistingcontextfallback.",
+    "A legitimate typedreason-only correction is merged and completelyreparsed; originalfinance/liquiditysiblings remainunchanged.",
+    "All14cases and extra controls preservevalidsiblings; actualnativeSignalSelectionDecision.to_dict is JSON persisted/reread in independenttemp, without RawInfoStore or schema changes."
+  ],
+  "effects": {
+    "API": 0,
+    "LabelStore": 0,
+    "RawInfoStore": 0,
+    "Registryfreeze_or_install": 0,
+    "Signalcalculations": 0,
+    "completedstage_reentry": 0,
+    "freshroles": 0,
+    "network": 0,
+    "product_edits_by_reviewer": 0
+  },
+  "fixed_counts": {
+    "adjacent_scope_positives": 2,
+    "adjacent_scope_positives_passed": 0,
+    "core_shared_object_positives": 4,
+    "core_shared_object_positives_passed": 4,
+    "correct_typed_reason_repair": 1,
+    "correct_typed_reason_repair_passed": 1,
+    "final_passed": 12,
+    "multi_retained_head_two_answer_attack_rejected": 1,
+    "negative_controls": 8,
+    "negative_controls_passed": 8,
+    "sole_retained_head_two_answer_attack_rejected": 1,
+    "total_independent_helper_native_cases": 14
+  },
+  "harness_and_case_refinements_preserved": [
+    "Precandidate n05 changed threeansweredanchorwordlookalikes together; originalsingle commitmentship variant stillcontained bindingofftake literalanchors, so was ambiguous. Originalv1/v2files kept, core14 frozenbeforecandidate.",
+    "Initialsolehead nativefixture used symbolic predictiontime target but explicitMay30 residual, causing an unrelatedresidualgrounding issue. Its nativefallback is NOT evidenceofsuccessfulsoleheadguard andis excluded frompositiveproof.",
+    "Clockaligned independentsolefixture then rootexactauthorizedtarget/reason/residual produced onlyownership issue and actual717secondanswer misaccept. Finalsameexactrootfixture rejects. All initial/supplementaryfiles andhashes remain."
+  ],
+  "historical_verdict": "CompletedGPRE firstportfolio strict0/1 and actualfallback/entrybudgettrace unchanged. Offline1callreplay undernewhelper is not newfreshroutingpass, cannotoverwriteoldgold or claimF5/F7/MVP/benefit closed.",
+  "known_open": [
+    {
+      "case_id": "p05_same_facet_distinct_explicit_objects",
+      "example": "OrionData commitments answered versus AuroraSensor commitments retained",
+      "reason": "Samefacet attached to differentexplicitobjects is semanticallyseparable, but current2-arm/overlappedfacet guard remainsconservative andflags bindingofftakecommitment. Old9ac alreadyfails; finaldoesnotcloseit.",
+      "verdict": "EXISTING_FALSE_REJECTION_PRESERVED"
+    },
+    {
+      "case_id": "p06_same_facet_disjoint_literal_time_windows",
+      "example": "Sameproduct/commitment recent180day disclosedwindow answered versus prewindow still-effectivecommitments retained",
+      "reason": "The explicitnonoverlappingtime scopes are legitimatepartial, but actualnativeparser stillrejects sharedfacet. Standalonehelpernotforcedtoresolvealltemporalpolicy; fullparsercontrol demonstrates remaininggap. Old9ac alreadyfails.",
+      "verdict": "EXISTING_NATIVE_FALSE_REJECTION_PRESERVED"
+    }
+  ],
+  "old_vs_candidate": {
+    "final92ca_multi_and_solehead_rejected": true,
+    "intermediate717_14_passed": 12,
+    "intermediate717_multihead_rejected": true,
+    "intermediate717_solehead_secondanswer_wrongly_admitted": true,
+    "old9ac14_passed": 8,
+    "old9ac_actual_code_filename": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/original-9ac20df4-validation.py",
+    "old9ac_actual_module_file": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/original-9ac20df4-validation.py",
+    "old9ac_correct_typed_repair_passed": 0,
+    "old9ac_helper": {
+      "bytes": 185185,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/original-9ac20df4-validation.py",
+      "sha256": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f"
+    },
+    "old9ac_multihead_secondanswer_wrongly_admitted": true,
+    "oldisolation_limit": "Exactoldhelper module and filename/hash are independent; nativeplanroles/typedfallback are byte-identical to9ac and common tobothruns. This is not an isolatedfulloldcheckout or freshmodel."
+  },
+  "preservation": {
+    "Registry_scope": "Independentcheck covers all1844frozen-sourcebindings, including actualfrozendefinitions. Author replay independentlyreports198Registryfilesbyteequal, citedasdriverartifact rather than claiming unavailableindependentbeforeinventory for every198file. OldruntimeRegistrytree notGittracked.",
+    "intentional_current_code_revision_vs_oldstage": [
+      {
+        "current": {
+          "bytes": 189362,
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+          "sha256": "92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946"
+        },
+        "original": {
+          "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+          "sha256": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f"
+        }
+      }
+    ],
+    "old_code_frozenfiles_not_rewritten": true,
+    "original_case_authority_source_bindings_current_equal": 1844,
+    "original_completed_routing_stage_files_current_equal": 19,
+    "prior14_expectations_unchanged": true,
+    "root_original_preservation_files_current_equal": 32
+  },
+  "reviewed_at_utc": "2026-10-21T01:36:31.899190+00:00",
+  "status": "BOUNDED_CORE_REPAIR_VERIFIED_WITH_TWO_EXISTING_SCOPE_FALSE_REJECTIONS_OPEN",
+  "structural_limits": "Positiveexception is narrow target-derivednounlistproof:>=3arms, localcoordinatedarms requiremultiwordanchors, orderedfirstobjectprefix, independentlywitnessedanswered andstrongretainedfirstarm. A weakhead alone cannot justifypositiveexemption but can proveconflict. It is not a generalsemantic/object/time parser; ambiguityretains oldconservativeguard. No propernounlist, globaltopicignore, PIT weakening or typedpermission expansion."
+}

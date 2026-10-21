@@ -1,0 +1,21 @@
+{
+  "current_source": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+    "sha256": "71731eab6ccb0d4567eedbb964de714780d296e58a49a23089aeb4ae5905675a"
+  },
+  "current_test": {
+    "path": "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py",
+    "sha256": "2404770176749ec2f99f6bab5d70119b12f9591309184cef3caca9811c026275"
+  },
+  "errors": [],
+  "failures": [],
+  "forbidden_calls": [],
+  "old_helper": false,
+  "old_source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-evolution_research_validation.py.txt",
+    "sha256": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f"
+  },
+  "passed": true,
+  "scope": "saved helper vs unchanged native routing parser; no fresh model",
+  "tests": 13
+}

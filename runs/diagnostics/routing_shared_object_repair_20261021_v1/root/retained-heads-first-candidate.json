@@ -1,0 +1,28 @@
+{
+  "scope": "pure current helper only; not native repair or fresh model acceptance",
+  "source_snapshot": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/first-candidate-evolution_research_validation.py.txt",
+  "source_sha256": "1e6bfe8548b2264bf5de1e9566a544ce32c4afceb7fcb087ab30c5753f732b0b",
+  "rows": [
+    {
+      "id": "retained_1",
+      "observed": "ultra high protein",
+      "pass": true
+    },
+    {
+      "id": "retained_2",
+      "observed": "ultra high protein",
+      "pass": true
+    },
+    {
+      "id": "retained_3",
+      "observed": "ultra high protein",
+      "pass": true
+    },
+    {
+      "id": "retained_4",
+      "observed": "ultra high protein",
+      "pass": true
+    }
+  ],
+  "passed": true
+}

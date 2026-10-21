@@ -1,0 +1,25 @@
+{
+  "scope": "old completed stages/pointers/original user deltas preserved; new production helper is deliberately a different revision, never used to reenter old stage",
+  "original_files_checked": 54,
+  "mismatches": [],
+  "production_candidate": [
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "sha256": "fe287bfc2572685dde82b474e5830602032bd072cde05512bb639be45fe9840a"
+    },
+    {
+      "path": "tests/test_evolution_routing_plan_roles.py",
+      "sha256": "57b25ae8236279ba92b2f1db4e210600dc59e49db9ef346a435c81f6bbf65431"
+    }
+  ],
+  "passed": true,
+  "fresh_role_answers": 0,
+  "external_LLM_API": 0,
+  "source_queries": 0,
+  "production_Signal_execution": 0,
+  "completed_stage_reentry": 0
+}

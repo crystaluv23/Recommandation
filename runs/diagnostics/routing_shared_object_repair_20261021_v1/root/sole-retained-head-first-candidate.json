@@ -1,0 +1,10 @@
+{
+  "scope": "additional same-family shortened sole-residual-head counterexample, not fresh model",
+  "target": "What Ultra-High Protein sales volumes, realized premiums and binding offtake commitments were disclosed by 2025-05-30?",
+  "reason": "Check Ultra-High Protein sales volumes and binding offtake commitments. Also measures premiums.",
+  "residual": "Using disclosures available by 2025-05-30, establish Ultra-High Protein premiums.",
+  "expected_conflict_with_or_without_object": true,
+  "source_sha256": "71731eab6ccb0d4567eedbb964de714780d296e58a49a23089aeb4ae5905675a",
+  "with_object": "ultra high protein",
+  "without_object": null
+}

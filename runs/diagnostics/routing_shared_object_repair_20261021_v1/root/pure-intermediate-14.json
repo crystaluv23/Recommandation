@@ -1,0 +1,90 @@
+{
+  "scope": "root pure helper inspection only; not native parser or fresh response",
+  "source_sha256": "71731eab6ccb0d4567eedbb964de714780d296e58a49a23089aeb4ae5905675a",
+  "rows": [
+    {
+      "id": "p01_actual_UHP_nested_and",
+      "shared": null,
+      "expected": "none",
+      "pass": true
+    },
+    {
+      "id": "p02_lowercase_object_nested_and",
+      "shared": null,
+      "expected": "none",
+      "pass": true
+    },
+    {
+      "id": "p03_object_after_facet",
+      "shared": null,
+      "expected": "none",
+      "pass": true
+    },
+    {
+      "id": "p04_semicolon_independent_arms",
+      "shared": null,
+      "expected": "none",
+      "pass": true
+    },
+    {
+      "id": "n01_true_retained_volume",
+      "shared": "sale volume",
+      "expected": "conflict",
+      "pass": true
+    },
+    {
+      "id": "n02_remove_premium_modifier",
+      "shared": "premium",
+      "expected": "conflict",
+      "pass": true
+    },
+    {
+      "id": "n03_shared_object_same_facet",
+      "shared": "carbon capture module customer qualification progress",
+      "expected": "conflict",
+      "pass": true
+    },
+    {
+      "id": "n04_near_cosmetic_full_residual",
+      "shared": "carbon capture module",
+      "expected": "conflict",
+      "pass": true
+    },
+    {
+      "id": "n05_word_boundary_fake_answer_anchor",
+      "shared": "carbon capture module",
+      "expected": "conflict",
+      "pass": true
+    },
+    {
+      "id": "n06_reason_claims_all_with_object",
+      "shared": "sale volume realized premium",
+      "expected": "conflict",
+      "pass": true
+    },
+    {
+      "id": "n07_future_residual_scope",
+      "shared": "carbon capture module",
+      "expected": "not_asserted",
+      "pass": true
+    },
+    {
+      "id": "n08_unsplit_ambiguous_object_topic",
+      "shared": "carbon capture module commercial output",
+      "expected": "conflict",
+      "pass": true
+    },
+    {
+      "id": "p05_same_facet_distinct_explicit_objects",
+      "shared": "binding offtake commitment",
+      "expected": "none",
+      "pass": false
+    },
+    {
+      "id": "p06_same_facet_disjoint_literal_time_windows",
+      "shared": "binding offtake commitment carbon capture module",
+      "expected": "not_asserted",
+      "pass": true
+    }
+  ]
+}

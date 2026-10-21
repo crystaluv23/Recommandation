@@ -3683,6 +3683,7 @@ def _shared_distinctive_phrase(
 
         scope_words: set[str] = set()
         topical_clauses: list[tuple[str, ...]] = []
+        topical_texts: list[str] = []
         for clause in clauses:
             bound = _EXPLICIT_AS_OF_BOUND.search(clause) or _SYMBOLIC_AS_OF_BOUND.search(clause)
             prefix = clause[:bound.start()].strip() if bound else ""
@@ -3695,6 +3696,7 @@ def _shared_distinctive_phrase(
                 scope_words.update(topic_words(clause))
             else:
                 topical_clauses.append(topic_words(clause))
+                topical_texts.append(clause)
         clause_words = [set(clause) - scope_words for clause in topical_clauses]
         unique_words = [
             content - set().union(*(other for index, other in enumerate(clause_words)
@@ -3722,6 +3724,79 @@ def _shared_distinctive_phrase(
                     distinctive_left, distinctive_right, minimum_words=2,
                 )
             )
+
+        # A leading object can scope a noun-facet list without being repeated
+        # in each arm. Prove that split locally; do not recognize proper names
+        # or erase every word shared with the target.
+        def arm_words(value: str) -> tuple[str, ...]:
+            value = _EXPLICIT_AS_OF_BOUND.sub(" ", value)
+            value = _SYMBOLIC_AS_OF_BOUND.sub(" ", value)
+            return topic_words(value)
+
+        arms: list[tuple[str, ...]] = []
+        for index, text in enumerate(topical_texts):
+            parts = re.split(r"\s+(?:and|or)\s+", text, flags=re.IGNORECASE)
+            split_words = [arm_words(part) for part in parts]
+            if index and len(parts) > 1 and all(len(set(part)) >= 2 for part in split_words):
+                arms.extend(split_words)
+            else:
+                arms.append(arm_words(text))
+
+        def contains(sequence: tuple[str, ...], phrase: tuple[str, ...]) -> bool:
+            return any(sequence[start:start + len(phrase)] == phrase
+                       for start in range(len(sequence) - len(phrase) + 1))
+
+        def without(sequence: tuple[str, ...], phrase: tuple[str, ...]) -> tuple[str, ...]:
+            result: list[str] = []
+            index = 0
+            while index < len(sequence):
+                if sequence[index:index + len(phrase)] == phrase:
+                    index += len(phrase)
+                else:
+                    result.append(sequence[index])
+                    index += 1
+            return tuple(result)
+
+        if len(arms) >= 3:
+            for size in range(len(arms[0]) - 2, 1, -1):
+                prefix = arms[0][:size]
+                if not contains(right_words, prefix):
+                    continue
+                stripped = [without(arm, prefix) for arm in arms]
+                contents = [set(arm) - scope_words for arm in stripped]
+                distinct = [content - set().union(*(other for index, other in enumerate(contents)
+                                                    if index != own))
+                            for own, content in enumerate(contents)]
+                if not all(len(content) >= 2 for content in distinct):
+                    continue
+                answered_flags: list[bool] = []
+                retained_flags: list[bool] = []
+                for index, content in enumerate(distinct):
+                    removed = tuple(token for token in stripped[index]
+                                    if token in content and token not in residual_topics)
+                    answered_flags.append(len(set(removed)) >= 2 and contains(left_words, removed))
+                    retained_flags.append(len(content & residual_topics) >= 2)
+                answered_arms = [i for i, (a, r) in enumerate(zip(answered_flags, retained_flags)) if a and not r]
+                retained_arms = [i for i, (a, r) in enumerate(zip(answered_flags, retained_flags)) if r and not a]
+                if answered_arms:
+                    # A shortened retained head still identifies its literal
+                    # arm. Do not suggest deleting the common object, and do
+                    # not lose the error after that object has been removed.
+                    retained_specific = set().union(*(
+                        content & residual_topics for i, content in enumerate(distinct)
+                        if i not in answered_arms
+                    ))
+                    conflicts = [token for token in without(left_words, prefix)
+                                 if token in retained_specific]
+                    if conflicts:
+                        return " ".join(dict.fromkeys(conflicts))
+                    if (0 in retained_arms and contains(left_words, prefix)
+                            and all(a != r for a, r in zip(answered_flags, retained_flags))):
+                        shared = _shared_distinctive_phrase(
+                            " ".join(without(left_words, prefix)),
+                            " ".join(without(right_words, prefix)), minimum_words=2,
+                        )
+                        return shared
 
     left_topic_words = tuple(
         token

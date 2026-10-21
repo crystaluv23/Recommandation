@@ -1,0 +1,54 @@
+{
+  "source_sha256": "a073a27fb48bdbd9a73932028974adc7fb761e6db8e2ef09860742f48414770e",
+  "rows": [
+    {
+      "id": "retained_1",
+      "object_removed": false,
+      "observed": "premium",
+      "pass": true
+    },
+    {
+      "id": "retained_1",
+      "object_removed": true,
+      "observed": "premium",
+      "pass": true
+    },
+    {
+      "id": "retained_2",
+      "object_removed": false,
+      "observed": "production cost",
+      "pass": true
+    },
+    {
+      "id": "retained_2",
+      "object_removed": true,
+      "observed": "production cost",
+      "pass": true
+    },
+    {
+      "id": "retained_3",
+      "object_removed": false,
+      "observed": "qualification progress",
+      "pass": true
+    },
+    {
+      "id": "retained_3",
+      "object_removed": true,
+      "observed": "qualification progress",
+      "pass": true
+    },
+    {
+      "id": "retained_4",
+      "object_removed": false,
+      "observed": "sale",
+      "pass": true
+    },
+    {
+      "id": "retained_4",
+      "object_removed": true,
+      "observed": "sale",
+      "pass": true
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,84 @@
+{
+  "GET": 0,
+  "Signal_execution": 0,
+  "actual_three_row_native_parser_replay": {
+    "Registry_files_equal": 198,
+    "candidate_all_original_rows_exact": true,
+    "candidate_scripted_calls": 1,
+    "forbidden_calls": [],
+    "old_helper_scripted_calls": 2,
+    "result": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-portfolio-replay-v2.json",
+      "sha256": "b97ef97bec6b753bd890b14fc095321b312c5ce5e72d78ebdad372f1723a384e"
+    },
+    "sealed_stage_files_equal": 19,
+    "siblings_exact": true
+  },
+  "baseline_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-evolution_research_validation.py.txt",
+      "sha256": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-evolution_research_validation.md",
+      "sha256": "595444a271fcfc4d9a7fac672db85827298bad3b05bf2d2f6392a1e23d9170b3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/original-test_evolution_routing_plan_roles.py.txt",
+      "sha256": "689b5099ecf6e9b4396e19974c7bab327df30a8c3041fe390c154e9a15873c3c"
+    }
+  ],
+  "boundaries": [
+    "Positive exemption requires a first-arm ordered shared prefix, >=3 literal arms with independent multi-token anchors, an answered witness and strong retained first arm.",
+    "A single literal retained anchor can reject a claim even after object removal; this does not suffice for a positive exemption.",
+    "No product-name recognition, domain word list, candidate-specific identifier, semantic judge or canonical field.",
+    "One-modifier/temporal/whole-word/cosmetic and typed paths retained; original contrast fixture uses pure snapshot rather than fresh freeze to avoid Signal calculations."
+  ],
+  "callsite_scope": "Only evolution_plan_roles.py routing ownership consumer plus helper recursive calls; helper signature unchanged and role/repair/fallback untouched.",
+  "completed_stage_reentry": 0,
+  "final_focused": {
+    "errors": 0,
+    "failures": 0,
+    "forbidden_calls": [],
+    "log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-candidate-v2.log",
+      "sha256": "a2d8c1a56b729cc2a895f1e2af3fcaa778213a0a3f372a2cc877126561c6ca5d"
+    },
+    "methods": 14,
+    "result": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-candidate-v2-result.json",
+      "sha256": "51cd30743499541dd2275effd065ce765e61f57a97c00d243e4d8ba8c128678c"
+    }
+  },
+  "historical_portfolio_verdict": "strict0/1 unchanged",
+  "initial_candidate_sole_head_counter": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/candidate-71731-sole-retained-head-red.json",
+    "sha256": "afff39362570d8be3bf53b1a09e10fcc28225f8636394ba41b0ee2da0471a33f"
+  },
+  "known_not_closed": [
+    "Root independent p05: two explicit different objects with same facet joined only by and still triggers conservative guard; no extra rule added.",
+    "Separate disjoint-window p06 needs native parser review; no claim that lexical helper proves arbitrary interval semantics.",
+    "Unprovable/one-anchor positive contrasts remain conservative; no general natural-language completeness claim.",
+    "Fresh initial routing behavior and subsequent ownership/result/Reflect consumption not tested."
+  ],
+  "labels": 0,
+  "new_model_calls": 0,
+  "old_helper_failure_interpretation": "13 methods/15 failing subcase assertions: mixture of wrong shared-object rejection, wrong feedback, and typed head bypass; not 15 independent unsafe accepts.",
+  "old_helper_focused": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-original-result.json",
+    "sha256": "799484be7f23291e9c9fabf0825291be6083b8420600fc9f6a1c7a6e71d34bb9"
+  },
+  "scope": "candidate ready for independent counterexample review; not fresh routing acceptance",
+  "source": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+    "sha256": "92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946"
+  },
+  "spec": {
+    "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+    "sha256": "fe287bfc2572685dde82b474e5830602032bd072cde05512bb639be45fe9840a"
+  },
+  "tests": {
+    "path": "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py",
+    "sha256": "57b25ae8236279ba92b2f1db4e210600dc59e49db9ef346a435c81f6bbf65431"
+  }
+}

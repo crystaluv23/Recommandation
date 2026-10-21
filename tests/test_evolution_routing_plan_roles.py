@@ -11,6 +11,8 @@ from stock_opportunity_agent.research.evolution_research_validation import (
     _reflection_selection_intents,
     _shared_distinctive_phrase,
 )
+from stock_opportunity_agent.artifacts import canonical_json_hash
+from stock_opportunity_agent.signal_library import FrozenSignalRegistry
 
 
 class RoutingResidualFacetContrastTests(TestCase):
@@ -41,7 +43,8 @@ class RoutingResidualFacetContrastTests(TestCase):
             registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
             caller = ScriptedRoleCaller(outputs)
             selected = LLMSignalRetrievalAgent(caller).select(
-                (self.TARGET,), registry.freeze(), {},
+                (self.TARGET,), registry.snapshot_from_refs(
+                    registry.version, tuple(card.ref for card in registry.list_signal_cards())), {},
             )
         return selected, caller
 
@@ -137,6 +140,134 @@ class RoutingResidualFacetContrastTests(TestCase):
             _shared_distinctive_phrase(reason, residual, target_need=residual),
             _shared_distinctive_phrase(reason, residual),
         )
+
+
+class RoutingSharedObjectListContrastTests(TestCase):
+    TARGET = (
+        "What {object} sales volumes, realized premiums, incremental production "
+        "costs, customer qualification progress and binding offtake commitments "
+        "had been disclosed by prediction time, including any then-published "
+        "milestones capable of changing earnings expectations within the forecast horizon?"
+    )
+    REASON = (
+        "Check {object} binding offtake commitments for named counterparties or "
+        "programs, delivery schedules and the existing $1M or 1000-unit materiality threshold."
+    )
+    RESIDUAL = (
+        "Using disclosures available by 2025-05-30, establish {object} sales "
+        "volumes, realized premiums, incremental production costs, customer "
+        "qualification progress, earnings-relevant milestones, and any "
+        "still-effective commitments disclosed before the 180-day window."
+    )
+    OBJECTS = ("Ultra-High Protein", "High Density Cooling Modules", "Advanced Ceramic Power Units")
+
+    def _strings(self, object_name=None):
+        values = {"object": object_name or self.OBJECTS[0]}
+        return tuple(value.format(**values) for value in (self.TARGET, self.REASON, self.RESIDUAL))
+
+    def _registry(self):
+        # Pure definitions: routing tests must not audit or calculate Signals.
+        spec = SignalSpec.from_dict({
+            "signal_id": "contract_confirmation", "version": 1, "category": "orders",
+            "modality": "narrative", "definition": {"description": "Identify binding offtake commitments."},
+            "execution": {"type": "llm", "skill_file": "skill.md"},
+            "raw_retrieval": {"source_types": ["filing"], "lookback_days": 180},
+            "evidence_policy": {"require_source": True, "require_timestamp": True, "require_exact_span": True},
+        })
+        return FrozenSignalRegistry(1, canonical_json_hash(spec.to_dict()), (spec,), {spec.ref: "Read contracts."})
+
+    def _row(self, reason, residual):
+        row = signal_selection("contract_confirmation:v1")
+        row["selections"][0].update(selection_reason=reason, answer_scope="partial", residual_need=residual)
+        return row
+
+    def _select(self, target, outputs):
+        caller = ScriptedRoleCaller(outputs)
+        agent = LLMSignalRetrievalAgent(caller)
+        agent.set_evaluation_context(datetime(2025, 5, 30, tzinfo=timezone.utc))
+        return agent.select((target,), self._registry(), {}), caller
+
+    def test_actual_and_independent_multiword_objects_keep_partial(self):
+        for object_name in self.OBJECTS:
+            with self.subTest(object_name=object_name):
+                target, reason, residual = self._strings(object_name)
+                self.assertIsNone(_shared_distinctive_phrase(reason, residual, target_need=target))
+                row = self._row(reason, residual)
+                selected, caller = self._select(target, [row, row])
+                self.assertEqual(len(caller.calls), 1)
+                self.assertEqual(selected.value[0].answer_scope, "partial")
+                self.assertEqual(selected.value[0].selection_reason, reason)
+                self.assertEqual(selected.value[0].residual_need, residual)
+
+    def test_shortened_retained_heads_survive_object_removal(self):
+        target, reason, residual = self._strings()
+        for head in ("premiums", "production costs", "qualification progress", "sales"):
+            for object_present in (True, False):
+                with self.subTest(head=head, object_present=object_present):
+                    claim = reason + " Also measures " + head + "."
+                    if not object_present:
+                        claim = claim.replace(self.OBJECTS[0] + " ", "")
+                    shortened = residual.replace("realized ", "")
+                    conflict = _shared_distinctive_phrase(claim, shortened, target_need=target)
+                    self.assertIsNotNone(conflict)
+                    self.assertNotIn("ultra", conflict)
+
+    def test_typed_delete_object_does_not_repair_retained_head(self):
+        target, reason, residual = self._strings()
+        residual = residual.replace("realized ", "")
+        bad = self._row(reason + " Also measures premiums.", residual)
+        still_bad = self._row(reason.replace(self.OBJECTS[0] + " ", "") + " Also measures premiums.", residual)
+        selected, caller = self._select(target, [bad, still_bad])
+        self.assertEqual(len(caller.calls), 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("premium", feedback["validation_error"])
+        self.assertNotIn("ultra", feedback["validation_error"])
+        obligation = feedback["obligations"][0]
+        self.assertEqual(obligation["must_change_paths"], ["selections[0].selection_reason", "selections[0]"])
+        self.assertEqual(selected.value[0].reason_code, "assess_applicability")
+        self.assertIsNone(selected.value[0].answer_scope)
+
+    def test_sole_shortened_retained_head_survives_typed_object_removal(self):
+        target = (
+            "What Ultra-High Protein sales volumes, realized premiums and binding "
+            "offtake commitments were disclosed by 2025-05-30?"
+        )
+        reason = (
+            "Check Ultra-High Protein sales volumes and binding offtake commitments. "
+            "Also measures premiums."
+        )
+        residual = "Using disclosures available by 2025-05-30, establish Ultra-High Protein premiums."
+        still_bad = reason.replace("Ultra-High Protein ", "")
+        selected, caller = self._select(target, [self._row(reason, residual), self._row(still_bad, residual)])
+        self.assertEqual(len(caller.calls), 2)
+        self.assertIn("premium", caller.calls[1]["payload"]["validation_feedback"]["validation_error"])
+        self.assertEqual(selected.value[0].reason_code, "assess_applicability")
+        self.assertIsNone(selected.value[0].answer_scope)
+
+    def test_real_retained_facets_receive_exact_row_correction(self):
+        target, reason, residual = self._strings()
+        for facet in ("sales volumes", "realized premiums", "customer qualification progress"):
+            with self.subTest(facet=facet):
+                bad = self._row(reason + " Also measures " + facet + ".", residual)
+                good = self._row(reason, residual)
+                selected, caller = self._select(target, [bad, good])
+                self.assertEqual(len(caller.calls), 2)
+                self.assertEqual(selected.value[0].selection_reason, reason)
+                self.assertEqual(selected.value[0].answer_scope, "partial")
+
+    def test_missing_answered_witness_and_near_object_keep_guard(self):
+        target, reason, residual = self._strings()
+        self.assertIsNotNone(_shared_distinctive_phrase("Check Ultra-High Protein.", residual, target_need=target))
+        self.assertIsNotNone(_shared_distinctive_phrase(reason, residual, target_need=target.replace("Protein", "Proteinized")))
+        self.assertIsNotNone(_shared_distinctive_phrase(reason, residual, target_need=residual))
+
+    def test_temporal_and_cosmetic_guards_still_correct(self):
+        target, reason, residual = self._strings()
+        for invalid in (residual + " Include results from 2026-06-30.", target):
+            with self.subTest(invalid=invalid):
+                selected, caller = self._select(target, [self._row(reason, invalid), self._row(reason, residual)])
+                self.assertEqual(len(caller.calls), 2)
+                self.assertEqual(selected.value[0].residual_need, residual)
 
 
 class RoutingPartialResidualTemporalScopeTests(TestCase):

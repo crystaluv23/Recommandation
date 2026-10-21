@@ -1,0 +1,12 @@
+{
+  "mode": "baseline",
+  "passed": 0,
+  "total": 0,
+  "extras": 0,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-clockaligned-sole-head-baseline-9ac-results.json",
+    "sha256": "ecddd8eaf054cea857c144eb0a43606da96914b4624879bc6c5abca6bf09fe91",
+    "bytes": 12291
+  },
+  "failures": []
+}

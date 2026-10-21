@@ -1,0 +1,12 @@
+{
+  "mode": "candidate",
+  "passed": 0,
+  "total": 0,
+  "extras": 1,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-sole-head-candidate-results.json",
+    "sha256": "4823f8ade7a0a0ba9bd64b99067bc06a626d8265cd2148974ea692baa40fc27e",
+    "bytes": 11882
+  },
+  "failures": []
+}

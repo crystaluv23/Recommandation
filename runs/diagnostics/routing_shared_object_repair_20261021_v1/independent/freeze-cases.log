@@ -1,0 +1,15 @@
+{
+  "cases": 12,
+  "expected_positive": 4,
+  "expected_negative": 8,
+  "binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/frozen-cases.json",
+    "sha256": "c2d2c52500bea136c457e04e2e2a02cb89db67d1fc8ed7a1da2a088ede45bc31",
+    "bytes": 12491
+  },
+  "script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/freeze-cases.py",
+    "sha256": "8be212b045b92ddc6d4226e5fcfd87ec87aa4670f4a3e3d996b19baec645f726",
+    "bytes": 7193
+  }
+}

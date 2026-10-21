@@ -1,0 +1,12 @@
+{
+  "mode": "baseline",
+  "passed": 0,
+  "total": 0,
+  "extras": 1,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/candidate-717-sole-head-baseline-9ac-results.json",
+    "sha256": "4400c5bde8fee33967f4a42cdf7df348e38565c5132dcf175e0a9c3f62bc1c1e",
+    "bytes": 14117
+  },
+  "failures": []
+}

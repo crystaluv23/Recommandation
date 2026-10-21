@@ -1,0 +1,31 @@
+{
+  "mode": "candidate",
+  "passed": 12,
+  "total": 14,
+  "extras": 1,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-candidate-results.json",
+    "sha256": "f932590d33ceea74ea820432d412ffc92c0afcaed37aa0e53f1fbeead83b4839",
+    "bytes": 130464
+  },
+  "failures": [
+    {
+      "case_id": "p05_same_facet_distinct_explicit_objects",
+      "helper": "binding offtake commitment",
+      "helper_ok": false,
+      "native_ok": false,
+      "native_error": null,
+      "first_direct": false,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "p06_same_facet_disjoint_literal_time_windows",
+      "helper": "binding offtake commitment carbon capture module",
+      "helper_ok": true,
+      "native_ok": false,
+      "native_error": null,
+      "first_direct": false,
+      "siblings_exact": true
+    }
+  ]
+}

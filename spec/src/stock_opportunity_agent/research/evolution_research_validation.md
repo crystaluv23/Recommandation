@@ -15,6 +15,26 @@ guard. Genuine retained-facet claims still receive the same indexed typed
 correction and bounded context-only fallback; ownership and canonical schemas
 are unchanged. Offline replay verifies this validator, not fresh model behavior.
 
+A shared ordered object prefix may govern a literal noun-facet list rather than
+belong only to its first facet. A narrow contrast may also separate a coordinated
+list arm when both sides retain multiple literal topic anchors. This does not
+recognize brands or invent semantic facets: an exemption requires independently
+witnessed answered and retained arms, a retained first-arm suffix, and a reason
+that claims the answered arm while not repeating retained-specific anchors.
+Removing only one distinguishing modifier cannot establish an answered arm.
+If those literal witnesses are missing or ambiguous, use the conservative guard.
+Only the proven whole ordered prefix and genuine global scope are shared;
+individual object words, near-words or unrelated clauses gain no exemption.
+The target/residual text, cutoff, cosmetic-progress check and typed write scope
+are not rewritten. A shortened real retained-facet claim still fails, including
+when it accompanies an otherwise valid answered arm. Its typed feedback names
+the retained literal anchor rather than suggesting removal of a shared object;
+the error must survive a correction that removes only that object. A weak
+one-anchor residual cannot justify the positive exemption, but its literal
+retained anchor can still identify a negative conflict without a second strong
+retained arm. Conservative uncertainty
+is not proof of absent issuer evidence or a new domain-specific restriction.
+
 ## Requested object and local exclusion scope (2026-10-02)
 
 ### Exact timestamp bounds (2026-10-19)

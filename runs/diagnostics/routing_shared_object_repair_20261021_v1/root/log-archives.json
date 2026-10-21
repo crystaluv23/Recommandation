@@ -1,0 +1,18 @@
+[
+  {
+    "original_path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-original.log",
+    "archive": "runs/diagnostics/routing_shared_object_repair_20261021_v1/driver/focused-original.log.gz",
+    "raw_sha256": "816477d777bbd0c564293d7afd863846416c2748c272557d6aa173c448070f09",
+    "raw_bytes": 18760,
+    "archive_sha256": "df39737571089eff9a44bdec62f4b4f66aded776483ddd18731f62c727f8b102",
+    "reason": "Exact original stdout contains trailing spaces; compressed archive preserves bytes and avoids treating them as authored text formatting."
+  },
+  {
+    "original_path": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/pre-push-lint.log",
+    "archive": "runs/diagnostics/routing_shared_object_repair_20261021_v1/root/pre-push-lint-first.log.gz",
+    "raw_sha256": "a6979c44ed02e157841c1026fc58c681eab8fb98b9683ddc75e3efda2070d59e",
+    "raw_bytes": 1926,
+    "archive_sha256": "5bfd2701b23b076cdda54e50c6cc0d8290edf080192af6b9d8c8d26090b07504",
+    "reason": "Exact original stdout contains trailing spaces; compressed archive preserves bytes and avoids treating them as authored text formatting."
+  }
+]

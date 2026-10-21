@@ -52,7 +52,10 @@ GPRE六strict-pass结果现经真实Reflect batch/egress到唯一journal，6值/
 [GPRE真实路由](../reports/gpre-native-routing-20261021.md)：18eligible/17原生卡、完整旧state/5needs进入fresh请求；严格首组合0/1。
 shared产品名UHP被误当residual-only，54598纠错请求超过18995余量未发送，原生fallback将合法order partial降context。
 融资partial意图保真进入core首批，entry1/prepare与计算0，未回答问题。1作者/0模型纠错；2journal准备总165630不等实际usage111032。
-已补真实Predictor61973预留→选择68139、排父唯一临时锁；1949绑定/原32保真。下一修共享对象与未答facet误判，不扩完整运行。
+已补真实Predictor61973预留→选择68139、排父唯一临时锁；原执行1949绑定/原32保真。局部误拒修复见下，不扩完整运行。
+[共享对象修复](../reports/routing-shared-object-repair-20261021.md)：literal列表正向证明与真实retained短head负向定位分离，
+既保合法partial，又阻“按纠错删产品名仍认领premiums”；唯一短head残余漏门另补，旧候选失败保留。
+242关联通过；独立原14控核心4正/8负通过，另2个不同对象/不重叠披露窗正控仍误拒，不报14/14或fresh通过。
 FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/unknown不等于无事件。
 [案例边界](../reports/case-scope-and-blind-boundary-20261020.md)：fresh40=16Anchor+8Random+16Discovery，Fast24；
 旧48无清单支持，不推剩余8为LockedTest。失败分母、标签、身份屏蔽与LockedTest保持。
@@ -87,7 +90,7 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   value/val、期间/单位/冲突及派生关系连接已修，原0671现在19facts逐literal核真；102关联/独立21×2及日期7控过。
   H1改共享row级合法pair存在性，205关联及独立控制过；实际dev8/qualified1780的24目录项/计数未变，观察增益0。
   legacy Fact leaf丢taxonomy的真实错配仍open；可选taxonomy字段/原文索引方案待答，不默改schema或启动Mining能力stage。
-- 下一按实际原答/反馈修routing共享对象误判，保原0/1与精确finance首批；先离线原失败/变体/真overclaim反例，不重入completed stage或重置预算。
+- 下一诊断routing同facet不同明示对象/不重叠披露窗两误拒；保原0/1及原答，局部修复不等新模型遵循，不重入completed stage或重置预算。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
   有界LLM阅读接口、gross_margin/revenue_acceleration期间定义也待设计决策；不由现有结果倒推答案。
 - 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。

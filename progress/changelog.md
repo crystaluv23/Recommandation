@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：spec-first修routing共享对象/复合facet误拒，并沿真实typed纠错补阻“删产品名仍认领premiums”；首候选只验多残余arm，root唯一短head反例仍误接，保红后分离强正向豁免与负向literal定位。最终242关联/14聚焦通过；原三行portfolio以精确18defs离线原生解析1call全canonical保留，非fresh通过。独立预冻14控核心4正/8负通过，两个不同对象/不重叠披露窗合法partial仍误拒，保12/14边界；旧9ac误拒及typed误放、717候选漏口不改。原54/旧stage19/Registry198保真，0新模型/GET/外部LLMAPI/生产Signal/标签/旧阶段重入；原native0/1和全MVP保持open。下一分别诊断两literal scope，不堆对象词表或启动完整后继。
+
 - 2026-10-21：GPRE accepted H_init经真实core重建/核同bootstrap、5needs及18eligible/17原生卡进入独立routing；先排误绑父exact调度锁、补真实Predictor纯预留61973，首select预算68139/请求49144，三零答temp与5安全控保留。唯一fresh首组合严格0/1：guard将共同产品名Ultra-High Protein误作residual-only，准备54598纠错超18995余量未发送，fallback把合法order partial降context；独立源审确认误拒，非作者错误/能力通过。finance partial原样经core截断至首批，entry1/0prepare/0计算；原5needs完整。1actor/0模型纠错，2journal的165630准备量与111032真实nativeusage分开，metadata无完整事件流的局限保留。1949绑定/原32不变、0GET/外部LLMAPI/旧stage恢复；下一先修共享对象与facet家族，不假定六财务结果被选择或被消费。
 
 - 2026-10-21：同GPRE qualified1780来源以default手工研究Plan运行真实core bootstrap/H_init；源cover身份/原文与171bars核心控制保留、4请求17投影及news/partial缺口进入请求。先封source-only oracle与1930绑定，完整临时连接后正式一次prepare；目录名身份泄露风险由中性路径逐字节handoff隔离。fresh独立subagent首答1/1、0纠错，raw/cache/parsed/persist全部同，4引用/5真实缺口need独立终审通过，61888逻辑预留。保import与RuntimeLimits scaffold前置错误、两审计harness错误及修正，未改答/产品/旧分母；3安全控制/root亲跑及来源/原14保真。只建立本案accepted初始状态；0routing/Signal/Reflect/Predictor/GET/外部LLMAPI，未恢复/关闭MVP；下一真实need路由与精确版本归属。

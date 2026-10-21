@@ -1,0 +1,17 @@
+{
+  "status": "BOUNDED_CORE_REPAIR_VERIFIED_WITH_TWO_EXISTING_SCOPE_FALSE_REJECTIONS_OPEN",
+  "review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/final-review.json",
+    "sha256": "f905a86cadbc808f56d5b2c61fa915cd4d1b8c08d1b22e13a9bb24d528b93ff3",
+    "bytes": 16611
+  },
+  "source": "92cabdd835ebab45d5167dc25e5d9f5e8e3909a2b25219c18d52ca4de658e946",
+  "independent_case_count": 14,
+  "passed": 12,
+  "open": [
+    "p05",
+    "p06"
+  ],
+  "old_stage_preserved": 19,
+  "old_source_preserved": 1844
+}

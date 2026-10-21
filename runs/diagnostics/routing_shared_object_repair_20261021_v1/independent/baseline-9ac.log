@@ -1,0 +1,67 @@
+{
+  "mode": "baseline",
+  "passed": 8,
+  "total": 14,
+  "extras": 0,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/routing_shared_object_repair_20261021_v1/independent/baseline-9ac-results.json",
+    "sha256": "d556d69074038a63d2b6c88c09874c4c1d3edcb69076ccbb0390084cb40d4351",
+    "bytes": 158410
+  },
+  "failures": [
+    {
+      "case_id": "p01_actual_UHP_nested_and",
+      "helper": "ultra high protein",
+      "helper_ok": false,
+      "native_ok": false,
+      "native_error": null,
+      "first_direct": false,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "p02_lowercase_object_nested_and",
+      "helper": "carbon capture module",
+      "helper_ok": false,
+      "native_ok": false,
+      "native_error": null,
+      "first_direct": false,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "p03_object_after_facet",
+      "helper": "carbon capture module",
+      "helper_ok": false,
+      "native_ok": false,
+      "native_error": null,
+      "first_direct": false,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "p04_semicolon_independent_arms",
+      "helper": "aurora sensor system",
+      "helper_ok": false,
+      "native_ok": false,
+      "native_error": null,
+      "first_direct": false,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "p05_same_facet_distinct_explicit_objects",
+      "helper": "binding offtake commitment",
+      "helper_ok": false,
+      "native_ok": false,
+      "native_error": null,
+      "first_direct": false,
+      "siblings_exact": true
+    },
+    {
+      "case_id": "p06_same_facet_disjoint_literal_time_windows",
+      "helper": "binding offtake commitment carbon capture module",
+      "helper_ok": true,
+      "native_ok": false,
+      "native_error": null,
+      "first_direct": false,
+      "siblings_exact": true
+    }
+  ]
+}
