@@ -1541,14 +1541,29 @@
         "runs/diagnostics/transcript_official_archive_20261022_v1/official-pdf-captures.json"
       ],
       "result": "Source-only progress: retain issuer-linked GPRE19page/ENB23page fullPDFs, extraction/metadata, selected original identity/fact/Q&A/close anchors; all26 originals hash/first-last reviewed but only2 new firstparty bodycomparisons, no wholeturn equivalence. GPRE officialschedule09ET=13UTC versusPDF14GMT unresolved; ENB correctedPDF modifiedMay14 afterMay9 event, neither proof of futurecontent nor public availability. PublicQ4 shell/bundle lacks clock, minimalgetEvent queries firstCSRFheader error then administrativefield onattendeeAPI unsupported; rootendpoint mistake, not sourceabsence. Stop after4 metadataGET, extra2fixedPDFarchives.4search/11queries/4newwebnav/7cachedops,6directpublicGET separate from unchanged147managed. InitialDLocal query outsideinventory notadopted.0model/LLMAPI/labels/oracleappend/normalization/admittedmanifest/oldstage/fullsuccessor. Sourceproof0of26, wholeMVPopen. Await existing boundedreading andnamespacechoices; do not enlarge archive strategy merely to seek pass."
+    },
+    {
+      "id": "engineering-mvp-historical-capture-limit-and-design-block-20261022",
+      "strategy": "exact_official_PDF_historical_capture_before_case_cutoff",
+      "failure_families": [
+        "historical_public_access_not_proved_by_current_body",
+        "required_reading_interface_and_Fact_provenance_design_choices_unanswered"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/transcript-official-archive-review-20261022.md",
+        "runs/diagnostics/transcript_historical_capture_20261022_v1/metadata-results.json",
+        "runs/diagnostics/transcript_historical_capture_20261022_v1/terminal-review.json"
+      ],
+      "result": "Distinct pre-cutoff archivedbody hypothesis on two exact retained officialPDF URLs with actualcohort GPREMay30/ENBSept30 cutoffs. Bothwebtool URLs inaccessible; one direct publicfallback each returned429/noJSON/noarchivedbody. Stop networkstrategy without retry/URLvariation/authentication/mirror; technicalaccesslimit is not archiveabsence.2webnavigation attempts/2directGET,0managedprovider/model/labels/sourceadmission/oldstage/fullsuccessor.26originals and10protectedbindings exact. Sourceproof0of26/MVPopen. Readinginterface/resources andFactnamespace choices pending across3goalturns; next critical implementation requires userdecision. No additional lexicalpatches/greenchecks/bookkeepingwork can replace those choices; request blocked status under goal rule."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-official-transcript-archive-diagnosis-20261022",
+    "after_iteration": "engineering-mvp-historical-capture-limit-and-design-block-20261022",
     "evidence": [
       "reports/transcript-official-archive-review-20261022.md",
-      "runs/diagnostics/transcript_official_archive_20261022_v1/source-review.json",
-      "runs/diagnostics/transcript_official_archive_20261022_v1/official-pdf-captures.json"
+      "runs/diagnostics/transcript_historical_capture_20261022_v1/metadata-results.json",
+      "runs/diagnostics/transcript_historical_capture_20261022_v1/terminal-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1643,13 +1658,14 @@
       "A valid H_init-only Predictor stub stops before reservations, but reusing it for routing silently omits the real dynamic Predictor reserve. A prepared correction journal can exceed the remaining native chain budget and never get an inbox; observer sums must not replace consumed usage. The existing literal-clause contrast still treats a shared multiword product as a retained facet in a nested compound target; conservative fallback does not prove that this rejection was correct or that the source-valid partial survived.",
       "A conservative initial rejection can issue the wrong typed remedy: sharedproduct terms were reported instead of actualretained premium, so native reason-only replacement removedobject and hid a trueclaim under generic threeword threshold. Firstcandidate checks with several long residualarms still missed a sole shortened residualhead because negative detection incorrectly required another strong retainedarm. Preserve both failedcandidates; separate strong positiveproof from literal negativeconflict, and exercise actual issuedpatch/reparse rather than bad,bad fallback alone. Independent fixed controls also demonstrate two adjacent scopefalsepositives; twelve passing controls cannot close fourteen or freshbehavior.",
       "Inherited final independent scope controls bound1de2 while current helper was subsequentlya5ba after ordered-subject repair. Root checked exact hashes and reran fixed native/consumer controls before carrying the conclusion; this is self-review, not fresh independent endorsement. Actualduplicate occurrences and unavailable results also require paired consumer controls; the first addedfixture mistakenly retainedSUCCESS and failed before the gate.",
-      "Complete official PDFs are stronger body evidence than prospective announcements but current corrected versions and creation/modification metadata still do not prove historical public access. GPRE firstparty event/PDF clocks disagree by1hour. Root also initially searched an out-of-inventory issuer and sent an administrative query to attendee schema; neither result authorizes absence/admission or unbounded endpoint probing."
+      "Complete official PDFs are stronger body evidence than prospective announcements but current corrected versions and creation/modification metadata still do not prove historical public access. GPRE firstparty event/PDF clocks disagree by1hour. Root also initially searched an out-of-inventory issuer and sent an administrative query to attendee schema; neither result authorizes absence/admission or unbounded endpoint probing.",
+      "Historical capture checks are distinct from inspecting current official files, but HTTP429 and tool access failures expose no historical snapshot. They cannot prove no capture or justify repeated alternate calls. Pending interface/schema choices remain the same blocker across automatic continuations, which are not decisions; stop instead of filling turns with more scans."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "human_decision",
       "strategy": "bounded_reading_interface_and_mining_namespace_provenance",
-      "action": "Official archive metadata attempt is stopped with retained complete bodies/clock conflicts and0of26 time proofs. Await the two already concrete user choices for bounded LLM reading interface/resources and optional EvidenceFact.taxonomy versus source lookup before installation. Do not extend failed metadata endpoints, authenticate/register, infer historical publication from file dates, reopen completed stages or start a full successor.",
+      "action": "Stop bounded source/archive checks after two429 responses; all original evidence and known failures retained. Both required F5 reading interface/request-ceiling and EvidenceFact namespace-representation choices remain pending across three consecutive goal turns. Mark goal blocked pending user design decisions; do not silently implement either alternative, reset budgets, retry service limits or start a full successor.",
       "stop": "Do not silently change public input interfaces, resource ceilings, canonical Fact provenance or pending gross_margin/revenue_acceleration definitions; do not use localPASS as fresh compliance, fullsuccessor authorization or MVPclosure."
     }
   },

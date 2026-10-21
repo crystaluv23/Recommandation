@@ -1,0 +1,27 @@
+{
+  "scope": "Terminal transport/source audit; root self-review, no archive absence or public-time proof",
+  "responses_checked": 2,
+  "direct_GETs": 2,
+  "web_navigation_attempts": 2,
+  "terminal_HTTP_statuses": [
+    429,
+    429
+  ],
+  "new_archived_bodies": 0,
+  "new_public_time_proofs": 0,
+  "managed_provider_GETs_added": 0,
+  "originals_verified": 26,
+  "protected_bindings_verified": 10,
+  "case_projection_binding": {
+    "path": "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/case-identities.json",
+    "sha256": "3ecbd01349c00bbbba554b06bee2824ef08db162affbac0122c62558e90d02e9"
+  },
+  "metadata_results_sha256": "b494bf096651ce48311b0c64ae82ea4b5037189edbf031f7ddc407aad51abcdd",
+  "source_strategy": "stopped at429; no retry/alternate URL/registration/mirror",
+  "pending_design_choices": [
+    "F5 bounded source reading interface and role-request ceiling",
+    "EvidenceFact optional taxonomy versus original-source namespace lookup"
+  ],
+  "blocked_audit": "Same required design choices pending from original goal turn through two automatic continuations. Independent authorized source checks reached bounded stops. Do not infer approval from automatic continuation.",
+  "passed_integrity": true
+}

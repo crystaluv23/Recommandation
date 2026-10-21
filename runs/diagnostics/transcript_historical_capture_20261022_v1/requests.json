@@ -1,0 +1,17 @@
+{
+  "scope": "Two exact official source URLs; public availability metadata only, at most one direct fallback per tool-inaccessible URL; no alternate URL enumeration or source admission",
+  "targets": [
+    {
+      "target": "GPRE2025Q1",
+      "cutoff": "2025-05-30T00:00:00+00:00",
+      "url": "https://s201.q4cdn.com/120229500/files/doc_events/2025/May/08/GPRE-First-Quarter-2025-Earnings-Transcript.pdf",
+      "timestamp": "20250529235959"
+    },
+    {
+      "target": "ENB2025Q1",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "url": "https://www.enbridge.com/~/media/Enb/Documents/Investor-Relations/2025/2025_Q1_Transcript_FINAL.pdf",
+      "timestamp": "20250929235959"
+    }
+  ]
+}

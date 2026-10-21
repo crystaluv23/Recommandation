@@ -1,0 +1,34 @@
+[
+  {
+    "target": {
+      "target": "GPRE2025Q1",
+      "cutoff": "2025-05-30T00:00:00+00:00",
+      "url": "https://s201.q4cdn.com/120229500/files/doc_events/2025/May/08/GPRE-First-Quarter-2025-Earnings-Transcript.pdf",
+      "timestamp": "20250529235959"
+    },
+    "request_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fs201.q4cdn.com%2F120229500%2Ffiles%2Fdoc_events%2F2025%2FMay%2F08%2FGPRE-First-Quarter-2025-Earnings-Transcript.pdf&timestamp=20250529235959",
+    "status": 429,
+    "response_headers": {},
+    "error": "HTTPError",
+    "body_path": "runs/diagnostics/transcript_historical_capture_20261022_v1/GPRE2025Q1-response.txt",
+    "body_sha256": "ae138caf8767f7be2fe6f47f1663b0e2e28d903264707aa9b6f73bb7b223902c",
+    "elapsed_seconds": 0.9574223328381777,
+    "json_parseable": false
+  },
+  {
+    "target": {
+      "target": "ENB2025Q1",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "url": "https://www.enbridge.com/~/media/Enb/Documents/Investor-Relations/2025/2025_Q1_Transcript_FINAL.pdf",
+      "timestamp": "20250929235959"
+    },
+    "request_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.enbridge.com%2F~%2Fmedia%2FEnb%2FDocuments%2FInvestor-Relations%2F2025%2F2025_Q1_Transcript_FINAL.pdf&timestamp=20250929235959",
+    "status": 429,
+    "response_headers": {},
+    "error": "HTTPError",
+    "body_path": "runs/diagnostics/transcript_historical_capture_20261022_v1/ENB2025Q1-response.txt",
+    "body_sha256": "ae138caf8767f7be2fe6f47f1663b0e2e28d903264707aa9b6f73bb7b223902c",
+    "elapsed_seconds": 1.2818316668272018,
+    "json_parseable": false
+  }
+]

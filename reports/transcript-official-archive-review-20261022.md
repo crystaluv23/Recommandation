@@ -74,3 +74,31 @@ Do not extend this archive strategy merely to add searches. Historical complete
 public access or actual live start/end evidence is still needed under the
 approved policy. F5 bounded-reading and Mining namespace-interface decisions
 remain pending; this review neither selects them nor authorizes a new interface.
+
+## Historical-capture follow-up and blocker
+
+A separate bounded check used the two exact PDF URLs and actual cohort cutoffs:
+GPRE May 30, ENB September 30. Its distinguishing evidence would have been an
+archived pre-cutoff public object whose complete bytes could be inspected;
+current PDF metadata would not substitute for that snapshot. The web tool could
+not access either public availability URL. One direct read-only fallback per URL
+then returned **HTTP 429**, with no parseable capture metadata or archived body.
+No retry, alternate URL, authentication or mirror enumeration followed. This
+establishes an access limit only, not that pre-cutoff captures do not exist.
+
+[Exact requests and terminal responses](../runs/diagnostics/transcript_historical_capture_20261022_v1/metadata-results.json)
+are retained. These add two web navigation attempts and two direct public GETs,
+separate from the preceding batch and unchanged managed-provider counts. All
+originals, existing source reviews, business pointers and unrelated user deltas
+remain unchanged. There is no new public-time proof, source admission, model
+call or research-stage execution; the fixed source proof denominator stays0/26.
+
+The two substantive choices raised before these source checks remain unanswered
+across three consecutive goal turns: the proposed F5 reading interface/request
+ceiling and Mining namespace provenance representation. General automatic goal
+continuation supplies neither choice. The independent current-source and
+historical-capture paths above have reached their bounded stopping conditions.
+The next critical-path implementation would change a user-owned interface,
+resource boundary or canonical shape. Further speculative guards, repeated
+tests or source scans would not close those known blockers. Record the goal as
+blocked pending those choices rather than manufacturing more status-only work.

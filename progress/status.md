@@ -3,7 +3,7 @@
 更新：2026-10-22。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛。
 独立预测收益是后续里程碑、未知；生产 LLM 节点由 exact inbox/outbox 独立 subagent 处理，外部 LLM API 调用0。
 公开资料只读取证已授权；累计147 managed-provider GET（115行情、32SEC），本轮新增0。
-另公开web取证累计6search/15queries、13web导航+1browser导航尝试；另6次直接公开GET，底层web HTTP数未知，不混入provider计数。host模型tokens/费用及资料成本未测量。
+另公开web取证累计6search/15queries、15web导航+1browser导航尝试；另8次直接公开GET，底层web HTTP数未知，不混入provider计数。host模型tokens/费用及资料成本未测量。
 
 ## 最新实证
 
@@ -35,7 +35,7 @@
 确定性输入消费default6/6、current9/9选typedQ1；allfinancial来源请求8/9及9/9，defaultLLM cash_ratio选文缺口仍留。
 26 transcript完整公开内容时间证明仍0，按用户已选“核实完整公开内容时间”口径，不改旧记录/实验。
 [官方档案新证据](../reports/transcript-official-archive-review-20261022.md)：留GPRE19页/ENB23页完整官方PDF及selected anchors；26原件首末段核读/hash同，非完整语义等价。
-GPRE日程09ET=13UTC/PDF14GMT冲突，ENB corrected PDF修改日May14晚于May9；均不能证明历史完整公开时间，仍0/26，停止本次回放metadata策略。
+GPRE日程09ET=13UTC/PDF14GMT冲突，ENB corrected PDF修改日May14晚于May9；两精确URL历史快照另查均HTTP429/未取到正文，仍0/26，停止该有界来源策略。
 [采集时间边界修复](../reports/transcript-acquisition-boundary-20261021.md)：Alpha reportedDate+1及legacy Finnhub列表日/季度末两错误clock已按spec移除，
 无reviewed proof输入时分别typed historical_data_unavailable/明确warning，provider调用前拒绝。
 保raw client/cache、local-first/其他source及原件；不背书旧local时间，不把producer guard当完整transcript能力通过。
@@ -94,7 +94,7 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   legacy Fact leaf丢taxonomy的真实错配仍open；可选taxonomy字段/原文索引方案待答，不默改schema或启动Mining能力stage。
 - routing两literal范围误拒已局部修复，停止继续词面补丁；保原0/1及原答，局部修复不等新模型遵循，不重入completed stage或重置预算。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
-  已请用户选择有界LLM阅读（每Signal最多4角色请求、仍守case预算）与可选taxonomy/原文查询两方案；答复前不改接口/schema。
+  有界LLM阅读（每Signal最多4角色请求、仍守case预算）与可选taxonomy/原文查询两设计选择连续三goal轮待答；下一关键实现需该决策，不改接口/schema凑进度。
   gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
 - 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。
