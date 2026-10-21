@@ -1,0 +1,30 @@
+{
+  "Signal_calculations": 0,
+  "actual_first_batch_intents": [
+    {
+      "answer_scope": "partial",
+      "applicability_hypothesis": "Financing and credit-facility disclosures available by 2025-05-30 may identify obligations affecting turnaround funding; their presence and economic adequacy require execution evidence.",
+      "context_tags": [
+        "capital_intensive",
+        "cyclical"
+      ],
+      "expected_role": "primary",
+      "reason_code": "answer_need",
+      "residual_need": "As disclosed by 2025-05-30, establish unrestricted cash, operating cash burn, committed capital spending and covenant headroom, then assess whether these resources and constraints permit the turnaround milestones.",
+      "selection_reason": "Assess disclosed debt maturities and potential equity issuance terms for their effect on dilution and funding continuity.",
+      "signal_ref": "financing_listing_action:v5",
+      "target_need_indices": [
+        3
+      ]
+    }
+  ],
+  "actual_first_batch_refs": [
+    "financing_listing_action:v5"
+  ],
+  "as_of": "2025-05-30T00:00:00+00:00",
+  "company_id": "cik_0001309402",
+  "executor_entry_attempts": 1,
+  "kind": "native_core_first_executor_entry_before_preparation",
+  "prepare_inputs": 0,
+  "prior_fingerprints": {}
+}

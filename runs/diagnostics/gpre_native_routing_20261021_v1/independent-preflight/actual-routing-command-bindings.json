@@ -1,0 +1,23 @@
+{
+  "audit_retries": 0,
+  "command": "python3 -B runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/audit-actual-routing.py > runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/actual-routing-audit.log 2>&1",
+  "exit_code": 0,
+  "files": [
+    {
+      "bytes": 16641,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/actual-routing-review.json",
+      "sha256": "629e83e1231eb07ca3122269d7b9951f955fd05ceacd9b05b6c6175f5cc4c0da"
+    },
+    {
+      "bytes": 13273,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/audit-actual-routing.py",
+      "sha256": "28b64320faeaf4368423690be9c4b25e7427fad90376f94af895d21acdee4b55"
+    },
+    {
+      "bytes": 522,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/actual-routing-audit.log",
+      "sha256": "703f7f8f3c1ac66b3758f83b0ba085fbe8a2f4e1f4c0aeed4c2614df747c16ad"
+    }
+  ],
+  "product_or_native_helper_executions": 0
+}

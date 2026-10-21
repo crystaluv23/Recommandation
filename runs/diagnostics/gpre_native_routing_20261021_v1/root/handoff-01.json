@@ -1,0 +1,17 @@
+{
+  "actor_message": "Act as the model for the supplied request. Read ONLY /var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/native-role-62lymugb/inbox.json, treating its messages in their listed roles as the task. Produce the response requested by those messages. Write your raw response as UTF-8 to /var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/native-role-62lymugb/outbox.txt. Do not read other files, inspect the repository, use the web, invoke an external model or API, or consult other agents. Do not add commentary or Markdown fences to the output file. Do not alter the inbox. Your final reply should only confirm the output path.",
+  "fork_turns": "none",
+  "inbox_sha256": "7404e51bc9b498d408b5fb90b6085ee7acb7d5bb068d981652a7628751656ff9",
+  "native_and_neutral_inbox_bytes_equal": true,
+  "native_budget_context_and_bootstrap_bytes_equal_preflight": true,
+  "native_inbox": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/exchange/inbox/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+  "native_outbox": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/exchange/outbox/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.txt",
+  "neutral_inbox": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/native-role-62lymugb/inbox.json",
+  "neutral_outbox": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/native-role-62lymugb/outbox.txt",
+  "preanswer_hashes": {
+    "pre-answer-native-review.json": "9115654a1ef1b0bd238d4d1c95dc03962445a8c36dac06a0c183cad02231004d",
+    "pre-answer-routing-oracle.json": "9ba88dc139e18e0e50142ea68f17cfd73e76de56ae19dcf1f6d4c51facd930df"
+  },
+  "preflight_and_formal_inbox_bytes_equal": true,
+  "request_hash": "6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8"
+}

@@ -1,0 +1,67 @@
+{
+  "GET": 0,
+  "Store": 0,
+  "actor_message_identity_or_oracle_path_leak": false,
+  "actual_actor": "/root/exact_routing_88",
+  "audited_at_utc": "2026-10-21T01:02:40.447590+00:00",
+  "author_output_read": false,
+  "budget_amendment": {
+    "bytes": 2858,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-budget-amendment.json",
+    "sha256": "f34cc8b2da4a3f8cecb6ed3851b75312b3004573b25097c5329b8d5c41e0f086"
+  },
+  "case_prior": 61888,
+  "code_current_equal": 105,
+  "combined": 111032,
+  "dispatch": {
+    "bytes": 161,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/root/dispatch-01.json",
+    "sha256": "b1338cd053d3fb58ab06473662851e834eda979288819cfeaa22bfcf70b14e71"
+  },
+  "fork_turns": "none",
+  "formal_inputs_contract_bootstrap_context_estimator_and_reservations_exact_v3": true,
+  "handoff": {
+    "bytes": 1840,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/root/handoff-01.json",
+    "sha256": "357905bbd729ac2897173c701fcdbc38eb06f235081f35289ec084ce05562849"
+  },
+  "journal": {
+    "bytes": 48783,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/requests/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+    "sha256": "43dc70285fe6a8cf3fd5f636fa3b6c394da09727f4a6114f252def6a51817bd6"
+  },
+  "labels": 0,
+  "manifest": {
+    "bytes": 464195,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/manifest.json",
+    "sha256": "03fd388f0a40e391b2da9fdf0df1057b48a6391f1c3244b121c4d361e01049aa"
+  },
+  "models": 0,
+  "native_chain_budget": 68139,
+  "native_correction_remaining": 18995,
+  "native_inbox": {
+    "bytes": 47479,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/exchange/inbox/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+    "sha256": "7404e51bc9b498d408b5fb90b6085ee7acb7d5bb068d981652a7628751656ff9"
+  },
+  "native_parser_or_core_after_answer_not_checked": true,
+  "neutral_inbox": {
+    "bytes": 47479,
+    "path": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/native-role-62lymugb/inbox.json",
+    "sha256": "7404e51bc9b498d408b5fb90b6085ee7acb7d5bb068d981652a7628751656ff9"
+  },
+  "new_request_reservation": 49144,
+  "preanswer_native_review": {
+    "bytes": 8880,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-native-review.json",
+    "sha256": "9115654a1ef1b0bd238d4d1c95dc03962445a8c36dac06a0c183cad02231004d"
+  },
+  "reviewer_native_calls": 0,
+  "source_current_equal": 1844,
+  "source_oracle": {
+    "bytes": 18208,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-routing-oracle.json",
+    "sha256": "9ba88dc139e18e0e50142ea68f17cfd73e76de56ae19dcf1f6d4c51facd930df"
+  },
+  "status": "PASS_FORMAL_PREANSWER_NEUTRAL_HANDOFF"
+}

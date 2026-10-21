@@ -1,0 +1,20 @@
+{
+  "status": "SOURCE_ORACLE_FROZEN_ACTUAL_NATIVE_CONTEXT_REQUIRED",
+  "oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-routing-oracle.json",
+    "sha256": "9ba88dc139e18e0e50142ea68f17cfd73e76de56ae19dcf1f6d4c51facd930df",
+    "bytes": 18208
+  },
+  "capability_basis": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/exact-version-capability-basis.json",
+    "sha256": "bc2e923420af3c9c50821a95c1ea73ee5bc02d8d365418c43b82b4e69ba085e5",
+    "bytes": 57911
+  },
+  "need_count": 5,
+  "exactref_count": 18,
+  "script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/freeze-routing-oracle.py",
+    "sha256": "d71263cfab75062d63efaba1b82208cc0f9082b635512e972acc41e5f4656f40",
+    "bytes": 16195
+  }
+}

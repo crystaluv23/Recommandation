@@ -1,0 +1,10 @@
+{
+  "combined_case_reservation": 111032,
+  "prior_case_usage": 61888,
+  "requests": [
+    {
+      "request_hash": "6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8",
+      "reservation": 49144
+    }
+  ]
+}

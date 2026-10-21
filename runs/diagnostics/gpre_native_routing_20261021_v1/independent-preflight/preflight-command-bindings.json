@@ -1,0 +1,47 @@
+{
+  "command": "python3 -B runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/audit-native-routing-preflight.py > runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/native-preflight-audit.log 2>&1",
+  "exit_code": 0,
+  "files": [
+    {
+      "bytes": 18208,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-routing-oracle.json",
+      "sha256": "9ba88dc139e18e0e50142ea68f17cfd73e76de56ae19dcf1f6d4c51facd930df"
+    },
+    {
+      "bytes": 57911,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/exact-version-capability-basis.json",
+      "sha256": "bc2e923420af3c9c50821a95c1ea73ee5bc02d8d365418c43b82b4e69ba085e5"
+    },
+    {
+      "bytes": 16195,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/freeze-routing-oracle.py",
+      "sha256": "d71263cfab75062d63efaba1b82208cc0f9082b635512e972acc41e5f4656f40"
+    },
+    {
+      "bytes": 929,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/freeze-routing-oracle.log",
+      "sha256": "e736d78203c167a7f27a8469dd27cdd05f9b3212a131438a3ef46bb4ec5a7416"
+    },
+    {
+      "bytes": 2858,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-budget-amendment.json",
+      "sha256": "f34cc8b2da4a3f8cecb6ed3851b75312b3004573b25097c5329b8d5c41e0f086"
+    },
+    {
+      "bytes": 8880,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-native-review.json",
+      "sha256": "9115654a1ef1b0bd238d4d1c95dc03962445a8c36dac06a0c183cad02231004d"
+    },
+    {
+      "bytes": 13419,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/audit-native-routing-preflight.py",
+      "sha256": "b24608fb59d413ef4ab00fc58b4bb1e4f4b939ab73dae4aa8a43898446b7d60e"
+    },
+    {
+      "bytes": 713,
+      "path": "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/native-preflight-audit.log",
+      "sha256": "750b7a961bd50ba188f88f062344a9dd98200c7799c3f5695f37b95ceb6ce014"
+    }
+  ],
+  "product_helper_calls": 0
+}

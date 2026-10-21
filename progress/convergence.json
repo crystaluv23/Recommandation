@@ -199,9 +199,11 @@
         "reports/transcript-acquisition-boundary-20261021.md",
         "reports/fibk-event-and-financial-wire-frontier-20261021.md",
         "reports/gpre-native-initial-20261021.md",
-        "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json"
+        "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json",
+        "reports/gpre-native-routing-20261021.md",
+        "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/actual-routing-review.json"
       ],
-      "remaining": "Engineering content chain remains local/open. Actual GPRE H_init now1of1 freshfirstanswer/0corrections,4quotes/5needs sourcefaithful and raw-to-persist exact. No genuine routingownership or sixfinancial-result model consumption yet. Currentv12 financial9 remains6strictpass/1prior literal-version mismatch/2period-policyunknown; F5 boundedreading interface pending and lexicalranking falsified. Original40 source gaps/partial BasicInfo, transcript publictimeproof0of26 and normal transcript positive remain. FreshF7 three scoped controls and S5 tests-author do not close whole contentchain or newmeasurement lifecycle. FullFast feedback/Slow consumption, newdirection+magnitude Mining-to-implementation-to-admission-to-exactsuccessorreuse, interruption/recovery and wholeloop unverified. Independentbenefit unknown."
+      "remaining": "Content chain local/open. GPRE actual H_init1of1 is sourcefaithful, but actual routing strictfirstportfolio0of1 exposes sharednamedobject falsepositive: orderpartial downgraded after budgetblocked correction; valid financepartial reaches corefirstentry with0calculation, all5needs unresolved. Native consumed111032 must not be replaced by observer165630 prepared sum. Actualnumeric6-result Reflect wire remains serialization only; no fresh owned result consumption. Financial9 remains6strict/1priorliteral mismatch/2period-policyunknown; F5 boundedreading design and Fact namespace choice pending. Source40 gaps/partial BasicInfo andtranscript publictimeproof0of26/normalpositive unresolved. ScopedF7controls/S5author not wholecontentchain. Fullfeedback consumption, direction+magnitude discovery/faithfulimplementation/admission/exactsuccessorreuse, interruption/recovery anddual-loop unverified; independentbenefit unknown."
     },
     {
       "id": "feedback_consumption",
@@ -1463,17 +1465,43 @@
         "runs/diagnostics/gpre_native_initial_20261021_v1/root/final-preservation.json"
       ],
       "result": "One actual GPRE native bootstrap/H_init at2025-05-30 from qualified1780 view and explicit default manual researchPlan. Reused real core/Controller/InitialBoundary; corecomputed anchor/171bar pricecontrol,4requests/17projections retained3partial+newsunknown. Sourceonlyoracle and1930 source/code bindings frozen before answer. Import error and firsttemp RuntimeLimits min3 error retained,0journals/answers; legalnative scaffold3 plus separate2author/131072request/256000case caps. Complete temporary zeroanswer chain then soleformal prepare/pending; actualwire equaltemp and neutralcopy, source-derived masks and neutral actor path avoid direct identity leak. Fresh fork_none exact_initial_87 firstanswer accepted1of1/0corrections,61888 logicalunits,4sourcequotes and5unansweredneeds independentlysource-reviewed; raw/cache/parsed/persist identical, no mechanical loss. Two independent audit harness mistakes preserved/corrected to existing hash and semantic cutoff contracts without changing product/source/oracle/answer/native execution. Original14 preservation and1930 currentbindings exact.0routing/Signal/Reflect/Predictor/labels/GET/externalLLMAPI. ManualPlan not independently validated strategy; not wholeF3/recovery/wholeMVP/benefit. Original9 financial verdict and transcript0of26 unchanged."
+    },
+    {
+      "id": "engineering-mvp-gpre-native-routing-20261021",
+      "strategy": "native_gpre_routing_from_accepted_hinit",
+      "failure_families": [
+        "shared_named_object_in_partial_reason_and_residual_false_rejected_as_unanswered_facet",
+        "orientation_predictor_stub_omits_later_native_dynamic_reservation",
+        "request_ready_journals_and_prepared_reservations_are_not_consumed_model_usage",
+        "operational_dispatch_lock_not_persisted_research_authority"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/gpre-native-routing-20261021.md",
+        "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-routing-oracle.json",
+        "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-budget-amendment.json",
+        "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-native-review.json",
+        "runs/diagnostics/gpre_native_routing_20261021_v1/stage/completion.json",
+        "runs/diagnostics/gpre_native_routing_20261021_v1/stage/accepted-selection.json",
+        "runs/diagnostics/gpre_native_routing_20261021_v1/stage/routing-boundary.json",
+        "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/actual-routing-review.json",
+        "runs/diagnostics/gpre_native_routing_20261021_v1/root/final-preservation.json"
+      ],
+      "result": "Actual GPRE accepted initial AgentStep consumed without initial-role rerun. Native bootstrap/5needs exact,18eligible/17actualcards; order_quality omitted by genuine requiredphrase gate. Initialtemp bound parent untracked dispatchlock; exact exclusion preserves allsubstantive state/raw/receipt/cache/journal and independent samebasename control. Earlier no-estimator budget130112 falsified by actual LLMBlindPredictor readonly61973 reservation; finalselect68139 with original256000case/prior61888/final64000 unchanged.3temporary pending probes0answers;5safety pass. Soleformal fresh actor88 raw3intents independentlysemantic-supported, but strictfirstportfolio0of1: guard labels commonproduct UltraHighProtein residual-only, generates54598 correction above18995 native remaining,0correctioninbox/response/actor. Nativefallback downgrades orderpartial tocontext; financepartial unchanged, liquidity nullomission only. Original5needs intact. Realcore caps/remaining1 admit financev5 need3partial at firstexecutorentry,0prepare/calculation/Reflect/Predictor/labels/sourcequeries/LLMAPI.2journals preparedobservertotal165630 is not consumed; nativeusage111032=prior61888+new49144,1newreceipt/0modelcorrections. Fullvalidationeventstream notretained.1949source/code plusoriginal32 andpreanswergold unchanged. No accepted financial result or ownedReflect/wholeF4/MVP/gain claim; originalfinancial9 andtranscript0of26 remain."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-gpre-native-initial-20261021",
+    "after_iteration": "engineering-mvp-gpre-native-routing-20261021",
     "evidence": [
-      "reports/gpre-native-initial-20261021.md",
-      "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
-      "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-native-review.json",
-      "runs/diagnostics/gpre_native_initial_20261021_v1/stage/completion.json",
-      "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json",
-      "runs/diagnostics/gpre_native_initial_20261021_v1/root/final-preservation.json"
+      "reports/gpre-native-routing-20261021.md",
+      "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-routing-oracle.json",
+      "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-budget-amendment.json",
+      "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-native-review.json",
+      "runs/diagnostics/gpre_native_routing_20261021_v1/stage/completion.json",
+      "runs/diagnostics/gpre_native_routing_20261021_v1/stage/accepted-selection.json",
+      "runs/diagnostics/gpre_native_routing_20261021_v1/stage/routing-boundary.json",
+      "runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/actual-routing-review.json",
+      "runs/diagnostics/gpre_native_routing_20261021_v1/root/final-preservation.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1564,19 +1592,20 @@
       "Static officialIR headings and an existing browser tab are not historical conference metadata; when extraction/state reads fail, keep unknown and stop the bounded strategy rather than infer absence or launch an unbounded alternate crawl.",
       "The saved financial single-result model view is not the native Reflect batch view. Before adding a fresh semantic stage, measure the actual numeric batch producer and its request boundary. Its carrier is explicitly not an accepted research state, so successful serialization cannot manufacture H_init or need ownership.",
       "Root and author initially checked data projection semantics but failed to validate the native carrier and parser configuration: default empty continue requires needs, and zero actual corrections is not a valid max_structured_corrections0 configuration. The first two captures yielded no wire. A full temporary native-chain preflight, not successive narrow constructor patches or a fake need, now proves both legal input shapes and budget-stop callback before actual source capture.",
-      "Native RuntimeLimits requires three scaffold slots even for a bounded initial-only stage; author count must remain separately frozen at two. Actor wrapper paths also carry identity: anonymized messages alone are insufficient if the actor sees an issuer-bearing path. Full actual-source temporary chain and neutral byte-exact handoff establish this boundary before an answer; neither proves whole research capability."
+      "Native RuntimeLimits requires three scaffold slots even for a bounded initial-only stage; author count must remain separately frozen at two. Actor wrapper paths also carry identity: anonymized messages alone are insufficient if the actor sees an issuer-bearing path. Full actual-source temporary chain and neutral byte-exact handoff establish this boundary before an answer; neither proves whole research capability.",
+      "A valid H_init-only Predictor stub stops before reservations, but reusing it for routing silently omits the real dynamic Predictor reserve. A prepared correction journal can exceed the remaining native chain budget and never get an inbox; observer sums must not replace consumed usage. The existing literal-clause contrast still treats a shared multiword product as a retained facet in a nested compound target; conservative fallback does not prove that this rejection was correct or that the source-valid partial survived."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "native_gpre_routing_from_accepted_hinit",
-      "question": "Can actual native retrieval consume the exact accepted GPRE state/Plan and frozen Registry, match a genuinely unanswered need to a supported exact version, and retain legitimate unmatched portions without prescribing a financial selection?",
-      "pass": "A fresh bounded native selection is independently consistent with the original needs and actual capability/measurement cards; exact selected refs and need ownership persist, or an evidence-grounded no_match retains the unresolved need.",
-      "fail": "Wrong version/capability/ownership, hidden required scope, invented answered need or loss of unresolved portions, or actual native input/runtime/masking prerequisite failure.",
-      "on_pass": "Preserve exact routing decision and lineage. Only genuinely selected matching versions may proceed to qualified execution/result reuse and owned Reflect. If legitimate no_match, preserve the gap and investigate the actual capability limitation; do not force the six financial results.",
-      "on_fail": "Keep the original failure and remaining gaps. Repair the demonstrated producer/prompt/validator/consumer family; no completed-stage reentry, fabricated prior/need, relaxed oracle or full successor.",
-      "action": "Prepare a distinct single-case GPRE routing profile using this exact accepted initial state, manual Plan, qualified view and exact Registry definitions. Observe the genuine native retrieval context/cards before dispatch, freeze source-only matching expectations, use full temporary native preflight and neutral exact inbox/outbox handoff. Freeze at most2 local author responses/one native correction,131072 perrequest/256000 case logical cap. Stop before Signal execution, Reflect, Predictor or labels. No externalLLMAPI/sourcequeries/fullsuccessor, and do not reuse old terminal budgets. Pending reading/period/Fact-schema decisions remain unanswered.",
-      "stop": "Stop at frozen limits or any unresolved source/PIT/identity/input contract prerequisite. No_match is not problem resolution or proof of capability absence. Do not claim ownership or downstream consumption from catalog visibility or serialization."
+      "kind": "repair",
+      "strategy": "routing_compound_shared_object_facet_contrast",
+      "question": "Can the original source-valid partial routing and representative compound-object variants survive ownership validation without admitting genuine retained-facet overclaims, lost temporal scope or cosmetic residuals?",
+      "pass": "Spec-aligned production parser controls preserve the actual legitimate product/order partial and analogous shared objects, while original/variant retained-facet, period, boundary, whole-word and typed-permission counterexamples still reject; all saved original stage bytes and0of1 remain.",
+      "fail": "A legitimate shared object is still downgraded, or any true overclaim/period/cosmetic/repair-authority control is admitted or unsupported semantic rewriting is required.",
+      "on_pass": "Commit scoped production repair after independent counterexample review and connected checks. Separate offline original-response replay from fresh behavior. Before any later actual trigger, freeze a new lawful contract with historical parent-code lineage, correct dynamic reserves, consumed native usage and complete validation events; no terminal reentry/budget reset.",
+      "on_fail": "Keep exact failing controls and originalnativeportfolio0of1. Revisit the concrete contrast hypothesis or prepare a substantive design choice if deterministic inputs cannot distinguish the cases; do not add product stopwords, weaken known gates or spend a full successor.",
+      "action": "Trace _shared_distinctive_phrase and routing caller through prompt/typed correction/fallback/persisted intentions/coreconsumer. First update owning spec, then minimally repair the generalized shared-object/compound-facet family, with originalcase and independently authored variants/counterexamples. Preserve actual retained-facet rejection, literal/whole-word/boundary/PIT, cosmetic-residual checks and typed repair scope. All current stages remain terminal and sourcefrozen. No fresh model/source/fullrun merely to see if patch passes; current financial6 are not forced into the finance-owned result path.",
+      "stop": "Stop a candidate on demonstrated semantic ambiguity or regression, preserving failure. No schema/definition policy change without required decision. Do not call local parser replay a fresh routing pass or treat contextual fallback as proved measurement/need resolution."
     }
   },
   "successor_prerequisites": [

@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-native-review.json",
+    "sha256": "9115654a1ef1b0bd238d4d1c95dc03962445a8c36dac06a0c183cad02231004d",
+    "bytes": 8880
+  },
+  "budget_amendment": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-budget-amendment.json",
+    "sha256": "f34cc8b2da4a3f8cecb6ed3851b75312b3004573b25097c5329b8d5c41e0f086",
+    "bytes": 2858
+  },
+  "boundfiles": 1949,
+  "nativecards": 17,
+  "request_reservation": 49144,
+  "native_budget": 68139,
+  "possible_correction_remaining": 18995
+}

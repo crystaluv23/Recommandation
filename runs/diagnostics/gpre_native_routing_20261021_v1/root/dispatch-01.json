@@ -1,0 +1,7 @@
+{
+  "agent_id": "/root/exact_routing_88",
+  "handoff": "handoff-01.json",
+  "fork_turns": "none",
+  "author_dispatch_number": 1,
+  "external_llm_api_calls": 0
+}

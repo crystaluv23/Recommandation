@@ -1,0 +1,10 @@
+{
+  "agent_id": "/root/exact_routing_88",
+  "byte_equal": true,
+  "modified_or_authored_by_root": false,
+  "native_outbox": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/exchange/outbox/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.txt",
+  "neutral_outbox": "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/native-role-62lymugb/outbox.txt",
+  "raw_bytes": 2291,
+  "raw_sha256": "a388947bb9fbcabee75ee4445497a15545bf44649fc8fa4ce26e7554c794be91",
+  "request_hash": "6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8"
+}

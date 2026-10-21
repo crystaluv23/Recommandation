@@ -1,0 +1,47 @@
+{
+  "author_dispatches": 0,
+  "budget": {
+    "case": 256000,
+    "correction_remaining_if_first_rejected": 18995,
+    "fixed_final_reserve": 64000,
+    "initial_request": 49144,
+    "native_predictor_estimate": 61973,
+    "prior": 61888,
+    "selection_budget": 68139
+  },
+  "checks": [
+    "read-only accepted parent AgentStep and bootstrap equivalence",
+    "actual native selector and full own card projection",
+    "nonempty selection returns to real core before executor-entry stop",
+    "zero Signal prepare/calculation; empty stops before finalization",
+    "only exact parent operational dispatch lock excluded from authority",
+    "native Predictor estimate retained; no stub-induced budget expansion",
+    "neutral exact inbox/outbox handoff required; no private oracle in role"
+  ],
+  "code_files_verified": 105,
+  "driver_summary": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/driver-summary.json",
+    "sha256": "5a310d4ef4ae36154cf31e7c60d45650fbd19c88552c231ba42a60dc3b64a503"
+  },
+  "formal_stage_exists": false,
+  "next_gate": "independent native pre-answer review before formal prepare",
+  "original_and_parent_files_verified": 32,
+  "pre_answer_oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-routing-oracle.json",
+    "sha256": "9ba88dc139e18e0e50142ea68f17cfd73e76de56ae19dcf1f6d4c51facd930df"
+  },
+  "root_safety_tests": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/root/safety-final-tests.log",
+    "sha256": "464e0ee629edf74de09ef21e4232fbcedc26588ff7cc23c470f47fe2da88c255"
+  },
+  "scope": "root pre-formal readonly code/input review; no role or native operation",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/scripts/run_gpre_native_routing_stage.py",
+    "sha256": "6a5866d010949cd135c0ba6ab4f702ac9d578fd2c00bb15d8d1e6c1952237bef"
+  },
+  "source_files_verified": 1844,
+  "spec": {
+    "path": "/Users/l/Project/Recommandation/spec/scripts/run_gpre_native_routing_stage.md",
+    "sha256": "c8c8c8557eb504ee8ff8faf0bf5c65a29f1559e0f17c17b9b5cf8948c01e5c4d"
+  }
+}

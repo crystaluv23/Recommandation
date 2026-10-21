@@ -1,0 +1,38 @@
+{
+  "boundary_scope_addendum": "Nonempty native selectorstep now returns unchanged tocore for real consume/eligible/duplicate/caps/remaining_call1 truncation. Executor.execute_batch subclass records realadoptedfirstrefs atentry then raises before super/prepare/calculation. Emptyselection stops atselectorboundary beforefinalization. Currentzeroanswerpreflight does not exercise either acceptedbranch.",
+  "corrected_budget": {
+    "actual_first_request": 49144,
+    "case_cap": 256000,
+    "case_remaining": 194112,
+    "combined_case_reserved": 111032,
+    "correction_not_guaranteed_to_fit": true,
+    "native_Predictor_estimator_reserve": 61973,
+    "native_corrections_max": 1,
+    "native_finalization_reserve": 64000,
+    "native_selection_chain_budget": 68139,
+    "new_author_max": 2,
+    "prior_usage": 61888,
+    "remaining_native_correction_chain_budget": 18995
+  },
+  "frozen_at_utc": "2026-10-21T00:59:58.207565+00:00",
+  "native_context": {
+    "bytes": 9487,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/native-select-context.json",
+    "sha256": "2a11a7ade8ccd2b6d15fa0be5af4cde4a331d7284f6ff87a6881e16afac743f2"
+  },
+  "native_estimator_evidence": {
+    "bytes": 208,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/native-predictor-reservation.json",
+    "sha256": "44586883a92fdb61f0dbf35b1b6e60e0643a36722f8f4e1e192daad47a02a6bb"
+  },
+  "operational_lock_correction": "Exactparentexchange/.dispatch.lock is not researchauthority; finalsourcebindings exclude onlythat absolute path. No deletion/change of parentlock or otherartifacts.",
+  "previous_130112_error": "Originaloracle/commonacceptance130112 omitted actualnativePredictor localestimator by usingSimpleNamespace lacking estimator. It remains originalbytes as a wrongfullnativebudget premise, not final authority. Native LLMBlindPredictor delegateestimate adds61973; no Predictor model request occurs.",
+  "private_skill_visibility_clarification": "exact-version capabilitybasis storesLLMskills for reviewer background. Actualrouting LLMscope only type, source/query anddescription: do not fail actor for hidden skill-onlydetails absent actualcard. Actualhardroutinggates and displayedcapability govern choice.",
+  "schema": "gpre-routing-pre-answer-budget-and-boundary-amendment-v1",
+  "source_oracle_unchanged": {
+    "bytes": 18208,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-routing-oracle.json",
+    "sha256": "9ba88dc139e18e0e50142ea68f17cfd73e76de56ae19dcf1f6d4c51facd930df"
+  },
+  "timing": "After only actualnativepending, before any routinganswer. No need/capabilitygold or modelvisiblepayload content changed."
+}

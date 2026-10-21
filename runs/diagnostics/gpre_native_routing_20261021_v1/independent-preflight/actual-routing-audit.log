@@ -1,0 +1,14 @@
+{
+  "status": "FAIL_NATIVE_STRICT_FIRST_PORTFOLIO_FIDELITY_WITH_VALID_SALVAGED_CORE_FIRST_ENTRY",
+  "review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/actual-routing-review.json",
+    "sha256": "629e83e1231eb07ca3122269d7b9951f955fd05ceacd9b05b6c6175f5cc4c0da",
+    "bytes": 16641
+  },
+  "native_strictfirstpass": 0,
+  "actors": 1,
+  "correction_answers": 0,
+  "core_first_financing_intent": 1,
+  "source_and_code": 1949,
+  "preservation": 32
+}

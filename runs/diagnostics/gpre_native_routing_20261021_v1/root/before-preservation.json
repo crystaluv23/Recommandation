@@ -1,0 +1,134 @@
+{
+  "scope": "original user deltas/prior authority plus completed accepted initial stage and its semantic oracle; before routing work",
+  "head": "f91be7ca",
+  "files": [
+    {
+      "path": "runs/cold_start/minimal_rounds_v151/fast_summary.json",
+      "sha256": "441c565efda31b60453837ce8d405a951bcc19f6c8691604a3abc18710475c77"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v151/fast_trajectories.json",
+      "sha256": "4734ab1a71ee3c20231e38a860e8176bdc4976816c8019d674cd887b144dd140"
+    },
+    {
+      "path": "spec/architecture.md",
+      "sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/memory/knowledge.md",
+      "sha256": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_control.md",
+      "sha256": "6551ca4ccffe2aaedb72d967d1905a40bd214206d93f794f3b73720c89222c83"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md",
+      "sha256": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/plan_evolution.md",
+      "sha256": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v182_integrated/cycle_state.json",
+      "sha256": "5619ac234153d2946c4d186e18a04043d4bf7e0739ae75859a6c91180fb00bf6"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v182_integrated/state.json",
+      "sha256": "e2cb3bbef7bfcfa62c4a1c218c181ac49796e6ebbd94851224ddbe1ed8dc2de9"
+    },
+    {
+      "path": "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/completed-files.json",
+      "sha256": "2b06a96555177a84df077fdc45698e29eca92f38607ff31450ac6e4c6d7e0720"
+    },
+    {
+      "path": "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/execution-start.json",
+      "sha256": "a50656f950bd00e491467ac5e0acafc740de4a64de9160e2d07576a1c3daf941"
+    },
+    {
+      "path": "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/observations.json",
+      "sha256": "0472edbe90bc4b0a6876aedde9328ba0ea281efe3328c9c15db0fa814380c228"
+    },
+    {
+      "path": "runs/diagnostics/mining_native_evidence_probe_20261021_v1/execution/result.json",
+      "sha256": "bc5e9263a071691a30546d9d595e05d941aacae0aeafa8655e2fad0d7e887871"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/cache/responses/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+      "sha256": "0d968db42be05dfbc357f7d9092afc077e4c94c40707319372d7ce60acc3891a"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/completion.json",
+      "sha256": "58082055515d8809e51a0ba897378cc9fb39c4fc61c426867c514c44c0ab5ec0"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/contract.json",
+      "sha256": "83988f3e644cb8a4f1ef6fce0425660373736f80552950adf0698446d9a7454b"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/contract.json",
+      "sha256": "0d04e730b34258841a1fa4f2cf61896cfea1943a9bc7e828958a6326fce507f4"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/inbox/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+      "sha256": "bd54c8ea3b994e94b712cf0a02f10c713fc3f0f257062364d06a98664a7fddde"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/outbox/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.txt",
+      "sha256": "687ae13a4e3385e7442a38de00705e8b9f10992e12faf0babc2ddd0eb8dccde1"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/exchange/receipts/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+      "sha256": "649e00ed7c440d51ab3065fd21d4085c47d0ce31d080b3c8e9cb724a9050b7df"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/inputs.json",
+      "sha256": "a75322d2af9d2abc43d9f4b9479608e6630f38a72d0714bf4e8f37d81750a50f"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/manifest.json",
+      "sha256": "5b1d736a76fb7e7d8e31395d76cd0ee4d94463cb8ee90c1ae79ef7f8298e9570"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/request-reservations.json",
+      "sha256": "f0d805630476819f256cacd5fbac42fe4a1ddc3bbe1a68eb395f0b101c321cc5"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/requests/66c9d73cf10c16c4a70e77165c48c63f9eee3158f4c6aaa577678398c6da2181.json",
+      "sha256": "37d7278086f6e4c3ee183f4fe227230a470e0647aacc648eaf8b68177d3592c7"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/bootstrap.json",
+      "sha256": "32ce837eaf66c7e8d20c41469ebca8120def925767a5176536fd825a580cd60e"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/initial_state.json",
+      "sha256": "9fdacbae3b14e3cf2cb42de3acabcf20ae584d4a8b18e11414b944f11480cab9"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/parsed_step.json",
+      "sha256": "563a9f29cbdfc86517efb32ee9cead0c04be3cac4326027d60405cf8e914012c"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/stage/unused_external_attempts.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-source-oracle.json",
+      "sha256": "0bce2212dfad502f8ad7adf8ac36661ff3da8bc43cb735cef633f9f9663d8189"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/pre-answer-native-review.json",
+      "sha256": "5df8021c85ac69817491247578409a17a11a26c7d9499bdea8af08766dfae463"
+    },
+    {
+      "path": "runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json",
+      "sha256": "455ca111aedd1f8e107de32b023f51ebb4003e3650bdd3ad980f8b15005090d2"
+    }
+  ]
+}

@@ -1,0 +1,1134 @@
+{
+  "actual_native_cards_not_yet_read": true,
+  "cards": [
+    {
+      "scope": {
+        "execution_type": "llm",
+        "parameters": {
+          "result_required_evidence_phrases": [
+            "financing",
+            "refinancing",
+            "debt",
+            "restructuring",
+            "listing",
+            "dilution",
+            "redemption",
+            "reverse split",
+            "share sale",
+            "offering",
+            "placement",
+            "credit facility",
+            "loan",
+            "convertible",
+            "PIPE",
+            "securities purchase agreement"
+          ],
+          "routing_answer_need_phrases": [
+            "financing",
+            "refinancing",
+            "debt restructuring",
+            "listing",
+            "dilution",
+            "runway",
+            "redemption",
+            "reverse split",
+            "share sale",
+            "share offering",
+            "equity offering",
+            "debt maturity",
+            "debt maturities",
+            "PIPE",
+            "securities purchase agreement"
+          ]
+        },
+        "raw_retrieval": {
+          "lookback_days": 730,
+          "query_terms": [
+            "financing offering",
+            "listing compliance",
+            "reverse split",
+            "PIPE financing",
+            "securities purchase agreement",
+            "at-the-market sales agreement",
+            "equity offering",
+            "convertible note conversion",
+            "pre-funded warrant",
+            "reverse merger",
+            "investment grade credit rating",
+            "credit facility amendment"
+          ],
+          "source_types": [
+            "filing",
+            "company_announcement",
+            "news"
+          ]
+        },
+        "source_types": [
+          "filing",
+          "company_announcement",
+          "news"
+        ],
+        "version_owned_description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."
+      },
+      "signal_ref": "financing_listing_action:v5",
+      "skill": {
+        "bytes": 782,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/skill.md",
+        "sha256": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a"
+      },
+      "skill_contract_not_role_input": "Identify completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing actions. Separate completed actions from proposals. Do not treat completed financing as automatically positive for the fixed surge target. Report completed capital-structure events as neutral capital-structure facts unless the visible span establishes a within-horizon change in runway, dilution, or tradability that is relevant to the fixed surge target; do not infer a directional effect from the existence of a refinancing, buyback authorization, note exchange, or ATM sale. Explain whether the point-in-time effect reduces or increases dilution, distress, or tradability, and whether it is a catalyst or merely a capital-structure event, with literal spans.\n",
+      "spec": {
+        "bytes": 1990,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/spec.json",
+        "sha256": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure cash burn as absolute negative operating cash flow / cash for the latest\nSEC duration, using the closest same-currency cash instant at or before period end.\nNon-negative operating cash flow is a zero burn ratio. Missing, non-positive cash,\nmismatched, or stale facts yield unavailable. burn_threshold defaults to 0.10;\nqualifying burn is positive, observed zero burn is negative, and an observed\nbelow-threshold positive burn is neutral.",
+        "callable_name": "financial.cash_burn_rate_elevated",
+        "configured_callable_parameters": {
+          "burn_threshold": 0.1,
+          "max_period_age_days": 550
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "burn_threshold": 0.1,
+          "lookback_days": 550,
+          "max_period_age_days": 550
+        },
+        "raw_retrieval": {
+          "lookback_days": 550,
+          "query_terms": [
+            "cash burn rate",
+            "operating cash flow",
+            "cash and cash equivalents",
+            "NetCashProvidedByUsedInOperatingActivities",
+            "CashAndCashEquivalentsAtCarryingValue"
+          ],
+          "source_types": [
+            "company_facts",
+            "financials"
+          ]
+        },
+        "source_types": [
+          "company_facts",
+          "financials"
+        ],
+        "version_owned_description": "Measure absolute negative operating cash flow divided by the closest same-currency cash balance at or before the reported period end."
+      },
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1183,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v2/spec.json",
+        "sha256": "c8a90a2f7c4b0000c038f547efd2012414abb1c57fcf457c9bc56a9e9dd823fb"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure the latest SEC instant cash and equivalents balance, in its reported currency\nunits, without normalizing by burn, revenue or company size. Missing or stale current\ncash facts yield unavailable. Numeric states use positive_min (default 0) and\nnegative_max (default positive_min): value >= positive_min is positive, otherwise\nvalue <= negative_max is negative, otherwise neutral. Thresholds do not change the\nmeasurement. max_period_age_days (default 550) bounds current SEC period age; older\ncomparative periods remain allowed.\nOptional plausible_abs_max has no default bound; when configured and exceeded,\nthe shared numeric builder retains value/state with partial coverage, 0.5\nconfidence and implausible_value. It is not an unavailable guard or clamp.",
+        "callable_name": "financial.cash_reserves",
+        "configured_callable_parameters": {
+          "negative_max": 10000000,
+          "positive_min": 100000000
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "negative_max": 10000000,
+          "positive_min": 100000000,
+          "routing_answer_need_phrases": [
+            "cash reserves",
+            "cash balance",
+            "cash and equivalents",
+            "cash position",
+            "liquidity"
+          ]
+        },
+        "raw_retrieval": {
+          "minimum_distinct_periods": 1,
+          "query_terms": [
+            "cash and equivalents",
+            "cash balance",
+            "liquidity"
+          ],
+          "required_source_groups": [
+            [
+              "financials",
+              "filing"
+            ]
+          ],
+          "source_types": [
+            "financials",
+            "filing"
+          ]
+        },
+        "source_types": [
+          "financials",
+          "filing"
+        ],
+        "version_owned_description": "Read the latest point-in-time cash and equivalents balance."
+      },
+      "signal_ref": "cash_reserves:v2",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1205,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/spec.json",
+        "sha256": "00a4595fe13d41e8bc0e972ef99fe6f9a8e5c46988aa47a667d8bf8816b309da"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure latest cash and equivalents / current liabilities for the same SEC\ninstant period and reported currency. Non-positive liabilities and missing,\nmismatched, or stale facts yield unavailable. Numeric states use positive_min\n(default 0) and negative_max (default positive_min).\nOptional plausible_abs_max has no default bound; when configured and exceeded,\nthe shared numeric builder retains value/state with partial coverage, 0.5\nconfidence and implausible_value. It is not an unavailable guard or clamp.",
+        "callable_name": "financial.cash_to_current_liabilities_ratio",
+        "configured_callable_parameters": {
+          "negative_max": 1.0,
+          "positive_min": 1.0
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "negative_max": 1.0,
+          "positive_min": 1.0
+        },
+        "raw_retrieval": {
+          "comparison_requirement": "latest point-in-time CashAndCashEquivalentsAtCarryingValue and LiabilitiesCurrent for the same company_id",
+          "query_terms": [
+            "CashAndCashEquivalentsAtCarryingValue",
+            "LiabilitiesCurrent",
+            "cash",
+            "current liabilities",
+            "liquidity ratio",
+            "10-Q",
+            "10-K",
+            "20-F",
+            "SEC company facts",
+            "USD"
+          ],
+          "source_types": [
+            "company_facts",
+            "financials"
+          ]
+        },
+        "source_types": [
+          "company_facts",
+          "financials"
+        ],
+        "version_owned_description": "Measure the ratio of latest cash and equivalents to current liabilities for the same point-in-time period and reported currency."
+      },
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1314,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v2/spec.json",
+        "sha256": "a4c30faa11f819b8f677939b56e0d1a92c2f3cfc1f798fe9d01714ffacd9c885"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure gross-margin change: latest GrossProfit / revenue minus the previous\ncomparable-duration margin. GrossProfit and revenue must match start, end and units\nwithin each period, and revenue comes from the per-issuer canonical total series\n(dominance-resolved; partial or zero same-period tag values never displace the\ntotal). Missing matched periods, zero revenue or stale current facts yield\nunavailable. Numeric states use positive_min (default 0) and negative_max (default\npositive_min): value >= positive_min is positive, otherwise value <= negative_max is\nnegative, otherwise neutral. Thresholds do not change the measurement. Values beyond\nplausible_abs_max (default 2) are downgraded to partial coverage at 0.5 confidence\nwith an implausible_value marker. max_period_age_days (default 550) bounds current\nSEC period age; older comparative periods remain allowed.",
+        "callable_name": "financial.gross_margin_change",
+        "configured_callable_parameters": {
+          "negative_max": -0.02,
+          "positive_min": 0.08
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "negative_max": -0.02,
+          "positive_min": 0.08
+        },
+        "raw_retrieval": {
+          "comparison_requirement": "Latest gross margin versus prior comparable period.",
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330,
+          "query_terms": [
+            "revenue",
+            "gross profit"
+          ],
+          "source_types": [
+            "financials"
+          ]
+        },
+        "source_types": [
+          "financials"
+        ],
+        "version_owned_description": "Measure the latest point-in-time change in gross margin."
+      },
+      "signal_ref": "gross_margin_change:v3",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1026,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/spec.json",
+        "sha256": "7f442b11c3fb3407ad0d7726e4fb28cbaa9f33c7c76ce6b52eaa1c9331bb6f60"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure cash runway in months from the latest SEC operating cash flow\nduration and the closest same-currency cash instant at or before its end. Monthly\nburn is absolute cash flow divided by the rounded reported duration in months.\nMissing, non-positive, mismatched, or stale facts yield unavailable. Runway <=\npositive_runway_max_months (default 6) is positive,\nrunway >= negative_runway_min_months (default 12) is negative, and values between\nare neutral. Non-negative operating cash flow is negative evidence of a\nlow-runway condition (an effectively unbounded burn runway).",
+        "callable_name": "financial.liquidity_runway_months",
+        "configured_callable_parameters": {
+          "max_period_age_days": 550,
+          "negative_runway_min_months": 12,
+          "positive_runway_max_months": 6
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "max_period_age_days": 550,
+          "negative_runway_min_months": 12,
+          "positive_runway_max_months": 6
+        },
+        "raw_retrieval": {
+          "comparison_requirement": "Use the latest point-in-time cash and equivalents and operating cash flow facts for the same reporting entity and period; when multiple facts conflict, prefer the most recent available_at.",
+          "lookback_days": 550,
+          "query_terms": [
+            "CashAndCashEquivalentsAtCarryingValue",
+            "CashAndCashEquivalents",
+            "CashEquivalents",
+            "NetCashProvidedByUsedInOperatingActivities",
+            "CashFlowsFromUsedInOperatingActivities",
+            "liquidity runway",
+            "operating cash flow",
+            "cash burn",
+            "months"
+          ],
+          "source_types": [
+            "financials",
+            "company_facts"
+          ]
+        },
+        "source_types": [
+          "financials",
+          "company_facts"
+        ],
+        "version_owned_description": "Measure cash runway in months from the latest negative operating cash flow duration and closest same-currency cash balance."
+      },
+      "signal_ref": "liquidity_runway_months:v3",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1524,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/spec.json",
+        "sha256": "19197cadb4729a131cf3c968ccc369ee0c7c0054ca95b719f7ff247f1b75613e"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure net share retirement as 1 - current / prior-year weighted-average shares over\ncomparable periods. Positive means net retirement and negative means dilution; this is\nnot a cash buyback amount. Missing comparable or stale current facts yield\nunavailable. Numeric states use positive_min (default 0) and negative_max (default\npositive_min): value >= positive_min is positive, otherwise value <= negative_max is\nnegative, otherwise neutral. Thresholds do not change the measurement.\nValues beyond plausible_abs_max (default 1) retain their measurement and categorical\nstate, but are downgraded to partial coverage at 0.5 confidence with an\nimplausible_value marker; this is not an unavailable guard or numeric clamp.\nmax_period_age_days (default 550) bounds current SEC period age; older comparative\nperiods remain allowed.",
+        "callable_name": "financial.net_share_retirement_yoy",
+        "configured_callable_parameters": {
+          "negative_max": -0.05,
+          "positive_min": 0.02
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "negative_max": -0.05,
+          "positive_min": 0.02
+        },
+        "raw_retrieval": {
+          "comparison_requirement": "Latest weighted-average shares versus prior-year comparable period; both periods must be plausible weighted-average share counts in the same unit, and an implausible prior-year denominator yields unavailable.",
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330,
+          "query_terms": [
+            "weighted average shares",
+            "shares outstanding"
+          ],
+          "source_types": [
+            "financials"
+          ]
+        },
+        "source_types": [
+          "financials"
+        ],
+        "version_owned_description": "Measure year-over-year net share retirement, with dilution represented as a negative value."
+      },
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1250,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/spec.json",
+        "sha256": "e8e10fd2221aba605e4a2128340680e5f1c86d241504105580760ace96067505"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure operating cash flow margin as operating cash flow / positive revenue for the\nlatest matching SEC duration period (same start, end and units). Revenue comes from\nthe per-issuer canonical total series (dominance-resolved; partial or zero\nsame-period tag values never displace the total). Requires both revenue\nand operating-cash-flow facts. This does not measure operating-income alignment or\ncash runway. Missing/mismatched/stale facts yield unavailable. Numeric states use\npositive_min (default 0) and negative_max (default positive_min): value >=\npositive_min is positive, otherwise value <= negative_max is negative, otherwise\nneutral. Thresholds do not change the measurement. Values beyond plausible_abs_max\n(default 1.5) are downgraded to partial coverage at 0.5 confidence with an\nimplausible_value marker. max_period_age_days (default 550) bounds current SEC\nperiod age; older comparative periods remain allowed.",
+        "callable_name": "financial.operating_cash_flow_margin",
+        "configured_callable_parameters": {
+          "negative_max": 0.0,
+          "positive_min": 0.1
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "negative_max": 0.0,
+          "positive_min": 0.1,
+          "routing_answer_need_phrases": [
+            "operating cash flow margin"
+          ]
+        },
+        "raw_retrieval": {
+          "comparison_requirement": "Operating cash flow and revenue for the same period.",
+          "minimum_distinct_periods": 1,
+          "query_terms": [
+            "operating cash flow",
+            "revenue"
+          ],
+          "source_types": [
+            "financials"
+          ]
+        },
+        "source_types": [
+          "financials"
+        ],
+        "version_owned_description": "Measure operating cash flow as a share of revenue for the latest exact reported duration."
+      },
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1120,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v2/spec.json",
+        "sha256": "cccc639ea02b2aaad172239a438bd429b950116a5d2a2d33f2aa0d677901d276"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure revenue acceleration as latest year-over-year revenue growth minus an earlier\ncomparable growth rate. Requires two supported revenue year-over-year pairs from the\nper-issuer canonical total series (dominance-resolved; never mixed-basis), with\nmatching units and nonzero denominators; incomplete/stale current facts yield\nunavailable. Numeric states use positive_min (default 0) and negative_max (default\npositive_min): value >= positive_min is positive, otherwise value <= negative_max is\nnegative, otherwise neutral. Thresholds do not change the measurement. Values beyond\nplausible_abs_max (default 5) are downgraded to partial coverage at 0.5 confidence\nwith an implausible_value marker. max_period_age_days (default 550) bounds current\nSEC period age; older comparative periods remain allowed.",
+        "callable_name": "financial.revenue_acceleration",
+        "configured_callable_parameters": {
+          "negative_max": -0.05,
+          "positive_min": 0.05
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "negative_max": -0.05,
+          "positive_min": 0.05
+        },
+        "raw_retrieval": {
+          "comparison_requirement": "Current and prior comparable growth periods.",
+          "minimum_distinct_periods": 3,
+          "minimum_period_span_days": 330,
+          "query_terms": [
+            "revenue",
+            "sales"
+          ],
+          "source_types": [
+            "financials"
+          ]
+        },
+        "source_types": [
+          "financials"
+        ],
+        "version_owned_description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period."
+      },
+      "signal_ref": "revenue_acceleration:v2",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1055,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/spec.json",
+        "sha256": "e2852a024a76e9b1b7f836c101ca02e09150727bbba93dbc6b1d077da76e4a1a"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure revenue_growth_yoy as current / comparable prior-year revenue - 1. Requires\nSEC duration facts from the per-issuer canonical total series (dominance-resolved;\npartial or zero same-period tag values never displace the total), matching units\nand comparable year-over-year periods; zero prior revenue or missing/stale\ncurrent facts yields unavailable. Numeric states use\npositive_min (default 0) and negative_max (default positive_min): value >=\npositive_min is positive, otherwise value <= negative_max is negative, otherwise\nneutral. Thresholds do not change the measurement. Values beyond\nplausible_abs_max (default 5) are downgraded to partial coverage at 0.5\nconfidence with an implausible_value marker. max_period_age_days (default 550)\nbounds current SEC period age; older comparative periods remain allowed.",
+        "callable_name": "financial.revenue_growth_yoy",
+        "configured_callable_parameters": {
+          "negative_max": 0.0,
+          "plausible_abs_max": 5.0,
+          "positive_min": 0.25
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "negative_max": 0.0,
+          "plausible_abs_max": 5.0,
+          "positive_min": 0.25,
+          "routing_answer_need_phrases": [
+            "revenue growth",
+            "year-over-year revenue",
+            "year over year revenue",
+            "yoy revenue"
+          ]
+        },
+        "raw_retrieval": {
+          "comparison_requirement": "Latest period versus prior-year comparable period; use only the per-issuer canonical total revenue series (dominance-resolved; partial or deprecated same-period tag values never displace the total).",
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330,
+          "query_terms": [
+            "revenue",
+            "sales",
+            "total revenue",
+            "revenues"
+          ],
+          "source_types": [
+            "financials",
+            "company_facts"
+          ]
+        },
+        "source_types": [
+          "financials",
+          "company_facts"
+        ],
+        "version_owned_description": "Measure the latest point-in-time year-over-year revenue growth."
+      },
+      "signal_ref": "revenue_growth_yoy:v3",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1415,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/spec.json",
+        "sha256": "91acc7bf052c8a39114c5a119e6a9bec9c6093ccaf4ae65ea832d605255636cf"
+      }
+    },
+    {
+      "scope": {
+        "execution_type": "llm",
+        "parameters": {
+          "result_required_evidence_phrases": [
+            "guidance",
+            "outlook",
+            "forecast",
+            "we expect",
+            "management expects",
+            "company expects",
+            "now expects",
+            "raises its",
+            "raised its",
+            "lowers its",
+            "lowered its",
+            "reaffirms",
+            "reaffirmed",
+            "on track to"
+          ],
+          "routing_answer_need_phrases": [
+            "guidance",
+            "outlook",
+            "forecast"
+          ],
+          "routing_need_phrases": [
+            "guidance update",
+            "guidance updates",
+            "updated guidance",
+            "guidance change",
+            "guidance changes",
+            "revised guidance",
+            "guidance revision",
+            "guidance revisions"
+          ]
+        },
+        "raw_retrieval": {
+          "comparison_requirement": "Current guidance versus explicit prior guidance; both current and prior guidance spans must be visible.",
+          "lookback_days": 365,
+          "query_terms": [
+            "guidance outlook forecast",
+            "raises guidance",
+            "raised guidance",
+            "lowers guidance",
+            "lowered guidance",
+            "reaffirms guidance",
+            "reaffirmed guidance",
+            "updated guidance",
+            "revised guidance",
+            "now expects",
+            "management expects",
+            "company expects"
+          ],
+          "source_types": [
+            "earnings_call",
+            "company_announcement",
+            "press_release",
+            "filing"
+          ]
+        },
+        "source_types": [
+          "earnings_call",
+          "company_announcement",
+          "press_release",
+          "filing"
+        ],
+        "version_owned_description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."
+      },
+      "signal_ref": "guidance_acceleration:v3",
+      "skill": {
+        "bytes": 231,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/skill.md",
+        "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833"
+      },
+      "skill_contract_not_role_input": "Compare current guidance with explicit prior guidance available in the input. Positive requires a material upward change in level, timing, or conviction; generic optimism is neutral. Preserve contrary qualifiers and literal spans.\n",
+      "spec": {
+        "bytes": 2025,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/spec.json",
+        "sha256": "27ddc4483007f747f6a0aa7d7618ad2da560151f2d12b51ef8d5847b3c83d400"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure the minimum price / preceding running peak - 1 over all observations in the\nlatest supplied metadata.prices series. This function does not itself restrict dates\nto one year; retrieval owns the point-in-time series window. Missing prices yield\nunavailable; invalid or nonpositive prices fail validation. Numeric states use\npositive_min (default 0) and negative_max (default positive_min): value >=\npositive_min is positive, otherwise value <= negative_max is negative, otherwise\nneutral. Thresholds do not change the measurement.\nOptional plausible_abs_max has no default bound; when configured and exceeded,\nthe shared numeric builder retains value/state with partial coverage, 0.5\nconfidence and implausible_value. It is not an unavailable guard or clamp.",
+        "callable_name": "market.max_drawdown_1y",
+        "configured_callable_parameters": {
+          "negative_max": -0.5,
+          "positive_min": -0.2
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "negative_max": -0.5,
+          "positive_min": -0.2
+        },
+        "raw_retrieval": {
+          "lookback_days": 400,
+          "query_terms": [
+            "adjusted close",
+            "price history"
+          ],
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "source_types": [
+          "market_data"
+        ],
+        "version_owned_description": "Measure maximum drawdown from the point-in-time one-year price series."
+      },
+      "signal_ref": "max_drawdown_1y:v2",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 903,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/versions/v2/spec.json",
+        "sha256": "98bd4cbc4aaf1b7fca8bfaa8d14f0167da52f4a3cd94e9caa09b3bdec1536786"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Measure last / first price - 1 over the final lookback_observations + 1 supplied\nmetadata.prices values (default lookback_observations=126, positive integer). Fewer\nobservations yield unavailable; prices must be finite positive numbers. Retrieval owns\ndates and adjustment convention. Numeric states use positive_min (default 0) and\nnegative_max (default positive_min): value >= positive_min is positive, otherwise\nvalue <= negative_max is negative, otherwise neutral. Thresholds do not change the\nmeasurement. Values beyond plausible_abs_max (default 50) retain their measurement\nand categorical state, but are downgraded to partial coverage at 0.5 confidence\nwith an implausible_value marker; this is not an unavailable guard or numeric clamp.",
+        "callable_name": "market.price_momentum_126d",
+        "configured_callable_parameters": {
+          "lookback_observations": 126,
+          "negative_max": -0.2,
+          "positive_min": 0.2
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "lookback_observations": 126,
+          "negative_max": -0.2,
+          "positive_min": 0.2
+        },
+        "raw_retrieval": {
+          "lookback_days": 400,
+          "minimum_observations": 127,
+          "query_terms": [
+            "adjusted close",
+            "price history"
+          ],
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "source_types": [
+          "market_data"
+        ],
+        "version_owned_description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series."
+      },
+      "signal_ref": "price_momentum_126d:v2",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1003,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v2/spec.json",
+        "sha256": "5fdc0c057e2c419f84b81ce8f384768c6c138b28e47e24851aeed6164c7c8d1b"
+      }
+    },
+    {
+      "scope": {
+        "callable_contract_read_from_AST": "Count case-insensitive literal substring occurrences across input documents.\n\nterms defaults to decline, loss, risk, delay, investigation, default.\nCount >= negative_count_min (default 1) is negative; otherwise neutral.\nThis measures lexical frequency, not semantic sentiment or event severity.",
+        "callable_name": "news.negative_word_count",
+        "configured_callable_parameters": {
+          "negative_count_min": 1,
+          "terms": [
+            "decline",
+            "loss",
+            "risk",
+            "delay",
+            "investigation",
+            "default"
+          ]
+        },
+        "execution_type": "deterministic",
+        "parameters": {
+          "negative_count_min": 1,
+          "terms": [
+            "decline",
+            "loss",
+            "risk",
+            "delay",
+            "investigation",
+            "default"
+          ]
+        },
+        "raw_retrieval": {
+          "lookback_days": 365,
+          "query_terms": [
+            "risk loss delay",
+            "decline warning"
+          ],
+          "source_types": [
+            "news"
+          ]
+        },
+        "source_types": [
+          "news"
+        ],
+        "version_owned_description": "Count configured negative terms in complete point-in-time company news source documents."
+      },
+      "signal_ref": "negative_word_count:v2",
+      "skill": null,
+      "skill_contract_not_role_input": null,
+      "spec": {
+        "bytes": 1019,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/versions/v2/spec.json",
+        "sha256": "32213a3e163e264e5a98e085c547d872609c2c60b23fd6bd3c8cae961112d025"
+      }
+    },
+    {
+      "scope": {
+        "execution_type": "llm",
+        "parameters": {},
+        "raw_retrieval": {
+          "lookback_days": 180,
+          "query_terms": [
+            "order",
+            "contract",
+            "offtake",
+            "binding award",
+            "customer order",
+            "delivery schedule",
+            "named counterparty",
+            "purchase agreement",
+            "supply agreement",
+            "new order",
+            "offtake agreement",
+            "binding contract"
+          ],
+          "source_types": [
+            "filing",
+            "news",
+            "transcript",
+            "10-k",
+            "10-q",
+            "8-k",
+            "company_news",
+            "sec_filing",
+            "earnings_call"
+          ]
+        },
+        "source_types": [
+          "filing",
+          "news",
+          "transcript",
+          "10-k",
+          "10-q",
+          "8-k",
+          "company_news",
+          "sec_filing",
+          "earnings_call"
+        ],
+        "version_owned_description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units."
+      },
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "skill": {
+        "bytes": 3639,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v3/skill.md",
+        "sha256": "cbe90f616917cfadd36b04ec800270772d0b5e3c6f6759e6726145d40a39e071"
+      },
+      "skill_contract_not_role_input": "# Skill: Order Confirmation Disclosed\n\n## Purpose\nDetermine whether, within the lookback window (180 days before as_of), the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule.\n\n## Inputs\n- as_of: ISO-8601 timestamp\n- documents: list of documents, each with source_type, published_at, available_at, content\n\n## Lookback Window\nOnly consider documents with published_at >= as_of - 180 days and <= as_of.\n\n## Source Families\nConsider documents from: filing, news, transcript, 10-k, 10-q, 8-k, company_news, sec_filing, earnings_call.\n\n## Semantic Condition\nA qualifying event is a new customer order, contract, offtake agreement, or binding award that:\n- is disclosed by the company or its official filings/press releases;\n- names a counterparty or program;\n- states or implies a value, volume, or delivery schedule;\n- meets the materiality threshold: value >= $1,000,000 or volume >= 1,000 units (or equivalent). Below threshold is neutral.\n\n## Classification Rules\n- **positive**: A confirmed qualifying event is present in at least one document within the lookback window. This includes explicit announcements of new orders, contracts, offtake agreements, or binding awards that meet the materiality threshold and name a counterparty/program. Paraphrases that clearly confirm such an event also qualify. A binding award with only a stated maximum or ceiling value does not meet the materiality threshold unless a minimum or expected value is stated or implied.\n- **negative**: An explicit cancellation or denial of a qualifying event is present in at least one document within the lookback window. This includes statements that a previously announced order, contract, offtake agreement, or binding award has been cancelled, terminated, or denied.\n- **neutral**: Documents within the lookback window are adequate but contain only proposals, memoranda, non-binding intent, lookalikes, below-threshold mentions, or non-qualifying arrangements. Proposals are statements of possible future agreements without confirmation. Non-binding intent includes expressions of interest, exploratory discussions, or memoranda of understanding. Lookalikes are generic mentions of orders/contracts without any specific new event. Below-threshold mentions are qualifying events that do not meet the materiality threshold. Non-qualifying arrangements include distribution agreements, joint pursuit agreements, and similar arrangements that do not themselves constitute a new customer order, contract, offtake agreement, or binding award with a stated or implied value, volume, or delivery schedule.\n- **unavailable**: No documents within the lookback window, or the available documents are genuinely insufficient to make a judgment (e.g., only cover pages, boilerplate, or text that does not address orders/contracts). Post-cutoff-only corpora (all documents published after as_of) also yield unavailable.\n\n## Evidence Citation\nFor positive: cite the verbatim span that confirms the qualifying event.\nFor negative: cite the verbatim span that cancels or denies the event.\nFor neutral: cite the verbatim span that shows the proposal, non-binding intent, lookalike, below-threshold mention, or non-qualifying arrangement.\nFor unavailable: explain why evidence is insufficient.\n\n## Output\nReturn a JSON object with:\n- value: one of \"positive\", \"neutral\", \"negative\", \"unavailable\"\n- confidence: float between 0 and 1\n- evidence: list of cited spans (verbatim) with document_id and text\n",
+      "spec": {
+        "bytes": 1490,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v3/spec.json",
+        "sha256": "07d2fefcaeb8930c21c5c881f9fc32b3096542634e04bdacc19d40d01bce8387"
+      }
+    },
+    {
+      "scope": {
+        "execution_type": "llm",
+        "parameters": {
+          "routing_required_research_phrases": [
+            "purchase order",
+            "purchase orders",
+            "customer order",
+            "customer orders",
+            "order backlog",
+            "funded backlog",
+            "contract award",
+            "customer commitment"
+          ]
+        },
+        "raw_retrieval": {
+          "lookback_days": 730,
+          "query_terms": [
+            "purchase order backlog",
+            "contract award",
+            "customer commitment"
+          ],
+          "source_types": [
+            "filing",
+            "company_announcement",
+            "customer_announcement",
+            "earnings_call"
+          ]
+        },
+        "source_types": [
+          "filing",
+          "company_announcement",
+          "customer_announcement",
+          "earnings_call"
+        ],
+        "version_owned_description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."
+      },
+      "signal_ref": "order_quality:v2",
+      "skill": {
+        "bytes": 255,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/skill.md",
+        "sha256": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5"
+      },
+      "skill_contract_not_role_input": "Separate binding purchase orders and funded backlog from MOUs, framework agreements, maximum-ceiling awards, and non-binding pipeline. Evaluate amount, customer commitment, delivery timing, cancellation rights, and revenue conversion. Cite literal spans.\n",
+      "spec": {
+        "bytes": 1227,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/spec.json",
+        "sha256": "b604c5c835f5203be8ef191d03b474698ee26a0c805d46ff1470803c80727d70"
+      }
+    },
+    {
+      "scope": {
+        "execution_type": "llm",
+        "parameters": {
+          "routing_excluded_context_tags": [
+            "mature_operations"
+          ],
+          "routing_required_research_phrases": [
+            "product",
+            "technology",
+            "prototype",
+            "commercialization",
+            "commercial launch",
+            "commercially available",
+            "sellable",
+            "repeatable"
+          ]
+        },
+        "raw_retrieval": {
+          "lookback_days": 1095,
+          "query_terms": [
+            "commercial launch",
+            "commercial shipment",
+            "scaled sales"
+          ],
+          "source_types": [
+            "filing",
+            "company_announcement",
+            "customer_announcement",
+            "earnings_call"
+          ]
+        },
+        "source_types": [
+          "filing",
+          "company_announcement",
+          "customer_announcement",
+          "earnings_call"
+        ],
+        "version_owned_description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."
+      },
+      "signal_ref": "commercialization_status:v2",
+      "skill": {
+        "bytes": 579,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/skill.md",
+        "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a"
+      },
+      "skill_contract_not_role_input": "Distinguish laboratory demonstration, certification, pilot production, first commercial shipment, and repeatable scaled sales for a distinct previously non-commercial product or technology. Positive requires evidence of real commercial delivery or repeat revenue, not a roadmap claim. Ordinary production, throughput, cost, or guidance from an already mature mine, utility, financial institution, or established service is not a commercialization milestone; when the visible evidence shows only such mature operations, return unavailable with empty evidence. Cite literal spans.\n",
+      "spec": {
+        "bytes": 1347,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/spec.json",
+        "sha256": "56325ffe9f5bed14256073f640fece46ba4957d8bb56ecf838ebae173e8d109b"
+      }
+    },
+    {
+      "scope": {
+        "execution_type": "llm",
+        "parameters": {
+          "result_required_evidence_phrases": [
+            "customer",
+            "customers",
+            "client",
+            "clients",
+            "buyer",
+            "buyers",
+            "offtake",
+            "backlog",
+            "order",
+            "orders",
+            "account",
+            "accounts",
+            "program"
+          ],
+          "routing_answer_need_phrases": [
+            "customer concentration",
+            "customer dependency",
+            "customer dependence",
+            "single customer",
+            "one customer",
+            "largest customer",
+            "major customer",
+            "revenue concentration",
+            "customer diversification",
+            "customer diversity",
+            "diversified customers",
+            "customer mix"
+          ],
+          "routing_required_research_phrases": [
+            "customer",
+            "client",
+            "buyer",
+            "offtake",
+            "backlog",
+            "order",
+            "customer program"
+          ]
+        },
+        "raw_retrieval": {
+          "lookback_days": 1095,
+          "query_terms": [
+            "customer concentration",
+            "major customer",
+            "revenue customer"
+          ],
+          "source_types": [
+            "filing",
+            "earnings_call",
+            "customer_announcement"
+          ]
+        },
+        "source_types": [
+          "filing",
+          "earnings_call",
+          "customer_announcement"
+        ],
+        "version_owned_description": "Judge whether the growth thesis depends excessively on one customer or one customer program."
+      },
+      "signal_ref": "customer_concentration:v2",
+      "skill": {
+        "bytes": 285,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/skill.md",
+        "sha256": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04"
+      },
+      "skill_contract_not_role_input": "Extract disclosed revenue, backlog, order, or deployment concentration. Negative means the growth thesis is materially dependent on one customer with limited replication evidence. Positive means adoption is demonstrably diversified. Unknown identity alone is unavailable, not neutral.\n",
+      "spec": {
+        "bytes": 1756,
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/spec.json",
+        "sha256": "30548fdbcb6d1ede05b3c5c703eaafdbaeed117e9ea1aa99a7c0667708b89c32"
+      }
+    }
+  ],
+  "group": {
+    "name": "latest_v12",
+    "refs": [
+      "financing_listing_action:v5",
+      "cash_burn_rate_elevated:v2",
+      "cash_reserves:v2",
+      "cash_to_current_liabilities_ratio:v2",
+      "gross_margin_change:v3",
+      "liquidity_runway_months:v3",
+      "net_share_retirement_yoy:v3",
+      "operating_cash_flow_margin:v2",
+      "revenue_acceleration:v2",
+      "revenue_growth_yoy:v3",
+      "guidance_acceleration:v3",
+      "max_drawdown_1y:v2",
+      "price_momentum_126d:v2",
+      "negative_word_count:v2",
+      "order_confirmation_disclosed:v3",
+      "order_quality:v2",
+      "commercialization_status:v2",
+      "customer_concentration:v2"
+    ],
+    "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+    "root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals",
+    "version": 12
+  },
+  "source_definition_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/registry.json",
+      "sha256": "41da62a18a371e11376933fb7dfe57f22440f3129467e2248a8c5d45d63ee0f4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/manifest.json",
+      "sha256": "dbe3fd99aa640e3f1108f61baba929f873b21210b228618bace6cae73a74cb4d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/spec.json",
+      "sha256": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/skill.md",
+      "sha256": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/manifest.json",
+      "sha256": "10f10404891bae1cebc4b44a374e673dd9c4f6c1055e947a714232934a1c9741"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v2/spec.json",
+      "sha256": "c8a90a2f7c4b0000c038f547efd2012414abb1c57fcf457c9bc56a9e9dd823fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/manifest.json",
+      "sha256": "9b74d18e29a24eb0658f1d1b858055c00c94c7991a4e19cde777cba88d66b41d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/spec.json",
+      "sha256": "00a4595fe13d41e8bc0e972ef99fe6f9a8e5c46988aa47a667d8bf8816b309da"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/manifest.json",
+      "sha256": "77e04b28c47e0091f7e435c4daab62c87bbdd4bdf8737c14fb545af941af8389"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v2/spec.json",
+      "sha256": "a4c30faa11f819b8f677939b56e0d1a92c2f3cfc1f798fe9d01714ffacd9c885"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/manifest.json",
+      "sha256": "0580a2fd679384ec3ba9f8315bcfec6b2b2bab219a3d089d9e2d9dd3d5d38478"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/spec.json",
+      "sha256": "7f442b11c3fb3407ad0d7726e4fb28cbaa9f33c7c76ce6b52eaa1c9331bb6f60"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/manifest.json",
+      "sha256": "480a1beb2a5f33fd4430b1df3706b3be16192b322c5fd02cb2fb93368bc1b5a7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/spec.json",
+      "sha256": "19197cadb4729a131cf3c968ccc369ee0c7c0054ca95b719f7ff247f1b75613e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/manifest.json",
+      "sha256": "4facfa3152b688d0a5d4abf8b476e2e4ecdf648953f41d36cf6a3a31d235a7db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/spec.json",
+      "sha256": "e8e10fd2221aba605e4a2128340680e5f1c86d241504105580760ace96067505"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/manifest.json",
+      "sha256": "eab48141105411350f1b188d2b2fffcec30d970ef0693755e15f2fc641fb8ad1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v2/spec.json",
+      "sha256": "cccc639ea02b2aaad172239a438bd429b950116a5d2a2d33f2aa0d677901d276"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/manifest.json",
+      "sha256": "7a2a8d5811732bc0a0c651876b84d50563863a114170ca34e434682f72488703"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/spec.json",
+      "sha256": "e2852a024a76e9b1b7f836c101ca02e09150727bbba93dbc6b1d077da76e4a1a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/manifest.json",
+      "sha256": "cf842ad4816c95724f6465b48f8505fb67e59c89452201a038b9863734601580"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/spec.json",
+      "sha256": "91acc7bf052c8a39114c5a119e6a9bec9c6093ccaf4ae65ea832d605255636cf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/manifest.json",
+      "sha256": "6743e1bf01f6bd7d06374c4337b9254f7cbf1ae7972c05908e4aca2d7cb419ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/spec.json",
+      "sha256": "27ddc4483007f747f6a0aa7d7618ad2da560151f2d12b51ef8d5847b3c83d400"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/skill.md",
+      "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/manifest.json",
+      "sha256": "2b804865a67917ef2d629d9d69cdc88603725742b4844f546952a3e0ff4bacf4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/versions/v2/spec.json",
+      "sha256": "98bd4cbc4aaf1b7fca8bfaa8d14f0167da52f4a3cd94e9caa09b3bdec1536786"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/manifest.json",
+      "sha256": "ece9671f6a208f7bdb6d18c46c7183eba02312fefd1c9051a6b2e7c6e024f7d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v2/spec.json",
+      "sha256": "5fdc0c057e2c419f84b81ce8f384768c6c138b28e47e24851aeed6164c7c8d1b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/manifest.json",
+      "sha256": "b6da592313ea25ea0d574bd3c28e0622702abe1cd75a5bb13d1a0483596d5e30"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/versions/v2/spec.json",
+      "sha256": "32213a3e163e264e5a98e085c547d872609c2c60b23fd6bd3c8cae961112d025"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/manifest.json",
+      "sha256": "6a6c54b2e1defef87e7fcff3b326648f0292ea17be5fb6e493d4e1187428b230"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v3/spec.json",
+      "sha256": "07d2fefcaeb8930c21c5c881f9fc32b3096542634e04bdacc19d40d01bce8387"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v3/skill.md",
+      "sha256": "cbe90f616917cfadd36b04ec800270772d0b5e3c6f6759e6726145d40a39e071"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/manifest.json",
+      "sha256": "be636ca0c8425768b9ffee0167c65f2e14828bf30a0bf649c8108810579975a7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/spec.json",
+      "sha256": "b604c5c835f5203be8ef191d03b474698ee26a0c805d46ff1470803c80727d70"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/skill.md",
+      "sha256": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/manifest.json",
+      "sha256": "56adf38dfa9b21ffbce593df532470e8a2a7898f144d99e44221f672be4d31f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/spec.json",
+      "sha256": "56325ffe9f5bed14256073f640fece46ba4957d8bb56ecf838ebae173e8d109b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/skill.md",
+      "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/manifest.json",
+      "sha256": "1cea9ab92ad3dd40fc23bb7cf5a9b7a8d087a2cb32e784fe54a4bec3571ffbfc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/spec.json",
+      "sha256": "30548fdbcb6d1ede05b3c5c703eaafdbaeed117e9ea1aa99a7c0667708b89c32"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/skill.md",
+      "sha256": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04"
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "GET": 0,
+  "H_init_model_calls": 0,
+  "Predictor": 0,
+  "Reflect": 0,
+  "Signal_calculations": 0,
+  "accepted_state_exact": true,
+  "actual_selection_caps": {
+    "llm_signals": 2,
+    "signals": 4
+  },
+  "all_bindings_rechecked_equal": true,
+  "bootstrap": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v2/stage/recomputed-bootstrap.json",
+    "sha256": "32ce837eaf66c7e8d20c41469ebca8120def925767a5176536fd825a580cd60e"
+  },
+  "bootstrap_exact_parent_equal": true,
+  "card_count": 17,
+  "code_files": 105,
+  "context": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v2/stage/native-select-context.json",
+    "sha256": "6a8dfb299f8839bd19b99d3b75dfae1d1601ce7a0e83e34682193a81cec892d4"
+  },
+  "core_post_select_caps": {
+    "max_llm_signals_per_round": 2,
+    "max_signals_per_round": 4,
+    "remaining_signal_calls": 1
+  },
+  "counts": {
+    "receive": 1
+  },
+  "executor_entry_attempts": 0,
+  "five_original_needs_exact": true,
+  "formal_stage_exists": false,
+  "inbox": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v2/stage/exchange/inbox/6edae26323e35b2556ea70d94629d09d71a69e1f3db8c0920827030caeb102fe.json",
+    "sha256": "cb72f040269c258cf51fc6ecb20c822a2ff309680a0a905534245f51d9b12c45"
+  },
+  "labels": 0,
+  "native_eligible_refs": [
+    "financing_listing_action:v5",
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "gross_margin_change:v3",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3",
+    "guidance_acceleration:v3",
+    "max_drawdown_1y:v2",
+    "price_momentum_126d:v2",
+    "negative_word_count:v2",
+    "order_confirmation_disclosed:v3",
+    "order_quality:v2",
+    "commercialization_status:v2",
+    "customer_concentration:v2"
+  ],
+  "native_selection_budget": 130112,
+  "native_visible_card_refs": [
+    "financing_listing_action:v5",
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "gross_margin_change:v3",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3",
+    "guidance_acceleration:v3",
+    "max_drawdown_1y:v2",
+    "price_momentum_126d:v2",
+    "negative_word_count:v2",
+    "order_confirmation_disclosed:v3",
+    "commercialization_status:v2",
+    "customer_concentration:v2"
+  ],
+  "new_author_answers": 0,
+  "outbox_exists": false,
+  "outbox_parent_exists": true,
+  "parent_files_preserved": 16,
+  "pending": {
+    "combined_case_reservation": 111032,
+    "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v2/stage/exchange/inbox/6edae26323e35b2556ea70d94629d09d71a69e1f3db8c0920827030caeb102fe.json",
+    "inbox_sha256": "cb72f040269c258cf51fc6ecb20c822a2ff309680a0a905534245f51d9b12c45",
+    "new_request_count": 1,
+    "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v2/stage/exchange/outbox/6edae26323e35b2556ea70d94629d09d71a69e1f3db8c0920827030caeb102fe.txt",
+    "prior_case_usage": 61888,
+    "request_hash": "6edae26323e35b2556ea70d94629d09d71a69e1f3db8c0920827030caeb102fe",
+    "stage": "signal_retrieval_cards",
+    "status": "pending"
+  },
+  "prepare": {
+    "code_bindings": 105,
+    "manifest_hash": "77297924bcba291ec558fbdc56869a6ba38bb5d6c56fcf77d833320e25a06cf0",
+    "new_authors": 0,
+    "prior_case_logical_usage": 61888,
+    "source_bindings": 1844
+  },
+  "request": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v2/stage/requests/6edae26323e35b2556ea70d94629d09d71a69e1f3db8c0920827030caeb102fe.json",
+    "sha256": "955b34c54e042e73347ef2efb6562acd1d86c13005c2259a6d91bd901259c812"
+  },
+  "scope": "temporary metadata/core/client preflight; no routing answer or semantic acceptance",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/scripts/run_gpre_native_routing_stage.py",
+    "sha256": "20b206364ed1a3f81beae4352fce494ed5bce7551e4e3d27146d062397e6b7a3"
+  },
+  "source_files": 1844,
+  "spec": {
+    "path": "/Users/l/Project/Recommandation/spec/scripts/run_gpre_native_routing_stage.md",
+    "sha256": "6345aa72f57fdb37716c5e47b0d875e7d5c9ca9ee9f48008a2d77969825331e6"
+  },
+  "status": "native_routing_pending_connection_passed",
+  "wire_declared_identity_leaks": []
+}

@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：GPRE accepted H_init经真实core重建/核同bootstrap、5needs及18eligible/17原生卡进入独立routing；先排误绑父exact调度锁、补真实Predictor纯预留61973，首select预算68139/请求49144，三零答temp与5安全控保留。唯一fresh首组合严格0/1：guard将共同产品名Ultra-High Protein误作residual-only，准备54598纠错超18995余量未发送，fallback把合法order partial降context；独立源审确认误拒，非作者错误/能力通过。finance partial原样经core截断至首批，entry1/0prepare/0计算；原5needs完整。1actor/0模型纠错，2journal的165630准备量与111032真实nativeusage分开，metadata无完整事件流的局限保留。1949绑定/原32不变、0GET/外部LLMAPI/旧stage恢复；下一先修共享对象与facet家族，不假定六财务结果被选择或被消费。
+
 - 2026-10-21：同GPRE qualified1780来源以default手工研究Plan运行真实core bootstrap/H_init；源cover身份/原文与171bars核心控制保留、4请求17投影及news/partial缺口进入请求。先封source-only oracle与1930绑定，完整临时连接后正式一次prepare；目录名身份泄露风险由中性路径逐字节handoff隔离。fresh独立subagent首答1/1、0纠错，raw/cache/parsed/persist全部同，4引用/5真实缺口need独立终审通过，61888逻辑预留。保import与RuntimeLimits scaffold前置错误、两审计harness错误及修正，未改答/产品/旧分母；3安全控制/root亲跑及来源/原14保真。只建立本案accepted初始状态；0routing/Signal/Reflect/Predictor/GET/外部LLMAPI，未恢复/关闭MVP；下一真实need路由与精确版本归属。
 
 - 2026-10-21：正确FIBK IR四次导航（3web+1browser）静态无历史条目/动态读超时后停止，不作无事件推论，0/26时间proof不改。转查已验GPRE六结果到Reflect的实际batch wire：独立gold先封，首空continue无need及次纠错配置0均前置拒/0journal，原失败保留；先纯synthetic五项完整原生控制及独立亲跑，再合法finalize空序列化载体/config1（实际0执行）唯一capture。1journal/36318逻辑预留，6结果/11operand/21原literal/60绑定独立全核，0cache/receive/模型/labels/Signal；只关闭本地序列化连接，非acceptedprior/H_init/F7或收益，原9财务分母/1literal失败/2policyunknown保持。下一真实GPRE bootstrap/H_init与路由，不造状态或为未触发guard加runner；原所有旧stage/用户改动不变。

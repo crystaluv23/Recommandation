@@ -48,7 +48,11 @@ GPRE六strict-pass结果现经真实Reflect batch/egress到唯一journal，6值/
 [GPRE原生初始化](../reports/gpre-native-initial-20261021.md)现以同1780来源view/default手工研究Plan真实bootstrap，
 核心计算anchor/171bars指标、4请求17投影保partial/news缺口；fresh独立subagent首答1/1、0纠错，61888逻辑预留。
 原答→cache→解析→落盘逐字段同，4引用/5needs独立源审通过；1930绑定及原14保留。中性路径交接避免目录名泄露身份。
-仅本案H_init，尚无routingownership/Reflect消费/恢复；上述序列化阶段的空carrier不追认为研究prior。
+仅本案H_init；路由进展见下，六财务结果仍未fresh Reflect消费/恢复，序列化空carrier不追认为研究prior。
+[GPRE真实路由](../reports/gpre-native-routing-20261021.md)：18eligible/17原生卡、完整旧state/5needs进入fresh请求；严格首组合0/1。
+shared产品名UHP被误当residual-only，54598纠错请求超过18995余量未发送，原生fallback将合法order partial降context。
+融资partial意图保真进入core首批，entry1/prepare与计算0，未回答问题。1作者/0模型纠错；2journal准备总165630不等实际usage111032。
+已补真实Predictor61973预留→选择68139、排父唯一临时锁；1949绑定/原32保真。下一修共享对象与未答facet误判，不扩完整运行。
 FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/unknown不等于无事件。
 [案例边界](../reports/case-scope-and-blind-boundary-20261020.md)：fresh40=16Anchor+8Random+16Discovery，Fast24；
 旧48无清单支持，不推剩余8为LockedTest。失败分母、标签、身份屏蔽与LockedTest保持。
@@ -62,7 +66,7 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
 - [S5测试作者](../reports/s5-fixture-authoring-contract-20261021.md)：共享CIK/literal/schema义务进入独立tests请求，
   非string content伪unavailable漏洞已修；fresh role78首答0纠错、原生双schema正控2/2、20files恢复保真。
   14241逻辑预留，仅固定测试作者能力，非新测量Mining/实现/发布/复用或全S5。
-- [F4卡片](../reports/signal-card-measurement-scope-20261020.md)已接精确measurement_scope，独立6及119关联通过；fresh路由行为未验。
+- [F4卡片](../reports/signal-card-measurement-scope-20261020.md)已接精确measurement_scope，独立6及119关联通过；fresh路由现暴露共享对象误拒，整体未关。
   [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md)新合成控制3/3窄通过，原fixed-FY/basic0/3保留。
 - [orientation](../reports/reviewed-orientation-stage-20261020.md)1proposer+3H_init原生接受、42files恢复；
   [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)apply→Reflect partial→实际Predictor/sink、52files恢复，
@@ -83,7 +87,7 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   value/val、期间/单位/冲突及派生关系连接已修，原0671现在19facts逐literal核真；102关联/独立21×2及日期7控过。
   H1改共享row级合法pair存在性，205关联及独立控制过；实际dev8/qualified1780的24目录项/计数未变，观察增益0。
   legacy Fact leaf丢taxonomy的真实错配仍open；可选taxonomy字段/原文索引方案待答，不默改schema或启动Mining能力stage。
-- 下一冻结同GPRE已接受H_init/手工Plan/精确Registry的真实routing，源审need匹配与精确版本后才可谈owned Reflect消费；不预定选金融Signal、不重跑已完成F6。
+- 下一按实际原答/反馈修routing共享对象误判，保原0/1与精确finance首批；先离线原失败/变体/真overclaim反例，不重入completed stage或重置预算。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
   有界LLM阅读接口、gross_margin/revenue_acceleration期间定义也待设计决策；不由现有结果倒推答案。
 - 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。

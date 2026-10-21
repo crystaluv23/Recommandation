@@ -1,0 +1,301 @@
+{
+  "accepted_seed": {
+    "bootstrap": {
+      "bytes": 650242,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/bootstrap.json",
+      "sha256": "32ce837eaf66c7e8d20c41469ebca8120def925767a5176536fd825a580cd60e"
+    },
+    "completion": {
+      "bytes": 578,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/completion.json",
+      "sha256": "58082055515d8809e51a0ba897378cc9fb39c4fc61c426867c514c44c0ab5ec0"
+    },
+    "independent_actual_review": {
+      "bytes": 11855,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/independent-preflight/actual-initial-review.json",
+      "sha256": "455ca111aedd1f8e107de32b023f51ebb4003e3650bdd3ad980f8b15005090d2"
+    },
+    "initial_state": {
+      "bytes": 6578,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/initial_state.json",
+      "sha256": "9fdacbae3b14e3cf2cb42de3acabcf20ae584d4a8b18e11414b944f11480cab9"
+    },
+    "parsed_step": {
+      "bytes": 6489,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/parsed_step.json",
+      "sha256": "563a9f29cbdfc86517efb32ee9cead0c04be3cac4326027d60405cf8e914012c"
+    }
+  },
+  "capability_basis": {
+    "bytes": 57911,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/exact-version-capability-basis.json",
+    "sha256": "bc2e923420af3c9c50821a95c1ea73ee5bc02d8d365418c43b82b4e69ba085e5"
+  },
+  "case": {
+    "company_id": "cik_0001309402",
+    "prediction_time": "2025-05-30T00:00:00+00:00"
+  },
+  "common_acceptance": [
+    "Use only actual supplied eligible exact-version cards. Full original18definitions are authoritypool, not proof all18 will be visible after native hard applicability gates.",
+    "Preserve actual accepted state/needs order/occurrences; target_need_indices indexes one originalneed. At most one answer_need pertarget; contextual reasons may associate atmostone but keep answer_scope/residual null and never answer need.",
+    "Reason must fit description AND actual measurement_scope callable object/period/unit/comparison. Latestcomparable does not grant requestedarbitraryperiod/ending/prospectivesharebasis; unknown docs cannot be deemed missing issuerfacts.",
+    "All five needs are compound. No current card clearly covers allfacets; do not claim full on mere topicwords. A legitimate partial supplies only uncoveredresidualfacets (<=300chars), cutoffbounded and not anotherneed or cosmeticfullneedcopy. Selectionreason must onlydescribe answeredfacet.",
+    "Enforce supplied routing_required_research_phrases /excludedtags and exact targeted routing_answer_need_phrases. New prose cannot invent the required phrase or broaden capability. Ordinary costrestructuring is not debtfinancing solely by token overlap.",
+    "No_match is legitimate for an unsupportedfacet/wholecapability, or when actual eligiblecards add no usefulevidence. Emptybatch must respect any native explicit-match requirement; blanket absence of all useful capabilities is not supported merely because some facets lack exactcards.",
+    "Do not prescribe a particular financialSignal, batch or answer. Any genuinely useful exactversion/context/partial selection can satisfy routing capability; prior six financial strictpasses are neither injected nor mandatory.",
+    "Scope is intendedcapability, not actual dataavailability or completedneed. Qualifiedsourcepresence/17BasicInfocardspartial and newsunresolved remain limited; F5boundedreading unresolved. Domainunavailable must not become negativefact or deny siblingcapability.",
+    "Previous results/fingerprints/contexttags should be empty for realfirstselection; original accepted H_init fields are context not newissuer evidence. NoSignalresult computed/reused in this stage.",
+    "No hidden futurefact/label/identity/oracle; maskedactualwire must inverse to nativecontext/cards/needs, and neutralactorhandoff must retainbyteexactrequest/raw.",
+    "Native selectioncaps4total/2LLM, original priorcall1/tokens61888 plus newlogicaluse. Casecap256000 =>194112remaining, retain nativefinalreserve64000 => firstselectrequestbudget130112, stricter thanouter131072. Correction uses further actualremaining; no borrowed/resetallowance. At most2newauthors/1nativecorrection; native scaffold min5 only structural.",
+    "Stop at raw/nativeparsedselection persistence before preparation/execution/Reflect/Predictor/labels/sourcequery/Registryfreshfreeze. No directsourcecapability or downstreamF7 claim from catalog."
+  ],
+  "fixed_scope": "Native first selection only; five original need occurrences retained. No Signal execution or result/Reflect inference.",
+  "frozen_at_utc": "2026-10-21T00:50:19.844618+00:00",
+  "need_matching_boundaries": [
+    {
+      "facets": [
+        "disclosed savings targets",
+        "implementation dates",
+        "cash restructuring costs",
+        "production effects of Fairmont idling/corporate restructuring",
+        "already-realized savings or operating support by cutoff"
+      ],
+      "index": 0,
+      "need": "What savings targets, implementation dates, cash restructuring costs and production effects of the Fairmont idling and corporate restructuring had been disclosed by prediction time, and what realized savings or operating evidence already supported those targets?",
+      "not_fully_covered": "No available single card is an initiative-specific savings/cost/implementation/production/realized-benefit extractor. Retain unmeasured facets; no generic financial success implies full.",
+      "potential_matches": [
+        {
+          "basis": "Can compare explicit current/prior guidance relevant to savings/cost/production outlook, not execute restructuring or establish realized benefits. Exact answer_need phrase gate still applies; need0 has no guidance/outlook/forecast literal.",
+          "kind": "context_or_conditional_partial",
+          "refs": [
+            "guidance_acceleration:v3"
+          ]
+        },
+        {
+          "basis": "Aggregate realized economics may test turnaround, but do not identify initiative-specific savings/implementation costs/production causal effects. Prior H_init already cites Q1 gross margin; selection must explain genuinely useful extra/comparable evidence.",
+          "kind": "context",
+          "refs": [
+            "gross_margin_change:v3",
+            "operating_cash_flow_margin:v2",
+            "revenue_growth_yoy:v3"
+          ]
+        },
+        {
+          "basis": "Corporate cost restructuring is not automatically debt/financing restructuring. Its description/skill concerns capital/runway/dilution/tradability; shared restructuring token alone does not answer cost-saving implementation.",
+          "kind": "applicability_only_unless_capital_action",
+          "refs": [
+            "financing_listing_action:v5"
+          ]
+        }
+      ]
+    },
+    {
+      "facets": [
+        "UHP disclosed sales volume",
+        "realized premiums",
+        "incremental production costs",
+        "customer qualification progress",
+        "binding offtake commitments",
+        "then-published near-horizon milestones"
+      ],
+      "index": 1,
+      "need": "What Ultra-High Protein sales volumes, realized premiums, incremental production costs, customer qualification progress and binding offtake commitments had been disclosed by prediction time, including any then-published milestones capable of changing earnings expectations within the forecast horizon?",
+      "not_fully_covered": "Even valid offtake/commercialization answer leaves product volume/premium/cost/qualification or other untouched facets; no card declares full compound coverage.",
+      "potential_matches": [
+        {
+          "basis": "Directly addresses newly disclosed binding offtake/order and namedcounterparty/program with materialvalue/volume/schedule in180daywindow; not product sales economics/qualification/profitability. No source is presumed to contain such order.",
+          "kind": "potential_partial",
+          "refs": [
+            "order_confirmation_disclosed:v3"
+          ]
+        },
+        {
+          "basis": "Judges binding nature/materiality/timing/cancellation/revenue conversion if its required research phrase eligibility is actually satisfied; cannot recreate card omitted by hard gate.",
+          "kind": "context_or_conditional_partial",
+          "refs": [
+            "order_quality:v2"
+          ]
+        },
+        {
+          "basis": "Could test transition to repeatable commercialsales for a previously noncommercial product; product mention alone does not establish that precondition. Mature ethanol output is excluded; cannot claim UHP previously noncommercial from name alone.",
+          "kind": "assess_applicability_or_potential_partial",
+          "refs": [
+            "commercialization_status:v2"
+          ]
+        },
+        {
+          "basis": "Customer/program dependency differs from qualification progress, realized premiums or binding offtake existence. Exact answer_need phrase gate not satisfied merely by customer/offtake topic.",
+          "kind": "context_only",
+          "refs": [
+            "customer_concentration:v2"
+          ]
+        }
+      ]
+    },
+    {
+      "facets": [
+        "specific strategic alternatives",
+        "transaction terms",
+        "binding commitments",
+        "execution obstacles",
+        "expected decision dates disclosed by cutoff",
+        "support for realizable common shareholder value within horizon"
+      ],
+      "index": 2,
+      "need": "By prediction time, what specific strategic alternatives, transaction terms, binding commitments, execution obstacles and expected decision dates had been disclosed, and what evidence could support realizable value for common shareholders within the forecast horizon?",
+      "not_fully_covered": "No exact strategic-alternatives/transactionvaluation/decisiontimetable extractor is declared. No_match for this need is legitimate; review disclosure alone cannot establish terms or executable deal.",
+      "potential_matches": [
+        {
+          "basis": "May be useful to financing/dilution/runway path if actual capitalaction fits; generic strategicreview/M&A alternatives/equityvaluation are not interchangeable with binding financing/listing events. Current need2 does not contain its strict answer_need phrases.",
+          "kind": "context_or_restricted_capital_facet",
+          "refs": [
+            "financing_listing_action:v5"
+          ]
+        }
+      ]
+    },
+    {
+      "facets": [
+        "unrestricted cash",
+        "operating cash burn",
+        "committed capex",
+        "debt maturities",
+        "covenant headroom",
+        "potential equity issuance obligations",
+        "terms versus milestonefunding/materialdilution"
+      ],
+      "index": 3,
+      "need": "What unrestricted cash, operating cash burn, committed capital spending, debt maturities, covenant headroom and potential equity issuance obligations were disclosed by prediction time, and did those terms allow the proposed turnaround to reach its milestones without material dilution?",
+      "not_fully_covered": "All seven facets cannot be answered by one generic cash/ratio/runway/action card. Partial residual must preserve unrelated capex/covenants/maturity/issuance/funding facets as applicable; future dilution need cannot be closed by historical shares.",
+      "potential_matches": [
+        {
+          "basis": "Latest SEC cash/equivalents instant in reportedcurrency; does not certify unrestricted cash, commitments/covenants/maturities or dilution. Current unrestricted cash words alone do not satisfy its exact routing_answer_need_phrases.",
+          "kind": "context_or_scope_limited",
+          "refs": [
+            "cash_reserves:v2"
+          ]
+        },
+        {
+          "basis": "Latest negative OCF duration divided by closest same-currency cash at/beforeend (nonnegativeOCF=>zero). Can address reported burn relationship, not capex/debt/covenants/futureability or unrestricted qualification.",
+          "kind": "potential_partial",
+          "refs": [
+            "cash_burn_rate_elevated:v2"
+          ]
+        },
+        {
+          "basis": "Cash/negativeOCF monthly rate using roundedreportedmonths is static implied runway, not debt-maturity/covenant/dilution commitments or comprehensive fundedmilestones.",
+          "kind": "potential_partial_or_context",
+          "refs": [
+            "liquidity_runway_months:v3"
+          ]
+        },
+        {
+          "basis": "Exact debt maturities phrase can establish intended ownership only if reason covers actual financing/maturity/issuance facet. Declared capability covers capitalactions/runway/dilution/tradability, not entire liquidity/capex/covenant analysis.",
+          "kind": "potential_partial",
+          "refs": [
+            "financing_listing_action:v5"
+          ]
+        },
+        {
+          "basis": "Cash/currentliabilitiesratio is not contractual maturity/headroom; OCF/revenue is not whole fundingplan; weightedaverage YoY sharechange is historical dilution, not futureequityobligations.",
+          "kind": "context",
+          "refs": [
+            "cash_to_current_liabilities_ratio:v2",
+            "operating_cash_flow_margin:v2",
+            "net_share_retirement_yoy:v3"
+          ]
+        }
+      ]
+    },
+    {
+      "facets": [
+        "quantified cash-earnings sensitivity to ethanol prices",
+        "corn costs",
+        "energy costs",
+        "hedging",
+        "lowcarbon incentives",
+        "already-published guidance/contracted economics supporting forward marginrecovery"
+      ],
+      "index": 4,
+      "need": "What contemporaneous issuer disclosures quantified sensitivity of cash earnings to ethanol selling prices, corn and energy costs, hedging and low-carbon incentives, and what already-published guidance or contracted economics could support a margin recovery during the forecast horizon?",
+      "not_fully_covered": "No declared multi-factor sensitivity/cashhedging/incentive model. No card has full compoundneed capability.",
+      "potential_matches": [
+        {
+          "basis": "Need explicitly contains guidance. Must actually compare explicit current/prior outlook; can address guidance change facet only, not automatically multiparameter sensitivity or contractedeconomics.",
+          "kind": "potential_partial",
+          "refs": [
+            "guidance_acceleration:v3"
+          ]
+        },
+        {
+          "basis": "Realized aggregate financial ratios/growth test economic trajectory, not commodity/cost/hedge/incentive sensitivities or published forecast commitments. Their intended scalar period must match actual executingcontract, not spec prose alone.",
+          "kind": "context",
+          "refs": [
+            "gross_margin_change:v3",
+            "operating_cash_flow_margin:v2",
+            "revenue_growth_yoy:v3",
+            "revenue_acceleration:v2"
+          ]
+        },
+        {
+          "basis": "If useful disclosed contract economics are a qualifying new order/offtake, can address that narrow facet only; cannot establish cashsensitivity to everydriver.",
+          "kind": "context_or_narrow_contract_facet",
+          "refs": [
+            "order_confirmation_disclosed:v3"
+          ]
+        }
+      ]
+    }
+  ],
+  "preserved_unknowns": {
+    "bounded_reading": "Actual matched source presence is not proof whole operands read.",
+    "gross_margin_change_and_revenue_acceleration": "Actual callable disclosure is visible authority for routing, while original research periodpolicy ambiguity remains open, not silently resolved by selecting a version.",
+    "original_financial9_verdict": "6strictpass/1priorliteralversionfailure/2periodpolicyunknown unchanged; no newexecution, oracleadjustment or anyofcredit.",
+    "routing_no_match": "No_match preserves missingneed; does not prove no issuerdisclosure or researchproblem solved."
+  },
+  "required_next_proof": [
+    "actualnativefirstselect context includes exactacceptedstate/needs and realcards/measurement_scope registration",
+    "actualremainingbudget130112 not outer131072 alone",
+    "maskedreverse/neutralhandoff/privacy and privateoracleisolation",
+    "rawanswer→nativeparse/typedcorrection/mechanicaldelta→selectionpersist underfixedlimits",
+    "oldcompletedinitialstage unchanged; no rerunH_init orsource/Signal/Reflectexecution"
+  ],
+  "reviewer_effects": {
+    "GET": 0,
+    "LabelStore": 0,
+    "Signal": 0,
+    "Store": 0,
+    "formalprepare": 0,
+    "models": 0,
+    "nativehelpers": 0
+  },
+  "schema": "gpre-native-routing-independent-source-oracle-v1",
+  "source_bindings": [
+    {
+      "bytes": 1146948,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/plan.json",
+      "sha256": "4d392d1ba3a326a05b2fda304cbd5a6c8f266e7ae98672df852ca404249e3403"
+    },
+    {
+      "bytes": 229762,
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "bytes": 195539,
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "29f1b3c057dc825ca77bed377a3f3be329c9eb6914ad5ad24774f88281d8aa07"
+    },
+    {
+      "bytes": 329921,
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9"
+    },
+    {
+      "bytes": 6181,
+      "path": "/Users/l/Project/Recommandation/reports/gpre-native-initial-20261021.md",
+      "sha256": "942bee0eb7d65194cdc23e22291fd9e7088750bfaf0a6901e50074ed94a3b8b0"
+    }
+  ],
+  "timing": "Before any new native routing answer; reviewer has not read routing request/capture or role output. Only accepted H_init/original definitions and current production source read."
+}

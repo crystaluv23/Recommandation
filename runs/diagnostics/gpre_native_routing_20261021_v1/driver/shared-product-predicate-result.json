@@ -1,0 +1,326 @@
+{
+  "Signal_execution": 0,
+  "actual_shared_phrase": "ultra high protein",
+  "completed_stage_files_before_equal_after": 19,
+  "network": 0,
+  "new_native_routing_runs": 0,
+  "new_role_answers": 0,
+  "raw": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/exchange/outbox/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.txt",
+    "sha256": "a388947bb9fbcabee75ee4445497a15545bf44649fc8fa4ce26e7554c794be91"
+  },
+  "reason": "Check Ultra-High Protein binding offtake commitments for named counterparties or programs, delivery schedules and the existing $1M or 1000-unit materiality threshold.",
+  "residual": "Using disclosures available by 2025-05-30, establish Ultra-High Protein sales volumes, realized premiums, incremental production costs, customer qualification progress, earnings-relevant milestones, and any still-effective commitments disclosed before the 180-day window.",
+  "scope": "single pure helper call, not parser/model/native-stage replay",
+  "source": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+    "sha256": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f"
+  },
+  "source_before_equal_after": true,
+  "target": "What Ultra-High Protein sales volumes, realized premiums, incremental production costs, customer qualification progress and binding offtake commitments had been disclosed by prediction time, including any then-published milestones capable of changing earnings expectations within the forecast horizon?",
+  "trace": [
+    {
+      "locals": {
+        "answered": [],
+        "clause_words": [
+          [
+            "high",
+            "protein",
+            "sale",
+            "ultra",
+            "volume"
+          ],
+          [
+            "premium",
+            "realized"
+          ],
+          [
+            "cost",
+            "incremental",
+            "production"
+          ],
+          [
+            "binding",
+            "commitment",
+            "customer",
+            "offtake",
+            "prediction",
+            "progress",
+            "qualification",
+            "time"
+          ],
+          [
+            "capable",
+            "changing",
+            "earning",
+            "expectation",
+            "forecast",
+            "horizon",
+            "including",
+            "milestone",
+            "published",
+            "then",
+            "within"
+          ]
+        ],
+        "clauses": [
+          "What Ultra-High Protein sales volumes",
+          "realized premiums",
+          "incremental production costs",
+          "customer qualification progress and binding offtake commitments had been disclosed by prediction time",
+          "including any then-published milestones capable of changing earnings expectations within the forecast horizon?"
+        ],
+        "left_topic_words": [
+          "check",
+          "ultra",
+          "high",
+          "protein",
+          "binding",
+          "offtake",
+          "commitment",
+          "named",
+          "counterparty",
+          "program",
+          "delivery",
+          "schedule",
+          "existing",
+          "1m",
+          "unit",
+          "materiality",
+          "threshold"
+        ],
+        "left_words": [
+          "check",
+          "ultra",
+          "high",
+          "protein",
+          "binding",
+          "offtake",
+          "commitment",
+          "named",
+          "counterparty",
+          "program",
+          "delivery",
+          "schedule",
+          "existing",
+          "1m",
+          "1000",
+          "unit",
+          "materiality",
+          "threshold"
+        ],
+        "residual_topics": [
+          "available",
+          "before",
+          "commitment",
+          "cost",
+          "customer",
+          "disclosure",
+          "earning",
+          "effective",
+          "establish",
+          "high",
+          "incremental",
+          "milestone",
+          "premium",
+          "production",
+          "progress",
+          "protein",
+          "qualification",
+          "realized",
+          "relevant",
+          "sale",
+          "still",
+          "ultra",
+          "using",
+          "volume",
+          "window"
+        ],
+        "retained": [
+          [
+            "ultra",
+            "high",
+            "protein",
+            "sale",
+            "volume"
+          ],
+          [
+            "realized",
+            "premium"
+          ],
+          [
+            "incremental",
+            "production",
+            "cost"
+          ],
+          [
+            "customer",
+            "qualification",
+            "progress",
+            "binding",
+            "offtake",
+            "commitment",
+            "prediction",
+            "time"
+          ],
+          [
+            "including",
+            "then",
+            "published",
+            "milestone",
+            "capable",
+            "changing",
+            "earning",
+            "expectation",
+            "within",
+            "forecast",
+            "horizon"
+          ]
+        ],
+        "right_topic_words": [
+          "using",
+          "disclosure",
+          "available",
+          "establish",
+          "ultra",
+          "high",
+          "protein",
+          "sale",
+          "volume",
+          "realized",
+          "premium",
+          "incremental",
+          "production",
+          "cost",
+          "customer",
+          "qualification",
+          "progress",
+          "earning",
+          "relevant",
+          "milestone",
+          "still",
+          "effective",
+          "commitment",
+          "before",
+          "window"
+        ],
+        "right_words": [
+          "using",
+          "disclosure",
+          "available",
+          "2025",
+          "05",
+          "30",
+          "establish",
+          "ultra",
+          "high",
+          "protein",
+          "sale",
+          "volume",
+          "realized",
+          "premium",
+          "incremental",
+          "production",
+          "cost",
+          "customer",
+          "qualification",
+          "progress",
+          "earning",
+          "relevant",
+          "milestone",
+          "still",
+          "effective",
+          "commitment",
+          "before",
+          "180",
+          "day",
+          "window"
+        ],
+        "scope_words": [],
+        "topical_clauses": [
+          [
+            "ultra",
+            "high",
+            "protein",
+            "sale",
+            "volume"
+          ],
+          [
+            "realized",
+            "premium"
+          ],
+          [
+            "incremental",
+            "production",
+            "cost"
+          ],
+          [
+            "customer",
+            "qualification",
+            "progress",
+            "binding",
+            "offtake",
+            "commitment",
+            "prediction",
+            "time"
+          ],
+          [
+            "including",
+            "then",
+            "published",
+            "milestone",
+            "capable",
+            "changing",
+            "earning",
+            "expectation",
+            "within",
+            "forecast",
+            "horizon"
+          ]
+        ],
+        "unique_words": [
+          [
+            "high",
+            "protein",
+            "sale",
+            "ultra",
+            "volume"
+          ],
+          [
+            "premium",
+            "realized"
+          ],
+          [
+            "cost",
+            "incremental",
+            "production"
+          ],
+          [
+            "binding",
+            "commitment",
+            "customer",
+            "offtake",
+            "prediction",
+            "progress",
+            "qualification",
+            "time"
+          ],
+          [
+            "capable",
+            "changing",
+            "earning",
+            "expectation",
+            "forecast",
+            "horizon",
+            "including",
+            "milestone",
+            "published",
+            "then",
+            "within"
+          ]
+        ]
+      },
+      "return": "ultra high protein"
+    }
+  ]
+}

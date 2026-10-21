@@ -1,0 +1,209 @@
+{
+  "actual_old_H_init_state_usage_metadata_plan_bootstrap_exact": true,
+  "actual_visible_cards": [
+    {
+      "callable_status": null,
+      "measurement_scope_exact": true,
+      "signal_ref": "financing_listing_action:v5"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "cash_burn_rate_elevated:v2"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "cash_reserves:v2"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "cash_to_current_liabilities_ratio:v2"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "gross_margin_change:v3"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "liquidity_runway_months:v3"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "net_share_retirement_yoy:v3"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "operating_cash_flow_margin:v2"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "revenue_acceleration:v2"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "revenue_growth_yoy:v3"
+    },
+    {
+      "callable_status": null,
+      "measurement_scope_exact": true,
+      "signal_ref": "guidance_acceleration:v3"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "max_drawdown_1y:v2"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "price_momentum_126d:v2"
+    },
+    {
+      "callable_status": "registered",
+      "measurement_scope_exact": true,
+      "signal_ref": "negative_word_count:v2"
+    },
+    {
+      "callable_status": null,
+      "measurement_scope_exact": true,
+      "signal_ref": "order_confirmation_disclosed:v3"
+    },
+    {
+      "callable_status": null,
+      "measurement_scope_exact": true,
+      "signal_ref": "commercialization_status:v2"
+    },
+    {
+      "callable_status": null,
+      "measurement_scope_exact": true,
+      "signal_ref": "customer_concentration:v2"
+    }
+  ],
+  "anonymous_actualwire": "No issuername/ticker/padded-unpaddedCIK/accession/URL/website/privateoracle. Userneeds/context andcards equal canonical directly, noopaqueidentitytoken onthis input; no exercised inverse-remapbranch claimed.",
+  "bootstrap": {
+    "bytes": 650242,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/recomputed-bootstrap.json",
+    "sha256": "32ce837eaf66c7e8d20c41469ebca8120def925767a5176536fd825a580cd60e"
+  },
+  "budget": {
+    "Predictor_reserve": 61973,
+    "combined_case_reservation": 111032,
+    "finalization_reserve": 64000,
+    "native_chain_available": 68139,
+    "new_actual_request": 49144,
+    "prior": 61888,
+    "remaining_native_chain": 18995
+  },
+  "capability_basis": {
+    "bytes": 57911,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/exact-version-capability-basis.json",
+    "sha256": "bc2e923420af3c9c50821a95c1ea73ee5bc02d8d365418c43b82b4e69ba085e5"
+  },
+  "contract": {
+    "bytes": 923,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/contract.json",
+    "sha256": "43a4fd3cfaadfbba804fedb1e26fc181efaa9dd095d292e8bf0f9cad964e8e8c"
+  },
+  "counts": {
+    "GET": 0,
+    "H_init_model": 0,
+    "LabelStore": 0,
+    "Predictor_model": 0,
+    "Signalcalculation": 0,
+    "executorentry": 0,
+    "native_pending_receive_attempt": 1,
+    "newauthoredanswers": 0,
+    "reviewer_Store": 0,
+    "reviewer_native": 0,
+    "routingjournals": 1
+  },
+  "earlier_diagnostics_retained": [
+    "v1 originalsource-lockmisbinding and missingPredictorestimator; v2 lockfix but stillno realestimator. Neither isfreshsemantic evidence; no reentry ofthose roots."
+  ],
+  "final_script": {
+    "bytes": 19121,
+    "path": "/Users/l/Project/Recommandation/scripts/run_gpre_native_routing_stage.py",
+    "sha256": "6a5866d010949cd135c0ba6ab4f702ac9d578fd2c00bb15d8d1e6c1952237bef"
+  },
+  "final_spec": {
+    "bytes": 4826,
+    "path": "/Users/l/Project/Recommandation/spec/scripts/run_gpre_native_routing_stage.md",
+    "sha256": "c8c8c8557eb504ee8ff8faf0bf5c65a29f1559e0f17c17b9b5cf8948c01e5c4d"
+  },
+  "frozen_current_equal": {
+    "code": 105,
+    "source": 1844
+  },
+  "inputs": {
+    "bytes": 692438,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/inputs.json",
+    "sha256": "41397c612732ca3e81a71ec15758fcd80b770827fcf750d056650732f189e8d5"
+  },
+  "journal": {
+    "bytes": 48783,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/requests/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+    "sha256": "43dc70285fe6a8cf3fd5f636fa3b6c394da09727f4a6114f252def6a51817bd6"
+  },
+  "manifest": {
+    "bytes": 464234,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/manifest.json",
+    "sha256": "f4a431115206060d782d7730321bbcc4a1cd10161ee2ce8ea05170585ac678f4"
+  },
+  "native_Predictor_reservation": {
+    "bytes": 208,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/native-predictor-reservation.json",
+    "sha256": "44586883a92fdb61f0dbf35b1b6e60e0643a36722f8f4e1e192daad47a02a6bb"
+  },
+  "native_eligible_refs": 18,
+  "native_inbox": {
+    "bytes": 47479,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/exchange/inbox/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+    "sha256": "7404e51bc9b498d408b5fb90b6085ee7acb7d5bb068d981652a7628751656ff9"
+  },
+  "native_preflight": {
+    "bytes": 5247,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/result.json",
+    "sha256": "a69e6d62dbaeb3a7a9bac173e8a2238a6922da822144ac4b0f5185173c589dbe"
+  },
+  "native_select_context": {
+    "bytes": 9487,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/native-select-context.json",
+    "sha256": "2a11a7ade8ccd2b6d15fa0be5af4cde4a331d7284f6ff87a6881e16afac743f2"
+  },
+  "omitted_card": {
+    "reason": "None of its exactrequiredresearchphrases occurs in originalneeds/context. Hardapplicabilityfilter, not missing issuerdata or unsupported source.",
+    "signal_ref": "order_quality:v2"
+  },
+  "parent_artifacts_bound_except_one_exact_operationallock": 15,
+  "preanswer_budget_and_scope_amendment": {
+    "bytes": 2858,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-budget-amendment.json",
+    "sha256": "f34cc8b2da4a3f8cecb6ed3851b75312b3004573b25097c5329b8d5c41e0f086"
+  },
+  "reviewed_at_utc": "2026-10-21T00:59:58.208116+00:00",
+  "scope_and_not_yet_proven": [
+    "Noactualroutinganswer, acceptedselection, nativeadoptedbatch or semanticneedcoverage yet.",
+    "Nonemptycoreadoption/entryboundary only code-reviewed, not exercised inthiszeroanswerpreflight; lateractual must distinguishacceptedintents andactualfirstbatch.",
+    "Rootmustneutralbytecopy actualinbox/raw, dispatchfreshforknone onlynativeinbox; formalroot notyetexists.",
+    "Neither sourcepresence nor routingcapability provesexecutedfacts, evidencefullness, requestedperiodpolicy, F5reading or F7consumption. Original9verdict/unknowns remain unchanged."
+  ],
+  "source_oracle": {
+    "bytes": 18208,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/independent-preflight/pre-answer-routing-oracle.json",
+    "sha256": "9ba88dc139e18e0e50142ea68f17cfd73e76de56ae19dcf1f6d4c51facd930df"
+  },
+  "status": "PASS_FORMAL_PREPARE_READY_NO_ROUTING_ANSWER",
+  "visibility_limits": [
+    "Routingsees label-freeacceptedcontext claims, not BasicInfo17rawprojections or sourcecatalogbody; no six financialresults injected.",
+    "All12 deterministicfunctions are registered withexactcallablecontract/configuredparameters. FiveLLMcards visible; LLMonlyscope.type, not actualskillbody.",
+    "Previousresult/fingerprint/contexttags empty, no fabricatedprior or outcomeprofile."
+  ]
+}

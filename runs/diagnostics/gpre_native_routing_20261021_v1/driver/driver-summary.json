@@ -1,0 +1,166 @@
+{
+  "GET": 0,
+  "Predictor_model": 0,
+  "Reflect": 0,
+  "Signal_calculations": 0,
+  "all_final_bindings_rechecked_equal": true,
+  "attempts": [
+    {
+      "code": {
+        "path": "/Users/l/Project/Recommandation/scripts/run_gpre_native_routing_stage.py",
+        "sha256": "5326cb06c8da0e183bc7db7373cc97dc52dc5cf0f4f96af34919d54802d398c3"
+      },
+      "code_bindings": 105,
+      "limitation": "Included exact parent operational lock; no real Predictor reservation estimator.",
+      "log": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v1.log",
+        "sha256": "08d6e44f2bf4726fa8725bd1d749de908d17c45ef3562a90c972985884f5b34c"
+      },
+      "new_author_answers": 0,
+      "request_hash": "6edae26323e35b2556ea70d94629d09d71a69e1f3db8c0920827030caeb102fe",
+      "result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v1/result.json",
+        "sha256": "d194c61d3b51926b0bb8a0b5f3bf19c6bd2f52929532ae5cb181910c3ce0a595"
+      },
+      "source_bindings": 1845,
+      "spec": {
+        "path": "/Users/l/Project/Recommandation/spec/scripts/run_gpre_native_routing_stage.md",
+        "sha256": "7af7a97b4c5f43af47894709dc3d735272f4fea356104f418d172604507e0883"
+      },
+      "status": "native_routing_pending_connection_passed",
+      "version": 1
+    },
+    {
+      "code": {
+        "path": "/Users/l/Project/Recommandation/scripts/run_gpre_native_routing_stage.py",
+        "sha256": "20b206364ed1a3f81beae4352fce494ed5bce7551e4e3d27146d062397e6b7a3"
+      },
+      "code_bindings": 105,
+      "limitation": "Operational lock fixed; no real Predictor reservation estimator.",
+      "log": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v2.log",
+        "sha256": "2a48edbb5bb0e0e779433afae4335059aa80ed173441ae11f3f13bec75575b00"
+      },
+      "new_author_answers": 0,
+      "request_hash": "6edae26323e35b2556ea70d94629d09d71a69e1f3db8c0920827030caeb102fe",
+      "result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v2/result.json",
+        "sha256": "5bc1ba0e95f262c7ed78cf383809d3f4e5ff34a9c7e2ec080b208f607b749dd6"
+      },
+      "source_bindings": 1844,
+      "spec": {
+        "path": "/Users/l/Project/Recommandation/spec/scripts/run_gpre_native_routing_stage.md",
+        "sha256": "6345aa72f57fdb37716c5e47b0d875e7d5c9ca9ee9f48008a2d77969825331e6"
+      },
+      "status": "native_routing_pending_connection_passed",
+      "version": 2
+    },
+    {
+      "code": {
+        "path": "/Users/l/Project/Recommandation/scripts/run_gpre_native_routing_stage.py",
+        "sha256": "6a5866d010949cd135c0ba6ab4f702ac9d578fd2c00bb15d8d1e6c1952237bef"
+      },
+      "code_bindings": 105,
+      "limitation": "Final native estimator and exact lock exclusion; pending connection only.",
+      "log": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3.log",
+        "sha256": "117f17be9c90a056981b9512726679f41c059097eb78d18f47b922bb4f0c4674"
+      },
+      "new_author_answers": 0,
+      "request_hash": "6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8",
+      "result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/result.json",
+        "sha256": "a69e6d62dbaeb3a7a9bac173e8a2238a6922da822144ac4b0f5185173c589dbe"
+      },
+      "source_bindings": 1844,
+      "spec": {
+        "path": "/Users/l/Project/Recommandation/spec/scripts/run_gpre_native_routing_stage.md",
+        "sha256": "c8c8c8557eb504ee8ff8faf0bf5c65a29f1559e0f17c17b9b5cf8948c01e5c4d"
+      },
+      "status": "native_routing_pending_connection_passed",
+      "version": 3
+    }
+  ],
+  "budget_composition": {
+    "case_limit": 256000,
+    "finalization_reserve": 64000,
+    "predictor_reservation": 61973,
+    "prior_tokens": 61888
+  },
+  "budget_note": "Two-author ceiling is not a promise that remaining native budget can admit a correction.",
+  "combined_case_logical_reservation": 111032,
+  "core_post_select_caps": {
+    "max_llm_signals_per_round": 2,
+    "max_signals_per_round": 4,
+    "remaining_signal_calls": 1
+  },
+  "exact_parent_operational_lock_excluded": true,
+  "executor_entry_attempts": 0,
+  "final_code_bindings": 105,
+  "final_script": {
+    "path": "/Users/l/Project/Recommandation/scripts/run_gpre_native_routing_stage.py",
+    "sha256": "6a5866d010949cd135c0ba6ab4f702ac9d578fd2c00bb15d8d1e6c1952237bef"
+  },
+  "final_source_bindings": 1844,
+  "final_spec": {
+    "path": "/Users/l/Project/Recommandation/spec/scripts/run_gpre_native_routing_stage.md",
+    "sha256": "c8c8c8557eb504ee8ff8faf0bf5c65a29f1559e0f17c17b9b5cf8948c01e5c4d"
+  },
+  "first_request_reservation": 49144,
+  "formal_stage_exists": false,
+  "labels": 0,
+  "native_accepted_state_needs_bootstrap_exact": true,
+  "native_eligible_ref_count": 18,
+  "native_predictor_estimator_context_hash": "d3a8fefd53290c9a19c59f5ec0ccd927cdbb9eef7cd5f59658e39399cdbada29",
+  "native_selection_budget": 68139,
+  "native_selection_caps": {
+    "llm_signals": 2,
+    "signals": 4
+  },
+  "native_visible_cards": 17,
+  "new_author_answers": 0,
+  "next": "Independent preanswer amendment/read-only review, root formal prepare/dispatch; driver stops now.",
+  "not_yet_verified": [
+    "Fresh routing semantics",
+    "Nonempty actual core executor-entry boundary",
+    "Native empty-selection stop",
+    "Owned Reflect/result consumption"
+  ],
+  "old_H_init_model_repeated": 0,
+  "outbox_parent_exists": true,
+  "parent_files_preserved": 16,
+  "pending_inbox": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/exchange/inbox/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+    "sha256": "7404e51bc9b498d408b5fb90b6085ee7acb7d5bb068d981652a7628751656ff9"
+  },
+  "pending_request": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/temp-native-preflight-v3/stage/requests/6dd836684a001330e31e78797bfbb439f2d751fc1aa79a6364224836029aabf8.json",
+    "sha256": "43dc70285fe6a8cf3fd5f636fa3b6c394da09727f4a6114f252def6a51817bd6"
+  },
+  "preserved_previous_script_candidates": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/candidate-before-lock-exclusion.py",
+      "sha256": "5326cb06c8da0e183bc7db7373cc97dc52dc5cf0f4f96af34919d54802d398c3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/candidate-before-native-predictor-estimator.py",
+      "sha256": "20b206364ed1a3f81beae4352fce494ed5bce7551e4e3d27146d062397e6b7a3"
+    }
+  ],
+  "real_parent_state_raw_cache_journal_receipt_still_bound": true,
+  "scope": "native routing candidate, temporary pending preflight only; root sole formal executor",
+  "selection_budget_left_after_first_reservation": 18995,
+  "tests": {
+    "log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/safety-tests-v3.log",
+      "sha256": "3507612a5e67de7f909c5daf665e72ae48703638023e5a20bbbf698936a10064"
+    },
+    "methods": 5,
+    "result": "PASS",
+    "script": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/driver/test_safety.py",
+      "sha256": "0ed13250e7dd6d1f35c5498ddf255944adcbcc5d167f16633057c93bdf437560"
+    }
+  },
+  "wire_declared_identity_leaks": []
+}
