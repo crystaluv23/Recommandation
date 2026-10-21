@@ -1,0 +1,273 @@
+{
+  "status": "terminal_harness_precondition_failure_before_native_reflect",
+  "error_type": "ValidationError",
+  "error": "continuing research requires next information needs",
+  "counts": {
+    "pre_egress_calls": 0,
+    "request_ready": 0
+  },
+  "forbidden_calls": [],
+  "journal_files": 0,
+  "all_48_source_code_bindings_unchanged": true,
+  "source_code_checks": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/plan.json",
+      "sha256": "7c1120ec07b149744ca9b69aeed7b21aa074f19ff1c83d23a410a54bb3be55b2",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/result.json",
+      "sha256": "ae45992407417c919668f1738b185f92324753f84b6999ca77f0f596c83e503f",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/native-batch.json",
+      "sha256": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/completed-files.json",
+      "sha256": "58f28add6a504e3d58368cdc462603aeb49b99f4665132f10d3e5ed654efbf9c",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json",
+      "sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/plan.json",
+      "sha256": "4d392d1ba3a326a05b2fda304cbd5a6c8f266e7ae98672df852ca404249e3403",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/basic-info.json",
+      "sha256": "198c520b53d8c750fb33fd5df15f2060f4e025e6f27d5d183743a67d8fa5c0c5",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/00.json",
+      "sha256": "1def8b322b030f22ac3f4f8ed37b9f047173d99dbf624ceb4217d2a97847142b",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/01.json",
+      "sha256": "cb32bdf32e13ece629f8e2dd6b38436e3e5684dd6965b1df27b79144af4d3528",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/02.json",
+      "sha256": "80fc9b4d12f449f8bf1cb86dea063f491d1d2dce2e533512fc88e04462e4cb0b",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/03.json",
+      "sha256": "7208290cc0ad3a3a35a46c4768be7585e03d3931d7e974caa48bc48aa7461c1e",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/04.json",
+      "sha256": "1bb71d2a47a0b9c305ab5ec39858e090397201d04b9bc11bc4c7d5071b64ebf3",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/05.json",
+      "sha256": "229afeb8ae635aabd79fcca854912dc07bb22ac2ff170af458be781e68a2a43c",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/06.json",
+      "sha256": "3510401879d45f9b72112bf78ccddbedcd6e4dfaffe20a94f4acca1647f1af58",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/07.json",
+      "sha256": "deaebf87f8c8334d5096c336fa9099f3c16e55a4e1d0cec52906781927114f96",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/results/08.json",
+      "sha256": "423ccbd254647e6fe6db0475f8c29458f08747e71d92ed1832c778493394044f",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/00.json",
+      "sha256": "72646922c1bb001ea1e8b70ef8f289bd2ff6fca49d2c846bb64fcde4971e696c",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/01.json",
+      "sha256": "aad11c7834f90c056c599814d9ac2f1cc1159dcfa8e7804660021c4e644a00ee",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/02.json",
+      "sha256": "f6280129ca4364718a0ffc367407d261629e1f06b10cd1c3c12633a3b324748d",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/03.json",
+      "sha256": "ac781caef3214165f7f5b513f17fccb09b98a9e38f3d3ba36744a72c3ff6cd24",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/04.json",
+      "sha256": "5a5fb8567b14514f95665333d2191a979a1052226b305ef49be5d7dd0b3186f5",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/05.json",
+      "sha256": "244d45b41450e34078d7a6ff95fee2b88409a8b19ed20a8a5a4f55834d51e713",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/06.json",
+      "sha256": "383a08f0398245f54dd6e380a3b31f6b2ebbccba4bfe7e8d5fab9d1de63bc693",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/07.json",
+      "sha256": "c3398b2408ac7b746f97bb2f01e172d6c36ed19c4709bf732467a064b11976eb",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/consumer-projections/08.json",
+      "sha256": "77539117ee799ca7269e7fea5ac9212810d4f864a0a11e0e0996ecf00c3b007b",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1776.json",
+      "sha256": "9df665e5ea1b21744280b37592afd5d5a0426b0d871a0cb52b6a334264f8edd8",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1778.json",
+      "sha256": "06edbe02870138dd1adf414036a68a56424d2d3f8b44c233d724a1a990e971b4",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json",
+      "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1334.json",
+      "sha256": "3da987fe0163aa81c64b8ef1dfa8d625a49ef06157c043945367055ff953f663",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1335.json",
+      "sha256": "0c21414abab8a073ec072eec952885ac9f48cc0bec767868bba3fe89e8188aa7",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture.py",
+      "sha256": "d01a57bd691c46baf65dcf126d445870d8ef7e98940d2750cbf17503d138da6d",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_executed_answer_scope.py",
+      "sha256": "6d5c9941e8b64f13eda7db754292ce6629fbbe105dce4ee2697c51419f3e956a",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_minimal_rounds.py",
+      "sha256": "84c13d56ee0056947ae6da990a43e29c52be17fe2e61127c868152e037282ed2",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "6380ba5639b60f5316a16c3e994b0c70a0e98743a1772b611851cf4d92720cf9",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "29f1b3c057dc825ca77bed377a3f3be329c9eb6914ad5ad24774f88281d8aa07",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "4a7f169d9a7362ff75a64873aa2c02760e1e9a036e639daa3eea5d79a10b2bc0",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "582d43a4912c1248866c3dddd8b15aed24e5f22a4f72ccde2f2f6d10cb740b77",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py",
+      "sha256": "f8d427c31b5f68f8b527de0954e97b40140a62bb57664c68100e5df796b17ddb",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/local_role_exchange.py",
+      "sha256": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/models.py",
+      "sha256": "7e0704241b11313b8c99720371ed1e5b76015b33f5af2d2d4a9f911bbfac98fb",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/artifacts.py",
+      "sha256": "04695d82683e7a9d7332cfe02dda29c47abacd05dda698e8cb4a8f969dacdd75",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "bc3eaae3e96cec370ed0094a9a51d5928e181f5c2a40b22faf0557083ce28ae0",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/point_in_time.py",
+      "sha256": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/local.py",
+      "sha256": "328d604fbf8205f8d1d1765697f9047a99b35aac8183c00ee15939dadd1efb2d",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/__init__.py",
+      "sha256": "cc16eaea477be155eccb1f37c12f755d6672ea42cc265e171df2162e1939f0d0",
+      "unchanged": true
+    }
+  ],
+  "failed_execution_files": [
+    {
+      "path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution/exchange/contract.json",
+      "sha256": "c77beab9a557fa92ad9d6ce40c0ebe6d45f6edd8177968de5b3239156b415549"
+    },
+    {
+      "path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution/execution-start.json",
+      "sha256": "5218962b4b445665ad388dc5d1ac4d172f18973c375c74781490c0687cbc961e"
+    },
+    {
+      "path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution/failure.json",
+      "sha256": "01ffba967dba6a59109ed25bee7ae03c3ed6d577d55a0cebd72e876bfa247c7e"
+    },
+    {
+      "path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution/unused-external.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    }
+  ],
+  "limits": "No wire was generated; no conclusion about measurement projection or fresh research semantics. No retry, fabricated need or decision change."
+}

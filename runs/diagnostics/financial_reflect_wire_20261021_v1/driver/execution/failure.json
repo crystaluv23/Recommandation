@@ -1,0 +1,10 @@
+{
+  "counts": {
+    "pre_egress_calls": 0,
+    "request_ready": 0
+  },
+  "error_type": "ValidationError",
+  "forbidden_calls": [],
+  "message": "continuing research requires next information needs",
+  "trace": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture.py\", line 146, in capture\n    controller.reflect(default_information_plan(), ResearchState(), batch)\n                                                   ^^^^^^^^^^^^^^^\n  File \"<string>\", line 11, in __init__\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py\", line 875, in __post_init__\n    raise ValidationError(\"continuing research requires next information needs\")\nstock_opportunity_agent.models.ValidationError: continuing research requires next information needs\n"
+}

@@ -1,0 +1,139 @@
+{
+  "status": "PASS_CANDIDATE3_FOR_ONE_SOURCE_WIRE_CAPTURE_NOT_RESEARCH_STAGE",
+  "reviewed_at": "2026-10-21T00:15:59.313388+00:00",
+  "candidate_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture-native-config.py",
+      "sha256": "48b107515437e877fcb837ac4890e5b94720de707e87c99fb933b39ba9382093"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/contract-v3.json",
+      "sha256": "450f3e947181ffb186a6b99b365e17a82d3b47ca9690f90d747c5bddabc4a3ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/pre-capture-expectations.json",
+      "sha256": "d23d09d8036575534d6d71dacfade8d4fe4be6c0726b816bb12d415531568754"
+    }
+  ],
+  "frozen_source_code_bindings_verified": 60,
+  "first_two_failures": [
+    {
+      "root": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution",
+      "error": "continuing research requires next information needs",
+      "counts": {
+        "pre_egress_calls": 0,
+        "request_ready": 0
+      },
+      "files": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution/exchange/contract.json",
+          "sha256": "c77beab9a557fa92ad9d6ce40c0ebe6d45f6edd8177968de5b3239156b415549"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution/execution-start.json",
+          "sha256": "5218962b4b445665ad388dc5d1ac4d172f18973c375c74781490c0687cbc961e"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution/failure.json",
+          "sha256": "01ffba967dba6a59109ed25bee7ae03c3ed6d577d55a0cebd72e876bfa247c7e"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution/unused-external.json",
+          "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+        }
+      ]
+    },
+    {
+      "root": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v2",
+      "error": "structured role correction budget must be 1 or 2",
+      "counts": {
+        "pre_egress_calls": 0,
+        "request_ready": 0
+      },
+      "files": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v2/exchange/contract.json",
+          "sha256": "c77beab9a557fa92ad9d6ce40c0ebe6d45f6edd8177968de5b3239156b415549"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v2/execution-start.json",
+          "sha256": "eda6ac37fc81769c522ac69329cf89d0dab313b6ab4b931c72ace5c925349859"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v2/failure.json",
+          "sha256": "0d39f932fdd7aec5ecad896ecd68e249ebf927671b9aa7f7228f23f3f4bf5be9"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v2/unused-external.json",
+          "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+        }
+      ]
+    }
+  ],
+  "first_two_combined_actual_source_journals": 0,
+  "third_output_existed_at_review": false,
+  "independent_synthetic_tests": {
+    "passed": 5,
+    "errors": 0,
+    "forbidden_calls": 0,
+    "actual_source_access_attempts": 0,
+    "same_candidate_observer": true,
+    "native_Controller_client_journal": true,
+    "critical_boundary_mocks": "Only cache.load/exchange.receive/external reserve/network/labels/Signal/fullprepare/Store construction forbidden tripwires. Controller.reflect, parsing configuration, complete_json forwarding, anonymous serialization, request journal and actual candidate request_ready_observer are not mocked."
+  },
+  "candidate_delta": [
+    "Keep explicit legal FINALIZE/0needs empty carrier and defaultPlan. Correction CONFIG becomes1 to satisfy native _complete_parsed_role_impl; no actual author correction can execute because capture stops before cache/receive.",
+    "Actual observer independently checks canonical native messages JSON UTF8 bytes plus max_output_tokens reservation <=131072. Cap1 synthetic proves its rejection, not only a setter argument.",
+    "Distinct execution-v3/contract-v3/script preserves both failed outputs; no retry/resume of old failure root. Old zero journals plus new at-most-one retains the original total ceiling."
+  ],
+  "gold_unchanged": "d23d six expected values/states/period/unit/canonical claims, eleven operands, evidence/PIT/fingerprint/privacy and excluded3 scope remain unchanged; expectations only sha-checked, never parsed into payload.",
+  "limitations": [
+    "Synthetic positives cover numeric and narrative request construction with different synthetic documents, not source measurement correctness or model behavior.",
+    "Pre-egress kwargs are deliberately unmasked audit material; only actual native outgoing request is expected anonymous.",
+    "Old invalid ResearchState and invalid correction configuration were harness preconditions, not actual6 projection failures; neither is reclassified success.",
+    "FINALIZE carrier is not normal production continuation, accepted GPRE prior/H_init/ownership or fresh F7. No source admission or old F6 rerun allowed.",
+    "At review no actual candidate3 capture has run. Final actual request equality and all counts must be audited against original d23d afterward."
+  ],
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/run-synthetic-observer-review.py",
+      "sha256": "00c367356b900d7368032cf5562f4474d9e6e87353b7bbd0f27a5d2140b1d784"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/synthetic-observer-independent.log",
+      "sha256": "a881ba0148fdc3eca86564b34fbfdedb9e04c19e730c6cd604685cc7b1234a43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/synthetic-observer-independent-results.json",
+      "sha256": "2fe7004ac1008f7a8a37b9ecb0a9b71957cc8f76e0f286fcfef2750f627ef673"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/synthetic-observer-controls.py",
+      "sha256": "19cc03ba9e20e5bf71c85211fbaf3b5e7b8ef07e53245bb47376ce6197463ff3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/synthetic-observer-controls-result.json",
+      "sha256": "dbebab24c66b2b1fb819c42e3a77f1397fc3934e194b0ecf624eddab124c86f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/synthetic-observer-controls.log",
+      "sha256": "97d9f844badda1f55a03af443aea8b1b08e6594b2b737c0bb8dd9df841ed1b61"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/failure-binding-review.json",
+      "sha256": "ec5dde1f04974246e03fc023b6dd58b0dc2c83f776ae85536e418fbe3e1ef98b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/failure-v2-binding-review.json",
+      "sha256": "3d5a9ceeb74d81e7110489dd6098883017439953764e5d1399033e3c0aa1bd9f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/explicit-carrier-amendment.json",
+      "sha256": "9e001ee0dfa7e4939dde9c7d6828caf37bb2158c6470eec255fb8a7241f0cb38"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/third-candidate-preflight-build.py",
+      "sha256": "9d002414773cc78033e0e77e2932cbdbfeb6b6c309963626a831e8f824e8e4f0"
+    }
+  ]
+}

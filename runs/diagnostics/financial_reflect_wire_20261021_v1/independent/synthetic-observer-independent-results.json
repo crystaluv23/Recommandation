@@ -1,0 +1,14 @@
+{
+  "tests_run": 5,
+  "errors": 0,
+  "failures": 0,
+  "forbidden_calls": [],
+  "actual_source_access_attempts": [],
+  "source_before_after_equal": true,
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/synthetic-observer-controls.py": "19cc03ba9e20e5bf71c85211fbaf3b5e7b8ef07e53245bb47376ce6197463ff3",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture-native-config.py": "48b107515437e877fcb837ac4890e5b94720de707e87c99fb933b39ba9382093",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/contract-v3.json": "450f3e947181ffb186a6b99b365e17a82d3b47ca9690f90d747c5bddabc4a3ba"
+  },
+  "scope": "Imports definitions only, then actual native synthetic Controller/client/observer tests in TemporaryDirectory. No capture() call or actual source open. Numeric/narrative positives create temp journals; invalid carrier/correction reject before journal; cap1 rejects at native observer before cache/receive."
+}

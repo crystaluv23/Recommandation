@@ -1,0 +1,84 @@
+{
+  "all_attempt_journals": 1,
+  "all_nine_source_operand_rows": 21,
+  "all_source_operand_checks": true,
+  "bindings_checked": 60,
+  "files": [
+    {
+      "bytes": 22082,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/bindings-before-after.json",
+      "sha256": "db725c92392566dad51be2087db1517a24b663c68a16631fd60a77124411ae5f"
+    },
+    {
+      "bytes": 106,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/exchange/contract.json",
+      "sha256": "c77beab9a557fa92ad9d6ce40c0ebe6d45f6edd8177968de5b3239156b415549"
+    },
+    {
+      "bytes": 383,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/execution-start.json",
+      "sha256": "6caaa69e236f6aaee0c440663974f47c0ae1d8392d78fda57808ce6bd79d4089"
+    },
+    {
+      "bytes": 19293,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/mapping.json",
+      "sha256": "e8e7f008c1f4f2d0ebcf463bceaff40d252dc0a67dd7c1884f092c8e5bd77395"
+    },
+    {
+      "bytes": 33778,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/pre-egress.json",
+      "sha256": "05fd78b141292216aa0e12e2f2bea5d115c30d859416dda417eab7cef732b0bd"
+    },
+    {
+      "bytes": 562,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/request-ready.json",
+      "sha256": "3f4ef9eff2ae032c16c82d5bd20bf27fbaf317abd2afcfd952e55e019d838b65"
+    },
+    {
+      "bytes": 29951,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/requests/cf29389bfcac52a0aa74b0115189b77dccf870c1faf208128036d4fda5363e84.json",
+      "sha256": "edd3f947c5a8276818cd258160222b567ea107ee95dbed192f78fcc227f701df"
+    },
+    {
+      "bytes": 475,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/result.json",
+      "sha256": "c67a0999f465003e3a6feffe54d25cf9d1afb75a31f88d22e0028f6e40207c96"
+    },
+    {
+      "bytes": 119,
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/unused-external.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    }
+  ],
+  "identity_token_absent_in_outgoing": {
+    "cik": true,
+    "company_id": true,
+    "ticker": true
+  },
+  "limits": "No model/response, accepted GPRE prior, H_init, need ownership or fresh research semantics. Complete canonical source literals are audit accessible, intentionally not whole raw text in the canonical numeric Reflect wire. Original nine-result failed/ambiguous dispositions unchanged.",
+  "logical_reservation": 36318,
+  "messages_utf8_bytes": 28318,
+  "model_evidence_text_rows": 0,
+  "output_reservation": 8000,
+  "pre_egress_and_outgoing_payload_canonical_equal": true,
+  "request_hash": "cf29389bfcac52a0aa74b0115189b77dccf870c1faf208128036d4fda5363e84",
+  "request_journal": {
+    "bytes": 29951,
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/requests/cf29389bfcac52a0aa74b0115189b77dccf870c1faf208128036d4fda5363e84.json",
+    "sha256": "edd3f947c5a8276818cd258160222b567ea107ee95dbed192f78fcc227f701df"
+  },
+  "request_limit": 131072,
+  "selected_refs": [
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2"
+  ],
+  "selected_six_source_operand_rows": 11,
+  "six_canonical_checks_all_equal": true,
+  "source_observation_rows": 11,
+  "status": "captured_native_reflect_serialization_only",
+  "within_request_limit": true
+}

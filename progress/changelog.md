@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-21：正确FIBK IR四次导航（3web+1browser）静态无历史条目/动态读超时后停止，不作无事件推论，0/26时间proof不改。转查已验GPRE六结果到Reflect的实际batch wire：独立gold先封，首空continue无need及次纠错配置0均前置拒/0journal，原失败保留；先纯synthetic五项完整原生控制及独立亲跑，再合法finalize空序列化载体/config1（实际0执行）唯一capture。1journal/36318逻辑预留，6结果/11operand/21原literal/60绑定独立全核，0cache/receive/模型/labels/Signal；只关闭本地序列化连接，非acceptedprior/H_init/F7或收益，原9财务分母/1literal失败/2policyunknown保持。下一真实GPRE bootstrap/H_init与路由，不造状态或为未触发guard加runner；原所有旧stage/用户改动不变。
+
 - 2026-10-21：按已批准完整公开内容时间政策，移除Alpha transcript reportedDate+1及legacy formal Finnhub列表日/季度末两条无证明自动PIT写入；既有typed历史缺口/明确warning在provider调用前拒绝，raw client/cache、local-first与其他来源保持。旧测试曾直接断言错误clock/以单段remarks当完整内容，原反例/失败保留。232关联及独立8/8全过（精确旧版5方法失败）、socket网络tripwire0；基线copy race/selector及seal-header审计错误保原证据纠正，不算旧红或放宽产品。26原件/旧inventory、original8及旧权威/完成probe绑定全同。仅关闭错误producer边界，非完整transcript正控；KGC/FIBK三项有限取证仍unknown、0/26时间proof，proof-backed materialization及后继准入仍open。外部LLMAPI0，无新模型/原stage重入/完整后继。
 
 - 2026-10-21：不等待待决Fact schema，利用H1原context的真实taxonomy分组修len(records)>=2误报：自动关系/H1共用row-index期间/冲突selector，目录仅证存在合法pair、不默认币种duration或要求整concept唯一scalar，原12k/24concept/分母/排名和modality保持。205关联/独立12及9等价+10H1控制过，旧3红/词句期待及harness错保留；H1 system/coverage不再把所有列项说成已成pair或以缺目录证明无来源。唯一actual unbound H1用原dev8/qualified1780，1789绑定全等、24项成员/顺序/count同，观察增益0；非Engine/LLM/FactGraph/labels/GET/旧stage，不关legacy namespace/Mining/全MVP。原dirty Experience段逐字保留，只提交本任务spec hunk。

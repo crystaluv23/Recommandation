@@ -1,0 +1,53 @@
+{
+  "scope": "readonly first-party FIBK IR metadata feasibility, no source admission or producer execution",
+  "fixed_transcript_denominator": 26,
+  "accepted_public_content_time_proofs_before": 0,
+  "accepted_public_content_time_proofs_after": 0,
+  "max_navigation_attempts": 4,
+  "navigation_attempts": [
+    {
+      "number": 1,
+      "tool": "web open",
+      "url": "https://fibk.com/overview/default.aspx",
+      "observation": "Issuer IR page identifies First Interstate BancSystem; events and quarterly-results links. Latest displayed quarter is2026Q2; not either2025 target."
+    },
+    {
+      "number": 2,
+      "tool": "web click",
+      "url": "https://fibk.com/events-and-presentations/events/default.aspx",
+      "observation": "Static extraction exposes Upcoming/Latest/Archived headings and year selector, but no event rows, historical target/replay metadata or complete conference content."
+    },
+    {
+      "number": 3,
+      "tool": "web click",
+      "url": "https://fibk.com/financials/quarterly-results/default.aspx",
+      "observation": "Static extraction exposes Financial Summary Table heading only; no2025 result/replay metadata or complete content."
+    },
+    {
+      "number": 4,
+      "tool": "cua createBrowserTab iab visibleFalse",
+      "url": "https://fibk.com/events-and-presentations/events/default.aspx",
+      "observation": "Create call timed out at30s and reset kernel. Subsequent getState confirms this task has existing iab tab id1 at exact events URL. Binding/read of that same tab/browser3 timed out at15s; no re-creation/reload or fifth navigation."
+    }
+  ],
+  "non_navigation_ui_reads": [
+    {
+      "call": "cua.getState",
+      "result": "existing relevant tab confirmed; other inventory deliberately not persisted"
+    },
+    {
+      "call": "cua.getTab id1 browser3",
+      "result": "same-tab read timeout; not a declaration that page or event does not exist"
+    }
+  ],
+  "network_accounting": {
+    "web_navigation_attempts": 3,
+    "browser_navigation_attempts": 1,
+    "managed_provider_get_increment": 0,
+    "underlying_browser_or_web_http_count": null,
+    "external_llm_api_calls": 0,
+    "production_roles": 0
+  },
+  "conclusion": "No complete-content public-time proof obtained. Stop this bounded metadata strategy. Static extractor omission/UI tool timeout is not event absence and not publication evidence. Original26 inventory/source bytes are not migrated. Next independent F7 guard feasibility must not consume these unverified transcripts.",
+  "head": "217fe3efdf2ffe0fb7bb26f0876047d157be08d7"
+}

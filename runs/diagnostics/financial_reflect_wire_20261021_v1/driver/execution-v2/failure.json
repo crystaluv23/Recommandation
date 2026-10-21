@@ -1,0 +1,10 @@
+{
+  "counts": {
+    "pre_egress_calls": 0,
+    "request_ready": 0
+  },
+  "error_type": "ValidationError",
+  "forbidden_calls": [],
+  "message": "structured role correction budget must be 1 or 2",
+  "trace": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture-empty-finalize.py\", line 146, in capture\n    controller.reflect(default_information_plan(), ResearchState(decision=ResearchDecision.FINALIZE), batch)\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py\", line 450, in reflect\n    reflected, usage = _complete_parsed_role(\n                       ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py\", line 3976, in _complete_parsed_role\n    return _complete_parsed_role_impl(caller, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py\", line 4032, in _complete_parsed_role_impl\n    raise ValidationError(\"structured role correction budget must be 1 or 2\")\nstock_opportunity_agent.models.ValidationError: structured role correction budget must be 1 or 2\n"
+}

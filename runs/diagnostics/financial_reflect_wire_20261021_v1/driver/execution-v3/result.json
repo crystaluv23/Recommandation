@@ -1,0 +1,17 @@
+{
+  "counts": {
+    "pre_egress_calls": 1,
+    "request_ready": 1
+  },
+  "forbidden_calls": [],
+  "model_calls": 0,
+  "operand_rows": 21,
+  "payload_has_no_oracle_or_verdict": true,
+  "responses": 0,
+  "role_dispatches": 0,
+  "scope": "Serialization only. No accepted GPRE prior, H_init, need ownership or fresh research semantics.",
+  "selected_results": 6,
+  "source_code_bytes_unchanged": true,
+  "source_denominator": 9,
+  "status": "captured_before_cache_and_receive"
+}

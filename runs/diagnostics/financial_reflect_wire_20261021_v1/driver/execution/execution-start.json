@@ -1,0 +1,8 @@
+{
+  "at": "2026-10-21T00:07:05.745002+00:00",
+  "contract_sha256": "244eeb11d38f1afc931d73178bfa47c099d0bccd16a1db1845ab541d42528357",
+  "expectations": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/pre-capture-expectations.json",
+    "sha256": "d23d09d8036575534d6d71dacfade8d4fe4be6c0726b816bb12d415531568754"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "note": "Raw logs kept locally; tracked lossless archives preserve original failures and terminal blank lines. Decompress to raw_path before rerunning log-bound audits.",
+  "records": [
+    {
+      "raw_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture-v2.log",
+      "archive_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture-v2.log.gz",
+      "raw_sha256": "83cd1d4923845c42dba8384bbbf52af17aad9373011acce30cdc12c4bb55bcf4",
+      "archive_sha256": "1c0422676ccd265c526ffdc929e6efea4e2d5abba6459491e126ec0d3c929889",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture-v3.log",
+      "archive_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture-v3.log.gz",
+      "raw_sha256": "c1b8ef2a3cd7e340266391894a4898245f64889c44ae2ad7615907116bf10f59",
+      "archive_sha256": "5b15d463dc90af1310867f61e70f36124943db81568d4026120e8829b794050a",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture.log",
+      "archive_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture.log.gz",
+      "raw_sha256": "49703b048ff727b58ee8796874b3310023d912e72a2af39934c498a1aadfe0d7",
+      "archive_sha256": "a34471cd7df31276356e2368a68ee92008c2acadd156c5b16c2219a9018ff89a",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/synthetic-boundary-controls-v2.log",
+      "archive_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/synthetic-boundary-controls-v2.log.gz",
+      "raw_sha256": "548e8711122d3c0deebd290360702ff247a52477ae1b11386a75ca9e3587cf0e",
+      "archive_sha256": "f6580271ede252c31e6761ba7096d43c495b547076ee10653e5b30c7731e5b9c",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/synthetic-boundary-controls.log",
+      "archive_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/synthetic-boundary-controls.log.gz",
+      "raw_sha256": "db95f05b0079d7bdb8adc38be3682c2102728529c05b3e87ee07593c1eb603db",
+      "archive_sha256": "117fe21b72fb18a8acbf125fead2801cd94c46bdf488fd3405dc4524c243388a",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/synthetic-observer-controls.log",
+      "archive_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/synthetic-observer-controls.log.gz",
+      "raw_sha256": "97d9f844badda1f55a03af443aea8b1b08e6594b2b737c0bb8dd9df841ed1b61",
+      "archive_sha256": "50becdf8808175eac668443fa05c0b12eaeedaa2c66c1a695977bfc37403f44e",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/actual-wire-audit.log",
+      "archive_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/actual-wire-audit.log.gz",
+      "raw_sha256": "ac0f83adecc516cd1be3330a33637cea25bd5bf331e3959e405c58f2341dd9a8",
+      "archive_sha256": "9ffebddc643c74d3188a38c2130561936be139b90f3c1cb2c5f4f853e7368cb6",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/synthetic-observer-independent.log",
+      "archive_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/synthetic-observer-independent.log.gz",
+      "raw_sha256": "a881ba0148fdc3eca86564b34fbfdedb9e04c19e730c6cd604685cc7b1234a43",
+      "archive_sha256": "5c77abd01e2668f550ad60623d710873d94927d209146eddc45b67c7731d05b6",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/third-candidate-preflight-build.log",
+      "archive_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/third-candidate-preflight-build.log.gz",
+      "raw_sha256": "7014673b738988ee2ca27596e9df6ad2de287c4e60b7949fdd6526f52b9ae2a8",
+      "archive_sha256": "dd6d941a7708d9522b931e014c65da0b303cd173baf14b6e095654023d554e21",
+      "lossless": true
+    },
+    {
+      "raw_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/root/final-lint.log",
+      "archive_path": "runs/diagnostics/financial_reflect_wire_20261021_v1/root/final-lint.log.gz",
+      "raw_sha256": "a0000776d63fa9032c2a1ff787e2c768f2bb15e3cc72563ce601ae15304bedc2",
+      "archive_sha256": "5caa35a64001d3d4bf5bd401101a8ac779c0cc13b1c4e1f8b044292931d92881",
+      "lossless": true
+    }
+  ]
+}

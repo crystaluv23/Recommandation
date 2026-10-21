@@ -1,0 +1,883 @@
+{
+  "status": "FROZEN_BEFORE_DRIVER_CAPTURE_INDEPENDENT_SOURCE_ONLY_EXPECTATIONS",
+  "acquired_at_utc": "2026-10-21T00:04:56.364624+00:00",
+  "acquisition_timing": "Parent was sent waiting before extraction; reviewer has not opened any newdiag capture, result, request or driver output. Only immutable original6 results and native source contracts read. This file must be hash-bound before driver capture.",
+  "purpose": "One native Reflect outgoing serialization at request_ready only, using explicitly empty ResearchState/default InformationPlan as serialization carriers, not accepted GPRE prior/Plan/ownership. No author answer, model consumption or F7 state acceptance claimed.",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/native-batch.json",
+      "sha256": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/result.json",
+      "sha256": "ae45992407417c919668f1738b185f92324753f84b6999ca77f0f596c83e503f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/plan.json",
+      "sha256": "7c1120ec07b149744ca9b69aeed7b21aa074f19ff1c83d23a410a54bb3be55b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "8a8b0e797bb3e66bddeb66f828db07c8e20b35f881a0a8ea2b5fafdf49faf55f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "29f1b3c057dc825ca77bed377a3f3be329c9eb6914ad5ad24774f88281d8aa07"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4367db829753200ecb224e81fb2d4713c79d9483faf49abd81614315cc1c7bfb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "582d43a4912c1248866c3dddd8b15aed24e5f22a4f72ccde2f2f6d10cb740b77"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/local_role_exchange.py",
+      "sha256": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d"
+    }
+  ],
+  "case": {
+    "company_id": "cik_0001309402",
+    "prediction_time": "2025-05-30T00:00:00+00:00"
+  },
+  "fixed_scope": {
+    "original_batch_denominator": 9,
+    "original_strict_passes": 6,
+    "original_sufficient_unique": 7,
+    "period_ambiguous": 2,
+    "original_revenue_literal_failure_preserved": true,
+    "selected_original_indices": [
+      0,
+      1,
+      2,
+      4,
+      5,
+      6
+    ],
+    "not_supplied_refs": [
+      "gross_margin_change:v3",
+      "revenue_acceleration:v2",
+      "revenue_growth_yoy:v3"
+    ],
+    "supplied_order": [
+      "cash_burn_rate_elevated:v2",
+      "cash_reserves:v2",
+      "cash_to_current_liabilities_ratio:v2",
+      "liquidity_runway_months:v3",
+      "net_share_retirement_yoy:v3",
+      "operating_cash_flow_margin:v2"
+    ]
+  },
+  "expected_rows": [
+    {
+      "source_batch_index": 0,
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "signal_id": "cash_burn_rate_elevated",
+      "version": 2,
+      "state": {
+        "confidence": 1.0,
+        "value": "positive"
+      },
+      "coverage": "sufficient",
+      "numeric_measurement": {
+        "formula": "absolute negative operating cash flow / cash",
+        "period": {
+          "end": "2025-03-31",
+          "start": "2025-01-01"
+        },
+        "unit": "ratio",
+        "value": 0.5581685427441436,
+        "numeric_sign": "positive",
+        "categorical_state": "positive"
+      },
+      "exact_claim_if_adopted": "cash_burn_rate_elevated=0.558169",
+      "wire_evidence": {
+        "supporting": [
+          {
+            "evidence_index": 0,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          },
+          {
+            "evidence_index": 1,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          }
+        ],
+        "counter": []
+      },
+      "source_observations": [
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "value": -55041000,
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "unit": "USD"
+        },
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "end": "2025-03-31",
+          "value": 98610000,
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "unit": "USD"
+        }
+      ],
+      "deferred_observation_count": 0,
+      "categorical_value_is_not_stock_direction": true,
+      "evidence_ref_catalog": {
+        "signal_ref": "cash_burn_rate_elevated:v2",
+        "supporting_evidence_indices": [
+          0,
+          1
+        ],
+        "counter_evidence_indices": []
+      },
+      "canonical_operand_audit": [
+        {
+          "group": "supporting",
+          "index": 0,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2025-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": -55041000
+          },
+          "whole_literal_sha256": "3098e6412fc28e03612206b2bf339ac7fb3523ebdb29657a6630500a4984158d",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -55041000,
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "unit": "USD"
+          }
+        },
+        {
+          "group": "supporting",
+          "index": 1,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          },
+          "whole_literal_sha256": "18a965903640e222aed8565147465477d6b036b3e99390ba279b49c87852d58c",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 1,
+            "end": "2025-03-31",
+            "value": 98610000,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "unit": "USD"
+          }
+        }
+      ],
+      "source_document_fingerprints": [
+        "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130:aa05ed7e72b76d7930e5411dbe4c3314c0f0186a7917d0b950bc6f3ada19df12",
+        "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877:cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+        "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902:eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b:b0c4c525055d12686df4ac82390803116324b197cbaac8d8cee83bce385c37f8",
+        "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4:a940180e1345eff4cc5540d3ca668447559f1b2757d87915179da56ee8e5dcfc",
+        "secfacts:0001309402:0001309402-25-000008:02d135492926ac40:02d135492926ac406154af88476b4235d6461873e97b5b963681adf7b39c696f"
+      ]
+    },
+    {
+      "source_batch_index": 1,
+      "signal_ref": "cash_reserves:v2",
+      "signal_id": "cash_reserves",
+      "version": 2,
+      "state": {
+        "confidence": 1.0,
+        "value": "neutral"
+      },
+      "coverage": "sufficient",
+      "numeric_measurement": {
+        "formula": "latest reported instant cash balance",
+        "period": {
+          "end": "2025-03-31"
+        },
+        "unit": "USD",
+        "value": 98610000.0,
+        "numeric_sign": "positive",
+        "categorical_state": "neutral"
+      },
+      "exact_claim_if_adopted": "cash_reserves=9.861e+07",
+      "wire_evidence": {
+        "supporting": [
+          {
+            "evidence_index": 0,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          }
+        ],
+        "counter": []
+      },
+      "source_observations": [
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "end": "2025-03-31",
+          "value": 98610000,
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "unit": "USD"
+        }
+      ],
+      "deferred_observation_count": 0,
+      "categorical_value_is_not_stock_direction": true,
+      "evidence_ref_catalog": {
+        "signal_ref": "cash_reserves:v2",
+        "supporting_evidence_indices": [
+          0
+        ],
+        "counter_evidence_indices": []
+      },
+      "canonical_operand_audit": [
+        {
+          "group": "supporting",
+          "index": 0,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          },
+          "whole_literal_sha256": "18a965903640e222aed8565147465477d6b036b3e99390ba279b49c87852d58c",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "end": "2025-03-31",
+            "value": 98610000,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "unit": "USD"
+          }
+        }
+      ],
+      "source_document_fingerprints": [
+        "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902:eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "sec:cik_0001309402:000130940225000008:dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+        "sec:cik_0001309402:000130940225000089:02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+        "secfacts:0001309402:0001309402-19-000024:8322f0b00f926f9c:8322f0b00f926f9cb9331f360d7e9bdb6aff742dab8da2c38ba58882ea32c62e",
+        "secfacts:0001309402:0001309402-19-000146:9ab33b4752f88e9e:9ab33b4752f88e9e83201d5f2ce1cb9f20779da89132c5307d45e8025da76bf7",
+        "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d:ba303ecd89c32d2d517f07f5b52f5009d30c81a01f65011b3a8e9b1e82b5b8d4",
+        "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02:1f19eaf394ce9e02a4f76765e7f90c85800fa7c9aa804369382a41c0adec0c7e",
+        "secfacts:0001309402:0001309402-22-000008:897a7957ef2a7219:897a7957ef2a7219cfb8cbff416729435b791dcbdb3d4737c64bdf88309efb59",
+        "secfacts:0001309402:0001309402-23-000012:21b32f10cee71e8c:21b32f10cee71e8c390be33274b28ee2895ade12e91f3e572c2479aefb36cefc",
+        "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4:a940180e1345eff4cc5540d3ca668447559f1b2757d87915179da56ee8e5dcfc"
+      ]
+    },
+    {
+      "source_batch_index": 2,
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "signal_id": "cash_to_current_liabilities_ratio",
+      "version": 2,
+      "state": {
+        "confidence": 1.0,
+        "value": "negative"
+      },
+      "coverage": "sufficient",
+      "numeric_measurement": {
+        "formula": "cash / same-date current liabilities",
+        "period": {
+          "end": "2025-03-31"
+        },
+        "unit": "ratio",
+        "value": 0.3027307473866794,
+        "numeric_sign": "positive",
+        "categorical_state": "negative"
+      },
+      "exact_claim_if_adopted": "cash_to_current_liabilities_ratio=0.302731",
+      "wire_evidence": {
+        "supporting": [
+          {
+            "evidence_index": 0,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          },
+          {
+            "evidence_index": 1,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          }
+        ],
+        "counter": []
+      },
+      "source_observations": [
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "end": "2025-03-31",
+          "value": 98610000,
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "unit": "USD"
+        },
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "end": "2025-03-31",
+          "value": 325735000,
+          "tag": "LiabilitiesCurrent",
+          "unit": "USD"
+        }
+      ],
+      "deferred_observation_count": 0,
+      "categorical_value_is_not_stock_direction": true,
+      "evidence_ref_catalog": {
+        "signal_ref": "cash_to_current_liabilities_ratio:v2",
+        "supporting_evidence_indices": [
+          0,
+          1
+        ],
+        "counter_evidence_indices": []
+      },
+      "canonical_operand_audit": [
+        {
+          "group": "supporting",
+          "index": 0,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          },
+          "whole_literal_sha256": "18a965903640e222aed8565147465477d6b036b3e99390ba279b49c87852d58c",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "end": "2025-03-31",
+            "value": 98610000,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "unit": "USD"
+          }
+        },
+        {
+          "group": "supporting",
+          "index": 1,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Total obligations incurred as part of normal operations that are expected to be paid during the following twelve months or within one business cycle, if longer.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Liabilities, Current",
+            "start": null,
+            "tag": "LiabilitiesCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 325735000
+          },
+          "whole_literal_sha256": "eb7ab320b70cf39115d3be9318416e155ec0ac9b23db24ae542de120b8c0d793",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 1,
+            "end": "2025-03-31",
+            "value": 325735000,
+            "tag": "LiabilitiesCurrent",
+            "unit": "USD"
+          }
+        }
+      ],
+      "source_document_fingerprints": [
+        "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902:eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "secfacts:0001309402:0001309402-18-000045:a6c8d5f922c154a1:a6c8d5f922c154a1d409ccb58889ab9bda40bba9ca94fe1708c6fadba97f490d",
+        "secfacts:0001309402:0001309402-19-000024:8322f0b00f926f9c:8322f0b00f926f9cb9331f360d7e9bdb6aff742dab8da2c38ba58882ea32c62e",
+        "secfacts:0001309402:0001309402-19-000146:9ab33b4752f88e9e:9ab33b4752f88e9e83201d5f2ce1cb9f20779da89132c5307d45e8025da76bf7",
+        "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d:ba303ecd89c32d2d517f07f5b52f5009d30c81a01f65011b3a8e9b1e82b5b8d4",
+        "secfacts:0001309402:0001309402-20-000116:0f4bc9b57dfe740c:0f4bc9b57dfe740cb5270b2eaa53198945ac91219dae23ede45fd09e820e4b4f",
+        "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02:1f19eaf394ce9e02a4f76765e7f90c85800fa7c9aa804369382a41c0adec0c7e",
+        "secfacts:0001309402:0001309402-22-000008:897a7957ef2a7219:897a7957ef2a7219cfb8cbff416729435b791dcbdb3d4737c64bdf88309efb59",
+        "secfacts:0001309402:0001309402-23-000012:21b32f10cee71e8c:21b32f10cee71e8c390be33274b28ee2895ade12e91f3e572c2479aefb36cefc",
+        "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4:a940180e1345eff4cc5540d3ca668447559f1b2757d87915179da56ee8e5dcfc"
+      ]
+    },
+    {
+      "source_batch_index": 4,
+      "signal_ref": "liquidity_runway_months:v3",
+      "signal_id": "liquidity_runway_months",
+      "version": 3,
+      "state": {
+        "confidence": 1.0,
+        "value": "positive"
+      },
+      "coverage": "sufficient",
+      "numeric_measurement": {
+        "formula": "cash / (absolute negative operating cash flow / reported months)",
+        "period": {
+          "end": "2025-03-31",
+          "start": "2025-01-01"
+        },
+        "unit": "months",
+        "value": 5.374720662778656,
+        "numeric_sign": "positive",
+        "categorical_state": "positive"
+      },
+      "exact_claim_if_adopted": "liquidity_runway_months=5.37472",
+      "wire_evidence": {
+        "supporting": [
+          {
+            "evidence_index": 0,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          },
+          {
+            "evidence_index": 1,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          }
+        ],
+        "counter": []
+      },
+      "source_observations": [
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "value": -55041000,
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "unit": "USD"
+        },
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "end": "2025-03-31",
+          "value": 98610000,
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "unit": "USD"
+        }
+      ],
+      "deferred_observation_count": 0,
+      "categorical_value_is_not_stock_direction": true,
+      "evidence_ref_catalog": {
+        "signal_ref": "liquidity_runway_months:v3",
+        "supporting_evidence_indices": [
+          0,
+          1
+        ],
+        "counter_evidence_indices": []
+      },
+      "canonical_operand_audit": [
+        {
+          "group": "supporting",
+          "index": 0,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2025-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": -55041000
+          },
+          "whole_literal_sha256": "3098e6412fc28e03612206b2bf339ac7fb3523ebdb29657a6630500a4984158d",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -55041000,
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "unit": "USD"
+          }
+        },
+        {
+          "group": "supporting",
+          "index": 1,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2025Q1I",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "start": null,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 98610000
+          },
+          "whole_literal_sha256": "18a965903640e222aed8565147465477d6b036b3e99390ba279b49c87852d58c",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 1,
+            "end": "2025-03-31",
+            "value": 98610000,
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "unit": "USD"
+          }
+        }
+      ],
+      "source_document_fingerprints": [
+        "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130:aa05ed7e72b76d7930e5411dbe4c3314c0f0186a7917d0b950bc6f3ada19df12",
+        "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877:cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+        "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902:eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b:b0c4c525055d12686df4ac82390803116324b197cbaac8d8cee83bce385c37f8",
+        "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4:a940180e1345eff4cc5540d3ca668447559f1b2757d87915179da56ee8e5dcfc",
+        "secfacts:0001309402:0001309402-25-000008:02d135492926ac40:02d135492926ac406154af88476b4235d6461873e97b5b963681adf7b39c696f"
+      ]
+    },
+    {
+      "source_batch_index": 5,
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "signal_id": "net_share_retirement_yoy",
+      "version": 3,
+      "state": {
+        "confidence": 1.0,
+        "value": "neutral"
+      },
+      "coverage": "sufficient",
+      "numeric_measurement": {
+        "formula": "1 - current weighted-average shares / prior-year shares",
+        "period": {
+          "end": "2025-03-31",
+          "start": "2025-01-01"
+        },
+        "unit": "fraction",
+        "value": -0.011493345542381794,
+        "numeric_sign": "negative",
+        "categorical_state": "neutral",
+        "display": {
+          "value": -1.1493345542381794,
+          "unit": "%"
+        }
+      },
+      "exact_claim_if_adopted": "net_share_retirement_yoy=-0.0114933",
+      "wire_evidence": {
+        "supporting": [
+          {
+            "evidence_index": 0,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          },
+          {
+            "evidence_index": 1,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          }
+        ],
+        "counter": []
+      },
+      "source_observations": [
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "value": 64069000,
+          "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+          "unit": "shares"
+        },
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "start": "2024-01-01",
+          "end": "2024-03-31",
+          "value": 63341000,
+          "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+          "unit": "shares"
+        }
+      ],
+      "deferred_observation_count": 0,
+      "categorical_value_is_not_stock_direction": true,
+      "evidence_ref_catalog": {
+        "signal_ref": "net_share_retirement_yoy:v3",
+        "supporting_evidence_indices": [
+          0,
+          1
+        ],
+        "counter_evidence_indices": []
+      },
+      "canonical_operand_audit": [
+        {
+          "group": "supporting",
+          "index": 0,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Weighted Average Number of Shares Outstanding, Basic",
+            "start": "2025-01-01",
+            "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+            "taxonomy": "us-gaap",
+            "unit": "shares",
+            "value": 64069000
+          },
+          "whole_literal_sha256": "a349b93d1272ee7be52bf5c3eb2c5007f9cb8751b0a10295035720512cfb59f1",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 64069000,
+            "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+            "unit": "shares"
+          }
+        },
+        {
+          "group": "supporting",
+          "index": 1,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Number of [basic] shares or units, after adjustment for contingently issuable shares or units and other shares or units not deemed outstanding, determined by relating the portion of time within a reporting period that common shares or units have been outstanding to the total time in that period.",
+            "end": "2024-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": "CY2024Q1",
+            "label": "Weighted Average Number of Shares Outstanding, Basic",
+            "start": "2024-01-01",
+            "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+            "taxonomy": "us-gaap",
+            "unit": "shares",
+            "value": 63341000
+          },
+          "whole_literal_sha256": "0a0db6dcdf410219b9740a994194cbec9889dc449b5edd466d3e6caf577cf1c1",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 1,
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 63341000,
+            "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+            "unit": "shares"
+          }
+        }
+      ],
+      "source_document_fingerprints": [
+        "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902:eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "secfacts:0001309402:0001309402-12-000050:d4031e823e0b91e1:d4031e823e0b91e1d161f96f9bd39d9d6db17ddc17c283a366c13bdbcb8e9b84",
+        "secfacts:0001309402:0001309402-13-000021:c017c478dd4814d7:c017c478dd4814d74b2cd866d9608155db5f0dffd55b1351e37a0c3ad1e68ee1",
+        "secfacts:0001309402:0001309402-14-000007:653a13cd2ee459e0:653a13cd2ee459e0a7c8bc3e3a5afefa81a8a2fbe343380f28856158a13ede9a",
+        "secfacts:0001309402:0001309402-15-000007:7477df509e311cff:7477df509e311cff5e8fbc054272749c7070694ddc0de456f8e25fe6a53bfc14",
+        "secfacts:0001309402:0001309402-16-000149:0f0a4bd4f8b5a055:0f0a4bd4f8b5a05515dd1bdb0163f4120f6bec15491be5043c098707f1d047b4",
+        "secfacts:0001309402:0001309402-17-000046:aa13e6e6ec12d8fa:aa13e6e6ec12d8fae5b9c023f18ef20534d938b0d9af641620a550843bf9838c",
+        "secfacts:0001309402:0001309402-18-000045:a6c8d5f922c154a1:a6c8d5f922c154a1d409ccb58889ab9bda40bba9ca94fe1708c6fadba97f490d",
+        "secfacts:0001309402:0001309402-19-000024:8322f0b00f926f9c:8322f0b00f926f9cb9331f360d7e9bdb6aff742dab8da2c38ba58882ea32c62e",
+        "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d:ba303ecd89c32d2d517f07f5b52f5009d30c81a01f65011b3a8e9b1e82b5b8d4"
+      ]
+    },
+    {
+      "source_batch_index": 6,
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "signal_id": "operating_cash_flow_margin",
+      "version": 2,
+      "state": {
+        "confidence": 1.0,
+        "value": "negative"
+      },
+      "coverage": "sufficient",
+      "numeric_measurement": {
+        "formula": "operating cash flow / same-period revenue",
+        "period": {
+          "end": "2025-03-31",
+          "start": "2025-01-01"
+        },
+        "unit": "fraction",
+        "value": -0.09150395251988729,
+        "numeric_sign": "negative",
+        "categorical_state": "negative",
+        "display": {
+          "value": -9.150395251988728,
+          "unit": "%"
+        }
+      },
+      "exact_claim_if_adopted": "operating_cash_flow_margin=-0.091504",
+      "wire_evidence": {
+        "supporting": [
+          {
+            "evidence_index": 0,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          },
+          {
+            "evidence_index": 1,
+            "available_at": "2025-05-09T00:00:00+00:00"
+          }
+        ],
+        "counter": []
+      },
+      "source_observations": [
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "value": 601515000,
+          "tag": "Revenues",
+          "unit": "USD"
+        },
+        {
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "value": -55041000,
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "unit": "USD"
+        }
+      ],
+      "deferred_observation_count": 0,
+      "categorical_value_is_not_stock_direction": true,
+      "evidence_ref_catalog": {
+        "signal_ref": "operating_cash_flow_margin:v2",
+        "supporting_evidence_indices": [
+          0,
+          1
+        ],
+        "counter_evidence_indices": []
+      },
+      "canonical_operand_audit": [
+        {
+          "group": "supporting",
+          "index": 0,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Revenues",
+            "start": "2025-01-01",
+            "tag": "Revenues",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 601515000
+          },
+          "whole_literal_sha256": "88f647704f9e49766487ca3b69ceac3b03b35b569c34600f3a5cf5fcb95a92c9",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 601515000,
+            "tag": "Revenues",
+            "unit": "USD"
+          }
+        },
+        {
+          "group": "supporting",
+          "index": 1,
+          "source_document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "whole_operand": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2025-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": -55041000
+          },
+          "whole_literal_sha256": "3098e6412fc28e03612206b2bf339ac7fb3523ebdb29657a6630500a4984158d",
+          "source_observation_required": {
+            "evidence_group": "supporting",
+            "evidence_index": 1,
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -55041000,
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "unit": "USD"
+          }
+        }
+      ],
+      "source_document_fingerprints": [
+        "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902:eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "secfacts:0001309402:0001309402-19-000146:9ab33b4752f88e9e:9ab33b4752f88e9e83201d5f2ce1cb9f20779da89132c5307d45e8025da76bf7",
+        "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d:ba303ecd89c32d2d517f07f5b52f5009d30c81a01f65011b3a8e9b1e82b5b8d4",
+        "secfacts:0001309402:0001309402-20-000083:7ea21eb1084d19de:7ea21eb1084d19de2c8c86a010d69947f52ddc8614425b8b7e5a093447cc2846",
+        "secfacts:0001309402:0001309402-20-000116:0f4bc9b57dfe740c:0f4bc9b57dfe740cb5270b2eaa53198945ac91219dae23ede45fd09e820e4b4f",
+        "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02:1f19eaf394ce9e02a4f76765e7f90c85800fa7c9aa804369382a41c0adec0c7e",
+        "secfacts:0001309402:0001309402-22-000008:897a7957ef2a7219:897a7957ef2a7219cfb8cbff416729435b791dcbdb3d4737c64bdf88309efb59",
+        "secfacts:0001309402:0001309402-23-000012:21b32f10cee71e8c:21b32f10cee71e8c390be33274b28ee2895ade12e91f3e572c2479aefb36cefc",
+        "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4:a940180e1345eff4cc5540d3ca668447559f1b2757d87915179da56ee8e5dcfc",
+        "secfacts:0001309402:0001309402-25-000008:02d135492926ac40:02d135492926ac406154af88476b4235d6461873e97b5b963681adf7b39c696f"
+      ]
+    }
+  ],
+  "native_projection_contract": {
+    "canonical_rows": true,
+    "complete_whole_literals_required_in_wire": false,
+    "explanation": "For these six successful measured results, native batch view uses exact_claim_if_adopted and numeric measurement_context, not the public single-result full artifact. Evidence entries expose only index and availability; whole raw/model_evidence_text is intentionally omitted. Require each whole operand numeric/date/unit/tag identity preserved via matching source_observations tuple. Original complete literal/source fingerprints remain hash-bound audit/canonical batch, not invented mandatory wire fields.",
+    "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors.",
+    "no_reinterpretation": [
+      "cash_burn positive is not positive stock direction",
+      "netshare negative numeric fraction with neutral categorical state remains separate",
+      "runway 5.374720662778656 months must not become ratio or quarter duration",
+      "OCF uses Revenues601515000 plus OCF-55041000 for Jan1-Mar31; partial revenue35846000 must not replace total",
+      "shares use weighted-average basic64069000 vs63341000 in actual corresponding Jan1-Mar31 years; no ending-share proxy"
+    ]
+  },
+  "boundary_expectations": {
+    "native_request_ready_events": 1,
+    "request_journal_records": 1,
+    "exchange_receive_calls": 0,
+    "cache_load_calls_after_request_ready": 0,
+    "dispatches": 0,
+    "inboxes": 0,
+    "receipts": 0,
+    "raw_answers": 0,
+    "model_calls": 0,
+    "GET": 0,
+    "labels": 0,
+    "Signal_apply": 0,
+    "no_state_sink_claim": true,
+    "required_need_indices": [],
+    "executed_selection_intents": []
+  },
+  "blind_boundary": "Native anonymity should conceal GPRE/company identity in actual outgoing messages per reversible scope; original document fingerprints stay audit-only unless native contract includes them. Independent expectations/private oracle/strict-pass verdicts/witness and excluded3 results are not appended to model input. Legitimate numbers/claims coming from actual6 source results are not oracle leakage.",
+  "acceptance_limits": [
+    "A real serialized request is stronger than public single-result projection but is not fresh model reading, accepted research state, need resolution, prediction or benefit.",
+    "Native canonical claims may be rounded summaries while numeric_measurement preserves raw precision; require both exact source values under their own fields, do not replace canonical summary with recomputed prose.",
+    "Empty state/defaultPlan only prove serialization; separate H_init accepted prior/actual ownership prerequisites remain."
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "event_type": "request_ready",
+  "logical_reservation": 36318,
+  "messages_utf8_bytes": 28318,
+  "model_alias": "independent-subagent",
+  "output_reservation": 8000,
+  "request_hash": "cf29389bfcac52a0aa74b0115189b77dccf870c1faf208128036d4fda5363e84",
+  "request_limit": 131072,
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/requests/cf29389bfcac52a0aa74b0115189b77dccf870c1faf208128036d4fda5363e84.json",
+  "stage": "research_controller_reflect",
+  "within_request_limit": true
+}

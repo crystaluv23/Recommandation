@@ -1,0 +1,124 @@
+{
+  "status": "PASS_ACTUAL_SIX_RESULT_NATIVE_MASKED_REFLECT_WIRE_ONLY",
+  "source_expectations_sha256": "d23d09d8036575534d6d71dacfade8d4fe4be6c0726b816bb12d415531568754",
+  "native_request_hash": "cf29389bfcac52a0aa74b0115189b77dccf870c1faf208128036d4fda5363e84",
+  "six_row_checks": [
+    {
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "exact_field_match": true,
+      "source_observations": 2
+    },
+    {
+      "signal_ref": "cash_reserves:v2",
+      "exact_field_match": true,
+      "source_observations": 1
+    },
+    {
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "exact_field_match": true,
+      "source_observations": 2
+    },
+    {
+      "signal_ref": "liquidity_runway_months:v3",
+      "exact_field_match": true,
+      "source_observations": 2
+    },
+    {
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "exact_field_match": true,
+      "source_observations": 2
+    },
+    {
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "exact_field_match": true,
+      "source_observations": 2
+    }
+  ],
+  "selected_operands": 11,
+  "all_original_operand_literals_reachable": 21,
+  "selected_fingerprint_documents_verified": 23,
+  "canonical_budget": {
+    "messages_utf8_bytes": 28318,
+    "output_reservation": 8000,
+    "total": 36318,
+    "limit": 131072
+  },
+  "boundary": {
+    "source_attempts": 3,
+    "first_two_harness_failures_retained": true,
+    "source_request_journals_total": 1,
+    "pre_egress": 1,
+    "request_ready": 1,
+    "responses": 0,
+    "models": 0,
+    "dispatches": 0,
+    "forbidden": 0,
+    "synthetic_temporary_controls_not_counted_as_actual_source_journals": true
+  },
+  "privacy": {
+    "identity_tokens_absent": true,
+    "private_expectations_or_verdict_absent": true,
+    "excluded3_refs_not_supplied": true,
+    "noBasicInfo_or_acceptedprior_claim": true
+  },
+  "frozen_bindings_current_equal": 60,
+  "original_nine_acceptance_unchanged": {
+    "strict_passes": 6,
+    "sufficient_unique": 7,
+    "fixed_denominator": 9,
+    "period_unknown": 2,
+    "revenue_growth_prior_literal_allowlist_failure": true,
+    "status": "completed_acceptance_failed"
+  },
+  "scope": "All audit operations are stdlib reads/hashes/parsing. No capture rerun, native helper, Store/Engine, model, GET, labels, source append, H_init, F7 semantic acceptance or Predictor. Native batch intentionally substitutes canonical claim/measurement_context for whole-literal text; source observations preserve all11 operand identities. Literal reachability of21 is provenance, not relaxation of the frozen oracle prior literal allowlist.",
+  "evidence_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/pre-capture-expectations.json",
+      "sha256": "d23d09d8036575534d6d71dacfade8d4fe4be6c0726b816bb12d415531568754"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/explicit-carrier-amendment.json",
+      "sha256": "9e001ee0dfa7e4939dde9c7d6828caf37bb2158c6470eec255fb8a7241f0cb38"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/third-candidate-preflight-review.json",
+      "sha256": "77717755869e9c96b76b50f76d0a70889b9a0c3a12b9f2d8d46f347b3dbb324a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/contract-v3.json",
+      "sha256": "450f3e947181ffb186a6b99b365e17a82d3b47ca9690f90d747c5bddabc4a3ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture-native-config.py",
+      "sha256": "48b107515437e877fcb837ac4890e5b94720de707e87c99fb933b39ba9382093"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/result.json",
+      "sha256": "c67a0999f465003e3a6feffe54d25cf9d1afb75a31f88d22e0028f6e40207c96"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/pre-egress.json",
+      "sha256": "05fd78b141292216aa0e12e2f2bea5d115c30d859416dda417eab7cef732b0bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/request-ready.json",
+      "sha256": "3f4ef9eff2ae032c16c82d5bd20bf27fbaf317abd2afcfd952e55e019d838b65"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/mapping.json",
+      "sha256": "e8e7f008c1f4f2d0ebcf463bceaff40d252dc0a67dd7c1884f092c8e5bd77395"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/bindings-before-after.json",
+      "sha256": "db725c92392566dad51be2087db1517a24b663c68a16631fd60a77124411ae5f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution-v3/requests/cf29389bfcac52a0aa74b0115189b77dccf870c1faf208128036d4fda5363e84.json",
+      "sha256": "edd3f947c5a8276818cd258160222b567ea107ee95dbed192f78fcc227f701df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/actual-wire-audit.py",
+      "sha256": "9573a74d5ae8bd7a783aa2125761e2a24cf13a7c0937a45213516ecf2fd0368d"
+    }
+  ]
+}

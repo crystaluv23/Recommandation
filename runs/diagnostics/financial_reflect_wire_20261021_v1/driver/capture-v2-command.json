@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture-empty-finalize.py",
+    "--expected-contract-sha",
+    "ca56e5102dfb35c32fc603c6be79a19f700c6051011471dff300a2c8d3cdbdd3",
+    "--expectations",
+    "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/pre-capture-expectations.json",
+    "--expected-expectations-sha",
+    "d23d09d8036575534d6d71dacfade8d4fe4be6c0726b816bb12d415531568754"
+  ],
+  "pid": 79833,
+  "started_at": "2026-10-21T00:10:04.718217+00:00",
+  "cwd": "/Users/l/Project/Recommandation"
+}

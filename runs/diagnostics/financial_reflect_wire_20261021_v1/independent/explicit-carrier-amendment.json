@@ -1,0 +1,59 @@
+{
+  "status": "APPROVED_BOUNDED_HARNESS_CARRIER_AMENDMENT_NOT_RESEARCH_EXECUTION",
+  "reviewed_at_utc": "2026-10-21T00:09:03.876918+00:00",
+  "original_expectations": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/pre-capture-expectations.json",
+    "sha256": "d23d09d8036575534d6d71dacfade8d4fe4be6c0726b816bb12d415531568754",
+    "unchanged": true
+  },
+  "first_failure": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/execution/failure.json",
+    "sha256": "01ffba967dba6a59109ed25bee7ae03c3ed6d577d55a0cebd72e876bfa247c7e",
+    "binding_review": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/driver/failure-binding-review.json",
+      "sha256": "ec5dde1f04974246e03fc023b6dd58b0dc2c83f776ae85536e418fbe3e1ef98b"
+    },
+    "pre_egress": 0,
+    "request_ready": 0,
+    "journal": 0,
+    "dispatch": 0,
+    "cause": "ResearchState() defaults continue with no needs and correctly fails native constructor before reflect/serialization. Not a projection failure."
+  },
+  "source_code_checks_current_match": 48,
+  "only_semantic_harness_change": "ResearchState() -> ResearchState(decision=ResearchDecision.FINALIZE); use a distinct explicit-carrier child output with its own frozen script/contract. Preserve original failed execution tree without resume/retry.",
+  "expected_state_carrier": {
+    "hypotheses": [],
+    "current_beliefs": [],
+    "supporting_evidence": [],
+    "contradictions": [],
+    "resolved_questions": [],
+    "open_questions": [],
+    "next_information_needs": [],
+    "decision": "finalize"
+  },
+  "why_valid": [
+    "Native ResearchState.__post_init__ forbids empty needs only for CONTINUE; empty FINALIZE is a legal value. This is verified statically, not by executing another constructor here.",
+    "LLMResearchController.reflect current6-success batch still serializes its request; its no-request all-unavailable short circuit does not apply. _signal_batch_model_view depends on the frozen batch, not on whether the carrier is continue/finalize.",
+    "No fake need, BasicInfo, claim, accepted prior, Signal or new source is added to satisfy constructor constraints."
+  ],
+  "unchanged_gold": "All six exact values/states/unit/period/canonical claims, eleven source observations, evidence indices, fingerprints, mask/oracle rules and excluded3 results in d23d pre-expectations remain byte-bound and unchanged.",
+  "cumulative_batch_boundaries": {
+    "old_journal": 0,
+    "new_maximum_request_journal": 1,
+    "combined_maximum_request_journal": 1,
+    "new_maximum_pre_egress_calls": 1,
+    "models": 0,
+    "exchange_receive": 0,
+    "dispatch": 0,
+    "cache_after_request_ready": 0,
+    "GET": 0,
+    "labels": 0,
+    "Signal_apply": 0
+  },
+  "limitations": [
+    "Native full research flow would not call a new Reflect after a finalized state; this deliberate unbound serializer diagnostic therefore establishes request-wire projection only.",
+    "It is not an accepted GPRE prior, H_init execution, routing ownership, live feedback consumption, state/Predictor sink or fresh model compliance.",
+    "Do not reclassify first failure as success; do not read/create an answer, rerun old F6 or resume old failed output. New child must stop at first request_ready before cache/receive."
+  ],
+  "reviewer_actions": "Stdlib source/failure/hash reads and this additive amendment only; no product helper/constructor, capture, Store, model, network or wire read."
+}

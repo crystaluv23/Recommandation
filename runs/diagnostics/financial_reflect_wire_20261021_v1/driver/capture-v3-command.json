@@ -1,0 +1,19 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "runs/diagnostics/financial_reflect_wire_20261021_v1/driver/capture-native-config.py",
+    "--expected-contract-sha",
+    "450f3e947181ffb186a6b99b365e17a82d3b47ca9690f90d747c5bddabc4a3ba",
+    "--expectations",
+    "runs/diagnostics/financial_reflect_wire_20261021_v1/independent/pre-capture-expectations.json",
+    "--expected-expectations-sha",
+    "d23d09d8036575534d6d71dacfade8d4fe4be6c0726b816bb12d415531568754"
+  ],
+  "pid": 80148,
+  "started_at": "2026-10-21T00:16:49.716318+00:00",
+  "cwd": "/Users/l/Project/Recommandation",
+  "preflight_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_reflect_wire_20261021_v1/independent/third-candidate-preflight-review.json",
+    "sha256": "77717755869e9c96b76b50f76d0a70889b9a0c3a12b9f2d8d46f347b3dbb324a"
+  }
+}
