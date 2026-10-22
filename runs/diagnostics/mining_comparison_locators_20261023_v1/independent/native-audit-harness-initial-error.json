@@ -1,0 +1,10 @@
+{
+  "scope": "Reviewer diagnostic error, not product failure",
+  "script_sha256": "06c258decdbc707471b062697e7e9eca79e64297c2427ba02288b574c1223eaa",
+  "exception": "AssertionError at v1 line85",
+  "incorrect_assumption": "heavy_remaining8 from generic12 default",
+  "actual_immutable_final_view_heavy_remaining": 2,
+  "actual_stage_heavy_limit": 6,
+  "new_v2_script": "runs/diagnostics/mining_comparison_locators_20261023_v1/independent/native-view-only-artifact-audit-v2.py",
+  "existing_artifacts_overwritten": false
+}

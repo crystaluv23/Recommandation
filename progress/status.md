@@ -7,9 +7,9 @@
 ## 最新实证
 
 [Mining出处消费](../reports/mining-taxonomy-consumer-20261023.md)：已读完整fact回执现在跨action保留，按ref去重/重读计预算、8KB whole-unit/遗漏显式；266关联过、网络0。
-预冻两控正式结果1/2：namespace两operand消费正确/首endpoint通过；实际0671在读current后丢prior locator，作者谨慎重compare，第5请求受原98304预算阻断。
-7fresh原答/0纠错，answered逻辑预留154184；actual4答90772+blocked26243、namespace3答63412，无第5作者，未加预算/补答。
-受控预演在脚本外保留ref，不能证明fresh自主可达；下一修比较locator在适用快照下可见，防止新fetch后沿用旧资格。非候选/准入/复用或完整S3/S4。
+预冻两控正式结果1/2：namespace首endpoint通过；actual丢prior locator重compare，第5请求受原98304预算阻断。7fresh/0纠错，answered154184；actual90772+blocked26243、namespace63412，无补答/加预算。
+[比较locator修复](../reports/mining-comparison-locators-20261023.md)现保留实际比较whole units并绑定fact/group/axis快照，变更时progress/last双副本失效；273关联/独立反例过、网络0。
+实际1780视图每次仅凭当前wire选下一ref，正反4输入97641/97599均在原98304内，旧版首读后确实失败；两次action重建view/ledger字节同，0inbox/作者。仅局部可达，非fresh/候选/准入/完整S3/S4。
 两临时pending fixture重放7原cache/0新交接、62非终态文件同、原64不变，非OS恢复；一次独立预算反例JSON覆盖失误已披露，未称原件保真。
 [分类链修复](../reports/classification-contract-propagation-20261023.md)保持局部；旧[财务消费者](../reports/financial-context-consumer-20261023.md)F7/F8窄通过、F9语义仍0/1。
 实际critic/Slow仍缺分类声明原件，canonical持久化[方案A/B](../reports/classification-context-persistence-proposal-20261023.md)等用户决策，未改该schema。

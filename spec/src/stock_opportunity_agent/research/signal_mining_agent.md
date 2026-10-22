@@ -378,6 +378,29 @@ corrections and validates the assembled action before any tool executes.
   action sequence reconstructs the same working view; it does not backfill old
   archived model requests. A selected ref or read count alone proves neither
   comparability nor semantic sufficiency.
+- Executed `compare_groups` locators survive intervening reads/computations in
+  `comparison_progress`. Each complete concept unit retains both groups' case
+  counts, available cases, latest/prior value-ref mappings and unresolved-basis
+  qualifications from that actual comparison. Keep only the latest executed
+  unit per concept, most recent first; concepts from one action tie in sorted
+  concept order. Select at most12 units/8,000 UTF-8 JSON bytes, with explicit
+  omissions and oversized concept names/sizes. Reissuing `compare_groups` for
+  omitted/oversized concepts uses its ordinary heavy cost, with no new tool.
+  These units locate already-fetched facts; they do not mark a fact read or
+  provide stronger evidence or measurement authority.
+  Bind each unit to the canonical fetched-fact graph (all fact fields, sorted
+  by ref), runtime group map and research axis used for its calculation. If
+  that context changes during calculation, reject before accepting the result,
+  ledger or budget charge. Later context changes invalidate every working-view
+  copy, including an otherwise-current `last_action_result` comparison; show
+  an explicit invalidation/refresh notice without stale values or locators.
+  A new comparison in the new context replaces old units. An idempotent fetch
+  of the same facts, tool counters and fact insertion order do not invalidate
+  them. View construction selects saved units and never recomputes a comparison
+  or adds unread/source-table facts. Canonical facts, read/compare ledger hashes
+  and raw historical requests stay unchanged; deterministic pending-operation
+  replay reconstructs the same view. All added working units/envelopes enter
+  actual request/case accounting and the existing reversible identity scope.
 - A candidate's measurement observable must be a genuinely new measurement:
   it may not reuse or version the base name of any Signal in the stable
   catalog, because changing an existing Signal belongs to the unchanged

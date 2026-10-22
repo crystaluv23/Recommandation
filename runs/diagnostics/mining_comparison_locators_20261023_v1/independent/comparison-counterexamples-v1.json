@@ -1,0 +1,99 @@
+{
+  "scope": "Synthetic controller-only independent controls, no model/API/inbox or business labels. Native budget/cache/source1780 checks are not established by this script.",
+  "source_hashes": {
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "8efd30c256dff5ce7fdc26707c7a99caac21fcdc4902f28da6d1952e93c26e95",
+    "src/stock_opportunity_agent/research/mining_controller.py": "5421ee448d4af6104eb7576e8b007ade3fc16b8fb9f6539f688552ad7b1dc28b",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "4114e4822cfb64c3799aad27eb89f8553fa891b5e82f71c5df9507f7c6074a55"
+  },
+  "source_hashes_after": {
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "8efd30c256dff5ce7fdc26707c7a99caac21fcdc4902f28da6d1952e93c26e95",
+    "src/stock_opportunity_agent/research/mining_controller.py": "5421ee448d4af6104eb7576e8b007ade3fc16b8fb9f6539f688552ad7b1dc28b",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "4114e4822cfb64c3799aad27eb89f8553fa891b5e82f71c5df9507f7c6074a55"
+  },
+  "drift": false,
+  "checks": [
+    {
+      "name": "T01_view_only_current_then_prior",
+      "passed": true,
+      "detail": {
+        "selected_from_current_progress": [
+          "fact-5ced4eb7d054d032",
+          "fact-26485ecef8db6ae4"
+        ],
+        "read_receipts": 2
+      }
+    },
+    {
+      "name": "T02_view_only_prior_then_current",
+      "passed": true,
+      "detail": {
+        "selected_from_current_progress": [
+          "fact-26485ecef8db6ae4",
+          "fact-5ced4eb7d054d032"
+        ],
+        "read_receipts": 2
+      }
+    },
+    {
+      "name": "T03_complete_units_sorted_ties_recent_dedup",
+      "passed": true,
+      "detail": {
+        "duplicates": 1,
+        "whole_branches_preserved": true
+      }
+    },
+    {
+      "name": "T04_T05_all_source_fields_group_axis_stale_copies",
+      "passed": true,
+      "detail": [
+        "value",
+        "taxonomy",
+        "period",
+        "exact_span",
+        "document_ref",
+        "content_hash",
+        "available_at",
+        "unit",
+        "source_display_name",
+        "case_ref",
+        "record_selection",
+        "label_map",
+        "research_axis"
+      ]
+    },
+    {
+      "name": "T06_idempotent_fetch_reorder_read_no_view_compute",
+      "passed": true,
+      "detail": {
+        "view_recomputation": false,
+        "fetch_graph_preserved": true
+      }
+    },
+    {
+      "name": "T07_atomic_acceptance_and_deepcopy",
+      "passed": true,
+      "detail": {
+        "context_mutation_rejected_before_acceptance": true,
+        "view_mutation_isolated": true
+      }
+    },
+    {
+      "name": "T08_whole_units_Unicode_oversized_omissions",
+      "passed": true,
+      "detail": {
+        "items_bytes": 3783,
+        "oversized_units": 1,
+        "omissions_explicit": true
+      }
+    },
+    {
+      "name": "T10_deterministic_action_reconstruction",
+      "passed": true,
+      "detail": {
+        "deterministic_controller_reconstruction": true,
+        "native_cache_not_yet_tested": true
+      }
+    }
+  ],
+  "all_pass": true
+}

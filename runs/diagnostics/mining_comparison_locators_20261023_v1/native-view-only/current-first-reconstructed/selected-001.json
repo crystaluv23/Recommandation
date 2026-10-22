@@ -1,0 +1,16 @@
+{
+  "action": {
+    "action": "compare_groups",
+    "concepts": [
+      "NetCashProvidedByUsedInOperatingActivities"
+    ],
+    "rationale": [
+      "Explicit deterministic offline locator test; not a model answer."
+    ]
+  },
+  "input": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/requests/5cf0e4512354e06882787f853016d1a8eed2a549b014c6f0227f405d45ae3ae0.json",
+    "sha256": "8b18c16a579aecb5d6cb7652fadbb66ad85387591c306afa2514cb582f8417b8"
+  },
+  "selector_source": "only current native payload"
+}

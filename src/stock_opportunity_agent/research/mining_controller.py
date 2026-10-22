@@ -373,6 +373,8 @@ class LabelAwareMiningController:
         self._visible_ranges: dict[tuple[str, str], tuple[tuple[int, int], ...]] = {}
         self._read_progress: dict[tuple[str, str, int, int], dict[str, Any]] = {}
         self._fact_read_progress: dict[str, dict[str, Any]] = {}
+        self._comparison_progress: dict[str, dict[str, Any]] = {}
+        self._comparison_snapshot: str | None = None
         self._last_action_result: Mapping[str, Any] | None = None
         self._narrative_explored = False
         self._narrative_reads = 0
@@ -534,7 +536,25 @@ class LabelAwareMiningController:
                 "original_disclosure_limit": 48_000},
         }
         if self._last_action_result is not None:
-            view["last_action_result"] = dict(self._last_action_result)
+            view["last_action_result"] = deepcopy(self._last_action_result)
+        if self._comparison_progress:
+            current = self._comparison_snapshot == self._comparison_context_hash()
+            entries = deepcopy(list(reversed(list(self._comparison_progress.values())))) if current else []
+            progress = bounded_entry_page(entries, max_items=12, max_bytes=8_000)
+            progress["oversized_entries"] = [
+                {**row, "concept": entries[row["index"]]["concept"]}
+                for row in progress["oversized_entries"]
+            ]
+            view["comparison_progress"] = {
+                **progress, "snapshot_status": "current" if current else "invalidated",
+                "invalidated_comparisons": 0 if current else len(self._comparison_progress),
+                "selection_order": "most_recent_comparison_first",
+                "refresh_action": "compare_groups with requested concepts; ordinary heavy cost",
+            }
+            if not current:
+                view["comparison_progress"]["selection_is_exhaustive"] = False
+                if self._last_action_result and self._last_action_result.get("action") == "compare_groups":
+                    view["last_action_result"] = {"action": "compare_groups", "snapshot_status": "invalidated"}
         if self._read_progress:
             view["narrative_read_progress"] = bounded_entry_page(
                 list(reversed(list(self._read_progress.values()))),
@@ -1312,7 +1332,11 @@ class LabelAwareMiningController:
         concepts = raw.get("concepts")
         if not isinstance(concepts, list) or not concepts:
             raise InvalidMiningAction("compare_groups requires non-empty concepts")
-        summary = self._group_summary(tuple(str(item) for item in concepts))
+        wanted = tuple(sorted({str(item) for item in concepts}))
+        snapshot = self._comparison_context_hash()
+        summary = self._group_summary(wanted)
+        if snapshot != self._comparison_context_hash():
+            raise InvalidMiningAction("comparison inputs changed during calculation")
         self._last_action_result = {
             "action": "compare_groups",
             "groups": summary,
@@ -1327,8 +1351,26 @@ class LabelAwareMiningController:
                 if fact.concept in {str(item) for item in concepts}
             ),
         )
+        if self._comparison_snapshot != snapshot:
+            self._comparison_progress.clear()
+        self._comparison_snapshot = snapshot
+        for concept in reversed(wanted):
+            self._comparison_progress.pop(concept, None)
+            self._comparison_progress[concept] = {
+                "concept": concept, "source_snapshot_hash": snapshot,
+                "groups": deepcopy({group: {"case_count": row["case_count"], **row["concepts"][concept]}
+                    for group, row in summary.items()}),
+            }
         self._heavy_used += 1
         return "running", [], ()
+
+    def _comparison_context_hash(self) -> str:
+        """Bind only the fetched graph and runtime grouping, without computing evidence."""
+
+        return canonical_json_hash({
+            "facts": [asdict(self._facts[ref]) for ref in sorted(self._facts)],
+            "label_map": self._label_map, "research_axis": self.research_axis,
+        })
 
     def _group_summary(self, concepts: Sequence[str]) -> dict[str, Any]:
         wanted = set(concepts)

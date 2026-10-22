@@ -1,0 +1,41 @@
+{
+  "scope": "Independent deterministic namespace control, not mandatory fresh-author arithmetic or a new accepted measurement.",
+  "source_hashes": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "5421ee448d4af6104eb7576e8b007ade3fc16b8fb9f6539f688552ad7b1dc28b",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "4114e4822cfb64c3799aad27eb89f8553fa891b5e82f71c5df9507f7c6074a55",
+    "src/stock_opportunity_agent/research/mining_agent_tools.py": "5fdb3a5ecd30e8039d14734f6bed31920fd7b74c8b97e556ee4024e9a43d92ed",
+    "runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json": "a1f75faa80c7eed795fa3ab4edd61c703063cdf763ec4ddf5684f58201760269"
+  },
+  "checks": [
+    {
+      "kind": "known_mismatch",
+      "taxonomies": [
+        "namespace-a",
+        "namespace-b"
+      ],
+      "no_automatic_latest_or_pair": true,
+      "unresolved_basis": {
+        "case-001": "latest basis is not unique across available units/periods/values"
+      },
+      "explicit_ratio": "1.200000",
+      "comparison_snapshot_preserved_after_compute": true
+    },
+    {
+      "kind": "unknown_legacy",
+      "taxonomies": [
+        "",
+        ""
+      ],
+      "no_automatic_latest_or_pair": true,
+      "unresolved_basis": {
+        "case-001": "latest basis is not unique across available units/periods/values"
+      },
+      "explicit_ratio": "1.200000",
+      "comparison_snapshot_preserved_after_compute": true
+    }
+  ],
+  "all_pass": true,
+  "new_tools": false,
+  "new_measurement_permissions": false,
+  "fresh_model_calls": 0
+}

@@ -1,0 +1,7 @@
+{
+  "event_type": "request_ready",
+  "model_alias": "independent-subagent",
+  "request_hash": "9996719e1089f61cb8f3c8a2816e505e2acf91e768df3abde7b01301d725d240",
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/requests/9996719e1089f61cb8f3c8a2816e505e2acf91e768df3abde7b01301d725d240.json",
+  "stage": "mining_controller_step"
+}

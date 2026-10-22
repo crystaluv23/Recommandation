@@ -1,0 +1,349 @@
+{
+  "scope": "Independent artifact-only verification of actual-source controlled native view-only input paths; no model calls, stage reentry, source acquisition, new business labels or truth.",
+  "native_capture": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/capture-view-only.py",
+    "sha256": "35e9360028c3106c218de24fd70205a1cf5f1207b9a434a7fbc0d500b05ebf57"
+  },
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/result.json",
+    "sha256": "ae4d3ff293595f859a9394d1cbe652fd03d5b05e8d31d84229671a5e8e4ccdf1"
+  },
+  "bindings": [
+    {
+      "kind": "sources",
+      "bindings_checked": 1785,
+      "mismatches": []
+    },
+    {
+      "kind": "code",
+      "bindings_checked": 5,
+      "mismatches": []
+    }
+  ],
+  "additional_current_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "8efd30c256dff5ce7fdc26707c7a99caac21fcdc4902f28da6d1952e93c26e95"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/independent/preimplementation-review.json",
+      "sha256": "b4bbc26abc3a6c073fb95e7673fd02636efe0c435c333250b3f31bf5d3fb8ddb"
+    }
+  ],
+  "variants": [
+    {
+      "variant": "current-first",
+      "steps": [
+        {
+          "step": 1,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first/requests/5cf0e4512354e06882787f853016d1a8eed2a549b014c6f0227f405d45ae3ae0.json",
+            "sha256": "8b18c16a579aecb5d6cb7652fadbb66ad85387591c306afa2514cb582f8417b8"
+          },
+          "reservation": 21400,
+          "selected_action": "compare_groups"
+        },
+        {
+          "step": 2,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first/requests/5341b6bf24b0e17d1810a90aba6d770b303f51fbfefa7db8848a403463a16150.json",
+            "sha256": "c46c16dfaa55728116b29ebaa766f95ec0def2b9f1e38a95bca11d099bd34f48"
+          },
+          "reservation": 22764,
+          "selected_action": "read_span",
+          "selected_current_payload_ref": "fact-3d4faa09011f777b"
+        },
+        {
+          "step": 3,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first/requests/342c3a6dd3d1719a49d9afbf977d112a44f97ef2669f3145e80aeb4c463a8fc7.json",
+            "sha256": "d625eb22d3162c1b9eca9e048f2ede872c82497b29b7aa4e69f9280b2f3b9666"
+          },
+          "reservation": 25938,
+          "selected_action": "read_span",
+          "selected_current_payload_ref": "fact-2f898adb2d25e349"
+        },
+        {
+          "step": 4,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first/requests/9996719e1089f61cb8f3c8a2816e505e2acf91e768df3abde7b01301d725d240.json",
+            "sha256": "d5846fac8acc0518b567d0f1b0526901cbd3df5700158ece7ce7485ed3bc60c2"
+          },
+          "reservation": 27539,
+          "selected_action": "record_deferred"
+        }
+      ],
+      "total_reservation": 97641,
+      "headroom": 663,
+      "final_view": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first/final-view.json",
+        "sha256": "6a362f2f16c117481008085b6757871cc580e868355323b3f4363e566670608f"
+      },
+      "final_ledger": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first/final-ledger.json",
+        "sha256": "05c7780e88cb079266763ab7f8f398156c003f54c87e28ff9c3e702617e38c71"
+      },
+      "inboxes": 0,
+      "answers": 0,
+      "cache_answers": 0
+    },
+    {
+      "variant": "current-first-reconstructed",
+      "steps": [
+        {
+          "step": 1,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/requests/5cf0e4512354e06882787f853016d1a8eed2a549b014c6f0227f405d45ae3ae0.json",
+            "sha256": "8b18c16a579aecb5d6cb7652fadbb66ad85387591c306afa2514cb582f8417b8"
+          },
+          "reservation": 21400,
+          "selected_action": "compare_groups"
+        },
+        {
+          "step": 2,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/requests/5341b6bf24b0e17d1810a90aba6d770b303f51fbfefa7db8848a403463a16150.json",
+            "sha256": "c46c16dfaa55728116b29ebaa766f95ec0def2b9f1e38a95bca11d099bd34f48"
+          },
+          "reservation": 22764,
+          "selected_action": "read_span",
+          "selected_current_payload_ref": "fact-3d4faa09011f777b"
+        },
+        {
+          "step": 3,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/requests/342c3a6dd3d1719a49d9afbf977d112a44f97ef2669f3145e80aeb4c463a8fc7.json",
+            "sha256": "d625eb22d3162c1b9eca9e048f2ede872c82497b29b7aa4e69f9280b2f3b9666"
+          },
+          "reservation": 25938,
+          "selected_action": "read_span",
+          "selected_current_payload_ref": "fact-2f898adb2d25e349"
+        },
+        {
+          "step": 4,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/requests/9996719e1089f61cb8f3c8a2816e505e2acf91e768df3abde7b01301d725d240.json",
+            "sha256": "d5846fac8acc0518b567d0f1b0526901cbd3df5700158ece7ce7485ed3bc60c2"
+          },
+          "reservation": 27539,
+          "selected_action": "record_deferred"
+        }
+      ],
+      "total_reservation": 97641,
+      "headroom": 663,
+      "final_view": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/final-view.json",
+        "sha256": "6a362f2f16c117481008085b6757871cc580e868355323b3f4363e566670608f"
+      },
+      "final_ledger": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/final-ledger.json",
+        "sha256": "05c7780e88cb079266763ab7f8f398156c003f54c87e28ff9c3e702617e38c71"
+      },
+      "inboxes": 0,
+      "answers": 0,
+      "cache_answers": 0
+    },
+    {
+      "variant": "prior-first",
+      "steps": [
+        {
+          "step": 1,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first/requests/5cf0e4512354e06882787f853016d1a8eed2a549b014c6f0227f405d45ae3ae0.json",
+            "sha256": "8b18c16a579aecb5d6cb7652fadbb66ad85387591c306afa2514cb582f8417b8"
+          },
+          "reservation": 21400,
+          "selected_action": "compare_groups"
+        },
+        {
+          "step": 2,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first/requests/5341b6bf24b0e17d1810a90aba6d770b303f51fbfefa7db8848a403463a16150.json",
+            "sha256": "c46c16dfaa55728116b29ebaa766f95ec0def2b9f1e38a95bca11d099bd34f48"
+          },
+          "reservation": 22764,
+          "selected_action": "read_span",
+          "selected_current_payload_ref": "fact-2f898adb2d25e349"
+        },
+        {
+          "step": 3,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first/requests/d61a8e2135b46017d502126bd1495b86c3d1ef2bfd716c17ef570543e6593af0.json",
+            "sha256": "87f6ae0908606d95cefcce377b9605f7a8a73eb7fda5d44efdefa9791f6e9151"
+          },
+          "reservation": 25854,
+          "selected_action": "read_span",
+          "selected_current_payload_ref": "fact-3d4faa09011f777b"
+        },
+        {
+          "step": 4,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first/requests/a93ee9156c4a4dcb4cad2ed45d38a41a8bd79d8f4dd015ef2758455d2c5e64f8.json",
+            "sha256": "f928b6bba658a004c6fc23762e00e8d49d1e097aa87cafd83d5cf82c182515f3"
+          },
+          "reservation": 27581,
+          "selected_action": "record_deferred"
+        }
+      ],
+      "total_reservation": 97599,
+      "headroom": 705,
+      "final_view": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first/final-view.json",
+        "sha256": "3d2690da83821eebf0acc059aceee41bc604ef4b37e8b3a308c5e935c506689d"
+      },
+      "final_ledger": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first/final-ledger.json",
+        "sha256": "46cb3c1f7936a789dc201a7a182960825c1ef6fc25f13a03d115878daf878031"
+      },
+      "inboxes": 0,
+      "answers": 0,
+      "cache_answers": 0
+    },
+    {
+      "variant": "prior-first-reconstructed",
+      "steps": [
+        {
+          "step": 1,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/requests/5cf0e4512354e06882787f853016d1a8eed2a549b014c6f0227f405d45ae3ae0.json",
+            "sha256": "8b18c16a579aecb5d6cb7652fadbb66ad85387591c306afa2514cb582f8417b8"
+          },
+          "reservation": 21400,
+          "selected_action": "compare_groups"
+        },
+        {
+          "step": 2,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/requests/5341b6bf24b0e17d1810a90aba6d770b303f51fbfefa7db8848a403463a16150.json",
+            "sha256": "c46c16dfaa55728116b29ebaa766f95ec0def2b9f1e38a95bca11d099bd34f48"
+          },
+          "reservation": 22764,
+          "selected_action": "read_span",
+          "selected_current_payload_ref": "fact-2f898adb2d25e349"
+        },
+        {
+          "step": 3,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/requests/d61a8e2135b46017d502126bd1495b86c3d1ef2bfd716c17ef570543e6593af0.json",
+            "sha256": "87f6ae0908606d95cefcce377b9605f7a8a73eb7fda5d44efdefa9791f6e9151"
+          },
+          "reservation": 25854,
+          "selected_action": "read_span",
+          "selected_current_payload_ref": "fact-3d4faa09011f777b"
+        },
+        {
+          "step": 4,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/requests/a93ee9156c4a4dcb4cad2ed45d38a41a8bd79d8f4dd015ef2758455d2c5e64f8.json",
+            "sha256": "f928b6bba658a004c6fc23762e00e8d49d1e097aa87cafd83d5cf82c182515f3"
+          },
+          "reservation": 27581,
+          "selected_action": "record_deferred"
+        }
+      ],
+      "total_reservation": 97599,
+      "headroom": 705,
+      "final_view": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/final-view.json",
+        "sha256": "3d2690da83821eebf0acc059aceee41bc604ef4b37e8b3a308c5e935c506689d"
+      },
+      "final_ledger": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/final-ledger.json",
+        "sha256": "46cb3c1f7936a789dc201a7a182960825c1ef6fc25f13a03d115878daf878031"
+      },
+      "inboxes": 0,
+      "answers": 0,
+      "cache_answers": 0
+    }
+  ],
+  "source": {
+    "binding": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+      "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+    },
+    "content_sha256": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+    "source_symbol_from_local_metadata": "DGICA",
+    "cik_from_local_metadata": "0000800457",
+    "operands": [
+      {
+        "value": "4342261",
+        "period": {
+          "start": "2010-01-01",
+          "end": "2010-06-30"
+        },
+        "offset": [
+          57043,
+          57546
+        ],
+        "row_hash": "1ba26ebb8ecab8c367dd2178646fd045340e71df36591e4cd551e42bed8eee86"
+      },
+      {
+        "value": "9506313",
+        "period": {
+          "start": "2011-01-01",
+          "end": "2011-06-30"
+        },
+        "offset": [
+          57547,
+          58050
+        ],
+        "row_hash": "4ddbe4f40edfc3364932f8b81df96eccb4c6f8fb5ce5b419d0d0c7d573140544"
+      }
+    ],
+    "qualifications": [
+      "Historical 2011 filing/source, 2025 case cutoff; not current2025 funding or performance.",
+      "H1 cumulative operating cash flow; description includes discontinued operations.",
+      "Source extraction is retrospective and requires primary filing audit; new locator retention does not remove source qualification.",
+      "Controlled one-document selection is not autonomous retrieval or all-source absence proof."
+    ]
+  },
+  "identity_harness_limitation": {
+    "original_capture_checks_wrong_snapshot_aliases": [
+      "GPRE",
+      "Green Plains"
+    ],
+    "independent_actual_alias_absence_checks": [
+      "0000800457",
+      "cik_0000800457",
+      "cik_0000800457:20250731",
+      "DGICA",
+      "DGICB"
+    ],
+    "all_actual_native_messages_pass": true,
+    "DGICA_supported_by_local_source_metadata": true,
+    "DGICB_only_supplementary_string_check": true,
+    "Donegal_name_not_asserted_from_unread_external_evidence": true,
+    "canonical_handles_preserved": true
+  },
+  "reconstruction_scope": "Four zero-inbox input-only builds repeat current-view selector choices and byte-identical native journals/final view/ledger. No cache answers exist; not cached-answer replay, pending LocalRoleExchange recovery, OS interruption recovery or fresh author obedience.",
+  "old_negative": {
+    "exact_341b94a5_implementation_preserved": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/before-controller.py",
+      "sha256": "15595c1eb46026c057d21387f7eed45c3abde1ff95c31c515041529c60463625"
+    },
+    "root_reported_missing_locator_after_first_read": true,
+    "independent_binding_of_old003_and_raw3_in_preimplementation_review": true
+  },
+  "semantic_acceptance": "Not measured. Old fixed fresh module result1/2 remains unchanged; no production authors answered in this task.",
+  "independent_controller_controls": {
+    "comparison_controls": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/independent/comparison-counterexamples-v1.json",
+      "sha256": "c98b7ebdad42d83496dbe44f16053d859b36edba97e17383ed40d9afe90ca60e"
+    },
+    "all8_passed": true,
+    "permission_T11": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/independent/measurement-permission-T11-v1.json",
+      "sha256": "ddb7fae3a0ed521a0731d4d0afa3cae5468234521e504d3251cbcca0f369e62f"
+    },
+    "both_namespace_controls_passed": true
+  },
+  "disposition": "No blocker found for the scoped locator-retention repair. Fresh semantic acceptance and native cached-answer/pending recovery remain unmeasured. The controlled4-request path has only663/705 logical units headroom; extra actions are not guaranteed to fit.",
+  "reviewer_harness_failure": {
+    "v1_script": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/independent/native-view-only-artifact-audit-v1.py",
+      "sha256": "06c258decdbc707471b062697e7e9eca79e64297c2427ba02288b574c1223eaa"
+    },
+    "issue": "Audit incorrectly assumed generic12-heavy controller default; this stage actually uses6 heavy actions. V1 stopped on its own assertion after independent wire/source checks, no product failure and no output overwritten. V2 checks actual stage boundary2 remaining after4 executed."
+  },
+  "all_checks_pass": true
+}

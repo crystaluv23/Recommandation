@@ -1,0 +1,13 @@
+{
+  "action": {
+    "action": "record_deferred",
+    "rationale": [
+      "Explicit deterministic offline locator test; not a model answer."
+    ]
+  },
+  "input": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/requests/a93ee9156c4a4dcb4cad2ed45d38a41a8bd79d8f4dd015ef2758455d2c5e64f8.json",
+    "sha256": "f928b6bba658a004c6fc23762e00e8d49d1e097aa87cafd83d5cf82c182515f3"
+  },
+  "selector_source": "only current native payload"
+}

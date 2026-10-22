@@ -1,0 +1,115 @@
+{
+  "schema": "mining-comparison-locator-independent-preimplementation-review-v1",
+  "disposition": "proposal_coherent_with_conditional_snapshot_and_working_view_obligations",
+  "scope": "Read only original actual view003/raw response3 and current owning progress spec. New comparison implementation not read at this review boundary; no model/API, label/check/LockedTest, old-stage reentry or product/reference edit.",
+  "old_fixed_result": "Original formal Mining taxonomy consumer remains1/2. No expectation, budget, denominator or terminal artifact is changed.",
+  "source_bindings": {
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-003.json": "f551610ca03d12bb7df673f99cc78038a7efdb8a1a7aa9d8ca4285a25fe6d9cc",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.txt": "6ba6fba58e9ab60c0efad4a50c9834e87c239ea922be39c88e774ec6f0f322d1",
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "b382f052bbb135179b858fb753e1066042b7fef94a9d689818856e24bb56c0c5"
+  },
+  "old_failure_identity": {
+    "fact_ref_still_known": "fact-2f898adb2d25e349",
+    "known_fact_ref_count": 19,
+    "lost_information": "The ref-to-target-concept/comparable-prior role mapping from earlier compare output is absent after current fact read.",
+    "what_is_preserved": "The current OCF full receipt including us-gaap/USD/value9506313/2011H1 is preserved by structured_read_progress.",
+    "author_response": "The third fresh author accurately notes adjacent excerpt does not establish full prior period and reissues compare to recover the locator. This is not a failure to consume an available complete prior locator."
+  },
+  "proposal_as_understood": {
+    "authority": "Parent-supplied proposal; owning spec did not yet include comparison_progress when read.",
+    "working_view": "Only successful already-executed compare_groups results, split per requested concept into complete positive/control unit preserving case_count and all actual concept output. Latest unit per concept, most recently compared first,12units/8000UTF8-JSON-byte whole-items cap and explicit omission/oversized concept reporting.",
+    "snapshot": "Digest of sorted full canonical asdict facts including taxonomy/source/period/value, plus runtime label_map and research_axis. Graph/group/axis change invalidates old units; same content/idempotent fetch preserves. New compare on changed graph clears old generation and stores actual new units.",
+    "no_new_authority": "No new tool, automatic undisclosed comparison, field/schema, generic arithmetic restriction, source read, canonical relation, ledger shape, budgets or published meaning."
+  },
+  "minimum_design_questions": [
+    {
+      "id": "D01_ALL_VISIBLE_COPIES",
+      "question": "How does source invalidation handle last_action_result when it still contains an old compare result?",
+      "obligation": "A source-hash mismatch must not hide comparison_progress while leaving identical old groups in last_action_result presented as current. Suppress or explicitly mark invalid the stale comparison copy without inventing new results. Ordinary fetch replaces last_action_result, but direct permitted label/axis changes are independent variants."
+    },
+    {
+      "id": "D02_COMPUTATION_SNAPSHOT",
+      "question": "Does the stored hash bind the exact graph/group/axis used to compute the accepted summary?",
+      "obligation": "Do not compute on one mutable source then label it with a later source hash. Accept result/hash/ledger/progress atomically or reject changed-during-compute inputs. Single-executor normal operation is helpful, not proof that an exposed mutable dependency cannot drift in a counterexample."
+    },
+    {
+      "id": "D03_COMPLETE_CONCEPT_UNIT",
+      "question": "What is the exact unit and tie order for one compare action requesting several concepts?",
+      "obligation": "Preserve both group case_count and all actual concept keys: available_cases, latest/prior values+refs, unresolved_basis_cases, including empty branches. Dedup repeated concept names deterministically, update all accepted units as one action, and define deterministic recency ties."
+    },
+    {
+      "id": "D04_HASH_SCOPE",
+      "question": "Is source equality content-based rather than dictionary/read/action order?",
+      "obligation": "Sort canonical fact rows and canonical map keys; reads/read_count, ledger growth, compute-only relations and reorder-only/idempotent fetch should not invalidate. Added/removed/changed facts, namespace/source/period/value, label assignments or axis metadata must invalidate. Case cutoff and identity scope remain frozen under the operation contract; do not silently carry units into a different operation scope."
+    },
+    {
+      "id": "D05_VIEW_ONLY_REACHABILITY",
+      "question": "Can each selected next operand be traced to the exact current native request rather than a private controller object?",
+      "obligation": "The deterministic test selector must receive only currently disclosed request data and target concept from the declared envelope. It may select from visible comparison_progress/last compare output and already-read receipts, but never controller._facts, prior Python locals, old raw answers or oracle refs. An opaque ref inventory alone cannot supply a missing semantic mapping."
+    },
+    {
+      "id": "D06_BOUNDED_HONESTY",
+      "question": "What happens when the target concept unit is oversized or omitted?",
+      "obligation": "No clipping, unbounded hidden fallback or automatic re-computation. Report whole-unit omission and retained source generation; existing compare can refresh at its normal cost if allowed, otherwise preserve uncertainty. Do not call an omitted locator absent evidence."
+    }
+  ],
+  "independent_acceptance_cases": [
+    {
+      "id": "T01_ORIGINAL_LOCATOR_PATH",
+      "input": "Actual0671 control source: compare targetOCF→read current→read prior→stop.",
+      "expected": "At each fresh decision, source for next ref is visible in that current actual request. After current read, complete prior locator remains visible in comparison_progress. Two full operand receipts and correct source scope reach the final request; script never uses private refs."
+    },
+    {
+      "id": "T02_READ_ORDER_REVERSE",
+      "input": "Same source with prior read first.",
+      "expected": "Current locator survives too; no dependence on fact-ref lexical order or hand-coded actual IDs."
+    },
+    {
+      "id": "T03_MULTI_CONCEPT_DEDUP",
+      "input": "A compare action with multiple concepts, duplicates, empty and unresolved branches; later recompare one concept.",
+      "expected": "Whole faithful per-concept positive/control units, deterministic tie/order; only latest per concept, no unexecuted units, no clipping or cross-concept group loss."
+    },
+    {
+      "id": "T04_GRAPH_CHANGE",
+      "input": "New/removed fact or changed namespace/value/period/source hash under an existing ref.",
+      "expected": "All old-generation progress invalid in working view. Any old last compare output is also ineligible as current. First new compare on changed source clears old units and stores only actually compared new-generation units."
+    },
+    {
+      "id": "T05_GROUP_AXIS_CHANGE",
+      "input": "Change label_map values, group membership or research_axis while last_action_result is compare.",
+      "expected": "No old current-looking comparison remains anywhere; newly accepted summary uses exactly the new source hash."
+    },
+    {
+      "id": "T06_NOOP_AND_ORDER",
+      "input": "Reorder dictionaries/facts only, idempotent fetch, reads/repeats, catalog and explicit generic compute.",
+      "expected": "Canonical source hash unchanged and actual units remain; view construction calls no _group_summary and creates no new relation/ledger/tool budget charge."
+    },
+    {
+      "id": "T07_ATOMICITY_AND_MUTATION",
+      "input": "Attempt nested view mutation, summary/source mutation during execution, failure in acceptance boundary.",
+      "expected": "Caller mutation cannot alter stored proof; source/result mismatch rejects instead of blessing one with the other. No partial concept update or inconsistent accepted last result/ledger/progress."
+    },
+    {
+      "id": "T08_UNIT_BYTE_BOUND",
+      "input": "13+concept units, Unicode, one oversized latest unit and older small units.",
+      "expected": "At most12whole units and8000bytes; explicit oversized concept/size and omissions; complete retained units survive and current source hash is stable. Omitted target cannot be selected from private storage."
+    },
+    {
+      "id": "T09_NATIVE_IDENTITY_BUDGET",
+      "input": "Real1780 actual source store through current native adapter, selected view-only path, unchanged32768/98304/6positions.",
+      "expected": "Exact serialized messages preserve opaque handles and source meaning; complete progress contributes to reservation. Test current/prior order variants without external ref retention. If cap blocks, stop honestly, no increase/reset."
+    },
+    {
+      "id": "T10_CACHE_RECONSTRUCTION",
+      "input": "Same frozen source and cached accepted actions replayed from fresh controller in a throwaway pending fixture.",
+      "expected": "Whole views, source hashes, dedup/order/omissions, ledger/requests and next selector choice reconstruct identically without a new dispatch or old-stage reentry. Do not import today graph to backfill historical unit."
+    },
+    {
+      "id": "T11_UNCHANGED_MEASUREMENT_AUTHORITY",
+      "input": "Namespace mismatch/unknown legacy basis and explicit generic arithmetic.",
+      "expected": "Snapshot/locator progress grants no automatic cross-namespace pair or unique basis. Existing explicit same-case arithmetic remains legal; no candidate/prediction direction/threshold recital requirement."
+    }
+  ],
+  "acceptance_boundary": "This is preimplementation source/design review only. Offline successful view-only selection/native budget/cache tests can prove the local connection; a separately authorized fresh author audit remains needed for new semantic obedience. No claim of whole Mining or research gain.",
+  "write_integrity": "New file opened with x; no earlier artifact overwritten."
+}

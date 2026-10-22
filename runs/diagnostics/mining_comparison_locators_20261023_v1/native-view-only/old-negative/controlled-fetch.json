@@ -1,0 +1,485 @@
+{
+  "action": {
+    "action": "fetch_evidence",
+    "case_refs": [
+      "case-008"
+    ],
+    "max_documents": 1,
+    "rationale": [
+      "Controlled module source preparation."
+    ],
+    "source_families": [
+      "sec_company_facts"
+    ]
+  },
+  "facts": [
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2011-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9506313}",
+      "fact_ref": "fact-3d4faa09011f777b",
+      "period": {
+        "end": "2011-06-30",
+        "start": "2011-01-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Net Cash Provided by (Used in) Operating Activities",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "9506313"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2010-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":4342261}",
+      "fact_ref": "fact-2f898adb2d25e349",
+      "period": {
+        "end": "2010-06-30",
+        "start": "2010-01-01"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "Net Cash Provided by (Used in) Operating Activities",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "4342261"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "Revenues",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2011-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":228637940}",
+      "fact_ref": "fact-3bf557877edd1955",
+      "period": {
+        "end": "2011-06-30",
+        "start": "2011-01-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Revenues",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "228637940"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "Revenues",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2011-04-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":117054498}",
+      "fact_ref": "fact-86c63430e0ff6fa4",
+      "period": {
+        "end": "2011-06-30",
+        "start": "2011-04-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Revenues",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "117054498"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "Revenues",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2010-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":199376202}",
+      "fact_ref": "fact-7263a6ac5431383c",
+      "period": {
+        "end": "2010-06-30",
+        "start": "2010-01-01"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "Revenues",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "199376202"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "Revenues",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2010Q2\",\"label\":\"Revenues\",\"start\":\"2010-04-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":101525354}",
+      "fact_ref": "fact-d4d09e553a4d506c",
+      "period": {
+        "end": "2010-06-30",
+        "start": "2010-04-01"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "Revenues",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "101525354"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "NetIncomeLoss",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Income (Loss) Attributable to Parent\",\"start\":\"2011-01-01\",\"tag\":\"NetIncomeLoss\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":511947}",
+      "fact_ref": "fact-ef2410ba3b51e580",
+      "period": {
+        "end": "2011-06-30",
+        "start": "2011-01-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Net Income (Loss) Attributable to Parent",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "511947"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "NetIncomeLoss",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Income (Loss) Attributable to Parent\",\"start\":\"2011-04-01\",\"tag\":\"NetIncomeLoss\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-1693989}",
+      "fact_ref": "fact-fa91660b590cdd1a",
+      "period": {
+        "end": "2011-06-30",
+        "start": "2011-04-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Net Income (Loss) Attributable to Parent",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "-1693989"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "NetIncomeLoss",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Income (Loss) Attributable to Parent\",\"start\":\"2010-01-01\",\"tag\":\"NetIncomeLoss\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":1974486}",
+      "fact_ref": "fact-3b640ab0af6d2c40",
+      "period": {
+        "end": "2010-06-30",
+        "start": "2010-01-01"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "Net Income (Loss) Attributable to Parent",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "1974486"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "NetIncomeLoss",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2010Q2\",\"label\":\"Net Income (Loss) Attributable to Parent\",\"start\":\"2010-04-01\",\"tag\":\"NetIncomeLoss\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":1739728}",
+      "fact_ref": "fact-cc7a88c283c0dbeb",
+      "period": {
+        "end": "2010-06-30",
+        "start": "2010-04-01"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "Net Income (Loss) Attributable to Parent",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "1739728"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "StockholdersEquity",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Total of all stockholders' equity (deficit) items, net of receivables from officers, directors, owners, and affiliates of the entity which are attributable to the parent. The amount of the economic entity's stockholders' equity attributable to the parent excludes the amount of stockholders' equity which is allocable to that ownership interest in subsidiary equity which is not attributable to the parent (noncontrolling interest, minority interest). This excludes temporary equity and is sometimes called permanent equity.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2011Q2I\",\"label\":\"Stockholders' Equity Attributable to Parent\",\"start\":null,\"tag\":\"StockholdersEquity\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":382667790}",
+      "fact_ref": "fact-ef14894cc2e3e480",
+      "period": {
+        "end": "2011-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Stockholders' Equity Attributable to Parent",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "382667790"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "StockholdersEquity",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Total of all stockholders' equity (deficit) items, net of receivables from officers, directors, owners, and affiliates of the entity which are attributable to the parent. The amount of the economic entity's stockholders' equity attributable to the parent excludes the amount of stockholders' equity which is allocable to that ownership interest in subsidiary equity which is not attributable to the parent (noncontrolling interest, minority interest). This excludes temporary equity and is sometimes called permanent equity.\",\"end\":\"2010-12-31\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Stockholders' Equity Attributable to Parent\",\"start\":null,\"tag\":\"StockholdersEquity\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":380102810}",
+      "fact_ref": "fact-e3464febc9492818",
+      "period": {
+        "end": "2010-12-31"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "Stockholders' Equity Attributable to Parent",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "380102810"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"The cash outflow associated with the acquisition of long-lived, physical assets that are used in the normal conduct of business to produce goods and services and not intended for resale; includes cash outflows to pay for construction of self-constructed assets.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Payments to Acquire Property, Plant, and Equipment\",\"start\":\"2010-01-01\",\"tag\":\"PaymentsToAcquirePropertyPlantAndEquipment\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":390737}",
+      "fact_ref": "fact-4da2031b56555775",
+      "period": {
+        "end": "2010-06-30",
+        "start": "2010-01-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Payments to Acquire Property, Plant, and Equipment",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "390737"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "UnearnedPremiums",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Carrying amount of premiums written on insurance contracts that have not been earned as of the balance sheet date.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2011Q2I\",\"label\":\"Unearned Premiums\",\"start\":null,\"tag\":\"UnearnedPremiums\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":335637737}",
+      "fact_ref": "fact-52666db05cce941f",
+      "period": {
+        "end": "2011-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Unearned Premiums",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "335637737"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "UnearnedPremiums",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Carrying amount of premiums written on insurance contracts that have not been earned as of the balance sheet date.\",\"end\":\"2010-12-31\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Unearned Premiums\",\"start\":null,\"tag\":\"UnearnedPremiums\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":297272161}",
+      "fact_ref": "fact-082036027674a900",
+      "period": {
+        "end": "2010-12-31"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "Unearned Premiums",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "297272161"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "TreasuryStockValue",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"The amount allocated to treasury stock. Treasury stock is common and preferred shares of an entity that were issued, repurchased by the entity, and are held in its treasury.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2011Q2I\",\"label\":\"Treasury Stock, Value\",\"start\":null,\"tag\":\"TreasuryStockValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9924438}",
+      "fact_ref": "fact-02a18d0e6ff2d662",
+      "period": {
+        "end": "2011-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Treasury Stock, Value",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "9924438"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "TreasuryStockValue",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"The amount allocated to treasury stock. Treasury stock is common and preferred shares of an entity that were issued, repurchased by the entity, and are held in its treasury.\",\"end\":\"2010-12-31\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Treasury Stock, Value\",\"start\":null,\"tag\":\"TreasuryStockValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9249933}",
+      "fact_ref": "fact-c9a7e50c701d1e36",
+      "period": {
+        "end": "2010-12-31"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "Treasury Stock, Value",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "9249933"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "SubordinatedDebt",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Including the current and noncurrent portions, carrying value as of the balance sheet date of subordinated debt (with initial maturities beyond one year or beyond the operating cycle if longer). Subordinated debt places a lender in a lien position behind debt having a higher priority of repayment in liquidation of the entity's assets.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":\"CY2011Q2I\",\"label\":\"Subordinated Debt\",\"start\":null,\"tag\":\"SubordinatedDebt\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":20465000}",
+      "fact_ref": "fact-32ece570ecc421c8",
+      "period": {
+        "end": "2011-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Subordinated Debt",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "20465000"
+    },
+    {
+      "available_at": "2011-08-10T00:00:00+00:00",
+      "case_ref": "case-008",
+      "concept": "SubordinatedDebt",
+      "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+      "exact_span": "{\"description\":\"Including the current and noncurrent portions, carrying value as of the balance sheet date of subordinated debt (with initial maturities beyond one year or beyond the operating cycle if longer). Subordinated debt places a lender in a lien position behind debt having a higher priority of repayment in liquidation of the entity's assets.\",\"end\":\"2010-12-31\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Subordinated Debt\",\"start\":null,\"tag\":\"SubordinatedDebt\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":20465000}",
+      "fact_ref": "fact-53c8edea9f9b71ce",
+      "period": {
+        "end": "2010-12-31"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "Subordinated Debt",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "20465000"
+    }
+  ],
+  "ledger": {
+    "cycle_id": 1,
+    "entries": [
+      {
+        "action": "fetch_evidence",
+        "action_id": 1,
+        "case_refs": [
+          "case-008"
+        ],
+        "coverage": {
+          "query_coverage": {
+            "matched_terms": [],
+            "sufficient": false
+          },
+          "unread_same_source": true
+        },
+        "evidence_refs": [
+          "fact-3d4faa09011f777b",
+          "fact-2f898adb2d25e349",
+          "fact-3bf557877edd1955",
+          "fact-86c63430e0ff6fa4",
+          "fact-7263a6ac5431383c",
+          "fact-d4d09e553a4d506c",
+          "fact-ef2410ba3b51e580",
+          "fact-fa91660b590cdd1a",
+          "fact-3b640ab0af6d2c40",
+          "fact-cc7a88c283c0dbeb",
+          "fact-ef14894cc2e3e480",
+          "fact-e3464febc9492818",
+          "fact-4da2031b56555775",
+          "fact-52666db05cce941f",
+          "fact-082036027674a900",
+          "fact-02a18d0e6ff2d662",
+          "fact-c9a7e50c701d1e36",
+          "fact-32ece570ecc421c8",
+          "fact-53c8edea9f9b71ce",
+          "relation-0b9ab54e870308be",
+          "relation-12303dcc36ae358f",
+          "relation-22a2d83cfaee64ad",
+          "relation-3f2a96d653d7eb3d",
+          "relation-747ebe2a37d2f180",
+          "relation-7ad0d7c711340fc1",
+          "relation-bc245b847be330ee",
+          "relation-e38f87cc2097a74e",
+          "relation-e466acbda1ce4353"
+        ],
+        "input_hash": "7fecd9b3698d3f8129688d8ac9cc75d52954eb19b45854ee1ebc4385598738cb",
+        "note": null,
+        "omitted_coverage": {
+          "excluded_document_ids": [
+            "secfacts:0000800457:0001140361-22-008115:c78018912da79c09",
+            "secfacts:0000800457:0001140361-22-017819:dd2dadb517ecead9",
+            "secfacts:0000800457:0001140361-22-028276:1973d45045d70850",
+            "secfacts:0000800457:0001140361-22-040009:e097bc2f752af09a",
+            "secfacts:0000800457:0001140361-23-010291:2ae5ec5f2bde002f",
+            "secfacts:0000800457:0001140361-23-023138:b25dc9157028fdb1",
+            "secfacts:0000800457:0001140361-23-038058:352a27742168d4a1",
+            "secfacts:0000800457:0001140361-23-051347:6eacafe706f2386a",
+            "secfacts:0000800457:0001140361-24-011762:090c1c7fdf894351",
+            "secfacts:0000800457:0001140361-24-024270:5ac4c087cba9ea94",
+            "secfacts:0000800457:0001140361-24-036147:61725e0d499c7ed5",
+            "secfacts:0000800457:0001140361-24-045419:0d18806a8dcc22ef",
+            "secfacts:0000800457:0001140361-25-007891:6cd3dfa3ae3e0e06",
+            "secfacts:0000800457:0001140361-25-017502:44716a26cdf75163",
+            "secfacts:0000800457:0001193125-11-296543:f9bf69c5555c8675",
+            "secfacts:0000800457:0001193125-12-108324:f396f23fad83e256",
+            "secfacts:0000800457:0001193125-12-214437:cd5f2dbe404f1e4d",
+            "secfacts:0000800457:0001193125-12-339567:6bcf58426c0166da",
+            "secfacts:0000800457:0001193125-12-455996:9b0912dead2f66ec",
+            "secfacts:0000800457:0001193125-13-103135:053770bbc990ab43",
+            "secfacts:0000800457:0001193125-13-207228:124e58a5db52198b",
+            "secfacts:0000800457:0001193125-13-325822:c741e886f1d4d109",
+            "secfacts:0000800457:0001193125-13-432289:d647ca21b0524a25",
+            "secfacts:0000800457:0001193125-14-099506:f707be11c47b12ba",
+            "secfacts:0000800457:0001193125-14-189037:48e92d1a0764233d",
+            "secfacts:0000800457:0001193125-14-299700:0c2c662f6c236643",
+            "secfacts:0000800457:0001193125-14-399935:88f2440849056962",
+            "secfacts:0000800457:0001193125-15-089251:d564863f04f4f704",
+            "secfacts:0000800457:0001193125-15-181527:2a70a4dfa95ea769",
+            "secfacts:0000800457:0001193125-15-282369:77d2504a60fd177c",
+            "secfacts:0000800457:0001193125-15-369735:a676d11fde21ced0",
+            "secfacts:0000800457:0001193125-16-510014:fbab0f30fe1a165e",
+            "secfacts:0000800457:0001193125-16-579137:2ff319a83040b4d1",
+            "secfacts:0000800457:0001193125-16-674394:1b211e2f30cd9baf",
+            "secfacts:0000800457:0001193125-16-761062:28fc0ffbb1f2a908",
+            "secfacts:0000800457:0001193125-17-078661:fd877d3a26da4358",
+            "secfacts:0000800457:0001193125-17-161888:2a9a0d29e5249dd4",
+            "secfacts:0000800457:0001193125-17-250949:cde38c800516e80a",
+            "secfacts:0000800457:0001193125-17-335596:11cb7125e1e5e13a",
+            "secfacts:0000800457:0001193125-18-077161:fe45c414035ce96b",
+            "secfacts:0000800457:0001193125-18-154086:a51d4284861edadf",
+            "secfacts:0000800457:0001193125-18-242383:0fd40d6915ab3e0b",
+            "secfacts:0000800457:0001193125-18-323263:a9f96c1e64f71b76",
+            "secfacts:0000800457:0001193125-19-074944:0e366ef2ca3063ae",
+            "secfacts:0000800457:0001193125-19-139084:2b8acc370aa254f3",
+            "secfacts:0000800457:0001193125-19-216557:513240bbc65938c8",
+            "secfacts:0000800457:0001193125-19-287934:e3ddafdd8ba4edce",
+            "secfacts:0000800457:0001193125-20-065229:5fae32436a2020b6",
+            "secfacts:0000800457:0001193125-20-137056:b1e9e5c147c2f1e8",
+            "secfacts:0000800457:0001193125-20-210124:bb68f8761c53da3b",
+            "secfacts:0000800457:0001193125-20-286372:4f881367d959ce2a",
+            "secfacts:0000800457:0001193125-21-071327:239c9bc8eaca89e2",
+            "secfacts:0000800457:0001193125-21-154420:0122bfea49677345",
+            "secfacts:0000800457:0001193125-21-238996:99b816ed7a6f2b9a",
+            "secfacts:0000800457:0001193125-21-321171:346faaecc3696ee1"
+          ]
+        },
+        "output_hash": "17f2f0b0855939a446538bc9b87bf03fde9a25989b0ee53909223eff934efd22",
+        "pit_status": "enforced",
+        "source_types": [
+          "sec_company_facts"
+        ],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 0
+        }
+      }
+    ],
+    "seed_id": "seed-discovery"
+  },
+  "receipt": {
+    "action": "fetch_evidence",
+    "cases_requested": 1,
+    "excluded_document_ids": 55,
+    "families": [
+      "sec_company_facts"
+    ],
+    "narrative_evidence": null,
+    "new_facts": 19,
+    "new_relations": 9,
+    "total_events": 0,
+    "total_facts": 19,
+    "total_relations": 9
+  }
+}

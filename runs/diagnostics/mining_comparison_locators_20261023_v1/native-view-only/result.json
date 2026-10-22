@@ -1,0 +1,217 @@
+{
+  "external_API": 0,
+  "inboxes": 0,
+  "limits": {
+    "max_case_tokens": 98304,
+    "max_local_role_calls": 6,
+    "max_request_tokens": 32768,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "model_answers": 0,
+  "new_business_labels": 0,
+  "old_fixed_production_result": "1/2 unchanged; no old stage advanced or budget reset",
+  "results": {
+    "current-first": {
+      "domain_terminal_executed": false,
+      "heavy_used": 4,
+      "inputs": [
+        {
+          "action": "compare_groups",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first/requests/5cf0e4512354e06882787f853016d1a8eed2a549b014c6f0227f405d45ae3ae0.json",
+            "sha256": "8b18c16a579aecb5d6cb7652fadbb66ad85387591c306afa2514cb582f8417b8"
+          },
+          "reservation": 21400,
+          "step": 1
+        },
+        {
+          "action": "read_span",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first/requests/5341b6bf24b0e17d1810a90aba6d770b303f51fbfefa7db8848a403463a16150.json",
+            "sha256": "c46c16dfaa55728116b29ebaa766f95ec0def2b9f1e38a95bca11d099bd34f48"
+          },
+          "reservation": 22764,
+          "step": 2
+        },
+        {
+          "action": "read_span",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first/requests/342c3a6dd3d1719a49d9afbf977d112a44f97ef2669f3145e80aeb4c463a8fc7.json",
+            "sha256": "d625eb22d3162c1b9eca9e048f2ede872c82497b29b7aa4e69f9280b2f3b9666"
+          },
+          "reservation": 25938,
+          "step": 3
+        },
+        {
+          "action": "record_deferred",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first/requests/9996719e1089f61cb8f3c8a2816e505e2acf91e768df3abde7b01301d725d240.json",
+            "sha256": "d5846fac8acc0518b567d0f1b0526901cbd3df5700158ece7ce7485ed3bc60c2"
+          },
+          "reservation": 27539,
+          "step": 4
+        }
+      ],
+      "state": "four_inputs_reachable_within_original_budget",
+      "total_reservation": 97641
+    },
+    "current-first-reconstructed": {
+      "domain_terminal_executed": false,
+      "heavy_used": 4,
+      "inputs": [
+        {
+          "action": "compare_groups",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/requests/5cf0e4512354e06882787f853016d1a8eed2a549b014c6f0227f405d45ae3ae0.json",
+            "sha256": "8b18c16a579aecb5d6cb7652fadbb66ad85387591c306afa2514cb582f8417b8"
+          },
+          "reservation": 21400,
+          "step": 1
+        },
+        {
+          "action": "read_span",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/requests/5341b6bf24b0e17d1810a90aba6d770b303f51fbfefa7db8848a403463a16150.json",
+            "sha256": "c46c16dfaa55728116b29ebaa766f95ec0def2b9f1e38a95bca11d099bd34f48"
+          },
+          "reservation": 22764,
+          "step": 2
+        },
+        {
+          "action": "read_span",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/requests/342c3a6dd3d1719a49d9afbf977d112a44f97ef2669f3145e80aeb4c463a8fc7.json",
+            "sha256": "d625eb22d3162c1b9eca9e048f2ede872c82497b29b7aa4e69f9280b2f3b9666"
+          },
+          "reservation": 25938,
+          "step": 3
+        },
+        {
+          "action": "record_deferred",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/current-first-reconstructed/requests/9996719e1089f61cb8f3c8a2816e505e2acf91e768df3abde7b01301d725d240.json",
+            "sha256": "d5846fac8acc0518b567d0f1b0526901cbd3df5700158ece7ce7485ed3bc60c2"
+          },
+          "reservation": 27539,
+          "step": 4
+        }
+      ],
+      "state": "four_inputs_reachable_within_original_budget",
+      "total_reservation": 97641
+    },
+    "old-negative": {
+      "implementation": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/before-controller.py",
+        "sha256": "15595c1eb46026c057d21387f7eed45c3abde1ff95c31c515041529c60463625"
+      },
+      "lost_mapping_after_first_read": true
+    },
+    "prior-first": {
+      "domain_terminal_executed": false,
+      "heavy_used": 4,
+      "inputs": [
+        {
+          "action": "compare_groups",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first/requests/5cf0e4512354e06882787f853016d1a8eed2a549b014c6f0227f405d45ae3ae0.json",
+            "sha256": "8b18c16a579aecb5d6cb7652fadbb66ad85387591c306afa2514cb582f8417b8"
+          },
+          "reservation": 21400,
+          "step": 1
+        },
+        {
+          "action": "read_span",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first/requests/5341b6bf24b0e17d1810a90aba6d770b303f51fbfefa7db8848a403463a16150.json",
+            "sha256": "c46c16dfaa55728116b29ebaa766f95ec0def2b9f1e38a95bca11d099bd34f48"
+          },
+          "reservation": 22764,
+          "step": 2
+        },
+        {
+          "action": "read_span",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first/requests/d61a8e2135b46017d502126bd1495b86c3d1ef2bfd716c17ef570543e6593af0.json",
+            "sha256": "87f6ae0908606d95cefcce377b9605f7a8a73eb7fda5d44efdefa9791f6e9151"
+          },
+          "reservation": 25854,
+          "step": 3
+        },
+        {
+          "action": "record_deferred",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first/requests/a93ee9156c4a4dcb4cad2ed45d38a41a8bd79d8f4dd015ef2758455d2c5e64f8.json",
+            "sha256": "f928b6bba658a004c6fc23762e00e8d49d1e097aa87cafd83d5cf82c182515f3"
+          },
+          "reservation": 27581,
+          "step": 4
+        }
+      ],
+      "state": "four_inputs_reachable_within_original_budget",
+      "total_reservation": 97599
+    },
+    "prior-first-reconstructed": {
+      "domain_terminal_executed": false,
+      "heavy_used": 4,
+      "inputs": [
+        {
+          "action": "compare_groups",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/requests/5cf0e4512354e06882787f853016d1a8eed2a549b014c6f0227f405d45ae3ae0.json",
+            "sha256": "8b18c16a579aecb5d6cb7652fadbb66ad85387591c306afa2514cb582f8417b8"
+          },
+          "reservation": 21400,
+          "step": 1
+        },
+        {
+          "action": "read_span",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/requests/5341b6bf24b0e17d1810a90aba6d770b303f51fbfefa7db8848a403463a16150.json",
+            "sha256": "c46c16dfaa55728116b29ebaa766f95ec0def2b9f1e38a95bca11d099bd34f48"
+          },
+          "reservation": 22764,
+          "step": 2
+        },
+        {
+          "action": "read_span",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/requests/d61a8e2135b46017d502126bd1495b86c3d1ef2bfd716c17ef570543e6593af0.json",
+            "sha256": "87f6ae0908606d95cefcce377b9605f7a8a73eb7fda5d44efdefa9791f6e9151"
+          },
+          "reservation": 25854,
+          "step": 3
+        },
+        {
+          "action": "record_deferred",
+          "identity_strings_absent": true,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_comparison_locators_20261023_v1/native-view-only/prior-first-reconstructed/requests/a93ee9156c4a4dcb4cad2ed45d38a41a8bd79d8f4dd015ef2758455d2c5e64f8.json",
+            "sha256": "f928b6bba658a004c6fc23762e00e8d49d1e097aa87cafd83d5cf82c182515f3"
+          },
+          "reservation": 27581,
+          "step": 4
+        }
+      ],
+      "state": "four_inputs_reachable_within_original_budget",
+      "total_reservation": 97599
+    }
+  },
+  "scope": "offline controlled real-source view-only request-ready capture; not fresh semantic obedience",
+  "source_and_code_unchanged": true
+}
