@@ -94,7 +94,7 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   可选taxonomy现贯穿投影/保存/fact-read；真实同名跨namespace反例拒配、旧fact_ref不变，122关联过；fresh Mining消费仍未验。
 - routing两literal范围误拒已局部修复，停止继续词面补丁；保原0/1及原答，局部修复不等新模型遵循，不重入completed stage或重置预算。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
-  有界阅读已接完整合格目录、实际已读证据/resolution/fingerprint、闭集纠错与native恢复；17聚焦/354关联过；fresh合成3角色/首答1of1/0纠错、25files恢复同；更旧typed窗口局部已修；fresh历史1角色0of1暴露自动比较期重复误拒，实际源/消费仍open。
+  有界阅读已接完整合格目录、实际已读证据/resolution/fingerprint、闭集纠错与native恢复；20聚焦/357关联过；fresh叙事及历史各3角色/首答1of1/0纠错、各25files恢复同；历史原0of1保留，实际源/消费仍open。
   gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
 - 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

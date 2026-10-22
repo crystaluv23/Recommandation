@@ -166,18 +166,25 @@ class SignalSourceSession:
             if len(self.read_handles | handles) > MAX_DOCUMENTS:
                 raise ValidationError("source document ceiling exceeded")
             rows, lineage, intervals, windows = [], {}, deepcopy(self.intervals), []
+            requested: dict[str, list[tuple[int, int]]] = {}
             for request in reads:
                 window, projected, mapped, read_intervals = self._read(request)
                 handle = request["source_ref"]
+                requested_interval = (window["requested_start"], window["requested_end"])
+                if any(requested_interval[0] < b and a < requested_interval[1]
+                       for a, b in requested.get(handle, ())):
+                    raise ValidationError("duplicate or overlapping requested source windows")
+                requested.setdefault(handle, []).append(requested_interval)
                 for interval in read_intervals:
                     if any(interval[0] < end and start < interval[1]
-                           for start, end in intervals.get(handle, ())):
+                           for start, end in self.intervals.get(handle, ())):
                         raise ValidationError("duplicate or overlapping source read")
-                    intervals.setdefault(handle, []).append(interval)
-                if any(row["projection_id"] in self.lineage or row["projection_id"] in lineage for row in projected):
+                    if interval not in intervals.get(handle, ()):
+                        intervals.setdefault(handle, []).append(interval)
+                if any(row["projection_id"] in self.lineage for row in projected):
                     raise ValidationError("source fact group was already read")
                 windows.append(window)
-                rows.extend(projected)
+                rows.extend(row for row in projected if row["projection_id"] not in lineage)
                 lineage.update(mapped)
             added = sum(len(r["exact_text"]) for r in rows)
             if self.characters + added > MAX_CHARACTERS:

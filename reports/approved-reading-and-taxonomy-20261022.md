@@ -103,3 +103,35 @@ automatically attached comparable rows within the same exchange. Merge only
 those implicit expansions, count each literal once, keep explicit duplicates
 and already-read windows rejected, then freeze a new fresh control. No F5 or
 MVP closure is claimed.
+
+
+## Implicit-comparable merge and fresh historical v2
+
+The exchange now rejects overlap in explicit requested coordinates and any
+already-read unit from earlier exchanges. Within the same exchange it merges
+identical units automatically attached to distinct requested windows, before
+source disclosure and character accounting. This keeps the original no-repeat
+authority and all resource ceilings. The original raw action and reverse order
+both failed on a02642c6; both now pass, while explicit repeated/overlapping
+coordinates and across-exchange repeats still fail atomically.
+
+[Final related controls](../runs/diagnostics/source_reading_20261022_v1/implicit-overlap-related-final.log):
+**357/357**, network attempts **0**, including 20 focused reading methods.
+[Fresh historical v2](../runs/diagnostics/source_reading_20261022_v1/history-native-v2/acceptance.json):
+**1/1 first final result**, three fresh independent roles, zero corrections,
+**44,551 logical reservation**, zero external LLM API. The newly authored first
+action is byte-identical to the preserved failed original; input/spec/skill
+bytes are unchanged. Both original fact records (2022 USD80 and 2021 USD70,
+matching six-month periods/taxonomy/concept) survive into canonical evidence and
+interpretation. Two unique rows plus previews consume 1,814 source characters.
+[Root source/reopen review](../runs/diagnostics/source_reading_20261022_v1/history-native-v2-root-review.json)
+confirms both literals in their bound original and all 25 files unchanged after
+reopen, with three receipts retained. The prior completed historical stage
+remains 0/1; it was neither resumed nor overwritten. The earlier narrative
+probe remains separately bound to revision 1100b208.
+
+This supersedes the two local gaps identified above. It establishes synthetic
+source-session capability and operation replay, not actual-source semantic
+coverage, fresh Mining taxonomy consumption, Reflect use, whole-loop recovery
+or MVP closure. Next inspect the frozen actual qualified source pool and
+version-owned inputs before preparing a bounded actual-source model stage.

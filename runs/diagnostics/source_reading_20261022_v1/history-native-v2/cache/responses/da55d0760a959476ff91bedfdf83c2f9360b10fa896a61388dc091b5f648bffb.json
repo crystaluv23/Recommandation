@@ -1,0 +1,52 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "results": [
+      {
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "exact_text": "{\"end\":\"2022-06-30\",\"start\":\"2022-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":80}",
+                "projection_id": "projection_84e2ba50b24a404c981d231b"
+              },
+              {
+                "exact_text": "{\"end\":\"2021-06-30\",\"start\":\"2021-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":70}",
+                "projection_id": "projection_e22417ea35a771bcecb12897"
+              }
+            ]
+          },
+          "interpretation": {
+            "summary": "Disclosed operating cash flow for the six months ended June 30, 2022 was USD 80, exceeding USD 70 for the matching six months ended June 30, 2021. Both literal records use the same operating cash flow concept and USD unit."
+          },
+          "signal_id": "historical_cash_flow_change",
+          "state": {
+            "confidence": 1.0,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        "signal_ref": "historical_cash_flow_change:v1"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"results\":[{\"result\":{\"evidence\":{\"counter\":[],\"supporting\":[{\"projection_id\":\"projection_84e2ba50b24a404c981d231b\",\"exact_text\":\"{\\\"end\\\":\\\"2022-06-30\\\",\\\"start\\\":\\\"2022-01-01\\\",\\\"tag\\\":\\\"NetCashProvidedByUsedInOperatingActivities\\\",\\\"taxonomy\\\":\\\"us-gaap\\\",\\\"unit\\\":\\\"USD\\\",\\\"value\\\":80}\"},{\"projection_id\":\"projection_e22417ea35a771bcecb12897\",\"exact_text\":\"{\\\"end\\\":\\\"2021-06-30\\\",\\\"start\\\":\\\"2021-01-01\\\",\\\"tag\\\":\\\"NetCashProvidedByUsedInOperatingActivities\\\",\\\"taxonomy\\\":\\\"us-gaap\\\",\\\"unit\\\":\\\"USD\\\",\\\"value\\\":70}\"}]},\"interpretation\":{\"summary\":\"Disclosed operating cash flow for the six months ended June 30, 2022 was USD 80, exceeding USD 70 for the matching six months ended June 30, 2021. Both literal records use the same operating cash flow concept and USD unit.\"},\"signal_id\":\"historical_cash_flow_change\",\"state\":{\"confidence\":1.0,\"value\":\"positive\"},\"status\":{\"coverage\":\"sufficient\"},\"version\":1},\"signal_ref\":\"historical_cash_flow_change:v1\"}]}\n",
+  "request_hash": "da55d0760a959476ff91bedfdf83c2f9360b10fa896a61388dc091b5f648bffb",
+  "response_id": "local-da55d0760a959476ff91bedfdf83c2f9360b10fa896a61388dc091b5f648bffb",
+  "usage": {
+    "accounting_tokens": 14231,
+    "agent_id": "/root/f5_history_v2_extract",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "4542f012295e3a4ef9e0515d425202460512e1686d66066d0276af487673a7ee",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "4f336962ff8b51af673f88236d4001410e3779e2bbd7c6adfa8ea2573c434ca3",
+    "request_hash": "da55d0760a959476ff91bedfdf83c2f9360b10fa896a61388dc091b5f648bffb",
+    "token_usage": null
+  }
+}

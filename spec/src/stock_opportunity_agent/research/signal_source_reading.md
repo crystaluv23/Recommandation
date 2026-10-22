@@ -27,6 +27,11 @@ any character overflow without disclosing a partial fact or sentence.
 Structured reads expand each intersected period atomically to all conflicting
 duration/value rows and each duration's nearest earlier comparable period in
 the same namespace/concept/unit, including periods older than the default view.
+Within one exchange, distinct non-overlapping requested windows can acquire the
+same implicitly attached comparable row. Merge those complete identical units
+before disclosure and character accounting; reject explicitly repeated or
+overlapping requested windows and any unit read in an earlier exchange. Automatic
+closure must not turn two legitimate current/prior requests into a false duplicate.
 The tool never adds a later period to replace the addressed older period. Narrative reads
 retain complete sentence units inside the addressed window and report a
 continuation when a complete unit could not fit. Raw-offset lineage remains bound

@@ -1,0 +1,227 @@
+{
+  "document_fingerprints": {
+    "historical_cash_flow_change:v1": [
+      "source_catalog:v1:8bd0794b5f0e1614ce7f5e5dff45dea0b37b050e831dc6f73d0c6b071eebabf9",
+      "disclosure-10:d9f8eaa2f5b3ce3ccfb3c315f5865515316d5d16b78d02ce0bc59141a73b8d3b"
+    ]
+  },
+  "request_hashes": [
+    "d93e0abea96c495ba6cd4dacfc24fba761c8d5276f2469cbf5f9558a66fcc292",
+    "10ab5ac628615f934c7cf7e87ed1adb64ca41cb0fddfd0865052538bc214049d",
+    "da55d0760a959476ff91bedfdf83c2f9360b10fa896a61388dc091b5f648bffb"
+  ],
+  "resolutions": [
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 11,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 2,
+        "observed_observation_count": 2,
+        "observed_period_span_days": 365,
+        "query_evaluated": true,
+        "query_matched_document_count": 11,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 1,
+        "selection_truncated": true,
+        "visible_span_count": 2
+      },
+      "data_gap": null,
+      "documents": [
+        {
+          "available_at": "2025-09-20T00:00:00+00:00",
+          "content_hash": "d9f8eaa2f5b3ce3ccfb3c315f5865515316d5d16b78d02ce0bc59141a73b8d3b",
+          "document_id": "disclosure-10"
+        }
+      ],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [
+              "disclosure-00",
+              "disclosure-01",
+              "disclosure-02",
+              "disclosure-03",
+              "disclosure-04",
+              "disclosure-05",
+              "disclosure-06",
+              "disclosure-07",
+              "disclosure-08",
+              "disclosure-09"
+            ],
+            "phase": "initial",
+            "request_id": "signal:historical_cash_flow_change:v1",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "kind": "local_query"
+        },
+        {
+          "details": {
+            "accepted": "success",
+            "catalog_signature": "source_catalog:v1:8bd0794b5f0e1614ce7f5e5dff45dea0b37b050e831dc6f73d0c6b071eebabf9",
+            "catalog_size": 11,
+            "characters": 1814,
+            "closed": true,
+            "exchanges": 1,
+            "history": [
+              {
+                "action": {
+                  "reads": [
+                    {
+                      "length": 137,
+                      "offset": 331,
+                      "source_ref": "source_344b90da67c135a4aa24a546"
+                    },
+                    {
+                      "length": 137,
+                      "offset": 469,
+                      "source_ref": "source_344b90da67c135a4aa24a546"
+                    }
+                  ]
+                },
+                "result": {
+                  "omitted_text_may_contain_additional_evidence": true,
+                  "remaining_exchanges": 1,
+                  "source_projection": [
+                    {
+                      "available_at": "2025-09-20T00:00:00+00:00",
+                      "content_hash": "d9f8eaa2f5b3ce3ccfb3c315f5865515316d5d16b78d02ce0bc59141a73b8d3b",
+                      "document_id": "disclosure-10",
+                      "exact_text": "{\"end\":\"2022-06-30\",\"start\":\"2022-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":80}",
+                      "fact_context": {
+                        "concept": "NetCashProvidedByUsedInOperatingActivities",
+                        "omitted_concept_count": 0,
+                        "source_context_partial": true,
+                        "taxonomy": "us-gaap",
+                        "unit": "USD"
+                      },
+                      "projection_id": "projection_84e2ba50b24a404c981d231b",
+                      "published_at": "2025-09-20T00:00:00+00:00",
+                      "source_type": "sec_company_facts",
+                      "source_window": {
+                        "end": 468,
+                        "start": 331
+                      }
+                    },
+                    {
+                      "available_at": "2025-09-20T00:00:00+00:00",
+                      "content_hash": "d9f8eaa2f5b3ce3ccfb3c315f5865515316d5d16b78d02ce0bc59141a73b8d3b",
+                      "document_id": "disclosure-10",
+                      "exact_text": "{\"end\":\"2021-06-30\",\"start\":\"2021-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":70}",
+                      "fact_context": {
+                        "concept": "NetCashProvidedByUsedInOperatingActivities",
+                        "omitted_concept_count": 0,
+                        "source_context_partial": true,
+                        "taxonomy": "us-gaap",
+                        "unit": "USD"
+                      },
+                      "projection_id": "projection_e22417ea35a771bcecb12897",
+                      "published_at": "2025-09-20T00:00:00+00:00",
+                      "source_type": "sec_company_facts",
+                      "source_window": {
+                        "end": 606,
+                        "start": 469
+                      }
+                    }
+                  ],
+                  "visible_source_characters": 1814,
+                  "windows": [
+                    {
+                      "next_offset": 468,
+                      "requested_end": 468,
+                      "requested_start": 331,
+                      "returned_units": 2,
+                      "source_complete": false,
+                      "source_ref": "source_344b90da67c135a4aa24a546"
+                    },
+                    {
+                      "next_offset": 606,
+                      "requested_end": 606,
+                      "requested_start": 469,
+                      "returned_units": 1,
+                      "source_complete": false,
+                      "source_ref": "source_344b90da67c135a4aa24a546"
+                    }
+                  ]
+                }
+              },
+              {
+                "action": {
+                  "finalize": true
+                },
+                "result": {
+                  "closed": true
+                }
+              }
+            ],
+            "mode": "bounded_source_reading",
+            "preview_characters": 1540,
+            "read_documents": [
+              "disclosure-10"
+            ]
+          },
+          "kind": "llm_signal_source_reading"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Compare disclosed six-month operating cash flow in 2022 with the matching six months in 2021.",
+        "max_documents": 10,
+        "query": "operating cash flow 2022 2021",
+        "request_id": "signal:historical_cash_flow_change:v1",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "status": "resolved"
+    }
+  ],
+  "results": [
+    {
+      "evidence": {
+        "counter": [],
+        "supporting": [
+          {
+            "document_id": "disclosure-10",
+            "exact_span": "{\"end\":\"2022-06-30\",\"start\":\"2022-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":80}",
+            "timestamp": "2025-09-20T00:00:00+00:00"
+          },
+          {
+            "document_id": "disclosure-10",
+            "exact_span": "{\"end\":\"2021-06-30\",\"start\":\"2021-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":70}",
+            "timestamp": "2025-09-20T00:00:00+00:00"
+          }
+        ]
+      },
+      "execution": {
+        "status": "success"
+      },
+      "interpretation": {
+        "summary": "Disclosed operating cash flow for the six months ended June 30, 2022 was USD 80, exceeding USD 70 for the matching six months ended June 30, 2021. Both literal records use the same operating cash flow concept and USD unit."
+      },
+      "signal_id": "historical_cash_flow_change",
+      "state": {
+        "confidence": 1.0,
+        "value": "positive"
+      },
+      "status": {
+        "coverage": "sufficient"
+      },
+      "version": 1
+    }
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 3,
+    "tokens": 44551
+  }
+}

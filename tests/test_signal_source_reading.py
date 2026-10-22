@@ -306,6 +306,33 @@ class SignalSourceReadingTests(TestCase):
         s.apply({'reads': [{'source_ref': card['source_ref'], 'offset': second['offset'], 'length': second['length']}]})
         self.assertEqual(len(s.rows), 3)
 
+    def test_original_fresh_distinct_windows_merge_only_implicit_comparables(self):
+        root = Path(__file__).resolve().parents[1] / 'runs/diagnostics/source_reading_20261022_v1/history-native'
+        inputs = json.loads((root/'inputs.json').read_text())
+        docs = tuple(RawInfoDocument.from_dict(d) for d in inputs['documents'])
+        action = json.loads(next((root/'exchange/outbox').glob('*.txt')).read_text())
+        for reverse in (False, True):
+            with self.subTest(reverse=reverse):
+                s = SignalSourceSession(item_for(docs), AS_OF)
+                s.catalog()
+                previews = s.characters
+                reads = action['reads'][::-1] if reverse else action['reads']
+                out = s.apply({'reads': reads})
+                self.assertEqual(len(out['source_projection']), 2)
+                self.assertEqual(len(s.lineage), 2)
+                self.assertEqual(s.characters, previews + sum(len(r['exact_text']) for r in s.rows))
+                self.assertEqual({json.loads(r['exact_text'])['end'] for r in s.rows}, {'2022-06-30','2021-06-30'})
+                with self.assertRaises(ValidationError):
+                    s.apply(action)
+                self.assertEqual(s.exchanges, 1)
+        for reads in ([action['reads'][0]] * 2,
+                      [action['reads'][0], {**action['reads'][0], 'offset': action['reads'][0]['offset']+1}]):
+            s = SignalSourceSession(item_for(docs), AS_OF)
+            with self.assertRaises(ValidationError):
+                s.apply({'reads': reads})
+            self.assertEqual(s.rows, [])
+            self.assertEqual(s.exchanges, 0)
+
     def test_budget_stop_retains_prior_usage_and_prevents_final_call(self):
         docs = sources()
         class BudgetCaller(ReadingCaller):

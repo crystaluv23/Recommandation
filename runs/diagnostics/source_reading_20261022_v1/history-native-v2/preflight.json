@@ -1,0 +1,16 @@
+{
+  "eligible_documents": 11,
+  "initial_selected_ids": [
+    "disclosure-00",
+    "disclosure-01",
+    "disclosure-02",
+    "disclosure-03",
+    "disclosure-04",
+    "disclosure-05",
+    "disclosure-06",
+    "disclosure-07",
+    "disclosure-08",
+    "disclosure-09"
+  ],
+  "outside_initial_selection": "disclosure-10"
+}

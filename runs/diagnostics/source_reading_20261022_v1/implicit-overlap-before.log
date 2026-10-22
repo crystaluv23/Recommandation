@@ -1,0 +1,26 @@
+======================================================================
+ERROR: test_original_fresh_distinct_windows_merge_only_implicit_comparables (tests.test_signal_source_reading.SignalSourceReadingTests.test_original_fresh_distinct_windows_merge_only_implicit_comparables) (reverse=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 320, in test_original_fresh_distinct_windows_merge_only_implicit_comparables
+    out = s.apply({'reads': reads})
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_source_reading.py", line 175, in apply
+    raise ValidationError("duplicate or overlapping source read")
+stock_opportunity_agent.models.ValidationError: duplicate or overlapping source read
+
+======================================================================
+ERROR: test_original_fresh_distinct_windows_merge_only_implicit_comparables (tests.test_signal_source_reading.SignalSourceReadingTests.test_original_fresh_distinct_windows_merge_only_implicit_comparables) (reverse=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 320, in test_original_fresh_distinct_windows_merge_only_implicit_comparables
+    out = s.apply({'reads': reads})
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_source_reading.py", line 175, in apply
+    raise ValidationError("duplicate or overlapping source read")
+stock_opportunity_agent.models.ValidationError: duplicate or overlapping source read
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+FAILED (errors=2)

@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-22：区分显式window重叠与同exchange自动附带比较期重叠，只合并后者并唯一计字符；原fresh动作/倒序旧a026两红后通过，显式重复/重叠及跨exchange重复仍拒。20聚焦/357关联全过、网络0；相同inputs/spec/skill的新history-v2三独立角色首答1of1/0纠错、44551逻辑预留，首读动作与原失败逐字同；2022/2021两完整USD事实进入canonical证据及解释，1814来源字符，各25files重开同/3receipts不增。原history0of1和1100叙事正控仍各绑原版不重入；外部LLMAPI0，actual源/Reflect/Mining消费及MVP保持open。
+
 - 2026-10-22：共享reader加内部include_history索引，默认caller保持最新/可比期；更旧typed/legacy完整literal、期间冲突/比较期与交错未读窗口接通，1100旧版两方法共3红后356关联过/网络0。fresh历史正控首读1角色/13398逻辑预留后因两独立window自动附带比较期相撞而validation_failed0of1，0body/0语义接受；原完成stage保留。准备duplicate-body去重前提错误及缺contract的resume误调用保留/0request，不能算模型或产品失败。下一合并同exchange的隐式展开，保显式重复与已读窗口拒绝；不重入原stage/全跑，MVP open。
 
 - 2026-10-22：按用户明确批准实施可选taxonomy与有界LLM阅读，外部LLMAPI0。Fact投影/保存/fact-read及自动basis贯通，原跨namespace反例拒配且旧ref不变；122关联过。完整合格目录接实际已读证据/resolution/fingerprint、目录签名no-op、闭集纠错及case/单请求预算；17聚焦/354关联通过、网络0。fresh合成v2实际rank11经3独立角色首答1of1/0纠错、31385逻辑预留、25files重开同/3receipts不增。原v1仅prepare因排名前提错在dispatch前停止/0答；usage/timestamp测试harness错与错误未知projection假设保留。广测355of356，唯一migration失败在修改前HEAD同样复现，未弱化fixture。发现默认typed reader仍阻更旧原文窗口，F5/实际源语义/Mining消费/全MVP保持open；未重入旧stage或全后继。

@@ -1,0 +1,26 @@
+{
+  "scope": "native source-session reopen, not OS-kill or whole-loop recovery",
+  "files": 25,
+  "bytes_unchanged": true,
+  "receipts_before": 3,
+  "receipts_after": 3,
+  "all_canonical_spans_in_bound_original": true,
+  "literal_rows": 2,
+  "periods": [
+    "2022-06-30",
+    "2021-06-30"
+  ],
+  "trace_source_characters": 1814,
+  "originals_unchanged_from_failed_stage": true,
+  "original_first_action_identical": true,
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 3,
+    "tokens": 44551
+  },
+  "result": {
+    "state": "completed",
+    "passed": true,
+    "result_path": "/Users/l/Project/Recommandation/runs/diagnostics/source_reading_20261022_v1/history-native-v2/result.json"
+  }
+}
