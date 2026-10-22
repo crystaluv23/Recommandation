@@ -1,0 +1,65 @@
+{
+  "evidence_sha256": "951c069e4698e6921274a008bbd4bbc0f7afbf2cb636285dd385e7672f28a01f",
+  "root_counterreview": [
+    {
+      "case_ref": "case-005",
+      "direct_raw_dei": {
+        "EntityCentralIndexKey": "0001814215",
+        "EntityRegistrantName": "NUBURU, INC.",
+        "DocumentType": "10-Q",
+        "DocumentPeriodEndDate": "March 31, 2025",
+        "DocumentFiscalYearFocus": "2025",
+        "AmendmentFlag": "false"
+      },
+      "assessment_not_cutoff": true,
+      "claim": "exact local historical filing binding only; remote contemporaneous bytes unknown"
+    },
+    {
+      "case_ref": "case-006",
+      "direct_raw_dei": {
+        "EntityCentralIndexKey": "0001946703",
+        "EntityRegistrantName": "WEBUY\nGLOBAL LTD",
+        "DocumentType": "20-F",
+        "DocumentPeriodEndDate": "December 31",
+        "DocumentFiscalYearFocus": "2024",
+        "AmendmentFlag": "false"
+      },
+      "assessment_not_cutoff": true,
+      "claim": "exact local historical filing binding only; remote contemporaneous bytes unknown"
+    },
+    {
+      "case_ref": "case-003",
+      "direct_raw_dei": {
+        "EntityCentralIndexKey": "0002009312",
+        "EntityRegistrantName": "Aureus\nGreenway Holdings Inc.",
+        "DocumentType": "10-K",
+        "DocumentPeriodEndDate": "December 31",
+        "DocumentFiscalYearFocus": "2024",
+        "AmendmentFlag": "false"
+      },
+      "assessment_not_cutoff": true,
+      "claim": "exact local historical filing binding only; remote contemporaneous bytes unknown"
+    },
+    {
+      "case_ref": "case-001",
+      "direct_raw_dei": {
+        "EntityCentralIndexKey": "0001951089",
+        "EntityRegistrantName": "Critical Metals Corp.",
+        "DocumentType": "20-F",
+        "DocumentPeriodEndDate": "June 30",
+        "DocumentFiscalYearFocus": "2024",
+        "AmendmentFlag": "false"
+      },
+      "assessment_not_cutoff": true,
+      "claim": "exact local historical filing binding only; remote contemporaneous bytes unknown"
+    }
+  ],
+  "counterexamples": [
+    "A matching hash alone cannot date content.",
+    "Retrieved_at in 2026 cannot itself establish or refute the 2025 availability.",
+    "Old acceptance cannot substitute for report assessment date or latest-cutoff status.",
+    "The actual transition-period omission and significant-deficiency/material-weakness conflict must remain."
+  ],
+  "external_calls": 0,
+  "production_authors": 0
+}

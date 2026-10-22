@@ -1,0 +1,75 @@
+{
+  "assignment": " Prospective bounded capability assignment: investigate a reusable narrative measurement in the public ICFR disclosure family. Independently choose and verify the measurement from authorized point-in-time material using the full existing catalog, backlog and tools. This assignment supplies no candidate, source locator, class mapping, supporting answer, or claim about stock direction or magnitude. Preserve unsupported or ambiguous conclusions as unknown. Retain every original action, exploration, evidence and disposition obligation.",
+  "author_calls": 0,
+  "candidate_count": 0,
+  "dispatch": 0,
+  "factory_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/factory-input.json",
+    "sha256": "254a24322260b33d2fcfbf37277a83de7af2dd5e624f10a0fe1c0a0ec45da6fc"
+  },
+  "inputs": [
+    {
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "backlog_page_count": 12,
+      "catalog_page_count": 7,
+      "output_allowance": 4000,
+      "request": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/path-review/bounded-preflight/icfr-scope-assignment/transport/requests/0eb5409f1467e2856d495bb954551f5eebe9f154cf838b505e3bd510928337b5.json",
+        "sha256": "9273ddc03cfb436bd764f53be456f9886259ac1b0a8d5611a24f38e92a4fcfec"
+      },
+      "reservation": 87659,
+      "seed": "hypothesis"
+    },
+    {
+      "backlog_disclosure": null,
+      "backlog_page_count": 0,
+      "catalog_page_count": 7,
+      "output_allowance": 4000,
+      "request": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/path-review/bounded-preflight/icfr-scope-assignment/transport/requests/753bdc5ff1641296fbe0496b0ece9634665c22462d46ef3ec06e7d7523906a4a.json",
+        "sha256": "d5d7fc28ec1a356285117f09abfc594edcc53f76efc684ba010b92634847b47d"
+      },
+      "reservation": 78851,
+      "seed": "discovery"
+    }
+  ],
+  "note": "Captured exceptions are preflight stops, not fresh failed role observations.",
+  "source_count": 263,
+  "stable_refs": [
+    "financing_listing_action:v5",
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "gross_margin_change:v3",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3",
+    "guidance_acceleration:v3",
+    "max_drawdown_1y:v2",
+    "price_momentum_126d:v2",
+    "negative_word_count:v2",
+    "order_confirmation_disclosed:v3",
+    "order_quality:v2",
+    "commercialization_status:v2",
+    "customer_concentration:v2"
+  ]
+}

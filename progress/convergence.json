@@ -3,9 +3,9 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-22T22:33:35.901876+00:00",
+    "checked_at": "2026-10-22T22:52:23.012725+00:00",
     "thread_id": "01a15f73-622f-7130-905e-927e4e6c17c7",
-    "source": "Active unbudgeted goal verified live. Prior turn was progress with scopedbudget connection. Current independent materialreview found genuineprospective ICFRfamily plus qualifiedwindowpath; actual692to600 andotherS4toS5losses locallyrepaired,402tests/9independentcontrols pass,5diagnosticpending/0productionanswers. Original0of2/1of2/authority unchanged. Need historicalbody/definition/fullcost freeze before genuinefresh Mining-to-implementation. No fullsuccessor; canonicalA/Bpending."
+    "source": "Active unbudgeted goal verified live. Complete evidence-handoff repair committed8612172b; current four local SEC source bindings and full native dual-seed first-wire preflight add prerequisite evidence, zero production authors/candidates. New full candidate-chain driver/independent budgets still to freeze. Original completed targets and acceptance unchanged; canonical A/B remains pending independently; no full successor."
   },
   "acceptance": [
     {
@@ -1845,25 +1845,46 @@
         "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-tests-final.log"
       ],
       "result": "Before conclusions independentlyfroze263authorizeddev8sources,originalopaquewirecutoffs/groups,exactstable18. All12functionscovered; parameterizedmomentumwindowgenuinelynewoperandpath7of8butadjustmentunknown/100daygapretainssuppliedobservationsemantics. CleannewICFRactual/contrary/hypothetical/ambiguitysourcefamilyfound,notcandidate/effectproof. InventoryNet/AssetsCurrenttrueusgaapUSDsameinstantmaterialexistsbutnoexactregisteredformula,noborrowedfunction/LLMrecast. Independentbeforecodeactual1179whole692clipped600droppingtaxonomy/literalend,13refs12,documenttailabsent,eventtailreplacedpreview,relation/operandsmissing; sourceidparsermisreadsaccessionastype. SpecfirstController.materialization_evidence exportswholefactswithactualfetchedsource_type,orderedrelations,onlyexecutedreadwindowswithtarget/case/hash/offset/clocks/visibility. Differenttarget/scopeunique,notperexecutionledgerID; eventunreadpreviewexcluded,unknownrefs/dependenciesfailbeforemodel,producingseedonly. S5nativeegressidentitymaskpreserved; originalsource/refs/ledgerunchanged. CallerexplicitcapRuntimeBudgetExceededpropagatescontrolflow,notcontentretry; H1capdoesnotimplicitlygovernS5,reviewinitialwrongscopeassumptionpreserved. Independent9of9 and5diagnosticnativepending spec/skill/tests inputs complete;0answers/receipts/models/network. Actualengineofflinefixtureverifiesseedwindowseparation.402associatedpass/network0/126bindingsunchanged. Initialoldno-source siblingfixture amendedwithsamevalidsyntheticrevenueinputs;newunitunsupportedrule/titleexpectationerrorspreservedandcorrected,notproductrelaxation. Newfresh0,candidate/publish/newbusinesslabels/checkLockedTest/pointer/fullsuccessor0; old0of2and1of2 fixeddenominatorsunchanged. LocalhandoffnotS4/S5/MVPcompletion; sourceauthenticity,actualplanning/fullcandidatechainandcanonicalA/Bremainopen. Finalinitialprompt explicitlynames sourcewindow/operand contract andsourceversusviewhash; independentafterv3ninegroupspass,5nativepayloadsidenticalprioronlypromptcontractadded,402finalrerunpass/network0. Supplementalexpectationoftrailingblank corrected toactualrecordedslice; productinputsunchanged."
+    },
+    {
+      "id": "icfr-source-and-native-path-preflight-20261023",
+      "strategy": "exact_local_sec_source_binding_and_full_native_dual_seed_candidate_chain_preflight",
+      "failure_families": [
+        "historical_body_clock_proof_scope",
+        "full_candidate_chain_vs_leaf_endpoint_cost",
+        "hypothesis_backlog_work_hidden_by_first_page",
+        "h1_s5_fast_budget_ownership",
+        "diagnostic_consumption_vs_committed_use"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/icfr-source-and-native-path-preflight-20261023.md",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/obligations.json",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/bindings-evidence.json",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/source-review.md",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/root-counterreview.json",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/path-review/obligations-frozen.json",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/path-review/bounded-preflight/obligations-frozen.json",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/path-review/path-review.md",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/path-review/bindings.json",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/path-review/root-counterreview.json"
+      ],
+      "result": "Four exact local SEC filing objects bind original submissions CIK/accession/form/reportDate/acceptance to retained body caches or original HTTP gzip and raw DEI; all before original cutoffs. No affirmative later-body contamination observed, but independent contemporaneous bytes remain unknown; preserve assessment date, transition omission and terminology conflict. Full native dual-seed axis/factory/role/transport retained 263 sources, stable18 and 265 hypothesis needs plus accepted prefix. Eight initial request_ready captures, zero authors/receipts/network/labels/check/LockedTest/candidates. Assigned bounded first requests H87659/D78851 bytes+output, not host tokens or consumed reservations. Direct source/spec/skill hashes checked; root checked source DEI, copied original trees and four earlier reservations. Complete native materialization/admission/promotion/Fast consumption entry identified, not yet new driver or frozen experiment. H1 caps do not implicitly govern S5 or Fast; suggested independent resources are not an approved historical budget. Generic predicate-positive wording does not redefine fixed surge-direction SignalValue. Captured ordinary Exception/copy of old active state is input-probe only, never future business execution. Diagnostic exact-use cannot fabricate committed scored learning event. Old0of2/1of2 and all broad acceptance remain unchanged; no need for further source/leaf scans."
     }
   ],
   "review": {
-    "after_iteration": "mining-materialization-evidence-frontier-20261023",
+    "after_iteration": "icfr-source-and-native-path-preflight-20261023",
     "evidence": [
-      "reports/mining-materialization-evidence-frontier-20261023.md",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/material-obligations-frozen.json",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/material-review.md",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/narrative-material-bindings.json",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/structured-material-gap.json",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/before-controls.json",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v2/results.json",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/review.md",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-test-bindings.json",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-tests.log",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v3/results.json",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v3/prompt-source-contract-audit.json",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-test-bindings-final.json",
-      "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-tests-final.log"
+      "reports/icfr-source-and-native-path-preflight-20261023.md",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/obligations.json",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/bindings-evidence.json",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/source-review.md",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/root-counterreview.json",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/path-review/obligations-frozen.json",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/path-review/bounded-preflight/obligations-frozen.json",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/path-review/path-review.md",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/path-review/bindings.json",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/path-review/root-counterreview.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1972,19 +1993,20 @@
       "Default small/USGAAP-priority tables missed that fetch query stopped at document selection and did not reach boundedconceptprojection; source existed but IFRS target stayedunreachable. Locator-only wirefit on19facts did not establish31factgeneralization capacity: complete4step newsource requires102563>98304 beforeanyinbox. Prior issuerCIK/symbol absence checks also left a resolvable accession in document_ref; zeroauthor input-only is not a sentleak, but cannot establish fullhandleanonymity. Retain preflight budgetfailure and attributiondefaultSPEC mistake/configuredsupplement; no easier sample or narrower obligation substitutesforMVP.",
       "A deterministic fourstep compare/read/read/endpoint fit only proved that given path. I omitted a permitted useful compute decision and failed to inspect whether the author saw nativecall costs. Both fresh legalcomputes were semantically correct, then fifth requests exceeded hidden98304aggregate; originaltool heavy2 did not disclose endpoint headroom. Prompt compression is not autonomous resource planning. Independent firstidentityfreeze also postdated initialcandidate, and preserved harnesserrors are not productcounterexamples.",
       "Budget visibility repair initially reused a RuntimeBudgetExceeded class without verifying its base (ValidationError), and treated defaultempty AgentUsage as proof of consumption. Independent native controls exposed both. I also initially accepted a speculative local/remote estimator mismatch without reading constructorregistration exclusion; removed unreachablechange. Fixedpath fit and scripted budget metadata remain local evidence, not newauthor planning or genuineMining capability. Further endpoint-only iterations would not satisfy the full positive measurement/implementation/admission/reuse objective.",
-      "Prior budget/read/locator checks ended before actual S5. They did not exercise longwholefacts, thirteen citations, document/event late reads or relation-only citations through real materializer payloads. Existing helper clippedliteral600/rows12, inferred source type fromoneIDgrammar and engineharvestdroppedread/relations pluscrossseedownership. I initially moved toward a positivecontrol without this consumercheck; independent originalsource/nativecontrols exposed it before freshanswers. Reviewer also assumed H1cap appliedS5; correctedscope ratherthan silentlyextendbudgetpolicy. Localinputpreservation and cleanICFRmaterial are still not freshcandidate/admission/reuse proof."
+      "Prior budget/read/locator checks ended before actual S5. They did not exercise longwholefacts, thirteen citations, document/event late reads or relation-only citations through real materializer payloads. Existing helper clippedliteral600/rows12, inferred source type fromoneIDgrammar and engineharvestdroppedread/relations pluscrossseedownership. I initially moved toward a positivecontrol without this consumercheck; independent originalsource/nativecontrols exposed it before freshanswers. Reviewer also assumed H1cap appliedS5; correctedscope ratherthan silentlyextendbudgetpolicy. Localinputpreservation and cleanICFRmaterial are still not freshcandidate/admission/reuse proof.",
+      "A full dual-seed capability input carries accepted memory and all265 hypothesis needs: the first12-card page and old fact-module98304 total hid real disposition work. Source hash/2026 retrieval alone neither prove nor refute historical SEC body validity. A zero-author capture exception caught as a seed failure, copied active state, no-op definition loop and proposed independent budgets must not become a production acceptance, new runtime or approved experiment. Four local archive bindings and exact first wires now distinguish these scopes; predicate presence and diagnostic use still do not redefine Signal direction or committed learning."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "icfr_source_version_definition_and_complete_native_capability_path_preflight",
-      "action": "Use the privatelyfrozen ICFRactual/contrary/hypothetical/ambiguity originalmaterials to verify exacthistoricalbody/version/clock/object and existingallowedmeasurement semantics. Then trace prospective nativeController→spec/skill/tests→technicaladmission→exactreuse entry and complete request/correction costs under explicitlyownedresources, distinguishing H1/controller from S5 budgets. Freeze independent obligations and fullcapabilitypositive before freshmodeloutputs; retainoriginalfullMVPscope, no handwrittensignal substitute. Do not repeat endpoint-only checks or reset sealedtargets.",
-      "stop": "Existingsourceonly/noAPI/network/businesslabel/check/LockedTest;noimplicitdefinition/canonicaldecision or H1toS5budgettransfer;nooldstageadvance/rename/reset;nofalsehistoricalprimarytruth/adjustmentclaims, droppedwholeunits/tools, handwrittencandidateasMining, easierendpointsubstitution orfullsuccessor. Stopifsourceversion/definition/resource path cannotbe supported; surface exact gap and prepare onlynecessarysubstantivechoice.",
-      "question": "Can the exact ICFR source bodies and a semantically unambiguous prospective newmeasurement support a genuinely frozen native Mining-to-implementation control with explicit fullpath resource bounds?",
-      "pass": "Historicalbody/time/object andactual/contrary/hypothetical/ambiguity independentobligations are bound; complete actualinput/candidate/materializer/admission/reuse connections and limits are feasible withoutsemantic orauthoritychanges.",
-      "fail": "Historicalbodyproof, measurementorientation/definition or executable/resource path is unsupported orbeing implicitlychanged; onlyanothernarrowendpoint is reachable.",
-      "on_pass": "Freeze the prospective fullcapabilitycontrol and dispatch only exactnativeinbox freshsubagents serially,inspectoriginalanswers/corrections/persistence/realconsumerinputs,keepalloldfailures.",
-      "on_fail": "Retain explicit missingproof/definition/resource disposition and changehypothesis or prepareconcretedecisionwhennecessary; no blindfresh/fullrun or newmechanismsto manufacturepass."
+      "strategy": "prospective_icfr_native_candidate_chain_and_exact_consumer_positive",
+      "action": "Stop further source/leaf scanning. Write the owning spec and a new isolated driver composing the accepted prefix, actual dual-seed Controller and source-owned materializer, same native technical admission/promotion and new complete-registry Fast route/apply/Reflect/final-context. Freeze independent actual/contrary/hypothetical-missing-assessment/ambiguity obligations, exact code/source versions and explicit H1/S5/Fast resource ceilings before fresh actors. Preserve all265 needs and all263 sources/stable18; dispatch exact native inbox/outbox fresh subagents serially. Independently review generated definition/orientation/spec/skill/fixtures against sources before any closure claim. Do not manufacture a scored committed-use record or claim full S8/MVP.",
+      "stop": "No external API/GET/network/new labels/check/LockedTest/full successor; no old stage reentry/reset, hidden source/call pruning, handmade candidate, implicit measurement/schema/value-direction change, inferred H1-to-S5 budget or proposed caps represented as old authorization. Actual next whole request must fit frozen owned resources; otherwise stop typed budget failure, not no-pattern. Stop when a fixed positive-control result or concrete source/definition/interface/resource failure is established.",
+      "question": "Can a newly frozen complete candidate-chain control generate a genuine source-grounded ICFR measurement, implement and technically admit the same definition, and consume its exact version in native Fast without losing unknown states?",
+      "pass": "A fresh native candidate and faithful spec/skill/fixtures pass independent source/orientation checks and genuine technical fixtures; atomic exact version is really routed/applied/retained by Fast and survives scoped restoration within original new-stage limits.",
+      "fail": "No genuine candidate on this known-material positive control, source/definition drift, accepted semantic error, implementation/admission/consumption failure, or frozen resource exhaustion occurs.",
+      "on_pass": "Report only the established scope, retain effect unverified and committed-use/wholeloop gaps; then prepare magnitude capability and required later business-loop evidence without replacing direction failures.",
+      "on_fail": "Preserve original answers, exact failure denominator and terminal; diagnose the first actual broken boundary or surface a concrete substantive choice, without more leaf substitutes or budget resets."
     }
   },
   "successor_prerequisites": [

@@ -1,0 +1,30 @@
+{
+  "schema_version": "icfr-local-source-review-obligations-v1",
+  "frozen_at": "2026-10-22T22:39:57.672010+00:00",
+  "scope": [
+    "case-005/source1507",
+    "case-006/source1500",
+    "case-003/source1501",
+    "case-001/source1768"
+  ],
+  "authority": "Read-only prerequisite evidence preparation; no canonical/interface/research-definition choice.",
+  "prohibited": [
+    "external API/GET/web/model",
+    "new business labels/check/LockedTest",
+    "business stage mutation",
+    "candidate or author creation"
+  ],
+  "obligations": {
+    "O1": "Bind exact local source bytes and quoted raw spans to registrant CIK, accession, primary-document URL, filing type and report period; accession prefix is not registrant CIK.",
+    "O2": "Locate original cached SEC submission row and original filing-document response/cache/collection chain; reconcile filingDate/acceptanceDateTime to available_at/published_at/retrieved_at. Stored date fields or hashes alone are insufficient.",
+    "O3": "Inspect local primary body for issuer/period/document anchors and possible later-version/update contamination. A 2026 retrieval alone does not invalidate an accession-bound historical filing; absence of archival retrieval proof is distinguished from affirmative contamination.",
+    "O4": "Keep assessment date distinct from filing availability and case cutoff. No latest-present-truth, absence-of-weakness or equity-outcome inference.",
+    "O5": "Pass only the claim directly supported by local material; unknown where an indispensable provenance link is absent. Include counterexamples to overclaiming and make no broad historical authenticity claim from self-consistent metadata."
+  },
+  "decision_levels": {
+    "pass_local_binding": "Local original cache, accession/document/object and date relation substantiate the bounded historical filing-source claim. This is not independent remote attestation.",
+    "unknown": "A required binding is absent/unsupported in bounded local material, or internal semantics conflict.",
+    "counterexample": "Concrete evidence refutes a shortcut, positive conclusion, or inappropriate transfer."
+  },
+  "stop": "After checking exact source files, relevant SEC submission/document cache and original acquisition records for these four approved development cases. No broader data search or external acquisition."
+}

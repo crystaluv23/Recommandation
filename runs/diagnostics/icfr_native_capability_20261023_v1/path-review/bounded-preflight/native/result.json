@@ -1,0 +1,75 @@
+{
+  "assignment": "",
+  "author_calls": 0,
+  "candidate_count": 0,
+  "dispatch": 0,
+  "factory_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/factory-input.json",
+    "sha256": "254a24322260b33d2fcfbf37277a83de7af2dd5e624f10a0fe1c0a0ec45da6fc"
+  },
+  "inputs": [
+    {
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "backlog_page_count": 12,
+      "catalog_page_count": 7,
+      "output_allowance": 4000,
+      "request": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/path-review/bounded-preflight/native/transport/requests/02c7cfc1ce7e4be2c5fdbf217339da85a6dbf1f67092feee512fc43bfd224572.json",
+        "sha256": "1b870f0a13fa6dba1e4d6f75dd1578a1395b89e0d6e6bf474315abb88dd3cd1a"
+      },
+      "reservation": 87122,
+      "seed": "hypothesis"
+    },
+    {
+      "backlog_disclosure": null,
+      "backlog_page_count": 0,
+      "catalog_page_count": 7,
+      "output_allowance": 4000,
+      "request": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/path-review/bounded-preflight/native/transport/requests/b043f9e7a12b65862550da7e0ecd73c64ecbf3d31a0f75a72444c74537c71531.json",
+        "sha256": "031f5fce85dbbf8af2e71f0b54bf62cb000a68361dd778ab7cf9fff9c25f7599"
+      },
+      "reservation": 78314,
+      "seed": "discovery"
+    }
+  ],
+  "note": "Captured exceptions are preflight stops, not fresh failed role observations.",
+  "source_count": 263,
+  "stable_refs": [
+    "financing_listing_action:v5",
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "gross_margin_change:v3",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3",
+    "guidance_acceleration:v3",
+    "max_drawdown_1y:v2",
+    "price_momentum_126d:v2",
+    "negative_word_count:v2",
+    "order_confirmation_disclosed:v3",
+    "order_quality:v2",
+    "commercialization_status:v2",
+    "customer_concentration:v2"
+  ]
+}

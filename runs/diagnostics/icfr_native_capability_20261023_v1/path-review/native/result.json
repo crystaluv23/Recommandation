@@ -1,0 +1,75 @@
+{
+  "assignment": "",
+  "author_calls": 0,
+  "candidate_count": 0,
+  "dispatch": 0,
+  "factory_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/factory-input.json",
+    "sha256": "254a24322260b33d2fcfbf37277a83de7af2dd5e624f10a0fe1c0a0ec45da6fc"
+  },
+  "inputs": [
+    {
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "backlog_page_count": 12,
+      "catalog_page_count": 7,
+      "output_allowance": 4000,
+      "request": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/path-review/native/transport/requests/0679e874f464c4d8d9f4a9fb1a7f572c6596fcbe06eb0637e6ebf3a89c6ca2ea.json",
+        "sha256": "e30a592015e97d35bb24252a050410a7d3028041f9b414f044ac8183a0ab0c68"
+      },
+      "reservation": 86712,
+      "seed": "hypothesis"
+    },
+    {
+      "backlog_disclosure": null,
+      "backlog_page_count": 0,
+      "catalog_page_count": 7,
+      "output_allowance": 4000,
+      "request": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/path-review/native/transport/requests/19e6c238ba006708fc44066c07e1b380e29bbb12a3c877ed2c23dad7be7a8a3c.json",
+        "sha256": "5af6716971ee14ed9470fb2f783df4d1d77d3c5f70e3035ca49eee2dcb52d24c"
+      },
+      "reservation": 77904,
+      "seed": "discovery"
+    }
+  ],
+  "note": "Captured exceptions are preflight stops, not fresh failed role observations.",
+  "source_count": 263,
+  "stable_refs": [
+    "financing_listing_action:v5",
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "gross_margin_change:v3",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3",
+    "guidance_acceleration:v3",
+    "max_drawdown_1y:v2",
+    "price_momentum_126d:v2",
+    "negative_word_count:v2",
+    "order_confirmation_disclosed:v3",
+    "order_quality:v2",
+    "commercialization_status:v2",
+    "customer_concentration:v2"
+  ]
+}

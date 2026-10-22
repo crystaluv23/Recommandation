@@ -1,0 +1,48 @@
+{
+  "claim": "Historical completed zero-author preflight; no resume or new production author.",
+  "independent_bindings_total": 311,
+  "unchanged": 310,
+  "intentional_post_preflight_document_change": [
+    {
+      "path": "/Users/l/Project/Recommandation/progress/status.md",
+      "frozen_sha256": "64b2edbfe7a37448552d2c27a21cc742164133e2d9094474a3bc5c5546661db2",
+      "current_sha256": "df2b6b3c5b601ca9abec0f4ec44a940b22a784ea6dc7109b3861ede837e6d80e"
+    }
+  ],
+  "limit": "Only status was updated after preflight completion. Frozen receipts are retained, not rewritten. No runtime, source, spec, skill, accepted prefix or request drift.",
+  "bounded_first_requests": [
+    {
+      "seed": "hypothesis",
+      "reservation": 87659,
+      "request": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/path-review/bounded-preflight/icfr-scope-assignment/transport/requests/0eb5409f1467e2856d495bb954551f5eebe9f154cf838b505e3bd510928337b5.json",
+        "sha256": "9273ddc03cfb436bd764f53be456f9886259ac1b0a8d5611a24f38e92a4fcfec"
+      },
+      "request_budget": {
+        "next_minimum": 16760,
+        "single_limit": 262144,
+        "this_request": "00000000000000087659",
+        "unit": "bytes_plus_output",
+        "used": 0
+      },
+      "inbox_created": false
+    },
+    {
+      "seed": "discovery",
+      "reservation": 78851,
+      "request": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/path-review/bounded-preflight/icfr-scope-assignment/transport/requests/753bdc5ff1641296fbe0496b0ece9634665c22462d46ef3ec06e7d7523906a4a.json",
+        "sha256": "d5d7fc28ec1a356285117f09abfc594edcc53f76efc684ba010b92634847b47d"
+      },
+      "request_budget": {
+        "next_minimum": 16760,
+        "single_limit": 262144,
+        "this_request": "00000000000000078851",
+        "unit": "bytes_plus_output",
+        "used": 0
+      },
+      "inbox_created": false
+    }
+  ],
+  "new_api_or_author": 0
+}

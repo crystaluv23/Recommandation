@@ -1,0 +1,743 @@
+{
+  "schema_version": "icfr-local-source-review-evidence-v1",
+  "frozen_obligations": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/source-review/obligations.json",
+    "sha256": "027769ca2626bf68fa1ab2b7f23ff977a7d262cd83d9cc8fad1e0c1606122faa"
+  },
+  "material_bindings": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/independent/narrative-material-bindings.json",
+    "sha256": "957c97fb081d42120ede3a464da57ab10bcfe1913fb5a7c7f066b76976fce41f"
+  },
+  "prior_source_review_locator": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json",
+    "sha256": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57"
+  },
+  "review_script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/source-review/review_local_sources.py",
+    "sha256": "752577519d739e71c814a25c21a324a873bffccb6e5b6d0d1618be5a2aceba8a"
+  },
+  "source_results": [
+    {
+      "case_ref": "case-005",
+      "source_number": 1507,
+      "case_id": "cik_0001814215:20250530",
+      "cutoff": "2025-05-30T00:00:00+00:00",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1507.json",
+        "sha256": "144cfaccae608a2351b0e8085cda17e22092281f95bbf1c9d6e63046364b6c80"
+      },
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001814215/sec:cik_0001814215:000095017025075392.json",
+        "sha256": "144cfaccae608a2351b0e8085cda17e22092281f95bbf1c9d6e63046364b6c80"
+      },
+      "source_metadata": {
+        "available_at": "2025-05-20T21:28:45+00:00",
+        "company_id": "cik_0001814215",
+        "content_hash": "5b637f54f99546efee5338e6cba61f225d77f5cbfc2fa4664b39e044c2aa1aae",
+        "document_id": "sec:cik_0001814215:000095017025075392",
+        "metadata": {
+          "accession_number": "0000950170-25-075392",
+          "cik": "0001814215",
+          "form": "10-Q",
+          "provider": "sec_edgar",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1814215/000095017025075392/buru-20250331.htm"
+        },
+        "published_at": "2025-05-20T21:28:45+00:00",
+        "source_type": "filing"
+      },
+      "submissions_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v97/cache/data/sec_edgar/filing_documents/9df8a471af4b66825e96c892.json",
+        "sha256": "08880cb82948efe3131c7005fcc97bdf91fbd41f86d516292bed07a8f730ad30"
+      },
+      "submissions_request": {
+        "endpoint": "https://data.sec.gov/submissions/CIK0001814215.json",
+        "source_key": "sec_edgar",
+        "capability": "filing_documents",
+        "payload_kind": "json",
+        "params": [
+          [
+            "method",
+            "GET"
+          ]
+        ],
+        "retrieved_at": "2026-09-17T18:13:59.081437+00:00"
+      },
+      "submissions_issuer": {
+        "cik": "0001814215",
+        "name": "Nuburu, Inc."
+      },
+      "exact_submission_row": {
+        "acceptanceDateTime": "2025-05-20T21:28:45.000Z",
+        "accessionNumber": "0000950170-25-075392",
+        "act": "34",
+        "core_type": "XBRL",
+        "fileNumber": "001-39489",
+        "filingDate": "2025-05-20",
+        "filmNumber": "25970140",
+        "form": "10-Q",
+        "isInlineXBRL": 1,
+        "isXBRL": 1,
+        "isXBRLNumeric": null,
+        "items": "",
+        "primaryDocDescription": "10-Q",
+        "primaryDocument": "buru-20250331.htm",
+        "reportDate": "2025-03-31",
+        "size": 14624558
+      },
+      "body_artifact": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v97/cache/data/sec_edgar/filing_documents/aa6694a9f36b8ecda1769138.json",
+        "sha256": "e47c845664c126e1cdf6149c06183abd72f657551138bbec8e05482538669d05"
+      },
+      "body_capture_role": "original_native_text_cache",
+      "body_retrieved_at": "2026-09-17T18:14:00.327281+00:00",
+      "receipt_evidence": null,
+      "body_length_characters": 2426365,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1814215/000095017025075392/buru-20250331.htm",
+      "checks": {
+        "snapshot_equals_original": true,
+        "retained_full_body_equals_source": true,
+        "original_cache_request_matches_exact_primary_url": true,
+        "root_cik_equals_source_and_url_issuer": true,
+        "single_exact_accession_row": true,
+        "row_form_and_primary_document_match": true,
+        "acceptance_equals_available_and_published": true,
+        "acceptance_precedes_case_cutoff": true,
+        "input_citation_offsets_match_full_original": true
+      },
+      "anchors": [
+        {
+          "kind": "inline_dei_EntityCentralIndexKey",
+          "raw_start": 1975,
+          "raw_end": 2145,
+          "raw_span": "<ix:nonNumeric id=\"F_f0e16e59-6422-4de2-8d15-857840740c4c\" name=\"dei:EntityCentralIndexKey\" contextRef=\"C_58f6b73c-f088-4a04-9aa3-e01860f6be84\">0001814215</ix:nonNumeric>",
+          "readable_rendering": "0001814215",
+          "raw_span_sha256": "f7838cee5811531a8b7bb3c95e0538142a998de943cdaa0187ed37322193a018"
+        },
+        {
+          "kind": "inline_dei_EntityRegistrantName",
+          "raw_start": 149455,
+          "raw_end": 149783,
+          "raw_span": "<ix:nonNumeric id=\"F_8b941c75-7738-4342-bd83-fb6ac99dae7a\" contextRef=\"C_58f6b73c-f088-4a04-9aa3-e01860f6be84\" name=\"dei:EntityRegistrantName\"><span style=\"color:#000000;white-space:pre-wrap;font-weight:bold;font-size:24pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">NUBURU, INC.</span></ix:nonNumeric>",
+          "readable_rendering": "NUBURU, INC.",
+          "raw_span_sha256": "49d372f2e6e598b9cfe1628b91efdb9298cd7286f08dd43be2701a3737e3e24b"
+        },
+        {
+          "kind": "inline_dei_DocumentType",
+          "raw_start": 142859,
+          "raw_end": 143171,
+          "raw_span": "<ix:nonNumeric id=\"F_889050e5-c18c-401c-b71b-f1d2ed29c3d5\" contextRef=\"C_58f6b73c-f088-4a04-9aa3-e01860f6be84\" name=\"dei:DocumentType\"><span style=\"color:#000000;white-space:pre-wrap;font-weight:bold;font-size:18pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">10-Q</span></ix:nonNumeric>",
+          "readable_rendering": "10-Q",
+          "raw_span_sha256": "f7fbdc9dbac786dcfce61ba4d17149c3fe2f291aff2b27ef0305e9571fc52c82"
+        },
+        {
+          "kind": "inline_dei_DocumentPeriodEndDate",
+          "raw_start": 145453,
+          "raw_end": 146185,
+          "raw_span": "<ix:nonNumeric id=\"F_83758d6a-8ad7-4ab1-8bef-8dab718ed66d\" contextRef=\"C_58f6b73c-f088-4a04-9aa3-e01860f6be84\" name=\"dei:DocumentPeriodEndDate\" format=\"ixt:date-monthname-day-year-en\"><span style=\"color:#000000;white-space:pre-wrap;font-weight:bold;font-size:10pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">March 31, </span><span style=\"font-size:10pt;font-family:Times New Roman;\"><ix:nonNumeric id=\"F_e991bf6b-f9e2-4e95-91a8-47c5f3162137\" contextRef=\"C_58f6b73c-f088-4a04-9aa3-e01860f6be84\" name=\"dei:DocumentFiscalYearFocus\"><span style=\"color:#000000;white-space:pre-wrap;font-weight:bold;font-size:10pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">2025</span></ix:nonNumeric>",
+          "readable_rendering": "March 31, 2025",
+          "raw_span_sha256": "c20d2823b5a4d38b5ffd0ae5dc0209c953f1aa688053e77813714efc5e6ca2fa"
+        },
+        {
+          "kind": "inline_dei_DocumentFiscalYearFocus",
+          "raw_start": 145862,
+          "raw_end": 146185,
+          "raw_span": "<ix:nonNumeric id=\"F_e991bf6b-f9e2-4e95-91a8-47c5f3162137\" contextRef=\"C_58f6b73c-f088-4a04-9aa3-e01860f6be84\" name=\"dei:DocumentFiscalYearFocus\"><span style=\"color:#000000;white-space:pre-wrap;font-weight:bold;font-size:10pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">2025</span></ix:nonNumeric>",
+          "readable_rendering": "2025",
+          "raw_span_sha256": "8da88bbe29d78aa52d36c81a9381829f7b3297789702ebfb4a792a51f6f9781b"
+        },
+        {
+          "kind": "inline_dei_AmendmentFlag",
+          "raw_start": 1793,
+          "raw_end": 1975,
+          "raw_span": "<ix:nonNumeric id=\"F_eb9a94fc-afe8-49e5-98c5-dcbc98c19f77\" name=\"dei:AmendmentFlag\" contextRef=\"C_58f6b73c-f088-4a04-9aa3-e01860f6be84\" format=\"ixt:fixed-false\">false</ix:nonNumeric>",
+          "readable_rendering": "false",
+          "raw_span_sha256": "950e1629aa030d7d1324817efd82dccea70bbfbd76af999154a82cc4fe339dff"
+        },
+        {
+          "kind": "document_generator_comment",
+          "raw_start": 132,
+          "raw_end": 186,
+          "raw_span": "<!-- Creation Date :2025-05-20T17:27:03.9285+00:00 -->",
+          "readable_rendering": "",
+          "raw_span_sha256": "6dbb361d40fd87da181e4e88a54e5828eaf7d89a30f02d34d16f0bf8957fe4e5"
+        },
+        {
+          "kind": "actual_management_icfr_conclusion",
+          "raw_start": 2334869,
+          "raw_end": 2336241,
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025,  as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "readable_rendering": "Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025, as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.",
+          "raw_span_sha256": "3915de744fe00e31706fe1f8bb6b95973902c7a1d403875529d580284f4b7b0a"
+        },
+        {
+          "kind": "explicit_nonremediation",
+          "raw_start": 2336241,
+          "raw_end": 2337349,
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this quarterly report on Form 10-Q, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner.</span></p>",
+          "readable_rendering": "We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this quarterly report on Form 10-Q, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner.",
+          "raw_span_sha256": "20b24be5b4d41556083f607e9d373cefea703a4906568fa97a679f986175618c"
+        }
+      ],
+      "verdicts": {
+        "exact_local_historical_source_binding": "pass_local_binding",
+        "affirmative_post_update_contamination": "not_observed_in_reviewed_object_period_generator_and_anchor_checks",
+        "historical_original_bytes_independent_remote_attestation": "unknown",
+        "latest_present_icfr_truth": "not_claimed"
+      }
+    },
+    {
+      "case_ref": "case-006",
+      "source_number": 1500,
+      "case_id": "cik_0001946703:20250731",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1500.json",
+        "sha256": "1345f2ae9d45c1ad769d6cb8bb861ec375ab654fdc3fc68253b2daaa8f725ad5"
+      },
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001946703/sec:cik_0001946703:000121390025033933.json",
+        "sha256": "1345f2ae9d45c1ad769d6cb8bb861ec375ab654fdc3fc68253b2daaa8f725ad5"
+      },
+      "source_metadata": {
+        "available_at": "2025-04-22T12:00:54+00:00",
+        "company_id": "cik_0001946703",
+        "content_hash": "bd2b4276a7c5e4d267f5ec556fb0d2510e255da1b36dc9c52aa5289112db3562",
+        "document_id": "sec:cik_0001946703:000121390025033933",
+        "metadata": {
+          "accession_number": "0001213900-25-033933",
+          "cik": "0001946703",
+          "form": "20-F",
+          "provider": "sec_edgar",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1946703/000121390025033933/ea0238515-20f_webuy.htm"
+        },
+        "published_at": "2025-04-22T12:00:54+00:00",
+        "source_type": "filing"
+      },
+      "submissions_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v66/cache/data/sec_edgar/filing_documents/ea91d792cc62608bca59daf3.json",
+        "sha256": "f3e377968a7d405857bf6cc0ea2cbb1b7b68dd834f386c743f17dd10fd08702e"
+      },
+      "submissions_request": {
+        "endpoint": "https://data.sec.gov/submissions/CIK0001946703.json",
+        "source_key": "sec_edgar",
+        "capability": "filing_documents",
+        "payload_kind": "json",
+        "params": [
+          [
+            "method",
+            "GET"
+          ]
+        ],
+        "retrieved_at": "2026-09-12T19:23:39.500334+00:00"
+      },
+      "submissions_issuer": {
+        "cik": "0001946703",
+        "name": "WEBUY GLOBAL LTD"
+      },
+      "exact_submission_row": {
+        "acceptanceDateTime": "2025-04-22T12:00:54.000Z",
+        "accessionNumber": "0001213900-25-033933",
+        "act": "34",
+        "core_type": "XBRL",
+        "fileNumber": "001-41840",
+        "filingDate": "2025-04-22",
+        "filmNumber": "25854996",
+        "form": "20-F",
+        "isInlineXBRL": 1,
+        "isXBRL": 1,
+        "isXBRLNumeric": null,
+        "items": "",
+        "primaryDocDescription": "ANNUAL REPORT",
+        "primaryDocument": "ea0238515-20f_webuy.htm",
+        "reportDate": "2024-12-31",
+        "size": 8253985
+      },
+      "body_artifact": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v66/cache/data/sec_edgar/filing_documents/df28188b59550d44a0342ab0.json",
+        "sha256": "70ed2942ea4b14b49c6cec7f12e107c0bd1fcc6fb596caa732cda2162b3bb57d"
+      },
+      "body_capture_role": "original_native_text_cache",
+      "body_retrieved_at": "2026-09-12T19:46:26.063618+00:00",
+      "receipt_evidence": null,
+      "body_length_characters": 1682713,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1946703/000121390025033933/ea0238515-20f_webuy.htm",
+      "checks": {
+        "snapshot_equals_original": true,
+        "retained_full_body_equals_source": true,
+        "original_cache_request_matches_exact_primary_url": true,
+        "root_cik_equals_source_and_url_issuer": true,
+        "single_exact_accession_row": true,
+        "row_form_and_primary_document_match": true,
+        "acceptance_equals_available_and_published": true,
+        "acceptance_precedes_case_cutoff": true,
+        "input_citation_offsets_match_full_original": true
+      },
+      "anchors": [
+        {
+          "kind": "inline_dei_EntityCentralIndexKey",
+          "raw_start": 1556785,
+          "raw_end": 1556890,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" name=\"dei:EntityCentralIndexKey\" id=\"ixv-18109\">0001946703</ix:nonNumeric>",
+          "readable_rendering": "0001946703",
+          "raw_span_sha256": "e1e1b035bac59ea78e32f57f9d52659527355fbb84d155fa74a94159644308a8"
+        },
+        {
+          "kind": "inline_dei_EntityRegistrantName",
+          "raw_start": 8715,
+          "raw_end": 8911,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" name=\"dei:EntityRegistrantName\" id=\"ixv-107\"><span style=\"font-family: Times New Roman, Times, Serif; font-size: 10pt\"><b>WEBUY\nGLOBAL LTD</b></span></ix:nonNumeric>",
+          "readable_rendering": "WEBUY GLOBAL LTD",
+          "raw_span_sha256": "085750c75714cdf2e9cc83ce9234028ee7b793fb1d578a3e94ea62b55f2f13be"
+        },
+        {
+          "kind": "inline_dei_DocumentType",
+          "raw_start": 2637,
+          "raw_end": 2727,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" name=\"dei:DocumentType\" id=\"ixv-17117\">20-F</ix:nonNumeric>",
+          "readable_rendering": "20-F",
+          "raw_span_sha256": "72e6d322be90e1a4c6b0b55390bfa5af895d338c551db179c5aa426642757ce0"
+        },
+        {
+          "kind": "inline_dei_DocumentPeriodEndDate",
+          "raw_start": 4964,
+          "raw_end": 5227,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" format=\"ixt:date-monthname-day-year-en\" name=\"dei:DocumentPeriodEndDate\" id=\"ixv-17120\"><ix:nonNumeric contextRef=\"c0\" format=\"ixt:date-monthname-day-en\" name=\"dei:CurrentFiscalYearEndDate\" id=\"ixv-17121\">December 31</ix:nonNumeric>",
+          "readable_rendering": "December 31",
+          "raw_span_sha256": "f5b6dfdd8479ed7b02e16ce56bcfd7be44a74ec3cae4b6bcdd57a9d8f959ce5d"
+        },
+        {
+          "kind": "inline_dei_DocumentFiscalYearFocus",
+          "raw_start": 5229,
+          "raw_end": 5330,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" name=\"dei:DocumentFiscalYearFocus\" id=\"ixv-17122\">2024</ix:nonNumeric>",
+          "readable_rendering": "2024",
+          "raw_span_sha256": "83b25d93c1cb8b9f14e7efc79980ce78e36fa027f4b3235e3937065d3f2ca8a7"
+        },
+        {
+          "kind": "inline_dei_AmendmentFlag",
+          "raw_start": 1556891,
+          "raw_end": 1556983,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" name=\"dei:AmendmentFlag\" id=\"ixv-18110\">false</ix:nonNumeric>",
+          "readable_rendering": "false",
+          "raw_span_sha256": "4597194cc20bd3e5883fd4ad5ec7056662181d42a433ef9912e05f54150c26bd"
+        },
+        {
+          "kind": "document_generator_comment",
+          "raw_start": 118,
+          "raw_end": 164,
+          "raw_span": "<!-- Created: Tue Apr 22 07:02:40 UTC 2025 -->",
+          "readable_rendering": "",
+          "raw_span_sha256": "cc51ab82980824d614371e37381ba10fe654fad379e128652805cf17d620c946"
+        },
+        {
+          "kind": "explicit_no_material_weakness_conclusion",
+          "raw_start": 933913,
+          "raw_end": 934606,
+          "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify; background-color: white\"><span style=\"font-family: Times New Roman, Times, Serif\">A\nmaterial weakness is a deficiency, or combination of deficiencies, in internal control over financial reporting, such that there is a\nreasonable possibility that a material misstatement of the Company&#8217;s annual or interim financial statements will not be prevented\nor detected on a timely basis. In its assessment of the effectiveness of internal control over financial reporting as of December 31,\n2024, the Company determined that there were no control deficiencies that constituted material weaknesses.</span></p>",
+          "readable_rendering": "A material weakness is a deficiency, or combination of deficiencies, in internal control over financial reporting, such that there is a reasonable possibility that a material misstatement of the Company’s annual or interim financial statements will not be prevented or detected on a timely basis. In its assessment of the effectiveness of internal control over financial reporting as of December 31, 2024, the Company determined that there were no control deficiencies that constituted material weaknesses.",
+          "raw_span_sha256": "889dc62d986623cccac992d2dd7688c7d26940b8f8c961fea2b4c4035173b72f"
+        }
+      ],
+      "verdicts": {
+        "exact_local_historical_source_binding": "pass_local_binding",
+        "affirmative_post_update_contamination": "not_observed_in_reviewed_object_period_generator_and_anchor_checks",
+        "historical_original_bytes_independent_remote_attestation": "unknown",
+        "latest_present_icfr_truth": "not_claimed"
+      }
+    },
+    {
+      "case_ref": "case-003",
+      "source_number": 1501,
+      "case_id": "cik_0002009312:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1501.json",
+        "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+      },
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0002009312/sec:cik_0002009312:000164117225001168.json",
+        "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+      },
+      "source_metadata": {
+        "available_at": "2025-03-28T20:00:48+00:00",
+        "company_id": "cik_0002009312",
+        "content_hash": "a9e13fc2183551fabc81a570a3934c287fa988d378dfd0f2f751b1501b3525f4",
+        "document_id": "sec:cik_0002009312:000164117225001168",
+        "metadata": {
+          "accession_number": "0001641172-25-001168",
+          "cik": "0002009312",
+          "form": "10-K",
+          "provider": "sec_edgar",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/2009312/000164117225001168/form10-k.htm"
+        },
+        "published_at": "2025-03-28T20:00:48+00:00",
+        "source_type": "10-k"
+      },
+      "submissions_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v54/cache/data/sec_edgar/filing_documents/bcb8bed81ec03c2149cc9352.json",
+        "sha256": "47a24f8b8a409d78457a4e3e5350e4f1b7fffdc77c8af2020c6403ca0819a732"
+      },
+      "submissions_request": {
+        "endpoint": "https://data.sec.gov/submissions/CIK0002009312.json",
+        "source_key": "sec_edgar",
+        "capability": "filing_documents",
+        "payload_kind": "json",
+        "params": [
+          [
+            "method",
+            "GET"
+          ]
+        ],
+        "retrieved_at": "2026-09-12T12:40:15.478472+00:00"
+      },
+      "submissions_issuer": {
+        "cik": "0002009312",
+        "name": "Aureus Greenway Holdings Inc"
+      },
+      "exact_submission_row": {
+        "acceptanceDateTime": "2025-03-28T20:00:48.000Z",
+        "accessionNumber": "0001641172-25-001168",
+        "act": "34",
+        "core_type": "XBRL",
+        "fileNumber": "001-42507",
+        "filingDate": "2025-03-28",
+        "filmNumber": "25785660",
+        "form": "10-K",
+        "isInlineXBRL": 1,
+        "isXBRL": 1,
+        "isXBRLNumeric": null,
+        "items": "",
+        "primaryDocDescription": "",
+        "primaryDocument": "form10-k.htm",
+        "reportDate": "2024-12-31",
+        "size": 6980381
+      },
+      "body_artifact": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v54/cache/data/sec_edgar/filing_documents/b8669829d14fdaf1a89bbbf6.json",
+        "sha256": "5f26d72d5a787a48adc40db94e10de2dad64feda439d900d3b5db6fd7ae694e3"
+      },
+      "body_capture_role": "original_native_text_cache",
+      "body_retrieved_at": "2026-09-12T12:40:18.041810+00:00",
+      "receipt_evidence": null,
+      "body_length_characters": 1651997,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/2009312/000164117225001168/form10-k.htm",
+      "checks": {
+        "snapshot_equals_original": true,
+        "retained_full_body_equals_source": true,
+        "original_cache_request_matches_exact_primary_url": true,
+        "root_cik_equals_source_and_url_issuer": true,
+        "single_exact_accession_row": true,
+        "row_form_and_primary_document_match": true,
+        "acceptance_equals_available_and_published": true,
+        "acceptance_precedes_case_cutoff": true,
+        "input_citation_offsets_match_full_original": true
+      },
+      "anchors": [
+        {
+          "kind": "inline_dei_EntityCentralIndexKey",
+          "raw_start": 2389,
+          "raw_end": 2519,
+          "raw_span": "<ix:nonNumeric contextRef=\"From2024-01-01to2024-12-31\" id=\"Fact000006\" name=\"dei:EntityCentralIndexKey\">0002009312</ix:nonNumeric>",
+          "readable_rendering": "0002009312",
+          "raw_span_sha256": "7af0535212c2b074f6a49d563cb2a80aafc766cbcfee7fe1893e0bcd785653b9"
+        },
+        {
+          "kind": "inline_dei_EntityRegistrantName",
+          "raw_start": 121892,
+          "raw_end": 122040,
+          "raw_span": "<ix:nonNumeric contextRef=\"From2024-01-01to2024-12-31\" id=\"Fact000020\" name=\"dei:EntityRegistrantName\">Aureus\nGreenway Holdings Inc.</ix:nonNumeric>",
+          "readable_rendering": "Aureus Greenway Holdings Inc.",
+          "raw_span_sha256": "f2880abf3db2358085f734ef128cb387b0a2879401b3a1fdb6b0b38fc5e44997"
+        },
+        {
+          "kind": "inline_dei_DocumentType",
+          "raw_start": 117715,
+          "raw_end": 117830,
+          "raw_span": "<ix:nonNumeric contextRef=\"From2024-01-01to2024-12-31\" id=\"Fact000013\" name=\"dei:DocumentType\">10-K</ix:nonNumeric>",
+          "readable_rendering": "10-K",
+          "raw_span_sha256": "1d424549e871a57e153c8691dcc45360f98dccf1b9cd8903c8b2ce9bd53ea98a"
+        },
+        {
+          "kind": "inline_dei_DocumentPeriodEndDate",
+          "raw_start": 119080,
+          "raw_end": 119461,
+          "raw_span": "<ix:nonNumeric contextRef=\"From2024-01-01to2024-12-31\" format=\"ixt:datemonthdayyearen\" id=\"Fact000015\" name=\"dei:DocumentPeriodEndDate\"><span id=\"xdx_90A_edei--CurrentFiscalYearEndDate_c20240101__20241231_znl5T3IWdQsc\"><ix:nonNumeric contextRef=\"From2024-01-01to2024-12-31\" format=\"ixt:datemonthdayen\" id=\"Fact000016\" name=\"dei:CurrentFiscalYearEndDate\">December 31</ix:nonNumeric>",
+          "readable_rendering": "December 31",
+          "raw_span_sha256": "ff456691fb4e74985ecbb17c1d7565d776a5432c870c30417134af3deb756931"
+        },
+        {
+          "kind": "inline_dei_DocumentFiscalYearFocus",
+          "raw_start": 119552,
+          "raw_end": 119678,
+          "raw_span": "<ix:nonNumeric contextRef=\"From2024-01-01to2024-12-31\" id=\"Fact000017\" name=\"dei:DocumentFiscalYearFocus\">2024</ix:nonNumeric>",
+          "readable_rendering": "2024",
+          "raw_span_sha256": "a3d84e5eb6f2eefefaaeeab715b0a81f57edf3b60f9422b2c0790fa593dfc532"
+        },
+        {
+          "kind": "inline_dei_AmendmentFlag",
+          "raw_start": 2140,
+          "raw_end": 2257,
+          "raw_span": "<ix:nonNumeric contextRef=\"From2024-01-01to2024-12-31\" id=\"Fact000004\" name=\"dei:AmendmentFlag\">false</ix:nonNumeric>",
+          "readable_rendering": "false",
+          "raw_span_sha256": "9dcbddd502b5aaa7116599fced9569d1f2d0d6b5f8abef52536bf4e35bf76aac"
+        },
+        {
+          "kind": "document_generator_comment",
+          "raw_start": 1423,
+          "raw_end": 1496,
+          "raw_span": "<!-- Field: Set; Name: xdx; ID: xdx_059_edei%2D%2DAmendmentFlag_false -->",
+          "readable_rendering": "",
+          "raw_span_sha256": "e79ae1e7e29765020ef1bbacfc739aa361334a9deef2ef05a4c5fec3929cf48f"
+        },
+        {
+          "kind": "document_generator_comment",
+          "raw_start": 1580,
+          "raw_end": 1666,
+          "raw_span": "<!-- Field: Set; Name: xdx; ID: xdx_05B_edei%2D%2DEntityCentralIndexKey_0002009312 -->",
+          "readable_rendering": "",
+          "raw_span_sha256": "c55e21f9a82abed7799e75ce79cd40b3c5a4c044c9b9b1c2f4ca2a753bc289e3"
+        },
+        {
+          "kind": "hypothetical_only_counterexample",
+          "raw_start": 478218,
+          "raw_end": 478843,
+          "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify\"><span style=\"font-family: Times New Roman, Times, Serif; font-size: 10pt\"><b><i>We\nmay experience material weaknesses in our internal controls and financial reporting may limit our ability to prevent or detect financial\nmisstatements or omissions. As a result, our financial reports may not be in compliance with U.S. GAAP. Any material weakness, misstatement\nor omission in our financial statements will negatively affect the market and the price of our stock, which could result in significant\nloss to our investors.</i></b></span></p>",
+          "readable_rendering": "We may experience material weaknesses in our internal controls and financial reporting may limit our ability to prevent or detect financial misstatements or omissions. As a result, our financial reports may not be in compliance with U.S. GAAP. Any material weakness, misstatement or omission in our financial statements will negatively affect the market and the price of our stock, which could result in significant loss to our investors.",
+          "raw_span_sha256": "a83ec9690dde296db958c4c1869a36fd19d5c908ac03d39094d93cc97998b140"
+        },
+        {
+          "kind": "additional_management_or_clock_countercheck",
+          "raw_start": 854628,
+          "raw_end": 855026,
+          "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0pt 0pt 0; text-align: justify\"><span style=\"font-family: Times New Roman, Times, Serif; font-size: 10pt\">This\nAnnual Report does not include a report of management&#8217;s assessment regarding internal controls over financial reporting due to\na transition period established by rules of the SEC for newly public companies.</span></p>",
+          "readable_rendering": "This Annual Report does not include a report of management’s assessment regarding internal controls over financial reporting due to a transition period established by rules of the SEC for newly public companies.",
+          "raw_span_sha256": "17113463a7c82de32ee2e0d33ebfbc2cba9cb835171639ce1a53bf83baf0ab80"
+        },
+        {
+          "kind": "additional_management_or_clock_countercheck",
+          "raw_start": 1647050,
+          "raw_end": 1647582,
+          "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0pt 0pt 0; text-align: justify\"><span style=\"font-family: Times New Roman, Times, Serif; font-size: 10pt\">The\nCompany evaluated all events and transactions that occurred after December 31, 2024 up through March 28, 2025, which is the date that\nthese consolidated financial statements are available to be issued, there were no other any material subsequent events that require disclosure\nin these consolidated financial statements other than disclosed below.</span></p>",
+          "readable_rendering": "The Company evaluated all events and transactions that occurred after December 31, 2024 up through March 28, 2025, which is the date that these consolidated financial statements are available to be issued, there were no other any material subsequent events that require disclosure in these consolidated financial statements other than disclosed below.",
+          "raw_span_sha256": "34394c1a0779052bd78ca018725790197da3c24d9dcd9cfe52025b4f517bc579"
+        }
+      ],
+      "verdicts": {
+        "exact_local_historical_source_binding": "pass_local_binding",
+        "affirmative_post_update_contamination": "not_observed_in_reviewed_object_period_generator_and_anchor_checks",
+        "historical_original_bytes_independent_remote_attestation": "unknown",
+        "latest_present_icfr_truth": "not_claimed"
+      }
+    },
+    {
+      "case_ref": "case-001",
+      "source_number": 1768,
+      "case_id": "cik_0001951089:20250530",
+      "cutoff": "2025-05-30T00:00:00+00:00",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1768.json",
+        "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+      },
+      "original": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001951089/sec:cik_0001951089:000121390024092156.json",
+        "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+      },
+      "source_metadata": {
+        "available_at": "2024-10-30T18:40:53+00:00",
+        "company_id": "cik_0001951089",
+        "content_hash": "034dd6c1e90d95ba9b19885ac86a9ce9e6e87b16deedfff8032c6dea7256304f",
+        "document_id": "sec:cik_0001951089:000121390024092156",
+        "metadata": {
+          "accession_number": "0001213900-24-092156",
+          "cik": "0001951089",
+          "form": "20-F",
+          "provider": "sec_edgar",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm"
+        },
+        "published_at": "2024-10-30T18:40:53+00:00",
+        "source_type": "filing"
+      },
+      "submissions_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v113/cache/data/sec_edgar/filing_documents/35c0c10c424e623a26585724.json",
+        "sha256": "3d6fca45c87bcb48d4fe6bbcaa34b31ed4f15d0f9430fbdb518c630936b90326"
+      },
+      "submissions_request": {
+        "endpoint": "https://data.sec.gov/submissions/CIK0001951089.json",
+        "source_key": "sec_edgar",
+        "capability": "filing_documents",
+        "payload_kind": "json",
+        "params": [
+          [
+            "method",
+            "GET"
+          ]
+        ],
+        "retrieved_at": "2026-09-04T11:34:52.488688+00:00"
+      },
+      "submissions_issuer": {
+        "cik": "0001951089",
+        "name": "Critical Metals Corp."
+      },
+      "exact_submission_row": {
+        "acceptanceDateTime": "2024-10-30T18:40:53.000Z",
+        "accessionNumber": "0001213900-24-092156",
+        "act": "34",
+        "core_type": "XBRL",
+        "fileNumber": "001-41973",
+        "filingDate": "2024-10-30",
+        "filmNumber": "241409461",
+        "form": "20-F",
+        "isInlineXBRL": 1,
+        "isXBRL": 1,
+        "isXBRLNumeric": null,
+        "items": "",
+        "primaryDocDescription": "ANNUAL REPORT",
+        "primaryDocument": "ea0217031-20f_critical.htm",
+        "reportDate": "2024-06-30",
+        "size": 10666279
+      },
+      "body_artifact": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-080-receipt-snapshot.json",
+        "sha256": "f4444119913c2c953f7fea57d6065d2523a41055be74f4ec42a5496413956abb"
+      },
+      "body_capture_role": "original_http_response_gzip_decoded",
+      "body_retrieved_at": "2026-10-20T00:23:25.505133+00:00",
+      "receipt_evidence": {
+        "receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/source-content-review/proof-080-receipt-snapshot.json",
+          "sha256": "f4444119913c2c953f7fea57d6065d2523a41055be74f4ec42a5496413956abb"
+        },
+        "raw_response": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/frozen40_source_proofs_20261020_v1/final-plan-v2/collection/responses/proof-080.response.raw",
+          "sha256": "06e739f8515241f5b469516a16a783f87c037ae7d270e3112731cf4ac48f2c31"
+        },
+        "http_status": 200,
+        "url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm",
+        "response_url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm",
+        "headers": {
+          "Content-Encoding": "gzip",
+          "Date": "Tue, 20 Oct 2026 00:23:25 GMT",
+          "Last-Modified": "Wed, 30 Oct 2024 18:41:54 GMT",
+          "x-amz-version-id": "XzAsbFtC3TKYOLKTj1Xv.S8isq0X6ahn"
+        },
+        "last_modified_limit": "Same-filing-day Last-Modified corroborates an old object; it is not proof of original acceptance-time bytes or independently verified S3 version history."
+      },
+      "body_length_characters": 2018271,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm",
+      "checks": {
+        "snapshot_equals_original": true,
+        "retained_full_body_equals_source": true,
+        "original_cache_request_matches_exact_primary_url": true,
+        "root_cik_equals_source_and_url_issuer": true,
+        "single_exact_accession_row": true,
+        "row_form_and_primary_document_match": true,
+        "acceptance_equals_available_and_published": true,
+        "acceptance_precedes_case_cutoff": true,
+        "input_citation_offsets_match_full_original": true
+      },
+      "anchors": [
+        {
+          "kind": "inline_dei_EntityCentralIndexKey",
+          "raw_start": 1885621,
+          "raw_end": 1885726,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" name=\"dei:EntityCentralIndexKey\" id=\"ixv-22943\">0001951089</ix:nonNumeric>",
+          "readable_rendering": "0001951089",
+          "raw_span_sha256": "e906facd58e58b413deaee61cf694442ac31bc9c78762b64d938df0d8852f630"
+        },
+        {
+          "kind": "inline_dei_EntityRegistrantName",
+          "raw_start": 8641,
+          "raw_end": 8761,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" name=\"dei:EntityRegistrantName\" id=\"ixv-117\"><b>Critical Metals Corp.</b></ix:nonNumeric>",
+          "readable_rendering": "Critical Metals Corp.",
+          "raw_span_sha256": "c7f877ac73ca2d875d6c25d252d3f9497fd7a4f7be509c9013364eb8e60d9a3a"
+        },
+        {
+          "kind": "inline_dei_DocumentType",
+          "raw_start": 3039,
+          "raw_end": 3129,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" name=\"dei:DocumentType\" id=\"ixv-21725\">20-F</ix:nonNumeric>",
+          "readable_rendering": "20-F",
+          "raw_span_sha256": "811a18a093e66a6cf2bb5cdd3310c1dcb2d70367d4d259072a20acafa1f44f21"
+        },
+        {
+          "kind": "inline_dei_DocumentPeriodEndDate",
+          "raw_start": 5490,
+          "raw_end": 5749,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" format=\"ixt:date-monthname-day-year-en\" name=\"dei:DocumentPeriodEndDate\" id=\"ixv-21728\"><ix:nonNumeric contextRef=\"c0\" format=\"ixt:date-monthname-day-en\" name=\"dei:CurrentFiscalYearEndDate\" id=\"ixv-21729\">June 30</ix:nonNumeric>",
+          "readable_rendering": "June 30",
+          "raw_span_sha256": "1239952ce80bffcd32515b6dcc46b80bd8cf1994e3ad1e5e291ecd405fc19d45"
+        },
+        {
+          "kind": "inline_dei_DocumentFiscalYearFocus",
+          "raw_start": 5751,
+          "raw_end": 5852,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" name=\"dei:DocumentFiscalYearFocus\" id=\"ixv-21730\">2024</ix:nonNumeric>",
+          "readable_rendering": "2024",
+          "raw_span_sha256": "b74858acbcef7a88cc4e5a00b06f50c9d41e95bb6b79e027af63d9fb464435af"
+        },
+        {
+          "kind": "inline_dei_AmendmentFlag",
+          "raw_start": 1885320,
+          "raw_end": 1885412,
+          "raw_span": "<ix:nonNumeric contextRef=\"c0\" name=\"dei:AmendmentFlag\" id=\"ixv-22940\">false</ix:nonNumeric>",
+          "readable_rendering": "false",
+          "raw_span_sha256": "83b21d537914f4a4bd9c730fbe038dd5c998e7e6d8ca53b46e96650f51787ba0"
+        },
+        {
+          "kind": "document_generator_comment",
+          "raw_start": 118,
+          "raw_end": 164,
+          "raw_span": "<!-- Created: Wed Oct 30 18:06:43 UTC 2024 -->",
+          "readable_rendering": "",
+          "raw_span_sha256": "e2afdd1d0d9b0d1e6f5231806f3fffbda148d03c2ae16127c7fd9bf0ebb8146f"
+        },
+        {
+          "kind": "terminology_conflict_counterexample",
+          "raw_start": 258500,
+          "raw_end": 258891,
+          "raw_span": "<p style=\"text-align: justify; font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-indent: 0.25in\">In connection with the audit of our consolidated\nfinancial statements for the years ended June 30, 2024 and 2023, we and the auditors identified six significant deficiencies in our internal\ncontrol over financial reporting. The significant deficiencies related to the following:</p>",
+          "readable_rendering": "In connection with the audit of our consolidated financial statements for the years ended June 30, 2024 and 2023, we and the auditors identified six significant deficiencies in our internal control over financial reporting. The significant deficiencies related to the following:",
+          "raw_span_sha256": "abf0aa4070f72cdfe6247318f91a3819e712564139dfa03fa528d2cc0dbd4b1c"
+        },
+        {
+          "kind": "terminology_conflict_counterexample",
+          "raw_start": 269491,
+          "raw_end": 270925,
+          "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify; text-indent: 0.25in\">In the course of auditing\nthe consolidated financial statements for the years ended June 30, 2024, we and our independent registered public accounting firm identified\nsix significant deficiencies in the internal control over financial reporting as of June 30, 2024, in accordance with the standards established\nby the PCAOB. A significant deficiency is a deficiency, or a combination of deficiencies, in internal control over financial reporting\nthat is less severe than a material weakness, yet important enough to merit attention by those responsible for oversight of the financial\nreporting. These significant deficiencies relate to the segregation of duties, related party transactions, accounting for accounts payable\nand accrued expenses, income tax provision and related disclosures, accounting for complex financial instruments, and cybersecurity programs.\nWe aim to take certain measures by hiring additional personnel and implement polices and procedures to remediate the identified significant\ndeficiencies, although no assurance can be given as to whether these steps will be sufficient. The implementation of these improvements\nmay increase our administrative expenses. To the extent these steps are not successful, we could be forced to incur additional expenses\nand require more of management&#8217;s time.</p>",
+          "readable_rendering": "In the course of auditing the consolidated financial statements for the years ended June 30, 2024, we and our independent registered public accounting firm identified six significant deficiencies in the internal control over financial reporting as of June 30, 2024, in accordance with the standards established by the PCAOB. A significant deficiency is a deficiency, or a combination of deficiencies, in internal control over financial reporting that is less severe than a material weakness, yet important enough to merit attention by those responsible for oversight of the financial reporting. These significant deficiencies relate to the segregation of duties, related party transactions, accounting for accounts payable and accrued expenses, income tax provision and related disclosures, accounting for complex financial instruments, and cybersecurity programs. We aim to take certain measures by hiring additional personnel and implement polices and procedures to remediate the identified significant deficiencies, although no assurance can be given as to whether these steps will be sufficient. The implementation of these improvements may increase our administrative expenses. To the extent these steps are not successful, we could be forced to incur additional expenses and require more of management’s time.",
+          "raw_span_sha256": "333d90a01acf99157342e449415f9f57793567838fed2666453753ac225ceef6"
+        },
+        {
+          "kind": "terminology_conflict_counterexample",
+          "raw_start": 902843,
+          "raw_end": 903862,
+          "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify; text-indent: 0.25in\">Our management is responsible\nfor establishing and maintaining adequate internal control over financial reporting. Internal control over financial reporting is a process\ndesigned to provide reasonable assurance regarding the reliability of financial reporting and the preparation of financial statements\nin accordance with IFRS. A material weakness is a deficiency, or a combination of deficiencies, in internal control over financial reporting\nsuch that there is a reasonable possibility that a material misstatement of annual or interim financial statements will not be prevented\nor detected on a timely basis. In connection with the audit of our consolidated financial statements for the years ended June 30, 2024,\nand 2023, we and the auditors identified six significant deficiencies in our internal control over financial reporting. The identified\nmaterial weaknesses related to the following matters:</p>",
+          "readable_rendering": "Our management is responsible for establishing and maintaining adequate internal control over financial reporting. Internal control over financial reporting is a process designed to provide reasonable assurance regarding the reliability of financial reporting and the preparation of financial statements in accordance with IFRS. A material weakness is a deficiency, or a combination of deficiencies, in internal control over financial reporting such that there is a reasonable possibility that a material misstatement of annual or interim financial statements will not be prevented or detected on a timely basis. In connection with the audit of our consolidated financial statements for the years ended June 30, 2024, and 2023, we and the auditors identified six significant deficiencies in our internal control over financial reporting. The identified material weaknesses related to the following matters:",
+          "raw_span_sha256": "e9b7bf1e964023d69dfc39bba8af1d91873d20192bfdecc0a8bb2893fed3af24"
+        }
+      ],
+      "verdicts": {
+        "exact_local_historical_source_binding": "pass_local_binding",
+        "affirmative_post_update_contamination": "not_observed_in_reviewed_object_period_generator_and_anchor_checks",
+        "historical_original_bytes_independent_remote_attestation": "unknown",
+        "latest_present_icfr_truth": "not_claimed"
+      }
+    }
+  ],
+  "scope": {
+    "external_calls": 0,
+    "new_model_authors": 0,
+    "new_candidates": 0,
+    "new_business_labels_or_check_or_lockedtest_reads": 0,
+    "business_stage_mutations": 0,
+    "reviewed_exact_sources": 4
+  },
+  "limits": [
+    "Local cache is retained source evidence, not signed SEC attestation.",
+    "No 2024/2025 contemporaneous capture or independent version history is established.",
+    "No source was rejected merely for 2026 retrieval.",
+    "No full-body line-by-line contamination proof or latest-as-of-filing selection claim.",
+    "No candidate schema, research direction/magnitude, admission or production result."
+  ]
+}
