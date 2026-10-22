@@ -26,6 +26,8 @@ _STAGE_INPUTS: dict[str, tuple[str, ...]] = {
     "research_controller_initialize": ("initial_research_skill", "basic_info"),
     "signal_retrieval_cards": ("available_signal_cards", "information_needs", "research_context", "selection_caps"),
     "llm_signal_batch_execute": ("signals", "source_projection", "as_of"),
+    "llm_signal_source_read": ("signal_spec", "skill", "as_of", "source_catalog", "last_read_result", "already_read_projection"),
+    "llm_signal_source_read_next": ("signal_spec", "skill", "as_of", "source_catalog", "last_read_result", "already_read_projection"),
     "research_controller_reflect": ("research_state", "signal_batch", "need_transition_contract"),
     "blind_predictor_predict": ("final_context",),
     "blind_predictor_jev_explain": ("final_context",),
@@ -44,6 +46,7 @@ _STAGE_INPUTS: dict[str, tuple[str, ...]] = {
 _BLIND_STAGES = frozenset({
     "research_controller_initialize", "signal_retrieval_cards",
     "llm_signal_batch_execute", "research_controller_reflect",
+    "llm_signal_source_read", "llm_signal_source_read_next",
     "blind_predictor_predict", "blind_predictor_jev_explain",
 })
 

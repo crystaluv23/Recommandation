@@ -71,6 +71,11 @@ class EvidenceFact:
     content_hash: str
     available_at: str
     source_display_name: str = ""
+    taxonomy: str = ""
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.taxonomy, str):
+            raise ValidationError("EvidenceFact taxonomy must be a string")
 
 
 @dataclass(frozen=True)
@@ -198,6 +203,7 @@ def _facts_from_document(
                     content_hash=document.content_hash,
                     available_at=document.available_at.isoformat(),
                     source_display_name=str(concept.get("label", "")),
+                    taxonomy=str(concept.get("taxonomy", "")),
                 )
             )
     return tuple(facts)
@@ -250,13 +256,17 @@ def _fact_period(fact: EvidenceFact) -> dict[str, str] | None:
 
 
 def _fact_taxonomy(fact: EvidenceFact) -> str:
-    """Typed whole rows prove a namespace; legacy leaf spans do not."""
+    """Use retained source provenance, with a legacy typed-row fallback."""
     try:
         row = json.loads(fact.exact_span)
     except (TypeError, ValueError):
-        return ""
+        row = None
     value = row.get("taxonomy") if isinstance(row, Mapping) else None
-    return value if isinstance(value, str) else ""
+    literal = value if isinstance(value, str) and value.strip() else ""
+    declared = fact.taxonomy if fact.taxonomy.strip() else ""
+    if declared and literal and declared != literal:
+        return ""
+    return declared or literal
 
 
 def _company_fact_value_key(value: object) -> tuple[str, object]:
@@ -321,7 +331,7 @@ def _fact_basis(fact: EvidenceFact) -> tuple[object, ...]:
 
 def _unique_latest_fact(facts: Sequence[EvidenceFact]) -> EvidenceFact | None:
     """Return a scalar only when all current unit/duration/value bases agree."""
-    if not facts or any(_fact_period(fact) is None for fact in facts):
+    if not facts or any(_fact_period(fact) is None or not _fact_taxonomy(fact) for fact in facts):
         return None
     if len({(fact.case_ref, fact.concept, fact.unit, _fact_taxonomy(fact)) for fact in facts}) != 1:
         return None
@@ -357,7 +367,7 @@ def build_same_concept_relations(
         grouped.setdefault(key, []).append(fact)
     relations = []
     for key, group in sorted(grouped.items()):
-        if not key[3] or not key[4]:
+        if not key[3] or not key[4] or not key[5]:
             continue
         group = sorted(group, key=lambda fact: fact.fact_ref)
         records = [{**(fact.period or {}), "value": fact.value} for fact in group]

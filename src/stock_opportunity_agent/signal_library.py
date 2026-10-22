@@ -7,7 +7,7 @@ import json
 import math
 import os
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
@@ -27,6 +27,8 @@ from stock_opportunity_agent.data.resolution import (
     EvidenceResolver,
     RawInfoRequest,
     RawInfoResolution,
+    RawInfoDocumentRef,
+    ResolutionEvent,
     _select_required_source_documents,
     _retrieval_contract_coverage,
     source_types_compatible,
@@ -3291,6 +3293,18 @@ class LLMSignalBatchInput:
     spec: SignalSpec
     documents: tuple[RawInfoDocument, ...]
     skill: str
+    eligible_documents: tuple[RawInfoDocument, ...] | None = None
+
+
+@dataclass(frozen=True)
+class LLMSignalReadingOutcome:
+    """Runtime reading dependencies, separate from the unchanged SignalResult."""
+
+    results: Mapping[str, SignalResult]
+    usage: AgentUsage
+    documents: Mapping[str, tuple[RawInfoDocument, ...]]
+    visible_documents: Mapping[str, tuple[RawInfoDocument, ...]]
+    traces: Mapping[str, Mapping[str, Any]]
 
 
 class LLMSignalRunner(Protocol):
@@ -3379,6 +3393,8 @@ class SignalExecutor:
         skipped: list[str] = []
         usage = AgentUsage()
         llm_inputs: list[LLMSignalBatchInput] = []
+        source_reader = getattr(self.llm_runner, "execute_with_source_reading", None)
+        reading_inputs: dict[str, LLMSignalBatchInput] = {}
         refs = tuple(signal_refs)
         if len(set(refs)) != len(refs):
             raise ValidationError("signal batch cannot contain duplicate refs")
@@ -3399,7 +3415,32 @@ class SignalExecutor:
                 )
             )
             fingerprints[spec.ref] = fingerprint
-            if (prior_fingerprints or {}).get(spec.ref) == fingerprint:
+            uses_reading = spec.execution_type is SignalExecutionType.LLM and callable(source_reader)
+            if uses_reading:
+                from stock_opportunity_agent.research.signal_source_reading import catalog_signature
+
+                pool = self.resolver.eligible_documents(resolution.request,
+                    company_id=company_id, identity=dict(identity or {}), as_of=as_of)
+                reading = LLMSignalBatchInput(spec, documents, self.snapshot.skills.get(spec.ref, ""), pool)
+                reading_inputs[spec.ref] = reading
+                signature = catalog_signature(reading, as_of)
+                previous = (prior_fingerprints or {}).get(spec.ref, ())
+                available = {f"{d.document_id}:{d.content_hash}": d for d in pool}
+                # Legacy fingerprints cannot establish that the full catalog
+                # and actual read dependencies were unchanged.
+                prior_documents = tuple(available[p] for p in previous[1:] if p in available)
+                unchanged = (bool(previous) and previous[0] == signature
+                             and len(prior_documents) == len(previous) - 1
+                             and bool(prior_documents))
+                fingerprints[spec.ref] = (signature,)
+                if unchanged:
+                    resolutions[-1] = _signal_read_resolution(resolution, prior_documents,
+                        (), {"mode": "unchanged_read_dependencies", "catalog_signature": signature,
+                             "coverage_not_recomputed_from_unread_text": True})
+                    fingerprints[spec.ref] = tuple(previous)
+                    skipped.append(spec.ref)
+                    continue
+            if not uses_reading and (prior_fingerprints or {}).get(spec.ref) == fingerprint:
                 skipped.append(spec.ref)
                 continue
             if resolution.status != "resolved":
@@ -3448,7 +3489,7 @@ class SignalExecutor:
                         error_message=f"frozen LLM skill is missing: {spec.ref}",
                     )
                     continue
-                llm_inputs.append(LLMSignalBatchInput(spec, documents, skill))
+                llm_inputs.append(reading_inputs.get(spec.ref) or LLMSignalBatchInput(spec, documents, skill))
                 continue
             if result.execution_status in {
                 SignalExecutionStatus.SUCCESS,
@@ -3458,10 +3499,31 @@ class SignalExecutor:
             results_by_ref[spec.ref] = result
         if llm_inputs:
             execute_many = getattr(self.llm_runner, "execute_many", None)
-            if callable(execute_many):
-                llm_results, signal_usage = execute_many(tuple(llm_inputs), as_of)
+            if callable(source_reader) or callable(execute_many):
+                outcome = source_reader(tuple(llm_inputs), as_of) if callable(source_reader) else None
+                if outcome is not None:
+                    llm_results, signal_usage = outcome.results, outcome.usage
+                else:
+                    llm_results, signal_usage = execute_many(tuple(llm_inputs), as_of)
                 usage = usage + signal_usage
                 for item in llm_inputs:
+                    validation_documents = item.documents
+                    if outcome is not None:
+                        pool = item.eligible_documents or ()
+                        validation_documents = outcome.documents.get(item.spec.ref, ())
+                        pool_records = {_canonical_hash(d.to_dict()) for d in pool}
+                        if len({d.document_id for d in validation_documents}) != len(validation_documents) or any(
+                            _canonical_hash(d.to_dict()) not in pool_records for d in validation_documents
+                        ):
+                            raise ValidationError("Signal reader returned changed or ineligible source versions")
+                        index = next(i for i, r in enumerate(resolutions) if r.request.request_id == f"signal:{item.spec.ref}")
+                        resolution = _signal_read_resolution(resolutions[index], validation_documents,
+                            outcome.visible_documents.get(item.spec.ref, ()), outcome.traces.get(item.spec.ref, {}))
+                        resolutions[index] = resolution
+                        from stock_opportunity_agent.research.signal_source_reading import catalog_signature
+
+                        fingerprints[item.spec.ref] = (catalog_signature(item, as_of), *sorted(
+                            f"{d.document_id}:{d.content_hash}" for d in validation_documents))
                     result = llm_results.get(item.spec.ref)
                     if result is None:
                         result = signal_execution_failure_result(
@@ -3472,7 +3534,7 @@ class SignalExecutor:
                         )
                     try:
                         validate_signal_result(
-                            item.spec, result, item.documents, as_of=as_of
+                            item.spec, result, validation_documents, as_of=as_of
                         )
                     except (ValidationError, KeyError, TypeError, ValueError) as exc:
                         result = signal_execution_failure_result(
@@ -3481,6 +3543,8 @@ class SignalExecutor:
                             error_code="llm_result_validation_failed",
                             error_message=f"{type(exc).__name__}: {exc}",
                         )
+                    if outcome is not None and not resolution.coverage.contract_satisfied and result.execution_status is SignalExecutionStatus.SUCCESS:
+                        result = _unresolved_signal_result(item.spec, resolution)
                     results_by_ref[item.spec.ref] = result
             else:
                 for item in llm_inputs:
@@ -3546,6 +3610,29 @@ class SignalExecutor:
             as_of=as_of,
             **selection,
         )
+
+
+def _signal_read_resolution(
+    original: RawInfoResolution, documents: tuple[RawInfoDocument, ...],
+    visible_documents: tuple[RawInfoDocument, ...], trace: Mapping[str, Any],
+) -> RawInfoResolution:
+    """Replace selected-source claims with actual reading and visible coverage."""
+
+    from stock_opportunity_agent.data.resolution import DataGap
+
+    coverage = replace(original.coverage,
+        selected_document_count=len(documents),
+        context_truncated=trace.get("mode") != "complete_small_input",
+        visible_span_count=sum(len(h.get("result", {}).get("source_projection", ())) for h in trace.get("history", ())),
+        selection_truncated=len(documents) < original.coverage.eligible_document_count,
+        **_retrieval_contract_coverage(visible_documents, original.request))
+    gap = None if coverage.contract_satisfied else DataGap(original.request.request_id,
+        DataGapReason.REQUIRED_COVERAGE_INCOMPLETE, "Actual source reading did not satisfy retrieval coverage",
+        original.request.source_types)
+    return replace(original, documents=tuple(RawInfoDocumentRef.from_document(d) for d in documents),
+        status="resolved" if coverage.contract_satisfied else "unresolved",
+        gap=gap, coverage=coverage, context_spans=(), omitted_context_markers=(),
+        events=(*original.events, ResolutionEvent("llm_signal_source_reading", dict(trace))))
 
 
 def _unresolved_signal_result(

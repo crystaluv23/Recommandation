@@ -1,0 +1,21 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "finalize": true
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"finalize\":true}",
+  "request_hash": "6b54a34cd774c1087826084334fdbe01e5c48dbc7e61753db2ef1c92817c9fcd",
+  "response_id": "local-6b54a34cd774c1087826084334fdbe01e5c48dbc7e61753db2ef1c92817c9fcd",
+  "usage": {
+    "accounting_tokens": 9810,
+    "agent_id": "/root/f5_read_next",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "32508015a9ad086f02d9bce62b93aef5f4ec000aab9447d92c33aef9002b21a0",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "bf1bfa37c2b5465cc0099602ee9398d0dfec8afa0e72cf741c30d2af65a381d6",
+    "request_hash": "6b54a34cd774c1087826084334fdbe01e5c48dbc7e61753db2ef1c92817c9fcd",
+    "token_usage": null
+  }
+}

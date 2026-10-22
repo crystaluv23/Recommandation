@@ -36,6 +36,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
 )
 from stock_opportunity_agent.signal_library import (
     LLMSignalBatchInput,
+    LLMSignalReadingOutcome,
     SignalExecutionStatus,
     SignalResult,
     SignalSpec,
@@ -5472,12 +5473,132 @@ class StructuredLLMSignalRunner:
         with boundary:
             return self._execute_many(inputs, as_of)
 
+    def execute_with_source_reading(
+        self, inputs: tuple[LLMSignalBatchInput, ...], as_of: datetime,
+    ) -> LLMSignalReadingOutcome:
+        """Read omitted eligible sources under the original case budget and scope."""
+
+        from stock_opportunity_agent.research.signal_source_reading import SignalSourceSession
+        from stock_opportunity_agent.research.evolution_core import _case_identity_alias_inventory
+
+        if not inputs or len(inputs) > 2 or len({i.spec.ref for i in inputs}) != len(inputs):
+            raise ValidationError("source reading requires one or two distinct Signals")
+        owners = {d.company_id for i in inputs for d in (i.eligible_documents or i.documents)}
+        if len(owners) > 1:
+            raise ValidationError("one source-reading batch cannot mix owners")
+        case = self.identity_cases.get(next(iter(owners))) if owners else None
+        scope = getattr(self.caller, "anonymous_case", None)
+        boundary = scope(aliases=_case_identity_alias_inventory((case,)), company_id=case.company_id,
+            ticker=str(case.basic_info.get("ticker") or case.basic_info.get("symbol") or ""),
+        ) if case is not None and callable(scope) else nullcontext()
+        with boundary:
+            projection, lineage = _shared_llm_signal_projection(inputs)
+            needs_reading = False
+            for item in inputs:
+                pool = item.eligible_documents if item.eligible_documents is not None else item.documents
+                if {(d.document_id, d.content_hash) for d in pool} != {(d.document_id, d.content_hash) for d in item.documents}:
+                    needs_reading = True
+                for document in pool:
+                    views = [v for v in lineage.values() if v.document == document
+                             and (not v.eligible_signal_refs or item.spec.ref in v.eligible_signal_refs)]
+                    fact_rows = [r for r in projection if r["document_id"] == document.document_id and "fact_context" in r]
+                    if fact_rows:
+                        if any(r["fact_context"].get("source_context_partial", True) for r in fact_rows):
+                            needs_reading = True
+                    else:
+                        intervals = sorted((v.normalized_start, v.normalized_end) for v in views)
+                        end = 0
+                        for start, stop in intervals:
+                            if start > end:
+                                break
+                            end = max(end, stop)
+                        normalized, _runs = _normalized_projection_text(document.content,
+                            strip_market_metadata=document.source_type.casefold() in
+                            {"market_data", "historical_price", "price_daily", "prices"})
+                        if end != len(normalized):
+                            needs_reading = True
+            _fit, _mapped, trimmed = self._fit_projection_to_budget(inputs, projection, lineage, as_of,
+                request_token_budget=self._reading_request_budget(self.request_token_budget))
+            needs_reading = needs_reading or trimmed
+            if not needs_reading:
+                results, usage = self._execute_many(inputs, as_of, closed_projection=(projection, lineage))
+                return LLMSignalReadingOutcome(results, usage,
+                    {i.spec.ref: i.documents for i in inputs},
+                    {i.spec.ref: i.documents for i in inputs},
+                    {i.spec.ref: {"mode": "complete_small_input", "accepted": results[i.spec.ref].execution_status.value} for i in inputs})
+            results, documents, visible, traces = {}, {}, {}, {}
+            usage = AgentUsage()
+            for item in inputs:
+                session = SignalSourceSession(item, as_of)
+                tool_result: Mapping[str, Any] | None = None
+                budget = self.request_token_budget
+                try:
+                    for exchange in range(2):
+                        action, used = _complete_json_with_invalid_value(self.caller,
+                            stage="llm_signal_source_read" if exchange == 0 else "llm_signal_source_read_next",
+                            system_prompt=(
+                                "Select exact source windows for this one Signal before extraction. "
+                                + _UNTRUSTED_DATA_INSTRUCTION +
+                                ' Return exactly {"reads":[{"source_ref":"supplied handle","offset":0,"length":4000}]} '
+                                '(1..5 windows), {"catalog_cursor":20}, '
+                                '{"catalog_source_ref":"supplied structured handle","group_cursor":20}, '
+                                'or {"finalize":true}. Coordinates are declared on each card; '
+                                "facts are expanded to their complete latest/comparable/conflicting group. "
+                                "There are at most two exchanges, ten sources and 32000 source characters total. "
+                                "Read the needed current, prior, currency and conflicting alternatives. "
+                                "Use full fact-group coordinates or sentence windows with context on both sides; "
+                                "overlapping/repeated reads, invented handles and extra fields are invalid. "
+                                "Catalog metadata is not evidence. The following final extraction may cite only read text."
+                            ),
+                            payload={"signal_spec": item.spec.to_dict(), "skill": item.skill,
+                                "as_of": as_of.isoformat(), "source_catalog": session.catalog(),
+                                "last_read_result": tool_result, "already_read_projection": session.rows},
+                            allow_outcomes=False, max_output_tokens=1200,
+                            max_request_tokens=self._reading_request_budget(
+                                max(0, budget - usage.tokens) if budget is not None else None))
+                        usage = usage + used
+                        tool_result = session.apply(action)
+                        if session.closed:
+                            break
+                    session.closed = True
+                    read_item = replace(item, documents=session.documents)
+                    value, used = self._execute_many((read_item,), as_of,
+                        request_token_budget=max(0, budget - usage.tokens) if budget is not None else None,
+                        closed_projection=(session.rows, session.lineage))
+                    usage = usage + used
+                    results.update(value)
+                except (ValidationError, IdentityOutputRejected, RuntimeBudgetExceeded) as exc:
+                    if isinstance(exc, (RuntimeBudgetExceeded, IdentityOutputRejected)):
+                        usage = usage + exc.usage
+                    results[item.spec.ref] = signal_execution_failure_result(item.spec,
+                        status=SignalExecutionStatus.BUDGET_BLOCKED if isinstance(exc, RuntimeBudgetExceeded)
+                            else SignalExecutionStatus.VALIDATION_FAILED,
+                        error_code="signal_source_reading_failed", error_message=str(exc))
+                    session.history.append({"rejected": str(exc)})
+                documents[item.spec.ref] = session.documents
+                visible[item.spec.ref] = session.visible_documents
+                traces[item.spec.ref] = {"mode": "bounded_source_reading", **session.trace(),
+                    "accepted": results[item.spec.ref].execution_status.value}
+            return LLMSignalReadingOutcome(results, usage, documents, visible, traces)
+
+    def _reading_request_budget(self, remaining: int | None) -> int | None:
+        """Apply both configured per-request cap and original remaining budget."""
+
+        contract = getattr(self.caller, "contract", None)
+        cap = getattr(contract, "limits", {}).get("max_request_tokens")
+        if cap is None:
+            return remaining
+        if type(cap) is not int or cap < 1:
+            raise ValidationError("source reading request cap must be a positive integer")
+        return min(cap, remaining) if remaining is not None else cap
+
     def _execute_many(
         self,
         inputs: tuple[LLMSignalBatchInput, ...],
         as_of: datetime,
         *,
         request_token_budget: int | None = None,
+        closed_projection: tuple[list[dict[str, Any]], Mapping[str, _SignalProjectionLineage]] | None = None,
     ) -> tuple[Mapping[str, SignalResult], AgentUsage]:
         """Execute and validate against original source coordinates inside egress scope."""
 
@@ -5486,7 +5607,7 @@ class StructuredLLMSignalRunner:
         if len({item.spec.ref for item in inputs}) != len(inputs):
             raise ValidationError("LLM Signal batch refs must be unique")
         budget = self.request_token_budget if request_token_budget is None else request_token_budget
-        if len(inputs) > 1:
+        if len(inputs) > 1 and closed_projection is None:
             planned, planned_lineage = _shared_llm_signal_projection(inputs)
             split = sum(len(row["exact_text"]) for row in planned) > MAX_LLM_SIGNAL_CONTEXT_CHARS
             if not split:
@@ -5522,8 +5643,9 @@ class StructuredLLMSignalRunner:
             pending_feedback = tuple(
                 row for row in validation_feedback if row.get("signal_ref") in pending
             )
-            documents, lineage = _shared_llm_signal_projection(attempt_inputs)
-            if attempt:
+            documents, lineage = (closed_projection if closed_projection is not None
+                                  else _shared_llm_signal_projection(attempt_inputs))
+            if attempt and closed_projection is None:
                 documents, lineage = _signal_edge_correction_projection(
                     documents, lineage, edge_read_requests, as_of=as_of,
                 )
@@ -5532,14 +5654,13 @@ class StructuredLLMSignalRunner:
                 if budget is not None
                 else None
             )
-            documents, lineage, budget_trimmed = self._fit_projection_to_budget(
-                attempt_inputs,
-                documents,
-                lineage,
-                as_of,
-                request_token_budget=remaining_budget,
-                validation_feedback=pending_feedback,
-            )
+            budget_trimmed = False
+            if closed_projection is None:
+                documents, lineage, budget_trimmed = self._fit_projection_to_budget(
+                    attempt_inputs, documents, lineage, as_of,
+                    request_token_budget=remaining_budget,
+                    validation_feedback=pending_feedback,
+                )
             payload = self._batch_payload(
                 attempt_inputs,
                 documents,
@@ -5565,11 +5686,8 @@ class StructuredLLMSignalRunner:
                     payload=payload,
                     allow_outcomes=False,
                     max_output_tokens=4_000,
-                    max_request_tokens=(
-                        budget - usage.tokens
-                        if budget is not None
-                        else None
-                    ),
+                    max_request_tokens=(self._reading_request_budget(remaining_budget)
+                        if closed_projection is not None else remaining_budget),
                 )
             except IdentityOutputRejected as exc:
                 value = exc.quarantined_output
@@ -5723,6 +5841,7 @@ class StructuredLLMSignalRunner:
                     continue
                 if (
                     attempt == 0
+                    and closed_projection is None
                     and result.value is SignalValue.UNAVAILABLE
                     and item.spec.retrieval_policy.comparison_requirement is not None
                 ):

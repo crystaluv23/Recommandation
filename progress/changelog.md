@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-22：按用户明确批准实施可选taxonomy与有界LLM阅读，外部LLMAPI0。Fact投影/保存/fact-read及自动basis贯通，原跨namespace反例拒配且旧ref不变；122关联过。完整合格目录接实际已读证据/resolution/fingerprint、目录签名no-op、闭集纠错及case/单请求预算；17聚焦/354关联通过、网络0。fresh合成v2实际rank11经3独立角色首答1of1/0纠错、31385逻辑预留、25files重开同/3receipts不增。原v1仅prepare因排名前提错在dispatch前停止/0答；usage/timestamp测试harness错与错误未知projection假设保留。广测355of356，唯一migration失败在修改前HEAD同样复现，未弱化fixture。发现默认typed reader仍阻更旧原文窗口，F5/实际源语义/Mining消费/全MVP保持open；未重入旧stage或全后继。
+
 - 2026-10-22：用实际GPRE May30/ENB Sept30 cutoff及两个精确官方PDF URL检查历史公开快照；web工具均不可达，各一次只读直接fallback均HTTP429，保请求/原响应，不作“存档不存在”推论，0/26不改，无重试/换URL/认证/模型/准入/原stage。此轮新增2web导航尝试/2直接公开GET，managed147未增。独立来源路径停止；已提出的F5接口/资源及Fact namespace两实质选择连续三goal轮待答，下一关键实现需用户决策。保全原件/已有修复，目标按阻塞规则处理，不用扩扫描或重复绿测替代选择。
 
 - 2026-10-22：来源只读取证留GPRE Q1官方19页与ENB Q1 corrected23页PDF/元数据及正文锚点，26原件首末段/hash核同；不是全turn语义等价或准入。GPRE官方09ET=13UTC与PDF14GMT差1h、ENB PDF May14修改晚于May9会期，不能以事件/CDN路径/CreationDate替代历史完整公开时间，0/26不改。Q4公开shell/bundle后两最小只读query先缺Apollo header、后错admin/attendee schema；root错误保留，不当事件不存在，不注册/认证/枚举，4GET后停策略，另2GET仅存已识别PDF。4search/11queries、4新web导航/7cached读及6直接公开GET分列，managed147未增；首DLocal越inventory query未采纳。旧原件/指针/用户delta保真，无模型/标签/normalization/append/旧stage/全跑。两接口决策仍待答；下一不延长此检索求过。

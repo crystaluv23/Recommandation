@@ -8,6 +8,15 @@ literal-source validation. Source IDs, hashes and original case labels remain
 local. A batch cannot mix multiple bound owners. Nested Fast scopes unwind to
 their previous context; control failures propagate as before.
 
+Production bounded source reading uses the same scope for catalogs, reads and
+final extraction. `llm_signal_source_read` and `llm_signal_source_read_next` are
+blind, source-only stages and permit no outcomes. Two exchange requests precede
+the normal final/correction pair. Catalog previews count against the 32k source
+character ceiling but cannot authorize citations. Final and correction requests
+reuse the identical closed read projection, without edge expansion or budget
+trimming. Unknown/malformed/over-budget reading actions terminate that Signal
+accurately; they cannot spend an extra semantic correction on choosing sources.
+
 For a bound source owner, the shared batch payload includes a reversible
 `target_subject` co-reference inventory from that case's known issuer aliases.
 Estimation and execution use the same payload. Retrieval ownership establishes

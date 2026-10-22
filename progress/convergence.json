@@ -3,10 +3,9 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-20T22:37:52.027714+00:00",
-    "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
-    "created_at": 1792394368,
-    "source": "Actual root get_goal during assigned-target control:active,unbudgeted,full engineering MVP open;no full successor."
+    "checked_at": "2026-10-22T17:16:01.135743+00:00",
+    "thread_id": "01a15f73-622f-7130-905e-927e4e6c17c7",
+    "source": "get_goal active unbudgeted this turn; user explicitly answered both pending decisions and reaffirmed zero external LLM API."
   },
   "acceptance": [
     {
@@ -1556,14 +1555,32 @@
         "runs/diagnostics/transcript_historical_capture_20261022_v1/terminal-review.json"
       ],
       "result": "Distinct pre-cutoff archivedbody hypothesis on two exact retained officialPDF URLs with actualcohort GPREMay30/ENBSept30 cutoffs. Bothwebtool URLs inaccessible; one direct publicfallback each returned429/noJSON/noarchivedbody. Stop networkstrategy without retry/URLvariation/authentication/mirror; technicalaccesslimit is not archiveabsence.2webnavigation attempts/2directGET,0managedprovider/model/labels/sourceadmission/oldstage/fullsuccessor.26originals and10protectedbindings exact. Sourceproof0of26/MVPopen. Readinginterface/resources andFactnamespace choices pending across3goalturns; next critical implementation requires userdecision. No additional lexicalpatches/greenchecks/bookkeepingwork can replace those choices; request blocked status under goal rule."
+    },
+    {
+      "id": "approved-bounded-reading-and-taxonomy-implementation-20261022",
+      "strategy": "approved_interface_implementation_then_closed_source_protocol_control",
+      "failure_families": [
+        "legacy_namespace_provenance_lost_before_automatic_pairing",
+        "selected_prefix_and_projection_do_not_establish_complete_reading_authority",
+        "structured_default_period_index_does_not_address_older_original_rows"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/approved-reading-and-taxonomy-20261022.md",
+        "runs/diagnostics/source_reading_20261022_v1/related-final.log",
+        "runs/diagnostics/source_reading_20261022_v1/native-v2/acceptance.json",
+        "runs/diagnostics/source_reading_20261022_v1/native-restore.json"
+      ],
+      "result": "User approved both interfaces; implemented taxonomy through producer/save/read/consumer and actual-read source-session dependencies with original bounded budgets.354associated checks pass/network0; broader1failure reproduces onprechangeHEAD. Freshsynthetic3roles/firstfinal1of1/0correction/31385logical reservation/externalLLMAPI0.25files unchanged/native reopen,3receipts retained. Initialprobe stoppedbeforedispatch because ranking premise false,0answers. No full F5/Mining/MVP closure: olderstructured windows still blocked by default latest/prior index; next repair shared reader addressing, not semantic sorting or a full successor."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-historical-capture-limit-and-design-block-20261022",
+    "after_iteration": "approved-bounded-reading-and-taxonomy-implementation-20261022",
     "evidence": [
       "reports/transcript-official-archive-review-20261022.md",
       "runs/diagnostics/transcript_historical_capture_20261022_v1/metadata-results.json",
-      "runs/diagnostics/transcript_historical_capture_20261022_v1/terminal-review.json"
+      "runs/diagnostics/transcript_historical_capture_20261022_v1/terminal-review.json",
+      "reports/approved-reading-and-taxonomy-20261022.md"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1659,14 +1676,20 @@
       "A conservative initial rejection can issue the wrong typed remedy: sharedproduct terms were reported instead of actualretained premium, so native reason-only replacement removedobject and hid a trueclaim under generic threeword threshold. Firstcandidate checks with several long residualarms still missed a sole shortened residualhead because negative detection incorrectly required another strong retainedarm. Preserve both failedcandidates; separate strong positiveproof from literal negativeconflict, and exercise actual issuedpatch/reparse rather than bad,bad fallback alone. Independent fixed controls also demonstrate two adjacent scopefalsepositives; twelve passing controls cannot close fourteen or freshbehavior.",
       "Inherited final independent scope controls bound1de2 while current helper was subsequentlya5ba after ordered-subject repair. Root checked exact hashes and reran fixed native/consumer controls before carrying the conclusion; this is self-review, not fresh independent endorsement. Actualduplicate occurrences and unavailable results also require paired consumer controls; the first addedfixture mistakenly retainedSUCCESS and failed before the gate.",
       "Complete official PDFs are stronger body evidence than prospective announcements but current corrected versions and creation/modification metadata still do not prove historical public access. GPRE firstparty event/PDF clocks disagree by1hour. Root also initially searched an out-of-inventory issuer and sent an administrative query to attendee schema; neither result authorizes absence/admission or unbounded endpoint probing.",
-      "Historical capture checks are distinct from inspecting current official files, but HTTP429 and tool access failures expose no historical snapshot. They cannot prove no capture or justify repeated alternate calls. Pending interface/schema choices remain the same blocker across automatic continuations, which are not decisions; stop instead of filling turns with more scans."
+      "Historical capture checks are distinct from inspecting current official files, but HTTP429 and tool access failures expose no historical snapshot. They cannot prove no capture or justify repeated alternate calls. Pending interface/schema choices remain the same blocker across automatic continuations, which are not decisions; stop instead of filling turns with more scans.",
+      "A rank-eleven claim must inspect actual resolver selection rather than source tuple order. Complete catalog access also does not prove arbitrary structured windows are readable: the shared reader currently omits older periods before window addressing. Preserve the undispatched firstprobe and address this family before F5 closure."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "human_decision",
-      "strategy": "bounded_reading_interface_and_mining_namespace_provenance",
-      "action": "Stop bounded source/archive checks after two429 responses; all original evidence and known failures retained. Both required F5 reading interface/request-ceiling and EvidenceFact namespace-representation choices remain pending across three consecutive goal turns. Mark goal blocked pending user design decisions; do not silently implement either alternative, reset budgets, retry service limits or start a full successor.",
-      "stop": "Do not silently change public input interfaces, resource ceilings, canonical Fact provenance or pending gross_margin/revenue_acceleration definitions; do not use localPASS as fresh compliance, fullsuccessor authorization or MVPclosure."
+      "kind": "repair",
+      "strategy": "shared_structured_history_addressing_after_bounded_source_session",
+      "action": "Design decisions are explicitly approved, replacing the prior human-decision blocker. Preserve the fresh synthetic native proof and implement/test access to older necessary original fact rows through the shared reader, without changing measurement definitions. Freeze new actual-source/fresh controls only after that boundary passes; no full successor.",
+      "stop": "Do not claim F5 or MVP closure from local tests/synthetic protocol. Keep source trust, unknown measurement definitions, full feedback/Mining/admission/reuse and whole-loop recovery open. External LLM API stays zero; use exact independent subagents for role requests.",
+      "question": "Can source-session coordinates disclose an older required original fact row omitted by the default latest/comparable index, while preserving PIT/conflicts/units and closed citation authority?",
+      "pass": "Original older row, variant and counterexamples are reachable by exact source coordinates; full literals and alternative same-period rows remain bound; no unseen coverage or budget excess.",
+      "fail": "Older row returns no text, unrelated/default period displaces it, alternatives or metadata disappear, or any read/identity/budget/evidence boundary regresses.",
+      "on_pass": "Freeze a new bounded actual-source/fresh-subagent control and inspect its accepted downstream consumption; retain all old failures and completed stage identities.",
+      "on_fail": "Stop fresh/full runs, localize reader indexing versus window/group closure and repair that deterministic boundary; do not change the research definition or tune semantic ranking."
     }
   },
   "successor_prerequisites": [

@@ -1,6 +1,7 @@
-# LLM Signal 有界资料阅读方案（待用户决策）
+# LLM Signal 有界资料阅读方案（用户已批准）
 
-本文件是具体实施提案，尚未改变生效 spec、代码、预算、Registry 或完成阶段。
+用户已明确批准本方案及其接口/资源边界；当前实施见 [验收记录](approved-reading-and-taxonomy-20261022.md)。
+以下保留决策依据；原 Registry、历史完成阶段和实验预算不因此重启。
 目标仍是原 Fast/Slow 工程 MVP；没有缩小 F5 的“遗漏可见且可继续读取”标准。
 
 ## 为什么单改排序不足
@@ -45,7 +46,7 @@ Executor 在调用 runner 前就用原10份资料算 fingerprint，并在返回�
 
 ## 实施与验收顺序
 
-用户确认后，先更新 owning specs，再按 eligible-session → executor消费/依赖 → runner阅读 →
+用户确认已收到；先更新 owning specs，再按 eligible-session → executor消费/依赖 → runner阅读 →
 持久化/恢复 的顺序实现。先通过固定反例与真实来源的 input-only 检查，再冻结一次有界 fresh
 subagent 正控；不得重入此前完成的 source、F7、S5 或旧 v182 阶段。
 
@@ -54,9 +55,9 @@ subagent 正控；不得重入此前完成的 source、F7、S5 或旧 v182 阶�
 中断后恢复不重复请求；已接受 sibling 保真。实际请求、原答、纠错、落盘和消费者输入都须检查。
 词汇改善、hash 和测试成功本身不关闭 F5；最终仍须证明真实语义与下游消费。
 
-## 为什么需要一次设计决策
+## 已完成的设计决策依据
 
 [AGENTS.md](../AGENTS.md) 要求对“研究定义、canonical schema、评分、PIT、准入政策、
 接口的实质取舍”准备具体方案并取得所需决策。这里虽然保留 `SignalResult`，仍改变了 LLM
 资料读取接口、原10份静态输入的消费方式，以及最坏请求数（原最多2次，提议最多4次）。
-因此先确认这组接口与资源边界，再实施。它不是外部 API 许可申请，也不恢复任何旧实验。
+该组接口与资源边界现已获批准。它不是外部 API 许可申请，也不恢复任何旧实验。

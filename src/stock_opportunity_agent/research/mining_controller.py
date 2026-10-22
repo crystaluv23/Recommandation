@@ -1270,7 +1270,11 @@ class LabelAwareMiningController:
         )
         entry = {"fact_ref": fact_ref, "context_chars": len(masked), "masked": masked,
                  "case_refs": [fact.case_ref], "document_ref": fact.document_ref,
-                 "content_hash": fact.content_hash, "available_at": fact.available_at}
+                 "content_hash": fact.content_hash, "available_at": fact.available_at,
+                 "fact": _mask_identity_values(
+                     {"taxonomy": fact.taxonomy, "concept": fact.concept,
+                      "unit": fact.unit, "period": dict(fact.period) if fact.period else None,
+                      "value": fact.value}, self.identity_aliases, expand_aliases=False)}
         self._last_action_result = {"action": "read_span", **entry}
         self._append(
             "read_span",

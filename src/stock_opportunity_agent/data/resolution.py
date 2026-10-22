@@ -1689,15 +1689,25 @@ class EvidenceResolver:
                     available.update(adapter.source_types)
         return tuple(sorted(available))
 
-    def _local_documents(
+    def eligible_documents(
+        self, request: RawInfoRequest, *, company_id: str,
+        identity: Mapping[str, Any], as_of: datetime,
+    ) -> tuple[RawInfoDocument, ...]:
+        """Freeze the complete eligible local pool without acquiring sources."""
+
+        ranked, _filtered, _duplicates = self._eligible_local_documents(
+            request, company_id=company_id, identity=identity, as_of=as_of,
+        )
+        return deepcopy(tuple(ranked))
+
+    def _eligible_local_documents(
         self,
         request: RawInfoRequest,
         *,
         company_id: str,
         identity: Mapping[str, Any],
         as_of: datetime,
-        select_documents: DocumentSelector | None = None,
-    ) -> tuple[list[RawInfoDocument], tuple[str, ...], RawInfoCoverage]:
+    ) -> tuple[list[RawInfoDocument], tuple[str, ...], tuple[str, ...]]:
         documents = [
             item
             for item in self.store.search(company_id, as_of=as_of)
@@ -1712,6 +1722,16 @@ class EvidenceResolver:
         )
         documents, duplicate_ids = _deduplicate_documents(documents)
         ranked = _rank_documents(documents, request)
+        return ranked, filtered_news_ids, duplicate_ids
+
+    def _local_documents(
+        self, request: RawInfoRequest, *, company_id: str,
+        identity: Mapping[str, Any], as_of: datetime,
+        select_documents: DocumentSelector | None = None,
+    ) -> tuple[list[RawInfoDocument], tuple[str, ...], RawInfoCoverage]:
+        ranked, filtered_news_ids, duplicate_ids = self._eligible_local_documents(
+            request, company_id=company_id, identity=identity, as_of=as_of,
+        )
         if select_documents is None:
             selected = _select_required_source_documents(ranked, request)
         else:

@@ -179,3 +179,13 @@ This supersedes only the H1 record-count pending item above. Legacy Fact
 namespace ambiguity, model consumption, direction/magnitude discovery and
 implementation/admission/successor reuse remain unresolved. The schema choice
 has not been inferred from silence and no further Mining capability stage ran.
+
+
+## Approved taxonomy implementation
+
+The user explicitly selected the optional `EvidenceFact.taxonomy` field. The
+implementation and bounded-reading progress are recorded in
+[the current acceptance note](approved-reading-and-taxonomy-20261022.md). This
+supersedes the pending schema choice above. Unknown legacy leaf namespaces
+remain ineligible for automatic pairing; no Mining capability stage has yet
+verified fresh model consumption of this additive field.

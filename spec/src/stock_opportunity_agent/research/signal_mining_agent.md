@@ -83,10 +83,17 @@ corrections and validates the assembled action before any tool executes.
   projected group, not record index: every latest-end alternative stays latest.
   Date ordering and basis identity use parsed dates, never lexicographic raw
   date spellings. Fact fields, source literals and unchanged identities remain
-  preserved.
+  preserved. The user-approved namespace repair adds optional `taxonomy: str = ""`
+  to EvidenceFact. New projections copy it from the shared source context for
+  both typed accession rows and legacy nested Company Facts. It travels with
+  serialized facts, fact-read bindings and their ledger output hashes. No source
+  text, original artifact or existing position-bound fact ref is rewritten.
 - Automatic same-concept pairs are scoped to case/concept/unit/document and
-  content hash. A known taxonomy in a typed exact span further separates the
-  group; a legacy leaf span does not establish a taxonomy and none is invented.
+  content hash and a known, nonblank taxonomy. An old typed whole-row span may
+  establish taxonomy when the optional field is absent; an old legacy leaf span
+  cannot. Unknown or conflicting field/literal taxonomy does not authorize an
+  automatic pair or unique-basis scalar. Old facts remain readable and explicitly
+  requested generic arithmetic retains its existing permissions.
   Within that scope, each latest current period has at most one nearest earlier
   period satisfying the existing comparable-duration predicate. Conflicting
   values at either operand period prevent that pair; they do not remove an
@@ -110,15 +117,13 @@ corrections and validates the assembled action before any tool executes.
   not a selected unique concept-level measurement. A valid duration can count
   despite another unresolved duration; concept-only scalars still require one
   unique basis. Projection omissions remain partial coverage, never source
-  absence. No new Fact field or public
-  tool/measurement schema is introduced. Diagnostic arrival is not admission or
+  absence. No measurement or compute-rule schema is changed. Diagnostic arrival is not admission or
   proof of an economic comparison, source priority or prediction benefit.
-  The current candidate still lacks legacy namespace provenance: a same-document
-  two-namespace counterexample can produce a false pair. This is an open design
-  and implementation gate, not a supported ambiguity resolution. Further native
-  Mining capability acceptance stays blocked until the explicit taxonomy-field
-  versus original-document-index decision is implemented and independently
-  verified; local tests excluding that counterexample cannot close this family.
+  The namespace-field option was explicitly approved by the user on 2026-10-22.
+  Verification must include the original same-document two-namespace false pair,
+  complete same-namespace positives in both shapes, unknown legacy snapshots,
+  contradictory typed provenance, serialization/readback and actual fact-read
+  ledger consumption. This repair alone does not prove fresh Mining capability.
 - Relation nodes are constructed only by deterministic code within three
   bounded scopes: same-concept record pairs under the existing
   comparable-period rule; numerator/denominator pairs computed only when

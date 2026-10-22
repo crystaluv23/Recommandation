@@ -1,0 +1,15 @@
+======================================================================
+ERROR: test_complete_plan_builds_explicit_audited_successor (tests.test_signal_modality_migration.SignalModalityMigrationTests.test_complete_plan_builds_explicit_audited_successor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_modality_migration.py", line 102, in test_complete_plan_builds_explicit_audited_successor
+    source_snapshot = source.freeze()
+                      ^^^^^^^^^^^^^^^
+  File "/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp9__sb72r/src/stock_opportunity_agent/signal_library.py", line 2325, in freeze
+    raise ValidationError(
+stock_opportunity_agent.models.ValidationError: Signal capability audit failed: {"disabled": {"cash_reserves:v1": ["schema_fixture_failed: expected positive, received unavailable"]}, "enabled_refs": ["cash_to_current_liabilities_ratio:v1", "guidance_acceleration:v1"], "passed": false, "schema_version": "signal-capability-audit-v1"}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.020s
+
+FAILED (errors=1)

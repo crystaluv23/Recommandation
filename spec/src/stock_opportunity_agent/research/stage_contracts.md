@@ -10,6 +10,11 @@ The user authorized the integrated design and implementation on 2026-10-01.
 
 ## Stage dependencies and boundaries
 
+The blind `llm_signal_source_read` and `llm_signal_source_read_next` stages require
+the exact Signal spec, skill, as-of, frozen source catalog, previous tool result
+and accumulated read projection. Both reject outcomes and use the native exact
+request journal/cache; their actions do not create a SignalResult.
+
 The module also owns a single pure need-row rationale description shared by
 the Controller's initial system prompt, native input contract and precise row
 error text: `rationale` is a non-empty array of nonblank strings, including when

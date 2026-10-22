@@ -1,0 +1,5 @@
+{
+  "state": "stopped_before_dispatch",
+  "actual_responses": 0,
+  "reason": "Root preflight found the chosen query ranks the answerable source first rather than eleventh. Preserve pending inbox; do not dispatch or resume. Fresh v2 fixes source-controlled rank and asserts production prepare selection."
+}

@@ -1,0 +1,19 @@
+Repository lint
+root: /Users/l/Project/Recommandation
+
+PASS: required meta and lint files exist
+FAIL: review: missing question
+FAIL: review: missing pass
+FAIL: review: missing fail
+FAIL: review: missing on_pass
+FAIL: review: missing on_fail
+FAIL: meta convergence check failed
+PASS: .githooks/pre-push is executable
+PASS: scripts/lint_repo.sh is executable
+PASS: git core.hooksPath is .githooks
+PASS: no merge conflict markers
+PASS: no trailing whitespace
+PASS: no hand-written outcome label constants
+PASS: local markdown links resolve
+
+Lint result: FAIL (1 issue(s))

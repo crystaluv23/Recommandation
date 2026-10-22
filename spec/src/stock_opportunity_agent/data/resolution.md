@@ -118,6 +118,12 @@ empty subset, permitting the same authorized-acquisition/unresolved path. This
 does not change generic query ranking, add semantic readiness to lexical
 coverage, or authorize data acquisition.
 
+`eligible_documents` exposes a deep copied, ranked snapshot of the complete local
+company/PIT/source/lookback/news-filtered/deduplicated pool, using the same helper
+as `resolve`. It performs no acquisition or budget reservation and never raises
+the request's selected-document limit. Bounded LLM reading freezes this snapshot
+after ordinary resolution, then separately validates actual read dependencies.
+
 `resolve` optionally accepts a pure local `select_documents` callback. It receives
 the deterministic ranked pool only after issuer, exact source type, lookback, and
 availability filtering, plus the original request. It must return at most the

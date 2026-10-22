@@ -19,7 +19,7 @@
 冲突、币种、duration/可比期，整组贯穿32k/token预算；63关联及13独立控制过，0新模型/资料。
 固定词频饱和排序令Q1原rank46→4且两完整operand在31986chars可见，但11文档反例仍漏rank11最新证据；
 独立比较期/币种/冲突见证反例同样失败，因此未装排序callback、未调参求过，整体F5仍open。
-[有界目录/按需阅读方案](../reports/llm-signal-bounded-source-reading-proposal-20261021.md)待用户设计决策，尚未改接口/预算。
+[有界阅读/Fact taxonomy](../reports/approved-reading-and-taxonomy-20261022.md)两方案已获明确批准并实施；外部LLMAPI继续0。
 方案每Signal至多10正文/32000chars/2读取交换/4角色请求；双Signal需阅读时分别冻结、最坏8请求并受case余量限制。
 完整小输入保既有双Signal共享路径。v143/v6仅run_minimal无override入口，显式v182用v12，一般init另有catalog。
 
@@ -91,10 +91,10 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
 - [Mining事实与H1](../reports/mining-native-fact-semantics-20261021.md)：原生7控确认context19→facts0；
   value/val、期间/单位/冲突及派生关系连接已修，原0671现在19facts逐literal核真；102关联/独立21×2及日期7控过。
   H1改共享row级合法pair存在性，205关联及独立控制过；实际dev8/qualified1780的24目录项/计数未变，观察增益0。
-  legacy Fact leaf丢taxonomy的真实错配仍open；可选taxonomy字段/原文索引方案待答，不默改schema或启动Mining能力stage。
+  可选taxonomy现贯穿投影/保存/fact-read；真实同名跨namespace反例拒配、旧fact_ref不变，122关联过；fresh Mining消费仍未验。
 - routing两literal范围误拒已局部修复，停止继续词面补丁；保原0/1及原答，局部修复不等新模型遵循，不重入completed stage或重置预算。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
-  有界LLM阅读（每Signal最多4角色请求、仍守case预算）与可选taxonomy/原文查询两设计选择连续三goal轮待答；下一关键实现需该决策，不改接口/schema凑进度。
+  有界阅读已接完整合格目录、实际已读证据/resolution/fingerprint、闭集纠错与native恢复；17聚焦/354关联过；fresh合成3角色/首答1of1/0纠错、25files恢复同；更旧typed窗口与实际源/消费仍open。
   gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
 - 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

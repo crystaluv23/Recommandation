@@ -1,0 +1,48 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "results": [
+      {
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "exact_text": "Management raised annual guidance from $100 million to $120 million.",
+                "projection_id": "projection_86a73d578cb2d1ce222927ca"
+              }
+            ]
+          },
+          "interpretation": {
+            "summary": "Management explicitly raised annual guidance from the prior $100 million to $120 million, establishing an upward revision."
+          },
+          "signal_id": "guidance_revision",
+          "state": {
+            "confidence": 0.99,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        "signal_ref": "guidance_revision:v1"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"results\":[{\"result\":{\"evidence\":{\"counter\":[],\"supporting\":[{\"projection_id\":\"projection_86a73d578cb2d1ce222927ca\",\"exact_text\":\"Management raised annual guidance from $100 million to $120 million.\"}]},\"interpretation\":{\"summary\":\"Management explicitly raised annual guidance from the prior $100 million to $120 million, establishing an upward revision.\"},\"signal_id\":\"guidance_revision\",\"state\":{\"confidence\":0.99,\"value\":\"positive\"},\"status\":{\"coverage\":\"sufficient\"},\"version\":1},\"signal_ref\":\"guidance_revision:v1\"}]}\n",
+  "request_hash": "598b61c941df22b051c26a6bd08bd4539dd3cc3479366bba0fbc73d81e280b55",
+  "response_id": "local-598b61c941df22b051c26a6bd08bd4539dd3cc3479366bba0fbc73d81e280b55",
+  "usage": {
+    "accounting_tokens": 12989,
+    "agent_id": "/root/f5_extract_final",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "9e06ea0734c88d1e1958746d18816213cc48fa8008c3aa03314f877d4553fa47",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "579d4e220c3c8386ec5a56adec143ddc034ab5a0c617f18922394f269499b560",
+    "request_hash": "598b61c941df22b051c26a6bd08bd4539dd3cc3479366bba0fbc73d81e280b55",
+    "token_usage": null
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "document_fingerprints": {
+    "guidance_revision:v1": [
+      "source_catalog:v1:98f333e7de3408136413b460e740dcc464fab1d04884cd04feda1bcd01687f85",
+      "disclosure-10:db8e335069c057e9a4f3c2bacb1d6fdc7a630d878740da43031f0e5b079b9dcd"
+    ]
+  },
+  "request_hashes": [
+    "a66cfa479f6885c77e2227ef5f07e9e10c450dffc9f38d5204c9a37c70be35a3",
+    "6b54a34cd774c1087826084334fdbe01e5c48dbc7e61753db2ef1c92817c9fcd",
+    "598b61c941df22b051c26a6bd08bd4539dd3cc3479366bba0fbc73d81e280b55"
+  ],
+  "resolutions": [
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 11,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 11,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 1,
+        "selection_truncated": true,
+        "visible_span_count": 1
+      },
+      "data_gap": null,
+      "documents": [
+        {
+          "available_at": "2025-09-20T00:00:00+00:00",
+          "content_hash": "db8e335069c057e9a4f3c2bacb1d6fdc7a630d878740da43031f0e5b079b9dcd",
+          "document_id": "disclosure-10"
+        }
+      ],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [
+              "disclosure-00",
+              "disclosure-01",
+              "disclosure-02",
+              "disclosure-03",
+              "disclosure-04",
+              "disclosure-05",
+              "disclosure-06",
+              "disclosure-07",
+              "disclosure-08",
+              "disclosure-09"
+            ],
+            "phase": "initial",
+            "request_id": "signal:guidance_revision:v1",
+            "source_types": [
+              "filing"
+            ]
+          },
+          "kind": "local_query"
+        },
+        {
+          "details": {
+            "accepted": "success",
+            "catalog_signature": "source_catalog:v1:98f333e7de3408136413b460e740dcc464fab1d04884cd04feda1bcd01687f85",
+            "catalog_size": 11,
+            "characters": 966,
+            "closed": true,
+            "exchanges": 1,
+            "history": [
+              {
+                "action": {
+                  "reads": [
+                    {
+                      "length": 93,
+                      "offset": 0,
+                      "source_ref": "source_96e2dc1539df780d39eace55"
+                    }
+                  ]
+                },
+                "result": {
+                  "omitted_text_may_contain_additional_evidence": true,
+                  "remaining_exchanges": 1,
+                  "source_projection": [
+                    {
+                      "available_at": "2025-09-20T00:00:00+00:00",
+                      "content_hash": "db8e335069c057e9a4f3c2bacb1d6fdc7a630d878740da43031f0e5b079b9dcd",
+                      "document_id": "disclosure-10",
+                      "exact_text": "Operating disclosure 10. Management raised annual guidance from $100 million to $120 million.",
+                      "projection_id": "projection_86a73d578cb2d1ce222927ca",
+                      "published_at": "2025-09-20T00:00:00+00:00",
+                      "source_type": "filing",
+                      "source_window": {
+                        "end": 93,
+                        "start": 0
+                      }
+                    }
+                  ],
+                  "visible_source_characters": 966,
+                  "windows": [
+                    {
+                      "next_offset": null,
+                      "requested_end": 93,
+                      "requested_start": 0,
+                      "returned_units": 1,
+                      "source_complete": true,
+                      "source_ref": "source_96e2dc1539df780d39eace55"
+                    }
+                  ]
+                }
+              },
+              {
+                "action": {
+                  "finalize": true
+                },
+                "result": {
+                  "closed": true
+                }
+              }
+            ],
+            "mode": "bounded_source_reading",
+            "preview_characters": 873,
+            "read_documents": [
+              "disclosure-10"
+            ]
+          },
+          "kind": "llm_signal_source_reading"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Extract an explicitly disclosed upward or downward annual guidance revision.",
+        "max_documents": 10,
+        "query": "guidance",
+        "request_id": "signal:guidance_revision:v1",
+        "source_types": [
+          "filing"
+        ]
+      },
+      "status": "resolved"
+    }
+  ],
+  "results": [
+    {
+      "evidence": {
+        "counter": [],
+        "supporting": [
+          {
+            "document_id": "disclosure-10",
+            "exact_span": "Management raised annual guidance from $100 million to $120 million.",
+            "timestamp": "2025-09-20T00:00:00+00:00"
+          }
+        ]
+      },
+      "execution": {
+        "status": "success"
+      },
+      "interpretation": {
+        "summary": "Management explicitly raised annual guidance from the prior $100 million to $120 million, establishing an upward revision."
+      },
+      "signal_id": "guidance_revision",
+      "state": {
+        "confidence": 0.99,
+        "value": "positive"
+      },
+      "status": {
+        "coverage": "sufficient"
+      },
+      "version": 1
+    }
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 3,
+    "tokens": 31385
+  }
+}

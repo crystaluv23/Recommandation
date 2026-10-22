@@ -1,0 +1,313 @@
+"""Offline controls for reading authority, budgets and executor dependencies."""
+
+import json
+from copy import deepcopy
+from dataclasses import replace
+from datetime import timedelta
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest import TestCase
+
+from stock_opportunity_agent.artifacts import canonical_json_hash
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.resolution import EvidenceResolver, RawInfoRequest, RawInfoResolution
+from stock_opportunity_agent.llm.agent import AgentUsage
+from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.evolution_signal_roles import StructuredLLMSignalRunner
+from stock_opportunity_agent.research.signal_source_reading import SignalSourceSession, catalog_signature
+from stock_opportunity_agent.research.scheme_evolution import RuntimeBudgetExceeded
+from stock_opportunity_agent.signal_library import FrozenSignalRegistry, SignalExecutor, SignalExecutionStatus
+from tests.test_signal_edge_correction import AS_OF, CLAUSE, document, signal_input, result
+from tests.test_mining_fact_semantics import document as fact_document, pair_rows
+
+
+def sources(count=11):
+    return tuple(RawInfoDocument.create(document_id=f"source-{i:02d}", company_id="issuer",
+        source_type="filing", published_at=AS_OF - timedelta(days=i), available_at=AS_OF - timedelta(days=i),
+        content=f"Disclosure {i:02d}. " + (CLAUSE if i == 10 else "Guidance coverage notice without any revised amounts.")) for i in range(count))
+
+
+def item_for(docs):
+    return replace(signal_input(docs[0]), documents=docs[:10], eligible_documents=docs)
+
+
+class ReadingCaller:
+    """Scripted transport only; no fresh-model or semantic acceptance claim."""
+
+    def __init__(self, wanted_hash, *, bad_first=False, wrong_evidence=False):
+        self.wanted_hash = wanted_hash
+        self.calls = []
+        self.bad_first = bad_first
+        self.wrong_evidence = wrong_evidence
+
+    def complete_json(self, **kwargs):
+        self.calls.append(deepcopy(kwargs))
+        p = kwargs["payload"]
+        if "source_catalog" in p:
+            if kwargs["stage"].endswith("next"):
+                action = {"finalize": True}
+            else:
+                card = next(c for c in p["source_catalog"]["cards"] if c["content_hash"] == self.wanted_hash)
+                action = {"reads": [{"source_ref": card["source_ref"], "offset": 0,
+                                      "length": card["coordinate_length"]}]}
+            return action, AgentUsage(llm_calls=1, tokens=30)
+        refs = p["batch_signal_refs"]
+        rows = []
+        for ref in refs:
+            view = next(r for r in p["source_projection"] if r["content_hash"] == self.wanted_hash)
+            projection = "invented" if self.wrong_evidence else view["projection_id"]
+            row = result(ref, projection, "Disclosure 00." if self.wrong_evidence else CLAUSE)
+            if self.bad_first and not kwargs["stage"].endswith("correction"):
+                row["result"]["version"] = 999
+            rows.append(row)
+        return {"results": rows}, AgentUsage(llm_calls=1, tokens=30)
+
+
+def executor(docs, caller):
+    item = item_for(docs)
+    snapshot = FrozenSignalRegistry(version=1, registry_hash=canonical_json_hash([item.spec.to_dict()]),
+        specs=(item.spec,), skills={item.spec.ref: item.skill})
+    return SignalExecutor(snapshot, RawInfoStore(documents=docs), llm_runner=StructuredLLMSignalRunner(caller))
+
+
+class SignalSourceReadingTests(TestCase):
+    def test_resolver_pool_uses_original_filters_and_is_isolated(self):
+        docs = sources(12)
+        wrong = replace(docs[0], document_id="wrong", company_id="other")
+        future = replace(docs[0], document_id="future", available_at=AS_OF + timedelta(days=1))
+        store = RawInfoStore(documents=(*docs, wrong, future))
+        resolver = EvidenceResolver(store)
+        request = RawInfoRequest(request_id="read", description="filings", source_types=("filing",), max_documents=10)
+        pool = resolver.eligible_documents(request, company_id="issuer", identity={}, as_of=AS_OF)
+        resolved = resolver.resolve(request, company_id="issuer", identity={}, as_of=AS_OF)
+        self.assertEqual(len(pool), 12)
+        self.assertEqual([d.document_id for d in pool[:10]], [d.document_id for d in resolved.documents])
+        pool[0].metadata["changed"] = True
+        self.assertNotIn("changed", store.load(pool[0].document_id, as_of=AS_OF).metadata)
+
+    def test_rank_eleven_is_read_citable_and_owns_resolution_and_fingerprint(self):
+        docs = sources()
+        caller = ReadingCaller(docs[-1].content_hash)
+        ex = executor(docs, caller)
+        prepared = ex.prepare_inputs(("guidance:v1",), company_id="issuer", as_of=AS_OF)
+        self.assertNotIn(docs[-1].document_id, [d.document_id for d in prepared[0].documents])
+        batch = ex.execute_batch(("guidance:v1",), company_id="issuer", as_of=AS_OF)
+        self.assertEqual(batch.results[0].execution_status, SignalExecutionStatus.SUCCESS)
+        self.assertEqual(batch.results[0].supporting_evidence[0].document_id, docs[-1].document_id)
+        self.assertEqual([d.document_id for d in batch.resolutions[0].documents], [docs[-1].document_id])
+        self.assertEqual(batch.document_fingerprints["guidance:v1"][1:], (f"{docs[-1].document_id}:{docs[-1].content_hash}",))
+        restored = RawInfoResolution.from_dict(json.loads(json.dumps(batch.resolutions[0].to_dict())))
+        self.assertEqual(restored.to_dict(), batch.resolutions[0].to_dict())
+        self.assertEqual(batch.usage.llm_calls, 3)
+        self.assertEqual(len(caller.calls), 3)
+
+    def test_catalog_change_invalidates_skip_but_unseen_periods_not_claimed_on_skip(self):
+        docs = sources()
+        caller = ReadingCaller(docs[-1].content_hash)
+        ex = executor(docs, caller)
+        first = ex.execute_batch(("guidance:v1",), company_id="issuer", as_of=AS_OF)
+        second = ex.execute_batch(("guidance:v1",), company_id="issuer", as_of=AS_OF,
+            prior_fingerprints=first.document_fingerprints)
+        self.assertEqual(second.skipped_unchanged_refs, ("guidance:v1",))
+        self.assertEqual(len(caller.calls), 3)
+        self.assertFalse(second.resolutions[0].coverage.contract_satisfied)
+        changed = RawInfoDocument.create(document_id="new-unread", company_id="issuer", source_type="filing",
+            published_at=AS_OF, available_at=AS_OF, content="Another unrelated filing.")
+        third = executor((*docs, changed), caller).execute_batch(("guidance:v1",), company_id="issuer", as_of=AS_OF,
+            prior_fingerprints=first.document_fingerprints)
+        self.assertFalse(third.skipped_unchanged_refs)
+        self.assertEqual(len(caller.calls), 6)
+        self.assertNotEqual(first.document_fingerprints, third.document_fingerprints)
+
+    def test_legacy_fingerprint_does_not_skip_reading(self):
+        docs = sources()
+        caller = ReadingCaller(docs[-1].content_hash)
+        batch = executor(docs, caller).execute_batch(("guidance:v1",), company_id="issuer", as_of=AS_OF,
+            prior_fingerprints={"guidance:v1": tuple(sorted(f"{d.document_id}:{d.content_hash}" for d in docs[:10]))})
+        self.assertFalse(batch.skipped_unchanged_refs)
+        self.assertEqual(len(caller.calls), 3)
+
+    def test_two_signals_keep_small_shared_execution(self):
+        docs = (document(CLAUSE),)
+        a, b = item_for(docs), replace(item_for(docs), spec=replace(item_for(docs).spec, signal_id="guidance_peer"))
+        caller = ReadingCaller(docs[0].content_hash)
+        outcome = StructuredLLMSignalRunner(caller).execute_with_source_reading((a, b), AS_OF)
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(set(outcome.results), {a.spec.ref, b.spec.ref})
+        self.assertTrue(all(r.execution_status is SignalExecutionStatus.SUCCESS for r in outcome.results.values()))
+
+    def test_bad_final_has_only_one_correction_on_identical_closed_source(self):
+        docs = sources()
+        caller = ReadingCaller(docs[-1].content_hash, bad_first=True)
+        outcome = StructuredLLMSignalRunner(caller).execute_with_source_reading((item_for(docs),), AS_OF)
+        self.assertEqual(len(caller.calls), 4)
+        self.assertEqual(outcome.results["guidance:v1"].execution_status, SignalExecutionStatus.SUCCESS)
+        self.assertEqual(caller.calls[-1]["payload"]["source_projection"], caller.calls[-2]["payload"]["source_projection"])
+
+    def test_unknown_projection_cannot_cite_unread_catalog(self):
+        docs = sources()
+        caller = ReadingCaller(docs[-1].content_hash, wrong_evidence=True)
+        outcome = StructuredLLMSignalRunner(caller).execute_with_source_reading((item_for(docs),), AS_OF)
+        self.assertEqual(len(caller.calls), 4)
+        self.assertEqual(outcome.results["guidance:v1"].execution_status, SignalExecutionStatus.VALIDATION_FAILED)
+
+    def test_pages_and_fact_pages_consume_same_two_exchanges(self):
+        s = SignalSourceSession(item_for(sources(45)), AS_OF)
+        self.assertEqual(len(s.catalog()["cards"]), 20)
+        self.assertEqual(s.catalog()["next_cursor"], 20)
+        page = s.apply({"catalog_cursor": 20})
+        self.assertEqual(len(page["cards"]), 20)
+        card = page["cards"][-1]
+        s.apply({"reads": [{"source_ref": card["source_ref"], "offset": 0, "length": card["coordinate_length"]}]})
+        self.assertEqual(s.exchanges, 2)
+        with self.assertRaises(ValidationError):
+            s.apply({"catalog_cursor": 40})
+
+    def test_two_exchanges_allow_ten_distinct_documents_and_no_more(self):
+        s = SignalSourceSession(item_for(sources(15)), AS_OF)
+        cards = s.catalog()["cards"]
+        for offset in (0, 5):
+            s.apply({"reads": [{"source_ref": c["source_ref"], "offset": 0,
+                "length": c["coordinate_length"]} for c in cards[offset:offset+5]]})
+        self.assertEqual(len(s.documents), 10)
+        self.assertEqual(s.exchanges, 2)
+        self.assertLessEqual(s.characters, 32000)
+
+    def test_separate_signals_share_case_budget_and_preserve_accepted_sibling(self):
+        docs = sources()
+        a = item_for(docs)
+        b = replace(a, spec=replace(a.spec, signal_id="guidance_peer"))
+        caller = ReadingCaller(docs[-1].content_hash, bad_first=True)
+        runner = StructuredLLMSignalRunner(caller)
+        runner.set_request_token_budget(1000)
+        outcome = runner.execute_with_source_reading((a, b), AS_OF)
+        self.assertEqual(len(caller.calls), 8)
+        self.assertEqual(outcome.usage.tokens, 240)
+        self.assertEqual([c["max_request_tokens"] for c in caller.calls], list(range(1000, 760, -30)))
+        self.assertTrue(all(r.execution_status is SignalExecutionStatus.SUCCESS for r in outcome.results.values()))
+
+    def test_unknown_runner_keeps_legacy_static_contract(self):
+        docs = sources()
+        item = item_for(docs)
+        class LegacyRunner:
+            def execute_many(self, inputs, as_of):
+                self.inputs = inputs
+                from stock_opportunity_agent.signal_library import SignalResult
+                row = result(item.spec.ref, "unused", "Disclosure 00.")["result"]
+                row["evidence"]["supporting"] = [{"document_id": docs[0].document_id,
+                    "content_hash": docs[0].content_hash, "exact_span": "Disclosure 00.",
+                    "timestamp": docs[0].available_at.isoformat()}]
+                return {item.spec.ref: SignalResult.from_dict(row)}, AgentUsage()
+        legacy = LegacyRunner()
+        ex = executor(docs, ReadingCaller(docs[-1].content_hash))
+        ex.llm_runner = legacy
+        batch = ex.execute_batch((item.spec.ref,), company_id="issuer", as_of=AS_OF)
+        self.assertEqual(len(legacy.inputs[0].documents), 10)
+        self.assertIsNone(legacy.inputs[0].eligible_documents)
+        self.assertFalse(any(p.startswith("source_catalog:") for p in batch.document_fingerprints[item.spec.ref]))
+
+    def test_invalid_actions_are_atomic_and_integer_strict(self):
+        s = SignalSourceSession(item_for(sources()), AS_OF)
+        card = s.catalog()["cards"][0]
+        valid = {"source_ref": card["source_ref"], "offset": 0, "length": card["coordinate_length"]}
+        actions = [{"finalize": 1}, {"reads": [dict(valid, offset=True)]}, {"reads": [dict(valid, source_ref="other")]},
+                   {"reads": [valid, dict(valid, source_ref="other")]}, {"reads": [valid] * 6}]
+        for action in actions:
+            with self.subTest(action=action), self.assertRaises(ValidationError):
+                s.apply(action)
+            self.assertEqual(s.exchanges, 0)
+            self.assertEqual(s.rows, [])
+        s.apply({"reads": [valid]})
+        with self.assertRaises(ValidationError):
+            s.apply({"reads": [valid]})
+
+    def test_character_budget_includes_previews_and_never_clips_long_sentence(self):
+        d = document("A" * 33000 + ".")
+        s = SignalSourceSession(item_for((d,)), AS_OF)
+        card = s.catalog()["cards"][0]
+        with self.assertRaises(ValidationError):
+            s.apply({"reads": [{"source_ref": card["source_ref"], "offset": 0, "length": len(d.content)}]})
+        self.assertEqual(s.rows, [])
+        empty = s.apply({"reads": [{"source_ref": card["source_ref"], "offset": 0, "length": 100}]})
+        self.assertEqual(empty["source_projection"], [])
+        self.assertEqual(empty["windows"][0]["next_offset"], 0)
+
+    def test_structured_read_preserves_prior_currency_and_same_period_conflicts(self):
+        rows = pair_rows()
+        rows += [{**rows[0], "value": 999}, {**rows[0], "unit": "EUR", "value": 5}]
+        d = fact_document("facts", rows)
+        s = SignalSourceSession(item_for((d,)), AS_OF)
+        card = s.catalog()["cards"][0]
+        first = card["fact_groups"][0]
+        s.apply({"reads": [{"source_ref": card["source_ref"], "offset": first["offset"], "length": first["length"]}]})
+        chosen_unit = first["unit"]
+        visible = [json.loads(r["exact_text"]) for r in s.rows]
+        self.assertTrue(all(r["unit"] == chosen_unit for r in visible))
+        expected = [r for r in rows if r["unit"] == chosen_unit]
+        self.assertCountEqual(visible, expected)
+        self.assertTrue(all(r["exact_text"] in d.content for r in s.rows))
+        self.assertEqual(s.visible_documents[0].metadata, {})
+
+    def test_partial_source_cannot_count_unseen_periods_or_observations(self):
+        from stock_opportunity_agent.data.resolution import _retrieval_contract_coverage
+        d = document(CLAUSE)
+        d = replace(d, metadata={"rows": [{"date": "2024-01-01"}, {"date": "2025-01-01"}]})
+        s = SignalSourceSession(item_for((d,)), AS_OF)
+        c = s.catalog()["cards"][0]
+        s.apply({"reads": [{"source_ref": c["source_ref"], "offset": 0, "length": len(d.content)}]})
+        request = RawInfoRequest(request_id="read", description="proof", source_types=("filing",), minimum_distinct_periods=2)
+        self.assertTrue(_retrieval_contract_coverage((d,), request)["contract_satisfied"])
+        self.assertFalse(_retrieval_contract_coverage(s.visible_documents, request)["contract_satisfied"])
+
+    def test_budget_stop_retains_prior_usage_and_prevents_final_call(self):
+        docs = sources()
+        class BudgetCaller(ReadingCaller):
+            def complete_json(self, **kwargs):
+                if len(self.calls) == 1:
+                    raise RuntimeBudgetExceeded("exact reservation refused")
+                return super().complete_json(**kwargs)
+        caller = BudgetCaller(docs[-1].content_hash)
+        outcome = StructuredLLMSignalRunner(caller).execute_with_source_reading((item_for(docs),), AS_OF)
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(outcome.usage.llm_calls, 1)
+        self.assertEqual(outcome.results["guidance:v1"].execution_status, SignalExecutionStatus.BUDGET_BLOCKED)
+
+    def test_native_interruption_restore_uses_exact_inbox_cache_and_receipts(self):
+        from diagnose_executed_answer_scope import StageContract
+        from stock_opportunity_agent.llm import get_model
+        from stock_opportunity_agent.research.evolution_transport import StructuredRoleClient, ExternalAttemptLedger
+        from stock_opportunity_agent.research.local_role_exchange import LocalRoleExchange, LocalRoleRequestPending
+
+        docs = sources()
+        scripted = ReadingCaller(docs[-1].content_hash)
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            exchange = LocalRoleExchange(root / "exchange", max_calls=4)
+            def reopen():
+                caller = StructuredRoleClient(registration=get_model("independent-subagent"),
+                    contract=StageContract({"limits": {"max_structured_corrections": 1}}),
+                    workspace=root, ledger=ExternalAttemptLedger(root / "unused.json", max_attempts=1, max_total_cost=.01),
+                    local_role_exchange=exchange, allow_external=False, environ={})
+                return executor(docs, caller)
+            pending_hashes = []
+            for _ in range(3):
+                with self.assertRaises(LocalRoleRequestPending) as pending:
+                    reopen().execute_batch(("guidance:v1",), company_id="issuer", as_of=AS_OF)
+                record = pending.exception.pending
+                digest = record["request_hash"]
+                pending_hashes.append(digest)
+                inbox = json.loads(Path(record["inbox_path"]).read_text())
+                p = json.loads(inbox["messages"][-1]["content"])
+                output, _usage = scripted.complete_json(stage=record["stage"], payload=p)
+                Path(record["outbox_path"]).write_text(json.dumps(output))
+                exchange.submit(digest, agent_id="offline-scripted-test-not-fresh-model")
+            completed = reopen().execute_batch(("guidance:v1",), company_id="issuer", as_of=AS_OF)
+            self.assertEqual(completed.results[0].execution_status, SignalExecutionStatus.SUCCESS)
+            before = {str(p.relative_to(root)): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+            restored = reopen().execute_batch(("guidance:v1",), company_id="issuer", as_of=AS_OF)
+            after = {str(p.relative_to(root)): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+            self.assertEqual(before, after)
+            self.assertEqual(completed, restored)
+            self.assertEqual(len(set(pending_hashes)), 3)
+            self.assertEqual(len(list((root / "exchange/inbox").glob("*.json"))), 3)
+            self.assertEqual(len(list((root / "cache/responses").glob("*.json"))), 3)

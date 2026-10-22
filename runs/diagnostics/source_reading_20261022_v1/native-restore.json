@@ -1,0 +1,12 @@
+{
+  "scope": "same frozen native operation reopened after completion; no OS kill; interruption boundary exercised by every pending role",
+  "files": 25,
+  "bytes_unchanged": true,
+  "receipts_before": 3,
+  "receipts_after": 3,
+  "result": {
+    "state": "completed",
+    "passed": true,
+    "result_path": "/Users/l/Project/Recommandation/runs/diagnostics/source_reading_20261022_v1/native-v2/result.json"
+  }
+}

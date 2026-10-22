@@ -734,7 +734,34 @@ interior n-grams. `operating_cash_flow_margin:v1` separately declares the same f
 measured object as its direct-answer phrase, so a request about cash-flow funding uses
 contextual routing or no match rather than pretending it asked for a margin.
 
-Complete Raw Info documents remain the local lineage, fingerprint, and final
+For a runner explicitly supporting bounded source reading, the executor freezes
+the resolver's complete eligible company/PIT/source/lookback/deduplicated pool
+after normal acquisition. Catalog pages contain at most 20 cards; source handles
+bind unchanged complete source versions. Static selected documents are not the
+reading authority. A complete small input retains shared two-Signal execution.
+Otherwise each Signal gets an isolated session: at most two reading exchanges
+(catalog paging included), five documents per exchange, ten distinct documents
+and 32,000 visible source characters in total. Reads retain complete fact groups
+or complete sentence units, raw offsets and explicit omissions/continuations.
+The initial selection and following read-selection requests precede the existing
+final result request and at most one correction: four role requests per Signal,
+eight for two separate sessions, always within original remaining case/request
+budgets. A malformed or over-limit action fails closed without extra attempts.
+Every role call uses the existing exact journal/cache and identity boundary;
+external LLM API use remains zero and fresh responses are driven by subagents.
+
+Final validation, resolutions and fingerprints use actual read documents and
+closed read windows. Correction cannot fetch additional text. Retrieval coverage
+must not count unseen periods/observations from an otherwise partly read source.
+The full eligible-pool signature is also a fingerprint dependency: a change in
+an unread candidate invalidates a prior skip. Old fingerprints without that
+signature cannot skip the new path. Reading actions/results and acceptance are
+saved with resolution events; exact cached role requests reconstruct the same
+session after interruption without paying for completed calls again.
+SignalResult stays unchanged. Unknown custom runners and historical completed
+artifacts retain their existing contract; none are migrated or restarted.
+
+In the legacy static runner path, complete Raw Info documents remain the local lineage, fingerprint, and final
 evidence-validation boundary; they are not copied into an LLM Signal request or
 into `SignalResult`. Before an LLM Signal executes, the runtime deterministically
 projects its resolved documents into normalized readable text with stable

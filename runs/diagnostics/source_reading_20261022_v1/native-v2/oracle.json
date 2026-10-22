@@ -1,0 +1,9 @@
+{
+  "content_hash": "db8e335069c057e9a4f3c2bacb1d6fdc7a630d878740da43031f0e5b079b9dcd",
+  "document_id": "disclosure-10",
+  "exact_span": "Management raised annual guidance from $100 million to $120 million.",
+  "must_read_initial_rank": 11,
+  "signal_ref": "guidance_revision:v1",
+  "source_only": true,
+  "value": "positive"
+}

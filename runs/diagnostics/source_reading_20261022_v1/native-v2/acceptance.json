@@ -1,0 +1,11 @@
+{
+  "actual_receipts": 3,
+  "external_llm_api_calls": 0,
+  "logical_usage": {
+    "cost": 0.0,
+    "llm_calls": 3,
+    "tokens": 31385
+  },
+  "scope": "one synthetic Signal; protocol and source-reading capability only, no F5 or MVP closure",
+  "synthetic_source_oracle_passed": true
+}
