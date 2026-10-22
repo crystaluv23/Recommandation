@@ -1,0 +1,131 @@
+{
+  "document_fingerprints": {
+    "historical_cash_flow_change:v1": [
+      "source_catalog:v1:8bd0794b5f0e1614ce7f5e5dff45dea0b37b050e831dc6f73d0c6b071eebabf9"
+    ]
+  },
+  "request_hashes": [
+    "a080339ae2e0ecf90569814d2bcfa463bb67d431caf3ddb60d6a81cf4090e29a"
+  ],
+  "resolutions": [
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 11,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 11,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": true,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Actual source reading did not satisfy retrieval coverage",
+        "provider": null,
+        "reason": "required_coverage_incomplete",
+        "request_id": "signal:historical_cash_flow_change:v1",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [
+              "disclosure-00",
+              "disclosure-01",
+              "disclosure-02",
+              "disclosure-03",
+              "disclosure-04",
+              "disclosure-05",
+              "disclosure-06",
+              "disclosure-07",
+              "disclosure-08",
+              "disclosure-09"
+            ],
+            "phase": "initial",
+            "request_id": "signal:historical_cash_flow_change:v1",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "kind": "local_query"
+        },
+        {
+          "details": {
+            "accepted": "validation_failed",
+            "catalog_signature": "source_catalog:v1:8bd0794b5f0e1614ce7f5e5dff45dea0b37b050e831dc6f73d0c6b071eebabf9",
+            "catalog_size": 11,
+            "characters": 1540,
+            "closed": false,
+            "exchanges": 0,
+            "history": [
+              {
+                "rejected": "duplicate or overlapping source read"
+              }
+            ],
+            "mode": "bounded_source_reading",
+            "preview_characters": 1540,
+            "read_documents": []
+          },
+          "kind": "llm_signal_source_reading"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Compare disclosed six-month operating cash flow in 2022 with the matching six months in 2021.",
+        "max_documents": 10,
+        "query": "operating cash flow 2022 2021",
+        "request_id": "signal:historical_cash_flow_change:v1",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "status": "unresolved"
+    }
+  ],
+  "results": [
+    {
+      "evidence": {
+        "counter": [],
+        "supporting": []
+      },
+      "execution": {
+        "error_code": "signal_source_reading_failed",
+        "error_message": "duplicate or overlapping source read",
+        "status": "validation_failed"
+      },
+      "interpretation": {
+        "summary": "Signal execution failed strict validation or execution: duplicate or overlapping source read"
+      },
+      "signal_id": "historical_cash_flow_change",
+      "state": {
+        "confidence": 0.0,
+        "value": "unavailable"
+      },
+      "status": {
+        "coverage": "unavailable"
+      },
+      "version": 1
+    }
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 13398
+  }
+}

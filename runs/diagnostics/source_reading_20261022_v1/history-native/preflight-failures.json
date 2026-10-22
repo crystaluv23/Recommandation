@@ -1,0 +1,8 @@
+{
+  "stage": "preparation_only_before_any_contract_or_request",
+  "responses": 0,
+  "failures": [
+    "Ten distractor bodies were identical and resolver correctly deduplicated them, violating selected-count10 precondition. Add distinct synthetic document titles.",
+    "Root also invoked resume after failed preparation, which refused for missing contract. No request or answer existed."
+  ]
+}

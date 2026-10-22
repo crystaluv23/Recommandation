@@ -59,10 +59,11 @@ class SignalSourceSession:
             self.sources[handle] = document
             facts = _company_facts_context(document,
                 max_content_chars=max(MAX_CHARACTERS, len(document.content) * 4),
-                query=item.spec.retrieval_policy.query)
+                query=item.spec.retrieval_policy.query, include_history=True)
             if facts is not None:
-                # The established reader keeps all alternatives for the chosen
-                # latest/comparable periods. Each group is an indivisible unit.
+                # This local index is not model disclosure. Default callers
+                # retain latest/comparable views; explicit reads can address
+                # older original periods without changing their raw literals.
                 self.groups[handle] = facts
                 self.views[handle] = (document.content,
                     ((0, len(document.content), 0, len(document.content)),))
@@ -115,12 +116,24 @@ class SignalSourceSession:
                 "metadata_is_not_evidence": True}
 
     def _group_page(self, handle: str, cursor: int) -> dict[str, Any]:
-        groups = self.groups[handle]["concepts"]
+        from stock_opportunity_agent.research.evolution_core import _optional_iso_date
+
+        queues = []
+        for concept in self.groups[handle]["concepts"]:
+            periods = {}
+            for record in concept["records"]:
+                period = _optional_iso_date(json.loads(record["exact_span"]).get("end"))
+                periods.setdefault(period, []).append(record)
+            queues.append([{**concept, "records": periods[p], "period_end": p.isoformat()}
+                           for p in sorted(periods, reverse=True)])
+        groups = [q[index] for index in range(max(map(len, queues), default=0))
+                  for q in queues if index < len(q)]
         if type(cursor) is not int or cursor < 0 or (cursor >= len(groups) and cursor != 0):
             raise ValidationError("invalid fact group cursor")
         return {"fact_group_count": len(groups), "group_cursor": cursor,
                 "fact_groups": [{"taxonomy": c["taxonomy"], "concept": c["concept"],
-                    "unit": c["unit"], "offset": min(r["start"] for r in c["records"]),
+                    "unit": c["unit"], "period_end": c["period_end"],
+                    "offset": min(r["start"] for r in c["records"]),
                     "length": max(r["end"] for r in c["records"]) - min(r["start"] for r in c["records"])}
                     for c in groups[cursor:cursor + PAGE_SIZE]],
                 "next_group_cursor": cursor + PAGE_SIZE if cursor + PAGE_SIZE < len(groups) else None,
@@ -154,12 +167,13 @@ class SignalSourceSession:
                 raise ValidationError("source document ceiling exceeded")
             rows, lineage, intervals, windows = [], {}, deepcopy(self.intervals), []
             for request in reads:
-                window, projected, mapped, interval = self._read(request)
+                window, projected, mapped, read_intervals = self._read(request)
                 handle = request["source_ref"]
-                if any(interval[0] < end and start < interval[1]
-                       for start, end in intervals.get(handle, ())):
-                    raise ValidationError("duplicate or overlapping source read")
-                intervals.setdefault(handle, []).append(interval)
+                for interval in read_intervals:
+                    if any(interval[0] < end and start < interval[1]
+                           for start, end in intervals.get(handle, ())):
+                        raise ValidationError("duplicate or overlapping source read")
+                    intervals.setdefault(handle, []).append(interval)
                 if any(row["projection_id"] in self.lineage or row["projection_id"] in lineage for row in projected):
                     raise ValidationError("source fact group was already read")
                 windows.append(window)
@@ -200,16 +214,33 @@ class SignalSourceSession:
         document = self.sources[handle]
         selections = []
         if handle in self.groups:
+            from stock_opportunity_agent.research.evolution_core import (
+                _company_fact_periods_comparable, _optional_iso_date,
+            )
+
             for concept in self.groups[handle]["concepts"]:
                 records = concept["records"]
-                if not any(start < r["end"] and r["start"] < end for r in records):
+                addressed = [r for r in records if start < r["end"] and r["start"] < end]
+                if not addressed:
                     continue
-                # A selected current row brings its complete comparable and
-                # conflicting alternatives; never clip a JSON fact to fit.
+                parsed = [(r, json.loads(r["exact_span"])) for r in records]
+                periods = {_optional_iso_date(json.loads(r["exact_span"]).get("end")) for r in addressed}
+                # Retain all alternatives at addressed ends, then the nearest
+                # earlier comparable end for each of their durations.
+                primary = [(r, value) for r, value in parsed
+                           if _optional_iso_date(value.get("end")) in periods]
+                prior_periods = set()
+                for _r, value in primary:
+                    older = [_optional_iso_date(v.get("end")) for _other, v in parsed
+                        if _optional_iso_date(v.get("end")) < _optional_iso_date(value.get("end"))
+                        and _company_fact_periods_comparable(value, v)]
+                    if older:
+                        prior_periods.add(max(older))
+                selected = [r for r, v in parsed if _optional_iso_date(v.get("end")) in periods | prior_periods]
                 context = {k: concept[k] for k in ("taxonomy", "concept", "unit")}
-                context.update(source_context_partial=self.groups[handle]["partial"],
+                context.update(source_context_partial=True,
                     omitted_concept_count=self.groups[handle]["omitted_concept_count"])
-                selections.extend((r["start"], r["end"], context) for r in records)
+                selections.extend((r["start"], r["end"], context) for r in selected)
         else:
             # Preserve complete sentence units inside the requested window.
             # No relocation, character clipping or boundary-validator exception.
@@ -237,8 +268,7 @@ class SignalSourceSession:
         return ({"source_ref": handle, "requested_start": start, "requested_end": end,
                  "returned_units": len(rows), "next_offset": next_offset if next_offset < len(text) else None,
                  "source_complete": start == 0 and end == len(text) and handle not in self.groups},
-                rows, lineage, (min((a for a, _b, _c in selections), default=start),
-                                max((b for _a, b, _c in selections), default=start)))
+                rows, lineage, tuple((a, b) for a, b, _context in selections))
 
     @property
     def documents(self) -> tuple[RawInfoDocument, ...]:

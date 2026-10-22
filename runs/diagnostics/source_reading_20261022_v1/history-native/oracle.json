@@ -1,0 +1,17 @@
+{
+  "content_hash": "d9f8eaa2f5b3ce3ccfb3c315f5865515316d5d16b78d02ce0bc59141a73b8d3b",
+  "document_id": "disclosure-10",
+  "exact_span": "{\"end\":\"2022-06-30\",\"start\":\"2022-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":80}",
+  "must_read_initial_rank": 11,
+  "required_periods": [
+    "2022-06-30",
+    "2021-06-30"
+  ],
+  "required_rows": [
+    "{\"end\":\"2022-06-30\",\"start\":\"2022-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":80}",
+    "{\"end\":\"2021-06-30\",\"start\":\"2021-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":70}"
+  ],
+  "signal_ref": "historical_cash_flow_change:v1",
+  "source_only": true,
+  "value": "positive"
+}

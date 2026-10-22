@@ -1,6 +1,7 @@
 """Offline controls for reading authority, budgets and executor dependencies."""
 
 import json
+import re
 from copy import deepcopy
 from dataclasses import replace
 from datetime import timedelta
@@ -258,6 +259,52 @@ class SignalSourceReadingTests(TestCase):
         request = RawInfoRequest(request_id="read", description="proof", source_types=("filing",), minimum_distinct_periods=2)
         self.assertTrue(_retrieval_contract_coverage((d,), request)["contract_satisfied"])
         self.assertFalse(_retrieval_contract_coverage(s.visible_documents, request)["contract_satisfied"])
+
+    def test_older_original_period_is_readable_in_both_shapes_without_default_displacement(self):
+        from tests.test_mining_fact_semantics import typed_row
+        from stock_opportunity_agent.research.evolution_core import _company_facts_context
+
+        rows = pair_rows() + [typed_row(80, '2022-01-01', '2022-06-30'),
+            typed_row(81, '2022-01-01', '2022-06-30'),
+            typed_row(70, '2021-01-01', '2021-06-30'),
+            typed_row(1000, '2026-01-01', '2026-06-30')]
+        for typed in (True, False):
+            with self.subTest(typed=typed):
+                source_rows = rows if typed else [{**r, 'val': r['value']} for r in rows]
+                d = fact_document('older', source_rows, typed=typed)
+                default = _company_facts_context(d, max_content_chars=32000, query=None)
+                self.assertFalse(any(json.loads(r['exact_span'])['end'] == '2022-06-30'
+                    for c in default['concepts'] for r in c['records']))
+                s = SignalSourceSession(item_for((d,)), AS_OF)
+                card = s.catalog()['cards'][0]
+                literal = next(m for m in re.finditer(r'\{[^{}]*\}', d.content)
+                    if json.loads(m.group(0)).get('end') == '2022-06-30')
+                s.apply({'reads': [{'source_ref': card['source_ref'], 'offset': literal.start(), 'length': literal.end() - literal.start()}]})
+                selected = [json.loads(r['exact_text']) for r in s.rows]
+                self.assertEqual({r['end'] for r in selected}, {'2022-06-30', '2021-06-30'})
+                self.assertEqual(len(selected), 3)
+                self.assertTrue(all(r['exact_text'] in d.content for r in s.rows))
+                self.assertTrue(all('2026' not in r['exact_text'] for r in s.rows))
+                self.assertIn('2022-06-30', [g['period_end'] for g in card['fact_groups']])
+
+    def test_expanded_pair_does_not_block_unread_interleaved_concept(self):
+        from tests.test_mining_fact_semantics import typed_row
+        rows = pair_rows()
+        other = {**rows[0], 'tag': 'OtherFact', 'value': 9}
+        d = fact_document('interleaved', [rows[0], other, rows[1]])
+        s = SignalSourceSession(item_for((d,)), AS_OF)
+        card = s.catalog()['cards'][0]
+        groups = {g['concept']: g for g in card['fact_groups']}
+        first = groups[rows[0]['tag']]
+        # Address only the latest row; its earlier comparable expands across
+        # an unrelated row without claiming that intervening text was read.
+        row_literal = next(r for c in s.groups[card['source_ref']]['concepts'] if c['concept'] == rows[0]['tag']
+            for r in c['records'] if json.loads(r['exact_span'])['end'] == '2024-06-30')
+        s.apply({'reads': [{'source_ref': card['source_ref'], 'offset': row_literal['start'],
+                            'length': row_literal['end'] - row_literal['start']}]})
+        second = groups['OtherFact']
+        s.apply({'reads': [{'source_ref': card['source_ref'], 'offset': second['offset'], 'length': second['length']}]})
+        self.assertEqual(len(s.rows), 3)
 
     def test_budget_stop_retains_prior_usage_and_prevents_final_call(self):
         docs = sources()

@@ -1569,9 +1569,12 @@
         "reports/approved-reading-and-taxonomy-20261022.md",
         "runs/diagnostics/source_reading_20261022_v1/related-final.log",
         "runs/diagnostics/source_reading_20261022_v1/native-v2/acceptance.json",
-        "runs/diagnostics/source_reading_20261022_v1/native-restore.json"
+        "runs/diagnostics/source_reading_20261022_v1/native-restore.json",
+        "runs/diagnostics/source_reading_20261022_v1/history-before.log",
+        "runs/diagnostics/source_reading_20261022_v1/history-related-final.log",
+        "runs/diagnostics/source_reading_20261022_v1/history-native/acceptance.json"
       ],
-      "result": "User approved both interfaces; implemented taxonomy through producer/save/read/consumer and actual-read source-session dependencies with original bounded budgets.354associated checks pass/network0; broader1failure reproduces onprechangeHEAD. Freshsynthetic3roles/firstfinal1of1/0correction/31385logical reservation/externalLLMAPI0.25files unchanged/native reopen,3receipts retained. Initialprobe stoppedbeforedispatch because ranking premise false,0answers. No full F5/Mining/MVP closure: olderstructured windows still blocked by default latest/prior index; next repair shared reader addressing, not semantic sorting or a full successor."
+      "result": "User approved both interfaces; implemented taxonomy through producer/save/read/consumer and actual-read source-session dependencies with original bounded budgets.354associated checks pass/network0; broader1failure reproduces onprechangeHEAD. Freshsynthetic3roles/firstfinal1of1/0correction/31385logical reservation/externalLLMAPI0.25files unchanged/native reopen,3receipts retained. Initialprobe stoppedbeforedispatch because ranking premise false,0answers. No full F5/Mining/MVP closure: olderstructured windows still blocked by default latest/prior index; next repair shared reader addressing, not semantic sorting or a full successor. Historical addressing locally repaired/default behavior retained,356associated tests pass. Newfresh historical1role stage0of1: separate current/prior requested windows overlap only after automatic comparable expansion, causing technical false rejection before body disclosure. Preserve completed original; repair implicit expansion merging, not author answer."
     }
   ],
   "review": {
@@ -1682,12 +1685,12 @@
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "repair",
-      "strategy": "shared_structured_history_addressing_after_bounded_source_session",
-      "action": "Design decisions are explicitly approved, replacing the prior human-decision blocker. Preserve the fresh synthetic native proof and implement/test access to older necessary original fact rows through the shared reader, without changing measurement definitions. Freeze new actual-source/fresh controls only after that boundary passes; no full successor.",
+      "strategy": "merge_only_implicit_comparable_overlap_within_one_read_exchange",
+      "action": "Preserve completed fresh history0of1 and exact raw action. Merge automatically attached comparable rows across distinct non-overlapping requested windows in the same exchange, while keeping explicit duplicates/overlap and already-read windows rejected. Add native-action replay, variants, negative controls and fresh new-stage proof; no full successor.",
       "stop": "Do not claim F5 or MVP closure from local tests/synthetic protocol. Keep source trust, unknown measurement definitions, full feedback/Mining/admission/reuse and whole-loop recovery open. External LLM API stays zero; use exact independent subagents for role requests.",
-      "question": "Can source-session coordinates disclose an older required original fact row omitted by the default latest/comparable index, while preserving PIT/conflicts/units and closed citation authority?",
-      "pass": "Original older row, variant and counterexamples are reachable by exact source coordinates; full literals and alternative same-period rows remain bound; no unseen coverage or budget excess.",
-      "fail": "Older row returns no text, unrelated/default period displaces it, alternatives or metadata disappear, or any read/identity/budget/evidence boundary regresses.",
+      "question": "Does one exchange accept distinct current/prior windows whose automatic comparable closure overlaps, without accepting explicit duplicate/overlapping requested windows or rereading prior exchanges?",
+      "pass": "Original fresh action and variants disclose one copy of each complete fact, within unchanged limits; explicit repeated/overlapping requests and prior-exchange rereads remain rejected.",
+      "fail": "Implicit closure still rejects valid distinct reads, duplicate text is billed/disclosed twice, or repeated requested coordinates become accepted.",
       "on_pass": "Freeze a new bounded actual-source/fresh-subagent control and inspect its accepted downstream consumption; retain all old failures and completed stage identities.",
       "on_fail": "Stop fresh/full runs, localize reader indexing versus window/group closure and repair that deterministic boundary; do not change the research definition or tune semantic ranking."
     }

@@ -254,6 +254,17 @@ than being treated as processed or silently dropped. The full archival view stay
 available as `archive_view()` for persistence and offline audit; `model_view()`
 returns the bounded brief dictionary. Blind roles cannot read the index.
 
+The shared Company Facts reader has an internal `include_history=False` option.
+Its default keeps the existing latest/comparable projection and all callers'
+budgets unchanged. Bounded Signal source sessions alone request all valid
+historical rows for a local coordinate index; this does not disclose those rows
+to a model. The index uses the same PIT/date/shape/literal rules. Addressed reads
+then retain every intersected period's conflicting duration/value alternatives
+and nearest earlier comparable period, as complete units within the existing
+reading budget. Older indexed periods cannot be silently replaced by the default
+latest period. The bounded catalog pages namespace/concept/unit/period coordinate
+groups, never fabricates a new historical record or measurement definition.
+
 For the supported SEC Company Facts response shape, model-facing document views
 preserve taxonomy concept, provider label, unit, and up to the latest necessary
 distinct reporting periods together. Every visible record carries its complete

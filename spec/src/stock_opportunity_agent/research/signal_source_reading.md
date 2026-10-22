@@ -11,9 +11,11 @@ complete individual records. Pages contain at most 20 cards, with 140-character
 previews and at most 20 structured group coordinates per card. Additional source
 pages or group pages consume a reading exchange. Catalog previews count toward
 the 32,000-character ceiling, but cannot authorize final citations. Metadata and
-bounded catalogs never prove absence. Structured group membership is the
-existing Company Facts reader's latest/comparable/conflicting context, not every
-historical observation; its partial status remains visible.
+bounded catalogs never prove absence. The local coordinate index requests all
+valid historical rows from the shared reader; catalog entries page complete
+namespace/concept/unit/period groups in breadth-first period order. Default
+reader callers retain their latest/comparable behavior. Invalid/future rows and
+index omissions remain partial; indexing alone does not mean model visibility.
 
 One session accepts at most two exchanges, five windows per exchange and ten
 distinct sources. An action is exactly reads, source-catalog cursor, fact-group
@@ -22,8 +24,10 @@ or normalized-readable system. Validate the entire read exchange before applying
 it. Reject unknown/version-mismatched handles, overlap/repeated source groups and
 any character overflow without disclosing a partial fact or sentence.
 
-Structured reads expand an intersected group atomically to all retained latest,
-comparable and conflicting rows of that namespace/concept/unit. Narrative reads
+Structured reads expand each intersected period atomically to all conflicting
+duration/value rows and each duration's nearest earlier comparable period in
+the same namespace/concept/unit, including periods older than the default view.
+The tool never adds a later period to replace the addressed older period. Narrative reads
 retain complete sentence units inside the addressed window and report a
 continuation when a complete unit could not fit. Raw-offset lineage remains bound
 to unchanged originals; existing literal/whole-word/boundary checks still apply.

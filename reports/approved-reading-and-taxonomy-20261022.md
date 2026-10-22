@@ -75,3 +75,31 @@ units and atomic comparable groups; test an older necessary period outside the
 default selection. Then freeze fresh actual-source controls and verify Reflect/
 consumer meaning. This synthetic protocol pass does not close F5, source trust,
 direction/magnitude Mining, admission/reuse or the complete Fast/Slow loop.
+
+
+## Historical coordinate follow-up, first candidate
+
+The shared reader now has an internal include-history index option; default
+callers retain their original latest/comparable selection. Explicit typed and
+legacy reads reach older source rows, retain same-period conflicts and nearest
+comparable rows, and avoid claiming unread gaps between interleaved records.
+Two controls fail against revision 1100b208 (both source-shape older reads return
+empty; interleaved reading is falsely blocked), then pass on this candidate.
+[356 associated checks](../runs/diagnostics/source_reading_20261022_v1/history-related-final.log)
+pass, network attempts zero.
+
+The [first fresh historical probe](../runs/diagnostics/source_reading_20261022_v1/history-native/acceptance.json)
+is **0/1**, one fresh role / 13,398 logical reservation / zero external LLM APIs.
+Its author selected two distinct non-overlapping 2022 and 2021 raw windows. The
+tool expanded the first to include its comparable and then rejected the second
+as overlapping. It disclosed no body and accepted no semantic result. The
+original response and completed failure stay unchanged. This is a deterministic
+interface false rejection: tests had only addressed one window at a time.
+A source-preparation-only duplicate-body fixture error and an attempted resume
+without a prepared contract are also retained; neither created a request.
+
+Next distinguish explicit duplicate/overlapping requested coordinates from
+automatically attached comparable rows within the same exchange. Merge only
+those implicit expansions, count each literal once, keep explicit duplicates
+and already-read windows rejected, then freeze a new fresh control. No F5 or
+MVP closure is claimed.

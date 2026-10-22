@@ -6754,6 +6754,7 @@ def _company_facts_context(
     *,
     max_content_chars: int,
     query: str | None,
+    include_history: bool = False,
 ) -> dict[str, Any] | None:
     """Project supported SEC Company Facts with exact raw record spans."""
 
@@ -6764,7 +6765,8 @@ def _company_facts_context(
     facts = payload.get("facts") if isinstance(payload, Mapping) else None
     if isinstance(payload, Mapping) and payload.get("schema_version") == "sec-company-facts-document-v1":
         return _typed_company_facts_context(
-            document, payload, max_content_chars=max_content_chars, query=query
+            document, payload, max_content_chars=max_content_chars, query=query,
+            include_history=include_history,
         )
     if not isinstance(facts, Mapping):
         return None
@@ -6857,7 +6859,7 @@ def _company_facts_context(
                         selected_offsets.update(item[3]["start"] for item in comparable
                                                 if item[0] == prior_period)
                 selected_records = [item for item in matched_records
-                                    if item[3]["start"] in selected_offsets]
+                                    if include_history or item[3]["start"] in selected_offsets]
                 selected_periods = [item[3] for item in selected_records]
                 entry = {
                     "taxonomy": str(taxonomy),
@@ -6975,6 +6977,7 @@ def _typed_company_facts_context(
     document: RawInfoDocument,
     payload: Mapping[str, Any],
     *, max_content_chars: int, query: str | None,
+    include_history: bool = False,
 ) -> dict[str, Any]:
     """Read accession rows without losing same-period alternatives or literals."""
 
@@ -7023,7 +7026,7 @@ def _typed_company_facts_context(
             if comparable:
                 prior_end = max(item[2] for item in comparable)
                 selected_offsets.update(item[1]["start"] for item in comparable if item[2] == prior_end)
-        selected = sorted((item for item in rows if item[1]["start"] in selected_offsets),
+        selected = sorted((item for item in rows if include_history or item[1]["start"] in selected_offsets),
                           key=lambda item: (-item[2].toordinal(), item[1]["start"]))
         label = latest[0][0].get("label", "")
         label = label if isinstance(label, str) else ""
