@@ -56,6 +56,13 @@ Replay uses those same positions and cached originals, not a fresh allowance
 for additional decisions. An oversized prepared request is retained as a
 blocked attempt and terminates the sample before any inbox or receive.
 
+For a separately frozen diagnostic version, `build_controller` may receive
+explicit role request limits; its default remains absent for historical replay.
+The Client estimator appends exactly the same module envelope as completion.
+The role's sequential consumed accounting discloses these limits without using
+future persisted requests to rewrite earlier replay payloads. This adds no
+authorization to restart either completed historical sample.
+
 Before formal prepare, run a separate all-steps local preflight through actual
 transport request-ready boundaries with controlled synthetic actions, capturing
 whole context/receipt preservation, budget and anonymity, with0receive/inbox.

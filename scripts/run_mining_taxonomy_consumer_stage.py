@@ -169,6 +169,10 @@ def make_client(root, sample, contract, *, input_only=False):
     class Client(StructuredRoleClient):
         module_decisions = 0
 
+        def estimate_json_request_tokens(self, **kwargs):
+            kwargs["system_prompt"] += ENVELOPE.format(concept=sample["concept"])
+            return super().estimate_json_request_tokens(**kwargs)
+
         def complete_json(self, **kwargs):
             self.module_decisions += 1
             if self.module_decisions > LIMITS["max_local_role_calls"]:
@@ -183,7 +187,7 @@ def make_client(root, sample, contract, *, input_only=False):
         allow_external=False, environ={}, on_progress=observe)
 
 
-def build_controller(root, sample, client, *, controlled_query=None):
+def build_controller(root, sample, client, *, controlled_query=None, request_limits=None):
     """Construct the real Controller and execute the declared controlled fetch."""
     if "snapshot" in sample:
         snap = sample["snapshot"]
@@ -200,7 +204,8 @@ def build_controller(root, sample, client, *, controlled_query=None):
         prediction_time=datetime.fromisoformat(sample["cutoff"]),
         ground_truth=SimpleNamespace(is_surge=sample["label"] == "positive"))
     aliases = (sample["case_id"], sample["company_id"])
-    inner = MiningAgentRoleModel(client, identity_aliases=aliases, max_output_tokens=2000)
+    inner = MiningAgentRoleModel(client, identity_aliases=aliases, max_output_tokens=2000,
+        **(request_limits or {}))
     class RecordingModel:
         def __init__(self):
             self.calls = 0

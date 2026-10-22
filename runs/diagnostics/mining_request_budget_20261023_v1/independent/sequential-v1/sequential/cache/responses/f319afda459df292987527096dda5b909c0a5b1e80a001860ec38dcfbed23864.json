@@ -1,0 +1,24 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "inspect_manifest",
+    "rationale": [
+      "Synthetic sequence 0 only."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"inspect_manifest\",\"rationale\":[\"Synthetic sequence 0 only.\"]}",
+  "request_hash": "f319afda459df292987527096dda5b909c0a5b1e80a001860ec38dcfbed23864",
+  "response_id": "local-f319afda459df292987527096dda5b909c0a5b1e80a001860ec38dcfbed23864",
+  "usage": {
+    "accounting_tokens": 18071,
+    "agent_id": "synthetic-independent-budget-fixture-not-fresh-LLM",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "a60ff4a4d8e8bd91fb6362fa731659f8108c8b312708e4135c6e07d2dee48da7",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "4d7e7a0899d6718a5f7d712335739a576f1f054c4d1cd5fde7f4aada5f3e28e4",
+    "request_hash": "f319afda459df292987527096dda5b909c0a5b1e80a001860ec38dcfbed23864",
+    "token_usage": null
+  }
+}

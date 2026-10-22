@@ -1,0 +1,18 @@
+[
+  {
+    "path": "src/stock_opportunity_agent/research/mining_role_model.py",
+    "sha256": "1a2adc2beba1c9f3c358fa744364f1c4490f59913af71e2d3e4bf184e8aecfc8"
+  },
+  {
+    "path": "src/stock_opportunity_agent/research/evolution_transport.py",
+    "sha256": "305843bfec6abfca8e45aba279c34f601619d8ce72c704302a7a1ca8ee0bc9e6"
+  },
+  {
+    "path": "scripts/run_mining_taxonomy_consumer_stage.py",
+    "sha256": "61ae6940fa1f7d48b9ff8bd8f8f2888853aabc72d094eb560aef665464b52832"
+  },
+  {
+    "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+    "sha256": "862f6ba65c22a38c779ed5bbae5151ba96c68bb6b8e446d66f8a433c9c1c2f88"
+  }
+]

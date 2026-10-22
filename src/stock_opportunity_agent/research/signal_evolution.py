@@ -6549,6 +6549,7 @@ class SignalEvolutionEngine:
         }
         model = MiningAgentRoleModel(
             caller,
+            max_request_tokens=getattr(self.mining_model, "request_token_budget", None),
             identity_aliases=_scoped_slow_identity_guard_inventory(
                 self._discovery_cases_by_id.values()
             ),

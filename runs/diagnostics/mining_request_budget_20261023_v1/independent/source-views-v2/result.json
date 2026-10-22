@@ -1,0 +1,236 @@
+{
+  "at": "2026-10-22T22:05:36.634653+00:00",
+  "external_API": 0,
+  "fresh_answers": 0,
+  "results": [
+    {
+      "inboxes": 0,
+      "pass": true,
+      "requests": [
+        {
+          "budget": {
+            "call_limit": 6,
+            "calls_remaining_after": 5,
+            "calls_used": 0,
+            "next_minimum": 15234,
+            "remaining_after": "00000000000000076666",
+            "single_limit": 32768,
+            "this_request": "00000000000000021638",
+            "total_limit": 98304,
+            "unit": "bytes_plus_output",
+            "used": 0
+          },
+          "reservation": 21638,
+          "scripted_action": {
+            "action": "compare_groups",
+            "concepts": [
+              "CashFlowsFromUsedInOperatingActivities"
+            ],
+            "rationale": [
+              "Deterministic source-view cost preflight, no model answer."
+            ]
+          },
+          "source_receipts": 0,
+          "step": 1
+        },
+        {
+          "budget": {
+            "call_limit": 6,
+            "calls_remaining_after": 4,
+            "calls_used": 1,
+            "next_minimum": 15234,
+            "remaining_after": "00000000000000053667",
+            "single_limit": 32768,
+            "this_request": "00000000000000022999",
+            "total_limit": 98304,
+            "unit": "bytes_plus_output",
+            "used": 21638
+          },
+          "reservation": 22999,
+          "scripted_action": {
+            "action": "read_span",
+            "fact_ref": "fact-74cea942438e2cd0",
+            "rationale": [
+              "Deterministic source-view cost preflight, no model answer."
+            ]
+          },
+          "source_receipts": 0,
+          "step": 2
+        },
+        {
+          "budget": {
+            "call_limit": 6,
+            "calls_remaining_after": 3,
+            "calls_used": 2,
+            "next_minimum": 15234,
+            "remaining_after": "00000000000000027999",
+            "single_limit": 32768,
+            "this_request": "00000000000000025668",
+            "total_limit": 98304,
+            "unit": "bytes_plus_output",
+            "used": 44637
+          },
+          "reservation": 25668,
+          "scripted_action": {
+            "action": "read_span",
+            "fact_ref": "fact-969421320623f49b",
+            "rationale": [
+              "Deterministic source-view cost preflight, no model answer."
+            ]
+          },
+          "source_receipts": 1,
+          "step": 3
+        },
+        {
+          "budget": {
+            "call_limit": 6,
+            "calls_remaining_after": 2,
+            "calls_used": 3,
+            "next_minimum": 15234,
+            "remaining_after": "00000000000000000875",
+            "single_limit": 32768,
+            "this_request": "00000000000000027124",
+            "total_limit": 98304,
+            "unit": "bytes_plus_output",
+            "used": 70305
+          },
+          "reservation": 27124,
+          "scripted_action": {
+            "action": "record_deferred",
+            "rationale": [
+              "Deterministic source-view cost preflight, no model answer."
+            ]
+          },
+          "source_receipts": 2,
+          "step": 4
+        }
+      ],
+      "sample": "a",
+      "total": 97429
+    },
+    {
+      "inboxes": 0,
+      "pass": true,
+      "requests": [
+        {
+          "budget": {
+            "call_limit": 6,
+            "calls_remaining_after": 5,
+            "calls_used": 0,
+            "next_minimum": 15238,
+            "remaining_after": "00000000000000078104",
+            "single_limit": 32768,
+            "this_request": "00000000000000020200",
+            "total_limit": 98304,
+            "unit": "bytes_plus_output",
+            "used": 0
+          },
+          "reservation": 20200,
+          "scripted_action": {
+            "action": "compare_groups",
+            "concepts": [
+              "NetCashProvidedByUsedInOperatingActivities"
+            ],
+            "rationale": [
+              "Deterministic source-view cost preflight, no model answer."
+            ]
+          },
+          "source_receipts": 0,
+          "step": 1
+        },
+        {
+          "budget": {
+            "call_limit": 6,
+            "calls_remaining_after": 4,
+            "calls_used": 1,
+            "next_minimum": 15238,
+            "remaining_after": "00000000000000056532",
+            "single_limit": 32768,
+            "this_request": "00000000000000021572",
+            "total_limit": 98304,
+            "unit": "bytes_plus_output",
+            "used": 20200
+          },
+          "reservation": 21572,
+          "scripted_action": {
+            "action": "read_span",
+            "fact_ref": "fact-6963faafa552b5b8",
+            "rationale": [
+              "Deterministic source-view cost preflight, no model answer."
+            ]
+          },
+          "source_receipts": 0,
+          "step": 2
+        },
+        {
+          "budget": {
+            "call_limit": 6,
+            "calls_remaining_after": 3,
+            "calls_used": 2,
+            "next_minimum": 15238,
+            "remaining_after": "00000000000000031796",
+            "single_limit": 32768,
+            "this_request": "00000000000000024736",
+            "total_limit": 98304,
+            "unit": "bytes_plus_output",
+            "used": 41772
+          },
+          "reservation": 24736,
+          "scripted_action": {
+            "action": "read_span",
+            "fact_ref": "fact-0beda24d07c3b1cd",
+            "rationale": [
+              "Deterministic source-view cost preflight, no model answer."
+            ]
+          },
+          "source_receipts": 1,
+          "step": 3
+        },
+        {
+          "budget": {
+            "call_limit": 6,
+            "calls_remaining_after": 2,
+            "calls_used": 3,
+            "next_minimum": 15238,
+            "remaining_after": "00000000000000005463",
+            "single_limit": 32768,
+            "this_request": "00000000000000026333",
+            "total_limit": 98304,
+            "unit": "bytes_plus_output",
+            "used": 66508
+          },
+          "reservation": 26333,
+          "scripted_action": {
+            "action": "record_deferred",
+            "rationale": [
+              "Deterministic source-view cost preflight, no model answer."
+            ]
+          },
+          "source_receipts": 2,
+          "step": 4
+        }
+      ],
+      "sample": "b",
+      "total": 92841
+    }
+  ],
+  "scope": "source-only rebuilt real views with explicitly simulated logical resource counters, no receive/answers/fresh model evidence",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "0d5e55746264defae38e8a95f763ddf60f05a5e34de7a64f80649659ee2ee976"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "305843bfec6abfca8e45aba279c34f601619d8ce72c704302a7a1ca8ee0bc9e6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py",
+      "sha256": "61ae6940fa1f7d48b9ff8bd8f8f2888853aabc72d094eb560aef665464b52832"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_mining_locator_generalization_stage.py",
+      "sha256": "e666b4bb455e51f01a6bc99e78e444bb57745a6a79051a3552982da654a02bf1"
+    }
+  ]
+}

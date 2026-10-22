@@ -6,9 +6,9 @@
 
 ## 最新实证
 
-[来源身份/提示成本](../reports/mining-source-identity-and-prompt-20261023.md)：显式SEC坐标可逆投影，19反例/341关联过；完整提示12953→11098bytes，义务未删，原102563零作者前置保留。
-同源两控正式首跑8fresh/0纠错，实际双operand读取/namespace/期间/数值与合法差值均准确；四答95265/90677，随后25385/24396使原98304预算阻断，无第五inbox，模块端点0/2。
-独立核1791来源/108代码/68封存同；模型仅见工具次数，未见stage累计请求成本/余量，下一修预算到决策view的连接，不归为作者语义错、不重入/加预算。非全匿名/Mining闭环。
+[请求预算连接](../reports/mining-request-budget-visibility-20261023.md)：明确scope的成本/余量/下一请求下界进入实际payload，原生普通/patch/identity估算同；生产只接既有single上限、不增aggregate。397关联/独立17组过，网络0。
+原初预算异常误入内容纠错、zero-usage前置拒绝误扣两反例保留后修；顺序cache重建同、默认请求与旧完整字节/hash同。实际两源纯输入四步97429/92841在原98304内，模拟计数/0fresh，不证明规划通过。
+[来源身份/提示成本](../reports/mining-source-identity-and-prompt-20261023.md)显式SEC坐标可逆、完整提示义务保持；原生两控8fresh的双operand/差值准确，但第五超预算/无inbox，端点0/2保留，不重入/加预算。非全匿名/Mining闭环。
 [定向query修复](../reports/mining-query-projection-and-generalization-20261023.md)：query贯穿完整concept投影，1179目标0→2；3原件noquery逐字段同，276关联/独立审查过、网络0。
 预冻两控正式结果1/2：namespace首endpoint通过；actual丢prior locator重compare，第5请求受原98304预算阻断。7fresh/0纠错，answered154184；actual90772+blocked26243、namespace63412，无补答/加预算。
 [比较locator修复](../reports/mining-comparison-locators-20261023.md)现保留实际比较whole units并绑定fact/group/axis快照，变更时progress/last双副本失效；273关联/独立反例过、网络0。
@@ -96,5 +96,5 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   [章节导航与真实控制](../reports/narrative-source-navigation-20261023.md)共用数据层matcher、各自坐标/分页、标题原子计预算；251关联/独立24过，网络0。旧v1形状与commercialization/v5净影响多义仍保留，未改定义。
   私有90日本金到期控制3fresh角色提取正确事实/0纠错、117566逻辑预留、29files同；更强oracle严审0of1不改。额外义务现已逐条对定义映射，不冒称错对象/日期；未发布/非Mining，整体F5/MVP仍open。
   gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
-- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证；当前先修原生预算信息可见性，终态两控0/2不重入。
+- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证；下一先冻有充分材料的能力正控/完整成本，再验fresh规划与真实测量链，终态两控0/2不重入。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

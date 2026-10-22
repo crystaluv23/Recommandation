@@ -1,0 +1,22 @@
+{
+  "actual_method": "SignalEvolutionEngine._run_controller_mining_axis",
+  "captured": [
+    {
+      "request_limits": {
+        "single_limit": 32768
+      },
+      "reserved_calls": 0,
+      "reserved_tokens": 0,
+      "seed": "hypothesis"
+    }
+  ],
+  "check_LockedTest": 0,
+  "external_API": 0,
+  "new_business_labels": 0,
+  "pass": true,
+  "scope": "executed production role construction until synthetic sentinel at controller factory; no controller run/no model/no business cases; does not establish full production semantic execution",
+  "source_binding": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+    "sha256": "862f6ba65c22a38c779ed5bbae5151ba96c68bb6b8e446d66f8a433c9c1c2f88"
+  }
+}

@@ -1,0 +1,1 @@
+{"action":"inspect_manifest","rationale":["Issuer Alpha"]}

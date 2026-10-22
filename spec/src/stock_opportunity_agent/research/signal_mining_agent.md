@@ -69,6 +69,38 @@ branches verbatim. Compare complete contractual meaning and actual composed
 request bytes; text equality, savings arithmetic and offline tests alone do
 not establish fresh semantic behavior.
 
+### Explicit request budgets at the role boundary
+
+Tool counters do not describe LLM request cost. A runtime may explicitly bind
+the role instance's single-request byte-plus-output limit, cumulative logical
+reservation limit and/or call limit. Omitted limits remain unknown, not inferred
+from unrelated H1, tool, memory or provider ceilings. Production controller
+construction forwards the existing Mining model's single-request limit only;
+it does not invent an aggregate/seed/cycle limit.
+
+When any such limit is supplied, the actual decision payload adds a separate
+runtime-owned `request_budget`: supplied limits, consumed logical reservations,
+the complete current request's reservation, remaining aggregate allowance after
+that request, and the minimum reservation of a subsequent request using the
+unchanged shared prompt/output allowance and an empty payload. The latter is a
+lower bound, never an estimate of an unknown tool result. Calls used/remaining
+are disclosed when capped. Tool-free terminals/dispositions still require an
+LLM decision; preserve gaps and choose a supported control-plane terminal when
+another request cannot fit. This does not impose an action order, remove tools,
+authorize a domain conclusion or change any terminal prerequisite.
+
+Estimation includes the complete normal/typed-patch prompt, wrapper envelope,
+identity projection and budget metadata itself. The two self-referential cost
+fields use fixed-width decimal strings so inserting their exact values cannot
+change their own wire size; all values are exact integers, not host token usage.
+Hard rejection uses existing control flow before prepare/dispatch, never a
+research verdict or model-content correction. Native malformed, identity-rejected
+and nonobject answers consume their reservation; pending/pre-dispatch exceptions
+do not. Reconstruction replays consumed answers in order and reproduces the
+same budget metadata/hash without counting future prepared files or asking
+again. Default uncapped adapters preserve their prior prompt/payload/behavior.
+Local safety/accounting tests do not prove fresh planning or MVP completion.
+
 ### Shared Evidence Graph
 
 - The graph is virtual and lazy. Facts project only from documents already

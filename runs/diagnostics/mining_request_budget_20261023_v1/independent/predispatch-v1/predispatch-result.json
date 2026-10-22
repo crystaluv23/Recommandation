@@ -1,0 +1,31 @@
+{
+  "after": {
+    "calls": 1,
+    "tokens": 18055
+  },
+  "before": {
+    "calls": 0,
+    "tokens": 0
+  },
+  "error": {
+    "message": "no-progress identical correction request 96d4119afa84a95bcb8b675a3f372fa5263cd4fb54fe627f913c6ac9b634f1c2: the exact-response cache would replay the previously rejected response; change the output instead of re-sending it",
+    "type": "CandidateExecutionRejected",
+    "usage": {
+      "llm_calls": 0,
+      "tokens": 0
+    }
+  },
+  "evidence": "native pre-dispatch synthetic fixture, zero authored answers",
+  "pass": false,
+  "receipts": 0,
+  "source_bindings": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "1a2adc2beba1c9f3c358fa744364f1c4490f59913af71e2d3e4bf184e8aecfc8"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "305843bfec6abfca8e45aba279c34f601619d8ce72c704302a7a1ca8ee0bc9e6"
+    }
+  ]
+}

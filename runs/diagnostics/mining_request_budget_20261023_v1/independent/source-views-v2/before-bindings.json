@@ -1,0 +1,18 @@
+[
+  {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+    "sha256": "0d5e55746264defae38e8a95f763ddf60f05a5e34de7a64f80649659ee2ee976"
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+    "sha256": "305843bfec6abfca8e45aba279c34f601619d8ce72c704302a7a1ca8ee0bc9e6"
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py",
+    "sha256": "61ae6940fa1f7d48b9ff8bd8f8f2888853aabc72d094eb560aef665464b52832"
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/scripts/run_mining_locator_generalization_stage.py",
+    "sha256": "e666b4bb455e51f01a6bc99e78e444bb57745a6a79051a3552982da654a02bf1"
+  }
+]

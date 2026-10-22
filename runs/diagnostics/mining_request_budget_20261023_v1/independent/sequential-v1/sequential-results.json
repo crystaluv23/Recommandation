@@ -1,0 +1,127 @@
+{
+  "all_physical_files_unchanged": true,
+  "consumed_calls": 3,
+  "external_API": 0,
+  "future_prepared_budget": {
+    "call_limit": 6,
+    "calls_remaining_after": 2,
+    "calls_used": 3,
+    "next_minimum": 14223,
+    "remaining_after": "00000000000000127704",
+    "single_limit": 99999,
+    "this_request": "00000000000000018075",
+    "total_limit": 200000,
+    "unit": "bytes_plus_output",
+    "used": 54221
+  },
+  "original": [
+    {
+      "budget": {
+        "call_limit": 6,
+        "calls_remaining_after": 5,
+        "calls_used": 0,
+        "next_minimum": 14223,
+        "remaining_after": "00000000000000181929",
+        "single_limit": 99999,
+        "this_request": "00000000000000018071",
+        "total_limit": 200000,
+        "unit": "bytes_plus_output",
+        "used": 0
+      },
+      "hash": "f319afda459df292987527096dda5b909c0a5b1e80a001860ec38dcfbed23864",
+      "reservation": 18071
+    },
+    {
+      "budget": {
+        "call_limit": 6,
+        "calls_remaining_after": 4,
+        "calls_used": 1,
+        "next_minimum": 14223,
+        "remaining_after": "00000000000000163854",
+        "single_limit": 99999,
+        "this_request": "00000000000000018075",
+        "total_limit": 200000,
+        "unit": "bytes_plus_output",
+        "used": 18071
+      },
+      "hash": "dc3d6545d131d10a4f414fba42db817b7fb44576611c6cbfe0fa4ec3c3dee11c",
+      "reservation": 18075
+    },
+    {
+      "budget": {
+        "call_limit": 6,
+        "calls_remaining_after": 3,
+        "calls_used": 2,
+        "next_minimum": 14223,
+        "remaining_after": "00000000000000145779",
+        "single_limit": 99999,
+        "this_request": "00000000000000018075",
+        "total_limit": 200000,
+        "unit": "bytes_plus_output",
+        "used": 36146
+      },
+      "hash": "d08263118525066258ee9e1b4183d20c6be2f06537831a6115f22a03e6a94e7f",
+      "reservation": 18075
+    }
+  ],
+  "pass": true,
+  "physical_receipts": 3,
+  "replayed": [
+    {
+      "budget": {
+        "call_limit": 6,
+        "calls_remaining_after": 5,
+        "calls_used": 0,
+        "next_minimum": 14223,
+        "remaining_after": "00000000000000181929",
+        "single_limit": 99999,
+        "this_request": "00000000000000018071",
+        "total_limit": 200000,
+        "unit": "bytes_plus_output",
+        "used": 0
+      },
+      "hash": "f319afda459df292987527096dda5b909c0a5b1e80a001860ec38dcfbed23864"
+    },
+    {
+      "budget": {
+        "call_limit": 6,
+        "calls_remaining_after": 4,
+        "calls_used": 1,
+        "next_minimum": 14223,
+        "remaining_after": "00000000000000163854",
+        "single_limit": 99999,
+        "this_request": "00000000000000018075",
+        "total_limit": 200000,
+        "unit": "bytes_plus_output",
+        "used": 18071
+      },
+      "hash": "dc3d6545d131d10a4f414fba42db817b7fb44576611c6cbfe0fa4ec3c3dee11c"
+    },
+    {
+      "budget": {
+        "call_limit": 6,
+        "calls_remaining_after": 3,
+        "calls_used": 2,
+        "next_minimum": 14223,
+        "remaining_after": "00000000000000145779",
+        "single_limit": 99999,
+        "this_request": "00000000000000018075",
+        "total_limit": 200000,
+        "unit": "bytes_plus_output",
+        "used": 36146
+      },
+      "hash": "d08263118525066258ee9e1b4183d20c6be2f06537831a6115f22a03e6a94e7f"
+    }
+  ],
+  "scope": "native synthetic replay only, no fresh LLM or old stage advancement",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "0d5e55746264defae38e8a95f763ddf60f05a5e34de7a64f80649659ee2ee976"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "305843bfec6abfca8e45aba279c34f601619d8ce72c704302a7a1ca8ee0bc9e6"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "inspect_manifest",
+    "rationale": [
+      "Issuer Alpha"
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"inspect_manifest\",\"rationale\":[\"Issuer Alpha\"]}",
+  "request_hash": "1c09bfe634f57a2caee5aa9fb1f85a08cc770f26541277ffe146dc55c3757d72",
+  "response_id": "local-1c09bfe634f57a2caee5aa9fb1f85a08cc770f26541277ffe146dc55c3757d72",
+  "usage": {
+    "accounting_tokens": 18056,
+    "agent_id": "synthetic-independent-budget-fixture-not-fresh-LLM",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "95a518938e4f334ea6f970b62778ea0ef63e0019059cbd1353d75a9c70aef838",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "b582f2b476f4bb42753140c221fb0c25c6d753c9fecfe5b00a0dc521e3f39267",
+    "request_hash": "1c09bfe634f57a2caee5aa9fb1f85a08cc770f26541277ffe146dc55c3757d72",
+    "token_usage": null
+  }
+}

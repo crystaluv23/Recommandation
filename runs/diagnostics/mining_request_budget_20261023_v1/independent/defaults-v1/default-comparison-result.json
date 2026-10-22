@@ -1,0 +1,10 @@
+{
+  "answers": 0,
+  "current_role_sha256": "0d5e55746264defae38e8a95f763ddf60f05a5e34de7a64f80649659ee2ee976",
+  "exact_request_hash": "2aeb930c70223b180cde4f441b6a13d7cafdbc657f88db6b63c966efbc071a65",
+  "external_API": 0,
+  "frozen_original_role_sha256": "646e4e74fff1d8f7f93c6895ecd008ef9ec960f4a18f05f89e9582eccd3d20ef",
+  "full_requests_identical": true,
+  "pass": true,
+  "scope": "native default exact-request comparison only"
+}

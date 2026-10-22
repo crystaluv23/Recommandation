@@ -1,0 +1,472 @@
+{
+  "controls": [
+    {
+      "id": "original-sealed",
+      "obligation": "All ten saved views and eight answered requests omit request_budget; two fifth requests prepared but not consumed; original failures persist."
+    },
+    {
+      "id": "exact-current",
+      "obligation": "Current reservation equals exact serialized transformed messages plus effective output; metadata self-cost solved to conservative fixed point, digit transitions near 9/10,99/100,999/1000."
+    },
+    {
+      "id": "equal-cap",
+      "obligation": "At cap admits; cap minus one rejects before dispatch; each single/aggregate/call independently enforced."
+    },
+    {
+      "id": "next-lower-bound",
+      "obligation": "Unknown next grammar: shared global prompt plus minimum normal/typed grammar + empty payload is lower bound; never current repair prompt cost presented as universal next bound; metadata wording discloses lower bound only."
+    },
+    {
+      "id": "identity",
+      "obligation": "Aliases including explicit SEC accession/projected source handles and unicode change bytes; estimate equals complete after reversible projection."
+    },
+    {
+      "id": "transport-envelope",
+      "obligation": "Native local-role estimator uses exact local message bytes; provider estimate wire bytes only for nonlocal provider path. Wrapper-added envelope is included exactly once in estimate and complete."
+    },
+    {
+      "id": "usage-malformed",
+      "obligation": "Malformed JSON/nonobject response or identity-rejected consumed answer charges reservation/call; neither exception may silently refund consumed call."
+    },
+    {
+      "id": "usage-pending",
+      "obligation": "InputCaptured, LocalRoleResponsePending, ExternalRequestPending/pre-dispatch exception and budget rejection charge zero; same model remains able to reconstruct attempt without false debt."
+    },
+    {
+      "id": "typed-repair",
+      "obligation": "Invalid action with output_patch_contract preserves patch instructions/base/allowed paths and normal invalid feedback; budget hard stop remains EvolutionControlFlow and never creates semantic no_pattern or repair."
+    },
+    {
+      "id": "shared-model-seeds",
+      "obligation": "One shared model across hypothesis/discovery retains one aggregate lifetime; production wires existing per-request cap only."
+    },
+    {
+      "id": "replay-sequential",
+      "obligation": "Earlier replay view sees only earlier consumed calls; no sum of future prepared files; duplicated exact-response replay causes no duplicate physical receipts, while logical replay reservation is reconstructed consistently."
+    },
+    {
+      "id": "bounded-original-controls",
+      "obligation": "Only explicit diagnostic opt-in single32768/aggregate98304/calls6; old sealed stages never advanced or rewritten; local pass grants no fresh control permission."
+    }
+  ],
+  "frozen_at_utc": "2026-10-22T22:00:22.135642+00:00",
+  "scope": "read-only independent pre-implementation controls; no external API, stage advancement, new labels, check/LockedTest or product/spec edits",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/AGENTS.md",
+      "sha256": "75767f90cebeea00c4f670dc431a6db49852edecdfcbbd28fbf8f338c3d30c1e",
+      "size": 5062
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/agent-workflow.md",
+      "sha256": "6a71beab596ce7ce46a90dab33569081172e71af8cde1e82a1981a4d45051cf6",
+      "size": 8872
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/mining-source-identity-and-prompt-20261023.md",
+      "sha256": "17ba4fd8593155f0f00d434e69412ecb56059455ec2fd7b6c534fb13a1dfd457",
+      "size": 8310
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "646e4e74fff1d8f7f93c6895ecd008ef9ec960f4a18f05f89e9582eccd3d20ef",
+      "size": 15016
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "0b80146d0354b1a53ee8fd15dad578c95120a7e2059be4ecc96d8d5830be8d41",
+      "size": 470829
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42",
+      "size": 78831
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py",
+      "sha256": "e9559f31fde9a6b8a4b1fda021459209e058d2c8622b0f3b7ef485cdc911e1ee",
+      "size": 20909
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_mining_locator_generalization_stage.py",
+      "sha256": "e666b4bb455e51f01a6bc99e78e444bb57745a6a79051a3552982da654a02bf1",
+      "size": 8143
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/action-001.json",
+      "sha256": "464d2e6dcfda26efafd63b0cc591a8716ab9f5cd2f687f370380f694b097250d",
+      "size": 367
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/action-002.json",
+      "sha256": "0e8f8303021ed6d6dbec774cdcd39f9902a69f66bf1153d33f6b388c2725b7a0",
+      "size": 366
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/action-003.json",
+      "sha256": "a8e4ba9182479d1f0f0ec033b013d9e4cdf6d37b86a677def71863185fb83d52",
+      "size": 322
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/action-004.json",
+      "sha256": "4f0fe19c61f5e54598100573eb0e631dc3b0f4f933ffbfc774668c70710169ab",
+      "size": 732
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/cache/responses/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.json",
+      "sha256": "d0945334baddffd8dcda7ed7367318c1f96006a10be2703cebcfe27c648fad2d",
+      "size": 1514
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/cache/responses/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.json",
+      "sha256": "088e27da44881d7248409b7a3ac15b3273dff4ab31d039e81c1ab45f69493e90",
+      "size": 2244
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/cache/responses/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.json",
+      "sha256": "b4757405087a2956081676177067feb256e3c9a80211d043f9d88e7a06c95469",
+      "size": 1434
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/cache/responses/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.json",
+      "sha256": "cf36fbbd7bff855ee472ad06afa886f45f80010d613b74c0f60783db621caccc",
+      "size": 1516
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/controlled-fetch.json",
+      "sha256": "4ebbbb9aff807ce58ce13be4411f05d76bb8578da38d5c0203cff9a6bcd2aef7",
+      "size": 30937
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/.dispatch.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/contract.json",
+      "sha256": "71e37f2cbca2702e8978becb16970eaf17d8e0ed4c0a74dc7347a5f0aa4ad6c9",
+      "size": 106
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/inbox/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.json",
+      "sha256": "b544c0c70f522884cf62b46ed40b3b29b8b63f370d31768ca74abba9a144f6c4",
+      "size": 19435
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/inbox/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.json",
+      "sha256": "604ef6b901d56be3db1f35b67431f22bc1af4b652e87cc461014e7f335548a9a",
+      "size": 24917
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/inbox/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.json",
+      "sha256": "1ab58ef1ba0b06ea5922f0e8ae54f52108d7acc1a9036eb6acbd8ebb70c53ae4",
+      "size": 23461
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/inbox/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.json",
+      "sha256": "d5c021a292fdb4633f31e6dd607bd0c7bcef4c8ece5413fda8ff94598b609df3",
+      "size": 20792
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/outbox/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.txt",
+      "sha256": "07ede017fda1bc04dde0aa2e6b2d119e2e00f1a760bd774d3a7e6beec30e0b0f",
+      "size": 332
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/outbox/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.txt",
+      "sha256": "e4b5aae0af7bfd6e8d0527273583a3827b244b43b06b6716804f00ce2e8f7681",
+      "size": 683
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/outbox/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.txt",
+      "sha256": "ec99bb52b3a739a3f718c45b154100dac3dc0796b7348bfeb08e65b67b6b1e07",
+      "size": 295
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/outbox/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.txt",
+      "sha256": "ae220a8a884991d567330ce2c85d15c142f9866053f72fc98bd1ed168cb7b095",
+      "size": 339
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/receipts/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.json",
+      "sha256": "f71f6be1f5c4412ac97b2fce66998b557b4e79dd7575a56c42ac2029cad942d5",
+      "size": 307
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/receipts/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.json",
+      "sha256": "2a90b3e8496b3a405c4ab139bca199277ce089120dc9a1af3856ba9abb864f1c",
+      "size": 307
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/receipts/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.json",
+      "sha256": "d747cfd3317f665621811e527ccde2efab100965206584ba60ecf51ac09291bb",
+      "size": 307
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/receipts/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.json",
+      "sha256": "f744d0ae4c8d2d3dc5bc5fb8b26c19a0efd04f06dfdbab39e0a2415ea5a1d4ca",
+      "size": 307
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/failed-controller.json",
+      "sha256": "e886f0b81e77a1547abb18895fb471eac0ad0b7f177f7be5898f642397851898",
+      "size": 18042
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/failure.json",
+      "sha256": "542a1bb7e5394380d6e22808760b4894439c06263cec39e4e56e3e768756f94d",
+      "size": 11917
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.json",
+      "sha256": "a89ece3888ad200f7f510b1ed49b5d3f61898d6278372d1ce7657d2d6f1068d6",
+      "size": 20867
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/739f4590506a3a734244bf940bbea20706145d84da9528d13b30e1acc5c2c131.json",
+      "sha256": "b53bdce5abf3706b1d56b4761311b95d5c8ea37f4b7c4467c6d2e0f3d4909501",
+      "size": 25152
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.json",
+      "sha256": "41393efdea12df03b30f09507290753b0294d7e2f8affd9dca152cc489bea027",
+      "size": 26350
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.json",
+      "sha256": "3d8779ffe52ec276179be11dba3ac7682e006c55d82948ebef93397f3c98057d",
+      "size": 24893
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.json",
+      "sha256": "a9ad1c1cb44785cc4dea3cfbebbac674d1808142bd0672b825b0e1358862f97c",
+      "size": 22224
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/unused_external.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277",
+      "size": 119
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/view-001.json",
+      "sha256": "82d27200b3599e2a06461ad6d186ad572de814162d4ebc91ce7fc681f864b2f0",
+      "size": 7227
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/view-002.json",
+      "sha256": "ce22ee19fa0f40031dcd9a402d2542406ac00596305a5acaa354e1a3ad3fe90a",
+      "size": 9381
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/view-003.json",
+      "sha256": "8e994c05b794df8502f705995262e92e715755962cf0fe222f5e79151a7731e2",
+      "size": 11644
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/view-004.json",
+      "sha256": "d4df53925946b59a68c63c40ca91688884de87106ae3186a0333ef92c9219e28",
+      "size": 13082
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/view-005.json",
+      "sha256": "a8237721267a7234a020d86fbe2a6ca8a69d705e4c1794d976ebc1c71efcf0e5",
+      "size": 12019
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/action-001.json",
+      "sha256": "42a751ff744a0b24b6a5b36f9ec742c781eaf5c9017ceaa437e71c0e5c4d6773",
+      "size": 392
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/action-002.json",
+      "sha256": "014638db7060680d1cbc9ed30d0c2ad5fc28e2c68409b1ab5253c12fda9eb13a",
+      "size": 362
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/action-003.json",
+      "sha256": "65e8f6ebdfc345c8811aaf0487d4bacd792778522e886f30f7580a41e9a7d13e",
+      "size": 357
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/action-004.json",
+      "sha256": "9194bb488f4134be5551fd88fa3b29472d00b7d959a079d345951c03e208909e",
+      "size": 767
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/cache/responses/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.json",
+      "sha256": "44664dc34760a9dfac572cebc5a4ae81f3db7b97b3938e21b3f07b8cdde3f67b",
+      "size": 1498
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/cache/responses/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.json",
+      "sha256": "704addbdcb731dd7b51b06ecb6aef2d86bb5d79c5f49f2df8395ce325394e70a",
+      "size": 1508
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/cache/responses/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.json",
+      "sha256": "c8001579ee2f4f2e4848117f7ae0684ce42cb20f3f109164508c37098aa6553f",
+      "size": 2314
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/cache/responses/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.json",
+      "sha256": "2593cc164d7eafe5f9076459d673ad066deb2d63a7ae70d4f07c8238c735d7d0",
+      "size": 1564
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/controlled-fetch.json",
+      "sha256": "fe377a887a55a390be2ffa588a2b25a5ca41ac869cbb8dd42c853bb81724c1f4",
+      "size": 25404
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/.dispatch.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/contract.json",
+      "sha256": "71e37f2cbca2702e8978becb16970eaf17d8e0ed4c0a74dc7347a5f0aa4ad6c9",
+      "size": 106
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/inbox/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.json",
+      "sha256": "1a59016c2617de27ead54db68410a44437f2057209fc4a3177e554743dcc682a",
+      "size": 22529
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/inbox/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.json",
+      "sha256": "884c4b93ab3d40006d6659d3a6cf33439b8b6f2de5420a027f2f65063fb1faf5",
+      "size": 19365
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/inbox/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.json",
+      "sha256": "e4178eb3338461b18251f7dcb03d5d0b9e2dee735f8c547fbda81591ad128594",
+      "size": 24126
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/inbox/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.json",
+      "sha256": "98e337e2f38ba19d0afa089270e677f42a1558890dccda8695302d4b36e8577a",
+      "size": 17997
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/outbox/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.txt",
+      "sha256": "2b417f87178ceffe934877f436009b931211849e96f17113c2549e9786153b61",
+      "size": 330
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/outbox/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.txt",
+      "sha256": "28ebfbed44b803969dd238e375a9c8f105ea7c615a6fbf1502c43c8f7f6a065d",
+      "size": 335
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/outbox/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.txt",
+      "sha256": "ae52392304f3db11f11e89beae2898006c11f6f68382fdbcd029740b51ddf2d1",
+      "size": 718
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/outbox/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.txt",
+      "sha256": "d766effc985dc324757b919486ed89b85aa02024a334ee154f13d7f0e6b7e288",
+      "size": 357
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/receipts/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.json",
+      "sha256": "8ce6f29543bc3dec06614871bce5081bbf5cc86bcd9b6508356d69a4601fceb7",
+      "size": 307
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/receipts/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.json",
+      "sha256": "d0af1d177bfc2d6cf9715662234688da3b6857e5c67e0697879dc41d257e141b",
+      "size": 307
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/receipts/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.json",
+      "sha256": "871c9f502d313ae96718a1010705a14a173412ef9a885b6580163cf703ffb881",
+      "size": 307
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/receipts/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.json",
+      "sha256": "6d17128d4192aaf49184832a96cb17863245033c9f0c51bf6383c4f70a76787c",
+      "size": 307
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/failed-controller.json",
+      "sha256": "e7fa4c8a4a45332f6a875dfbcbc2348f99c0512a0e587a6b8546fa169c95b67c",
+      "size": 17839
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/failure.json",
+      "sha256": "561a194247dedeeacd6f38098f2a8a0687f87ac18d569b21f7aff14157abe916",
+      "size": 11917
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.json",
+      "sha256": "157de48b008b7cb344c19477e9549ea40ff3a776e735e28e9d0f8a7588b3ab2c",
+      "size": 23961
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.json",
+      "sha256": "0e07b6355a35022eeeae6f6b5bf873138089cc1cef06c773da65cba2cfaf7c87",
+      "size": 20797
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/a3d590e1a12f171ca4797fb553d4a1c387243ee42f3f73c485c7d5faae1ba68f.json",
+      "sha256": "93e91c560b9c27912083cd2e02056cfcf83bde791a335531823ffc5ebcf83122",
+      "size": 24163
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.json",
+      "sha256": "e3d0b47c574fc0cfc0b31bb2112ab4cd591061bdb25dd1ddfad15499d4cd06c0",
+      "size": 25558
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.json",
+      "sha256": "02166b93c6d64c4b44a064c724fd59476767e0682f464a7d666ec59dc5f87c8c",
+      "size": 19429
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/unused_external.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277",
+      "size": 119
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/view-001.json",
+      "sha256": "736c86c872c257689e3348813fdd9c24318dd36fe922fc877b2705ab0b87034b",
+      "size": 5467
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/view-002.json",
+      "sha256": "e86e850714c45a34031434d32fb0a5f9b4e1ba609bc67f184a8e93960fdf5cab",
+      "size": 7632
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/view-003.json",
+      "sha256": "7e1184e083c490707d8d0f47b940763057c88ed41f7e6f0653729856385c30a9",
+      "size": 10426
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/view-004.json",
+      "sha256": "95618487cf60b73074dd3d307a924180623dde65c1b9820e531f93f96eab8bd9",
+      "size": 12099
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/view-005.json",
+      "sha256": "eb827021d2ab3432a235550dfca251ccf91d8baacc77a66e1be777c9fbb66918",
+      "size": 10782
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/contract.json",
+      "sha256": "d4f973d5c63c8e110ce5521f717c502d86ea14e44f1afa712d8ef145420c645c",
+      "size": 426
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/inputs.json",
+      "sha256": "5b06022490bb2f12d470a5d0b32f07f89ca4fcde669ded06237160673d11b5bb",
+      "size": 1724
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/manifest.json",
+      "sha256": "2a52a8f52563e3ef3c709a5b8142bcfdf98485e21c44ca9a5515f83362fdcfe3",
+      "size": 451399
+    }
+  ],
+  "unverified": "Controls are frozen test obligations, not execution results or model evidence."
+}

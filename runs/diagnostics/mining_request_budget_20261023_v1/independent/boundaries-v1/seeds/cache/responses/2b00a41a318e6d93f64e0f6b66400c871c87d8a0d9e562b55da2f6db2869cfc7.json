@@ -1,0 +1,24 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "inspect_manifest",
+    "rationale": [
+      "Synthetic fixture only."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"inspect_manifest\",\"rationale\":[\"Synthetic fixture only.\"]}",
+  "request_hash": "2b00a41a318e6d93f64e0f6b66400c871c87d8a0d9e562b55da2f6db2869cfc7",
+  "response_id": "local-2b00a41a318e6d93f64e0f6b66400c871c87d8a0d9e562b55da2f6db2869cfc7",
+  "usage": {
+    "accounting_tokens": 17965,
+    "agent_id": "synthetic-independent-budget-fixture-not-fresh-LLM",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "b7afe90b9b48e56598afd1eff93998f099ca192bfdbbfc216470579f81c1650c",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "49a53ab89ef7538e0159f0257039ef41c103866aa6a9d5a3feab645ccb7a3661",
+    "request_hash": "2b00a41a318e6d93f64e0f6b66400c871c87d8a0d9e562b55da2f6db2869cfc7",
+    "token_usage": null
+  }
+}

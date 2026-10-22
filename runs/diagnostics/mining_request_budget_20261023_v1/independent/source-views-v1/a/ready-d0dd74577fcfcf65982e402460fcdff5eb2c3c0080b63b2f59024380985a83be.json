@@ -1,0 +1,7 @@
+{
+  "event_type": "request_ready",
+  "model_alias": "independent-subagent",
+  "request_hash": "d0dd74577fcfcf65982e402460fcdff5eb2c3c0080b63b2f59024380985a83be",
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_request_budget_20261023_v1/independent/source-views-v1/a/requests/d0dd74577fcfcf65982e402460fcdff5eb2c3c0080b63b2f59024380985a83be.json",
+  "stage": "mining_controller_step"
+}

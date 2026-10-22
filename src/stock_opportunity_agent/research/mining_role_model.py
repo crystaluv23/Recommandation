@@ -12,14 +12,28 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
+from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_core import AgentUsage
+from stock_opportunity_agent.research.evolution_transport import IdentityOutputRejected, StructuredOutputInvalid
 from stock_opportunity_agent.research.evolution_output_validation import (
     _SOURCE_FACT_RELATION_INSTRUCTION,
 )
 from stock_opportunity_agent.research.evolution_state_patch import PATCH_INSTRUCTION
 from stock_opportunity_agent.research.stage_contracts import NEED_ROW_RATIONALE_CONTRACT
+from stock_opportunity_agent.research.scheme_evolution import EvolutionControlFlow
 
 MINING_CONTROLLER_STAGE = "mining_controller_step"
+
+
+class MiningRequestBudgetExhausted(EvolutionControlFlow):
+    """Stop an explicitly scoped request budget without a research verdict."""
+
+_REQUEST_BUDGET_INSTRUCTION = (
+    " request_budget counts complete LLM requests, including tool continuations "
+    "and terminal decisions. Its decimal strings are exact integers. If "
+    "remaining_after < next_minimum, no further decision fits; preserve gaps "
+    "and choose a supported terminal when needed."
+)
 
 _MINING_CONTROLLER_PROMPT = (
     """[Role and admission]
@@ -77,6 +91,9 @@ class MiningAgentRoleModel:
         max_output_tokens: int = 4000,
         temperature: float = 0.2,
         identity_aliases: tuple[str, ...] = (),
+        max_request_tokens: int | None = None,
+        max_total_tokens: int | None = None,
+        max_calls: int | None = None,
     ) -> None:
         self.caller = caller
         self.stage = stage
@@ -85,6 +102,60 @@ class MiningAgentRoleModel:
         self.identity_aliases = identity_aliases
         self.usage = AgentUsage()
         self.requests: list[str] = []
+        self.request_limits = {key: value for key, value in (
+            ("single_limit", max_request_tokens), ("total_limit", max_total_tokens),
+            ("call_limit", max_calls)) if value is not None}
+        if any(type(value) is not int or value < 1 for value in self.request_limits.values()):
+            raise ValidationError("Mining request limits must be positive integers")
+        if self.request_limits and not callable(getattr(caller, "estimate_json_request_tokens", None)):
+            raise ValidationError("Mining request limits require the complete caller estimator")
+        self.reserved_tokens = 0
+        self.reserved_calls = 0
+
+    def _budgeted_payload(self, system_prompt: str, view: Mapping[str, Any]):
+        """Disclose exact scoped cost without changing its own serialized size."""
+        common = dict(allow_outcomes=True, anonymous_aliases=self.identity_aliases,
+            max_output_tokens=self.max_output_tokens, temperature=self.temperature)
+        estimate = self.caller.estimate_json_request_tokens
+        floor = estimate(system_prompt=_MINING_CONTROLLER_PROMPT
+            + _SOURCE_FACT_RELATION_INSTRUCTION + _REQUEST_BUDGET_INSTRUCTION,
+            payload={}, **common)
+        # Two self-referential fields keep a constant serialized width.
+        width = max(20, *(len(str(value)) + 2 for value in self.request_limits.values()))
+        budget = {"unit": "bytes_plus_output", **self.request_limits,
+            "used": self.reserved_tokens, "this_request": "0" * width,
+            "next_minimum": floor}
+        total = self.request_limits.get("total_limit")
+        if total is not None:
+            budget["remaining_after"] = "0" * width
+        if "call_limit" in budget:
+            budget["calls_used"] = self.reserved_calls
+            budget["calls_remaining_after"] = budget["call_limit"] - self.reserved_calls - 1
+        payload = {**view, "request_budget": budget}
+        required = estimate(system_prompt=system_prompt, payload=payload, **common)
+        budget["this_request"] = str(required).zfill(width)
+        if total is not None:
+            budget["remaining_after"] = str(total - self.reserved_tokens - required).zfill(width)
+        if any(len(budget[key]) != width for key in ("this_request", "remaining_after") if key in budget):
+            raise MiningRequestBudgetExhausted("Mining request reservation exceeds accounting width")
+        if estimate(system_prompt=system_prompt, payload=payload, **common) != required:
+            raise MiningRequestBudgetExhausted("Mining caller estimator changed during budget disclosure")
+        ceilings = [budget[key] for key in ("single_limit",) if key in budget]
+        if total is not None:
+            ceilings.append(total - self.reserved_tokens)
+        if ((ceilings and required > min(ceilings))
+                or budget.get("calls_remaining_after", 0) < 0):
+            raise MiningRequestBudgetExhausted("Mining scoped request budget exhausted before prepare")
+        return payload, required, min(ceilings) if ceilings else None
+
+    def _consume(self, usage: AgentUsage, reserved: int) -> None:
+        self.reserved_tokens += reserved
+        self.reserved_calls += 1
+        self.usage = AgentUsage(llm_calls=self.usage.llm_calls + usage.llm_calls,
+            tokens=self.usage.tokens + usage.tokens, cost=self.usage.cost + usage.cost)
+        trace = getattr(self.caller, "request_hash_trace", ())
+        if isinstance(trace, (list, tuple)):
+            self.requests.extend(str(item) for item in trace[len(self.requests):])
 
     def next_action(self, view: Mapping[str, Any]) -> dict[str, Any]:
         """Send one controller view and return the model's action object."""
@@ -108,28 +179,32 @@ class MiningAgentRoleModel:
                 "of short strings. When last_invalid_action is present, fix "
                 "the reported issue by choosing one admissible action. "
             )
-        parsed, usage = self.caller.complete_json(
-            stage=self.stage,
-            system_prompt=(
+        system_prompt = (
                 output_instruction + _MINING_CONTROLLER_PROMPT
                 + _SOURCE_FACT_RELATION_INSTRUCTION
-            ),
-            payload=dict(view),
+            )
+        payload, reserved, ceiling = dict(view), 0, None
+        if self.request_limits:
+            system_prompt += _REQUEST_BUDGET_INSTRUCTION
+            payload, reserved, ceiling = self._budgeted_payload(system_prompt, view)
+        kwargs = dict(stage=self.stage, system_prompt=system_prompt, payload=payload,
             allow_outcomes=True,
             anonymous_aliases=self.identity_aliases,
             max_output_tokens=self.max_output_tokens,
             temperature=self.temperature,
         )
-        self.usage = AgentUsage(
-            llm_calls=self.usage.llm_calls + usage.llm_calls,
-            tokens=self.usage.tokens + usage.tokens,
-            cost=self.usage.cost + usage.cost,
-        )
-        trace = getattr(self.caller, "request_hash_trace", ())
-        if isinstance(trace, (list, tuple)):
-            self.requests.extend(str(item) for item in trace[len(self.requests) :])
+        if ceiling is not None:
+            kwargs["max_request_tokens"] = ceiling
+        try:
+            parsed, usage = self.caller.complete_json(**kwargs)
+        except BaseException as exc:
+            # Pending/pre-dispatch failures have no answered usage to consume.
+            usage = getattr(exc, "usage", None)
+            answered = isinstance(exc, (StructuredOutputInvalid, IdentityOutputRejected))
+            if isinstance(usage, AgentUsage) and (answered or usage.llm_calls or usage.tokens or usage.cost):
+                self._consume(exc.usage, reserved)
+            raise
+        self._consume(usage, reserved)
         if not isinstance(parsed, Mapping):
-            from stock_opportunity_agent.models import ValidationError
-
             raise ValidationError("mining controller action must be an object")
         return dict(parsed)

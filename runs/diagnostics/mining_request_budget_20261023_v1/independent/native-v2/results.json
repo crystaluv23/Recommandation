@@ -1,0 +1,150 @@
+{
+  "at": "2026-10-22T22:05:13.172413+00:00",
+  "evidence": "native synthetic fixtures only; no fresh LLM semantic evidence",
+  "external_API": 0,
+  "pass": true,
+  "results": [
+    {
+      "detail": {
+        "model_budget_enabled": false,
+        "reservation": 19517
+      },
+      "id": "defaults-identical",
+      "pass": true
+    },
+    {
+      "detail": {
+        "first": {
+          "call_limit": 6,
+          "calls_remaining_after": 5,
+          "calls_used": 0,
+          "next_minimum": 14223,
+          "remaining_after": "00000000000000080249",
+          "single_limit": 32768,
+          "this_request": "00000000000000018055",
+          "total_limit": 98304,
+          "unit": "bytes_plus_output",
+          "used": 0
+        },
+        "first_reservation": 18055,
+        "physical_receipts": 1,
+        "second": {
+          "call_limit": 6,
+          "calls_remaining_after": 4,
+          "calls_used": 1,
+          "next_minimum": 14223,
+          "remaining_after": "00000000000000062171",
+          "single_limit": 32768,
+          "this_request": "00000000000000018078",
+          "total_limit": 98304,
+          "unit": "bytes_plus_output",
+          "used": 18055
+        }
+      },
+      "id": "exact-pending-sequential",
+      "pass": true
+    },
+    {
+      "detail": {
+        "charged": {
+          "call_limit": 3,
+          "calls_remaining_after": 1,
+          "calls_used": 1,
+          "next_minimum": 14223,
+          "remaining_after": "00000000000000163866",
+          "single_limit": 50000,
+          "this_request": "00000000000000018078",
+          "total_limit": 200000,
+          "unit": "bytes_plus_output",
+          "used": 18056
+        },
+        "original_reservation": 18056
+      },
+      "id": "malformed-consumed",
+      "pass": true
+    },
+    {
+      "detail": {
+        "charged": {
+          "call_limit": 3,
+          "calls_remaining_after": 1,
+          "calls_used": 1,
+          "next_minimum": 14223,
+          "remaining_after": "00000000000000163866",
+          "single_limit": 50000,
+          "this_request": "00000000000000018078",
+          "total_limit": 200000,
+          "unit": "bytes_plus_output",
+          "used": 18056
+        },
+        "original_reservation": 18056
+      },
+      "id": "nonobject-consumed",
+      "pass": true
+    },
+    {
+      "detail": {
+        "charged": {
+          "call_limit": 3,
+          "calls_remaining_after": 1,
+          "calls_used": 1,
+          "next_minimum": 14223,
+          "remaining_after": "00000000000000163867",
+          "single_limit": 50000,
+          "this_request": "00000000000000018077",
+          "total_limit": 200000,
+          "unit": "bytes_plus_output",
+          "used": 18056
+        },
+        "original_reservation": 18056
+      },
+      "id": "identity-consumed",
+      "pass": true
+    },
+    {
+      "detail": {
+        "budget": {
+          "call_limit": 3,
+          "calls_remaining_after": 2,
+          "calls_used": 0,
+          "next_minimum": 14223,
+          "remaining_after": "00000000000000180811",
+          "single_limit": 50000,
+          "this_request": "00000000000000019189",
+          "total_limit": 200000,
+          "unit": "bytes_plus_output",
+          "used": 0
+        },
+        "empty_payload_current_grammar": 15331
+      },
+      "id": "typed-grammar-lower-bound",
+      "pass": true
+    },
+    {
+      "detail": {
+        "logical_replay_once": true,
+        "physical_receipts": 1
+      },
+      "id": "cache-replay-no-duplicate-receipts",
+      "pass": true
+    },
+    {
+      "detail": {
+        "inboxes": 0,
+        "propagates_control_flow": true
+      },
+      "id": "hard-stop-control-flow",
+      "pass": true
+    }
+  ],
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "0d5e55746264defae38e8a95f763ddf60f05a5e34de7a64f80649659ee2ee976"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "305843bfec6abfca8e45aba279c34f601619d8ce72c704302a7a1ca8ee0bc9e6"
+    }
+  ]
+}

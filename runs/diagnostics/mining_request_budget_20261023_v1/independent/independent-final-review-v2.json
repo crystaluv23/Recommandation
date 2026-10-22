@@ -1,0 +1,85 @@
+{
+  "check_LockedTest": 0,
+  "default_envelope_evidence": {
+    "finding": "Actual native default full request identical to independently frozen original role implementation.",
+    "path": "defaults-v1/default-comparison-result.json"
+  },
+  "external_API": 0,
+  "final_product_hashes": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "0d5e55746264defae38e8a95f763ddf60f05a5e34de7a64f80649659ee2ee976"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "305843bfec6abfca8e45aba279c34f601619d8ce72c704302a7a1ca8ee0bc9e6"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "862f6ba65c22a38c779ed5bbae5151ba96c68bb6b8e446d66f8a433c9c1c2f88"
+    },
+    {
+      "path": "scripts/run_mining_taxonomy_consumer_stage.py",
+      "sha256": "61ae6940fa1f7d48b9ff8bd8f8f2888853aabc72d094eb560aef665464b52832"
+    }
+  ],
+  "fresh_LLM_answers": 0,
+  "initial_harness_failures": [
+    "predispatch invocation missing __file__ before direct v2 runnable script",
+    "source-views-v1 sources changed during execution; rejected drift; v2 before/after bound pass"
+  ],
+  "initial_product_failures": [
+    {
+      "failure": "RuntimeBudgetExceeded inherits ValidationError and would enter model correction instead of propagate as control flow",
+      "final": "native-v2/results.json hard-stop control passes",
+      "path": "native-v1/results.json"
+    },
+    {
+      "failure": "native no-progress zero-usage pre-dispatch rejection wrongly charged calls1/tokens18055",
+      "final": "predispatch-v2/predispatch-result.json calls0/tokens0 preserved",
+      "path": "predispatch-v1/predispatch-result.json"
+    }
+  ],
+  "native_groups": 17,
+  "native_groups_passed": 17,
+  "new_business_labels": 0,
+  "old_stage_advancement": 0,
+  "prior_source_drift": [],
+  "prior_source_files_verified": 1791,
+  "production_construction_evidence": {
+    "finding": "Actual production role construction forwards single_limit32768 only; synthetic sentinel stops before controller run, zero businesscases/models.",
+    "path": "production-factory-v1/production-factory-result.json"
+  },
+  "remaining": "Fresh decision planning under disclosed budgets and actual controlled module endpoint remains untested; local/scripted preflights do not substitute for that evidence.",
+  "scope": "independent local repair review only; does not authorize fresh controls, restore sealed stages, or claim model semantics/MVP/research benefit",
+  "sealed_stage_drift": [],
+  "sealed_stage_files_verified": 75,
+  "source_only_counter_policy": "explicitly simulated logical reservations; no responses, no receipt or cache fabrication",
+  "source_only_sample_totals": {
+    "a": 97429,
+    "b": 92841
+  },
+  "source_only_samples": 2,
+  "tested_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_request_budget_20261023_v1/independent/native-v2/results.json",
+      "sha256": "de29aaaf351b07f67c1ac8375c756555a26a53e9cfa90c28ad947d23674e86f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_request_budget_20261023_v1/independent/boundaries-v1/boundary-results.json",
+      "sha256": "e35168ca05a34dcf415744ed48bf3e9be38cca7eb46d9a7dd602b05093555404"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_request_budget_20261023_v1/independent/predispatch-v2/predispatch-result.json",
+      "sha256": "352150f0434b81c9bc46b6de504bc68b4be06e15cb6b7a63ea11bfbfec7fc329"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_request_budget_20261023_v1/independent/sequential-v1/sequential-results.json",
+      "sha256": "a1bf633bfb23e7630d445f74fe1c65fbf218d696fe8844b4a1d9570eb1340ecd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_request_budget_20261023_v1/independent/source-views-v2/result.json",
+      "sha256": "7d287c8d4f1a05d03544241e5cce69d28e76d5102cf55f14261527ed05b8b1b2"
+    }
+  ]
+}

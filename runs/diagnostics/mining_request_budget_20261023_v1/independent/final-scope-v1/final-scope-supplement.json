@@ -1,0 +1,80 @@
+{
+  "external_API": 0,
+  "fresh_answers": 0,
+  "old_stage_advancement": 0,
+  "pass": true,
+  "prior_final_v2_preserved_sha256": "af06c7c95d9e25c0c85c58bbb76946852edfcc2d9893174d39f38da5b3d8f9c3",
+  "prior_scope_evidence": "17 native groups and2 source-only preflights remain historical local evidence. Current native exact request is identical across transport removal; no need repeat extraction.",
+  "remaining": "Fresh planning and module endpoints remain untested; no new execution authorization.",
+  "results": [
+    {
+      "detail": {
+        "legal_local_provider": "local",
+        "not_wire_audited": true,
+        "rejected": [
+          "independent-external",
+          "remote-local-exchange",
+          "independent-remote-provider"
+        ]
+      },
+      "id": "constructor-boundary",
+      "pass": true
+    },
+    {
+      "detail": {
+        "full_native_request_identical_to_pre_removal": true,
+        "physical_receipts_after_replay": 1,
+        "reservation": 18055
+      },
+      "id": "native-exact-before-after-equivalent",
+      "pass": true
+    },
+    {
+      "detail": {
+        "exact_budget_envelope_parity": true,
+        "inboxes": 0,
+        "reservation": 19034
+      },
+      "id": "wrapper-envelope-parity",
+      "pass": true
+    },
+    {
+      "detail": {
+        "receipts": 0,
+        "reserved_calls": 0,
+        "reserved_tokens": 0
+      },
+      "id": "native-no-progress-no-debt",
+      "pass": true
+    },
+    {
+      "detail": {
+        "control_flow": true,
+        "inboxes": 0
+      },
+      "id": "hard-stop-controlflow",
+      "pass": true
+    }
+  ],
+  "retained_fix": "Mining request-budget observability/accounting plus diagnostic wrapper ENVELOPE estimator parity",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "0d5e55746264defae38e8a95f763ddf60f05a5e34de7a64f80649659ee2ee976"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "862f6ba65c22a38c779ed5bbae5151ba96c68bb6b8e446d66f8a433c9c1c2f88"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py",
+      "sha256": "61ae6940fa1f7d48b9ff8bd8f8f2888853aabc72d094eb560aef665464b52832"
+    }
+  ],
+  "transport_change_claim": "withdrawn: remote-registration plus local-exchange mismatch is unreachable under valid current registrations; no transport defect closure claimed",
+  "transport_source_matches_HEAD": true
+}

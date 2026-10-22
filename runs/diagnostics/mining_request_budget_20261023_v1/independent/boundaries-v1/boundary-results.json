@@ -1,0 +1,90 @@
+{
+  "evidence": "native synthetic only",
+  "external_API": 0,
+  "pass": true,
+  "results": [
+    {
+      "detail": {
+        "digit_boundaries": [
+          {
+            "calls_used": 9,
+            "required": 18058,
+            "used": 9
+          },
+          {
+            "calls_used": 10,
+            "required": 18059,
+            "used": 10
+          },
+          {
+            "calls_used": 9,
+            "required": 18059,
+            "used": 99
+          },
+          {
+            "calls_used": 10,
+            "required": 18060,
+            "used": 100
+          },
+          {
+            "calls_used": 9,
+            "required": 18060,
+            "used": 999
+          },
+          {
+            "calls_used": 10,
+            "required": 18061,
+            "used": 1000
+          }
+        ],
+        "wide_cap_width": 29
+      },
+      "id": "decimal-boundaries-widecaps",
+      "pass": true
+    },
+    {
+      "detail": {
+        "equal_admitted": 17926,
+        "minus_one_rejected": 17925
+      },
+      "id": "single-equality",
+      "pass": true
+    },
+    {
+      "detail": {
+        "equal_admitted": 17970,
+        "minus_one_rejected": 17969,
+        "remaining_after": 0
+      },
+      "id": "aggregate-equality",
+      "pass": true
+    },
+    {
+      "detail": {
+        "consumed_calls": 1,
+        "other_seed_rejected": true
+      },
+      "id": "calls-shared-seed-instance",
+      "pass": true
+    },
+    {
+      "detail": {
+        "masked_explicit_coordinates": true,
+        "reservation": 18285,
+        "unicode_preserved": true
+      },
+      "id": "identity-projected-exact-envelope",
+      "pass": true
+    }
+  ],
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "0d5e55746264defae38e8a95f763ddf60f05a5e34de7a64f80649659ee2ee976"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "305843bfec6abfca8e45aba279c34f601619d8ce72c704302a7a1ca8ee0bc9e6"
+    }
+  ]
+}
