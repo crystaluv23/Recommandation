@@ -1,0 +1,22 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "safe": "secfacts:[ANON_ID_0001]:[ANON_ID_0000]:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "unsafe": "https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156/ea0215960-20f_critical.htm"
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"unsafe\": \"https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156/ea0215960-20f_critical.htm\", \"safe\": \"secfacts:[ANON_ID_0001]:[ANON_ID_0000]:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}",
+  "request_hash": "4dba1e611134a62ae312f0995df3ef02361e2601d00d55647af6adc5d3ff1365",
+  "response_id": "local-4dba1e611134a62ae312f0995df3ef02361e2601d00d55647af6adc5d3ff1365",
+  "usage": {
+    "accounting_tokens": 1771,
+    "agent_id": "/root/source_coordinate_review synthetic fixture; not a production author",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "4af18f2440dad83d11b23b70617b1a2b54de1568d95deca40340b991a2e97862",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "72d738aa27ad619ac2c0ef44909e920fb0be4bb9d1e8b0d13408ca737d873da9",
+    "request_hash": "4dba1e611134a62ae312f0995df3ef02361e2601d00d55647af6adc5d3ff1365",
+    "token_usage": null
+  }
+}

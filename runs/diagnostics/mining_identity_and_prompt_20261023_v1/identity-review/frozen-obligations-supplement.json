@@ -1,0 +1,31 @@
+{
+  "reason": "Complete parseable SEC directory-coordinate paths can end at issuer or accession without a trailing slash; this remains the announced source-coordinate family. Frozen before this supplementary execution.",
+  "cases": [
+    {
+      "id": "terminal-accession-directory",
+      "kind": "mask",
+      "text": "https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156",
+      "forbidden": [
+        "1957939",
+        "000121390024092156"
+      ]
+    },
+    {
+      "id": "terminal-cik-directory",
+      "kind": "mask",
+      "text": "/Archives/edgar/data/1957939",
+      "forbidden": [
+        "1957939"
+      ]
+    },
+    {
+      "id": "terminal-accession-query",
+      "kind": "mask",
+      "text": "https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156?output=json",
+      "forbidden": [
+        "1957939",
+        "000121390024092156"
+      ]
+    }
+  ]
+}

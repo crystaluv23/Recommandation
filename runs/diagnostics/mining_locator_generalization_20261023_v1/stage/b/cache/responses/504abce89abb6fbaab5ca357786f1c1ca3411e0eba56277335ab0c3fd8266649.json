@@ -1,0 +1,26 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "fact_ref": "fact-6963faafa552b5b8",
+    "rationale": [
+      "Inspect the latest operating cash flow source fact to establish its period, unit, entity and taxonomy binding before comparing it with the located prior operand.",
+      "Comparison progress supplies operand locators but does not establish source measurement identity."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"fact_ref\":\"fact-6963faafa552b5b8\",\"rationale\":[\"Inspect the latest operating cash flow source fact to establish its period, unit, entity and taxonomy binding before comparing it with the located prior operand.\",\"Comparison progress supplies operand locators but does not establish source measurement identity.\"]}",
+  "request_hash": "504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649",
+  "response_id": "local-504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649",
+  "usage": {
+    "accounting_tokens": 21030,
+    "agent_id": "/root/native_mining_b_2",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "884c4b93ab3d40006d6659d3a6cf33439b8b6f2de5420a027f2f65063fb1faf5",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "28ebfbed44b803969dd238e375a9c8f105ea7c615a6fbf1502c43c8f7f6a065d",
+    "request_hash": "504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649",
+    "token_usage": null
+  }
+}

@@ -1,0 +1,276 @@
+{
+  "source_sha256_before": "a9645639f3dff9142c1b06c698531f4dcfe88056e8536d0ef67daf2702550c81",
+  "source_sha256_after": "a9645639f3dff9142c1b06c698531f4dcfe88056e8536d0ef67daf2702550c81",
+  "counterexamples": [
+    {
+      "version": "baseline",
+      "case": "original-foreign-agent",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "secfacts:[ANON_ID_0000]:0001213900-24-092156:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "version": "baseline",
+      "case": "foreign-cik-url",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156/ea0215960-20f_critical.htm"
+    },
+    {
+      "version": "baseline",
+      "case": "same-cik-path",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "/Archives/edgar/data/1213900/000121390024092156/document.htm"
+    },
+    {
+      "version": "baseline",
+      "case": "url-nested-json",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "{\"source\": \"https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156/document.htm\"}"
+    },
+    {
+      "version": "baseline",
+      "case": "url-json-escaped-slashes",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "{\"source\": \"https:\\/\\/www.sec.gov\\/Archives\\/edgar\\/data\\/1957939\\/000121390024092156\\/document.htm\"}"
+    },
+    {
+      "version": "baseline",
+      "case": "url-json-double-escaped",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "\"{\\\"source\\\": \\\"https:\\\\/\\\\/www.sec.gov\\\\/Archives\\\\/edgar\\\\/data\\\\/1957939\\\\/000121390024092156\\\\/document.htm\\\"}\""
+    },
+    {
+      "version": "baseline",
+      "case": "upper-case-path",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "/ARCHIVES/EDGAR/DATA/1957939/000121390024092156/document.htm"
+    },
+    {
+      "version": "baseline",
+      "case": "bare-18digit-money",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "Assets 000121390024092156; total 123456789012345678; $121390024092156.00."
+    },
+    {
+      "version": "baseline",
+      "case": "date-math",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "2024-09-30; 20240930; 2024/09/30; 18 * 1213900 = 21850200; 1234567890-12-1234567."
+    },
+    {
+      "version": "baseline",
+      "case": "document-local-semantic",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "document-annual-2024 appendix-1213900 local filing-document-42 secfacts:unrelated:hash"
+    },
+    {
+      "version": "baseline",
+      "case": "long-digit-boundary",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "10001213900-24-0921561 X0001213900-24-092156Y"
+    },
+    {
+      "version": "baseline",
+      "case": "nonsec-financial-path",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "https://example.org/assets/1957939/000121390024092156/table.csv"
+    },
+    {
+      "version": "baseline",
+      "case": "terminal-accession-directory",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156"
+    },
+    {
+      "version": "baseline",
+      "case": "terminal-cik-directory",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "/Archives/edgar/data/1957939"
+    },
+    {
+      "version": "baseline",
+      "case": "terminal-accession-query",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156?output=json"
+    },
+    {
+      "version": "candidate",
+      "case": "original-foreign-agent",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "secfacts:[ANON_ID_0001]:[ANON_ID_0000]:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "version": "candidate",
+      "case": "foreign-cik-url",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "https://www.sec.gov/Archives/edgar/data/[ANON_ID_0001]/[ANON_ID_0000]/ea0215960-20f_critical.htm"
+    },
+    {
+      "version": "candidate",
+      "case": "same-cik-path",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "/Archives/edgar/data/[ANON_ID_0001]/[ANON_ID_0000]/document.htm"
+    },
+    {
+      "version": "candidate",
+      "case": "url-nested-json",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "{\"source\": \"https://www.sec.gov/Archives/edgar/data/[ANON_ID_0001]/[ANON_ID_0000]/document.htm\"}"
+    },
+    {
+      "version": "candidate",
+      "case": "url-json-escaped-slashes",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "{\"source\": \"https:\\/\\/www.sec.gov\\/Archives\\/edgar\\/data\\/[ANON_ID_0001]\\/[ANON_ID_0000]\\/document.htm\"}"
+    },
+    {
+      "version": "candidate",
+      "case": "url-json-double-escaped",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "\"{\\\"source\\\": \\\"https:\\\\/\\\\/www.sec.gov\\\\/Archives\\\\/edgar\\\\/data\\\\/[ANON_ID_0001]\\\\/[ANON_ID_0000]\\\\/document.htm\\\"}\""
+    },
+    {
+      "version": "candidate",
+      "case": "upper-case-path",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "/ARCHIVES/EDGAR/DATA/[ANON_ID_0001]/[ANON_ID_0000]/document.htm"
+    },
+    {
+      "version": "candidate",
+      "case": "bare-18digit-money",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "Assets 000121390024092156; total 123456789012345678; $121390024092156.00."
+    },
+    {
+      "version": "candidate",
+      "case": "date-math",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "2024-09-30; 20240930; 2024/09/30; 18 * 1213900 = 21850200; 1234567890-12-1234567."
+    },
+    {
+      "version": "candidate",
+      "case": "document-local-semantic",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "document-annual-2024 appendix-1213900 local filing-document-42 secfacts:unrelated:hash"
+    },
+    {
+      "version": "candidate",
+      "case": "long-digit-boundary",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "10001213900-24-0921561 X0001213900-24-092156Y"
+    },
+    {
+      "version": "candidate",
+      "case": "nonsec-financial-path",
+      "pass": true,
+      "exact_inverse": true,
+      "view": "https://example.org/assets/1957939/000121390024092156/table.csv"
+    },
+    {
+      "version": "candidate",
+      "case": "terminal-accession-directory",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "https://www.sec.gov/Archives/edgar/data/[ANON_ID_0000]/000121390024092156"
+    },
+    {
+      "version": "candidate",
+      "case": "terminal-cik-directory",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "/Archives/edgar/data/1957939"
+    },
+    {
+      "version": "candidate",
+      "case": "terminal-accession-query",
+      "pass": false,
+      "exact_inverse": true,
+      "view": "https://www.sec.gov/Archives/edgar/data/[ANON_ID_0000]/000121390024092156?output=json"
+    }
+  ],
+  "native": {
+    "estimate": 1771,
+    "reservation": 1771,
+    "canonical_payload_unchanged": true,
+    "messages_match_projected_payload": true,
+    "cache_inverse_replay": true,
+    "typed_snapshot_preserved": true,
+    "correction_same_projection": true,
+    "budget_rejected_before_inbox": true,
+    "synthetic_fixture_only": true,
+    "production_authors": 0,
+    "new_production_inboxes": 0,
+    "external_api_get": 0
+  },
+  "output_guard": [
+    {
+      "unsafe": "0001213900-24-092156",
+      "rejected": true,
+      "quarantine": "model guessed target identity outside supplied tokens"
+    },
+    {
+      "unsafe": "https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156/ea0215960-20f_critical.htm",
+      "rejected": true,
+      "quarantine": "model guessed target identity outside supplied tokens"
+    },
+    {
+      "unsafe": "[ANON_ID_9876]",
+      "rejected": true,
+      "quarantine": "model returned an undisclosed identity token"
+    }
+  ],
+  "context_nested_failure_threads_isolated": true,
+  "old_prepared_requests_unchanged": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/b30a2f92def1288fcc702b00621316ae27efa88940bfaba15d315f584309f106.json",
+      "sha256": "4b5dd33ba903c439dd442fbc40b5981a9f9358e60947c553dc0103bd327f1568",
+      "residual_projection_hidden": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/79014e5255aa0a58fcc41d93ef58b3835307198cc32693632d896b76ce1d8f07.json",
+      "sha256": "b2735748ec1f1a809d9cb919d7ce2f1c8f52e14681d29515b6a8f20baf1aa63f",
+      "residual_projection_hidden": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/0350b5ff5bc905f8694b63c21045399d8bc336d7b27b2afe59b66446b4a40f18.json",
+      "sha256": "65b52a2ed46c0b0fd9969d03b85cfc21cb7a5f9669c901c9740c52d2f98a7bc3",
+      "residual_projection_hidden": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/b2fe5af9a03d7c2b1d01e1123b3b8cd1b6b4dbfe7d2c7cdbc8acab1664033f53.json",
+      "sha256": "8f20c397ed27cf1ef179b68d2ce15ffd1a982f816c5c67910e24e4a1e08869d3",
+      "residual_projection_hidden": true
+    }
+  ],
+  "all_candidate_cases_pass": false,
+  "limitations": [
+    "Frozen cases were created after initial source candidate existed, before review execution.",
+    "Synthetic native fixtures establish wiring, not fresh model compliance or source truth.",
+    "No completed stage reentry; old aggregate budget failure and overall MVP remain."
+  ]
+}

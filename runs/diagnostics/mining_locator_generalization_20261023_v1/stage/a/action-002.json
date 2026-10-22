@@ -1,0 +1,8 @@
+{
+  "action": "read_span",
+  "fact_ref": "fact-74cea942438e2cd0",
+  "rationale": [
+    "Read the latest operating cash-flow operand to establish its source taxonomy, object, unit and period before interpreting the comparison.",
+    "The comparison locator identifies a prior operand but does not itself establish measurement identity or period comparability."
+  ]
+}

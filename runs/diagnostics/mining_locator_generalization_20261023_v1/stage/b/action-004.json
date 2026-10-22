@@ -1,0 +1,13 @@
+{
+  "action": "compute_statistic",
+  "fact_refs": [
+    "fact-6963faafa552b5b8",
+    "fact-0beda24d07c3b1cd"
+  ],
+  "rationale": [
+    "Both source operands have been read for control case-002: us-gaap NetCashProvidedByUsedInOperatingActivities in USD, covering January through September of 2018 and 2017 respectively.",
+    "The matching nine-month periods support a historical year-over-year operating cash flow difference, with latest then prior operands; fiscal_period Q3 does not make these standalone quarterly flows.",
+    "Both facts were available before the case prediction cutoff. This comparison does not establish current cash flow at the 2025 cutoff, a positive/control contrast, or predictive benefit."
+  ],
+  "rule": "latest_minus_comparable_prior"
+}

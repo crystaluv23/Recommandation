@@ -1,0 +1,1 @@
+{"action":"read_span","fact_ref":"fact-0beda24d07c3b1cd","rationale":["The latest receipt establishes us-gaap operating cash flow of USD 20122000 for 2018-01-01 through 2018-09-30.","Read the located comparable-prior operand to verify its complete period, unit and measurement identity before computing a historical comparison."]}

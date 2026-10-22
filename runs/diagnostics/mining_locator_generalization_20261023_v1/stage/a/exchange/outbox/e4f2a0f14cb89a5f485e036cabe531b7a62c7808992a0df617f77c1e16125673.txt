@@ -1,0 +1,1 @@
+{"action":"read_span","fact_ref":"fact-969421320623f49b","rationale":["The latest operand has been read with its ifrs-full concept, USD unit and annual period preserved.","Read the comparison locator’s prior operand to verify its source binding and period before computing an annual change."]}

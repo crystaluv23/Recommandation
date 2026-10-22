@@ -1,0 +1,127 @@
+{
+  "sample": "a",
+  "verdict": "Source consumption and allowed signed arithmetic supported; endpoint not produced because fifth request blocked. No semantic error inferred from optional compute.",
+  "failure": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/failure.json",
+    "sha256": "542a1bb7e5394380d6e22808760b4894439c06263cec39e4e56e3e768756f94d"
+  },
+  "sealed_files_verified": 34,
+  "steps": [
+    {
+      "step": 1,
+      "visible_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 5,
+        "light_remaining": 4
+      },
+      "action": {
+        "action": "compare_groups",
+        "concepts": [
+          "CashFlowsFromUsedInOperatingActivities"
+        ],
+        "rationale": [
+          "Locate the operating cash flow operands and their case, period and source bindings before selecting exact fact reads.",
+          "The controlled fetch identifies the concept but does not yet establish measurement identity or comparable periods."
+        ]
+      }
+    },
+    {
+      "step": 2,
+      "visible_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 4,
+        "light_remaining": 4
+      },
+      "action": {
+        "action": "read_span",
+        "fact_ref": "fact-74cea942438e2cd0",
+        "rationale": [
+          "Read the latest operating cash-flow operand to establish its source taxonomy, object, unit and period before interpreting the comparison.",
+          "The comparison locator identifies a prior operand but does not itself establish measurement identity or period comparability."
+        ]
+      }
+    },
+    {
+      "step": 3,
+      "visible_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 3,
+        "light_remaining": 4
+      },
+      "action": {
+        "action": "read_span",
+        "fact_ref": "fact-969421320623f49b",
+        "rationale": [
+          "The latest operand has been read with its ifrs-full concept, USD unit and annual period preserved.",
+          "Read the comparison locator’s prior operand to verify its source binding and period before computing an annual change."
+        ]
+      }
+    },
+    {
+      "step": 4,
+      "visible_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 2,
+        "light_remaining": 4
+      },
+      "action": {
+        "action": "compute_statistic",
+        "fact_refs": [
+          "fact-74cea942438e2cd0",
+          "fact-969421320623f49b"
+        ],
+        "rationale": [
+          "Both raw-read operands belong to case-001 and the same ifrs-full CashFlowsFromUsedInOperatingActivities concept in USD.",
+          "The latest annual period is 2023-07-01 through 2024-06-30 with value -15122354; the prior annual period is 2022-07-01 through 2023-06-30 with value -2378789. Both were available before the case prediction cutoff.",
+          "Compute the signed annual cash-flow change in latest-then-prior order. These negative operands do not establish a growth interpretation, a future funding plan, or a positive/control research effect."
+        ],
+        "rule": "latest_minus_comparable_prior"
+      }
+    },
+    {
+      "step": 5,
+      "visible_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 1,
+        "light_remaining": 4
+      },
+      "action": null
+    }
+  ],
+  "reservations": [
+    21100,
+    22457,
+    25126,
+    26582,
+    25385
+  ],
+  "answered_reservation": 95265,
+  "blocked_reservation": 25385,
+  "all_prepared_reservation": 120650,
+  "ceiling": 98304,
+  "remaining_before_fifth": 3039,
+  "fresh_authors": 4,
+  "model_corrections": 0,
+  "inboxes": 4,
+  "prepared_requests": 5,
+  "final_intent": null,
+  "source_claim": "Two ifrs-full/USD negativeannualOCF operands and exact annualperiods in fourthraw match originalsource; latest-minus-prior=-12743565.000000.",
+  "budget_observability": {
+    "visible": "heavy/browse/light only; unrelatedmemory/catalog byte limits",
+    "not_disclosed_in_actual_system_or_user": "32768per-call,98304aggregate,call-reservation/cumulative-spend/currentcallremaining/nextcallaffordability/endpointreserve",
+    "fourth_request_budget": {
+      "heavy_remaining": 2,
+      "browse_remaining": 24,
+      "light_remaining": 4
+    },
+    "compute_statistic_was_allowed": true,
+    "inference": "Producer/prompt omission: observer enforces logical requestbudget but author cannot plan remaining nativecalls from supplied view. Preflight validated one4step path, not all allowed action paths. Do not impose retrospective4stepterminal rule."
+  },
+  "O1": "pass actualbothoperandreads",
+  "O2": "supported materialsourceclaims; optionalcomputationlegal",
+  "O3": "finalrationale absent,notreached",
+  "O4": "pass bothfullreceiptsandcomparisonlocatorspersist",
+  "O5": "fail endpointnotproduced,no nativeterminalinvented",
+  "O6": "resourceceilingenforced/terminalpreserved; inbudgetendpointnotachieved",
+  "scope": "Read-only diagnosis; no product/input/reference/oldstage changes, no advance, no network."
+}

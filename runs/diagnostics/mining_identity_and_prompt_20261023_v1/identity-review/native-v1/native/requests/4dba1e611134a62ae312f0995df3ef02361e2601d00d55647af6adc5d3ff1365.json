@@ -1,0 +1,55 @@
+{
+  "request": {
+    "contract_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "max_http_attempts": 1,
+    "max_output_tokens": 800,
+    "messages": [
+      {
+        "content": "Return exactly one JSON object and no non-JSON text. Copy supplied source coordinates only through supplied tokens.",
+        "role": "system"
+      },
+      {
+        "content": "{\"basic_info\":{\"cash\":123456789012345678,\"document_ref\":\"secfacts:[ANON_ID_0001]:[ANON_ID_0000]:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"escaped_url\":\"\\\"{\\\\\\\"source\\\\\\\": \\\\\\\"https:\\\\\\\\/\\\\\\\\/www.sec.gov\\\\\\\\/Archives\\\\\\\\/edgar\\\\\\\\/data\\\\\\\\/[ANON_ID_0003]\\\\\\\\/[ANON_ID_0002]\\\\\\\\/document.htm\\\\\\\"}\\\"\",\"snapshot_hash\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"typed_patch\":{\"period\":\"2024-09-30\",\"source_hash\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"value\":-2378789},\"url\":\"https://www.sec.gov/Archives/edgar/data/[ANON_ID_0003]/[ANON_ID_0002]/ea0215960-20f_critical.htm\"},\"initial_research_skill\":\"Inspect only supplied evidence.\"}",
+        "role": "user"
+      }
+    ],
+    "model": {
+      "alias": "independent-subagent",
+      "api_key_env_var": "",
+      "default_input_cost_per_million_tokens": 0.0,
+      "default_max_output_tokens": 16384,
+      "default_output_cost_per_million_tokens": 0.0,
+      "default_reasoning_effort": null,
+      "description": "Independent role agent through exact local request/response files; no API transport.",
+      "model": "independent-subagent",
+      "proposal_profile": "independent_agent",
+      "provider": "local",
+      "provider_identity": "local",
+      "provider_route": null,
+      "roles": [
+        "evolution",
+        "judge"
+      ],
+      "web_tools_allowed": false
+    },
+    "response_format": {
+      "type": "json_object"
+    },
+    "schema_version": "evolution-exact-request-v1",
+    "stage": "research_controller_initialize",
+    "stage_contract": {
+      "allow_outcomes": false,
+      "payload_hash": "74a44c579ea25d110d84a729f7ee8010e0bba51e9adb018009d5aa9a7a031bac",
+      "payload_utf8_bytes": 707,
+      "registered": true,
+      "required_fields": [
+        "initial_research_skill",
+        "basic_info"
+      ],
+      "schema_version": "research-stage-input-v1",
+      "stage": "research_controller_initialize"
+    },
+    "temperature": 0.0
+  },
+  "request_hash": "4dba1e611134a62ae312f0995df3ef02361e2601d00d55647af6adc5d3ff1365"
+}

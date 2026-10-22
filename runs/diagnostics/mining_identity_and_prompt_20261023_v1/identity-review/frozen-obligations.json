@@ -1,0 +1,126 @@
+{
+  "created_utc": "2026-10-22T21:29:51.909189+00:00",
+  "scope": "Existing active _CaseIdentityProjection egress only; explicit SEC dashed accession and Archives/edgar/data issuer/accession path coordinates; no arbitrary 18digit masks, no new schema or identity inventory, canonical source/ref/hash/ledger/typedpatch unchanged.",
+  "timing_limit": "Candidate 9line source implementation was already present at first reviewer inspection. This independent case freeze precedes review execution, not that implementation. No future author output exists or was read.",
+  "source_bindings": [
+    {
+      "path": "reports/mining-query-projection-and-generalization-20261023.md",
+      "sha256": "5df58e5cf98b43a5ba14ced6d1b8bacdb157006fa82a2db94ea8f7fe6b4f8270"
+    },
+    {
+      "path": "runs/diagnostics/mining_locator_generalization_20261023_v1/independent/final-query-and-budget-review.json",
+      "sha256": "ba2cf968fbacd383cf0d0d750d1e1f4d27957ad618efdcd41fdf42f539b143c6"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "71caf723494d893b05b0329332c4cf9ec0c27ccaa23370ecdff229533a42c9b6"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/evolution_transport.md",
+      "sha256": "bced61e5ee27362f715af8c7dde14c2e74f0a8d4c5ece7e25321a4a81d698716"
+    }
+  ],
+  "baseline_sha256": "582d43a4912c1248866c3dddd8b15aed24e5f22a4f72ccde2f2f6d10cb740b77",
+  "aliases": [
+    "cik_0001957939",
+    "Critical Metals Corp",
+    "CRML"
+  ],
+  "cases": [
+    {
+      "id": "original-foreign-agent",
+      "kind": "mask",
+      "text": "secfacts:0001957939:0001213900-24-092156:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "forbidden": [
+        "0001213900-24-092156"
+      ]
+    },
+    {
+      "id": "foreign-cik-url",
+      "kind": "mask",
+      "text": "https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156/ea0215960-20f_critical.htm",
+      "forbidden": [
+        "1957939",
+        "000121390024092156"
+      ]
+    },
+    {
+      "id": "same-cik-path",
+      "kind": "mask",
+      "text": "/Archives/edgar/data/1213900/000121390024092156/document.htm",
+      "forbidden": [
+        "1213900",
+        "000121390024092156"
+      ]
+    },
+    {
+      "id": "url-nested-json",
+      "kind": "mask",
+      "text": "{\"source\": \"https://www.sec.gov/Archives/edgar/data/1957939/000121390024092156/document.htm\"}",
+      "forbidden": [
+        "1957939",
+        "000121390024092156"
+      ]
+    },
+    {
+      "id": "url-json-escaped-slashes",
+      "kind": "mask",
+      "text": "{\"source\": \"https:\\/\\/www.sec.gov\\/Archives\\/edgar\\/data\\/1957939\\/000121390024092156\\/document.htm\"}",
+      "forbidden": [
+        "1957939",
+        "000121390024092156"
+      ]
+    },
+    {
+      "id": "url-json-double-escaped",
+      "kind": "mask",
+      "text": "\"{\\\"source\\\": \\\"https:\\\\/\\\\/www.sec.gov\\\\/Archives\\\\/edgar\\\\/data\\\\/1957939\\\\/000121390024092156\\\\/document.htm\\\"}\"",
+      "forbidden": [
+        "1957939",
+        "000121390024092156"
+      ]
+    },
+    {
+      "id": "upper-case-path",
+      "kind": "mask",
+      "text": "/ARCHIVES/EDGAR/DATA/1957939/000121390024092156/document.htm",
+      "forbidden": [
+        "1957939",
+        "000121390024092156"
+      ]
+    },
+    {
+      "id": "bare-18digit-money",
+      "kind": "preserve",
+      "text": "Assets 000121390024092156; total 123456789012345678; $121390024092156.00."
+    },
+    {
+      "id": "date-math",
+      "kind": "preserve",
+      "text": "2024-09-30; 20240930; 2024/09/30; 18 * 1213900 = 21850200; 1234567890-12-1234567."
+    },
+    {
+      "id": "document-local-semantic",
+      "kind": "preserve",
+      "text": "document-annual-2024 appendix-1213900 local filing-document-42 secfacts:unrelated:hash"
+    },
+    {
+      "id": "long-digit-boundary",
+      "kind": "preserve",
+      "text": "10001213900-24-0921561 X0001213900-24-092156Y"
+    },
+    {
+      "id": "nonsec-financial-path",
+      "kind": "preserve",
+      "text": "https://example.org/assets/1957939/000121390024092156/table.csv"
+    }
+  ],
+  "extra_obligations": [
+    "All masked cases restore exact input string spelling and slash escapes.",
+    "Guess raw accession/compact SEC path and unknown ANON token reject/quarantine; safe siblings restore only exact request tokens.",
+    "Estimate equals actual native message serialization bytes plus output; reservation/inbox/cache/inverse agree; synthetic fixture only, production authors zero.",
+    "Correction payload uses same projection; canonical hash references and typed snapshots unchanged.",
+    "Thread/nested/failure context unwinds; no projection absent active scope.",
+    "Original 4 native prepared journals retain hashes, zero production inbox/author and original budget failure unchanged."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "code_sha256": "a9645639f3dff9142c1b06c698531f4dcfe88056e8536d0ef67daf2702550c81",
+  "results": [
+    {
+      "case": "terminal-accession-directory",
+      "view": "https://www.sec.gov/Archives/edgar/data/[ANON_ID_0000]/000121390024092156",
+      "pass": false,
+      "inverse": true
+    },
+    {
+      "case": "terminal-cik-directory",
+      "view": "/Archives/edgar/data/1957939",
+      "pass": false,
+      "inverse": true
+    },
+    {
+      "case": "terminal-accession-query",
+      "view": "https://www.sec.gov/Archives/edgar/data/[ANON_ID_0000]/000121390024092156?output=json",
+      "pass": false,
+      "inverse": true
+    }
+  ]
+}

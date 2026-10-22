@@ -1,0 +1,9 @@
+{
+  "attempts": [
+    "full-mining-rebuild",
+    "full-mining-rebuild-v2"
+  ],
+  "error": "step1 read_count logging directly indexed structured_read_progress before firstread; KeyError",
+  "classification": "independent harnesserror, not product failure; defaultempty logging fixed, no product change",
+  "original_artifacts_preserved": true
+}

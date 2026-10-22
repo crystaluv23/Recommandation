@@ -1,0 +1,10 @@
+{
+  "action": "compare_groups",
+  "concepts": [
+    "NetCashProvidedByUsedInOperatingActivities"
+  ],
+  "rationale": [
+    "Locate the target concept operands and periods within the fetched historical case before selecting exact source fact reads.",
+    "The supplied state contains fact references without source bindings; comparability and measurement identity remain unestablished."
+  ]
+}

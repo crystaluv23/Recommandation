@@ -1,0 +1,26 @@
+{
+  "reason": "Avoid treating digit prefixes of nonnumeric file/directory segments as whole SEC CIK coordinates; completes minimal-source-coordinate preservation check.",
+  "cases": [
+    {
+      "id": "numeric-prefix-filename-dash",
+      "kind": "preserve",
+      "text": "https://www.sec.gov/Archives/edgar/data/1234567890-document.htm"
+    },
+    {
+      "id": "numeric-prefix-filename-underscore",
+      "kind": "preserve",
+      "text": "/Archives/edgar/data/1234567890_local.txt"
+    },
+    {
+      "id": "numeric-prefix-filename-extension",
+      "kind": "preserve",
+      "text": "/Archives/edgar/data/1234567890.csv"
+    },
+    {
+      "id": "compactaccession-prefix-segment",
+      "kind": "preserve",
+      "text": "/Archives/edgar/data/1957939/000121390024092156extra/table.txt",
+      "preserved_substring": "000121390024092156extra"
+    }
+  ]
+}

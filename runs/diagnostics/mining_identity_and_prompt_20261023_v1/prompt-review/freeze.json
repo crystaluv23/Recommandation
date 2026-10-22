@@ -1,0 +1,27 @@
+{
+  "scope": "read-only contract compression review; no actor input/output, label store, check/LockedTest, or network accessed",
+  "frozen_at_utc": "2026-10-22T21:27:22.950707+00:00",
+  "files": {
+    "old-controller.txt": {
+      "utf8_bytes": 12953,
+      "sha256": "5b7c89d84318715d90c608bb3fc6c1228cdaeeb5654e82f306f94c33493ccf19"
+    },
+    "shared-source-fact.txt": {
+      "utf8_bytes": 713,
+      "sha256": "07f7cd289c43d3b6a64faa10577f42a2d3f3ef76b2b5c29c939fffe54ef2bc67"
+    },
+    "shared-need-row.txt": {
+      "utf8_bytes": 98,
+      "sha256": "fa575b76f426572cab42c84f49f36608dc8d0e31398243d9987ab0cc5cbe6f1e"
+    },
+    "old-mining_role_model.py.txt": {
+      "utf8_bytes": 18154,
+      "sha256": "4114e4822cfb64c3799aad27eb89f8553fa891b5e82f71c5df9507f7c6074a55"
+    }
+  },
+  "source_files": {
+    "src/stock_opportunity_agent/research/mining_role_model.py": "4114e4822cfb64c3799aad27eb89f8553fa891b5e82f71c5df9507f7c6074a55",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "3fc449936485510837b31596e5e3beb8d3dc726a63f2509ec831ef3ab316a7fa",
+    "src/stock_opportunity_agent/research/stage_contracts.py": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494"
+  }
+}

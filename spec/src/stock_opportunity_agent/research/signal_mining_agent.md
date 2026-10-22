@@ -60,6 +60,14 @@ remain invalid, valid siblings retain their original persistence semantics, and
 only the existing top-level scalar rationale may be mechanically wrapped.
 Domain/tool rules remain visible, and the controller still rejects full-object
 corrections and validates the assembled action before any tool executes.
+The global prompt may consolidate repeated prose while retaining every action,
+field/enum, state and budget exception, PIT/evidence/namespace rule, candidate
+and admission obligation, memory/backlog access path and terminal condition.
+It is not shortened by removing capabilities for a favorable module. Keep the
+shared row-rationale/source-fact instructions and normal/typed-patch output
+branches verbatim. Compare complete contractual meaning and actual composed
+request bytes; text equality, savings arithmetic and offline tests alone do
+not establish fresh semantic behavior.
 
 ### Shared Evidence Graph
 

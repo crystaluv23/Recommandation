@@ -1,0 +1,516 @@
+{
+  "ledger": {
+    "cycle_id": 1,
+    "entries": [
+      {
+        "action": "fetch_evidence",
+        "action_id": 1,
+        "case_refs": [
+          "case-002"
+        ],
+        "coverage": {
+          "query_coverage": {
+            "matched_terms": [
+              "netcashprovidedbyusedinoperatingactivities"
+            ],
+            "sufficient": true
+          },
+          "unread_same_source": true
+        },
+        "evidence_refs": [
+          "fact-6963faafa552b5b8",
+          "fact-0beda24d07c3b1cd",
+          "fact-b4cc5146ab7284ef",
+          "fact-b67f1d64d8caaa42",
+          "fact-311e40dbb28e76a1",
+          "fact-dec278f4127ec1f1",
+          "fact-765069d5563d12d9",
+          "fact-b498e1c1f56963a1",
+          "fact-c96ef10008528ea6",
+          "fact-e6b0d5be7ef70125",
+          "fact-6ac1ba409db9f75b",
+          "fact-6ab7b00b19ee8db7",
+          "fact-e2da5a439fe236a9",
+          "fact-0685374ec3136a83",
+          "fact-86cda28fe3f2a67a",
+          "fact-f9721e9b6644014f",
+          "fact-b320816eb4c0cb7f",
+          "relation-349dde16baf9cec0",
+          "relation-3df9a1b6db2b33b3",
+          "relation-814bafa798e7b600",
+          "relation-d4f7a16ecf161a6b",
+          "relation-d8d08f43d85eb55b",
+          "relation-ddd225d27b486afa",
+          "relation-f8c37fb1ca9b4207"
+        ],
+        "input_hash": "a2b554bc772734e1442fe616c217675a9ca164989f87ecc62a1819300715271d",
+        "note": null,
+        "omitted_coverage": {
+          "excluded_document_ids": [
+            "secfacts:0001746129:0001140361-19-006071:6f98bdf34c46706e",
+            "secfacts:0001746129:0001140361-19-009160:eb5a691bc50e32c3",
+            "secfacts:0001746129:0001140361-19-014953:bb9bd7d0484f5fd7",
+            "secfacts:0001746129:0001140361-19-020500:937841c5c1065d1e",
+            "secfacts:0001746129:0001140361-20-007438:3cb09cf895c97d7e",
+            "secfacts:0001746129:0001140361-20-011655:5eb5078380e1a30f",
+            "secfacts:0001746129:0001140361-20-018421:96ef7c858a599f42",
+            "secfacts:0001746129:0001140361-20-025585:7a51f79bbc947c26",
+            "secfacts:0001746129:0001140361-21-009987:a7b507911a3c6ea8",
+            "secfacts:0001746129:0001140361-21-016843:ca4368aa5fc770cd",
+            "secfacts:0001746129:0001140361-21-028263:eba1b4d740a439c6",
+            "secfacts:0001746129:0001140361-21-036825:e168d983318d50c7",
+            "secfacts:0001746129:0001140361-22-012281:66964a63f4268d7b",
+            "secfacts:0001746129:0001140361-22-019016:207950ba741d1170",
+            "secfacts:0001746129:0001140361-22-029630:ec457fff501242dc",
+            "secfacts:0001746129:0001140361-22-041387:5dfe5e191a969acb",
+            "secfacts:0001746129:0001140361-23-013727:7e59a8208642eb34",
+            "secfacts:0001746129:0001140361-23-024806:d9b357ef68791bfc",
+            "secfacts:0001746129:0001140361-23-038773:a176b8e35dc09f5f",
+            "secfacts:0001746129:0001140361-23-052295:738f18510d60e789",
+            "secfacts:0001746129:0001140361-24-014984:27532751eea695c6",
+            "secfacts:0001746129:0001140361-24-026111:af610fe63cccf9f6",
+            "secfacts:0001746129:0001140361-24-036309:6d6198625ef682d3",
+            "secfacts:0001746129:0001140361-24-045199:b1b7a9097985a4db",
+            "secfacts:0001746129:0001140361-25-008438:19f58c01b1b8409c",
+            "secfacts:0001746129:0001140361-25-018373:ed1b42cde3010de4"
+          ]
+        },
+        "output_hash": "8572fac150e9eb1706a8007f05bf277574fe679e3a0fc4757634c7f7397bf1dd",
+        "pit_status": "enforced",
+        "source_types": [
+          "sec_company_facts"
+        ],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 0
+        }
+      },
+      {
+        "action": "compare_groups",
+        "action_id": 2,
+        "case_refs": [],
+        "coverage": {
+          "groups": [
+            "control",
+            "positive"
+          ]
+        },
+        "evidence_refs": [
+          "fact-6963faafa552b5b8",
+          "fact-0beda24d07c3b1cd"
+        ],
+        "input_hash": "9e10c06bfaa30bb1b7478210ce7bafc345b606f9f87338644ef8ec054819e0db",
+        "note": null,
+        "omitted_coverage": {},
+        "output_hash": "150ddf0eae2d61acc88e839a0051a5c40a350208062fcb32251001464f6008d9",
+        "pit_status": "enforced",
+        "source_types": [],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 1
+        }
+      },
+      {
+        "action": "read_span",
+        "action_id": 3,
+        "case_refs": [
+          "case-002"
+        ],
+        "coverage": {},
+        "evidence_refs": [
+          "fact-6963faafa552b5b8"
+        ],
+        "input_hash": "7c2981eef6ba825b86d321bb33cc05277ce3e2fa0bd16589374ab863092e1f40",
+        "note": null,
+        "omitted_coverage": {},
+        "output_hash": "670a9eb9a7613559a9e59a289a7fab2f2e800d9da5706662da97a10b39299a61",
+        "pit_status": "enforced",
+        "source_types": [],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 2
+        }
+      },
+      {
+        "action": "read_span",
+        "action_id": 4,
+        "case_refs": [
+          "case-002"
+        ],
+        "coverage": {},
+        "evidence_refs": [
+          "fact-0beda24d07c3b1cd"
+        ],
+        "input_hash": "b734a53e7b3a79c470abcfea02639cbc98c17ecea6d7de06d256a33401a4f689",
+        "note": null,
+        "omitted_coverage": {},
+        "output_hash": "b5ef55887390dd16df5e1aad713bf91d8f05a7961fb19f424712791a52b34036",
+        "pit_status": "enforced",
+        "source_types": [],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 3
+        }
+      },
+      {
+        "action": "compute_statistic",
+        "action_id": 5,
+        "case_refs": [],
+        "coverage": {},
+        "evidence_refs": [
+          "relation-c051d12e9a745e2a",
+          "fact-6963faafa552b5b8",
+          "fact-0beda24d07c3b1cd"
+        ],
+        "input_hash": "064ccdbf84a0d6f5001a9b45354d49d1aa0417af274b28590ac04064d90ce5df",
+        "note": null,
+        "omitted_coverage": {},
+        "output_hash": "b6cab4aafb175fb5f3a8feefafa3edfa9f7a2c6e1272f82c652f626bd692f2db",
+        "pit_status": "enforced",
+        "source_types": [],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 4
+        }
+      }
+    ],
+    "seed_id": "seed-discovery"
+  },
+  "view": {
+    "available_actions": [
+      "inspect_manifest",
+      "inspect_catalog",
+      "fetch_evidence",
+      "compute_statistic",
+      "read_span",
+      "compare_groups",
+      "propose_candidate",
+      "record_deferred",
+      "record_no_pattern"
+    ],
+    "available_source_families": [
+      "filing",
+      "financial",
+      "market",
+      "market_data",
+      "sec_company_facts"
+    ],
+    "budget": {
+      "browse_remaining": 24,
+      "heavy_remaining": 1,
+      "light_remaining": 4
+    },
+    "case_prediction_times": {
+      "case-002": "2025-07-31T00:00:00+00:00"
+    },
+    "case_refs": [
+      "case-002"
+    ],
+    "comparison_progress": {
+      "counts": {
+        "available": 1,
+        "included": 1,
+        "omitted_after": 0,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "cursor": 0,
+      "invalidated_comparisons": 0,
+      "items": [
+        {
+          "concept": "NetCashProvidedByUsedInOperatingActivities",
+          "groups": {
+            "control": {
+              "available_cases": [
+                "case-002"
+              ],
+              "case_count": 1,
+              "comparable_prior": {
+                "case-002": {
+                  "fact_ref": "fact-0beda24d07c3b1cd",
+                  "value": "20727000"
+                }
+              },
+              "latest": {
+                "case-002": {
+                  "fact_ref": "fact-6963faafa552b5b8",
+                  "value": "20122000"
+                }
+              },
+              "unresolved_basis_cases": {}
+            },
+            "positive": {
+              "available_cases": [],
+              "case_count": 0,
+              "comparable_prior": {},
+              "latest": {},
+              "unresolved_basis_cases": {}
+            }
+          },
+          "source_snapshot_hash": "40228de9e71c84f91f14453578e6289e2b0cadb8a9dd8e6cbe3be42809187226"
+        }
+      ],
+      "max_entry_bytes": 8000,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "refresh_action": "compare_groups with requested concepts; ordinary heavy cost",
+      "selection_is_exhaustive": true,
+      "selection_order": "most_recent_comparison_first",
+      "snapshot_status": "current"
+    },
+    "evidence_digest": {
+      "cases_with_facts": [
+        "case-002"
+      ],
+      "concept_case_coverage": {
+        "InterestPaidNet": {
+          "control_cases": 1,
+          "positive_cases": 0
+        },
+        "NetCashProvidedByUsedInFinancingActivities": {
+          "control_cases": 1,
+          "positive_cases": 0
+        },
+        "NetCashProvidedByUsedInInvestingActivities": {
+          "control_cases": 1,
+          "positive_cases": 0
+        },
+        "NetCashProvidedByUsedInOperatingActivities": {
+          "control_cases": 1,
+          "positive_cases": 0
+        },
+        "OperatingLeasesFutureMinimumPaymentsDueThereafter": {
+          "control_cases": 1,
+          "positive_cases": 0
+        },
+        "OperatingLeasesFutureMinimumPaymentsRemainderOfFiscalYear": {
+          "control_cases": 1,
+          "positive_cases": 0
+        },
+        "OperatingLeasesRentExpenseNet": {
+          "control_cases": 1,
+          "positive_cases": 0
+        },
+        "PropertyPlantAndEquipmentNet": {
+          "control_cases": 1,
+          "positive_cases": 0
+        },
+        "TimeDeposits": {
+          "control_cases": 1,
+          "positive_cases": 0
+        }
+      },
+      "event_count": 0,
+      "fact_count": 17,
+      "families_fetched": [
+        "sec_company_facts"
+      ],
+      "fetches": 1,
+      "label_counts": {
+        "control": 1,
+        "positive": 0
+      },
+      "relation_count": 8
+    },
+    "known_event_refs": [],
+    "known_fact_refs": [
+      "fact-0685374ec3136a83",
+      "fact-0beda24d07c3b1cd",
+      "fact-311e40dbb28e76a1",
+      "fact-6963faafa552b5b8",
+      "fact-6ab7b00b19ee8db7",
+      "fact-6ac1ba409db9f75b",
+      "fact-765069d5563d12d9",
+      "fact-86cda28fe3f2a67a",
+      "fact-b320816eb4c0cb7f",
+      "fact-b498e1c1f56963a1",
+      "fact-b4cc5146ab7284ef",
+      "fact-b67f1d64d8caaa42",
+      "fact-c96ef10008528ea6",
+      "fact-dec278f4127ec1f1",
+      "fact-e2da5a439fe236a9",
+      "fact-e6b0d5be7ef70125",
+      "fact-f9721e9b6644014f"
+    ],
+    "known_relation_refs": [
+      "relation-349dde16baf9cec0",
+      "relation-3df9a1b6db2b33b3",
+      "relation-814bafa798e7b600",
+      "relation-c051d12e9a745e2a",
+      "relation-d4f7a16ecf161a6b",
+      "relation-d8d08f43d85eb55b",
+      "relation-ddd225d27b486afa",
+      "relation-f8c37fb1ca9b4207"
+    ],
+    "label_map": {
+      "case-002": "control"
+    },
+    "last_action_result": {
+      "action": "compute_statistic",
+      "fact_refs": [
+        "fact-6963faafa552b5b8",
+        "fact-0beda24d07c3b1cd"
+      ],
+      "relation_ref": "relation-c051d12e9a745e2a",
+      "rule": "latest_minus_comparable_prior",
+      "value": "-605000.000000"
+    },
+    "measurable_evidence_manifest": {},
+    "memory_consumption": {
+      "original_disclosure_bytes": 2,
+      "original_disclosure_limit": 48000,
+      "read_refs": []
+    },
+    "meta_info": {},
+    "meta_memory_disclosures": [],
+    "modality_coverage": {
+      "narrative": {
+        "available": true,
+        "explored": false,
+        "status": "required"
+      },
+      "structured": {
+        "available": true,
+        "explored": true,
+        "status": "explored"
+      }
+    },
+    "prior_modality_footprints": [],
+    "research_axis": {
+      "axis_id": "surge_direction",
+      "control": "realized_max_multiple < 2.0",
+      "population": "eligible_discovery_cases",
+      "positive": "realized_max_multiple >= 2.0"
+    },
+    "seed": "discovery",
+    "signal_catalog": [],
+    "signal_catalog_disclosure": {
+      "counts": {
+        "available": 0,
+        "included": 0,
+        "omitted_after": 0,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "cursor": 0,
+      "max_entry_bytes": 8000,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "read_action": "inspect_catalog scope=signals item_refs",
+      "read_byte_limit": 16000,
+      "selection_is_exhaustive": true
+    },
+    "slow_method_memory": {},
+    "state": "evidence_ready",
+    "structured_read_progress": {
+      "counts": {
+        "available": 2,
+        "included": 2,
+        "omitted_after": 0,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "cursor": 0,
+      "items": [
+        {
+          "available_at": "2018-11-15T00:00:00+00:00",
+          "case_refs": [
+            "case-002"
+          ],
+          "content_hash": "4cb97d2eee42f5caac8671264d41e0d7d4455237d2ba654b3a174de4e4cd423b",
+          "context_chars": 904,
+          "document_ref": "document-secfacts:0001746129:0001140361-18-043119:4cb97d2eee42f5ca",
+          "fact": {
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "period": {
+              "end": "2017-09-30",
+              "start": "2017-01-01"
+            },
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": "20727000"
+          },
+          "fact_ref": "fact-0beda24d07c3b1cd",
+          "masked": "\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Investing Activities\",\"start\":\"2018-01-01\",\"tag\":\"NetCashProvidedByUsedInInvestingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-19946000},{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2017-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2018,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2017-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":20727000},{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not",
+          "read_count": 1
+        },
+        {
+          "available_at": "2018-11-15T00:00:00+00:00",
+          "case_refs": [
+            "case-002"
+          ],
+          "content_hash": "4cb97d2eee42f5caac8671264d41e0d7d4455237d2ba654b3a174de4e4cd423b",
+          "context_chars": 904,
+          "document_ref": "document-secfacts:0001746129:0001140361-18-043119:4cb97d2eee42f5ca",
+          "fact": {
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "period": {
+              "end": "2018-09-30",
+              "start": "2018-01-01"
+            },
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": "20122000"
+          },
+          "fact_ref": "fact-6963faafa552b5b8",
+          "masked": ",\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2017-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":20727000},{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2018-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2018,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2018-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":20122000},{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2017-09-30\",\"fiscal_period\":\"Q3\",\"fiscal_year\":2018,\"frame\":null,\"label",
+          "read_count": 1
+        }
+      ],
+      "max_entry_bytes": 8000,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "revisit_action": "read_span with fact_ref; ordinary heavy cost",
+      "selection_is_exhaustive": true,
+      "selection_order": "most_recent_read_first"
+    },
+    "tool_contracts": {
+      "compute_statistic": {
+        "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+        "operand_count": 2,
+        "operand_order": "numerator_then_denominator_or_latest_then_prior",
+        "operand_scope": "same_case",
+        "rules": [
+          "latest_minus_comparable_prior",
+          "latest_over_comparable_prior",
+          "latest_over_latest"
+        ]
+      },
+      "inspect_catalog": {
+        "allowed_scopes": [
+          "signals",
+          "evidence",
+          "memory",
+          "backlog"
+        ],
+        "budget_by_scope": {
+          "backlog": "light",
+          "evidence": "light",
+          "memory": "browse",
+          "signals": "light"
+        },
+        "default_scope": "signals"
+      },
+      "read_span": {
+        "budget_by_target": {
+          "document_ref": "browse",
+          "event_ref": "browse",
+          "fact_ref": "heavy"
+        },
+        "length_max": 4000,
+        "length_min": 1,
+        "offset_min": 0,
+        "target_count": 1,
+        "target_fields": [
+          "fact_ref",
+          "event_ref",
+          "document_ref"
+        ],
+        "window_applies_to": [
+          "event_ref",
+          "document_ref"
+        ]
+      }
+    }
+  }
+}

@@ -224,7 +224,17 @@ class _CaseIdentityProjection:
         ))
         self.exact_aliases = frozenset(alias.casefold() for alias in inventory)
         matchers = _compiled_identity_aliases(inventory, expand_aliases=expand_aliases)
-        self.patterns = [row[1] for row in matchers]
+        # Source coordinates can identify the issuer even when a filing agent
+        # owns the accession prefix. Run before partial issuer-CIK matchers.
+        separator = r"\\*/"
+        archive = separator + "Archives" + separator + "edgar" + separator + "data" + separator
+        boundary = r"(?=" + separator + r"""|[?#\s<>)}\]]|\\*["']|$)"""
+        self.patterns = [
+            re.compile(r"(?<![A-Za-z0-9])\d{10}-\d{2}-\d{6}(?![A-Za-z0-9])"),
+            re.compile(archive + r"\d+" + separator + r"(?P<identity_literal>\d{18})" + boundary, re.IGNORECASE),
+            re.compile(archive + r"(?P<identity_literal>\d+)" + boundary, re.IGNORECASE),
+            *[row[1] for row in matchers],
+        ]
         self.url_patterns = [row[2] for row in matchers]
         self.url_host_prefixes = tuple(
             alias.casefold() for alias, _, _ in matchers

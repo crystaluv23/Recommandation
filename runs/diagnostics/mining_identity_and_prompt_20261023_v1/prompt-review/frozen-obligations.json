@@ -1,0 +1,300 @@
+{
+  "basis": "Complete old controller + shared source-fact constant + unchanged output branch read in full; obligation grouping is semantic and includes interfaces, exceptions and examples. No F1 or measurement/admission thresholds changed or newly introduced.",
+  "obligations": [
+    {
+      "id": "R01",
+      "family": "role",
+      "frozen_obligation": "Choose one action per step in a bounded label-aware PIT Evidence Graph; runtime owns tools, ledger, budgets, labels and termination."
+    },
+    {
+      "id": "R02",
+      "family": "admission",
+      "frozen_obligation": "Candidate is reusable measurement, not required to predict surge/magnitude alone; admission is technical correctness, PIT evidence, uniqueness, executable fixtures; effect unverified and tracked after admission."
+    },
+    {
+      "id": "R03",
+      "family": "admission",
+      "frozen_obligation": "Do not withhold concrete measurable candidate solely for unproved strict paired benefit; never fabricate support."
+    },
+    {
+      "id": "R04",
+      "family": "output",
+      "frozen_obligation": "Every assembled action has nonempty short-string rationale array; normal vs typed-patch output is selected separately, unchanged."
+    },
+    {
+      "id": "R05",
+      "family": "actions",
+      "frozen_obligation": "Preserve closed action names and field interfaces: inspect_manifest, inspect_catalog, fetch_evidence, compute_statistic, read_span, compare_groups, propose_candidate, record_deferred, record_no_pattern, record_need_dispositions."
+    },
+    {
+      "id": "R06",
+      "family": "fetch",
+      "frozen_obligation": "fetch_evidence has case_refs, source_families, max_documents, query|null; multiple families allowed, all from available_source_families; use as few fetches as needed."
+    },
+    {
+      "id": "R07",
+      "family": "read",
+      "frozen_obligation": "read_span takes exactly one named fact_ref/event_ref/document_ref, never returned target/ref keys; event/document windows bounded and raw narrative text authoritative."
+    },
+    {
+      "id": "R08",
+      "family": "catalog",
+      "frozen_obligation": "inspect_catalog scope enum signals/evidence/memory/backlog, integer cursor, level enum case/plan/round/cross_round, exact-version signal_ref, item_refs array preserved; default signals."
+    },
+    {
+      "id": "R09",
+      "family": "memory",
+      "frozen_obligation": "Memory is complete authorized Experience directory; level filter, signal_ref association filter, cursor paging; item_refs reads 1-3 complete item/supporting-source originals within per-read and cumulative original disclosure limits."
+    },
+    {
+      "id": "R10",
+      "family": "memory",
+      "frozen_obligation": "Memory browse/read charge browse, not light; read originals remain meta_memory_disclosures; slow_method_memory retains completed method and cross_round reflections."
+    },
+    {
+      "id": "R11",
+      "family": "memory",
+      "frozen_obligation": "Cross-round changes are retrospective diagnostics with unknown causes, not observable economic factors; use axis/hypothesis-relevant memory rather than every feedback as feature."
+    },
+    {
+      "id": "R12",
+      "family": "coverage",
+      "frozen_obligation": "Omitted/unread entries remain available and do not establish absence; actual catalog result and next_cursor in last_action_result.result."
+    },
+    {
+      "id": "R13",
+      "family": "paging",
+      "frozen_obligation": "Evidence next request copies last_action_result.result.next_cursor; absent new fetch, omitted/zero cursor repeats first page with no coverage gain; counts.omitted_after means unread; retain budget-limited page coverage."
+    },
+    {
+      "id": "R14",
+      "family": "labels",
+      "frozen_obligation": "Before narrative positive/control contrast bind selected document/event case_bindings/case_ref to label_map; title/position does not determine group."
+    },
+    {
+      "id": "R15",
+      "family": "signals",
+      "frozen_obligation": "Cards carry actual capability_contract, original hash/read size; default signal_catalog bounded, omissions in signal_catalog_disclosure; read complete exact-version spec/skill via signals/item_refs/read_byte_limit before detail-dependent coverage assertion; unread/missing is not absence."
+    },
+    {
+      "id": "R16",
+      "family": "compute",
+      "frozen_obligation": "tool_contracts authoritative enum, operand scope/order, read target/window limits; compute only listed rules and two finite numeric fact refs from one case; inspect facts or compare_groups if case/period unclear."
+    },
+    {
+      "id": "R17",
+      "family": "fact",
+      "frozen_obligation": "Fact reads retain taxonomy/concept/unit/period/value binding; unknown namespace cannot establish automatic comparable pair/unique basis; same concept words do not equate namespaces."
+    },
+    {
+      "id": "R18",
+      "family": "progress",
+      "frozen_obligation": "structured_read_progress retains whole already-read fact receipts across actions with source bindings/repeated counts, most-recent-first bounded page, explicit omissions/oversized refs; hidden history is neither absence nor comparability; known fact may be reread at ordinary heavy cost; read count not semantic sufficiency."
+    },
+    {
+      "id": "R19",
+      "family": "progress",
+      "frozen_obligation": "comparison_progress is executed-comparison lookup metadata for unchanged fact/group/axis snapshot, not source reads; use locators between operand reads and refresh invalidated/omitted units via ordinary-heavy compare_groups."
+    },
+    {
+      "id": "R20",
+      "family": "candidate",
+      "frozen_obligation": "candidate measurement requires observable,value_kind,normalization; value_kind exactly boolean/ordinal/numeric/categorical, ratio numeric; falsifiers entries condition/expected_observation and evidence_refs retained."
+    },
+    {
+      "id": "R21",
+      "family": "usage",
+      "frozen_obligation": "Optional usage_context fields when_to_use:string|null, failure_conditions:[strings], related_refs:[disclosed Experience item refs]; describe economic/research weakening or reversal beyond extraction gaps; unknown unobserved boundaries; card performance association not causal proof."
+    },
+    {
+      "id": "R22",
+      "family": "narrative",
+      "frozen_obligation": "Narrative measurement has predicate modality:narrative, source_families,lookback_days,semantic_condition,threshold{field,operator,value}; families intersect cited narrative evidence."
+    },
+    {
+      "id": "R23",
+      "family": "narrative",
+      "frozen_obligation": "narrative_summary/attribute_case_coverage positive-control contrast can motivate first-class event-ref-citing narrative predicate, often serving multiple backlog needs; preserve order-confirmation example."
+    },
+    {
+      "id": "R24",
+      "family": "feedback",
+      "frozen_obligation": "prior_modality_footprints holds prior cycle metrics and staged_candidate_outcomes real check-cohort tp/fn/fp/tn,availability,disposition; family with fires not overlapping positives (tp near zero/fn high) is demonstrated predicate-label mismatch; seek different narrative contrast rather than same family."
+    },
+    {
+      "id": "R25",
+      "family": "grounding",
+      "frozen_obligation": "Only known_fact_refs/known_event_refs/known_relation_refs may be cited; every citation already in ledger; at least one fetch before any proposal."
+    },
+    {
+      "id": "R26",
+      "family": "grounding",
+      "frozen_obligation": "Every known concept named in observable/normalization backed by cited fact of that concept; compare_groups gives fact_ref behind each value."
+    },
+    {
+      "id": "R27",
+      "family": "novelty",
+      "frozen_obligation": "Observable genuinely new measurement; cannot reuse/version any signal_catalog signal_ref base name; existing Signal changes belong separate Update path."
+    },
+    {
+      "id": "R28",
+      "family": "backlog",
+      "frozen_obligation": "Hypothesis backlog_needs is bounded unresolved page, not full backlog; backlog_disclosure omissions; backlog catalog pages semantic cards and item_refs whole originals within byte cap."
+    },
+    {
+      "id": "R29",
+      "family": "disposition",
+      "frozen_obligation": "record_need_dispositions exact base_hash,need_dispositions,rationale interface; issued need_disposition_contract.base_hash and allowed_need_refs only; each successful action handles at least one new need."
+    },
+    {
+      "id": "R30",
+      "family": "disposition",
+      "frozen_obligation": "Independent valid rows persist despite invalid siblings; invalid_rows names remaining errors; accepted rows never repeat/overwrite; staged intents not resolved capabilities."
+    },
+    {
+      "id": "R31",
+      "family": "disposition",
+      "frozen_obligation": "Final proposal/no-pattern includes remaining rows only; runtime assembles saved rows and checks entire backlog exactly once."
+    },
+    {
+      "id": "R32",
+      "family": "disposition",
+      "frozen_obligation": "Six disposition values exactly new_measurement,deferred_measurement,update_existing,repair_dependency,not_testable,fast_plan_action; row fields need_refs,disposition,signal_refs,rationale."
+    },
+    {
+      "id": "R33",
+      "family": "disposition",
+      "frozen_obligation": "Each row rationale uses shared NEED_ROW_RATIONALE_CONTRACT verbatim; update_existing cites exactly one existing signal ref, every other disposition none."
+    },
+    {
+      "id": "R34",
+      "family": "source_scope",
+      "frozen_obligation": "Need source_scope distinguishes original examples/current dev; case_prediction_times actual dev cutoffs; outside-cohort origins not missing original-issuer data."
+    },
+    {
+      "id": "R35",
+      "family": "semantics",
+      "frozen_obligation": "Generalize without dropping metric,comparison,entity level,time qualifiers; use each dev case own PIT cutoff; state partial coverage/unsupported remainder rather than proxy substitution."
+    },
+    {
+      "id": "R36",
+      "family": "semantics",
+      "frozen_obligation": "Actual-only revenue not forecast deviation; consolidated margin not same-store sales; historical burn not future plans; source refs do not prove coverage; partial reads allow unestablished/deferred, never cohort-wide source absence."
+    },
+    {
+      "id": "R37",
+      "family": "progress",
+      "frozen_obligation": "evidence_digest collects families and per-concept positive/control coverage; last_action_result previous result; combine narrative_read_progress to retain document/range coverage across catalogs; metadata not source evidence, claims need exact raw reads."
+    },
+    {
+      "id": "R38",
+      "family": "progress",
+      "frozen_obligation": "Do not call already-read range first read; insufficient prior window advances next_readable_start or other document; avoid refetching covered families, spend budget on compute/compare/terminal."
+    },
+    {
+      "id": "R39",
+      "family": "budget",
+      "frozen_obligation": "heavy_remaining=0 prohibits fetch/statistics/comparisons/proposals/fact reads; event/document reads still allowed if browse>0; light inspection requires light>0; repeated budget-inadmissible action yields deferred_budget."
+    },
+    {
+      "id": "R40",
+      "family": "budget",
+      "frozen_obligation": "light zero exhausts only light, not heavy/browse; narrative event/document read_span uses browse, not heavy."
+    },
+    {
+      "id": "R41",
+      "family": "case_scope",
+      "frozen_obligation": "Directory case_bindings/read case_refs join label_map; event is case-scoped observation, shared doc multiple bindings; receipts retain all observed scopes."
+    },
+    {
+      "id": "R42",
+      "family": "navigation",
+      "frozen_obligation": "Directory raw_chars/readable_start/section raw_start; hidden HTML/XBRL header means use supplied body/section offset instead of zero; read length max4000 raw chars; discovery_only directory not evidence, actual read establishes evidence."
+    },
+    {
+      "id": "R43",
+      "family": "navigation",
+      "frozen_obligation": "has_readable_text=false is not narrative exploration; use next_readable_start for new exact raw read and do not repeat empty range."
+    },
+    {
+      "id": "R44",
+      "family": "admissibility",
+      "frozen_obligation": "available_actions names have at least one budget-admissible variant, state prerequisites still apply; catalog only tool_contracts.inspect_catalog.allowed_scopes; signals/evidence/backlog charge light, memory browse; light zero can leave memory-only catalog, no other scope authorized; after scope-budget rejection switch allowed scope/action, never repeat rejected scope."
+    },
+    {
+      "id": "R45",
+      "family": "axis",
+      "frozen_obligation": "research_axis fixed positive/control comparison, labels only runtime label_map; never author/rewrite/expand either."
+    },
+    {
+      "id": "R46",
+      "family": "planning",
+      "frozen_obligation": "Fetch broadly once/twice, then compute/compare and reserve terminal budget; free terminal/disposition actions listed remain budget admissible, domain terminal evidence/exploration still required; use record_deferred when supported domain terminal unavailable."
+    },
+    {
+      "id": "R47",
+      "family": "modality",
+      "frozen_obligation": "Domain terminals inadmissible while any available structured/narrative modality unexplored; fetch missing structured and read at least one bounded raw narrative event/document span; narrative listing/fetch proves availability not grounded exploration; control-plane terminal remains admissible."
+    },
+    {
+      "id": "R48",
+      "family": "modality",
+      "frozen_obligation": "Exploration imposes no candidate quota; propose only recurring supported factor regardless modality."
+    },
+    {
+      "id": "R49",
+      "family": "no_pattern",
+      "frozen_obligation": "record_no_pattern explored_families must occur in own prior fetches; give supported research reason, never invented budget exhaustion."
+    },
+    {
+      "id": "R50",
+      "family": "boundary",
+      "frozen_obligation": "No facts after prediction time, no identities/file ordering features, never exceed shown budgets."
+    },
+    {
+      "id": "R51",
+      "family": "budget_truth",
+      "frozen_obligation": "Named counters/exhaustion claims in rationale/coverage match current runtime; light/browse exhaustion not heavy exhaustion; positive heavy does not oblige candidate."
+    },
+    {
+      "id": "S01",
+      "family": "source_fact",
+      "frozen_obligation": "Preserve source stated object,unit,currency,period,event identity."
+    },
+    {
+      "id": "S02",
+      "family": "source_fact",
+      "frozen_obligation": "Project construction cost not contract price; distinguish revenue,backlog,financing proceeds,capacity."
+    },
+    {
+      "id": "S03",
+      "family": "source_fact",
+      "frozen_obligation": "Apply Signal versioned skill existing materiality definition."
+    },
+    {
+      "id": "S04",
+      "family": "source_fact",
+      "frozen_obligation": "Explicit inference labels, not source-stated amount or invented conversion."
+    },
+    {
+      "id": "S05",
+      "family": "source_fact",
+      "frozen_obligation": "Repeated event attributes/disclosures corroborate, not independent events; retain truly source-distinct events."
+    },
+    {
+      "id": "S06",
+      "family": "source_fact",
+      "frozen_obligation": "Copy source quantities or supplied deterministic results; no prose-calculated totals/conversions."
+    },
+    {
+      "id": "P01",
+      "family": "typed_patch",
+      "frozen_obligation": "Issued output_patch_contract selects only base_hash/operations grammar; preserve failed action/correct args, authorized paths and same base/permissions after patch_error; no full action/changed action. PATCH_INSTRUCTION remains appended unchanged."
+    },
+    {
+      "id": "P02",
+      "family": "normal_output",
+      "frozen_obligation": "Ordinary grammar exact JSON object action,rationale and action fields; nonempty short-string rationale array; last_invalid_action fixes reported issue by one admissible action."
+    }
+  ]
+}

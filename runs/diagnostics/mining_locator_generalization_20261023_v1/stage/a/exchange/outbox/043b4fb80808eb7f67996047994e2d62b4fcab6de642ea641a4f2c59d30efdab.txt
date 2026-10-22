@@ -1,0 +1,1 @@
+{"action":"compare_groups","concepts":["CashFlowsFromUsedInOperatingActivities"],"rationale":["Locate the operating cash flow operands and their case, period and source bindings before selecting exact fact reads.","The controlled fetch identifies the concept but does not yet establish measurement identity or comparable periods."]}

@@ -1,0 +1,24 @@
+{
+  "verdict": "Supported local explicit-SEC source-coordinate egress repair; full anonymity and fresh model adherence are not established.",
+  "source_sha256": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42",
+  "frozen_cases": 19,
+  "masked_coordinate_cases": 10,
+  "preservation_cases": 9,
+  "all_exact_inverse": true,
+  "native_fixture_path": "native-v3-result.json",
+  "native_reservation": 1771,
+  "real_old_prepared_count": 4,
+  "real_old_prepared_hashes_unchanged": true,
+  "new_full_mining_preflight": "awaiting main-thread independently prepared artifacts; not yet reviewed",
+  "fresh_production_authors": 0,
+  "external_api_get": 0,
+  "counterexamples_that_changed_implementation": [
+    "Multilayer slash-escaped SEC path initially left source coordinates visible.",
+    "Terminal issuer/accession SEC path and query-bearing directory initially left coordinates visible.",
+    "Permissive numeric prefix boundary initially masked nonnumeric filename segments."
+  ],
+  "timing_limit": "Original obligations were frozen after initial9line implementation already existed, before independent execution; supplementary cases froze before their respective executions. Baseline extracted from immutable HEAD transport snapshot.",
+  "initial_unbound_trial_limit": "initial-counterexamples.json has no within-run source hash and occurred while candidate could change; final native-v3 result is source-hash-bound before/after and is controlling evidence.",
+  "hash_boundary_review": "Product diff changes only _CaseIdentityProjection.__init__ source-coordinate regex inventory before issuer matching. Existing per-call projection/inverse downstream unchanged; no canonical row/ref/hash/typed-patch computation touched. Synthetic canonical payload remains byte-identical, original4actualjournals hashes preserved. This does not independently re-admit or semantically verify all source records.",
+  "scope_limit": "Only exact dashed SEC accession and explicit Archives/edgar/data numeric CIK/accession path forms under an active identity scope. No arbitrary18digit number classification, new inventory/schema/tool, generic document-name masking or canonical history rewrite."
+}

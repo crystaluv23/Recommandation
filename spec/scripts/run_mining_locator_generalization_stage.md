@@ -50,6 +50,15 @@ driver/spec, owning Mining spec, tests and all src modules. No old-stage files
 are mutated or advanced. Freeze source/code inventories after a zero-inbox
 preflight that selects each next operand only from the actual current native
 payload; it may not retain a previous ref or read a private fact table.
+The original preflight remains an immutable zero-dispatch budget failure,
+102563>98304. `preflight-v2` measures the same cases/sources/obligations/budgets
+after reversible source-coordinate projection and complete global prompt
+consolidation. No formal stage, author receipt or consumed case budget existed
+in that failed preparation. This is an explicit preparatory code revision, not
+a restarted/renamed budget-limited execution. Never overwrite the old evidence.
+The shared prepare helper accepts this explicit preflight_root while its old
+default stays preflight/. Freeze and verify the selected version exactly;
+changed inputs or an incomplete revision cannot borrow another result's pass.
 
 Independent references must precede formal freeze. Prepare verifies complete
 preflight source/code inventories; advance verifies frozen inventory and native

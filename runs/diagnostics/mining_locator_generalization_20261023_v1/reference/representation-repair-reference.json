@@ -1,0 +1,27 @@
+{
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_identity_and_prompt_20261023_v1/identity-review/native-v3-result.json",
+      "sha256": "c8e7afc01c937122cfc09547d3ba1cd6a0815f4f28bd30136ce7a1fb5485667c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_identity_and_prompt_20261023_v1/identity-review/local-final-review.json",
+      "sha256": "bbf4ad879001ff2283a69e38846b7fbf77d18ad45de71a6f3f525dca125f95c4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_identity_and_prompt_20261023_v1/prompt-review/applied-review-20261023-v1.json",
+      "sha256": "d23b6f90b6ac73cf60d2787afc83ad3b6bf291010f97087d0e54a54f333a9fc2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_identity_and_prompt_20261023_v1/associated-test-bindings.json",
+      "sha256": "5072aba0281e453e01a757989f21ed6b8fd3f38814db9ab13e1506e25607217a"
+    }
+  ],
+  "old_preparation_vs_execution": "Original failure had0inbox/author/receipt and noformalstage; no consumedcasebudget is restored. Original102563 record remains; no oldbudgetlimitedactual fifthreply.",
+  "preserved_original_preflight": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/budget-failure.json",
+    "sha256": "6cada06a3702aefc08e1293920cf92245c81c7612d33ab51c4926446fb55852d"
+  },
+  "requirements": "Same source pair/O1-O6/32768/98304/6decision/output2000/heavy6; oldformal1of2 unchanged; source records/refs/hash remain canonical. Preflight-v2 uses complete shared prompt and reversible source coordinate projection before any formalstage/inbox.",
+  "scope": "Additional pre-author evidence references; not a semantic Mining pass"
+}

@@ -1,0 +1,12 @@
+{
+  "old_controller_utf8_bytes": 12953,
+  "candidate_controller_utf8_bytes": 11084,
+  "saving_per_controller_utf8_bytes": 1869,
+  "saving_percent": 14.429089786149927,
+  "old_controller_sha256": "5b7c89d84318715d90c608bb3fc6c1228cdaeeb5654e82f306f94c33493ccf19",
+  "candidate_controller_sha256": "c13f665a15a5cc9431c315e196b19a561d4e7b9ddadef5a94f772b494cfe0b69",
+  "shared_source_fact_utf8_bytes_unchanged": 713,
+  "four_controller_repetition_saving_bytes": 7476,
+  "illustrative_102563_minus_four_controller_savings": 95087,
+  "not_actual_request_measurement": true
+}

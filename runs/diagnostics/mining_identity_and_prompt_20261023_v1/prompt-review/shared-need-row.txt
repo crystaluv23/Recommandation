@@ -1,0 +1,1 @@
+rationale must be a non-empty array of nonblank strings; a single reason uses a one-element array.

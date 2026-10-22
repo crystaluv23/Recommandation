@@ -1,0 +1,62 @@
+{
+  "verdict": "Both final native canonical receiptviews preserve four original whole source rows, exactquote substrings, namespaces/units/periods/sign/values and source hashes.",
+  "samples": [
+    {
+      "sample": "a",
+      "issuer": "cik_0001951089",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1179.json",
+        "sha256": "4e03393bbff52aef5bca7b324502266842811d03f7611c9f28962cfd0ae0379a"
+      },
+      "receipts": [
+        {
+          "fact_ref": "fact-969421320623f49b",
+          "source_pointer": "/content(JSON)/facts/34",
+          "whole_row_exact": true,
+          "whole_context_exact_source_substring": true,
+          "source_hash_exact": true,
+          "fact_period_namespace_unit_sign_value_exact": true
+        },
+        {
+          "fact_ref": "fact-74cea942438e2cd0",
+          "source_pointer": "/content(JSON)/facts/35",
+          "whole_row_exact": true,
+          "whole_context_exact_source_substring": true,
+          "source_hash_exact": true,
+          "fact_period_namespace_unit_sign_value_exact": true
+        }
+      ]
+    },
+    {
+      "sample": "b",
+      "issuer": "cik_0001746129",
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0770.json",
+        "sha256": "6d4348d8c1a7f99f64a93238a7ea770d21307d56f2ee560101a7c17622dcc0bd"
+      },
+      "receipts": [
+        {
+          "fact_ref": "fact-0beda24d07c3b1cd",
+          "source_pointer": "/content(JSON)/facts/257",
+          "whole_row_exact": true,
+          "whole_context_exact_source_substring": true,
+          "source_hash_exact": true,
+          "fact_period_namespace_unit_sign_value_exact": true
+        },
+        {
+          "fact_ref": "fact-6963faafa552b5b8",
+          "source_pointer": "/content(JSON)/facts/258",
+          "whole_row_exact": true,
+          "whole_context_exact_source_substring": true,
+          "source_hash_exact": true,
+          "fact_period_namespace_unit_sign_value_exact": true
+        }
+      ]
+    }
+  ],
+  "review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_identity_and_prompt_20261023_v1/identity-review/full-mining-preflight-v2-review.json",
+    "sha256": "8686077b2094c1da1a51aaee6d354fd5084520ebe462a2ed2b9794c6c321d16b"
+  },
+  "limits": "Historical normalized/source scope stays; primary-filing truth not established; no model response read."
+}

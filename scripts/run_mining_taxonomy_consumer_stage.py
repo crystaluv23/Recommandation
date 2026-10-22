@@ -280,13 +280,14 @@ def preflight():
     return {"state": "preflight_complete", "samples": 2, "inboxes": 0}
 
 
-def prepare():
+def prepare(*, preflight_root=None):
     """Freeze the independent reference and current inputs before formal inboxes."""
     if ROOT.exists():
         raise ValidationError("formal stage already exists")
     with guards():
         inputs, sources = authorities()
-        ready = read_json(BASE / "preflight/result.json")
+        preflight_root = preflight_root or BASE / "preflight"
+        ready = read_json(preflight_root / "result.json")
         check_bindings(ready["code_files"])
         if ready["code_files"] != code_bindings():
             raise ValidationError("preflight code inventory changed; no refreeze")
@@ -296,7 +297,7 @@ def prepare():
         references = [binding(p) for p in sorted((BASE / "reference").glob("*")) if p.is_file()]
         if not (BASE / "reference/prefreeze-obligations.json").is_file() or not references:
             raise ValidationError("independent pre-answer reference missing")
-        sources += references + [binding(BASE / "preflight/result.json")]
+        sources += references + [binding(preflight_root / "result.json")]
         contract = {"schema_version": "mining-taxonomy-consumer-module-v1", "limits": LIMITS,
             "fixed_denominator": 2, "backend": "independent-subagent", "external_API": 0,
             "scope": "controlled fact-source consumption only; no candidate or domain terminal"}

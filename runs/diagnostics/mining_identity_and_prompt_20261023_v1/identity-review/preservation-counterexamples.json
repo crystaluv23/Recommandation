@@ -1,0 +1,29 @@
+{
+  "code_sha256": "5184da995e8745c18586809b33bf72b1bfcc92425fc7bc0aecca5cd71e83f38b",
+  "results": [
+    {
+      "case": "numeric-prefix-filename-dash",
+      "view": "https://www.sec.gov/Archives/edgar/data/[ANON_ID_0000]-document.htm",
+      "pass": false,
+      "inverse": true
+    },
+    {
+      "case": "numeric-prefix-filename-underscore",
+      "view": "/Archives/edgar/data/[ANON_ID_0000]_local.txt",
+      "pass": false,
+      "inverse": true
+    },
+    {
+      "case": "numeric-prefix-filename-extension",
+      "view": "/Archives/edgar/data/[ANON_ID_0000].csv",
+      "pass": false,
+      "inverse": true
+    },
+    {
+      "case": "compactaccession-prefix-segment",
+      "view": "/Archives/edgar/data/[ANON_ID_0000]/000121390024092156extra/table.txt",
+      "pass": true,
+      "inverse": true
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "meaning": "Shared active projection recognizes no raw bound aliases, dashed SEC accessions, SEC ArchivesCIK orcompactaccession coordinates in all10actualprepared message bodies. Existing suppliedopaque tokens preserved.",
+  "requests": [
+    {
+      "request": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.json",
+      "sha256": "a89ece3888ad200f7f510b1ed49b5d3f61898d6278372d1ce7657d2d6f1068d6",
+      "remaining_pattern_identities": 0
+    },
+    {
+      "request": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/739f4590506a3a734244bf940bbea20706145d84da9528d13b30e1acc5c2c131.json",
+      "sha256": "b53bdce5abf3706b1d56b4761311b95d5c8ea37f4b7c4467c6d2e0f3d4909501",
+      "remaining_pattern_identities": 0
+    },
+    {
+      "request": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.json",
+      "sha256": "41393efdea12df03b30f09507290753b0294d7e2f8affd9dca152cc489bea027",
+      "remaining_pattern_identities": 0
+    },
+    {
+      "request": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.json",
+      "sha256": "3d8779ffe52ec276179be11dba3ac7682e006c55d82948ebef93397f3c98057d",
+      "remaining_pattern_identities": 0
+    },
+    {
+      "request": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.json",
+      "sha256": "a9ad1c1cb44785cc4dea3cfbebbac674d1808142bd0672b825b0e1358862f97c",
+      "remaining_pattern_identities": 0
+    },
+    {
+      "request": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.json",
+      "sha256": "157de48b008b7cb344c19477e9549ea40ff3a776e735e28e9d0f8a7588b3ab2c",
+      "remaining_pattern_identities": 0
+    },
+    {
+      "request": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.json",
+      "sha256": "0e07b6355a35022eeeae6f6b5bf873138089cc1cef06c773da65cba2cfaf7c87",
+      "remaining_pattern_identities": 0
+    },
+    {
+      "request": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/a3d590e1a12f171ca4797fb553d4a1c387243ee42f3f73c485c7d5faae1ba68f.json",
+      "sha256": "93e91c560b9c27912083cd2e02056cfcf83bde791a335531823ffc5ebcf83122",
+      "remaining_pattern_identities": 0
+    },
+    {
+      "request": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.json",
+      "sha256": "e3d0b47c574fc0cfc0b31bb2112ab4cd591061bdb25dd1ddfad15499d4cd06c0",
+      "remaining_pattern_identities": 0
+    },
+    {
+      "request": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.json",
+      "sha256": "02166b93c6d64c4b44a064c724fd59476767e0682f464a7d666ec59dc5f87c8c",
+      "remaining_pattern_identities": 0
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "event_type": "request_ready",
+  "model_alias": "independent-subagent",
+  "request_hash": "3d6231a643d59fdb83cb8f5e689dd8299fae633211fb9a204ec2d53bb281ea69",
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_identity_and_prompt_20261023_v1/identity-review/full-mining-rebuild-v3/b/requests/3d6231a643d59fdb83cb8f5e689dd8299fae633211fb9a204ec2d53bb281ea69.json",
+  "stage": "mining_controller_step"
+}

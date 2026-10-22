@@ -1,0 +1,209 @@
+{
+  "schema_version": "independent-full-mining-preflight-v2-identity-review-v1",
+  "verdict": "Input-only preparation supported for both fixed source controls within original budget; no production author/fresh semantic acceptance yet.",
+  "preflight_result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/result.json",
+    "sha256": "20657666b11c9f1a4ff0f852a0a877d98660463244d559e68e438b2d39ce0531"
+  },
+  "code_bindings_verified": 108,
+  "source_bindings_verified": 1784,
+  "associated_tests": {
+    "record": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_identity_and_prompt_20261023_v1/associated-test-bindings.json",
+      "sha256": "5072aba0281e453e01a757989f21ed6b8fd3f38814db9ab13e1506e25607217a"
+    },
+    "files_verified": 127,
+    "tests": 341,
+    "network_calls": 0,
+    "independent_rerun": "not repeated; exact bound files and log record verified"
+  },
+  "samples": [
+    {
+      "sample": "a",
+      "case_ref": "case-001",
+      "exact_source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1179.json",
+        "sha256": "4e03393bbff52aef5bca7b324502266842811d03f7611c9f28962cfd0ae0379a"
+      },
+      "reservations": [
+        21100,
+        22457,
+        25126,
+        26582
+      ],
+      "aggregate_reservation": 95265,
+      "remaining": 3039,
+      "requests": [
+        {
+          "step": 1,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/a/requests/9b4a740e5c905dad4b19b3af61d6e05c739d4b15fd795d2d2383ae2e0cc222d1.json",
+            "sha256": "f733ff157563e0c8e3e877671f90b7fe8feaae89bccc45454adf1134b0f17685"
+          },
+          "native_rebuild_identical": true,
+          "estimate_equals_reservation": true,
+          "reservation": 21100,
+          "identity_aliases_and_source_coordinate_residuals": 0,
+          "inverse_restores_entire_canonical_view": true,
+          "read_receipts": 0,
+          "next_ref_selected_from_current_wire": true
+        },
+        {
+          "step": 2,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/a/requests/2f1dda86236ab56ec59c46b2dbd3a5225d2f9762778f51826843f3515ff06260.json",
+            "sha256": "ab96657b124cdf8d5ee2f642f05c1f62121bcc4373eee43739ee6ffe78dde511"
+          },
+          "native_rebuild_identical": true,
+          "estimate_equals_reservation": true,
+          "reservation": 22457,
+          "identity_aliases_and_source_coordinate_residuals": 0,
+          "inverse_restores_entire_canonical_view": true,
+          "read_receipts": 0,
+          "next_ref_selected_from_current_wire": true
+        },
+        {
+          "step": 3,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/a/requests/f9acbe463da3b80a7514decba3513cd41543a0388a5fa85f110babebedc584e0.json",
+            "sha256": "18ae15535a0c999bd47dddb6a52701e89903fe341967c7e636b6441a6954fc2b"
+          },
+          "native_rebuild_identical": true,
+          "estimate_equals_reservation": true,
+          "reservation": 25126,
+          "identity_aliases_and_source_coordinate_residuals": 0,
+          "inverse_restores_entire_canonical_view": true,
+          "read_receipts": 1,
+          "next_ref_selected_from_current_wire": true
+        },
+        {
+          "step": 4,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/a/requests/4c5a0b22067341bb3fc89bbca05dc05852a15077d0232ffd2c0d29b9e00477e0.json",
+            "sha256": "449678c873620e8bc81f23aac0dae3a6bd84b0740b84b41f4dd6210d8722797c"
+          },
+          "native_rebuild_identical": true,
+          "estimate_equals_reservation": true,
+          "reservation": 26582,
+          "identity_aliases_and_source_coordinate_residuals": 0,
+          "inverse_restores_entire_canonical_view": true,
+          "read_receipts": 2,
+          "next_ref_selected_from_current_wire": true
+        }
+      ],
+      "whole_successful_receipts": 2,
+      "source_qualification": "historical normalized selected-document scope; not complete/latest source or primary filing truth"
+    },
+    {
+      "sample": "b",
+      "case_ref": "case-002",
+      "exact_source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0770.json",
+        "sha256": "6d4348d8c1a7f99f64a93238a7ea770d21307d56f2ee560101a7c17622dcc0bd"
+      },
+      "reservations": [
+        19662,
+        21030,
+        24194,
+        25791
+      ],
+      "aggregate_reservation": 90677,
+      "remaining": 7627,
+      "requests": [
+        {
+          "step": 1,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/b/requests/ebd60b382599e3736423f4418f7c84cb142d5fce2ba194834af4a0e2f47fb32b.json",
+            "sha256": "f13713e9a16d651798d8e8e57ccbf4eb25eea79e878b715459e79a1928b52458"
+          },
+          "native_rebuild_identical": true,
+          "estimate_equals_reservation": true,
+          "reservation": 19662,
+          "identity_aliases_and_source_coordinate_residuals": 0,
+          "inverse_restores_entire_canonical_view": true,
+          "read_receipts": 0,
+          "next_ref_selected_from_current_wire": true
+        },
+        {
+          "step": 2,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/b/requests/3d6231a643d59fdb83cb8f5e689dd8299fae633211fb9a204ec2d53bb281ea69.json",
+            "sha256": "ca092cfe9ebf05d93b6ce543a5a225b7804786a0973437eff1559d2abb611aa9"
+          },
+          "native_rebuild_identical": true,
+          "estimate_equals_reservation": true,
+          "reservation": 21030,
+          "identity_aliases_and_source_coordinate_residuals": 0,
+          "inverse_restores_entire_canonical_view": true,
+          "read_receipts": 0,
+          "next_ref_selected_from_current_wire": true
+        },
+        {
+          "step": 3,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/b/requests/583e28f783fa9f3c11d9aecdd2cf769bb4b9c8dab4818d025235b60047e0ac95.json",
+            "sha256": "2294aa983ea711d58e92413455ee440fe8d64cfa228ad5b64122ab856b9c3cf7"
+          },
+          "native_rebuild_identical": true,
+          "estimate_equals_reservation": true,
+          "reservation": 24194,
+          "identity_aliases_and_source_coordinate_residuals": 0,
+          "inverse_restores_entire_canonical_view": true,
+          "read_receipts": 1,
+          "next_ref_selected_from_current_wire": true
+        },
+        {
+          "step": 4,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/b/requests/8f1cb588e29fb630f5a997fd06ca6ffe127f9b858bfc510c8907388b78bbb1c1.json",
+            "sha256": "48b8cb447459fddbf06caa3b148bc145dbfa1098c70007d22cfd5616d03ee593"
+          },
+          "native_rebuild_identical": true,
+          "estimate_equals_reservation": true,
+          "reservation": 25791,
+          "identity_aliases_and_source_coordinate_residuals": 0,
+          "inverse_restores_entire_canonical_view": true,
+          "read_receipts": 2,
+          "next_ref_selected_from_current_wire": true
+        }
+      ],
+      "whole_successful_receipts": 2,
+      "source_qualification": "historical normalized selected-document scope; not complete/latest source or primary filing truth"
+    }
+  ],
+  "original_preflight_preserved": {
+    "record": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/budget-failure.json",
+      "sha256": "6cada06a3702aefc08e1293920cf92245c81c7612d33ab51c4926446fb55852d"
+    },
+    "reservation": 102563,
+    "ceiling": 98304,
+    "old_prepared_requests": 4,
+    "old_prepared_hashes_unchanged": true,
+    "old0671_namespace_terminal_records_unchanged": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/failure.json",
+        "sha256": "01fe5c6a424ac008a8bd3700ea323374cbaad6db3c08ddb3e7d5e20e5dd48fd8"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/completion.json",
+        "sha256": "cbcbb091482d5a2ecbc7f4a60189ad2e98801a3de2747ee25180226bbdd7cdd5"
+      }
+    ]
+  },
+  "zero_counts": {
+    "production_inboxes": 0,
+    "production_answers": 0,
+    "external_api_get": 0,
+    "new_labels": 0,
+    "formal_stages_run": 0,
+    "completed_stage_reentry": 0
+  },
+  "actual_chain": "Fresh Controller -> native RoleModel -> same StructuredRoleClient input-only serialization matches every saved actual request byte-for-byte; estimate=reservation; project/inverse restores every canonical view including document refs; each action/ref selected from its current wire only; two whole receipts persist in each final request.",
+  "limitations": [
+    "Preparation version has no consumed formalcase budget and does not resume old budget-limited0671 stage.",
+    "No model answer or semantic compliance result; frozen O1-O6 and full denominator2 remain unchanged.",
+    "Original synthetic19-case freeze was after initial candidate source existed; real8-request replay verifies exact original1951089/1746129 issuers independently.",
+    "This checks scoped known aliases and explicit SEC coordinates, not a proof of global anonymity or source economic truth."
+  ]
+}

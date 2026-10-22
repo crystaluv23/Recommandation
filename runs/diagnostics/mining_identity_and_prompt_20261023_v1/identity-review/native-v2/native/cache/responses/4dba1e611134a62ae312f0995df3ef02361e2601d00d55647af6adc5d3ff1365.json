@@ -1,0 +1,33 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "basic_info": {
+      "cash": 123456789012345678,
+      "document_ref": "secfacts:[ANON_ID_0001]:[ANON_ID_0000]:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "escaped_url": "\"{\\\"source\\\": \\\"https:\\\\/\\\\/www.sec.gov\\\\/Archives\\\\/edgar\\\\/data\\\\/[ANON_ID_0003]\\\\/[ANON_ID_0002]\\\\/document.htm\\\"}\"",
+      "snapshot_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "typed_patch": {
+        "period": "2024-09-30",
+        "source_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "value": -2378789
+      },
+      "url": "https://www.sec.gov/Archives/edgar/data/[ANON_ID_0003]/[ANON_ID_0002]/ea0215960-20f_critical.htm"
+    },
+    "initial_research_skill": "Inspect only supplied evidence."
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"basic_info\": {\"cash\": 123456789012345678, \"document_ref\": \"secfacts:[ANON_ID_0001]:[ANON_ID_0000]:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"escaped_url\": \"\\\"{\\\\\\\"source\\\\\\\": \\\\\\\"https:\\\\\\\\/\\\\\\\\/www.sec.gov\\\\\\\\/Archives\\\\\\\\/edgar\\\\\\\\/data\\\\\\\\/[ANON_ID_0003]\\\\\\\\/[ANON_ID_0002]\\\\\\\\/document.htm\\\\\\\"}\\\"\", \"snapshot_hash\": \"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\", \"typed_patch\": {\"period\": \"2024-09-30\", \"source_hash\": \"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\", \"value\": -2378789}, \"url\": \"https://www.sec.gov/Archives/edgar/data/[ANON_ID_0003]/[ANON_ID_0002]/ea0215960-20f_critical.htm\"}, \"initial_research_skill\": \"Inspect only supplied evidence.\"}",
+  "request_hash": "4dba1e611134a62ae312f0995df3ef02361e2601d00d55647af6adc5d3ff1365",
+  "response_id": "local-4dba1e611134a62ae312f0995df3ef02361e2601d00d55647af6adc5d3ff1365",
+  "usage": {
+    "accounting_tokens": 1771,
+    "agent_id": "/root/source_coordinate_review synthetic fixture; not a production author",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "4af18f2440dad83d11b23b70617b1a2b54de1568d95deca40340b991a2e97862",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "ed72bc4bd0547cb86bdbb757cec74ba3083681bcef22ea542d0fb771ceb7ca6d",
+    "request_hash": "4dba1e611134a62ae312f0995df3ef02361e2601d00d55647af6adc5d3ff1365",
+    "token_usage": null
+  }
+}

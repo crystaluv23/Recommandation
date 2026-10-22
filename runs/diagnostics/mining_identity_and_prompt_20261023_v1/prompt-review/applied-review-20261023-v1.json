@@ -1,0 +1,23 @@
+{
+  "reviewed_at_utc": "2026-10-22T21:34:25.034498+00:00",
+  "scope": "current applied role adapter and named shared constants only; no actor/raw/prepared inputs or responses accessed",
+  "actual_utf8_bytes": 11098,
+  "actual_sha256": "8bc4b9eaccbafeab7e72c2d4a51fdcab91dc6e2a5665e818972985a700fbcc13",
+  "canonical_v2_utf8_bytes": 11088,
+  "applied_minus_v2_utf8_bytes": 10,
+  "actual_exactly_expected_one_phrase_expansion": true,
+  "candidate_phrase_occurrences": 1,
+  "only_global_constant_source_changed": true,
+  "entire_next_action_source_byte_identical": true,
+  "next_action_sha256": "07d623c52c2b72e4433984ea439d13a20287f70391345edf02e4a8ba7f88be9e",
+  "shared_source_fact_byte_identical": true,
+  "shared_source_fact_utf8_bytes": 713,
+  "shared_source_fact_sha256": "07f7cd289c43d3b6a64faa10577f42a2d3f3ef76b2b5c29c939fffe54ef2bc67",
+  "shared_need_row_byte_identical": true,
+  "shared_need_row_utf8_bytes": 98,
+  "shared_need_row_sha256": "fa575b76f426572cab42c84f49f36608dc8d0e31398243d9987ab0cc5cbe6f1e",
+  "need_row_occurrences_in_actual": 1,
+  "source_file_current_sha256": "646e4e74fff1d8f7f93c6895ecd008ef9ec960f4a18f05f89e9582eccd3d20ef",
+  "saving_vs_old_per_occurrence": 1855,
+  "saving_vs_old_four_occurrences": 7420
+}

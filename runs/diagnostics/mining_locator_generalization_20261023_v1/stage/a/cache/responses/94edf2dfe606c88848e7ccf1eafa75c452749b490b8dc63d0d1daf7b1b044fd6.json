@@ -1,0 +1,31 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "compute_statistic",
+    "fact_refs": [
+      "fact-74cea942438e2cd0",
+      "fact-969421320623f49b"
+    ],
+    "rationale": [
+      "Both raw-read operands belong to case-001 and the same ifrs-full CashFlowsFromUsedInOperatingActivities concept in USD.",
+      "The latest annual period is 2023-07-01 through 2024-06-30 with value -15122354; the prior annual period is 2022-07-01 through 2023-06-30 with value -2378789. Both were available before the case prediction cutoff.",
+      "Compute the signed annual cash-flow change in latest-then-prior order. These negative operands do not establish a growth interpretation, a future funding plan, or a positive/control research effect."
+    ],
+    "rule": "latest_minus_comparable_prior"
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"compute_statistic\",\"rule\":\"latest_minus_comparable_prior\",\"fact_refs\":[\"fact-74cea942438e2cd0\",\"fact-969421320623f49b\"],\"rationale\":[\"Both raw-read operands belong to case-001 and the same ifrs-full CashFlowsFromUsedInOperatingActivities concept in USD.\",\"The latest annual period is 2023-07-01 through 2024-06-30 with value -15122354; the prior annual period is 2022-07-01 through 2023-06-30 with value -2378789. Both were available before the case prediction cutoff.\",\"Compute the signed annual cash-flow change in latest-then-prior order. These negative operands do not establish a growth interpretation, a future funding plan, or a positive/control research effect.\"]}",
+  "request_hash": "94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6",
+  "response_id": "local-94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6",
+  "usage": {
+    "accounting_tokens": 26582,
+    "agent_id": "/root/native_mining_a_4",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "604ef6b901d56be3db1f35b67431f22bc1af4b652e87cc461014e7f335548a9a",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "e4b5aae0af7bfd6e8d0527273583a3827b244b43b06b6716804f00ce2e8f7681",
+    "request_hash": "94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6",
+    "token_usage": null
+  }
+}

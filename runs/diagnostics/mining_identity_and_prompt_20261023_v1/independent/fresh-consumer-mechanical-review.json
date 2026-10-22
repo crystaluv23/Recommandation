@@ -1,0 +1,840 @@
+{
+  "schema_version": "independent-fresh-mining-consumer-review-v1",
+  "manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/manifest.json",
+    "sha256": "2a52a8f52563e3ef3c709a5b8142bcfdf98485e21c44ca9a5515f83362fdcfe3"
+  },
+  "fixed_denominator": 2,
+  "module_endpoint_count": 0,
+  "samples": [
+    {
+      "sample": "a",
+      "terminal": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/failure.json",
+        "sha256": "542a1bb7e5394380d6e22808760b4894439c06263cec39e4e56e3e768756f94d"
+      },
+      "terminal_state": "terminal_module_failure",
+      "sealed_files_verified": 34,
+      "steps": [
+        {
+          "step": 1,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.json",
+            "sha256": "a89ece3888ad200f7f510b1ed49b5d3f61898d6278372d1ce7657d2d6f1068d6"
+          },
+          "reservation": 21100,
+          "visible_budget": {
+            "browse_remaining": 24,
+            "heavy_remaining": 5,
+            "light_remaining": 4
+          },
+          "read_receipts": 0,
+          "canonical_projection_and_inverse_exact": true,
+          "known_alias_and_explicit_sourcecoordinate_residuals": 0,
+          "budget_related_fields": [
+            {
+              "path": "/budget/browse_remaining",
+              "value": 24
+            },
+            {
+              "path": "/budget/heavy_remaining",
+              "value": 5
+            },
+            {
+              "path": "/budget/light_remaining",
+              "value": 4
+            },
+            {
+              "path": "/memory_consumption/original_disclosure_limit",
+              "value": 48000
+            },
+            {
+              "path": "/signal_catalog_disclosure/read_byte_limit",
+              "value": 16000
+            }
+          ],
+          "system_discloses_native_call_budget": false,
+          "status": "answered_first",
+          "inbox": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/inbox/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.json",
+            "sha256": "b544c0c70f522884cf62b46ed40b3b29b8b63f370d31768ca74abba9a144f6c4"
+          },
+          "raw": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/outbox/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.txt",
+            "sha256": "07ede017fda1bc04dde0aa2e6b2d119e2e00f1a760bd774d3a7e6beec30e0b0f"
+          },
+          "receipt": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/receipts/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.json",
+            "sha256": "f71f6be1f5c4412ac97b2fce66998b557b4e79dd7575a56c42ac2029cad942d5"
+          },
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/cache/responses/043b4fb80808eb7f67996047994e2d62b4fcab6de642ea641a4f2c59d30efdab.json",
+            "sha256": "d0945334baddffd8dcda7ed7367318c1f96006a10be2703cebcfe27c648fad2d"
+          },
+          "agent_id": "/root/native_mining_a_1",
+          "action": {
+            "action": "compare_groups",
+            "concepts": [
+              "CashFlowsFromUsedInOperatingActivities"
+            ],
+            "rationale": [
+              "Locate the operating cash flow operands and their case, period and source bindings before selecting exact fact reads.",
+              "The controlled fetch identifies the concept but does not yet establish measurement identity or comparable periods."
+            ]
+          },
+          "cache_raw_parsed_action_exact": true
+        },
+        {
+          "step": 2,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.json",
+            "sha256": "a9ad1c1cb44785cc4dea3cfbebbac674d1808142bd0672b825b0e1358862f97c"
+          },
+          "reservation": 22457,
+          "visible_budget": {
+            "browse_remaining": 24,
+            "heavy_remaining": 4,
+            "light_remaining": 4
+          },
+          "read_receipts": 0,
+          "canonical_projection_and_inverse_exact": true,
+          "known_alias_and_explicit_sourcecoordinate_residuals": 0,
+          "budget_related_fields": [
+            {
+              "path": "/budget/browse_remaining",
+              "value": 24
+            },
+            {
+              "path": "/budget/heavy_remaining",
+              "value": 4
+            },
+            {
+              "path": "/budget/light_remaining",
+              "value": 4
+            },
+            {
+              "path": "/memory_consumption/original_disclosure_limit",
+              "value": 48000
+            },
+            {
+              "path": "/signal_catalog_disclosure/read_byte_limit",
+              "value": 16000
+            }
+          ],
+          "system_discloses_native_call_budget": false,
+          "status": "answered_first",
+          "inbox": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/inbox/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.json",
+            "sha256": "d5c021a292fdb4633f31e6dd607bd0c7bcef4c8ece5413fda8ff94598b609df3"
+          },
+          "raw": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/outbox/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.txt",
+            "sha256": "ae220a8a884991d567330ce2c85d15c142f9866053f72fc98bd1ed168cb7b095"
+          },
+          "receipt": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/receipts/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.json",
+            "sha256": "f744d0ae4c8d2d3dc5bc5fb8b26c19a0efd04f06dfdbab39e0a2415ea5a1d4ca"
+          },
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/cache/responses/f8528aac04178dd03c1745ea941dfe6fef9940a56ecf662eb35c0a57f70c7c9f.json",
+            "sha256": "cf36fbbd7bff855ee472ad06afa886f45f80010d613b74c0f60783db621caccc"
+          },
+          "agent_id": "/root/native_mining_a_2",
+          "action": {
+            "action": "read_span",
+            "fact_ref": "fact-74cea942438e2cd0",
+            "rationale": [
+              "Read the latest operating cash-flow operand to establish its source taxonomy, object, unit and period before interpreting the comparison.",
+              "The comparison locator identifies a prior operand but does not itself establish measurement identity or period comparability."
+            ]
+          },
+          "cache_raw_parsed_action_exact": true
+        },
+        {
+          "step": 3,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.json",
+            "sha256": "3d8779ffe52ec276179be11dba3ac7682e006c55d82948ebef93397f3c98057d"
+          },
+          "reservation": 25126,
+          "visible_budget": {
+            "browse_remaining": 24,
+            "heavy_remaining": 3,
+            "light_remaining": 4
+          },
+          "read_receipts": 1,
+          "canonical_projection_and_inverse_exact": true,
+          "known_alias_and_explicit_sourcecoordinate_residuals": 0,
+          "budget_related_fields": [
+            {
+              "path": "/budget/browse_remaining",
+              "value": 24
+            },
+            {
+              "path": "/budget/heavy_remaining",
+              "value": 3
+            },
+            {
+              "path": "/budget/light_remaining",
+              "value": 4
+            },
+            {
+              "path": "/memory_consumption/original_disclosure_limit",
+              "value": 48000
+            },
+            {
+              "path": "/signal_catalog_disclosure/read_byte_limit",
+              "value": 16000
+            }
+          ],
+          "system_discloses_native_call_budget": false,
+          "status": "answered_first",
+          "inbox": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/inbox/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.json",
+            "sha256": "1ab58ef1ba0b06ea5922f0e8ae54f52108d7acc1a9036eb6acbd8ebb70c53ae4"
+          },
+          "raw": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/outbox/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.txt",
+            "sha256": "ec99bb52b3a739a3f718c45b154100dac3dc0796b7348bfeb08e65b67b6b1e07"
+          },
+          "receipt": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/receipts/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.json",
+            "sha256": "d747cfd3317f665621811e527ccde2efab100965206584ba60ecf51ac09291bb"
+          },
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/cache/responses/e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673.json",
+            "sha256": "b4757405087a2956081676177067feb256e3c9a80211d043f9d88e7a06c95469"
+          },
+          "agent_id": "/root/native_mining_a_3",
+          "action": {
+            "action": "read_span",
+            "fact_ref": "fact-969421320623f49b",
+            "rationale": [
+              "The latest operand has been read with its ifrs-full concept, USD unit and annual period preserved.",
+              "Read the comparison locator’s prior operand to verify its source binding and period before computing an annual change."
+            ]
+          },
+          "cache_raw_parsed_action_exact": true
+        },
+        {
+          "step": 4,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.json",
+            "sha256": "41393efdea12df03b30f09507290753b0294d7e2f8affd9dca152cc489bea027"
+          },
+          "reservation": 26582,
+          "visible_budget": {
+            "browse_remaining": 24,
+            "heavy_remaining": 2,
+            "light_remaining": 4
+          },
+          "read_receipts": 2,
+          "canonical_projection_and_inverse_exact": true,
+          "known_alias_and_explicit_sourcecoordinate_residuals": 0,
+          "budget_related_fields": [
+            {
+              "path": "/budget/browse_remaining",
+              "value": 24
+            },
+            {
+              "path": "/budget/heavy_remaining",
+              "value": 2
+            },
+            {
+              "path": "/budget/light_remaining",
+              "value": 4
+            },
+            {
+              "path": "/memory_consumption/original_disclosure_limit",
+              "value": 48000
+            },
+            {
+              "path": "/signal_catalog_disclosure/read_byte_limit",
+              "value": 16000
+            }
+          ],
+          "system_discloses_native_call_budget": false,
+          "status": "answered_first",
+          "inbox": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/inbox/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.json",
+            "sha256": "604ef6b901d56be3db1f35b67431f22bc1af4b652e87cc461014e7f335548a9a"
+          },
+          "raw": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/outbox/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.txt",
+            "sha256": "e4b5aae0af7bfd6e8d0527273583a3827b244b43b06b6716804f00ce2e8f7681"
+          },
+          "receipt": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/exchange/receipts/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.json",
+            "sha256": "2a90b3e8496b3a405c4ab139bca199277ce089120dc9a1af3856ba9abb864f1c"
+          },
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/cache/responses/94edf2dfe606c88848e7ccf1eafa75c452749b490b8dc63d0d1daf7b1b044fd6.json",
+            "sha256": "088e27da44881d7248409b7a3ac15b3273dff4ab31d039e81c1ab45f69493e90"
+          },
+          "agent_id": "/root/native_mining_a_4",
+          "action": {
+            "action": "compute_statistic",
+            "fact_refs": [
+              "fact-74cea942438e2cd0",
+              "fact-969421320623f49b"
+            ],
+            "rationale": [
+              "Both raw-read operands belong to case-001 and the same ifrs-full CashFlowsFromUsedInOperatingActivities concept in USD.",
+              "The latest annual period is 2023-07-01 through 2024-06-30 with value -15122354; the prior annual period is 2022-07-01 through 2023-06-30 with value -2378789. Both were available before the case prediction cutoff.",
+              "Compute the signed annual cash-flow change in latest-then-prior order. These negative operands do not establish a growth interpretation, a future funding plan, or a positive/control research effect."
+            ],
+            "rule": "latest_minus_comparable_prior"
+          },
+          "cache_raw_parsed_action_exact": true
+        },
+        {
+          "step": 5,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/requests/739f4590506a3a734244bf940bbea20706145d84da9528d13b30e1acc5c2c131.json",
+            "sha256": "b53bdce5abf3706b1d56b4761311b95d5c8ea37f4b7c4467c6d2e0f3d4909501"
+          },
+          "reservation": 25385,
+          "visible_budget": {
+            "browse_remaining": 24,
+            "heavy_remaining": 1,
+            "light_remaining": 4
+          },
+          "read_receipts": 2,
+          "canonical_projection_and_inverse_exact": true,
+          "known_alias_and_explicit_sourcecoordinate_residuals": 0,
+          "budget_related_fields": [
+            {
+              "path": "/budget/browse_remaining",
+              "value": 24
+            },
+            {
+              "path": "/budget/heavy_remaining",
+              "value": 1
+            },
+            {
+              "path": "/budget/light_remaining",
+              "value": 4
+            },
+            {
+              "path": "/memory_consumption/original_disclosure_limit",
+              "value": 48000
+            },
+            {
+              "path": "/signal_catalog_disclosure/read_byte_limit",
+              "value": 16000
+            }
+          ],
+          "system_discloses_native_call_budget": false,
+          "status": "blocked_before_inbox",
+          "author": null,
+          "not_a_semantic_response": true
+        }
+      ],
+      "prepared_requests": 5,
+      "answered_first": 4,
+      "answered_corrections": 0,
+      "blocked_before_inbox": 1,
+      "answered_reservation": 95265,
+      "blocked_reservation": 25385,
+      "all_prepared_reservation": 120650,
+      "original_ceiling": 98304,
+      "headroom_after_answers": 3039,
+      "module_endpoint_produced": false,
+      "final_intent": null,
+      "actual_final_compute_result": {
+        "action": "compute_statistic",
+        "fact_refs": [
+          "fact-74cea942438e2cd0",
+          "fact-969421320623f49b"
+        ],
+        "relation_ref": "relation-1f2ead3f3a06f256",
+        "rule": "latest_minus_comparable_prior",
+        "value": "-12743565.000000"
+      },
+      "actual_ledger_actions": [
+        "fetch_evidence",
+        "compare_groups",
+        "read_span",
+        "read_span",
+        "compute_statistic"
+      ],
+      "source_operands": [
+        {
+          "fact_ref": "fact-969421320623f49b",
+          "whole_row": {
+            "description": null,
+            "end": "2023-06-30",
+            "fiscal_period": "FY",
+            "fiscal_year": 2024,
+            "frame": null,
+            "label": null,
+            "start": "2022-07-01",
+            "tag": "CashFlowsFromUsedInOperatingActivities",
+            "taxonomy": "ifrs-full",
+            "unit": "USD",
+            "value": -2378789
+          },
+          "source_pointer": "/content(JSON)/facts/34",
+          "exact_quote_and_hash": true
+        },
+        {
+          "fact_ref": "fact-74cea942438e2cd0",
+          "whole_row": {
+            "description": null,
+            "end": "2024-06-30",
+            "fiscal_period": "FY",
+            "fiscal_year": 2024,
+            "frame": null,
+            "label": null,
+            "start": "2023-07-01",
+            "tag": "CashFlowsFromUsedInOperatingActivities",
+            "taxonomy": "ifrs-full",
+            "unit": "USD",
+            "value": -15122354
+          },
+          "source_pointer": "/content(JSON)/facts/35",
+          "exact_quote_and_hash": true
+        }
+      ],
+      "source_reference": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1179.json",
+        "sha256": "4e03393bbff52aef5bca7b324502266842811d03f7611c9f28962cfd0ae0379a"
+      },
+      "O1": "pass:bothsourceoperandreadsreallyexecuted",
+      "O2": "materialsourcebindingsandlegalarithmeticexact;seeindependentproserationaleassessment",
+      "O3": "notreached:no finalintent;fourthcompute rationale is not finalintent",
+      "O4": "pass:whole2receiptsretainedandcomparisonlocatorscurrentinlateractualwire",
+      "O5": "fail:budgetblockedbeforeendpointauthor",
+      "O6": {
+        "limits_enforced": true,
+        "original_samples_and_denominator": true,
+        "no_correction_budget_reset": true,
+        "inbudget_module_endpoint": false
+      },
+      "scope_limit": "Historical normalized one-selected-document inspection; no candidate/admission/publication/reuse/independentgain claim."
+    },
+    {
+      "sample": "b",
+      "terminal": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/failure.json",
+        "sha256": "561a194247dedeeacd6f38098f2a8a0687f87ac18d569b21f7aff14157abe916"
+      },
+      "terminal_state": "terminal_module_failure",
+      "sealed_files_verified": 34,
+      "steps": [
+        {
+          "step": 1,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.json",
+            "sha256": "02166b93c6d64c4b44a064c724fd59476767e0682f464a7d666ec59dc5f87c8c"
+          },
+          "reservation": 19662,
+          "visible_budget": {
+            "browse_remaining": 24,
+            "heavy_remaining": 5,
+            "light_remaining": 4
+          },
+          "read_receipts": 0,
+          "canonical_projection_and_inverse_exact": true,
+          "known_alias_and_explicit_sourcecoordinate_residuals": 0,
+          "budget_related_fields": [
+            {
+              "path": "/budget/browse_remaining",
+              "value": 24
+            },
+            {
+              "path": "/budget/heavy_remaining",
+              "value": 5
+            },
+            {
+              "path": "/budget/light_remaining",
+              "value": 4
+            },
+            {
+              "path": "/memory_consumption/original_disclosure_limit",
+              "value": 48000
+            },
+            {
+              "path": "/signal_catalog_disclosure/read_byte_limit",
+              "value": 16000
+            }
+          ],
+          "system_discloses_native_call_budget": false,
+          "status": "answered_first",
+          "inbox": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/inbox/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.json",
+            "sha256": "98e337e2f38ba19d0afa089270e677f42a1558890dccda8695302d4b36e8577a"
+          },
+          "raw": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/outbox/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.txt",
+            "sha256": "d766effc985dc324757b919486ed89b85aa02024a334ee154f13d7f0e6b7e288"
+          },
+          "receipt": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/receipts/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.json",
+            "sha256": "6d17128d4192aaf49184832a96cb17863245033c9f0c51bf6383c4f70a76787c"
+          },
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/cache/responses/d9cc0d5ff4351d4e4717788478f788a5520cd4ec7c8102b545df9cf60f972d27.json",
+            "sha256": "2593cc164d7eafe5f9076459d673ad066deb2d63a7ae70d4f07c8238c735d7d0"
+          },
+          "agent_id": "/root/native_mining_b_1",
+          "action": {
+            "action": "compare_groups",
+            "concepts": [
+              "NetCashProvidedByUsedInOperatingActivities"
+            ],
+            "rationale": [
+              "Locate the target concept operands and periods within the fetched historical case before selecting exact source fact reads.",
+              "The supplied state contains fact references without source bindings; comparability and measurement identity remain unestablished."
+            ]
+          },
+          "cache_raw_parsed_action_exact": true
+        },
+        {
+          "step": 2,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.json",
+            "sha256": "0e07b6355a35022eeeae6f6b5bf873138089cc1cef06c773da65cba2cfaf7c87"
+          },
+          "reservation": 21030,
+          "visible_budget": {
+            "browse_remaining": 24,
+            "heavy_remaining": 4,
+            "light_remaining": 4
+          },
+          "read_receipts": 0,
+          "canonical_projection_and_inverse_exact": true,
+          "known_alias_and_explicit_sourcecoordinate_residuals": 0,
+          "budget_related_fields": [
+            {
+              "path": "/budget/browse_remaining",
+              "value": 24
+            },
+            {
+              "path": "/budget/heavy_remaining",
+              "value": 4
+            },
+            {
+              "path": "/budget/light_remaining",
+              "value": 4
+            },
+            {
+              "path": "/memory_consumption/original_disclosure_limit",
+              "value": 48000
+            },
+            {
+              "path": "/signal_catalog_disclosure/read_byte_limit",
+              "value": 16000
+            }
+          ],
+          "system_discloses_native_call_budget": false,
+          "status": "answered_first",
+          "inbox": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/inbox/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.json",
+            "sha256": "884c4b93ab3d40006d6659d3a6cf33439b8b6f2de5420a027f2f65063fb1faf5"
+          },
+          "raw": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/outbox/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.txt",
+            "sha256": "28ebfbed44b803969dd238e375a9c8f105ea7c615a6fbf1502c43c8f7f6a065d"
+          },
+          "receipt": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/receipts/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.json",
+            "sha256": "d0af1d177bfc2d6cf9715662234688da3b6857e5c67e0697879dc41d257e141b"
+          },
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/cache/responses/504abce89abb6fbaab5ca357786f1c1ca3411e0eba56277335ab0c3fd8266649.json",
+            "sha256": "704addbdcb731dd7b51b06ecb6aef2d86bb5d79c5f49f2df8395ce325394e70a"
+          },
+          "agent_id": "/root/native_mining_b_2",
+          "action": {
+            "action": "read_span",
+            "fact_ref": "fact-6963faafa552b5b8",
+            "rationale": [
+              "Inspect the latest operating cash flow source fact to establish its period, unit, entity and taxonomy binding before comparing it with the located prior operand.",
+              "Comparison progress supplies operand locators but does not establish source measurement identity."
+            ]
+          },
+          "cache_raw_parsed_action_exact": true
+        },
+        {
+          "step": 3,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.json",
+            "sha256": "157de48b008b7cb344c19477e9549ea40ff3a776e735e28e9d0f8a7588b3ab2c"
+          },
+          "reservation": 24194,
+          "visible_budget": {
+            "browse_remaining": 24,
+            "heavy_remaining": 3,
+            "light_remaining": 4
+          },
+          "read_receipts": 1,
+          "canonical_projection_and_inverse_exact": true,
+          "known_alias_and_explicit_sourcecoordinate_residuals": 0,
+          "budget_related_fields": [
+            {
+              "path": "/budget/browse_remaining",
+              "value": 24
+            },
+            {
+              "path": "/budget/heavy_remaining",
+              "value": 3
+            },
+            {
+              "path": "/budget/light_remaining",
+              "value": 4
+            },
+            {
+              "path": "/memory_consumption/original_disclosure_limit",
+              "value": 48000
+            },
+            {
+              "path": "/signal_catalog_disclosure/read_byte_limit",
+              "value": 16000
+            }
+          ],
+          "system_discloses_native_call_budget": false,
+          "status": "answered_first",
+          "inbox": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/inbox/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.json",
+            "sha256": "1a59016c2617de27ead54db68410a44437f2057209fc4a3177e554743dcc682a"
+          },
+          "raw": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/outbox/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.txt",
+            "sha256": "2b417f87178ceffe934877f436009b931211849e96f17113c2549e9786153b61"
+          },
+          "receipt": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/receipts/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.json",
+            "sha256": "8ce6f29543bc3dec06614871bce5081bbf5cc86bcd9b6508356d69a4601fceb7"
+          },
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/cache/responses/377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49.json",
+            "sha256": "44664dc34760a9dfac572cebc5a4ae81f3db7b97b3938e21b3f07b8cdde3f67b"
+          },
+          "agent_id": "/root/native_mining_b_3",
+          "action": {
+            "action": "read_span",
+            "fact_ref": "fact-0beda24d07c3b1cd",
+            "rationale": [
+              "The latest receipt establishes us-gaap operating cash flow of USD 20122000 for 2018-01-01 through 2018-09-30.",
+              "Read the located comparable-prior operand to verify its complete period, unit and measurement identity before computing a historical comparison."
+            ]
+          },
+          "cache_raw_parsed_action_exact": true
+        },
+        {
+          "step": 4,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.json",
+            "sha256": "e3d0b47c574fc0cfc0b31bb2112ab4cd591061bdb25dd1ddfad15499d4cd06c0"
+          },
+          "reservation": 25791,
+          "visible_budget": {
+            "browse_remaining": 24,
+            "heavy_remaining": 2,
+            "light_remaining": 4
+          },
+          "read_receipts": 2,
+          "canonical_projection_and_inverse_exact": true,
+          "known_alias_and_explicit_sourcecoordinate_residuals": 0,
+          "budget_related_fields": [
+            {
+              "path": "/budget/browse_remaining",
+              "value": 24
+            },
+            {
+              "path": "/budget/heavy_remaining",
+              "value": 2
+            },
+            {
+              "path": "/budget/light_remaining",
+              "value": 4
+            },
+            {
+              "path": "/memory_consumption/original_disclosure_limit",
+              "value": 48000
+            },
+            {
+              "path": "/signal_catalog_disclosure/read_byte_limit",
+              "value": 16000
+            }
+          ],
+          "system_discloses_native_call_budget": false,
+          "status": "answered_first",
+          "inbox": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/inbox/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.json",
+            "sha256": "e4178eb3338461b18251f7dcb03d5d0b9e2dee735f8c547fbda81591ad128594"
+          },
+          "raw": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/outbox/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.txt",
+            "sha256": "ae52392304f3db11f11e89beae2898006c11f6f68382fdbcd029740b51ddf2d1"
+          },
+          "receipt": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/exchange/receipts/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.json",
+            "sha256": "871c9f502d313ae96718a1010705a14a173412ef9a885b6580163cf703ffb881"
+          },
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/cache/responses/a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed.json",
+            "sha256": "c8001579ee2f4f2e4848117f7ae0684ce42cb20f3f109164508c37098aa6553f"
+          },
+          "agent_id": "/root/native_mining_b_4",
+          "action": {
+            "action": "compute_statistic",
+            "fact_refs": [
+              "fact-6963faafa552b5b8",
+              "fact-0beda24d07c3b1cd"
+            ],
+            "rationale": [
+              "Both source operands have been read for control case-002: us-gaap NetCashProvidedByUsedInOperatingActivities in USD, covering January through September of 2018 and 2017 respectively.",
+              "The matching nine-month periods support a historical year-over-year operating cash flow difference, with latest then prior operands; fiscal_period Q3 does not make these standalone quarterly flows.",
+              "Both facts were available before the case prediction cutoff. This comparison does not establish current cash flow at the 2025 cutoff, a positive/control contrast, or predictive benefit."
+            ],
+            "rule": "latest_minus_comparable_prior"
+          },
+          "cache_raw_parsed_action_exact": true
+        },
+        {
+          "step": 5,
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/requests/a3d590e1a12f171ca4797fb553d4a1c387243ee42f3f73c485c7d5faae1ba68f.json",
+            "sha256": "93e91c560b9c27912083cd2e02056cfcf83bde791a335531823ffc5ebcf83122"
+          },
+          "reservation": 24396,
+          "visible_budget": {
+            "browse_remaining": 24,
+            "heavy_remaining": 1,
+            "light_remaining": 4
+          },
+          "read_receipts": 2,
+          "canonical_projection_and_inverse_exact": true,
+          "known_alias_and_explicit_sourcecoordinate_residuals": 0,
+          "budget_related_fields": [
+            {
+              "path": "/budget/browse_remaining",
+              "value": 24
+            },
+            {
+              "path": "/budget/heavy_remaining",
+              "value": 1
+            },
+            {
+              "path": "/budget/light_remaining",
+              "value": 4
+            },
+            {
+              "path": "/memory_consumption/original_disclosure_limit",
+              "value": 48000
+            },
+            {
+              "path": "/signal_catalog_disclosure/read_byte_limit",
+              "value": 16000
+            }
+          ],
+          "system_discloses_native_call_budget": false,
+          "status": "blocked_before_inbox",
+          "author": null,
+          "not_a_semantic_response": true
+        }
+      ],
+      "prepared_requests": 5,
+      "answered_first": 4,
+      "answered_corrections": 0,
+      "blocked_before_inbox": 1,
+      "answered_reservation": 90677,
+      "blocked_reservation": 24396,
+      "all_prepared_reservation": 115073,
+      "original_ceiling": 98304,
+      "headroom_after_answers": 7627,
+      "module_endpoint_produced": false,
+      "final_intent": null,
+      "actual_final_compute_result": {
+        "action": "compute_statistic",
+        "fact_refs": [
+          "fact-6963faafa552b5b8",
+          "fact-0beda24d07c3b1cd"
+        ],
+        "relation_ref": "relation-c051d12e9a745e2a",
+        "rule": "latest_minus_comparable_prior",
+        "value": "-605000.000000"
+      },
+      "actual_ledger_actions": [
+        "fetch_evidence",
+        "compare_groups",
+        "read_span",
+        "read_span",
+        "compute_statistic"
+      ],
+      "source_operands": [
+        {
+          "fact_ref": "fact-0beda24d07c3b1cd",
+          "whole_row": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2017-09-30",
+            "fiscal_period": "Q3",
+            "fiscal_year": 2018,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2017-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 20727000
+          },
+          "source_pointer": "/content(JSON)/facts/257",
+          "exact_quote_and_hash": true
+        },
+        {
+          "fact_ref": "fact-6963faafa552b5b8",
+          "whole_row": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2018-09-30",
+            "fiscal_period": "Q3",
+            "fiscal_year": 2018,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2018-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 20122000
+          },
+          "source_pointer": "/content(JSON)/facts/258",
+          "exact_quote_and_hash": true
+        }
+      ],
+      "source_reference": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0770.json",
+        "sha256": "6d4348d8c1a7f99f64a93238a7ea770d21307d56f2ee560101a7c17622dcc0bd"
+      },
+      "O1": "pass:bothsourceoperandreadsreallyexecuted",
+      "O2": "materialsourcebindingsandlegalarithmeticexact;seeindependentproserationaleassessment",
+      "O3": "notreached:no finalintent;fourthcompute rationale is not finalintent",
+      "O4": "pass:whole2receiptsretainedandcomparisonlocatorscurrentinlateractualwire",
+      "O5": "fail:budgetblockedbeforeendpointauthor",
+      "O6": {
+        "limits_enforced": true,
+        "original_samples_and_denominator": true,
+        "no_correction_budget_reset": true,
+        "inbudget_module_endpoint": false
+      },
+      "scope_limit": "Historical normalized one-selected-document inspection; no candidate/admission/publication/reuse/independentgain claim."
+    }
+  ],
+  "formal_fresh_authors": 8,
+  "corrections": 0,
+  "blocked_prepared_without_inbox": 2,
+  "source_bindings_verified": 1791,
+  "code_bindings_verified": 108,
+  "old_failure_102563_and_fourprepared_preserved": true,
+  "old0671_namespace_terminal_and_sealedchildren_preserved": true,
+  "budget_observability": "Actual native userbudget exposes onlyheavy/browse/light; memory/catalogbytelimitsunrelated. System has no98304aggregate/32768single/callreservation/consumedtotal/endpointreserve. Thereforeauthorcannotinferoptionallegalcomputeaffordability;fourstep preflight is reachability,not a requirement forallvalidpaths.",
+  "classification": "Budget-enforced module endpoint failure is separatefrom source-reading/measurement/arithmetic semantic success. Do not blame optionalcompute or inventmissingterminalrationale.",
+  "zero_counts": {
+    "external_api_get": 0,
+    "new_businesslabels": 0,
+    "candidates_publications": 0,
+    "completed_stage_reentry_by_reviewer": 0
+  },
+  "reviewer_writes": "Only newglobaldiag independent artifacts; frozenBASE/reference/product/oldoriginals unchanged.",
+  "remaining": "Final rationale semantics are independently stated in accompanying source-semantic-supplement; wholeMVP/S3S4/forecastbenefit remainopen."
+}

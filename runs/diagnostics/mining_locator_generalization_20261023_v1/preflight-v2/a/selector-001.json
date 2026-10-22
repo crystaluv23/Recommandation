@@ -1,0 +1,15 @@
+{
+  "action": {
+    "action": "compare_groups",
+    "concepts": [
+      "CashFlowsFromUsedInOperatingActivities"
+    ],
+    "rationale": [
+      "Deterministic current-wire-only preflight, not an author answer."
+    ]
+  },
+  "request": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/a/requests/9b4a740e5c905dad4b19b3af61d6e05c739d4b15fd795d2d2383ae2e0cc222d1.json",
+    "sha256": "f733ff157563e0c8e3e877671f90b7fe8feaae89bccc45454adf1134b0f17685"
+  }
+}

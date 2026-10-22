@@ -14,6 +14,7 @@ REPO = Path(__file__).resolve().parents[1]
 BASE = REPO / "runs/diagnostics/mining_locator_generalization_20261023_v1"
 SPEC = REPO / "spec/scripts/run_mining_locator_generalization_stage.md"
 SAMPLES = ("a", "b")
+PREFLIGHT = BASE / "preflight-v2"
 TARGETS = (("case-001", "1179.json", "CashFlowsFromUsedInOperatingActivities"),
            ("case-002", "0770.json", "NetCashProvidedByUsedInOperatingActivities"))
 _base_build = module.build_controller
@@ -51,7 +52,9 @@ def code_bindings():
     """Bind the reused module, new driver and changed projection tests/spec."""
     rows = _base_code()
     rows += [binding(Path(__file__)), binding(REPO / "tests/test_mining_query_projection.py"),
-        binding(REPO / "tests/test_mining_comparison_progress.py")]
+        binding(REPO / "tests/test_mining_comparison_progress.py"),
+        binding(REPO / "tests/test_source_coordinate_identity.py"),
+        binding(REPO / "spec/src/stock_opportunity_agent/research/evolution_transport.md")]
     return rows
 
 
@@ -80,7 +83,7 @@ def visible_operand(payload, concept, role):
 
 def preflight():
     """Capture exact native inputs and all next-ref choices without receiving."""
-    destination = BASE / "preflight"
+    destination = PREFLIGHT
     if destination.exists():
         raise ValidationError("preflight is single-entry")
     destination.mkdir()
@@ -146,7 +149,7 @@ def main():
     parser.add_argument("--sample", choices=SAMPLES, default="a")
     args = parser.parse_args()
     configure()
-    value = preflight() if args.operation == "preflight" else module.prepare() if args.operation == "prepare" else module.advance(args.sample)
+    value = preflight() if args.operation == "preflight" else module.prepare(preflight_root=PREFLIGHT) if args.operation == "prepare" else module.advance(args.sample)
     print(json.dumps(value, ensure_ascii=False, sort_keys=True))
 
 

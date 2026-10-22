@@ -1,0 +1,13 @@
+{
+  "canonical_candidate": "candidate-controller-v2.rendered.txt",
+  "template": "candidate-controller-v2.template.txt",
+  "old_utf8_bytes": 12953,
+  "candidate_utf8_bytes": 11088,
+  "saving_per_occurrence": 1865,
+  "saving_percent": 14.39820890913302,
+  "saving_four_occurrences": 7460,
+  "candidate_sha256": "37a69903b093b2fdff6f47fa643cb63853b311dbbf450751e93d1b6aa1bf2880",
+  "old_sha256": "5b7c89d84318715d90c608bb3fc6c1228cdaeeb5654e82f306f94c33493ccf19",
+  "v2_change": "Restore original explicit rationale grammar after self-review; v1 remains immutable evidence.",
+  "real_composed_request_budget_pass": "not tested"
+}

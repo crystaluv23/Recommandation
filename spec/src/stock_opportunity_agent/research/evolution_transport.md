@@ -76,6 +76,18 @@ original execution path. This does not authorize a full successor run.
   The same rule covers explicit ticker/symbol/company_id JSON string metadata
   embedded in source literals. Replace only the known identity value, preserving
   surrounding syntax (including escaped quotes), numbers and raw source hashes.
+  An active identity scope also projects explicit SEC source coordinates:
+  dashed accession numbers, plus issuer-directory and18-digit accession-directory
+  coordinates in SEC Archives/edgar/data URLs or paths. A filing agent's accession
+  prefix need not equal the bound issuer CIK. Project these coordinates before
+  issuer aliases so partial masking cannot expose the remaining accession.
+  Recognize complete numeric directory segments, including terminal/query URLs
+  and nested JSON slash escaping, without masking numeric filename prefixes.
+  Keep surrounding URL/source-family syntax and hash identities; exact inverse
+  restoration recovers original spelling. Bare financial integers, dates and
+  ordinary document-local prose are not source coordinates. Estimation, native
+  request, output quarantine, correction and cache use the same projection;
+  canonical records and completed historical requests are never backfilled.
 - Cache reuse requires the exact canonical request hash.
 - Attempt, token, and cost ceilings fail closed before network I/O.
 - The attempt ledger admits a new request against settled cost: finalized

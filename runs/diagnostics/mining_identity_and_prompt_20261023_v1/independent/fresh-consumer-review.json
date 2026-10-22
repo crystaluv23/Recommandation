@@ -1,0 +1,299 @@
+{
+  "schema_version": "independent-fresh-mining-consumer-review-v1",
+  "created_at_utc": "2026-10-22T21:54:16.084818+00:00",
+  "verdict": "Two controlled source-consumption paths demonstrate correct fresh reading and permitted arithmetic; module endpoints0/2 because fifth requests hit original aggregate budget before inbox. Do not classify legal compute as model semantic error.",
+  "fixed_denominator": 2,
+  "mechanical_audit": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_identity_and_prompt_20261023_v1/independent/fresh-consumer-mechanical-review.json",
+    "sha256": "58ee98c9c7b83ef4942d7569327dc8833cc1ec28cdcdc6a22faabbc11b0a71d0"
+  },
+  "stage_manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/manifest.json",
+    "sha256": "2a52a8f52563e3ef3c709a5b8142bcfdf98485e21c44ca9a5515f83362fdcfe3"
+  },
+  "source_code_freeze": {
+    "source_bindings_verified": 1791,
+    "code_bindings_verified": 108,
+    "all_frozen_bindings_current": true
+  },
+  "counts": {
+    "module_endpoints": 0,
+    "fresh_first_answers": 8,
+    "model_corrections": 0,
+    "native_prepared_requests": 10,
+    "native_inboxes": 8,
+    "raw_answers": 8,
+    "verified_receipts": 8,
+    "verified_exact_caches": 8,
+    "blocked_prepared_without_inbox_or_author": 2,
+    "sealed_child_files_verified": 68,
+    "whole_source_operand_reads": 4,
+    "actual_permitted_arithmetic_results": 2,
+    "answered_logical_reservation": 185942,
+    "blocked_logical_reservation": 49781,
+    "all_prepared_logical_reservation": 235723,
+    "external_api_get": 0,
+    "new_business_labels_candidates_publications": 0
+  },
+  "samples": [
+    {
+      "sample": "a",
+      "terminal": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/a/failure.json",
+        "sha256": "542a1bb7e5394380d6e22808760b4894439c06263cec39e4e56e3e768756f94d"
+      },
+      "sealed_files_verified": 34,
+      "actions": [
+        "compare_groups",
+        "read_span",
+        "read_span",
+        "compute_statistic"
+      ],
+      "reservations": [
+        21100,
+        22457,
+        25126,
+        26582,
+        25385
+      ],
+      "answered_first": 4,
+      "corrections": 0,
+      "prepared": 5,
+      "inboxes": 4,
+      "blocked_before_inbox": 1,
+      "answered_reservation": 95265,
+      "blocked_reservation": 25385,
+      "all_prepared_reservation": 120650,
+      "remaining_after_answered": 3039,
+      "original_ceiling": 98304,
+      "actual_compute_result": {
+        "action": "compute_statistic",
+        "fact_refs": [
+          "fact-74cea942438e2cd0",
+          "fact-969421320623f49b"
+        ],
+        "relation_ref": "relation-1f2ead3f3a06f256",
+        "rule": "latest_minus_comparable_prior",
+        "value": "-12743565.000000"
+      },
+      "final_intent": null,
+      "module_endpoint": false,
+      "exact_source_operands": [
+        {
+          "fact_ref": "fact-969421320623f49b",
+          "whole_row": {
+            "description": null,
+            "end": "2023-06-30",
+            "fiscal_period": "FY",
+            "fiscal_year": 2024,
+            "frame": null,
+            "label": null,
+            "start": "2022-07-01",
+            "tag": "CashFlowsFromUsedInOperatingActivities",
+            "taxonomy": "ifrs-full",
+            "unit": "USD",
+            "value": -2378789
+          },
+          "source_pointer": "/content(JSON)/facts/34",
+          "exact_quote_and_hash": true
+        },
+        {
+          "fact_ref": "fact-74cea942438e2cd0",
+          "whole_row": {
+            "description": null,
+            "end": "2024-06-30",
+            "fiscal_period": "FY",
+            "fiscal_year": 2024,
+            "frame": null,
+            "label": null,
+            "start": "2023-07-01",
+            "tag": "CashFlowsFromUsedInOperatingActivities",
+            "taxonomy": "ifrs-full",
+            "unit": "USD",
+            "value": -15122354
+          },
+          "source_pointer": "/content(JSON)/facts/35",
+          "exact_quote_and_hash": true
+        }
+      ],
+      "obligations": {
+        "O1": {
+          "verdict": "pass",
+          "evidence": "Fresh authors selected current-wire refs; two read_span operations executed, whole exact source operands retained."
+        },
+        "O2": {
+          "verdict": "pass for observed material claims and arithmetic",
+          "evidence": "Namespace/concept/unit/period/sign/value, latest-prior order, cutoff and mathematical result match exact original rows. Arithmetic was explicitly allowed and optional."
+        },
+        "O3": {
+          "verdict": "not reached",
+          "evidence": "No final intent exists. Fourth compute rationales accurately retain material historical scope limitations, but cannot substitute for final rationale."
+        },
+        "O4": {
+          "verdict": "pass",
+          "evidence": "Later actual native requests retain both whole receipts and current comparison locators; no private ref rescue."
+        },
+        "O5": {
+          "verdict": "fail endpoint absent",
+          "evidence": "Fifth prepared request blocked before inbox; no record_deferred intent, boundary or native domain terminal executed."
+        },
+        "O6": {
+          "limits_safety": "pass",
+          "module_completion_within_frozen_budget": "fail",
+          "evidence": "Original32768single/98304aggregate/6decisions/output2000 and fixed denominator remain; fifth prepared reservation retained and blocked. No budget reset, replacement or terminal reentry."
+        }
+      }
+    },
+    {
+      "sample": "b",
+      "terminal": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/stage/b/failure.json",
+        "sha256": "561a194247dedeeacd6f38098f2a8a0687f87ac18d569b21f7aff14157abe916"
+      },
+      "sealed_files_verified": 34,
+      "actions": [
+        "compare_groups",
+        "read_span",
+        "read_span",
+        "compute_statistic"
+      ],
+      "reservations": [
+        19662,
+        21030,
+        24194,
+        25791,
+        24396
+      ],
+      "answered_first": 4,
+      "corrections": 0,
+      "prepared": 5,
+      "inboxes": 4,
+      "blocked_before_inbox": 1,
+      "answered_reservation": 90677,
+      "blocked_reservation": 24396,
+      "all_prepared_reservation": 115073,
+      "remaining_after_answered": 7627,
+      "original_ceiling": 98304,
+      "actual_compute_result": {
+        "action": "compute_statistic",
+        "fact_refs": [
+          "fact-6963faafa552b5b8",
+          "fact-0beda24d07c3b1cd"
+        ],
+        "relation_ref": "relation-c051d12e9a745e2a",
+        "rule": "latest_minus_comparable_prior",
+        "value": "-605000.000000"
+      },
+      "final_intent": null,
+      "module_endpoint": false,
+      "exact_source_operands": [
+        {
+          "fact_ref": "fact-0beda24d07c3b1cd",
+          "whole_row": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2017-09-30",
+            "fiscal_period": "Q3",
+            "fiscal_year": 2018,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2017-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 20727000
+          },
+          "source_pointer": "/content(JSON)/facts/257",
+          "exact_quote_and_hash": true
+        },
+        {
+          "fact_ref": "fact-6963faafa552b5b8",
+          "whole_row": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2018-09-30",
+            "fiscal_period": "Q3",
+            "fiscal_year": 2018,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2018-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 20122000
+          },
+          "source_pointer": "/content(JSON)/facts/258",
+          "exact_quote_and_hash": true
+        }
+      ],
+      "obligations": {
+        "O1": {
+          "verdict": "pass",
+          "evidence": "Fresh authors selected current-wire refs; two read_span operations executed, whole exact source operands retained."
+        },
+        "O2": {
+          "verdict": "pass for observed material claims and arithmetic",
+          "evidence": "Namespace/concept/unit/period/sign/value, latest-prior order, cutoff and mathematical result match exact original rows. Arithmetic was explicitly allowed and optional."
+        },
+        "O3": {
+          "verdict": "not reached",
+          "evidence": "No final intent exists. Fourth compute rationales accurately retain material historical scope limitations, but cannot substitute for final rationale."
+        },
+        "O4": {
+          "verdict": "pass",
+          "evidence": "Later actual native requests retain both whole receipts and current comparison locators; no private ref rescue."
+        },
+        "O5": {
+          "verdict": "fail endpoint absent",
+          "evidence": "Fifth prepared request blocked before inbox; no record_deferred intent, boundary or native domain terminal executed."
+        },
+        "O6": {
+          "limits_safety": "pass",
+          "module_completion_within_frozen_budget": "fail",
+          "evidence": "Original32768single/98304aggregate/6decisions/output2000 and fixed denominator remain; fifth prepared reservation retained and blocked. No budget reset, replacement or terminal reentry."
+        }
+      }
+    }
+  ],
+  "independent_source_semantics": {
+    "a": "Original1179 supplies IFRS ifrs-full CashFlowsFromUsedInOperatingActivities, USD -15122354 for2023-07-01..2024-06-30 and -2378789 for2022-07-01..2023-06-30. Raw fourth rationale states these exact annual periods/signs/values and namespace; it does not infer growth, funding plans or group effect. latest-minus-prior=-12743565.000000 is exact.",
+    "b": "Original0770 supplies us-gaap NetCashProvidedByUsedInOperatingActivities, USD20122000 for2018-01-01..2018-09-30 and20727000 for2017-01-01..2017-09-30. Raw fourth rationale correctly calls them matched nine-month YTD, explicitly rejects standalone-quarter reading of fiscal_period Q3, and does not claim2025current cash flow, group contrast or predictive benefit. latest-minus-prior=-605000.000000 is exact.",
+    "source_limit": "Both remain retrospective normalized SEC extraction and bounded historical selected-document scope; no primary-filing truth, autonomous acquisition, new measurement, candidate/admission/reuse or research gain is established."
+  },
+  "budget_observability_diagnosis": {
+    "observed_in_all_actual_systems": "No98304aggregate,32768single, cumulative native request reservation, currentcallreservation, remainingcallallowance or endpoint reservation disclosure.",
+    "observed_in_each_actual_user": "budget contains heavy_remaining,browse_remaining,light_remaining. Related extra fields are memory48000original_disclosure_limit and16000signal catalogread_byte_limit; neither represents nativecall aggregate.",
+    "fourth_request_visible_budget_each": {
+      "heavy_remaining": 2,
+      "browse_remaining": 24,
+      "light_remaining": 4
+    },
+    "actual_compute_admissibility": "compute_statistic is in available_actions, two finite source refs and same-case/latest-prior order are valid, heavy_remaining is positive.",
+    "gate_owner": {
+      "path": "/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py",
+      "function": "make_client.observe",
+      "lines": "154-165",
+      "behavior": "At request_ready, sums persisted native message-byte-plus-output reservations; raises LocalRoleBudgetExhausted before local exchange inbox when sum exceeds98304. This report establishes this shared diagnostic-stage gate, not a universal production-runtime aggregate gate."
+    },
+    "decision_view_owner": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "functions": "_model_view/_remaining_budget",
+      "lines": "490-495,607-609",
+      "behavior": "Supplies tool-action heavy/browse/light counters. MiningAgentRoleModel sends this view; stage call accounting is not added to its actual payload or envelope."
+    },
+    "supported_inference": "The stage constraints and decision inputs are disconnected for cumulative native-call cost. Authors cannot determine from supplied tool counters that one optional legitimate computation will prevent a subsequent endpoint request. This is a producer/prompt constraint-observability gap, not evidence of budget-instruction disobedience.",
+    "causal_limit": "Exposed cost information has not been tested; cannot claim it would necessarily change author actions or deliver endpoint."
+  },
+  "why_preflight_missed": "Input-only preflight demonstrated a deterministic compare/read/read/record_deferred path fits original budgets. It did not establish that every allowed autonomous path fits, nor that an author receives call-cost information. Assuming an immediate fourth-step terminal contradicts the frozen optional-arithmetic allowance; no retrospective four-step stopping rule is imposed.",
+  "preservation": {
+    "original_failed_preflight102563_and4prepared": true,
+    "old_actual0671_budget_terminal_and_namespace_completion_and59sealedchildren": true,
+    "current_a_b_terminal_metadata_and68sealedchildren": true,
+    "raw_inbox_receipt_cache_bytes_exact": true,
+    "canonical_projection_inverse_restores_all10views": true,
+    "known_alias_and_explicit_source_coordinate_residuals_in10prepared_messages": 0,
+    "frozen_reference_files_unchanged": true,
+    "reviewer_advanced_any_stage": false,
+    "reviewer_changed_product_source_reference_or_original": false
+  },
+  "acceptance_boundary": "O1/O2/O4 are supported for observed source consumption; O3 final rationale is untested, O5 endpoints fail, O6 original resource limits are enforced but in-budget module completion fails. Overall source-consumption module completion0/2; overall Mining/S3/S4/FastSlowMVP and independent benefit remain open.",
+  "next_action": "Diagnose or repair the bounded stage constraint-to-decision-input connection as a separate version, with honest original cost counters and estimator/actual reservation identity. Preserve both sealed terminal failures. No current-stage restart, budget expansion, forced fourth-step stop or source replacement follows from this review."
+}

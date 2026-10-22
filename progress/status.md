@@ -6,11 +6,12 @@
 
 ## 最新实证
 
-[定向query修复](../reports/mining-query-projection-and-generalization-20261023.md)：既有query现贯穿完整concept投影，1179 IFRS目标0→2；3原件noquery与旧版逐字段同，276关联/独立审查过、网络0。
-不同来源两控在正式准备前止：a第4prepared使102563>98304，前三input-only/0inbox作者，b未起；source handle仍有accession坐标，未宣称完整匿名。先核身份与完整请求成本，不增预算/换源强跑。
+[来源身份/提示成本](../reports/mining-source-identity-and-prompt-20261023.md)：显式SEC坐标可逆投影，19反例/341关联过；完整提示12953→11098bytes，义务未删，原102563零作者前置保留。
+同源两控正式首跑8fresh/0纠错，实际双operand读取/namespace/期间/数值与合法差值均准确；四答95265/90677，随后25385/24396使原98304预算阻断，无第五inbox，模块端点0/2。
+独立核1791来源/108代码/68封存同；模型仅见工具次数，未见stage累计请求成本/余量，下一修预算到决策view的连接，不归为作者语义错、不重入/加预算。非全匿名/Mining闭环。
+[定向query修复](../reports/mining-query-projection-and-generalization-20261023.md)：query贯穿完整concept投影，1179目标0→2；3原件noquery逐字段同，276关联/独立审查过、网络0。
 预冻两控正式结果1/2：namespace首endpoint通过；actual丢prior locator重compare，第5请求受原98304预算阻断。7fresh/0纠错，answered154184；actual90772+blocked26243、namespace63412，无补答/加预算。
 [比较locator修复](../reports/mining-comparison-locators-20261023.md)现保留实际比较whole units并绑定fact/group/axis快照，变更时progress/last双副本失效；273关联/独立反例过、网络0。
-实际1780视图每次仅凭当前wire选下一ref，正反4输入97641/97599均在原98304内，旧版首读后确实失败；两次action重建view/ledger字节同，0inbox/作者。仅局部可达，非fresh/候选/准入/完整S3/S4。
 [Mining出处消费](../reports/mining-taxonomy-consumer-20261023.md)完整read回执跨action保留；临时pending fixture7原cache/0交接、62非终态同/原64不变，非OS恢复；一次独立预算JSON覆盖失误已披露。
 [分类链修复](../reports/classification-contract-propagation-20261023.md)保持局部；旧[财务消费者](../reports/financial-context-consumer-20261023.md)F7/F8窄通过、F9语义仍0/1。
 实际critic/Slow仍缺分类声明原件，canonical持久化[方案A/B](../reports/classification-context-persistence-proposal-20261023.md)等用户决策，未改该schema。
@@ -73,7 +74,6 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
 - [F4卡片](../reports/signal-card-measurement-scope-20261020.md)已接精确measurement_scope，独立6及119关联通过；fresh路由现暴露共享对象误拒，整体未关。
   [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md)新合成控制3/3窄通过，原fixed-FY/basic0/3保留。
 - [orientation](../reports/reviewed-orientation-stage-20261020.md)1proposer+3H_init原生接受、42files恢复；
-  [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)apply→Reflect partial→实际Predictor/sink、52files恢复，
   均只局部连接，不关整体F1–F9。[镜像纠错](../reports/owned-partial-residual-mirror-20261020.md)仅离线触发通过。
 - [Posthoc](../reports/reviewed-posthoc-stage-20261020.md)唯一纠错后2items独立窄审/19files恢复，尚未提交Fast或证明Slow消费。
   [LabelStore](../reports/label-store-admission-20261020.md)6554记录机械核过、原18误放保留，不证明provider价格/issuer真值。
@@ -96,5 +96,5 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   [章节导航与真实控制](../reports/narrative-source-navigation-20261023.md)共用数据层matcher、各自坐标/分页、标题原子计预算；251关联/独立24过，网络0。旧v1形状与commercialization/v5净影响多义仍保留，未改定义。
   私有90日本金到期控制3fresh角色提取正确事实/0纠错、117566逻辑预留、29files同；更强oracle严审0of1不改。额外义务现已逐条对定义映射，不冒称错对象/日期；未发布/非Mining，整体F5/MVP仍open。
   gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
-- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。
+- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证；当前先修原生预算信息可见性，终态两控0/2不重入。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

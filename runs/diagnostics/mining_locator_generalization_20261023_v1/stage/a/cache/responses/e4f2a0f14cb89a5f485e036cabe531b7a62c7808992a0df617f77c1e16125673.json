@@ -1,0 +1,26 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "fact_ref": "fact-969421320623f49b",
+    "rationale": [
+      "The latest operand has been read with its ifrs-full concept, USD unit and annual period preserved.",
+      "Read the comparison locator\u2019s prior operand to verify its source binding and period before computing an annual change."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"fact_ref\":\"fact-969421320623f49b\",\"rationale\":[\"The latest operand has been read with its ifrs-full concept, USD unit and annual period preserved.\",\"Read the comparison locator\u2019s prior operand to verify its source binding and period before computing an annual change.\"]}",
+  "request_hash": "e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673",
+  "response_id": "local-e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673",
+  "usage": {
+    "accounting_tokens": 25126,
+    "agent_id": "/root/native_mining_a_3",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "1ab58ef1ba0b06ea5922f0e8ae54f52108d7acc1a9036eb6acbd8ebb70c53ae4",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "ec99bb52b3a739a3f718c45b154100dac3dc0796b7348bfeb08e65b67b6b1e07",
+    "request_hash": "e4f2a0f14cb89a5f485e036cabe531b7a62c7808992a0df617f77c1e16125673",
+    "token_usage": null
+  }
+}

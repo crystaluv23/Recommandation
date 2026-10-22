@@ -1,0 +1,55 @@
+{
+  "request": {
+    "contract_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "max_http_attempts": 1,
+    "max_output_tokens": 800,
+    "messages": [
+      {
+        "content": "Return exactly one JSON object and no non-JSON text. Copy supplied source coordinates only through supplied tokens.",
+        "role": "system"
+      },
+      {
+        "content": "{\"basic_info\":{\"cash\":123456789012345678,\"document_ref\":\"secfacts:[ANON_ID_0001]:[ANON_ID_0000]:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"escaped_url\":\"\\\"{\\\\\\\"source\\\\\\\": \\\\\\\"https:\\\\\\\\/\\\\\\\\/www.sec.gov\\\\\\\\/Archives\\\\\\\\/edgar\\\\\\\\/data\\\\\\\\/[ANON_ID_0003]\\\\\\\\/[ANON_ID_0002]\\\\\\\\/document.htm\\\\\\\"}\\\"\",\"snapshot_hash\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"typed_patch\":{\"period\":\"2024-09-30\",\"source_hash\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"value\":-2378789},\"url\":\"https://www.sec.gov/Archives/edgar/data/[ANON_ID_0003]/[ANON_ID_0002]/ea0215960-20f_critical.htm\"},\"correction_feedback\":[\"Copy the exact supplied coordinate token.\"],\"initial_research_skill\":\"Inspect only supplied evidence.\",\"last_invalid_action\":{\"document_ref\":\"secfacts:[ANON_ID_0001]:[ANON_ID_0000]:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}}",
+        "role": "user"
+      }
+    ],
+    "model": {
+      "alias": "independent-subagent",
+      "api_key_env_var": "",
+      "default_input_cost_per_million_tokens": 0.0,
+      "default_max_output_tokens": 16384,
+      "default_output_cost_per_million_tokens": 0.0,
+      "default_reasoning_effort": null,
+      "description": "Independent role agent through exact local request/response files; no API transport.",
+      "model": "independent-subagent",
+      "proposal_profile": "independent_agent",
+      "provider": "local",
+      "provider_identity": "local",
+      "provider_route": null,
+      "roles": [
+        "evolution",
+        "judge"
+      ],
+      "web_tools_allowed": false
+    },
+    "response_format": {
+      "type": "json_object"
+    },
+    "schema_version": "evolution-exact-request-v1",
+    "stage": "research_controller_initialize_correction",
+    "stage_contract": {
+      "allow_outcomes": false,
+      "payload_hash": "8fec2ea0e7f2f8d5dfd4e267d93fac5ce093e2735bb188c01d2fd21a2b8e59ba",
+      "payload_utf8_bytes": 920,
+      "registered": true,
+      "required_fields": [
+        "initial_research_skill",
+        "basic_info"
+      ],
+      "schema_version": "research-stage-input-v1",
+      "stage": "research_controller_initialize"
+    },
+    "temperature": 0.0
+  },
+  "request_hash": "baccd0a70e318480a07fcec36c3db6425f7497689795b2cb42ce456c58177783"
+}

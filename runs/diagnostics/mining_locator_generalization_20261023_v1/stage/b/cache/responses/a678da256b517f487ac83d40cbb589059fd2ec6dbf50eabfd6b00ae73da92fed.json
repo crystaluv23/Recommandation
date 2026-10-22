@@ -1,0 +1,31 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "compute_statistic",
+    "fact_refs": [
+      "fact-6963faafa552b5b8",
+      "fact-0beda24d07c3b1cd"
+    ],
+    "rationale": [
+      "Both source operands have been read for control case-002: us-gaap NetCashProvidedByUsedInOperatingActivities in USD, covering January through September of 2018 and 2017 respectively.",
+      "The matching nine-month periods support a historical year-over-year operating cash flow difference, with latest then prior operands; fiscal_period Q3 does not make these standalone quarterly flows.",
+      "Both facts were available before the case prediction cutoff. This comparison does not establish current cash flow at the 2025 cutoff, a positive/control contrast, or predictive benefit."
+    ],
+    "rule": "latest_minus_comparable_prior"
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"compute_statistic\",\"rule\":\"latest_minus_comparable_prior\",\"fact_refs\":[\"fact-6963faafa552b5b8\",\"fact-0beda24d07c3b1cd\"],\"rationale\":[\"Both source operands have been read for control case-002: us-gaap NetCashProvidedByUsedInOperatingActivities in USD, covering January through September of 2018 and 2017 respectively.\",\"The matching nine-month periods support a historical year-over-year operating cash flow difference, with latest then prior operands; fiscal_period Q3 does not make these standalone quarterly flows.\",\"Both facts were available before the case prediction cutoff. This comparison does not establish current cash flow at the 2025 cutoff, a positive/control contrast, or predictive benefit.\"]}",
+  "request_hash": "a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed",
+  "response_id": "local-a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed",
+  "usage": {
+    "accounting_tokens": 25791,
+    "agent_id": "/root/native_mining_b_4",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "e4178eb3338461b18251f7dcb03d5d0b9e2dee735f8c547fbda81591ad128594",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "ae52392304f3db11f11e89beae2898006c11f6f68382fdbcd029740b51ddf2d1",
+    "request_hash": "a678da256b517f487ac83d40cbb589059fd2ec6dbf50eabfd6b00ae73da92fed",
+    "token_usage": null
+  }
+}

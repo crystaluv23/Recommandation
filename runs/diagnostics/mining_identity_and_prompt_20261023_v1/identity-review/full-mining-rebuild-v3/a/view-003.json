@@ -1,0 +1,381 @@
+{
+  "available_actions": [
+    "inspect_manifest",
+    "inspect_catalog",
+    "fetch_evidence",
+    "compute_statistic",
+    "read_span",
+    "compare_groups",
+    "propose_candidate",
+    "record_deferred",
+    "record_no_pattern"
+  ],
+  "available_source_families": [
+    "filing",
+    "financial",
+    "market",
+    "market_data",
+    "sec_company_facts"
+  ],
+  "budget": {
+    "browse_remaining": 24,
+    "heavy_remaining": 3,
+    "light_remaining": 4
+  },
+  "case_prediction_times": {
+    "case-001": "2025-05-30T00:00:00+00:00"
+  },
+  "case_refs": [
+    "case-001"
+  ],
+  "comparison_progress": {
+    "counts": {
+      "available": 1,
+      "included": 1,
+      "omitted_after": 0,
+      "omitted_before": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "invalidated_comparisons": 0,
+    "items": [
+      {
+        "concept": "CashFlowsFromUsedInOperatingActivities",
+        "groups": {
+          "control": {
+            "available_cases": [],
+            "case_count": 0,
+            "comparable_prior": {},
+            "latest": {},
+            "unresolved_basis_cases": {}
+          },
+          "positive": {
+            "available_cases": [
+              "case-001"
+            ],
+            "case_count": 1,
+            "comparable_prior": {
+              "case-001": {
+                "fact_ref": "fact-969421320623f49b",
+                "value": "-2378789"
+              }
+            },
+            "latest": {
+              "case-001": {
+                "fact_ref": "fact-74cea942438e2cd0",
+                "value": "-15122354"
+              }
+            },
+            "unresolved_basis_cases": {}
+          }
+        },
+        "source_snapshot_hash": "7eeabd1c890fb4815dbacd7e4b9218ed04663b78d3cf8a0b4b5bceb3c88bb2f2"
+      }
+    ],
+    "max_entry_bytes": 8000,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "refresh_action": "compare_groups with requested concepts; ordinary heavy cost",
+    "selection_is_exhaustive": true,
+    "selection_order": "most_recent_comparison_first",
+    "snapshot_status": "current"
+  },
+  "evidence_digest": {
+    "cases_with_facts": [
+      "case-001"
+    ],
+    "concept_case_coverage": {
+      "AcquisitiondateFairValueOfTotalConsiderationTransferred": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "CashAdvancesAndLoansFromRelatedParties": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "CashAndCashEquivalents": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "CashFlowsFromUsedInFinancingActivities": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "CashFlowsFromUsedInInvestingActivities": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "CashFlowsFromUsedInOperatingActivities": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "CashFlowsFromUsedInOperationsBeforeChangesInWorkingCapital": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "CashOnHand": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "EffectOfExchangeRateChangesOnCashAndCashEquivalents": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "IncreaseDecreaseInCashAndCashEquivalentsBeforeEffectOfExchangeRateChanges": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "InterestPaidClassifiedAsOperatingActivities": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "NoncurrentRestrictedCashAndCashEquivalents": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "PaymentsOfLeaseLiabilitiesClassifiedAsFinancingActivities": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "RepaymentsOfBorrowingsClassifiedAsFinancingActivities": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "ReserveOfExchangeDifferencesOnTranslation": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "RestrictedCashAndCashEquivalents": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "ShorttermDepositsClassifiedAsCashEquivalents": {
+        "control_cases": 0,
+        "positive_cases": 1
+      },
+      "TaxExpenseRelatingToProfitLossFromOrdinaryActivitiesOfDiscontinuedOperations": {
+        "control_cases": 0,
+        "positive_cases": 1
+      }
+    },
+    "event_count": 0,
+    "fact_count": 31,
+    "families_fetched": [
+      "sec_company_facts"
+    ],
+    "fetches": 1,
+    "label_counts": {
+      "control": 0,
+      "positive": 1
+    },
+    "relation_count": 12
+  },
+  "known_event_refs": [],
+  "known_fact_refs": [
+    "fact-04976b1e73b64511",
+    "fact-0e81074c32bb571b",
+    "fact-16aca790caf024c2",
+    "fact-2429accbb884ca3d",
+    "fact-2514935a069837df",
+    "fact-25905ad8eca4a933",
+    "fact-34d1739f3ed326d7",
+    "fact-382eecd9948dad15",
+    "fact-3f2ace63c74d348a",
+    "fact-40e48650afbf292c",
+    "fact-4db2ec6bb35cd13e",
+    "fact-50861dd3b48f7fc0",
+    "fact-599a422fe8731d96",
+    "fact-6b02224dc86c63d2",
+    "fact-74cea942438e2cd0",
+    "fact-7bba996ecb259cdd",
+    "fact-8b45f3b8eb093a03",
+    "fact-8e627d9bdc4830eb",
+    "fact-8e6391a8eb3c9743",
+    "fact-8fcb1fc6f9659c73",
+    "fact-969421320623f49b",
+    "fact-a0c9d9a5ff153aac",
+    "fact-a38bf848d85237e3",
+    "fact-af35990f0ecc8cb8",
+    "fact-c3cca98fa2fef552",
+    "fact-e49643422ac3caf1",
+    "fact-e5ba436a640ab47f",
+    "fact-e5cc7b92d4831048",
+    "fact-eb0d6e4bd5056f34",
+    "fact-eed888c08bcf51fa",
+    "fact-f4a43dcf11af305e"
+  ],
+  "known_relation_refs": [
+    "relation-0534a0de71571447",
+    "relation-1792296238ded93e",
+    "relation-2a5ea0620c56616e",
+    "relation-3ad23767ef7414a4",
+    "relation-4f8c44607e9be03c",
+    "relation-6dacebffe1043871",
+    "relation-7a606691ca776e39",
+    "relation-bded3ab075792bca",
+    "relation-c79f810b3be36645",
+    "relation-ced07c63348229b8",
+    "relation-d550f0861482e67b",
+    "relation-dbb304b51ff8798e"
+  ],
+  "label_map": {
+    "case-001": "positive"
+  },
+  "last_action_result": {
+    "action": "read_span",
+    "available_at": "2024-10-31T00:00:00+00:00",
+    "case_refs": [
+      "case-001"
+    ],
+    "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+    "context_chars": 627,
+    "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+    "fact": {
+      "concept": "CashFlowsFromUsedInOperatingActivities",
+      "period": {
+        "end": "2024-06-30",
+        "start": "2023-07-01"
+      },
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "-15122354"
+    },
+    "fact_ref": "fact-74cea942438e2cd0",
+    "masked": "2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2022-07-01\",\"tag\":\"CashFlowsFromUsedInOperatingActivities\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-2378789},{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2023-07-01\",\"tag\":\"CashFlowsFromUsedInOperatingActivities\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-15122354},{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2022-07-01\",\"tag\":\"CashFlowsFromUsedInOperationsBeforeChangesInWorkingCapital\",\"taxon"
+  },
+  "measurable_evidence_manifest": {},
+  "memory_consumption": {
+    "original_disclosure_bytes": 2,
+    "original_disclosure_limit": 48000,
+    "read_refs": []
+  },
+  "meta_info": {},
+  "meta_memory_disclosures": [],
+  "modality_coverage": {
+    "narrative": {
+      "available": true,
+      "explored": false,
+      "status": "required"
+    },
+    "structured": {
+      "available": true,
+      "explored": true,
+      "status": "explored"
+    }
+  },
+  "prior_modality_footprints": [],
+  "research_axis": {
+    "axis_id": "surge_direction",
+    "control": "realized_max_multiple < 2.0",
+    "population": "eligible_discovery_cases",
+    "positive": "realized_max_multiple >= 2.0"
+  },
+  "seed": "discovery",
+  "signal_catalog": [],
+  "signal_catalog_disclosure": {
+    "counts": {
+      "available": 0,
+      "included": 0,
+      "omitted_after": 0,
+      "omitted_before": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "max_entry_bytes": 8000,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "read_action": "inspect_catalog scope=signals item_refs",
+    "read_byte_limit": 16000,
+    "selection_is_exhaustive": true
+  },
+  "slow_method_memory": {},
+  "state": "evidence_ready",
+  "structured_read_progress": {
+    "counts": {
+      "available": 1,
+      "included": 1,
+      "omitted_after": 0,
+      "omitted_before": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "items": [
+      {
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "case_refs": [
+          "case-001"
+        ],
+        "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+        "context_chars": 627,
+        "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+        "fact": {
+          "concept": "CashFlowsFromUsedInOperatingActivities",
+          "period": {
+            "end": "2024-06-30",
+            "start": "2023-07-01"
+          },
+          "taxonomy": "ifrs-full",
+          "unit": "USD",
+          "value": "-15122354"
+        },
+        "fact_ref": "fact-74cea942438e2cd0",
+        "masked": "2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2022-07-01\",\"tag\":\"CashFlowsFromUsedInOperatingActivities\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-2378789},{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2023-07-01\",\"tag\":\"CashFlowsFromUsedInOperatingActivities\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-15122354},{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2022-07-01\",\"tag\":\"CashFlowsFromUsedInOperationsBeforeChangesInWorkingCapital\",\"taxon",
+        "read_count": 1
+      }
+    ],
+    "max_entry_bytes": 8000,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "revisit_action": "read_span with fact_ref; ordinary heavy cost",
+    "selection_is_exhaustive": true,
+    "selection_order": "most_recent_read_first"
+  },
+  "tool_contracts": {
+    "compute_statistic": {
+      "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+      "operand_count": 2,
+      "operand_order": "numerator_then_denominator_or_latest_then_prior",
+      "operand_scope": "same_case",
+      "rules": [
+        "latest_minus_comparable_prior",
+        "latest_over_comparable_prior",
+        "latest_over_latest"
+      ]
+    },
+    "inspect_catalog": {
+      "allowed_scopes": [
+        "signals",
+        "evidence",
+        "memory",
+        "backlog"
+      ],
+      "budget_by_scope": {
+        "backlog": "light",
+        "evidence": "light",
+        "memory": "browse",
+        "signals": "light"
+      },
+      "default_scope": "signals"
+    },
+    "read_span": {
+      "budget_by_target": {
+        "document_ref": "browse",
+        "event_ref": "browse",
+        "fact_ref": "heavy"
+      },
+      "length_max": 4000,
+      "length_min": 1,
+      "offset_min": 0,
+      "target_count": 1,
+      "target_fields": [
+        "fact_ref",
+        "event_ref",
+        "document_ref"
+      ],
+      "window_applies_to": [
+        "event_ref",
+        "document_ref"
+      ]
+    }
+  }
+}

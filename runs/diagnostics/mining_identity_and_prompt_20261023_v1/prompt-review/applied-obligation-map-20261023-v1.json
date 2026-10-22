@@ -1,0 +1,359 @@
+{
+  "review_method": "Inherited complete manual semantic review plus exact full evaluated-text equality under one explicitly reviewed equivalent acronym expansion, and byte-identical adapter/shared-constant comparisons. No substring test is used as semantic proof.",
+  "obligations": [
+    {
+      "id": "R01",
+      "status": "preserved",
+      "basis": "PIT is explicitly expanded to point-in-time; same role, runtime authority and single-action meaning.",
+      "original_semantic_review": "Runtime authority and one-action granularity remain explicit."
+    },
+    {
+      "id": "R02",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "All four admission conditions and unverified post-admission effect are retained; surge/magnitude independence is unchanged."
+    },
+    {
+      "id": "R03",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Both permission despite unproved paired benefit and prohibition on fabricated support remain."
+    },
+    {
+      "id": "R04",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Assembled action rationale remains array/nonempty/short strings; typed-patch grammar is kept outside this text."
+    },
+    {
+      "id": "R05",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "All ten actions are named, including the later-declared incremental disposition action; action fields remain assigned to their original actions."
+    },
+    {
+      "id": "R06",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same four fetch fields, multi-family allowance, supplied-family restriction and economy guidance."
+    },
+    {
+      "id": "R07",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Exclusive target choice and event/document window bounds remain; returned target/ref keys still prohibited, raw narrative authority and separate budget retained."
+    },
+    {
+      "id": "R08",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same scope/level enums, integer cursor, exact-version signal filter and item_refs array; optional scope matches original declared default signals rather than adding a new variant."
+    },
+    {
+      "id": "R09",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same complete authorized index, filters, paging, 1-3 whole-original reads and two disclosed byte caps."
+    },
+    {
+      "id": "R10",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "The candidate paragraph is explicitly memory-scoped; both read retention surfaces remain named."
+    },
+    {
+      "id": "R11",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Unknown causes/economic-factor prohibition and relevant-memory selection retained together."
+    },
+    {
+      "id": "R12",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Shared catalog absence statement replaces repeated wording without changing authority or reachability."
+    },
+    {
+      "id": "R13",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same concrete cursor path/action, zero/omitted behavior absent new fetch, unread count interpretation and remaining-budget caveat."
+    },
+    {
+      "id": "R14",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Binding is required before contrast; exact supplied fields join label_map, with title/position excluded as labels."
+    },
+    {
+      "id": "R15",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "All card metadata and default bounded/omission/read conditions retained; missing-content caveat shared with catalog paragraph."
+    },
+    {
+      "id": "R16",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Supplied order made explicit, preserving original authoritative operand scope/order; finite numeric pair, same case, exact rule and uncertainty inspection all remain."
+    },
+    {
+      "id": "R17",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "All five source binding dimensions and both namespace prohibitions remain."
+    },
+    {
+      "id": "R18",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Receipt persistence, bindings, repeated counts, bounded recent-first order, omission/oversize disclosure, reread cost and all insufficiency caveats remain."
+    },
+    {
+      "id": "R19",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same snapshot scope, locator-only status, between-read use and costed refresh for invalidated/omitted units."
+    },
+    {
+      "id": "R20",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Measurement fields, four value kinds, ratio encoding, falsifier fields and evidence refs all retained."
+    },
+    {
+      "id": "R21",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Optional schema and economic/research weakening/reversal rather than extraction-only conditions retained, with unknown boundaries and no causal interpretation of association."
+    },
+    {
+      "id": "R22",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Every nested predicate/threshold field and cited-family intersection retained."
+    },
+    {
+      "id": "R23",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Narrative predicate remains first-class, uses event refs and may serve multiple needs; same order-confirmation example retained."
+    },
+    {
+      "id": "R24",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Prior outcomes and mismatch diagnostic/action retained without changing near-zero/high language into a new numeric threshold."
+    },
+    {
+      "id": "R25",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Known ref classes, ledger presence and prior-fetch proposal prerequisite all retained."
+    },
+    {
+      "id": "R26",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same concept-level grounding, observable/normalization scope and value locator availability."
+    },
+    {
+      "id": "R27",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same stable-catalog base-name/version exclusion and separate Update ownership."
+    },
+    {
+      "id": "R28",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Bounded unresolved page, disclosure, full semantic paging and whole-original byte cap retained."
+    },
+    {
+      "id": "R29",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same issued base/allowed refs and new-need progress condition; full interface in Action interfaces."
+    },
+    {
+      "id": "R30",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Sibling independence, exact error surface, no repetition/overwrite and staged-intent limitation retained."
+    },
+    {
+      "id": "R31",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Remaining rows only plus runtime merge and entire-backlog exactly-once check retained."
+    },
+    {
+      "id": "R32",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "All six literal dispositions and four row fields preserved."
+    },
+    {
+      "id": "R33",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Shared row-rationale constant is rendered verbatim; one existing signal only for update_existing and zero for every other disposition preserved."
+    },
+    {
+      "id": "R34",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Original/current cohort and real dev cutoffs remain distinct; outside-cohort origin is not original-issuer missing data."
+    },
+    {
+      "id": "R35",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Metric/comparison/entity/time qualifiers and each dev cutoff retained; partial coverage/remainder requirement survives shortened wording."
+    },
+    {
+      "id": "R36",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "All three invalid proxy examples, provenance insufficiency and partial-read/no-universal-absence boundary retained."
+    },
+    {
+      "id": "R37",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Fetched families, per-concept grouped coverage, prior result, range progress, intervening catalogs and exact raw-claim authority remain."
+    },
+    {
+      "id": "R38",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same anti-first-read claim, next offset/alternate document response, covered-family reuse and remaining-budget priorities."
+    },
+    {
+      "id": "R39",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "All five heavy action categories, surviving browse/light variants and repeated-inadmissible deferred_budget retained."
+    },
+    {
+      "id": "R40",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Shared budget paragraph removes duplicates while explicitly preserving independent dimensions and browse-only narrative reads."
+    },
+    {
+      "id": "R41",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Event scope, shared-document multiplicity, retained receipt scopes and joins remain explicit."
+    },
+    {
+      "id": "R42",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same raw coordinate fields, hidden-header navigation, maximum 4000 raw chars, discovery-only directory and actual-read authority."
+    },
+    {
+      "id": "R43",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Empty visibility cannot satisfy exploration; exact next offset/new read and no empty-range repetition retained."
+    },
+    {
+      "id": "R44",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Action-name availability vs variant/state distinction and exact allowed-scope/budget/default mapping retained; scope rejection switches action/scope rather than repeating."
+    },
+    {
+      "id": "R45",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same single fixed axis, runtime-only labels and no authoring/rewriting/expansion of either."
+    },
+    {
+      "id": "R46",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Same advice and reservation, free-listed terminal/disposition admissibility, domain prerequisites and deferred control-plane option."
+    },
+    {
+      "id": "R47",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Any available unexplored modality still blocks domain terminals; structured fetch/raw narrative read required, list/fetch not exploration, control-plane exception survives."
+    },
+    {
+      "id": "R48",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "No modality balancing quota and recurring supported factor condition retained."
+    },
+    {
+      "id": "R49",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Actual own prior-fetched families and supported research rationale, no invented budget excuse retained."
+    },
+    {
+      "id": "R50",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "PIT/identity/file-order prohibitions and remaining-budget limit retained; no additional feature exceptions introduced."
+    },
+    {
+      "id": "R51",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Rationale/coverage claims tied to current counters, cross-dimension distinction and no forced candidate retained."
+    },
+    {
+      "id": "S01",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Shared source-fact constant appended byte-identically outside candidate-controller; each source dimension unchanged."
+    },
+    {
+      "id": "S02",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "All five distinct economic quantities remain in unchanged shared constant."
+    },
+    {
+      "id": "S03",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Versioned existing materiality definition remains unchanged; no substitute threshold."
+    },
+    {
+      "id": "S04",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Inference labeling and no invented amount/conversion remain unchanged."
+    },
+    {
+      "id": "S05",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Corroboration vs independent events and genuinely distinct event retention unchanged."
+    },
+    {
+      "id": "S06",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "No prose totals/conversions and supplied deterministic results unchanged."
+    },
+    {
+      "id": "P01",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Candidate replaces only fixed controller text; typed-patch output selection, preservation, base/permissions, error retry and PATCH_INSTRUCTION untouched."
+    },
+    {
+      "id": "P02",
+      "status": "preserved",
+      "basis": "Applied text is byte-identical to the manually reviewed v2 clause; unchanged shared/output component where applicable.",
+      "original_semantic_review": "Normal exact JSON grammar and bounded invalid-action handling untouched."
+    }
+  ]
+}

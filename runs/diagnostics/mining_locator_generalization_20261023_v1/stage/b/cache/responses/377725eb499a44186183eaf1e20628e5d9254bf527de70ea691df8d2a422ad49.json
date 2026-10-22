@@ -1,0 +1,26 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "fact_ref": "fact-0beda24d07c3b1cd",
+    "rationale": [
+      "The latest receipt establishes us-gaap operating cash flow of USD 20122000 for 2018-01-01 through 2018-09-30.",
+      "Read the located comparable-prior operand to verify its complete period, unit and measurement identity before computing a historical comparison."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"fact_ref\":\"fact-0beda24d07c3b1cd\",\"rationale\":[\"The latest receipt establishes us-gaap operating cash flow of USD 20122000 for 2018-01-01 through 2018-09-30.\",\"Read the located comparable-prior operand to verify its complete period, unit and measurement identity before computing a historical comparison.\"]}",
+  "request_hash": "377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49",
+  "response_id": "local-377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49",
+  "usage": {
+    "accounting_tokens": 24194,
+    "agent_id": "/root/native_mining_b_3",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "1a59016c2617de27ead54db68410a44437f2057209fc4a3177e554743dcc682a",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "2b417f87178ceffe934877f436009b931211849e96f17113c2549e9786153b61",
+    "request_hash": "377725eb499a44186183eaf1e20628e5d9254bf527de70ea691df8d2a422ad49",
+    "token_usage": null
+  }
+}

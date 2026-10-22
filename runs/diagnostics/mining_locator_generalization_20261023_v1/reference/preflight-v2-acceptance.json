@@ -1,0 +1,43 @@
+{
+  "schema_version": "independent-mining-preflight-v2-acceptance-v1",
+  "preflight_result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/result.json",
+    "sha256": "20657666b11c9f1a4ff0f852a0a877d98660463244d559e68e438b2d39ce0531"
+  },
+  "independent_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_identity_and_prompt_20261023_v1/identity-review/full-mining-preflight-v2-review.json",
+    "sha256": "8686077b2094c1da1a51aaee6d354fd5084520ebe462a2ed2b9794c6c321d16b"
+  },
+  "local_identity_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_identity_and_prompt_20261023_v1/identity-review/local-final-review.json",
+    "sha256": "bbf4ad879001ff2283a69e38846b7fbf77d18ad45de71a6f3f525dca125f95c4"
+  },
+  "source_reference": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/source-reference.json",
+    "sha256": "03b55378be4faa422310abde07d01f52614123d1a0a49270372eb161da62bd43"
+  },
+  "original_obligations": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/prefreeze-obligations.json",
+    "sha256": "92e5a8278a2cb55ecbb0c62bfc58904864f15ca3ad71fa53105717cae91ceee2"
+  },
+  "obligation_supplement": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/prefreeze-obligations-supplement.json",
+    "sha256": "0c20e2560ba69f2da5d37c25495e75547495c1dfe270e369113b41acb5632964"
+  },
+  "fixed_denominator": [
+    "source_1179",
+    "source_0770"
+  ],
+  "scope": "Only input-onlypreparation/egress/reference-readiness is supported; retain independent O1-O6 verbatim, original98304aggregate/32768single/output2000/6decisions/6heavy. Fresh autonomous author actions, semantic source comparison and endpoint acceptance remain to be tested.",
+  "reservations": {
+    "a": 95265,
+    "b": 90677
+  },
+  "preparation_only": true,
+  "formal_semantic_controls_executed": 0,
+  "production_authors": 0,
+  "external_api_get": 0,
+  "old_preflight_failure_unchanged": true,
+  "old0671_terminal_budget_unchanged": true,
+  "review_does_not_authorize_full_successor_or_budget_reset": true
+}

@@ -1,0 +1,14 @@
+{
+  "backend": "independent-subagent",
+  "external_API": 0,
+  "fixed_denominator": 2,
+  "limits": {
+    "max_case_tokens": 98304,
+    "max_local_role_calls": 6,
+    "max_request_tokens": 32768,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "schema_version": "mining-taxonomy-consumer-module-v1",
+  "scope": "controlled fact-source consumption only; no candidate or domain terminal"
+}

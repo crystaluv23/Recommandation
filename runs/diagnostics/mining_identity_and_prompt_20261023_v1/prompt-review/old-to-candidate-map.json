@@ -1,0 +1,359 @@
+{
+  "review_method": "Manual clause-by-clause semantic comparison, including exceptions and examples; anchors are navigation only and do not constitute semantic proof.",
+  "mapping": [
+    {
+      "id": "R01",
+      "old_anchor": "You are the bounded decision core",
+      "candidate_anchor_or_unchanged_component": "You choose one action per step",
+      "semantic_review": "Runtime authority and one-action granularity remain explicit."
+    },
+    {
+      "id": "R02",
+      "old_anchor": "A candidate is a reusable measurement",
+      "candidate_anchor_or_unchanged_component": "A candidate is a reusable measurement",
+      "semantic_review": "All four admission conditions and unverified post-admission effect are retained; surge/magnitude independence is unchanged."
+    },
+    {
+      "id": "R03",
+      "old_anchor": "Do not withhold a concrete measurable",
+      "candidate_anchor_or_unchanged_component": "Do not withhold a concrete measurable",
+      "semantic_review": "Both permission despite unproved paired benefit and prohibition on fabricated support remain."
+    },
+    {
+      "id": "R04",
+      "old_anchor": "Every assembled action requires rationale",
+      "candidate_anchor_or_unchanged_component": "Every assembled action requires",
+      "semantic_review": "Assembled action rationale remains array/nonempty/short strings; typed-patch grammar is kept outside this text."
+    },
+    {
+      "id": "R05",
+      "old_anchor": "Allowed actions and their required fields",
+      "candidate_anchor_or_unchanged_component": "[Action interfaces]",
+      "semantic_review": "All ten actions are named, including the later-declared incremental disposition action; action fields remain assigned to their original actions."
+    },
+    {
+      "id": "R06",
+      "old_anchor": "fetch_evidence {case_refs",
+      "candidate_anchor_or_unchanged_component": "fetch_evidence {case_refs",
+      "semantic_review": "Same four fetch fields, multi-family allowance, supplied-family restriction and economy guidance."
+    },
+    {
+      "id": "R07",
+      "old_anchor": "read_span with exactly one",
+      "candidate_anchor_or_unchanged_component": "read_span {exactly one",
+      "semantic_review": "Exclusive target choice and event/document window bounds remain; returned target/ref keys still prohibited, raw narrative authority and separate budget retained."
+    },
+    {
+      "id": "R08",
+      "old_anchor": "inspect_catalog {scope: signals",
+      "candidate_anchor_or_unchanged_component": "inspect_catalog {scope?:signals",
+      "semantic_review": "Same scope/level enums, integer cursor, exact-version signal filter and item_refs array; optional scope matches original declared default signals rather than adding a new variant."
+    },
+    {
+      "id": "R09",
+      "old_anchor": "scope=memory browses the complete",
+      "candidate_anchor_or_unchanged_component": "scope=memory browses the complete",
+      "semantic_review": "Same complete authorized index, filters, paging, 1-3 whole-original reads and two disclosed byte caps."
+    },
+    {
+      "id": "R10",
+      "old_anchor": "Memory browsing/reading uses the browse",
+      "candidate_anchor_or_unchanged_component": "Browse/read charge browse",
+      "semantic_review": "The candidate paragraph is explicitly memory-scoped; both read retention surfaces remain named."
+    },
+    {
+      "id": "R11",
+      "old_anchor": "Cross-round changes are retrospective",
+      "candidate_anchor_or_unchanged_component": "Cross-round changes are retrospective",
+      "semantic_review": "Unknown causes/economic-factor prohibition and relevant-memory selection retained together."
+    },
+    {
+      "id": "R12",
+      "old_anchor": "Omitted entries remain available",
+      "candidate_anchor_or_unchanged_component": "Omitted/unread entries remain available",
+      "semantic_review": "Shared catalog absence statement replaces repeated wording without changing authority or reachability."
+    },
+    {
+      "id": "R13",
+      "old_anchor": "For evidence paging",
+      "candidate_anchor_or_unchanged_component": "For the next evidence page",
+      "semantic_review": "Same concrete cursor path/action, zero/omitted behavior absent new fetch, unread count interpretation and remaining-budget caveat."
+    },
+    {
+      "id": "R14",
+      "old_anchor": "Before describing a positive/control",
+      "candidate_anchor_or_unchanged_component": "Join directory case_bindings",
+      "semantic_review": "Binding is required before contrast; exact supplied fields join label_map, with title/position excluded as labels."
+    },
+    {
+      "id": "R15",
+      "old_anchor": "Signal cards carry the actual",
+      "candidate_anchor_or_unchanged_component": "Signal cards contain actual",
+      "semantic_review": "All card metadata and default bounded/omission/read conditions retained; missing-content caveat shared with catalog paragraph."
+    },
+    {
+      "id": "R16",
+      "old_anchor": "tool_contracts supplies the authoritative",
+      "candidate_anchor_or_unchanged_component": "tool_contracts is authoritative",
+      "semantic_review": "Supplied order made explicit, preserving original authoritative operand scope/order; finite numeric pair, same case, exact rule and uncertainty inspection all remain."
+    },
+    {
+      "id": "R17",
+      "old_anchor": "Fact reads retain source taxonomy",
+      "candidate_anchor_or_unchanged_component": "Fact reads preserve taxonomy",
+      "semantic_review": "All five source binding dimensions and both namespace prohibitions remain."
+    },
+    {
+      "id": "R18",
+      "old_anchor": "structured_read_progress retains whole",
+      "candidate_anchor_or_unchanged_component": "structured_read_progress retains whole",
+      "semantic_review": "Receipt persistence, bindings, repeated counts, bounded recent-first order, omission/oversize disclosure, reread cost and all insufficiency caveats remain."
+    },
+    {
+      "id": "R19",
+      "old_anchor": "comparison_progress retains executed",
+      "candidate_anchor_or_unchanged_component": "comparison_progress retains executed",
+      "semantic_review": "Same snapshot scope, locator-only status, between-read use and costed refresh for invalidated/omitted units."
+    },
+    {
+      "id": "R20",
+      "old_anchor": "candidate has measurement",
+      "candidate_anchor_or_unchanged_component": "candidate requires measurement",
+      "semantic_review": "Measurement fields, four value kinds, ratio encoding, falsifier fields and evidence refs all retained."
+    },
+    {
+      "id": "R21",
+      "old_anchor": "candidate may also include usage_context",
+      "candidate_anchor_or_unchanged_component": "Optional usage_context",
+      "semantic_review": "Optional schema and economic/research weakening/reversal rather than extraction-only conditions retained, with unknown boundaries and no causal interpretation of association."
+    },
+    {
+      "id": "R22",
+      "old_anchor": "For a narrative measurement",
+      "candidate_anchor_or_unchanged_component": "For narrative measurement include",
+      "semantic_review": "Every nested predicate/threshold field and cited-family intersection retained."
+    },
+    {
+      "id": "R23",
+      "old_anchor": "When narrative_summary headlines",
+      "candidate_anchor_or_unchanged_component": "A positive/control contrast in narrative_summary",
+      "semantic_review": "Narrative predicate remains first-class, uses event refs and may serve multiple needs; same order-confirmation example retained."
+    },
+    {
+      "id": "R24",
+      "old_anchor": "prior_modality_footprints carries",
+      "candidate_anchor_or_unchanged_component": "prior_modality_footprints contains",
+      "semantic_review": "Prior outcomes and mismatch diagnostic/action retained without changing near-zero/high language into a new numeric threshold."
+    },
+    {
+      "id": "R25",
+      "old_anchor": "Every cited ref must already",
+      "candidate_anchor_or_unchanged_component": "Cite only known_fact_refs",
+      "semantic_review": "Known ref classes, ledger presence and prior-fetch proposal prerequisite all retained."
+    },
+    {
+      "id": "R26",
+      "old_anchor": "every known concept named in the observable",
+      "candidate_anchor_or_unchanged_component": "Every known concept named in observable",
+      "semantic_review": "Same concept-level grounding, observable/normalization scope and value locator availability."
+    },
+    {
+      "id": "R27",
+      "old_anchor": "must be a genuinely new measurement",
+      "candidate_anchor_or_unchanged_component": "Observable must be genuinely new",
+      "semantic_review": "Same stable-catalog base-name/version exclusion and separate Update ownership."
+    },
+    {
+      "id": "R28",
+      "old_anchor": "backlog_needs is only the current bounded",
+      "candidate_anchor_or_unchanged_component": "backlog_needs is a bounded",
+      "semantic_review": "Bounded unresolved page, disclosure, full semantic paging and whole-original byte cap retained."
+    },
+    {
+      "id": "R29",
+      "old_anchor": "Use record_need_dispositions",
+      "candidate_anchor_or_unchanged_component": "record_need_dispositions uses",
+      "semantic_review": "Same issued base/allowed refs and new-need progress condition; full interface in Action interfaces."
+    },
+    {
+      "id": "R30",
+      "old_anchor": "Valid independent rows are saved",
+      "candidate_anchor_or_unchanged_component": "Independent valid rows are saved",
+      "semantic_review": "Sibling independence, exact error surface, no repetition/overwrite and staged-intent limitation retained."
+    },
+    {
+      "id": "R31",
+      "old_anchor": "The final proposal or no-pattern",
+      "candidate_anchor_or_unchanged_component": "Final proposal/no-pattern",
+      "semantic_review": "Remaining rows only plus runtime merge and entire-backlog exactly-once check retained."
+    },
+    {
+      "id": "R32",
+      "old_anchor": "new_measurement, deferred_measurement",
+      "candidate_anchor_or_unchanged_component": "disposition exactly new_measurement",
+      "semantic_review": "All six literal dispositions and four row fields preserved."
+    },
+    {
+      "id": "R33",
+      "old_anchor": "For every need_dispositions row",
+      "candidate_anchor_or_unchanged_component": "For every need_dispositions row",
+      "semantic_review": "Shared row-rationale constant is rendered verbatim; one existing signal only for update_existing and zero for every other disposition preserved."
+    },
+    {
+      "id": "R34",
+      "old_anchor": "Need source_scope distinguishes",
+      "candidate_anchor_or_unchanged_component": "source_scope distinguishes",
+      "semantic_review": "Original/current cohort and real dev cutoffs remain distinct; outside-cohort origin is not original-issuer missing data."
+    },
+    {
+      "id": "R35",
+      "old_anchor": "Generalize the measurement without dropping",
+      "candidate_anchor_or_unchanged_component": "Generalize without dropping",
+      "semantic_review": "Metric/comparison/entity/time qualifiers and each dev cutoff retained; partial coverage/remainder requirement survives shortened wording."
+    },
+    {
+      "id": "R36",
+      "old_anchor": "actual-only revenue cannot establish",
+      "candidate_anchor_or_unchanged_component": "actual-only revenue cannot establish",
+      "semantic_review": "All three invalid proxy examples, provenance insufficiency and partial-read/no-universal-absence boundary retained."
+    },
+    {
+      "id": "R37",
+      "old_anchor": "evidence_digest summarizes",
+      "candidate_anchor_or_unchanged_component": "evidence_digest summarizes",
+      "semantic_review": "Fetched families, per-concept grouped coverage, prior result, range progress, intervening catalogs and exact raw-claim authority remain."
+    },
+    {
+      "id": "R38",
+      "old_anchor": "Do not call an already-read range",
+      "candidate_anchor_or_unchanged_component": "Never call an already-read range",
+      "semantic_review": "Same anti-first-read claim, next offset/alternate document response, covered-family reuse and remaining-budget priorities."
+    },
+    {
+      "id": "R39",
+      "old_anchor": "Once heavy_remaining reaches 0",
+      "candidate_anchor_or_unchanged_component": "heavy_remaining=0 prohibits",
+      "semantic_review": "All five heavy action categories, surviving browse/light variants and repeated-inadmissible deferred_budget retained."
+    },
+    {
+      "id": "R40",
+      "old_anchor": "light_remaining=0 only exhausts",
+      "candidate_anchor_or_unchanged_component": "its exhaustion does not exhaust",
+      "semantic_review": "Shared budget paragraph removes duplicates while explicitly preserving independent dimensions and browse-only narrative reads."
+    },
+    {
+      "id": "R41",
+      "old_anchor": "An event is one case-scoped observation",
+      "candidate_anchor_or_unchanged_component": "Each event is one case-scoped observation",
+      "semantic_review": "Event scope, shared-document multiplicity, retained receipt scopes and joins remain explicit."
+    },
+    {
+      "id": "R42",
+      "old_anchor": "The evidence directory supplies raw_chars",
+      "candidate_anchor_or_unchanged_component": "Directory raw_chars",
+      "semantic_review": "Same raw coordinate fields, hidden-header navigation, maximum 4000 raw chars, discovery-only directory and actual-read authority."
+    },
+    {
+      "id": "R43",
+      "old_anchor": "A read with has_readable_text=false",
+      "candidate_anchor_or_unchanged_component": "has_readable_text=false",
+      "semantic_review": "Empty visibility cannot satisfy exploration; exact next offset/new read and no empty-range repetition retained."
+    },
+    {
+      "id": "R44",
+      "old_anchor": "available_actions lists action names",
+      "candidate_anchor_or_unchanged_component": "available_actions lists names",
+      "semantic_review": "Action-name availability vs variant/state distinction and exact allowed-scope/budget/default mapping retained; scope rejection switches action/scope rather than repeating."
+    },
+    {
+      "id": "R45",
+      "old_anchor": "research_axis defines the one comparison",
+      "candidate_anchor_or_unchanged_component": "research_axis fixes the positive/control",
+      "semantic_review": "Same single fixed axis, runtime-only labels and no authoring/rewriting/expansion of either."
+    },
+    {
+      "id": "R46",
+      "old_anchor": "Budget wisely: fetch broadly",
+      "candidate_anchor_or_unchanged_component": "Fetch broadly once/twice",
+      "semantic_review": "Same advice and reservation, free-listed terminal/disposition admissibility, domain prerequisites and deferred control-plane option."
+    },
+    {
+      "id": "R47",
+      "old_anchor": "Domain terminals are inadmissible",
+      "candidate_anchor_or_unchanged_component": "Domain terminals are inadmissible",
+      "semantic_review": "Any available unexplored modality still blocks domain terminals; structured fetch/raw narrative read required, list/fetch not exploration, control-plane exception survives."
+    },
+    {
+      "id": "R48",
+      "old_anchor": "Exploration creates no candidate quota",
+      "candidate_anchor_or_unchanged_component": "Exploration creates no candidate quota",
+      "semantic_review": "No modality balancing quota and recurring supported factor condition retained."
+    },
+    {
+      "id": "R49",
+      "old_anchor": "record_no_pattern must cite",
+      "candidate_anchor_or_unchanged_component": "record_no_pattern must cite",
+      "semantic_review": "Actual own prior-fetched families and supported research rationale, no invented budget excuse retained."
+    },
+    {
+      "id": "R50",
+      "old_anchor": "Never request facts after the prediction time",
+      "candidate_anchor_or_unchanged_component": "Never request post-prediction facts",
+      "semantic_review": "PIT/identity/file-order prohibitions and remaining-budget limit retained; no additional feature exceptions introduced."
+    },
+    {
+      "id": "R51",
+      "old_anchor": "Named remaining counters and exhaustion",
+      "candidate_anchor_or_unchanged_component": "Named counters/exhaustion claims",
+      "semantic_review": "Rationale/coverage claims tied to current counters, cross-dimension distinction and no forced candidate retained."
+    },
+    {
+      "id": "S01",
+      "old_anchor": "Preserve each source fact",
+      "candidate_anchor_or_unchanged_component": "shared-source-fact.txt",
+      "semantic_review": "Shared source-fact constant appended byte-identically outside candidate-controller; each source dimension unchanged."
+    },
+    {
+      "id": "S02",
+      "old_anchor": "A project construction cost",
+      "candidate_anchor_or_unchanged_component": "shared-source-fact.txt",
+      "semantic_review": "All five distinct economic quantities remain in unchanged shared constant."
+    },
+    {
+      "id": "S03",
+      "old_anchor": "For a Signal, apply its versioned",
+      "candidate_anchor_or_unchanged_component": "shared-source-fact.txt",
+      "semantic_review": "Versioned existing materiality definition remains unchanged; no substitute threshold."
+    },
+    {
+      "id": "S04",
+      "old_anchor": "Any inferred relationship",
+      "candidate_anchor_or_unchanged_component": "shared-source-fact.txt",
+      "semantic_review": "Inference labeling and no invented amount/conversion remain unchanged."
+    },
+    {
+      "id": "S05",
+      "old_anchor": "Different attributes or repeated disclosures",
+      "candidate_anchor_or_unchanged_component": "shared-source-fact.txt",
+      "semantic_review": "Corroboration vs independent events and genuinely distinct event retention unchanged."
+    },
+    {
+      "id": "S06",
+      "old_anchor": "Copy source quantities",
+      "candidate_anchor_or_unchanged_component": "shared-source-fact.txt",
+      "semantic_review": "No prose totals/conversions and supplied deterministic results unchanged."
+    },
+    {
+      "id": "P01",
+      "old_anchor": "Output only a JSON object with exactly",
+      "candidate_anchor_or_unchanged_component": "unchanged next_action output branch",
+      "semantic_review": "Candidate replaces only fixed controller text; typed-patch output selection, preservation, base/permissions, error retry and PATCH_INSTRUCTION untouched."
+    },
+    {
+      "id": "P02",
+      "old_anchor": "Return exactly one JSON object with keys",
+      "candidate_anchor_or_unchanged_component": "unchanged next_action output branch",
+      "semantic_review": "Normal exact JSON grammar and bounded invalid-action handling untouched."
+    }
+  ]
+}

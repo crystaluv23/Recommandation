@@ -1,0 +1,1 @@
+{"action":"read_span","fact_ref":"fact-6963faafa552b5b8","rationale":["Inspect the latest operating cash flow source fact to establish its period, unit, entity and taxonomy binding before comparing it with the located prior operand.","Comparison progress supplies operand locators but does not establish source measurement identity."]}

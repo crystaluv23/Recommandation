@@ -1,0 +1,36 @@
+{
+  "a": {
+    "case_id": "cik_0001951089:20250530",
+    "case_ref": "case-001",
+    "company_id": "cik_0001951089",
+    "concept": "CashFlowsFromUsedInOperatingActivities",
+    "cutoff": "2025-05-30T00:00:00+00:00",
+    "expected_source": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1179.json",
+      "sha256": "4e03393bbff52aef5bca7b324502266842811d03f7611c9f28962cfd0ae0379a"
+    },
+    "label": "positive",
+    "scope": "controlled target-query historical normalized source; no latest/primary-filing claim",
+    "snapshot": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json",
+      "sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a"
+    }
+  },
+  "b": {
+    "case_id": "cik_0001746129:20250731",
+    "case_ref": "case-002",
+    "company_id": "cik_0001746129",
+    "concept": "NetCashProvidedByUsedInOperatingActivities",
+    "cutoff": "2025-07-31T00:00:00+00:00",
+    "expected_source": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0770.json",
+      "sha256": "6d4348d8c1a7f99f64a93238a7ea770d21307d56f2ee560101a7c17622dcc0bd"
+    },
+    "label": "control",
+    "scope": "controlled target-query historical normalized source; no latest/primary-filing claim",
+    "snapshot": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json",
+      "sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a"
+    }
+  }
+}

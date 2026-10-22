@@ -1,0 +1,12 @@
+{
+  "action": {
+    "action": "record_deferred",
+    "rationale": [
+      "Deterministic current-wire-only preflight, not an author answer."
+    ]
+  },
+  "request": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-v2/a/requests/4c5a0b22067341bb3fc89bbca05dc05852a15077d0232ffd2c0d29b9e00477e0.json",
+    "sha256": "449678c873620e8bc81f23aac0dae3a6bd84b0740b84b41f4dd6210d8722797c"
+  }
+}
