@@ -1,0 +1,164 @@
+{
+  "schema_version": "mining-taxonomy-consumer-prefreeze-obligations-v1",
+  "status": "source_feasible_runtime_visibility_repair_and_fresh_request_freeze_required",
+  "source_reference": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/source-reference.json",
+    "sha256": "2549c26e9176cf6fb2fd4beaf7ad05e0847b22c3e8aa748ed4d59c0329b2665a"
+  },
+  "scope": "Two-source controlled consumer subset: dev8 case-008 historical typed document and separately identified original synthetic namespace mismatch. No candidate/admission/whole-Mining/research-effect claim. Predetermined fetches are control inputs, not autonomous retrieval.",
+  "current_runtime_boundary": [
+    {
+      "id": "B01",
+      "producer": "LabelAwareMiningController constructor",
+      "binding": "case_pairs→case_by_ref and caller-supplied opaque label_map must have exact same case-ref keys. Original dev8 map/time metadata matches inventory. Constructor eagerly constructs default_labels from case.ground_truth even when explicit map supplied; a transparent SimpleNamespace.is_surge derived solely from the same approved opaque map avoids any new LabelStore read."
+    },
+    {
+      "id": "B02",
+      "producer": "fetch_case_evidence / _execute_fetch",
+      "binding": "Filters store-local documents by company_id and available_at<=case cutoff, requested source families, optional query tokens, max_documents. No-query order follows store document order; query scores overlap then earlier available_at/document_id. Selected sources are bounded, not necessarily latest. Omitted candidates/limit counts stay explicit."
+    },
+    {
+      "id": "B03",
+      "producer": "_facts_from_document→_company_facts_context",
+      "binding": "Projects only already-selected documents. Typed value vs legacy val keys and complete literal rows are different shapes. Source projection has12,000-character context cap, whole-concept selection, latest/nearest comparable source record filtering, priority ordering, partial/omitted counts. Raw source can contain a control row the projection omits; source-only expected comparability is not proof that actual model received it."
+    },
+    {
+      "id": "B04",
+      "producer": "EvidenceFact and relation construction",
+      "binding": "taxonomy comes from selected source group. Old typed literal may establish taxonomy; absent legacy leaf namespace stays unknown. Conflicting retained/literal taxonomy does not establish basis. Automatic relations also require same case/concept/unit/document/content hash and compatible periods; unique latest/pair rejects unresolved competing bases."
+    },
+    {
+      "id": "B05",
+      "producer": "_execute_fetch→_model_view",
+      "binding": "Model gets known refs and count/digest summaries, not the complete fact table. Evidence inspect_catalog is a document directory, not an inspect-facts tool. A compare_groups action can expose current/prior fact refs for a resolved concept."
+    },
+    {
+      "id": "B06",
+      "producer": "_read_fact_span",
+      "binding": "Explicit known fact_ref read returns full masked context plus fact{taxonomy,concept,unit,period,value}, case_refs/document_ref/content_hash/available_at. Payload hash/evidence refs enter ordinary ledger and one heavy action is charged. This receipt is actual source disclosure; merely having a local taxonomy field or ledger hash is not model consumption."
+    },
+    {
+      "id": "B07",
+      "producer": "_group_summary / _execute_compare",
+      "binding": "Uses all fetched current facts matching requested concept, joins only runtime-owned group map, then automatic unique basis/pair helpers. Latest/prior values carry refs; unresolved-basis messages cannot be promoted to global source absence. Multiple source documents/bases can change resolution; selected one-document control does not establish whole240-document results."
+    },
+    {
+      "id": "B08",
+      "producer": "compute_statistic",
+      "binding": "Existing explicit generic arithmetic takes2 finite same-case operands in authored order, ratio nonzero denominator. It does not certify automatic same-namespace comparability.1.200000 can be legal explicit arithmetic for the synthetic mismatch."
+    },
+    {
+      "id": "B09",
+      "producer": "MiningAgentRoleModel.next_action",
+      "binding": "Transmits current view via caller.complete_json, ordinary stage/system prompt/anonymous aliases/output limits, allow_outcomes=true for the already-approved opaque groups. It does not itself add read history. _model_view currently retains only one last_action_result; a later read/compare overwrites the previous fact receipt."
+    },
+    {
+      "id": "B10",
+      "producer": "domain terminals",
+      "binding": "record_deferred executes evidence_unavailable whenever heavy budget is not exhausted; it is not a neutral completed-module terminal. A controlled audit stopping after supported historical reads must intercept terminal intent before this execution and persist a distinct harness stop cause. Raw rationale still must not falsely claim absent facts or exhausted budget."
+    }
+  ],
+  "observed_blocker": {
+    "id": "V01_PRIOR_FACT_RECEIPT_NOT_IN_LATER_VIEW",
+    "source_confirmed": true,
+    "effect": "With independent fresh per-request authors, the final author cannot jointly inspect both operand namespace bindings once the first read receipt is overwritten. Do not score an impossible dual-operand interpretation as model disobedience, or silently inject outside-wire memory.",
+    "proposed_repair_parent_owned": "Spec-first runtime-only structured_read_progress from already-executed complete masked fact read receipts, per-fact dedup/read_count, latest-first8KB whole-unit cap and explicit omissions. This audit has not inspected its later implementation or counted it as implemented."
+  },
+  "minimum_prefrozen_acceptance": [
+    {
+      "id": "A01_SOURCE_IDENTITY",
+      "must": "Freeze exact current spec/code/input source hashes and original row/parent bindings before new role answers. Original source and source-only oracle are private to review and never supplied as a production answer. Keep historical source qualifications."
+    },
+    {
+      "id": "A02_CONTROLLED_FETCH",
+      "must": "Declare pre-executed fetch as control input; preserve original file/content hash and both target rows. Persist actual selected/fetched documents, production fact projection output, fact refs, limits/omission receipts. If a target row is omitted, classify insufficient actual model input; do not fake the row or silently expand selection."
+    },
+    {
+      "id": "A03_ACTUAL_WIRE",
+      "must": "Read exact transmitted model request and full actual tool-return receipt. Prove taxonomy, concept, both calendar periods, unit, value, case/document/content hash/PIT bindings are simultaneously reachable at the semantic decision being scored. Local fields, return hashes and helper tests alone do not meet this."
+    },
+    {
+      "id": "A04_KNOWN_POSITIVE_SOURCE",
+      "must": "A fresh author must treat the actual historical OCF source as us-gaap/USD,2011H1 versus2010H1, document-local comparable. It may use valid source reads/compare results without reciting every key. Do not turnQ2 or fiscal_year into different duration, declare2025 latest availability, infer outcome/forecast direction, or deny the available supported historical facts."
+    },
+    {
+      "id": "A05_MISMATCH_AND_UNKNOWN",
+      "must": "Fresh parent-source projection exposes namespace-a vsnamespace-b; author must not call it automatic same-concept comparable basis. Preserved old leaf-only records stayunknown unless literal/parent evidence actually supplies provenance. Known mismatch fresh consumption and old unknown handling are separate scopes. No hard requirement to perform generic arithmetic; if performed, allow1.200000 as explicit arithmetic while withholding automatic pair semantics."
+    },
+    {
+      "id": "A06_FRESH_AUTHOR_CONSUMPTION",
+      "must": "Use actual fresh action rationale/ref/operand selections after source receipts to establish consumption. A model merely repeating a prompt sentence about taxonomy or receiving a compare failure without seeing lineage is insufficient to prove use of the additive field. No handcrafted candidate, numeric answer, prediction, probability or hypothesis direction is required."
+    },
+    {
+      "id": "A07_CLOSED_CHAIN",
+      "must": "Audit real request→original raw action→receipt/cache→parsed canonical action→controller executed read/compare/compute→subsequent consuming request. Count physical fresh responses and every correction separately, freeze first valid semantic endpoint denominator per sample, and retain initial failures instead of appending answers until pass."
+    },
+    {
+      "id": "A08_SCOPE_TERMINATION",
+      "must": "Stop before candidate/Signal admission/effect evaluation/LabelStore/check groups. The harness-owned controlled boundary is not research completion, no-pattern, data absence, budget exhaustion or production successful terminal. Audit any raw stop rationale for false unavailable/budget claims."
+    },
+    {
+      "id": "A09_ANONYMITY_BUDGET",
+      "must": "Use only approved opaque group/time metadata and production identity masking. Scan actual wire including document_ref/context/source metadata for company/ticker/CIK leakage under existing policy. Charge complete added progress/receipt text through existing request/case budgets; do not add free metadata, external API or hidden continuation context."
+    },
+    {
+      "id": "A10_REPLAY",
+      "must": "Reconstruct from the exact same frozen code/input/action/cache/receipt history without a new role call, and compare persisted request/fact/read/compare/progress/ledger results. A replay verifies reconstruction only, not fresh semantic obedience or whole-loop recovery."
+    }
+  ],
+  "proposed_progress_repair_counterexamples": [
+    {
+      "id": "P01_ATOMIC_UNIT",
+      "expected": "Whole accepted masked receipt is the unit: original fact_ref, case/document/content hash/availability, all taxonomy/concept/unit/period/value fields and complete disclosed context together. No key-only summary that drops counter-context, no partial JSON/word/number clipping. Metadata counts do not create citation authority."
+    },
+    {
+      "id": "P02_ONLY_READ",
+      "expected": "Before reads, no fact progress. After one read, only that receipt; inspect/fetch/compare must not auto-mark unread facts as read. Comparison-created refs remain discoverable but require their actual read for claimed provenance consumption."
+    },
+    {
+      "id": "P03_DEDUP_AND_ORDER",
+      "expected": "Repeated same fact_ref read updates deterministic recency and read_count; disclose one complete latest accepted receipt. Counts reflect executed reads, not planned actions, model request attempts or cache receipt retrieval. Different refs remain distinct and source-bound."
+    },
+    {
+      "id": "P04_COLLISION_AND_CHANGED_BINDING",
+      "expected": "If the same ref is associated with differing document/content/case/period/taxonomy payload, do not silently count it as repeated proof of the original. Reject conflicting provenance or preserve explicit uncertainty under current identity contract. Do not silently redesign canonical fact_ref identity in this visibility patch."
+    },
+    {
+      "id": "P05_EXACT_WHOLE_ENTRY_BOUND",
+      "expected": "Specify8KB as a precise serializer/UTF8-byte bound before implementation. Unicode and wrapper/omission metadata accounting must be explicit. Largest/oversized newest entry cannot be clipped; list oversized/omitted refs/counts and whether older complete units were retained. Selection and sort are deterministic."
+    },
+    {
+      "id": "P06_REACHABILITY_REREAD",
+      "expected": "Omitted read receipts remain reachable via existing known fact_ref/read_span while heavy budget remains; rereads charge ordinary heavy and update recency. No new tool/permissions or automatic whole-source scan. If no budget fits, keep context insufficient rather than synthesize absent evidence."
+    },
+    {
+      "id": "P07_INTERVENING_ACTIONS",
+      "expected": "ReadA→compare→readB→inspect/compute must preserve complete readA/readB progress within cap, independent of overwritten last_action_result. Fact and narrative targets must retain their existing separate disclosure/budget semantics."
+    },
+    {
+      "id": "P08_ALIAS_AND_INTEGRITY",
+      "expected": "Progress stores already-masked issuer/source context without losing immutable source-binding metadata. Actual payload hashing/ledger authority and anonymity must agree; masks cannot attach stale view hashes or alter canonical source spans."
+    },
+    {
+      "id": "P09_CACHE_RECONSTRUCTION",
+      "expected": "Fresh controller replay of exactly cached actions under same snapshot/alias/config rebuilds identical progress ordering/read_count/omission wrapper and requests. Do not deserialize current source into an old result to fill history. Avoid importing progress and then double-counting replayed reads."
+    },
+    {
+      "id": "P10_BUDGET_AND_FALSE_STOP",
+      "expected": "Progress text participates in exact request/case reserve and actual dispatch; near-limit/oversize omission cannot be hidden by injecting text outside the real wire. Module cap/controlled stop is not evidence_unavailable or research completion."
+    }
+  ],
+  "explicit_nonrequirements": [
+    "No candidate or prediction direction",
+    "No new taxonomy ontology, automatic cross-namespace arithmetic ban, category quota or research definition",
+    "No required verbatim field recitation if source/period/namespace interpretation is substantively correct",
+    "No full dev8 natural-counterexample census or all-Mining capability promise",
+    "No assumption that replay or field presence proves fresh model consumption"
+  ],
+  "unknowns": [
+    "Actual baseline raw wire and future structured_read_progress implementation were not read in this source preflight.",
+    "Actual new caller wire/session history and simultaneous operand visibility must be verified before semantic scoring.",
+    "The2-source design does not freshly exercise every old unknown/conflicting typed variant; retain explicit coverage limits.",
+    "Original historical typed-source primary filing audit remainsrequired/unknown from supplied snapshot metadata."
+  ]
+}

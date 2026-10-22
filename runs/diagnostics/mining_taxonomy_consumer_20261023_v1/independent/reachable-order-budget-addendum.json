@@ -1,0 +1,149 @@
+{
+  "schema": "independent-reachable-order-native-budget-v1",
+  "scope": "Two zero-inbox controlled path variants on the actual1780 source store; no fresh model response, source append or budget expansion.",
+  "stage_sha_before": "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+  "stage_sha_after": "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+  "limits": {
+    "max_request_tokens": 32768,
+    "max_case_tokens": 98304,
+    "max_local_role_calls": 6,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "variants": [
+    {
+      "read_order": "current-then-prior",
+      "blocked": false,
+      "steps": [
+        {
+          "position": 1,
+          "requested_next_action": "compare_groups",
+          "status": "captured_before_receive",
+          "journals": 1,
+          "aggregate": 21133,
+          "remaining": 77171
+        },
+        {
+          "position": 2,
+          "requested_next_action": "read_span",
+          "status": "captured_before_receive",
+          "journals": 2,
+          "aggregate": 42601,
+          "remaining": 55703
+        },
+        {
+          "position": 3,
+          "requested_next_action": "read_span",
+          "status": "captured_before_receive",
+          "journals": 3,
+          "aggregate": 67243,
+          "remaining": 31061
+        },
+        {
+          "position": 4,
+          "requested_next_action": "record_deferred",
+          "status": "captured_before_receive",
+          "journals": 4,
+          "aggregate": 93486,
+          "remaining": 4818
+        }
+      ],
+      "requests": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/reachable-order-capture/current-then-prior/requests/3982253f85460f00483a3c084be66119f6956ecfb616cfd5f8becf19c6ef8981.json",
+          "sha256": "95cbbb0bd5f2f33748af40810a013c854985be097ec47aab19c42b8c43515f36",
+          "reservation": 21133
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/reachable-order-capture/current-then-prior/requests/88ca794c50ad2b9cd5b5e72bf073938980c2942bb26f11178f4f5ca00fc0a6a0.json",
+          "sha256": "57b628a55881122d6201c8a75abbcf054b8db180e26a0a3ebdb102240c901d0d",
+          "reservation": 24642
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/reachable-order-capture/current-then-prior/requests/97555eee72b9dd033e1b299f89e5921b3a3c8b5f9f6a8a97f598919d7d9a5ded.json",
+          "sha256": "f33fa339cb2881c54b31a6473403eb0580b48ba43dc63fbae8023ba7f51ee06d",
+          "reservation": 21468
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/reachable-order-capture/current-then-prior/requests/e6e21129346e20b10e5de51e75942511237d079fe1d5c9336a96a1c771599ab4.json",
+          "sha256": "b6e2a060cb6d933ee1c362b70062263c2846d687acdc22d9cd9eadba62fa57d5",
+          "reservation": 26243
+        }
+      ],
+      "aggregate": 93486,
+      "headroom": 4818,
+      "whole_receipts_at_stop": 2,
+      "selected_source_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "inboxes": 0,
+      "fresh_model_answers": 0
+    },
+    {
+      "read_order": "prior-then-current",
+      "blocked": false,
+      "steps": [
+        {
+          "position": 1,
+          "requested_next_action": "compare_groups",
+          "status": "captured_before_receive",
+          "journals": 1,
+          "aggregate": 21133,
+          "remaining": 77171
+        },
+        {
+          "position": 2,
+          "requested_next_action": "read_span",
+          "status": "captured_before_receive",
+          "journals": 2,
+          "aggregate": 42601,
+          "remaining": 55703
+        },
+        {
+          "position": 3,
+          "requested_next_action": "read_span",
+          "status": "captured_before_receive",
+          "journals": 3,
+          "aggregate": 67159,
+          "remaining": 31145
+        },
+        {
+          "position": 4,
+          "requested_next_action": "record_deferred",
+          "status": "captured_before_receive",
+          "journals": 4,
+          "aggregate": 93444,
+          "remaining": 4860
+        }
+      ],
+      "requests": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/reachable-order-capture/prior-then-current/requests/090c95b40cc80fe190461d9e0aea468b524f32390dab036b08836328e60e2f39.json",
+          "sha256": "932eacca0d3d954d8f991d83f64f4e1a6118218051e1218e50db2a02ef3da5a5",
+          "reservation": 26285
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/reachable-order-capture/prior-then-current/requests/158d5d45f9a58458178373c11bcf1213a73a3d0b84d5d996e40061efce76d8be.json",
+          "sha256": "a347dc54314cc58dc2d21657258be418856f9ea351247f040835730beaad0e7f",
+          "reservation": 24558
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/reachable-order-capture/prior-then-current/requests/3982253f85460f00483a3c084be66119f6956ecfb616cfd5f8becf19c6ef8981.json",
+          "sha256": "95cbbb0bd5f2f33748af40810a013c854985be097ec47aab19c42b8c43515f36",
+          "reservation": 21133
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/reachable-order-capture/prior-then-current/requests/97555eee72b9dd033e1b299f89e5921b3a3c8b5f9f6a8a97f598919d7d9a5ded.json",
+          "sha256": "f33fa339cb2881c54b31a6473403eb0580b48ba43dc63fbae8023ba7f51ee06d",
+          "reservation": 21468
+        }
+      ],
+      "aggregate": 93444,
+      "headroom": 4860,
+      "whole_receipts_at_stop": 2,
+      "selected_source_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+      "inboxes": 0,
+      "fresh_model_answers": 0
+    }
+  ],
+  "all_fit": true,
+  "qualification": "This proves the selected compare→two reads→stop request envelopes fit. It does not guarantee arbitrary extra actions/corrections fit, or prove autonomous source/semantic behavior. Root original controlled read→read→compare path is separate evidence."
+}

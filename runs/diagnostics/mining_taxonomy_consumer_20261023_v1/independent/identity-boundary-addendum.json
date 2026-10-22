@@ -1,0 +1,35 @@
+{
+  "schema": "independent-mining-identity-boundary-addendum-v1",
+  "disposition": "actual_native_wire_masks_known_cik_handle_no_wire_identity_violation_established",
+  "current_stage_sha256": "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/identity-wire-capture/requests/a6f667f83ac113a36886257fd26151999a47d6a2301dafb6470115db42f4f4e5.json",
+  "request_file_sha256": "ee4bff784806b9ce0eefb6d89b7e499c7b3b6afed7a1c99567cfde19480874c1",
+  "request_reservation": 25172,
+  "original_source_identity": "The canonical Fact/read receipt contains the known CIK as local provenance; it is not opaque by itself. Existing whole-request reversible projection is the egress anonymity authority.",
+  "local_canonical_document_refs": [
+    "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+    "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324"
+  ],
+  "actual_wire_document_refs": [
+    "document-secfacts:[ANON_ID_0000]:0000950123-11-074727:171d25ca06a00324",
+    "document-secfacts:[ANON_ID_0000]:0000950123-11-074727:171d25ca06a00324"
+  ],
+  "known_identifiers_present_in_actual_wire": {
+    "cik_0000800457:20250731": false,
+    "cik_0000800457": false,
+    "0000800457": false,
+    "DGICA": false
+  },
+  "existing_policy_mechanism": "_CaseIdentityProjection derives numeric CIK patterns from cik_<digits> aliases even with expand_aliases=False, and tokenizes the complete source handle at egress. No per-case alias or product modification was needed.",
+  "full1780_source_selection_matches_reference": true,
+  "selected_fact_refs": [
+    "fact-2f898adb2d25e349",
+    "fact-3d4faa09011f777b"
+  ],
+  "local_projection_inverse_equal": true,
+  "production_inboxes": 0,
+  "fresh_model_answers": 0,
+  "external_API": 0,
+  "qualification": "The actual persisted native request proves egress masking for this source/handle. Pure existing projection.restore roundtrip was checked; no fresh/cached real model response roundtrip or broad anonymity-family closure is claimed.",
+  "reviewer_correction": "The reviewer initially called raw receipt CIK a proven wire leak before inspecting the actual whole-request projection. That conclusion was premature and corrected before any product/reference modification. Earlier final-review did not establish anonymity; this source-bound native evidence is the supplemental determination."
+}

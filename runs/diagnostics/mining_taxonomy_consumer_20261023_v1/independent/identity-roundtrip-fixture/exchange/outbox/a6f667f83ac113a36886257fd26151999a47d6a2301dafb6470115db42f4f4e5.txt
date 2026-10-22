@@ -1,0 +1,1 @@
+{"action": "record_deferred", "rationale": ["Explicit offline inverse fixture source handle: document-secfacts:[ANON_ID_0000]:0000950123-11-074727:171d25ca06a00324"]}

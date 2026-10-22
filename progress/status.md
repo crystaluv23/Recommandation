@@ -6,12 +6,14 @@
 
 ## 最新实证
 
-[分类链修复](../reports/classification-contract-propagation-20261023.md)：实际执行声明经 exact result/round 进入Reflect、最终context、保存/Posthoc及Update，缺失不回填；
-跨轮补写、Update误用validator表、匿名后hash失效三反例均修复。445关联测试/独立20控通过，非新模型遵循。
-实际来源input-only预演一次新deterministic计算、0inbox/回答；发生在最后三源文件修复前，不冒称最终代码真实验收。
-实际critic/Slow原件仍丢声明，canonical持久化[方案A/B](../reports/classification-context-persistence-proposal-20261023.md)已具体化、等用户决策；未改该schema。
-[旧真实财务消费者](../reports/financial-context-consumer-20261023.md)F7/F8本案窄通过、235851/256000含旧usage；Predictor按正号误释类别，完整语义仍0/1/F9不关。
-本轮无新生产回答/API/GET/标签；不重入完成stage或重置预算，整体MVP与独立收益未知。
+[Mining出处消费](../reports/mining-taxonomy-consumer-20261023.md)：已读完整fact回执现在跨action保留，按ref去重/重读计预算、8KB whole-unit/遗漏显式；266关联过、网络0。
+预冻两控正式结果1/2：namespace两operand消费正确/首endpoint通过；实际0671在读current后丢prior locator，作者谨慎重compare，第5请求受原98304预算阻断。
+7fresh原答/0纠错，answered逻辑预留154184；actual4答90772+blocked26243、namespace3答63412，无第5作者，未加预算/补答。
+受控预演在脚本外保留ref，不能证明fresh自主可达；下一修比较locator在适用快照下可见，防止新fetch后沿用旧资格。非候选/准入/复用或完整S3/S4。
+两临时pending fixture重放7原cache/0新交接、62非终态文件同、原64不变，非OS恢复；一次独立预算反例JSON覆盖失误已披露，未称原件保真。
+[分类链修复](../reports/classification-contract-propagation-20261023.md)保持局部；旧[财务消费者](../reports/financial-context-consumer-20261023.md)F7/F8窄通过、F9语义仍0/1。
+实际critic/Slow仍缺分类声明原件，canonical持久化[方案A/B](../reports/classification-context-persistence-proposal-20261023.md)等用户决策，未改该schema。
+本轮外部API/GET/新业务标签0；各完成stage不重入，整体MVP/独立收益未关闭。
 
 [原生财务批次与阅读诊断](../reports/current-financial-apply-20261021.md)：当前比较用既有v12精确18版本，不替换历史v6。单GPRE/2025-05-30、1780来源view，冻结4389绑定，唯一native批次20.261s/exit0。
 9财务结果为6严格通过、1prior原文版本匹配失败、2期间政策unknown，终态completed_acceptance_failed保留。
@@ -46,9 +48,8 @@ GPRE六strict-pass结果现经真实Reflect batch/egress到唯一journal，6值/
 两次诊断前置失败保留，先5项synthetic完整原生控制后才捕获；36318/131072逻辑预留，cache/receive前止、0生产模型/响应/dispatch。
 该capture只证序列化、未建立研究prior；原9分母/1literal失败/2政策unknown不改。
 [GPRE原生初始化](../reports/gpre-native-initial-20261021.md)现以同1780来源view/default手工研究Plan真实bootstrap，
-核心计算anchor/171bars指标、4请求17投影保partial/news缺口；fresh独立subagent首答1/1、0纠错，61888逻辑预留。
-原答→cache→解析→落盘逐字段同，4引用/5needs独立源审通过；1930绑定及原14保留。中性路径交接避免目录名泄露身份。
-仅本案H_init；六财务结果未整体fresh消费，本轮单项context连接见最新；序列化空carrier不追认为研究prior。
+核心计算anchor/171bars指标、4请求17投影保partial/news缺口；fresh独立subagent首答1/1、0纠错，61888逻辑预留。原答→cache→解析→落盘逐字段同，4引用/5needs独立源审通过；1930绑定及原14保留。中性路径交接避免目录名泄露身份。
+仅本案H_init；六财务结果未整体fresh消费，单项context见财务消费者报告；序列化空carrier不追认为研究prior。
 [GPRE真实路由](../reports/gpre-native-routing-20261021.md)：18eligible/17原生卡、完整旧state/5needs进入fresh请求；严格首组合0/1。
 shared产品名UHP被误当residual-only，54598纠错请求超过18995余量未发送，原生fallback将合法order partial降context。
 融资partial意图保真进入core首批，entry1/prepare与计算0，未回答问题。1作者/0模型纠错；2journal准备总165630不等实际usage111032。
@@ -61,7 +62,6 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
 旧独立final属1de2；root当前a5ba复验scope19/19、原14/14+typed、补充2/2、反例1/1、consumer7/7和300关联，134原件保真；非新版独立fresh审查，原native0/1保持。
 [案例边界](../reports/case-scope-and-blind-boundary-20261020.md)：fresh40=16Anchor+8Random+16Discovery，Fast24；
 旧48无清单支持，不推剩余8为LockedTest。失败分母、标签、身份屏蔽与LockedTest保持。
-
 ## 其他局部验收与限制
 - [F7三控制](../reports/reviewed-owned-temporal-controls-20261021.md)：partial/partial/full目标3/3，9独立首答/0模型纠错，
   535373逻辑预留；state→17cards/版本→实际Predictor/sink及各32files恢复保真。原完整语义0/1不改，mirror均未触发。
@@ -90,7 +90,7 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
 - [Mining事实与H1](../reports/mining-native-fact-semantics-20261021.md)：原生7控确认context19→facts0；
   value/val、期间/单位/冲突及派生关系连接已修，原0671现在19facts逐literal核真；102关联/独立21×2及日期7控过。
   H1改共享row级合法pair存在性，205关联及独立控制过；实际dev8/qualified1780的24目录项/计数未变，观察增益0。
-  可选taxonomy现贯穿投影/保存/fact-read；真实同名跨namespace反例拒配、旧fact_ref不变，122关联过；fresh Mining消费仍未验。
+  可选taxonomy贯穿投影/保存/fact-read，旧fact_ref不变；本轮fresh两控1/2与locator缺口见最新，整体未关。
 - routing两literal范围误拒已局部修复，停止继续词面补丁；保原0/1及原答，局部修复不等新模型遵循，不重入completed stage或重置预算。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
   [章节导航与真实控制](../reports/narrative-source-navigation-20261023.md)共用数据层matcher、各自坐标/分页、标题原子计预算；251关联/独立24过，网络0。旧v1形状与commercialization/v5净影响多义仍保留，未改定义。

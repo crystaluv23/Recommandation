@@ -1,0 +1,178 @@
+{
+  "schema_version": "mining-taxonomy-consumer-independent-preflight-implementation-review-v1",
+  "reviewed_at_utc": "2026-10-22T20:28:37.934375+00:00",
+  "disposition": "narrow_offline_visibility_and_stage_guards_supported_no_known_remaining_blocker_to_input_only_preflight",
+  "summary": "The runtime-only whole fact-read progress view passes8 independent counterexample groups. Three stage problems discovered during review—silent source/code refreeze, missing per-request/prepared-decision budget enforcement, and unbound terminal metadata—were repaired and rechecked without changing expectations. No production fresh author answer or two-sample semantic acceptance has occurred. The original budget-failure JSON was accidentally overwritten by reviewer and is explicitly not preserved as original bytes.",
+  "scope": {
+    "read": "Current named Mining spec/controller/role diffs and tests; stage script/spec/test, approved source reference, baseline exact request/read receipts, and relevant actual native local transport/reservation interfaces.",
+    "writes": "Only new reference artifacts before parent freeze request, then independent diagnostics/tmp. Reference directory is unchanged after parent requested freeze. No product edits, original-source edits, original-stage reentry, external API, LabelStore/check/LockedTest read or production role answer.",
+    "execution": "Compatible Python3.12, PYTHONDONTWRITEBYTECODE=1, PYTHONPATH=src. Actual0671 source projection for meaningful receipt test; explicit synthetic field/budget/pending/cache fixtures for controls. Fake raw actions are marked offline fixtures and not scored as fresh model outputs.",
+    "business_label_scope": "Only already-approved opaque case-008 group from source-reference. SimpleNamespace.is_surge derives from that same group for constructor compatibility; synthetic case has explicit fixture group, not a real issuer label."
+  },
+  "baseline": {
+    "controller_head_blob": "ad5870d6:src/stock_opportunity_agent/research/mining_controller.py",
+    "head_blob_sha256": "a44991a3ce892ab96fffe6c532e4563d568564a6c9eee041dd36deede175cb9e",
+    "result_reported_hash_matches_head": true,
+    "independent_actual_wire": "Original baseline request user payload has2 prior fact reads in saved read receipts, then last_action_result=compare_groups; no structured_read_progress or fact-history field. Case/time match approved opaque map. Baseline has0inbox/answers according to saved result; this was request-ready evidence, not model noncompliance.",
+    "native_request_hash": "eabb9371dcb7384e46adbf7845d178d281bd9842cbd1d8dbb1294d7ef98df95b"
+  },
+  "implementation_review": {
+    "canonical_and_permission": "Only runtime _fact_read_progress and model-view metadata added; EvidenceFact/Signal/ResearchState schemas, original source spans/refs, ledger payload hashes, namespace rules, generic explicit arithmetic and typed repair permission unchanged. No new tool, automatic pair, unread fact disclosure or free read.",
+    "whole_unit": "Progress is deepcopy of complete already-issued masked receipt plus read_count, newest first.12-unit and8000 UTF8-JSON-byte whole-items limit; omission/oversize envelope also enters actual request budget. No partial units or contexts manufactured.",
+    "same_ref_atomicity": "Changed taxonomy/value/period/content_hash/document_ref/available_at/case_ref/context under an already-read ref rejects before accepting another read: progress, last_action_result, ledger and heavy count remain unchanged.",
+    "current_read_visibility": "Actual0671 two OCF receipts survive compare and reach MiningAgentRoleModel payload entry complete.2921 JSON bytes for both complete units; full captured payload7380 bytes in one-source fixture. Actual1780-store preflight is still required.",
+    "replay": "Fresh controller replays cached exact accepted actions and rebuilds history; no imported working-state double counting. Four synthetic native raw fixture receipts produced4journals; repeated pending advance kept counts[1,1], then module stop saved before native domain terminal.",
+    "stage_effects": "No candidate/Signal execution/admission/workspace-cycle/scoring path is enabled. Controlled fetch is explicit preparation; allowed author actions stay fact read/compare/generic compute/stop intent. Effect guards block network/persistent source append/labels/Signal execution/external attempt reservation. Terminal completion is a module boundary requiring independent semantic review, not a domain verdict."
+  },
+  "independent_checks": {
+    "progress": {
+      "passed": 8,
+      "total_groups": 8,
+      "artifact": "independent/progress-final-recheck-results.json",
+      "source_before_after_equal": true,
+      "groups": [
+        "Original0671 two receipts→compare→real role adapter payload",
+        "Recent dedup/read_count/deep nested mutation/ordinary heavy charge",
+        "8 changed same-ref provenance fields rejected atomically",
+        "15reads→12units with explicit omission and known-ref paid reread",
+        "Unicode oversized whole unit9384bytes omitted while smaller complete unit shown",
+        "7984-byte unit retained, larger unit omitted without clipping",
+        "Intervening compare/compute preserves history; alias mask and explicit arithmetic",
+        "Fresh deterministic complete-view/ledger action reconstruction"
+      ]
+    },
+    "stage": {
+      "passed": 3,
+      "total_groups": 3,
+      "artifact": "independent/stage-final-recheck-results.json",
+      "source_before_after_equal": true,
+      "freeze_variants": [
+        "source bytes changed",
+        "source added",
+        "source removed",
+        "code inventory added"
+      ],
+      "six_request_boundary": "6native input-only captures then seventh stops before super/request journal;6journals0inboxes.",
+      "native_pending_reconstruction": {
+        "physical_offline_receipts": 4,
+        "journal_counts": [
+          2,
+          3,
+          4,
+          4
+        ],
+        "read_counts": [
+          1,
+          1
+        ],
+        "native_terminal_executed": false,
+        "reservations": [
+          21813,
+          21318,
+          21966,
+          19880
+        ],
+        "aggregate": 84977,
+        "completion_metadata_tamper": {
+          "rejected": true,
+          "type": "ValidationError"
+        }
+      }
+    },
+    "original_budget_counterexample_same_expectation_recheck": {
+      "artifact": "independent/stage-budget-final-recheck.json",
+      "reservation": 51484,
+      "max_request": 32768,
+      "stop_type": "LocalRoleBudgetExhausted",
+      "inboxes": 0,
+      "oversize_accepted": false
+    },
+    "denominator": "These are offline diagnostic groups and4synthetic cache-reconstruction fixture responses. Formal two-sample fixed semantic denominator2 remains unscored; no physical fresh model answers were produced by this reviewer."
+  },
+  "findings_and_repair_history": [
+    {
+      "id": "S01_PREFLIGHT_SILENT_REFREEZE",
+      "first_evidence": "independent/first-stage-source-review.json",
+      "first_kind": "Source-confirmed only; no old-code runtime execution claimed.",
+      "before": "prepare verified preflight code bytes only, then rebound present source bytes. Source change/add/remove could silently become new frozen authority; stage module test also omitted from code bindings.",
+      "after": "Checks original preflight source bytes and exact source inventory; checks code bytes and exact inventory at prepare/verify; stage module test included. Independent4 drift variants reject before formal ROOT exists.",
+      "status": "rechecked_fixed"
+    },
+    {
+      "id": "S02_NATIVE_SINGLE_REQUEST_AND_DECISION_CAP",
+      "first_kind": "Original native0inbox stdout runtime proof, with on-disk first JSON later overwritten by reviewer.",
+      "before": "51484 logical reservation exceeded32768 but reached InputCaptured because only98304aggregate was enforced. LIMITS value alone did not pass max_request_tokens to native client; request-ready only enforced total. Inbox-only call cap did not protect prepared request count.",
+      "after": "Client explicitly passes per-request cap; observer checks exact serialized current request, prepared count and aggregate before receive/InputCaptured. Client counts native decision positions including corrections, replay starts from position0, seventh stops before super/journal. Original51484 request now LocalRoleBudgetExhausted with0inboxes; sixth/seventh boundary checked.",
+      "status": "rechecked_fixed_with_original_byte_evidence_loss_disclosed"
+    },
+    {
+      "id": "S03_TERMINAL_METADATA_UNBOUND",
+      "first_evidence": [
+        "independent/stage-counterexample-results.json",
+        "independent/pending-reconstruction-detail.json"
+      ],
+      "before": "Sealed child files were checked, but changing completion.json.state alone was returned as if verified.",
+      "after": "terminal_hash plus state/sample shape checks reject the same mutation before runtime reentry. Native pending reconstruction remains intact and completed advance does not invoke make_client.",
+      "status": "rechecked_fixed"
+    }
+  ],
+  "reviewer_artifact_error": {
+    "disclosure": "independent/stage-budget-original-overwrite-disclosure.json",
+    "mistake": "Reviewer recheck filename replacement failed to match independent/ prefix and overwrote stage-budget-counterexample.json. No known first JSON byte copy or original JSON hash is available.",
+    "historical_evidence": "Earlier functions.exec stdout and parent acknowledgment retain sourceSHA db3441ab8df9bc2b74a0aacbc6edbd47cf11e570d319b58dc35422dcd6ab9c46 / InputCaptured /51484>32768 /0inbox. Disclosure labels these as transcribed tool-output fields, not original bytes.",
+    "current_misnamed_path": "independent/stage-budget-counterexample.json now contains a passing recheck and must not be cited as immutable first failure.",
+    "current_recheck_byte_copy": "independent/stage-budget-current-recheck-preserved.json",
+    "subsequent_write_safety": "Subsequent rechecks and this review assert new destinations before writing; no existing counterexample is overwritten."
+  },
+  "stage_design_acceptance_limits": [
+    "The known source pair is2010H1 vs2011H1 within0671, not latest issuer facts at2025 cutoff. Preserve calendar durations, discontinued-operations description and retrospective/primary-filing-audit source qualification.",
+    "The namespace mismatch is explicitly synthetic. Old leaf-only unknown handling, typed-literal fallback and conflict variants are separate scopes; the two-sample fresh probe does not cover all of them.",
+    "Generic explicit arithmetic acrossnamespace is still permitted under the old contract. Legal1.200000 arithmetic is not automatic same-concept comparability. No ban, candidate, forecast direction or mandatory threshold/key recitation was added.",
+    "Actual complete1780-store preflight and both exact source/omission/native-budget requests have not yet been independently audited. This review permits only moving to unpaid input-only preflight, not skipping it.",
+    "Formal fresh original requests/answers/corrections/cache/tool receipts/subsequent actual consuming requests and module stop rationale must still be independently checked against frozen source-reference. Field presence or a scripted action is not fresh model consumption.",
+    "The four-response native reconstruction is a throwaway local fixture. It is not formal-stage replay, OS-kill recovery, a label evaluation or research gain. Parent associated tests are separate evidence and not substituted for these findings."
+  ],
+  "current_source_sha256": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "15595c1eb46026c057d21387f7eed45c3abde1ff95c31c515041529c60463625",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "22e9edc000d1e00e741360e9861632a4eb73cdf0ff8a47f20030c1cf44c4aaf0",
+    "src/stock_opportunity_agent/research/mining_agent_tools.py": "5fdb3a5ecd30e8039d14734f6bed31920fd7b74c8b97e556ee4024e9a43d92ed",
+    "src/stock_opportunity_agent/research/stage_contracts.py": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494",
+    "src/stock_opportunity_agent/research/evolution_transport.py": "582d43a4912c1248866c3dddd8b15aed24e5f22a4f72ccde2f2f6d10cb740b77",
+    "src/stock_opportunity_agent/research/local_role_exchange.py": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d",
+    "scripts/run_mining_taxonomy_consumer_stage.py": "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "b382f052bbb135179b858fb753e1066042b7fef94a9d689818856e24bb56c0c5",
+    "spec/scripts/run_mining_taxonomy_consumer_stage.md": "0f3c3f422f0e8ed688b529ba4f9e11d00704b8ae6f7936e06b933a088ebc27a3",
+    "tests/test_mining_fact_read_progress.py": "bd8479c09bd5b67424a752c42adbd9698803394525c56ed6ea0334e6241bcf06",
+    "tests/test_mining_taxonomy_consumer_stage.py": "b569c01367828cf52505c3b74595039d1cb01196dcb8d78b3261c5c4883e63c7",
+    "tests/test_mining_taxonomy.py": "86770c65e6a093c815514adc857c2cfd5484ebcee395ce903ad3825ad1364881"
+  },
+  "reference_sha256_unchanged_after_freeze_request": {
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/prefreeze-obligations.json": "11db4a586fa2bdf729e73af3baf08071611bf9452c38ced74be701c5b9d9a8d0",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/review.md": "0000a9a2861c1f663e85f33dc7e3a2ea1dde4c0f3de1aed43b04acd91f0df02e",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/source-reference.json": "2549c26e9176cf6fb2fd4beaf7ad05e0847b22c3e8aa748ed4d59c0329b2665a",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/source_preflight.py": "8e604741f20e9b6982d0bc46246eae42604b4a56a8e1c2a08a8c03c17b0c3d08"
+  },
+  "artifact_sha256": {
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/first-stage-source-review.json": "d18d5a1bad94d6e1e18e04f2530c090ce258a60398a412dac748b21396e29434",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-budget-original-overwrite-disclosure.json": "bfbe23a2cd519dd1d001185172f8f757ea7982147334239b2a248cb9e50f8ab9",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-budget-current-recheck-preserved.json": "3a512c5a47c792531919f8cabc19cbf1df153247bfd1abb7ec83c0431951c84f",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-counterexample-results.json": "4fa5c5643d06227fa9943a24c93234ade74da3b8bad761f2921105f62f156814",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/pending-reconstruction-detail.json": "5f815053dfeb2113348d41e2b5447b29b686f1d156d6f50f52cfc12b8e2905be",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress-final-recheck-results.json": "cba4cac8618195689b5068d48c583ba8f7c6289e055d536198d95046108321e9",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-final-recheck-results.json": "7030fd92d18db489b24c21700c7f6f22a286d904a8fd520a2f69aba403e7cdf5",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-budget-final-recheck.json": "94ed7e8865f73e76c5586d782aac22b16e17f70d079f02cbab18ab37f962a684",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/pending-final-reconstruction-detail.json": "5c0169ae08b4dbbd08dd6ea1733024b3dbfd8fc1ee0a28da7b707b2af58fadd6",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/baseline/result.json": "066ceaa4b76941565f01a2618430fddbc9e0417a7c705f4426e01919bc7b5198",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/baseline/request-ready.json": "10bc98074e7b0d0ba3ab961c7693c3899b52e7f160155617b920d8e579920ecf",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/baseline/read-receipts.json": "70f91054d125d1f14fe997cd11124b15e1cc59d4aa88d6180cd66f481df5b772",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/baseline/requests/eabb9371dcb7384e46adbf7845d178d281bd9842cbd1d8dbb1294d7ef98df95b.json": "540a64d7930f1d35d92a41d83c729c69113890acef92276610b301a66eca80fa"
+  },
+  "remaining_known_substantive_blockers_to_input_only_preflight": [],
+  "unclosed_acceptance": [
+    "Full1780 actual-input source/omission/budget preflight",
+    "Prepared final code/source/reference manifest comparison",
+    "Two fresh author semantic consumption endpoints with correction/physical-response accounting",
+    "Formal-stage cache-only reconstruction and durable evidence review if authorized",
+    "No full Mining, S3/S4, candidate admission/reuse or independent gain claim"
+  ]
+}

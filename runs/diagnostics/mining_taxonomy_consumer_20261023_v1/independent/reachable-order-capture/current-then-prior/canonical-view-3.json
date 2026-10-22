@@ -1,0 +1,274 @@
+{
+  "available_actions": [
+    "inspect_manifest",
+    "inspect_catalog",
+    "fetch_evidence",
+    "compute_statistic",
+    "read_span",
+    "compare_groups",
+    "propose_candidate",
+    "record_deferred",
+    "record_no_pattern"
+  ],
+  "available_source_families": [
+    "filing",
+    "financial",
+    "market",
+    "market_data",
+    "sec_company_facts"
+  ],
+  "budget": {
+    "browse_remaining": 24,
+    "heavy_remaining": 3,
+    "light_remaining": 4
+  },
+  "case_prediction_times": {
+    "case-008": "2025-07-31T00:00:00+00:00"
+  },
+  "case_refs": [
+    "case-008"
+  ],
+  "evidence_digest": {
+    "cases_with_facts": [
+      "case-008"
+    ],
+    "concept_case_coverage": {
+      "NetCashProvidedByUsedInOperatingActivities": {
+        "control_cases": 1,
+        "positive_cases": 0
+      },
+      "NetIncomeLoss": {
+        "control_cases": 1,
+        "positive_cases": 0
+      },
+      "PaymentsToAcquirePropertyPlantAndEquipment": {
+        "control_cases": 1,
+        "positive_cases": 0
+      },
+      "Revenues": {
+        "control_cases": 1,
+        "positive_cases": 0
+      },
+      "StockholdersEquity": {
+        "control_cases": 1,
+        "positive_cases": 0
+      },
+      "SubordinatedDebt": {
+        "control_cases": 1,
+        "positive_cases": 0
+      },
+      "TreasuryStockValue": {
+        "control_cases": 1,
+        "positive_cases": 0
+      },
+      "UnearnedPremiums": {
+        "control_cases": 1,
+        "positive_cases": 0
+      }
+    },
+    "event_count": 0,
+    "fact_count": 19,
+    "families_fetched": [
+      "sec_company_facts"
+    ],
+    "fetches": 1,
+    "label_counts": {
+      "control": 1,
+      "positive": 0
+    },
+    "relation_count": 9
+  },
+  "known_event_refs": [],
+  "known_fact_refs": [
+    "fact-02a18d0e6ff2d662",
+    "fact-082036027674a900",
+    "fact-2f898adb2d25e349",
+    "fact-32ece570ecc421c8",
+    "fact-3b640ab0af6d2c40",
+    "fact-3bf557877edd1955",
+    "fact-3d4faa09011f777b",
+    "fact-4da2031b56555775",
+    "fact-52666db05cce941f",
+    "fact-53c8edea9f9b71ce",
+    "fact-7263a6ac5431383c",
+    "fact-86c63430e0ff6fa4",
+    "fact-c9a7e50c701d1e36",
+    "fact-cc7a88c283c0dbeb",
+    "fact-d4d09e553a4d506c",
+    "fact-e3464febc9492818",
+    "fact-ef14894cc2e3e480",
+    "fact-ef2410ba3b51e580",
+    "fact-fa91660b590cdd1a"
+  ],
+  "known_relation_refs": [
+    "relation-0b9ab54e870308be",
+    "relation-12303dcc36ae358f",
+    "relation-22a2d83cfaee64ad",
+    "relation-3f2a96d653d7eb3d",
+    "relation-747ebe2a37d2f180",
+    "relation-7ad0d7c711340fc1",
+    "relation-bc245b847be330ee",
+    "relation-e38f87cc2097a74e",
+    "relation-e466acbda1ce4353"
+  ],
+  "label_map": {
+    "case-008": "control"
+  },
+  "last_action_result": {
+    "action": "read_span",
+    "available_at": "2011-08-10T00:00:00+00:00",
+    "case_refs": [
+      "case-008"
+    ],
+    "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+    "context_chars": 903,
+    "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+    "fact": {
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "period": {
+        "end": "2011-06-30",
+        "start": "2011-01-01"
+      },
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "value": "9506313"
+    },
+    "fact_ref": "fact-3d4faa09011f777b",
+    "masked": "1,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2010-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":4342261},{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2011-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9506313},{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label"
+  },
+  "measurable_evidence_manifest": {},
+  "memory_consumption": {
+    "original_disclosure_bytes": 2,
+    "original_disclosure_limit": 48000,
+    "read_refs": []
+  },
+  "meta_info": {},
+  "meta_memory_disclosures": [],
+  "modality_coverage": {
+    "narrative": {
+      "available": true,
+      "explored": false,
+      "status": "required"
+    },
+    "structured": {
+      "available": true,
+      "explored": true,
+      "status": "explored"
+    }
+  },
+  "prior_modality_footprints": [],
+  "research_axis": {
+    "axis_id": "surge_direction",
+    "control": "realized_max_multiple < 2.0",
+    "population": "eligible_discovery_cases",
+    "positive": "realized_max_multiple >= 2.0"
+  },
+  "seed": "discovery",
+  "signal_catalog": [],
+  "signal_catalog_disclosure": {
+    "counts": {
+      "available": 0,
+      "included": 0,
+      "omitted_after": 0,
+      "omitted_before": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "max_entry_bytes": 8000,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "read_action": "inspect_catalog scope=signals item_refs",
+    "read_byte_limit": 16000,
+    "selection_is_exhaustive": true
+  },
+  "slow_method_memory": {},
+  "state": "evidence_ready",
+  "structured_read_progress": {
+    "counts": {
+      "available": 1,
+      "included": 1,
+      "omitted_after": 0,
+      "omitted_before": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "items": [
+      {
+        "available_at": "2011-08-10T00:00:00+00:00",
+        "case_refs": [
+          "case-008"
+        ],
+        "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+        "context_chars": 903,
+        "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+        "fact": {
+          "concept": "NetCashProvidedByUsedInOperatingActivities",
+          "period": {
+            "end": "2011-06-30",
+            "start": "2011-01-01"
+          },
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": "9506313"
+        },
+        "fact_ref": "fact-3d4faa09011f777b",
+        "masked": "1,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2010-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":4342261},{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2011-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9506313},{\"description\":\"The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label",
+        "read_count": 1
+      }
+    ],
+    "max_entry_bytes": 8000,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "revisit_action": "read_span with fact_ref; ordinary heavy cost",
+    "selection_is_exhaustive": true,
+    "selection_order": "most_recent_read_first"
+  },
+  "tool_contracts": {
+    "compute_statistic": {
+      "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+      "operand_count": 2,
+      "operand_order": "numerator_then_denominator_or_latest_then_prior",
+      "operand_scope": "same_case",
+      "rules": [
+        "latest_minus_comparable_prior",
+        "latest_over_comparable_prior",
+        "latest_over_latest"
+      ]
+    },
+    "inspect_catalog": {
+      "allowed_scopes": [
+        "signals",
+        "evidence",
+        "memory",
+        "backlog"
+      ],
+      "budget_by_scope": {
+        "backlog": "light",
+        "evidence": "light",
+        "memory": "browse",
+        "signals": "light"
+      },
+      "default_scope": "signals"
+    },
+    "read_span": {
+      "budget_by_target": {
+        "document_ref": "browse",
+        "event_ref": "browse",
+        "fact_ref": "heavy"
+      },
+      "length_max": 4000,
+      "length_min": 1,
+      "offset_min": 0,
+      "target_count": 1,
+      "target_fields": [
+        "fact_ref",
+        "event_ref",
+        "document_ref"
+      ],
+      "window_applies_to": [
+        "event_ref",
+        "document_ref"
+      ]
+    }
+  }
+}

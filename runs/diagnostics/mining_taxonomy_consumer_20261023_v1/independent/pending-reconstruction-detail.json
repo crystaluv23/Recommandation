@@ -1,0 +1,25 @@
+{
+  "physical_offline_receipts": 4,
+  "journal_counts": [
+    2,
+    3,
+    4,
+    4
+  ],
+  "read_counts": [
+    1,
+    1
+  ],
+  "native_terminal_executed": false,
+  "reservations": [
+    21813,
+    21318,
+    21966,
+    19880
+  ],
+  "aggregate": 84977,
+  "completion_metadata_tamper": {
+    "rejected": false,
+    "returned_state": "synthetic-corrupted-terminal-state"
+  }
+}

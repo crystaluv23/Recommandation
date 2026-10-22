@@ -1,0 +1,23 @@
+{
+  "controller_code": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+    "sha256": "a44991a3ce892ab96fffe6c532e4563d568564a6c9eee041dd36deede175cb9e"
+  },
+  "external_API": 0,
+  "final_last_action": "compare_groups",
+  "final_view_has_fact_history": false,
+  "inboxes": 0,
+  "label_scope": "Only prior native opaque dev8 label_map[case-008] imported; no labelstore/check/LockedTest.",
+  "new_business_labels": 0,
+  "production_answers": 0,
+  "read_count": 2,
+  "script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/baseline-capture.py",
+    "sha256": "25898e55bf9929c9292f876b3411342db63b30cf837ce50727cd48b52e155a59"
+  },
+  "source_file": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+    "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+  },
+  "state": "captured_missing_two_operand_read_context"
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "independent-native-identity-roundtrip-fixture-v1",
+  "scope": "One explicit locally written raw action fixture, no fresh model answer or external API. The module terminal action was never executed.",
+  "request_hash": "a6f667f83ac113a36886257fd26151999a47d6a2301dafb6470115db42f4f4e5",
+  "wire_document_ref": "document-secfacts:[ANON_ID_0000]:0000950123-11-074727:171d25ca06a00324",
+  "canonical_local_document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+  "wire_has_raw_cik": false,
+  "response_restore_matches_original": true,
+  "cache_reexecution_equal": true,
+  "offline_fixture_receipts": 1,
+  "offline_fixture_inboxes": 1,
+  "fresh_model_answers": 0,
+  "production_stage_inboxes_created": 0,
+  "domain_terminal_executed": false,
+  "source_sha256": "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+  "receipt": {
+    "request_hash": "a6f667f83ac113a36886257fd26151999a47d6a2301dafb6470115db42f4f4e5",
+    "agent_id": "explicit-offline-identity-roundtrip-fixture-not-a-model",
+    "inbox_sha256": "594b0dbbc680839680a9462c45a7f63ecae9085167430b167c8d3c8e14aea79b",
+    "raw_output_sha256": "5d900857ac30c6883fda83025a87839f58ed560b0d510ae298d7dafa2f4310bd"
+  },
+  "wire_inbox_sha256": "594b0dbbc680839680a9462c45a7f63ecae9085167430b167c8d3c8e14aea79b",
+  "qualification": "Native persisted request, exact local receipt/raw fixture and cached replay were exercised. This proves reversible source-handle restoration, not a fresh author result or all identity variants."
+}

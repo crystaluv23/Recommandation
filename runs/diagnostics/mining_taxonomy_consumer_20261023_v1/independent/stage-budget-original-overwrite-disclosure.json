@@ -1,0 +1,26 @@
+{
+  "schema": "independent-artifact-overwrite-disclosure-v1",
+  "mistake": "The reviewer recheck overwrote stage-budget-counterexample.json. The string replacement matched a bare quoted filename but actual writer used the quoted independent/ prefix, so output remained the original path. Reviewer failed to inspect the new output target.",
+  "original_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-budget-counterexample.json",
+  "original_byte_copy_available": false,
+  "original_sha256_available": false,
+  "current_path_content": "Current passing budget-recheck result, not the first failed budget result. No restoration or fabricated original is claimed.",
+  "current_bytes_preserved_at": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-budget-current-recheck-preserved.json",
+  "current_sha256": "3a512c5a47c792531919f8cabc19cbf1df153247bfd1abb7ec83c0431951c84f",
+  "recoverable_historical_evidence": {
+    "kind": "Exact fields transcribed from the successful earlier functions.exec stdout in this session; not an original file byte copy.",
+    "source_sha256": "db3441ab8df9bc2b74a0aacbc6edbd47cf11e570d319b58dc35422dcd6ab9c46",
+    "stopped_type": "InputCaptured",
+    "stopped_message": "",
+    "request_count": 1,
+    "inboxes": 0,
+    "reservation": 51484,
+    "max_request_tokens": 32768,
+    "max_case_tokens": 98304,
+    "oversize_accepted_as_input_ready": true,
+    "scope": "Isolated native input-only oversized context; no receive, inbox, model or external API."
+  },
+  "still_supported": "First runtime budget failure remains supported by preserved conversation/tool stdout and parent acknowledgment, with loss of original on-disk JSON integrity evidence. The fixed result is separately preserved.",
+  "prohibited_claim": "Do not cite the overwritten path as immutable first-failure artifact or call transcribed historical fields original bytes.",
+  "future_write_rule": "All further diagnostics assert destination does not exist before write; no existing counterexample file is overwritten."
+}

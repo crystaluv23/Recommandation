@@ -1,0 +1,284 @@
+{
+  "schema_version": "mining-taxonomy-source-only-reference-v1",
+  "disposition": "feasible_narrow_two_source_consumer_probe_with_explicit_boundaries",
+  "scope": "Independent original JSON reading and standard-library date/Decimal arithmetic; no production helper determines expected namespace or comparison. No candidate, prediction direction, research benefit, label acquisition or model answer.",
+  "opaque_existing_metadata": {
+    "wire_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json",
+    "wire_sha256": "f20fbbe47e5e16a31e2cbd11400d7a7ab239d39d8964438f02375e720b62a304",
+    "wire_pointer_expected_sha256": "f20fbbe47e5e16a31e2cbd11400d7a7ab239d39d8964438f02375e720b62a304",
+    "extraction": "Only label_map and case_prediction_times decoded after one JSON-quote layer; no source_input or ground_truth deserialized.",
+    "label_map": {
+      "case-001": "positive",
+      "case-002": "control",
+      "case-003": "positive",
+      "case-004": "control",
+      "case-005": "positive",
+      "case-006": "control",
+      "case-007": "positive",
+      "case-008": "control"
+    },
+    "case_prediction_times": {
+      "case-001": "2025-05-30T00:00:00+00:00",
+      "case-002": "2025-07-31T00:00:00+00:00",
+      "case-003": "2025-09-30T00:00:00+00:00",
+      "case-004": "2025-01-31T00:00:00+00:00",
+      "case-005": "2025-05-30T00:00:00+00:00",
+      "case-006": "2025-07-31T00:00:00+00:00",
+      "case-007": "2025-01-31T00:00:00+00:00",
+      "case-008": "2025-07-31T00:00:00+00:00"
+    },
+    "case_binding_matches_static_dev8": true,
+    "constructor_constraint": "For a one-case controller use only that case-ref label-map subset. Constructor still accesses case.ground_truth.is_surge to construct unused defaults; supplying SimpleNamespace.is_surge from this same opaque map is a transparent compatibility adapter, not a new label."
+  },
+  "positive_source_control": {
+    "case_ref": "case-008",
+    "opaque_group": "control",
+    "case_cutoff": "2025-07-31T00:00:00+00:00",
+    "source_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+    "file_sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31",
+    "document_id": "secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+    "content_sha256": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+    "company_id_private_binding": "cik_0000800457",
+    "source_type": "sec_company_facts",
+    "published_at": "2011-08-09T00:00:00+00:00",
+    "available_at": "2011-08-10T00:00:00+00:00",
+    "content_schema": "sec-company-facts-document-v1",
+    "filing_date": "2011-08-09",
+    "form": "10-Q",
+    "records": [
+      {
+        "json_pointer": "/facts/118",
+        "row": {
+          "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+          "end": "2010-06-30",
+          "fiscal_period": "Q2",
+          "fiscal_year": 2011,
+          "frame": null,
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "start": "2010-01-01",
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 4342261
+        },
+        "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2010-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":4342261}",
+        "raw_content_char_start": 57043,
+        "raw_content_char_end_exclusive": 57546,
+        "raw_content_utf8_byte_start": 57043,
+        "raw_content_utf8_byte_end_exclusive": 57546,
+        "exact_span_sha256": "1ba26ebb8ecab8c367dd2178646fd045340e71df36591e4cd551e42bed8eee86",
+        "row_canonical_sha256": "1ba26ebb8ecab8c367dd2178646fd045340e71df36591e4cd551e42bed8eee86"
+      },
+      {
+        "json_pointer": "/facts/119",
+        "row": {
+          "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+          "end": "2011-06-30",
+          "fiscal_period": "Q2",
+          "fiscal_year": 2011,
+          "frame": null,
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "start": "2011-01-01",
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 9506313
+        },
+        "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2011-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9506313}",
+        "raw_content_char_start": 57547,
+        "raw_content_char_end_exclusive": 58050,
+        "raw_content_utf8_byte_start": 57547,
+        "raw_content_utf8_byte_end_exclusive": 58050,
+        "exact_span_sha256": "4ddbe4f40edfc3364932f8b81df96eccb4c6f8fb5ce5b419d0d0c7d573140544",
+        "row_canonical_sha256": "4ddbe4f40edfc3364932f8b81df96eccb4c6f8fb5ce5b419d0d0c7d573140544"
+      }
+    ],
+    "source_only_judgment": "The complete original document has exactly these2 operating-cash-flow rows, same explicit taxonomy/concept/USD and two six-month calendar durations, with no competing OCF row or different OCF currency in this document. A document-local historical current/prior comparison is supported.",
+    "allowed_measurement_scope": {
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "taxonomy": "us-gaap",
+      "unit": "USD",
+      "prior_period": {
+        "start": "2010-01-01",
+        "end": "2010-06-30"
+      },
+      "current_period": {
+        "start": "2011-01-01",
+        "end": "2011-06-30"
+      },
+      "current_value": "9506313",
+      "prior_value": "4342261",
+      "latest_over_comparable_prior_decimal": "2.189254169659539120287794769",
+      "optional_compute_six_decimal": "2.189254",
+      "latest_minus_comparable_prior": "5164052",
+      "not_required": "No compute action, candidate, predictive direction, positive/control contrast, or mandatory numeric prose is needed merely to consume taxonomy correctly."
+    },
+    "material_qualifications": [
+      "The reported periods are calendar first-half durations. fiscal_period=Q2 does not make them individual second quarters; fiscal_year=2011 on both rows does not override start/end.",
+      "The latest row is latest within the selected historical2011 source only. It is not the latest available issuer fact at the2025 cutoff; dev8 inventory lists56 financial documents and later source availability2025-05-07.",
+      "Source metadata states retrospective_api_extraction=true, retrieved_at2026-10-19, next_utc_day_after_companyfacts_filed_date, and requires_primary_filing_audit=true. This is a reviewed saved-source provenance/control proof, not an independently verified primary-filing or real-time acquisition proof.",
+      "Description explicitly includes discontinued operations. Do not narrow it to continuing operations without evidence.",
+      "The actual source belongs to opaque control group case-008. A source-side positive control means comparable namespace provenance, not the positive outcome class or favorable economics.",
+      "No full dev8 comparable-factor admission or natural unknown/mismatch frequency claim was made. Only this exact selected source control was independently qualified."
+    ],
+    "metadata": {
+      "accession_number": "0000950123-11-074727",
+      "acquisition_policy_hash": "8b8fbfbd4bf57efe1adcf7a40ee035479d2d07ecaccc601728c0beea6b4ae295",
+      "acquisition_selection": {
+        "available_at_through": "2025-07-31T00:00:00+00:00",
+        "form_allowlist": [
+          "10-K",
+          "10-K/A",
+          "10-Q",
+          "10-Q/A",
+          "20-F",
+          "20-F/A",
+          "40-F",
+          "40-F/A",
+          "6-K",
+          "6-K/A",
+          "8-K",
+          "8-K/A"
+        ],
+        "period_end_from": "0001-01-01",
+        "period_end_through": "2025-07-31",
+        "taxonomy_allowlist": [
+          "dei",
+          "ifrs-full",
+          "srt",
+          "us-gaap"
+        ]
+      },
+      "availability_policy": "next_utc_day_after_companyfacts_filed_date",
+      "cik": "0000800457",
+      "content_scope": "standard_taxonomy_facts_for_accession",
+      "fact_count": 228,
+      "form": "10-Q",
+      "period_end_from": "0001-01-01",
+      "period_end_through": "2025-07-31",
+      "requires_primary_filing_audit": true,
+      "retrieved_at": "2026-10-19T23:38:49.665806+00:00",
+      "retrospective_api_extraction": true,
+      "source_key": "sec_edgar",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000800457.json",
+      "symbol": "DGICA",
+      "taxonomy_namespaces": [
+        "dei",
+        "us-gaap"
+      ]
+    }
+  },
+  "original_namespace_counterexample": {
+    "source_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json",
+    "file_sha256": "a1f75faa80c7eed795fa3ab4edd61c703063cdf763ec4ddf5684f58201760269",
+    "raw_source_content": "{\"facts\": {\"namespace-a\": {\"Metric\": {\"units\": {\"USD\": [{\"end\": \"2024-06-30\", \"val\": 120}]}}}, \"namespace-b\": {\"Metric\": {\"units\": {\"USD\": [{\"end\": \"2023-06-30\", \"val\": 100}]}}}}}",
+    "raw_source_content_sha256": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+    "records": [
+      {
+        "taxonomy_from_parent": "namespace-a",
+        "json_pointer": "/facts/namespace-a/Metric/units/USD/0",
+        "row": {
+          "end": "2024-06-30",
+          "val": 120
+        },
+        "exact_leaf_span": "{\"end\": \"2024-06-30\", \"val\": 120}",
+        "raw_content_char_start": 56,
+        "raw_content_char_end_exclusive": 89,
+        "leaf_span_sha256": "f72249302ad0fd28c84c0d7784887c7bee4b45d85ff6a142d71307c7b69de292",
+        "qualification": "The leaf has no taxonomy; parent namespace is required for this new projection."
+      },
+      {
+        "taxonomy_from_parent": "namespace-b",
+        "json_pointer": "/facts/namespace-b/Metric/units/USD/0",
+        "row": {
+          "end": "2023-06-30",
+          "val": 100
+        },
+        "exact_leaf_span": "{\"end\": \"2023-06-30\", \"val\": 100}",
+        "raw_content_char_start": 140,
+        "raw_content_char_end_exclusive": 173,
+        "leaf_span_sha256": "78f8a0230c9e8483737263a2891be1a9d7f591888d35803ab324056d8837e0a6",
+        "qualification": "The leaf has no taxonomy; parent namespace is required for this new projection."
+      }
+    ],
+    "old_saved_fact_records": [
+      {
+        "available_at": "2024-08-02T00:00:00+00:00",
+        "case_ref": "synthetic",
+        "concept": "Metric",
+        "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+        "document_ref": "document-namespace-control-only",
+        "exact_span": "{\"end\": \"2024-06-30\", \"val\": 120}",
+        "fact_ref": "fact-82c8d0d89727166f",
+        "period": {
+          "end": "2024-06-30"
+        },
+        "record_selection": "latest",
+        "source_display_name": "",
+        "unit": "USD",
+        "value": "120"
+      },
+      {
+        "available_at": "2024-08-02T00:00:00+00:00",
+        "case_ref": "synthetic",
+        "concept": "Metric",
+        "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+        "document_ref": "document-namespace-control-only",
+        "exact_span": "{\"end\": \"2023-06-30\", \"val\": 100}",
+        "fact_ref": "fact-50642375b0247e29",
+        "period": {
+          "end": "2023-06-30"
+        },
+        "record_selection": "latest",
+        "source_display_name": "",
+        "unit": "USD",
+        "value": "100"
+      }
+    ],
+    "old_fact_refs": [
+      "fact-82c8d0d89727166f",
+      "fact-50642375b0247e29"
+    ],
+    "new_projection_expected": "A fresh source projection can retain namespace-a for current Metric120 and namespace-b for prior Metric100. Same concept spelling and USD do not establish same namespace: no automatic unique current/comparable pair or same-concept period relation across them.",
+    "old_legacy_expected": "The original persisted leaf facts have neither taxonomy field nor taxonomy in exact_span. Without the complete parent source they remain readable but namespace unknown; no automatic unique/current/comparable inference and no invented default us-gaap. Do not retroactively alter original refs or hashes.",
+    "typed_legacy_exception": "An old typed exact_span that itself contains taxonomy may establish namespace; this is different from these legacy leaves.",
+    "conflict_expected": "A retained taxonomy conflicting with taxonomy in a typed literal is unknown/conflicting provenance and cannot establish an automatic comparable basis.",
+    "explicit_arithmetic_authority": "The existing generic explicit compute accepts2 finite same-case fact refs.120/100=1.200000 is legal explicit arithmetic even across these namespaces; it must not be relabeled an automatically proven same-concept comparable pair. Reject semantic promotion, not the arithmetic itself.",
+    "sample_scope": "Previously saved synthetic counterexample; not a natural dev8 source discovery or new business label. Its available_at is fixture lineage only, not an independent real-issuer filing proof.",
+    "fresh_coverage_limit": "A fresh fetch of the original parent source tests known namespace mismatch. It does not by itself test the old imported unknown-leaf variant; keep that as a separate preserved source/legacy control unless explicitly included."
+  },
+  "hash_bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/static-inventory.json": {
+      "sha256": "9be1e6776429ef5d8d77c5cbdfbf7f2c5ce7e37447fea2ca043d5cdfb504f3b4"
+    },
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json": {
+      "sha256": "f20fbbe47e5e16a31e2cbd11400d7a7ab239d39d8964438f02375e720b62a304"
+    },
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json": {
+      "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+    },
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_fact_semantics_repair_20261021_v1/root/namespace-before.json": {
+      "sha256": "a1f75faa80c7eed795fa3ab4edd61c703063cdf763ec4ddf5684f58201760269"
+    },
+    "/Users/l/Project/Recommandation/reports/approved-reading-and-taxonomy-20261022.md": {
+      "sha256": "df2b63fc44675b74674a29f4042abbdf75388b5e711a96a7ff8da5568ba61c73"
+    },
+    "/Users/l/Project/Recommandation/tests/test_mining_taxonomy.py": {
+      "sha256": "7f0e5a96dbb13541b02be8807f7386e2d0ba3fa236a64f90d42e29a447edcb2b"
+    },
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": {
+      "sha256": "a44991a3ce892ab96fffe6c532e4563d568564a6c9eee041dd36deede175cb9e"
+    },
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py": {
+      "sha256": "5fdb3a5ecd30e8039d14734f6bed31920fd7b74c8b97e556ee4024e9a43d92ed"
+    },
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py": {
+      "sha256": "e55bb688efd9ad1a70d2d1f25ff4a7bd463192c2f1dfbd3584999351438f72fb"
+    },
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py": {
+      "sha256": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617"
+    }
+  },
+  "no_model_or_external_calls": true,
+  "no_product_edits": true
+}

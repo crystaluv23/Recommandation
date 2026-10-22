@@ -1,0 +1,24 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "record_deferred",
+    "rationale": [
+      "Explicit offline inverse fixture source handle: document-secfacts:[ANON_ID_0000]:0000950123-11-074727:171d25ca06a00324"
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"record_deferred\", \"rationale\": [\"Explicit offline inverse fixture source handle: document-secfacts:[ANON_ID_0000]:0000950123-11-074727:171d25ca06a00324\"]}",
+  "request_hash": "a6f667f83ac113a36886257fd26151999a47d6a2301dafb6470115db42f4f4e5",
+  "response_id": "local-a6f667f83ac113a36886257fd26151999a47d6a2301dafb6470115db42f4f4e5",
+  "usage": {
+    "accounting_tokens": 25172,
+    "agent_id": "explicit-offline-identity-roundtrip-fixture-not-a-model",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "594b0dbbc680839680a9462c45a7f63ecae9085167430b167c8d3c8e14aea79b",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "5d900857ac30c6883fda83025a87839f58ed560b0d510ae298d7dafa2f4310bd",
+    "request_hash": "a6f667f83ac113a36886257fd26151999a47d6a2301dafb6470115db42f4f4e5",
+    "token_usage": null
+  }
+}

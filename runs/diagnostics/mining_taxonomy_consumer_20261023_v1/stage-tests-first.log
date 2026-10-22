@@ -1,0 +1,14 @@
+..E
+======================================================================
+ERROR: test_pending_cache_reconstruction_retains_two_operands_without_double_count (tests.test_mining_taxonomy_consumer_stage.MiningTaxonomyConsumerStageTests.test_pending_cache_reconstruction_retains_two_operands_without_double_count)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_taxonomy_consumer_stage.py", line 58, in test_pending_cache_reconstruction_retains_two_operands_without_double_count
+    self.assertEqual(boundary["view"]["budget"]["heavy_used"], 3)
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+KeyError: 'heavy_used'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.051s
+
+FAILED (errors=1)

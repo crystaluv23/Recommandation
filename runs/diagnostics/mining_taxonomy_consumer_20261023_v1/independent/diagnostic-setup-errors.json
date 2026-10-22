@@ -1,0 +1,95 @@
+{
+  "schema": "independent-mining-read-progress-counterexamples-v1",
+  "scope": "Actual saved source for meaningful two-operand test; synthetic field/boundary variants only. No fresh model, external API, business label/check/LockedTest, source edits or canonical changes.",
+  "passed": 4,
+  "total": 8,
+  "checks": [
+    {
+      "name": "actual_source_two_receipts_and_role_adapter_after_compare",
+      "pass": true,
+      "detail": {
+        "fact_refs": [
+          "fact-2f898adb2d25e349",
+          "fact-3d4faa09011f777b"
+        ],
+        "values": [
+          "4342261",
+          "9506313"
+        ],
+        "whole_receipt_bytes": 2921,
+        "actual_adapter_payload_bytes": 7380,
+        "source_rows_visible_after_compare": true,
+        "native_transport_budget_not_recomputed": true
+      }
+    },
+    {
+      "name": "dedup_recency_nested_mutation_and_cost",
+      "pass": true,
+      "detail": "Recent-first dedup, read_count, deep-copy isolation and ordinary heavy/ledger counts agree"
+    },
+    {
+      "name": "changed_same_ref_all_source_bindings_atomic",
+      "pass": true,
+      "detail": {
+        "changed_bindings_rejected_atomically": [
+          "taxonomy",
+          "value",
+          "period",
+          "content_hash",
+          "document_ref",
+          "available_at",
+          "case_ref",
+          "exact_span"
+        ]
+      }
+    },
+    {
+      "name": "fifteen_units_cap_and_omitted_ref_reread",
+      "pass": false,
+      "error_type": "InvalidMiningAction",
+      "error": "read_span requires state evidence_ready, currently ready",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 21, in check\n    try:CHECKS.append({'name':name,'pass':True,'detail':fn()})\n                                                        ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 96, in paging\n    for ref in refs:read(c,ref)\n                    ^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 36, in read\n    c._validate_action_shape(action);c._execute('read_span',action)\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 924, in _execute\n    return self._execute_read_span(raw)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 1137, in _execute_read_span\n    self._require_state_at_least(\"evidence_ready\", \"read_span\")\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 880, in _require_state_at_least\n    raise InvalidMiningAction(\nstock_opportunity_agent.research.mining_controller.InvalidMiningAction: read_span requires state evidence_ready, currently ready\n"
+    },
+    {
+      "name": "unicode_whole_oversize_and_smaller_complete_unit",
+      "pass": false,
+      "error_type": "InvalidMiningAction",
+      "error": "read_span requires state evidence_ready, currently ready",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 21, in check\n    try:CHECKS.append({'name':name,'pass':True,'detail':fn()})\n                                                        ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 108, in unicode_oversize\n    c=controller(source=False);a=syn(c,1);b=syn(c,2,'长'*3000);read(c,a);read(c,b)\n                                                               ^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 36, in read\n    c._validate_action_shape(action);c._execute('read_span',action)\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 924, in _execute\n    return self._execute_read_span(raw)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 1137, in _execute_read_span\n    self._require_state_at_least(\"evidence_ready\", \"read_span\")\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 880, in _require_state_at_least\n    raise InvalidMiningAction(\nstock_opportunity_agent.research.mining_controller.InvalidMiningAction: read_span requires state evidence_ready, currently ready\n"
+    },
+    {
+      "name": "serializer_boundaries_no_partial_unit",
+      "pass": false,
+      "error_type": "InvalidMiningAction",
+      "error": "read_span requires state evidence_ready, currently ready",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 21, in check\n    try:CHECKS.append({'name':name,'pass':True,'detail':fn()})\n                                                        ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 120, in near_byte_boundary\n    c=controller(source=False);ref=syn(c,1,'a'*length);read(c,ref);page=c._model_view()['structured_read_progress']\n                                                       ^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 36, in read\n    c._validate_action_shape(action);c._execute('read_span',action)\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 924, in _execute\n    return self._execute_read_span(raw)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 1137, in _execute_read_span\n    self._require_state_at_least(\"evidence_ready\", \"read_span\")\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 880, in _require_state_at_least\n    raise InvalidMiningAction(\nstock_opportunity_agent.research.mining_controller.InvalidMiningAction: read_span requires state evidence_ready, currently ready\n"
+    },
+    {
+      "name": "intervening_actions_mask_and_generic_arithmetic",
+      "pass": false,
+      "error_type": "InvalidMiningAction",
+      "error": "read_span requires state evidence_ready, currently ready",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 21, in check\n    try:CHECKS.append({'name':name,'pass':True,'detail':fn()})\n                                                        ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 131, in aliases_and_otheractions\n    read(c,a);read(c,b);snapshot=copy.deepcopy(c._fact_read_progress)\n    ^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/progress_counterexamples.py\", line 36, in read\n    c._validate_action_shape(action);c._execute('read_span',action)\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 924, in _execute\n    return self._execute_read_span(raw)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 1137, in _execute_read_span\n    self._require_state_at_least(\"evidence_ready\", \"read_span\")\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 880, in _require_state_at_least\n    raise InvalidMiningAction(\nstock_opportunity_agent.research.mining_controller.InvalidMiningAction: read_span requires state evidence_ready, currently ready\n"
+    },
+    {
+      "name": "deterministic_action_reconstruction_complete_view_ledger",
+      "pass": true,
+      "detail": "Fresh deterministic action reconstruction identical; no claim of pending LocalRoleExchange or OS-kill recovery"
+    }
+  ],
+  "source_hashes_before": {
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "b382f052bbb135179b858fb753e1066042b7fef94a9d689818856e24bb56c0c5",
+    "spec/scripts/run_mining_taxonomy_consumer_stage.md": "f695f5dea8722e0b7acccd1b401262f4a893aac2b52c3529c79c87ad1a4b5f0c",
+    "src/stock_opportunity_agent/research/mining_controller.py": "15595c1eb46026c057d21387f7eed45c3abde1ff95c31c515041529c60463625",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "22e9edc000d1e00e741360e9861632a4eb73cdf0ff8a47f20030c1cf44c4aaf0",
+    "tests/test_mining_fact_read_progress.py": "bd8479c09bd5b67424a752c42adbd9698803394525c56ed6ea0334e6241bcf06"
+  },
+  "source_hashes_after": {
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "b382f052bbb135179b858fb753e1066042b7fef94a9d689818856e24bb56c0c5",
+    "spec/scripts/run_mining_taxonomy_consumer_stage.md": "f695f5dea8722e0b7acccd1b401262f4a893aac2b52c3529c79c87ad1a4b5f0c",
+    "src/stock_opportunity_agent/research/mining_controller.py": "15595c1eb46026c057d21387f7eed45c3abde1ff95c31c515041529c60463625",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "22e9edc000d1e00e741360e9861632a4eb73cdf0ff8a47f20030c1cf44c4aaf0",
+    "tests/test_mining_fact_read_progress.py": "bd8479c09bd5b67424a752c42adbd9698803394525c56ed6ea0334e6241bcf06"
+  },
+  "source_drift": false
+}

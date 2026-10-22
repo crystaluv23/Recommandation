@@ -1,0 +1,38 @@
+{
+  "blocked_journal_recreated": [
+    "d654e536da4c6a5e63a5d31d1d7f30834c129cd8409ca8fe8c2879925cf76cea.json"
+  ],
+  "cached_receive_calls": 7,
+  "new_dispatches": 0,
+  "nonterminal_files_equal": 62,
+  "original_all_files_unchanged": 64,
+  "original_root": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage",
+  "removed_fixture_files": [
+    "actual/failure.json",
+    "actual/failed-controller.json",
+    "namespace/completion.json",
+    "namespace/boundary.json",
+    "actual/requests/d654e536da4c6a5e63a5d31d1d7f30834c129cd8409ca8fe8c2879925cf76cea.json"
+  ],
+  "samples": [
+    {
+      "assembled_artifact_exact_equal": true,
+      "domain_terminal_executed": false,
+      "original_receipts": 4,
+      "sample": "actual",
+      "state": "terminal_module_failure"
+    },
+    {
+      "assembled_artifact_exact_equal": true,
+      "domain_terminal_executed": false,
+      "original_receipts": 3,
+      "sample": "namespace",
+      "state": "completed_module_boundary"
+    }
+  ],
+  "scope": "Explicit throwaway pending-operation fixtures from sealed copies; no original terminal reentry, no OS/process-kill or whole-loop recovery claim.",
+  "verification_script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/verify-cache-reconstruction.py",
+    "sha256": "666e871d0d69ca9fb7c94b79307017c799b75328c1d39f217e6db02d81ab8e3f"
+  }
+}

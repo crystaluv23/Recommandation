@@ -1,0 +1,103 @@
+{
+  "action": {
+    "action": "fetch_evidence",
+    "case_refs": [
+      "synthetic"
+    ],
+    "max_documents": 1,
+    "rationale": [
+      "Controlled module source preparation."
+    ],
+    "source_families": [
+      "sec_company_facts"
+    ]
+  },
+  "facts": [
+    {
+      "available_at": "2024-08-02T00:00:00+00:00",
+      "case_ref": "synthetic",
+      "concept": "Metric",
+      "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+      "document_ref": "document-namespace-control-only",
+      "exact_span": "{\"end\": \"2024-06-30\", \"val\": 120}",
+      "fact_ref": "fact-82c8d0d89727166f",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "namespace-a",
+      "unit": "USD",
+      "value": "120"
+    },
+    {
+      "available_at": "2024-08-02T00:00:00+00:00",
+      "case_ref": "synthetic",
+      "concept": "Metric",
+      "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+      "document_ref": "document-namespace-control-only",
+      "exact_span": "{\"end\": \"2023-06-30\", \"val\": 100}",
+      "fact_ref": "fact-50642375b0247e29",
+      "period": {
+        "end": "2023-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "namespace-b",
+      "unit": "USD",
+      "value": "100"
+    }
+  ],
+  "ledger": {
+    "cycle_id": 1,
+    "entries": [
+      {
+        "action": "fetch_evidence",
+        "action_id": 1,
+        "case_refs": [
+          "synthetic"
+        ],
+        "coverage": {
+          "query_coverage": {
+            "matched_terms": [],
+            "sufficient": false
+          },
+          "unread_same_source": false
+        },
+        "evidence_refs": [
+          "fact-82c8d0d89727166f",
+          "fact-50642375b0247e29"
+        ],
+        "input_hash": "7df4a0d38cc4202fe4094bafd7edfa1df245ede201e74fba5104c70f2c6166eb",
+        "note": null,
+        "omitted_coverage": {
+          "excluded_document_ids": []
+        },
+        "output_hash": "46f9e2ef112799f23e67a1f5170518e399ee2648c8f91a2636d93af2e683fb9a",
+        "pit_status": "enforced",
+        "source_types": [
+          "sec_company_facts"
+        ],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 0
+        }
+      }
+    ],
+    "seed_id": "seed-discovery"
+  },
+  "receipt": {
+    "action": "fetch_evidence",
+    "cases_requested": 1,
+    "excluded_document_ids": 0,
+    "families": [
+      "sec_company_facts"
+    ],
+    "narrative_evidence": null,
+    "new_facts": 2,
+    "new_relations": 0,
+    "total_events": 0,
+    "total_facts": 2,
+    "total_relations": 0
+  }
+}

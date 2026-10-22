@@ -1,0 +1,22 @@
+{
+  "scope": "First independent stage source review before parent repaired prepare source drift checks. No old-code runtime execution claimed.",
+  "finding": "PREFLIGHT_SOURCE_SILENT_REFREEZE",
+  "controlling_clause": "Stage spec: any source/code drift rejects and no silent refreeze.",
+  "observed_original_sequence": [
+    "inputs, sources = authorities()",
+    "ready = read_json(BASE / 'preflight/result.json')",
+    "check_bindings(ready['code_files'])",
+    "sources += references + [binding(BASE / 'preflight/result.json')]",
+    "manifest.source_files = sources"
+  ],
+  "missing_checks": [
+    "No check_bindings(ready.source_files)",
+    "No equality of original preflight source inventory and newly enumerated authorities sources",
+    "Stage module test file absent from code_bindings"
+  ],
+  "counterexample": "Modify original namespace content or an unselected reviewed document between preflight and prepare, or change inventory membership; prepare rebinds present source bytes instead of rejecting the frozen preflight difference.",
+  "parent_acknowledgment": "Parent confirmed and added source binding verification, inventory equality, stage-test binding before formal preflight/prepare.",
+  "expectation_unchanged": "Source drift/addition/removal must reject before formal ROOT creation; do not adjust expected source or oracle to pass.",
+  "old_runtime_execution": false,
+  "product_edits_by_reviewer": 0
+}

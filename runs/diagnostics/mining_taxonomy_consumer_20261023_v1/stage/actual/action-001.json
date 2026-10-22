@@ -1,0 +1,10 @@
+{
+  "action": "compare_groups",
+  "concepts": [
+    "NetCashProvidedByUsedInOperatingActivities"
+  ],
+  "rationale": [
+    "Locate the target concept operands and their case and period bindings before selecting source fact reads.",
+    "The fetched scope contains one control case, so this inspection cannot establish a positive-versus-control contrast."
+  ]
+}

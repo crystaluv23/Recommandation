@@ -1,0 +1,8 @@
+{
+  "action": "read_span",
+  "fact_ref": "fact-3d4faa09011f777b",
+  "rationale": [
+    "Inspect the latest operating cash flow operand for its source taxonomy, entity, unit and period before accepting the reported comparable-prior pairing.",
+    "The grouped values identify two operands but do not disclose their full measurement identities or historical reporting periods."
+  ]
+}

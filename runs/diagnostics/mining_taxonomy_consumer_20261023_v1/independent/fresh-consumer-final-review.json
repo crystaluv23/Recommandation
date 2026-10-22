@@ -1,0 +1,643 @@
+{
+  "schema_version": "mining-taxonomy-fresh-consumer-independent-final-review-v1",
+  "disposition": "fixed_module_first_endpoint_acceptance_1_of_2_actual_locator_budget_failure_retained",
+  "scope": "Read-only sealed formal stage requests, original raw responses, receipts/cache/actions/tool-return views/ledger, source bindings and frozen reference. No runner/advance/model/API execution, no product/source/stage/reference mutation, no business LabelStore/check/LockedTest reads. All writes are new independent/fresh-consumer-* files.",
+  "frozen_integrity": {
+    "manifest_hash": "08638c06a6ab7d727bb1a4322aa24b2d91f07971e5db3d68dcf54b4c70742105",
+    "contract_sha256": "d4f973d5c63c8e110ce5521f717c502d86ea14e44f1afa712d8ef145420c645c",
+    "manifest_file_sha256": "925bd7b6241ede4b2ae44cb2ea543bb194b322f782cb7036f6852c9cc367eca2",
+    "inputs_file_sha256": "b79785901be8d17eaf43eb30d428e2d5b14df8828ce8ea5598b8e2439aa658b9",
+    "source_bindings_verified": 1790,
+    "code_bindings_verified": 103,
+    "drift": [],
+    "source_reference_sha256": "2549c26e9176cf6fb2fd4beaf7ad05e0847b22c3e8aa748ed4d59c0329b2665a",
+    "prefreeze_obligations_sha256": "11db4a586fa2bdf729e73af3baf08071611bf9452c38ced74be701c5b9d9a8d0",
+    "reviewer_executed_production_calls": 0
+  },
+  "fixed_denominator": {
+    "samples": 2,
+    "first_endpoint_semantic_accepted": 1,
+    "full_module_semantic_result": "1/2",
+    "namespace": "1/1 first module endpoint,3fresh responses0corrections",
+    "actual": "0/1: aggregate-budget terminal before final author endpoint,4fresh responses0corrections",
+    "physical_fresh_responses": 7,
+    "prepared_native_requests": 8,
+    "blocked_unanswered_requests": 1,
+    "note": "Intermediate source-field correctness does not turn actual into a completed semantic endpoint. No correction or appended response is used to change this denominator."
+  },
+  "samples": {
+    "namespace": {
+      "terminal_state": "completed_module_boundary",
+      "terminal_record_hash": "b7fd6110af9fc8353b560686379b1ecdf597641d11b80620226b30cf7bb1fd0e",
+      "terminal_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/completion.json",
+      "terminal_file_sha256": "cbcbb091482d5a2ecbc7f4a60189ad2e98801a3de2747ee25180226bbdd7cdd5",
+      "terminal_sealed_bindings_verified": 25,
+      "fresh_physical_responses": 3,
+      "corrections": 0,
+      "actions": [
+        "read_span",
+        "read_span",
+        "record_deferred"
+      ],
+      "answered_logical_reservation": 63412,
+      "prepared_logical_reservation": 63412,
+      "requests": [
+        {
+          "request_hash": "a2fd24387725dfc911c57d487f7abf6796f7fa54cf3859de4684db3bb16abefe",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/requests/a2fd24387725dfc911c57d487f7abf6796f7fa54cf3859de4684db3bb16abefe.json",
+          "file_sha256": "a077509e52add2417ac504f5f09730dab76ddc56e9d02cf0a15bab6974eceb51",
+          "logical_reservation": 19851,
+          "last_action": "fetch_evidence",
+          "read_progress_fact_refs": [],
+          "known_fact_ref_count": 2,
+          "has_inbox": true,
+          "has_receipt": true
+        },
+        {
+          "request_hash": "fdbf25769990b52d1940e37738a76c515448bb1c681689ab49037e976cc4e40b",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/requests/fdbf25769990b52d1940e37738a76c515448bb1c681689ab49037e976cc4e40b.json",
+          "file_sha256": "9caf9545c29c476991f03cf5a531bc46b4e5ef6837366a96c9b67061650935d2",
+          "logical_reservation": 21423,
+          "last_action": "read_span",
+          "read_progress_fact_refs": [
+            "fact-50642375b0247e29"
+          ],
+          "known_fact_ref_count": 2,
+          "has_inbox": true,
+          "has_receipt": true
+        },
+        {
+          "request_hash": "feb9fdb3892651cbed44f3d1a787fd55d2ed5141b38abde8ba0cabff777dbcec",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/requests/feb9fdb3892651cbed44f3d1a787fd55d2ed5141b38abde8ba0cabff777dbcec.json",
+          "file_sha256": "9546dcb79a9590ffc595ab574163bf3522cdb951d4980f2b8a5993c837e8e97a",
+          "logical_reservation": 22138,
+          "last_action": "read_span",
+          "read_progress_fact_refs": [
+            "fact-82c8d0d89727166f",
+            "fact-50642375b0247e29"
+          ],
+          "known_fact_ref_count": 2,
+          "has_inbox": true,
+          "has_receipt": true
+        }
+      ],
+      "fresh_action_chain": [
+        {
+          "position": 1,
+          "request_hash": "a2fd24387725dfc911c57d487f7abf6796f7fa54cf3859de4684db3bb16abefe",
+          "agent_id": "/root/mining_taxonomy_namespace_step1",
+          "raw_output_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/outbox/a2fd24387725dfc911c57d487f7abf6796f7fa54cf3859de4684db3bb16abefe.txt",
+          "raw_output_sha256": "b7ea5dfc8f829c32b9bdfc0744f0d269e67ade8885c052228305da5ee40408b1",
+          "action": {
+            "action": "read_span",
+            "fact_ref": "fact-50642375b0247e29",
+            "rationale": [
+              "Inspect the first Metric operand and its source namespace, unit and period before assessing comparison support."
+            ]
+          },
+          "logical_reservation": 19851,
+          "simultaneous_read_fact_bindings": []
+        },
+        {
+          "position": 2,
+          "request_hash": "fdbf25769990b52d1940e37738a76c515448bb1c681689ab49037e976cc4e40b",
+          "agent_id": "/root/mining_taxonomy_namespace_step2",
+          "raw_output_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/outbox/fdbf25769990b52d1940e37738a76c515448bb1c681689ab49037e976cc4e40b.txt",
+          "raw_output_sha256": "a480003d6c8d556624fc469e0c257bda4595a213591dc52d7e1f4a15b372ddbd",
+          "action": {
+            "action": "read_span",
+            "fact_ref": "fact-82c8d0d89727166f",
+            "rationale": [
+              "Inspect the other Metric operand to retain its own taxonomy, period and measurement identity before assessing comparability.",
+              "The existing receipt binds the prior observation to namespace-b; matching Metric names and USD units alone do not establish equivalence across namespaces."
+            ]
+          },
+          "logical_reservation": 21423,
+          "simultaneous_read_fact_bindings": [
+            {
+              "fact_ref": "fact-50642375b0247e29",
+              "fact": {
+                "concept": "Metric",
+                "period": {
+                  "end": "2023-06-30"
+                },
+                "taxonomy": "namespace-b",
+                "unit": "USD",
+                "value": "100"
+              },
+              "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+              "available_at": "2024-08-02T00:00:00+00:00"
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "request_hash": "feb9fdb3892651cbed44f3d1a787fd55d2ed5141b38abde8ba0cabff777dbcec",
+          "agent_id": "/root/mining_taxonomy_namespace_step3",
+          "raw_output_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/outbox/feb9fdb3892651cbed44f3d1a787fd55d2ed5141b38abde8ba0cabff777dbcec.txt",
+          "raw_output_sha256": "52bfaaf78e33e06668ac5ccb04c87ebddf26253dec8b4ce44c1e3b9b1e7a7eeb",
+          "action": {
+            "action": "record_deferred",
+            "rationale": [
+              "Both fetched Metric operands have been read: fact-82c8d0d89727166f states namespace-a, USD, 120, period end 2024-06-30; fact-50642375b0247e29 states namespace-b, USD, 100, period end 2023-06-30.",
+              "These are distinct namespace-qualified measurements in the same control case. Matching concept text and currency do not establish equivalent measurement definitions or a comparable prior-period pair.",
+              "The fetched source does not establish a namespace mapping, consistent entity scope, or period-duration identity. A year-over-year difference or ratio is therefore unestablished; no statistic is warranted from these operands.",
+              "This stops the bounded source inspection with the facts and comparison uncertainty retained; it does not establish evidence unavailability or no pattern."
+            ]
+          },
+          "logical_reservation": 22138,
+          "simultaneous_read_fact_bindings": [
+            {
+              "fact_ref": "fact-82c8d0d89727166f",
+              "fact": {
+                "concept": "Metric",
+                "period": {
+                  "end": "2024-06-30"
+                },
+                "taxonomy": "namespace-a",
+                "unit": "USD",
+                "value": "120"
+              },
+              "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+              "available_at": "2024-08-02T00:00:00+00:00"
+            },
+            {
+              "fact_ref": "fact-50642375b0247e29",
+              "fact": {
+                "concept": "Metric",
+                "period": {
+                  "end": "2023-06-30"
+                },
+                "taxonomy": "namespace-b",
+                "unit": "USD",
+                "value": "100"
+              },
+              "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+              "available_at": "2024-08-02T00:00:00+00:00"
+            }
+          ]
+        }
+      ],
+      "ledger_actions": [
+        "fetch_evidence",
+        "read_span",
+        "read_span"
+      ],
+      "target_facts": [
+        {
+          "available_at": "2024-08-02T00:00:00+00:00",
+          "case_ref": "synthetic",
+          "concept": "Metric",
+          "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+          "document_ref": "document-namespace-control-only",
+          "exact_span": "{\"end\": \"2024-06-30\", \"val\": 120}",
+          "fact_ref": "fact-82c8d0d89727166f",
+          "period": {
+            "end": "2024-06-30"
+          },
+          "record_selection": "latest",
+          "source_display_name": "",
+          "taxonomy": "namespace-a",
+          "unit": "USD",
+          "value": "120"
+        },
+        {
+          "available_at": "2024-08-02T00:00:00+00:00",
+          "case_ref": "synthetic",
+          "concept": "Metric",
+          "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+          "document_ref": "document-namespace-control-only",
+          "exact_span": "{\"end\": \"2023-06-30\", \"val\": 100}",
+          "fact_ref": "fact-50642375b0247e29",
+          "period": {
+            "end": "2023-06-30"
+          },
+          "record_selection": "latest",
+          "source_display_name": "",
+          "taxonomy": "namespace-b",
+          "unit": "USD",
+          "value": "100"
+        }
+      ],
+      "controlled_fetch_fact_count": 2,
+      "controlled_fetch_excluded_documents": 0,
+      "native_domain_terminal_executed": false,
+      "terminal_error": null
+    },
+    "actual": {
+      "terminal_state": "terminal_module_failure",
+      "terminal_record_hash": "206ed0a2cf8b5de2005cedf4be8fd72e39f1f0d33e148d2ed75f0ca1add30d20",
+      "terminal_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/failure.json",
+      "terminal_file_sha256": "01fe5c6a424ac008a8bd3700ea323374cbaad6db3c08ddb3e7d5e20e5dd48fd8",
+      "terminal_sealed_bindings_verified": 34,
+      "fresh_physical_responses": 4,
+      "corrections": 0,
+      "actions": [
+        "compare_groups",
+        "read_span",
+        "compare_groups",
+        "read_span"
+      ],
+      "answered_logical_reservation": 90772,
+      "prepared_logical_reservation": 117015,
+      "requests": [
+        {
+          "request_hash": "10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.json",
+          "file_sha256": "2d89d8894650b5a8cbecc1737086e12b45c90e931c2fe1f9b7994ac1f52d4754",
+          "logical_reservation": 24642,
+          "last_action": "read_span",
+          "read_progress_fact_refs": [
+            "fact-3d4faa09011f777b"
+          ],
+          "known_fact_ref_count": 19,
+          "has_inbox": true,
+          "has_receipt": true
+        },
+        {
+          "request_hash": "8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.json",
+          "file_sha256": "89ea30b65df72a875ce3225e6ef0fbf70f46fac2dd71ac476b7fbf16ce796dcf",
+          "logical_reservation": 21468,
+          "last_action": "compare_groups",
+          "read_progress_fact_refs": [],
+          "known_fact_ref_count": 19,
+          "has_inbox": true,
+          "has_receipt": true
+        },
+        {
+          "request_hash": "b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.json",
+          "file_sha256": "1fafb9d0d7c6706b4f9949866afe9148b2e51d9d066f02a0d33598e4977ccc56",
+          "logical_reservation": 23529,
+          "last_action": "compare_groups",
+          "read_progress_fact_refs": [
+            "fact-3d4faa09011f777b"
+          ],
+          "known_fact_ref_count": 19,
+          "has_inbox": true,
+          "has_receipt": true
+        },
+        {
+          "request_hash": "d654e536da4c6a5e63a5d31d1d7f30834c129cd8409ca8fe8c2879925cf76cea",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/d654e536da4c6a5e63a5d31d1d7f30834c129cd8409ca8fe8c2879925cf76cea.json",
+          "file_sha256": "c3baaa02be9acbafc0d17dc7e85576179734044f659a8b8a4c9ca76f0ffdd210",
+          "logical_reservation": 26243,
+          "last_action": "read_span",
+          "read_progress_fact_refs": [
+            "fact-2f898adb2d25e349",
+            "fact-3d4faa09011f777b"
+          ],
+          "known_fact_ref_count": 19,
+          "has_inbox": false,
+          "has_receipt": false
+        },
+        {
+          "request_hash": "f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7",
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.json",
+          "file_sha256": "d47f2deda16d56e281eb8ca5f8783964b5a9a958962a2502fee3d6b4057b0a1f",
+          "logical_reservation": 21133,
+          "last_action": "fetch_evidence",
+          "read_progress_fact_refs": [],
+          "known_fact_ref_count": 19,
+          "has_inbox": true,
+          "has_receipt": true
+        }
+      ],
+      "fresh_action_chain": [
+        {
+          "position": 1,
+          "request_hash": "f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7",
+          "agent_id": "/root/mining_taxonomy_actual_step1",
+          "raw_output_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.txt",
+          "raw_output_sha256": "0abe37e6b2ebd5614df1a9183b688fcf8b8986110d77225b7636adc71f936f34",
+          "action": {
+            "action": "compare_groups",
+            "concepts": [
+              "NetCashProvidedByUsedInOperatingActivities"
+            ],
+            "rationale": [
+              "Locate the target concept operands and their case and period bindings before selecting source fact reads.",
+              "The fetched scope contains one control case, so this inspection cannot establish a positive-versus-control contrast."
+            ]
+          },
+          "logical_reservation": 21133,
+          "simultaneous_read_fact_bindings": []
+        },
+        {
+          "position": 2,
+          "request_hash": "8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6",
+          "agent_id": "/root/mining_taxonomy_actual_step2",
+          "raw_output_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.txt",
+          "raw_output_sha256": "cd7f2e5d625918450294ba26d448ffe2cf9d6a4a3347cb51b0c81125fa6f81e5",
+          "action": {
+            "action": "read_span",
+            "fact_ref": "fact-3d4faa09011f777b",
+            "rationale": [
+              "Inspect the latest operating cash flow operand for its source taxonomy, entity, unit and period before accepting the reported comparable-prior pairing.",
+              "The grouped values identify two operands but do not disclose their full measurement identities or historical reporting periods."
+            ]
+          },
+          "logical_reservation": 21468,
+          "simultaneous_read_fact_bindings": []
+        },
+        {
+          "position": 3,
+          "request_hash": "10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e",
+          "agent_id": "/root/mining_taxonomy_actual_step3",
+          "raw_output_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.txt",
+          "raw_output_sha256": "6ba6fba58e9ab60c0efad4a50c9834e87c239ea922be39c88e774ec6f0f322d1",
+          "action": {
+            "action": "compare_groups",
+            "concepts": [
+              "NetCashProvidedByUsedInOperatingActivities"
+            ],
+            "rationale": [
+              "The read establishes us-gaap operating cash flow of USD 9506313 for 2011-01-01 through 2011-06-30 in case-008, available before its prediction cutoff.",
+              "Inspect the fetched target-concept values and fact refs to identify a period-comparable prior operand; the neighboring excerpt does not establish its full period.",
+              "This single control case supports historical operand inspection, not a positive-versus-control conclusion."
+            ]
+          },
+          "logical_reservation": 24642,
+          "simultaneous_read_fact_bindings": [
+            {
+              "fact_ref": "fact-3d4faa09011f777b",
+              "fact": {
+                "concept": "NetCashProvidedByUsedInOperatingActivities",
+                "period": {
+                  "end": "2011-06-30",
+                  "start": "2011-01-01"
+                },
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": "9506313"
+              },
+              "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+              "available_at": "2011-08-10T00:00:00+00:00"
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "request_hash": "b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8",
+          "agent_id": "/root/mining_taxonomy_actual_step4",
+          "raw_output_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.txt",
+          "raw_output_sha256": "f6060a7bdd58922aa7530dd6e755e9fab5fd1142cb9b026a4858247eb182dc5e",
+          "action": {
+            "action": "read_span",
+            "fact_ref": "fact-2f898adb2d25e349",
+            "rationale": [
+              "Inspect the selected prior operand directly to establish its taxonomy, unit and complete period before accepting the comparison.",
+              "The latest receipt establishes us-gaap operating cash flow of 9506313 USD for 2011-01-01 through 2011-06-30; the prior receipt remains unread."
+            ]
+          },
+          "logical_reservation": 23529,
+          "simultaneous_read_fact_bindings": [
+            {
+              "fact_ref": "fact-3d4faa09011f777b",
+              "fact": {
+                "concept": "NetCashProvidedByUsedInOperatingActivities",
+                "period": {
+                  "end": "2011-06-30",
+                  "start": "2011-01-01"
+                },
+                "taxonomy": "us-gaap",
+                "unit": "USD",
+                "value": "9506313"
+              },
+              "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+              "available_at": "2011-08-10T00:00:00+00:00"
+            }
+          ]
+        }
+      ],
+      "ledger_actions": [
+        "fetch_evidence",
+        "compare_groups",
+        "read_span",
+        "compare_groups",
+        "read_span"
+      ],
+      "target_facts": [
+        {
+          "available_at": "2011-08-10T00:00:00+00:00",
+          "case_ref": "case-008",
+          "concept": "NetCashProvidedByUsedInOperatingActivities",
+          "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+          "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+          "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2011-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2011-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":9506313}",
+          "fact_ref": "fact-3d4faa09011f777b",
+          "period": {
+            "end": "2011-06-30",
+            "start": "2011-01-01"
+          },
+          "record_selection": "latest",
+          "source_display_name": "Net Cash Provided by (Used in) Operating Activities",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": "9506313"
+        },
+        {
+          "available_at": "2011-08-10T00:00:00+00:00",
+          "case_ref": "case-008",
+          "concept": "NetCashProvidedByUsedInOperatingActivities",
+          "content_hash": "171d25ca06a0032455d6338d60b0ee2835b735bc500265a2182975b382167028",
+          "document_ref": "document-secfacts:0000800457:0000950123-11-074727:171d25ca06a00324",
+          "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2010-06-30\",\"fiscal_period\":\"Q2\",\"fiscal_year\":2011,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2010-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":4342261}",
+          "fact_ref": "fact-2f898adb2d25e349",
+          "period": {
+            "end": "2010-06-30",
+            "start": "2010-01-01"
+          },
+          "record_selection": "comparable_prior",
+          "source_display_name": "Net Cash Provided by (Used in) Operating Activities",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": "4342261"
+        }
+      ],
+      "controlled_fetch_fact_count": 19,
+      "controlled_fetch_excluded_documents": 55,
+      "native_domain_terminal_executed": false,
+      "terminal_error": "sample aggregate logical reservation exhausted"
+    }
+  },
+  "namespace_semantic_review": {
+    "accepted": true,
+    "exact_source": "Preserved explicitly synthetic parent source namespace-a MetricUSD120 at2024-06-30 and namespace-b MetricUSD100 at2023-06-30. Both complete actual fact-read receipts, parent context and identity were simultaneously in the final wire, and all fields match the frozen reference.",
+    "fresh_consumption": "The second fresh response retains prior namespace-b from actual receipt; the first module endpoint explicitly binds both refs/taxonomies/units/values/end dates and declines automatic same-concept comparable measurement. No fabricated mapping, positive/control contrast, source absence or domain research completion.",
+    "generic_arithmetic_question": {
+      "literal_text": "A year-over-year difference or ratio is therefore unestablished; no statistic is warranted from these operands.",
+      "assessment": "Read in its surrounding measurement-equivalence/source-scope rationale, this declines a warranted YoY statistic. It does not explicitly claim generic compute_statistic is illegal, arithmetic120/100 impossible, or request a tool ban. Frozen A05 does not require computing1.2 or reciting generic arithmetic permissions. Do not add that duty retrospectively.",
+      "scope_limit": "No compute was performed; generic arithmetic branch consumption is untested. The broad wording is not accepted as a general rule forbidding explicit arithmetic. If a later consumer treats it as such, that later semantic promotion requires separate review."
+    },
+    "source_unknowns_preserved": "Namespace mapping/entity measurement equivalence and additional duration scope are not established by this synthetic source. Same case and USD alone do not resolve namespace identity. The sample is not a dev8 natural discovery.",
+    "stop": "Boundary saved before executing record_deferred; raw endpoint expressly denies evidence_unavailable/no-pattern interpretation."
+  },
+  "actual_partial_vs_module": {
+    "module_accepted": false,
+    "source_field_consumption_supported": "Fresh response3 correctly states us-gaap operating cash flow USD9506313 for2011-01-01 through2011-06-30, pre-cutoff availability and single-control historical scope. Response4 selects the actual prior source fact for a direct read.",
+    "not_yet_consumed": "The2010H1 prior full receipt is produced after response4. It is in local view005 and blocked fifth request, but no fifth inbox/author exists. No fresh final consumer has jointly interpreted both complete operands; this remains unclosed.",
+    "available_evidence": "Actual read tools successfully produced both original0671 complete rows with matching content hash, namespace/USD/value/period bindings. Tool execution and local field presence are not final author semantic consumption.",
+    "stop_reason": "LocalRoleBudgetExhausted at the existing aggregate cap, not missing issuer facts, no-pattern, exhaustion of heavy actions or research completion.",
+    "budget": {
+      "answered_first4": 90772,
+      "remaining_before_fifth": 7532,
+      "blocked_fifth": 26243,
+      "prepared_total": 117015,
+      "cap": 98304,
+      "fifth_inbox": false,
+      "fifth_receipt": false,
+      "per_request_cap_satisfied": true
+    }
+  },
+  "new_general_connection_gap": {
+    "id": "G01_COMPARE_LOCATOR_LOST_ACROSS_ACTIONS",
+    "finding": "Previously disclosed compare operand locator/role mapping does not survive an intervening fact read in a stateless fresh author view. Already-read receipt progress solves read history only.",
+    "precise_observation": "The prior ref is not literally removed from known_fact_refs: it remains one of19opaque strings. Its mapping to targetOCF/concept/comparable-prior role is absent after current read. Current adjacent raw excerpt contains prior start/value but lacks its full period; it cannot safely replace a direct prior read.",
+    "causal_chain": [
+      "Response1 compare_groups obtains current/prior ref mappings in actual request2.",
+      "Response2 reads current. Actual request3 preserves only current full receipt in structured_read_progress, while compare locator is overwritten as last_action_result.",
+      "Response3 correctly refuses to infer full prior period from the neighboring fragment and reissues compare_groups to recover the prior operand locator.",
+      "Response4 receives the mapping again and reads prior.",
+      "The fifth request containing both complete receipts would need26243 with only7532remaining and is rejected before inbox; no module endpoint can be authored."
+    ],
+    "classification": "Producer working-view connection failure with correct conservative intermediate source behavior; not evidence that the model ignored an available full prior locator, and not a reason to enlarge/reset frozen budget.",
+    "minimal_repair_direction": "Retain already-issued complete compare/operand locator units or equivalent source-bound lookup visibility across later actions, with stable refs, target concept/role, qualifiers/unresolved cases, deterministic bounded omissions, current-source binding and ordinary budgets. Avoid silently disclosing unread fact contents, automatic new measurement inference or new tool/admission authority. Requires a new spec-first frozen attempt, not hot repair/reentry of this terminal stage."
+  },
+  "controlled_preflight_claim_correction": {
+    "prior_artifact": "independent/reachable-order-budget-addendum.json plus preparation-audit-addendum.json",
+    "what_remains_true": "The controlled sequence compare→two reads→stop envelopes fit93486/93444 under unchanged cap, and real native wires/source hashes were checked.",
+    "overclaim_corrected": "The script chose and retained refs from private controller._facts between steps. That establishes envelope feasibility given externally retained locators, not autonomous/stateless fresh-author reachability. The earlier label real reachable path was too strong and is superseded by the actual lost-locator trace.",
+    "why_old_controls_missed": "Eight progress tests and both controlled path probes preselected fact refs outside later author views; they tested preservation of read units, not continued accessibility of a not-yet-read operand locator after an intervening action. No expected source answer or arithmetic policy is changed."
+  },
+  "reconstruction_review": {
+    "artifact": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/cache-reconstruction.json",
+    "artifact_sha256": "c703e7991a7f4a5f64111bba784413a38fe5561718bcc6aecfe9fdb6f4ca1166",
+    "script_sha256": "666e871d0d69ca9fb7c94b79307017c799b75328c1d39f217e6db02d81ab8e3f",
+    "scope_read": "Read the script/result/log without executing it. It builds explicit pending-operation fixtures from copies, removes terminal business artifacts and actual blocked fifth journal in the copy, asserts allow_dispatch=False for each cache receive, reconstructs the same final artifacts/failure, compares all nonterminal files and original stage hashes.",
+    "reported": {
+      "blocked_journal_recreated": [
+        "d654e536da4c6a5e63a5d31d1d7f30834c129cd8409ca8fe8c2879925cf76cea.json"
+      ],
+      "cached_receive_calls": 7,
+      "new_dispatches": 0,
+      "nonterminal_files_equal": 62,
+      "original_all_files_unchanged": 64,
+      "original_root": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage",
+      "removed_fixture_files": [
+        "actual/failure.json",
+        "actual/failed-controller.json",
+        "namespace/completion.json",
+        "namespace/boundary.json",
+        "actual/requests/d654e536da4c6a5e63a5d31d1d7f30834c129cd8409ca8fe8c2879925cf76cea.json"
+      ],
+      "samples": [
+        {
+          "assembled_artifact_exact_equal": true,
+          "domain_terminal_executed": false,
+          "original_receipts": 4,
+          "sample": "actual",
+          "state": "terminal_module_failure"
+        },
+        {
+          "assembled_artifact_exact_equal": true,
+          "domain_terminal_executed": false,
+          "original_receipts": 3,
+          "sample": "namespace",
+          "state": "completed_module_boundary"
+        }
+      ],
+      "scope": "Explicit throwaway pending-operation fixtures from sealed copies; no original terminal reentry, no OS/process-kill or whole-loop recovery claim.",
+      "verification_script": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/verify-cache-reconstruction.py",
+        "sha256": "666e871d0d69ca9fb7c94b79307017c799b75328c1d39f217e6db02d81ab8e3f"
+      }
+    },
+    "supported": "Consistent evidence of7original receipt-only receives,62nonterminal equal files, blocked journal recreation and64original files unchanged; no original terminal reentry, new handoff or OS/process-kill/whole-loop recovery proof. This does not change semantic1/2."
+  },
+  "prior_evidence_error_preserved": {
+    "artifact": "independent/stage-budget-original-overwrite-disclosure.json",
+    "limitation": "Reviewer overwrote the first pre-answer budget-failure JSON during recheck. Original bytes/hash unavailable; only historical tool stdout fields and parent acknowledgment retain the first failure. The misleading old path now contains recheck bytes and is not cited as immutable original. No existing report or counterexample was modified by this fresh audit."
+  },
+  "anonymity_budget_ownership": "Actual persisted messages contain anonymous document handles and no known raw CIK/companyid; local canonical provenance remains intact. No new business label was read/authored; only frozen opaque group map. Local logical reservations are serialized message UTF8 bytes plus output allowance, not actual internal model token/cost accounting.",
+  "non_closures": [
+    "No actual source final2operand semantic endpoint",
+    "No fresh generic arithmetic branch test",
+    "No unknown-leaf imported legacy fresh sample beyond separately frozen source control",
+    "No candidate/Signal publication/admission/reuse, S3/S4, whole-Mining or independent gain claim"
+  ],
+  "artifact_sha256": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/completion.json": "cbcbb091482d5a2ecbc7f4a60189ad2e98801a3de2747ee25180226bbdd7cdd5",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/boundary.json": "2cb3aa765bd1e160231f72f6d3be398ed786718e19463508723edfb2ae5bed03",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/failure.json": "01fe5c6a424ac008a8bd3700ea323374cbaad6db3c08ddb3e7d5e20e5dd48fd8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/failed-controller.json": "a7107df96925fd5d11205f240ed819e4baeb4a3b7978eb79c52352d3826ebcd2",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/cache-reconstruction.json": "c703e7991a7f4a5f64111bba784413a38fe5561718bcc6aecfe9fdb6f4ca1166",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/cache-reconstruction.log": "232093aaf87ac7c10e0fa3792167da76c8709d6e6942e05364325c3946898622",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/verify-cache-reconstruction.py": "666e871d0d69ca9fb7c94b79307017c799b75328c1d39f217e6db02d81ab8e3f",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-budget-original-overwrite-disclosure.json": "bfbe23a2cd519dd1d001185172f8f757ea7982147334239b2a248cb9e50f8ab9"
+  },
+  "all_formal_stage_file_sha256_at_review": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/action-003.json": "e95e74c464606b06783612e0ea58317f61dd7a76ed40fe864da2ee8663b6e05f",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/action-002.json": "e8c8d72e0cf8bd793e13e0f536083d624d789c7c352c1f01fea043477e1e1e35",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/view-001.json": "22e590b7e07ee4fe44666c38e2a4a99757d98de7d05d453c3489d06b29a5fd9a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/view-003.json": "6b5c3452124a134f4ce8410f6b5f9ef345ad98ed4257022119e1f8d834a6f365",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/controlled-fetch.json": "4f65ef8520f29ee34d0b0547f3fff5fc84e5b07a67f7f26e04f126c86dc8a52d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/view-002.json": "270f0c00e7278c671c7f2391179a27fc19ad1b8231f901dcbc67ecab1efd26a0",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/unused_external.json": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/boundary.json": "2cb3aa765bd1e160231f72f6d3be398ed786718e19463508723edfb2ae5bed03",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/action-001.json": "996580b3337669e1390a2b12bd39c3f86175538e39725566d833e383dcaa4eca",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/completion.json": "cbcbb091482d5a2ecbc7f4a60189ad2e98801a3de2747ee25180226bbdd7cdd5",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/contract.json": "71e37f2cbca2702e8978becb16970eaf17d8e0ed4c0a74dc7347a5f0aa4ad6c9",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/receipts/feb9fdb3892651cbed44f3d1a787fd55d2ed5141b38abde8ba0cabff777dbcec.json": "0f2d9cde393974a1ed8ef1e8e1a379fd2ed6dcbcfdce581e3bfca4cb3f2c03bf",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/receipts/a2fd24387725dfc911c57d487f7abf6796f7fa54cf3859de4684db3bb16abefe.json": "8ad3c3ca9fc0dc3f920d8d8bcb723f1c9c8915aa123888557002fd46728821cc",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/receipts/fdbf25769990b52d1940e37738a76c515448bb1c681689ab49037e976cc4e40b.json": "6936cb5ce80f77d0cafb370f24f1e38278366b34b399c0d2e4525aa855bccb3b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/outbox/a2fd24387725dfc911c57d487f7abf6796f7fa54cf3859de4684db3bb16abefe.txt": "b7ea5dfc8f829c32b9bdfc0744f0d269e67ade8885c052228305da5ee40408b1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/outbox/fdbf25769990b52d1940e37738a76c515448bb1c681689ab49037e976cc4e40b.txt": "a480003d6c8d556624fc469e0c257bda4595a213591dc52d7e1f4a15b372ddbd",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/outbox/feb9fdb3892651cbed44f3d1a787fd55d2ed5141b38abde8ba0cabff777dbcec.txt": "52bfaaf78e33e06668ac5ccb04c87ebddf26253dec8b4ce44c1e3b9b1e7a7eeb",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/inbox/feb9fdb3892651cbed44f3d1a787fd55d2ed5141b38abde8ba0cabff777dbcec.json": "b1c80ee2416f50f57d0b91e423f078b90399c383229ceaad68569a344b553e45",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/inbox/a2fd24387725dfc911c57d487f7abf6796f7fa54cf3859de4684db3bb16abefe.json": "855d720cc997235db49254d43f5bc251713863bbdeb4db2ed64a42542c6d2236",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/exchange/inbox/fdbf25769990b52d1940e37738a76c515448bb1c681689ab49037e976cc4e40b.json": "5f4207e00f6921baa9a7dc600d7156330720ea92fe233bf1c7082dd2c6409c13",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/cache/responses/feb9fdb3892651cbed44f3d1a787fd55d2ed5141b38abde8ba0cabff777dbcec.json": "6c87dcc18d4308dac1d26c20c30b40fac7cfa3b8689391d6bb3b46085789e9ef",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/cache/responses/a2fd24387725dfc911c57d487f7abf6796f7fa54cf3859de4684db3bb16abefe.json": "a73ddf66855c1a3fb1bea60bba0e4707650ba4378e0e97a78915f42d954b6ea4",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/cache/responses/fdbf25769990b52d1940e37738a76c515448bb1c681689ab49037e976cc4e40b.json": "b7e38471f8b407a3b035c3eaa3ae5dddc5ab7ec85067722a147cf586e88dd190",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/requests/feb9fdb3892651cbed44f3d1a787fd55d2ed5141b38abde8ba0cabff777dbcec.json": "9546dcb79a9590ffc595ab574163bf3522cdb951d4980f2b8a5993c837e8e97a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/requests/a2fd24387725dfc911c57d487f7abf6796f7fa54cf3859de4684db3bb16abefe.json": "a077509e52add2417ac504f5f09730dab76ddc56e9d02cf0a15bab6974eceb51",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/requests/fdbf25769990b52d1940e37738a76c515448bb1c681689ab49037e976cc4e40b.json": "9caf9545c29c476991f03cf5a531bc46b4e5ef6837366a96c9b67061650935d2",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/action-003.json": "f444734ec41603a386f91ac194170e54646835313db391e5ceeffb622eadd2df",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/action-002.json": "40cce4e5de6c2d35c8398011e1b5df14d567716911ac4a8bf6a9c58115ee9e69",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-001.json": "9f28904421817ce6366a6f6b4963e1aeb21d8ca9a895d13701986d1f2b0b372e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/failed-controller.json": "a7107df96925fd5d11205f240ed819e4baeb4a3b7978eb79c52352d3826ebcd2",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/action-004.json": "3e25fa07b1a9110003d3661522cf6813d826b7d53dbe2272efe32e1e21847a30",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-003.json": "f551610ca03d12bb7df673f99cc78038a7efdb8a1a7aa9d8ca4285a25fe6d9cc",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/controlled-fetch.json": "0f825415b88596249c50ec11daccde8197a6a4ffb058c389f287dbc3db0c7952",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-002.json": "07241cedaa527f4cc213ab766374cd3fc542907d21e2ad128a8ab8f0a737c414",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/unused_external.json": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/failure.json": "01fe5c6a424ac008a8bd3700ea323374cbaad6db3c08ddb3e7d5e20e5dd48fd8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-005.json": "484ca65a7e2c6f3b6193d6aa1cd3415c8c436d697b1fe91bb909a617247ec416",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/action-001.json": "1faa07eaecdb0aca19d37790cf2d3b6181b50be54e74c2c0fd9c9ae8e7403000",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-004.json": "95bfe3d8e950745fef7d765de588c3b923da8337d00c4c39705ed853c820326c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/contract.json": "71e37f2cbca2702e8978becb16970eaf17d8e0ed4c0a74dc7347a5f0aa4ad6c9",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/receipts/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.json": "bd1d0ba8aa0524cf7205eeeb7ca4a75382f2856c262c235ef9f6448853b4d07b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/receipts/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.json": "afd4dc6b4a6cf5cb0742184ce7c2f3fce56b4a7163b1f2175aae4f7785b27fbd",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/receipts/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.json": "c3ba12431c1587f0da2fe0193ff3275d21c199ac4d40cfe44841476f62aacfd3",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/receipts/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.json": "17d070cc2dd27222a78b7c49297cfff3203ab8ae6d5a8a8920b5562233b8bbd6",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.txt": "cd7f2e5d625918450294ba26d448ffe2cf9d6a4a3347cb51b0c81125fa6f81e5",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.txt": "f6060a7bdd58922aa7530dd6e755e9fab5fd1142cb9b026a4858247eb182dc5e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.txt": "0abe37e6b2ebd5614df1a9183b688fcf8b8986110d77225b7636adc71f936f34",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.txt": "6ba6fba58e9ab60c0efad4a50c9834e87c239ea922be39c88e774ec6f0f322d1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/inbox/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.json": "b02f07e6fc5972615b94092ff2cd747d8e12ef8f363ce7d5af3af16aba24e6d4",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/inbox/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.json": "be52985bb66e062bf8380bf2b928554f4d99132e61ee4a8ebd96c343a0292e55",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/inbox/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.json": "4d3fd875e77c6b2bea14dab3a1d3db4b540ecdf98dca468459f178263ac93fca",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/inbox/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.json": "c38418b9d850a8ea39fea6f91973fb7492882a6a2f9aae6eeaececfa8651f16d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/cache/responses/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.json": "c1b0d75b75395a599190b0bbc6efa9004a33ed46d981b25879e77bc467311505",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/cache/responses/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.json": "9ced4c712e7663ef01c678966461750d24f8770f3361ed63626b7a69705f1c15",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/cache/responses/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.json": "c36f9fb340c0ac891933ea34c3d0a1c54ddcd90bad65b55e7d6511bcbe826832",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/cache/responses/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.json": "2f256fa91c48280be71bcaea3992d1ad693e6e331d76f313f1bdba882c877367",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.json": "1fafb9d0d7c6706b4f9949866afe9148b2e51d9d066f02a0d33598e4977ccc56",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.json": "2d89d8894650b5a8cbecc1737086e12b45c90e931c2fe1f9b7994ac1f52d4754",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.json": "89ea30b65df72a875ce3225e6ef0fbf70f46fac2dd71ac476b7fbf16ce796dcf",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.json": "d47f2deda16d56e281eb8ca5f8783964b5a9a958962a2502fee3d6b4057b0a1f",
+    "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/d654e536da4c6a5e63a5d31d1d7f30834c129cd8409ca8fe8c2879925cf76cea.json": "c3baaa02be9acbafc0d17dc7e85576179734044f659a8b8a4c9ca76f0ffdd210"
+  }
+}

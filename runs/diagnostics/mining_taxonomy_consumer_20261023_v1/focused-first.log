@@ -1,0 +1,19 @@
+.....F.....
+======================================================================
+FAIL: test_two_native_reads_survive_compare_and_reach_actual_role_adapter (tests.test_mining_fact_read_progress.MiningFactReadProgressTests.test_two_native_reads_survive_compare_and_reach_actual_role_adapter)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_fact_read_progress.py", line 38, in test_two_native_reads_survive_compare_and_reach_actual_role_adapter
+    self.assertEqual(page["items"], [{**second, "read_count": 1}, {**first, "read_count": 1}])
+AssertionError: Lists differ: [{'fact_ref': 'fact-9615b140df506dbc', 'cont[1346 chars]: 1}] != [{'action': 'read_span', 'fact_ref': 'fact-9[1392 chars]: 1}]
+
+First differing element 0:
+{'fact_ref': 'fact-9615b140df506dbc', 'cont[647 chars]': 1}
+{'action': 'read_span', 'fact_ref': 'fact-9[670 chars]': 1}
+
+Diff is 1881 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.004s
+
+FAILED (failures=1)

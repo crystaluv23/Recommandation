@@ -1,0 +1,1 @@
+{"action":"read_span","fact_ref":"fact-50642375b0247e29","rationale":["Inspect the first Metric operand and its source namespace, unit and period before assessing comparison support."]}

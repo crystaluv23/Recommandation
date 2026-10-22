@@ -1,0 +1,12 @@
+{
+  "scope": "Isolated native input-only oversized context; no receive, inbox, model or external API.",
+  "source_sha256": "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+  "stopped_type": "LocalRoleBudgetExhausted",
+  "stopped_message": "sample single-request logical reservation exhausted",
+  "request_count": 1,
+  "inboxes": 0,
+  "reservation": 51484,
+  "max_request_tokens": 32768,
+  "max_case_tokens": 98304,
+  "oversize_accepted_as_input_ready": false
+}

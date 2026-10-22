@@ -1,0 +1,9 @@
+{
+  "action": "record_deferred",
+  "rationale": [
+    "Both fetched Metric operands have been read: fact-82c8d0d89727166f states namespace-a, USD, 120, period end 2024-06-30; fact-50642375b0247e29 states namespace-b, USD, 100, period end 2023-06-30.",
+    "These are distinct namespace-qualified measurements in the same control case. Matching concept text and currency do not establish equivalent measurement definitions or a comparable prior-period pair.",
+    "The fetched source does not establish a namespace mapping, consistent entity scope, or period-duration identity. A year-over-year difference or ratio is therefore unestablished; no statistic is warranted from these operands.",
+    "This stops the bounded source inspection with the facts and comparison uncertainty retained; it does not establish evidence unavailability or no pattern."
+  ]
+}

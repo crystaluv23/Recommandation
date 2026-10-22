@@ -3,9 +3,9 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-22T20:03:56.575713+00:00",
+    "checked_at": "2026-10-22T20:49:12.867081+00:00",
     "thread_id": "01a15f73-622f-7130-905e-927e4e6c17c7",
-    "source": "Active unbudgeted goal refreshed. User no-external-API boundary retained. Local propagation repair and independent offline counterexamples only; no fresh production model answer. Canonical critic/Slow storage decision pending, no full successor."
+    "source": "Active unbudgeted goal verified this turn. Seven fresh independent-subagent native Mining replies, zero external APIs. Fixed module1of2; actual aggregate budget stop retained. No full successor. Canonical critic/Slow A/B decision remains pending; independent locator repair can proceed."
   },
   "acceptance": [
     {
@@ -216,7 +216,8 @@
         "runs/diagnostics/financial_context_consumer_20261023_v1/classification-semantics-diagnosis.md",
         "runs/diagnostics/financial_context_consumer_20261023_v1/cache-reconstruction.json",
         "runs/diagnostics/financial_context_consumer_20261023_v1/consumer-controls.log",
-        "runs/diagnostics/financial_context_consumer_20261023_v1/associated-controls.log"
+        "runs/diagnostics/financial_context_consumer_20261023_v1/associated-controls.log",
+        "reports/mining-taxonomy-consumer-20261023.md"
       ],
       "remaining": "Content chain local/open. GPRE actual H_init1of1 is sourcefaithful, but actual routing strictfirstportfolio0of1 exposes sharednamedobject falsepositive: orderpartial downgraded after budgetblocked correction; valid financepartial reaches corefirstentry with0calculation, all5needs unresolved. Native consumed111032 must not be replaced by observer165630 prepared sum. Actualnumeric6-result Reflect wire remains serialization only; no fresh owned result consumption. Financial9 remains6strict/1priorliteral mismatch/2period-policyunknown; F5 boundedreading design and Fact namespace choice pending. Source40 gaps/partial BasicInfo andtranscript publictimeproof0of26/normalpositive unresolved. ScopedF7controls/S5author not wholecontentchain. Fullfeedback consumption, direction+magnitude discovery/faithfulimplementation/admission/exactsuccessorreuse, interruption/recovery anddual-loop unverified; independentbenefit unknown."
     },
@@ -1694,19 +1695,50 @@
         "runs/diagnostics/classification_contract_20261023_v1/independent/critic-slow-gap.json"
       ],
       "result": "Spec-first exact actual callable/skill declaration control data; result-object/private sidecar and canonical result_hash, per-round saved reuse, no Registry/default backfill or canonical SignalResult changes. Independent first counterexamples found cross-round ref contamination, Update uninvoked validator reconstruction and anonymous text/raw-hash mismatch; all fixed and same family rechecked.445associated pass;20independent offline controls plus2Update capture cases and original alias recheck pass, not model samples. Actualsource input-only1newdeterministicv3 batch equals old strict-pass result,wholebootstrap equal,1847source bindings,prior111032usage retained;Reflect reservation59806available79655;0receive/inbox/answer. This intermediate preflight precedes3finalsourcechanges, preserved in code-delta; no finalcode live claim. Actualcritic/Slow canonical original source still lacks declaration despite helper/Posthoc preservation;A/Bstorage proposal pending user decision, no canonical extension implemented. OldconsumerF9semantic0of1,financial9,routing0of1,maturity0of1 unchanged.0externalAPI/GET/businesslabels/LockedTest/newproductionanswer/fullsuccessor/pointerchange. FullMVP staysopen."
+    },
+    {
+      "id": "mining-taxonomy-consumer-20261023",
+      "strategy": "whole_read_fact_receipts_then_frozen_native_source_consumption_controls",
+      "failure_families": [
+        "read_fact_receipt_overwritten_between_stateless_role_requests",
+        "source_code_inventory_refreeze_and_native_budget_or_terminal_guard_gaps",
+        "comparison_locator_disappears_after_first_operand_read"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/mining-taxonomy-consumer-20261023.md",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/baseline/result.json",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/source-reference.json",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/prefreeze-obligations.json",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/final-frozen-associated.log",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/final-test-bindings.json",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/preflight/result.json",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/manifest.json",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/failure.json",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/completion.json",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/fresh-consumer-final-review.json",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-budget-original-overwrite-disclosure.json",
+        "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/cache-reconstruction.json"
+      ],
+      "result": "Captured old actual0671 two-read→compare request without fact history before repair/no inbox. Runtime-only structured_read_progress preserves complete already-read masked units,ref dedup/readcount,recent order,8KB/12unit cap,explicit omissions; no canonical Fact/ledger/hash/tool/arithmetic authority change.266associated tests network0,103code/spec/test bindings unchanged; independent8controls and stage counterexamples pass after source/code/refreeze,explicit local single/aggregate/6decision and terminal seal fixes. Formal stage froze2samples/1790source/103code before7fresh native replies/0corrections. Namespace2source reads+stop firstendpoint1of1; actualcompare→readcurrent→recompare→readprior4replies90772,5th26243blocked before inbox as prepared117015>98304,nofinalendpoint0of1;fixedmodule1of2. Prior locator remains among19knownrefs but lost its target mapping after currentread; actualmodel cautions justified. Controlled4step scripts retained external ref and prove byte budget only,not autonomous reachability; early canonical-view CIK leak inference corrected after actualwire/restore confirms existing projection. Temporarypending fixtures7cachedreceives/0dispatch,62nonterminalbytes same,original64unchanged,notOS/full recovery. One independent first-budget JSON overwritten by recheck; historicalstdout fields and explicit disclosure retained,notoriginal-byte fidelity.0externalAPI/GET/newbusinesslabels/LockedTest/candidate/publication/score/pointer/fullsuccessor. OldF9consumer0of1 and other fixed failures unchanged. Critic/Slow canonical storage awaits priorA/Bdecision; fullMVPopen."
     }
   ],
   "review": {
-    "after_iteration": "classification-contract-propagation-20261023",
+    "after_iteration": "mining-taxonomy-consumer-20261023",
     "evidence": [
-      "reports/classification-contract-propagation-20261023.md",
-      "reports/classification-context-persistence-proposal-20261023.md",
-      "runs/diagnostics/classification_contract_20261023_v1/reference/preimplementation-review.json",
-      "runs/diagnostics/classification_contract_20261023_v1/final-connected.log",
-      "runs/diagnostics/classification_contract_20261023_v1/independent/final-review.json",
-      "runs/diagnostics/classification_contract_20261023_v1/actual-source-preflight/result.json",
-      "runs/diagnostics/classification_contract_20261023_v1/preflight-code-delta.json",
-      "runs/diagnostics/classification_contract_20261023_v1/independent/critic-slow-gap.json"
+      "reports/mining-taxonomy-consumer-20261023.md",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/baseline/result.json",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/source-reference.json",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/prefreeze-obligations.json",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/final-frozen-associated.log",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/final-test-bindings.json",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/preflight/result.json",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/manifest.json",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/failure.json",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/completion.json",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/fresh-consumer-final-review.json",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-budget-original-overwrite-disclosure.json",
+      "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/cache-reconstruction.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1809,14 +1841,20 @@
       "Independent ceiling review found catalog() charged unseen previews after body budget exhaustion without atomic validation. Earlier budget checks only guarded read rows. The initial candidate verification guard then blocked legitimate in-memory fixture appends; keep harness failures distinct from product failures and preserve exact-fit/whole-page rejection controls.",
       "A source-only independent reference can add stronger obligations than the actual measurement. Root froze full-context expectations without mapping each to the presence-only definition. The native answer preserves the qualifying complete paragraph, dates, fees/warrants/drawn caveat, yet frozen extra named-borrower/other-facility/inventory requirements yield strict0of1. Distinguish contract/core support from stronger reference closure; preserve original denominator and correct oracle design before another freeze, rather than reclassifying the answer or rerunning until pass.",
       "Distinct numeric_sign/categorical_state fields and a prompt warning preserved scalar and label but did not deliver the exact classification predicate. Fresh Predictor then equated a risk-positive low-runway enum with a positive months number; offline field-preservation tests and mechanical acceptance did not cover this semantic inference. Preserve complete-case0of1 while retaining narrow F7/F8 evidence, and repair the producer-to-consumer classification contract rather than correcting the completed answer or adding a wording patch.",
-      "A ref-global declaration map and helper-only critic test missed different-round/result provenance and final egress. Update rebuilt metadata from a validator function that never executed; anonymous text projection retained an invalid raw hash. Exact result-object capture, per-round reuse and source/view hash separation fix those local families, but actual critic/Slow CaseReflectionEvidence serialization still drops declarations. Offline/control preservation and an intermediate-code source preflight do not establish fresh model compliance or canonical downstream closure."
+      "A ref-global declaration map and helper-only critic test missed different-round/result provenance and final egress. Update rebuilt metadata from a validator function that never executed; anonymous text projection retained an invalid raw hash. Exact result-object capture, per-round reuse and source/view hash separation fix those local families, but actual critic/Slow CaseReflectionEvidence serialization still drops declarations. Offline/control preservation and an intermediate-code source preflight do not establish fresh model compliance or canonical downstream closure.",
+      "Read-history tests and both preflights supplied the second fact_ref from a private source table or a script-retained compare output. They proved receipt retention/bytes but missed discovery-locator→next-tool argument visibility. Fresh currentread replaced comparison output, forcing a justified recompare and one extra request; original aggregate cap blocked the final endpoint. Do not treat fields saved, controlled known-ref actions or namespace1of1 as full two-sample/source capability. A canonical prewire view was also wrongly called a transmitted identity leak before actual reversible transport inspection; correction preserved. Independent recheck accidentally overwrote one diagnostic JSON; absence of original bytes remains a real evidence limit."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "human_decision",
-      "strategy": "choose_canonical_meta_declaration_storage_then_actual_critic_slow_source_consumption",
-      "action": "Await the already-presented concrete A/B choice for optional CaseReflectionEvidence full declarations versus typed references and immutable archive. Do not implement the canonical extension before that decision. Then spec-first implement exact saved round/result-bound original source units, existing catalog/read_refs budget and actual critic/Slow egress; freeze independent counterexamples and current code before a distinct authorized native consumer acceptance.",
-      "stop": "No completed-stage reentry, same-case extra answer seeking pass, target budget reset, external API, label read, published definition/threshold/score/admission change or full successor. Legacy missing declarations stay unknown. Preserve old consumer0of1. If no decision, stop dependent canonical work; no repeated scans or administrative-only iterations."
+      "kind": "repair",
+      "strategy": "snapshot_bound_comparison_locators_in_native_working_view",
+      "action": "Spec first repair discovered comparison/ref visibility across subsequent tool decisions while binding it to the applicable fetched-fact snapshot; invalidate or explicitly qualify stale comparison basis after a new fetch/conflict. Use only handles visible in the preceding actual model request to construct original-failure, namespace, period and competing-source counterexamples. Prove native budget/anonymity/persistence with that actual decision path before any distinct frozen fresh validation; no private fact table supplies the next operand. Canonical critic/Slow storage extension remains independently pending user A/B choice.",
+      "stop": "Do not reenter either completed original module, supply actual fifth answer, reset/rename its target or enlarge98304, alter generic arithmetic/measurement/admission, access externalAPI/check/LockedTest, or start a full successor. Stop the strategy if a locator cannot be supported from the actual producer snapshot; retain unknowns and original1of2.",
+      "question": "Can each next operand or source locator needed by a fresh stateless role be recovered from its current authorized view, without replaying paid discovery or promoting a stale comparison into current measurement truth?",
+      "pass": "A view-only decision path obtains both exact source-bound operands, preserves namespace/period uncertainty and current graph scope, fits unchanged applicable request/case limits, and reaches an independently judged fresh endpoint on a separately frozen supported control.",
+      "fail": "The next handle requires outside-wire memory/private lookup, new facts silently reuse stale pair qualification, or repeated discovery still consumes the final consumer budget.",
+      "on_pass": "Advance only the proven locator/consumer component and continue remaining Fast/Slow discovery/admission/reuse/recovery requirements; wholeMVP staysopen.",
+      "on_fail": "Retain the failure and distinguish missing producer/indexing versus model behavior or genuine resource insufficiency; change the discriminating mechanism or stop, without same-case appended answers."
     }
   },
   "successor_prerequisites": [

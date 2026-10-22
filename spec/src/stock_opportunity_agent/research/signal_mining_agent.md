@@ -361,6 +361,23 @@ corrections and validates the assembled action before any tool executes.
   A bounded whole-receipt page discloses omitted ranges; the evidence directory
   also lists each document's read windows. Progress metadata proves a read,
   not its semantic sufficiency, and does not alter existing budget charges.
+- Structured fact reads also survive later actions in `structured_read_progress`.
+  Retain only successful, already-issued masked fact receipts, including their
+  exact case/document/hash/availability and taxonomy/concept/unit/period/value
+  binding. Deduplicate by fact ref, count repeated reads, and show the most
+  recently read whole receipts first. The working page selects at most 12 units
+  and 8,000 UTF-8 JSON bytes of complete units; its disclosure envelope and the
+  rest of the actual request still count against the existing request budget.
+  Disclose omitted counts and oversized fact refs/sizes, never clip a unit or
+  imply that the page is complete history. Existing `read_span(fact_ref=...)`
+  can revisit a known fact at its ordinary heavy-action cost; this surface adds
+  no new tool, free read, evidence, automatic relation or namespace inference.
+  A changed receipt under an already-read fact ref fails closed before accepting
+  another read; it cannot inherit the old receipt's read count or proof.
+  Originals and read ledger hashes stay unchanged. Replaying the same accepted
+  action sequence reconstructs the same working view; it does not backfill old
+  archived model requests. A selected ref or read count alone proves neither
+  comparability nor semantic sufficiency.
 - A candidate's measurement observable must be a genuinely new measurement:
   it may not reuse or version the base name of any Signal in the stable
   catalog, because changing an existing Signal belongs to the unchanged

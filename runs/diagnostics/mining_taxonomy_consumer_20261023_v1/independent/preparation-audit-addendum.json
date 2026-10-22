@@ -1,0 +1,75 @@
+{
+  "schema": "independent-mining-taxonomy-preparation-audit-addendum-v1",
+  "reviewed_at_utc": "2026-10-22T20:33:55.143056+00:00",
+  "disposition": "no_known_identity_or_reachable_path_budget_blocker_to_frozen_two_source_consumer_probe",
+  "scope": "Supplement the prior final-review without editing it or reference. No product modifications, fresh model answers, business label/check reads or original-stage reentry.",
+  "identity_determination": {
+    "canonical": "Canonical Fact/read receipt document_ref contains a known source CIK and by itself is not opaque. It is local provenance, not the final egress wire.",
+    "controlling_clause": "signal_mining_agent.md Controller egress consistency explicitly includes document handles, SEC numeric CIKs, namespace/domain text and reflected source receipts in complete composed-request reversible masking.",
+    "actual_wire": "Native full1780-store request-ready capture shows both source handles as document-secfacts:[ANON_ID_0000]:...; raw CIK, fullcase/companyid andticker absent in actual messages. Existing _CaseIdentityProjection extracts numeric CIK patterns from cik_<digits> inventory even with expand_aliases=False. No case-only alias patch or product change was needed.",
+    "source_selection": "Selected actual0671 content hash and2OCF fact refs match the independent source reference.",
+    "native_inverse_cache": "One explicitly offline raw action fixture refers to the supplied anonymous source token; native receipt/cache returns canonical source handle after reversible restoration, repeat cache result equal. This is1offline fixture inbox/receipt,0production-stage inbox/fresh answer; no domain terminal execution.",
+    "reviewer_correction": "Reviewer initially inferred a proven wire leak from a raw canonical receipt/short aliases list. That conclusion was premature; complete native wire and projection evidence supersede it. No initial leak finding is retained as established.",
+    "supported_scope": "Source-bound identity masking and native fixture inverse/cache path; no all-identity-family or fresh model output claim."
+  },
+  "reachable_path_budget": {
+    "why_added": "Root original controlled preflight read→read→compare did not by itself establish the reasonable fresh-author path from opaque refs: compare→read→read→stop.",
+    "unchanged_limits": {
+      "max_request_tokens": 32768,
+      "max_case_tokens": 98304,
+      "max_local_role_calls": 6,
+      "max_structured_corrections": 1,
+      "structured_reasoning_token_reserve": 0
+    },
+    "variants": [
+      {
+        "order": "current-then-prior",
+        "aggregate": 93486,
+        "headroom": 4818,
+        "blocked": false,
+        "whole_receipts_at_stop": 2,
+        "inboxes": 0
+      },
+      {
+        "order": "prior-then-current",
+        "aggregate": 93444,
+        "headroom": 4860,
+        "blocked": false,
+        "whole_receipts_at_stop": 2,
+        "inboxes": 0
+      }
+    ],
+    "all_fit": true,
+    "actual_native_input_only": "Both actual1780-store variants executed source fetch/control tools and captured real serialized request-ready messages.0inboxes/answers, no budget increase or extra permissions. All wire CIK checks passed.",
+    "limit": "These4-position paths fit; arbitrary extra exploration or corrections may still exhaust the fixed budget and must stop, not restart/rename/increase."
+  },
+  "current_stage_hash": "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+  "native_capture_stage_hashes": [
+    "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+    "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+    "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+    "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45"
+  ],
+  "known_remaining_substantive_blockers": [],
+  "still_unverified": [
+    "Formal prepare/code-source-reference manifest freeze and drift guard at the final operation boundary",
+    "Two fresh authors actual raw decisions, rationale semantics and correct namespace/period/source use",
+    "Physical response/correction accounting and fixed2sample semantic denominator",
+    "Formal completed-stage cache-only reconstruction/seals and exact persisted consumption if later authorized",
+    "No candidate/Signal admission, full-Mining ability or independent research gain is established"
+  ],
+  "evidence_loss_unchanged": "Original first budget-failure JSON byte loss remains disclosed; do not cite its overwritten path as an immutable original. Historical stdout evidence and separate fixed rechecks are retained.",
+  "reference_unchanged": {
+    "source-reference.json": "2549c26e9176cf6fb2fd4beaf7ad05e0847b22c3e8aa748ed4d59c0329b2665a",
+    "prefreeze-obligations.json": "11db4a586fa2bdf729e73af3baf08071611bf9452c38ced74be701c5b9d9a8d0"
+  },
+  "artifact_sha256": {
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/final-review.json": "3339fab15c8473455c3bebdd24d1d21a5d30dbeee7fa1560e2305a94678477a3",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/identity-boundary-addendum.json": "d02fe6cb9751abace31bf8efaa6ad34b4927f0c104586c6ae0f16b9801fc9559",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/identity-roundtrip-addendum.json": "b7fb7e2d3bb9bf8d9dec3df217ec7488a010df5ce37ed469e9613c4e91a6eeee",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/reachable-order-budget-addendum.json": "30b62c5875033e8e70acdc3721948e9b7509527a9738329c96cb75acf8b9b02e",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage-budget-original-overwrite-disclosure.json": "bfbe23a2cd519dd1d001185172f8f757ea7982147334239b2a248cb9e50f8ab9",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/source-reference.json": "2549c26e9176cf6fb2fd4beaf7ad05e0847b22c3e8aa748ed4d59c0329b2665a",
+    "runs/diagnostics/mining_taxonomy_consumer_20261023_v1/reference/prefreeze-obligations.json": "11db4a586fa2bdf729e73af3baf08071611bf9452c38ced74be701c5b9d9a8d0"
+  }
+}

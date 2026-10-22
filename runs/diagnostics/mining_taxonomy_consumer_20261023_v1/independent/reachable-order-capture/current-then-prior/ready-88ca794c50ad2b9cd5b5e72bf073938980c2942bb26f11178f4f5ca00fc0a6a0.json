@@ -1,0 +1,7 @@
+{
+  "event_type": "request_ready",
+  "model_alias": "independent-subagent",
+  "request_hash": "88ca794c50ad2b9cd5b5e72bf073938980c2942bb26f11178f4f5ca00fc0a6a0",
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/reachable-order-capture/current-then-prior/requests/88ca794c50ad2b9cd5b5e72bf073938980c2942bb26f11178f4f5ca00fc0a6a0.json",
+  "stage": "mining_controller_step"
+}

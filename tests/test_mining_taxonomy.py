@@ -68,6 +68,7 @@ class MiningTaxonomyTests(TestCase):
         controller.ledger = MiningLedger(cycle_id='test-cycle', seed_id='test-seed')
         controller._heavy_used = 0
         controller._model_calls = 0
+        controller._fact_read_progress = {}
         controller._read_fact_span({'action': 'read_span', 'fact_ref': facts[0].fact_ref})
         entry = controller._last_action_result
         self.assertEqual(entry['fact']['taxonomy'], facts[0].taxonomy)

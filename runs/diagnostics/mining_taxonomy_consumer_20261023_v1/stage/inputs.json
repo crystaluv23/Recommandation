@@ -1,0 +1,25 @@
+{
+  "actual": {
+    "case_id": "cik_0000800457:20250731",
+    "case_ref": "case-008",
+    "company_id": "cik_0000800457",
+    "concept": "NetCashProvidedByUsedInOperatingActivities",
+    "cutoff": "2025-07-31T00:00:00+00:00",
+    "label": "control",
+    "scope": "controlled historical source; not latest retrieval",
+    "snapshot": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json",
+      "sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a"
+    }
+  },
+  "namespace": {
+    "case_id": "synthetic-namespace-control",
+    "case_ref": "synthetic",
+    "company_id": "probe-issuer",
+    "concept": "Metric",
+    "content": "{\"facts\": {\"namespace-a\": {\"Metric\": {\"units\": {\"USD\": [{\"end\": \"2024-06-30\", \"val\": 120}]}}}, \"namespace-b\": {\"Metric\": {\"units\": {\"USD\": [{\"end\": \"2023-06-30\", \"val\": 100}]}}}}}",
+    "cutoff": "2024-08-02T00:00:00+00:00",
+    "label": "control",
+    "scope": "explicitly synthetic namespace counterexample; not a business label"
+  }
+}

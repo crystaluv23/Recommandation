@@ -1,0 +1,214 @@
+{
+  "available_actions": [
+    "inspect_manifest",
+    "inspect_catalog",
+    "fetch_evidence",
+    "compute_statistic",
+    "read_span",
+    "compare_groups",
+    "propose_candidate",
+    "record_deferred",
+    "record_no_pattern"
+  ],
+  "available_source_families": [
+    "financial",
+    "sec_company_facts"
+  ],
+  "budget": {
+    "browse_remaining": 24,
+    "heavy_remaining": 4,
+    "light_remaining": 4
+  },
+  "case_prediction_times": {
+    "synthetic": "2024-08-02T00:00:00+00:00"
+  },
+  "case_refs": [
+    "synthetic"
+  ],
+  "evidence_digest": {
+    "cases_with_facts": [
+      "synthetic"
+    ],
+    "concept_case_coverage": {
+      "Metric": {
+        "control_cases": 1,
+        "positive_cases": 0
+      }
+    },
+    "event_count": 0,
+    "fact_count": 2,
+    "families_fetched": [
+      "sec_company_facts"
+    ],
+    "fetches": 1,
+    "label_counts": {
+      "control": 1,
+      "positive": 0
+    },
+    "relation_count": 0
+  },
+  "known_event_refs": [],
+  "known_fact_refs": [
+    "fact-50642375b0247e29",
+    "fact-82c8d0d89727166f"
+  ],
+  "known_relation_refs": [],
+  "label_map": {
+    "synthetic": "control"
+  },
+  "last_action_result": {
+    "action": "read_span",
+    "available_at": "2024-08-02T00:00:00+00:00",
+    "case_refs": [
+      "synthetic"
+    ],
+    "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+    "context_chars": 179,
+    "document_ref": "document-namespace-control-only",
+    "fact": {
+      "concept": "Metric",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "taxonomy": "namespace-a",
+      "unit": "USD",
+      "value": "120"
+    },
+    "fact_ref": "fact-82c8d0d89727166f",
+    "masked": "{\"facts\": {\"namespace-a\": {\"Metric\": {\"units\": {\"USD\": [{\"end\": \"2024-06-30\", \"val\": 120}]}}}, \"namespace-b\": {\"Metric\": {\"units\": {\"USD\": [{\"end\": \"2023-06-30\", \"val\": 100}]}}}}}"
+  },
+  "measurable_evidence_manifest": {},
+  "memory_consumption": {
+    "original_disclosure_bytes": 2,
+    "original_disclosure_limit": 48000,
+    "read_refs": []
+  },
+  "meta_info": {},
+  "meta_memory_disclosures": [],
+  "modality_coverage": {
+    "narrative": {
+      "available": false,
+      "explored": false,
+      "status": "not_available"
+    },
+    "structured": {
+      "available": true,
+      "explored": true,
+      "status": "explored"
+    }
+  },
+  "prior_modality_footprints": [],
+  "research_axis": {
+    "axis_id": "surge_direction",
+    "control": "realized_max_multiple < 2.0",
+    "population": "eligible_discovery_cases",
+    "positive": "realized_max_multiple >= 2.0"
+  },
+  "seed": "discovery",
+  "signal_catalog": [],
+  "signal_catalog_disclosure": {
+    "counts": {
+      "available": 0,
+      "included": 0,
+      "omitted_after": 0,
+      "omitted_before": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "max_entry_bytes": 8000,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "read_action": "inspect_catalog scope=signals item_refs",
+    "read_byte_limit": 16000,
+    "selection_is_exhaustive": true
+  },
+  "slow_method_memory": {},
+  "state": "evidence_ready",
+  "structured_read_progress": {
+    "counts": {
+      "available": 1,
+      "included": 1,
+      "omitted_after": 0,
+      "omitted_before": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "items": [
+      {
+        "available_at": "2024-08-02T00:00:00+00:00",
+        "case_refs": [
+          "synthetic"
+        ],
+        "content_hash": "6873f74a724a0a9dd619310bdfc07cb31c4b8cc5c3ec7aa79a845e9d68b10b13",
+        "context_chars": 179,
+        "document_ref": "document-namespace-control-only",
+        "fact": {
+          "concept": "Metric",
+          "period": {
+            "end": "2024-06-30"
+          },
+          "taxonomy": "namespace-a",
+          "unit": "USD",
+          "value": "120"
+        },
+        "fact_ref": "fact-82c8d0d89727166f",
+        "masked": "{\"facts\": {\"namespace-a\": {\"Metric\": {\"units\": {\"USD\": [{\"end\": \"2024-06-30\", \"val\": 120}]}}}, \"namespace-b\": {\"Metric\": {\"units\": {\"USD\": [{\"end\": \"2023-06-30\", \"val\": 100}]}}}}}",
+        "read_count": 1
+      }
+    ],
+    "max_entry_bytes": 8000,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "revisit_action": "read_span with fact_ref; ordinary heavy cost",
+    "selection_is_exhaustive": true,
+    "selection_order": "most_recent_read_first"
+  },
+  "tool_contracts": {
+    "compute_statistic": {
+      "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+      "operand_count": 2,
+      "operand_order": "numerator_then_denominator_or_latest_then_prior",
+      "operand_scope": "same_case",
+      "rules": [
+        "latest_minus_comparable_prior",
+        "latest_over_comparable_prior",
+        "latest_over_latest"
+      ]
+    },
+    "inspect_catalog": {
+      "allowed_scopes": [
+        "signals",
+        "evidence",
+        "memory",
+        "backlog"
+      ],
+      "budget_by_scope": {
+        "backlog": "light",
+        "evidence": "light",
+        "memory": "browse",
+        "signals": "light"
+      },
+      "default_scope": "signals"
+    },
+    "read_span": {
+      "budget_by_target": {
+        "document_ref": "browse",
+        "event_ref": "browse",
+        "fact_ref": "heavy"
+      },
+      "length_max": 4000,
+      "length_min": 1,
+      "offset_min": 0,
+      "target_count": 1,
+      "target_fields": [
+        "fact_ref",
+        "event_ref",
+        "document_ref"
+      ],
+      "window_applies_to": [
+        "event_ref",
+        "document_ref"
+      ]
+    }
+  }
+}

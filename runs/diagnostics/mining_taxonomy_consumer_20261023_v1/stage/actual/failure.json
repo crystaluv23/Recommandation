@@ -1,0 +1,146 @@
+{
+  "error": "sample aggregate logical reservation exhausted",
+  "sample": "actual",
+  "sealed_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/action-001.json",
+      "sha256": "1faa07eaecdb0aca19d37790cf2d3b6181b50be54e74c2c0fd9c9ae8e7403000"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/action-002.json",
+      "sha256": "40cce4e5de6c2d35c8398011e1b5df14d567716911ac4a8bf6a9c58115ee9e69"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/action-003.json",
+      "sha256": "f444734ec41603a386f91ac194170e54646835313db391e5ceeffb622eadd2df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/action-004.json",
+      "sha256": "3e25fa07b1a9110003d3661522cf6813d826b7d53dbe2272efe32e1e21847a30"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/cache/responses/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.json",
+      "sha256": "9ced4c712e7663ef01c678966461750d24f8770f3361ed63626b7a69705f1c15"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/cache/responses/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.json",
+      "sha256": "c36f9fb340c0ac891933ea34c3d0a1c54ddcd90bad65b55e7d6511bcbe826832"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/cache/responses/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.json",
+      "sha256": "c1b0d75b75395a599190b0bbc6efa9004a33ed46d981b25879e77bc467311505"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/cache/responses/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.json",
+      "sha256": "2f256fa91c48280be71bcaea3992d1ad693e6e331d76f313f1bdba882c877367"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/controlled-fetch.json",
+      "sha256": "0f825415b88596249c50ec11daccde8197a6a4ffb058c389f287dbc3db0c7952"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/contract.json",
+      "sha256": "71e37f2cbca2702e8978becb16970eaf17d8e0ed4c0a74dc7347a5f0aa4ad6c9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/inbox/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.json",
+      "sha256": "be52985bb66e062bf8380bf2b928554f4d99132e61ee4a8ebd96c343a0292e55"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/inbox/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.json",
+      "sha256": "4d3fd875e77c6b2bea14dab3a1d3db4b540ecdf98dca468459f178263ac93fca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/inbox/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.json",
+      "sha256": "b02f07e6fc5972615b94092ff2cd747d8e12ef8f363ce7d5af3af16aba24e6d4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/inbox/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.json",
+      "sha256": "c38418b9d850a8ea39fea6f91973fb7492882a6a2f9aae6eeaececfa8651f16d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.txt",
+      "sha256": "6ba6fba58e9ab60c0efad4a50c9834e87c239ea922be39c88e774ec6f0f322d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.txt",
+      "sha256": "cd7f2e5d625918450294ba26d448ffe2cf9d6a4a3347cb51b0c81125fa6f81e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.txt",
+      "sha256": "f6060a7bdd58922aa7530dd6e755e9fab5fd1142cb9b026a4858247eb182dc5e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/outbox/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.txt",
+      "sha256": "0abe37e6b2ebd5614df1a9183b688fcf8b8986110d77225b7636adc71f936f34"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/receipts/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.json",
+      "sha256": "afd4dc6b4a6cf5cb0742184ce7c2f3fce56b4a7163b1f2175aae4f7785b27fbd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/receipts/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.json",
+      "sha256": "c3ba12431c1587f0da2fe0193ff3275d21c199ac4d40cfe44841476f62aacfd3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/receipts/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.json",
+      "sha256": "bd1d0ba8aa0524cf7205eeeb7ca4a75382f2856c262c235ef9f6448853b4d07b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/exchange/receipts/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.json",
+      "sha256": "17d070cc2dd27222a78b7c49297cfff3203ab8ae6d5a8a8920b5562233b8bbd6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/failed-controller.json",
+      "sha256": "a7107df96925fd5d11205f240ed819e4baeb4a3b7978eb79c52352d3826ebcd2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/10255368d89520d7ae4453d1da8b216bd98e67e5a8219838e581d4d1ef8d1b2e.json",
+      "sha256": "2d89d8894650b5a8cbecc1737086e12b45c90e931c2fe1f9b7994ac1f52d4754"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/8e83def5df09454579b81102fa16e2245ee4a76429000468b5bb0c72e3cb95e6.json",
+      "sha256": "89ea30b65df72a875ce3225e6ef0fbf70f46fac2dd71ac476b7fbf16ce796dcf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/b0670632054a16c7ccef18ab7b2970ad5d686cd45b402f821cbc35f5523bd1e8.json",
+      "sha256": "1fafb9d0d7c6706b4f9949866afe9148b2e51d9d066f02a0d33598e4977ccc56"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/d654e536da4c6a5e63a5d31d1d7f30834c129cd8409ca8fe8c2879925cf76cea.json",
+      "sha256": "c3baaa02be9acbafc0d17dc7e85576179734044f659a8b8a4c9ca76f0ffdd210"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/requests/f077d1c3eaaec9d35642d24904f412cca56a8bf7442a0da1a7bca978bf9b4cf7.json",
+      "sha256": "d47f2deda16d56e281eb8ca5f8783964b5a9a958962a2502fee3d6b4057b0a1f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/unused_external.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-001.json",
+      "sha256": "9f28904421817ce6366a6f6b4963e1aeb21d8ca9a895d13701986d1f2b0b372e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-002.json",
+      "sha256": "07241cedaa527f4cc213ab766374cd3fc542907d21e2ad128a8ab8f0a737c414"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-003.json",
+      "sha256": "f551610ca03d12bb7df673f99cc78038a7efdb8a1a7aa9d8ca4285a25fe6d9cc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-004.json",
+      "sha256": "95bfe3d8e950745fef7d765de588c3b923da8337d00c4c39705ed853c820326c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/view-005.json",
+      "sha256": "484ca65a7e2c6f3b6193d6aa1cd3415c8c436d697b1fe91bb909a617247ec416"
+    }
+  ],
+  "state": "terminal_module_failure",
+  "terminal_hash": "206ed0a2cf8b5de2005cedf4be8fd72e39f1f0d33e148d2ed75f0ca1add30d20",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py\", line 342, in advance\n    result = controller.run()\n             ^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 412, in run\n    raw = self._decide(view)\n          ^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py\", line 471, in _decide\n    raw = self.model.next_action(dict(view))\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py\", line 210, in next_action\n    action = inner.next_action(view)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py\", line 253, in next_action\n    parsed, usage = self.caller.complete_json(\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py\", line 179, in complete_json\n    return super().complete_json(**kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py\", line 1039, in complete_json\n    value, usage, _scores = self._complete_json(\n                            ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py\", line 1128, in _complete_json\n    value, usage, scores = self._complete_json_request(**projected)\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py\", line 1297, in _complete_json_request\n    _emit_runtime_progress(\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py\", line 1881, in _emit_runtime_progress\n    callback({\"event_type\": event_type, **details})\n  File \"/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py\", line 165, in observe\n    raise LocalRoleBudgetExhausted(\"sample aggregate logical reservation exhausted\")\nstock_opportunity_agent.research.local_role_exchange.LocalRoleBudgetExhausted: sample aggregate logical reservation exhausted\n",
+  "type": "LocalRoleBudgetExhausted"
+}

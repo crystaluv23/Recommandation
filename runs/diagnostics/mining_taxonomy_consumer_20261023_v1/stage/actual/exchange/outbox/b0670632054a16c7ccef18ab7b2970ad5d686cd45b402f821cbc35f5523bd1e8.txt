@@ -1,0 +1,1 @@
+{"action": "read_span", "fact_ref": "fact-2f898adb2d25e349", "rationale": ["Inspect the selected prior operand directly to establish its taxonomy, unit and complete period before accepting the comparison.", "The latest receipt establishes us-gaap operating cash flow of 9506313 USD for 2011-01-01 through 2011-06-30; the prior receipt remains unread."]}

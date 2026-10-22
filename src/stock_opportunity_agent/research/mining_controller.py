@@ -372,6 +372,7 @@ class LabelAwareMiningController:
         self._document_cards: dict[tuple[str, str], dict[str, Any]] = {}
         self._visible_ranges: dict[tuple[str, str], tuple[tuple[int, int], ...]] = {}
         self._read_progress: dict[tuple[str, str, int, int], dict[str, Any]] = {}
+        self._fact_read_progress: dict[str, dict[str, Any]] = {}
         self._last_action_result: Mapping[str, Any] | None = None
         self._narrative_explored = False
         self._narrative_reads = 0
@@ -539,6 +540,17 @@ class LabelAwareMiningController:
                 list(reversed(list(self._read_progress.values()))),
                 max_items=max(1, len(self._read_progress)),
             )
+        if self._fact_read_progress:
+            entries = deepcopy(list(reversed(list(self._fact_read_progress.values()))))
+            progress = bounded_entry_page(entries)
+            progress["oversized_entries"] = [
+                {**row, "fact_ref": entries[row["index"]]["fact_ref"]}
+                for row in progress["oversized_entries"]
+            ]
+            view["structured_read_progress"] = {
+                **progress, "selection_order": "most_recent_read_first",
+                "revisit_action": "read_span with fact_ref; ordinary heavy cost",
+            }
         view["available_actions"] = [
             action for action in ACTIONS
             if (action not in LIGHT_ACTIONS or self._light_used < self.light_action_limit
@@ -1275,6 +1287,9 @@ class LabelAwareMiningController:
                      {"taxonomy": fact.taxonomy, "concept": fact.concept,
                       "unit": fact.unit, "period": dict(fact.period) if fact.period else None,
                       "value": fact.value}, self.identity_aliases, expand_aliases=False)}
+        prior = self._fact_read_progress.get(fact_ref, {})
+        if prior and {key: value for key, value in prior.items() if key != "read_count"} != entry:
+            raise InvalidMiningAction("already-read fact receipt changed under the same fact_ref")
         self._last_action_result = {"action": "read_span", **entry}
         self._append(
             "read_span",
@@ -1283,6 +1298,10 @@ class LabelAwareMiningController:
             evidence_refs=(fact_ref,),
             case_refs=(fact.case_ref,),
         )
+        self._fact_read_progress.pop(fact_ref, None)
+        self._fact_read_progress[fact_ref] = {
+            **deepcopy(entry), "read_count": prior.get("read_count", 0) + 1,
+        }
         self._heavy_used += 1
         return "running", [], ()
 

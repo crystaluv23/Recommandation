@@ -1,0 +1,6 @@
+{
+  "agent_id": "explicit-offline-identity-roundtrip-fixture-not-a-model",
+  "inbox_sha256": "594b0dbbc680839680a9462c45a7f63ecae9085167430b167c8d3c8e14aea79b",
+  "raw_output_sha256": "5d900857ac30c6883fda83025a87839f58ed560b0d510ae298d7dafa2f4310bd",
+  "request_hash": "a6f667f83ac113a36886257fd26151999a47d6a2301dafb6470115db42f4f4e5"
+}

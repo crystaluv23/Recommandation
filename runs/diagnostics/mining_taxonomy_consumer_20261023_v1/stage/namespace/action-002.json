@@ -1,0 +1,8 @@
+{
+  "action": "read_span",
+  "fact_ref": "fact-82c8d0d89727166f",
+  "rationale": [
+    "Inspect the other Metric operand to retain its own taxonomy, period and measurement identity before assessing comparability.",
+    "The existing receipt binds the prior observation to namespace-b; matching Metric names and USD units alone do not establish equivalence across namespaces."
+  ]
+}

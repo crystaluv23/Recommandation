@@ -1,0 +1,46 @@
+{
+  "scope": "All stage writes under independent/tmp, synthetic local raw actions only,0fresh models/business labels/API/original edits.",
+  "checks": [
+    {
+      "name": "preflight_content_inventory_drift_rejects_before_root",
+      "pass": true,
+      "detail": [
+        {
+          "mode": "content",
+          "rejected": "original artifact changed: /Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/tmp/tmpbxqerm0k/source.json"
+        },
+        {
+          "mode": "source-added",
+          "rejected": "preflight source inventory changed; no refreeze"
+        },
+        {
+          "mode": "source-removed",
+          "rejected": "preflight source inventory changed; no refreeze"
+        },
+        {
+          "mode": "code-added",
+          "rejected": "preflight code inventory changed; no refreeze"
+        }
+      ]
+    },
+    {
+      "name": "seventh_native_position_stops_before_journal",
+      "pass": false,
+      "error_type": "AssertionError",
+      "error": "Expected true",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage_counterexamples.py\", line 13, in check\n    try:results.append({'name':name,'pass':True,'detail':fn()})\n                                                         ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage_counterexamples.py\", line 45, in countcap\n    require(errors==['InputCaptured']*6+['LocalRoleBudgetExhausted'])\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage_counterexamples.py\", line 16, in require\n    if not x:raise AssertionError(msg)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Expected true\n"
+    },
+    {
+      "name": "pending_cache_reconstruction_and_terminal_integrity",
+      "pass": false,
+      "error_type": "ValidationError",
+      "error": "frozen code inventory changed",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage_counterexamples.py\", line 13, in check\n    try:results.append({'name':name,'pass':True,'detail':fn()})\n                                                         ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage_counterexamples.py\", line 56, in pending_restore\n    pending=stage.advance('namespace');require(pending['state']=='pending')\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py\", line 325, in advance\n    inputs, contract = verify()\n                       ^^^^^^^^\n  File \"/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py\", line 319, in verify\n    raise ValidationError(\"frozen code inventory changed\")\nstock_opportunity_agent.models.ValidationError: frozen code inventory changed\n"
+    }
+  ],
+  "passed": 1,
+  "total": 3,
+  "stage_sha_before": "396d9576069442fd4f52f6dc962fe429b6b856d11829e43f2639e9add3392565",
+  "stage_sha_after": "396d9576069442fd4f52f6dc962fe429b6b856d11829e43f2639e9add3392565",
+  "source_drift": false
+}

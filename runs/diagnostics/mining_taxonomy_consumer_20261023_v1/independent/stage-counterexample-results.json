@@ -1,0 +1,56 @@
+{
+  "scope": "All stage writes under independent/tmp, synthetic local raw actions only,0fresh models/business labels/API/original edits.",
+  "checks": [
+    {
+      "name": "preflight_content_inventory_drift_rejects_before_root",
+      "pass": true,
+      "detail": [
+        {
+          "mode": "content",
+          "rejected": "original artifact changed: /Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/tmp/tmpxlok4v44/source.json"
+        },
+        {
+          "mode": "source-added",
+          "rejected": "preflight source inventory changed; no refreeze"
+        },
+        {
+          "mode": "source-removed",
+          "rejected": "preflight source inventory changed; no refreeze"
+        },
+        {
+          "mode": "code-added",
+          "rejected": "preflight code inventory changed; no refreeze"
+        }
+      ]
+    },
+    {
+      "name": "seventh_native_position_stops_before_journal",
+      "pass": true,
+      "detail": {
+        "stops": [
+          "InputCaptured",
+          "InputCaptured",
+          "InputCaptured",
+          "InputCaptured",
+          "InputCaptured",
+          "InputCaptured",
+          "LocalRoleBudgetExhausted"
+        ],
+        "journals": 6,
+        "inboxes": 0
+      }
+    },
+    {
+      "name": "pending_cache_reconstruction_and_terminal_integrity",
+      "pass": false,
+      "error_type": "AssertionError",
+      "error": "Terminal completion metadata corruption was accepted",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage_counterexamples.py\", line 13, in check\n    try:results.append({'name':name,'pass':True,'detail':fn()})\n                                                         ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage_counterexamples.py\", line 85, in pending_restore\n    require(tamper['rejected'],'Terminal completion metadata corruption was accepted')\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/stage_counterexamples.py\", line 16, in require\n    if not x:raise AssertionError(msg)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Terminal completion metadata corruption was accepted\n"
+    }
+  ],
+  "passed": 2,
+  "total": 3,
+  "stage_sha_before": "396d9576069442fd4f52f6dc962fe429b6b856d11829e43f2639e9add3392565",
+  "stage_sha_after": "396d9576069442fd4f52f6dc962fe429b6b856d11829e43f2639e9add3392565",
+  "source_drift": false
+}

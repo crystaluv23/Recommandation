@@ -1,0 +1,78 @@
+{
+  "scope": "All stage writes under independent/tmp, synthetic local raw actions only,0fresh models/business labels/API/original edits.",
+  "checks": [
+    {
+      "name": "preflight_content_inventory_drift_rejects_before_root",
+      "pass": true,
+      "detail": [
+        {
+          "mode": "content",
+          "rejected": "original artifact changed: /Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/independent/tmp/tmpoq8i7641/source.json"
+        },
+        {
+          "mode": "source-added",
+          "rejected": "preflight source inventory changed; no refreeze"
+        },
+        {
+          "mode": "source-removed",
+          "rejected": "preflight source inventory changed; no refreeze"
+        },
+        {
+          "mode": "code-added",
+          "rejected": "preflight code inventory changed; no refreeze"
+        }
+      ]
+    },
+    {
+      "name": "seventh_native_position_stops_before_journal",
+      "pass": true,
+      "detail": {
+        "stops": [
+          "InputCaptured",
+          "InputCaptured",
+          "InputCaptured",
+          "InputCaptured",
+          "InputCaptured",
+          "InputCaptured",
+          "LocalRoleBudgetExhausted"
+        ],
+        "journals": 6,
+        "inboxes": 0
+      }
+    },
+    {
+      "name": "pending_cache_reconstruction_and_terminal_integrity",
+      "pass": true,
+      "detail": {
+        "physical_offline_receipts": 4,
+        "journal_counts": [
+          2,
+          3,
+          4,
+          4
+        ],
+        "read_counts": [
+          1,
+          1
+        ],
+        "native_terminal_executed": false,
+        "reservations": [
+          21813,
+          21318,
+          21966,
+          19880
+        ],
+        "aggregate": 84977,
+        "completion_metadata_tamper": {
+          "rejected": true,
+          "type": "ValidationError"
+        }
+      }
+    }
+  ],
+  "passed": 3,
+  "total": 3,
+  "stage_sha_before": "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+  "stage_sha_after": "d7d0699ca2208864f5c54f09ac3467d1eadd4137c99f6871eb8c859e6e2b5d45",
+  "source_drift": false
+}

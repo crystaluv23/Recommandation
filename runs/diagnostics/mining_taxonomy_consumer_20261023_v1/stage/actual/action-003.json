@@ -1,0 +1,11 @@
+{
+  "action": "compare_groups",
+  "concepts": [
+    "NetCashProvidedByUsedInOperatingActivities"
+  ],
+  "rationale": [
+    "The read establishes us-gaap operating cash flow of USD 9506313 for 2011-01-01 through 2011-06-30 in case-008, available before its prediction cutoff.",
+    "Inspect the fetched target-concept values and fact refs to identify a period-comparable prior operand; the neighboring excerpt does not establish its full period.",
+    "This single control case supports historical operand inspection, not a positive-versus-control conclusion."
+  ]
+}
