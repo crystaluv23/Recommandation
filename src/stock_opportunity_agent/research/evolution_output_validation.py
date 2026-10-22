@@ -1042,6 +1042,7 @@ _UNTRUSTED_DATA_INSTRUCTION = (
 
 def _require_context_signal_pit(context: Mapping[str, Any]) -> None:
     """Recheck persisted full results or runtime cards before new model use."""
+    from stock_opportunity_agent.signal_library import validate_signal_classification_contract
     rows = list(context.get("signal_results", ()))
     for round_row in context.get("signal_rounds", ()):
         if isinstance(round_row, Mapping) and isinstance(round_row.get("batch"), Mapping):
@@ -1056,6 +1057,12 @@ def _require_context_signal_pit(context: Mapping[str, Any]) -> None:
         if not isinstance(row, Mapping):
             raise SignalModelInputRejected("context", "signal_results", "complete result or runtime card required")
         require_signal_result_pit(row, as_of=cutoff)
+        interpretation = row.get("interpretation", {})
+        metadata = interpretation.get("measurement_context", {}) if isinstance(interpretation, Mapping) else {}
+        contract = metadata.get("classification_contract") if isinstance(metadata, Mapping) else None
+        if contract is not None:
+            validate_signal_classification_contract(contract,
+                signal_ref=row.get("signal_ref") or f"{row.get('signal_id')}:v{row.get('version')}")
 
 
 def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, Any]:

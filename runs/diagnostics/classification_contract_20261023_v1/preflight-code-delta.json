@@ -1,0 +1,21 @@
+{
+  "scope": "Completed input-only intermediate-code preflight; no reentry or current-full-code claim.",
+  "changed_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "preflight_hash": "0163e858fa885672e8bbce322a711b344a1a42bfc8cb9f52b6c2421f025beee7",
+      "current_hash": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "preflight_hash": "b51b269c035a71586cb9d08394871d0025a4ede53f2c8b725dd90d7f35633b7e",
+      "current_hash": "0b80146d0354b1a53ee8fd15dad578c95120a7e2059be4ecc96d8d5830be8d41"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "preflight_hash": "6efe221a91e2eca09b14686a0e05e4adcb8e486f80f6165eb09a7ed269b501d2",
+      "current_hash": "35be3d0546d1e19f9ddeb76ae89ebf0f1e35bc809c81f5b7af169d4d7e62ad60"
+    }
+  ],
+  "new_model_behavior": "not_verified"
+}

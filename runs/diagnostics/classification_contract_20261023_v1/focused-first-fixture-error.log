@@ -1,0 +1,14 @@
+E....
+======================================================================
+ERROR: test_core_to_real_reflect_final_persistence_posthoc_and_critic_reuses_only_saved_declaration (tests.test_signal_classification_contract.SignalClassificationContractTests.test_core_to_real_reflect_final_persistence_posthoc_and_critic_reuses_only_saved_declaration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_classification_contract.py", line 125, in test_core_to_real_reflect_final_persistence_posthoc_and_critic_reuses_only_saved_declaration
+    intent = SignalSelectionDecision(spec.ref, reason_code='combine_evidence',
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSelectionDecision.__init__() missing 2 required positional arguments: 'selection_reason' and 'expected_role'
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.004s
+
+FAILED (errors=1)

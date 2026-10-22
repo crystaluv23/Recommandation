@@ -1,0 +1,34 @@
+{
+  "scope": "Synthetic no-outcome source row, no business labels or model calls.",
+  "input_source_row": {
+    "case_index": 1,
+    "stop_reason": "finalized",
+    "termination_trigger": null,
+    "self_reflection": {}
+  },
+  "registered_source_contents": [
+    {
+      "source_identity": "reflection_case:6400b39813e81caa5acf61090a17a9f50dda049dab73d4fa36ec363da9d5074d"
+    },
+    {
+      "case_index": 1,
+      "stop_reason": "finalized",
+      "termination_trigger": null,
+      "self_reflection": {}
+    }
+  ],
+  "classification_contract_anywhere": false,
+  "source_count": 2,
+  "source_confirmed_chain": [
+    "CaseReflectionEvidence fields/from_trajectory/to_dict do not copy final_context or classification declarations.",
+    "Actual LLMPlanCritic builds helper summary, then replaces trajectories with trajectories_view omitting signal_rounds.",
+    "Memory._cases registers only _FACT_FIELDS outcome snapshot and supplied CaseReflectionEvidence row.",
+    "Slow original_case_reflections serializes this same CaseReflectionEvidence schema, so no saved declaration is available for original-source reads."
+  ],
+  "conclusion": "T10 actual critic/Slow preservation fails for the new metadata despite helper/posthoc retention; no canonical mutation is authorized by this audit.",
+  "source_hashes": {
+    "src/stock_opportunity_agent/research/evolution_core.py": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556",
+    "src/stock_opportunity_agent/research/evolution_reflection_memory.py": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04"
+  }
+}

@@ -3,9 +3,9 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-22T19:19:35.743892+00:00",
+    "checked_at": "2026-10-22T20:03:56.575713+00:00",
     "thread_id": "01a15f73-622f-7130-905e-927e4e6c17c7",
-    "source": "Active unbudgeted goal refreshed this turn. User reaffirmed no external APIs; two fresh independent native role authors for bounded consumer, no full successor or completed-stage reentry."
+    "source": "Active unbudgeted goal refreshed. User no-external-API boundary retained. Local propagation repair and independent offline counterexamples only; no fresh production model answer. Canonical critic/Slow storage decision pending, no full successor."
   },
   "acceptance": [
     {
@@ -1672,26 +1672,41 @@
         "runs/diagnostics/financial_context_consumer_20261023_v1/associated-controls.log"
       ],
       "result": "Mapped old stronger maturity reference to actual clauses, preserving strict0of1 and all originals. New frozen one-completed-result context consumer imports only independently supported v12 liquidity_runway_months:v3 into accepted actual GPRE H_init after whole bootstrap equality. Original financial9/routing0of1 unchanged; no new selection/apply authority.1856source/106code bindings, native input-only before receive/inbox0handoff.2fresh native authors firstanswers/0correction; Reflect retains5exact needs and2real citations/context owns no answer; actual finalcontext carries5.374720662778656months/Q1/formula/operands/ref; actual Predictor and durable sink before truth.235851prior-inclusive logical reservation/256000,4calls including old2;2newphysicalreceipts. Independent review finds F9 categoricalpositive falsely equated with positive numericmonths despite supplied distinction instruction; exact version classification thresholds absent wire. F7/F8 single-case context connection supported, complete semantic1case0passes; wholeF9/MVP open.4newcontrols+64associated pass.25files throwaway-copy cache reconstruction unchanged/2existingreceipts/0handoff, not OS recovery. First verifier macOS temp path alias error before native retained separately.0externalAPI/GET/labels/newSignalcalc/pointer/fullsuccessor."
+    },
+    {
+      "id": "classification-contract-propagation-20261023",
+      "strategy": "actual_result_bound_classification_declarations_through_runtime_and_saved_views",
+      "failure_families": [
+        "exact_classification_condition_missing_from_consumer_context",
+        "cross_round_ref_backfill_and_uninvoked_validator_reconstruction",
+        "identity_projection_breaks_control_metadata_integrity",
+        "actual_critic_slow_egress_drops_saved_classification_declarations"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/classification-contract-propagation-20261023.md",
+        "reports/classification-context-persistence-proposal-20261023.md",
+        "runs/diagnostics/classification_contract_20261023_v1/reference/preimplementation-review.json",
+        "runs/diagnostics/classification_contract_20261023_v1/final-connected.log",
+        "runs/diagnostics/classification_contract_20261023_v1/independent/final-review.json",
+        "runs/diagnostics/classification_contract_20261023_v1/actual-source-preflight/result.json",
+        "runs/diagnostics/classification_contract_20261023_v1/preflight-code-delta.json",
+        "runs/diagnostics/classification_contract_20261023_v1/independent/critic-slow-gap.json"
+      ],
+      "result": "Spec-first exact actual callable/skill declaration control data; result-object/private sidecar and canonical result_hash, per-round saved reuse, no Registry/default backfill or canonical SignalResult changes. Independent first counterexamples found cross-round ref contamination, Update uninvoked validator reconstruction and anonymous text/raw-hash mismatch; all fixed and same family rechecked.445associated pass;20independent offline controls plus2Update capture cases and original alias recheck pass, not model samples. Actualsource input-only1newdeterministicv3 batch equals old strict-pass result,wholebootstrap equal,1847source bindings,prior111032usage retained;Reflect reservation59806available79655;0receive/inbox/answer. This intermediate preflight precedes3finalsourcechanges, preserved in code-delta; no finalcode live claim. Actualcritic/Slow canonical original source still lacks declaration despite helper/Posthoc preservation;A/Bstorage proposal pending user decision, no canonical extension implemented. OldconsumerF9semantic0of1,financial9,routing0of1,maturity0of1 unchanged.0externalAPI/GET/businesslabels/LockedTest/newproductionanswer/fullsuccessor/pointerchange. FullMVP staysopen."
     }
   ],
   "review": {
-    "after_iteration": "completed-financial-context-consumer-20261023",
+    "after_iteration": "classification-contract-propagation-20261023",
     "evidence": [
-      "reports/financial-context-consumer-20261023.md",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/reference/contract-obligation-mapping.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/reference/consumer-oracle.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/reference/bootstrap-binding-addendum.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/preflight/request-ready.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/stage/manifest.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/stage/completion.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/stage/accepted-reflect.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/stage/predictor-input.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/stage/prediction-sink.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/independent-final-review.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/classification-semantics-diagnosis.md",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/cache-reconstruction.json",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/consumer-controls.log",
-      "runs/diagnostics/financial_context_consumer_20261023_v1/associated-controls.log"
+      "reports/classification-contract-propagation-20261023.md",
+      "reports/classification-context-persistence-proposal-20261023.md",
+      "runs/diagnostics/classification_contract_20261023_v1/reference/preimplementation-review.json",
+      "runs/diagnostics/classification_contract_20261023_v1/final-connected.log",
+      "runs/diagnostics/classification_contract_20261023_v1/independent/final-review.json",
+      "runs/diagnostics/classification_contract_20261023_v1/actual-source-preflight/result.json",
+      "runs/diagnostics/classification_contract_20261023_v1/preflight-code-delta.json",
+      "runs/diagnostics/classification_contract_20261023_v1/independent/critic-slow-gap.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1793,19 +1808,15 @@
       "Prior synthetic controls used empty spec parameters and never exercised immutable Registry nonempty dictionaries. Small source catalogs also hid repeated metadata cost on the composed wire. An oracle-addressed coordinate path does not prove a model can find an unindexed late passage or interpret an unsupported historical skill.",
       "Independent ceiling review found catalog() charged unseen previews after body budget exhaustion without atomic validation. Earlier budget checks only guarded read rows. The initial candidate verification guard then blocked legitimate in-memory fixture appends; keep harness failures distinct from product failures and preserve exact-fit/whole-page rejection controls.",
       "A source-only independent reference can add stronger obligations than the actual measurement. Root froze full-context expectations without mapping each to the presence-only definition. The native answer preserves the qualifying complete paragraph, dates, fees/warrants/drawn caveat, yet frozen extra named-borrower/other-facility/inventory requirements yield strict0of1. Distinguish contract/core support from stronger reference closure; preserve original denominator and correct oracle design before another freeze, rather than reclassifying the answer or rerunning until pass.",
-      "Distinct numeric_sign/categorical_state fields and a prompt warning preserved scalar and label but did not deliver the exact classification predicate. Fresh Predictor then equated a risk-positive low-runway enum with a positive months number; offline field-preservation tests and mechanical acceptance did not cover this semantic inference. Preserve complete-case0of1 while retaining narrow F7/F8 evidence, and repair the producer-to-consumer classification contract rather than correcting the completed answer or adding a wording patch."
+      "Distinct numeric_sign/categorical_state fields and a prompt warning preserved scalar and label but did not deliver the exact classification predicate. Fresh Predictor then equated a risk-positive low-runway enum with a positive months number; offline field-preservation tests and mechanical acceptance did not cover this semantic inference. Preserve complete-case0of1 while retaining narrow F7/F8 evidence, and repair the producer-to-consumer classification contract rather than correcting the completed answer or adding a wording patch.",
+      "A ref-global declaration map and helper-only critic test missed different-round/result provenance and final egress. Update rebuilt metadata from a validator function that never executed; anonymous text projection retained an invalid raw hash. Exact result-object capture, per-round reuse and source/view hash separation fix those local families, but actual critic/Slow CaseReflectionEvidence serialization still drops declarations. Offline/control preservation and an intermediate-code source preflight do not establish fresh model compliance or canonical downstream closure."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "repair",
-      "strategy": "exact_version_classification_meaning_through_model_consumers_with_opaque_unknowns",
-      "action": "Spec first: bind categorical explanations to authoritative exact-version producer conditions and preserve them through model view, Reflect, final context, Predictor and persistence. Missing meanings stay opaque. Distinguish same-sign/different-state, risk-positive, negative-number/positive-state, unbounded and unavailable cases before a newly frozen bounded fresh acceptance. Do not infer semantics from parameter spelling or require a stock-direction/probability answer.",
-      "stop": "No repeated completed consumer or extra same-case response; preserve F9 original0of1, financial9, routing0of1 and prior maturity0of1. No canonical measurement/score/admission change, external API, labels, published-version overwrite or full successor. Stop if classification meaning cannot be established from the authoritative producer rather than fabricate it.",
-      "question": "Can the consumer receive the exact categorical condition or explicitly unknown semantics, independently of scalar sign and stock direction, with source/version/typed repair authority intact?",
-      "pass": "Authoritative classification condition is faithfully bound and delivered, no unsupported condition inferred; representative counterexamples and new independent native consumer obey the distinction within frozen budget.",
-      "fail": "Unknown classification is guessed, sign substitutes for predicate, state explanation changes the measurement definition, or required version/provenance/context is dropped.",
-      "on_pass": "Advance only the supported family/component and proceed to remaining input/Slow/reuse/restoration prerequisites; wholeMVP stays open until full acceptance.",
-      "on_fail": "Retain the new failure, isolate producer/contract versus fresh model noncompliance, and change the discriminating hypothesis or stop that strategy; no full rerun."
+      "kind": "human_decision",
+      "strategy": "choose_canonical_meta_declaration_storage_then_actual_critic_slow_source_consumption",
+      "action": "Await the already-presented concrete A/B choice for optional CaseReflectionEvidence full declarations versus typed references and immutable archive. Do not implement the canonical extension before that decision. Then spec-first implement exact saved round/result-bound original source units, existing catalog/read_refs budget and actual critic/Slow egress; freeze independent counterexamples and current code before a distinct authorized native consumer acceptance.",
+      "stop": "No completed-stage reentry, same-case extra answer seeking pass, target budget reset, external API, label read, published definition/threshold/score/admission change or full successor. Legacy missing declarations stay unknown. Preserve old consumer0of1. If no decision, stop dependent canonical work; no repeated scans or administrative-only iterations."
     }
   },
   "successor_prerequisites": [

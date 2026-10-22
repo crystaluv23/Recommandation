@@ -1,0 +1,41 @@
+{
+  "scope": "Same actual-vs-validator-map counterexample, revised explicit per-case packet API. No labels or models.",
+  "checks": [
+    {
+      "case": "actual_saved_execution_declaration",
+      "pass": true,
+      "supplied_contract": {
+        "signal_ref": "runway_scope:v1",
+        "spec_hash": "c51892324cfcba75eaa459eda9553bba4c8a6bb09249f95845185bae48d79944",
+        "definition": "Independent synthetic runway control",
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.liquidity_runway_months",
+          "callable_status": "registered",
+          "contract": "ACTUALLY INVOKED custom declaration: source-bound runway branch.",
+          "parameter_names": [
+            "positive_runway_max_months",
+            "negative_runway_min_months"
+          ],
+          "configured_parameters": {
+            "positive_runway_max_months": 6,
+            "negative_runway_min_months": 12
+          }
+        },
+        "declaration_available": true,
+        "result_hash": "8ba6740c5181077d8ab2b4ffa470dd3c2929c89bb0f901c3f414384e7cf49d5e",
+        "contract_hash": "87b9df8f4516c7a89fac3f9f107b83aeafb4c6dcda2a1b28792a0a8302f4e73b"
+      },
+      "no_label_access": true
+    },
+    {
+      "case": "no_execution_declaration",
+      "pass": true,
+      "supplied_contract": null,
+      "no_label_access": true
+    }
+  ],
+  "pass": true,
+  "source_hash": "0b80146d0354b1a53ee8fd15dad578c95120a7e2059be4ecc96d8d5830be8d41",
+  "additional_source_observation": "_run_one_signal_update captures sidecar immediately for each exact result and later passes only same case_id + result identity; missing declaration remains None; no validator-map reconstruction."
+}

@@ -1,5 +1,13 @@
 # Evolution Core
 
+Core binds model-facing categorical definitions to its actual frozen Signal
+Registry and the executor's registered callables/skills. The same exact-version
+declaration enters Reflect and final assembly, including Predictor reservation
+estimates. Save it in final context without modifying canonical SignalResult or
+research-state schemas. Historical projections reuse saved declarations only;
+missing ones are unknown, never backfilled from a current Registry. Declarations
+are control data with no evidence/disposition authority and no new budget.
+
 Before routing, core optionally supplies `signal_executor.deterministic_functions`
 to the selector's `set_deterministic_functions`. This is the final merged actual
 executor map (including overrides), not a separately reconstructed built-in map.

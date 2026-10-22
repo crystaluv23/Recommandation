@@ -1,0 +1,327 @@
+{
+  "schema_version": "classification-contract-preimplementation-independent-review-v1",
+  "scope": "Read-only review of the three specified new spec sections, pre-existing signal_measurement_scope, the existing v3 runway callable/docstring and the actual preceding failed Predictor raw/model view. No later implementation or new role answer was reviewed; no product/source/oracle edits, network, API or labels.",
+  "disposition": "The additive control-metadata direction is contractually coherent and targets a real missing definition path. Acceptance remains conditional on complete version/callable binding, full downstream preservation and existing permission/budget boundaries. A declaration is not a semantic correctness proof or model-obedience result.",
+  "observed_sources": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "section": "Version-owned categorical meaning",
+      "section_sha256": "7b3eb424d7e9799ea8e3642434060c7dfe678bf9769184813ea2fa626b6e1ac9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_plan_roles.md",
+      "section": "Top section before Executed need dispositions",
+      "section_sha256": "166ce26c28adb19efa8a48e117519915e2636a9bda5686dd46c6eb9bf9fcfaa9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_core.md",
+      "section": "Top classification and actual-map injection section",
+      "section_sha256": "068dca91e606a415d88bf5b3e10d85ea9dad7c3c451bc4e6a5851d68a008c6e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "observed_only": [
+        "signal_measurement_scope near 3884–3916",
+        "_liquidity_runway_months_signal callable/decorators/docstring near 4501–4570"
+      ],
+      "note": "The existing specified bodies were read before later implementation. No current/new classification helper implementation was inspected. Whole-file code hash is intentionally not claimed as a snapshot of unreviewed later changes."
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/requests/b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88.json",
+      "sha256": "2168cf02dd79aab4333f13b31a16ce125eac8a18943caf1f1a4dbcab203f8336"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/exchange/outbox/b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88.txt",
+      "sha256": "cb300df5938c36aa932a99d9513cd5169500a3eb232627aea85d344795ddd46f"
+    }
+  ],
+  "actual_preceding_failure": {
+    "request_hash": "b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88",
+    "model_view": {
+      "categorical_value_is_not_stock_direction": true,
+      "deferred_observation_count": 0,
+      "numeric_measurement": {
+        "categorical_state": "positive",
+        "formula": "cash / (absolute negative operating cash flow / reported months)",
+        "numeric_sign": "positive",
+        "period": {
+          "end": "2025-03-31",
+          "start": "2025-01-01"
+        },
+        "unit": "months",
+        "value": 5.374720662778656
+      },
+      "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors.",
+      "source_observations": [
+        {
+          "end": "2025-03-31",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "start": "2025-01-01",
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "unit": "USD",
+          "value": -55041000
+        },
+        {
+          "end": "2025-03-31",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "unit": "USD",
+          "value": 98610000
+        }
+      ]
+    },
+    "classification_contract_present": false,
+    "exact_threshold_parameter_names_in_wire": false,
+    "preexisting_system_distinction": "numeric_sign is distinct from the measured predicate's categorical state",
+    "raw_failed_sentence": "The successfully measured liquidity runway uses cash at March 31, 2025 and operating cash outflow for January 1 through March 31, 2025. Its positive categorical state denotes a positive months measurement, not a bullish stock forecast or assured financing through the forecast horizon. Historical cash consumption adds execution risk to the turnaround case.",
+    "meaning": "The numeric measurement and funding uncertainty were correctly retained, but the answer asserted that categorical positive denotes positive months. The preceding wire supplied two distinct fields and a distinction instruction, without the actual threshold mapping. Both model failure and producer information gap remain explicit; prior full-consumer0/1 is not changed."
+  },
+  "existing_authority_observations": {
+    "signal_measurement_scope": "Uses the supplied actual deterministic_functions map, function.__doc__, validated __signal_parameter_names__ and only configured values for those declared names. Missing map stays unknown; missing registered name stays missing. It does not reconstruct a default map. This is an existing useful authority seam, not proof a declaration is semantically complete.",
+    "runway_consumed_parameter_names": [
+      "positive_runway_max_months",
+      "negative_runway_min_months",
+      "max_period_age_days"
+    ],
+    "runway_existing_rules": {
+      "negative_ocf_finite_runway": "Compute cash divided by absolute operating cash flow per rounded reported month. Current code tests <=positive_max first, then >=negative_min, else neutral.",
+      "defaults": {
+        "positive_runway_max_months": 6,
+        "negative_runway_min_months": 12
+      },
+      "nonnegative_ocf": "Existing negative category for effectively unbounded low-burn runway; no canonical numeric measurement is emitted in that branch.",
+      "invalid_or_missing_inputs": "Existing unavailable behavior and PIT/source validation remain authoritative; no classification metadata may manufacture a measured fact.",
+      "invalid_threshold_order": "negative_min below positive_max currently raises validation; no proposed repair to this rule.",
+      "equal_threshold_order": "negative_min equal positive_max is accepted; at the equality point the current if/elif code selects positive."
+    }
+  },
+  "actual_contract_obligations": [
+    {
+      "id": "C01",
+      "source": "signal_library Version-owned categorical meaning",
+      "clause": "runtime-owned measurement_context.classification_contract ... exact frozen Signal description/spec hash ... actual registered callable ... or complete frozen LLM skill and version parameters",
+      "obligation": "Derive declarations from actual frozen version authority and actual executor callable/skill, retaining configured consumed parameters and explicit default/branch text. No consumer Signal-id/name lookup."
+    },
+    {
+      "id": "C02",
+      "source": "signal_library exact binding and overrides paragraph; evolution_core top",
+      "clause": "Exact ref and content hash bind the envelope ... A custom callable own contract supersedes any default callable with the same name.",
+      "obligation": "Validate exact ref/spec/declaration identity before use. Same-name overrides must expose their actual doc/parameter contract. Conflict/mismatch rejects; do not overwrite it with a default or another saved version."
+    },
+    {
+      "id": "C03",
+      "source": "signal_library availability/unknown paragraphs; roles top",
+      "clause": "Availability means a declaration is supplied, not that its semantic correctness has been independently established ... absent/incomplete meaning stays unknown",
+      "obligation": "Do not turn declaration presence into certification. Explain only supplied conditions; missing doc/parameter/branch meaning cannot be guessed from enum, numeric sign, function name or familiar parameter names."
+    },
+    {
+      "id": "C04",
+      "source": "signal_library status-only clause",
+      "clause": "Unavailable/technical-failure views keep their existing status-only semantics and do not acquire a classification.",
+      "obligation": "No classification on unavailable or technical-failure cards. Conversely an available nonnumeric/unbounded result or LLM narrative result must not lose a valid declaration merely because numeric measurement is absent."
+    },
+    {
+      "id": "C05",
+      "source": "signal_library persistence paragraph; roles/core top",
+      "clause": "Reflect and final Predictor assembly receive the same declaration ... post-hoc, critic and Slow views reuse only that saved declaration ... missing ones unknown, never backfilled",
+      "obligation": "Preserve complete saved declaration and all parameters/branches through final context, serialization/reload, posthoc/critic/Slow. Historical absence remains absence even if current Registry knows the same ref."
+    },
+    {
+      "id": "C06",
+      "source": "signal_library definition/control and permission clauses; roles top",
+      "clause": "definition/control data, never issuer evidence, answer disposition ... no new citation or typed repair authority",
+      "obligation": "Keep declarations separate from issuer/source literals and fixed role instructions. No new canonical SignalResult/ResearchState field, measured value, score/admission decision, adopted issuer quote, answer ownership or correction permission."
+    },
+    {
+      "id": "C07",
+      "source": "signal_library budget clause; evolution_core Predictor reservation clause",
+      "clause": "All declaration text counts toward existing exact request/case budgets ... including Predictor reservation estimates",
+      "obligation": "Use the identical complete content in preflight, reservation and actual dispatch. Do not truncate a branch/parameter to fit or create a separate free metadata budget."
+    },
+    {
+      "id": "C08",
+      "source": "roles top existing canonical-evidence PIT guard; unchanged canonical contracts",
+      "clause": "Before Reflect ... validate complete current Signal batch ... Predictor checks existing final-context Signal cards before estimation/dispatch",
+      "obligation": "Metadata propagation cannot bypass source/PIT validation or convert a bad input into a typed model correction. Existing anonymous-case boundaries and source-evidence adoption rules still apply."
+    },
+    {
+      "id": "C09",
+      "source": "Confirmed pre-review design tightening of C01/C02/C05 actual-executor and no-history-backfill requirements",
+      "clause": "Derive declarations only from the actual executed/validated result object; old imported objects without sidecar remain unknown.",
+      "obligation": "Bind the exact final validated live result object to the exact spec and callable/skill actually used, then consume that sidecar in core. Same ref, serialized equality, current map membership or a cloned result cannot establish execution provenance. No ephemeral object identity is serialized into canonical result or declaration hashes."
+    }
+  ],
+  "substantive_preimplementation_gaps_and_cautions": [
+    {
+      "id": "G01_EQUAL_THRESHOLDS",
+      "observation": "Existing runway docstring states <=positive_max positive and >=negative_min negative, while code permits equal thresholds and gives positive first-branch precedence. At equality both prose predicates overlap without explicit precedence.",
+      "risk": "Copying docstring plus configured values can be complete as a declaration yet still fail to uniquely explain this permitted edge. Availability must not certify uniqueness.",
+      "acceptable_resolution": "Clarify the public declared contract to state existing branch precedence, without changing execution/thresholds; or retain that ambiguity as unknown. Do not silently alter inequality, disallow equality or invent model-side priority.",
+      "not_a_new_research_definition": "The actual if/elif behavior already exists; this review asks faithful disclosure or honest uncertainty, not a new scoring policy.",
+      "planned_resolution": "Parent plans docstring clarification of existing positive-first precedence without changing parameters or branches. Independently check that exact text and behavior later."
+    },
+    {
+      "id": "G02_HISTORICAL_CALLABLE_IDENTITY",
+      "observation": "Exact ref/spec hash alone cannot prove the actual callable used for a historical result when same-name overrides are allowed.",
+      "risk": "A later default map could attach false meaning to an old completed result or saved context.",
+      "acceptable_resolution": "Historical posthoc/critic/Slow reuse the saved declaration only. Current candidate semantic review may expose its own actual declaration separately. New live batches use their actual frozen Registry/executor. An imported old result needs its original execution declaration authority explicitly bound or keeps old meaning unknown; do not infer it solely from same ref.",
+      "planned_resolution": "Parent accepted exact executed/validated result-object sidecar; legacy/imported objects without sidecar remain unknown. Independently verify implementation and counterexamples before closure."
+    },
+    {
+      "id": "G03_DECLARATION_INCOMPLETENESS",
+      "observation": "Valid parameter-name metadata currently permits a configured subset; defaults may live only in docstring. Missing/invalid parameter-name metadata yields unknown configured parameters. Some custom docstrings may be incomplete or contradict actual code.",
+      "risk": "A uniform available flag may tempt a consumer to infer a predicate that was never declared.",
+      "acceptable_resolution": "Preserve actual text/known parameters and unknown markers. Do not synthesize missing defaults or consumed names; branch-level meaning remains unknown where incomplete. No requirement to prove every custom docstring semantically correct is introduced."
+    },
+    {
+      "id": "G04_NONNUMERIC_AVAILABLE",
+      "observation": "Runway nonnegative-OCF branch returns negative with a textual unbounded interpretation and no numeric measurement. LLM narrative Signals can also be available without numeric measurement.",
+      "risk": "Attaching definitions only inside a finite numeric-measurement branch would miss exactly these category distinctions.",
+      "acceptable_resolution": "Attach a valid control declaration to available evidence-consuming result views independent of finite numeric metadata; keep unavailable/technical-failure status-only."
+    }
+  ],
+  "independent_acceptance_cases": [
+    {
+      "id": "T01_SAME_SIGN_DIFFERENT_STATE",
+      "contract_ids": [
+        "C01",
+        "C03"
+      ],
+      "inputs": "Existing runway declaration with defaults 6/12 and positive finite values 5, 9, 13 months.",
+      "expected": "The same numeric sign coexists with positive, neutral and negative categories. Metadata preserves the predicate mapping; no assertion that categorical labels mean numeric signs or stock direction. Boundary 6 is positive and 12 negative when thresholds differ. No model is required to recite these numbers."
+    },
+    {
+      "id": "T02_NONDEFAULT_AND_EQUAL_BOUND",
+      "contract_ids": [
+        "C01",
+        "C03"
+      ],
+      "inputs": "Configured positive_max 3 / negative_min 8; value 5 is neutral and 9 negative. Also allowed equal 8/8 at value 8.",
+      "expected": "Actual3/8 must not be silently replaced by defaults 6/12. Equal-bound behavior follows existing code; declared explanation needs explicit existing precedence or stays ambiguous/unknown. Invalid reversed order retains existing rejection."
+    },
+    {
+      "id": "T03_SAME_NAME_OVERRIDE",
+      "contract_ids": [
+        "C01",
+        "C02"
+      ],
+      "inputs": "Two maps register the same function name with distinct actual functions, docstrings and declared parameter names; one override lacks doc/names.",
+      "expected": "Actual merged executor map controls the view. No built-in fallback by name, no guessed threshold-name filtering. Missing declaration/parameter metadata stays unknown. Outgoing view mutation cannot mutate frozen Registry or saved envelope."
+    },
+    {
+      "id": "T04_DEFAULTS_AND_PARTIAL_DECLARATION",
+      "contract_ids": [
+        "C01",
+        "C03"
+      ],
+      "inputs": "Omitted configured values with explicit docstring defaults; invalid/duplicate/missing __signal_parameter_names__; custom doc without default values.",
+      "expected": "Copy only declared configuration, keep explicit defaults in declared text, never mutate frozen spec to fill values. Unknown consumed names or branch conditions remain unknown rather than asserted complete."
+    },
+    {
+      "id": "T05_UNBOUNDED_AND_UNAVAILABLE",
+      "contract_ids": [
+        "C04"
+      ],
+      "inputs": "Available negative unbounded nonnegative-OCF runway; missing/stale/PIT-invalid source; domain unavailable; each existing technical-failure status.",
+      "expected": "Unbounded category gets its valid declaration despite absent finite numeric measurement; no fabricated infinity or numeric sign. Unavailable/technical failure remains existing status-only, with no classification enrichment or source-evidence bypass."
+    },
+    {
+      "id": "T06_LLM_SKILL_PARAMETERS",
+      "contract_ids": [
+        "C01",
+        "C06"
+      ],
+      "inputs": "Frozen LLM skill with multiple conditional branches, nondefault/nested parameters and a long tail; role-looking or issuer-looking text in the skill.",
+      "expected": "Complete exact skill/version parameters retained as inert control metadata, hashed/bound to spec/ref; no clipping branch text, tool invocation, instruction override or issuer-evidence promotion. All existing anonymity rules still cover newly transmitted text."
+    },
+    {
+      "id": "T07_REF_HASH_CONFLICT",
+      "contract_ids": [
+        "C02",
+        "C08"
+      ],
+      "inputs": "Wrong version/ref, edited spec hash, edited declaration content hash, two conflicting saved declarations for the same bound version, malformed persisted envelope.",
+      "expected": "Fail before relevant model estimation/dispatch as input/contract failure. Do not silently select current definition or ask a model typed correction to repair immutable input. No extra evidence/disposition authority."
+    },
+    {
+      "id": "T08_LEGACY_NO_BACKFILL",
+      "contract_ids": [
+        "C03",
+        "C05"
+      ],
+      "inputs": "Historical result/final_context/trajectory has no classification declaration; current Registry contains same ref or changed callable/skill.",
+      "expected": "Historical missing field remains absent/unknown, original bytes/canonical hashes unchanged. Do not backfill by today Registry, function name or model prose. Current candidate review definition is separately scoped. The new private sidecar lookup must not turn serialized equality or current function-map membership into a historical declaration."
+    },
+    {
+      "id": "T09_F7_F8_F9_TRANSMISSION",
+      "contract_ids": [
+        "C01",
+        "C05",
+        "C07",
+        "C09"
+      ],
+      "inputs": "New live actual source apply through SignalExecutor, its private validated-result sidecar, Reflect request, final-context reservation, actual Predictor request and durable saved final_context.",
+      "expected": "Exact same authoritative declaration/parameters/branches reach each applicable path with no canonical-result mutation. Saved context can explain the measured category, numeric sign remains separate, and absence/incomplete meaning remains unknown. A correct future model explanation is separate evidence from deterministic wiring. An imported old batch cannot stand in for actual execution provenance. The planned fresh diagnostic uses newly frozen one-v3 actual deterministic apply, with no reentry of completed old stages."
+    },
+    {
+      "id": "T10_PERSISTENT_CRITIC_SLOW",
+      "contract_ids": [
+        "C05"
+      ],
+      "inputs": "Serialize/reload saved final_context through posthoc, compact critic/case view and Slow source unit, including nonnumeric available result, repeated rounds and incomplete legacy variants.",
+      "expected": "Preserve only the actually saved declaration for each original round/ref; complete parameters/branches survive compaction and no later round/current Registry overwrites prior meaning. Existing legacy records with no declaration do not change hashes."
+    },
+    {
+      "id": "T11_NO_EVIDENCE_OR_TYPED_AUTHORITY",
+      "contract_ids": [
+        "C06",
+        "C08"
+      ],
+      "inputs": "Reflect attempts to cite a definition threshold as issuer exact_text, adopts a new arbitrary claim instead of issued numeric claim, resolves a context-only need, or authors classification metadata as a new permanent field.",
+      "expected": "Existing literal/adoption/schema/ownership/typed-permission rules still reject the illegal operation. Declaration text is not issuer evidence or new repair permission. A permitted ordinary evidence adoption remains valid without forced extra updates."
+    },
+    {
+      "id": "T12_ANONYMITY_AND_EXACT_BUDGET",
+      "contract_ids": [
+        "C07",
+        "C08"
+      ],
+      "inputs": "Long Unicode callable doc or LLM skill, nested parameters, issuer aliases inside declaration, near request/case reserve thresholds.",
+      "expected": "Original envelope remains bound runtime-side; actual anonymous wire masks existing issuer identities and preserves required meaning. Full metadata is charged in reservation/preflight/actual wire. If limits cannot fit, stop through existing budget semantics rather than truncate/skip/free-charge the contract or run extra calls."
+    },
+    {
+      "id": "T13_EXACT_EXECUTED_RESULT_OBJECT_SIDECAR",
+      "contract_ids": [
+        "C01",
+        "C02",
+        "C05",
+        "C09"
+      ],
+      "inputs": "One actually executed/validated available result; an imported old result with the same ref/value; a from_dict clone; a reused prior object under a new map; result normalization/replacement and runtime batch merging; unavailable/failure variants.",
+      "expected": "Only the exact final canonical validated live result object receives its captured declaration. Imported/legacy/cloned/equal-valued objects without original sidecar remain absent/unknown, even with current same-ref callable. Normalization must not leave a stale sidecar on the wrong pre-validation object; batch merging must preserve proven object association or honestly lose meaning. Capture the actual invoked function/skill and spec at execution, not a later map lookup. Mismatch rejects and no fallback reconstructs meaning. Return independent plain JSON so consumer mutation cannot alter sidecar authority. No object-id addresses enter stable hashes or persisted canonical schemas."
+    }
+  ],
+  "actual_effect_acceptance_boundary": {
+    "offline": "Focused tests can prove derivation, identity, retention, status/permission/budget boundaries and representative counterexamples. They cannot establish that a newly called model follows the declaration or that research gains.",
+    "future_live": "If later authorized, audit the exact new wire/raw answer/correction/persisted consumption on the permitted fresh scope. An old cached answer replay, new metadata presence or test exit0 alone is not fresh model compliance. Do not reopen the completed failed consumer to manufacture a pass.",
+    "no_frozen_forecast_answer": "No required candidate judgment, probability, belief direction, mandatory threshold recitation, specific citation display or optional state update."
+  },
+  "non_changes_required": [
+    "Canonical SignalResult/ResearchState schemas, enum meanings and execution behavior unchanged.",
+    "Thresholds, PIT, source/evidence admission and typed repair boundaries unchanged.",
+    "Routing history remains conclusion-only.",
+    "Old records/failure denominators remain immutable; missing meaning remains unknown.",
+    "No extra model role/call, new network action or new research definition."
+  ],
+  "review_status": "Preimplementation spec/authority review only. No later implementation verdict or semantic-success claim is issued.",
+  "design_update_before_implementation_review": {
+    "prior_review_sha256": "5c3493299e95648bae3c19512c495e28d03966230b43fd31e15cf237a2d0545e",
+    "authority": "Parent confirmed revised implementation design before code review; no new implementation was read.",
+    "sidecar_design": "The live SignalExecutor records an immutable private result-object -> exact classification-declaration sidecar only after actual execution and canonical validation. Core retrieves declarations only for those exact actual batch result objects and then passes them to Reflect and final context. Missing sidecar on imported/legacy/copied results means unknown even when the current function table contains the same ref.",
+    "persistence": "Only the final-context saved declaration is reused by posthoc/critic/Slow; no new SignalResult or SignalRound canonical field.",
+    "boundary_doc_clarification": "Planned runway public-docstring clarification states existing positive branch is checked first at equal thresholds; numeric values and code branches are unchanged. This review records the plan, not a claim it is implemented.",
+    "future_acceptance_scope": "If separately executed as authorized, use a new frozen one-v3 actual deterministic source apply. Do not import the old completed batch and call it new execution; preserve all old 0/1 terminal stages."
+  }
+}

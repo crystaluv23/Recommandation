@@ -1,0 +1,8 @@
+{
+  "event_type": "request_ready",
+  "logical_reservation": 59806,
+  "model_alias": "independent-subagent",
+  "request_hash": "239a4a039142e971c6dc167dfb67162a478ee5d29bece75408a250fda0565530",
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_contract_20261023_v1/actual-source-preflight/requests/239a4a039142e971c6dc167dfb67162a478ee5d29bece75408a250fda0565530.json",
+  "stage": "research_controller_reflect"
+}

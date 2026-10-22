@@ -1,0 +1,8 @@
+{
+  "parent": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/bootstrap.json",
+    "sha256": "32ce837eaf66c7e8d20c41469ebca8120def925767a5176536fd825a580cd60e"
+  },
+  "rebuilt_hash": "9b5024a2298427548a643aceea28624ca7d47b97221acbe44e17a7d7878b27a8",
+  "whole_structure_equal": true
+}

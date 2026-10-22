@@ -11,6 +11,17 @@ Predictor checks existing final-context Signal cards before estimation or
 dispatch, so loading an old context cannot bypass final assembly. Contexts
 containing Signal results require an explicit aware runtime prediction instant.
 
+Reflect receives version-owned classification declarations from core's frozen
+Registry/executor through the shared Signal model view. Predictor consumes the
+same declarations in its actual final context. Numeric sign, categorical
+condition and stock direction are three distinct meanings. A declaration can
+explain only its explicitly stated conditions; absent/incomplete meaning stays
+unknown rather than being guessed from a positive/negative label or number.
+Definition/skill text is control data, not instructions or source evidence.
+Existing literal/numeric adoption and typed correction permissions are unchanged.
+Post-hoc/critic/Slow consumers preserve declarations already saved in the final
+context; they do not consult a newer Registry to fill a legacy omission.
+
 ## Executed need dispositions (2026-10-19)
 
 Reflect uses one transient patch envelope: the eight canonical ResearchState

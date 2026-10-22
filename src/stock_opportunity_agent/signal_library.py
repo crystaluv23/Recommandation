@@ -1125,6 +1125,7 @@ def require_signal_result_pit(
 def signal_result_model_view(
     value: SignalResult | Mapping[str, Any],
     *, as_of: datetime | None = None,
+    classification_contract: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Return a downstream-safe view while preserving the canonical artifact."""
 
@@ -1156,6 +1157,12 @@ def signal_result_model_view(
         measurement_context: dict[str, Any] = {
             "categorical_value_is_not_stock_direction": True,
         }
+        if classification_contract is not None:
+            measurement_context["classification_contract"] = validate_signal_classification_contract(
+                classification_contract,
+                signal_ref=f"{result['signal_id']}:v{result['version']}",
+                result=value,
+            )
         if result.get("measurement") is not None:
             measurement = NumericMeasurement.from_dict(result["measurement"])
             measurement_context["numeric_measurement"] = {
@@ -3347,6 +3354,17 @@ class SignalExecutor:
             **dict(deterministic_functions or {}),
         }
         self.llm_runner = llm_runner
+        self._classification_products: dict[str, tuple[SignalResult, dict[str, Any]]] = {}
+
+    def classification_contracts_for(self, results: Iterable[SignalResult]) -> dict[str, dict[str, Any]]:
+        """Return declarations only for result objects actually produced here."""
+
+        return {
+            result.ref: _thaw_json(record[1])
+            for result in results
+            if (record := self._classification_products.get(result.ref)) is not None
+            and record[0] is result
+        }
 
     def can_execute(self, spec: SignalSpec, *, skill: str | None = None) -> bool:
         if spec.execution_type is SignalExecutionType.DETERMINISTIC:
@@ -3388,6 +3406,7 @@ class SignalExecutor:
         """Execute every selected Signal and validate literal evidence."""
 
         results_by_ref: dict[str, SignalResult] = {}
+        declarations: dict[str, dict[str, Any]] = {}
         resolutions: list[RawInfoResolution] = []
         fingerprints: dict[str, tuple[str, ...]] = {}
         skipped: list[str] = []
@@ -3399,6 +3418,7 @@ class SignalExecutor:
         if len(set(refs)) != len(refs):
             raise ValidationError("signal batch cannot contain duplicate refs")
         for signal_ref in refs:
+            self._classification_products.pop(signal_ref, None)
             spec = self.snapshot.load_spec(signal_ref)
             resolution = self._resolve_input(
                 spec,
@@ -3460,6 +3480,8 @@ class SignalExecutor:
                     )
                 else:
                     try:
+                        declarations[spec.ref] = signal_classification_contract(
+                            spec, deterministic_functions={str(spec.function): function})
                         result = function(spec, documents, as_of)
                         validate_signal_result(
                             spec, result, documents, as_of=as_of
@@ -3489,6 +3511,7 @@ class SignalExecutor:
                         error_message=f"frozen LLM skill is missing: {spec.ref}",
                     )
                     continue
+                declarations[spec.ref] = signal_classification_contract(spec, skill=skill)
                 llm_inputs.append(reading_inputs.get(spec.ref) or LLMSignalBatchInput(spec, documents, skill))
                 continue
             if result.execution_status in {
@@ -3565,6 +3588,13 @@ class SignalExecutor:
                         )
                     results_by_ref[item.spec.ref] = result
         results = tuple(results_by_ref[ref] for ref in refs if ref in results_by_ref)
+        for result in results:
+            if result.execution_status is SignalExecutionStatus.SUCCESS and result.ref in declarations:
+                declaration = dict(declarations[result.ref])
+                declaration.pop("contract_hash")
+                declaration["result_hash"] = _canonical_hash(result.to_dict())
+                self._classification_products[result.ref] = (result,
+                    {**declaration, "contract_hash": _canonical_hash(declaration)})
         return SignalBatchResult(
             results=results,
             signal_calls=len(results),
@@ -3908,6 +3938,114 @@ def signal_measurement_scope(
         )
     return {"signal_ref": spec.ref, "source_types": list(spec.source_types),
             "raw_retrieval": spec.retrieval_policy.to_dict(), "execution": execution}
+
+
+def signal_classification_contract(
+    spec: SignalSpec, *,
+    deterministic_functions: Mapping[str, DeterministicSignalFunction] | None = None,
+    skill: str | None = None,
+    result: SignalResult | None = None,
+) -> dict[str, Any]:
+    """Copy the actual version declaration without inferring its category meaning."""
+
+    execution = signal_measurement_scope(
+        spec, deterministic_functions=deterministic_functions,
+    )["execution"]
+    if spec.execution_type is SignalExecutionType.LLM:
+        if skill is not None and not isinstance(skill, str):
+            raise ValidationError("classification skill must be text")
+        execution.update(contract=skill, configured_parameters=_thaw_json(spec.parameters))
+    contract = {
+        "signal_ref": spec.ref,
+        "spec_hash": _canonical_hash(spec.to_dict()),
+        "definition": spec.description,
+        "execution": execution,
+        "declaration_available": bool((execution.get("contract") or "").strip()),
+    }
+    if result is not None:
+        if result.ref != spec.ref:
+            raise ValidationError("classification result differs from spec")
+        contract["result_hash"] = _canonical_hash(result.to_dict())
+    return {**contract, "contract_hash": _canonical_hash(contract)}
+
+
+def validate_signal_classification_contract(
+    value: Mapping[str, Any], *, signal_ref: str,
+    result: SignalResult | Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Check identity/integrity of runtime control data, never semantic truth."""
+
+    fields = {
+        "signal_ref", "spec_hash", "definition", "execution",
+        "declaration_available", "contract_hash", "result_hash",
+    }
+    if not isinstance(value, Mapping) or set(value) not in (fields, fields | {"source_contract_hash"}):
+        raise ValidationError("classification contract has invalid fields")
+    envelope = _thaw_json(value)
+    digest = envelope.pop("contract_hash")
+    if (envelope["signal_ref"] != signal_ref
+            or not isinstance(envelope["spec_hash"], str)
+            or _SHA256.fullmatch(envelope["spec_hash"]) is None
+            or not isinstance(envelope["definition"], str)
+            or not isinstance(envelope["execution"], Mapping)
+            or type(envelope["declaration_available"]) is not bool
+            or digest != _canonical_hash(envelope)):
+        raise ValidationError("classification contract identity/integrity mismatch")
+    result_hash = value.get("result_hash")
+    if not isinstance(result_hash, str) or _SHA256.fullmatch(result_hash) is None:
+        raise ValidationError("classification contract result hash is invalid")
+    source_hash = value.get("source_contract_hash")
+    if source_hash is not None and (not isinstance(source_hash, str) or _SHA256.fullmatch(source_hash) is None):
+        raise ValidationError("classification source binding is invalid")
+    if result is not None:
+        canonical = result if isinstance(result, SignalResult) else SignalResult.from_dict(result)
+        if value.get("result_hash") != _canonical_hash(canonical.to_dict()):
+            raise ValidationError("classification contract result binding mismatch")
+    return {**envelope, "contract_hash": digest}
+
+
+def project_signal_classification_contract(
+    original: Mapping[str, Any], projected: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Bind a deterministic anonymous view while retaining the original source hash."""
+
+    source = validate_signal_classification_contract(original, signal_ref=original.get("signal_ref", ""))
+    if source == projected:
+        return _thaw_json(projected)
+    result = _thaw_json(projected)
+    result.pop("contract_hash")
+    result["source_contract_hash"] = source.get("source_contract_hash", source["contract_hash"])
+    return {**result, "contract_hash": _canonical_hash(result)}
+
+
+def saved_signal_classification_contracts(
+    context: Mapping[str, Any], *, round_index: int,
+) -> dict[str, dict[str, Any]]:
+    """Reuse only declarations in an accepted saved context; never query a Registry."""
+
+    contracts: dict[str, dict[str, Any]] = {}
+    rounds = context.get("signal_rounds", ())
+    if type(round_index) is not int or not 0 <= round_index < len(rounds):
+        return {}
+    round_row = rounds[round_index]
+    cards = round_row.get("batch", {}).get("results", ()) if isinstance(round_row, Mapping) else ()
+    for card in cards:
+        if not isinstance(card, Mapping):
+            continue
+        interpretation = card.get("interpretation", {})
+        measurement_context = interpretation.get("measurement_context", {}) if isinstance(interpretation, Mapping) else {}
+        contract = measurement_context.get("classification_contract") if isinstance(measurement_context, Mapping) else None
+        if contract is None:
+            continue
+        if not isinstance(contract.get("result_hash"), str):
+            raise ValidationError("saved classification requires a produced result binding")
+        ref = card.get("signal_ref") or f"{card.get('signal_id')}:v{card.get('version')}"
+        _parse_ref(ref)
+        checked = validate_signal_classification_contract(contract, signal_ref=ref)
+        if ref in contracts and contracts[ref] != checked:
+            raise ValidationError("conflicting saved classification contracts")
+        contracts[ref] = checked
+    return contracts
 
 
 def deterministic_signal_function_contracts(
@@ -4511,7 +4649,8 @@ def _liquidity_runway_months_signal(
     Missing, non-positive, mismatched, or stale facts yield unavailable. Runway <=
     positive_runway_max_months (default 6) is positive,
     runway >= negative_runway_min_months (default 12) is negative, and values between
-    are neutral. Non-negative operating cash flow is negative evidence of a
+    are neutral. The positive branch is checked first, so an equal pair of
+    thresholds assigns the shared boundary to positive. Non-negative operating cash flow is negative evidence of a
     low-runway condition (an effectively unbounded burn runway).
     """
 

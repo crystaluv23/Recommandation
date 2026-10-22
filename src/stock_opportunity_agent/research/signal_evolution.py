@@ -5681,6 +5681,7 @@ class SignalEvolutionEngine:
         }
         technical_failures: list[dict[str, Any]] = []
         execution_usage = AgentUsage()
+        execution_declarations: dict[str, tuple[SignalResult, Mapping[str, Any]]] = {}
         for case in cases:
             batch = executor.execute_batch(
                 (signal_ref,),
@@ -5691,6 +5692,10 @@ class SignalEvolutionEngine:
             execution_usage = execution_usage + batch.usage
             result = batch.results[0]
             resolution = batch.resolutions[0]
+            declaration_reader = getattr(executor, "classification_contracts_for", None)
+            declarations = declaration_reader(batch.results) if callable(declaration_reader) else {}
+            if result.ref in declarations:
+                execution_declarations[case.case_id] = (result, declarations[result.ref])
             if result.execution_status not in {
                 SignalExecutionStatus.SUCCESS,
                 SignalExecutionStatus.DOMAIN_UNAVAILABLE,
@@ -5885,10 +5890,13 @@ class SignalEvolutionEngine:
         resolutions: list[dict[str, Any]] = []
         for index, (case, result, resolution) in enumerate(induction, start=1):
             case_ref = f"update-case-{index:03d}"
+            declaration = execution_declarations.get(case.case_id)
             packet, resolution_audit = self._signal_update_evidence_packet(
                 case_ref,
                 case,
                 spec=spec,
+                classification_contract=declaration[1]
+                if declaration is not None and declaration[0] is result else None,
                 result=result,
                 resolution=resolution,
             )
@@ -9871,6 +9879,7 @@ class SignalEvolutionEngine:
         case: EvolutionCase,
         *,
         spec: SignalSpec,
+        classification_contract: Mapping[str, Any] | None = None,
         result: SignalResult,
         resolution: RawInfoResolution,
     ) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -9912,7 +9921,8 @@ class SignalEvolutionEngine:
             )
             for index, document in enumerate(documents, start=1)
         ]
-        result_view = signal_result_model_view(result, as_of=case.prediction_time)
+        result_view = signal_result_model_view(result, as_of=case.prediction_time,
+            classification_contract=classification_contract)
         for group in ("supporting", "counter"):
             for item in result_view["evidence"][group]:
                 item["document_id"] = document_ref_by_id.get(

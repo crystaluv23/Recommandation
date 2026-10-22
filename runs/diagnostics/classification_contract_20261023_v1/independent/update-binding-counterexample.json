@@ -1,0 +1,44 @@
+{
+  "scope": "No model calls, no outcome/label objects; stopped at Update result view before outcome relation.",
+  "actual_executed_contract": {
+    "signal_ref": "runway_scope:v1",
+    "spec_hash": "c51892324cfcba75eaa459eda9553bba4c8a6bb09249f95845185bae48d79944",
+    "definition": "Independent synthetic runway control",
+    "execution": {
+      "type": "deterministic",
+      "function": "financial.liquidity_runway_months",
+      "callable_status": "registered",
+      "contract": "ACTUALLY INVOKED custom declaration: source-bound runway branch.",
+      "parameter_names": [
+        "positive_runway_max_months",
+        "negative_runway_min_months"
+      ],
+      "configured_parameters": {
+        "positive_runway_max_months": 6,
+        "negative_runway_min_months": 12
+      }
+    },
+    "declaration_available": true,
+    "result_hash": "8ba6740c5181077d8ab2b4ffa470dd3c2929c89bb0f901c3f414384e7cf49d5e",
+    "contract_hash": "87b9df8f4516c7a89fac3f9f107b83aeafb4c6dcda2a1b28792a0a8302f4e73b"
+  },
+  "supplied_update_contract": {
+    "signal_ref": "runway_scope:v1",
+    "spec_hash": "c51892324cfcba75eaa459eda9553bba4c8a6bb09249f95845185bae48d79944",
+    "definition": "Independent synthetic runway control",
+    "execution": {
+      "type": "deterministic",
+      "function": "financial.liquidity_runway_months",
+      "callable_status": "registered",
+      "contract": "UNINVOKED validator declaration must not be rebound to the executed result.",
+      "parameter_names": null,
+      "configured_parameters": null
+    },
+    "declaration_available": true,
+    "result_hash": "8ba6740c5181077d8ab2b4ffa470dd3c2929c89bb0f901c3f414384e7cf49d5e",
+    "contract_hash": "ede187c39a2aa3f4010de98c37eeb94285ed6e285dde9c174878cd95a40d6162"
+  },
+  "preserves_actual_invoked_callable": false,
+  "captured_before_label_access": true,
+  "source_hash": "b51b269c035a71586cb9d08394871d0025a4ede53f2c8b725dd90d7f35633b7e"
+}

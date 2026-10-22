@@ -1,0 +1,14 @@
+.....E.................................................................................................................................................................................
+======================================================================
+ERROR: test_same_ref_in_different_rounds_cannot_fill_unknown_or_rebind_another_result (tests.test_signal_classification_contract.SignalClassificationContractTests.test_same_ref_in_different_rounds_cannot_fill_unknown_or_rebind_another_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_classification_contract.py", line 205, in test_same_ref_in_different_rounds_cannot_fill_unknown_or_rebind_another_result
+    intent=SignalSelectionDecision(spec.ref,'Historical context.','coverage',reason_code='combine_evidence',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSelectionDecision.__init__() got multiple values for argument 'reason_code'
+
+----------------------------------------------------------------------
+Ran 183 tests in 4.094s
+
+FAILED (errors=1)

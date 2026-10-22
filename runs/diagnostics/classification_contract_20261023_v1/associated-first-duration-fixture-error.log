@@ -1,0 +1,14 @@
+..E...................................................................................................................................................................................
+======================================================================
+ERROR: test_negative_scalar_can_be_positive_category (tests.test_signal_classification_contract.SignalClassificationContractTests.test_negative_scalar_can_be_positive_category)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_classification_contract.py", line 87, in test_negative_scalar_can_be_positive_category
+    contract = executor.classification_contracts_for((result,))[spec.ref]
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'margin_control:v1'
+
+----------------------------------------------------------------------
+Ran 182 tests in 4.055s
+
+FAILED (errors=1)

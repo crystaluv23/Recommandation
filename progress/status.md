@@ -2,16 +2,16 @@
 
 更新：2026-10-23。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛。
 独立预测收益是后续里程碑、未知；生产 LLM 节点由 exact inbox/outbox 独立 subagent 处理，外部 LLM API 调用0。
-公开资料只读取证已授权；累计147 managed-provider GET（115行情、32SEC），本轮新增0。
-另公开web取证累计6search/15queries、15web导航+1browser导航尝试；另8次直接公开GET，底层web HTTP数未知，不混入provider计数。host模型tokens/费用及资料成本未测量。
+公开资料只读取证已授权；累计147 managed-provider GET（115行情、32SEC），本轮新增0。另公开web取证累计6search/15queries、15web导航+1browser导航尝试；另8次直接公开GET，底层web HTTP数未知，不混入provider计数。host模型tokens/费用及资料成本未测量。
 
 ## 最新实证
 
-[真实财务消费者](../reports/financial-context-consumer-20261023.md)：完整parent bootstrap相等后，只导入已完成strict-pass runway-v3作context；
-2fresh角色首答/0纠错，真实Reflect保5exact needs、2引文/无answer ownership，最终context保数值/期间/operand/版本；
-Predictor→sink先于truth，235851逻辑预留/256000、含旧2calls共4calls、物理新增2，外部API/GET/标签/新apply0。
-独立终审发现Predictor把positive类别误释为月份数为正，实际v3 positive≤6个月；F7/F8本案窄通过，整案语义0/1/F9不关。
-模型已获sign/state区别提示但没收到阈值映射；下一修复分类含义传递，不重入同案或追加求过。4新控+64关联过，25files副本重建同/0交接，非OS恢复。
+[分类链修复](../reports/classification-contract-propagation-20261023.md)：实际执行声明经 exact result/round 进入Reflect、最终context、保存/Posthoc及Update，缺失不回填；
+跨轮补写、Update误用validator表、匿名后hash失效三反例均修复。445关联测试/独立20控通过，非新模型遵循。
+实际来源input-only预演一次新deterministic计算、0inbox/回答；发生在最后三源文件修复前，不冒称最终代码真实验收。
+实际critic/Slow原件仍丢声明，canonical持久化[方案A/B](../reports/classification-context-persistence-proposal-20261023.md)已具体化、等用户决策；未改该schema。
+[旧真实财务消费者](../reports/financial-context-consumer-20261023.md)F7/F8本案窄通过、235851/256000含旧usage；Predictor按正号误释类别，完整语义仍0/1/F9不关。
+本轮无新生产回答/API/GET/标签；不重入完成stage或重置预算，整体MVP与独立收益未知。
 
 [原生财务批次与阅读诊断](../reports/current-financial-apply-20261021.md)：当前比较用既有v12精确18版本，不替换历史v6。单GPRE/2025-05-30、1780来源view，冻结4389绑定，唯一native批次20.261s/exit0。
 9财务结果为6严格通过、1prior原文版本匹配失败、2期间政策unknown，终态completed_acceptance_failed保留。

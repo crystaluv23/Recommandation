@@ -54,6 +54,7 @@ from stock_opportunity_agent.signal_library import (
     SignalValue,
     SIGNAL_CONTEXT_TAGS,
     signal_result_model_view,
+    project_signal_classification_contract,
     _thaw_json,
 )
 
@@ -3168,6 +3169,10 @@ def execute_information_plan(
     status_setter = getattr(controller, "set_signal_research_status", None)
     if callable(status_setter):
         status_setter(signal_registry.research_status)
+    round_classification_contracts: list[Mapping[str, Mapping[str, Any]]] = []
+    classification_setter = getattr(controller, "set_signal_classification_contracts", None)
+    if callable(classification_setter):
+        classification_setter({})
     # Computation before interpretation: the anchor block is derived once
     # from complete PIT market documents and disclosed verbatim at every
     # stage; the state validator rejects numeric restatements of it.
@@ -3251,6 +3256,7 @@ def execute_information_plan(
             computed_metrics=(*bootstrap_computed, *document_channel.computed_metrics),
             document_views=document_channel.document_views,
             signal_research_status=signal_registry.research_status,
+            signal_classification_contracts=tuple(round_classification_contracts),
             runtime_termination={"phase": "prediction_ready" if prediction_ready else "research_in_progress",
                 "stop_reason": stop_reason.value if prediction_ready else None,
                 "termination_trigger": termination_trigger.value if prediction_ready and termination_trigger is not None else None},
@@ -3412,6 +3418,11 @@ def execute_information_plan(
                 else RuntimeStopReason.NO_SIGNAL_MATCH
             )
             break
+        classification_reader = getattr(signal_executor, "classification_contracts_for", None)
+        classification_contracts = classification_reader(batch.results) if callable(classification_reader) else {}
+        if callable(classification_setter):
+            classification_setter(classification_contracts)
+        round_classification_contracts.append(classification_contracts)
         signal_fingerprints.update(batch.document_fingerprints)
         prior_signal_results.update(
             {result.ref: result.to_dict() for result in batch.results}
@@ -4075,6 +4086,7 @@ def _assemble_final_context(
     computed_metrics: Iterable[Mapping[str, Any]] = (),
     document_views: Iterable[Mapping[str, Any]] = (),
     signal_research_status: Mapping[str, Mapping[str, Any]] | None = None,
+    signal_classification_contracts: Iterable[Mapping[str, Mapping[str, Any]]] | None = None,
     runtime_termination: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     identity_keys = {"company_id", "company_name", "ticker", "symbol"}
@@ -4092,16 +4104,20 @@ def _assemble_final_context(
                  if isinstance(row, Mapping) and isinstance(row.get("data_gap"), Mapping)]
 
     round_rows = tuple(rounds)
+    declarations_by_round = tuple(signal_classification_contracts) if signal_classification_contracts is not None else tuple({} for _ in round_rows)
+    if len(declarations_by_round) != len(round_rows):
+        raise ValidationError("classification declarations must match exact round positions")
     signal_results = {
         result.ref: result
         for round_row in round_rows
         for result in round_row.batch.results
     }
     signal_rounds = []
-    for round_row in round_rows:
+    for round_row, classification_contracts in zip(round_rows, declarations_by_round):
         cards = []
         for result in round_row.batch.results:
-            view = signal_result_model_view(result, as_of=prediction_time)
+            view = signal_result_model_view(result, as_of=prediction_time,
+                classification_contract=classification_contracts.get(result.ref))
             card = {
                 "signal_ref": result.ref,
                 "state": view["state"],
@@ -8219,7 +8235,12 @@ def _mask_identity_values(
         if isinstance(item, tuple):
             return tuple(mask(child) for child in item)
         if isinstance(item, Mapping):
-            return {key: mask(child) for key, child in item.items()}
+            projected = {key: mask(child) for key, child in item.items()}
+            metadata = item.get("measurement_context")
+            if isinstance(metadata, Mapping) and isinstance(metadata.get("classification_contract"), Mapping):
+                projected["measurement_context"]["classification_contract"] = project_signal_classification_contract(
+                    metadata["classification_contract"], projected["measurement_context"]["classification_contract"])
+            return projected
         return item
 
     return mask(value)

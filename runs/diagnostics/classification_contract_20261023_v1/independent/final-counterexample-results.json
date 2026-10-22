@@ -1,0 +1,204 @@
+{
+  "schema": "independent-classification-counterexamples-v1",
+  "scope": "Synthetic deterministic source facts and no-label trajectory; offline wiring only; no model/production calls.",
+  "checks": [
+    {
+      "name": "same_positive_scalar_different_states_and_equal_boundary",
+      "pass": true,
+      "detail": [
+        {
+          "parameters": [
+            6,
+            12
+          ],
+          "value": 5.0,
+          "numeric_sign": "positive",
+          "state": "positive"
+        },
+        {
+          "parameters": [
+            4,
+            12
+          ],
+          "value": 5.0,
+          "numeric_sign": "positive",
+          "state": "neutral"
+        },
+        {
+          "parameters": [
+            3,
+            4
+          ],
+          "value": 5.0,
+          "numeric_sign": "positive",
+          "state": "negative"
+        },
+        {
+          "parameters": [
+            5,
+            5
+          ],
+          "value": 5.0,
+          "numeric_sign": "positive",
+          "state": "positive"
+        }
+      ]
+    },
+    {
+      "name": "exact_object_sidecar_and_thaw_copy",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "sidecar_copies_are_isolated",
+      "pass": true,
+      "detail": "Returned metadata mutation does not mutate sidecar"
+    },
+    {
+      "name": "legacy_then_live_same_ref_no_backfill",
+      "pass": true,
+      "detail": {
+        "expected": [
+          false,
+          true
+        ],
+        "final": [
+          false,
+          true
+        ],
+        "critic": [
+          false,
+          true
+        ],
+        "posthoc": [
+          false,
+          true
+        ]
+      }
+    },
+    {
+      "name": "live_then_clone_same_ref_no_forward_fill",
+      "pass": true,
+      "detail": {
+        "expected": [
+          true,
+          false
+        ],
+        "final": [
+          true,
+          false
+        ],
+        "critic": [
+          true,
+          false
+        ],
+        "posthoc": [
+          true,
+          false
+        ]
+      }
+    },
+    {
+      "name": "two_live_same_ref_distinct_result_hash_per_round",
+      "pass": true,
+      "detail": {
+        "expected": [
+          true,
+          true
+        ],
+        "final": [
+          true,
+          true
+        ],
+        "critic": [
+          true,
+          true
+        ],
+        "posthoc": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "same_ref_wrong_result_binding_reject",
+      "pass": true,
+      "detail": "classification contract result binding mismatch"
+    },
+    {
+      "name": "misaligned_per_round_contract_reject",
+      "pass": true,
+      "detail": "classification contract result binding mismatch"
+    },
+    {
+      "name": "wrong_round_coordinate_count_reject",
+      "pass": true,
+      "detail": "classification declarations must match exact round positions"
+    },
+    {
+      "name": "same_name_override_precall_and_skip",
+      "pass": true,
+      "detail": "Actual callable captured before invocation map mutation; skipped batch clears old sidecar"
+    },
+    {
+      "name": "unknown_no_default_and_full_skill_not_truncated",
+      "pass": true,
+      "detail": {
+        "unknown_default_absent": true,
+        "full_skill_chars": 28500,
+        "retained_chars": 28500
+      }
+    },
+    {
+      "name": "unbounded_and_unavailable_are_distinct",
+      "pass": true,
+      "detail": "Available nonnumeric negative keeps declaration; unavailable stays status-only"
+    },
+    {
+      "name": "identity_hash_tamper_and_model_injected_projection",
+      "pass": true,
+      "detail": [
+        "classification contract identity/integrity mismatch",
+        "classification contract identity/integrity mismatch",
+        "classification contract identity/integrity mismatch",
+        "classification contract identity/integrity mismatch"
+      ]
+    },
+    {
+      "name": "reflect_projection_current_batch_only",
+      "pass": true,
+      "detail": "Current empty batch map stays empty; complete saved declaration unchanged"
+    }
+  ],
+  "passed": 14,
+  "total": 14,
+  "source_hashes_before": {
+    "src/stock_opportunity_agent/signal_library.py": "35be3d0546d1e19f9ddeb76ae89ebf0f1e35bc809c81f5b7af169d4d7e62ad60",
+    "src/stock_opportunity_agent/research/evolution_core.py": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556",
+    "src/stock_opportunity_agent/research/evolution_research_validation.py": "443930f588474bdf889d395c5cf7f6843bafa62811272a8025af2af9a2df2386",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "3fc449936485510837b31596e5e3beb8d3dc726a63f2509ec831ef3ab316a7fa",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "0b80146d0354b1a53ee8fd15dad578c95120a7e2059be4ecc96d8d5830be8d41",
+    "spec/src/stock_opportunity_agent/signal_library.md": "f0d6473af0291603cb8a17c27ea7787888b1eec783e1a25a6503cdc4de24e045",
+    "spec/src/stock_opportunity_agent/research/evolution_core.md": "317d0b4f51c31b6c1f4b27e8efa2ff9e8aeecd22c7afe7aebcf3fbfbf39593ec",
+    "spec/src/stock_opportunity_agent/research/evolution_plan_roles.md": "eeb48246c474a638c5be12621084f928863e48164137a52723f12069931cd9f4",
+    "tests/test_signal_classification_contract.py": "d575c6740105ec5e4ba530269cfc225b914788d38ede5288f3c9485382f82e5a"
+  },
+  "source_hashes_after": {
+    "src/stock_opportunity_agent/signal_library.py": "35be3d0546d1e19f9ddeb76ae89ebf0f1e35bc809c81f5b7af169d4d7e62ad60",
+    "src/stock_opportunity_agent/research/evolution_core.py": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556",
+    "src/stock_opportunity_agent/research/evolution_research_validation.py": "443930f588474bdf889d395c5cf7f6843bafa62811272a8025af2af9a2df2386",
+    "src/stock_opportunity_agent/research/evolution_output_validation.py": "3fc449936485510837b31596e5e3beb8d3dc726a63f2509ec831ef3ab316a7fa",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "0b80146d0354b1a53ee8fd15dad578c95120a7e2059be4ecc96d8d5830be8d41",
+    "spec/src/stock_opportunity_agent/signal_library.md": "f0d6473af0291603cb8a17c27ea7787888b1eec783e1a25a6503cdc4de24e045",
+    "spec/src/stock_opportunity_agent/research/evolution_core.md": "317d0b4f51c31b6c1f4b27e8efa2ff9e8aeecd22c7afe7aebcf3fbfbf39593ec",
+    "spec/src/stock_opportunity_agent/research/evolution_plan_roles.md": "eeb48246c474a638c5be12621084f928863e48164137a52723f12069931cd9f4",
+    "tests/test_signal_classification_contract.py": "d575c6740105ec5e4ba530269cfc225b914788d38ede5288f3c9485382f82e5a"
+  },
+  "source_drift": false,
+  "network_calls": 0,
+  "new_model_calls": 0,
+  "product_edits": 0,
+  "canonical_result_changed": false
+}

@@ -2250,13 +2250,17 @@ def _compact_signal_evidence_text(text_value: str, *, max_chars: int) -> str:
     )
 
 
-def _signal_batch_model_view(batch: SignalBatchResult) -> list[dict[str, Any]]:
+def _signal_batch_model_view(
+    batch: SignalBatchResult, *,
+    classification_contracts: Mapping[str, Mapping[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
     """Project canonical Signal results into one compact H_reflect-only view."""
 
     remaining = MAX_REFLECT_SIGNAL_BATCH_EVIDENCE_CHARS
     rows: list[dict[str, Any]] = []
     for result in batch.results:
-        model_result = signal_result_model_view(result)
+        model_result = signal_result_model_view(result,
+            classification_contract=(classification_contracts or {}).get(result.ref))
         use_canonical_interpretation = (
             _signal_result_has_adoptable_evidence(result)
             and (result.measurement is not None or (

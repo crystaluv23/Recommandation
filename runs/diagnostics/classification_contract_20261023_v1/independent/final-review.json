@@ -1,0 +1,244 @@
+{
+  "schema_version": "classification-contract-independent-final-review-v1",
+  "reviewed_at_utc": "2026-10-22T19:58:33.666419+00:00",
+  "disposition": "partial_implementation_verified_actual_critic_slow_egress_gap_open",
+  "summary": "The live deterministic/LLM result-object sidecar, per-round Reflect/final-context and posthoc/helper-critic paths pass independent offline counterexamples after three discovered defects were corrected. Full C05/T10 does not pass: actual critic and Slow source-memory serialization omits the saved classification declarations. No new model obedience, live research result or benefit is established.",
+  "scope": {
+    "allowed_reads": "Six named implementation diffs, three owning specs, named test file, frozen preimplementation review, own independent artifacts; parent subsequently authorized evolution_reflection_memory.py plus core CaseReflectionEvidence for T10.",
+    "writes": "Only new files under runs/diagnostics/classification_contract_20261023_v1/independent/. No product/source/spec/native-stage/oracle edits by reviewer.",
+    "methods": [
+      "Direct original source/diff reading",
+      "Compatible Python3.12 with PYTHONDONTWRITEBYTECODE=1 and PYTHONPATH=src",
+      "Independent synthetic normalized financial facts and literal evidence",
+      "No-label fake trajectory for pure projection functions",
+      "Local no-model capture at Update result-view entry before any outcome relation",
+      "Existing anonymity helper and Predictor estimate/dispatch boundary capture, no dispatch"
+    ],
+    "network_calls": 0,
+    "new_model_calls": 0,
+    "business_labels_or_LockedTest_reads": 0,
+    "old_stage_reentries": 0,
+    "no_research_definition_change": "No forecast direction, probability, threshold-recitation, citation naming or optional state update is an acceptance requirement."
+  },
+  "frozen_reference": {
+    "path": "runs/diagnostics/classification_contract_20261023_v1/reference/preimplementation-review.json",
+    "sha256": "a6c8e4228d855c5dead6108e799bd29aee438ad5c9ae74a18570cceffea0976e",
+    "unchanged_from_preimplementation": true
+  },
+  "source_snapshot": {
+    "current_sha256": {
+      "src/stock_opportunity_agent/signal_library.py": "35be3d0546d1e19f9ddeb76ae89ebf0f1e35bc809c81f5b7af169d4d7e62ad60",
+      "src/stock_opportunity_agent/research/evolution_core.py": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617",
+      "src/stock_opportunity_agent/research/evolution_plan_roles.py": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556",
+      "src/stock_opportunity_agent/research/evolution_research_validation.py": "443930f588474bdf889d395c5cf7f6843bafa62811272a8025af2af9a2df2386",
+      "src/stock_opportunity_agent/research/evolution_output_validation.py": "3fc449936485510837b31596e5e3beb8d3dc726a63f2509ec831ef3ab316a7fa",
+      "src/stock_opportunity_agent/research/signal_evolution.py": "0b80146d0354b1a53ee8fd15dad578c95120a7e2059be4ecc96d8d5830be8d41",
+      "spec/src/stock_opportunity_agent/signal_library.md": "f0d6473af0291603cb8a17c27ea7787888b1eec783e1a25a6503cdc4de24e045",
+      "spec/src/stock_opportunity_agent/research/evolution_core.md": "317d0b4f51c31b6c1f4b27e8efa2ff9e8aeecd22c7afe7aebcf3fbfbf39593ec",
+      "spec/src/stock_opportunity_agent/research/evolution_plan_roles.md": "eeb48246c474a638c5be12621084f928863e48164137a52723f12069931cd9f4",
+      "tests/test_signal_classification_contract.py": "d575c6740105ec5e4ba530269cfc225b914788d38ede5288f3c9485382f82e5a",
+      "src/stock_opportunity_agent/research/evolution_reflection_memory.py": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04"
+    },
+    "main_recheck_source_drift": {},
+    "main_run_before_after_equal": true,
+    "note": "The final14-case recheck used the revised alias projection and Update implementation, not the initial freeze. Earlier artifacts preserve their own tested hashes. Parent actual-source-preflight was captured before the last two source repairs; it is not independent evidence of this final source snapshot and is not promoted to current full-hash/live acceptance."
+  },
+  "independent_execution": {
+    "main": {
+      "passed": 14,
+      "total": 14,
+      "artifact": "independent/final-counterexample-results.json"
+    },
+    "additional_boundaries": {
+      "passed": 6,
+      "total": 6,
+      "artifact": "independent/final-extended-counterexample-results.json"
+    },
+    "update_recheck": {
+      "passed": 2,
+      "total": 2,
+      "artifact": "independent/update-binding-recheck.json",
+      "scope": "Captured explicit actual per-case declaration and None/missing provenance at view entry; production source separately confirms immediate per-case capture and same-object guard. No business label access."
+    },
+    "alias_recheck": {
+      "saved_view_accepted": true,
+      "alias_removed": true,
+      "source_hash_preserved": true,
+      "view_hash_recomputed": true,
+      "original_result_spec_hash_preserved": true,
+      "saved_posthoc_helper_critic_equal": true,
+      "tamper_reject": "classification contract identity/integrity mismatch",
+      "artifact": "independent/anonymity-binding-full-recheck.json"
+    },
+    "denominator_meaning": "20 independent offline ordinary/boundary checks, plus2 Update capture cases and1 original alias counterexample with additional assertions. These are diagnostic checks, not24 live role answers or research samples. The open actual critic/Slow contract failure is separately retained; pass counts do not override it."
+  },
+  "counterexample_history": [
+    {
+      "id": "X01_CROSS_ROUND_REF_BACKFILL",
+      "first_evidence": "independent/first-source-review.json",
+      "first_evidence_kind": "Source-confirmed bug acknowledged by parent; no old-code runtime execution claimed.",
+      "problem": "Initial global by-ref core and critic maps attached later live metadata to earlier legacy/clone rounds, and vice versa.",
+      "unchanged_expectation": "Only matching produced/saved round-result gets the declaration; same ref/value does not fill another round omission.",
+      "current_disposition": "Corrected and independently rechecked both orderings, distinct same-ref live outputs, wrong result binding and mismatched round coordinates.",
+      "related": [
+        "C02",
+        "C05",
+        "C09",
+        "T08",
+        "T10",
+        "T13"
+      ]
+    },
+    {
+      "id": "X02_UPDATE_UNINVOKED_VALIDATOR_RECONSTRUCTION",
+      "first_evidence": "independent/update-binding-counterexample.json",
+      "first_evidence_kind": "Independent runtime capture before labels/model calls.",
+      "problem": "Actual executor override ran, but Update rebuilt a declaration from an uninvoked validator function map. Same result_hash did not prove actual invocation.",
+      "current_disposition": "Corrected to immediate per-case sidecar capture plus exact result-object guard; explicit packet declaration preserved, missing provenance staysNone. Original failed artifact unchanged.",
+      "related": [
+        "C01",
+        "C02",
+        "C05",
+        "C09",
+        "T03",
+        "T13"
+      ]
+    },
+    {
+      "id": "X03_MASKED_TEXT_RAW_HASH_MISMATCH",
+      "first_evidence": "independent/anonymity-binding-counterexample.json",
+      "first_evidence_kind": "Independent actual executor→final assembly→context input guard.",
+      "problem": "Existing identity masking changed declaration text but left its raw contract_hash, causing the producer-saved anonymous context to reject before Predictor estimation/dispatch.",
+      "current_disposition": "Corrected by deterministic projection retaining source_contract_hash and rehashing complete anonymous view; raw canonical result/spec hashes unchanged. Original same-semantic alias counterexample now passes, saved posthoc/helper-critic reuse and tamper rejection confirmed.",
+      "related": [
+        "C02",
+        "C05",
+        "C07",
+        "C08",
+        "T06",
+        "T12"
+      ]
+    }
+  ],
+  "open_findings": [
+    {
+      "id": "F01_ACTUAL_CRITIC_SLOW_METADATA_EGRESS_LOSS",
+      "priority": "P1",
+      "status": "unresolved_contract_gap",
+      "controlling_obligation": "C05/T10: actual post-hoc/critic/Slow consumers reuse the saved declaration with parameters/branches, without newer Registry backfill. This was frozen before implementation; it is not an added preference.",
+      "source_chain": [
+        {
+          "path": "src/stock_opportunity_agent/research/evolution_plan_roles.py",
+          "symbols": "LLMPlanCritic.reflect / _plan_critic_trajectory",
+          "observation": "The helper preserves per-round declarations and passes local tests. Actual critic later replaces trajectories with a reduced trajectories_view omitting signal_rounds."
+        },
+        {
+          "path": "src/stock_opportunity_agent/research/evolution_core.py",
+          "symbols": "CaseReflectionEvidence fields/from_trajectory/to_dict/to_model_dict; Plan meta-info original_case_reflections",
+          "observation": "The original source-row schema copies feedback/reflection/status data but never final_context or classification declarations. Slow meta-info serializes the same rows."
+        },
+        {
+          "path": "src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+          "symbols": "ReflectionMemoryIndex._cases, _source, from_case_rows",
+          "observation": "Registered original source is only supplied CaseReflectionEvidence row plus outcome _FACT_FIELDS snapshot. It cannot recover a declaration omitted upstream."
+        }
+      ],
+      "independent_confirmation": "Synthetic no-outcome source row registers2 source contents; neither contains classification_contract. Static producer and egress reads establish the loss; no business labels were inspected.",
+      "artifact": "independent/critic-slow-gap.json",
+      "impact": "Do not close complete C05/T10 or advertise real critic/Slow reuse merely because helper/posthoc tests pass. Final context preserves metadata, but the real critic/Slow source unit does not.",
+      "authority_boundary": "Resolving this may require canonical CaseReflectionEvidence optional fields or a bound reference/archive design. No such canonical change was made by reviewer; parent is requesting the necessary design decision."
+    }
+  ],
+  "contract_matrix": [
+    {
+      "id": "T01",
+      "status": "offline_supported",
+      "evidence": "5/6/9/12/13 positive-signed runway values carry positive/neutral/negative categories; no numeric-sign inference."
+    },
+    {
+      "id": "T02",
+      "status": "offline_supported",
+      "evidence": "Nondefault3/8 and varied5-value thresholds retained; existing equal-bound positive-first behavior explicitly declared; numeric branches unchanged."
+    },
+    {
+      "id": "T03",
+      "status": "offline_supported_after_X02",
+      "evidence": "Actual same-name override captured before function-map mutation; no default replacement; outgoing sidecar copies isolated; Update now uses actual case/result sidecar."
+    },
+    {
+      "id": "T04",
+      "status": "offline_supported",
+      "evidence": "Omitted configuration staysomitted with explicit defaults in doc; malformed/duplicate consumed-name metadata not guessed; declaration_available marks presence, not completeness."
+    },
+    {
+      "id": "T05",
+      "status": "offline_supported",
+      "evidence": "Available nonnumeric/unbounded negative carries declaration; missing/domain unavailable and5 technical statuses staystatus-only; no fabricated infinity."
+    },
+    {
+      "id": "T06",
+      "status": "offline_supported_after_X03",
+      "evidence": "Complete48,000-character Unicode LLMskill and nested parameters survive mixed execution/Reflect/posthoc; real alias masking now rebinds anonymous view and preserves source hash."
+    },
+    {
+      "id": "T07",
+      "status": "offline_supported_with_scope_limit",
+      "evidence": "Ref/version/content/spec/result-hash tampering and conflicting local declarations reject; issuer-evidence input guard remains. Hashing detects integrity mismatches, not semantic falsity or an attacker who invents an entirely rehashed trusted source record."
+    },
+    {
+      "id": "T08",
+      "status": "offline_supported",
+      "evidence": "from_dict clone/import has no sidecar; same-ref missing historical rounds remain absent in either order; no currentRegistry backfill in reviewed saved paths."
+    },
+    {
+      "id": "T09",
+      "status": "deterministic_main_chain_supported_live_semantics_unknown",
+      "evidence": "Exact executed result sidecar→Reflect projection→final assembly→Predictor reservation/dispatch entry and save/reload preserved. No fresh actual model answer audited in this review."
+    },
+    {
+      "id": "T10",
+      "status": "not_met_actual_egress",
+      "evidence": "Posthoc and helpercritic preserve saved declaration; actualcritic/Slow source serialization loses it. F01 remainsopen."
+    },
+    {
+      "id": "T11",
+      "status": "offline_supported_existing_permissions",
+      "evidence": "Definition threshold adopted as issuer claim rejected by unchanged numeric/evidence rule; canonical result unchanged and typed/disposition validators receive no added authority. Full semantic obedience remains model-dependent."
+    },
+    {
+      "id": "T12",
+      "status": "offline_supported_budget_billing_unverified",
+      "evidence": "Complete metadata charged through same Predictor context estimate/dispatch boundary and reserve/output/anonymityargs; alias projection passes actual saved-context guard. Underlying wirebilling and a real near-budget terminal case were not independently reconstructed."
+    },
+    {
+      "id": "T13",
+      "status": "offline_supported_after_X01_X02",
+      "evidence": "Actual validated final object only, clones unknown, mixed subgroup merge preserves object identity, sidecar reseton skippedselectedref, per-round result_hash prevents different canonical result substitution."
+    }
+  ],
+  "unchanged_boundaries": {
+    "canonical_schemas": "Reviewed diffs add model-view metadata/private sidecar only. SignalResult/SignalRound/ResearchState canonical fields and numeric calculation branches unchanged; CaseReflectionEvidence remains unchanged and is the reason F01 is not closed.",
+    "admission_PIT_literals_typed_permissions": "No new execution/eligibility/score/admission/PIT/evidence-literal authority. Definition text is inert control metadata and cannot answer issuer needs or become a source quote.",
+    "old_failures": "Old maturity-control strict0of1 and financial-consumer semantic0of1 are not reclassified or reopened. Old stages/oracles were not edited; this review does not supply a current whole-file rehash of every oldstage.",
+    "fresh_model_compliance": "Unknown; no new model requested or answered by reviewer. Runtime declaration presence and offline pass counts alone do not establish correct interpretation or independent gain."
+  },
+  "limitations": [
+    "No actual fresh Reflect/Predictor rawanswer/correction/cache/durable-sink chain audited for this new mechanism.",
+    "No independent underlying wire byte/token charging reconstruction or actual near-limit terminal dispatch test.",
+    "No full project test/lint run by reviewer; parent tests are separately owned and do not replace these source-semantic conclusions.",
+    "Initial diagnostic setup mistakes were corrected without changing product expectations: Python3.9 import incompatibility; incomplete synthetic input schema/issuer binding; nonexistent batch.to_dict print; document-ref vs loaded-document resolver; finalize instead of finalized stop enum. None is counted as a product failure."
+  ],
+  "artifact_sha256": {
+    "runs/diagnostics/classification_contract_20261023_v1/reference/preimplementation-review.json": "a6c8e4228d855c5dead6108e799bd29aee438ad5c9ae74a18570cceffea0976e",
+    "runs/diagnostics/classification_contract_20261023_v1/independent/first-source-review.json": "4f28fc1eabe541a47f72204399d36b2144b9fe4ea99e91253f6cf96943881b1f",
+    "runs/diagnostics/classification_contract_20261023_v1/independent/update-binding-counterexample.json": "520d15d71eddcc9ca26848ff62f7b1d54f8d6922cebb31a3c449701afa1b0e8e",
+    "runs/diagnostics/classification_contract_20261023_v1/independent/anonymity-binding-counterexample.json": "f446e2bb3436ff90411dc472d475cc0b241f8204069a71bfe2ab04bfc3cf1465",
+    "runs/diagnostics/classification_contract_20261023_v1/independent/final-counterexample-results.json": "f7c015fb264462eaa0777b0ee77c9f7a41446375c27289f43ea891427bc8b86c",
+    "runs/diagnostics/classification_contract_20261023_v1/independent/final-extended-counterexample-results.json": "e8d1057a3b21a063a72a657cd29dd25ea229942d922b5931965a9ae5868876c6",
+    "runs/diagnostics/classification_contract_20261023_v1/independent/update-binding-recheck.json": "6ae82164e8e302a9e443a5dc49e0b063b46d28781b21b8165596e29055e685a4",
+    "runs/diagnostics/classification_contract_20261023_v1/independent/anonymity-binding-recheck.json": "878017552ce234d4544659ba8fe068af7c654956ae9bc9b0ae2bc2667f82309a",
+    "runs/diagnostics/classification_contract_20261023_v1/independent/anonymity-binding-full-recheck.json": "549a59edbf0bc69fbe660757d44294bdf028fc2831802633939f19c212fffc59",
+    "runs/diagnostics/classification_contract_20261023_v1/independent/critic-slow-gap.json": "68fee231bbcaeb2ecd28341637901196e199d57ea82f6760863be30c57d3c549"
+  },
+  "recommended_disposition": "Accept only the narrowly verified local main-chain propagation/identity repair. Keep actual critic/Slow closure open pending explicit canonical persistence decision and implementation; then test its actual outbound/readable source unit. A separately authorized fresh model test remains necessary for new model-semantic acceptance."
+}

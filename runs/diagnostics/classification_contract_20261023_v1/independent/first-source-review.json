@@ -1,0 +1,38 @@
+{
+  "scope": "First independent read-only source review before root fixed the identified cross-round defect. No old implementation execution is claimed.",
+  "status": "source_confirmed_failure_acknowledged_by_root",
+  "finding": {
+    "id": "CROSS_ROUND_REF_BACKFILL",
+    "contracts": [
+      "C02",
+      "C05",
+      "C09",
+      "T08",
+      "T10",
+      "T13"
+    ],
+    "initial_core_diff_blob": "a46935f8",
+    "initial_library_diff_blob": "2efa4fa0",
+    "observed_core_statements": [
+      "classification_contracts.update(classification_reader(batch.results))",
+      "_assemble_final_context(...signal_classification_contracts=classification_contracts)",
+      "for round_row in round_rows: for result in round_row.batch.results: classification_contract=(signal_classification_contracts or {}).get(result.ref)"
+    ],
+    "observed_critic_statements": [
+      "classification_contracts = saved_signal_classification_contracts(final)",
+      "for round_value in data.signal_rounds: model_result = signal_result_model_view(result, classification_contract=classification_contracts.get(ref))"
+    ],
+    "counterexample_input": "Two results have the same versioned ref. One round has no executed-object sidecar/saved declaration; a different round has a real live declaration. Test both orderings and later different live values.",
+    "unchanged_expected": "Only the exact round/result with executed/saved declaration receives it. Earlier/later missing/imported/clone result stays unknown, even with same ref and value.",
+    "source_result": "The initial by-ref core map necessarily attached a known declaration to every same-ref round, and by-ref critic reconstruction backfilled missing rounds. This violated the frozen no-backfill and exact-object contract.",
+    "root_response": "Root independently confirmed a core/critic ref aggregation omission and planned current-batch plus per-round preservation and canonical result_hash binding. No normal-case exemption or expectation change."
+  },
+  "diagnostic_setup_history_not_product_failures": [
+    "System Python3.9 could not import UnionType; switched to bundled compatible Python.",
+    "Initial synthetic fact fixtures lacked correct issuer binding or sec-company-facts-document-v1 schema, producing valid unavailable outcomes; they did not establish a product regression.",
+    "A print diagnostic attempted nonexistent SignalBatchResult.to_dict, then was corrected.",
+    "The accepted independent synthetic fixture now includes explicit CIK, normalized schema, filing date/form and exact same-currency Q4 facts; actual runway result is5 months positive."
+  ],
+  "product_edits": 0,
+  "network_or_new_models": 0
+}

@@ -226,6 +226,49 @@ The result validator checks that any declared period occurs in its cited origina
 numeric facts and that numeric metadata agrees with the canonical adoption string.
 The existing execution/evidence/PIT checks remain mandatory.
 
+### Version-owned categorical meaning
+
+Evidence-consuming model views may additionally carry a runtime-owned
+`measurement_context.classification_contract`. It copies the exact frozen
+Signal description/spec hash and the actual registered callable's declared
+contract/consumed configured parameters (the existing measurement-scope
+disclosure), or the complete frozen LLM skill and its version parameters.
+It is definition/control data, never issuer evidence, an answer disposition,
+numeric-sign semantics or a stock-direction forecast. It does not change a
+measurement, threshold, SignalResult schema, published version or admission rule.
+Availability means a declaration is supplied, not that its semantic correctness
+has been independently established. Explain a category only by conditions
+explicitly supplied in that declaration; otherwise its meaning stays unknown.
+
+Core derives these declarations from its actual frozen Registry and executor,
+not a Signal-id lookup, guessed parameter names, consumer prose or model output.
+The executor records an ephemeral declaration only after actually producing and
+validating that result object. Core accepts this product identity, not merely a
+matching ref/value: imported/reconstructed results without it remain unknown.
+This sidecar is bounded per ref and is not a canonical result/batch schema.
+Exact ref, canonical result hash and content hash bind the envelope; mismatches
+and conflicting declarations at the same batch position reject instead of
+silently substituting another product. Declarations remain per round/result;
+matching refs in another round cannot fill an omission. A custom
+callable's own contract supersedes any default callable with the same name.
+Deterministic identity masking retains the original `source_contract_hash` and
+rehashes the anonymous declaration as `contract_hash`; it never leaves a raw
+hash attached to changed text or exposes identity to keep a hash valid. This
+projection binding does not establish semantic truth. Canonical result/spec
+hashes remain original provenance and are not rewritten by masking.
+Missing declarations remain absent/unknown and must not be reconstructed for
+historical records from today's Registry. Unavailable/technical-failure views
+keep their existing status-only semantics and do not acquire a classification.
+
+Reflect and final Predictor assembly receive the same declaration. Persistence
+retains it in the final context; post-hoc, critic and Slow views reuse only that
+saved declaration, retaining all parameters and branches without truncation.
+Current candidate semantic review may use its actual spec/callable/skill.
+Routing history remains conclusion-only. All declaration text counts toward
+the existing exact request/case budgets. It creates no new citation or typed
+repair authority: Reflect's numeric-adoption and literal-evidence rules stay
+unchanged, so a threshold is not an issuer quote or an allowed invented claim.
+
 ## Signal Types
 
 - `deterministic`: calls a registered pure function over point-in-time Raw Info.

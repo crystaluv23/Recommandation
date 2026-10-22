@@ -1,0 +1,51 @@
+{
+  "scope": "Synthetic actual invoked override; no labels/models/network; final assembly with existing alias masking.",
+  "input_declaration": {
+    "signal_ref": "runway_scope:v1",
+    "spec_hash": "c51892324cfcba75eaa459eda9553bba4c8a6bb09249f95845185bae48d79944",
+    "definition": "Independent synthetic runway control",
+    "execution": {
+      "type": "deterministic",
+      "function": "financial.liquidity_runway_months",
+      "callable_status": "registered",
+      "contract": "Private Issuer Inc. is example text; actual predicate remains the source-bound runway branches.",
+      "parameter_names": [
+        "positive_runway_max_months",
+        "negative_runway_min_months"
+      ],
+      "configured_parameters": {
+        "positive_runway_max_months": 6,
+        "negative_runway_min_months": 12
+      }
+    },
+    "declaration_available": true,
+    "result_hash": "8ba6740c5181077d8ab2b4ffa470dd3c2929c89bb0f901c3f414384e7cf49d5e",
+    "contract_hash": "9e14021309236082f91cf9516ade17ca2355ff31904efe50d6149efe14c839fe"
+  },
+  "saved_projected_declaration": {
+    "signal_ref": "runway_scope:v1",
+    "spec_hash": "c51892324cfcba75eaa459eda9553bba4c8a6bb09249f95845185bae48d79944",
+    "definition": "Independent synthetic runway control",
+    "execution": {
+      "type": "deterministic",
+      "function": "financial.liquidity_runway_months",
+      "callable_status": "registered",
+      "contract": "[MASKED_COMPANY]. is example text; actual predicate remains the source-bound runway branches.",
+      "parameter_names": [
+        "positive_runway_max_months",
+        "negative_runway_min_months"
+      ],
+      "configured_parameters": {
+        "positive_runway_max_months": 6,
+        "negative_runway_min_months": 12
+      }
+    },
+    "declaration_available": true,
+    "result_hash": "8ba6740c5181077d8ab2b4ffa470dd3c2929c89bb0f901c3f414384e7cf49d5e",
+    "contract_hash": "9e14021309236082f91cf9516ade17ca2355ff31904efe50d6149efe14c839fe"
+  },
+  "alias_removed": true,
+  "saved_view_accepted": false,
+  "error_type": "ValidationError",
+  "error": "classification contract identity/integrity mismatch"
+}

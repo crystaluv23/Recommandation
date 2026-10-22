@@ -1,0 +1,95 @@
+{
+  "scope": "Additional synthetic offline boundaries; no labels/models/network, no new research/forecast expectation.",
+  "checks": [
+    {
+      "name": "exact_default_boundaries_and_nondefault_3_8",
+      "pass": true,
+      "detail": [
+        [
+          5,
+          "positive"
+        ],
+        [
+          6,
+          "positive"
+        ],
+        [
+          9,
+          "neutral"
+        ],
+        [
+          12,
+          "negative"
+        ],
+        [
+          13,
+          "negative"
+        ],
+        [
+          5,
+          "neutral",
+          {
+            "positive_max": 3,
+            "negative_min": 8
+          }
+        ],
+        [
+          9,
+          "negative",
+          {
+            "positive_max": 3,
+            "negative_min": 8
+          }
+        ]
+      ]
+    },
+    {
+      "name": "omitted_defaults_and_partial_or_invalid_declaration",
+      "pass": true,
+      "detail": "Exact explicit defaults copied as text; no synthesized config; malformed consumed-name metadata remains unknown"
+    },
+    {
+      "name": "all_five_technical_statuses_keep_status_only",
+      "pass": true,
+      "detail": [
+        "validation_failed",
+        "transport_failed",
+        "permanent_failed",
+        "budget_blocked",
+        "authorization_blocked"
+      ]
+    },
+    {
+      "name": "mixed_subgroups_full_llm_skill_nonnumeric_and_masking",
+      "pass": true,
+      "detail": {
+        "skill_chars": 48000,
+        "reflect_retained_chars": 48000,
+        "merge_preserves_objects": true,
+        "nonnumeric_posthoc_preserves_skill": true,
+        "alias_masked_at_egress": true
+      }
+    },
+    {
+      "name": "predictor_estimate_and_dispatch_full_context_and_empty_setter",
+      "pass": true,
+      "detail": {
+        "full_context_equal_at_estimate_dispatch_boundary": true,
+        "configured_output_reserve_equal": true,
+        "anonymity_args_equal": true,
+        "empty_current_setter_clears": true,
+        "wire_billing_not_independently_recomputed": true
+      }
+    },
+    {
+      "name": "definition_threshold_not_issuer_evidence",
+      "pass": true,
+      "detail": {
+        "rejected_type": "StructuredValidationError",
+        "reason": "supporting_evidence[0] claim contains numeric quantities absent from all referenced Signal evidence items with the same claim, missing_quantity_groups=[\"6\"], missing_quantity_literals=[\"6\"], same_claim_evidence_paths=[\"supporting_evidence[0].claim\"]. Change or remove every listed evidence claim together. Copy the exact canonical numeric form from a deterministic Signal interpretation, cite every required Signal evidence item with the same claim, or narrow the claim. Do not round or convert the supplied values"
+      }
+    }
+  ],
+  "passed": 6,
+  "total": 6
+}
