@@ -93,8 +93,8 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   可选taxonomy现贯穿投影/保存/fact-read；真实同名跨namespace反例拒配、旧fact_ref不变，122关联过；fresh Mining消费仍未验。
 - routing两literal范围误拒已局部修复，停止继续词面补丁；保原0/1及原答，局部修复不等新模型遵循，不重入completed stage或重置预算。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
-  [真实阅读前置](../reports/actual-bounded-reading-preflight-20261023.md)修Registry非空冻结参数复制、目录400坐标无损共享/直接翻页、额度及预览越界；240关联过/网络0，首请求预留88302→32579；0生产答/GET/外部API。
-  历史v1输入形状不适用、当前商业化v2多义均在模型前停止；独立源审保原件，未改定义/强造正控。长正文仍缺透明定位，F5/实际消费保持open；既有合成首答1of1及历史原0of1不改。
+  [章节导航与真实控制](../reports/narrative-source-navigation-20261023.md)共用数据层matcher、各自坐标/分页、标题原子计预算；251关联/独立24过，网络0。旧v1形状与commercialization/v5净影响多义仍保留，未改定义。
+  私有90日本金到期控制由3fresh角色首答正确事实/0纠错、117566逻辑预留、31138来源chars、29files再开同；冻结更强上下文严审仍0of1，core事实正确不等完整通过。oracle额外义务须先对定义核清；未发布/非Mining，F5/实际消费/MVP仍open。
   gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
 - 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

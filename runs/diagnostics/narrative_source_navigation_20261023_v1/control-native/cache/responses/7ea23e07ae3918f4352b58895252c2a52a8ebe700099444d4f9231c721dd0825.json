@@ -1,0 +1,32 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "reads": [
+      {
+        "length": 16000,
+        "offset": 28000,
+        "source_ref": "source_dfac075adb7886510c817a60"
+      },
+      {
+        "length": 6000,
+        "offset": 129000,
+        "source_ref": "source_dfac075adb7886510c817a60"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"reads\":[{\"source_ref\":\"source_dfac075adb7886510c817a60\",\"offset\":28000,\"length\":16000},{\"source_ref\":\"source_dfac075adb7886510c817a60\",\"offset\":129000,\"length\":6000}]}",
+  "request_hash": "7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825",
+  "response_id": "local-7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825",
+  "usage": {
+    "accounting_tokens": 15396,
+    "agent_id": "/root/maturity_read_initial",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "72e1e7c52f117de455d9b7fbf8785d63054d0bc38a6bc8678a1dc327a6a056f2",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "fa4c531d86adaf6f7ef8d50fad078dc3aff533548171c9521a7ff56d0767edef",
+    "request_hash": "7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825",
+    "token_usage": null
+  }
+}

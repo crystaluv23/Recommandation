@@ -1,0 +1,31 @@
+{
+  "scope": "Private actual-source F5/F6 capability control only; not a published/admitted Signal, Mining output, prediction-direction finding or relaxation of current-v5 acceptance.",
+  "signal_id": "principal_maturity_90d_control",
+  "version": 1,
+  "definition": "Measure the presence of a completed or binding debt/credit facility of the issuer or an explicitly consolidated subsidiary whose contractual principal maturity is strictly after the as-of calendar date and no later than 90 calendar days afterward. Use the latest disclosed effective amendment for the same facility. Distinguish principal maturity from fee/interest/collateral/optional redemption dates, proposals, uncommitted funding and third-party customer debt.",
+  "states": {
+    "positive": "At least one explicitly dated qualifying principal maturity exists in that interval; this means only that the condition is present, with no surge, benefit or investment-direction meaning.",
+    "neutral": "A complete explicitly supplied maturity inventory establishes all qualifying issuer facilities outside the interval.",
+    "unavailable": "No supported positive and the visible inventory or dates/owner/amendment terms are insufficient.",
+    "negative": "Not used by this control."
+  },
+  "evidence_obligations": [
+    "Cite complete original-source sentences identifying the borrower/facility and principal maturity. Keep material qualifications and funding/obligation context.",
+    "An exact future contractual maturity disclosed before cutoff is admissible; a later actual outcome is not.",
+    "Do not infer any net financing benefit or directional surge effect. Warrants, fees and collateral cannot be concealed in interpretation but do not change a correctly identified principal maturity.",
+    "Use only disclosed source windows; unknown inventory cannot prove absence."
+  ],
+  "retrieval": {
+    "source_types": [
+      "filing"
+    ],
+    "lookback_days": 730,
+    "query_terms": [
+      "debt maturity",
+      "credit facility",
+      "financing"
+    ]
+  },
+  "as_of": "2025-05-30T00:00:00+00:00",
+  "window_calendar_days": 90
+}

@@ -1,0 +1,235 @@
+{
+  "document_fingerprints": {
+    "principal_maturity_90d_control:v1": [
+      "source_catalog:v1:81e2052a93a35135c5db0f226b8932b1ea9760ec14f3f81885e46fd186f1bb94",
+      "sec:cik_0001309402:000130940225000089:02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799"
+    ]
+  },
+  "request_hashes": [
+    "7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825",
+    "3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528",
+    "150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293"
+  ],
+  "resolutions": [
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 1,
+        "selection_truncated": true,
+        "visible_span_count": 3
+      },
+      "data_gap": null,
+      "documents": [
+        {
+          "available_at": "2025-05-08T20:34:28+00:00",
+          "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+          "document_id": "sec:cik_0001309402:000130940225000089"
+        }
+      ],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [
+              "sec:cik_0001309402:000130940225000008",
+              "sec:cik_0001309402:000130940225000089"
+            ],
+            "phase": "initial",
+            "request_id": "signal:principal_maturity_90d_control:v1",
+            "source_types": [
+              "filing"
+            ]
+          },
+          "kind": "local_query"
+        },
+        {
+          "details": {
+            "accepted": "success",
+            "catalog_signature": "source_catalog:v1:81e2052a93a35135c5db0f226b8932b1ea9760ec14f3f81885e46fd186f1bb94",
+            "catalog_size": 2,
+            "characters": 31138,
+            "closed": true,
+            "exchanges": 2,
+            "history": [
+              {
+                "action": {
+                  "reads": [
+                    {
+                      "length": 16000,
+                      "offset": 28000,
+                      "source_ref": "source_dfac075adb7886510c817a60"
+                    },
+                    {
+                      "length": 6000,
+                      "offset": 129000,
+                      "source_ref": "source_dfac075adb7886510c817a60"
+                    }
+                  ]
+                },
+                "result": {
+                  "omitted_text_may_contain_additional_evidence": true,
+                  "remaining_exchanges": 1,
+                  "source_projection": [
+                    {
+                      "available_at": "2025-05-08T20:34:28+00:00",
+                      "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+                      "document_id": "sec:cik_0001309402:000130940225000089",
+                      "exact_text": " ACQUISITION Green Plains Partners Merger On January 9, 2024, the transactions contemplated by the Merger Agreement were completed and the company issued approximately 4.7 million shares of common stock to acquire all of the publicly held common units of the partnership not already owned by the company prior to the Merger at a fixed exchange ratio of 0.405 shares of the company's common stock, par value $ 0.001 per share, along with $ 2.50 of cash consideration for each partnership common unit. The total consideration as a result of the Merger was $ 143.1 million, which was comprised of $ 29.2 million in cash and $ 113.9 million of common stock exchanged. As a result of the Merger, the partnership's common units are no longer publicly traded. The interests in the partnership owned by the company and its subsidiaries remain outstanding as limited partner interests in the surviving entity. The General Partner of the partnership will continue to own the non-economic general partner interest in the surviving entity. Since the company controlled the partnership prior to the Merger and continues to control the partnership after the Merger, the company accounted for the change in its ownership interest in the partnership as an equity transaction during the three months ended March 31, 2024, which is reflected as a reduction of non-controlling interest with a corresponding increase to common stock and additional paid-in capital. No gain or loss was recognized in the consolidated statements of operations as a result of the Merger. Prior to the effective time of the Merger on January 9, 2024, public unitholders owned a 49.2 % limited partner interest, the company owned a 48.8 % limited partner interest and a 2.0 % general partner interest in the partnership. For the three months ended March 31, 2024, the non-controlling interest attributed to the partnership common units held by the public of $ 133.8 million were recorded as a reduction of non-controlling interest with a corresponding increase to additional paid-in capital. The company incurred transaction costs of $ 5.5 million related to the Merger during the three months ended March 31, 2024. These costs were directly related to the Merger consisting primarily of financial advisory services, legal services and other professional fees, and were recorded as an offset to the issuance of common stock within additional paid-in capital. 4. FAIR VALUE DISCLOSURES The following methods, assumptions and valuation techniques were used in estimating the fair value of the company’s financial instruments: Level 1 – unadjusted quoted prices in active markets for identical assets or liabilities the company can access at the measurement date. Level 2 – directly or indirectly observable inputs such as quoted prices for similar assets or liabilities in active markets other than quoted prices included within Level 1, quoted prices for identical or similar assets in markets that are not active, and other inputs that are observable or can be substantially corroborated by observable market data through correlation or other means. Fair value hedged inventories in the agribusiness and energy services segment as well as forward commodity purchase and sale contracts are valued at nearby futures values, plus or minus nearby basis values, which represent differences in local markets, including transportation or commodity quality or grade differences. Level 3 – unobservable inputs that are supported by little or no market activity and comprise a significant component of the fair value of the assets or liabilities. The company currently does not have any recurring Level 3 financial instruments. Derivative contracts include exchange-traded commodity futures and options contracts and forward commodity purchase and sale contracts. Exchange-traded futures and options contracts are valued based on unadjusted quoted prices in active markets and are classified in Level 1. The majority of the company’s exchange-traded futures and options contracts are cash-settled on a daily basis. 14 Table of Contents There have been no changes in valuation techniques and inputs used in measuring fair value. The company’s assets and liabilities by level are as follows (in thousands): Fair Value Measurements at March 31, 2025 Quoted Prices in Active Markets for Identical Assets (Level 1) Significant Other Observable Inputs (Level 2) Total Assets Cash and cash equivalents $ 98,610 $ — $ 98,610 Restricted cash 27,993 — 27,993 Inventories carried at market — 21,930 21,930 Derivative financial instruments - assets — 9,765 9,765 Total assets measured at fair value $ 126,603 $ 31,695 $ 158,298 Liabilities Accounts payable (1) $ — $ 15,110 $ 15,110 Derivative financial instruments - liabilities — 12,038 12,038 Other liabilities (2) — 1,062 1,062 Total liabilities measured at fair value $ — $ 28,210 $ 28,210 Fair Value Measurements at December 31, 2024 Quoted Prices in Active Markets for Identical Assets (Level 1) Significant Other Observable Inputs (Level 2) Total Assets Cash and cash equivalents $ 173,041 $ — $ 173,041 Restricted cash 36,354 — 36,354 Inventories carried at market — 48,500 48,500 Derivative financial instruments - assets — 10,154 10,154 Total assets measured at fair value $ 209,395 $ 58,654 $ 268,049 Liabilities Accounts payable (1) $ — $ 23,208 $ 23,208 Accrued and other liabilities (2) — 2,094 2,094 Derivative financial instruments - liabilities — 4,791 4,791 Other liabilities (2) — 979 979 Total liabilities measured at fair value $ — $ 31,072 $ 31,072 (1) Accounts payable is generally stated at historical amounts with the exception of $ 15.1 million and $ 23.2 million at March 31, 2025 and December 31, 2024, respectively, related to certain delivered inventory for which the payable fluctuates based on changes in commodity prices. These payables are hybrid financial instruments for which the company has elected the fair value option. (2) Accrued and other liabilities includes $ 2.1 million at December 31, 2024, while other liabilities includes $ 1.1 million and $ 1.0 million of consideration related to potential earn-out payments recorded at fair value at March 31, 2025 and December 31, 2024, respectively. As of March 31, 2025, the fair value of the company’s debt was approximately $ 517.8 million compared with a book value of $ 571.8 million. At December 31, 2024, the fair value of the company’s debt was approximately $ 518.6 million compared with a book value of $ 575.4 million. The company estimated the fair value of its outstanding debt using Level 2 inputs. The company believes the fair value of its accounts receivable approximated book value, which was $ 97.1 million and $ 94.9 million at March 31, 2025 and December 31, 2024, respectively. 15 Table of Contents Although the company currently does not have any recurring Level 3 financial measurements, the fair values of tangible assets and goodwill acquired represent Level 3 measurements which were derived using a combination of the income approach, market approach and cost approach for the specific assets or liabilities being valued. 5. SEGMENT INFORMATION The company reports the financial and operating performance for the following two operating segments: (1) ethanol production, which includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil and (2) agribusiness and energy services, which includes grain handling and storage, commodity marketing and merchant trading for company-produced and third-party ethanol, distillers grains, Ultra-High Protein, renewable corn oil, natural gas and other commodities. Corporate activities include selling, general and administrative expenses, consisting primarily of compensation, professional fees, overhead costs, gain on sale of assets, and restructuring costs not directly related to a specific operating segment. During the normal course of business, the operating segments conduct business with each other. For example, the agribusiness and energy services segment procures grain and natural gas and sells products, including ethanol, distillers grains, Ultra-High Protein and renewable corn oil for the ethanol production segment. These intersegment activities are treated like third-party transactions with origination, marketing and storage fees charged at estimated market values. Consequently, these transactions affect segment performance; however, they do not impact the company’s consolidated results since the revenues and corresponding costs are eliminated. The Chief Operating Decision Maker (\"CODM\") for the company is the Interim Principal Executive Officer. The CODM utilizes EBITDA to assess segment performance, which is derived from revenue less cost of goods sold and selling, general and administrative expenses. The CODM manages and allocates resources to the operations of the Company's two segments. This enables the Interim Principal Executive Officer to assess the Company’s overall level of available resources and determine how best to deploy these resources for capital expenditure, research and development projects, and other strategic opportunities that are in line with our long-term strategic goals. The CODM is regularly provided with consolidated expense information or forecasted expense information for the applicable reportable segment. The following tables set forth certain financial data for the company’s operating segments (in thousands): Three Months Ended March 31, 2025 2024 Revenues Ethanol production Revenues from external customers $ 497,458 $ 504,446 Intersegment revenues 314 1,213 Total segment revenues 497,772 505,659 Agribusiness and energy services Revenues from external customers 104,057 92,768 Intersegment revenues 5,772 6,228 Total segment revenues 109,829 98,996 Revenues including intersegment activity 607,601 604,655 Intersegment eliminations ( 6,086 ) ( 7,441 ) $ 601,515 $ 597,214 16 Table of Contents Refer to Note 2 - Revenue , for further disaggregation of revenue by operating segment. Three Months Ended March 31, 2025 2024 Cost of goods sold Ethanol production (1) $ 503,464 $ 508,302 Agribusiness and energy services 101,098 87,986 Intersegment eliminations ( 6,086 ) ( 7,441 ) $ 598,476 $ 588,847 Three Months Ended March 31, 2025 2024 Gross margin Ethanol production (1) $ ( 5,692 ) $ ( 2,643 ) Agribusiness and energy services 8,731 11,010 $ 3,039 $ 8,367 Three Months Ended March 31, 2025 2024 Depreciation and amortization Ethanol production $ 21,035 $ 20,534 Agribusiness and energy services 598 505 Corporate activities 754 448 $ 22,387 $ 21,487 Three Months Ended March 31, 2025 2024 Operating income (loss) Ethanol production (1) $ ( 39,550 ) $ ( 33,653 ) Agribusiness and energy services 1,533 6,004 Corporate activities (2) ( 24,243 ) ( 17,240 ) $ ( 62,260 ) $ ( 44,889 ) (1) Ethanol production includes an inventory lower of cost or net realizable value adjustment of $ 2.5 million and $ 4.2 million for the three months ended March 31, 2025 and 2024, respectively. (2) Corporate activities includes $ 10.3 million of restructuring costs for the three months ended March 31, 2025 as a result of the company's cost reduction initiative, including severance related to the departure of its CEO. During the three months ended March 31, 2025, the company incurred restructuring costs related to severance, stock based compensation and other charges as a result of cost reduction initiatives that were recorded within the following line items in the consolidated statements of operations (in thousands): 17 Table of Contents Three Months Ended March 31, 2025 Ethanol production Agribusiness and energy services Corporate activities Subtotal Cost of goods sold $ 2,260 459 — $ 2,719 Selling, general and administrative expenses 210 1,658 10,341 12,209 Other, net — 154 1,505 1,659 Total restructuring costs $ 2,470 2,271 11,846 $ 16,587 The following tables reconcile EBITDA, our segment measure of profit or loss, to net loss (in thousands). EBITDA is defined as earnings before interest expense, income taxes, depreciation and amortization excluding the amortization of right-of-use assets and debt issuance costs. Three Months Ended March 31, 2025 Ethanol production Agribusiness and energy services Subtotal EBITDA $ ( 19,416 ) $ 3,156 $ ( 16,260 ) Depreciation and amortization ( 21,035 ) ( 598 ) ( 21,633 ) Interest expense ( 4,820 ) ( 2,427 ) ( 7,247 ) Subtotal $ ( 45,271 ) $ 131 $ ( 45,140 ) Unallocated corporate expenses (1) ( 27,666 ) Income tax expense, net of equity method income tax benefit 165 Net loss $ ( 72,641 ) Three Months Ended March 31, 2024 Ethanol production Agribusiness and energy services Subtotal EBITDA $ ( 13,621 ) $ 7,056 $ ( 6,565 ) Depreciation and amortization ( 20,534 ) ( 505 ) ( 21,039 ) Interest expense ( 5,061 ) ( 1,141 ) ( 6,202 ) Subtotal $ ( 39,216 ) $ 5,410 $ ( 33,806 ) Unallocated corporate expenses (1) ( 16,987 ) Income tax expense, net of equity method income tax benefit ( 329 ) Net loss $ ( 51,122 ) (1) Corporate expenses include selling, general administrative expenses, depreciation and amortization, interest expense, and during 2025 includes restructuring costs related to cost savings initiatives and the departure of our CEO. The following table sets forth total assets by operating segment (in thousands): March 31, 2025 December 31, 2024 Total assets (1) Ethanol production $ 1,244,617 $ 1,234,635 Agribusiness and energy services 351,655 412,006 Corporate assets 77,219 143,716 Intersegment eliminations ( 6,919 ) ( 8,183 ) $ 1,666,572 $ 1,782,174 (1) Asset balances by segment exclude intercompany balances. 18 Table of Contents 6. INVENTORIES Inventories are carried at the lower of cost or net realizable value, except fair-value hedged inventories. There was a $ 2.5 million and $ 2.1 million lower of cost or net realizable value inventory adjustment associated with finished goods in cost of goods sold within the ethanol production segment as of March 31, 2025 and December 31, 2024, respectively. The components of inventories are as follows (in thousands): March 31, 2025 December 31, 2024 Finished goods $ 60,166 $ 72,863 Commodities held for sale 21,930 48,500 Raw materials 33,479 37,334 Work-in-process 13,516 13,569 Supplies and parts 57,980 55,178 $ 187,071 $ 227,444 7. DERIVATIVE FINANCIAL INSTRUMENTS At March 31, 2025, the company’s consolidated balance sheet reflected unrealized losses of $ 1.3 million, net of tax, in accumulated other comprehensive loss. The company expects these items will be reclassified as operating income (loss) over the next 12 months as a result of hedged transactions that are forecasted to occur. The amount realized in operating income (loss) will differ as commodity prices change.",
+                      "projection_id": "projection_22aebdee53702b21da4aafae",
+                      "published_at": "2025-05-08T20:34:28+00:00",
+                      "source_type": "filing",
+                      "source_window": {
+                        "end": 42801,
+                        "start": 28015
+                      }
+                    },
+                    {
+                      "available_at": "2025-05-08T20:34:28+00:00",
+                      "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+                      "document_id": "sec:cik_0001309402:000130940225000089",
+                      "exact_text": " Funds at certain subsidiaries are generally required for their ongoing operational needs and restricted from distribution. At March 31, 2025, our subsidiaries had approximately $22.3 million of net assets that were not available to use in the form of dividends, loans or advances due to restrictions contained in their credit facilities. The company has $125.0 million of debt due on May 15, 2026. On or before the maturation of debt in 2026, the Company will require substantial additional liquidity to satisfy these debt obligations. The Company is currently evaluating strategies to obtain the needed additional liquidity to satisfy these obligations, including but not limited to, issuing debt, entering into other financing arrangements, selling assets, or other strategic actions. There can be no assurance that the Company will be able to execute on these strategies when needed or under acceptable terms. Net cash used in operating activities was $55.0 million for the three months ended March 31, 2025, compared with net cash used in operating activities of $50.6 million for the same period in 2024. Net cash used in operating activities compared to the prior year decreased primarily due to higher net losses and lower collections of accounts receivable. Net cash used in investing activities was $20.7 million for the three months ended March 31, 2025, compared with net cash used in investing activities of $30.2 million for the same period in 2024. Investing activities were primarily affected by lower investment in equity method investees when compared to the same period in the prior year. Net cash used in financing activities was $7.0 million for the three months ended March 31, 2025, compared with net cash used in financing activities of $20.6 million for the same period in 2024, primarily due to the extinguishment of non-controlling interest and payments of transactions costs during 2024. Additionally, Green Plains Finance Company, Green Plains Trade, Green Plains Grain and Green Plains Commodity Management use revolving credit facilities to finance working capital requirements. We frequently draw from and repay these facilities, which results in significant cash movements reflected on a gross basis within financing activities as proceeds from and payments on short-term borrowings. We incurred capital expenditures of approximately $16.7 million during the three months ended March 31, 2025, primarily for various capital projects. Capital spending for the remainder of 2025 is expected to be approximately $20.0 million, which is subject to review prior to the initiation of any project. This estimated capital spending for the remainder of 2025 excludes estimated total costs of $110 million related to our carbon capture and sequestration projects to be funded through project related financing. Our business is sensitive to the price of commodities, particularly for corn, ethanol, distillers grains, Ultra-High Protein, renewable corn oil and natural gas. We use derivative financial instruments to reduce the market risk associated with fluctuations in commodity prices. Sudden changes in commodity prices may require cash deposits with brokers for margin calls or significant liquidity with little advanced notice to meet margin calls, depending on our open derivative positions. We continuously monitor our exposure to margin calls and believe we will continue to maintain adequate liquidity to cover margin calls from our operating results and borrowings. In August 2014 and October 2019, our Board authorized a share repurchase program of up to $200.0 million of our common stock. Under the program, we may repurchase shares in open market transactions, privately negotiated transactions, accelerated share buyback programs, tender offers or by other means. The timing and amount of repurchase transactions are determined by our management based on market conditions, share price, legal requirements and other factors. The program may be suspended, modified or discontinued at any time without prior notice. Since inception of the repurchase program, we have repurchased 7.4 million shares of common stock for approximately $92.8 million under the program. We did not repurchase any shares of common stock during the first quarter of 2025. We believe we have sufficient working capital for our existing operations. A continued sustained period of unprofitable operations, however, may strain our liquidity. We may sell additional assets or equity or borrow capital to improve or preserve our liquidity. 42 Table of Contents Debt We were in compliance with our debt covenants at March 31, 2025. Based on our forecasts, we anticipate we will maintain compliance at each of our subsidiaries for the next twelve months or have sufficient liquidity available on a consolidated basis to resolve noncompliance. We cannot provide assurance that actual results will approximate our forecasts or that we will inject the necessary capital into a subsidiary to maintain compliance with its respective covenants. In the event a subsidiary is unable to comply with its debt covenants, the subsidiary’s lenders may determine that an event of default has occurred, and following notice, the lenders may terminate the commitment and declare the unpaid balance due and payable. Corporate Activities In March 2021, we issued $230.0 million of unsecured 2.25% convertible senior notes due in 2027, or the 2.25% notes. The 2.25% notes bear interest at a rate of 2.25% per year, payable on March 15 and September 15 of each year. The initial conversion rate is 31.6206 shares of our common stock per $1,000 principal amount of 2.25% notes (equivalent to an initial conversion price of approximately $31.62 per share of our common stock), representing an approximately 37.5% premium over the offering price of our common stock.",
+                      "projection_id": "projection_0bb1249b44f6d6c2e1fa48a8",
+                      "published_at": "2025-05-08T20:34:28+00:00",
+                      "source_type": "filing",
+                      "source_window": {
+                        "end": 134905,
+                        "start": 129056
+                      }
+                    }
+                  ],
+                  "visible_source_characters": 24367,
+                  "windows": [
+                    {
+                      "next_offset": 42801,
+                      "requested_end": 44000,
+                      "requested_start": 28000,
+                      "returned_units": 1,
+                      "source_complete": false,
+                      "source_ref": "source_dfac075adb7886510c817a60"
+                    },
+                    {
+                      "next_offset": 134905,
+                      "requested_end": 135000,
+                      "requested_start": 129000,
+                      "returned_units": 1,
+                      "source_complete": false,
+                      "source_ref": "source_dfac075adb7886510c817a60"
+                    }
+                  ]
+                }
+              },
+              {
+                "action": {
+                  "reads": [
+                    {
+                      "length": 6772,
+                      "offset": 134905,
+                      "source_ref": "source_dfac075adb7886510c817a60"
+                    }
+                  ]
+                },
+                "result": {
+                  "omitted_text_may_contain_additional_evidence": true,
+                  "remaining_exchanges": 0,
+                  "source_projection": [
+                    {
+                      "available_at": "2025-05-08T20:34:28+00:00",
+                      "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+                      "document_id": "sec:cik_0001309402:000130940225000089",
+                      "exact_text": " The conversion rate is subject to adjustment upon the occurrence of certain events, including but not limited to; the event of a stock dividend or stock split; the issuance of additional rights, options and warrants; spinoffs; or a tender or exchange offering. In addition, we may be obligated to increase the conversion rate for any conversion that occurs in connection with certain corporate events, including our calling the 2.25% notes for redemption. We may settle the 2.25% notes in cash, common stock or a combination of cash and common stock. At March 31, 2025, the outstanding principal balance on the 2.25% notes was $230.0 million. On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period. Ethanol Production Segment On February 9, 2021, Green Plains SPE LLC, a wholly-owned special purpose subsidiary and parent of Green Plains Obion and Green Plains Mount Vernon issued $125.0 million of junior secured mezzanine notes with BlackRock. On May 7, 2025 the junior notes were amended to give us additional flexibility and liquidity in order to continue the implementation of our strategic plan, which extended the maturity date from February 9, 2026 to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the maturity date extended from April 28, 2026 to December 31, 2029. These notes will accrue interest at an annual rate of 11.75%. The company believes that it has adequate access to capital to source appropriate funding to refinance or extinguish the junior secured notes. Green Plains Shenandoah, a wholly-owned subsidiary, has a $75.0 million secured loan agreement, which matures on September 1, 2035. At March 31, 2025, the outstanding principal balance was $71.3 million on the loan and the interest rate was 6.52%. We also have small equipment financing loans, finance leases on equipment or facilities, and other forms of debt financing. Agribusiness and Energy Services Segment Green Plains Finance Company, Green Plains Grain and Green Plains Trade have total senior secured revolving commitments of $350.0 million and an accordion feature whereby amounts available under the facility may be increased by up to $100.0 million of new lender commitments subject to certain conditions. The facility matures in March 2027. Each SOFR rate loan shall bear interest for each day at a rate per annum equal to the Term SOFR rate for the outstanding period plus a Term SOFR adjustment and an applicable margin of 2.25% to 2.50%, which is dependent on undrawn availability under the facility. Each base rate loan shall bear interest at a rate per annum equal to the base rate plus the applicable margin of 1.25% to 1.50%, which is dependent on undrawn availability under the facility. The unused portion of the facility is also subject to a commitment fee of 0.275% to 0.375%, dependent on undrawn availability. At March 31, 2025, the outstanding principal balance was $129.0 million on the facility and the interest rate was 7.50%. 43 Table of Contents Green Plains Commodity Management has an uncommitted $40.0 million secured revolving credit facility to finance margins related to its hedging programs. During the first quarter of 2023, this revolving credit facility was extended five years to mature on April 30, 2028. Advances are subject to variable interest rates equal to SOFR plus 1.75%. At March 31, 2025, the outstanding principal balance was $8.4 million on the facility and the interest rate was 6.09%. Green Plains Grain has a short-term inventory financing agreement with a financial institution. The company has accounted for the agreement as short-term notes, rather than revenues, and has elected the fair value option to offset fluctuations in market prices of the inventory. This agreement is subject to negotiated variable interest rates. The company had no outstanding short-term notes payable related to the inventory financing agreement as of March 31, 2025. Refer to Note 8 - Debt in the notes to the consolidated financial statements included herein for more information about our debt. Effects of Inflation We have experienced inflationary impacts on labor costs, wages, components, equipment, other inputs and services across our business and inflation and its impact could escalate in future quarters, many of which are beyond our control. Moreover, we have fixed price arrangements with our customers and are not able to pass those costs along in most instances. As such, inflationary pressures could have a material adverse effect on our performance and financial statements. Contractual Obligations and Commitments In addition to debt, our material future obligations include certain lease agreements and contractual and purchase commitments related to commodities, storage and transportation. Aggregate minimum lease payments under the operating lease agreements for future fiscal years as of March 31, 2025 totaled $75.3 million. As of March 31, 2025, we had contracted future purchases of grain, distillers grains and natural gas valued at approximately $257.0 million, future commitments for storage and transportation valued at approximately $37.7 million, and accumulated commitments related to the construction of carbon capture and sequestration equipment at our three Nebraska plants of $28.5 million. Refer to Note 13 – Commitments and Contingencies included in the notes to consolidated financial statements for more information. Critical Accounting Policies and Estimates Critical accounting policies, including those relating to derivative financial instruments and accounting for income taxes, are impacted significantly by judgments, assumptions and estimates used in the preparation of the consolidated financial statements. Information about our critical accounting policies and estimates are included in our annual report on Form 10-K for the year ended December 31, 2024. Off-Balance Sheet Arrangements We do not have any off-balance sheet arrangements.",
+                      "projection_id": "projection_1e324db5874e543cb7377262",
+                      "published_at": "2025-05-08T20:34:28+00:00",
+                      "source_type": "filing",
+                      "source_window": {
+                        "end": 141676,
+                        "start": 134905
+                      }
+                    }
+                  ],
+                  "visible_source_characters": 31138,
+                  "windows": [
+                    {
+                      "next_offset": 141676,
+                      "requested_end": 141677,
+                      "requested_start": 134905,
+                      "returned_units": 1,
+                      "source_complete": false,
+                      "source_ref": "source_dfac075adb7886510c817a60"
+                    }
+                  ]
+                }
+              }
+            ],
+            "mode": "bounded_source_reading",
+            "navigation_characters": 3452,
+            "preview_characters": 280,
+            "read_documents": [
+              "sec:cik_0001309402:000130940225000089"
+            ]
+          },
+          "kind": "llm_signal_source_reading"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure the presence of a completed or binding debt/credit facility of the issuer or an explicitly consolidated subsidiary whose contractual principal maturity is strictly after the as-of calendar date and no later than 90 calendar days afterward. Use the latest disclosed effective amendment for the same facility. Distinguish principal maturity from fee/interest/collateral/optional redemption dates, proposals, uncommitted funding and third-party customer debt.",
+        "lookback_days": 730,
+        "max_documents": 10,
+        "query": "debt maturity credit facility financing",
+        "request_id": "signal:principal_maturity_90d_control:v1",
+        "source_types": [
+          "filing"
+        ]
+      },
+      "status": "resolved"
+    }
+  ],
+  "results": [
+    {
+      "evidence": {
+        "counter": [],
+        "supporting": [
+          {
+            "document_id": "sec:cik_0001309402:000130940225000089",
+            "exact_span": "On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+            "timestamp": "2025-05-08T20:34:28+00:00"
+          }
+        ]
+      },
+      "execution": {
+        "status": "success"
+      },
+      "interpretation": {
+        "summary": "The issuer entered into a secured $30 million revolving credit facility on May 7, 2025 with contractual maturity on July 30, 2025, strictly after the May 30, 2025 as-of date and within the following 90 calendar days. This establishes the control condition. The facility bears 10% interest on borrowings and a 0.5% fee on the unused balance, with interest and fees due monthly, and included issuance of 1,504,140 warrants at $0.01 per share with a ten year exercise period. The disclosed facility amount does not establish the amount drawn; this result implies no net financing benefit or investment direction."
+      },
+      "signal_id": "principal_maturity_90d_control",
+      "state": {
+        "confidence": 0.99,
+        "value": "positive"
+      },
+      "status": {
+        "coverage": "sufficient"
+      },
+      "version": 1
+    }
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 3,
+    "tokens": 117566
+  }
+}

@@ -5541,7 +5541,7 @@ class StructuredLLMSignalRunner:
                                 + _UNTRUSTED_DATA_INSTRUCTION +
                                 ' Return exactly {"reads":[{"source_ref":"supplied handle","offset":0,"length":4000}]} '
                                 '(1..5 windows), {"catalog_cursor":20}, '
-                                '{"catalog_source_ref":"supplied structured handle","group_cursor":20}, '
+                                '{"catalog_source_ref":"supplied source handle","group_cursor":20}, '
                                 'or {"finalize":true}. Coordinates are declared on each card; '
                                 "facts are expanded to their complete latest/comparable/conflicting group. "
                                 "There are at most two exchanges, ten sources and 32000 source characters total. "
@@ -5552,6 +5552,11 @@ class StructuredLLMSignalRunner:
                                 " Page summaries allow a direct catalog_cursor jump; their availability dates are not measurement periods. "
                                 "Decode catalog fact_groups using fact_group_fields and the page-local fact_group_terms dictionary; "
                                 "the last two fields are literal offset and length for a read."
+                                " Narrative section_groups index heading matches in the card's coordinates, "
+                                "including possible contents-table/cross-reference matches; the index is partial. "
+                                "Use the same source/group action to page omitted headings, within the two exchanges. "
+                                "Read complete contextual sentences near the selected section; headings alone are not evidence. "
+                                "Displayed headings, previews and actual reads share the remaining source-character limit."
                             ),
                             payload={"signal_spec": item.spec.to_dict(), "skill": item.skill,
                                 "as_of": as_of.isoformat(), "source_catalog": session.catalog(),

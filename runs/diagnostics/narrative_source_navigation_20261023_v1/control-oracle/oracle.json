@@ -1,0 +1,569 @@
+{
+  "schema_version": "actual-source-control-reference-v1",
+  "scope": "Private actual-source F5/F6 capability control only; not a published/admitted Signal, Mining output, prediction-direction finding or relaxation of current-v5 acceptance.",
+  "status": "supported_unique_state",
+  "signal_id": "principal_maturity_90d_control",
+  "version": 1,
+  "expected_state": "positive",
+  "allowed_expected_states": [
+    "positive"
+  ],
+  "state_meaning": "Presence of at least one qualifying facility principal maturity in the interval only. No net benefit, distress, surge or investment-direction meaning.",
+  "definition": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-definition.json",
+    "sha256": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb",
+    "exact_definition": {
+      "scope": "Private actual-source F5/F6 capability control only; not a published/admitted Signal, Mining output, prediction-direction finding or relaxation of current-v5 acceptance.",
+      "signal_id": "principal_maturity_90d_control",
+      "version": 1,
+      "definition": "Measure the presence of a completed or binding debt/credit facility of the issuer or an explicitly consolidated subsidiary whose contractual principal maturity is strictly after the as-of calendar date and no later than 90 calendar days afterward. Use the latest disclosed effective amendment for the same facility. Distinguish principal maturity from fee/interest/collateral/optional redemption dates, proposals, uncommitted funding and third-party customer debt.",
+      "states": {
+        "positive": "At least one explicitly dated qualifying principal maturity exists in that interval; this means only that the condition is present, with no surge, benefit or investment-direction meaning.",
+        "neutral": "A complete explicitly supplied maturity inventory establishes all qualifying issuer facilities outside the interval.",
+        "unavailable": "No supported positive and the visible inventory or dates/owner/amendment terms are insufficient.",
+        "negative": "Not used by this control."
+      },
+      "evidence_obligations": [
+        "Cite complete original-source sentences identifying the borrower/facility and principal maturity. Keep material qualifications and funding/obligation context.",
+        "An exact future contractual maturity disclosed before cutoff is admissible; a later actual outcome is not.",
+        "Do not infer any net financing benefit or directional surge effect. Warrants, fees and collateral cannot be concealed in interpretation but do not change a correctly identified principal maturity.",
+        "Use only disclosed source windows; unknown inventory cannot prove absence."
+      ],
+      "retrieval": {
+        "source_types": [
+          "filing"
+        ],
+        "lookback_days": 730,
+        "query_terms": [
+          "debt maturity",
+          "credit facility",
+          "financing"
+        ]
+      },
+      "as_of": "2025-05-30T00:00:00+00:00",
+      "window_calendar_days": 90
+    }
+  },
+  "preserved_source_manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-source-manifest.json",
+    "sha256": "3e6aa2d0035a78b0f555474063e1e73c7a037f8d3e575669087029fb9c2fe136"
+  },
+  "preserved_v5_artifact_hashes": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-oracle/oracle.json",
+      "sha256": "3abddbeb5f4912b952547e607c10415af751e43b047e6f839d275070829398ae",
+      "read_mode": "bytes hashed only; not used to derive this control expected result"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-oracle/review.md",
+      "sha256": "46cfbcdb8a0d0dd335c325118e62f655a8706dac889a5fbf285eba01d37e2f78",
+      "read_mode": "bytes hashed only; not used to derive this control expected result"
+    }
+  ],
+  "company_id": "cik_0001309402",
+  "as_of": "2025-05-30T00:00:00+00:00",
+  "calendar_window": {
+    "date_basis": "UTC calendar date from supplied as_of; add exactly 90 calendar days using standard-library datetime.timedelta",
+    "start_exclusive": "2025-05-30",
+    "end_inclusive": "2025-08-28",
+    "calendar_days": 90
+  },
+  "qualifying_facility": {
+    "borrower": "Green Plains Inc.",
+    "borrower_role": "issuer",
+    "guarantor": "Green Plains Central City LLC",
+    "lender": "Ancora Alternatives LLC",
+    "instrument": "secured revolving credit facility / Secured Line of Credit Agreement",
+    "facility_size_usd": 30000000,
+    "execution_date": "2025-05-07",
+    "latest_disclosed_effective_terms": "Executed May 7 terms repeated in supplied Q Note 14, Recent Developments and MD&A; no later same-facility amendment is disclosed in these supplied bodies. This is not a claim about unsupplied sources.",
+    "principal_maturity_date": "2025-07-30",
+    "days_after_asof": 61,
+    "strict_lower_bound_passes": true,
+    "inclusive_upper_bound_passes": true,
+    "funding_status": "Binding executed facility; drawn balance or funded principal amount at as_of is not established and is not asserted. The control definition admits binding facilities, not only outstanding funded debt.",
+    "material_terms": {
+      "borrowing_interest_percent": 10,
+      "unused_fee_percent": 0.5,
+      "interest_and_fee_due": "5th of each month",
+      "issued_warrants": 1504140,
+      "warrant_strike_usd": 0.01,
+      "warrant_exercise_period_years": 10,
+      "secured": true
+    }
+  },
+  "reasoning": "The latest original 10-Q available May 8 explicitly says the issuer entered the facility on May 7 and it matures July 30. The original exhibit-index description binds Green Plains Inc. as Borrower and Ancora as Lender. July 30 is 61 days after May 30 and within (May 30, August 28]. This existential condition is supported without complete facility inventory or any net-benefit comparison.",
+  "allowed_literal_alternative_sets": [
+    {
+      "source_span_ids": [
+        "q_company_reference",
+        "q_ancora_borrower_index",
+        "q_ancora_note14"
+      ],
+      "why_sufficient": "Company-reference and explicit issuer borrower binding plus complete executed facility/maturity/cost/warrant paragraph."
+    },
+    {
+      "source_span_ids": [
+        "q_company_reference",
+        "q_ancora_borrower_index",
+        "q_ancora_recent"
+      ],
+      "why_sufficient": "Same identity binding and complete equivalent Recent Developments facility paragraph."
+    },
+    {
+      "source_span_ids": [
+        "q_company_reference",
+        "q_ancora_borrower_index",
+        "q_ancora_mda"
+      ],
+      "why_sufficient": "Same identity binding and complete equivalent MD&A facility paragraph including issuer purpose claim."
+    }
+  ],
+  "subject_date_bindings": [
+    {
+      "subject": "Ancora executed issuer facility",
+      "date": "2025-07-30",
+      "kind": "contractual principal/facility maturity",
+      "included": true,
+      "source_span_ids": [
+        "q_ancora_note14",
+        "q_ancora_borrower_index"
+      ]
+    },
+    {
+      "subject": "BlackRock Junior Notes",
+      "date": "2025-07-31",
+      "kind": "conditional collateral/fee/warrant-repricing trigger if unrepaid",
+      "included": false,
+      "source_span_ids": [
+        "q_blackrock_note14",
+        "q_blackrock_mda"
+      ]
+    },
+    {
+      "subject": "BlackRock Junior Notes latest amendment",
+      "date": "2026-05-15",
+      "kind": "contractual principal maturity",
+      "included": false,
+      "reason": "Outside 90-day interval; supersedes February 9, 2026.",
+      "source_span_ids": [
+        "q_blackrock_mda",
+        "q_junior_terms"
+      ]
+    },
+    {
+      "subject": "Ancora interest and fees",
+      "date": "5th of each month",
+      "kind": "interest/fee payment schedule",
+      "included": false,
+      "source_span_ids": [
+        "q_ancora_note14"
+      ]
+    },
+    {
+      "subject": "2.25% convertible notes",
+      "date": "conditional redemption / fundamental-change repurchase dates",
+      "kind": "optional or contingent rights, not fixed near-term principal maturity",
+      "included": false,
+      "source_span_ids": [
+        "q_optional_redemption"
+      ]
+    }
+  ],
+  "mandatory_interpretation_context": [
+    "Positive means only that this private condition is present. Do not infer favorable financing, investment direction or surge relevance.",
+    "Retain full Ancora security, 10% borrowing interest, 0.5% unused fee, monthly payment dates and already-issued 1,504,140 penny warrants. The ten-year warrant exercise period is not a facility maturity or evidence of exercise.",
+    "Do not present the $30m facility size as an established drawn/outstanding amount.",
+    "The issuer-liquidity increase is jointly attributed to non-core asset sales and the facility, with subsidiary/lending restrictions. It does not independently measure net economic benefit.",
+    "BlackRock July 31 is a conditional nonpayment trigger, not scheduled principal maturity or proof it occurred. May 15, 2026 is latest disclosed amended principal maturity.",
+    "An uncommitted hedge line, optional redemption, contingent future collateral/fees and proposals cannot create additional qualifying maturities.",
+    "A positive existential finding does not require or establish a complete inventory; the two-source local scope cannot establish absence or later actual outcomes."
+  ],
+  "sources": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000008.json",
+      "record_sha256": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "company_id": "cik_0001309402",
+      "metadata": {
+        "accession_number": "0001309402-25-000008",
+        "cik": "0001309402",
+        "form": "10-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1309402/000130940225000008/gpre-20241231.htm"
+      },
+      "published_at": "2025-02-07T20:20:08+00:00",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+      "computed_content_sha256": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+      "qualification": {
+        "verdict": "admitted",
+        "profile": "sec_archive_acceptance_v1",
+        "reason": "Existing original passes native SEC identity/time/body profile and independently reviewed complete report scope; partial fact reading remains explicit.",
+        "reviewed_available_at": "2025-02-07T20:20:08+00:00",
+        "content_and_file_and_identity_and_time_match": true
+      },
+      "external_proofs_reopened": false
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000089.json",
+      "record_sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "company_id": "cik_0001309402",
+      "metadata": {
+        "accession_number": "0001309402-25-000089",
+        "cik": "0001309402",
+        "form": "10-Q",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1309402/000130940225000089/gpre-20250331.htm"
+      },
+      "published_at": "2025-05-08T20:34:28+00:00",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+      "computed_content_sha256": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+      "qualification": {
+        "verdict": "admitted",
+        "profile": "sec_archive_acceptance_v1",
+        "reason": "Existing original passes native SEC identity/time/body profile and independently reviewed complete report scope; partial fact reading remains explicit.",
+        "reviewed_available_at": "2025-05-08T20:34:28+00:00",
+        "content_and_file_and_identity_and_time_match": true
+      },
+      "external_proofs_reopened": false
+    }
+  ],
+  "literal_source_spans": [
+    {
+      "span_id": "q_company_reference",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Issuer reference binding in Note 1.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 396219,
+      "raw_end": 396637,
+      "raw_utf8_byte_start": 396219,
+      "raw_utf8_byte_end": 396637,
+      "raw_span_sha256": "bf9e85d2306879551f83900e43f1a4f08ba97783e95ee95b6540b120359ae22e",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">References to &#8220;Green Plains&#8221; or the &#8220;company&#8221; in the consolidated financial statements and in these notes to the consolidated financial statements refer to Green Plains Inc., an Iowa corporation, and its subsidiaries. </span></div>",
+      "visible_text": "References to “Green Plains” or the “company” in the consolidated financial statements and in these notes to the consolidated financial statements refer to Green Plains Inc., an Iowa corporation, and its subsidiaries. ",
+      "visible_text_whitespace_normalized": "References to “Green Plains” or the “company” in the consolidated financial statements and in these notes to the consolidated financial statements refer to Green Plains Inc., an Iowa corporation, and its subsidiaries.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_consolidation",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Consolidation and equity-method distinction.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 396948,
+      "raw_end": 397366,
+      "raw_utf8_byte_start": 396948,
+      "raw_utf8_byte_end": 397366,
+      "raw_span_sha256": "60e4973f3a1b21c57d3dcbf7a1d7f5ae4daf597b5f066f0aeb7611439d8938aa",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The consolidated financial statements include the company&#8217;s accounts and all significant intercompany balances and transactions are eliminated. Unconsolidated entities are included in the financial statements on an equity method basis. </span></div>",
+      "visible_text": "The consolidated financial statements include the company’s accounts and all significant intercompany balances and transactions are eliminated. Unconsolidated entities are included in the financial statements on an equity method basis. ",
+      "visible_text_whitespace_normalized": "The consolidated financial statements include the company’s accounts and all significant intercompany balances and transactions are eliminated. Unconsolidated entities are included in the financial statements on an equity method basis.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_ancora_borrower_index",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Explicit borrower, guarantor and lender identity. This exhibit-index text is in the supplied original Q body; linked exhibit was not opened.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 1324423,
+      "raw_end": 1352330,
+      "raw_utf8_byte_start": 1324423,
+      "raw_utf8_byte_end": 1352330,
+      "raw_span_sha256": "8cdb99b69fe231ddeb3acd0ee60b7fe06f0ff6ebbde3899a4ea5cee916d6d1f5",
+      "literal_raw_html": "<div style=\"margin-top:10pt\"><table style=\"border-collapse:collapse;display:inline-table;margin-bottom:5pt;vertical-align:text-bottom;width:100.000%\"><tr><td style=\"width:1.0%\"/><td style=\"width:13.596%\"/><td style=\"width:0.1%\"/><td style=\"width:1.0%\"/><td style=\"width:84.204%\"/><td style=\"width:0.1%\"/></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.7</span></td><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit107ingamendment.htm\">First Amendment to Loan and Security Agreement, dated April 14, 2025, </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit107ingamendment.htm\">related to Loan and Security Agreement dated March 25, 2022</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit107ingamendment.htm\">,</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit107ingamendment.htm\"> </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit107ingamendment.htm\">by and among Green Plains Inc., as Guarantor, Green Plains Finance Company LLC, Green Plains Grain Company LLC and Green Plains Trade Group LLC as the Borrowers, ING Capital LLC, as Agent and the other financial institutions party thereto (The exhibits and schedules to Exhibit A have been omitted. The Company will furnish such schedules to the SEC upon request.)</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.8</span></td><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit108blackrockextensi.htm\">First Supplemental Indenture, dated May 7, 2025, related to Note Purchase Agreement dated February 9, 2021, by Green Plains SPE LLC, as Issuer, Green Plains Inc., as Guarantor and Wilmington Trust, National Association, as Trustee</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.9</span></td><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:left;vertical-align:top\"><div style=\"margin-bottom:6pt;padding-right:6.15pt\"><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">G</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">uarante</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">e Agreement</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">, dated as of May 7, 2025, between G</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">reen</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\"> </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">Plains</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\"> SPE LLC, </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">as</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\"> </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">Issuer</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">, G</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">reen</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\"> P</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">la</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">in</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">s</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\"> I</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">nc</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">., </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">as </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">Guarantor</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">, each of the entities listed on Exhibit A </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">as </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">Additional Guarantors</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">,</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\"> and W</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">ilmi</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">ngton</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\"> T</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">rust</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">, N</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">ational</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\"> A</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">ssociation</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">, as </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">T</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">rustee</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">, under the Indenture, dated as of February 9, 2021, as amended by Amendment No. 1 dated May 13, 2022</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\"> and as supplemented by the first supplemental indenture, dated </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">May</a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\"> 7, </a><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit109blackrockguaranty.htm\">2025</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.10(a)</span></td><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%;text-decoration:underline\" href=\"exhibit1010ablackrockwarra.htm\">Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and BlackRock Global Allocation Fund, Inc.</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.10(b)</span></td><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit1010bblackrockwarra.htm\">Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and BlackRock Global Allocation Collective Fund</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.10(c)</span></td><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit1010cblackrockwarra.htm\">Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and BlackRock Total Return Bond Fund</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.10(d)</span></td><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit1010dblackrockwarra.htm\">Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Strategic Income Opportunities Bond Fund</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.11</span></td><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:left;vertical-align:top\"><div style=\"margin-bottom:12pt\"><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%;text-decoration:underline\" href=\"exhibit1011ancoraloc.htm\">Secured Line of Credit Agreement, dated May 7, 2025 by Green Plains Inc., as Borrower, Green Plains Central City LLC, as Guarantor and Ancora Alternatives LLC, as Lender</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.12(a)</span></td><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit1012aancorawarrant-.htm\">Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Catalyst Institutional, LP</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.12(b)</span></td><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit1012bancorawarrant-.htm\">Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Catalyst, LP</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.12(c)</span></td><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit1012cancorawarrant-.htm\">Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Merlin Institutional, LP</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.12(d)</span></td><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit1012dancorawarrant-.htm\">Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Merlin, LP</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">10.12(e)</span></td><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit1012eancorawarrant-.htm\">Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Bellator Fund, LP</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">31.1</span></td><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit311-25q1.htm\">Certification of Chief Executive Officer pursuant to Rule 13a-14(a) and Section 302 of the Sarbanes-Oxley Act of 2002</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">31.2</span></td><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit312-25q1.htm\">Certification of Chief Financial Officer pursuant to Rule 13a-14(a) and Section 302 of the Sarbanes-Oxley Act of 2002</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">32.1</span></td><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit321-25q1.htm\">Certification of Chief Executive Officer pursuant to 18 U.S.C. Section 1350, as adopted pursuant to Section 906 of the Sarbanes-Oxley Act of 2002</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">32.2</span></td><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:left;vertical-align:top\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"-sec-extract:exhibit;color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"exhibit322-25q1.htm\">Certification of Chief Financial Officer pursuant to 18 U.S.C. Section 1350, as adopted pursuant to Section 906 of the Sarbanes-Oxley Act of 2002</a></span></div></td></tr><tr><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">101</span></td><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:left;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">The following information from Green Plains Inc.&#8217;s Quarterly Report on Form 10-Q for the quarterly period ended March 31, 2025, formatted in Inline Extensible Business Reporting Language (iXBRL): (i) Consolidated Balance Sheets, (ii) Consolidated Statements of Operations, (iii) Consolidated Statements of Comprehensive Loss, (iv) Consolidated Statements of Cash Flows, and (v) the Notes to Consolidated Financial Statements</span></td></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">104</span></td><td colspan=\"3\" style=\"background-color:#cceeff;padding:2px 1pt;text-align:left;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">The cover page from Green Plains Inc.&#8217;s Quarterly Report on Form 10-Q for the quarterly period ended March 31, 2025, formatted in iXBRL.</span></td></tr><tr><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:center;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">&#160;</span></td><td colspan=\"3\" style=\"background-color:#ffffff;padding:2px 1pt;text-align:left;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">*Represents management compensatory contract</span></td></tr><tr><td colspan=\"3\" style=\"background-color:#cceeff;padding:0 1pt\"/><td colspan=\"3\" style=\"background-color:#cceeff;border-bottom:1pt solid #000;padding:2px 1pt;text-align:left;vertical-align:top\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%\">**Certain provisions and terms of the exhibit have been redacted in accordance with Item 601(b)(2)(ii) of Regulation S-K because the Company customarily and actually treats that information as private or confidential, and the omitted information is not material. The Company will supplementally provide an unredacted copy of this exhibit to the SEC upon request.</span></td></tr></table></div>",
+      "visible_text": "10.7First Amendment to Loan and Security Agreement, dated April 14, 2025, related to Loan and Security Agreement dated March 25, 2022, by and among Green Plains Inc., as Guarantor, Green Plains Finance Company LLC, Green Plains Grain Company LLC and Green Plains Trade Group LLC as the Borrowers, ING Capital LLC, as Agent and the other financial institutions party thereto (The exhibits and schedules to Exhibit A have been omitted. The Company will furnish such schedules to the SEC upon request.)10.8First Supplemental Indenture, dated May 7, 2025, related to Note Purchase Agreement dated February 9, 2021, by Green Plains SPE LLC, as Issuer, Green Plains Inc., as Guarantor and Wilmington Trust, National Association, as Trustee10.9Guarantee Agreement, dated as of May 7, 2025, between Green Plains SPE LLC, as Issuer, Green Plains Inc., as Guarantor, each of the entities listed on Exhibit A as Additional Guarantors, and Wilmington Trust, National Association, as Trustee, under the Indenture, dated as of February 9, 2021, as amended by Amendment No. 1 dated May 13, 2022 and as supplemented by the first supplemental indenture, dated May 7, 202510.10(a)Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and BlackRock Global Allocation Fund, Inc.10.10(b)Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and BlackRock Global Allocation Collective Fund10.10(c)Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and BlackRock Total Return Bond Fund10.10(d)Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Strategic Income Opportunities Bond Fund10.11Secured Line of Credit Agreement, dated May 7, 2025 by Green Plains Inc., as Borrower, Green Plains Central City LLC, as Guarantor and Ancora Alternatives LLC, as Lender10.12(a)Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Catalyst Institutional, LP10.12(b)Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Catalyst, LP10.12(c)Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Merlin Institutional, LP10.12(d)Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Merlin, LP10.12(e)Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Bellator Fund, LP31.1Certification of Chief Executive Officer pursuant to Rule 13a-14(a) and Section 302 of the Sarbanes-Oxley Act of 200231.2Certification of Chief Financial Officer pursuant to Rule 13a-14(a) and Section 302 of the Sarbanes-Oxley Act of 200232.1Certification of Chief Executive Officer pursuant to 18 U.S.C. Section 1350, as adopted pursuant to Section 906 of the Sarbanes-Oxley Act of 200232.2Certification of Chief Financial Officer pursuant to 18 U.S.C. Section 1350, as adopted pursuant to Section 906 of the Sarbanes-Oxley Act of 2002101The following information from Green Plains Inc.’s Quarterly Report on Form 10-Q for the quarterly period ended March 31, 2025, formatted in Inline Extensible Business Reporting Language (iXBRL): (i) Consolidated Balance Sheets, (ii) Consolidated Statements of Operations, (iii) Consolidated Statements of Comprehensive Loss, (iv) Consolidated Statements of Cash Flows, and (v) the Notes to Consolidated Financial Statements104The cover page from Green Plains Inc.’s Quarterly Report on Form 10-Q for the quarterly period ended March 31, 2025, formatted in iXBRL. *Represents management compensatory contract**Certain provisions and terms of the exhibit have been redacted in accordance with Item 601(b)(2)(ii) of Regulation S-K because the Company customarily and actually treats that information as private or confidential, and the omitted information is not material. The Company will supplementally provide an unredacted copy of this exhibit to the SEC upon request.",
+      "visible_text_whitespace_normalized": "10.7First Amendment to Loan and Security Agreement, dated April 14, 2025, related to Loan and Security Agreement dated March 25, 2022, by and among Green Plains Inc., as Guarantor, Green Plains Finance Company LLC, Green Plains Grain Company LLC and Green Plains Trade Group LLC as the Borrowers, ING Capital LLC, as Agent and the other financial institutions party thereto (The exhibits and schedules to Exhibit A have been omitted. The Company will furnish such schedules to the SEC upon request.)10.8First Supplemental Indenture, dated May 7, 2025, related to Note Purchase Agreement dated February 9, 2021, by Green Plains SPE LLC, as Issuer, Green Plains Inc., as Guarantor and Wilmington Trust, National Association, as Trustee10.9Guarantee Agreement, dated as of May 7, 2025, between Green Plains SPE LLC, as Issuer, Green Plains Inc., as Guarantor, each of the entities listed on Exhibit A as Additional Guarantors, and Wilmington Trust, National Association, as Trustee, under the Indenture, dated as of February 9, 2021, as amended by Amendment No. 1 dated May 13, 2022 and as supplemented by the first supplemental indenture, dated May 7, 202510.10(a)Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and BlackRock Global Allocation Fund, Inc.10.10(b)Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and BlackRock Global Allocation Collective Fund10.10(c)Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and BlackRock Total Return Bond Fund10.10(d)Second Amended and Restated Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Strategic Income Opportunities Bond Fund10.11Secured Line of Credit Agreement, dated May 7, 2025 by Green Plains Inc., as Borrower, Green Plains Central City LLC, as Guarantor and Ancora Alternatives LLC, as Lender10.12(a)Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Catalyst Institutional, LP10.12(b)Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Catalyst, LP10.12(c)Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Merlin Institutional, LP10.12(d)Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Merlin, LP10.12(e)Warrant Agreement to Purchase Common Stock of Green Plains Inc., dated May 7, 2025, by and between Green Plains Inc. and Ancora Bellator Fund, LP31.1Certification of Chief Executive Officer pursuant to Rule 13a-14(a) and Section 302 of the Sarbanes-Oxley Act of 200231.2Certification of Chief Financial Officer pursuant to Rule 13a-14(a) and Section 302 of the Sarbanes-Oxley Act of 200232.1Certification of Chief Executive Officer pursuant to 18 U.S.C. Section 1350, as adopted pursuant to Section 906 of the Sarbanes-Oxley Act of 200232.2Certification of Chief Financial Officer pursuant to 18 U.S.C. Section 1350, as adopted pursuant to Section 906 of the Sarbanes-Oxley Act of 2002101The following information from Green Plains Inc.’s Quarterly Report on Form 10-Q for the quarterly period ended March 31, 2025, formatted in Inline Extensible Business Reporting Language (iXBRL): (i) Consolidated Balance Sheets, (ii) Consolidated Statements of Operations, (iii) Consolidated Statements of Comprehensive Loss, (iv) Consolidated Statements of Cash Flows, and (v) the Notes to Consolidated Financial Statements104The cover page from Green Plains Inc.’s Quarterly Report on Form 10-Q for the quarterly period ended March 31, 2025, formatted in iXBRL. *Represents management compensatory contract**Certain provisions and terms of the exhibit have been redacted in accordance with Item 601(b)(2)(ii) of Regulation S-K because the Company customarily and actually treats that information as private or confidential, and the omitted information is not material. The Company will supplementally provide an unredacted copy of this exhibit to the SEC upon request.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_ancora_note14",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Binding event and principal-maturity date with complete costs and warrant terms.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 1073521,
+      "raw_end": 1075180,
+      "raw_utf8_byte_start": 1073521,
+      "raw_utf8_byte_end": 1075180,
+      "raw_span_sha256": "1aab936430c0111787d875a687bd60b59e92816912501c2ea8d013ecba38df19",
+      "literal_raw_html": "<div style=\"margin-top:6pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On May 7, 2025, the company entered into a secured $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-261\" decimals=\"INF\" name=\"us-gaap:LineOfCreditFacilityMaximumBorrowingCapacity\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-968\">30</ix:nonFraction>&#160;million revolving credit facility with Ancora Alternatives LLC that matures on July 30, 2025. The facility bears interest at <ix:nonFraction unitRef=\"number\" contextRef=\"c-262\" decimals=\"2\" name=\"us-gaap:LineOfCreditFacilityInterestRateDuringPeriod\" scale=\"-2\" id=\"f-969\">10</ix:nonFraction>% on borrowings and has a <ix:nonFraction unitRef=\"number\" contextRef=\"c-262\" decimals=\"3\" name=\"us-gaap:LineOfCreditFacilityCommitmentFeePercentage\" scale=\"-2\" id=\"f-970\">0.5</ix:nonFraction>% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued <ix:nonFraction unitRef=\"shares\" contextRef=\"c-261\" decimals=\"INF\" name=\"us-gaap:ClassOfWarrantOrRightOutstanding\" format=\"ixt:num-dot-decimal\" scale=\"0\" id=\"f-971\">1,504,140</ix:nonFraction> stock warrants at a strike price of $<ix:nonFraction unitRef=\"usdPerShare\" contextRef=\"c-261\" decimals=\"INF\" name=\"gpre:ClassOfWarrantOrRightStrikePriceOfWarrantsOrRights\" scale=\"0\" id=\"f-972\">0.01</ix:nonFraction> per share. The warrants have a <ix:nonNumeric contextRef=\"c-261\" name=\"us-gaap:WarrantsAndRightsOutstandingTerm\" format=\"ixt-sec:durwordsen\" id=\"f-973\">ten year</ix:nonNumeric> exercise period.</span></div>",
+      "visible_text": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC that matures on July 30, 2025. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "visible_text_whitespace_normalized": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC that matures on July 30, 2025. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_ancora_recent",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Alternative original Recent Developments paragraph.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 1095669,
+      "raw_end": 1096314,
+      "raw_utf8_byte_start": 1095669,
+      "raw_utf8_byte_end": 1096314,
+      "raw_span_sha256": "c02b4dab396dcc72bebf15b874226adafb51a35d30c27b4f6c8bdeffa672a6fb",
+      "literal_raw_html": "<div style=\"margin-top:6pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.</span></div>",
+      "visible_text": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "visible_text_whitespace_normalized": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_ancora_mda",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Alternative original Corporate Activities paragraph; stated liquidity purpose plus costs and warrants.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 1252069,
+      "raw_end": 1252818,
+      "raw_utf8_byte_start": 1252069,
+      "raw_utf8_byte_end": 1252818,
+      "raw_span_sha256": "3a8ad421e37eb5d18838c4b541477327bb1a3f19c962acd5caedd1dc739e3aa1",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:115%\">On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.</span></div>",
+      "visible_text": "On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "visible_text_whitespace_normalized": "On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_liquidity",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Liquidity availability restrictions and joint asset-sale/facility attribution.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 1241548,
+      "raw_end": 1242711,
+      "raw_utf8_byte_start": 1241548,
+      "raw_utf8_byte_end": 1242711,
+      "raw_span_sha256": "806848c9d9176075701c1b946ab81ae12c50f0b09ae3f321cba91592a08949a2",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:115%\">On March&#160;31, 2025, we had $98.6 million in cash and cash equivalents and $28.0 million in restricted cash. We also had $204.5 million available under our committed revolving credit agreement, subject to restrictions or other lending conditions. Total corporate liquidity consisting of unrestricted cash, distributable cash from subsidiaries and credit facility availability was $48.6 million as of March 31, 2025, and has increased to $89.2 million as of May 7, 2025, primarily as a result of the sale of certain non-core assets, and the company entering into a secured $30 million revolving credit facility that matures on July 30, 2025. Funds at certain subsidiaries are generally required for their ongoing operational needs and restricted from distribution. At March&#160;31, 2025, our subsidiaries had approximately $22.3 million of net assets that were not available to use in the form of dividends, loans or advances due to restrictions contained in their credit facilities. </span></div>",
+      "visible_text": "On March 31, 2025, we had $98.6 million in cash and cash equivalents and $28.0 million in restricted cash. We also had $204.5 million available under our committed revolving credit agreement, subject to restrictions or other lending conditions. Total corporate liquidity consisting of unrestricted cash, distributable cash from subsidiaries and credit facility availability was $48.6 million as of March 31, 2025, and has increased to $89.2 million as of May 7, 2025, primarily as a result of the sale of certain non-core assets, and the company entering into a secured $30 million revolving credit facility that matures on July 30, 2025. Funds at certain subsidiaries are generally required for their ongoing operational needs and restricted from distribution. At March 31, 2025, our subsidiaries had approximately $22.3 million of net assets that were not available to use in the form of dividends, loans or advances due to restrictions contained in their credit facilities. ",
+      "visible_text_whitespace_normalized": "On March 31, 2025, we had $98.6 million in cash and cash equivalents and $28.0 million in restricted cash. We also had $204.5 million available under our committed revolving credit agreement, subject to restrictions or other lending conditions. Total corporate liquidity consisting of unrestricted cash, distributable cash from subsidiaries and credit facility availability was $48.6 million as of March 31, 2025, and has increased to $89.2 million as of May 7, 2025, primarily as a result of the sale of certain non-core assets, and the company entering into a secured $30 million revolving credit facility that matures on July 30, 2025. Funds at certain subsidiaries are generally required for their ongoing operational needs and restricted from distribution. At March 31, 2025, our subsidiaries had approximately $22.3 million of net assets that were not available to use in the form of dividends, loans or advances due to restrictions contained in their credit facilities.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_blackrock_note14",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Counterexample: July 31 conditional collateral/fees/repricing is not principal maturity.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 1071914,
+      "raw_end": 1073521,
+      "raw_utf8_byte_start": 1071914,
+      "raw_utf8_byte_end": 1073521,
+      "raw_span_sha256": "4071ac47572ed189cecf3bbd3b8db173a4146fee8bf700ef4ac8a4378353519b",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On May 7, 2025, the company entered into an amendment to its $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-259\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentFaceAmount\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-964\">125</ix:nonFraction>&#160;million junior secured mezzanine notes (the &#8220;Junior Notes&#8221;) with BlackRock to extend the maturity date to May 15, 2026, with an amendment fee of <ix:nonFraction unitRef=\"number\" contextRef=\"c-259\" decimals=\"3\" name=\"gpre:DebtInstrumentAmendmentFeePercent\" scale=\"-2\" id=\"f-965\">2.0</ix:nonFraction>% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $<ix:nonFraction unitRef=\"usdPerShare\" contextRef=\"c-260\" decimals=\"2\" name=\"us-gaap:ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1\" scale=\"0\" id=\"f-966\">22.00</ix:nonFraction> to a $<ix:nonFraction unitRef=\"usdPerShare\" contextRef=\"c-259\" decimals=\"2\" name=\"us-gaap:ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1\" scale=\"0\" id=\"f-967\">7.00</ix:nonFraction> exercise price with the expiration date extended from April 28, 2026 to December 31, 2029. As a result, the outstanding balance is classified within long-term debt in the consolidated balance sheets. </span></div>",
+      "visible_text": "On May 7, 2025, the company entered into an amendment to its $125 million junior secured mezzanine notes (the “Junior Notes”) with BlackRock to extend the maturity date to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the expiration date extended from April 28, 2026 to December 31, 2029. As a result, the outstanding balance is classified within long-term debt in the consolidated balance sheets. ",
+      "visible_text_whitespace_normalized": "On May 7, 2025, the company entered into an amendment to its $125 million junior secured mezzanine notes (the “Junior Notes”) with BlackRock to extend the maturity date to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the expiration date extended from April 28, 2026 to December 31, 2029. As a result, the outstanding balance is classified within long-term debt in the consolidated balance sheets.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_blackrock_mda",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Latest effective BlackRock maturity May 15, 2026 supersedes February 9, 2026.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 1253020,
+      "raw_end": 1254295,
+      "raw_utf8_byte_start": 1253020,
+      "raw_utf8_byte_end": 1254295,
+      "raw_span_sha256": "7fed92f9d8a6cf3659bf92d260c4dba4581d3ad8e96622ccee13077b9ea62607",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On February 9, 2021, Green Plains SPE LLC, a wholly-owned special purpose subsidiary and parent of Green Plains Obion and Green Plains Mount Vernon issued $125.0 million of junior secured mezzanine notes with BlackRock. On May 7, 2025 the junior notes were amended to give us additional flexibility and liquidity in order to continue the implementation of our strategic plan, which extended the maturity date from February&#160;9, 2026 to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the maturity date extended from April 28, 2026 to December 31, 2029. These notes will accrue interest at an annual rate of 11.75%. The company believes that it has adequate access to capital to source appropriate funding to refinance or extinguish the junior secured notes.</span></div>",
+      "visible_text": "On February 9, 2021, Green Plains SPE LLC, a wholly-owned special purpose subsidiary and parent of Green Plains Obion and Green Plains Mount Vernon issued $125.0 million of junior secured mezzanine notes with BlackRock. On May 7, 2025 the junior notes were amended to give us additional flexibility and liquidity in order to continue the implementation of our strategic plan, which extended the maturity date from February 9, 2026 to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the maturity date extended from April 28, 2026 to December 31, 2029. These notes will accrue interest at an annual rate of 11.75%. The company believes that it has adequate access to capital to source appropriate funding to refinance or extinguish the junior secured notes.",
+      "visible_text_whitespace_normalized": "On February 9, 2021, Green Plains SPE LLC, a wholly-owned special purpose subsidiary and parent of Green Plains Obion and Green Plains Mount Vernon issued $125.0 million of junior secured mezzanine notes with BlackRock. On May 7, 2025 the junior notes were amended to give us additional flexibility and liquidity in order to continue the implementation of our strategic plan, which extended the maturity date from February 9, 2026 to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the maturity date extended from April 28, 2026 to December 31, 2029. These notes will accrue interest at an annual rate of 11.75%. The company believes that it has adequate access to capital to source appropriate funding to refinance or extinguish the junior secured notes.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_junior_terms",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Complete secured-note terms, interest/PIK conditions, covenants, guarantee, and no-premium refinancing after 42 months.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 841099,
+      "raw_end": 843188,
+      "raw_utf8_byte_start": 841099,
+      "raw_utf8_byte_end": 843188,
+      "raw_span_sha256": "e267b8a9e01f668399500fcb7b913535249666f94eb4954780bcf42675155e7b",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The Junior Notes were amended on May 7, 2025, which extended the maturity date from February&#160;9, 2026 to May 15, 2026. The Junior Notes are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct high protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-156\" decimals=\"4\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-713\">11.75</ix:nonFraction>%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-169\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentBasisSpreadOnVariableRate1\" scale=\"-2\" id=\"f-714\">6.00</ix:nonFraction>% per annum plus an amount equal to interest accruing at a rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-170\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentBasisSpreadOnVariableRate1\" scale=\"-2\" id=\"f-715\">6.75</ix:nonFraction>% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after <ix:nonNumeric contextRef=\"c-171\" name=\"us-gaap:DebtInstrumentTerm\" format=\"ixt-sec:durmonth\" id=\"f-716\">42</ix:nonNumeric> months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.</span></div>",
+      "visible_text": "The Junior Notes were amended on May 7, 2025, which extended the maturity date from February 9, 2026 to May 15, 2026. The Junior Notes are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct high protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of 11.75%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of 6.00% per annum plus an amount equal to interest accruing at a rate of 6.75% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after 42 months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.",
+      "visible_text_whitespace_normalized": "The Junior Notes were amended on May 7, 2025, which extended the maturity date from February 9, 2026 to May 15, 2026. The Junior Notes are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct high protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of 11.75%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of 6.00% per annum plus an amount equal to interest accruing at a rate of 6.75% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after 42 months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_future_liquidity",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Outside-window principal maturity and unassured future funding strategies.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 1242711,
+      "raw_end": 1243461,
+      "raw_utf8_byte_start": 1242711,
+      "raw_utf8_byte_end": 1243461,
+      "raw_span_sha256": "2de80e68a6958e6b646b69a48b61aa55b4e4cbabc621913602f425f044eac8a5",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:112%\">The company has $125.0 million of debt due on May 15, 2026. On or before the maturation of debt in 2026, the Company will require substantial additional liquidity to satisfy these debt obligations. The Company is currently evaluating strategies to obtain the needed additional liquidity to satisfy these obligations, including but not limited to, issuing debt, entering into other financing arrangements, selling assets, or other strategic actions. There can be no assurance that the Company will be able to execute on these strategies when needed or under acceptable terms.</span></div>",
+      "visible_text": "The company has $125.0 million of debt due on May 15, 2026. On or before the maturation of debt in 2026, the Company will require substantial additional liquidity to satisfy these debt obligations. The Company is currently evaluating strategies to obtain the needed additional liquidity to satisfy these obligations, including but not limited to, issuing debt, entering into other financing arrangements, selling assets, or other strategic actions. There can be no assurance that the Company will be able to execute on these strategies when needed or under acceptable terms.",
+      "visible_text_whitespace_normalized": "The company has $125.0 million of debt due on May 15, 2026. On or before the maturation of debt in 2026, the Company will require substantial additional liquidity to satisfy these debt obligations. The Company is currently evaluating strategies to obtain the needed additional liquidity to satisfy these obligations, including but not limited to, issuing debt, entering into other financing arrangements, selling assets, or other strategic actions. There can be no assurance that the Company will be able to execute on these strategies when needed or under acceptable terms.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_uncommitted_hedge",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Explicit uncommitted funding distinguished from qualifying Ancora facility.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 854860,
+      "raw_end": 856148,
+      "raw_utf8_byte_start": 854860,
+      "raw_utf8_byte_end": 856148,
+      "raw_span_sha256": "c6825267d6320838879f9a31e3d88d65eab1f923f11cce3daa7ed0f749de7e55",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">Green Plains Commodity Management has an uncommitted $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-187\" decimals=\"INF\" name=\"us-gaap:LineOfCreditFacilityMaximumBorrowingCapacity\" scale=\"6\" id=\"f-744\">40.0</ix:nonFraction> million revolving credit facility to finance margins related to its hedging programs, which is secured by cash and securities held in its brokerage accounts. During the first quarter of 2023, this revolving credit facility was extended <ix:nonNumeric contextRef=\"c-188\" name=\"gpre:LineOfCreditFacilityExtendedMaturityPeriod\" format=\"ixt-sec:durwordsen\" id=\"f-745\">five years</ix:nonNumeric> to mature on April&#160;30, 2028. Advances are subject to variable interest rates equal to SOFR plus <ix:nonFraction unitRef=\"number\" contextRef=\"c-189\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentBasisSpreadOnVariableRate1\" scale=\"-2\" id=\"f-746\">1.75</ix:nonFraction>%. At March&#160;31, 2025, the interest rate on the facility was <ix:nonFraction unitRef=\"number\" contextRef=\"c-190\" decimals=\"4\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-747\">6.09</ix:nonFraction>%.</span></div>",
+      "visible_text": "Green Plains Commodity Management has an uncommitted $40.0 million revolving credit facility to finance margins related to its hedging programs, which is secured by cash and securities held in its brokerage accounts. During the first quarter of 2023, this revolving credit facility was extended five years to mature on April 30, 2028. Advances are subject to variable interest rates equal to SOFR plus 1.75%. At March 31, 2025, the interest rate on the facility was 6.09%.",
+      "visible_text_whitespace_normalized": "Green Plains Commodity Management has an uncommitted $40.0 million revolving credit facility to finance margins related to its hedging programs, which is secured by cash and securities held in its brokerage accounts. During the first quarter of 2023, this revolving credit facility was extended five years to mature on April 30, 2028. Advances are subject to variable interest rates equal to SOFR plus 1.75%. At March 31, 2025, the interest rate on the facility was 6.09%.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_senior_revolver",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Historical refinancing, borrower identities and outside-window maturity.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 848638,
+      "raw_end": 849985,
+      "raw_utf8_byte_start": 848638,
+      "raw_utf8_byte_end": 849985,
+      "raw_span_sha256": "deff73edfe25e14cbfb67ac1275025b738b1c2aec395357568574542d032c333",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On March&#160;25, 2022, Green Plains Finance Company, Green Plains Grain and Green Plains Trade (collectively, the &#8220;Borrowers&#8221;), all wholly owned subsidiaries of </span><span style=\"background-color:#ffffff;color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">the company, together with the company, as guarantor, </span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">entered into a <ix:nonNumeric contextRef=\"c-175\" name=\"us-gaap:DebtInstrumentTerm\" format=\"ixt-sec:durwordsen\" id=\"f-728\">five-year</ix:nonNumeric>, $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-176\" decimals=\"INF\" name=\"us-gaap:LineOfCreditFacilityMaximumBorrowingCapacity\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-729\">350.0</ix:nonFraction>&#160;million senior secured sustainability-linked revolving Loan and Security Agreement (the &#8220;Facility&#8221;) with a group of financial institutions. This transaction refinanced the separate credit facilities previously held by Green Plains Grain and Green Plains Trade. The Facility matures on March&#160;25, 2027. </span></div>",
+      "visible_text": "On March 25, 2022, Green Plains Finance Company, Green Plains Grain and Green Plains Trade (collectively, the “Borrowers”), all wholly owned subsidiaries of the company, together with the company, as guarantor, entered into a five-year, $350.0 million senior secured sustainability-linked revolving Loan and Security Agreement (the “Facility”) with a group of financial institutions. This transaction refinanced the separate credit facilities previously held by Green Plains Grain and Green Plains Trade. The Facility matures on March 25, 2027. ",
+      "visible_text_whitespace_normalized": "On March 25, 2022, Green Plains Finance Company, Green Plains Grain and Green Plains Trade (collectively, the “Borrowers”), all wholly owned subsidiaries of the company, together with the company, as guarantor, entered into a five-year, $350.0 million senior secured sustainability-linked revolving Loan and Security Agreement (the “Facility”) with a group of financial institutions. This transaction refinanced the separate credit facilities previously held by Green Plains Grain and Green Plains Trade. The Facility matures on March 25, 2027.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_long_loan",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Outside-window 2035 principal maturity; collateral and borrower context.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 843188,
+      "raw_end": 843855,
+      "raw_utf8_byte_start": 843188,
+      "raw_utf8_byte_end": 843855,
+      "raw_span_sha256": "ccaf57b94e4671fe217b17eaf97baad72591d974df6694ed06a4fad6e921dc9c",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On September 3, 2020, Green Plains Wood River and Green Plains Shenandoah, wholly-owned subsidiaries of the company, entered into a $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-158\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentFaceAmount\" scale=\"6\" id=\"f-717\">75.0</ix:nonFraction> million loan agreement with MetLife Real Estate Lending LLC. The loan matures on September&#160;1, 2035 and is secured by substantially all of the assets of the Shenandoah facility. During the second quarter of </span></div>",
+      "visible_text": "On September 3, 2020, Green Plains Wood River and Green Plains Shenandoah, wholly-owned subsidiaries of the company, entered into a $75.0 million loan agreement with MetLife Real Estate Lending LLC. The loan matures on September 1, 2035 and is secured by substantially all of the assets of the Shenandoah facility. During the second quarter of ",
+      "visible_text_whitespace_normalized": "On September 3, 2020, Green Plains Wood River and Green Plains Shenandoah, wholly-owned subsidiaries of the company, entered into a $75.0 million loan agreement with MetLife Real Estate Lending LLC. The loan matures on September 1, 2035 and is secured by substantially all of the assets of the Shenandoah facility. During the second quarter of",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_covenant_mda",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Actual covenant-compliance date versus qualified forecasts/default risks.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 1249608,
+      "raw_end": 1250525,
+      "raw_utf8_byte_start": 1249608,
+      "raw_utf8_byte_end": 1250525,
+      "raw_span_sha256": "c8092dda4abf3de0c9d903959aa29b516eea0678af2b61279258db174c291151",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">We were in compliance with our debt covenants at March&#160;31, 2025. Based on our forecasts, we anticipate we will maintain compliance at each of our subsidiaries for the next twelve months or have sufficient liquidity available on a consolidated basis to resolve noncompliance. We cannot provide assurance that actual results will approximate our forecasts or that we will inject the necessary capital into a subsidiary to maintain compliance with its respective covenants. In the event a subsidiary is unable to comply with its debt covenants, the subsidiary&#8217;s lenders may determine that an event of default has occurred, and following notice, the lenders may terminate the commitment and declare the unpaid balance due and payable.</span></div>",
+      "visible_text": "We were in compliance with our debt covenants at March 31, 2025. Based on our forecasts, we anticipate we will maintain compliance at each of our subsidiaries for the next twelve months or have sufficient liquidity available on a consolidated basis to resolve noncompliance. We cannot provide assurance that actual results will approximate our forecasts or that we will inject the necessary capital into a subsidiary to maintain compliance with its respective covenants. In the event a subsidiary is unable to comply with its debt covenants, the subsidiary’s lenders may determine that an event of default has occurred, and following notice, the lenders may terminate the commitment and declare the unpaid balance due and payable.",
+      "visible_text_whitespace_normalized": "We were in compliance with our debt covenants at March 31, 2025. Based on our forecasts, we anticipate we will maintain compliance at each of our subsidiaries for the next twelve months or have sufficient liquidity available on a consolidated basis to resolve noncompliance. We cannot provide assurance that actual results will approximate our forecasts or that we will inject the necessary capital into a subsidiary to maintain compliance with its respective covenants. In the event a subsidiary is unable to comply with its debt covenants, the subsidiary’s lenders may determine that an event of default has occurred, and following notice, the lenders may terminate the commitment and declare the unpaid balance due and payable.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "k_original_junior_maturity",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Historical junior-note terms superseded by latest Q amendment.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 2020053,
+      "raw_end": 2022220,
+      "raw_utf8_byte_start": 2020053,
+      "raw_utf8_byte_end": 2022220,
+      "raw_span_sha256": "29d293247c3638943d2ddc1d70a7bebcbe112b9b87701a10dc2528bc3c725ad9",
+      "literal_raw_html": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:112%\">The Junior Notes will mature on <ix:nonNumeric contextRef=\"c-327\" name=\"us-gaap:DebtInstrumentMaturityDate\" format=\"ixt:date-monthname-day-year-en\" id=\"f-1272\">February&#160;9, 2026</ix:nonNumeric> and are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct Ultra-High Protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-328\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-1273\">11.75</ix:nonFraction>%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-329\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-1274\">6.00</ix:nonFraction>% per annum plus an amount equal to interest accruing at a rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-330\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-1275\">6.75</ix:nonFraction>% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after <ix:nonNumeric contextRef=\"c-327\" name=\"us-gaap:DebtInstrumentTerm\" format=\"ixt-sec:durmonth\" id=\"f-1276\">42</ix:nonNumeric> months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.</span></div>",
+      "visible_text": "The Junior Notes will mature on February 9, 2026 and are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct Ultra-High Protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of 11.75%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of 6.00% per annum plus an amount equal to interest accruing at a rate of 6.75% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after 42 months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.",
+      "visible_text_whitespace_normalized": "The Junior Notes will mature on February 9, 2026 and are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct Ultra-High Protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of 11.75%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of 6.00% per annum plus an amount equal to interest accruing at a rate of 6.75% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after 42 months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "k_completed_repayment",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Completed September 2024 term-loan repayment is not a future maturity.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 752541,
+      "raw_end": 753198,
+      "raw_utf8_byte_start": 752541,
+      "raw_utf8_byte_end": 753198,
+      "raw_span_sha256": "8b305da18a8b57b773588a4e11735f49b32c82ed4666e900baae06d841d9967e",
+      "literal_raw_html": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">Green Plains Partners had a term loan to fund working capital, capital expenditures and other general partnership purposes. Interest on the term loan was based on 3-month SOFR plus 8.26%. On September 30, 2024, the proceeds from the Birmingham Transaction were used to repay the outstanding principal and interest of the loan in full. Prepayments totaling $56.0 million, $3.0 million and $1.0 million were made during the years ended December 31, 2024, 2023 and 2022, respectively.</span></div>",
+      "visible_text": "Green Plains Partners had a term loan to fund working capital, capital expenditures and other general partnership purposes. Interest on the term loan was based on 3-month SOFR plus 8.26%. On September 30, 2024, the proceeds from the Birmingham Transaction were used to repay the outstanding principal and interest of the loan in full. Prepayments totaling $56.0 million, $3.0 million and $1.0 million were made during the years ended December 31, 2024, 2023 and 2022, respectively.",
+      "visible_text_whitespace_normalized": "Green Plains Partners had a term loan to fund working capital, capital expenditures and other general partnership purposes. Interest on the term loan was based on 3-month SOFR plus 8.26%. On September 30, 2024, the proceeds from the Birmingham Transaction were used to repay the outstanding principal and interest of the loan in full. Prepayments totaling $56.0 million, $3.0 million and $1.0 million were made during the years ended December 31, 2024, 2023 and 2022, respectively.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    },
+    {
+      "span_id": "q_optional_redemption",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Optional conditional convertible-note redemption and fundamental-change repurchase are not scheduled principal maturity.",
+      "offset_basis": "zero-based half-open decoded record.content character offsets; UTF-8 byte offsets supplied separately",
+      "raw_start": 837120,
+      "raw_end": 840252,
+      "raw_utf8_byte_start": 837120,
+      "raw_utf8_byte_end": 840252,
+      "raw_span_sha256": "b7106b91cf9da347bf8ebcd6087f5d72cb11b88a695c76377be49559fc1fdf21",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On and after March 15, 2024, and prior to the maturity date, the company may redeem, for cash, all, but not less than all, of the <ix:nonFraction unitRef=\"number\" contextRef=\"c-166\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-701\">2.25</ix:nonFraction>% notes if the last reported sale price of the company&#8217;s common stock equals or exceeds <ix:nonFraction unitRef=\"number\" contextRef=\"c-167\" decimals=\"2\" name=\"us-gaap:DebtInstrumentConvertibleThresholdPercentageOfStockPriceTrigger\" scale=\"-2\" id=\"f-702\">140</ix:nonFraction>% of the applicable conversion price on (i) at least <ix:nonFraction unitRef=\"day\" contextRef=\"c-167\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentConvertibleThresholdTradingDays\" scale=\"0\" id=\"f-703\">20</ix:nonFraction> trading days during a <ix:nonFraction unitRef=\"day\" contextRef=\"c-167\" decimals=\"0\" name=\"us-gaap:DebtInstrumentConvertibleThresholdConsecutiveTradingDays1\" scale=\"0\" id=\"f-704\">30</ix:nonFraction> consecutive trading day period ending on the trading day immediately prior to the date the company delivers notice of the redemption; and (ii) the trading day immediately before the date of the redemption notice. The redemption price will equal <ix:nonFraction unitRef=\"number\" contextRef=\"c-167\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentRedemptionPricePercentage\" scale=\"-2\" id=\"f-705\">100</ix:nonFraction>% of the principal amount of the <ix:nonFraction unitRef=\"number\" contextRef=\"c-166\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-706\">2.25</ix:nonFraction>% notes to be redeemed, plus any accrued and unpaid interest to, but excluding, the redemption date. In addition, upon the occurrence of a &#8220;fundamental change&#8221; (as defined in the indenture for the <ix:nonFraction unitRef=\"number\" contextRef=\"c-166\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-707\">2.25</ix:nonFraction>% notes), holders of the <ix:nonFraction unitRef=\"number\" contextRef=\"c-166\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-708\">2.25</ix:nonFraction>% notes will have the right, at their option, to require the company to repurchase their <ix:nonFraction unitRef=\"number\" contextRef=\"c-166\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-709\">2.25</ix:nonFraction>% notes for cash at a price equal to <ix:nonFraction unitRef=\"number\" contextRef=\"c-167\" decimals=\"INF\" name=\"gpre:PercentOfPrincipalAmountCashPriceForRepurchase\" scale=\"-2\" id=\"f-710\">100</ix:nonFraction>% of the principal amount of the <ix:nonFraction unitRef=\"number\" contextRef=\"c-166\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-711\">2.25</ix:nonFraction>% notes to be repurchased, plus accrued and unpaid interest to, but excluding, the fundamental change repurchase date.</span></div>",
+      "visible_text": "On and after March 15, 2024, and prior to the maturity date, the company may redeem, for cash, all, but not less than all, of the 2.25% notes if the last reported sale price of the company’s common stock equals or exceeds 140% of the applicable conversion price on (i) at least 20 trading days during a 30 consecutive trading day period ending on the trading day immediately prior to the date the company delivers notice of the redemption; and (ii) the trading day immediately before the date of the redemption notice. The redemption price will equal 100% of the principal amount of the 2.25% notes to be redeemed, plus any accrued and unpaid interest to, but excluding, the redemption date. In addition, upon the occurrence of a “fundamental change” (as defined in the indenture for the 2.25% notes), holders of the 2.25% notes will have the right, at their option, to require the company to repurchase their 2.25% notes for cash at a price equal to 100% of the principal amount of the 2.25% notes to be repurchased, plus accrued and unpaid interest to, but excluding, the fundamental change repurchase date.",
+      "visible_text_whitespace_normalized": "On and after March 15, 2024, and prior to the maturity date, the company may redeem, for cash, all, but not less than all, of the 2.25% notes if the last reported sale price of the company’s common stock equals or exceeds 140% of the applicable conversion price on (i) at least 20 trading days during a 30 consecutive trading day period ending on the trading day immediately prior to the date the company delivers notice of the redemption; and (ii) the trading day immediately before the date of the redemption notice. The redemption price will equal 100% of the principal amount of the 2.25% notes to be redeemed, plus any accrued and unpaid interest to, but excluding, the redemption date. In addition, upon the occurrence of a “fundamental change” (as defined in the indenture for the 2.25% notes), holders of the 2.25% notes will have the right, at their option, to require the company to repurchase their 2.25% notes for cash at a price equal to 100% of the principal amount of the 2.25% notes to be repurchased, plus accrued and unpaid interest to, but excluding, the fundamental change repurchase date.",
+      "completeness": "Complete original div paragraph or exhibit-index description. No sentence clipping; no production helper used."
+    }
+  ],
+  "review_coverage": "Same two complete original bodies as v5 preflight: all relevant financing/debt/covenant/repurchase passages and complete debt notes/MD&A read; current control separately binds facility owner and dates using original Q Note 1, Note 14, debt note, MD&A and original exhibit index. Standard-library JSON/HTMLParser/date arithmetic only. No production extractor or Signal helper.",
+  "limitations": [
+    "Source identity/content/PIT consistency verified against the supplied qualified-source manifest; referenced external receipt files and exhibit documents were not opened and no network reauthentication occurred.",
+    "Latest effective means latest explicitly disclosed terms in the allowed saved source windows. Unsupplied later amendments/outcomes are not assumed.",
+    "No implementation, tests, model output, old categorical answer, outcome label or external API was used to derive the expected state. Old v5 artifact files were bytes-hashed only for immutability.",
+    "This private F5/F6 capability fixture verifies ordinary actual-source reading capacity only. It is not a published/admitted Signal, Mining output, current-v5 repair, S4/S5 evidence, research capability gain or independent return/benefit proof."
+  ],
+  "unchanged_file_verification": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-source-manifest.json",
+      "sha256_before": "3e6aa2d0035a78b0f555474063e1e73c7a037f8d3e575669087029fb9c2fe136",
+      "sha256_after": "3e6aa2d0035a78b0f555474063e1e73c7a037f8d3e575669087029fb9c2fe136",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-definition.json",
+      "sha256_before": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb",
+      "sha256_after": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-oracle/oracle.json",
+      "sha256_before": "3abddbeb5f4912b952547e607c10415af751e43b047e6f839d275070829398ae",
+      "sha256_after": "3abddbeb5f4912b952547e607c10415af751e43b047e6f839d275070829398ae",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-oracle/review.md",
+      "sha256_before": "46cfbcdb8a0d0dd335c325118e62f655a8706dac889a5fbf285eba01d37e2f78",
+      "sha256_after": "46cfbcdb8a0d0dd335c325118e62f655a8706dac889a5fbf285eba01d37e2f78",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/spec.json",
+      "sha256_before": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1",
+      "sha256_after": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/skill.md",
+      "sha256_before": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a",
+      "sha256_after": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000008.json",
+      "sha256_before": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+      "sha256_after": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000089.json",
+      "sha256_before": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+      "sha256_after": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json",
+      "sha256_before": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57",
+      "sha256_after": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57",
+      "unchanged": true
+    }
+  ]
+}

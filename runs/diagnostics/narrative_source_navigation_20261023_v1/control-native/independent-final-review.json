@@ -1,0 +1,577 @@
+{
+  "schema_version": "independent-control-final-review-v1",
+  "scope": "Read-only independent audit of the first actual-source private principal_maturity_90d_control:v1 final. No production calls, network, outcome labels, implementation/test helpers or post-answer oracle changes.",
+  "conclusion": "Supported partial finding only. Actual source navigation/read and the selected Ancora categorical presence/evidence claim are supported. Full F6 interpretation under the unchanged frozen oracle/clarification is not accepted because explicit identity anchors and mandatory counter-context were not consumed/retained. Do not conflate execution success or correct positive value with full semantic acceptance.",
+  "strict_first_final1": {
+    "denominator": 1,
+    "final_extraction_responses": 1,
+    "full_frozen_f6_accepted": 0,
+    "full_frozen_f6_rejected_or_incomplete": 1,
+    "correct_categorical_value": 1,
+    "correct_primary_ancora_literal": 1,
+    "f5_primary_source_locating_reading_supported": 1,
+    "structured_corrections": 0,
+    "repair_retries": 0,
+    "denominator_preserved": true,
+    "note": "Two source-reading decisions plus one extraction final are three role responses; they are not three extraction finals. No post-review classification repair is performed."
+  },
+  "terminal_execution": {
+    "execution_status": "success",
+    "external_llm_api_calls": 0,
+    "production_receipts": 3,
+    "scope": "Private actual-source F5/F6 capability control only; not a published/admitted Signal, Mining output, prediction-direction finding or relaxation of current-v5 acceptance.",
+    "semantic_acceptance": "pending independent source comparison; mechanical result is not semantic acceptance",
+    "state": "completed"
+  },
+  "execution_vs_acceptance": {
+    "terminal_completed": true,
+    "canonical_execution_success": true,
+    "local_role_receipts": 3,
+    "external_llm_api_calls_recorded": 0,
+    "recorded_usage": {
+      "cost": 0.0,
+      "llm_calls": 3,
+      "tokens": 117566
+    },
+    "token_accounting_sum_matches": true,
+    "internal_cost_unknown_not_free": true,
+    "mechanical_success_is_not_semantic_acceptance": true
+  },
+  "freeze_and_input_checks": {
+    "contract_canonical_sha256": "f3712c6e6f51d9ae4987a0d47071d73d75b254e0f1e94bd89bc35d39544376a8",
+    "input_canonical_sha256": "db9af59d49325c88d1728aa5e9263b0348c271a5c56e7b8116b71c4cfefa9b11",
+    "input_hash_matches_contract": true,
+    "frozen_definition_oracle_clarification_match_contract": true,
+    "original_v5_oracle_sha256": "3abddbeb5f4912b952547e607c10415af751e43b047e6f839d275070829398ae",
+    "original_v5_review_sha256": "46cfbcdb8a0d0dd335c325118e62f655a8706dac889a5fbf285eba01d37e2f78",
+    "original_v5_disposition_remains": "preflight_insufficient; no reclassification",
+    "control_definition_sha256": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb",
+    "control_oracle_sha256": "182780db4a96a9bfaed3a323027b4d456d56f05b39310248f1abe5af54356429",
+    "predispatch_clarification_sha256": "b4c74fbbb80553b56dc9a23f945b8e0ff2ba1872ac3368bf9c447eec64809aa8",
+    "source_manifest_sha256": "3e6aa2d0035a78b0f555474063e1e73c7a037f8d3e575669087029fb9c2fe136",
+    "source_snapshot_contract_declaration": {
+      "manifest_sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+      "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot",
+      "store_type": "reviewed"
+    },
+    "source_snapshot_manifest_not_reopened": "Not in the source allowlist; actual input records independently equal the two qualified originals.",
+    "implementation_hashes_not_independently_verified": "Contract code hash declarations read as data; implementation files were not opened under the audit boundary."
+  },
+  "source_bindings": [
+    {
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "record_sha256": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+      "content_sha256": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "form": "10-K",
+      "input_record_equals_original": true,
+      "qualification_matches": true,
+      "pit_pre_cutoff": true
+    },
+    {
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "record_sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+      "content_sha256": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "form": "10-Q",
+      "input_record_equals_original": true,
+      "qualification_matches": true,
+      "pit_pre_cutoff": true
+    }
+  ],
+  "packet_checks": [
+    {
+      "request_hash": "7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825",
+      "stage": "llm_signal_source_read",
+      "agent_id": "/root/maturity_read_initial",
+      "contract_hash_matches": true,
+      "request_canonical_sha256_matches": true,
+      "stage_payload_canonical_sha256_matches": true,
+      "stage_payload_utf8_bytes_match": true,
+      "inbox_messages_exactly_equal_request": true,
+      "receipt_inbox_sha256_matches": true,
+      "receipt_raw_outbox_sha256_matches": true,
+      "cache_raw_output_byte_equal_outbox": true,
+      "outbox_cache_raw_and_json_parse_equal": true,
+      "accounting_tokens": 15396,
+      "validation_feedback_present": false
+    },
+    {
+      "request_hash": "3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528",
+      "stage": "llm_signal_source_read_next",
+      "agent_id": "/root/maturity_read_next",
+      "contract_hash_matches": true,
+      "request_canonical_sha256_matches": true,
+      "stage_payload_canonical_sha256_matches": true,
+      "stage_payload_utf8_bytes_match": true,
+      "inbox_messages_exactly_equal_request": true,
+      "receipt_inbox_sha256_matches": true,
+      "receipt_raw_outbox_sha256_matches": true,
+      "cache_raw_output_byte_equal_outbox": true,
+      "outbox_cache_raw_and_json_parse_equal": true,
+      "accounting_tokens": 58921,
+      "validation_feedback_present": false
+    },
+    {
+      "request_hash": "150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293",
+      "stage": "llm_signal_batch_execute",
+      "agent_id": "/root/maturity_extract_final",
+      "contract_hash_matches": true,
+      "request_canonical_sha256_matches": true,
+      "stage_payload_canonical_sha256_matches": true,
+      "stage_payload_utf8_bytes_match": true,
+      "inbox_messages_exactly_equal_request": true,
+      "receipt_inbox_sha256_matches": true,
+      "receipt_raw_outbox_sha256_matches": true,
+      "cache_raw_output_byte_equal_outbox": true,
+      "outbox_cache_raw_and_json_parse_equal": true,
+      "accounting_tokens": 43249,
+      "validation_feedback_present": false
+    }
+  ],
+  "actual_read_actions": {
+    "catalog_candidates": 2,
+    "catalog_signature": "source_catalog:v1:81e2052a93a35135c5db0f226b8932b1ea9760ec14f3f81885e46fd186f1bb94",
+    "actions": [
+      {
+        "reads": [
+          {
+            "source_ref": "source_dfac075adb7886510c817a60",
+            "offset": 28000,
+            "length": 16000
+          },
+          {
+            "source_ref": "source_dfac075adb7886510c817a60",
+            "offset": 129000,
+            "length": 6000
+          }
+        ]
+      },
+      {
+        "reads": [
+          {
+            "source_ref": "source_dfac075adb7886510c817a60",
+            "offset": 134905,
+            "length": 6772
+          }
+        ]
+      }
+    ],
+    "action_equals_recorded_tool_history": true,
+    "requested_and_returned_windows": [
+      {
+        "action": {
+          "reads": [
+            {
+              "length": 16000,
+              "offset": 28000,
+              "source_ref": "source_dfac075adb7886510c817a60"
+            },
+            {
+              "length": 6000,
+              "offset": 129000,
+              "source_ref": "source_dfac075adb7886510c817a60"
+            }
+          ]
+        },
+        "tool_windows": [
+          {
+            "next_offset": 42801,
+            "requested_end": 44000,
+            "requested_start": 28000,
+            "returned_units": 1,
+            "source_complete": false,
+            "source_ref": "source_dfac075adb7886510c817a60"
+          },
+          {
+            "next_offset": 134905,
+            "requested_end": 135000,
+            "requested_start": 129000,
+            "returned_units": 1,
+            "source_complete": false,
+            "source_ref": "source_dfac075adb7886510c817a60"
+          }
+        ],
+        "omitted_text_may_contain_additional_evidence": true,
+        "remaining_exchanges": 1
+      },
+      {
+        "action": {
+          "reads": [
+            {
+              "length": 6772,
+              "offset": 134905,
+              "source_ref": "source_dfac075adb7886510c817a60"
+            }
+          ]
+        },
+        "tool_windows": [
+          {
+            "next_offset": 141676,
+            "requested_end": 141677,
+            "requested_start": 134905,
+            "returned_units": 1,
+            "source_complete": false,
+            "source_ref": "source_dfac075adb7886510c817a60"
+          }
+        ],
+        "omitted_text_may_contain_additional_evidence": true,
+        "remaining_exchanges": 0
+      }
+    ],
+    "independent_normalization": "HTMLParser visible text excluding head/ix:header/script/style, joining data with spaces and folding whitespace reproduces Q coordinate_length 168859 and every returned unmasked source window exactly. No production parser was used.",
+    "returned_projections": [
+      {
+        "projection_id": "projection_22aebdee53702b21da4aafae",
+        "document_id": "sec:cik_0001309402:000130940225000089",
+        "normalized_start": 28015,
+        "normalized_end": 42801,
+        "characters": 14786,
+        "exact_independent_normalized_original_match": true,
+        "source_complete": false
+      },
+      {
+        "projection_id": "projection_0bb1249b44f6d6c2e1fa48a8",
+        "document_id": "sec:cik_0001309402:000130940225000089",
+        "normalized_start": 129056,
+        "normalized_end": 134905,
+        "characters": 5849,
+        "exact_independent_normalized_original_match": true,
+        "source_complete": false
+      },
+      {
+        "projection_id": "projection_1e324db5874e543cb7377262",
+        "document_id": "sec:cik_0001309402:000130940225000089",
+        "normalized_start": 134905,
+        "normalized_end": 141676,
+        "characters": 6771,
+        "exact_independent_normalized_original_match": true,
+        "source_complete": false
+      }
+    ],
+    "read_source_characters": 27406,
+    "navigation_characters": 3452,
+    "preview_characters": 280,
+    "total_characters": 31138,
+    "character_accounting_matches": true,
+    "only_q_was_read": true,
+    "k_not_read": true,
+    "source_complete": false,
+    "coverage_flags": {
+      "context_truncated": true,
+      "contract_satisfied": true,
+      "deduplicated_document_count": 0,
+      "eligible_document_count": 2,
+      "missing_requirements": [],
+      "observed_distinct_period_count": 0,
+      "observed_observation_count": 0,
+      "observed_period_span_days": null,
+      "query_evaluated": true,
+      "query_matched_document_count": 2,
+      "query_requested": true,
+      "query_status": "matched",
+      "required_source_group_count": 0,
+      "satisfied_source_group_count": 0,
+      "selected_document_count": 1,
+      "selection_truncated": true,
+      "visible_span_count": 3
+    },
+    "omitted_context_markers": [],
+    "omission_interpretation": "Empty omitted_context_markers does not override explicit context_truncated/selection_truncated/omitted-text/source_complete=false flags. Positive primary existence does not require all documents; broad semantic completeness is not proved.",
+    "anchor_coverage": [
+      {
+        "frozen_anchor": "q_company_reference",
+        "original_normalized_start": 13590,
+        "original_normalized_end": 13807,
+        "complete_anchor_model_read": false,
+        "note": ""
+      },
+      {
+        "frozen_anchor": "q_ancora_borrower_index",
+        "original_normalized_start": 165831,
+        "original_normalized_end": 166000,
+        "complete_anchor_model_read": false,
+        "note": ""
+      },
+      {
+        "frozen_anchor": "q_blackrock_mda",
+        "original_normalized_start": 136150,
+        "original_normalized_end": 137244,
+        "complete_anchor_model_read": true,
+        "note": ""
+      },
+      {
+        "frozen_anchor": "q_liquidity",
+        "original_normalized_start": 128418,
+        "original_normalized_end": 129394,
+        "complete_anchor_model_read": false,
+        "note": ""
+      },
+      {
+        "frozen_anchor": "q_junior_terms",
+        "original_normalized_start": null,
+        "original_normalized_end": null,
+        "complete_anchor_model_read": false,
+        "note": "Note 8 junior terms contain inline-token whitespace differences under frozen paragraph normalization and were not selected by any read."
+      },
+      {
+        "frozen_anchor": "q_covenant_mda",
+        "original_normalized_start": 133630,
+        "original_normalized_end": 134360,
+        "complete_anchor_model_read": true,
+        "note": ""
+      }
+    ]
+  },
+  "fingerprints": {
+    "recorded": {
+      "principal_maturity_90d_control:v1": [
+        "source_catalog:v1:81e2052a93a35135c5db0f226b8932b1ea9760ec14f3f81885e46fd186f1bb94",
+        "sec:cik_0001309402:000130940225000089:02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799"
+      ]
+    },
+    "read_document_fingerprint_matches_original": true,
+    "catalog_signature_consistent_across_requests_and_resolution": true,
+    "catalog_signature_not_an_exhaustive_read_claim": true
+  },
+  "masking_and_oracle_separation": [
+    {
+      "request_hash": "7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825",
+      "raw_issuer_alias_occurrences": {
+        "Green Plains": 0,
+        "GPRE": 0,
+        "0001309402": 0,
+        "cik_0001309402": 0,
+        "GREEN PLAINS INC.": 0
+      },
+      "oracle_reference_or_expected_answer_transmitted": false,
+      "masked_projection_checks": [],
+      "note": "Anonymization tokens are request-scoped and differ across stages; original document identity is retained runtime-side by projection/content hash. Counterparties Ancora and BlackRock remain source text."
+    },
+    {
+      "request_hash": "3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528",
+      "raw_issuer_alias_occurrences": {
+        "Green Plains": 0,
+        "GPRE": 0,
+        "0001309402": 0,
+        "cik_0001309402": 0,
+        "GREEN PLAINS INC.": 0
+      },
+      "oracle_reference_or_expected_answer_transmitted": false,
+      "masked_projection_checks": [
+        {
+          "projection_id": "projection_22aebdee53702b21da4aafae",
+          "same_content_hash_and_window": true,
+          "only_text_change": "Green Plains -> [ANON_ID_0000]",
+          "all_other_original_text_preserved": true
+        },
+        {
+          "projection_id": "projection_0bb1249b44f6d6c2e1fa48a8",
+          "same_content_hash_and_window": true,
+          "only_text_change": "Green Plains -> [ANON_ID_0000]",
+          "all_other_original_text_preserved": true
+        }
+      ],
+      "note": "Anonymization tokens are request-scoped and differ across stages; original document identity is retained runtime-side by projection/content hash. Counterparties Ancora and BlackRock remain source text."
+    },
+    {
+      "request_hash": "150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293",
+      "raw_issuer_alias_occurrences": {
+        "Green Plains": 0,
+        "GPRE": 0,
+        "0001309402": 0,
+        "cik_0001309402": 0,
+        "GREEN PLAINS INC.": 0
+      },
+      "oracle_reference_or_expected_answer_transmitted": false,
+      "masked_projection_checks": [
+        {
+          "projection_id": "projection_22aebdee53702b21da4aafae",
+          "same_content_hash_and_window": true,
+          "only_text_change": "Green Plains -> [ANON_ID_0002]",
+          "all_other_original_text_preserved": true
+        },
+        {
+          "projection_id": "projection_0bb1249b44f6d6c2e1fa48a8",
+          "same_content_hash_and_window": true,
+          "only_text_change": "Green Plains -> [ANON_ID_0002]",
+          "all_other_original_text_preserved": true
+        },
+        {
+          "projection_id": "projection_1e324db5874e543cb7377262",
+          "same_content_hash_and_window": true,
+          "only_text_change": "Green Plains -> [ANON_ID_0002]",
+          "all_other_original_text_preserved": true
+        }
+      ],
+      "note": "Anonymization tokens are request-scoped and differ across stages; original document identity is retained runtime-side by projection/content hash. Counterparties Ancora and BlackRock remain source text."
+    }
+  ],
+  "raw_to_canonical_final": {
+    "raw_final_file": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/outbox/150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293.txt",
+    "raw_final_sha256": "c5642a3cb4e5830109df05c102a5861be6c7cbe6d39d460d6d36f4836e9987f6",
+    "closed_json_object": true,
+    "one_expected_versioned_row": true,
+    "raw_model_state": {
+      "confidence": 0.99,
+      "value": "positive"
+    },
+    "raw_model_coverage": {
+      "coverage": "sufficient"
+    },
+    "raw_model_interpretation": {
+      "summary": "The issuer entered into a secured $30 million revolving credit facility on May 7, 2025 with contractual maturity on July 30, 2025, strictly after the May 30, 2025 as-of date and within the following 90 calendar days. This establishes the control condition. The facility bears 10% interest on borrowings and a 0.5% fee on the unused balance, with interest and fees due monthly, and included issuance of 1,504,140 warrants at $0.01 per share with a ten year exercise period. The disclosed facility amount does not establish the amount drawn; this result implies no net financing benefit or investment direction."
+    },
+    "state_interpretation_coverage_preserved_in_canonical_result": true,
+    "canonical_enrichment_only": "Runtime adds execution.status=success and maps evidence projection_id/exact_text to original document_id/exact_span/timestamp; no semantic rewrite observed.",
+    "counter_evidence_count": 0,
+    "supporting_binding": {
+      "model_projection_id": "projection_1e324db5874e543cb7377262",
+      "eligible_for_this_control": true,
+      "copied_exactly_from_visible_projection": true,
+      "canonical_document_id": "sec:cik_0001309402:000130940225000089",
+      "canonical_timestamp": "2025-05-08T20:34:28+00:00",
+      "full_literal_equals_frozen_q_ancora_mda_visible_text": true,
+      "complete_original_sentences": true,
+      "exact_span": "On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "independent_original_raw_start": 1252232,
+      "independent_original_raw_end": 1252805,
+      "independent_original_raw_sha256": "7128bbc9727499ceba8a0da4f0812f0f6b24368c6b55a13438ecb2a5d48ea0db",
+      "independent_normalized_start": 135549,
+      "independent_normalized_end": 136122,
+      "projection_interior_left_characters": 644,
+      "projection_interior_right_characters": 5554,
+      "original_html_anchor": {
+        "raw_start": 1252069,
+        "raw_end": 1252818,
+        "raw_span_sha256": "3a8ad421e37eb5d18838c4b541477327bb1a3f19c962acd5caedd1dc739e3aa1"
+      }
+    }
+  },
+  "independent_primary_semantics": {
+    "expected_state": "positive",
+    "actual_state": "positive",
+    "state_matches": true,
+    "borrower_as_source_claim": "Issuer first-person we entered in Corporate Activities; independently corroborated in original exhibit10.11 as Green Plains Inc., with Central City guarantor and Ancora lender. Named reference/index anchors were not read by the production roles.",
+    "execution_date": "2025-05-07",
+    "contractual_maturity": "2025-07-30",
+    "as_of_calendar_date": "2025-05-30",
+    "inclusive_window_end": "2025-08-28",
+    "days_after_asof": 61,
+    "correct_principal_vs_interest_and_warrant_period_for_ancora": true,
+    "source_pit_valid": true,
+    "reported_period": "10-Q for quarter ended March31 2025; May7 financing is a disclosed subsequent event available May8, not a March31 realized event.",
+    "latest_same_facility_terms": "No later Ancora amendment in the two supplied original bodies; reviewer can corroborate this finite-source fact, not evidence that the production role read all amendments/inventory.",
+    "material_ancora_terms_preserved": [
+      "secured facility",
+      "10% on borrowing",
+      "0.5% unused balance",
+      "5th-of-month interest/fees in literal evidence; monthly in summary",
+      "1,504,140 issued warrants",
+      "$0.01 strike",
+      "ten-year exercise period",
+      "facility size does not establish drawn amount"
+    ],
+    "unsupported_economic_direction_observed": false,
+    "net_financing_benefit_disclaimed": true,
+    "surge_or_investment_benefit_claim": false
+  },
+  "unmet_items_with_controlling_clauses": [
+    {
+      "item": "Frozen explicit named borrower/reference anchor context",
+      "observed": "Final uses issuer-neutral we/issuer and correct facility. Source index and Note1 company-reference anchors were never read and were not retained as mapped identity context; source document id/content hash was retained.",
+      "definition_clause": "Cite complete original-source sentences identifying the borrower/facility and principal maturity.",
+      "definition_assessment": "The original Corporate Activities first-person we entered sentence is a source-stated issuer action, and independent original index corroborates Green Plains Inc. as borrower. The definition does not literally mandate quoting the named borrower-index or Note1. No wrong actor or invented identity is demonstrated.",
+      "stronger_frozen_clause": "oracle.allowed_literal_alternative_sets pairs each facility alternative with q_company_reference and q_ancora_borrower_index; clarification.identity_matching.borrower_binding requires those original anchors retained as canonical mapped context.",
+      "strict_obligation_satisfied": false,
+      "classification": "frozen-oracle identity/context obligation unmet; core product issuer co-reference supported"
+    },
+    {
+      "item": "BlackRock principal maturity versus conditional July31 trigger and economic qualifications",
+      "observed": "The complete BlackRock MD&A paragraph is in the final input projection, but final counter=[] and interpretation say nothing about its July31 conditional collateral/fee/warrant trigger versus amended May15 2026 principal maturity, 2% amendment fee or 11.75% interest. Mere presence in an input/source-resolution window does not show explicit final interpretation/consumption.",
+      "definition_clause": "Use the latest disclosed effective amendment for the same facility. Distinguish principal maturity from fee/interest/collateral/optional redemption dates, proposals, uncommitted funding and third-party customer debt.",
+      "definition_assessment": "The chosen Ancora principal-maturity claim is correct and does not classify BlackRock. The definition does not unambiguously require discussing every non-selected facility. Omission is not evidence the model confused July31 with principal maturity.",
+      "stronger_frozen_clause": "oracle.mandatory_interpretation_context explicitly requires BlackRock July31 conditional trigger versus May15 2026 maturity; clarification.counter_context_obligations inherits it and requires explicit, auditable interpretation/context including the frozen economic terms.",
+      "strict_obligation_satisfied": false,
+      "classification": "frozen-oracle counter-context interpretation obligation unmet, not a demonstrated false Ancora finding"
+    },
+    {
+      "item": "Finite-source/latest-disclosed/inventory caveat",
+      "observed": "Input/read resolution explicitly flags omitted text and incomplete selection, but final coverage=sufficient and interpretation do not expressly carry the limited-window/unsupplied-later-amendment caveat. Final does not assert absence of other maturities or claim exhaustive inventory.",
+      "definition_clause": "positive: At least one explicitly dated qualifying principal maturity exists in that interval; ... Use only disclosed source windows; unknown inventory cannot prove absence.",
+      "definition_assessment": "Positive is existential and the final supplies the qualifying Ancora event; a complete inventory or generic later-amendment warning is not required to establish presence. coverage=sufficient can describe the measured presence condition and is not itself an absence claim.",
+      "stronger_frozen_clause": "oracle.mandatory_interpretation_context and clarification.counter_context_obligations.interpretation_always_required demand explicit latest-disclosed/unknown-inventory context in the answer or auditable interpretation/context fields.",
+      "strict_obligation_satisfied": false,
+      "classification": "frozen-oracle retained-context obligation unmet; no unsupported exhaustive-absence conclusion observed"
+    },
+    {
+      "item": "Liquidity joint attribution and restrictions",
+      "observed": "The cited source sentence includes an issuer flexibility/liquidity purpose claim. Final does not quantify corporate-liquidity increase or infer a benefit, and explicitly disclaims net financing benefit. Entire March-to-May corporate-liquidity paragraph was not read; read2 begins after its first part. Final does not retain the joint non-core-asset-sale attribution and lending/subsidiary restrictions as interpretation.",
+      "definition_clause": "Do not infer any net financing benefit or directional surge effect. Warrants, fees and collateral cannot be concealed in interpretation but do not change a correctly identified principal maturity.",
+      "definition_assessment": "No unsupported liquidity improvement amount or favorable direction is asserted. Ancora security/costs/warrants are retained. Mandatory discussion of the separate quantified liquidity reconciliation exceeds the explicit core presence requirement when no economic benefit is claimed.",
+      "stronger_frozen_clause": "oracle.mandatory_interpretation_context and clarification.counter_context_obligations.liquidity_required retain joint attribution and restrictions without weakening after answers.",
+      "strict_obligation_satisfied": false,
+      "classification": "frozen-oracle counter-context completeness unmet; no fabricated benefit observed"
+    },
+    {
+      "item": "Other date-type/uncommitted/optional-right distinctions",
+      "observed": "Input contains old convertibles, uncommitted hedge line and other facilities; final selects only Ancora and offers no explicit comparison against those alternatives.",
+      "definition_clause": "Distinguish principal maturity from fee/interest/collateral/optional redemption dates, proposals, uncommitted funding and third-party customer debt.",
+      "definition_assessment": "No excluded date/type is used to establish the selected result. The final correctly uses a binding Ancora facility maturity. Silence does not prove mistaken treatment of other dates.",
+      "stronger_frozen_clause": "clarification.counter_context_obligations.other_date_type_distinctions_required plus inherited frozen mandatory interpretation context requires explicit retained distinctions.",
+      "strict_obligation_satisfied": false,
+      "classification": "frozen strict interpretation-context coverage unmet, not evidence of additional false facility findings"
+    }
+  ],
+  "product_vs_frozen_oracle_assessment": {
+    "core_presence_definition": "Supported ordinary source-reading result for chosen Ancora facility. No false principal date, actor, amount-drawn assertion, fee concealment or unsupported economic direction observed.",
+    "frozen_strict_oracle": "Full acceptance remains 0/1. Additional identity-anchor and counter-context obligations were frozen before dispatch and are not relaxed after seeing the response.",
+    "do_not_misdescribe": "Do not describe missing discussion as proven confusion, or treat extra frozen-oracle context duties as if the definition explicitly demanded a named borrower-index quotation or exhaustive positive-case inventory. This separation does not upgrade the strict result."
+  },
+  "reflect_consumption": {
+    "observed_in_this_execution": false,
+    "status": "not_tested",
+    "reason": "Only source_read, source_read_next and signal_batch_execute requests exist in the supplied run. No later Reflect request/response or exact-version consumption evidence is supplied; successful source reading/final output does not prove it."
+  },
+  "limits": [
+    "This is one private F5/F6 capability control, not published/admitted Signal behavior, Mining output, current-v5 repair, S4/S5 acceptance, independent research gain or model generalization.",
+    "Receipt/request/cache lineage supports three distinct local role packets and first-final count; no external transport or implementation internals were audited.",
+    "No completeness claim beyond the two qualified original filings. Later actual repayment, warrant exercise, default or price outcome was not read.",
+    "Frozen strict criteria remain unchanged; no correction, extra production call or answer-targeted oracle rewrite was performed."
+  ],
+  "read_file_hashes": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-source-manifest.json": "3e6aa2d0035a78b0f555474063e1e73c7a037f8d3e575669087029fb9c2fe136",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-definition.json": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/oracle.json": "182780db4a96a9bfaed3a323027b4d456d56f05b39310248f1abe5af54356429",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/review.md": "67accd560297ce0e25eaf33994f4180fa3cf797571c04571411a0d24911bc429",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/evidence-matching-clarification.json": "b4c74fbbb80553b56dc9a23f945b8e0ff2ba1872ac3368bf9c447eec64809aa8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-oracle/oracle.json": "3abddbeb5f4912b952547e607c10415af751e43b047e6f839d275070829398ae",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-oracle/review.md": "46cfbcdb8a0d0dd335c325118e62f655a8706dac889a5fbf285eba01d37e2f78",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/contract.json": "505be947bdff4467d899bc1004af6e982c6a859b13df721f7e9dc100f399fcfb",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/inputs.json": "ce9242f4f11cc40b6f70909bb4b4efdc9ff30b598841d7b053855c4ee18239eb",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/result.json": "14ded83e468bbb3deb07492ef5dbc19a4c8511cae3ba9267f84e6f47671ec2dd",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/completion.json": "67c729c77346eeec4931b48f274985a3e88854274dbcfb7f02a0ef2aa24ec2d3",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/contract.json": "57f9e38408e639cccbb48149fd8518438c6a2421faee6e1b48044c0574d3979e",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/spec.json": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/skill.md": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000008.json": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000089.json": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/requests/150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293.json": "f587c6ad11ea4667f7ceded138ce6c81e325d39e0c2b74a1af74bc9d3d31d4ac",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/requests/3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528.json": "be822507dad29f46e105bd87f58c14e285d3e09baa2fe0e8df45db899aee2169",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/requests/7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825.json": "1fefb56becf5b234ec21550528aaab26036fff6733c039e5b5d9951db724467a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/inbox/150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293.json": "2b00772e17463cc3860b04f23e6153dac97a659e847b441484b34f2536d3b9ec",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/inbox/3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528.json": "477ed44e5397bdb7c8b5270d48f14f2e425aa0d596949f49b48b205191a81ed6",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/inbox/7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825.json": "72e1e7c52f117de455d9b7fbf8785d63054d0bc38a6bc8678a1dc327a6a056f2",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/outbox/150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293.txt": "c5642a3cb4e5830109df05c102a5861be6c7cbe6d39d460d6d36f4836e9987f6",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/outbox/3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528.txt": "4ef6095e8ea4bddb0a7465d89aac60058bded17ff449f49d7066fb7c1bf474d7",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/outbox/7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825.txt": "fa4c531d86adaf6f7ef8d50fad078dc3aff533548171c9521a7ff56d0767edef",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/receipts/150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293.json": "42f7bc2740f505858e0e6385adf9d92dc2ca735be0d517144c420c7ba6eaefe9",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/receipts/3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528.json": "b051703b8db53f2b5721064e211c7b47debd29e68f74303f9d14e3594d419a05",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/exchange/receipts/7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825.json": "396fad9f29ca0b4692d73131bac5b51941cb87d0b117d984f5b0e2acca4a330b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/cache/responses/150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293.json": "3581066b3397cea143571003c8a63831f2c36d163a1120dd6d3bc801f944397a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/cache/responses/3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528.json": "eb43d99091e331ee8cd497babaa8b4174e1d40bec8161bd754c040ef5062a96c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/cache/responses/7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825.json": "050e7e04cfaacf2816fae351af6ac616c56d578718d56814467a6d9025ba57ea"
+  },
+  "all_read_files_unchanged": true
+}

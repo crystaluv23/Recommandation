@@ -1,0 +1,26 @@
+{
+  "requests": [
+    {
+      "request_hash": "150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293",
+      "logical_reservation": 43249,
+      "forbidden_alias_hits": [],
+      "path": "runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/requests/150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293.json",
+      "sha256": "f587c6ad11ea4667f7ceded138ce6c81e325d39e0c2b74a1af74bc9d3d31d4ac"
+    },
+    {
+      "request_hash": "3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528",
+      "logical_reservation": 58921,
+      "forbidden_alias_hits": [],
+      "path": "runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/requests/3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528.json",
+      "sha256": "be822507dad29f46e105bd87f58c14e285d3e09baa2fe0e8df45db899aee2169"
+    },
+    {
+      "request_hash": "7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825",
+      "logical_reservation": 15396,
+      "forbidden_alias_hits": [],
+      "path": "runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/requests/7ea23e07ae3918f4352b58895252c2a52a8ebe700099444d4f9231c721dd0825.json",
+      "sha256": "1fefb56becf5b234ec21550528aaab26036fff6733c039e5b5d9951db724467a"
+    }
+  ],
+  "sum": 117566
+}

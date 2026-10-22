@@ -1,0 +1,228 @@
+{
+  "schema_version": "independent-narrative-navigation-counter-review-v1",
+  "reviewer_agent_id": "/root/actual_f5_source_oracle",
+  "scope": "Read-only deterministic/local review of the specified diff against HEAD23e869c4, corresponding owning specs/tests, and new actual input-only preflight/wire. No F5, current-Signal financing value, semantic applicability or model-adherence closure.",
+  "base_commit": "23e869c4a82e51375bb6ac806e094ec50c5e51c9",
+  "status": "no_actionable_deterministic_regression_found_in_reviewed_scope",
+  "findings": [],
+  "reviewed_file_bindings_frozen_before_checks": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py",
+      "sha256": "21db5eaeb42a7f98896f14e0ad8efd0852a2ae489d7b918719f74c315d9dee2b",
+      "bytes": 15483
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_source_reading.py",
+      "sha256": "5dec23847a4aeefc71bbee1a36adf45181658ffe63f564f03879c45381468033",
+      "bytes": 21689
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "733e2f305a25cebb60e136cf1b1e21a2ae219ddaefd9a2636bc39b40944c31e7",
+      "bytes": 292517
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/disclosure.md",
+      "sha256": "0d6243c8cacc671f0656bde8518bbc0d992a83547093de9530cc5514b9be6a8d",
+      "bytes": 1189
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_source_reading.md",
+      "sha256": "367094515285f365d79b5de225ef23a396401a15493994f884348214826ab54c",
+      "bytes": 6531
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_signal_roles.md",
+      "sha256": "d05153054efd4a6ab4e26d2cd8048259df4e4fe821f83ea4cad39072e20a2cd8",
+      "bytes": 56951
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_data_disclosure.py",
+      "sha256": "a31a63a18e3f44f7430231c9cfaf5102488fa912c121f2d071fb94ed9d4950de",
+      "bytes": 9571
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py",
+      "sha256": "f3423d0b56797c542495fc46f7365a8a3a6e3c765fd2b460003fe4b18d1787cf",
+      "bytes": 34347
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/preflight/log.txt",
+      "sha256": "9ba8e619905a2253307a41f89ce5f74cc3600958b5a414f1ffea02a5e3fc5897",
+      "bytes": 1886
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/preflight/preflight-result.json",
+      "sha256": "5bc65c7b93175e39d6b82f7cb9c2971d0c29dfd4b582dcc2a3d6f4945c0bfc82",
+      "bytes": 2162
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/preflight/preflight.py",
+      "sha256": "8d80286b0390b5a55602ebc70a3275f6b40c6f9684d10b50c45c623f94de0d22",
+      "bytes": 6178
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/preflight/wire-capture/exchange/contract.json",
+      "sha256": "57f9e38408e639cccbb48149fd8518438c6a2421faee6e1b48044c0574d3979e",
+      "bytes": 106
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/preflight/wire-capture/requests/8dffa0cd73b25e9394d5c6f12f4b135701a15454d0de46f52e5807fbde9d9827.json",
+      "sha256": "a97490d2f9acffb82099934e3b01d1f432022e38809992ce9f11a7fc20c94b97",
+      "bytes": 15674
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/preflight/wire-capture/unused.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277",
+      "bytes": 119
+    }
+  ],
+  "post_check_hash_confirmation": {
+    "all_frozen_hashes_unchanged": true,
+    "changes": [],
+    "head_now": "23e869c4a82e51375bb6ac806e094ec50c5e51c9"
+  },
+  "positive_checks": [
+    {
+      "area": "Shared heading matcher and raw-adapter compatibility",
+      "evidence": "readable_section_index reuses the existing data-owned _SECTION_HEADING_PATTERN without new query ranking. _filing_sections maps the returned heading offsets/lengths through its own origins. Five synthetic plain/HTML/entity/hidden-header/cross-reference cases exactly match the old pure _filing_sections function extracted from HEAD23e869c4. Seven data disclosure tests also pass.",
+      "limit": "Finite fixture equivalence does not prove universal parser equivalence or that every SEC section can be found."
+    },
+    {
+      "area": "Normalized/raw coordinates and lineage",
+      "evidence": "Narrative session indexes self.views[handle][0] after normalization, rather than copying raw card offsets. The long-hidden-header test shows normalized heading offset differs from raw content index, reads the target clause at the supplied normalized coordinates, and retains source documents only after a body read. Structured fact raw coordinate behavior remains covered.",
+      "limit": "Actual full annual/quarterly bodies were not independently re-opened in this scope; real-source coordinate checks here are restricted to the supplied preflight/wire and existing deterministic code."
+    },
+    {
+      "area": "Heuristics, TOC/cross-references and omissions",
+      "evidence": "Matcher docstring, owning specs, prompt, and wire mark heading matches partial and possible TOC/cross-references. Cards expose counts, per-page groups, omitted counts and next cursor. Actual wire contains42 and21 matched groups with20 visible on each first page, explicitly omitting22 and1. Navigation does not certify semantic sections, absence or source completeness."
+    },
+    {
+      "area": "Existing actions, paging and exchange bounds",
+      "evidence": "The existing catalog_source_ref/group_cursor action now routes narrative groups as well as structured groups, without a new action or exchange allowance. Focused tests preserve the two-exchange ceiling and existing five-window/ten-source controls. Independent probes reject boolean, negative, out-of-range and string group cursors without mutation."
+    },
+    {
+      "area": "Heading, preview and body budget atomicity",
+      "evidence": "_charge_catalog computes all previously undisclosed preview and heading charges before mutating handles, section identities or counters. Independent mixed-page counterexample at31860 rejects a page whose140-character preview alone would fit but extra86-character heading would overflow, leaving all recorded state unchanged. A heading-only page at31913 plus87 characters succeeds exactly at32000. Existing preview overflow/multi-preview atomic controls and new heading-page overflow control pass."
+    },
+    {
+      "area": "Revisit invariance and evidence/read-document boundary",
+      "evidence": "Metadata revisit does not recharge already seen source/section identities. Independent group-only metadata session has no source rows, read documents, visible documents or lineage. Exact-fit metadata paging changes no prior body rows or read documents. Navigation remains absent from the closed citable projection."
+    },
+    {
+      "area": "Identity, untrusted source text and actual initial wire",
+      "evidence": "The captured request includes the existing untrusted-data instruction and heading-only-is-not-evidence instruction. Source cards use opaque handles and content hashes, not original document IDs; some original issuer aliases are masked in displayed heading text. The wire exposes declared normalized coordinates, metadata_is_not_evidence=true, empty already_read_projection and null last_read_result.",
+      "limit": "This inspection is not an exhaustive identity-redaction proof for all possible headings or aliases. No source/identity policies were widened by the reviewed diff."
+    },
+    {
+      "area": "Actual preflight resource boundary",
+      "evidence": "Recomputed displayed preview+heading charge is3732, agreeing with remaining_source_characters28268. Recomputed exact initial reservation is15122 under131072. Supplied preflight reports two eligible/selected filing sources, no inboxes and zero network/label/append attempts; its capture hook stops at request_ready.",
+      "limit": "Only the captured initial request was inspected. It is not proof of an affordable complete selection/read/final sequence or of production execution."
+    },
+    {
+      "area": "Scripted native reopen control",
+      "evidence": "Both native_interruption_restore and native_long_narrative_navigation_restore unit controls pass under network/label guards after correcting the test import path. They verify exact local inbox/cache/receipts and closed projection reuse using existing scripted fixture callers in temporary directories.",
+      "limit": "These controls are offline synthetic fixture replay, not fresh model answers or actual-source consumer adoption."
+    }
+  ],
+  "offline_test_run": {
+    "tests_run": 24,
+    "failures": 0,
+    "errors": 0,
+    "log": "........................\n----------------------------------------------------------------------\nRan 24 tests in 0.437s\n\nOK\n",
+    "source_reading_test_names": [
+      "test_narrative_sections_share_normalized_coordinates_with_actual_reads",
+      "test_narrative_section_pages_use_existing_exchange_budget_and_do_not_recharge",
+      "test_narrative_heading_page_overflow_rejects_all_metadata_atomically",
+      "test_registry_loaded_immutable_spec_and_nested_source_metadata_are_isolated",
+      "test_pages_and_fact_pages_consume_same_two_exchanges",
+      "test_page_summaries_expose_direct_navigation_without_disclosing_extra_cards",
+      "test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation",
+      "test_catalog_all_new_previews_fit_together_or_none_are_committed",
+      "test_catalog_coordinate_sharing_is_lossless_for_all_cards_and_periods",
+      "test_invalid_actions_are_atomic_and_integer_strict",
+      "test_character_budget_includes_previews_and_never_clips_long_sentence",
+      "test_structured_read_preserves_prior_currency_and_same_period_conflicts",
+      "test_partial_source_cannot_count_unseen_periods_or_observations",
+      "test_older_original_period_is_readable_in_both_shapes_without_default_displacement",
+      "test_expanded_pair_does_not_block_unread_interleaved_concept",
+      "test_native_interruption_restore_uses_exact_inbox_cache_and_receipts",
+      "test_native_long_narrative_navigation_restores_exact_closed_projection"
+    ],
+    "python": "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "environment": {
+      "PYTHONPATH": "src:scripts",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "guards": "socket.socket.connect/connect_ex and socket.create_connection reject network; LabelStore.__init__/load reject labels. RawInfoStore.append was not globally disabled, allowing ordinary in-memory fixtures.",
+    "scope": "Seven DisclosureInterfaceTests plus17 explicitly selected SignalSourceReadingTests; excluded the historical saved-model-answer replay test.",
+    "harness_failures": [
+      {
+        "environment": "PYTHONPATH=src",
+        "result": "22 passed; two native controls errored at import with ModuleNotFoundError: diagnose_executed_answer_scope before role work.",
+        "interpretation": "Test-launch import-path failure, not product red."
+      },
+      {
+        "result": "An initial orchestration attempt tried JSON.parse on the Python traceback and failed before displaying the underlying error. The targeted rerun exposed the import-path issue; no product or artifact mutation resulted.",
+        "interpretation": "Reviewer harness-output parsing error, not product red."
+      }
+    ]
+  },
+  "independent_counterexample_probes": {
+    "raw_adapter_head23e869c4_equivalence_fixtures": 5,
+    "mixed_preview_heading_atomic_rejection": {
+      "before": 31860,
+      "preview_alone_would_fit": true,
+      "preview_characters": 140,
+      "heading_extra_characters": 86,
+      "accepted": false,
+      "all_state_unchanged": true
+    },
+    "heading_exact_fit": {
+      "before": 31913,
+      "heading_characters": 87,
+      "after": 32000,
+      "revisit_no_recharge": true,
+      "no_added_projection_or_read_documents": true
+    },
+    "metadata_only_no_rows_documents_or_lineage": true,
+    "invalid_group_cursors_atomic": [
+      true,
+      -1,
+      999,
+      "20"
+    ],
+    "actual_wire": {
+      "initial_catalog_charge": 3732,
+      "remaining_characters": 28268,
+      "exact_initial_reservation": 15122,
+      "request_cap": 131072,
+      "empty_read_projection": true,
+      "section_groups_counts": [
+        42,
+        21
+      ],
+      "visible_group_counts": [
+        20,
+        20
+      ]
+    }
+  },
+  "independence": {
+    "implementation_edits": 0,
+    "source_oracle_reads": 0,
+    "source_oracle_writes": 0,
+    "actual_model_requests_dispatched": 0,
+    "external_api_or_network_calls": 0,
+    "label_reads": 0,
+    "output": "Only this new counter-review.json was written. Existing code/spec/test/preflight/wire files were read-only and all frozen hashes were confirmed unchanged.",
+    "actual_preflight": "The supplied preflight capture artifacts were inspected but preflight.py was not re-executed, avoiding any new actual-source request/cache/inbox writes."
+  },
+  "limits": [
+    "No independent semantic oracle was read or used; no current financing value was authored or certified.",
+    "No fresh model source selection, answer, correction, final native consumer receipt or persisted production completion was inspected or executed.",
+    "Initial wire reservation and deterministic controls do not establish complete-path token affordability, model comprehension, extraction quality, economic correctness or research benefit.",
+    "Heading matching remains intentionally heuristic and may miss headings or include TOC/cross-reference/body fragments. Partial flags and omission disclosure preserve that uncertainty.",
+    "Source/body/evidence authority was checked through code, fixtures and the permitted initial wire, not through an actual production source-read/final-output sequence."
+  ]
+}

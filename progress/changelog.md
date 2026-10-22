@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-23：共享数据层Part/Item matcher并在各自原始readable视图建坐标，既有raw卡保持，Signal给20条normalized章节/遗漏及原group分页；标题与preview/body共用32k原子预算，元数据无证据权限。251关联/独立24及raw等价/混合预算反例过，网络0。当前financing-v5净影响独立源审多义，模型前停；另冻结私有90日本金到期actual-source控制，3fresh原生角色首final正确提取Ancora本金日期/费用权证及无方向限定，0纠错，117566逻辑预留/31138来源chars，29files重开同/3receipts。冻结完整oracle严审0of1保留：其部分额外主体/其他facility/库存警告义务超出presence定义；此前未逐条对齐是root验收设计遗漏，不伪称模型错或改分母求过。未发布Signal/非Mining/无Reflect消费，外部API/GET0，无旧stage重入或全后继，整体MVP open。
+
 - 2026-10-23：真实qualified1780来源前置暴露Registry非空冻结参数deepcopy失败，以公开序列化隔离修复；原57合格/target rank46、400组坐标目录无损共享并给完整page可用时间导航，首wire逻辑预留88302→32579。独立反例另见32000正文后翻页预览越界，现整页先验证再原子计费，保exact-fit及拒后状态；240关联过/网络0。真实source-only两审查分别判历史cash-v1来源/val形状不适用、当前commercialization-v2混合新旧技术无唯一状态，均在模型前停，未改旧skill或强造正控。当前两长文354332/168859正文缺透明定位，仍open。0生产模型答/资料GET/外部LLMAPI/完整后继；测试脚本误拦内存fixture的86fail+2error及初hash错误单独留档。见actual-bounded-reading-preflight报告，MVP不闭合。
 
 - 2026-10-22：区分显式window重叠与同exchange自动附带比较期重叠，只合并后者并唯一计字符；原fresh动作/倒序旧a026两红后通过，显式重复/重叠及跨exchange重复仍拒。20聚焦/357关联全过、网络0；相同inputs/spec/skill的新history-v2三独立角色首答1of1/0纠错、44551逻辑预留，首读动作与原失败逐字同；2022/2021两完整USD事实进入canonical证据及解释，1814来源字符，各25files重开同/3receipts不增。原history0of1和1100叙事正控仍各绑原版不重入；外部LLMAPI0，actual源/Reflect/Mining消费及MVP保持open。

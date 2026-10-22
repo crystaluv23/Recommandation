@@ -39,6 +39,7 @@ class SignalSourceSession:
     """Apply at most two validated read/page actions to one frozen pool."""
 
     def __init__(self, item: LLMSignalBatchInput, as_of: datetime) -> None:
+        from stock_opportunity_agent.data.disclosure import readable_section_index
         from stock_opportunity_agent.research.evolution_core import _company_facts_context
         from stock_opportunity_agent.research.scheme_evolution import _normalized_projection_text
 
@@ -62,6 +63,7 @@ class SignalSourceSession:
         self.sources = {}
         self.views = {}
         self.groups = {}
+        self.sections = {}
         for document in pool:
             handle = "source_" + canonical_json_hash(document.to_dict())[:24]
             self.sources[handle] = document
@@ -79,6 +81,7 @@ class SignalSourceSession:
                 self.views[handle] = _normalized_projection_text(document.content,
                     strip_market_metadata=document.source_type.casefold() in
                     {"market_data", "historical_price", "price_daily", "prices"})
+                self.sections[handle] = readable_section_index(self.views[handle][0])
         self.exchanges = 0
         self.characters = 0
         self.rows: list[dict[str, Any]] = []
@@ -87,7 +90,9 @@ class SignalSourceSession:
         self.intervals: dict[str, list[tuple[int, int]]] = {}
         self.history: list[dict[str, Any]] = []
         self.catalogued_handles: set[str] = set()
+        self.catalogued_sections: set[tuple[str, str]] = set()
         self.preview_characters = 0
+        self.navigation_characters = 0
         self.closed = False
 
     def catalog(self, cursor: int = 0) -> dict[str, Any]:
@@ -110,15 +115,10 @@ class SignalSourceSession:
                 groups = self.groups[handle]["concepts"]
                 card.update(self._group_page(handle, 0))
                 card["read_start"] = min((r["start"] for c in groups for r in c["records"]), default=0)
+            else:
+                card.update(self._group_page(handle, 0))
             cards.append(card)
-        new_previews = {card["source_ref"]: len(card["preview"]) for card in cards
-                        if card["source_ref"] not in self.catalogued_handles}
-        added = sum(new_previews.values())
-        if self.characters + added > MAX_CHARACTERS:
-            raise ValidationError("source character ceiling exceeded; catalog previews cannot fit")
-        self.catalogued_handles.update(new_previews)
-        self.characters += added
-        self.preview_characters += added
+        self._charge_catalog(cards)
         end = cursor + len(cards)
         fields = ("taxonomy", "concept", "unit", "period_end", "offset", "length")
         terms: list[str] = []
@@ -153,9 +153,34 @@ class SignalSourceSession:
                     "remaining_source_characters": MAX_CHARACTERS - self.characters},
                 "metadata_is_not_evidence": True}
 
+    def _charge_catalog(self, cards: list[dict[str, Any]]) -> None:
+        previews = {card["source_ref"]: len(card["preview"]) for card in cards
+                    if "preview" in card and card["source_ref"] not in self.catalogued_handles}
+        headings = {(card["source_ref"], group["section_id"]): len(group["heading"])
+                    for card in cards for group in card.get("section_groups", ())
+                    if (card["source_ref"], group["section_id"]) not in self.catalogued_sections}
+        added = sum(previews.values()) + sum(headings.values())
+        if self.characters + added > MAX_CHARACTERS:
+            raise ValidationError("source character ceiling exceeded; catalog previews/headings cannot fit")
+        self.catalogued_handles.update(previews)
+        self.catalogued_sections.update(headings)
+        self.preview_characters += sum(previews.values())
+        self.navigation_characters += sum(headings.values())
+        self.characters += added
+
     def _group_page(self, handle: str, cursor: int) -> dict[str, Any]:
         from stock_opportunity_agent.research.evolution_core import _optional_iso_date
 
+        if handle not in self.groups:
+            sections = self.sections[handle]
+            if type(cursor) is not int or cursor < 0 or (cursor >= len(sections) and cursor != 0):
+                raise ValidationError("invalid section group cursor")
+            end = min(len(sections), cursor + PAGE_SIZE)
+            return {"section_group_count": len(sections), "group_cursor": cursor,
+                "section_groups": deepcopy(sections[cursor:end]),
+                "omitted_section_group_count": len(sections) - (end - cursor),
+                "next_group_cursor": end if end < len(sections) else None,
+                "section_index_is_partial": True}
         queues = []
         for concept in self.groups[handle]["concepts"]:
             periods = {}
@@ -192,9 +217,10 @@ class SignalSourceSession:
             result = self.catalog(action["catalog_cursor"])
         elif set(action) == {"catalog_source_ref", "group_cursor"}:
             handle = action["catalog_source_ref"]
-            if not isinstance(handle, str) or handle not in self.groups:
-                raise ValidationError("unknown structured source handle")
+            if not isinstance(handle, str) or handle not in self.sources:
+                raise ValidationError("unknown source handle")
             result = {"source_ref": handle, **self._group_page(handle, action["group_cursor"])}
+            self._charge_catalog([result])
         elif set(action) == {"reads"}:
             reads = action["reads"]
             if not isinstance(reads, list) or not 1 <= len(reads) <= 5:
@@ -349,5 +375,6 @@ class SignalSourceSession:
         return {"catalog_signature": self.signature, "catalog_size": len(self.sources),
                 "exchanges": self.exchanges, "characters": self.characters,
                 "preview_characters": self.preview_characters,
+                "navigation_characters": self.navigation_characters,
                 "history": deepcopy(self.history), "closed": self.closed,
                 "read_documents": [d.document_id for d in self.documents]}

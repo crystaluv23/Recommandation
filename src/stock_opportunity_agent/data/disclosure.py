@@ -133,22 +133,37 @@ def _news_title(document: RawInfoDocument) -> str | None:
     return None
 
 
+def readable_section_index(readable: str) -> list[dict[str, Any]]:
+    """Index heading-pattern matches in the supplied readable coordinates.
+
+    Contents entries and cross-references may match; this navigation index
+    cannot establish semantic sections, complete coverage or evidence absence.
+    """
+
+    matches = list(_SECTION_HEADING_PATTERN.finditer(readable))
+    return [{"section_id": f"sec{index:02d}",
+             "heading": " ".join(_decode_entities(match.group(1)).split())[:120],
+             "offset": match.start(1), "heading_length": match.end(1) - match.start(1),
+             "length": (matches[index + 1].start(1) if index + 1 < len(matches)
+                        else len(readable)) - match.start(1)}
+            for index, match in enumerate(matches)]
+
+
 def _filing_sections(
     readable: str, origins: list[tuple[int, int]]
 ) -> list[dict[str, Any]]:
-    """Index SEC Part/Item headings with exact raw-offset boundaries."""
+    """Map shared heading matches to the raw document-card coordinates."""
 
     sections: list[dict[str, Any]] = []
-    for match in _SECTION_HEADING_PATTERN.finditer(readable):
-        heading = " ".join(_decode_entities(match.group(1)).split())
-        start_origin = origins[match.start(1)][0]
-        end_origin = origins[match.end(1) - 1][1]
+    for group in readable_section_index(readable):
+        start_origin = origins[group["offset"]][0]
+        end_origin = origins[group["offset"] + group["heading_length"] - 1][1]
         if sections and sections[-1]["raw_start"] == start_origin:
             continue
         sections.append(
             {
                 "section_id": f"sec{len(sections):02d}",
-                "heading": heading[:120],
+                "heading": group["heading"],
                 "raw_start": start_origin,
                 "raw_end": end_origin,
             }

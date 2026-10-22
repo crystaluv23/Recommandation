@@ -73,6 +73,21 @@ class ReadingCaller:
         return {"results": rows}, AgentUsage(llm_calls=1, tokens=30)
 
 
+class HeadingCaller(ReadingCaller):
+    """Script only catalog-based navigation; this is not a fresh-model claim."""
+
+    def complete_json(self, **kwargs):
+        if 'source_catalog' not in kwargs['payload']:
+            return super().complete_json(**kwargs)
+        self.calls.append(deepcopy(kwargs))
+        if kwargs['stage'].endswith('next'):
+            return {'finalize':True}, AgentUsage(llm_calls=1,tokens=30)
+        card, group=next((c,g) for c in kwargs['payload']['source_catalog']['cards']
+            for g in c.get('section_groups',()) if 'Guidance discussion' in g['heading'])
+        return {'reads':[{'source_ref':card['source_ref'],'offset':max(0,group['offset']-100),
+                          'length':1500}]}, AgentUsage(llm_calls=1,tokens=30)
+
+
 def executor(docs, caller):
     item = item_for(docs)
     snapshot = FrozenSignalRegistry(version=1, registry_hash=canonical_json_hash([item.spec.to_dict()]),
@@ -81,6 +96,64 @@ def executor(docs, caller):
 
 
 class SignalSourceReadingTests(TestCase):
+    def test_narrative_sections_share_normalized_coordinates_with_actual_reads(self):
+        content = '<ix:header>' + 'hidden metadata ' * 5000 + '</ix:header><p>Cover.</p>'
+        content += '<p>' + 'Background context. ' * 4000 + '</p><h2>ITEM 7. Guidance discussion.</h2><p>' + CLAUSE + '</p>'
+        d = RawInfoDocument.create(document_id='long-filing', company_id='issuer',source_type='filing',
+            published_at=AS_OF, available_at=AS_OF, content=content)
+        s = SignalSourceSession(item_for((d,)), AS_OF)
+        catalog = s.catalog()
+        card = catalog['cards'][0]
+        section = next(g for g in card['section_groups'] if 'ITEM 7.' in g['heading'])
+        self.assertGreater(section['offset'], 32000)
+        self.assertNotEqual(section['offset'], content.index('ITEM 7.'))
+        text = s.views[card['source_ref']][0]
+        self.assertTrue(text[section['offset']:].startswith('ITEM 7.'))
+        self.assertEqual(s.documents, ())
+        self.assertEqual(s.rows, [])
+        self.assertEqual(s.characters, len(card['preview']) + sum(len(g['heading']) for g in card['section_groups']))
+        out = s.apply({'reads':[{'source_ref':card['source_ref'],'offset':section['offset']-100,'length':1000}]})
+        self.assertIn(CLAUSE, ' '.join(r['exact_text'] for r in out['source_projection']))
+        self.assertEqual(s.documents, (d,))
+        self.assertTrue(card['section_index_is_partial'])
+
+    def test_narrative_section_pages_use_existing_exchange_budget_and_do_not_recharge(self):
+        text = ' '.join(f'ITEM {i}. Topic {i}. ' + 'Context disclosure. ' * 12 for i in range(31))
+        d = RawInfoDocument.create(document_id='many-sections',company_id='issuer',source_type='filing',
+            published_at=AS_OF, available_at=AS_OF,content=text)
+        s = SignalSourceSession(item_for((d,)), AS_OF)
+        card = s.catalog()['cards'][0]
+        self.assertEqual(card['section_group_count'],31)
+        self.assertEqual(len(card['section_groups']),20)
+        self.assertEqual(card['omitted_section_group_count'],11)
+        before=s.characters
+        self.assertEqual(s.catalog()['cards'][0],card)
+        self.assertEqual(s.characters,before)
+        page=s.apply({'catalog_source_ref':card['source_ref'],'group_cursor':20})
+        self.assertEqual(len(page['section_groups']),11)
+        self.assertIsNone(page['next_group_cursor'])
+        self.assertEqual(s.characters,before+sum(len(g['heading']) for g in page['section_groups']))
+        self.assertEqual(s.trace()['navigation_characters'],s.characters-len(card['preview']))
+        target=page['section_groups'][-1]
+        s.apply({'reads':[{'source_ref':card['source_ref'],'offset':target['offset'],'length':target['length']}]})
+        self.assertEqual(s.exchanges,2)
+        with self.assertRaises(ValidationError):
+            s.apply({'catalog_source_ref':card['source_ref'],'group_cursor':0})
+
+    def test_narrative_heading_page_overflow_rejects_all_metadata_atomically(self):
+        text='B. '*11000 + ' '.join(f'ITEM {i}. Topic {i}. ' + 'Context disclosure. '*12 for i in range(25))
+        d=RawInfoDocument.create(document_id='heading-budget',company_id='issuer',source_type='filing',
+            published_at=AS_OF,available_at=AS_OF,content=text)
+        s=SignalSourceSession(item_for((d,)),AS_OF)
+        card=s.catalog()['cards'][0]
+        length=(32000-s.characters-1)//3*3
+        s.apply({'reads':[{'source_ref':card['source_ref'],'offset':0,'length':length}]})
+        self.assertLess(32000-s.characters,10)
+        before=(s.trace(),set(s.catalogued_sections))
+        with self.assertRaisesRegex(ValidationError,'character ceiling'):
+            s.apply({'catalog_source_ref':card['source_ref'],'group_cursor':20})
+        self.assertEqual((s.trace(),set(s.catalogued_sections)),before)
+
     def test_registry_loaded_immutable_spec_and_nested_source_metadata_are_isolated(self):
         from stock_opportunity_agent.signal_library import SignalSpec
         d = replace(document(CLAUSE), metadata={'nested': {'values': [1, 1.0, True]}})
@@ -445,13 +518,19 @@ class SignalSourceReadingTests(TestCase):
         self.assertEqual(outcome.results["guidance:v1"].execution_status, SignalExecutionStatus.BUDGET_BLOCKED)
 
     def test_native_interruption_restore_uses_exact_inbox_cache_and_receipts(self):
+        docs = sources()
+        self._assert_native_restore(docs, ReadingCaller(docs[-1].content_hash))
+
+    def test_native_long_narrative_navigation_restores_exact_closed_projection(self):
+        d = document('<p>'+'Background. '*6000+'</p><h2>ITEM 7. Guidance discussion.</h2><p>'+CLAUSE+'</p>')
+        self._assert_native_restore((d,), HeadingCaller(d.content_hash))
+
+    def _assert_native_restore(self, docs, scripted):
         from diagnose_executed_answer_scope import StageContract
         from stock_opportunity_agent.llm import get_model
         from stock_opportunity_agent.research.evolution_transport import StructuredRoleClient, ExternalAttemptLedger
         from stock_opportunity_agent.research.local_role_exchange import LocalRoleExchange, LocalRoleRequestPending
 
-        docs = sources()
-        scripted = ReadingCaller(docs[-1].content_hash)
         with TemporaryDirectory() as directory:
             root = Path(directory)
             exchange = LocalRoleExchange(root / "exchange", max_calls=4)

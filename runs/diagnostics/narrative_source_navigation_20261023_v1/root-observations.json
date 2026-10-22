@@ -1,0 +1,61 @@
+{
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 3,
+    "tokens": 117566
+  },
+  "first_final_value": {
+    "confidence": 0.99,
+    "value": "positive"
+  },
+  "execution": {
+    "status": "success"
+  },
+  "source_characters": 31138,
+  "previews": 280,
+  "headings": 3452,
+  "exchanges": 2,
+  "read_documents": [
+    "sec:cik_0001309402:000130940225000089"
+  ],
+  "closed": true,
+  "actions": [
+    {
+      "reads": [
+        {
+          "length": 16000,
+          "offset": 28000,
+          "source_ref": "source_dfac075adb7886510c817a60"
+        },
+        {
+          "length": 6000,
+          "offset": 129000,
+          "source_ref": "source_dfac075adb7886510c817a60"
+        }
+      ]
+    },
+    {
+      "reads": [
+        {
+          "length": 6772,
+          "offset": 134905,
+          "source_ref": "source_dfac075adb7886510c817a60"
+        }
+      ]
+    }
+  ],
+  "source_windows": [
+    {
+      "end": 42801,
+      "start": 28015
+    },
+    {
+      "end": 134905,
+      "start": 129056
+    },
+    {
+      "end": 141676,
+      "start": 134905
+    }
+  ]
+}

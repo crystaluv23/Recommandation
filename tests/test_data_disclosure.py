@@ -55,6 +55,22 @@ TEN_Q_BODY = (
 
 
 class DisclosureInterfaceTests(unittest.TestCase):
+    def test_readable_section_index_uses_supplied_coordinates_and_preserves_raw_adapter(self):
+        from stock_opportunity_agent.data.disclosure import readable_section_index, _readable_text, _filing_sections
+        d = filing_document('indexed', '<p>Cover.</p><h2>ITEM&nbsp;1A. Risk Factors</h2>'
+            '<p>' + 'Disclosure context. ' * 12 + '</p><h2>ITEM 7. Discussion</h2><p>Current guidance.</p>', form='10-K')
+        text, origins = _readable_text(d)
+        groups = readable_section_index(text)
+        self.assertEqual(len(groups), 2)
+        self.assertEqual([g['offset'] for g in groups], sorted(g['offset'] for g in groups))
+        self.assertEqual(groups[0]['length'], groups[1]['offset'] - groups[0]['offset'])
+        self.assertEqual(groups[-1]['offset'] + groups[-1]['length'], len(text))
+        self.assertTrue(groups[0]['heading'].startswith('ITEM 1A. Risk Factors'))
+        for group, raw in zip(groups, _filing_sections(text, origins), strict=True):
+            self.assertEqual(raw['raw_start'], origins[group['offset']][0])
+            self.assertEqual(raw['raw_end'], origins[group['offset']+group['heading_length']-1][1])
+            self.assertEqual(raw['heading'], group['heading'])
+
     def test_v145_catalog_cards_carry_deterministic_metadata_and_envelope(self):
         news = news_document(
             "news-sale",

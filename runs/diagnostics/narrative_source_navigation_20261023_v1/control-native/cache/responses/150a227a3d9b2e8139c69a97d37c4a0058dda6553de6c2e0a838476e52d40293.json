@@ -1,0 +1,48 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "results": [
+      {
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "exact_text": "On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+                "projection_id": "projection_1e324db5874e543cb7377262"
+              }
+            ]
+          },
+          "interpretation": {
+            "summary": "The issuer entered into a secured $30 million revolving credit facility on May 7, 2025 with contractual maturity on July 30, 2025, strictly after the May 30, 2025 as-of date and within the following 90 calendar days. This establishes the control condition. The facility bears 10% interest on borrowings and a 0.5% fee on the unused balance, with interest and fees due monthly, and included issuance of 1,504,140 warrants at $0.01 per share with a ten year exercise period. The disclosed facility amount does not establish the amount drawn; this result implies no net financing benefit or investment direction."
+          },
+          "signal_id": "principal_maturity_90d_control",
+          "state": {
+            "confidence": 0.99,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        "signal_ref": "principal_maturity_90d_control:v1"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"results\":[{\"result\":{\"evidence\":{\"counter\":[],\"supporting\":[{\"projection_id\":\"projection_1e324db5874e543cb7377262\",\"exact_text\":\"On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.\"}]},\"interpretation\":{\"summary\":\"The issuer entered into a secured $30 million revolving credit facility on May 7, 2025 with contractual maturity on July 30, 2025, strictly after the May 30, 2025 as-of date and within the following 90 calendar days. This establishes the control condition. The facility bears 10% interest on borrowings and a 0.5% fee on the unused balance, with interest and fees due monthly, and included issuance of 1,504,140 warrants at $0.01 per share with a ten year exercise period. The disclosed facility amount does not establish the amount drawn; this result implies no net financing benefit or investment direction.\"},\"signal_id\":\"principal_maturity_90d_control\",\"state\":{\"confidence\":0.99,\"value\":\"positive\"},\"status\":{\"coverage\":\"sufficient\"},\"version\":1},\"signal_ref\":\"principal_maturity_90d_control:v1\"}]}\n",
+  "request_hash": "150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293",
+  "response_id": "local-150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293",
+  "usage": {
+    "accounting_tokens": 43249,
+    "agent_id": "/root/maturity_extract_final",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "2b00772e17463cc3860b04f23e6153dac97a659e847b441484b34f2536d3b9ec",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "c5642a3cb4e5830109df05c102a5861be6c7cbe6d39d460d6d36f4836e9987f6",
+    "request_hash": "150a227a3d9b2e8139c69a97d37c4a0058dda6553de6c2e0a838476e52d40293",
+    "token_usage": null
+  }
+}

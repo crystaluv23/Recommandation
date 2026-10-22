@@ -1,0 +1,40 @@
+EEEE
+======================================================================
+ERROR: test_readable_section_index_uses_supplied_coordinates_and_preserves_raw_adapter (tests.test_data_disclosure.DisclosureInterfaceTests.test_readable_section_index_uses_supplied_coordinates_and_preserves_raw_adapter)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_disclosure.py", line 59, in test_readable_section_index_uses_supplied_coordinates_and_preserves_raw_adapter
+    from stock_opportunity_agent.data.disclosure import readable_section_index, _readable_text, _filing_sections
+ImportError: cannot import name 'readable_section_index' from 'stock_opportunity_agent.data.disclosure' (/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py)
+
+======================================================================
+ERROR: test_narrative_sections_share_normalized_coordinates_with_actual_reads (tests.test_signal_source_reading.SignalSourceReadingTests.test_narrative_sections_share_normalized_coordinates_with_actual_reads)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 92, in test_narrative_sections_share_normalized_coordinates_with_actual_reads
+    section = next(g for g in card['section_groups'] if 'ITEM 7.' in g['heading'])
+                              ~~~~^^^^^^^^^^^^^^^^^^
+KeyError: 'section_groups'
+
+======================================================================
+ERROR: test_narrative_section_pages_use_existing_exchange_budget_and_do_not_recharge (tests.test_signal_source_reading.SignalSourceReadingTests.test_narrative_section_pages_use_existing_exchange_budget_and_do_not_recharge)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 111, in test_narrative_section_pages_use_existing_exchange_budget_and_do_not_recharge
+    self.assertEqual(card['section_group_count'],31)
+                     ~~~~^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'section_group_count'
+
+======================================================================
+ERROR: test_narrative_heading_page_overflow_rejects_all_metadata_atomically (tests.test_signal_source_reading.SignalSourceReadingTests.test_narrative_heading_page_overflow_rejects_all_metadata_atomically)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 135, in test_narrative_heading_page_overflow_rejects_all_metadata_atomically
+    before=(s.trace(),set(s.catalogued_sections))
+                          ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SignalSourceSession' object has no attribute 'catalogued_sections'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.030s
+
+FAILED (errors=4)

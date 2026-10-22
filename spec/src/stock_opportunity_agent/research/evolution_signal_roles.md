@@ -21,6 +21,12 @@ coordinates, and allow direct navigation using complete page availability
 summaries. Availability metadata cannot establish measurement periods; the role
 must read original rows before extraction. Transport sharing preserves all
 originally disclosed group coordinates and does not add source or token budget.
+Narrative `section_groups` provide source-order heading matches in the declared
+normalized coordinate system. The same source/group paging action can request
+omitted headings; it consumes the original exchange allowance. Roles must treat
+the index as partial (including possible contents/cross-reference matches),
+read enough complete sentences on both sides, and budget displayed heading text
+with previews and body reads. Heading metadata alone cannot support a result.
 
 For a bound source owner, the shared batch payload includes a reversible
 `target_subject` co-reference inventory from that case's known issuer aliases.

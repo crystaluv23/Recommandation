@@ -1,0 +1,234 @@
+{
+  "schema_version": "pre-dispatch-evidence-matching-clarification-v1",
+  "timing": "Written before production dispatch or answers; no production answer or implementation was read.",
+  "scope": "Clarify evidence granularity under unchanged private principal_maturity_90d_control v1. No state, source fact, definition or oracle reclassification.",
+  "definition": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-definition.json",
+    "sha256": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb"
+  },
+  "immutable_oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/oracle.json",
+    "sha256": "182780db4a96a9bfaed3a323027b4d456d56f05b39310248f1abe5af54356429"
+  },
+  "immutable_source_manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-source-manifest.json",
+    "sha256": "3e6aa2d0035a78b0f555474063e1e73c7a037f8d3e575669087029fb9c2fe136"
+  },
+  "ruling": "The three frozen full-paragraph alternatives are enclosing source anchors. The unchanged definition requires complete original-source sentences, not reproduction of an entire raw HTML paragraph in each final evidence citation. Complete sentence subspans or combinations of complete source sentences are allowed when exact source/subject/date bindings and all material qualifications remain explicit and auditable. There is no justified stronger whole-paragraph citation requirement.",
+  "primary_evidence_rule": {
+    "allowed_alternatives": [
+      "q_ancora_note14_complete_primary_sentence",
+      "q_ancora_recent_complete_primary_sentence",
+      "q_ancora_mda_complete_primary_sentence"
+    ],
+    "requirement": "At least one complete original primary sentence from the frozen Ancora alternative anchors must support the executed May 7 issuer/company secured revolving credit facility, Ancora lender and July 30, 2025 contractual maturity. Combinations of complete source sentences are also permitted when their facility identity and dates agree and no clause is truncated or invented. A phrase or isolated date alone is insufficient.",
+    "mda_qualification": "If the MD&A alternative is used as literal primary evidence, retain its whole first sentence, including the issuer flexibility/liquidity purpose language. The shorter Note 14 or Recent Developments first sentences are independent allowed alternatives."
+  },
+  "identity_matching": {
+    "required_source_record": {
+      "company_id": "cik_0001309402",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "source_type": "filing",
+      "record_sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc"
+    },
+    "facility_join_keys": {
+      "agreement_execution_date": "2025-05-07",
+      "lender": "Ancora Alternatives LLC",
+      "facility_size_usd": 30000000,
+      "facility_type": "secured revolving credit / secured line of credit",
+      "principal_maturity": "2025-07-30"
+    },
+    "borrower_binding": "Retain exact issuer borrowing identity Green Plains Inc.; Green Plains Central City LLC is guarantor, not borrower. The frozen company-reference sentence and original exhibit-10.11 description are the identity/context anchors. They may be retained as canonical mapped context instead of reproduced verbatim in every final citation. Where the primary sentence says the company or we, its identity resolution must be backed by those original anchors and the exact source record, not an unrelated issuer match.",
+    "not_a_mandatory_whole_index": "q_ancora_borrower_index encloses a broader exhibit-table div. Only its complete Ancora exhibit-10.11 description is relevant borrower evidence. Other exhibit descriptions in that enclosing div are not required citation text."
+  },
+  "normalization_and_raw_mapping": {
+    "allowed": [
+      "Decode original HTML character entities and remove markup while retaining textual order.",
+      "Normalize rendering-only whitespace, including nonbreaking spaces, line wraps and whitespace introduced across inline tags.",
+      "Represent multiple independently complete original sentences as separately mapped evidence items; order may differ in explanation if every subject/date/condition remains unambiguous."
+    ],
+    "required": [
+      "Preserve an auditable normalized-character-to-original-raw mapping for each excerpt and its exact document/content identity.",
+      "Verify each cited literal sentence against the original source text under the declared render/whitespace normalization; hashes alone do not validate semantic meaning.",
+      "Keep original numbers, dates, negation, modality, conditions, borrowers and lender associations.",
+      "If combining sources or sections, keep their own document/span identifiers; do not synthesize a literal quotation that never occurred."
+    ],
+    "not_allowed": [
+      "Treat arbitrary paraphrases as literal evidence quotes.",
+      "Remove material clauses from a cited complete sentence, join fragments across unrelated facilities, or convert if/may/uncommitted wording into completed unconditional obligations.",
+      "Match an isolated July date without facility/borrower binding or confuse the BlackRock conditional trigger with Ancora principal maturity."
+    ]
+  },
+  "counter_context_obligations": {
+    "expression_rule": "Material context must be explicitly retained in the answer or its auditable evidence/context fields and backed by complete original-source supporting sentences. It may be faithfully paraphrased in explanation; no requirement says every context sentence must be quoted verbatim in the final display. Primary evidence quotations remain literal and complete.",
+    "ancora_required": [
+      "Executed secured facility on May 7, 2025; $30m is facility size, not proof of a drawn/outstanding $30m balance.",
+      "10% borrowing interest; 0.5% unused-balance fee; interest/fees due on the 5th of each month.",
+      "Already issued 1,504,140 warrants at $0.01 strike with ten-year exercise period; issuance is not proof of exercise.",
+      "July 30 is contractual facility/principal maturity, 61 days after May 30, inside (May 30, August 28]; monthly interest and ten-year warrant dates are different date types."
+    ],
+    "interpretation_always_required": [
+      "Positive means this private existential maturity condition is present only; no benefit, surge, investment-direction or netting judgment.",
+      "A disclosed contractual future maturity before cutoff is admissible; later realized outcomes are not assumed.",
+      "Latest disclosed terms in the supplied windows are used; unknown additional inventory or unsupplied later amendments cannot prove absence."
+    ],
+    "inherited_frozen_obligations": [
+      "Positive means only that this private condition is present. Do not infer favorable financing, investment direction or surge relevance.",
+      "Retain full Ancora security, 10% borrowing interest, 0.5% unused fee, monthly payment dates and already-issued 1,504,140 penny warrants. The ten-year warrant exercise period is not a facility maturity or evidence of exercise.",
+      "Do not present the $30m facility size as an established drawn/outstanding amount.",
+      "The issuer-liquidity increase is jointly attributed to non-core asset sales and the facility, with subsidiary/lending restrictions. It does not independently measure net economic benefit.",
+      "BlackRock July 31 is a conditional nonpayment trigger, not scheduled principal maturity or proof it occurred. May 15, 2026 is latest disclosed amended principal maturity.",
+      "An uncommitted hedge line, optional redemption, contingent future collateral/fees and proposals cannot create additional qualifying maturities.",
+      "A positive existential finding does not require or establish a complete inventory; the two-source local scope cannot establish absence or later actual outcomes."
+    ],
+    "blackrock_required": [
+      "Use latest disclosed effective amended principal maturity May 15, 2026, not superseded February 9, 2026.",
+      "July 31, 2025 additional collateral/fees/$22-to-$7 warrant repricing and expiry extension are conditional on nonrepayment, not scheduled principal maturity or proof of their occurrence.",
+      "Retain 2% amendment fee, 11.75% note interest and any stated cash/PIK conditions when describing economic note terms."
+    ],
+    "liquidity_required": [
+      "If liquidity improvement is stated, preserve its joint attribution to asset sales and facility, subsidiary/lending restrictions and issuer-belief/forward-funding qualifications. Do not attribute the entire increase solely to financing."
+    ],
+    "other_date_type_distinctions_required": [
+      "Uncommitted hedge line, optional redemption, future funding proposals and contingent collateral/fee dates are not qualifying scheduled principal maturities."
+    ],
+    "scope_of_clarification": "All frozen mandatory interpretation context remains in force. The clarification changes citation granularity only. Material identity, financing costs, warrants and date-type qualifications must remain explicit and auditable; enclosing unrelated source paragraphs need not be quoted."
+  },
+  "no_fixed_citation_count": "The obligation is supported content, exact identity and preserved meaning. One complete primary sentence plus retained mapped identity and material context may suffice; several complete citations may also suffice. The three frozen alternative sets do not impose verbatim repetition of all enclosing paragraphs or irrelevant exhibit text.",
+  "tight_original_subspans": [
+    {
+      "span_id": "q_ancora_note14_complete_primary_sentence",
+      "enclosing_frozen_anchor": "q_ancora_note14",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "offset_basis": "zero-based half-open offsets in original decoded record.content",
+      "raw_start": 1073683,
+      "raw_end": 1074027,
+      "raw_utf8_byte_start": 1073683,
+      "raw_utf8_byte_end": 1074027,
+      "raw_span_sha256": "7259ed63b3e4f8a9331756a114f61d582217608bbc0f46f8b0fb3c36500e6c82",
+      "literal_raw_html_subspan": "On May 7, 2025, the company entered into a secured $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-261\" decimals=\"INF\" name=\"us-gaap:LineOfCreditFacilityMaximumBorrowingCapacity\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-968\">30</ix:nonFraction>&#160;million revolving credit facility with Ancora Alternatives LLC that matures on July 30, 2025.",
+      "literal_visible_text": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC that matures on July 30, 2025.",
+      "meaning": "Complete original execution/facility/principal-maturity sentence, with unchanged lender/date qualifiers."
+    },
+    {
+      "span_id": "q_ancora_recent_complete_primary_sentence",
+      "enclosing_frozen_anchor": "q_ancora_recent",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "offset_basis": "zero-based half-open offsets in original decoded record.content",
+      "raw_start": 1095831,
+      "raw_end": 1095980,
+      "raw_utf8_byte_start": 1095831,
+      "raw_utf8_byte_end": 1095980,
+      "raw_span_sha256": "72fac2e8455d05e432bbd91ef8a6cbafd7b5fec189bcfc1541b65cc353e1a542",
+      "literal_raw_html_subspan": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025.",
+      "literal_visible_text": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025.",
+      "meaning": "Complete original execution/facility/principal-maturity sentence, with unchanged lender/date qualifiers."
+    },
+    {
+      "span_id": "q_ancora_mda_complete_primary_sentence",
+      "enclosing_frozen_anchor": "q_ancora_mda",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "offset_basis": "zero-based half-open offsets in original decoded record.content",
+      "raw_start": 1252232,
+      "raw_end": 1252484,
+      "raw_utf8_byte_start": 1252232,
+      "raw_utf8_byte_end": 1252484,
+      "raw_span_sha256": "0951b0f8330771b42d7d97ca21e3f8518d8cbed2c6bd4037e449069b84adb780",
+      "literal_raw_html_subspan": "On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan.",
+      "literal_visible_text": "On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan.",
+      "meaning": "Complete original execution/facility/principal-maturity sentence, with unchanged lender/date qualifiers."
+    },
+    {
+      "span_id": "q_ancora_explicit_borrower_description",
+      "enclosing_frozen_anchor": "q_ancora_borrower_index",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "offset_basis": "zero-based half-open offsets in original decoded record.content",
+      "raw_start": 1341746,
+      "raw_end": 1341915,
+      "raw_utf8_byte_start": 1341746,
+      "raw_utf8_byte_end": 1341915,
+      "raw_span_sha256": "69d9cb59392aa7415f0c21dac8b0bea1dc1ee822594081581245267a62d20322",
+      "literal_raw_html_subspan": "Secured Line of Credit Agreement, dated May 7, 2025 by Green Plains Inc., as Borrower, Green Plains Central City LLC, as Guarantor and Ancora Alternatives LLC, as Lender",
+      "literal_visible_text": "Secured Line of Credit Agreement, dated May 7, 2025 by Green Plains Inc., as Borrower, Green Plains Central City LLC, as Guarantor and Ancora Alternatives LLC, as Lender",
+      "meaning": "Complete original exhibit-10.11 description. This is an index description rather than a grammatical sentence; it independently resolves the exact borrower/guarantor/lender."
+    }
+  ],
+  "preserved_expectation": {
+    "expected_state": "positive",
+    "allowed_expected_states": [
+      "positive"
+    ],
+    "unchanged": true
+  },
+  "source_only_limits": "No production answer, implementation, test, model output or external API was accessed. This clarification is about source evidence matching before dispatch and supplies no S4/S5, published Signal, Mining, research capability or gain proof.",
+  "unchanged_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/oracle.json",
+      "sha256_before": "182780db4a96a9bfaed3a323027b4d456d56f05b39310248f1abe5af54356429",
+      "sha256_after": "182780db4a96a9bfaed3a323027b4d456d56f05b39310248f1abe5af54356429",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-definition.json",
+      "sha256_before": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb",
+      "sha256_after": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-source-manifest.json",
+      "sha256_before": "3e6aa2d0035a78b0f555474063e1e73c7a037f8d3e575669087029fb9c2fe136",
+      "sha256_after": "3e6aa2d0035a78b0f555474063e1e73c7a037f8d3e575669087029fb9c2fe136",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/review.md",
+      "sha256_before": "67accd560297ce0e25eaf33994f4180fa3cf797571c04571411a0d24911bc429",
+      "sha256_after": "67accd560297ce0e25eaf33994f4180fa3cf797571c04571411a0d24911bc429",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-oracle/oracle.json",
+      "sha256_before": "3abddbeb5f4912b952547e607c10415af751e43b047e6f839d275070829398ae",
+      "sha256_after": "3abddbeb5f4912b952547e607c10415af751e43b047e6f839d275070829398ae",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-oracle/review.md",
+      "sha256_before": "46cfbcdb8a0d0dd335c325118e62f655a8706dac889a5fbf285eba01d37e2f78",
+      "sha256_after": "46cfbcdb8a0d0dd335c325118e62f655a8706dac889a5fbf285eba01d37e2f78",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/spec.json",
+      "sha256_before": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1",
+      "sha256_after": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/skill.md",
+      "sha256_before": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a",
+      "sha256_after": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000008.json",
+      "sha256_before": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+      "sha256_after": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000089.json",
+      "sha256_before": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+      "sha256_after": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json",
+      "sha256_before": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57",
+      "sha256_after": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57",
+      "unchanged": true
+    }
+  ]
+}

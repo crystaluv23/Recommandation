@@ -1,0 +1,15 @@
+# Private source-only 90-day principal-maturity control
+
+Independent expected state: **positive**, exclusively in this control's presence-only meaning. At least one binding issuer facility has a principal maturity in the defined interval. This says nothing about economic benefit or surge direction and does not repair the unchanged v5 insufficiency.
+
+Standard calendar arithmetic gives **(2025-05-30, 2025-08-28]**. The original May 8 10-Q discloses an executed May 7 **$30 million secured Ancora revolving credit facility maturing July 30, 2025**, 61 calendar days after the as-of date. Its original exhibit index explicitly identifies **Green Plains Inc. as Borrower**, Green Plains Central City LLC as Guarantor, and Ancora Alternatives LLC as Lender. The company-reference paragraph in Note 1 supplies the issuer/consolidated reference binding. The source was available before cutoff, and a disclosed future contractual maturity is the object measured; no actual later repayment/default outcome is assumed.
+
+Three allowed literal alternatives are frozen in oracle.json: the complete Note 14 paragraph, the complete Recent Developments paragraph, or the complete Corporate Activities paragraph, each paired with original company-reference and explicit borrower-index spans. All preserve the 10% borrowing interest, 0.5% unused fee, monthly fee/interest dates, and already-issued 1,504,140 $0.01 warrants with a ten-year exercise period. No $30 million drawn balance or warrant exercise is claimed. The latest disclosed terms in the allowed sources are used; no assertion is made about unsupplied later amendments.
+
+Counter-context is required. BlackRock's July 31 date is a conditional collateral/fee/warrant-repricing trigger if its Junior Notes remain unpaid; it is not principal maturity. Its completed May 7 amendment moves principal maturity from February 9 to May 15, 2026, beyond this control's interval. Monthly interest dates, optional convertible-note redemption, uncommitted hedge funding and proposed funding strategies also cannot establish a qualifying principal maturity. These distinctions are recorded as subject/date bindings.
+
+The issuer attributes increased corporate liquidity jointly to asset sales and the new facility, with subsidiary and lending restrictions; no favorable financing conclusion follows. Full relevant debt notes and financing sections across both supplied filings were reviewed. This positive existential finding does not require an exhaustive inventory and cannot support an absence claim.
+
+The definition, preserved source manifest and old v5 oracle/review were hashed. All supplied definition/source/qualification hashes and content/PIT/identity bindings were checked, and all protected files remained unchanged. The new artifacts contain 18 complete original paragraph/index spans with raw character and UTF-8 byte offsets and SHA-256 hashes. No linked exhibit, implementation, tests, model output or external source was opened.
+
+Scope: actual-source F5/F6 ordinary source-reading fixture only; not published/admitted Signal, Mining output, current-v5 repair, S4/S5 proof, new research capability or gain evidence.

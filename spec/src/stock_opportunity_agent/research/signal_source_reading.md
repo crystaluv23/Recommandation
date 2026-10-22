@@ -20,6 +20,20 @@ namespace/concept/unit/period groups in breadth-first period order. Default
 reader callers retain their latest/comparable behavior. Invalid/future rows and
 index omissions remain partial; indexing alone does not mean model visibility.
 
+Narrative cards reuse the data-owned Part/Item heading matcher on their exact
+normalized readable view. They expose at most 20 source-order `section_groups`,
+the matched count, omitted count and next group cursor. Offsets and lengths use
+the card's normalized coordinate system; raw data-card offsets are never copied.
+Heading matches can include contents tables and cross-references, so the index
+explicitly remains partial and cannot prove a semantic section or absence.
+The existing `catalog_source_ref`/`group_cursor` action pages either structured
+fact groups or narrative section groups, within the same two-exchange limit.
+No additional role, read exchange, acquisition, ranking or measurement authority
+is introduced. Displayed heading characters count toward the same 32k ceiling,
+once per source/section in the session; revisiting metadata does not recharge.
+Whole-page preview and heading disclosure is atomic. Catalog navigation text is
+never added to the citable closed projection or the set of read documents.
+
 Catalog pages retain the resolver's ranked order and every originally disclosed
 coordinate. Repeated taxonomy/concept/unit/period strings use one page-local
 dictionary: `fact_group_fields` declares the six columns, the first four values

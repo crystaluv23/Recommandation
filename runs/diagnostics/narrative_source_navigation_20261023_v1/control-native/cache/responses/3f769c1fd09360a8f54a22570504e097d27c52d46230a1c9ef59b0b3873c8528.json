@@ -1,0 +1,27 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "reads": [
+      {
+        "length": 6772,
+        "offset": 134905,
+        "source_ref": "source_dfac075adb7886510c817a60"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"reads\":[{\"source_ref\":\"source_dfac075adb7886510c817a60\",\"offset\":134905,\"length\":6772}]}\n",
+  "request_hash": "3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528",
+  "response_id": "local-3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528",
+  "usage": {
+    "accounting_tokens": 58921,
+    "agent_id": "/root/maturity_read_next",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "477ed44e5397bdb7c8b5270d48f14f2e425aa0d596949f49b48b205191a81ed6",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "4ef6095e8ea4bddb0a7465d89aac60058bded17ff449f49d7066fb7c1bf474d7",
+    "request_hash": "3f769c1fd09360a8f54a22570504e097d27c52d46230a1c9ef59b0b3873c8528",
+    "token_usage": null
+  }
+}

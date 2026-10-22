@@ -1,0 +1,642 @@
+{
+  "schema_version": "source-only-financing-preflight-v1",
+  "status": "preflight_insufficient",
+  "expected_state": null,
+  "allowed_expected_states": [],
+  "signal_id": "financing_listing_action",
+  "version": 5,
+  "company_id": "cik_0001309402",
+  "as_of": "2025-05-30T00:00:00+00:00",
+  "scope": "Independent source/semantic preflight. No production apply, model compliance, execution success, predictive outcome or independent research-gain evidence.",
+  "decision": "Do not issue a categorical oracle for this case under the exact supplied v5 definition. Binding May 7 financing actions have opposing liquidity and financing-cost/potential-dilution facts. The supplied definition provides no non-invented rule selecting a unique case-level state for this combination.",
+  "why_not_forced_neutral": "Neutral is a specified default for capital-structure facts without established within-horizon target relevance. Here the original expressly attributes added current flexibility/liquidity to a short bridge and discloses already-issued penny warrants plus a near-term conditional collateral/fee/warrant-repricing trigger. Treating those facts as irrelevant, immaterial or net-neutral would require an additional interpretation/aggregation policy that is not in the supplied definition.",
+  "why_not_forced_direction": "The disclosed liquidity increase does not prove financing is positive for the fixed surge target; nor do penny warrants, fees or conditional future repricing establish that negative effects dominate the liquidity benefit for that target. Do not infer exercise, July nonpayment, default, future funding success or price response.",
+  "why_not_unavailable": "Both qualified original bodies contain substantive completed/binding financing evidence. Preflight insufficiency is a review disposition, not the Signal value unavailable, and is not a claim that the issuer lacks financing events.",
+  "contract_limits": [
+    "The supplied spec/skill mentions materiality, within-horizon effects and a fixed surge target but does not define an operational target-link/materiality threshold or mixed-event precedence/netting rule. No new policy was invented.",
+    "No broader architecture/target definition was read because the independent read allowlist contains only this manifest, exact definitions, two originals and qualification manifest."
+  ],
+  "manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/financing-source-manifest.json",
+    "sha256": "3e6aa2d0035a78b0f555474063e1e73c7a037f8d3e575669087029fb9c2fe136"
+  },
+  "verified_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/spec.json",
+      "expected_sha256": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1",
+      "actual_sha256": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1",
+      "match": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/skill.md",
+      "expected_sha256": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a",
+      "actual_sha256": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a",
+      "match": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000008.json",
+      "expected_sha256": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+      "actual_sha256": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+      "match": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000089.json",
+      "expected_sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+      "actual_sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+      "match": true
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json",
+      "expected_sha256": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57",
+      "actual_sha256": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57",
+      "match": true
+    }
+  ],
+  "sources": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000008.json",
+      "record_sha256": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "company_id": "cik_0001309402",
+      "metadata": {
+        "accession_number": "0001309402-25-000008",
+        "cik": "0001309402",
+        "form": "10-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1309402/000130940225000008/gpre-20241231.htm"
+      },
+      "published_at": "2025-02-07T20:20:08+00:00",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+      "computed_content_sha256": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+      "content_length_characters": 2260647,
+      "qualification_verdict": "admitted",
+      "qualification_reason": "Existing original passes native SEC identity/time/body profile and independently reviewed complete report scope; partial fact reading remains explicit.",
+      "qualification_profile": "sec_archive_acceptance_v1",
+      "qualification_time_matches": true,
+      "qualification_content_matches": true,
+      "proof_declarations_only": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/9aa77fcabe90afd4c7410f7e.json",
+            "sha256": "b617bed4600bc51763549404c5508e2f61a12f56646e597b5fd74dd0ffc6817b"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1309402/000130940225000008/gpre-20241231.htm",
+          "expected_content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-02-07T20:20:08+00:00",
+          "accession_number": "0001309402-25-000008",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/d6fc6db3fdac593083faa6ca.json",
+            "sha256": "87bda8b2d0677a3ccc07892b1454c1bdc8cc737479ce004940adf074aa7e06cc"
+          },
+          "form": "10-K",
+          "issuer_cik": "0001309402",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "gpre-20241231.htm"
+        }
+      ]
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000089.json",
+      "record_sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "company_id": "cik_0001309402",
+      "metadata": {
+        "accession_number": "0001309402-25-000089",
+        "cik": "0001309402",
+        "form": "10-Q",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1309402/000130940225000089/gpre-20250331.htm"
+      },
+      "published_at": "2025-05-08T20:34:28+00:00",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+      "computed_content_sha256": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+      "content_length_characters": 1359708,
+      "qualification_verdict": "admitted",
+      "qualification_reason": "Existing original passes native SEC identity/time/body profile and independently reviewed complete report scope; partial fact reading remains explicit.",
+      "qualification_profile": "sec_archive_acceptance_v1",
+      "qualification_time_matches": true,
+      "qualification_content_matches": true,
+      "proof_declarations_only": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/cee558295adecce297e3e0a7.json",
+            "sha256": "544617685101ba6f88afe373aceec2e4b9867a87cc2c1756fd47b2048355927d"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1309402/000130940225000089/gpre-20250331.htm",
+          "expected_content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-05-08T20:34:28+00:00",
+          "accession_number": "0001309402-25-000089",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/data/sec_edgar/filing_documents/d6fc6db3fdac593083faa6ca.json",
+            "sha256": "87bda8b2d0677a3ccc07892b1454c1bdc8cc737479ce004940adf074aa7e06cc"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001309402",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "gpre-20250331.htm"
+        }
+      ]
+    }
+  ],
+  "factual_span_alternative_groups": [
+    {
+      "fact": "Ancora binding revolver, all cost/maturity/warrant terms",
+      "alternatives": [
+        [
+          "q_ancora_note14"
+        ],
+        [
+          "q_ancora_recent"
+        ],
+        [
+          "q_ancora_mda"
+        ]
+      ],
+      "mandatory_counter_context": [
+        "q_liquidity",
+        "q_working_capital",
+        "q_future_liquidity"
+      ]
+    },
+    {
+      "fact": "BlackRock amendment with conditional trigger",
+      "alternatives": [
+        [
+          "q_blackrock_note14",
+          "q_junior_note_conditions"
+        ],
+        [
+          "q_blackrock_mda",
+          "q_junior_note_conditions"
+        ]
+      ],
+      "mandatory_counter_context": [
+        "q_liquidity",
+        "q_future_liquidity",
+        "q_covenant_mda",
+        "k_original_junior_terms"
+      ]
+    },
+    {
+      "fact": "Authorization is not executed buyback",
+      "alternatives": [
+        [
+          "q_buyback",
+          "k_buyback"
+        ]
+      ],
+      "mandatory_counter_context": [
+        "q_tax_withholding"
+      ]
+    }
+  ],
+  "required_counter_context": [
+    "May 7, 2025 Ancora facility is executed; 1,504,140 $0.01 warrants are issued. Ten-year exercise period does not prove exercise or realized dilution at as_of.",
+    "Ancora maturity July 30 and BlackRock trigger July 31 fall about two months after May 30; they are near-term terms, not proof that any trigger has occurred. Under a 3-6 month reading they precede the 3-month endpoint, so event timing and subsequent consequences must be distinguished.",
+    "BlackRock amendment is executed; additional collateral, fees and repricing are conditional on Junior Notes not being repaid by July 31. Extension February 9 to May 15, 2026 is beyond 3-6 months from as_of.",
+    "Corporate liquidity $48.6m to $89.2m is attributed jointly to non-core asset sales and the new facility; do not attribute the full increase solely to financing or equate $204.5m subsidiary availability to unrestricted corporate cash.",
+    "March 31 covenant compliance is an observed date; 12-month compliance/sufficient-liquidity language is qualified issuer forecasting. No actual default follows from generic risks.",
+    "No Q1 2025 buyback; historical authorization may be suspended at any time; payroll-tax withheld shares are not discretionary program repurchases.",
+    "2022 note conversions/exchanges and 2022 refinancing are historical; 2024 term repayment is completed, but no within-horizon target effect is thereby established.",
+    "Future equity/debt/asset-sale strategies and continuing strategic review have no assured execution.",
+    "Carbon-capture financing/contracts include in-service payments, milestones, termination rights, offsetting liabilities and anticipated completion, not a demonstrated financing-related surge effect."
+  ],
+  "review_coverage": {
+    "method": "Standard-library JSON and HTMLParser navigation of both complete saved bodies; manual reading of full relevant original paragraphs and debt sections. No production extraction or Signal helpers. All financing/refinancing/repurchase/covenant occurrences were enumerated, with table and risk context read; no corpus-exhaustive claim beyond these two sources.",
+    "10k": [
+      "Liquidity and Capital Resources and complete Corporate/Ethanol/Agribusiness Debt discussion",
+      "Note 11 Debt in full, scheduled debt table, short-term debt table, convertibility/redemption conditions, BlackRock/MetLife/revolver/hedge-line/inventory facilities, covenant compliance and restricted assets",
+      "Risk-factor debt service, covenants, liquidity/credit-market constraints",
+      "Issuer purchase/withholding table, Note 14 Warrants, historical note exchanges and share repurchase program",
+      "Carbon-capture purchase/financing arrangements and commitments; strategic review exploration"
+    ],
+    "10q": [
+      "Complete Note 8 Debt and all financing/covenant/restricted-net-asset disclosures",
+      "Complete Note 14 Subsequent Event, Recent Developments financing paragraphs and full MD&A Liquidity and Debt discussion",
+      "Issuer withholding table and no repurchases statement; financing-related equity/EPS context",
+      "Project commitments, strategic review and restructuring-cost context"
+    ]
+  },
+  "limitations": [
+    "Qualification artifact file hash and matching record declarations were independently verified; referenced SEC receipt/acceptance files were not opened under this allowlist. Original source provenance is qualified-manifest-bound, not reauthenticated over the network in this review.",
+    "Only two qualified filings were supplied. Absence of another action in them is not a complete issuer-history or external-source absence proof.",
+    "No implementation, tests, prior reports/oracles/model outputs, labels, network, external APIs or production Signal helpers were read or used.",
+    "No categorical result is approved. Literal spans below are factual evidence and counter-context, not a directional oracle or newly approved aggregation rule."
+  ],
+  "literal_source_spans": [
+    {
+      "span_id": "q_ancora_note14",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Binding financing with already-issued warrants; short maturity, interest and unused fee preserved.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1073521,
+      "raw_end": 1075180,
+      "raw_utf8_byte_start": 1073521,
+      "raw_utf8_byte_end": 1075180,
+      "raw_span_sha256": "1aab936430c0111787d875a687bd60b59e92816912501c2ea8d013ecba38df19",
+      "literal_raw_html": "<div style=\"margin-top:6pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On May 7, 2025, the company entered into a secured $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-261\" decimals=\"INF\" name=\"us-gaap:LineOfCreditFacilityMaximumBorrowingCapacity\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-968\">30</ix:nonFraction>&#160;million revolving credit facility with Ancora Alternatives LLC that matures on July 30, 2025. The facility bears interest at <ix:nonFraction unitRef=\"number\" contextRef=\"c-262\" decimals=\"2\" name=\"us-gaap:LineOfCreditFacilityInterestRateDuringPeriod\" scale=\"-2\" id=\"f-969\">10</ix:nonFraction>% on borrowings and has a <ix:nonFraction unitRef=\"number\" contextRef=\"c-262\" decimals=\"3\" name=\"us-gaap:LineOfCreditFacilityCommitmentFeePercentage\" scale=\"-2\" id=\"f-970\">0.5</ix:nonFraction>% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued <ix:nonFraction unitRef=\"shares\" contextRef=\"c-261\" decimals=\"INF\" name=\"us-gaap:ClassOfWarrantOrRightOutstanding\" format=\"ixt:num-dot-decimal\" scale=\"0\" id=\"f-971\">1,504,140</ix:nonFraction> stock warrants at a strike price of $<ix:nonFraction unitRef=\"usdPerShare\" contextRef=\"c-261\" decimals=\"INF\" name=\"gpre:ClassOfWarrantOrRightStrikePriceOfWarrantsOrRights\" scale=\"0\" id=\"f-972\">0.01</ix:nonFraction> per share. The warrants have a <ix:nonNumeric contextRef=\"c-261\" name=\"us-gaap:WarrantsAndRightsOutstandingTerm\" format=\"ixt-sec:durwordsen\" id=\"f-973\">ten year</ix:nonNumeric> exercise period.</span></div>",
+      "visible_text": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC that matures on July 30, 2025. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "visible_text_whitespace_normalized": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC that matures on July 30, 2025. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_ancora_recent",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Alternative original Recent Developments paragraph.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1095669,
+      "raw_end": 1096314,
+      "raw_utf8_byte_start": 1095669,
+      "raw_utf8_byte_end": 1096314,
+      "raw_span_sha256": "c02b4dab396dcc72bebf15b874226adafb51a35d30c27b4f6c8bdeffa672a6fb",
+      "literal_raw_html": "<div style=\"margin-top:6pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.</span></div>",
+      "visible_text": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "visible_text_whitespace_normalized": "On May 7, 2025, the company entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_ancora_mda",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Additional flexibility/liquidity claim, paired with all costs and warrant terms.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1252069,
+      "raw_end": 1252818,
+      "raw_utf8_byte_start": 1252069,
+      "raw_utf8_byte_end": 1252818,
+      "raw_span_sha256": "3a8ad421e37eb5d18838c4b541477327bb1a3f19c962acd5caedd1dc739e3aa1",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:115%\">On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.</span></div>",
+      "visible_text": "On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "visible_text_whitespace_normalized": "On May 7, 2025, we entered into a secured $30 million revolving credit facility with Ancora Alternatives LLC, that matures on July 30, 2025 and gives us additional flexibility and liquidity in order to continue the implementation of our strategic plan. The facility bears interest at 10% on borrowings and has a 0.5% fee on the unused balance. Interest and fees are due on the 5th of each month. Also executed as part of the credit facility, the company has issued 1,504,140 stock warrants at a strike price of $0.01 per share. The warrants have a ten year exercise period.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_blackrock_note14",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Binding extension; conditional July 31 consequences and long-term classification preserved.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1071914,
+      "raw_end": 1073521,
+      "raw_utf8_byte_start": 1071914,
+      "raw_utf8_byte_end": 1073521,
+      "raw_span_sha256": "4071ac47572ed189cecf3bbd3b8db173a4146fee8bf700ef4ac8a4378353519b",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On May 7, 2025, the company entered into an amendment to its $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-259\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentFaceAmount\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-964\">125</ix:nonFraction>&#160;million junior secured mezzanine notes (the &#8220;Junior Notes&#8221;) with BlackRock to extend the maturity date to May 15, 2026, with an amendment fee of <ix:nonFraction unitRef=\"number\" contextRef=\"c-259\" decimals=\"3\" name=\"gpre:DebtInstrumentAmendmentFeePercent\" scale=\"-2\" id=\"f-965\">2.0</ix:nonFraction>% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $<ix:nonFraction unitRef=\"usdPerShare\" contextRef=\"c-260\" decimals=\"2\" name=\"us-gaap:ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1\" scale=\"0\" id=\"f-966\">22.00</ix:nonFraction> to a $<ix:nonFraction unitRef=\"usdPerShare\" contextRef=\"c-259\" decimals=\"2\" name=\"us-gaap:ClassOfWarrantOrRightExercisePriceOfWarrantsOrRights1\" scale=\"0\" id=\"f-967\">7.00</ix:nonFraction> exercise price with the expiration date extended from April 28, 2026 to December 31, 2029. As a result, the outstanding balance is classified within long-term debt in the consolidated balance sheets. </span></div>",
+      "visible_text": "On May 7, 2025, the company entered into an amendment to its $125 million junior secured mezzanine notes (the “Junior Notes”) with BlackRock to extend the maturity date to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the expiration date extended from April 28, 2026 to December 31, 2029. As a result, the outstanding balance is classified within long-term debt in the consolidated balance sheets. ",
+      "visible_text_whitespace_normalized": "On May 7, 2025, the company entered into an amendment to its $125 million junior secured mezzanine notes (the “Junior Notes”) with BlackRock to extend the maturity date to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the expiration date extended from April 28, 2026 to December 31, 2029. As a result, the outstanding balance is classified within long-term debt in the consolidated balance sheets.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_blackrock_recent",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Alternative Recent Developments paragraph.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1094642,
+      "raw_end": 1095457,
+      "raw_utf8_byte_start": 1094642,
+      "raw_utf8_byte_end": 1095457,
+      "raw_span_sha256": "dc60cbceee6d4d9d4a0db7fd0880f8ed994b6ccd6ba18eae8132017fa458bb69",
+      "literal_raw_html": "<div style=\"margin-top:6pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On May 7, 2025, the company entered into an amendment to its $125 million junior secured mezzanine notes (the &#8220;Junior Notes&#8221;) with BlackRock to extend the maturity date to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the maturity date extended from April 28, 2026 to December 31, 2029. </span></div>",
+      "visible_text": "On May 7, 2025, the company entered into an amendment to its $125 million junior secured mezzanine notes (the “Junior Notes”) with BlackRock to extend the maturity date to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the maturity date extended from April 28, 2026 to December 31, 2029. ",
+      "visible_text_whitespace_normalized": "On May 7, 2025, the company entered into an amendment to its $125 million junior secured mezzanine notes (the “Junior Notes”) with BlackRock to extend the maturity date to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the maturity date extended from April 28, 2026 to December 31, 2029.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_blackrock_mda",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Historical original note versus completed amendment, conditional consequences, interest and issuer funding belief preserved.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1253020,
+      "raw_end": 1254295,
+      "raw_utf8_byte_start": 1253020,
+      "raw_utf8_byte_end": 1254295,
+      "raw_span_sha256": "7fed92f9d8a6cf3659bf92d260c4dba4581d3ad8e96622ccee13077b9ea62607",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On February 9, 2021, Green Plains SPE LLC, a wholly-owned special purpose subsidiary and parent of Green Plains Obion and Green Plains Mount Vernon issued $125.0 million of junior secured mezzanine notes with BlackRock. On May 7, 2025 the junior notes were amended to give us additional flexibility and liquidity in order to continue the implementation of our strategic plan, which extended the maturity date from February&#160;9, 2026 to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the maturity date extended from April 28, 2026 to December 31, 2029. These notes will accrue interest at an annual rate of 11.75%. The company believes that it has adequate access to capital to source appropriate funding to refinance or extinguish the junior secured notes.</span></div>",
+      "visible_text": "On February 9, 2021, Green Plains SPE LLC, a wholly-owned special purpose subsidiary and parent of Green Plains Obion and Green Plains Mount Vernon issued $125.0 million of junior secured mezzanine notes with BlackRock. On May 7, 2025 the junior notes were amended to give us additional flexibility and liquidity in order to continue the implementation of our strategic plan, which extended the maturity date from February 9, 2026 to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the maturity date extended from April 28, 2026 to December 31, 2029. These notes will accrue interest at an annual rate of 11.75%. The company believes that it has adequate access to capital to source appropriate funding to refinance or extinguish the junior secured notes.",
+      "visible_text_whitespace_normalized": "On February 9, 2021, Green Plains SPE LLC, a wholly-owned special purpose subsidiary and parent of Green Plains Obion and Green Plains Mount Vernon issued $125.0 million of junior secured mezzanine notes with BlackRock. On May 7, 2025 the junior notes were amended to give us additional flexibility and liquidity in order to continue the implementation of our strategic plan, which extended the maturity date from February 9, 2026 to May 15, 2026, with an amendment fee of 2.0% to be added to the principal balance of the Junior Notes, payable at the maturity date. The amendment includes a trigger date of July 31, 2025, at which date if the Junior Notes are not repaid additional collateral will be required, fees will be assessed, and BlackRock's warrants will be repriced from a $22.00 to a $7.00 exercise price with the maturity date extended from April 28, 2026 to December 31, 2029. These notes will accrue interest at an annual rate of 11.75%. The company believes that it has adequate access to capital to source appropriate funding to refinance or extinguish the junior secured notes.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_junior_note_conditions",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Collateral, conditional cash/PIK election, covenants, guarantee and distribution limits.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 841099,
+      "raw_end": 843188,
+      "raw_utf8_byte_start": 841099,
+      "raw_utf8_byte_end": 843188,
+      "raw_span_sha256": "e267b8a9e01f668399500fcb7b913535249666f94eb4954780bcf42675155e7b",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The Junior Notes were amended on May 7, 2025, which extended the maturity date from February&#160;9, 2026 to May 15, 2026. The Junior Notes are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct high protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-156\" decimals=\"4\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-713\">11.75</ix:nonFraction>%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-169\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentBasisSpreadOnVariableRate1\" scale=\"-2\" id=\"f-714\">6.00</ix:nonFraction>% per annum plus an amount equal to interest accruing at a rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-170\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentBasisSpreadOnVariableRate1\" scale=\"-2\" id=\"f-715\">6.75</ix:nonFraction>% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after <ix:nonNumeric contextRef=\"c-171\" name=\"us-gaap:DebtInstrumentTerm\" format=\"ixt-sec:durmonth\" id=\"f-716\">42</ix:nonNumeric> months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.</span></div>",
+      "visible_text": "The Junior Notes were amended on May 7, 2025, which extended the maturity date from February 9, 2026 to May 15, 2026. The Junior Notes are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct high protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of 11.75%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of 6.00% per annum plus an amount equal to interest accruing at a rate of 6.75% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after 42 months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.",
+      "visible_text_whitespace_normalized": "The Junior Notes were amended on May 7, 2025, which extended the maturity date from February 9, 2026 to May 15, 2026. The Junior Notes are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct high protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of 11.75%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of 6.00% per annum plus an amount equal to interest accruing at a rate of 6.75% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after 42 months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_liquidity",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Increase jointly attributed to non-core asset sales and Ancora facility; availability conditions and restricted subsidiary assets.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1241548,
+      "raw_end": 1242711,
+      "raw_utf8_byte_start": 1241548,
+      "raw_utf8_byte_end": 1242711,
+      "raw_span_sha256": "806848c9d9176075701c1b946ab81ae12c50f0b09ae3f321cba91592a08949a2",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:115%\">On March&#160;31, 2025, we had $98.6 million in cash and cash equivalents and $28.0 million in restricted cash. We also had $204.5 million available under our committed revolving credit agreement, subject to restrictions or other lending conditions. Total corporate liquidity consisting of unrestricted cash, distributable cash from subsidiaries and credit facility availability was $48.6 million as of March 31, 2025, and has increased to $89.2 million as of May 7, 2025, primarily as a result of the sale of certain non-core assets, and the company entering into a secured $30 million revolving credit facility that matures on July 30, 2025. Funds at certain subsidiaries are generally required for their ongoing operational needs and restricted from distribution. At March&#160;31, 2025, our subsidiaries had approximately $22.3 million of net assets that were not available to use in the form of dividends, loans or advances due to restrictions contained in their credit facilities. </span></div>",
+      "visible_text": "On March 31, 2025, we had $98.6 million in cash and cash equivalents and $28.0 million in restricted cash. We also had $204.5 million available under our committed revolving credit agreement, subject to restrictions or other lending conditions. Total corporate liquidity consisting of unrestricted cash, distributable cash from subsidiaries and credit facility availability was $48.6 million as of March 31, 2025, and has increased to $89.2 million as of May 7, 2025, primarily as a result of the sale of certain non-core assets, and the company entering into a secured $30 million revolving credit facility that matures on July 30, 2025. Funds at certain subsidiaries are generally required for their ongoing operational needs and restricted from distribution. At March 31, 2025, our subsidiaries had approximately $22.3 million of net assets that were not available to use in the form of dividends, loans or advances due to restrictions contained in their credit facilities. ",
+      "visible_text_whitespace_normalized": "On March 31, 2025, we had $98.6 million in cash and cash equivalents and $28.0 million in restricted cash. We also had $204.5 million available under our committed revolving credit agreement, subject to restrictions or other lending conditions. Total corporate liquidity consisting of unrestricted cash, distributable cash from subsidiaries and credit facility availability was $48.6 million as of March 31, 2025, and has increased to $89.2 million as of May 7, 2025, primarily as a result of the sale of certain non-core assets, and the company entering into a secured $30 million revolving credit facility that matures on July 30, 2025. Funds at certain subsidiaries are generally required for their ongoing operational needs and restricted from distribution. At March 31, 2025, our subsidiaries had approximately $22.3 million of net assets that were not available to use in the form of dividends, loans or advances due to restrictions contained in their credit facilities.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_future_liquidity",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Future additional-liquidity need and nonassurance; proposed strategies are not completed financing.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1242711,
+      "raw_end": 1243461,
+      "raw_utf8_byte_start": 1242711,
+      "raw_utf8_byte_end": 1243461,
+      "raw_span_sha256": "2de80e68a6958e6b646b69a48b61aa55b4e4cbabc621913602f425f044eac8a5",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:112%\">The company has $125.0 million of debt due on May 15, 2026. On or before the maturation of debt in 2026, the Company will require substantial additional liquidity to satisfy these debt obligations. The Company is currently evaluating strategies to obtain the needed additional liquidity to satisfy these obligations, including but not limited to, issuing debt, entering into other financing arrangements, selling assets, or other strategic actions. There can be no assurance that the Company will be able to execute on these strategies when needed or under acceptable terms.</span></div>",
+      "visible_text": "The company has $125.0 million of debt due on May 15, 2026. On or before the maturation of debt in 2026, the Company will require substantial additional liquidity to satisfy these debt obligations. The Company is currently evaluating strategies to obtain the needed additional liquidity to satisfy these obligations, including but not limited to, issuing debt, entering into other financing arrangements, selling assets, or other strategic actions. There can be no assurance that the Company will be able to execute on these strategies when needed or under acceptable terms.",
+      "visible_text_whitespace_normalized": "The company has $125.0 million of debt due on May 15, 2026. On or before the maturation of debt in 2026, the Company will require substantial additional liquidity to satisfy these debt obligations. The Company is currently evaluating strategies to obtain the needed additional liquidity to satisfy these obligations, including but not limited to, issuing debt, entering into other financing arrangements, selling assets, or other strategic actions. There can be no assurance that the Company will be able to execute on these strategies when needed or under acceptable terms.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_operating_cash",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Observed cash use, not a forecast of runway.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1243461,
+      "raw_end": 1244653,
+      "raw_utf8_byte_start": 1243461,
+      "raw_utf8_byte_end": 1244653,
+      "raw_span_sha256": "6786a7eca504c4ce60685d90d822490b6bfd7509782db4c939c09230004b17e0",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">Net cash used in operating activities was $55.0 million for the three months ended March&#160;31, 2025, compared with net cash used in operating activities of $50.6 million for the same period in 2024. Net cash used in operating activities compared to the prior year decreased primarily due to higher net losses and lower collections of accounts receivable. Net cash used in investing activities was $20.7 million for the three months ended March&#160;31, 2025, compared with net cash used in investing activities of $30.2 million for the same period in 2024. Investing activities were primarily affected by lower investment in equity method investees when compared to the same period in the prior year. Net cash used in financing activities was $7.0 million for the three months ended March&#160;31, 2025, compared with net cash used in financing activities of $20.6 million for the same period in 2024, primarily due to the extinguishment of non-controlling interest and payments of transactions costs during 2024.</span></div>",
+      "visible_text": "Net cash used in operating activities was $55.0 million for the three months ended March 31, 2025, compared with net cash used in operating activities of $50.6 million for the same period in 2024. Net cash used in operating activities compared to the prior year decreased primarily due to higher net losses and lower collections of accounts receivable. Net cash used in investing activities was $20.7 million for the three months ended March 31, 2025, compared with net cash used in investing activities of $30.2 million for the same period in 2024. Investing activities were primarily affected by lower investment in equity method investees when compared to the same period in the prior year. Net cash used in financing activities was $7.0 million for the three months ended March 31, 2025, compared with net cash used in financing activities of $20.6 million for the same period in 2024, primarily due to the extinguishment of non-controlling interest and payments of transactions costs during 2024.",
+      "visible_text_whitespace_normalized": "Net cash used in operating activities was $55.0 million for the three months ended March 31, 2025, compared with net cash used in operating activities of $50.6 million for the same period in 2024. Net cash used in operating activities compared to the prior year decreased primarily due to higher net losses and lower collections of accounts receivable. Net cash used in investing activities was $20.7 million for the three months ended March 31, 2025, compared with net cash used in investing activities of $30.2 million for the same period in 2024. Investing activities were primarily affected by lower investment in equity method investees when compared to the same period in the prior year. Net cash used in financing activities was $7.0 million for the three months ended March 31, 2025, compared with net cash used in financing activities of $20.6 million for the same period in 2024, primarily due to the extinguishment of non-controlling interest and payments of transactions costs during 2024.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_working_capital",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Issuer sufficiency belief with sustained-loss qualification and possible asset/equity/debt actions.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1248001,
+      "raw_end": 1248439,
+      "raw_utf8_byte_start": 1248001,
+      "raw_utf8_byte_end": 1248439,
+      "raw_span_sha256": "e832b38a47408a7c6bc235b47fcc9f78424f64bc09cfddfdc4cb4520375e5bb9",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:115%\">We believe we have sufficient working capital for our existing operations. A continued sustained period of unprofitable operations, however, may strain our liquidity. We may sell additional assets or equity or borrow capital to improve or preserve our liquidity.</span></div>",
+      "visible_text": "We believe we have sufficient working capital for our existing operations. A continued sustained period of unprofitable operations, however, may strain our liquidity. We may sell additional assets or equity or borrow capital to improve or preserve our liquidity.",
+      "visible_text_whitespace_normalized": "We believe we have sufficient working capital for our existing operations. A continued sustained period of unprofitable operations, however, may strain our liquidity. We may sell additional assets or equity or borrow capital to improve or preserve our liquidity.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_covenant_mda",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Actual compliance date versus forecasts and conditional default acceleration.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1249608,
+      "raw_end": 1250525,
+      "raw_utf8_byte_start": 1249608,
+      "raw_utf8_byte_end": 1250525,
+      "raw_span_sha256": "c8092dda4abf3de0c9d903959aa29b516eea0678af2b61279258db174c291151",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">We were in compliance with our debt covenants at March&#160;31, 2025. Based on our forecasts, we anticipate we will maintain compliance at each of our subsidiaries for the next twelve months or have sufficient liquidity available on a consolidated basis to resolve noncompliance. We cannot provide assurance that actual results will approximate our forecasts or that we will inject the necessary capital into a subsidiary to maintain compliance with its respective covenants. In the event a subsidiary is unable to comply with its debt covenants, the subsidiary&#8217;s lenders may determine that an event of default has occurred, and following notice, the lenders may terminate the commitment and declare the unpaid balance due and payable.</span></div>",
+      "visible_text": "We were in compliance with our debt covenants at March 31, 2025. Based on our forecasts, we anticipate we will maintain compliance at each of our subsidiaries for the next twelve months or have sufficient liquidity available on a consolidated basis to resolve noncompliance. We cannot provide assurance that actual results will approximate our forecasts or that we will inject the necessary capital into a subsidiary to maintain compliance with its respective covenants. In the event a subsidiary is unable to comply with its debt covenants, the subsidiary’s lenders may determine that an event of default has occurred, and following notice, the lenders may terminate the commitment and declare the unpaid balance due and payable.",
+      "visible_text_whitespace_normalized": "We were in compliance with our debt covenants at March 31, 2025. Based on our forecasts, we anticipate we will maintain compliance at each of our subsidiaries for the next twelve months or have sufficient liquidity available on a consolidated basis to resolve noncompliance. We cannot provide assurance that actual results will approximate our forecasts or that we will inject the necessary capital into a subsidiary to maintain compliance with its respective covenants. In the event a subsidiary is unable to comply with its debt covenants, the subsidiary’s lenders may determine that an event of default has occurred, and following notice, the lenders may terminate the commitment and declare the unpaid balance due and payable.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_buyback",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Authorization, suspension discretion and explicitly no Q1 repurchases.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1247041,
+      "raw_end": 1248001,
+      "raw_utf8_byte_start": 1247041,
+      "raw_utf8_byte_end": 1248001,
+      "raw_span_sha256": "d5ae1976a64fa44b4ae8d110489519f06dd0b2994d92b47881bddc57adf76761",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">In August 2014 and October 2019, our Board authorized a share repurchase program of up to $200.0 million of our common stock. Under the program, we may repurchase shares in open market transactions, privately negotiated transactions, accelerated share buyback programs, tender offers or by other means. The timing and amount of repurchase transactions are determined by our management based on market conditions, share price, legal requirements and other factors. The program may be suspended, modified or discontinued at any time without prior notice. Since inception of the repurchase program, we have repurchased 7.4 million shares of common stock for approximately $92.8 million under the program. We did not repurchase any shares of common stock during the first quarter of 2025.</span></div>",
+      "visible_text": "In August 2014 and October 2019, our Board authorized a share repurchase program of up to $200.0 million of our common stock. Under the program, we may repurchase shares in open market transactions, privately negotiated transactions, accelerated share buyback programs, tender offers or by other means. The timing and amount of repurchase transactions are determined by our management based on market conditions, share price, legal requirements and other factors. The program may be suspended, modified or discontinued at any time without prior notice. Since inception of the repurchase program, we have repurchased 7.4 million shares of common stock for approximately $92.8 million under the program. We did not repurchase any shares of common stock during the first quarter of 2025.",
+      "visible_text_whitespace_normalized": "In August 2014 and October 2019, our Board authorized a share repurchase program of up to $200.0 million of our common stock. Under the program, we may repurchase shares in open market transactions, privately negotiated transactions, accelerated share buyback programs, tender offers or by other means. The timing and amount of repurchase transactions are determined by our management based on market conditions, share price, legal requirements and other factors. The program may be suspended, modified or discontinued at any time without prior notice. Since inception of the repurchase program, we have repurchased 7.4 million shares of common stock for approximately $92.8 million under the program. We did not repurchase any shares of common stock during the first quarter of 2025.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_tax_withholding",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Required counter-context for issuer-purchase table; these are payroll-tax withheld shares.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1304679,
+      "raw_end": 1305088,
+      "raw_utf8_byte_start": 1304679,
+      "raw_utf8_byte_end": 1305088,
+      "raw_span_sha256": "72fb106f4836c886a8c709525ae36bf0dbd4d41876d99435c48a12a250ac71d0",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The company withholds shares when restricted stock grants are vested to satisfy statutory minimum required payroll tax withholding obligations. The following table lists the shares that were withheld during the first quarter of 2025:</span></div>",
+      "visible_text": "The company withholds shares when restricted stock grants are vested to satisfy statutory minimum required payroll tax withholding obligations. The following table lists the shares that were withheld during the first quarter of 2025:",
+      "visible_text_whitespace_normalized": "The company withholds shares when restricted stock grants are vested to satisfy statutory minimum required payroll tax withholding obligations. The following table lists the shares that were withheld during the first quarter of 2025:",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_strategic_review",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "No timetable or assurance of transaction; exploration is not binding financing.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1103212,
+      "raw_end": 1104250,
+      "raw_utf8_byte_start": 1103212,
+      "raw_utf8_byte_end": 1104250,
+      "raw_span_sha256": "f9271281366ff19ffb04d3fd210424235e312f87bae9d48b65a94dc07cd1a4b4",
+      "literal_raw_html": "<div style=\"margin-top:6pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The company initiated a strategic review process in February 2024 to explore a broad range of opportunities to enhance long-term shareholder value, including, but not limited to, acquisitions, divestitures, a merger or sale, partnerships and financings. The Board of Directors continues to progress the strategic review process, working with its financial advisors, BMO Capital Markets Corp. and Moelis &amp; Company, and legal advisors Vinson &amp; Elkins LLP. There is no deadline or definitive timetable for completion of the strategic review process, and there can be no assurances that the process will result in a transaction or any other outcome. The company does not intend to make any further public comment regarding the review until the Board has approved a specific action or otherwise determines that additional disclosure is appropriate or required.</span></div>",
+      "visible_text": "The company initiated a strategic review process in February 2024 to explore a broad range of opportunities to enhance long-term shareholder value, including, but not limited to, acquisitions, divestitures, a merger or sale, partnerships and financings. The Board of Directors continues to progress the strategic review process, working with its financial advisors, BMO Capital Markets Corp. and Moelis & Company, and legal advisors Vinson & Elkins LLP. There is no deadline or definitive timetable for completion of the strategic review process, and there can be no assurances that the process will result in a transaction or any other outcome. The company does not intend to make any further public comment regarding the review until the Board has approved a specific action or otherwise determines that additional disclosure is appropriate or required.",
+      "visible_text_whitespace_normalized": "The company initiated a strategic review process in February 2024 to explore a broad range of opportunities to enhance long-term shareholder value, including, but not limited to, acquisitions, divestitures, a merger or sale, partnerships and financings. The Board of Directors continues to progress the strategic review process, working with its financial advisors, BMO Capital Markets Corp. and Moelis & Company, and legal advisors Vinson & Elkins LLP. There is no deadline or definitive timetable for completion of the strategic review process, and there can be no assurances that the process will result in a transaction or any other outcome. The company does not intend to make any further public comment regarding the review until the Board has approved a specific action or otherwise determines that additional disclosure is appropriate or required.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "q_project_contracts",
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "role": "Binding project contracts, in-service/milestone/termination conditions and offsetting liability.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 1069134,
+      "raw_end": 1070837,
+      "raw_utf8_byte_start": 1069134,
+      "raw_utf8_byte_end": 1070837,
+      "raw_span_sha256": "578119c259f93b39280158c4061c9aa19c0ad49f5f5e4b2e688a32d7b4e38b4d",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The company has entered into contracts with Tallgrass High Plains Carbon Storage, LLC and its affiliates, related to the construction, development and operation of carbon capture and sequestration projects at our <ix:nonFraction unitRef=\"d\" contextRef=\"c-257\" decimals=\"0\" name=\"gpre:OtherCommitmentNumberOfPlantsConstructed\" format=\"ixt-sec:numwordsen\" scale=\"0\" id=\"f-960\">three</ix:nonFraction> Nebraska plants, which are expected to be completed in 2025. Payments associated with these contracts are due monthly over a period of <ix:nonNumeric contextRef=\"c-257\" name=\"gpre:OtherCommitmentPeriod\" format=\"ixt-sec:durwordsen\" id=\"f-961\">twelve years</ix:nonNumeric>, commencing after the capture facilities are considered in-service. Amounts due under the contracts are based on the achievement of certain project milestones and are subject to termination of all or portions of the contracts. Certain of the future obligations to Tallgrass High Plains Carbon Storage LLC are secured by a leasehold deed of trust, security agreement and assignment of rents and leases. As of March&#160;31, 2025, the company had incurred $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-258\" decimals=\"-5\" name=\"us-gaap:PropertyPlantAndEquipmentNet\" format=\"ixt:num-dot-decimal\" scale=\"6\" id=\"f-962\">28.5</ix:nonFraction>&#160;million of accumulated construction costs in relation to the projects, presented as property, plant and equipment on the consolidated balance sheet, with an equal and offsetting liability presented as other liabilities.</span></div>",
+      "visible_text": "The company has entered into contracts with Tallgrass High Plains Carbon Storage, LLC and its affiliates, related to the construction, development and operation of carbon capture and sequestration projects at our three Nebraska plants, which are expected to be completed in 2025. Payments associated with these contracts are due monthly over a period of twelve years, commencing after the capture facilities are considered in-service. Amounts due under the contracts are based on the achievement of certain project milestones and are subject to termination of all or portions of the contracts. Certain of the future obligations to Tallgrass High Plains Carbon Storage LLC are secured by a leasehold deed of trust, security agreement and assignment of rents and leases. As of March 31, 2025, the company had incurred $28.5 million of accumulated construction costs in relation to the projects, presented as property, plant and equipment on the consolidated balance sheet, with an equal and offsetting liability presented as other liabilities.",
+      "visible_text_whitespace_normalized": "The company has entered into contracts with Tallgrass High Plains Carbon Storage, LLC and its affiliates, related to the construction, development and operation of carbon capture and sequestration projects at our three Nebraska plants, which are expected to be completed in 2025. Payments associated with these contracts are due monthly over a period of twelve years, commencing after the capture facilities are considered in-service. Amounts due under the contracts are based on the achievement of certain project milestones and are subject to termination of all or portions of the contracts. Certain of the future obligations to Tallgrass High Plains Carbon Storage LLC are secured by a leasehold deed of trust, security agreement and assignment of rents and leases. As of March 31, 2025, the company had incurred $28.5 million of accumulated construction costs in relation to the projects, presented as property, plant and equipment on the consolidated balance sheet, with an equal and offsetting liability presented as other liabilities.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_historical_term_repayment",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Historical September 2024 completed repayment, no future catalyst inferred.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 752541,
+      "raw_end": 753198,
+      "raw_utf8_byte_start": 752541,
+      "raw_utf8_byte_end": 753198,
+      "raw_span_sha256": "8b305da18a8b57b773588a4e11735f49b32c82ed4666e900baae06d841d9967e",
+      "literal_raw_html": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">Green Plains Partners had a term loan to fund working capital, capital expenditures and other general partnership purposes. Interest on the term loan was based on 3-month SOFR plus 8.26%. On September 30, 2024, the proceeds from the Birmingham Transaction were used to repay the outstanding principal and interest of the loan in full. Prepayments totaling $56.0 million, $3.0 million and $1.0 million were made during the years ended December 31, 2024, 2023 and 2022, respectively.</span></div>",
+      "visible_text": "Green Plains Partners had a term loan to fund working capital, capital expenditures and other general partnership purposes. Interest on the term loan was based on 3-month SOFR plus 8.26%. On September 30, 2024, the proceeds from the Birmingham Transaction were used to repay the outstanding principal and interest of the loan in full. Prepayments totaling $56.0 million, $3.0 million and $1.0 million were made during the years ended December 31, 2024, 2023 and 2022, respectively.",
+      "visible_text_whitespace_normalized": "Green Plains Partners had a term loan to fund working capital, capital expenditures and other general partnership purposes. Interest on the term loan was based on 3-month SOFR plus 8.26%. On September 30, 2024, the proceeds from the Birmingham Transaction were used to repay the outstanding principal and interest of the loan in full. Prepayments totaling $56.0 million, $3.0 million and $1.0 million were made during the years ended December 31, 2024, 2023 and 2022, respectively.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_original_junior_terms",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Original pre-amendment February 2026 maturity and funding/covenant terms; superseded by Q May amendment.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 2020053,
+      "raw_end": 2022220,
+      "raw_utf8_byte_start": 2020053,
+      "raw_utf8_byte_end": 2022220,
+      "raw_span_sha256": "29d293247c3638943d2ddc1d70a7bebcbe112b9b87701a10dc2528bc3c725ad9",
+      "literal_raw_html": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:112%\">The Junior Notes will mature on <ix:nonNumeric contextRef=\"c-327\" name=\"us-gaap:DebtInstrumentMaturityDate\" format=\"ixt:date-monthname-day-year-en\" id=\"f-1272\">February&#160;9, 2026</ix:nonNumeric> and are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct Ultra-High Protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-328\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-1273\">11.75</ix:nonFraction>%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-329\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-1274\">6.00</ix:nonFraction>% per annum plus an amount equal to interest accruing at a rate of <ix:nonFraction unitRef=\"number\" contextRef=\"c-330\" decimals=\"INF\" name=\"us-gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-1275\">6.75</ix:nonFraction>% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after <ix:nonNumeric contextRef=\"c-327\" name=\"us-gaap:DebtInstrumentTerm\" format=\"ixt-sec:durmonth\" id=\"f-1276\">42</ix:nonNumeric> months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.</span></div>",
+      "visible_text": "The Junior Notes will mature on February 9, 2026 and are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct Ultra-High Protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of 11.75%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of 6.00% per annum plus an amount equal to interest accruing at a rate of 6.75% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after 42 months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.",
+      "visible_text_whitespace_normalized": "The Junior Notes will mature on February 9, 2026 and are secured by a pledge of the membership interests in and the real property owned by Green Plains Obion and Green Plains Mount Vernon. The proceeds of the Junior Notes were used to construct Ultra-High Protein processing systems at the Green Plains Obion and Green Plains Mount Vernon facilities. The Junior Notes accrue interest at an annual rate of 11.75%. However, subject to the satisfaction of certain conditions, Green Plains SPE LLC may elect to pay an amount in cash equal to interest accruing at a rate of 6.00% per annum plus an amount equal to interest accruing at a rate of 6.75% per annum to be paid in kind. The entire outstanding principal balance, plus any accrued and unpaid interest is due upon maturity. Green Plains SPE LLC is required to comply with certain financial covenants regarding minimum liquidity at Green Plains and a maximum aggregate loan to value. The Junior Notes can be retired or refinanced after 42 months with no prepayment premium. The Junior Notes have an unsecured parent guarantee from the company and have certain limitations on distributions, dividends or loans to the company unless there will not exist any event of default.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_revolver_historical",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "March 2022 completed refinancing with March 2027 maturity; not a new May 2025 event.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 2028874,
+      "raw_end": 2030189,
+      "raw_utf8_byte_start": 2028874,
+      "raw_utf8_byte_end": 2030189,
+      "raw_span_sha256": "e671c26ee1d4e01b941c79b67ecae40a277b466e801742abe3306277111adccf",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">On March&#160;25, 2022, Green Plains Finance Company, Green Plains Grain and Green Plains Trade (collectively, the &#8220;Borrowers&#8221;), all wholly owned subsidiaries of </span><span style=\"background-color:#ffffff;color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">the company, together with the company, as guarantor, </span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">entered into a <ix:nonNumeric contextRef=\"c-340\" name=\"us-gaap:DebtInstrumentTerm\" format=\"ixt-sec:durwordsen\" id=\"f-1293\">five-year</ix:nonNumeric>, $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-341\" decimals=\"INF\" name=\"us-gaap:LineOfCreditFacilityMaximumBorrowingCapacity\" scale=\"6\" id=\"f-1294\">350.0</ix:nonFraction> million senior secured sustainability-linked revolving Loan and Security Agreement (the &#8220;Facility&#8221;) with a group of financial institutions. This transaction refinanced the separate credit facilities previously held by Green Plains Grain and Green Plains Trade. The Facility matures on March&#160;25, 2027. </span></div>",
+      "visible_text": "On March 25, 2022, Green Plains Finance Company, Green Plains Grain and Green Plains Trade (collectively, the “Borrowers”), all wholly owned subsidiaries of the company, together with the company, as guarantor, entered into a five-year, $350.0 million senior secured sustainability-linked revolving Loan and Security Agreement (the “Facility”) with a group of financial institutions. This transaction refinanced the separate credit facilities previously held by Green Plains Grain and Green Plains Trade. The Facility matures on March 25, 2027. ",
+      "visible_text_whitespace_normalized": "On March 25, 2022, Green Plains Finance Company, Green Plains Grain and Green Plains Trade (collectively, the “Borrowers”), all wholly owned subsidiaries of the company, together with the company, as guarantor, entered into a five-year, $350.0 million senior secured sustainability-linked revolving Loan and Security Agreement (the “Facility”) with a group of financial institutions. This transaction refinanced the separate credit facilities previously held by Green Plains Grain and Green Plains Trade. The Facility matures on March 25, 2027.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_revolver_covenants",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Quantified financial covenant conditions.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 2033237,
+      "raw_end": 2034283,
+      "raw_utf8_byte_start": 2033237,
+      "raw_utf8_byte_end": 2034283,
+      "raw_span_sha256": "5194c54dc6252dcf75118cb3f99ee5b256cbcc76ddd0e680f75cb868406c5ec3",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:20.16pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The Facility contains customary affirmative and negative covenants, as well as the following financial covenants to be calculated as of the last day of any month: the current ratio of the Borrowers shall not be less than <ix:nonFraction unitRef=\"number\" contextRef=\"c-349\" decimals=\"2\" name=\"gpre:MinimumCurrentRatioRequired\" scale=\"0\" id=\"f-1305\">1.00</ix:nonFraction> to 1.00; the collateral coverage ratio of the Borrowers shall not be less than <ix:nonFraction unitRef=\"number\" contextRef=\"c-349\" decimals=\"2\" name=\"gpre:MinimumCollateralCoverageRatioRequired\" scale=\"0\" id=\"f-1306\">1.20</ix:nonFraction> to 1.00; and the debt to capitalization ratio of the company shall not be greater than <ix:nonFraction unitRef=\"number\" contextRef=\"c-349\" decimals=\"2\" name=\"gpre:MaximumDebtToCapitalizationRatioRequired\" scale=\"0\" id=\"f-1307\">0.60</ix:nonFraction> to 1.00. </span></div>",
+      "visible_text": "The Facility contains customary affirmative and negative covenants, as well as the following financial covenants to be calculated as of the last day of any month: the current ratio of the Borrowers shall not be less than 1.00 to 1.00; the collateral coverage ratio of the Borrowers shall not be less than 1.20 to 1.00; and the debt to capitalization ratio of the company shall not be greater than 0.60 to 1.00. ",
+      "visible_text_whitespace_normalized": "The Facility contains customary affirmative and negative covenants, as well as the following financial covenants to be calculated as of the last day of any month: the current ratio of the Borrowers shall not be less than 1.00 to 1.00; the collateral coverage ratio of the Borrowers shall not be less than 1.20 to 1.00; and the debt to capitalization ratio of the company shall not be greater than 0.60 to 1.00.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_warrants",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Pre-amendment warrant expiries and potential dilution; not proof of subsequent exercise.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 2105982,
+      "raw_end": 2108718,
+      "raw_utf8_byte_start": 2105982,
+      "raw_utf8_byte_end": 2108718,
+      "raw_span_sha256": "4c30da37a26e6191dc0fbfff97c4d1fb01a7ab4a0d2e024e7e69af7bee4afff0",
+      "literal_raw_html": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The company has reserved <ix:nonFraction unitRef=\"shares\" contextRef=\"c-374\" decimals=\"INF\" name=\"gpre:NumberOfSharesOfCommonStockReservedForExerciseOfWarrants\" format=\"ixt:num-dot-decimal\" scale=\"0\" id=\"f-1402\">2,550,000</ix:nonFraction> shares of common stock for the exercise of warrants to non-employees, of which <ix:nonFraction unitRef=\"shares\" contextRef=\"c-374\" decimals=\"INF\" name=\"gpre:NumberOfCommonStockReservedForExerciseOfWarrantsExercisable\" format=\"ixt:num-dot-decimal\" scale=\"0\" id=\"f-1403\">2,275,000</ix:nonFraction> are exercisable, treated as equity based awards and recorded as a reduction in additional paid-in capital. The remaining <ix:nonFraction unitRef=\"shares\" contextRef=\"c-374\" decimals=\"INF\" name=\"gpre:RemainingWarrantsNumber\" format=\"ixt:num-dot-decimal\" scale=\"0\" id=\"f-1404\">275,000</ix:nonFraction> warrants, of which <ix:nonFraction unitRef=\"shares\" contextRef=\"c-374\" decimals=\"INF\" name=\"gpre:RemainingWarrantsContingentUponCertainEarnOutProvisionsExercisable\" format=\"ixt:num-dot-decimal\" scale=\"0\" id=\"f-1405\">194,444</ix:nonFraction> are exercisable as a result of achieving certain earn-out provisions and <ix:nonFraction unitRef=\"shares\" contextRef=\"c-374\" decimals=\"INF\" name=\"gpre:RemainingWarrantsContingentUponCertainEarnOutProvisions\" format=\"ixt:num-dot-decimal\" scale=\"0\" id=\"f-1406\">80,556</ix:nonFraction> are contingent upon certain earn-out provisions, are treated as liability based awards, and valued quarterly using the company&#8217;s stock price. These warrants could potentially dilute basic earnings per share in future periods. The exercise price of the warrants is $<ix:nonFraction unitRef=\"usdPerShare\" contextRef=\"c-375\" decimals=\"2\" name=\"gpre:ExerciseOfWarrantsExercisePrice\" scale=\"0\" id=\"f-1407\">22.00</ix:nonFraction> and expiration dates are December&#160;8, 2025 for <ix:nonFraction unitRef=\"shares\" contextRef=\"c-376\" decimals=\"INF\" name=\"gpre:NumberOfSharesOfCommonStockReservedForExerciseOfWarrants\" format=\"ixt:num-dot-decimal\" scale=\"0\" id=\"f-1408\">275,000</ix:nonFraction> warrants, February&#160;9, 2026 for <ix:nonFraction unitRef=\"shares\" contextRef=\"c-377\" decimals=\"INF\" name=\"gpre:NumberOfSharesOfCommonStockReservedForExerciseOfWarrants\" format=\"ixt:num-dot-decimal\" scale=\"0\" id=\"f-1409\">275,000</ix:nonFraction> warrants and April&#160;28, 2026 for <ix:nonFraction unitRef=\"shares\" contextRef=\"c-378\" decimals=\"INF\" name=\"gpre:NumberOfSharesOfCommonStockReservedForExerciseOfWarrants\" format=\"ixt:num-dot-decimal\" scale=\"0\" id=\"f-1410\">2,000,000</ix:nonFraction> warrants.</span></div>",
+      "visible_text": "The company has reserved 2,550,000 shares of common stock for the exercise of warrants to non-employees, of which 2,275,000 are exercisable, treated as equity based awards and recorded as a reduction in additional paid-in capital. The remaining 275,000 warrants, of which 194,444 are exercisable as a result of achieving certain earn-out provisions and 80,556 are contingent upon certain earn-out provisions, are treated as liability based awards, and valued quarterly using the company’s stock price. These warrants could potentially dilute basic earnings per share in future periods. The exercise price of the warrants is $22.00 and expiration dates are December 8, 2025 for 275,000 warrants, February 9, 2026 for 275,000 warrants and April 28, 2026 for 2,000,000 warrants.",
+      "visible_text_whitespace_normalized": "The company has reserved 2,550,000 shares of common stock for the exercise of warrants to non-employees, of which 2,275,000 are exercisable, treated as equity based awards and recorded as a reduction in additional paid-in capital. The remaining 275,000 warrants, of which 194,444 are exercisable as a result of achieving certain earn-out provisions and 80,556 are contingent upon certain earn-out provisions, are treated as liability based awards, and valued quarterly using the company’s stock price. These warrants could potentially dilute basic earnings per share in future periods. The exercise price of the warrants is $22.00 and expiration dates are December 8, 2025 for 275,000 warrants, February 9, 2026 for 275,000 warrants and April 28, 2026 for 2,000,000 warrants.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_buyback",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Authorization and no repurchases in 2024, 2023 or 2022.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 2113505,
+      "raw_end": 2114888,
+      "raw_utf8_byte_start": 2113505,
+      "raw_utf8_byte_end": 2114888,
+      "raw_span_sha256": "325fa59522317afa16092896b6e790dc9c6cff882cb2a5064283c202a72ca63b",
+      "literal_raw_html": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The company&#8217;s board of directors authorized a share repurchase program of up to $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-5\" decimals=\"-6\" name=\"srt:StockRepurchaseProgramAuthorizedAmount1\" scale=\"6\" id=\"f-1424\">200.0</ix:nonFraction> million. Under the program, the company may repurchase shares in open market transactions, privately negotiated transactions, accelerated share buyback programs, tender offers or by other means. The timing and amount of repurchase transactions are determined by its management based on market conditions, share price, legal requirements and other factors. The program may be suspended, modified or discontinued at any time without prior notice. The company did not repurchase any shares of common stock during 2024, 2023 or 2022. Since inception, the company has repurchased <ix:nonFraction unitRef=\"shares\" contextRef=\"c-383\" decimals=\"INF\" name=\"us-gaap:TreasuryStockSharesAcquired\" scale=\"6\" id=\"f-1425\">7.4</ix:nonFraction> million shares of common stock for approximately $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-383\" decimals=\"-5\" name=\"us-gaap:TreasuryStockValueAcquiredCostMethod\" scale=\"6\" id=\"f-1426\">92.8</ix:nonFraction> million under the program.</span></div>",
+      "visible_text": "The company’s board of directors authorized a share repurchase program of up to $200.0 million. Under the program, the company may repurchase shares in open market transactions, privately negotiated transactions, accelerated share buyback programs, tender offers or by other means. The timing and amount of repurchase transactions are determined by its management based on market conditions, share price, legal requirements and other factors. The program may be suspended, modified or discontinued at any time without prior notice. The company did not repurchase any shares of common stock during 2024, 2023 or 2022. Since inception, the company has repurchased 7.4 million shares of common stock for approximately $92.8 million under the program.",
+      "visible_text_whitespace_normalized": "The company’s board of directors authorized a share repurchase program of up to $200.0 million. Under the program, the company may repurchase shares in open market transactions, privately negotiated transactions, accelerated share buyback programs, tender offers or by other means. The timing and amount of repurchase transactions are determined by its management based on market conditions, share price, legal requirements and other factors. The program may be suspended, modified or discontinued at any time without prior notice. The company did not repurchase any shares of common stock during 2024, 2023 or 2022. Since inception, the company has repurchased 7.4 million shares of common stock for approximately $92.8 million under the program.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_historical_4pct_conversion",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Historical completed 2022 note conversion; not within supplied 730-day lookback.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 748628,
+      "raw_end": 749795,
+      "raw_utf8_byte_start": 748628,
+      "raw_utf8_byte_end": 749795,
+      "raw_span_sha256": "89cddcb9c3a5e58479ad583160aeabe83b09cade6a9f1028a78150ae27e62f3b",
+      "literal_raw_html": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">In June 2019, we issued $115.0 million of 4.00% convertible senior notes due in 2024, or the 4.00% notes. On May 25, 2022, we gave notice calling for the redemption of our outstanding 4.00% notes, totaling an aggregate principal amount of $64.0 million. The final conversion rate was increased to 66.4178 shares of common stock per $1,000 of principal. From July 1, 2022 through July 8, 2022, the remaining $64.0 million of the 4.00% notes were converted into approximately 4.3 million shares of common stock. Common stock held as treasury shares were exchanged for the 4.00% notes. Pursuant to the guidance within ASC 470, </span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-style:italic;font-weight:400;line-height:120%\">Debt, </span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">we recorded the exchanges as a conversion. The 4.00% notes were retired effective July 8, 2022.</span></div>",
+      "visible_text": "In June 2019, we issued $115.0 million of 4.00% convertible senior notes due in 2024, or the 4.00% notes. On May 25, 2022, we gave notice calling for the redemption of our outstanding 4.00% notes, totaling an aggregate principal amount of $64.0 million. The final conversion rate was increased to 66.4178 shares of common stock per $1,000 of principal. From July 1, 2022 through July 8, 2022, the remaining $64.0 million of the 4.00% notes were converted into approximately 4.3 million shares of common stock. Common stock held as treasury shares were exchanged for the 4.00% notes. Pursuant to the guidance within ASC 470, Debt, we recorded the exchanges as a conversion. The 4.00% notes were retired effective July 8, 2022.",
+      "visible_text_whitespace_normalized": "In June 2019, we issued $115.0 million of 4.00% convertible senior notes due in 2024, or the 4.00% notes. On May 25, 2022, we gave notice calling for the redemption of our outstanding 4.00% notes, totaling an aggregate principal amount of $64.0 million. The final conversion rate was increased to 66.4178 shares of common stock per $1,000 of principal. From July 1, 2022 through July 8, 2022, the remaining $64.0 million of the 4.00% notes were converted into approximately 4.3 million shares of common stock. Common stock held as treasury shares were exchanged for the 4.00% notes. Pursuant to the guidance within ASC 470, Debt, we recorded the exchanges as a conversion. The 4.00% notes were retired effective July 8, 2022.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_historical_4125_exchange",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Historical 2022 debt exchange and complete retirement, not a current catalyst.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 749795,
+      "raw_end": 750767,
+      "raw_utf8_byte_start": 749795,
+      "raw_utf8_byte_end": 750767,
+      "raw_span_sha256": "06a06227e274d1c1e8f669625f0226135667b97a0e9f8add8e06c05204c6d57e",
+      "literal_raw_html": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">In August 2016, we issued $170.0 million of 4.125% convertible senior notes due in 2022, or the 4.125% notes, which were senior, unsecured obligations. During August 2022, we entered into four privately negotiated exchange agreements with certain noteholders of the 4.125% notes to exchange approximately $32.6 million aggregate principal amount for approximately 1.2 million shares of our common stock. Additionally, on September 1, 2022, approximately $1.7 million aggregate principal amount of the 4.125% notes were settled through a combination of $1.7 million in cash and approximately 15 thousand shares of our common stock, and the remaining $23 thousand aggregate principal amount and accrued interest were settled in cash. The 4.125% notes were fully retired effective September 1, 2022.</span></div>",
+      "visible_text": "In August 2016, we issued $170.0 million of 4.125% convertible senior notes due in 2022, or the 4.125% notes, which were senior, unsecured obligations. During August 2022, we entered into four privately negotiated exchange agreements with certain noteholders of the 4.125% notes to exchange approximately $32.6 million aggregate principal amount for approximately 1.2 million shares of our common stock. Additionally, on September 1, 2022, approximately $1.7 million aggregate principal amount of the 4.125% notes were settled through a combination of $1.7 million in cash and approximately 15 thousand shares of our common stock, and the remaining $23 thousand aggregate principal amount and accrued interest were settled in cash. The 4.125% notes were fully retired effective September 1, 2022.",
+      "visible_text_whitespace_normalized": "In August 2016, we issued $170.0 million of 4.125% convertible senior notes due in 2022, or the 4.125% notes, which were senior, unsecured obligations. During August 2022, we entered into four privately negotiated exchange agreements with certain noteholders of the 4.125% notes to exchange approximately $32.6 million aggregate principal amount for approximately 1.2 million shares of our common stock. Additionally, on September 1, 2022, approximately $1.7 million aggregate principal amount of the 4.125% notes were settled through a combination of $1.7 million in cash and approximately 15 thousand shares of our common stock, and the remaining $23 thousand aggregate principal amount and accrued interest were settled in cash. The 4.125% notes were fully retired effective September 1, 2022.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_risk_cash",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Debt-service cashflow uncertainty, possible capital measures and liquidity risk.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 431757,
+      "raw_end": 433091,
+      "raw_utf8_byte_start": 431757,
+      "raw_utf8_byte_end": 433091,
+      "raw_span_sha256": "51c1331d6b71c3f0e5c972116dd880b8aec7e437a002e2032bfbe903092b8c8d",
+      "literal_raw_html": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">Our ability to make scheduled payments on or to refinance our debt obligations and to fund our planned capital expenditures, acquisitions and other ongoing liquidity needs depends on our financial condition and operating performance, which are subject to prevailing economic and competitive conditions as well as certain financial, business and other factors which are beyond our control. There can be no assurance that we will maintain a level of cash flow from operating activities in an amount sufficient to permit us to pay the principal, premium, if any, and interest on our indebtedness. If our cash flow and capital resources are insufficient to fund our debt service obligations, we may be forced to reduce or delay investments and capital expenditures, or to seek additional capital or restructure our indebtedness. These alternative measures may not be successful and may not permit us to meet our scheduled debt service obligations. In the absence of such operating results and resources, we could face substantial liquidity problems and might be required to dispose of material assets or operations to meet our debt service and other obligations.</span></div>",
+      "visible_text": "Our ability to make scheduled payments on or to refinance our debt obligations and to fund our planned capital expenditures, acquisitions and other ongoing liquidity needs depends on our financial condition and operating performance, which are subject to prevailing economic and competitive conditions as well as certain financial, business and other factors which are beyond our control. There can be no assurance that we will maintain a level of cash flow from operating activities in an amount sufficient to permit us to pay the principal, premium, if any, and interest on our indebtedness. If our cash flow and capital resources are insufficient to fund our debt service obligations, we may be forced to reduce or delay investments and capital expenditures, or to seek additional capital or restructure our indebtedness. These alternative measures may not be successful and may not permit us to meet our scheduled debt service obligations. In the absence of such operating results and resources, we could face substantial liquidity problems and might be required to dispose of material assets or operations to meet our debt service and other obligations.",
+      "visible_text_whitespace_normalized": "Our ability to make scheduled payments on or to refinance our debt obligations and to fund our planned capital expenditures, acquisitions and other ongoing liquidity needs depends on our financial condition and operating performance, which are subject to prevailing economic and competitive conditions as well as certain financial, business and other factors which are beyond our control. There can be no assurance that we will maintain a level of cash flow from operating activities in an amount sufficient to permit us to pay the principal, premium, if any, and interest on our indebtedness. If our cash flow and capital resources are insufficient to fund our debt service obligations, we may be forced to reduce or delay investments and capital expenditures, or to seek additional capital or restructure our indebtedness. These alternative measures may not be successful and may not permit us to meet our scheduled debt service obligations. In the absence of such operating results and resources, we could face substantial liquidity problems and might be required to dispose of material assets or operations to meet our debt service and other obligations.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_risk_covenants",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Conditional breach/acceleration is risk, not actual default.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 433388,
+      "raw_end": 434194,
+      "raw_utf8_byte_start": 433388,
+      "raw_utf8_byte_end": 434194,
+      "raw_span_sha256": "afe20d3b3c25196897ab3de9838a8ca54451dea974e125e731b8fa64ed4f3ffa",
+      "literal_raw_html": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">We are required to maintain specified financial ratios, including minimum cash flow coverage, working capital and leverage ratios under certain loan agreements. A breach of these covenants could result in default, and if such default is not cured or waived, our lenders could accelerate our debt and declare it immediately due and payable. If this occurs, we may not be able to repay or borrow sufficient funds to refinance the debt. Even if financing is available, it may not be on acceptable terms. No assurance can be given that our future operating results will be sufficient to comply with these covenants or remedy default. </span></div>",
+      "visible_text": "We are required to maintain specified financial ratios, including minimum cash flow coverage, working capital and leverage ratios under certain loan agreements. A breach of these covenants could result in default, and if such default is not cured or waived, our lenders could accelerate our debt and declare it immediately due and payable. If this occurs, we may not be able to repay or borrow sufficient funds to refinance the debt. Even if financing is available, it may not be on acceptable terms. No assurance can be given that our future operating results will be sufficient to comply with these covenants or remedy default. ",
+      "visible_text_whitespace_normalized": "We are required to maintain specified financial ratios, including minimum cash flow coverage, working capital and leverage ratios under certain loan agreements. A breach of these covenants could result in default, and if such default is not cured or waived, our lenders could accelerate our debt and declare it immediately due and payable. If this occurs, we may not be able to repay or borrow sufficient funds to refinance the debt. Even if financing is available, it may not be on acceptable terms. No assurance can be given that our future operating results will be sufficient to comply with these covenants or remedy default.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    },
+    {
+      "span_id": "k_project_contracts",
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "role": "Earlier project contracts with milestones/in-service payments, termination and liability; later Q updates preserved.",
+      "offset_basis": "zero-based half-open offsets in the decoded original record.content string; UTF-8 byte offsets are supplied separately",
+      "raw_start": 2251520,
+      "raw_end": 2252894,
+      "raw_utf8_byte_start": 2251520,
+      "raw_utf8_byte_end": 2252894,
+      "raw_span_sha256": "b5c8f3e5c50c43c9987b69dde81620b6ecb645976c9f230147e36a2f10219950",
+      "literal_raw_html": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The company has entered into contracts with Tallgrass High Plains Carbon Storage, LLC and its affiliates, related to the construction, development and operation of carbon capture and sequestration projects at our three Nebraska plants, which are expected to be completed in 2025. Payments associated with these contracts are due monthly over a period of twelve years, commencing after the capture facilities are considered in-service. Amounts due under the contracts are based on the achievement of certain project milestones and are subject to termination of all or portions of the contracts. Certain of the future obligations to Tallgrass High Plains Carbon Storage, LLC are secured by a leasehold deed of trust, security agreement and assignment of rents and leases. As of December&#160;31, 2024, the company had incurred $<ix:nonFraction unitRef=\"usd\" contextRef=\"c-215\" decimals=\"-5\" name=\"us-gaap:PropertyPlantAndEquipmentNet\" scale=\"6\" id=\"f-1580\">17.9</ix:nonFraction> million of accumulated construction costs in relation to these projects, presented as property, plant and equipment on the consolidated balance sheet, with an equal and offsetting liability presented as other liabilities.</span></div>",
+      "visible_text": "The company has entered into contracts with Tallgrass High Plains Carbon Storage, LLC and its affiliates, related to the construction, development and operation of carbon capture and sequestration projects at our three Nebraska plants, which are expected to be completed in 2025. Payments associated with these contracts are due monthly over a period of twelve years, commencing after the capture facilities are considered in-service. Amounts due under the contracts are based on the achievement of certain project milestones and are subject to termination of all or portions of the contracts. Certain of the future obligations to Tallgrass High Plains Carbon Storage, LLC are secured by a leasehold deed of trust, security agreement and assignment of rents and leases. As of December 31, 2024, the company had incurred $17.9 million of accumulated construction costs in relation to these projects, presented as property, plant and equipment on the consolidated balance sheet, with an equal and offsetting liability presented as other liabilities.",
+      "visible_text_whitespace_normalized": "The company has entered into contracts with Tallgrass High Plains Carbon Storage, LLC and its affiliates, related to the construction, development and operation of carbon capture and sequestration projects at our three Nebraska plants, which are expected to be completed in 2025. Payments associated with these contracts are due monthly over a period of twelve years, commencing after the capture facilities are considered in-service. Amounts due under the contracts are based on the achievement of certain project milestones and are subject to termination of all or portions of the contracts. Certain of the future obligations to Tallgrass High Plains Carbon Storage, LLC are secured by a leasehold deed of trust, security agreement and assignment of rents and leases. As of December 31, 2024, the company had incurred $17.9 million of accumulated construction costs in relation to these projects, presented as property, plant and equipment on the consolidated balance sheet, with an equal and offsetting liability presented as other liabilities.",
+      "span_completeness": "Complete original div paragraph including all its inline markup and data; original HTML is authoritative."
+    }
+  ],
+  "stop_condition": "Preflight stops here. Do not force a production test with an invented expected categorical state. Another candidate or an explicitly resolved existing-contract interpretation is needed before a categorical oracle."
+}
