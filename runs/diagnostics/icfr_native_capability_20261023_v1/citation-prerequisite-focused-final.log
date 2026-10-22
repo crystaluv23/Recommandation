@@ -1,0 +1,62 @@
+E.E.E.............................................
+======================================================================
+ERROR: test_event_read_does_not_broadcast_to_another_case_on_shared_document (tests.test_mining_narrative_citation_readiness.NarrativeCitationReadinessTests.test_event_read_does_not_broadcast_to_another_case_on_shared_document)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 95, in test_event_read_does_not_broadcast_to_another_case_on_shared_document
+    controller = fixture(shared=True)
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 47, in fixture
+    execute(controller, 'fetch_evidence', case_refs=['case-001', 'case-002'],
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 15, in execute
+    return controller._execute(action, raw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 972, in _execute
+    return "running", [], self._execute_fetch(raw)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 1021, in _execute_fetch
+    raise InvalidMiningAction(
+stock_opportunity_agent.research.mining_controller.InvalidMiningAction: fetch_evidence source_families must come from available_source_families in the view; unknown: filing
+
+======================================================================
+ERROR: test_matching_document_read_supports_event_and_exact_s5_unit (tests.test_mining_narrative_citation_readiness.NarrativeCitationReadinessTests.test_matching_document_read_supports_event_and_exact_s5_unit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 71, in test_matching_document_read_supports_event_and_exact_s5_unit
+    controller = fixture()
+                 ^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 47, in fixture
+    execute(controller, 'fetch_evidence', case_refs=['case-001', 'case-002'],
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 15, in execute
+    return controller._execute(action, raw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 972, in _execute
+    return "running", [], self._execute_fetch(raw)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 1021, in _execute_fetch
+    raise InvalidMiningAction(
+stock_opportunity_agent.research.mining_controller.InvalidMiningAction: fetch_evidence source_families must come from available_source_families in the view; unknown: filing
+
+======================================================================
+ERROR: test_unrelated_read_cannot_authorize_an_unread_citation (tests.test_mining_narrative_citation_readiness.NarrativeCitationReadinessTests.test_unrelated_read_cannot_authorize_an_unread_citation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 59, in test_unrelated_read_cannot_authorize_an_unread_citation
+    controller = fixture()
+                 ^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 47, in fixture
+    execute(controller, 'fetch_evidence', case_refs=['case-001', 'case-002'],
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 15, in execute
+    return controller._execute(action, raw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 972, in _execute
+    return "running", [], self._execute_fetch(raw)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 1021, in _execute_fetch
+    raise InvalidMiningAction(
+stock_opportunity_agent.research.mining_controller.InvalidMiningAction: fetch_evidence source_families must come from available_source_families in the view; unknown: filing
+
+----------------------------------------------------------------------
+Ran 50 tests in 0.071s
+
+FAILED (errors=3)

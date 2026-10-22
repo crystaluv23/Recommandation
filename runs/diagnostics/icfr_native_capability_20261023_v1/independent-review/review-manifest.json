@@ -1,0 +1,22 @@
+{
+  "citation-controls-first-harness.py.txt": "009aad33c4070c6819eafeec35fabe831885621bf0794fb36927886d85ac4775",
+  "citation-results.json": "e299be9cb90dd7c138412f9c09853fd0cdf7fe759f233ef18babcb72231c4f9d",
+  "citation_controls.py": "88524386084dcfed33990a29d82c04aa53b6196039e635bf0f6dae2417483e0e",
+  "document-only-prompt-supplement.json": "8961193c1e8edfe91f73f72f1e788d35ba1061220d4ad5ab5cff4cee20af2c82",
+  "driver-corrected-boundary-controls.json": "8a45cda0c51400a678f1f0e04e92caa37168f6f89288d45eee98cc5336f18bd4",
+  "driver-review-initial-bindings.json": "e1230f2ca1f2cb866e2b68aac1ac552ed32ee8cd9c733afe4474b0a706774952",
+  "driver-reviewed-interim.py.txt": "1c853a52832c930a4513711003d596141973626c32a3e34e48d3dde393bf6116",
+  "final-read-bindings.json": "c05f976d7047be2cb78f01cb9ea23515a2e10413a6ba4d1345994aa7c7473740",
+  "harness-error-01.json": "3af912e620581dfda58b119b07f27cf584dbe28f7ef5772d91781d42b0faab52",
+  "input-only-control/fast/.stage.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "input-only-control/mining-output/.stage.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "input-only-control/mining-output/mining-output.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "input-only-control/publication/.stage.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "input-only-control/publication/publication.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "input-only-control/seeds-hypothesis-terminal/.stage.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "input-only-control/seeds-hypothesis-terminal/seeds/hypothesis/terminal.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "input-only-control/technical-decision/.stage.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "input-only-control/technical-decision/technical-decision.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "old-f9904bd5-mining_controller.py.txt": "cb4f4a489215b0a50b38fde6b887e031445c378a7edd0d45aca60bfe7f71220a",
+  "review.md": "85fcac50ebdad56c8ffe0f2d1109faebdf09c3e44590c286a4b048084d248546"
+}

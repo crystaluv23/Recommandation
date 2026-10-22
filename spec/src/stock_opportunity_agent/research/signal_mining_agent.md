@@ -111,6 +111,17 @@ document/content hash, offsets, source clocks/type and visibility result. Keep
 different event/document targets and case scopes distinct even for the same
 raw range. An event's later reads cannot be replaced by its original preview.
 Unfetched/unread document body and undisclosed metadata are never exported.
+The same citation prerequisite applies before S4 accepts a narrative proposal:
+every cited narrative event/document must resolve through this handoff to a
+nonempty executed readable window for its own document/hash and case scope.
+Reading an unrelated narrative, another case's event or hidden-only markup
+does not authorize that citation. A matching document read may support its
+fetched case-bound event refs; an event read cannot grant another case scope.
+Titles, previews and attribute counts steer search only. The normal Mining
+instruction must agree with this gate; an unmet prerequisite is actionable
+bounded invalid-action feedback before candidate terminal/sink, not a late
+S5 failure, no-pattern or fabricated semantic conclusion. The check proves
+read access and lineage, not that a span semantically proves the measurement.
 
 Materialization resolves every citation and relation dependency before sending
 spec/skill/tests requests. Missing lineage fails closed as an implementation

@@ -1,0 +1,13 @@
+{
+  "scope": "Read-time binding only; within-run stable scopes are stated in each result artifact",
+  "files": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "cbb8b89a95888faa0d59c5b1f0ed46cb97d9fcd960df5c4a272288c4df4240ee",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "d8bc2fc8a3ea4a8809126b6657d2279d3944f2e4e28d89a2f56fccea95dd5776",
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "bbf905efb9863d910d78923e9b313a3d65a41f124081bed74efa551b35eaa5c1",
+    "scripts/run_icfr_native_capability_stage.py": "1c853a52832c930a4513711003d596141973626c32a3e34e48d3dde393bf6116",
+    "spec/scripts/run_icfr_native_capability_stage.md": "cc8ee0c5d6b5c3b4bb1c9740a777daf1fd49924f066a0dd7ec43bb66ffa5cb2d",
+    "tests/test_mining_narrative_citation_readiness.py": "080d09b09f09edb092e19e4022dd447fba3df9617a90a5dee060f270d599014c",
+    "tests/test_icfr_native_capability_stage.py": "d609f33572f62ed10fc1d4bd080932c79775ba4a80e9285b52f2b0ba847e87d4"
+  },
+  "fixed_stage_exists": false
+}

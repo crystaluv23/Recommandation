@@ -1,0 +1,5 @@
+{
+  "scripts/run_icfr_native_capability_stage.py": "1c853a52832c930a4513711003d596141973626c32a3e34e48d3dde393bf6116",
+  "spec/scripts/run_icfr_native_capability_stage.md": "cc8ee0c5d6b5c3b4bb1c9740a777daf1fd49924f066a0dd7ec43bb66ffa5cb2d",
+  "tests/test_icfr_native_capability_stage.py": "d609f33572f62ed10fc1d4bd080932c79775ba4a80e9285b52f2b0ba847e87d4"
+}

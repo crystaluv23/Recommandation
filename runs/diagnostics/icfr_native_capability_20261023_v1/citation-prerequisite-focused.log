@@ -1,0 +1,14 @@
+.F................................................
+======================================================================
+FAIL: test_hidden_only_window_cannot_borrow_another_read (tests.test_mining_narrative_citation_readiness.NarrativeCitationReadinessTests.test_hidden_only_window_cannot_borrow_another_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 88, in test_hidden_only_window_cannot_borrow_another_read
+    with self.assertRaisesRegex(InvalidMiningAction, 'executed readable window'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidMiningAction not raised
+
+----------------------------------------------------------------------
+Ran 50 tests in 0.064s
+
+FAILED (failures=1)

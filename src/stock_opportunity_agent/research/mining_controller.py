@@ -1644,6 +1644,27 @@ class LabelAwareMiningController:
                 "predicate source_families do not intersect the cited "
                 f"narrative evidence families ({sorted(event_families)})"
             )
+        # Use the same case/hash-bound units that S5 will actually receive.
+        # An unrelated raw read cannot promote a discovery preview to evidence.
+        evidence = self.materialization_evidence()
+        narrative_refs = {
+            ref for ref in cited_refs
+            if ref in self._events or (
+                ref.startswith("document-")
+                and (document := self._document_by_ref(ref)) is not None
+                and _evidence_source_family(document.source_type) in _NARRATIVE_FAMILIES
+            )
+        }
+        unread = sorted(ref for ref in narrative_refs if not any(
+            str(window.get("readable_text", "")).strip()
+            for window in evidence.get(ref, {}).get("read_windows", ())
+        ))
+        if unread:
+            raise InvalidMiningAction(
+                "narrative citations require an executed readable window in "
+                "their own document/hash and case scope; use read_span before "
+                "proposing: " + ", ".join(unread)
+            )
         threshold = predicate.get("threshold")
         if threshold is not None and (
             not isinstance(threshold, Mapping)

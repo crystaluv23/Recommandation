@@ -1,0 +1,49 @@
+FFEFF.........
+======================================================================
+ERROR: test_matching_document_read_supports_event_and_exact_s5_unit (tests.test_mining_narrative_citation_readiness.NarrativeCitationReadinessTests.test_matching_document_read_supports_event_and_exact_s5_unit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 78, in test_matching_document_read_supports_event_and_exact_s5_unit
+    self.assertEqual(rows[0]['read_windows'][0]['case_refs'], ['case-002'])
+                     ~~~~~~~^^^^^^^^^^^^^^^^
+KeyError: 'read_windows'
+
+======================================================================
+FAIL: test_event_read_does_not_broadcast_to_another_case_on_shared_document (tests.test_mining_narrative_citation_readiness.NarrativeCitationReadinessTests.test_event_read_does_not_broadcast_to_another_case_on_shared_document)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 98, in test_event_read_does_not_broadcast_to_another_case_on_shared_document
+    with self.assertRaisesRegex(InvalidMiningAction, 'executed readable window'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidMiningAction not raised
+
+======================================================================
+FAIL: test_hidden_only_window_cannot_borrow_another_read (tests.test_mining_narrative_citation_readiness.NarrativeCitationReadinessTests.test_hidden_only_window_cannot_borrow_another_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 87, in test_hidden_only_window_cannot_borrow_another_read
+    with self.assertRaisesRegex(InvalidMiningAction, 'executed readable window'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidMiningAction not raised
+
+======================================================================
+FAIL: test_native_invalid_feedback_allows_read_then_same_candidate_without_late_s5_failure (tests.test_mining_narrative_citation_readiness.NarrativeCitationReadinessTests.test_native_invalid_feedback_allows_read_then_same_candidate_without_late_s5_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 124, in test_native_invalid_feedback_allows_read_then_same_candidate_without_late_s5_failure
+    self.assertEqual(result.model_calls, 5)
+AssertionError: 3 != 5
+
+======================================================================
+FAIL: test_unrelated_read_cannot_authorize_an_unread_citation (tests.test_mining_narrative_citation_readiness.NarrativeCitationReadinessTests.test_unrelated_read_cannot_authorize_an_unread_citation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_citation_readiness.py", line 65, in test_unrelated_read_cannot_authorize_an_unread_citation
+    with self.assertRaisesRegex(InvalidMiningAction, 'executed readable window'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidMiningAction not raised
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.008s
+
+FAILED (failures=4, errors=1)

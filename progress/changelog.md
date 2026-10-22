@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-23：完整ICFR native诊断driver与私有oracle预冻，保263源/18版本/265needs；先spec后修Mining normal prompt/S4逐引用实际可读同源前提，六独立旧误放变体新拒、合法event/document及语义限制保留。新增driver的显式0预算与input-only越界两边界已修，440关联通过/网络0、版本稳定；历史prefix原回执/输入权威及五漂移反例核过，完整链真实行为待独立新作者，原0/2、1/2及MVP open不改。见[报告](../reports/icfr-native-stage-and-citation-prerequisite-20261023.md)。
+
 - 2026-10-23：ICFR四精确申报本地原采集/DEI反核及原生双seed全输入预检；保263源/18版本/265needs，8输入捕获0作者，明确H1/S5/Fast资源及诊断use边界，未创建候选/改旧终态。见[报告](../reports/icfr-source-and-native-path-preflight-20261023.md)。
 - 2026-10-23：独立263份dev8原件/stable18审查找到ICFR实际/相反/假设/歧义材料族；价格不同供应观测窗口7of8但调整/断档限制保留，财务新组合缺注册函数不借LLM绕过。实际S4→S5整行692裁600、13引用裁12、doc/event后段和relation丢失已独立冻结；spec-first以Controller单向完整来源/实际读窗导出、原seed消费、ordered operands展开和实际source_type修复，未知引用模型前拒绝、原身份/PIT/原件不改。402关联/独立9组过，5诊断待答/0回答/receipt/新生产作者/网络；显式caller预算超限传控制流，审查误继H1到S5的假设保留纠正。0候选发布/新业务label/指针/完整后继；下一核ICFR历史版本/定义/完整成本再冻真正Mining能力正控，原0of2/1of2及MVP open不改。见mining-materialization-evidence-frontier报告。
 - 2026-10-23：spec-first将明确scope的single/累计/call预算、完整请求成本/消费后余量/下一请求下界接入Mining实际payload；自计量字段定宽decimal避免位数两周期，保全部动作/证据权限。生产仅传原有single上限，不臆造aggregate；native估算与messagebytes/模块envelope一致，默认完整请求/hash与旧同。独立捕获预算异常继承ValidationError误纠错、zero-usage前置拒绝误扣1call/18055两原失败后修，17原生组及397关联过/网络0；cache顺序复验同/无新物理回执。实际两源纯输入模拟四步97429/92841在原98304内，0fresh/非模型规划通过；75stage及1791sources保真，原0of2/旧1of2不改。下一冻结具备充分材料的真正能力正控/测量链，不重置终态或以更易endpoint替代S3–S8；canonicalA/B仍待原决策。见mining-request-budget-visibility报告。

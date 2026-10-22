@@ -6,7 +6,7 @@
 
 ## 最新实证
 
-[ICFR来源/全链预检](../reports/icfr-source-and-native-path-preflight-20261023.md)：4精确SEC申报本地原采集链通过，逐字历史同时点独立证明仍unknown；假设/缺评估/术语冲突保留。原生双seed保263源/stable18/265backlog，8首wire捕获/0作者；带单次上限与范围指派H87659/D78851，非实际tokens。完整driver/分层预算尚未冻结，S8诊断消费不能冒充committed use；下一写spec/driver，不再扩大源/leaf扫描。
+[ICFR原生驱动/引用前提](../reports/icfr-native-stage-and-citation-prerequisite-20261023.md)：完整S4→S5→S7→四案Fast诊断链已实现、私有oracle预冻；真实候选/准入/消费仍待。S4任意read曾误授权未读/跨case引用，现与S5同源读窗gate；独立六拒/三合法及语义限制、另两doc路径核过。0预算覆盖/input-only越界修复，440关联过/网络0，下一lint/checkpoint后冻真实stage。
 [能力材料/S4→S5交接](../reports/mining-materialization-evidence-frontier-20261023.md)：263份dev8源/stable18独立核过；ICFR有实际/相反/假设/歧义材料，价格窗口7/8但调整未知/有100天缺口，财务新组合无对应函数，不改定义求过。
 真实692字整行曾裁600、13引用裁12，doc/event后段及relation丢失；现单向whole-unit/实际读窗/source_type交接且绑定原seed，未知先拒，原始/身份/PIT保持。402关联/独立9组过、网络0；5诊断待答/0新作者，不称实现或准入通过。S5显式caller预算止传控制流，不臆继H1额度；旧0/2和1/2不改，真正能力正控仍待。
 [请求预算连接](../reports/mining-request-budget-visibility-20261023.md)：明确scope的成本/余量/下一请求下界进入实际payload，原生普通/patch/identity估算同；生产只接既有single上限、不增aggregate。397关联/独立17组过，网络0。

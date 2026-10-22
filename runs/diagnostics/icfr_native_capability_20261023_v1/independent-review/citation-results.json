@@ -1,0 +1,2398 @@
+{
+  "old_commit": "f9904bd5",
+  "old_controller_sha256": "cb4f4a489215b0a50b38fde6b887e031445c378a7edd0d45aca60bfe7f71220a",
+  "current_bindings": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "cbb8b89a95888faa0d59c5b1f0ed46cb97d9fcd960df5c4a272288c4df4240ee",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "92bbbe83d6ec46027e9450084e64800f914b02fc56e7f14603128ca83750be4c",
+    "src/stock_opportunity_agent/research/mining_agent_tools.py": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "bbf905efb9863d910d78923e9b313a3d65a41f124081bed74efa551b35eaa5c1"
+  },
+  "stable_current_sources": true,
+  "results": [
+    {
+      "id": "unrelated-case",
+      "old": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          4,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-46f5d9cb0786596b"
+        ],
+        "export_ready": {
+          "event-46f5d9cb0786596b": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "propose_candidate",
+            "input_hash": "b8dc3157c43a59b5a9acfac878b535c22ac51143ff47ef21c700e332715f497c",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "current": {
+        "status": "rejected",
+        "error": "InvalidMiningAction: narrative citations require an executed readable window in their own document/hash and case scope; use read_span before proposing: event-46f5d9cb0786596b",
+        "before": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "after": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "sink_calls": 0,
+        "cited_refs": [
+          "event-46f5d9cb0786596b"
+        ],
+        "export_ready": {
+          "event-46f5d9cb0786596b": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          }
+        ]
+      },
+      "expected_new_rejection": true,
+      "passed": true
+    },
+    {
+      "id": "same-case-unrelated-doc",
+      "old": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          4,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-30c0f607bedb902e"
+        ],
+        "export_ready": {
+          "event-30c0f607bedb902e": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "75a04dd9c77dcbda5c719cc8d45ca9e6a5f97249fe8db74763efc21a8cbb635a",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-30c0f607bedb902e"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "propose_candidate",
+            "input_hash": "1c377a05215973cf22151a9c655cc8611798e9575efc3ce895b65eb7442a1f9f",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-30c0f607bedb902e"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-30c0f607bedb902e"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "current": {
+        "status": "rejected",
+        "error": "InvalidMiningAction: narrative citations require an executed readable window in their own document/hash and case scope; use read_span before proposing: event-30c0f607bedb902e",
+        "before": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "after": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "sink_calls": 0,
+        "cited_refs": [
+          "event-30c0f607bedb902e"
+        ],
+        "export_ready": {
+          "event-30c0f607bedb902e": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "75a04dd9c77dcbda5c719cc8d45ca9e6a5f97249fe8db74763efc21a8cbb635a",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-30c0f607bedb902e"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          }
+        ]
+      },
+      "expected_new_rejection": true,
+      "passed": true
+    },
+    {
+      "id": "shared-other-case-event",
+      "old": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          4,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-d2f85a6fbafd1098"
+        ],
+        "export_ready": {
+          "event-d2f85a6fbafd1098": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-d2f85a6fbafd1098"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "propose_candidate",
+            "input_hash": "8566e842d0caa4d30b4dcc709d26492623f628428eb54873cbefce9e6009ea31",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-d2f85a6fbafd1098"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-d2f85a6fbafd1098"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "current": {
+        "status": "rejected",
+        "error": "InvalidMiningAction: narrative citations require an executed readable window in their own document/hash and case scope; use read_span before proposing: event-d2f85a6fbafd1098",
+        "before": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "after": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "sink_calls": 0,
+        "cited_refs": [
+          "event-d2f85a6fbafd1098"
+        ],
+        "export_ready": {
+          "event-d2f85a6fbafd1098": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-d2f85a6fbafd1098"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          }
+        ]
+      },
+      "expected_new_rejection": true,
+      "passed": true
+    },
+    {
+      "id": "hidden-only",
+      "old": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          5,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-1a2f6d62b819a40e"
+        ],
+        "export_ready": {
+          "event-1a2f6d62b819a40e": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "48e3d32e1a2b7af352cb27211c2a8f0e5a6d25a84729c826f932c80271e86a2e",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-1a2f6d62b819a40e"
+            ],
+            "source_types": [
+              "company_news",
+              "sec_filing"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "read_span",
+            "input_hash": "ed250b45ccbaef4646b2aae96a5fc248a53bbdf0beac589a8cf27a627b80c001",
+            "output_hash": "143be8acdb15a51711388eb835b7eac2428e4ac186f6cd0d7e7383d685877208",
+            "case_refs": [
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-1a2f6d62b819a40e"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "propose_candidate",
+            "input_hash": "f7e92087f85ad1c348bad8be3c25d51c551329c70dc9656baa49827d753ad657",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-1a2f6d62b819a40e"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 5,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-1a2f6d62b819a40e"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "current": {
+        "status": "rejected",
+        "error": "InvalidMiningAction: narrative citations require an executed readable window in their own document/hash and case scope; use read_span before proposing: event-1a2f6d62b819a40e",
+        "before": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "after": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "sink_calls": 0,
+        "cited_refs": [
+          "event-1a2f6d62b819a40e"
+        ],
+        "export_ready": {
+          "event-1a2f6d62b819a40e": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "48e3d32e1a2b7af352cb27211c2a8f0e5a6d25a84729c826f932c80271e86a2e",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-1a2f6d62b819a40e"
+            ],
+            "source_types": [
+              "company_news",
+              "sec_filing"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "read_span",
+            "input_hash": "ed250b45ccbaef4646b2aae96a5fc248a53bbdf0beac589a8cf27a627b80c001",
+            "output_hash": "143be8acdb15a51711388eb835b7eac2428e4ac186f6cd0d7e7383d685877208",
+            "case_refs": [
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-1a2f6d62b819a40e"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          }
+        ]
+      },
+      "expected_new_rejection": true,
+      "passed": true
+    },
+    {
+      "id": "whitespace-only",
+      "old": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          5,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-cbf9a22d1754a70c"
+        ],
+        "export_ready": {
+          "event-cbf9a22d1754a70c": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-cbf9a22d1754a70c"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "read_span",
+            "input_hash": "13e172acc03f14aadf9709028835d40e21181bc3e2e66bb87b85ca1b5e3ca0b4",
+            "output_hash": "1b4f4f9beaea2b5c8d287af448e78bb8995395c1b61679d457513158cc3304a4",
+            "case_refs": [
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-cbf9a22d1754a70c"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "propose_candidate",
+            "input_hash": "6b82605cc2adbe058683ee0a86c857c34f45c7d5cd4d727c88a949f57262335d",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-cbf9a22d1754a70c"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 5,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-cbf9a22d1754a70c"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "current": {
+        "status": "rejected",
+        "error": "InvalidMiningAction: narrative citations require an executed readable window in their own document/hash and case scope; use read_span before proposing: event-cbf9a22d1754a70c",
+        "before": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "after": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "sink_calls": 0,
+        "cited_refs": [
+          "event-cbf9a22d1754a70c"
+        ],
+        "export_ready": {
+          "event-cbf9a22d1754a70c": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-cbf9a22d1754a70c"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "read_span",
+            "input_hash": "13e172acc03f14aadf9709028835d40e21181bc3e2e66bb87b85ca1b5e3ca0b4",
+            "output_hash": "1b4f4f9beaea2b5c8d287af448e78bb8995395c1b61679d457513158cc3304a4",
+            "case_refs": [
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-cbf9a22d1754a70c"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          }
+        ]
+      },
+      "expected_new_rejection": true,
+      "passed": true
+    },
+    {
+      "id": "mixed-read-and-unread",
+      "old": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          4,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-47d68bc4aeee5e41",
+          "event-46f5d9cb0786596b"
+        ],
+        "export_ready": {
+          "event-47d68bc4aeee5e41": true,
+          "event-46f5d9cb0786596b": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "propose_candidate",
+            "input_hash": "11c145a685da44db2a0f98d4ba870fc5278595ee0ff77dd82d21fb2f2e4e70c7",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "current": {
+        "status": "rejected",
+        "error": "InvalidMiningAction: narrative citations require an executed readable window in their own document/hash and case scope; use read_span before proposing: event-46f5d9cb0786596b",
+        "before": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "after": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "sink_calls": 0,
+        "cited_refs": [
+          "event-47d68bc4aeee5e41",
+          "event-46f5d9cb0786596b"
+        ],
+        "export_ready": {
+          "event-47d68bc4aeee5e41": true,
+          "event-46f5d9cb0786596b": false
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          }
+        ]
+      },
+      "expected_new_rejection": true,
+      "passed": true
+    },
+    {
+      "id": "matching-document",
+      "old": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          5,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-46f5d9cb0786596b"
+        ],
+        "export_ready": {
+          "event-46f5d9cb0786596b": true
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "read_span",
+            "input_hash": "aaeb6d8a919eb47f74bfcb406480f85e423cfa13282cc72c2beb606506495537",
+            "output_hash": "8c13491dbb5469cedae1cb5a20fe98cc6938d6d016c304c8674bdfe1ef030003",
+            "case_refs": [
+              "case-002"
+            ],
+            "evidence_refs": [
+              "document-source-two"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "propose_candidate",
+            "input_hash": "b8dc3157c43a59b5a9acfac878b535c22ac51143ff47ef21c700e332715f497c",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 5,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "current": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          5,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-46f5d9cb0786596b"
+        ],
+        "export_ready": {
+          "event-46f5d9cb0786596b": true
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "read_span",
+            "input_hash": "aaeb6d8a919eb47f74bfcb406480f85e423cfa13282cc72c2beb606506495537",
+            "output_hash": "8c13491dbb5469cedae1cb5a20fe98cc6938d6d016c304c8674bdfe1ef030003",
+            "case_refs": [
+              "case-002"
+            ],
+            "evidence_refs": [
+              "document-source-two"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "propose_candidate",
+            "input_hash": "b8dc3157c43a59b5a9acfac878b535c22ac51143ff47ef21c700e332715f497c",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 5,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "expected_new_rejection": false,
+      "passed": true
+    },
+    {
+      "id": "shared-matching-document",
+      "old": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          5,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-d2f85a6fbafd1098"
+        ],
+        "export_ready": {
+          "event-d2f85a6fbafd1098": true
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-d2f85a6fbafd1098"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "read_span",
+            "input_hash": "d1085294f2f51452fbfcb5ab62fbaafe9df6658fd6afde9a28f0cb4d8393d242",
+            "output_hash": "7c609d4ac8284d076613461628907b0198947c95f8a14eaea19b03cb26ca1ab5",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "document-source-one"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "propose_candidate",
+            "input_hash": "8566e842d0caa4d30b4dcc709d26492623f628428eb54873cbefce9e6009ea31",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-d2f85a6fbafd1098"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 5,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-d2f85a6fbafd1098"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "current": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          5,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-d2f85a6fbafd1098"
+        ],
+        "export_ready": {
+          "event-d2f85a6fbafd1098": true
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-d2f85a6fbafd1098"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "read_span",
+            "input_hash": "d1085294f2f51452fbfcb5ab62fbaafe9df6658fd6afde9a28f0cb4d8393d242",
+            "output_hash": "7c609d4ac8284d076613461628907b0198947c95f8a14eaea19b03cb26ca1ab5",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "document-source-one"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "propose_candidate",
+            "input_hash": "8566e842d0caa4d30b4dcc709d26492623f628428eb54873cbefce9e6009ea31",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-d2f85a6fbafd1098"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 5,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-d2f85a6fbafd1098"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "expected_new_rejection": false,
+      "passed": true
+    },
+    {
+      "id": "matching-event",
+      "old": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          5,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-46f5d9cb0786596b"
+        ],
+        "export_ready": {
+          "event-46f5d9cb0786596b": true
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "read_span",
+            "input_hash": "d628d96cac0fb20d1887b0e648bd3c13912b390977ae61a1720336463b3bba38",
+            "output_hash": "16ea47e12199f14d07f7047cb347c6ea1c48c0b22ce0620ef4ce1d3c6d68ef3d",
+            "case_refs": [
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "propose_candidate",
+            "input_hash": "b8dc3157c43a59b5a9acfac878b535c22ac51143ff47ef21c700e332715f497c",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 5,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "current": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          3,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          5,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-46f5d9cb0786596b"
+        ],
+        "export_ready": {
+          "event-46f5d9cb0786596b": true
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "read_span",
+            "input_hash": "d628d96cac0fb20d1887b0e648bd3c13912b390977ae61a1720336463b3bba38",
+            "output_hash": "16ea47e12199f14d07f7047cb347c6ea1c48c0b22ce0620ef4ce1d3c6d68ef3d",
+            "case_refs": [
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "propose_candidate",
+            "input_hash": "b8dc3157c43a59b5a9acfac878b535c22ac51143ff47ef21c700e332715f497c",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 5,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "expected_new_rejection": false,
+      "passed": true
+    },
+    {
+      "id": "read-does-not-prove-meaning",
+      "old": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          4,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-47d68bc4aeee5e41"
+        ],
+        "export_ready": {
+          "event-47d68bc4aeee5e41": true
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "propose_candidate",
+            "input_hash": "c80f7ede55489c2150fbf97a18454c909773936f73f9b01cb4387ac3fda3455f",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "current": {
+        "status": "candidate",
+        "error": null,
+        "before": [
+          "evidence_ready",
+          1,
+          2,
+          0
+        ],
+        "after": [
+          "terminal",
+          2,
+          4,
+          1
+        ],
+        "sink_calls": 1,
+        "cited_refs": [
+          "event-47d68bc4aeee5e41"
+        ],
+        "export_ready": {
+          "event-47d68bc4aeee5e41": true
+        },
+        "ledger": [
+          {
+            "action_id": 1,
+            "action": "fetch_evidence",
+            "input_hash": "31d922cfc6b878101e4bbc7a7aaf6d813e30b8a61d2949d27f00e2c209f82fa0",
+            "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+            "case_refs": [
+              "case-001",
+              "case-002"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41",
+              "event-46f5d9cb0786596b"
+            ],
+            "source_types": [
+              "company_news"
+            ],
+            "pit_status": "enforced",
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": false
+            },
+            "omitted_coverage": {
+              "excluded_document_ids": []
+            },
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 2,
+            "action": "read_span",
+            "input_hash": "34299e127177a9b14f7e7dae2aeee1c6b0ff30ba731fc4e2109d0c7869cf81dd",
+            "output_hash": "3cfe7478f4d3615dd1946e51af3391e04b46c3c80097b227786512e6e89cd876",
+            "case_refs": [
+              "case-001"
+            ],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": null,
+            "note": null
+          },
+          {
+            "action_id": 3,
+            "action": "propose_candidate",
+            "input_hash": "c80f7ede55489c2150fbf97a18454c909773936f73f9b01cb4387ac3fda3455f",
+            "output_hash": "6cbccd3b88018e578d439ae5da5fab903bbd1a473452b4ede153369bfe8c4aad",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "candidate_proposed",
+            "note": null
+          },
+          {
+            "action_id": 4,
+            "action": "validate_candidate",
+            "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+            "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+            "case_refs": [],
+            "evidence_refs": [
+              "event-47d68bc4aeee5e41"
+            ],
+            "source_types": [],
+            "pit_status": "enforced",
+            "coverage": {},
+            "omitted_coverage": {},
+            "usage": {
+              "model_calls": 0
+            },
+            "terminal_disposition": "locally_validated",
+            "note": null
+          }
+        ]
+      },
+      "expected_new_rejection": false,
+      "passed": true
+    }
+  ],
+  "boundary": "Exact old controller source, same currently bound tools; synthetic observations; no semantic or production model acceptance",
+  "network": 0,
+  "models": 0,
+  "production_answers": 0,
+  "check_or_locked_test": 0
+}

@@ -1,0 +1,6 @@
+{
+  "type": "ValidationError",
+  "message": "raw info content must not be empty",
+  "cause": "Whitespace-only complete synthetic document is disallowed by the source constructor. The intended counterexample is a valid document with a whitespace-only requested range.",
+  "correction": "Append substantive unread body after initial six whitespace characters; keep the exact whitespace-only read range."
+}

@@ -1,0 +1,870 @@
+"""Run the frozen, unscored native ICFR capability control with local role handoff."""
+from __future__ import annotations
+
+import argparse
+from contextlib import ExitStack, contextmanager
+from copy import deepcopy
+from dataclasses import asdict
+from datetime import datetime
+import fcntl
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import socket
+from types import MethodType, SimpleNamespace
+from unittest.mock import patch
+
+try:
+    from scripts.diagnose_executed_answer_scope import StageContract
+except ModuleNotFoundError:  # Direct script entry places scripts/ on sys.path.
+    from diagnose_executed_answer_scope import StageContract
+from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash as digest
+from stock_opportunity_agent.cases.label_store import LabelStore
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.llm import get_model
+from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.evolution_control import (
+    _historical_registry_snapshot, _rebased_history_meta_entries,
+)
+from stock_opportunity_agent.research.evolution_core import (
+    AgentUsage, PlanMetaMemory, ResearchState, RoundMetaEntry, RuntimeStopReason,
+    SignalRound, SignalSelectionDecision, _assemble_final_context,
+    _bounded_runtime_signal_selections, _research_state_delta, default_information_plan,
+)
+from stock_opportunity_agent.research.evolution_plan_roles import (
+    LLMResearchController, LLMSignalRetrievalAgent,
+)
+from stock_opportunity_agent.research.evolution_research_validation import (
+    _validate_research_state_refs, validate_need_dispositions,
+)
+from stock_opportunity_agent.research.evolution_transport import (
+    ExternalAttemptLedger, StructuredRoleClient,
+)
+from stock_opportunity_agent.research.local_role_exchange import (
+    LocalRoleExchange, LocalRoleRequestPending, _immutable,
+)
+from stock_opportunity_agent.research.mining_controller import ControllerResult, LedgerEntry
+from stock_opportunity_agent.research.plan_evolution import EvolutionWorkspace
+from stock_opportunity_agent.research.scheme_evolution import EvolutionControlFlow
+from stock_opportunity_agent.research.signal_evolution import (
+    SignalCandidateEffectivenessEvaluator, SignalEvolutionEngine,
+)
+from stock_opportunity_agent.research.evolution_signal_roles import (
+    LLMSignalMiningModel, LLMSignalUpdateModel, StructuredLLMSignalRunner,
+)
+from stock_opportunity_agent.signal_library import SignalExecutor, SignalRegistry
+
+REPO = Path(__file__).resolve().parents[1]
+BASE = REPO / 'runs/diagnostics/icfr_native_capability_20261023_v1'
+STAGE_ROOT = BASE / 'stage'
+PARENT = REPO / 'runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1'
+MATERIAL = REPO / 'runs/diagnostics/mining_capability_frontier_20261023_v1/independent'
+SPEC = REPO / 'spec/scripts/run_icfr_native_capability_stage.md'
+TEST = REPO / 'tests/test_icfr_native_capability_stage.py'
+CONTROLS = ('case-001', 'case-003', 'case-005', 'case-006')
+MIB = 1024 * 1024
+LIMITS = {'max_request_tokens': 262144, 'max_structured_corrections': 1,
+          'structured_reasoning_token_reserve': 0, 'max_local_role_calls': 728}
+SCOPE_LIMITS = {'global': (728, 56 * MIB), 'mining': (80, 12 * MIB),
+                'candidate': (300, 16 * MIB), 'fast': (12, 3 * MIB)}
+ASSIGNMENT = (
+    ' Prospective bounded capability assignment: investigate a reusable narrative measurement '
+    'in the public ICFR disclosure family. Independently choose and verify the measurement from '
+    'authorized point-in-time material using the full existing catalog, backlog and tools. '
+    'This assignment supplies no candidate, source locator, class mapping, supporting answer, '
+    'or claim about stock direction or magnitude. Preserve unsupported or ambiguous conclusions '
+    'as unknown. Retain every original action, exploration, evidence and disposition obligation.')
+NEED = ('Identify the latest publicly disclosed dated management assessment of ICFR, its '
+        'assessment period, material-weakness/remediation conclusion, and whether this establishes '
+        'ICFR status at the prediction cutoff; preserve unknowns and conflicting terminology.')
+EXCLUDED = {'progress.json', '.stage.lock', 'completion.json', 'exchange/.dispatch.lock'}
+
+
+class StageBudgetStop(EvolutionControlFlow):
+    """Stop a diagnostic resource/control boundary outside model-content correction."""
+
+
+class InputCaptured(EvolutionControlFlow):
+    """Stop before cache/receive while retaining an exact native input."""
+
+
+def read(path):
+    """Read a saved JSON artifact."""
+    return json.loads(Path(path).read_text(encoding='utf-8'))
+
+
+def binding(path):
+    """Bind exact file bytes, without interpreting any source instructions."""
+    path = Path(path).resolve()
+    return {'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
+def save(path, value):
+    """Persist one immutable diagnostic checkpoint."""
+    _immutable(Path(path), value)
+
+
+def _root(root):
+    path = Path(root).resolve()
+    if path != STAGE_ROOT.resolve():
+        raise ValidationError('stage destination differs from its fixed contract')
+    return path
+
+
+@contextmanager
+def _lock(root):
+    with (root / '.stage.lock').open('a+') as handle:
+        try:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            raise ValidationError('stage already has an executor') from exc
+        yield
+
+
+@contextmanager
+def guards():
+    """Forbid network, label access, persistent source writes and business cycles."""
+    def forbidden(*args, **kwargs):
+        raise StageBudgetStop('network/labels/source mutation/business execution forbidden')
+    append = RawInfoStore.append
+    def memory_append(store, document):
+        if store.root is not None:
+            forbidden()
+        return append(store, document)
+    with ExitStack() as stack:
+        for owner, name in ((socket, 'create_connection'), (socket.socket, 'connect'),
+                (socket.socket, 'connect_ex'), (LabelStore, '__init__'), (LabelStore, 'load'),
+                (LabelStore, 'ground_truth'), (LabelStore, 'record'),
+                (SignalEvolutionEngine, 'run_cycle'), (EvolutionWorkspace, 'complete_cycle'),
+                (EvolutionWorkspace, 'complete_round'),
+                (SignalCandidateEffectivenessEvaluator, 'evaluate'), (ExternalAttemptLedger, 'reserve')):
+            if hasattr(owner, name):
+                stack.enter_context(patch.object(owner, name, forbidden))
+        stack.enter_context(patch.object(RawInfoStore, 'append', memory_append))
+        yield
+
+
+def _code():
+    paths = set((REPO / 'src/stock_opportunity_agent').rglob('*.py'))
+    paths.update((REPO / 'spec/src/stock_opportunity_agent').rglob('*.md'))
+    paths.update(REPO / name for name in ('spec/vision.md', 'spec/architecture.md', 'spec/engineering-mvp.md'))
+    paths.update((Path(__file__), SPEC, TEST, REPO / 'scripts/diagnose_executed_answer_scope.py'))
+    return [binding(p) for p in sorted(paths)]
+
+
+def _check(rows):
+    for row in rows:
+        if binding(row['path'])['sha256'] != row['sha256']:
+            raise ValidationError('frozen bytes drifted: ' + row['path'])
+
+
+def _files(root):
+    return {p.relative_to(root).as_posix(): binding(p)['sha256'] for p in sorted(root.rglob('*'))
+            if p.is_file() and p.relative_to(root).as_posix() not in EXCLUDED}
+
+
+def _snapshot_record(snapshot):
+    return {'version': snapshot.version, 'registry_hash': snapshot.registry_hash,
+            'refs': [s.ref for s in snapshot.specs],
+            'specs': [s.to_dict() for s in snapshot.specs], 'skills': dict(snapshot.skills)}
+
+
+def prepare(root=STAGE_ROOT):
+    """Freeze source/code/prefix and create legitimate new state without any role."""
+    root = _root(root)
+    if root.exists():
+        raise ValidationError('prepare is single-entry')
+    _check(read(BASE / 'oracle/acceptance-obligations.json')['contract_bindings'])
+    obligations = read(MATERIAL / 'material-obligations-frozen.json')
+    definitions = read(MATERIAL / 'function-and-definition-map.json')['stable_registry18']
+    _check(obligations['source_document_bindings'] + obligations['definition_bindings'])
+    _check([row['materialized_skill'] for row in definitions if row.get('materialized_skill')])
+    sources = obligations['source_document_bindings']
+    if len(sources) != 263 or len(definitions) != 18:
+        raise ValidationError('approved source/definition population changed')
+    approved = read(PARENT / 'approved_cases.json')
+    identities = [{key: row[key] for key in ('case_id', 'company_id', 'prediction_time', 'basic_info')}
+                  for rows in approved['splits'].values() for row in rows]
+    if len(identities) != 40 or len({r['case_id'] for r in identities}) != 40:
+        raise ValidationError('approved identity-only population differs')
+    factory = read(PARENT / 'factory-input.json')
+    if len(factory['backlog_needs']) != 265 or len(factory['meta_memory_disclosures']) != 6:
+        raise ValidationError('accepted factory population changed')
+    groups = obligations['authorized_original_group_map']
+    wire = read(obligations['source_authority']['first_native_manifest_wire']['path'])
+    wire_view = json.loads(next(m['content'] for m in wire['messages'] if m['role'] == 'user'))
+    if factory['label_map'] != groups or wire_view['label_map'] != groups:
+        raise ValidationError('opaque group authority differs')
+    by_id = {r['case_id']: r for r in identities}
+    if (len(obligations['dev8']) != 8
+            or set(groups) != {r['case_ref'] for r in obligations['dev8']}
+            or factory['research_axis'] != wire_view['research_axis']):
+        raise ValidationError('original dev8/axis authority differs')
+    for row in obligations['dev8']:
+        if (by_id[row['case_id']]['prediction_time'] != row['cutoff']
+                or wire_view['case_prediction_times'][row['case_ref']] != row['cutoff']):
+            raise ValidationError('original dev8 cutoff differs')
+    root.mkdir(parents=True)
+    with guards():
+        work = root / 'workspace'
+        # Copy definitions/history only: never copy old state, active cycle or validation.
+        shutil.copytree(PARENT / 'workspace/signals', work / 'signals')
+        shutil.copytree(PARENT / 'workspace/slow_history', work / 'slow_history')
+        registry = SignalRegistry(work / 'signals', candidate_root=work / 'signals_candidates')
+        baseline = _historical_registry_snapshot(registry)
+        if {s.ref for s in baseline.specs} != {r['signal_ref'] for r in definitions}:
+            raise ValidationError('exact baseline refs differ')
+        workspace = EvolutionWorkspace(work)
+        history_hash = read(work / 'slow_history/manifest.json')['manifest_hash']
+        contract = {'schema_version': 'icfr-native-capability-stage-v1', 'root': str(root),
+                    'limits': LIMITS, 'scope_limits': SCOPE_LIMITS, 'controls': list(CONTROLS),
+                    'fixed_candidate_denominator': 1, 'fixed_consumer_denominator': 4,
+                    'slow_history_manifest_hash': history_hash, 'external_api_calls': 0,
+                    'assignment': ASSIGNMENT, 'need': NEED,
+                    'provenance': 'current_cycle1 is this isolated diagnostic with accepted-prefix Slow input; not a business commit'}
+        save(root / 'contract.json', contract)
+        save(work / 'run_contract.json', {'contract': contract, 'contract_hash': digest(contract)})
+        save(workspace.cycle_state_path, {'schema_version': 'dual-loop-cycle-state-v2',
+             'run_contract_hash': digest(contract), 'initial_signal_registry_version': baseline.version,
+             'initial_signal_registry_hash': baseline.registry_hash,
+             'current_signal_registry_version': baseline.version,
+             'current_signal_registry_hash': baseline.registry_hash,
+             'last_completed_cycle': 0, 'active_cycle': None})
+        save(root / 'inputs/identities.json', {'identities': identities})
+        save(root / 'inputs/factory.json', factory)
+        save(root / 'inputs/dev.json', {'cases': obligations['dev8'], 'groups': groups})
+        prefix = PARENT / 'workspace/experiments/cycles/cycle-0001'
+        for name in ('slow_input.json', 'slow_memory.json'):
+            save(root / 'inputs' / name, read(prefix / name))
+        save(root / 'inputs/baseline.json', _snapshot_record(baseline))
+        oracle_files = [BASE / 'oracle/acceptance-obligations.json', MATERIAL / 'material-obligations-frozen.json', MATERIAL / 'material-review.md',
+                        MATERIAL / 'narrative-material-bindings.json',
+                        BASE / 'source-review/obligations.json', BASE / 'source-review/bindings-evidence.json',
+                        BASE / 'source-review/root-counterreview.json']
+        save(root / 'private-oracle.json', {'bindings': [binding(p) for p in oracle_files],
+             'source_documents': sources, 'definition_bindings': obligations['definition_bindings'],
+             'qualification': 'bounded exact local SEC accession/body/date binding; remote historical identity unknown'})
+        prefix_paths = [PARENT / 'factory-input.json', PARENT / 'approved_cases.json',
+                        obligations['source_authority']['first_native_manifest_wire']['path'],
+                        prefix / 'slow_input.json', prefix / 'slow_memory.json']
+        original_files = [binding(p) for name in ('signals', 'slow_history')
+                          for p in sorted((PARENT / 'workspace' / name).rglob('*')) if p.is_file()]
+        manifest = {'schema_version': 'icfr-native-stage-manifest-v1', 'code': _code(),
+                    'source_bindings': sources + [binding(p) for p in oracle_files + prefix_paths] + original_files,
+                    'contract_hash': digest(contract), 'inputs': _files(root),
+                    'baseline_registry_hash': baseline.registry_hash}
+        save(root / 'manifest.json', manifest)
+    result = {'status': 'prepared_not_dispatched', 'manifest_hash': digest(manifest),
+              'fixed_candidate_denominator': 1, 'fixed_consumer_denominator': 4}
+    atomic_write_json(root / 'progress.json', result)
+    return result
+
+
+def verify(root):
+    """Reject source/code/contract/input drift and business pointer changes."""
+    manifest = read(root / 'manifest.json')
+    _check(manifest['code'] + manifest['source_bindings'])
+    if digest(read(root / 'contract.json')) != manifest['contract_hash']:
+        raise ValidationError('contract drift')
+    for name, sha in manifest['inputs'].items():
+        # Baseline stable manifests change only during the native new transition.
+        if name.startswith('workspace/signals/'):
+            if '/versions/' in name:
+                if binding(root / name)['sha256'] != sha:
+                    raise ValidationError('original stable version mutated')
+            continue
+        if binding(root / name)['sha256'] != sha:
+            raise ValidationError('immutable stage input changed: ' + name)
+    work = root / 'workspace'
+    if read(work / 'state.json').get('last_completed_round') != 0:
+        raise ValidationError('business round pointer advanced')
+    cycle = read(work / 'cycle_state.json')
+    if cycle.get('last_completed_cycle') != 0 or cycle.get('active_cycle') is not None:
+        raise ValidationError('business cycle state changed')
+    if (root / 'unused_external.json').exists() and read(root / 'unused_external.json').get('attempts'):
+        raise ValidationError('external attempt ledger is not empty')
+    for name in ('slow_loop_validation.json', 'slow_loop_result.json'):
+        if list((work / 'experiments').rglob(name)):
+            raise ValidationError('unauthorized complete Slow artifact')
+    if not (root / 'technical-decision.json').exists():
+        registry = SignalRegistry(work / 'signals', candidate_root=work / 'signals_candidates')
+        if _snapshot_record(_historical_registry_snapshot(registry)) != read(root / 'inputs/baseline.json'):
+            raise ValidationError('unpromoted baseline Registry changed')
+    return manifest
+
+
+class Budget:
+    """Account unique submitted answers across native cache reconstruction."""
+
+    def __init__(self, root, *, input_only=False):
+        self.root = Path(root)
+        self.scope = 'mining'
+        self.input_only = input_only
+
+    def records(self):
+        """Verify raw wire/receipt costs before counting unique answered identities."""
+        rows = {}
+        try:
+            for path in (self.root / 'exchange/receipts').glob('*.json'):
+                receipt = read(path)
+                h = path.stem
+                meta = read(self.root / 'request-scopes' / (h + '.json'))
+                request_path = self.root / 'transport/requests' / (h + '.json')
+                if Path(meta['request']['path']).resolve() != request_path.resolve():
+                    raise ValidationError('answered request path differs from native transport')
+                _check([meta['request']])
+                envelope = read(request_path)
+                request = envelope['request']
+                cost = len(json.dumps(request['messages'], ensure_ascii=False, sort_keys=True,
+                                      separators=(',', ':')).encode()) + request['max_output_tokens']
+                inbox = self.root / 'exchange/inbox' / (h + '.json')
+                outbox = self.root / 'exchange/outbox' / (h + '.txt')
+                expected_inbox = {'schema_version': 'independent-local-role-inbox-v1',
+                    'request_hash': h, 'backend': 'independent-subagent', 'messages': request['messages'],
+                    'max_output_tokens': request['max_output_tokens'],
+                    'output_contract': request.get('output_contract', request.get('response_format'))}
+                if (envelope.get('request_hash') != h or digest(request) != h
+                        or type(meta['reservation']) is not int or meta['reservation'] != cost
+                        or read(inbox) != expected_inbox or receipt.get('request_hash') != h
+                        or not receipt.get('agent_id')
+                        or receipt.get('inbox_sha256') != binding(inbox)['sha256']
+                        or receipt.get('raw_output_sha256') != binding(outbox)['sha256']):
+                    raise ValidationError('answered wire/cost/receipt identity differs')
+                memberships = list((self.root / 'request-scope-membership' / h).glob('*.json'))
+                scopes = []
+                for member in memberships:
+                    scope = read(member)['scope']
+                    if member.stem != digest(scope) or scope.split(':', 1)[0] not in SCOPE_LIMITS:
+                        raise ValidationError('request scope binding differs')
+                    scopes.append(scope)
+                if meta['initial_scope'] not in scopes:
+                    raise ValidationError('original answered scope membership is missing')
+                rows[h] = {**meta, 'scopes': scopes}
+        except (OSError, KeyError, TypeError, ValueError, ValidationError) as exc:
+            raise StageBudgetStop('answered accounting proof invalid: ' + str(exc)) from exc
+        return rows
+
+    def used(self, scope=None):
+        """Count each submitted answer once globally and once per applicable scope."""
+        rows = self.records().values()
+        if scope is not None:
+            rows = [r for r in rows if scope in r['scopes']]
+        rows = list(rows)
+        return len(rows), sum(r['reservation'] for r in rows)
+
+    def remaining(self):
+        """Return the current scope/global logical reservation remainder."""
+        kind = self.scope.split(':', 1)[0]
+        return min(SCOPE_LIMITS[kind][1] - self.used(self.scope)[1],
+                   SCOPE_LIMITS['global'][1] - self.used()[1])
+
+    def phase_allowance(self, name):
+        """Freeze a component's initial remainder so pending replay keeps its hash."""
+        path = self.root / 'phase-budgets' / (name + '.json')
+        if not path.exists():
+            save(path, {'remaining': self.remaining()})
+        return read(path)['remaining']
+
+    def __call__(self, event):
+        if event.get('event_type') != 'request_ready':
+            return
+        request = read(event['request_path'])['request']
+        h = event['request_hash']
+        reservation = len(json.dumps(request['messages'], ensure_ascii=False, sort_keys=True,
+                                     separators=(',', ':')).encode()) + request['max_output_tokens']
+        meta_path = self.root / 'request-scopes' / (h + '.json')
+        initial_scope = read(meta_path)['initial_scope'] if meta_path.exists() else self.scope
+        meta = {'reservation': reservation, 'request': binding(event['request_path']),
+                'initial_scope': initial_scope}
+        save(meta_path, meta)
+        answered = self.records()
+        if h not in answered:
+            pending = [p.stem for p in (self.root / 'exchange/inbox').glob('*.json')
+                       if p.stem not in answered]
+            if pending and pending != [h]:
+                raise StageBudgetStop('another unanswered inbox is current')
+        kind = self.scope.split(':', 1)[0]
+        for scope, limits in ((None, SCOPE_LIMITS['global']), (self.scope, SCOPE_LIMITS[kind])):
+            already = h in answered and (scope is None or scope in answered[h]['scopes'])
+            if not already:
+                calls, used = self.used(scope)
+                if calls + 1 > limits[0] or used + reservation > limits[1]:
+                    raise StageBudgetStop('answered request scope ceiling: ' + str(scope))
+        if reservation > LIMITS['max_request_tokens']:
+            raise StageBudgetStop('complete request ceiling exceeded')
+        save(self.root / 'request-scope-membership' / h / (digest(self.scope) + '.json'),
+             {'scope': self.scope})
+        if self.input_only:
+            raise InputCaptured(json.dumps({'request_hash': h, 'request_path': event['request_path'],
+                                            'reservation': reservation, 'scope': self.scope}))
+
+
+class Caller(StructuredRoleClient):
+    """Use the preflighted scope assignment identically in preview and real call."""
+
+    def estimate_json_request_tokens(self, **kwargs):
+        """Estimate exactly the assignment-bearing request used by the caller."""
+        if self.budget.scope == 'mining':
+            kwargs['system_prompt'] += ASSIGNMENT
+        return super().estimate_json_request_tokens(**kwargs)
+
+    def complete_json(self, **kwargs):
+        """Run the native request with explicit independent per-request ceiling."""
+        if self.budget.scope == 'mining':
+            kwargs['system_prompt'] += ASSIGNMENT
+        requested = kwargs.get('max_request_tokens')
+        if requested is not None and (type(requested) is not int or requested < 1):
+            raise StageBudgetStop('explicit native caller remainder is exhausted or invalid')
+        kwargs['max_request_tokens'] = min(requested if requested is not None else 262144, 262144)
+        return super().complete_json(**kwargs)
+
+
+def make_client(root, budget):
+    """Construct only the registered network-free production transport."""
+    client = Caller(registration=get_model('independent-subagent'),
+        contract=StageContract(read(root / 'contract.json')), workspace=root / 'transport',
+        local_role_exchange=LocalRoleExchange(root / 'exchange', max_calls=728),
+        ledger=ExternalAttemptLedger(root / 'unused_external.json', max_attempts=1, max_total_cost=.01),
+        allow_external=False, environ={}, on_progress=budget)
+    client.budget = budget
+    return client
+
+
+def _candidate_bundle(registry, ref, *, root=None):
+    spec, skill = registry.load_candidate(ref)
+    tests = registry.load_candidate_tests(ref)
+    bundle = {'signal_ref': ref, 'candidate_hash': registry.candidate_hash(ref),
+              'spec': spec.to_dict(), 'skill': skill, 'tests': list(tests)}
+    if root is not None:
+        origin_path = root / 'candidate-scopes' / (ref + '.json')
+        origin = read(origin_path)
+        bundle['origin'] = {'controller_candidate': origin['controller_candidate'],
+                            'scope_binding': binding(origin_path),
+                            'seed_terminal_binding': binding(root / 'seeds' / origin['seed'] / 'terminal.json')}
+    return bundle
+
+
+class Engine(SignalEvolutionEngine):
+    """Observe native outputs and apply only the frozen diagnostic resource scopes."""
+
+    def _new_mining_controller(self, *, cycle_id, **kwargs):
+        model = kwargs['model']
+        model.request_limits.update(total_limit=12 * MIB, call_limit=80)
+        controller = super()._new_mining_controller(cycle_id=cycle_id, **kwargs)
+        root, seed = self.stage_root, kwargs['seed']
+        native = controller.run
+        def run():
+            checkpoint = root / 'seeds' / seed / 'terminal.json'
+            if checkpoint.exists():
+                saved = read(checkpoint)
+                for row in saved['result']['ledger']:
+                    controller.ledger.append(LedgerEntry(**row))
+                controller.materialization_evidence = lambda: deepcopy(saved['evidence'])
+                model.reserved_tokens = saved['model_prefix']['tokens']
+                model.reserved_calls = saved['model_prefix']['calls']
+                model.usage = AgentUsage(**saved['model_prefix']['usage'])
+                for candidate in saved['result']['candidates']:
+                    controller.validation_sink(candidate)
+                result = dict(saved['result'])
+                result['ledger'] = controller.ledger.entries
+                return ControllerResult(**result)
+            try:
+                result = native()
+                saved = {'result': asdict(result), 'evidence': controller.materialization_evidence(),
+                         'model_prefix': {'tokens': model.reserved_tokens, 'calls': model.reserved_calls,
+                                          'usage': asdict(model.usage)}}
+                save(checkpoint, saved)
+                return result
+            finally:
+                observation = {'ledger': controller.ledger.to_dict(),
+                               'evidence': controller.materialization_evidence(),
+                               'last_action_result': controller._last_action_result}
+                save(root / 'seeds' / seed / 'observations' / (digest(observation) + '.json'), observation)
+        controller.run = run
+        return controller
+
+    def _materialize_controller_candidate(self, candidate, **kwargs):
+        key = digest({'seed': kwargs['seed'], 'candidate': candidate})
+        self.budget.scope = 'candidate:' + key
+        checkpoint = self.stage_root / 'materialized' / (key + '.json')
+        if checkpoint.exists():
+            saved = read(checkpoint)
+            kwargs['failures'].update({k: tuple(v) for k, v in saved['failures'].items()})
+            return tuple(saved['result']) if saved['result'] is not None else None
+        result = super()._materialize_controller_candidate(candidate, **kwargs)
+        save(checkpoint, {'result': list(result) if result else None,
+                          'failures': {k: list(v) for k, v in kwargs['failures'].items()},
+                          'candidate': candidate, 'scope': self.budget.scope})
+        if result is not None:
+            save(self.stage_root / 'candidate-scopes' / (result[0] + '.json'),
+                 {'scope': self.budget.scope, 'controller_candidate': candidate, 'seed': kwargs['seed']})
+        return result
+
+
+def construct(root, budget):
+    """Compose exact source/catalog/accepted-prefix inputs without new selection roles."""
+    work = root / 'workspace'
+    dev_data = read(root / 'inputs/dev.json')
+    identities = tuple(SimpleNamespace(**{**row, 'prediction_time': datetime.fromisoformat(row['prediction_time'])})
+                       for row in read(root / 'inputs/identities.json')['identities'])
+    by_id = {c.case_id: c for c in identities}
+    dev = tuple(SimpleNamespace(**{**vars(by_id[row['case_id']]),
+               'ground_truth': SimpleNamespace(is_surge=dev_data['groups'][row['case_ref']] == 'positive')})
+                for row in dev_data['cases'])
+    sources = read(root / 'private-oracle.json')['source_documents']
+    store = RawInfoStore(documents=[RawInfoDocument.from_dict(read(row['path'])) for row in sources])
+    registry = SignalRegistry(work / 'signals', candidate_root=work / 'signals_candidates')
+    history = read(work / 'slow_history/manifest.json')['manifest']
+    meta = PlanMetaMemory(entries=_rebased_history_meta_entries(
+        RoundMetaEntry.from_dict(row) for row in history['fast_context']['meta_entries']))
+    client = make_client(root, budget)
+    runner = StructuredLLMSignalRunner(client)
+    engine = Engine(registry=registry, raw_info_store=store, discovery_cases=dev, identity_cases=identities,
+        workspace=EvolutionWorkspace(work), meta_memory=meta, mining_model=LLMSignalMiningModel(client),
+        update_model=LLMSignalUpdateModel(client), llm_signal_runner=runner)
+    engine.stage_root, engine.budget = root, budget
+    engine.mining_model.set_request_token_budget(262144)
+    engine._active_slow_input = read(root / 'inputs/slow_input.json')
+    engine._active_slow_memory = read(root / 'inputs/slow_memory.json')
+    engine._active_sampling_manifest = engine._active_slow_input['sampling_manifest']
+    engine._mining_memory_index = engine._controller_memory_index()
+    baseline = read(root / 'inputs/baseline.json')
+    factory = read(root / 'inputs/factory.json')
+    context = {'stable_signal_cards': [{'signal_ref': s['signal_id'] + ':v' + str(s['version']),
+               'description': s['definition']['description']} for s in baseline['specs']],
+               'capability_backlog': {'signal_need_items': factory['backlog_needs']},
+               'prior_modality_footprints': factory['prior_modality_footprints'],
+               'meta_info': factory['meta_memory_briefs'], 'slow_method_memory': factory['slow_method_memory'],
+               'meta_memory_disclosures': factory['meta_memory_disclosures']}
+    engine._mining_context = MethodType(lambda self, **kw: deepcopy(context), engine)
+    validate = engine.validator.validate
+    def bounded_validate(spec, *, skill, tests):
+        tests = tuple(tests)
+        if len(tests) > 12:
+            raise StageBudgetStop('authored tests exceed12; retained without fixture execution')
+        return validate(spec, skill=skill, tests=tests)
+    engine.validator.validate = bounded_validate
+    return engine, client, {row['case_ref']: by_id[row['case_id']] for row in dev_data['cases']}
+
+
+def _review(root, name, targets, fields):
+    path = root / (name + '.json')
+    save(root / (name + '-targets.json'), targets)
+    if not path.exists():
+        return None
+    receipt = read(path)
+    if (receipt.get('schema_version') != 'icfr-native-independent-review-v1'
+            or receipt.get('manifest_hash') != digest(read(root / 'manifest.json'))
+            or receipt.get('targets_sha256') != binding(root / (name + '-targets.json'))['sha256']
+            or receipt.get('oracle_sha256') != binding(root / 'private-oracle.json')['sha256']
+            or not isinstance(receipt.get('reviewer_id'), str) or not receipt['reviewer_id'].strip()
+            or set(receipt.get('items', {})) != set(targets['items'])):
+        raise ValidationError('independent source-review binding is incomplete')
+    for key, item in receipt['items'].items():
+        if (type(item.get('accepted')) is not bool or not isinstance(item.get('limitations'), list)
+                or any(type(item.get(field)) is not bool for field in fields)
+                or (item['accepted'] and not all(item[field] for field in fields))):
+            raise ValidationError('independent review needs explicit semantic determinations: ' + key)
+    save(root / (name + '-validated-binding.json'), {'receipt': binding(path)})
+    return receipt
+
+
+def _publish(root, engine, output, receipt):
+    registry = engine.registry
+    baseline = read(root / 'inputs/baseline.json')
+    accepted, evaluations, rejected = {}, {}, {}
+    seen_semantic, seen_behavior = {}, {}
+    for ref in output['candidate_refs']:
+        if not receipt['items'][ref]['accepted']:
+            rejected[ref] = ['independent semantics rejected or unresolved']
+            continue
+        engine.budget.scope = read(root / 'candidate-scopes' / (ref + '.json'))['scope']
+        spec, skill = registry.load_candidate(ref)
+        tests = registry.load_candidate_tests(ref)
+        checked = engine._technical_candidate_validation(spec, skill=skill, tests=tests,
+            input_registry_hash=baseline['registry_hash'], validator_hash=engine._technical_validator_hash(),
+            targets=('surge_direction',))
+        # Same native within-batch description/behavior duplicate checks.
+        from stock_opportunity_agent.research.signal_evolution import _normalize_semantics
+        semantic, behavior = _normalize_semantics(spec.description), engine.validator._behavior_identity(spec, skill)
+        duplicate = seen_semantic.get(semantic) or seen_behavior.get(behavior)
+        if checked.accepted and duplicate:
+            rejected[ref] = ['semantic duplicate of candidate ' + duplicate]
+            continue
+        key = registry.record_candidate_admission(ref, input_registry_hash=baseline['registry_hash'],
+            validator_hash=engine._technical_validator_hash(), research_targets=('surge_direction',),
+            contract_validation={'accepted': checked.accepted, 'reasons': list(checked.reasons),
+                                 'executed_tests': checked.executed_tests},
+            research_provenance=engine._candidate_research_provenance(ref, target_id='surge_direction',
+                induction_case_ids=tuple(output['induction_case_ids'].get(ref, ()))))
+        if not checked.accepted:
+            rejected[ref] = list(checked.reasons)
+            continue
+        seen_semantic[semantic], seen_behavior[behavior] = ref, ref
+        accepted[ref], evaluations[ref] = registry.candidate_hash(ref), key
+    # Freeze the decision before an idempotent native transition (including crash recovery).
+    decision = {'accepted': accepted, 'evaluations': evaluations, 'rejected': rejected}
+    save(root / 'technical-decision.json', decision)
+    return _transition(root, engine, decision)
+
+
+def _transition(root, engine, decision):
+    baseline = read(root / 'inputs/baseline.json')
+    transition = engine.registry.promote_validated_batch(decision['accepted'],
+        validated_evaluations=decision['evaluations'], transition_id='icfr_native_capability_v1',
+        input_version=baseline['version'], input_hash=baseline['registry_hash'], input_refs=baseline['refs'])
+    snapshot = engine.registry.freeze()
+    reopened = SignalRegistry(root / 'workspace/signals', candidate_root=root / 'workspace/signals_candidates')
+    reopened.knowledge_workspace_root = root / 'workspace'
+    if _snapshot_record(reopened.freeze()) != _snapshot_record(snapshot):
+        raise ValidationError('published Registry reopen differs')
+    for old in baseline['specs']:
+        ref = old['signal_id'] + ':v' + str(old['version'])
+        if snapshot.load_spec(ref).to_dict() != old or snapshot.skills.get(ref) != baseline['skills'].get(ref):
+            raise ValidationError('original stable definition changed')
+    for ref in transition.promoted:
+        status = engine.registry.load_research_status(ref)
+        if status.get('effect_status') != 'unverified':
+            raise ValidationError('technical publication claimed effect')
+    result = {'transition': asdict(transition), 'snapshot': _snapshot_record(snapshot),
+              'promoted': list(transition.promoted), 'effect_status': 'unverified',
+              'published_files': [binding(p) for p in sorted(engine.registry.root.rglob('*'))
+                                  if p.is_file() and (('/versions/' in p.as_posix())
+                                  or p.name == 'icfr_native_capability_v1.json')]}
+    save(root / 'publication.json', result)
+    return result
+
+
+def _fast(root, engine, client, case_ref, case):
+    folder = root / 'fast' / case_ref
+    folder.mkdir(parents=True, exist_ok=True)
+    engine.budget.scope = 'fast:' + case_ref
+    snapshot = engine.registry.freeze()
+    state = ResearchState(next_information_needs=(NEED,))
+    plan = default_information_plan()
+    time = case.prediction_time
+    aliases = tuple(engine.slow_role_identity_guards)
+    controller = LLMResearchController(client)
+    controller.set_evaluation_context(time)
+    evaluation_context = deepcopy(controller.evaluation_context)
+    with client.anonymous_case(aliases=aliases, company_id=case.company_id,
+                               ticker=str(case.basic_info.get('ticker') or case.basic_info.get('symbol') or '')):
+        routing = folder / 'routing.json'
+        if not routing.exists():
+            role = LLMSignalRetrievalAgent(client)
+            role.set_evaluation_context(time)
+            role.set_request_token_budget(engine.budget.phase_allowance(case_ref + '-route'))
+            step = role.select(state.next_information_needs, snapshot, {}, prior_signal_results={},
+                eligible_signal_refs=tuple(s.ref for s in snapshot.specs), research_state=state)
+            bounded = _bounded_runtime_signal_selections(step.value, snapshot, max_signals=4, max_llm_signals=2)
+            save(routing, {'all_selections': [x.to_dict() for x in step.value],
+                 'selections': [x.to_dict() for x in bounded],
+                 'omitted': [x.to_dict() for x in step.value if x not in bounded],
+                 'metadata': dict(step.metadata), 'catalog_refs': [s.ref for s in snapshot.specs]})
+        selections = tuple(SignalSelectionDecision.from_dict(x) for x in read(routing)['selections'])
+        applied = folder / 'apply.json'
+        if not applied.exists():
+            runner = StructuredLLMSignalRunner(client)
+            runner.set_identity_cases(engine._discovery_cases_by_id.values())
+            runner.set_request_token_budget(engine.budget.phase_allowance(case_ref + '-apply'))
+            executor = SignalExecutor(snapshot, engine.raw_info_store, llm_runner=runner)
+            batch = executor.execute_batch(tuple(s.signal_ref for s in selections),
+                company_id=case.company_id, as_of=time, identity=dict(case.basic_info))
+            round_row = SignalRound(state.next_information_needs, selections, batch)
+            save(applied, {'round': round_row.to_dict(), 'classification_contracts': executor.classification_contracts_for(batch.results)})
+        applied_value = read(applied)
+        round_row = SignalRound.from_dict(applied_value['round'])
+        reflected = folder / 'reflect.json'
+        if not reflected.exists():
+            controller.set_signal_research_status(snapshot.research_status)
+            controller.set_signal_classification_contracts(applied_value['classification_contracts'])
+            controller.set_reflection_runtime_context(selections=selections, must_finalize=True,
+                                                     termination_trigger=RuntimeStopReason.MAX_SIGNAL_ROUNDS)
+            controller.set_request_token_budget(engine.budget.phase_allowance(case_ref + '-reflect'))
+            step = controller.reflect(plan, state, round_row.batch)
+            save(reflected, {'state': step.value.to_dict(), 'metadata': dict(step.metadata),
+                             'evaluation_context': evaluation_context})
+        result = read(reflected)
+        if result['evaluation_context'] != evaluation_context:
+            raise ValidationError('cached native evaluation context differs')
+        final = ResearchState.from_dict(result['state'])
+        disposition = result['metadata'].get('need_dispositions')
+        rows = [{k: v for k, v in x.items() if k != 'prior_need'} for x in (disposition or {}).get('items', [])]
+        _validate_research_state_refs(final, phase='reflect', previous_state=state, selections=selections,
+            batch=round_row.batch, need_dispositions=rows, must_finalize=True,
+            evaluation_context=evaluation_context)
+        validate_need_dispositions(rows, previous_state=state, state=final, selections=selections,
+            batch=round_row.batch, evaluation_context=evaluation_context)
+        context = _assemble_final_context(plan=plan, company_id=case.company_id,
+            additional_identity_aliases=aliases, basic_info={}, state=final, rounds=(round_row,),
+            prediction_time=time, state_deltas=({'round': 1, 'delta': _research_state_delta(state, final),
+                'need_dispositions': disposition},), signal_research_status=snapshot.research_status,
+            signal_classification_contracts=(applied_value['classification_contracts'],),
+            runtime_termination={'phase': 'prediction_ready', 'stop_reason': 'max_signal_rounds',
+                                 'termination_trigger': 'max_signal_rounds'})
+        save(folder / 'final-context.json', context)
+    promoted = set(read(root / 'publication.json')['promoted'])
+    use = {'case_ref': case_ref, 'registry_hash': snapshot.registry_hash,
+           'selected_refs': [s.signal_ref for s in selections],
+           'new_exact_refs_executed': sorted(promoted & {r.ref for r in round_row.batch.results}),
+           'artifacts': [binding(folder / x) for x in ('routing.json', 'apply.json', 'reflect.json', 'final-context.json')],
+           'committed_use': False, 'scored': False}
+    save(folder / 'use.json', use)
+    return use
+
+
+def _seal(root, result):
+    verify(root)
+    if (root / 'publication.json').exists():
+        _check(read(root / 'publication.json')['published_files'])
+    for use_path in (root / 'fast').glob('*/use.json'):
+        _check(read(use_path)['artifacts'])
+    seal = {'result': result, 'files': _files(root)}
+    save(root / 'completion.json', seal)
+    return result
+
+
+def advance(root=STAGE_ROOT, *, input_only=False):
+    """Advance native phases serially until pending, source review or terminal seal."""
+    root = _root(root)
+    with _lock(root):
+        if (root / 'completion.json').exists():
+            raise ValidationError('sealed stage cannot reenter')
+        verify(root)
+        if input_only and (list((root / 'exchange/receipts').glob('*.json'))
+                or list((root / 'seeds').glob('*/terminal.json'))
+                or any((root / name).exists() for name in
+                       ('mining-output.json', 'publication.json', 'technical-decision.json', 'fast'))):
+            raise ValidationError('input-only is limited to the unanswered first Mining frontier')
+        budget = Budget(root, input_only=input_only)
+        result = {}
+        try:
+            with guards():
+                engine, client, cases = construct(root, budget)
+                mined = root / 'mining-output.json'
+                if not mined.exists():
+                    factory = read(root / 'inputs/factory.json')
+                    dev = read(root / 'inputs/dev.json')
+                    output = engine._run_controller_mining_axis(cycle_id=1, axis_id='surge_direction',
+                        research_axis=factory['research_axis'], dev_cases=engine.discovery_cases, check_cases=(),
+                        labels_by_case_id={r['case_id']: dev['groups'][r['case_ref']] for r in dev['cases']})
+                    save(mined, output)
+                output = read(mined)
+                targets = {'items': {ref: _candidate_bundle(engine.registry, ref, root=root) for ref in output['candidate_refs']}}
+                if not targets['items']:
+                    return _seal(root, {'status': 'completed_acceptance_failed', 'reason': 'no_native_candidate',
+                        'fixed_candidate_denominator': 1, 'candidate_passed': 0,
+                        'fixed_consumer_denominator': 4, 'consumer_passed': 0})
+                review = _review(root, 'semantic-review', targets,
+                    ('faithful_definition', 'faithful_orientation', 'source_scope_reviewed', 'counterexamples_reviewed'))
+                if review is None:
+                    result = {'status': 'awaiting_independent_semantic_review',
+                              'targets': binding(root / 'semantic-review-targets.json')}
+                else:
+                    if not (root / 'publication.json').exists():
+                        if (root / 'technical-decision.json').exists():
+                            _transition(root, engine, read(root / 'technical-decision.json'))
+                        else:
+                            _publish(root, engine, output, review)
+                    publication = read(root / 'publication.json')
+                    if not publication['promoted']:
+                        return _seal(root, {'status': 'completed_acceptance_failed', 'reason': 'no_admitted_candidate',
+                            'fixed_candidate_denominator': 1, 'candidate_passed': 0,
+                            'fixed_consumer_denominator': 4, 'consumer_passed': 0})
+                    uses = {}
+                    for case_ref in CONTROLS:
+                        if (root / 'fast' / case_ref / 'use.json').exists():
+                            uses[case_ref] = read(root / 'fast' / case_ref / 'use.json')
+                        else:
+                            uses[case_ref] = _fast(root, engine, client, case_ref, cases[case_ref])
+                    for use in uses.values():
+                        _check(use['artifacts'])
+                    _check(publication['published_files'])
+                    consumer = _review(root, 'consumer-review', {'items': uses},
+                        ('source_meaning_preserved', 'uncertainty_preserved', 'exact_version_consumed', 'context_faithful'))
+                    if consumer is None:
+                        result = {'status': 'awaiting_independent_consumer_review',
+                                  'targets': binding(root / 'consumer-review-targets.json')}
+                    else:
+                        passed = sum(consumer['items'][ref]['accepted'] and bool(uses[ref]['new_exact_refs_executed']) for ref in CONTROLS)
+                        result = {'status': 'completed_passed' if passed == 4 else 'completed_acceptance_failed',
+                            'fixed_candidate_denominator': 1, 'candidate_passed': int(passed == 4),
+                            'fixed_consumer_denominator': 4, 'consumer_passed': passed,
+                            'committed_use': False, 'engineering_mvp_closed': False,
+                            'answered_unique_requests': budget.used()[0], 'logical_reservations': budget.used()[1]}
+                        return _seal(root, result)
+        except LocalRoleRequestPending as exc:
+            result = {'status': 'pending_independent_role', 'pending': exc.pending}
+        except InputCaptured as exc:
+            result = {'status': 'input_only_no_dispatch', 'capture': json.loads(str(exc))}
+        except EvolutionControlFlow as exc:
+            result = {'status': 'terminal_resource_or_control_stop', 'error_type': type(exc).__name__, 'error': str(exc),
+                      'fixed_candidate_denominator': 1, 'fixed_consumer_denominator': 4}
+            save(root / 'failure.json', result)
+            return _seal(root, result)
+        except Exception as exc:
+            result = {'status': 'terminal_failed', 'error_type': type(exc).__name__, 'error': str(exc),
+                      'fixed_candidate_denominator': 1, 'fixed_consumer_denominator': 4}
+            save(root / 'failure.json', result)
+            return _seal(root, result)
+        atomic_write_json(root / 'progress.json', result)
+        return result
+
+
+def submit(root, request_hash, agent_id):
+    """Bind the one current raw answer to an actual independently run agent."""
+    root = _root(root)
+    with _lock(root):
+        if (root / 'completion.json').exists():
+            raise ValidationError('sealed stage cannot accept answers')
+        verify(root)
+        pending = read(root / 'progress.json').get('pending')
+        if not pending or pending['request_hash'] != request_hash:
+            raise ValidationError('submission differs from current pending inbox')
+        if not agent_id.startswith('/root/'):
+            raise ValidationError('canonical independent agent identity is required')
+        exchange = LocalRoleExchange(root / 'exchange', max_calls=728)
+        receipt = exchange.submit(request_hash, agent_id=agent_id)
+        Budget(root).records()  # malformed JSON still counts by its verified raw receipt.
+        return receipt
+
+
+def inspect(root=STAGE_ROOT):
+    """Read state, verifying any terminal seal without running native phases."""
+    root = _root(root)
+    verify(root)
+    if (root / 'completion.json').exists():
+        seal = read(root / 'completion.json')
+        if seal['files'] != _files(root):
+            raise ValidationError('terminal scoped reopen equality failed')
+        return seal['result']
+    return read(root / 'progress.json')
+
+
+def main():
+    """Prepare, advance, inspect or submit; never dispatch or author a response."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--root', type=Path, default=STAGE_ROOT)
+    modes = parser.add_mutually_exclusive_group(required=True)
+    for mode in ('prepare', 'advance', 'inspect', 'submit'):
+        modes.add_argument('--' + mode, action='store_true')
+    parser.add_argument('--input-only', action='store_true')
+    parser.add_argument('--request-hash')
+    parser.add_argument('--agent-id')
+    args = parser.parse_args()
+    if args.prepare:
+        result = prepare(args.root)
+    elif args.submit:
+        if not args.request_hash or not args.agent_id:
+            parser.error('submit requires request-hash and actual canonical agent-id')
+        result = submit(args.root, args.request_hash, args.agent_id)
+    elif args.inspect:
+        result = inspect(args.root)
+    else:
+        result = advance(args.root, input_only=args.input_only)
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
+if __name__ == '__main__':
+    main()

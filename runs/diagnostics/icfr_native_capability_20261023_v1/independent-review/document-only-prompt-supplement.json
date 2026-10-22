@@ -1,0 +1,93 @@
+{
+  "bindings": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "cbb8b89a95888faa0d59c5b1f0ed46cb97d9fcd960df5c4a272288c4df4240ee",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "d8bc2fc8a3ea4a8809126b6657d2279d3944f2e4e28d89a2f56fccea95dd5776",
+    "src/stock_opportunity_agent/research/mining_agent_tools.py": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "bbf905efb9863d910d78923e9b313a3d65a41f124081bed74efa551b35eaa5c1"
+  },
+  "stable_during_this_supplement": true,
+  "results": [
+    {
+      "target": "event",
+      "ref": "event-46f5d9cb0786596b",
+      "S4_accepted": true,
+      "S5_source_unit": {
+        "evidence_kind": "event_read",
+        "event_ref": "event-46f5d9cb0786596b",
+        "case_ref": "case-002",
+        "document_ref": "document-source-two",
+        "content_hash": "b81d0b1507fedd1cdb04c0c1a71c308e4dc742dc2cdeda689e0cb5d0b3b4a523",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "title": "Dated management assessment found a material weakness.",
+        "source_family": "news",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "source_type": "company_news",
+        "read_windows": [
+          {
+            "target": "document_ref",
+            "ref": "document-source-two",
+            "document_ref": "document-source-two",
+            "offset": 0,
+            "length": 100,
+            "verbatim_hash": "b81d0b1507fedd1cdb04c0c1a71c308e4dc742dc2cdeda689e0cb5d0b3b4a523",
+            "has_readable_text": true,
+            "readable_chars": 54,
+            "raw_window_chars": 54,
+            "next_readable_start": null,
+            "case_refs": [
+              "case-002"
+            ],
+            "readable_text": "Dated management assessment found a material weakness.",
+            "content_hash": "b81d0b1507fedd1cdb04c0c1a71c308e4dc742dc2cdeda689e0cb5d0b3b4a523",
+            "source_type": "company_news",
+            "published_at": "2025-01-01T00:00:00+00:00",
+            "available_at": "2025-01-01T00:00:00+00:00"
+          }
+        ],
+        "ref": "event-46f5d9cb0786596b",
+        "document_source_type": "company_news"
+      }
+    },
+    {
+      "target": "document",
+      "ref": "document-source-two",
+      "S4_accepted": true,
+      "S5_source_unit": {
+        "evidence_kind": "document_read",
+        "document_ref": "document-source-two",
+        "content_hash": "b81d0b1507fedd1cdb04c0c1a71c308e4dc742dc2cdeda689e0cb5d0b3b4a523",
+        "source_type": "company_news",
+        "published_at": "2025-01-01T00:00:00+00:00",
+        "available_at": "2025-01-01T00:00:00+00:00",
+        "read_windows": [
+          {
+            "target": "document_ref",
+            "ref": "document-source-two",
+            "document_ref": "document-source-two",
+            "offset": 0,
+            "length": 100,
+            "verbatim_hash": "b81d0b1507fedd1cdb04c0c1a71c308e4dc742dc2cdeda689e0cb5d0b3b4a523",
+            "has_readable_text": true,
+            "readable_chars": 54,
+            "raw_window_chars": 54,
+            "next_readable_start": null,
+            "case_refs": [
+              "case-002"
+            ],
+            "readable_text": "Dated management assessment found a material weakness.",
+            "content_hash": "b81d0b1507fedd1cdb04c0c1a71c308e4dc742dc2cdeda689e0cb5d0b3b4a523",
+            "source_type": "company_news",
+            "published_at": "2025-01-01T00:00:00+00:00",
+            "available_at": "2025-01-01T00:00:00+00:00"
+          }
+        ],
+        "ref": "document-source-two",
+        "document_source_type": "company_news"
+      }
+    }
+  ],
+  "scope": "Two legal direct document-read citation paths, current prompt alignment only; prior ten-control snapshot remains original",
+  "models": 0,
+  "network": 0,
+  "production_answers": 0
+}

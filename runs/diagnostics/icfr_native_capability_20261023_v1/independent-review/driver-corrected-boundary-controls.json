@@ -1,0 +1,40 @@
+{
+  "bindings": {
+    "scripts/run_icfr_native_capability_stage.py": "1c853a52832c930a4513711003d596141973626c32a3e34e48d3dde393bf6116",
+    "spec/scripts/run_icfr_native_capability_stage.md": "cc8ee0c5d6b5c3b4bb1c9740a777daf1fd49924f066a0dd7ec43bb66ffa5cb2d"
+  },
+  "stable_sources_during_controls": true,
+  "zero_cap": {
+    "rejected_before_super": true,
+    "error": "explicit native caller remainder is exhausted or invalid"
+  },
+  "none_uses_declared_host_cap": true,
+  "positive_cap_preserved": true,
+  "input_only_phase_controls": [
+    {
+      "existing_marker": "mining-output.json",
+      "rejected_before_construct_and_seal": true
+    },
+    {
+      "existing_marker": "publication.json",
+      "rejected_before_construct_and_seal": true
+    },
+    {
+      "existing_marker": "technical-decision.json",
+      "rejected_before_construct_and_seal": true
+    },
+    {
+      "existing_marker": "fast",
+      "rejected_before_construct_and_seal": true
+    },
+    {
+      "existing_marker": "seeds/hypothesis/terminal.json",
+      "rejected_before_construct_and_seal": true
+    }
+  ],
+  "scope": "Two reported control-boundary issues only; synthetic local markers, verify intentionally bypassed, no full native stage or capability claim",
+  "models": 0,
+  "network": 0,
+  "production_answers": 0,
+  "fixed_stage_prepared": false
+}
