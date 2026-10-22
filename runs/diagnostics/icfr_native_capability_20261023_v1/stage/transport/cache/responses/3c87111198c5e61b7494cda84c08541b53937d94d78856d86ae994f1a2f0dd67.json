@@ -1,0 +1,26 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "inspect_catalog",
+    "rationale": [
+      "Fetched filings establish narrative availability but no raw narrative window has been read.",
+      "Inspect the titled evidence directory and section coordinates to locate point-in-time ICFR disclosures for bounded raw reading; directory entries alone will not establish support."
+    ],
+    "scope": "evidence"
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"inspect_catalog\",\"scope\":\"evidence\",\"rationale\":[\"Fetched filings establish narrative availability but no raw narrative window has been read.\",\"Inspect the titled evidence directory and section coordinates to locate point-in-time ICFR disclosures for bounded raw reading; directory entries alone will not establish support.\"]}",
+  "request_hash": "3c87111198c5e61b7494cda84c08541b53937d94d78856d86ae994f1a2f0dd67",
+  "response_id": "local-3c87111198c5e61b7494cda84c08541b53937d94d78856d86ae994f1a2f0dd67",
+  "usage": {
+    "accounting_tokens": 188179,
+    "agent_id": "/root/icfr_native_h004",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "2865e64d28dc1ba5c394277877dc20d21b55b95c4e3693f56abe46abfe20b55c",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "a919c7570dce5aa05fae18c66b3fec3758810e97d718ae12508ed048d90104e8",
+    "request_hash": "3c87111198c5e61b7494cda84c08541b53937d94d78856d86ae994f1a2f0dd67",
+    "token_usage": null
+  }
+}

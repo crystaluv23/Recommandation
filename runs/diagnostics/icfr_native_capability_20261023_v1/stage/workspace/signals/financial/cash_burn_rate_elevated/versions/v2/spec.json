@@ -1,0 +1,51 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Measure absolute negative operating cash flow divided by the closest same-currency cash balance at or before the reported period end."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "financial.cash_burn_rate_elevated",
+    "type": "deterministic"
+  },
+  "modality": "structured",
+  "parameters": {
+    "burn_threshold": 0.1,
+    "lookback_days": 550,
+    "max_period_age_days": 550
+  },
+  "raw_retrieval": {
+    "lookback_days": 550,
+    "query_terms": [
+      "cash burn rate",
+      "operating cash flow",
+      "cash and cash equivalents",
+      "NetCashProvidedByUsedInOperatingActivities",
+      "CashAndCashEquivalentsAtCarryingValue"
+    ],
+    "source_types": [
+      "company_facts",
+      "financials"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "cash_burn_rate_elevated",
+  "version": 2
+}

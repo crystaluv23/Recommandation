@@ -1,0 +1,2968 @@
+{
+  "fixed_completed_roles": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "h011_read": false,
+  "requests": [
+    {
+      "role": 1,
+      "request_hash": "b5241cef9edbd669d868ad8dd0720940c98236b7132f87930a0acdfa8ca720ab",
+      "messages": 2,
+      "payload_keys": [
+        "available_actions",
+        "available_source_families",
+        "backlog_disclosure",
+        "backlog_needs",
+        "budget",
+        "case_prediction_times",
+        "case_refs",
+        "evidence_digest",
+        "known_event_refs",
+        "known_fact_refs",
+        "known_relation_refs",
+        "label_map",
+        "measurable_evidence_manifest",
+        "memory_consumption",
+        "meta_info",
+        "meta_memory_disclosures",
+        "modality_coverage",
+        "need_disposition_contract",
+        "prior_modality_footprints",
+        "request_budget",
+        "research_axis",
+        "seed",
+        "signal_catalog",
+        "signal_catalog_disclosure",
+        "slow_method_memory",
+        "state",
+        "tool_contracts"
+      ],
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 12,
+        "light_remaining": 4
+      },
+      "last_action_result": {},
+      "raw_answer": {
+        "action": "inspect_catalog",
+        "scope": "signals",
+        "cursor": 7,
+        "rationale": [
+          "The initial catalog discloses only 7 of 18 existing Signals.",
+          "Read the next catalog page before choosing an ICFR measurement so omitted capabilities are not mistaken for novelty."
+        ]
+      },
+      "read_progress": null,
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "signals",
+            "evidence",
+            "memory",
+            "backlog"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "available_actions": [
+        "inspect_manifest",
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ]
+    },
+    {
+      "role": 2,
+      "request_hash": "d2a3defe8230b4bd41872094710b41be908951c174a50fec2aea5c52eb6b141a",
+      "messages": 2,
+      "payload_keys": [
+        "available_actions",
+        "available_source_families",
+        "backlog_disclosure",
+        "backlog_needs",
+        "budget",
+        "case_prediction_times",
+        "case_refs",
+        "evidence_digest",
+        "known_event_refs",
+        "known_fact_refs",
+        "known_relation_refs",
+        "label_map",
+        "last_action_result",
+        "measurable_evidence_manifest",
+        "memory_consumption",
+        "meta_info",
+        "meta_memory_disclosures",
+        "modality_coverage",
+        "need_disposition_contract",
+        "prior_modality_footprints",
+        "request_budget",
+        "research_axis",
+        "seed",
+        "signal_catalog",
+        "signal_catalog_disclosure",
+        "slow_method_memory",
+        "state",
+        "tool_contracts"
+      ],
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 12,
+        "light_remaining": 3
+      },
+      "last_action_result": {
+        "action": "inspect_catalog",
+        "result": {
+          "counts": {
+            "available": 18,
+            "included": 7,
+            "omitted_after": 4,
+            "omitted_before": 7,
+            "oversized": 0
+          },
+          "cursor": 7,
+          "items": [
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "function": "financial.operating_cash_flow_margin",
+                  "type": "deterministic"
+                },
+                "modality": "structured",
+                "parameters": {
+                  "negative_max": 0.0,
+                  "positive_min": 0.1,
+                  "routing_answer_need_phrases": [
+                    "operating cash flow margin"
+                  ]
+                },
+                "raw_retrieval": {
+                  "comparison_requirement": "Operating cash flow and revenue for the same period.",
+                  "minimum_distinct_periods": 1,
+                  "query_terms": [
+                    "operating cash flow",
+                    "revenue"
+                  ],
+                  "source_types": [
+                    "financials"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration.",
+              "original_available": true,
+              "read_bytes": 1035,
+              "signal_ref": "operating_cash_flow_margin:v2",
+              "source_hash": "828ce230b6d441b27c3998dd6c8c74c04ae15fbdb4bf2e30049b31b0c6a0952e"
+            },
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "function": "financial.revenue_acceleration",
+                  "type": "deterministic"
+                },
+                "modality": "structured",
+                "parameters": {
+                  "negative_max": -0.05,
+                  "positive_min": 0.05
+                },
+                "raw_retrieval": {
+                  "comparison_requirement": "Current and prior comparable growth periods.",
+                  "minimum_distinct_periods": 3,
+                  "minimum_period_span_days": 330,
+                  "query_terms": [
+                    "revenue",
+                    "sales"
+                  ],
+                  "source_types": [
+                    "financials"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period.",
+              "original_available": true,
+              "read_bytes": 976,
+              "signal_ref": "revenue_acceleration:v2",
+              "source_hash": "b1cdead2c864ecadcaaa061c46ed5900578e56e8b88404022041bb99b7569fe1"
+            },
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "function": "financial.revenue_growth_yoy",
+                  "type": "deterministic"
+                },
+                "modality": "structured",
+                "parameters": {
+                  "negative_max": 0.0,
+                  "plausible_abs_max": 5.0,
+                  "positive_min": 0.25,
+                  "routing_answer_need_phrases": [
+                    "revenue growth",
+                    "year-over-year revenue",
+                    "year over year revenue",
+                    "yoy revenue"
+                  ]
+                },
+                "raw_retrieval": {
+                  "comparison_requirement": "Latest period versus prior-year comparable period; use only the per-issuer canonical total revenue series (dominance-resolved; partial or deprecated same-period tag values never displace the total).",
+                  "minimum_distinct_periods": 2,
+                  "minimum_period_span_days": 330,
+                  "query_terms": [
+                    "revenue",
+                    "sales",
+                    "total revenue",
+                    "revenues"
+                  ],
+                  "source_types": [
+                    "financials",
+                    "company_facts"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Measure the latest point-in-time year-over-year revenue growth.",
+              "original_available": true,
+              "read_bytes": 1268,
+              "signal_ref": "revenue_growth_yoy:v3",
+              "source_hash": "69337857ea9d9b4e6ecb05978baeb84ba2d23dc17fa851d971e8465744f1bbf7"
+            },
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "skill_file": "skill.md",
+                  "type": "llm"
+                },
+                "modality": "narrative",
+                "parameters": {
+                  "result_required_evidence_phrases": [
+                    "guidance",
+                    "outlook",
+                    "forecast",
+                    "we expect",
+                    "management expects",
+                    "company expects",
+                    "now expects",
+                    "raises its",
+                    "raised its",
+                    "lowers its",
+                    "lowered its",
+                    "reaffirms",
+                    "reaffirmed",
+                    "on track to"
+                  ],
+                  "routing_answer_need_phrases": [
+                    "guidance",
+                    "outlook",
+                    "forecast"
+                  ],
+                  "routing_need_phrases": [
+                    "guidance update",
+                    "guidance updates",
+                    "updated guidance",
+                    "guidance change",
+                    "guidance changes",
+                    "revised guidance",
+                    "guidance revision",
+                    "guidance revisions"
+                  ]
+                },
+                "raw_retrieval": {
+                  "comparison_requirement": "Current guidance versus explicit prior guidance; both current and prior guidance spans must be visible.",
+                  "lookback_days": 365,
+                  "query_terms": [
+                    "guidance outlook forecast",
+                    "raises guidance",
+                    "raised guidance",
+                    "lowers guidance",
+                    "lowered guidance",
+                    "reaffirms guidance",
+                    "reaffirmed guidance",
+                    "updated guidance",
+                    "revised guidance",
+                    "now expects",
+                    "management expects",
+                    "company expects"
+                  ],
+                  "source_types": [
+                    "earnings_call",
+                    "company_announcement",
+                    "press_release",
+                    "filing"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+              "original_available": true,
+              "read_bytes": 1896,
+              "signal_ref": "guidance_acceleration:v3",
+              "source_hash": "bca7bd051508cee22f06ca62f06d9ea1718de1873900962135133b5dc19d9627"
+            },
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "function": "market.max_drawdown_1y",
+                  "type": "deterministic"
+                },
+                "modality": "structured",
+                "parameters": {
+                  "negative_max": -0.5,
+                  "positive_min": -0.2
+                },
+                "raw_retrieval": {
+                  "lookback_days": 400,
+                  "query_terms": [
+                    "adjusted close",
+                    "price history"
+                  ],
+                  "source_types": [
+                    "market_data"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Measure maximum drawdown from the point-in-time one-year price series.",
+              "original_available": true,
+              "read_bytes": 831,
+              "signal_ref": "max_drawdown_1y:v2",
+              "source_hash": "718b2545f0d0d291b5b4a0478223a0afdcd401ce281b649252bba787e1727d36"
+            },
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "function": "market.price_momentum_126d",
+                  "type": "deterministic"
+                },
+                "modality": "structured",
+                "parameters": {
+                  "lookback_observations": 126,
+                  "negative_max": -0.2,
+                  "positive_min": 0.2
+                },
+                "raw_retrieval": {
+                  "lookback_days": 400,
+                  "minimum_observations": 127,
+                  "query_terms": [
+                    "adjusted close",
+                    "price history"
+                  ],
+                  "source_types": [
+                    "market_data"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series.",
+              "original_available": true,
+              "read_bytes": 923,
+              "signal_ref": "price_momentum_126d:v2",
+              "source_hash": "035f8b19948ad41683f3f9bf039c33e3cbc378dfb3cc61357a10a8f4deb017a6"
+            },
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "function": "news.negative_word_count",
+                  "type": "deterministic"
+                },
+                "modality": "structured",
+                "parameters": {
+                  "negative_count_min": 1,
+                  "terms": [
+                    "decline",
+                    "loss",
+                    "risk",
+                    "delay",
+                    "investigation",
+                    "default"
+                  ]
+                },
+                "raw_retrieval": {
+                  "lookback_days": 365,
+                  "query_terms": [
+                    "risk loss delay",
+                    "decline warning"
+                  ],
+                  "source_types": [
+                    "news"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Count configured negative terms in complete point-in-time company news source documents.",
+              "original_available": true,
+              "read_bytes": 904,
+              "signal_ref": "negative_word_count:v2",
+              "source_hash": "009b1e0b21ce6bcfd58b74c102eafe2dbfe991918ffdac7d250532d20a19e3f0"
+            }
+          ],
+          "max_entry_bytes": 8000,
+          "next_cursor": 14,
+          "oversized_entries": [],
+          "read_action": "inspect_catalog scope=signals item_refs",
+          "read_byte_limit": 16000,
+          "selection_is_exhaustive": false
+        },
+        "scope": "signals"
+      },
+      "raw_answer": {
+        "action": "inspect_catalog",
+        "scope": "signals",
+        "cursor": 14,
+        "rationale": [
+          "Read the remaining catalog page before selecting a reusable ICFR measurement.",
+          "The previous signals page supplies next_cursor 14 and four entries remain unread; omission is not absence."
+        ]
+      },
+      "read_progress": null,
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "signals",
+            "evidence",
+            "memory",
+            "backlog"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "available_actions": [
+        "inspect_manifest",
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ]
+    },
+    {
+      "role": 3,
+      "request_hash": "d5d327433f72afded4e9f29fa4fb21f122045f920f09138eecf1f1ba4d150026",
+      "messages": 2,
+      "payload_keys": [
+        "available_actions",
+        "available_source_families",
+        "backlog_disclosure",
+        "backlog_needs",
+        "budget",
+        "case_prediction_times",
+        "case_refs",
+        "evidence_digest",
+        "known_event_refs",
+        "known_fact_refs",
+        "known_relation_refs",
+        "label_map",
+        "last_action_result",
+        "measurable_evidence_manifest",
+        "memory_consumption",
+        "meta_info",
+        "meta_memory_disclosures",
+        "modality_coverage",
+        "need_disposition_contract",
+        "prior_modality_footprints",
+        "request_budget",
+        "research_axis",
+        "seed",
+        "signal_catalog",
+        "signal_catalog_disclosure",
+        "slow_method_memory",
+        "state",
+        "tool_contracts"
+      ],
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 12,
+        "light_remaining": 2
+      },
+      "last_action_result": {
+        "action": "inspect_catalog",
+        "result": {
+          "counts": {
+            "available": 18,
+            "included": 4,
+            "omitted_after": 0,
+            "omitted_before": 14,
+            "oversized": 0
+          },
+          "cursor": 14,
+          "items": [
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "skill_file": "order_confirmation_disclosed.md",
+                  "type": "llm"
+                },
+                "modality": "narrative",
+                "parameters": {},
+                "raw_retrieval": {
+                  "lookback_days": 180,
+                  "query_terms": [
+                    "order",
+                    "contract",
+                    "offtake",
+                    "binding award",
+                    "customer order",
+                    "delivery schedule",
+                    "named counterparty",
+                    "purchase agreement",
+                    "supply agreement",
+                    "new order",
+                    "offtake agreement",
+                    "binding contract"
+                  ],
+                  "source_types": [
+                    "filing",
+                    "news",
+                    "transcript",
+                    "10-k",
+                    "10-q",
+                    "8-k",
+                    "company_news",
+                    "sec_filing",
+                    "earnings_call"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units.",
+              "original_available": true,
+              "read_bytes": 5004,
+              "signal_ref": "order_confirmation_disclosed:v3",
+              "source_hash": "382aefd77c7ad7208b0d07f8fbe9ad96b70c5c40d2370aa01ef505bf9aa7276d"
+            },
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "skill_file": "skill.md",
+                  "type": "llm"
+                },
+                "modality": "narrative",
+                "parameters": {
+                  "routing_required_research_phrases": [
+                    "purchase order",
+                    "purchase orders",
+                    "customer order",
+                    "customer orders",
+                    "order backlog",
+                    "funded backlog",
+                    "contract award",
+                    "customer commitment"
+                  ]
+                },
+                "raw_retrieval": {
+                  "lookback_days": 730,
+                  "query_terms": [
+                    "purchase order backlog",
+                    "contract award",
+                    "customer commitment"
+                  ],
+                  "source_types": [
+                    "filing",
+                    "company_announcement",
+                    "customer_announcement",
+                    "earnings_call"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue.",
+              "original_available": true,
+              "read_bytes": 1324,
+              "signal_ref": "order_quality:v2",
+              "source_hash": "7d054cafc32ddf2d4080451745d58c742a64d2afd2409b1c97b07522ebb0a946"
+            },
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "skill_file": "skill.md",
+                  "type": "llm"
+                },
+                "modality": "narrative",
+                "parameters": {
+                  "routing_excluded_context_tags": [
+                    "mature_operations"
+                  ],
+                  "routing_required_research_phrases": [
+                    "product",
+                    "technology",
+                    "prototype",
+                    "commercialization",
+                    "commercial launch",
+                    "commercially available",
+                    "sellable",
+                    "repeatable"
+                  ]
+                },
+                "raw_retrieval": {
+                  "lookback_days": 1095,
+                  "query_terms": [
+                    "commercial launch",
+                    "commercial shipment",
+                    "scaled sales"
+                  ],
+                  "source_types": [
+                    "filing",
+                    "company_announcement",
+                    "customer_announcement",
+                    "earnings_call"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable.",
+              "original_available": true,
+              "read_bytes": 1761,
+              "signal_ref": "commercialization_status:v2",
+              "source_hash": "16ed86d1f824a0f596e49a5d5848e413b2e5c4fd86058bdcb90b6c95454372ba"
+            },
+            {
+              "capability_contract": {
+                "evidence_policy": {
+                  "require_exact_span": true,
+                  "require_source": true,
+                  "require_timestamp": true
+                },
+                "execution": {
+                  "skill_file": "skill.md",
+                  "type": "llm"
+                },
+                "modality": "narrative",
+                "parameters": {
+                  "result_required_evidence_phrases": [
+                    "customer",
+                    "customers",
+                    "client",
+                    "clients",
+                    "buyer",
+                    "buyers",
+                    "offtake",
+                    "backlog",
+                    "order",
+                    "orders",
+                    "account",
+                    "accounts",
+                    "program"
+                  ],
+                  "routing_answer_need_phrases": [
+                    "customer concentration",
+                    "customer dependency",
+                    "customer dependence",
+                    "single customer",
+                    "one customer",
+                    "largest customer",
+                    "major customer",
+                    "revenue concentration",
+                    "customer diversification",
+                    "customer diversity",
+                    "diversified customers",
+                    "customer mix"
+                  ],
+                  "routing_required_research_phrases": [
+                    "customer",
+                    "client",
+                    "buyer",
+                    "offtake",
+                    "backlog",
+                    "order",
+                    "customer program"
+                  ]
+                },
+                "raw_retrieval": {
+                  "lookback_days": 1095,
+                  "query_terms": [
+                    "customer concentration",
+                    "major customer",
+                    "revenue customer"
+                  ],
+                  "source_types": [
+                    "filing",
+                    "earnings_call",
+                    "customer_announcement"
+                  ]
+                },
+                "schema": {
+                  "confidence": {
+                    "type": "float"
+                  },
+                  "value": {
+                    "type": "categorical",
+                    "values": [
+                      "positive",
+                      "neutral",
+                      "negative",
+                      "unavailable"
+                    ]
+                  }
+                }
+              },
+              "description": "Judge whether the growth thesis depends excessively on one customer or one customer program.",
+              "original_available": true,
+              "read_bytes": 1709,
+              "signal_ref": "customer_concentration:v2",
+              "source_hash": "ee242b80fc0c72ac3d535962b3c92faad5c7f8ab363c70764bc0135d7bb75410"
+            }
+          ],
+          "max_entry_bytes": 8000,
+          "next_cursor": null,
+          "oversized_entries": [],
+          "read_action": "inspect_catalog scope=signals item_refs",
+          "read_byte_limit": 16000,
+          "selection_is_exhaustive": false
+        },
+        "scope": "signals"
+      },
+      "raw_answer": {
+        "action": "fetch_evidence",
+        "case_refs": [
+          "case-001",
+          "case-002",
+          "case-003",
+          "case-004",
+          "case-005",
+          "case-006",
+          "case-007",
+          "case-008"
+        ],
+        "source_families": [
+          "filing",
+          "10-k",
+          "sec_filing",
+          "financial",
+          "sec_company_facts"
+        ],
+        "max_documents": 24,
+        "query": null,
+        "rationale": [
+          "Fetch prediction-time narrative filings and structured financial evidence across both runtime-labeled groups in one broad request.",
+          "Use the returned directory and raw spans to investigate ICFR disclosure measurements without assuming their meaning or directional effect."
+        ]
+      },
+      "read_progress": null,
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "signals",
+            "evidence",
+            "memory",
+            "backlog"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "available_actions": [
+        "inspect_manifest",
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ]
+    },
+    {
+      "role": 4,
+      "request_hash": "3c87111198c5e61b7494cda84c08541b53937d94d78856d86ae994f1a2f0dd67",
+      "messages": 2,
+      "payload_keys": [
+        "available_actions",
+        "available_source_families",
+        "backlog_disclosure",
+        "backlog_needs",
+        "budget",
+        "case_prediction_times",
+        "case_refs",
+        "evidence_digest",
+        "known_event_refs",
+        "known_fact_refs",
+        "known_relation_refs",
+        "label_map",
+        "last_action_result",
+        "measurable_evidence_manifest",
+        "memory_consumption",
+        "meta_info",
+        "meta_memory_disclosures",
+        "modality_coverage",
+        "need_disposition_contract",
+        "prior_modality_footprints",
+        "request_budget",
+        "research_axis",
+        "seed",
+        "signal_catalog",
+        "signal_catalog_disclosure",
+        "slow_method_memory",
+        "state",
+        "tool_contracts"
+      ],
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 11,
+        "light_remaining": 2
+      },
+      "last_action_result": {
+        "action": "fetch_evidence",
+        "cases_requested": 8,
+        "excluded_document_ids": 120,
+        "families": [
+          "10-k",
+          "filing",
+          "sec_company_facts",
+          "sec_filing"
+        ],
+        "narrative_evidence": {
+          "catalog_note": "the evidence catalog pages titled documents by family and window (inspect_catalog scope=evidence); use next_cursor to reach omitted entries",
+          "events": 14,
+          "sample_titles": [
+            "10-K 2024-02-09",
+            "10-K 2024-02-21",
+            "10-Q 2024-10-23"
+          ]
+        },
+        "new_facts": 2187,
+        "new_relations": 1038,
+        "total_events": 14,
+        "total_facts": 2187,
+        "total_relations": 1038
+      },
+      "raw_answer": {
+        "action": "inspect_catalog",
+        "scope": "evidence",
+        "rationale": [
+          "Fetched filings establish narrative availability but no raw narrative window has been read.",
+          "Inspect the titled evidence directory and section coordinates to locate point-in-time ICFR disclosures for bounded raw reading; directory entries alone will not establish support."
+        ]
+      },
+      "read_progress": null,
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "signals",
+            "evidence",
+            "memory",
+            "backlog"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "available_actions": [
+        "inspect_manifest",
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ]
+    },
+    {
+      "role": 5,
+      "request_hash": "dbacc4de8a1415be86ceba615469bf47c378e3b804868efe9f0b502a6cb8c878",
+      "messages": 2,
+      "payload_keys": [
+        "available_actions",
+        "available_source_families",
+        "backlog_disclosure",
+        "backlog_needs",
+        "budget",
+        "case_prediction_times",
+        "case_refs",
+        "evidence_digest",
+        "known_event_refs",
+        "known_fact_refs",
+        "known_relation_refs",
+        "label_map",
+        "last_action_result",
+        "measurable_evidence_manifest",
+        "memory_consumption",
+        "meta_info",
+        "meta_memory_disclosures",
+        "modality_coverage",
+        "need_disposition_contract",
+        "prior_modality_footprints",
+        "request_budget",
+        "research_axis",
+        "seed",
+        "signal_catalog",
+        "signal_catalog_disclosure",
+        "slow_method_memory",
+        "state",
+        "tool_contracts"
+      ],
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "last_action_result": {
+        "action": "inspect_catalog",
+        "result": {
+          "counts": {
+            "available": 14,
+            "included": 2,
+            "omitted_after": 12,
+            "omitted_before": 0,
+            "oversized": 0
+          },
+          "cursor": 0,
+          "items": [
+            {
+              "available_at": "2025-08-14T20:01:09+00:00",
+              "case_bindings": [
+                {
+                  "case_ref": "case-003",
+                  "event_ref": "event-99d2c1094c6984b5"
+                }
+              ],
+              "discovery_only": true,
+              "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+              "event_ref": "event-99d2c1094c6984b5",
+              "family": "filing",
+              "raw_chars": 1191914,
+              "readable_start": 160442,
+              "section_count": 17,
+              "sections": [
+                {
+                  "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+                  "raw_end": 184115,
+                  "raw_start": 183640,
+                  "section_id": "sec00"
+                },
+                {
+                  "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+                  "raw_end": 184602,
+                  "raw_start": 184516,
+                  "section_id": "sec01"
+                },
+                {
+                  "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+                  "raw_end": 185470,
+                  "raw_start": 184996,
+                  "section_id": "sec02"
+                },
+                {
+                  "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+                  "raw_end": 187105,
+                  "raw_start": 185865,
+                  "section_id": "sec03"
+                },
+                {
+                  "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+                  "raw_end": 188402,
+                  "raw_start": 187551,
+                  "section_id": "sec04"
+                },
+                {
+                  "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+                  "raw_end": 190904,
+                  "raw_start": 188811,
+                  "section_id": "sec05"
+                },
+                {
+                  "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+                  "raw_end": 210430,
+                  "raw_start": 209861,
+                  "section_id": "sec06"
+                },
+                {
+                  "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+                  "raw_end": 215508,
+                  "raw_start": 214365,
+                  "section_id": "sec07"
+                },
+                {
+                  "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+                  "raw_end": 912522,
+                  "raw_start": 912261,
+                  "section_id": "sec08"
+                },
+                {
+                  "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+                  "raw_end": 1148005,
+                  "raw_start": 1147325,
+                  "section_id": "sec09"
+                },
+                {
+                  "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+                  "raw_end": 1149505,
+                  "raw_start": 1148801,
+                  "section_id": "sec10"
+                },
+                {
+                  "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+                  "raw_end": 1156322,
+                  "raw_start": 1155063,
+                  "section_id": "sec11"
+                },
+                {
+                  "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+                  "raw_end": 1158900,
+                  "raw_start": 1158223,
+                  "section_id": "sec12"
+                },
+                {
+                  "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+                  "raw_end": 1160102,
+                  "raw_start": 1159422,
+                  "section_id": "sec13"
+                },
+                {
+                  "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+                  "raw_end": 1162286,
+                  "raw_start": 1160835,
+                  "section_id": "sec14"
+                },
+                {
+                  "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+                  "raw_end": 1163981,
+                  "raw_start": 1163299,
+                  "section_id": "sec15"
+                },
+                {
+                  "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+                  "raw_end": 1169506,
+                  "raw_start": 1167485,
+                  "section_id": "sec16"
+                }
+              ],
+              "title": "10-Q 2025-08-14",
+              "window": "2025Q3"
+            },
+            {
+              "available_at": "2025-05-12T20:05:53+00:00",
+              "case_bindings": [
+                {
+                  "case_ref": "case-002",
+                  "event_ref": "event-24747d604f79cfb5"
+                }
+              ],
+              "discovery_only": true,
+              "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+              "event_ref": "event-24747d604f79cfb5",
+              "family": "filing",
+              "raw_chars": 3988651,
+              "readable_start": 251090,
+              "section_count": 15,
+              "sections": [
+                {
+                  "heading": "PART I. FINANCIAL INFORMATION Item 1. Financial Statements",
+                  "raw_end": 273510,
+                  "raw_start": 272259,
+                  "section_id": "sec00"
+                },
+                {
+                  "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+                  "raw_end": 277409,
+                  "raw_start": 277081,
+                  "section_id": "sec01"
+                },
+                {
+                  "heading": "Item 3. Quantitative and Qualitative Disclosures About Market Risk 49 Item 4. Controls",
+                  "raw_end": 278891,
+                  "raw_start": 277870,
+                  "section_id": "sec02"
+                },
+                {
+                  "heading": "PART II. OTHER INFORMATION 51 Item 1. Legal Proceedings 51 Item 1A",
+                  "raw_end": 281623,
+                  "raw_start": 279650,
+                  "section_id": "sec03"
+                },
+                {
+                  "heading": "Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 51 Item 3. Default",
+                  "raw_end": 283522,
+                  "raw_start": 282419,
+                  "section_id": "sec04"
+                },
+                {
+                  "heading": "Item 4. Mine Safety Disclosures 51 Item 5. Other Information 51 Item 6. Exhibits 52 &#",
+                  "raw_end": 286295,
+                  "raw_start": 284134,
+                  "section_id": "sec05"
+                },
+                {
+                  "heading": "ITEM 2. Management&#8217;s Discussion and Analysis of Financial Condition and R",
+                  "raw_end": 3083736,
+                  "raw_start": 3083467,
+                  "section_id": "sec06"
+                },
+                {
+                  "heading": "ITEM 3. Quantitative and Qualitative Disclosures about Market Risk Interest Rate Sensi",
+                  "raw_end": 3944282,
+                  "raw_start": 3944092,
+                  "section_id": "sec07"
+                },
+                {
+                  "heading": "ITEM 4. Controls and Procedures Our management, with the participation of our Chief Ex",
+                  "raw_end": 3969896,
+                  "raw_start": 3969625,
+                  "section_id": "sec08"
+                },
+                {
+                  "heading": "PART II ITEM 1. Legal Proceedings From time to time, we are a party to legal actions th",
+                  "raw_end": 3972577,
+                  "raw_start": 3972224,
+                  "section_id": "sec09"
+                },
+                {
+                  "heading": "ITEM 1A. Risk Factors In addition to the other information set forth in this Report, we",
+                  "raw_end": 3973673,
+                  "raw_start": 3973501,
+                  "section_id": "sec10"
+                },
+                {
+                  "heading": "Item 1A. &#8220;Risk Factors&#8221; of our Annual Report on Form 10-K for the year ende",
+                  "raw_end": 3973774,
+                  "raw_start": 3973687,
+                  "section_id": "sec11"
+                },
+                {
+                  "heading": "ITEM 2. Unregistered Sales of Equity Securities and Use of Proceeds On October 30, 202",
+                  "raw_end": 3974359,
+                  "raw_start": 3974188,
+                  "section_id": "sec12"
+                },
+                {
+                  "heading": "ITEM 3. Defaults Upon Senior Securities None ITEM 4. Mine Safety Disclosures None ITEM",
+                  "raw_end": 3976187,
+                  "raw_start": 3975564,
+                  "section_id": "sec13"
+                },
+                {
+                  "heading": "Item 408(a) of Regulation S-K. 51 Table of Contents ITEM 6. Exhibits 31.1 Certification",
+                  "raw_end": 3978788,
+                  "raw_start": 3977182,
+                  "section_id": "sec14"
+                }
+              ],
+              "title": "10-Q 2025-05-12",
+              "window": "2025Q2"
+            }
+          ],
+          "max_entry_bytes": 8000,
+          "next_cursor": 2,
+          "oversized_entries": [],
+          "selection_is_exhaustive": false
+        },
+        "scope": "evidence"
+      },
+      "raw_answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "offset": 1148801,
+        "length": 4000,
+        "rationale": [
+          "Inspect the disclosed Controls and Procedures section for a reusable ICFR measurement.",
+          "The directory identifies this case-scoped location but no raw narrative has yet been read; source meaning and any candidate remain unestablished."
+        ]
+      },
+      "read_progress": null,
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "signals",
+            "evidence",
+            "memory",
+            "backlog"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "available_actions": [
+        "inspect_manifest",
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ]
+    },
+    {
+      "role": 6,
+      "request_hash": "6bd38ea74d3fd6800ad20fae00752711c38390536ec24054a1bba367f8e406bb",
+      "messages": 2,
+      "payload_keys": [
+        "available_actions",
+        "available_source_families",
+        "backlog_disclosure",
+        "backlog_needs",
+        "budget",
+        "case_prediction_times",
+        "case_refs",
+        "evidence_digest",
+        "known_event_refs",
+        "known_fact_refs",
+        "known_relation_refs",
+        "label_map",
+        "last_action_result",
+        "measurable_evidence_manifest",
+        "memory_consumption",
+        "meta_info",
+        "meta_memory_disclosures",
+        "modality_coverage",
+        "narrative_read_progress",
+        "need_disposition_contract",
+        "prior_modality_footprints",
+        "request_budget",
+        "research_axis",
+        "seed",
+        "signal_catalog",
+        "signal_catalog_disclosure",
+        "slow_method_memory",
+        "state",
+        "tool_contracts"
+      ],
+      "budget": {
+        "browse_remaining": 23,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "last_action_result": {
+        "action": "read_span",
+        "case_refs": [
+          "case-003"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "has_readable_text": true,
+        "length": 4000,
+        "next_readable_start": 1152908,
+        "offset": 1148801,
+        "raw_window_chars": 4000,
+        "readable_chars": 1631,
+        "ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "target": "document_ref",
+        "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+      },
+      "raw_answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "offset": 1152908,
+        "length": 4000,
+        "rationale": [
+          "Continue at the supplied next readable offset to inspect the ICFR changes disclosure following the already-read disclosure-controls conclusion.",
+          "Disclosure-controls effectiveness alone does not establish ICFR status or remediation; preserve that distinction before defining a reusable measurement."
+        ]
+      },
+      "read_progress": {
+        "counts": {
+          "available": 1,
+          "included": 1,
+          "omitted_after": 0,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "items": [
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1152908,
+            "offset": 1148801,
+            "read_count": 1,
+            "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+          }
+        ],
+        "max_entry_bytes": 8000,
+        "next_cursor": null,
+        "oversized_entries": [],
+        "selection_is_exhaustive": true
+      },
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "signals",
+            "evidence",
+            "memory",
+            "backlog"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "available_actions": [
+        "inspect_manifest",
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ]
+    },
+    {
+      "role": 7,
+      "request_hash": "64dd37cb0bcebf0ec9fae1964ad5f165dd3d3050e48e5b5900e7092e73d76541",
+      "messages": 2,
+      "payload_keys": [
+        "available_actions",
+        "available_source_families",
+        "backlog_disclosure",
+        "backlog_needs",
+        "budget",
+        "case_prediction_times",
+        "case_refs",
+        "evidence_digest",
+        "known_event_refs",
+        "known_fact_refs",
+        "known_relation_refs",
+        "label_map",
+        "last_action_result",
+        "measurable_evidence_manifest",
+        "memory_consumption",
+        "meta_info",
+        "meta_memory_disclosures",
+        "modality_coverage",
+        "narrative_read_progress",
+        "need_disposition_contract",
+        "prior_modality_footprints",
+        "request_budget",
+        "research_axis",
+        "seed",
+        "signal_catalog",
+        "signal_catalog_disclosure",
+        "slow_method_memory",
+        "state",
+        "tool_contracts"
+      ],
+      "budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "last_action_result": {
+        "action": "read_span",
+        "case_refs": [
+          "case-003"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "has_readable_text": true,
+        "length": 4000,
+        "next_readable_start": 1156908,
+        "offset": 1152908,
+        "raw_window_chars": 4000,
+        "readable_chars": 1015,
+        "ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "target": "document_ref",
+        "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968"
+      },
+      "raw_answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "offset": 1148801,
+        "length": 4000,
+        "rationale": [
+          "Revisit the recorded earlier readable window to inspect the actual ICFR assessment and any weakness disclosure; its receipt alone does not establish meaning.",
+          "The latest no-material-change paragraph does not establish control effectiveness or remediation. Preserve this distinction before selecting a reusable measurement."
+        ]
+      },
+      "read_progress": {
+        "counts": {
+          "available": 2,
+          "included": 2,
+          "omitted_after": 0,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "items": [
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1156908,
+            "offset": 1152908,
+            "read_count": 1,
+            "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968"
+          },
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1152908,
+            "offset": 1148801,
+            "read_count": 1,
+            "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+          }
+        ],
+        "max_entry_bytes": 8000,
+        "next_cursor": null,
+        "oversized_entries": [],
+        "selection_is_exhaustive": true
+      },
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "signals",
+            "evidence",
+            "memory",
+            "backlog"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "available_actions": [
+        "inspect_manifest",
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ]
+    },
+    {
+      "role": 8,
+      "request_hash": "7cc30e4499e78973c53d985ab7e7b9c88e6e829ca124c719f461ac3dd47b6712",
+      "messages": 2,
+      "payload_keys": [
+        "available_actions",
+        "available_source_families",
+        "backlog_disclosure",
+        "backlog_needs",
+        "budget",
+        "case_prediction_times",
+        "case_refs",
+        "evidence_digest",
+        "known_event_refs",
+        "known_fact_refs",
+        "known_relation_refs",
+        "label_map",
+        "last_action_result",
+        "measurable_evidence_manifest",
+        "memory_consumption",
+        "meta_info",
+        "meta_memory_disclosures",
+        "modality_coverage",
+        "narrative_read_progress",
+        "need_disposition_contract",
+        "prior_modality_footprints",
+        "request_budget",
+        "research_axis",
+        "seed",
+        "signal_catalog",
+        "signal_catalog_disclosure",
+        "slow_method_memory",
+        "state",
+        "tool_contracts"
+      ],
+      "budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "last_action_result": {
+        "action": "read_span",
+        "case_refs": [
+          "case-003"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "has_readable_text": true,
+        "length": 4000,
+        "next_readable_start": 1152908,
+        "offset": 1148801,
+        "raw_window_chars": 4000,
+        "readable_chars": 1631,
+        "ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "target": "document_ref",
+        "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+      },
+      "raw_answer": {
+        "action": "inspect_catalog",
+        "scope": "evidence",
+        "cursor": 0,
+        "rationale": [
+          "Recover the titled document directory and exact section offsets to inspect ICFR disclosures across additional positive and control cases.",
+          "The current nonempty raw window establishes effective disclosure controls only for case-003; it does not establish ICFR effectiveness or a recurring cohort measurement.",
+          "Previously read ranges remain explored; this directory lookup supplies navigation rather than new source evidence."
+        ]
+      },
+      "read_progress": {
+        "counts": {
+          "available": 2,
+          "included": 2,
+          "omitted_after": 0,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "items": [
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1152908,
+            "offset": 1148801,
+            "read_count": 2,
+            "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+          },
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1156908,
+            "offset": 1152908,
+            "read_count": 1,
+            "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968"
+          }
+        ],
+        "max_entry_bytes": 8000,
+        "next_cursor": null,
+        "oversized_entries": [],
+        "selection_is_exhaustive": true
+      },
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "signals",
+            "evidence",
+            "memory",
+            "backlog"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "available_actions": [
+        "inspect_manifest",
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ]
+    },
+    {
+      "role": 9,
+      "request_hash": "3cb441ba91184e65602fc476445734984a54f9f44334a39ab5ab983f8d79f1a3",
+      "messages": 2,
+      "payload_keys": [
+        "available_actions",
+        "available_source_families",
+        "backlog_disclosure",
+        "backlog_needs",
+        "budget",
+        "case_prediction_times",
+        "case_refs",
+        "evidence_digest",
+        "known_event_refs",
+        "known_fact_refs",
+        "known_relation_refs",
+        "label_map",
+        "last_action_result",
+        "measurable_evidence_manifest",
+        "memory_consumption",
+        "meta_info",
+        "meta_memory_disclosures",
+        "modality_coverage",
+        "narrative_read_progress",
+        "need_disposition_contract",
+        "prior_modality_footprints",
+        "request_budget",
+        "research_axis",
+        "seed",
+        "signal_catalog",
+        "signal_catalog_disclosure",
+        "slow_method_memory",
+        "state",
+        "tool_contracts"
+      ],
+      "budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 11,
+        "light_remaining": 0
+      },
+      "last_action_result": {
+        "action": "inspect_catalog",
+        "result": {
+          "counts": {
+            "available": 14,
+            "included": 2,
+            "omitted_after": 12,
+            "omitted_before": 0,
+            "oversized": 0
+          },
+          "cursor": 0,
+          "items": [
+            {
+              "available_at": "2025-08-14T20:01:09+00:00",
+              "case_bindings": [
+                {
+                  "case_ref": "case-003",
+                  "event_ref": "event-99d2c1094c6984b5"
+                }
+              ],
+              "discovery_only": true,
+              "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+              "event_ref": "event-99d2c1094c6984b5",
+              "family": "filing",
+              "raw_chars": 1191914,
+              "read_windows": [
+                {
+                  "case_refs": [
+                    "case-003"
+                  ],
+                  "has_readable_text": true,
+                  "length": 4000,
+                  "next_readable_start": 1156908,
+                  "offset": 1152908,
+                  "read_count": 1,
+                  "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968"
+                },
+                {
+                  "case_refs": [
+                    "case-003"
+                  ],
+                  "has_readable_text": true,
+                  "length": 4000,
+                  "next_readable_start": 1152908,
+                  "offset": 1148801,
+                  "read_count": 2,
+                  "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+                }
+              ],
+              "readable_start": 160442,
+              "section_count": 17,
+              "sections": [
+                {
+                  "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+                  "raw_end": 184115,
+                  "raw_start": 183640,
+                  "section_id": "sec00"
+                },
+                {
+                  "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+                  "raw_end": 184602,
+                  "raw_start": 184516,
+                  "section_id": "sec01"
+                },
+                {
+                  "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+                  "raw_end": 185470,
+                  "raw_start": 184996,
+                  "section_id": "sec02"
+                },
+                {
+                  "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+                  "raw_end": 187105,
+                  "raw_start": 185865,
+                  "section_id": "sec03"
+                },
+                {
+                  "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+                  "raw_end": 188402,
+                  "raw_start": 187551,
+                  "section_id": "sec04"
+                },
+                {
+                  "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+                  "raw_end": 190904,
+                  "raw_start": 188811,
+                  "section_id": "sec05"
+                },
+                {
+                  "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+                  "raw_end": 210430,
+                  "raw_start": 209861,
+                  "section_id": "sec06"
+                },
+                {
+                  "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+                  "raw_end": 215508,
+                  "raw_start": 214365,
+                  "section_id": "sec07"
+                },
+                {
+                  "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+                  "raw_end": 912522,
+                  "raw_start": 912261,
+                  "section_id": "sec08"
+                },
+                {
+                  "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+                  "raw_end": 1148005,
+                  "raw_start": 1147325,
+                  "section_id": "sec09"
+                },
+                {
+                  "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+                  "raw_end": 1149505,
+                  "raw_start": 1148801,
+                  "section_id": "sec10"
+                },
+                {
+                  "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+                  "raw_end": 1156322,
+                  "raw_start": 1155063,
+                  "section_id": "sec11"
+                },
+                {
+                  "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+                  "raw_end": 1158900,
+                  "raw_start": 1158223,
+                  "section_id": "sec12"
+                },
+                {
+                  "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+                  "raw_end": 1160102,
+                  "raw_start": 1159422,
+                  "section_id": "sec13"
+                },
+                {
+                  "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+                  "raw_end": 1162286,
+                  "raw_start": 1160835,
+                  "section_id": "sec14"
+                },
+                {
+                  "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+                  "raw_end": 1163981,
+                  "raw_start": 1163299,
+                  "section_id": "sec15"
+                },
+                {
+                  "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+                  "raw_end": 1169506,
+                  "raw_start": 1167485,
+                  "section_id": "sec16"
+                }
+              ],
+              "title": "10-Q 2025-08-14",
+              "window": "2025Q3"
+            },
+            {
+              "available_at": "2025-05-12T20:05:53+00:00",
+              "case_bindings": [
+                {
+                  "case_ref": "case-002",
+                  "event_ref": "event-24747d604f79cfb5"
+                }
+              ],
+              "discovery_only": true,
+              "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+              "event_ref": "event-24747d604f79cfb5",
+              "family": "filing",
+              "raw_chars": 3988651,
+              "readable_start": 251090,
+              "section_count": 15,
+              "sections": [
+                {
+                  "heading": "PART I. FINANCIAL INFORMATION Item 1. Financial Statements",
+                  "raw_end": 273510,
+                  "raw_start": 272259,
+                  "section_id": "sec00"
+                },
+                {
+                  "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+                  "raw_end": 277409,
+                  "raw_start": 277081,
+                  "section_id": "sec01"
+                },
+                {
+                  "heading": "Item 3. Quantitative and Qualitative Disclosures About Market Risk 49 Item 4. Controls",
+                  "raw_end": 278891,
+                  "raw_start": 277870,
+                  "section_id": "sec02"
+                },
+                {
+                  "heading": "PART II. OTHER INFORMATION 51 Item 1. Legal Proceedings 51 Item 1A",
+                  "raw_end": 281623,
+                  "raw_start": 279650,
+                  "section_id": "sec03"
+                },
+                {
+                  "heading": "Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 51 Item 3. Default",
+                  "raw_end": 283522,
+                  "raw_start": 282419,
+                  "section_id": "sec04"
+                },
+                {
+                  "heading": "Item 4. Mine Safety Disclosures 51 Item 5. Other Information 51 Item 6. Exhibits 52 &#",
+                  "raw_end": 286295,
+                  "raw_start": 284134,
+                  "section_id": "sec05"
+                },
+                {
+                  "heading": "ITEM 2. Management&#8217;s Discussion and Analysis of Financial Condition and R",
+                  "raw_end": 3083736,
+                  "raw_start": 3083467,
+                  "section_id": "sec06"
+                },
+                {
+                  "heading": "ITEM 3. Quantitative and Qualitative Disclosures about Market Risk Interest Rate Sensi",
+                  "raw_end": 3944282,
+                  "raw_start": 3944092,
+                  "section_id": "sec07"
+                },
+                {
+                  "heading": "ITEM 4. Controls and Procedures Our management, with the participation of our Chief Ex",
+                  "raw_end": 3969896,
+                  "raw_start": 3969625,
+                  "section_id": "sec08"
+                },
+                {
+                  "heading": "PART II ITEM 1. Legal Proceedings From time to time, we are a party to legal actions th",
+                  "raw_end": 3972577,
+                  "raw_start": 3972224,
+                  "section_id": "sec09"
+                },
+                {
+                  "heading": "ITEM 1A. Risk Factors In addition to the other information set forth in this Report, we",
+                  "raw_end": 3973673,
+                  "raw_start": 3973501,
+                  "section_id": "sec10"
+                },
+                {
+                  "heading": "Item 1A. &#8220;Risk Factors&#8221; of our Annual Report on Form 10-K for the year ende",
+                  "raw_end": 3973774,
+                  "raw_start": 3973687,
+                  "section_id": "sec11"
+                },
+                {
+                  "heading": "ITEM 2. Unregistered Sales of Equity Securities and Use of Proceeds On October 30, 202",
+                  "raw_end": 3974359,
+                  "raw_start": 3974188,
+                  "section_id": "sec12"
+                },
+                {
+                  "heading": "ITEM 3. Defaults Upon Senior Securities None ITEM 4. Mine Safety Disclosures None ITEM",
+                  "raw_end": 3976187,
+                  "raw_start": 3975564,
+                  "section_id": "sec13"
+                },
+                {
+                  "heading": "Item 408(a) of Regulation S-K. 51 Table of Contents ITEM 6. Exhibits 31.1 Certification",
+                  "raw_end": 3978788,
+                  "raw_start": 3977182,
+                  "section_id": "sec14"
+                }
+              ],
+              "title": "10-Q 2025-05-12",
+              "window": "2025Q2"
+            }
+          ],
+          "max_entry_bytes": 8000,
+          "next_cursor": 2,
+          "oversized_entries": [],
+          "selection_is_exhaustive": false
+        },
+        "scope": "evidence"
+      },
+      "raw_answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+        "offset": 3969625,
+        "length": 4000,
+        "rationale": [
+          "Read the controls-and-procedures section of case-002, a runtime-labeled control, to investigate the ICFR disclosure family from raw point-in-time text.",
+          "The directory supplies this section offset but establishes no source meaning; case-002 has no executed readable window in the disclosed progress.",
+          "Case-003 already has readable windows; an independent control read can test whether a reusable ICFR distinction is supported without assuming label association."
+        ]
+      },
+      "read_progress": {
+        "counts": {
+          "available": 2,
+          "included": 2,
+          "omitted_after": 0,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "items": [
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1152908,
+            "offset": 1148801,
+            "read_count": 2,
+            "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+          },
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1156908,
+            "offset": 1152908,
+            "read_count": 1,
+            "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968"
+          }
+        ],
+        "max_entry_bytes": 8000,
+        "next_cursor": null,
+        "oversized_entries": [],
+        "selection_is_exhaustive": true
+      },
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "memory"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "available_actions": [
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ]
+    },
+    {
+      "role": 10,
+      "request_hash": "6f6b2459a13422b18f76a50fdd74295b5e2ad832378bd69dce77f26ec4ed1618",
+      "messages": 2,
+      "payload_keys": [
+        "available_actions",
+        "available_source_families",
+        "backlog_disclosure",
+        "backlog_needs",
+        "budget",
+        "case_prediction_times",
+        "case_refs",
+        "evidence_digest",
+        "known_event_refs",
+        "known_fact_refs",
+        "known_relation_refs",
+        "label_map",
+        "last_action_result",
+        "measurable_evidence_manifest",
+        "memory_consumption",
+        "meta_info",
+        "meta_memory_disclosures",
+        "modality_coverage",
+        "narrative_read_progress",
+        "need_disposition_contract",
+        "prior_modality_footprints",
+        "request_budget",
+        "research_axis",
+        "seed",
+        "signal_catalog",
+        "signal_catalog_disclosure",
+        "slow_method_memory",
+        "state",
+        "tool_contracts"
+      ],
+      "budget": {
+        "browse_remaining": 20,
+        "heavy_remaining": 11,
+        "light_remaining": 0
+      },
+      "last_action_result": {
+        "action": "read_span",
+        "case_refs": [
+          "case-002"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0000]:000114036125018373",
+        "has_readable_text": true,
+        "length": 4000,
+        "next_readable_start": 3973625,
+        "offset": 3969625,
+        "raw_window_chars": 4000,
+        "readable_chars": 2094,
+        "ref": "document-sec:[ANON_ID_0000]:000114036125018373",
+        "target": "document_ref",
+        "verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65"
+      },
+      "raw_answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+        "offset": 1148801,
+        "length": 4000,
+        "rationale": [
+          "The control case-002 raw disclosure reports effective disclosure controls and no material ICFR change; this does not establish the positive-case ICFR condition.",
+          "Revisit the already-read case-003 ICFR window to verify its exact substantive finding before defining a reusable measurement; retained progress locators alone are not source meaning."
+        ]
+      },
+      "read_progress": {
+        "counts": {
+          "available": 3,
+          "included": 3,
+          "omitted_after": 0,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "items": [
+          {
+            "case_refs": [
+              "case-002"
+            ],
+            "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+            "document_ref": "document-sec:[ANON_ID_0000]:000114036125018373",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 3973625,
+            "offset": 3969625,
+            "read_count": 1,
+            "verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65"
+          },
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1152908,
+            "offset": 1148801,
+            "read_count": 2,
+            "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+          },
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1156908,
+            "offset": 1152908,
+            "read_count": 1,
+            "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968"
+          }
+        ],
+        "max_entry_bytes": 8000,
+        "next_cursor": null,
+        "oversized_entries": [],
+        "selection_is_exhaustive": true
+      },
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "memory"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "available_actions": [
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ]
+    }
+  ],
+  "body_presence_matrix": [
+    {
+      "window": "case002-C",
+      "case_refs": [
+        "case-002"
+      ],
+      "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+      "raw_verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65",
+      "readable_text_sha256": "5287a19c3b2fe2482b0861aa84d36af449f503d7435a8aeeffc043a9f890a7d4",
+      "readable_chars": 2094,
+      "offset": 3969625,
+      "length": 4000,
+      "anchor": "concluded that our disclosure controls and procedures were effective as of the end of the fiscal quarter covered by this Form 10-Q.",
+      "presence": [
+        {
+          "role": 1,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 2,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 3,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 4,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 5,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 6,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 7,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 8,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 9,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 10,
+          "exact_full_body_paths": [
+            "$.last_action_result.masked"
+          ],
+          "distinctive_meaning_anchor_paths": [
+            "$.last_action_result.masked"
+          ],
+          "receipt_present": true,
+          "read_count": 1
+        }
+      ]
+    },
+    {
+      "window": "case003-A",
+      "case_refs": [
+        "case-003"
+      ],
+      "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+      "raw_verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80",
+      "readable_text_sha256": "264e23a354326255e2045ec7b437654beee01f7d2101f12ee875a95dda12218e",
+      "readable_chars": 1631,
+      "offset": 1148801,
+      "length": 4000,
+      "anchor": "Chief Executive Officer and Chief Financial Officer concluded that, as of end of the period covered by this Quarterly Report",
+      "presence": [
+        {
+          "role": 1,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 2,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 3,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 4,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 5,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 6,
+          "exact_full_body_paths": [
+            "$.last_action_result.masked"
+          ],
+          "distinctive_meaning_anchor_paths": [
+            "$.last_action_result.masked"
+          ],
+          "receipt_present": true,
+          "read_count": 1
+        },
+        {
+          "role": 7,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": true,
+          "read_count": 1
+        },
+        {
+          "role": 8,
+          "exact_full_body_paths": [
+            "$.last_action_result.masked"
+          ],
+          "distinctive_meaning_anchor_paths": [
+            "$.last_action_result.masked"
+          ],
+          "receipt_present": true,
+          "read_count": 2
+        },
+        {
+          "role": 9,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": true,
+          "read_count": 2
+        },
+        {
+          "role": 10,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": true,
+          "read_count": 2
+        }
+      ]
+    },
+    {
+      "window": "case003-B",
+      "case_refs": [
+        "case-003"
+      ],
+      "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+      "raw_verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968",
+      "readable_text_sha256": "366f7024d5a41d94c7a5de0d523e5cff126c4b39c6d87d385c71e9f6dd97fcb9",
+      "readable_chars": 1015,
+      "offset": 1152908,
+      "length": 4000,
+      "anchor": "There were no changes in our internal control over financial reporting during the period covered by this Quarterly Report",
+      "presence": [
+        {
+          "role": 1,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 2,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 3,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 4,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 5,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 6,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": false,
+          "read_count": null
+        },
+        {
+          "role": 7,
+          "exact_full_body_paths": [
+            "$.last_action_result.masked"
+          ],
+          "distinctive_meaning_anchor_paths": [
+            "$.last_action_result.masked"
+          ],
+          "receipt_present": true,
+          "read_count": 1
+        },
+        {
+          "role": 8,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": true,
+          "read_count": 1
+        },
+        {
+          "role": 9,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": true,
+          "read_count": 1
+        },
+        {
+          "role": 10,
+          "exact_full_body_paths": [],
+          "distinctive_meaning_anchor_paths": [],
+          "receipt_present": true,
+          "read_count": 1
+        }
+      ]
+    }
+  ],
+  "runtime_observation": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/seeds/hypothesis/observations/43c87b4466872974ddc73b25721f112ffa4d2e0b54fb58c7e2912dfaed7e9db8.json",
+    "ledger_actions": 9,
+    "all_three_readable_windows_retained": true
+  },
+  "identity_match_rule": "case_refs+content_hash+offset+length+raw_verbatim_hash; ANON_ID indices vary by exact wire",
+  "models": 0,
+  "network": 0,
+  "production_answers_written": 0,
+  "tool_conclusion": {
+    "scope": "Only fixed h001-h010 complete native views/contracts and their frozen Controller implementation",
+    "supported_action_preserving_two_executed_narrative_bodies_in_S4": false,
+    "not_equivalent": [
+      "single-target reread",
+      "discovery title/attribute counts",
+      "metadata receipts",
+      "runtime-only S5 evidence"
+    ],
+    "h010_inspect_allowed_scopes": [
+      "memory"
+    ],
+    "h010_read_target_count": 1,
+    "h010_read_length_max": 4000
+  }
+}

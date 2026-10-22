@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "documents": [
+        {
+          "content": "The financing remains a proposal and has not closed.",
+          "source_type": "filing"
+        }
+      ],
+      "expected": "neutral",
+      "name": "proposed financing is not completed"
+    }
+  ]
+}

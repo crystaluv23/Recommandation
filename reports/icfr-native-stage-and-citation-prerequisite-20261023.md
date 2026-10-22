@@ -23,3 +23,11 @@
 ## 当前关闭范围
 
 最终440关联测试全部通过，测试前后绑定一致、网络0，见associated-test-bindings-final.json及associated-tests-final.log。历史prefix权威检查另验证原firstwire/reviewed snapshot、完成回执中原始approved/factory/slow input/memory等六文件及原committed input hash，五种parseable输入漂移均拒；只冻结当前hash不能替代这项原授权校验。实际stage进展见当前status。离线通过仅关闭本次引用前提和驱动边界问题；真实候选、忠实实现、准入、四案消费及全MVP仍需actual产物，未因脚本存在而关闭。canonical分类持久化A/B仍待原用户决策，与本轮独立工作分开。
+
+## 真实阶段结果：停止调度但不伪造终态
+
+代码checkpoint cbc9f1ab后真实prepare一次；263源/18版本/265needs及原prefix完整绑定，初次input-only在receive前捕获88063逻辑预留、0inbox。随后12个fresh fork_turns=none subagent各仅读当前exact inbox、写raw outbox，12首答/0纠错、12原生receipt、累计2001316逻辑预留；host tokens/费用未测量。没有外部LLM API、网络/GET、新业务label/check/LockedTest、候选、发布或Fast消费。第13个请求6fc59b…已准备，尚无作者、outbox或receipt。
+
+[独立固定10请求审查](../runs/diagnostics/icfr_native_capability_20261023_v1/stage/actual-read-frontier/report.md)确认首个实际断点：case003读窗A/B及case002读窗C只各进入紧接一次last_action_result；h009两旧正文均无、h010只见C，既有两窗完整回执却未遗漏。匿名ID跨wire变化，按case/content hash/raw range对齐。运行时/S5仍保全部readable_text，故不是持久化或交接再裁剪，而是S4可见投影只保metadata。当前公开tool contracts没有同时带回两个narrative正文的动作。必要续页、合理回读和更佳来源选择分别保留判断；审查不据重复直接判Mining能力失败，未读h011及以后。父另外两原答继续请求原生窗口，不改该独立集合。
+
+[Parent控制停止记录](../runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop.json)在h013之前停止更多盲调度。原stage仍pending，不造completion/failure/no-pattern，不报预算耗尽：候选正控1尚未完成/0通过，四消费者均未尝试。182份实际冻结runtime/spec/driver/test全文已归档并逐文件读回/hash核同，含原有未提交spec差异；只证明版本保留，不是OS恢复。12原答/接收/工具结果和冻结原件均保留。下一修复此通用跨步正文可见性，先owning spec、反例/真实原答复验，再在明确新代码合同下继续完整能力验收；禁止热改或重答此冻结pending请求。此前local gate/driver测试不证明这一真实规划链，旧失败分母与整体MVP保持open。

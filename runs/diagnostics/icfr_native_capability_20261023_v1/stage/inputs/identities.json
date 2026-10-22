@@ -1,0 +1,804 @@
+{
+  "identities": [
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Enbridge Inc / ENBRIDGE INC",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "ENB",
+          "Enbridge Inc / ENBRIDGE INC"
+        ],
+        "industry": null,
+        "ipo_date": "1990-03-27",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "ENB"
+      },
+      "case_id": "cik_0000895728:20250930",
+      "company_id": "cik_0000895728",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Bumble Inc - Class A / Bumble Inc.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "BMBL",
+          "Bumble Inc - Class A / Bumble Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2021-02-11",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "BMBL"
+      },
+      "case_id": "cik_0001830043:20250930",
+      "company_id": "cik_0001830043",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Kinross Gold Corp / KINROSS GOLD CORP",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "KGC",
+          "Kinross Gold Corp / KINROSS GOLD CORP"
+        ],
+        "industry": null,
+        "ipo_date": "1994-10-19",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "KGC"
+      },
+      "case_id": "cik_0000701818:20250930",
+      "company_id": "cik_0000701818",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Wynn Resorts Ltd / WYNN RESORTS LTD",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "WYNN",
+          "Wynn Resorts Ltd / WYNN RESORTS LTD"
+        ],
+        "industry": null,
+        "ipo_date": "2002-10-25",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "WYNN"
+      },
+      "case_id": "cik_0001174922:20250731",
+      "company_id": "cik_0001174922",
+      "prediction_time": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Morgan Stanley / MORGAN STANLEY",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "MS",
+          "Morgan Stanley / MORGAN STANLEY"
+        ],
+        "industry": null,
+        "ipo_date": "1993-02-23",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "MS"
+      },
+      "case_id": "cik_0000895421:20250731",
+      "company_id": "cik_0000895421",
+      "prediction_time": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Life Time Group Holdings Inc / Life Time Group Holdings, Inc.",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "LTH",
+          "Life Time Group Holdings Inc / Life Time Group Holdings, Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2021-10-07",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "LTH"
+      },
+      "case_id": "cik_0001869198:20250331",
+      "company_id": "cik_0001869198",
+      "prediction_time": "2025-03-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Stitch Fix Inc - Class A / Stitch Fix, Inc.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "SFIX",
+          "Stitch Fix Inc - Class A / Stitch Fix, Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2017-11-17",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "SFIX"
+      },
+      "case_id": "cik_0001576942:20250530",
+      "company_id": "cik_0001576942",
+      "prediction_time": "2025-05-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "FTAI Aviation Ltd - Class A / FTAI Aviation Ltd.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "FTAI",
+          "FTAI Aviation Ltd - Class A / FTAI Aviation Ltd."
+        ],
+        "industry": null,
+        "ipo_date": "2015-05-15",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "FTAI"
+      },
+      "case_id": "cik_0001590364:20250731",
+      "company_id": "cik_0001590364",
+      "prediction_time": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "CIENA Corp / CIENA CORP",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "CIEN",
+          "CIENA Corp / CIENA CORP"
+        ],
+        "industry": null,
+        "ipo_date": "1997-02-07",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "CIEN"
+      },
+      "case_id": "cik_0000936395:20250930",
+      "company_id": "cik_0000936395",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Newmont Corp / NEWMONT Corp /DE/",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "NEM",
+          "Newmont Corp / NEWMONT Corp /DE/"
+        ],
+        "industry": null,
+        "ipo_date": "1983-04-06",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "NEM"
+      },
+      "case_id": "cik_0001164727:20250731",
+      "company_id": "cik_0001164727",
+      "prediction_time": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "MP Materials Corporation / MP Materials Corp. / DE",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "MP",
+          "MP Materials Corporation / MP Materials Corp. / DE"
+        ],
+        "industry": null,
+        "ipo_date": "2020-06-22",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "MP"
+      },
+      "case_id": "cik_0001801368:20250331",
+      "company_id": "cik_0001801368",
+      "prediction_time": "2025-03-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "ATI Inc / ATI INC",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "ATI",
+          "ATI Inc / ATI INC"
+        ],
+        "industry": null,
+        "ipo_date": "1999-11-29",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "ATI"
+      },
+      "case_id": "cik_0001018963:20250930",
+      "company_id": "cik_0001018963",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Praxis Precision Medicines Inc / Praxis Precision Medicines, Inc.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "PRAX",
+          "Praxis Precision Medicines Inc / Praxis Precision Medicines, Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2020-10-16",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "PRAX"
+      },
+      "case_id": "cik_0001689548:20250930",
+      "company_id": "cik_0001689548",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Sandisk Corp",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "SNDK",
+          "Sandisk Corp"
+        ],
+        "industry": null,
+        "ipo_date": "2025-02-24",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "SNDK"
+      },
+      "case_id": "cik_0002023554:20250930",
+      "company_id": "cik_0002023554",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Micron Technology Inc / MICRON TECHNOLOGY INC",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "MU",
+          "Micron Technology Inc / MICRON TECHNOLOGY INC"
+        ],
+        "industry": null,
+        "ipo_date": "1989-05-16",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "MU"
+      },
+      "case_id": "cik_0000723125:20250731",
+      "company_id": "cik_0000723125",
+      "prediction_time": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Ondas Holdings Inc / Ondas Inc.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "ONDS",
+          "Ondas Holdings Inc / Ondas Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2018-10-25",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "ONDS"
+      },
+      "case_id": "cik_0001646188:20250530",
+      "company_id": "cik_0001646188",
+      "prediction_time": "2025-05-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Donegal Group Inc - Class A / DONEGAL GROUP INC",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "DGICA",
+          "Donegal Group Inc - Class A / DONEGAL GROUP INC"
+        ],
+        "industry": null,
+        "ipo_date": "2001-04-24",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "DGICA"
+      },
+      "case_id": "cik_0000800457:20250731",
+      "company_id": "cik_0000800457",
+      "prediction_time": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "TechnipFMC plc",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "FTI",
+          "TechnipFMC plc"
+        ],
+        "industry": null,
+        "ipo_date": "2001-06-14",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "FTI"
+      },
+      "case_id": "cik_0001681459:20250530",
+      "company_id": "cik_0001681459",
+      "prediction_time": "2025-05-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Sun Life Financial Inc / SUN LIFE FINANCIAL INC",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "SLF",
+          "Sun Life Financial Inc / SUN LIFE FINANCIAL INC"
+        ],
+        "industry": null,
+        "ipo_date": "2000-03-23",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "SLF"
+      },
+      "case_id": "cik_0001097362:20250731",
+      "company_id": "cik_0001097362",
+      "prediction_time": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Bank7 Corp / Bank7 Corp.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "BSVN",
+          "Bank7 Corp / Bank7 Corp."
+        ],
+        "industry": null,
+        "ipo_date": "2018-09-20",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "BSVN"
+      },
+      "case_id": "cik_0001746129:20250731",
+      "company_id": "cik_0001746129",
+      "prediction_time": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Lamb Weston Holdings Inc / Lamb Weston Holdings, Inc.",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "LW",
+          "Lamb Weston Holdings Inc / Lamb Weston Holdings, Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2016-11-10",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "LW"
+      },
+      "case_id": "cik_0001679273:20250331",
+      "company_id": "cik_0001679273",
+      "prediction_time": "2025-03-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Travel+Leisure Company / Travel & Leisure Co.",
+        "development_stage": null,
+        "exchange": "NYSE",
+        "identity_aliases": [
+          "TNL",
+          "Travel+Leisure Company / Travel & Leisure Co."
+        ],
+        "industry": null,
+        "ipo_date": "2006-07-19",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "TNL"
+      },
+      "case_id": "cik_0001361658:20250131",
+      "company_id": "cik_0001361658",
+      "prediction_time": "2025-01-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Energy Recovery Inc / Energy Recovery, Inc.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "ERII",
+          "Energy Recovery Inc / Energy Recovery, Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2008-07-02",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "ERII"
+      },
+      "case_id": "cik_0001421517:20250131",
+      "company_id": "cik_0001421517",
+      "prediction_time": "2025-01-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Webuy Global Ltd - Class A / WEBUY GLOBAL LTD",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "WBUY",
+          "Webuy Global Ltd - Class A / WEBUY GLOBAL LTD"
+        ],
+        "industry": null,
+        "ipo_date": "2023-10-19",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "WBUY"
+      },
+      "case_id": "cik_0001946703:20250731",
+      "company_id": "cik_0001946703",
+      "prediction_time": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Aureus Greenway Holdings Inc",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "AGH",
+          "Aureus Greenway Holdings Inc"
+        ],
+        "industry": null,
+        "ipo_date": "2025-02-12",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "AGH"
+      },
+      "case_id": "cik_0002009312:20250930",
+      "company_id": "cik_0002009312",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Centrus Energy Corp - Class A / CENTRUS ENERGY CORP",
+        "development_stage": null,
+        "exchange": "NYSE MKT",
+        "identity_aliases": [
+          "LEU",
+          "Centrus Energy Corp - Class A / CENTRUS ENERGY CORP"
+        ],
+        "industry": null,
+        "ipo_date": "1998-07-23",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "LEU"
+      },
+      "case_id": "cik_0001065059:20250131",
+      "company_id": "cik_0001065059",
+      "prediction_time": "2025-01-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Taseko Mines Ltd / TASEKO MINES LTD",
+        "development_stage": null,
+        "exchange": "NYSE MKT",
+        "identity_aliases": [
+          "TGB",
+          "Taseko Mines Ltd / TASEKO MINES LTD"
+        ],
+        "industry": null,
+        "ipo_date": "1994-06-02",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "TGB"
+      },
+      "case_id": "cik_0000878518:20250930",
+      "company_id": "cik_0000878518",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Tandem Diabetes Care Inc / TANDEM DIABETES CARE INC",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "TNDM",
+          "Tandem Diabetes Care Inc / TANDEM DIABETES CARE INC"
+        ],
+        "industry": null,
+        "ipo_date": "2013-11-14",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "TNDM"
+      },
+      "case_id": "cik_0001438133:20250930",
+      "company_id": "cik_0001438133",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Nuburu Inc / Nuburu, Inc.",
+        "development_stage": null,
+        "exchange": "AMEX",
+        "identity_aliases": [
+          "BURU",
+          "Nuburu Inc / Nuburu, Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2024-06-26",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "BURU"
+      },
+      "case_id": "cik_0001814215:20250530",
+      "company_id": "cik_0001814215",
+      "prediction_time": "2025-05-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Omeros Corporation / OMEROS CORP",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "OMER",
+          "Omeros Corporation / OMEROS CORP"
+        ],
+        "industry": null,
+        "ipo_date": "2009-10-08",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "OMER"
+      },
+      "case_id": "cik_0001285819:20250930",
+      "company_id": "cik_0001285819",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Newegg Commerce Inc / Newegg Commerce, Inc.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "NEGG",
+          "Newegg Commerce Inc / Newegg Commerce, Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2010-04-22",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "NEGG"
+      },
+      "case_id": "cik_0001474627:20250530",
+      "company_id": "cik_0001474627",
+      "prediction_time": "2025-05-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Critical Metals Corp / Critical Metals Corp.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "CRML",
+          "Critical Metals Corp / Critical Metals Corp."
+        ],
+        "industry": null,
+        "ipo_date": "2024-02-27",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "CRML"
+      },
+      "case_id": "cik_0001951089:20250530",
+      "company_id": "cik_0001951089",
+      "prediction_time": "2025-05-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Lantheus Holdings Inc / Lantheus Holdings, Inc.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "LNTH",
+          "Lantheus Holdings Inc / Lantheus Holdings, Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2015-06-25",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "LNTH"
+      },
+      "case_id": "cik_0001521036:20250331",
+      "company_id": "cik_0001521036",
+      "prediction_time": "2025-03-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "High Tide Inc / High Tide Inc.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "HITI",
+          "High Tide Inc / High Tide Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2019-01-28",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "HITI"
+      },
+      "case_id": "cik_0001847409:20250131",
+      "company_id": "cik_0001847409",
+      "prediction_time": "2025-01-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "First Interstate BancSystem Inc / FIRST INTERSTATE BANCSYSTEM INC",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "FIBK",
+          "First Interstate BancSystem Inc / FIRST INTERSTATE BANCSYSTEM INC"
+        ],
+        "industry": null,
+        "ipo_date": "2010-03-24",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "FIBK"
+      },
+      "case_id": "cik_0000860413:20250930",
+      "company_id": "cik_0000860413",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Green Plains Inc / Green Plains Inc.",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "GPRE",
+          "Green Plains Inc / Green Plains Inc."
+        ],
+        "industry": null,
+        "ipo_date": "2006-03-15",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "GPRE"
+      },
+      "case_id": "cik_0001309402:20250530",
+      "company_id": "cik_0001309402",
+      "prediction_time": "2025-05-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Impinj Inc / IMPINJ INC",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "PI",
+          "Impinj Inc / IMPINJ INC"
+        ],
+        "industry": null,
+        "ipo_date": "2016-07-21",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "PI"
+      },
+      "case_id": "cik_0001114995:20250331",
+      "company_id": "cik_0001114995",
+      "prediction_time": "2025-03-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Rezolve AI Ltd / REZOLVE AI PLC",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "RZLV",
+          "Rezolve AI Ltd / REZOLVE AI PLC"
+        ],
+        "industry": null,
+        "ipo_date": "2024-08-16",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "RZLV"
+      },
+      "case_id": "cik_0001920294:20250530",
+      "company_id": "cik_0001920294",
+      "prediction_time": "2025-05-30T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "Westwater Resources Inc / WESTWATER RESOURCES, INC.",
+        "development_stage": null,
+        "exchange": "NYSE MKT",
+        "identity_aliases": [
+          "WWR",
+          "Westwater Resources Inc / WESTWATER RESOURCES, INC."
+        ],
+        "industry": null,
+        "ipo_date": "2017-08-22",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "WWR"
+      },
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "prediction_time": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "basic_info": {
+        "business_description": null,
+        "company_name": "AXT Inc / AXT INC",
+        "development_stage": null,
+        "exchange": "NASDAQ",
+        "identity_aliases": [
+          "AXTI",
+          "AXT Inc / AXT INC"
+        ],
+        "industry": null,
+        "ipo_date": "1998-05-21",
+        "market_cap": null,
+        "revenue_segments": [],
+        "ticker": "AXTI"
+      },
+      "case_id": "cik_0001051627:20250930",
+      "company_id": "cik_0001051627",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    }
+  ]
+}

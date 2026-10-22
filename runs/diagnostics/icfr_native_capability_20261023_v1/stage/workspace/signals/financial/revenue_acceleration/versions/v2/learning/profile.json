@@ -1,0 +1,46 @@
+{
+  "confidence": "sparse",
+  "directional": {
+    "correct": 1,
+    "unavailable": 1,
+    "unavailable_with_inputs": 1,
+    "unavailable_without_inputs": 0,
+    "wrong": 0
+  },
+  "disputed_observations": 0,
+  "recurring_contexts": [],
+  "reflection_attribution": {
+    "ignored": 0,
+    "misleading": 0,
+    "other": 1
+  },
+  "schema_version": "signal-learning-profile-v1",
+  "selection_events": 2,
+  "selection_reason_codes": [
+    {
+      "count": 2,
+      "reason_code": "assess_applicability"
+    }
+  ],
+  "signal_ref": "revenue_acceleration:v2",
+  "state_outcome_matrix": {
+    "negative": {
+      "non_surge": 1,
+      "surge": 0
+    },
+    "neutral": {
+      "non_surge": 0,
+      "surge": 0
+    },
+    "positive": {
+      "non_surge": 0,
+      "surge": 0
+    },
+    "unavailable": {
+      "non_surge": 0,
+      "surge": 1
+    }
+  },
+  "unique_issuers": 2,
+  "unique_observations": 2
+}

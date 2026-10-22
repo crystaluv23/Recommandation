@@ -1,0 +1,1 @@
+{"action": "inspect_catalog", "scope": "signals", "cursor": 14, "rationale": ["Read the remaining catalog page before selecting a reusable ICFR measurement.", "The previous signals page supplies next_cursor 14 and four entries remain unread; omission is not absence."]}

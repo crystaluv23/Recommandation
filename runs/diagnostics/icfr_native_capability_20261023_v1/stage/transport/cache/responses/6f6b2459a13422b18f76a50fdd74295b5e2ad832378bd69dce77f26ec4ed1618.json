@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+    "length": 4000,
+    "offset": 1148801,
+    "rationale": [
+      "The control case-002 raw disclosure reports effective disclosure controls and no material ICFR change; this does not establish the positive-case ICFR condition.",
+      "Revisit the already-read case-003 ICFR window to verify its exact substantive finding before defining a reusable measurement; retained progress locators alone are not source meaning."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"document_ref\": \"document-sec:[ANON_ID_0001]:000149315225011966\", \"offset\": 1148801, \"length\": 4000, \"rationale\": [\"The control case-002 raw disclosure reports effective disclosure controls and no material ICFR change; this does not establish the positive-case ICFR condition.\", \"Revisit the already-read case-003 ICFR window to verify its exact substantive finding before defining a reusable measurement; retained progress locators alone are not source meaning.\"]}",
+  "request_hash": "6f6b2459a13422b18f76a50fdd74295b5e2ad832378bd69dce77f26ec4ed1618",
+  "response_id": "local-6f6b2459a13422b18f76a50fdd74295b5e2ad832378bd69dce77f26ec4ed1618",
+  "usage": {
+    "accounting_tokens": 191538,
+    "agent_id": "/root/icfr_native_h010",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "fa7193e565e3ad7b6e6fb34c621c2b2acc53e462e0d4ff632a3e8862a864df1e",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "99ac079bf3dc11e659532c60ca92680f82251f5c075822d0c4966673ba068473",
+    "request_hash": "6f6b2459a13422b18f76a50fdd74295b5e2ad832378bd69dce77f26ec4ed1618",
+    "token_usage": null
+  }
+}

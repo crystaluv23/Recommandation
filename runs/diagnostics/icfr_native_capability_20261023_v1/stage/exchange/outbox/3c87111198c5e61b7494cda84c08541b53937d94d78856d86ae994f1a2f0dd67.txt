@@ -1,0 +1,1 @@
+{"action":"inspect_catalog","scope":"evidence","rationale":["Fetched filings establish narrative availability but no raw narrative window has been read.","Inspect the titled evidence directory and section coordinates to locate point-in-time ICFR disclosures for bounded raw reading; directory entries alone will not establish support."]}

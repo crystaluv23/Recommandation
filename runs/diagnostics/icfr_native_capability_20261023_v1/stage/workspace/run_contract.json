@@ -1,0 +1,44 @@
+{
+  "contract": {
+    "assignment": " Prospective bounded capability assignment: investigate a reusable narrative measurement in the public ICFR disclosure family. Independently choose and verify the measurement from authorized point-in-time material using the full existing catalog, backlog and tools. This assignment supplies no candidate, source locator, class mapping, supporting answer, or claim about stock direction or magnitude. Preserve unsupported or ambiguous conclusions as unknown. Retain every original action, exploration, evidence and disposition obligation.",
+    "controls": [
+      "case-001",
+      "case-003",
+      "case-005",
+      "case-006"
+    ],
+    "external_api_calls": 0,
+    "fixed_candidate_denominator": 1,
+    "fixed_consumer_denominator": 4,
+    "limits": {
+      "max_local_role_calls": 728,
+      "max_request_tokens": 262144,
+      "max_structured_corrections": 1,
+      "structured_reasoning_token_reserve": 0
+    },
+    "need": "Identify the latest publicly disclosed dated management assessment of ICFR, its assessment period, material-weakness/remediation conclusion, and whether this establishes ICFR status at the prediction cutoff; preserve unknowns and conflicting terminology.",
+    "provenance": "current_cycle1 is this isolated diagnostic with accepted-prefix Slow input; not a business commit",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage",
+    "schema_version": "icfr-native-capability-stage-v1",
+    "scope_limits": {
+      "candidate": [
+        300,
+        16777216
+      ],
+      "fast": [
+        12,
+        3145728
+      ],
+      "global": [
+        728,
+        58720256
+      ],
+      "mining": [
+        80,
+        12582912
+      ]
+    },
+    "slow_history_manifest_hash": "ba60fd7c7aa4472900ef26c8068deee66e9d4e51c8a699455432f7eed626bc55"
+  },
+  "contract_hash": "005337d33af6f4f8d8ed82d6c7dbdbafa700c261e1b260907754ea8f5d58ec59"
+}

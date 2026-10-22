@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "inspect_catalog",
+    "cursor": 0,
+    "rationale": [
+      "Recover the titled document directory and exact section offsets to inspect ICFR disclosures across additional positive and control cases.",
+      "The current nonempty raw window establishes effective disclosure controls only for case-003; it does not establish ICFR effectiveness or a recurring cohort measurement.",
+      "Previously read ranges remain explored; this directory lookup supplies navigation rather than new source evidence."
+    ],
+    "scope": "evidence"
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"inspect_catalog\", \"scope\": \"evidence\", \"cursor\": 0, \"rationale\": [\"Recover the titled document directory and exact section offsets to inspect ICFR disclosures across additional positive and control cases.\", \"The current nonempty raw window establishes effective disclosure controls only for case-003; it does not establish ICFR effectiveness or a recurring cohort measurement.\", \"Previously read ranges remain explored; this directory lookup supplies navigation rather than new source evidence.\"]}",
+  "request_hash": "7cc30e4499e78973c53d985ab7e7b9c88e6e829ca124c719f461ac3dd47b6712",
+  "response_id": "local-7cc30e4499e78973c53d985ab7e7b9c88e6e829ca124c719f461ac3dd47b6712",
+  "usage": {
+    "accounting_tokens": 190750,
+    "agent_id": "/root/icfr_native_h008",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "b8efbc139a5378133a3caa01ef9c4f2ccbfc58b156ccae876aaa5cb6e1f94f4a",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "0d46c3afc5081bb460707581c2a84b35190d3e1b309d41045dd515e018a5b6b6",
+    "request_hash": "7cc30e4499e78973c53d985ab7e7b9c88e6e829ca124c719f461ac3dd47b6712",
+    "token_usage": null
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "attempts": [
+    {
+      "action_summary": "update",
+      "candidate_hash": "61920dacb93e2afb1df28e1c4364e9b5a4031853348a902336fb576f0130fb17",
+      "candidate_ref": "revenue_growth_yoy:v3",
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "update",
+      "parent_signal_ref": "revenue_growth_yoy:v2",
+      "proposal_hash": "c72e180f81557a0d0394c582d5d9c340551cdb07302b79961e79f17538d03949",
+      "request_refs": [
+        "73656a527cbf205599defcf75492a004a3357df0d2a3b286e07947c9dc023177"
+      ],
+      "stage": "Update",
+      "usage_ref": "73656a527cbf205599defcf75492a004a3357df0d2a3b286e07947c9dc023177",
+      "work_id": "cycle-0001:Update:001"
+    },
+    {
+      "action_summary": "update target",
+      "candidate_hash": null,
+      "candidate_ref": null,
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": "Update:002",
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "failed",
+      "parent_signal_ref": "liquidity_runway_months:v3",
+      "proposal_hash": "fc0bbd9e159723664f960e30780e1130ad3f0678e205054fc90f2ca7d97fbdbe",
+      "request_refs": [
+        "d1c0f50851ec8bb9192910f57e428deff770c756cc0fe81e33f4198ef314463f",
+        "21e602763adba35f0a6d21da13031b9843a94cb698fb8823e1b2935318d1ed93"
+      ],
+      "stage": "Update",
+      "usage_ref": "21e602763adba35f0a6d21da13031b9843a94cb698fb8823e1b2935318d1ed93",
+      "work_id": "cycle-0001:Update:002"
+    },
+    {
+      "action_summary": "update",
+      "candidate_hash": "0ab835a852e97c7e1b32dc253ef26fce8f8ba0c92586fe6c133df8d0567aec1c",
+      "candidate_ref": "net_share_retirement_yoy:v3",
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "update",
+      "parent_signal_ref": "net_share_retirement_yoy:v2",
+      "proposal_hash": "bcd2be93c4ecd9fd1ead5e8ade2f49b774c88a718d30733193b09759acdb2dfa",
+      "request_refs": [
+        "b67c2af8d091c1280979bc5844f07b7a4cae16fdde2b393c70c0d2f5bbe1dcf3"
+      ],
+      "stage": "Update",
+      "usage_ref": "b67c2af8d091c1280979bc5844f07b7a4cae16fdde2b393c70c0d2f5bbe1dcf3",
+      "work_id": "cycle-0001:Update:003"
+    },
+    {
+      "action_summary": "candidate validation",
+      "candidate_hash": "61920dacb93e2afb1df28e1c4364e9b5a4031853348a902336fb576f0130fb17",
+      "candidate_ref": "revenue_growth_yoy:v3",
+      "evidence_or_evaluation_refs": [
+        "83bf32683e48345ae8ee139f8042147153b5b90e7f210cf15d00e7c1a7cb5f85"
+      ],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "validated",
+      "parent_signal_ref": "revenue_growth_yoy",
+      "proposal_hash": "61920dacb93e2afb1df28e1c4364e9b5a4031853348a902336fb576f0130fb17",
+      "request_refs": [],
+      "stage": "Update",
+      "usage_ref": null,
+      "work_id": "cycle-0001:candidate:revenue_growth_yoy:v3"
+    },
+    {
+      "action_summary": "candidate validation",
+      "candidate_hash": "0ab835a852e97c7e1b32dc253ef26fce8f8ba0c92586fe6c133df8d0567aec1c",
+      "candidate_ref": "net_share_retirement_yoy:v3",
+      "evidence_or_evaluation_refs": [
+        "50e5b02066976deb89d43f362fcd6284b2716d5f84e5435d132b7948fe412c62"
+      ],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "validated",
+      "parent_signal_ref": "net_share_retirement_yoy",
+      "proposal_hash": "0ab835a852e97c7e1b32dc253ef26fce8f8ba0c92586fe6c133df8d0567aec1c",
+      "request_refs": [],
+      "stage": "Update",
+      "usage_ref": null,
+      "work_id": "cycle-0001:candidate:net_share_retirement_yoy:v3"
+    }
+  ],
+  "contract_hash": "2dab8b3e898e49376486e824a5d797fadb7dc5d5a69039130bd57b6e6253ef04",
+  "cycle_id": 1,
+  "input_hash": "c0bbe544563e92b9302c3e71fb67e803e2c1f57febd382b33c59fa5d6c9019a8",
+  "memory_hash": "7f7a259566b290c084ef254360dbf25eaceffa63fd08d00d4d57c298f2a1ad1f",
+  "schema_version": "slow-experiments-v1"
+}

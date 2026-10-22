@@ -1,0 +1,8 @@
+{
+  "admission_keys": {
+    "3": "f1f5e571450de8e9d5d7812a09b88cc4bd3beb232ba9152e0e6cd991b04c70ca"
+  },
+  "category": "order_confirmation",
+  "signal_id": "order_confirmation_disclosed",
+  "stable_version": 3
+}

@@ -1,0 +1,73 @@
+{
+  "confidence": "repeated",
+  "directional": {
+    "correct": 3,
+    "unavailable": 1,
+    "unavailable_with_inputs": 1,
+    "unavailable_without_inputs": 0,
+    "wrong": 1
+  },
+  "disputed_observations": 15,
+  "recurring_contexts": [
+    {
+      "context_tag": "catalyst_window",
+      "issuers": 8,
+      "observations": 8,
+      "positive_surge_rate": 0.75
+    },
+    {
+      "context_tag": "small_cap",
+      "issuers": 8,
+      "observations": 8,
+      "positive_surge_rate": 0.75
+    },
+    {
+      "context_tag": "capital_intensive",
+      "issuers": 7,
+      "observations": 7,
+      "positive_surge_rate": 0.75
+    }
+  ],
+  "reflection_attribution": {
+    "ignored": 3,
+    "misleading": 7,
+    "other": 16
+  },
+  "schema_version": "signal-learning-profile-v1",
+  "selection_events": 121,
+  "selection_reason_codes": [
+    {
+      "count": 71,
+      "reason_code": "answer_need"
+    },
+    {
+      "count": 46,
+      "reason_code": "assess_applicability"
+    },
+    {
+      "count": 4,
+      "reason_code": "combine_evidence"
+    }
+  ],
+  "signal_ref": "order_confirmation_disclosed:v2",
+  "state_outcome_matrix": {
+    "negative": {
+      "non_surge": 0,
+      "surge": 0
+    },
+    "neutral": {
+      "non_surge": 1,
+      "surge": 2
+    },
+    "positive": {
+      "non_surge": 1,
+      "surge": 3
+    },
+    "unavailable": {
+      "non_surge": 1,
+      "surge": 0
+    }
+  },
+  "unique_issuers": 8,
+  "unique_observations": 8
+}

@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+    "length": 4000,
+    "offset": 1148801,
+    "rationale": [
+      "Inspect the disclosed Controls and Procedures section for a reusable ICFR measurement.",
+      "The directory identifies this case-scoped location but no raw narrative has yet been read; source meaning and any candidate remain unestablished."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"document_ref\": \"document-sec:[ANON_ID_0000]:000149315225011966\", \"offset\": 1148801, \"length\": 4000, \"rationale\": [\"Inspect the disclosed Controls and Procedures section for a reusable ICFR measurement.\", \"The directory identifies this case-scoped location but no raw narrative has yet been read; source meaning and any candidate remain unestablished.\"]}",
+  "request_hash": "dbacc4de8a1415be86ceba615469bf47c378e3b804868efe9f0b502a6cb8c878",
+  "response_id": "local-dbacc4de8a1415be86ceba615469bf47c378e3b804868efe9f0b502a6cb8c878",
+  "usage": {
+    "accounting_tokens": 194092,
+    "agent_id": "/root/icfr_native_h005",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "fa1cac5f3c993aacb63931ee2ef53700135920698d1b770a4b4ad34dfb7541ad",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "6464f048f50226d9ba995494859b033940a7d2fcfde2e4bad2ade23f2a31dd6a",
+    "request_hash": "dbacc4de8a1415be86ceba615469bf47c378e3b804868efe9f0b502a6cb8c878",
+    "token_usage": null
+  }
+}

@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-23：cbc9f1ab后真实ICFR完整控制12独立fresh首答/0纠错、2001316逻辑预留、API/网络0；原生S4正文跨步只剩回执的缺口由前10wire独立核出，runtime/S5原文仍全。h013未dispatch，parent停止调度、保原pending不造终态/预算耗尽，1候选正控未完成、四消费未试。归档182实际冻结runtime文件逐hash读回；下一修正文可见性再验完整链，不热改旧stage。见[报告](../reports/icfr-native-stage-and-citation-prerequisite-20261023.md)。
+
 - 2026-10-23：完整ICFR native诊断driver与私有oracle预冻，保263源/18版本/265needs；先spec后修Mining normal prompt/S4逐引用实际可读同源前提，六独立旧误放变体新拒、合法event/document及语义限制保留。新增driver的显式0预算与input-only越界两边界已修，440关联通过/网络0、版本稳定；历史prefix原回执/输入权威及五漂移反例核过，完整链真实行为待独立新作者，原0/2、1/2及MVP open不改。见[报告](../reports/icfr-native-stage-and-citation-prerequisite-20261023.md)。
 
 - 2026-10-23：ICFR四精确申报本地原采集/DEI反核及原生双seed全输入预检；保263源/18版本/265needs，8输入捕获0作者，明确H1/S5/Fast资源及诊断use边界，未创建候选/改旧终态。见[报告](../reports/icfr-source-and-native-path-preflight-20261023.md)。

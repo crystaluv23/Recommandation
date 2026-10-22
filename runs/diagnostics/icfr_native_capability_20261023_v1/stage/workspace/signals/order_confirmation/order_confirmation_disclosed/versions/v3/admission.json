@@ -1,0 +1,49 @@
+{
+  "accepted": true,
+  "admission_identity": {
+    "candidate_hash": "917b27d6206a0ddad4be6ff3b8a4b8c7821f31a7d62d27879ef4aa1bc11cc756",
+    "contract_validation": {
+      "accepted": true,
+      "executed_tests": 8,
+      "reasons": []
+    },
+    "input_registry_hash": "561167101a14c3d296c0798cc08dfc26657c1dfba01b24e37823b4fbe2bb148b",
+    "research_provenance": {
+      "generation_case_ids": [
+        "cik_0001065059:20250131",
+        "cik_0001097362:20250731",
+        "cik_0001285819:20250930",
+        "cik_0001421517:20250131",
+        "cik_0001679273:20250331",
+        "cik_0001746129:20250731",
+        "cik_0001814215:20250530",
+        "cik_0001951089:20250530"
+      ],
+      "induction_case_ids": [
+        "cik_0001065059:20250131",
+        "cik_0001285819:20250930",
+        "cik_0001421517:20250131",
+        "cik_0001814215:20250530"
+      ],
+      "origin": "current_cycle",
+      "source_input_hash": "1809bc7384b23f45363b5bcab9ca587a1cb8b80d20d12db7ad6c0db8089406b2"
+    },
+    "research_targets": [
+      "surge_direction"
+    ],
+    "schema_version": "signal-candidate-admission-identity-v1",
+    "signal_ref": "order_confirmation_disclosed:v3",
+    "validator_hash": "5826b99df8dd000da723bcac7b746a767ba9fff8f5ccff9ae766e1f0a33f6fc9"
+  },
+  "candidate_hash": "917b27d6206a0ddad4be6ff3b8a4b8c7821f31a7d62d27879ef4aa1bc11cc756",
+  "contract_validation": {
+    "accepted": true,
+    "executed_tests": 8,
+    "reasons": []
+  },
+  "evaluation_key": "f1f5e571450de8e9d5d7812a09b88cc4bd3beb232ba9152e0e6cd991b04c70ca",
+  "reasons": [],
+  "schema_version": "signal-candidate-admission-v1",
+  "signal_ref": "order_confirmation_disclosed:v3",
+  "status": "admitted"
+}

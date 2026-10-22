@@ -1,0 +1,44 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "fetch_evidence",
+    "case_refs": [
+      "case-001",
+      "case-002",
+      "case-003",
+      "case-004",
+      "case-005",
+      "case-006",
+      "case-007",
+      "case-008"
+    ],
+    "max_documents": 24,
+    "query": null,
+    "rationale": [
+      "Fetch prediction-time narrative filings and structured financial evidence across both runtime-labeled groups in one broad request.",
+      "Use the returned directory and raw spans to investigate ICFR disclosure measurements without assuming their meaning or directional effect."
+    ],
+    "source_families": [
+      "filing",
+      "10-k",
+      "sec_filing",
+      "financial",
+      "sec_company_facts"
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"fetch_evidence\", \"case_refs\": [\"case-001\", \"case-002\", \"case-003\", \"case-004\", \"case-005\", \"case-006\", \"case-007\", \"case-008\"], \"source_families\": [\"filing\", \"10-k\", \"sec_filing\", \"financial\", \"sec_company_facts\"], \"max_documents\": 24, \"query\": null, \"rationale\": [\"Fetch prediction-time narrative filings and structured financial evidence across both runtime-labeled groups in one broad request.\", \"Use the returned directory and raw spans to investigate ICFR disclosure measurements without assuming their meaning or directional effect.\"]}",
+  "request_hash": "d5d327433f72afded4e9f29fa4fb21f122045f920f09138eecf1f1ba4d150026",
+  "response_id": "local-d5d327433f72afded4e9f29fa4fb21f122045f920f09138eecf1f1ba4d150026",
+  "usage": {
+    "accounting_tokens": 93662,
+    "agent_id": "/root/icfr_native_h003",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "ceb236d640b2c1dca1c4f386861e546934bb2cc97a3ff08380efaa6c64c34ad4",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "76d5c9e4e88c96192a2a537cf8964b9286666c3d1fe8b551c129fb0dfcf84293",
+    "request_hash": "d5d327433f72afded4e9f29fa4fb21f122045f920f09138eecf1f1ba4d150026",
+    "token_usage": null
+  }
+}

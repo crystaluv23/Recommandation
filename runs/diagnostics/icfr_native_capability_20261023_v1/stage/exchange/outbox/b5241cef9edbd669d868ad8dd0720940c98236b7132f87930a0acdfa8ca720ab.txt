@@ -1,0 +1,1 @@
+{"action":"inspect_catalog","scope":"signals","cursor":7,"rationale":["The initial catalog discloses only 7 of 18 existing Signals.","Read the next catalog page before choosing an ICFR measurement so omitted capabilities are not mistaken for novelty."]}
