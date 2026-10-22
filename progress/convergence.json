@@ -3,9 +3,9 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-22T17:16:01.135743+00:00",
+    "checked_at": "2026-10-22T18:04:51.823438+00:00",
     "thread_id": "01a15f73-622f-7130-905e-927e4e6c17c7",
-    "source": "get_goal active unbudgeted this turn; user explicitly answered both pending decisions and reaffirmed zero external LLM API."
+    "source": "get_goal active unbudgeted this turn; user authorization still forbids external APIs and substitutes independent native subagents for production LLM roles. This turn stopped at input-only preconditions."
   },
   "acceptance": [
     {
@@ -1579,15 +1579,44 @@
         "runs/diagnostics/source_reading_20261022_v1/history-native-v2-root-review.json"
       ],
       "result": "User approved both interfaces; implemented taxonomy through producer/save/read/consumer and actual-read source-session dependencies with original bounded budgets.354associated checks pass/network0; broader1failure reproduces onprechangeHEAD. Freshsynthetic3roles/firstfinal1of1/0correction/31385logical reservation/externalLLMAPI0.25files unchanged/native reopen,3receipts retained. Initialprobe stoppedbeforedispatch because ranking premise false,0answers. No full F5/Mining/MVP closure: olderstructured windows still blocked by default latest/prior index; next repair shared reader addressing, not semantic sorting or a full successor. Historical addressing locally repaired/default behavior retained,356associated tests pass. Newfresh historical1role stage0of1: separate current/prior requested windows overlap only after automatic comparable expansion, causing technical false rejection before body disclosure. Preserve completed original; repair implicit expansion merging, not author answer. Implicit comparable closure now merges withinoneexchange, explicit overlaps/prior reads remainrejected.357associated tests/network0. Sameinput/spec/skill newhistoricalv2 firstfinal1of1/3freshroles/0corrections/44551logicalreservation, initialactionbyteidentical tooldfailedrole;2literaloperands/1814sourcechars canonical,25files native reopen unchanged/3receipts retained. Original0of1 preserved; actualsource/Reflect/Mining/fullMVP remainopen."
+    },
+    {
+      "id": "actual-source-bounded-reading-preflight-20261023",
+      "strategy": "actual_frozen_inputs_then_unique_semantics_and_wire_affordability_before_dispatch",
+      "failure_families": [
+        "immutable_registry_parameters_fail_session_deepcopy",
+        "repeated_catalog_metadata_exhausts_request_budget_and_hides_direct_page_navigation",
+        "catalog_preview_page_can_exceed_cumulative_character_ceiling",
+        "actual_signal_definition_does_not_supply_unique_supported_answer",
+        "long_normalized_body_lacks_transparent_source_navigation"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/actual-bounded-reading-preflight-20261023.md",
+        "runs/diagnostics/actual_bounded_reading_20261023_v1/v2/preflight-result.json",
+        "runs/diagnostics/actual_bounded_reading_20261023_v1/oracle/oracle.json",
+        "runs/diagnostics/actual_bounded_reading_20261023_v1/current-oracle/oracle.json",
+        "runs/diagnostics/actual_bounded_reading_20261023_v1/narrative-navigation.json",
+        "runs/diagnostics/actual_bounded_reading_20261023_v1/candidate-final.log",
+        "runs/diagnostics/actual_bounded_reading_20261023_v1/counter-review.json",
+        "runs/diagnostics/actual_bounded_reading_20261023_v1/counter-review-final.json",
+        "runs/diagnostics/actual_bounded_reading_20261023_v1/baseline-reproduction.log"
+      ],
+      "result": "Actual qualified1780 source view; exact v6/v12 definitions retained. Nonempty immutable spec copy fixed through public serialization.400group coordinates retained with page-local dictionary and all-page availability summaries; actual initial logical reservation88302to32579, root-addressed2exchange/4row/7451char preflight only. Independent counterexample exposes32000to32140preview overflow; atomic full-page validation now rejects unchanged and permits exactfit.240associated tests pass/network0. First broad append guard wrongly rejected in-memory fixture setup86fail2error; retained separately from corrected networkguard batch and from product red. Independent source-only references stop archivedcashv1 unsupported source_type/val shape and currentcommercializationv2 nonunique mixed-initiative state before any model response. No new measurement policy/Registry publication. Current narratives354332/168859 chars expose no section coordinates; source-only normal offsets show relevant passages beyond initialwindow.0productioninbox/response/GET/externalLLMAPI; all completed prior stages/failures preserved; no F5/consumer/fullMVP closure."
     }
   ],
   "review": {
-    "after_iteration": "approved-bounded-reading-and-taxonomy-implementation-20261022",
+    "after_iteration": "actual-source-bounded-reading-preflight-20261023",
     "evidence": [
-      "reports/transcript-official-archive-review-20261022.md",
-      "runs/diagnostics/transcript_historical_capture_20261022_v1/metadata-results.json",
-      "runs/diagnostics/transcript_historical_capture_20261022_v1/terminal-review.json",
-      "reports/approved-reading-and-taxonomy-20261022.md"
+      "reports/actual-bounded-reading-preflight-20261023.md",
+      "runs/diagnostics/actual_bounded_reading_20261023_v1/v2/preflight-result.json",
+      "runs/diagnostics/actual_bounded_reading_20261023_v1/oracle/oracle.json",
+      "runs/diagnostics/actual_bounded_reading_20261023_v1/current-oracle/oracle.json",
+      "runs/diagnostics/actual_bounded_reading_20261023_v1/narrative-navigation.json",
+      "runs/diagnostics/actual_bounded_reading_20261023_v1/candidate-final.log",
+      "runs/diagnostics/actual_bounded_reading_20261023_v1/counter-review.json",
+      "runs/diagnostics/actual_bounded_reading_20261023_v1/counter-review-final.json",
+      "runs/diagnostics/actual_bounded_reading_20261023_v1/baseline-reproduction.log"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1685,19 +1714,21 @@
       "Complete official PDFs are stronger body evidence than prospective announcements but current corrected versions and creation/modification metadata still do not prove historical public access. GPRE firstparty event/PDF clocks disagree by1hour. Root also initially searched an out-of-inventory issuer and sent an administrative query to attendee schema; neither result authorizes absence/admission or unbounded endpoint probing.",
       "Historical capture checks are distinct from inspecting current official files, but HTTP429 and tool access failures expose no historical snapshot. They cannot prove no capture or justify repeated alternate calls. Pending interface/schema choices remain the same blocker across automatic continuations, which are not decisions; stop instead of filling turns with more scans.",
       "A rank-eleven claim must inspect actual resolver selection rather than source tuple order. Complete catalog access also does not prove arbitrary structured windows are readable: the shared reader currently omits older periods before window addressing. Preserve the undispatched firstprobe and address this family before F5 closure.",
-      "One-window atomic-pair tests did not cover two separately addressed current/prior operands in the same request. Automatic closure falsely created duplication after valid coordinate selection. Check explicit request intervals separately from implicit complete-unit union; retain byte-exact original fresh failure and require unchanged-input new role proof."
+      "One-window atomic-pair tests did not cover two separately addressed current/prior operands in the same request. Automatic closure falsely created duplication after valid coordinate selection. Check explicit request intervals separately from implicit complete-unit union; retain byte-exact original fresh failure and require unchanged-input new role proof.",
+      "Prior synthetic controls used empty spec parameters and never exercised immutable Registry nonempty dictionaries. Small source catalogs also hid repeated metadata cost on the composed wire. An oracle-addressed coordinate path does not prove a model can find an unindexed late passage or interpret an unsupported historical skill.",
+      "Independent ceiling review found catalog() charged unseen previews after body budget exhaustion without atomic validation. Earlier budget checks only guarded read rows. The initial candidate verification guard then blocked legitimate in-memory fixture appends; keep harness failures distinct from product failures and preserve exact-fit/whole-page rejection controls."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "repair",
-      "strategy": "actual_source_input_readability_and_closed_consumer_binding_before_new_stage",
-      "action": "Preserve both synthetic passes and original historical0of1. Inspect current frozen qualified actual-source catalog, source coordinates and version-owned actual measurement oracle without model or acquisition; only after source/coverage/reservation preconditions pass freeze a new bounded independent-subagent stage and inspect canonical downstream meaning. No full successor.",
-      "stop": "Do not claim F5 or MVP closure from local tests/synthetic protocol. Keep source trust, unknown measurement definitions, full feedback/Mining/admission/reuse and whole-loop recovery open. External LLM API stays zero; use exact independent subagents for role requests.",
-      "question": "Do current qualified actual-source versions expose the required current/prior/unit/conflict rows through the bounded catalog/read path, within original per-case/request/exchange ceilings and without importing unproved transcript/PIT sources?",
-      "pass": "Actual originals and oracle are independently bound; all needed rows are addressable and visible in a legal bounded closed projection, with consumer evidence/resolution/fingerprint dependencies consistent and request reservations affordable.",
-      "fail": "Required rows are missing, outside eligible PIT/source scope, unaddressable within the approved envelope, semantically ambiguous or budget-infeasible; declared model view and actual wire differ.",
-      "on_pass": "Freeze one new actual-source stage with exact source/spec/skill/measurement oracle and use fresh exact independent subagents, then inspect results and downstream consumption.",
-      "on_fail": "Keep exact input failure and bounded uncertainty; repair the applicable deterministic producer/read/consumer family or seek only the still-missing research decision, without restarting completed stages or a full run."
+      "strategy": "transparent_normalized_source_navigation_before_fresh_unique_measurement_probe",
+      "action": "Stop both unsuitable semantic targets without model dispatch or answer changes. Next inspect/reuse source-owned section metadata with exact normalized/raw coordinate mapping, explicit omissions and original reading limits; choose a definition-clear actual positive only after source/answerability/wire preconditions. Preserve current independent source oracles and original failures. No full successor.",
+      "stop": "Do not infer semantic support from hash, coordinates, savings in wire size or all-unavailable results. Do not normalize archived val/source_type policies silently, guess a mixed-product categorical state, leak private oracle offsets to a role, or spend another read beyond the approved two exchanges. External APIs remain zero.",
+      "question": "Can a role locate necessary complete/context/contrary source spans from transparent public catalog metadata under two exchanges/32k characters, before extracting a uniquely defined actual measurement?",
+      "pass": "Metadata navigation has exact declared coordinates, bounded explicit omissions, preserved PIT/identity/resource limits, and actual unassisted source selection plus independently defined normal output and consumer linkage.",
+      "fail": "Required source location is only known via private oracle, metadata coordinates mismatch, complete qualified evidence cannot fit, or the exact skill/input yields no unique supported expected state.",
+      "on_pass": "Freeze one new bounded actual-source stage and use exact independent native subagents for production role requests; inspect final semantics and actual downstream consumption.",
+      "on_fail": "Repair the deterministic navigation/coordinate/budget family or obtain a separately justified measurement decision for a new version; retain original preflight failure without expanding/restarting completed experiments."
     }
   },
   "successor_prerequisites": [

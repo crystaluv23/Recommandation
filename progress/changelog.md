@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-23：真实qualified1780来源前置暴露Registry非空冻结参数deepcopy失败，以公开序列化隔离修复；原57合格/target rank46、400组坐标目录无损共享并给完整page可用时间导航，首wire逻辑预留88302→32579。独立反例另见32000正文后翻页预览越界，现整页先验证再原子计费，保exact-fit及拒后状态；240关联过/网络0。真实source-only两审查分别判历史cash-v1来源/val形状不适用、当前commercialization-v2混合新旧技术无唯一状态，均在模型前停，未改旧skill或强造正控。当前两长文354332/168859正文缺透明定位，仍open。0生产模型答/资料GET/外部LLMAPI/完整后继；测试脚本误拦内存fixture的86fail+2error及初hash错误单独留档。见actual-bounded-reading-preflight报告，MVP不闭合。
+
 - 2026-10-22：区分显式window重叠与同exchange自动附带比较期重叠，只合并后者并唯一计字符；原fresh动作/倒序旧a026两红后通过，显式重复/重叠及跨exchange重复仍拒。20聚焦/357关联全过、网络0；相同inputs/spec/skill的新history-v2三独立角色首答1of1/0纠错、44551逻辑预留，首读动作与原失败逐字同；2022/2021两完整USD事实进入canonical证据及解释，1814来源字符，各25files重开同/3receipts不增。原history0of1和1100叙事正控仍各绑原版不重入；外部LLMAPI0，actual源/Reflect/Mining消费及MVP保持open。
 
 - 2026-10-22：共享reader加内部include_history索引，默认caller保持最新/可比期；更旧typed/legacy完整literal、期间冲突/比较期与交错未读窗口接通，1100旧版两方法共3红后356关联过/网络0。fresh历史正控首读1角色/13398逻辑预留后因两独立window自动附带比较期相撞而validation_failed0of1，0body/0语义接受；原完成stage保留。准备duplicate-body去重前提错误及缺contract的resume误调用保留/0request，不能算模型或产品失败。下一合并同exchange的隐式展开，保显式重复与已读窗口拒绝；不重入原stage/全跑，MVP open。

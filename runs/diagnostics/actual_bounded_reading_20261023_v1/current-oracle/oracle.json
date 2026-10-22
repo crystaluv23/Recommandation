@@ -1,0 +1,530 @@
+{
+  "schema_version": "source-only-current-commercialization-preflight-v1",
+  "author_agent_id": "/root/actual_f5_source_oracle",
+  "company_id": "cik_0001309402",
+  "as_of": "2025-05-30T00:00:00+00:00",
+  "signal_id": "commercialization_status",
+  "version": 2,
+  "bindings": {
+    "manifest": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/current-source-manifest.json",
+      "sha256": "c2ac95c87a6e118e0377636e6d50653eb09a63f1b430cd42d694ce1886a6c463"
+    },
+    "definitions": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/spec.json",
+        "sha256": "56325ffe9f5bed14256073f640fece46ba4957d8bb56ecf838ebae173e8d109b",
+        "hash_verified": true
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/skill.md",
+        "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a",
+        "hash_verified": true
+      }
+    ],
+    "source_qualification_review": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json",
+      "sha256": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57",
+      "hash_verified": true
+    },
+    "sources": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000008.json",
+        "sha256": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8",
+        "document_id": "sec:cik_0001309402:000130940225000008",
+        "company_id": "cik_0001309402",
+        "source_type": "filing",
+        "content_sha256": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+        "content_char_length": 2260647,
+        "published_at": "2025-02-07T20:20:08+00:00",
+        "available_at": "2025-02-07T20:20:08+00:00",
+        "metadata": {
+          "accession_number": "0001309402-25-000008",
+          "cik": "0001309402",
+          "form": "10-K",
+          "provider": "sec_edgar",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1309402/000130940225000008/gpre-20241231.htm"
+        },
+        "report_period_end": "2024-12-31",
+        "hash_verified": true,
+        "content_hash_verified": true,
+        "qualification": {
+          "verdict": "admitted",
+          "proof_profile": "sec_archive_acceptance_v1",
+          "reviewed_available_at": "2025-02-07T20:20:08+00:00",
+          "original_record_binding_verified": true,
+          "proof_artifacts_independently_reopened": false
+        }
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000089.json",
+        "sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc",
+        "document_id": "sec:cik_0001309402:000130940225000089",
+        "company_id": "cik_0001309402",
+        "source_type": "filing",
+        "content_sha256": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+        "content_char_length": 1359708,
+        "published_at": "2025-05-08T20:34:28+00:00",
+        "available_at": "2025-05-08T20:34:28+00:00",
+        "metadata": {
+          "accession_number": "0001309402-25-000089",
+          "cik": "0001309402",
+          "form": "10-Q",
+          "provider": "sec_edgar",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1309402/000130940225000089/gpre-20250331.htm"
+        },
+        "report_period_end": "2025-03-31",
+        "hash_verified": true,
+        "content_hash_verified": true,
+        "qualification": {
+          "verdict": "admitted",
+          "proof_profile": "sec_archive_acceptance_v1",
+          "reviewed_available_at": "2025-05-08T20:34:28+00:00",
+          "original_record_binding_verified": true,
+          "proof_artifacts_independently_reopened": false
+        }
+      }
+    ]
+  },
+  "preflight": {
+    "disposition": "insufficient_for_unique_exact_signal_state",
+    "clear_applicable_answer_exists": false,
+    "freeze_as_answerable_probe": false,
+    "expected_signal_value": null,
+    "expected_signal_confidence": null,
+    "positive_proven": false,
+    "mature_only_packet": false,
+    "reason": "The packet contains genuine new technology/product initiatives as well as mature operations. No reviewed disclosure unambiguously links a distinct previously non-commercial product/technology to actual delivery or repeat revenue. Tharaldson first shipments are expressly a new MSC asset deployment while MSC production began in 2020; the distinct Sequence product has production-run/marketing evidence only. CST is distinct and technically productive but final customer approvals/certification were pending in the annual disclosure and operations were idled in the latest quarter. The exact skill supplies no neutral/negative mapping or aggregation rule for this mixed precommercial/paused portfolio, so a unique categorical state would be invented.",
+    "frozen_supported_conclusions": [
+      "Existing mature ethanol throughput and revenue do not establish commercialization.",
+      "Tharaldson assets shipped first commercial quantities in Q2 2024; this statement must not be silently transformed into first commercialization of a distinct new technology or Sequence.",
+      "Sequence is described as a new 60% specialty feed ingredient with full-scale production runs and marketing; that alone does not establish actual delivery or repeat revenue.",
+      "CST has distinct initial deployment and successful production, but the packet does not establish actual customer delivery/repeat revenue; the latest source explicitly reports Q1-2025 idling.",
+      "Blue Blade ATJ SAF remains development/exploration and York Shell collaboration remains demonstration/commissioning.",
+      "Lack of positive evidence is bounded to these two saved reports and is not proof that no commercial delivery exists elsewhere."
+    ]
+  },
+  "candidate_assessments": [
+    {
+      "subject": "Ordinary ethanol production, throughput and commodity co-products",
+      "applicability": "mature_operations_excluded",
+      "exact_skill_state_if_this_is_the_only_visible_subject": "unavailable",
+      "exact_skill_evidence_if_mature_only": [],
+      "basis_excerpt_ids": [
+        "annual_mature_ethanol_business_scope",
+        "quarterly_mature_ethanol_business_scope"
+      ]
+    },
+    {
+      "subject": "FQT MSC Ultra-High Protein / Tharaldson facility",
+      "applicability": "no_new_distinct_noncommercial_technology_established_for_this_facility_milestone",
+      "observed_stage": "Production since 2020; additional JV assets first commercial quantities in Q2 2024, continuing operations in Q1 2025.",
+      "positive_sufficient": false,
+      "counterargument": "First commercial shipment wording is real and is retained, but its subject is these assets. The report also identifies MSC production since 2020 and multiple operating plants. Treating site commissioning as first commercialization changes the definition.",
+      "basis_excerpt_ids": [
+        "annual_msc_origin_sequence_and_tharaldson_delivery",
+        "annual_mda_alternative_tharaldson_delivery",
+        "quarterly_msc_sequence_and_tharaldson_operations"
+      ]
+    },
+    {
+      "subject": "Sequence 60% protein specialty feed ingredient",
+      "applicability": "distinct_product_supported_previous_noncommercial_state_and_delivery_not_fully_established",
+      "observed_stage": "New product description; repeated/full-scale production runs; marketing to aquaculture customers.",
+      "positive_sufficient": false,
+      "unknowns": [
+        "No explicit Sequence customer shipment, transferred control, fulfilled order, or identifiable repeat revenue in the reviewed relevant narrative.",
+        "Marketing and production do not alone prove sellable repeatable commercial delivery."
+      ],
+      "basis_excerpt_ids": [
+        "annual_sequence_distinct_product_description",
+        "annual_msc_origin_sequence_and_tharaldson_delivery",
+        "annual_mda_alternative_tharaldson_delivery",
+        "quarterly_msc_sequence_and_tharaldson_operations",
+        "quarterly_protein_customer_acceptance_and_reliability_limits"
+      ]
+    },
+    {
+      "subject": "CST low-carbon glucose/dextrose syrups at Shenandoah",
+      "applicability": "distinct_technology_candidate",
+      "observed_stage": "First commercial-scale deployment; ongoing production and trials during 2024; final product approvals and FSSC certification anticipated in Q1 2025; operations idled during Q1 2025.",
+      "positive_sufficient": false,
+      "negative_proven": false,
+      "unknowns": [
+        "No actual commercial delivery/repeat revenue established by these excerpts.",
+        "Certification completion and customer approval completion are not shown by the latest relevant narrative.",
+        "Idling reason is product-mix returns/process refinement; no technical failure or irreversible commercialization failure is established.",
+        "Skill does not define neutral versus negative for technical production with unproved delivery and a current operating pause."
+      ],
+      "basis_excerpt_ids": [
+        "annual_cst_initial_deployment_and_production",
+        "annual_mda_cst_production",
+        "annual_cst_pending_customer_approvals_and_certification",
+        "quarterly_cst_full_production_and_idling",
+        "quarterly_recent_developments_cst_idling"
+      ]
+    },
+    {
+      "subject": "Blue Blade ATJ SAF",
+      "applicability": "distinct_technology_candidate",
+      "observed_stage": "Development and exploration of commercialization.",
+      "positive_sufficient": false,
+      "basis_excerpt_ids": [
+        "annual_blue_blade_development",
+        "quarterly_blue_blade_exploration"
+      ]
+    },
+    {
+      "subject": "FQT plus Shell Fiber Conversion Technology at York",
+      "applicability": "distinct_technology_combination_candidate",
+      "observed_stage": "Demonstration facility constructed; commissioning began in 2024; potential technical uses.",
+      "positive_sufficient": false,
+      "basis_excerpt_ids": [
+        "annual_shell_york_demonstration",
+        "quarterly_shell_york_complete_across_page_break"
+      ]
+    }
+  ],
+  "source_excerpts": [
+    {
+      "excerpt_id": "annual_msc_origin_sequence_and_tharaldson_delivery",
+      "source_binding_index": 0,
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "subject": "cik_0001309402",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">As part of our transformation to a value-added agricultural technology company, we began producing Ultra-High Protein using FQT's MSC&#8482; technology in 2020 and have deployed this technology across half of our biorefinery locations, in addition to one joint venture, to help meet growing demand for protein feed ingredients and low-carbon renewable corn oil to use as a feedstock for producing advanced biofuels such as renewable diesel, biodiesel and SAF, as the MSC&#8482; technology enhances renewable corn oil yields. The biorefineries producing Ultra-High Protein, a feed ingredient with protein concentrations of 50% or greater and yeast concentrations of 25%, have also increased renewable corn oil yields. We repeatedly demonstrated full scale 60% protein production runs using FQT's MSC&#8482; system, which we have branded as Sequence&#8482;. We market this specialty feed ingredient to aquaculture customers globally. Our 50/50 joint venture with Tharaldson Ethanol Plant I LLC (Tharaldson Ethanol) owns the MSC&#8482; technology assets added adjacent to the Tharaldson Ethanol plant in Casselton, North Dakota which produces Ultra-High Protein and increases renewable corn oil yields. We share in the protein and renewable corn oil uplift, with no additional exposure to the Tharaldson Ethanol production. These assets completed commissioning and shipped the first commercial quantities during the second quarter of 2024. Including GP Turnkey Tharaldson's capacity, the annual Ultra-High Protein capacity we market is approximately 430 thousand tons.</span></div>",
+      "literal_sha256": "e8b5df65ccc145ac8f0b9401f5113b87bd6a0f8053bead02ec6d5c834b83b481",
+      "visible_text_for_review_only": "As part of our transformation to a value-added agricultural technology company, we began producing Ultra-High Protein using FQT's MSC™ technology in 2020 and have deployed this technology across half of our biorefinery locations, in addition to one joint venture, to help meet growing demand for protein feed ingredients and low-carbon renewable corn oil to use as a feedstock for producing advanced biofuels such as renewable diesel, biodiesel and SAF, as the MSC™ technology enhances renewable corn oil yields. The biorefineries producing Ultra-High Protein, a feed ingredient with protein concentrations of 50% or greater and yeast concentrations of 25%, have also increased renewable corn oil yields. We repeatedly demonstrated full scale 60% protein production runs using FQT's MSC™ system, which we have branded as Sequence™. We market this specialty feed ingredient to aquaculture customers globally. Our 50/50 joint venture with Tharaldson Ethanol Plant I LLC (Tharaldson Ethanol) owns the MSC™ technology assets added adjacent to the Tharaldson Ethanol plant in Casselton, North Dakota which produces Ultra-High Protein and increases renewable corn oil yields. We share in the protein and renewable corn oil uplift, with no additional exposure to the Tharaldson Ethanol production. These assets completed commissioning and shipped the first commercial quantities during the second quarter of 2024. Including GP Turnkey Tharaldson's capacity, the annual Ultra-High Protein capacity we market is approximately 430 thousand tons.",
+      "content_char_start": 316773,
+      "content_char_end": 318514,
+      "content_utf8_byte_start": 316773,
+      "content_utf8_byte_end": 318514,
+      "serialized_file_char_start": 322779,
+      "serialized_file_char_end": 324524,
+      "serialized_file_utf8_byte_start": 322779,
+      "serialized_file_utf8_byte_end": 324524,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">As part of our transformation to a value-added agricultural technology company, we began producing Ultra-High Protein using FQT's MSC&#8482; technology in 2020 and have deployed this technology across half of our biorefinery locations, in addition to one joint venture, to help meet growing demand for protein feed ingredients and low-carbon renewable corn oil to use as a feedstock for producing advanced biofuels such as renewable diesel, biodiesel and SAF, as the MSC&#8482; technology enhances renewable corn oil yields. The biorefineries producing Ultra-High Protein, a feed ingredient with protein concentrations of 50% or greater and yeast concentrations of 25%, have also increased renewable corn oil yields. We repeatedly demonstrated full scale 60% protein production runs using FQT's MSC&#8482; system, which we have branded as Sequence&#8482;. We market this specialty feed ingredient to aquaculture customers globally. Our 50/50 joint venture with Tharaldson Ethanol Plant I LLC (Tharaldson Ethanol) owns the MSC&#8482; technology assets added adjacent to the Tharaldson Ethanol plant in Casselton, North Dakota which produces Ultra-High Protein and increases renewable corn oil yields. We share in the protein and renewable corn oil uplift, with no additional exposure to the Tharaldson Ethanol production. These assets completed commissioning and shipped the first commercial quantities during the second quarter of 2024. Including GP Turnkey Tharaldson's capacity, the annual Ultra-High Protein capacity we market is approximately 430 thousand tons.</span></div>",
+      "interpretation_and_limit": "Complete paragraph includes MSC production since 2020, full-scale 60% Sequence runs and marketing, JV scope, and first Tharaldson commercial quantities in Q2 2024. This supports a facility shipment but does not establish a new non-commercial technology or attribute delivery to Sequence."
+    },
+    {
+      "excerpt_id": "annual_mda_alternative_tharaldson_delivery",
+      "source_binding_index": 0,
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "subject": "cik_0001309402",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">We have installed and are operating FQT MSC&#8482; technology at five of our biorefineries. Through our value-added ingredients initiative, we produce Ultra-High Protein, a feed ingredient with protein concentrations of 50% or greater and yeast concentrations of 25%, increase production of renewable corn oil and produce other higher value products, such as post-MSC&#8482; distillers grains. We successfully completed full scale 60% protein production runs using FQT's MSC&#8482; system, which is our new specialty feed ingredient branded as Sequence&#8482;. Our 50/50 joint venture with Tharaldson Ethanol Plant I LLC (Tharaldson Ethanol) owns the MSC&#8482; technology assets added adjacent to the Tharaldson Ethanol plant in Casselton, North Dakota which produces Ultra-High Protein and increases renewable corn oil yields. These assets completed commissioning and shipped the first commercial quantities during the second quarter of 2024. Including GP Turnkey Tharaldson's capacity, the annual Ultra-High Protein capacity we market is approximately 430 thousand tons.</span></div>",
+      "literal_sha256": "e3dec8f1d233c41348a60ade07698016fa83e36f628044c651c9240a4a7ffaac",
+      "visible_text_for_review_only": "We have installed and are operating FQT MSC™ technology at five of our biorefineries. Through our value-added ingredients initiative, we produce Ultra-High Protein, a feed ingredient with protein concentrations of 50% or greater and yeast concentrations of 25%, increase production of renewable corn oil and produce other higher value products, such as post-MSC™ distillers grains. We successfully completed full scale 60% protein production runs using FQT's MSC™ system, which is our new specialty feed ingredient branded as Sequence™. Our 50/50 joint venture with Tharaldson Ethanol Plant I LLC (Tharaldson Ethanol) owns the MSC™ technology assets added adjacent to the Tharaldson Ethanol plant in Casselton, North Dakota which produces Ultra-High Protein and increases renewable corn oil yields. These assets completed commissioning and shipped the first commercial quantities during the second quarter of 2024. Including GP Turnkey Tharaldson's capacity, the annual Ultra-High Protein capacity we market is approximately 430 thousand tons.",
+      "content_char_start": 552841,
+      "content_char_end": 554090,
+      "content_utf8_byte_start": 552841,
+      "content_utf8_byte_end": 554090,
+      "serialized_file_char_start": 561761,
+      "serialized_file_char_end": 563014,
+      "serialized_file_utf8_byte_start": 561761,
+      "serialized_file_utf8_byte_end": 563014,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">We have installed and are operating FQT MSC&#8482; technology at five of our biorefineries. Through our value-added ingredients initiative, we produce Ultra-High Protein, a feed ingredient with protein concentrations of 50% or greater and yeast concentrations of 25%, increase production of renewable corn oil and produce other higher value products, such as post-MSC&#8482; distillers grains. We successfully completed full scale 60% protein production runs using FQT's MSC&#8482; system, which is our new specialty feed ingredient branded as Sequence&#8482;. Our 50/50 joint venture with Tharaldson Ethanol Plant I LLC (Tharaldson Ethanol) owns the MSC&#8482; technology assets added adjacent to the Tharaldson Ethanol plant in Casselton, North Dakota which produces Ultra-High Protein and increases renewable corn oil yields. These assets completed commissioning and shipped the first commercial quantities during the second quarter of 2024. Including GP Turnkey Tharaldson's capacity, the annual Ultra-High Protein capacity we market is approximately 430 thousand tons.</span></div>",
+      "interpretation_and_limit": "Alternative complete occurrence of the first-commercial-quantities statement. Still ties shipment to JV assets, not a distinct new product."
+    },
+    {
+      "excerpt_id": "annual_cst_initial_deployment_and_production",
+      "source_binding_index": 0,
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "subject": "cik_0001309402",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">In September 2022, we broke ground at our biorefinery in Shenandoah, Iowa, as the first location to deploy FQT's CST&#8482; at commercial scale, and during 2024 the company achieved successful ongoing production of dextrose syrups with CST&#8482;. FQT&#8217;s CST&#8482; allows for the production of both food and industrial grade low-carbon glucose and dextrose at a dry mill ethanol plant to target applications in food production, in addition to serving as a feedstock for renewable chemicals and synthetic biology. The facility is currently capable of producing 60 million pounds of product per year, and we anticipate modifying additional biorefineries to include FQT CST&#8482; production capabilities to meet anticipated demand. </span></div>",
+      "literal_sha256": "8344bb3a031cf4881ea0700a5aa428d58d0d9c426d29ffcd565e3ebc89bcbb87",
+      "visible_text_for_review_only": "In September 2022, we broke ground at our biorefinery in Shenandoah, Iowa, as the first location to deploy FQT's CST™ at commercial scale, and during 2024 the company achieved successful ongoing production of dextrose syrups with CST™. FQT’s CST™ allows for the production of both food and industrial grade low-carbon glucose and dextrose at a dry mill ethanol plant to target applications in food production, in addition to serving as a feedstock for renewable chemicals and synthetic biology. The facility is currently capable of producing 60 million pounds of product per year, and we anticipate modifying additional biorefineries to include FQT CST™ production capabilities to meet anticipated demand. ",
+      "content_char_start": 318514,
+      "content_char_end": 319426,
+      "content_utf8_byte_start": 318514,
+      "content_utf8_byte_end": 319426,
+      "serialized_file_char_start": 324524,
+      "serialized_file_char_end": 325440,
+      "serialized_file_utf8_byte_start": 324524,
+      "serialized_file_utf8_byte_end": 325440,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">In September 2022, we broke ground at our biorefinery in Shenandoah, Iowa, as the first location to deploy FQT's CST&#8482; at commercial scale, and during 2024 the company achieved successful ongoing production of dextrose syrups with CST&#8482;. FQT&#8217;s CST&#8482; allows for the production of both food and industrial grade low-carbon glucose and dextrose at a dry mill ethanol plant to target applications in food production, in addition to serving as a feedstock for renewable chemicals and synthetic biology. The facility is currently capable of producing 60 million pounds of product per year, and we anticipate modifying additional biorefineries to include FQT CST&#8482; production capabilities to meet anticipated demand. </span></div>",
+      "interpretation_and_limit": "Supports distinct first commercial-scale CST deployment begun in September 2022 and ongoing dextrose production during 2024. Capacity and production alone do not establish delivery or revenue."
+    },
+    {
+      "excerpt_id": "annual_mda_cst_production",
+      "source_binding_index": 0,
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "subject": "cik_0001309402",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The world's first commercial scale FQT CST&#8482; facility in Shenandoah, Iowa has achieved successful ongoing production of dextrose syrups with CST&#8482;. The FQT CST&#8482; technology allows for the production of both food and industrial grade low carbon-intensity glucose and dextrose corn syrups to target applications in food production, renewable chemicals and synthetic biology. The facility is currently capable of producing 60 million pounds of product per year, and we also anticipate modifying additional biorefineries to include FQT CST&#8482; production capabilities to meet anticipated future customer demand.</span></div>",
+      "literal_sha256": "9ff292063582dfdb8341fe12e00fbdbc53e2cc6339ab74adaac740a703f20429",
+      "visible_text_for_review_only": "The world's first commercial scale FQT CST™ facility in Shenandoah, Iowa has achieved successful ongoing production of dextrose syrups with CST™. The FQT CST™ technology allows for the production of both food and industrial grade low carbon-intensity glucose and dextrose corn syrups to target applications in food production, renewable chemicals and synthetic biology. The facility is currently capable of producing 60 million pounds of product per year, and we also anticipate modifying additional biorefineries to include FQT CST™ production capabilities to meet anticipated future customer demand.",
+      "content_char_start": 554090,
+      "content_char_end": 554891,
+      "content_utf8_byte_start": 554090,
+      "content_utf8_byte_end": 554891,
+      "serialized_file_char_start": 563014,
+      "serialized_file_char_end": 563819,
+      "serialized_file_utf8_byte_start": 563014,
+      "serialized_file_utf8_byte_end": 563819,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">The world's first commercial scale FQT CST&#8482; facility in Shenandoah, Iowa has achieved successful ongoing production of dextrose syrups with CST&#8482;. The FQT CST&#8482; technology allows for the production of both food and industrial grade low carbon-intensity glucose and dextrose corn syrups to target applications in food production, renewable chemicals and synthetic biology. The facility is currently capable of producing 60 million pounds of product per year, and we also anticipate modifying additional biorefineries to include FQT CST&#8482; production capabilities to meet anticipated future customer demand.</span></div>",
+      "interpretation_and_limit": "Alternative complete CST production/capacity disclosure with future customer demand language."
+    },
+    {
+      "excerpt_id": "annual_cst_pending_customer_approvals_and_certification",
+      "source_binding_index": 0,
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "subject": "cik_0001309402",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The company has achieved successful ongoing production of dextrose syrups with CST</span><span style=\"background-color:#ffffff;color:#212529;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">&#8482;</span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\"> at its Shenandoah facility. The syrups produced with CST</span><span style=\"background-color:#ffffff;color:#212529;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">&#8482;</span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\"> have proven successful in trials as feedstocks for fermentation of various bio-products and bio-chemicals, in addition to food ingredients. The facility is currently capable of producing 60 million pounds of product per year. The company is going through final product approvals with multiple potential customers and anticipates receiving final </span></div><div style=\"height:45pt;position:relative;width:100%\"><div style=\"bottom:0;position:absolute;width:100%\"><div style=\"text-align:center\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">7</span></div></div></div><hr style=\"page-break-after:always\"/><div style=\"min-height:45pt;width:100%\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\"><a style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"#i82d89278396c4d27ae92f3c4c087a581_7\">Table of </a><a style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\" href=\"#i82d89278396c4d27ae92f3c4c087a581_7\">Contents</a></span></div></div><div style=\"margin-top:12pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">FSSC certification during the first quarter of 2025.</span></div>",
+      "literal_sha256": "cede368e5937f12d61d25cc4def3bed8e7e3ffbda55d8dc3d59eeaf256898e20",
+      "visible_text_for_review_only": "The company has achieved successful ongoing production of dextrose syrups with CST™ at its Shenandoah facility. The syrups produced with CST™ have proven successful in trials as feedstocks for fermentation of various bio-products and bio-chemicals, in addition to food ingredients. The facility is currently capable of producing 60 million pounds of product per year. The company is going through final product approvals with multiple potential customers and anticipates receiving final 7Table of ContentsFSSC certification during the first quarter of 2025.",
+      "content_char_start": 330097,
+      "content_char_end": 332445,
+      "content_utf8_byte_start": 330097,
+      "content_utf8_byte_end": 332445,
+      "serialized_file_char_start": 336207,
+      "serialized_file_char_end": 338593,
+      "serialized_file_utf8_byte_start": 336207,
+      "serialized_file_utf8_byte_end": 338593,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">The company has achieved successful ongoing production of dextrose syrups with CST</span><span style=\\\"background-color:#ffffff;color:#212529;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">&#8482;</span><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\"> at its Shenandoah facility. The syrups produced with CST</span><span style=\\\"background-color:#ffffff;color:#212529;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">&#8482;</span><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\"> have proven successful in trials as feedstocks for fermentation of various bio-products and bio-chemicals, in addition to food ingredients. The facility is currently capable of producing 60 million pounds of product per year. The company is going through final product approvals with multiple potential customers and anticipates receiving final </span></div><div style=\\\"height:45pt;position:relative;width:100%\\\"><div style=\\\"bottom:0;position:absolute;width:100%\\\"><div style=\\\"text-align:center\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">7</span></div></div></div><hr style=\\\"page-break-after:always\\\"/><div style=\\\"min-height:45pt;width:100%\\\"><div><span style=\\\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\\\"><a style=\\\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\\\" href=\\\"#i82d89278396c4d27ae92f3c4c087a581_7\\\">Table of </a><a style=\\\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:108%;text-decoration:underline\\\" href=\\\"#i82d89278396c4d27ae92f3c4c087a581_7\\\">Contents</a></span></div></div><div style=\\\"margin-top:12pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">FSSC certification during the first quarter of 2025.</span></div>",
+      "interpretation_and_limit": "Complete disclosure through FSSC certification sentence across a page break: trials, potential customers, final product approvals and anticipated certification, not completed sales."
+    },
+    {
+      "excerpt_id": "annual_sequence_distinct_product_description",
+      "source_binding_index": 0,
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "subject": "cik_0001309402",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-style:italic;font-weight:400;line-height:120%\">Ultra-High Protein</span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">. Ultra-High Protein is corn fermented protein produced by further processing of the spent grain mash from the beer column. The spent grain is processed using FQT&#8217;s MSC&#8482; technology, which contains a series of screening equipment to remove fiber from the spent grain which is sent to the distillers grain dryer. The remaining product is washed and clarified into a wet protein stream which is dried in a ring dryer to produce Ultra-High Protein meal with protein concentrations of approximately 50%. Our new specialty feed ingredient, Sequence&#8482; has protein concentrations of approximately 60%.</span></div>",
+      "literal_sha256": "0834962389180c9ea43d380f4b00fbf110e920a2d3e6df6e6f2f2575ee737f50",
+      "visible_text_for_review_only": "Ultra-High Protein. Ultra-High Protein is corn fermented protein produced by further processing of the spent grain mash from the beer column. The spent grain is processed using FQT’s MSC™ technology, which contains a series of screening equipment to remove fiber from the spent grain which is sent to the distillers grain dryer. The remaining product is washed and clarified into a wet protein stream which is dried in a ring dryer to produce Ultra-High Protein meal with protein concentrations of approximately 50%. Our new specialty feed ingredient, Sequence™ has protein concentrations of approximately 60%.",
+      "content_char_start": 359121,
+      "content_char_end": 360067,
+      "content_utf8_byte_start": 359121,
+      "content_utf8_byte_end": 360067,
+      "serialized_file_char_start": 365647,
+      "serialized_file_char_end": 366599,
+      "serialized_file_utf8_byte_start": 365647,
+      "serialized_file_utf8_byte_end": 366599,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-style:italic;font-weight:400;line-height:120%\\\">Ultra-High Protein</span><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">. Ultra-High Protein is corn fermented protein produced by further processing of the spent grain mash from the beer column. The spent grain is processed using FQT&#8217;s MSC&#8482; technology, which contains a series of screening equipment to remove fiber from the spent grain which is sent to the distillers grain dryer. The remaining product is washed and clarified into a wet protein stream which is dried in a ring dryer to produce Ultra-High Protein meal with protein concentrations of approximately 50%. Our new specialty feed ingredient, Sequence&#8482; has protein concentrations of approximately 60%.</span></div>",
+      "interpretation_and_limit": "Sequence described as new 60% specialty feed ingredient, distinct concentration from 50% Ultra-High Protein. This establishes a product distinction but no delivered customer order or product-specific revenue."
+    },
+    {
+      "excerpt_id": "annual_shell_york_demonstration",
+      "source_binding_index": 0,
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "subject": "cik_0001309402",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">We also pursue innovation and new business opportunities through a variety of ventures. In July 2023, we announced a technology collaboration with Equilon Enterprises LLC, which allows us to use FQT&#8217;s precision separation and processing technology with Shell Fiber Conversion Technology. The two technologies combine fermentation, mechanical separation and processing, and fiber conversion into one platform. This has the potential to liberate all of the remaining distillers corn oil currently bound in the fiber fraction of the corn kernel, generate cellulosic sugars for production of low-carbon ethanol, and enhance and expand available high protein to produce high-quality ingredients for global pet, livestock and aquaculture diets. Our collaboration completed the construction of a large demonstration facility at Green Plains York and began commissioning during 2024.</span></div>",
+      "literal_sha256": "d700dbe6e0dfc02fa4e48a99408821b175cdee84414dfece58f1975f4e44db29",
+      "visible_text_for_review_only": "We also pursue innovation and new business opportunities through a variety of ventures. In July 2023, we announced a technology collaboration with Equilon Enterprises LLC, which allows us to use FQT’s precision separation and processing technology with Shell Fiber Conversion Technology. The two technologies combine fermentation, mechanical separation and processing, and fiber conversion into one platform. This has the potential to liberate all of the remaining distillers corn oil currently bound in the fiber fraction of the corn kernel, generate cellulosic sugars for production of low-carbon ethanol, and enhance and expand available high protein to produce high-quality ingredients for global pet, livestock and aquaculture diets. Our collaboration completed the construction of a large demonstration facility at Green Plains York and began commissioning during 2024.",
+      "content_char_start": 319426,
+      "content_char_end": 320483,
+      "content_utf8_byte_start": 319426,
+      "content_utf8_byte_end": 320483,
+      "serialized_file_char_start": 325440,
+      "serialized_file_char_end": 326501,
+      "serialized_file_utf8_byte_start": 325440,
+      "serialized_file_utf8_byte_end": 326501,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">We also pursue innovation and new business opportunities through a variety of ventures. In July 2023, we announced a technology collaboration with Equilon Enterprises LLC, which allows us to use FQT&#8217;s precision separation and processing technology with Shell Fiber Conversion Technology. The two technologies combine fermentation, mechanical separation and processing, and fiber conversion into one platform. This has the potential to liberate all of the remaining distillers corn oil currently bound in the fiber fraction of the corn kernel, generate cellulosic sugars for production of low-carbon ethanol, and enhance and expand available high protein to produce high-quality ingredients for global pet, livestock and aquaculture diets. Our collaboration completed the construction of a large demonstration facility at Green Plains York and began commissioning during 2024.</span></div>",
+      "interpretation_and_limit": "Technology combination remains demonstration facility/commissioning and potential; no commercial shipment proof."
+    },
+    {
+      "excerpt_id": "annual_blue_blade_development",
+      "source_binding_index": 0,
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "subject": "cik_0001309402",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">SAF is a drop-in fuel, chemically identical to petroleum-based jet fuel and can be blended into the fuel supply at varying levels. There is an increasing focus on using this fuel to reduce the carbon footprint of air travel. SAF can be produced from vegetable and waste oil feedstocks, such as our renewable corn oil. Additionally, ATJ technologies are emerging and being commercialized that use low-CI ethanol as a feedstock to produce SAF. In January 2023, Green Plains, United Airlines and Tallgrass formed a joint venture, Blue Blade Energy, to develop and then commercialize a novel ATJ SAF technology.</span></div>",
+      "literal_sha256": "35e05b30f51ec14ca79a3c677516f06047952a60525fbe94a992e372c4f50150",
+      "visible_text_for_review_only": "SAF is a drop-in fuel, chemically identical to petroleum-based jet fuel and can be blended into the fuel supply at varying levels. There is an increasing focus on using this fuel to reduce the carbon footprint of air travel. SAF can be produced from vegetable and waste oil feedstocks, such as our renewable corn oil. Additionally, ATJ technologies are emerging and being commercialized that use low-CI ethanol as a feedstock to produce SAF. In January 2023, Green Plains, United Airlines and Tallgrass formed a joint venture, Blue Blade Energy, to develop and then commercialize a novel ATJ SAF technology.",
+      "content_char_start": 557732,
+      "content_char_end": 558515,
+      "content_utf8_byte_start": 557732,
+      "content_utf8_byte_end": 558515,
+      "serialized_file_char_start": 566690,
+      "serialized_file_char_end": 567477,
+      "serialized_file_utf8_byte_start": 566690,
+      "serialized_file_utf8_byte_end": 567477,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">SAF is a drop-in fuel, chemically identical to petroleum-based jet fuel and can be blended into the fuel supply at varying levels. There is an increasing focus on using this fuel to reduce the carbon footprint of air travel. SAF can be produced from vegetable and waste oil feedstocks, such as our renewable corn oil. Additionally, ATJ technologies are emerging and being commercialized that use low-CI ethanol as a feedstock to produce SAF. In January 2023, Green Plains, United Airlines and Tallgrass formed a joint venture, Blue Blade Energy, to develop and then commercialize a novel ATJ SAF technology.</span></div>",
+      "interpretation_and_limit": "Novel ATJ SAF technology described as to develop and then commercialize. Industry commercializing language does not identify a completed Green Plains milestone."
+    },
+    {
+      "excerpt_id": "annual_mature_ethanol_business_scope",
+      "source_binding_index": 0,
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "subject": "cik_0001309402",
+      "available_at": "2025-02-07T20:20:08+00:00",
+      "literal": "<div style=\"margin-top:12pt;padding-left:36pt;text-indent:-18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">&#8226;</span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-style:italic;font-weight:400;line-height:120%;padding-left:14.5pt\">Ethanol Production.</span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\"> Our ethanol production segment includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil at ten biorefineries in Illinois, Indiana, Iowa, Minnesota, Nebraska and Tennessee. At capacity, our facilities are capable of processing approximately 310 million bushels of corn per year and producing approximately 903 million gallons of ethanol, 2.2 million tons of distillers grains and Ultra-High Protein, and 310 million pounds of renewable corn oil, a low-carbon feedstock for biodiesel, renewable diesel and sustainable aviation fuel. We are one of the largest ethanol producers in North America.</span></div>",
+      "literal_sha256": "0716a5b7eb734dd613614ab7b99ef67077f3d0bc01f260790ce2969adb78bc4d",
+      "visible_text_for_review_only": "•Ethanol Production. Our ethanol production segment includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil at ten biorefineries in Illinois, Indiana, Iowa, Minnesota, Nebraska and Tennessee. At capacity, our facilities are capable of processing approximately 310 million bushels of corn per year and producing approximately 903 million gallons of ethanol, 2.2 million tons of distillers grains and Ultra-High Protein, and 310 million pounds of renewable corn oil, a low-carbon feedstock for biodiesel, renewable diesel and sustainable aviation fuel. We are one of the largest ethanol producers in North America.",
+      "content_char_start": 309659,
+      "content_char_end": 310827,
+      "content_utf8_byte_start": 309659,
+      "content_utf8_byte_end": 310827,
+      "serialized_file_char_start": 315603,
+      "serialized_file_char_end": 316779,
+      "serialized_file_utf8_byte_start": 315603,
+      "serialized_file_utf8_byte_end": 316779,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;padding-left:36pt;text-indent:-18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">&#8226;</span><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-style:italic;font-weight:400;line-height:120%;padding-left:14.5pt\\\">Ethanol Production.</span><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\"> Our ethanol production segment includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil at ten biorefineries in Illinois, Indiana, Iowa, Minnesota, Nebraska and Tennessee. At capacity, our facilities are capable of processing approximately 310 million bushels of corn per year and producing approximately 903 million gallons of ethanol, 2.2 million tons of distillers grains and Ultra-High Protein, and 310 million pounds of renewable corn oil, a low-carbon feedstock for biodiesel, renewable diesel and sustainable aviation fuel. We are one of the largest ethanol producers in North America.</span></div>",
+      "interpretation_and_limit": "Established production, storage and transportation at ten biorefineries supplies mature-operation context."
+    },
+    {
+      "excerpt_id": "quarterly_msc_sequence_and_tharaldson_operations",
+      "source_binding_index": 1,
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "subject": "cik_0001309402",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "literal": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">We have installed and are operating FQT MSC&#8482; technology at five of our biorefineries. Through our value-added ingredients initiative, we produce Ultra-High Protein, a feed ingredient with protein concentrations of 50% or greater and yeast concentrations of 25%, increase production of renewable corn oil and produce other higher value products, such as post-MSC&#8482; distillers grains. We successfully completed full scale 60% protein production runs using FQT's MSC&#8482; system, which is our specialty feed ingredient branded as Sequence&#8482;. We formed a 50/50 joint venture with Tharaldson Ethanol Plant I LLC (Tharaldson Ethanol), which owns the MSC&#8482; technology assets added adjacent to the Tharaldson Ethanol plant in Casselton, North Dakota to produce Ultra-High Protein and increase renewable corn oil yields. Operations commenced during the second quarter of 2024. Including GP Turnkey Tharaldson's capacity, the annual Ultra-High Protein capacity we market is approximately 430 thousand tons.</span></div>",
+      "literal_sha256": "4f1c22ca97ed938f334c6dacad807e68d78557759769e8bc70e9f8b4a2823645",
+      "visible_text_for_review_only": "We have installed and are operating FQT MSC™ technology at five of our biorefineries. Through our value-added ingredients initiative, we produce Ultra-High Protein, a feed ingredient with protein concentrations of 50% or greater and yeast concentrations of 25%, increase production of renewable corn oil and produce other higher value products, such as post-MSC™ distillers grains. We successfully completed full scale 60% protein production runs using FQT's MSC™ system, which is our specialty feed ingredient branded as Sequence™. We formed a 50/50 joint venture with Tharaldson Ethanol Plant I LLC (Tharaldson Ethanol), which owns the MSC™ technology assets added adjacent to the Tharaldson Ethanol plant in Casselton, North Dakota to produce Ultra-High Protein and increase renewable corn oil yields. Operations commenced during the second quarter of 2024. Including GP Turnkey Tharaldson's capacity, the annual Ultra-High Protein capacity we market is approximately 430 thousand tons.",
+      "content_char_start": 1088999,
+      "content_char_end": 1090194,
+      "content_utf8_byte_start": 1088999,
+      "content_utf8_byte_end": 1090194,
+      "serialized_file_char_start": 1123509,
+      "serialized_file_char_end": 1124708,
+      "serialized_file_utf8_byte_start": 1123509,
+      "serialized_file_utf8_byte_end": 1124708,
+      "serialized_file_literal": "<div style=\\\"margin-top:10pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">We have installed and are operating FQT MSC&#8482; technology at five of our biorefineries. Through our value-added ingredients initiative, we produce Ultra-High Protein, a feed ingredient with protein concentrations of 50% or greater and yeast concentrations of 25%, increase production of renewable corn oil and produce other higher value products, such as post-MSC&#8482; distillers grains. We successfully completed full scale 60% protein production runs using FQT's MSC&#8482; system, which is our specialty feed ingredient branded as Sequence&#8482;. We formed a 50/50 joint venture with Tharaldson Ethanol Plant I LLC (Tharaldson Ethanol), which owns the MSC&#8482; technology assets added adjacent to the Tharaldson Ethanol plant in Casselton, North Dakota to produce Ultra-High Protein and increase renewable corn oil yields. Operations commenced during the second quarter of 2024. Including GP Turnkey Tharaldson's capacity, the annual Ultra-High Protein capacity we market is approximately 430 thousand tons.</span></div>",
+      "interpretation_and_limit": "Latest narrative preserves five operating MSC facilities, Sequence production runs and Tharaldson Q2-2024 operations; it does not add proof of distinct new-product delivery."
+    },
+    {
+      "excerpt_id": "quarterly_cst_full_production_and_idling",
+      "source_binding_index": 1,
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "subject": "cik_0001309402",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">The world's first commercial scale FQT CST&#8482; facility in Shenandoah, Iowa has achieved successful ongoing production of dextrose syrups with CST&#8482;. The FQT CST&#8482; technology allows for the production of both food and industrial grade low carbon-intensity glucose and dextrose corn syrups to target applications in food production, renewable chemicals and synthetic biology. The facility is currently capable of producing approximately 60 million pounds of product per year. During the quarter, the company idled its operations at the Clean Sugar Technology (CST&#8482;) facility in Shenandoah, Iowa, as the company focuses on optimizing its product mix to maximize current returns. CST&#8482; has already proven its ability to produce a high-purity dextrose with a lower carbon intensity and the company remains confident in its commercial potential. The decision to temporarily pause operations presents an opportunity to further refine the dextrose production process.</span></div>",
+      "literal_sha256": "0aab3029eca5752654a6b17c17cd9c962fbd1379008ddfa216aa581d778b51e4",
+      "visible_text_for_review_only": "The world's first commercial scale FQT CST™ facility in Shenandoah, Iowa has achieved successful ongoing production of dextrose syrups with CST™. The FQT CST™ technology allows for the production of both food and industrial grade low carbon-intensity glucose and dextrose corn syrups to target applications in food production, renewable chemicals and synthetic biology. The facility is currently capable of producing approximately 60 million pounds of product per year. During the quarter, the company idled its operations at the Clean Sugar Technology (CST™) facility in Shenandoah, Iowa, as the company focuses on optimizing its product mix to maximize current returns. CST™ has already proven its ability to produce a high-purity dextrose with a lower carbon intensity and the company remains confident in its commercial potential. The decision to temporarily pause operations presents an opportunity to further refine the dextrose production process.",
+      "content_char_start": 1090194,
+      "content_char_end": 1091354,
+      "content_utf8_byte_start": 1090194,
+      "content_utf8_byte_end": 1091354,
+      "serialized_file_char_start": 1124708,
+      "serialized_file_char_end": 1125872,
+      "serialized_file_utf8_byte_start": 1124708,
+      "serialized_file_utf8_byte_end": 1125872,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">The world's first commercial scale FQT CST&#8482; facility in Shenandoah, Iowa has achieved successful ongoing production of dextrose syrups with CST&#8482;. The FQT CST&#8482; technology allows for the production of both food and industrial grade low carbon-intensity glucose and dextrose corn syrups to target applications in food production, renewable chemicals and synthetic biology. The facility is currently capable of producing approximately 60 million pounds of product per year. During the quarter, the company idled its operations at the Clean Sugar Technology (CST&#8482;) facility in Shenandoah, Iowa, as the company focuses on optimizing its product mix to maximize current returns. CST&#8482; has already proven its ability to produce a high-purity dextrose with a lower carbon intensity and the company remains confident in its commercial potential. The decision to temporarily pause operations presents an opportunity to further refine the dextrose production process.</span></div>",
+      "interpretation_and_limit": "Complete latest CST paragraph contains both ongoing-production/capacity claim and Q1 idling, lower-CI dextrose technical achievement, commercial potential and process refinement. Omitting the latter would misrepresent current status."
+    },
+    {
+      "excerpt_id": "quarterly_recent_developments_cst_idling",
+      "source_binding_index": 1,
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "subject": "cik_0001309402",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "literal": "<div style=\"margin-top:6pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">During the quarter, the company idled its operations at the Clean Sugar Technology (CST&#8482;) facility in Shenandoah, Iowa, as the company focuses on optimizing its product mix to maximize current returns. CST&#8482; has already proven its ability to produce a high-purity dextrose with a lower carbon intensity and the company remains confident in its commercial potential. The decision to temporarily pause operations presents an opportunity to further refine the dextrose production process.</span></div>",
+      "literal_sha256": "6ed4ed7017b392d4226d8f23f563661c1db2ff22e4fcde33b88356d236093ff9",
+      "visible_text_for_review_only": "During the quarter, the company idled its operations at the Clean Sugar Technology (CST™) facility in Shenandoah, Iowa, as the company focuses on optimizing its product mix to maximize current returns. CST™ has already proven its ability to produce a high-purity dextrose with a lower carbon intensity and the company remains confident in its commercial potential. The decision to temporarily pause operations presents an opportunity to further refine the dextrose production process.",
+      "content_char_start": 1104488,
+      "content_char_end": 1105159,
+      "content_utf8_byte_start": 1104488,
+      "content_utf8_byte_end": 1105159,
+      "serialized_file_char_start": 1139136,
+      "serialized_file_char_end": 1139811,
+      "serialized_file_utf8_byte_start": 1139136,
+      "serialized_file_utf8_byte_end": 1139811,
+      "serialized_file_literal": "<div style=\\\"margin-top:6pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">During the quarter, the company idled its operations at the Clean Sugar Technology (CST&#8482;) facility in Shenandoah, Iowa, as the company focuses on optimizing its product mix to maximize current returns. CST&#8482; has already proven its ability to produce a high-purity dextrose with a lower carbon intensity and the company remains confident in its commercial potential. The decision to temporarily pause operations presents an opportunity to further refine the dextrose production process.</span></div>",
+      "interpretation_and_limit": "Alternative complete latest idling disclosure; operational pause is not itself proof of technological failure or completed commercialization."
+    },
+    {
+      "excerpt_id": "quarterly_shell_york_complete_across_page_break",
+      "source_binding_index": 1,
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "subject": "cik_0001309402",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">In July 2023, we announced a technology collaboration with Equilon Enterprises LLC, which allows us to use FQT&#8217;s precision separation and processing technology with Shell Fiber Conversion Technology. The two technologies combine </span></div><div style=\"height:45pt;position:relative;width:100%\"><div style=\"bottom:0;position:absolute;width:100%\"><div style=\"text-align:center\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">32</span></div></div></div><hr style=\"page-break-after:always\"/><div style=\"min-height:45pt;width:100%\"><div><span style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:8pt;font-weight:400;line-height:120%;text-decoration:underline\"><a style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:8pt;font-weight:400;line-height:120%;text-decoration:underline\" href=\"#ifd8a1f6071884ea0b08777518cd293ad_7\">Table of </a><a style=\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:8pt;font-weight:400;line-height:120%;text-decoration:underline\" href=\"#ifd8a1f6071884ea0b08777518cd293ad_7\">Contents</a></span></div></div><div style=\"margin-top:12pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">fermentation, mechanical separation and processing, and fiber conversion into one platform. This has the potential to liberate all of the remaining distillers corn oil currently bound in the fiber fraction of the corn kernel, generate cellulosic sugars for production of low-carbon ethanol, and enhance and expand available high protein to produce high-quality ingredients for global pet, livestock and aquaculture diets. Our collaboration completed the construction of a large demonstration facility at Green Plains York and began commissioning during 2024.</span></div>",
+      "literal_sha256": "ce0a8790ab7c996ccdaff7fff95e09612a4e73ab37df2a81a651df135c28f7e4",
+      "visible_text_for_review_only": "In July 2023, we announced a technology collaboration with Equilon Enterprises LLC, which allows us to use FQT’s precision separation and processing technology with Shell Fiber Conversion Technology. The two technologies combine 32Table of Contentsfermentation, mechanical separation and processing, and fiber conversion into one platform. This has the potential to liberate all of the remaining distillers corn oil currently bound in the fiber fraction of the corn kernel, generate cellulosic sugars for production of low-carbon ethanol, and enhance and expand available high protein to produce high-quality ingredients for global pet, livestock and aquaculture diets. Our collaboration completed the construction of a large demonstration facility at Green Plains York and began commissioning during 2024.",
+      "content_char_start": 1091354,
+      "content_char_end": 1093396,
+      "content_utf8_byte_start": 1091354,
+      "content_utf8_byte_end": 1093396,
+      "serialized_file_char_start": 1125872,
+      "serialized_file_char_end": 1127944,
+      "serialized_file_utf8_byte_start": 1125872,
+      "serialized_file_utf8_byte_end": 1127944,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">In July 2023, we announced a technology collaboration with Equilon Enterprises LLC, which allows us to use FQT&#8217;s precision separation and processing technology with Shell Fiber Conversion Technology. The two technologies combine </span></div><div style=\\\"height:45pt;position:relative;width:100%\\\"><div style=\\\"bottom:0;position:absolute;width:100%\\\"><div style=\\\"text-align:center\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">32</span></div></div></div><hr style=\\\"page-break-after:always\\\"/><div style=\\\"min-height:45pt;width:100%\\\"><div><span style=\\\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:8pt;font-weight:400;line-height:120%;text-decoration:underline\\\"><a style=\\\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:8pt;font-weight:400;line-height:120%;text-decoration:underline\\\" href=\\\"#ifd8a1f6071884ea0b08777518cd293ad_7\\\">Table of </a><a style=\\\"color:#0000ff;font-family:'Times New Roman',sans-serif;font-size:8pt;font-weight:400;line-height:120%;text-decoration:underline\\\" href=\\\"#ifd8a1f6071884ea0b08777518cd293ad_7\\\">Contents</a></span></div></div><div style=\\\"margin-top:12pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">fermentation, mechanical separation and processing, and fiber conversion into one platform. This has the potential to liberate all of the remaining distillers corn oil currently bound in the fiber fraction of the corn kernel, generate cellulosic sugars for production of low-carbon ethanol, and enhance and expand available high protein to produce high-quality ingredients for global pet, livestock and aquaculture diets. Our collaboration completed the construction of a large demonstration facility at Green Plains York and began commissioning during 2024.</span></div>",
+      "interpretation_and_limit": "Full collaboration paragraph across page break ends with demonstration facility commissioning during 2024; potential remains forward looking."
+    },
+    {
+      "excerpt_id": "quarterly_blue_blade_exploration",
+      "source_binding_index": 1,
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "subject": "cik_0001309402",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "literal": "<div style=\"margin-top:12pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">SAF is a drop-in fuel, chemically identical to petroleum-based jet fuel and can be blended into the fuel supply at varying levels. There is an increasing focus on using this fuel to reduce the carbon footprint of air travel. SAF can be produced from vegetable and waste oil feedstocks, such as our renewable corn oil. Additionally, ATJ technologies are emerging and being commercialized that use low-CI ethanol as a feedstock to produce SAF. In January 2023, Green Plains, United Airlines and Tallgrass formed a joint venture, Blue Blade Energy, to explore development and commercialization of ATJ SAF.</span></div>",
+      "literal_sha256": "42510b925a3ade9ee3685eb6826836d374f11817ebd268deb893ee8778fc771a",
+      "visible_text_for_review_only": "SAF is a drop-in fuel, chemically identical to petroleum-based jet fuel and can be blended into the fuel supply at varying levels. There is an increasing focus on using this fuel to reduce the carbon footprint of air travel. SAF can be produced from vegetable and waste oil feedstocks, such as our renewable corn oil. Additionally, ATJ technologies are emerging and being commercialized that use low-CI ethanol as a feedstock to produce SAF. In January 2023, Green Plains, United Airlines and Tallgrass formed a joint venture, Blue Blade Energy, to explore development and commercialization of ATJ SAF.",
+      "content_char_start": 1088221,
+      "content_char_end": 1088999,
+      "content_utf8_byte_start": 1088221,
+      "content_utf8_byte_end": 1088999,
+      "serialized_file_char_start": 1122727,
+      "serialized_file_char_end": 1123509,
+      "serialized_file_utf8_byte_start": 1122727,
+      "serialized_file_utf8_byte_end": 1123509,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">SAF is a drop-in fuel, chemically identical to petroleum-based jet fuel and can be blended into the fuel supply at varying levels. There is an increasing focus on using this fuel to reduce the carbon footprint of air travel. SAF can be produced from vegetable and waste oil feedstocks, such as our renewable corn oil. Additionally, ATJ technologies are emerging and being commercialized that use low-CI ethanol as a feedstock to produce SAF. In January 2023, Green Plains, United Airlines and Tallgrass formed a joint venture, Blue Blade Energy, to explore development and commercialization of ATJ SAF.</span></div>",
+      "interpretation_and_limit": "Latest ATJ SAF activity remains exploration of development and commercialization."
+    },
+    {
+      "excerpt_id": "quarterly_mature_ethanol_business_scope",
+      "source_binding_index": 1,
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "subject": "cik_0001309402",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "literal": "<div style=\"margin-top:12pt;padding-left:36pt;text-indent:-18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\">&#8226;</span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-style:italic;font-weight:400;line-height:120%;padding-left:14.5pt\">Ethanol Production.</span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\"> Our ethanol production segment includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil at ten biorefineries in Illinois, Indiana, Iowa, Minnesota, Nebraska and Tennessee. At capacity, our ten facilities are capable of processing approximately 310 million bushels of corn per year and producing approximately 903 million gallons of ethanol, 2.2 million tons of distillers grains and Ultra-High Protein, and 310 million pounds of renewable corn oil, a low-carbon feedstock for biodiesel, renewable diesel and SAF. We are one of the largest ethanol producers in North America.</span></div>",
+      "literal_sha256": "f3386d8d6b2bfaa374ffb9e682ed61d24d0262378cd20f170da31597a0763870",
+      "visible_text_for_review_only": "•Ethanol Production. Our ethanol production segment includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil at ten biorefineries in Illinois, Indiana, Iowa, Minnesota, Nebraska and Tennessee. At capacity, our ten facilities are capable of processing approximately 310 million bushels of corn per year and producing approximately 903 million gallons of ethanol, 2.2 million tons of distillers grains and Ultra-High Protein, and 310 million pounds of renewable corn oil, a low-carbon feedstock for biodiesel, renewable diesel and SAF. We are one of the largest ethanol producers in North America.",
+      "content_char_start": 1084478,
+      "content_char_end": 1085628,
+      "content_utf8_byte_start": 1084478,
+      "content_utf8_byte_end": 1085628,
+      "serialized_file_char_start": 1118964,
+      "serialized_file_char_end": 1120122,
+      "serialized_file_utf8_byte_start": 1118964,
+      "serialized_file_utf8_byte_end": 1120122,
+      "serialized_file_literal": "<div style=\\\"margin-top:12pt;padding-left:36pt;text-indent:-18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\">&#8226;</span><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-style:italic;font-weight:400;line-height:120%;padding-left:14.5pt\\\">Ethanol Production.</span><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:120%\\\"> Our ethanol production segment includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil at ten biorefineries in Illinois, Indiana, Iowa, Minnesota, Nebraska and Tennessee. At capacity, our ten facilities are capable of processing approximately 310 million bushels of corn per year and producing approximately 903 million gallons of ethanol, 2.2 million tons of distillers grains and Ultra-High Protein, and 310 million pounds of renewable corn oil, a low-carbon feedstock for biodiesel, renewable diesel and SAF. We are one of the largest ethanol producers in North America.</span></div>",
+      "interpretation_and_limit": "Latest mature-business production capacity is excluded from new-technology milestone inference."
+    },
+    {
+      "excerpt_id": "quarterly_protein_customer_acceptance_and_reliability_limits",
+      "source_binding_index": 1,
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "subject": "cik_0001309402",
+      "available_at": "2025-05-08T20:34:28+00:00",
+      "literal": "<div style=\"margin-top:10pt;text-indent:18pt\"><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-style:italic;font-weight:400;line-height:112%\">Ultra-High Protein.</span><span style=\"color:#000000;font-family:'Aptos',san-serif;font-size:10pt;font-weight:400;line-height:112%\"> </span><span style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:112%\">Our Ultra-High Protein has unique nutritional advantages and a higher protein concentration than soybean meal and can be included in a variety of feed rations in the pet, dairy, swine, poultry and aquaculture industries. As a value-added feed ingredient, quality control is imperative. Demand for feed products and pricing pressure from competing feed products may result in downward pressure on the price of Ultra-High Protein. Reliable production of Ultra-High Protein from both consistent operations of the biorefinery as well as the MSC&#8482; technology is necessary to produce anticipated volumes. Changes in our customers willingness to accept these ingredients, inconsistency in production volumes, quality or downward pressure on prices could result in adverse impact on our business and profitability.</span></div>",
+      "literal_sha256": "5f2e771c66b2c06d0b99330fb7f8d7c8cd38af6e85ecb55597081c47d12333bd",
+      "visible_text_for_review_only": "Ultra-High Protein. Our Ultra-High Protein has unique nutritional advantages and a higher protein concentration than soybean meal and can be included in a variety of feed rations in the pet, dairy, swine, poultry and aquaculture industries. As a value-added feed ingredient, quality control is imperative. Demand for feed products and pricing pressure from competing feed products may result in downward pressure on the price of Ultra-High Protein. Reliable production of Ultra-High Protein from both consistent operations of the biorefinery as well as the MSC™ technology is necessary to produce anticipated volumes. Changes in our customers willingness to accept these ingredients, inconsistency in production volumes, quality or downward pressure on prices could result in adverse impact on our business and profitability.",
+      "content_char_start": 1301078,
+      "content_char_end": 1302340,
+      "content_utf8_byte_start": 1301078,
+      "content_utf8_byte_end": 1302340,
+      "serialized_file_char_start": 1339540,
+      "serialized_file_char_end": 1340810,
+      "serialized_file_utf8_byte_start": 1339540,
+      "serialized_file_utf8_byte_end": 1340810,
+      "serialized_file_literal": "<div style=\\\"margin-top:10pt;text-indent:18pt\\\"><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-style:italic;font-weight:400;line-height:112%\\\">Ultra-High Protein.</span><span style=\\\"color:#000000;font-family:'Aptos',san-serif;font-size:10pt;font-weight:400;line-height:112%\\\"> </span><span style=\\\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:10pt;font-weight:400;line-height:112%\\\">Our Ultra-High Protein has unique nutritional advantages and a higher protein concentration than soybean meal and can be included in a variety of feed rations in the pet, dairy, swine, poultry and aquaculture industries. As a value-added feed ingredient, quality control is imperative. Demand for feed products and pricing pressure from competing feed products may result in downward pressure on the price of Ultra-High Protein. Reliable production of Ultra-High Protein from both consistent operations of the biorefinery as well as the MSC&#8482; technology is necessary to produce anticipated volumes. Changes in our customers willingness to accept these ingredients, inconsistency in production volumes, quality or downward pressure on prices could result in adverse impact on our business and profitability.</span></div>",
+      "interpretation_and_limit": "Discloses feed acceptance, quality, repeatable production and pricing risks; does not give Sequence-specific realized revenue or delivery."
+    }
+  ],
+  "contract_ambiguities": [
+    "The skill defines positive as actual commercial delivery or repeat revenue for a distinct previously non-commercial product/technology, and defines mature-only output as unavailable with empty evidence. It does not define neutral/negative for real precommercial candidates, confidence values, product selection, or aggregation across mixed initiatives.",
+    "No statement was found connecting the Tharaldson first commercial quantities specifically to the new Sequence product. This relationship cannot be inferred merely from co-location within a paragraph.",
+    "Current idling and commercial potential language do not undo a proven historical delivery, but no such CST delivery is established here; current stage must not be overwritten by older commercial-scale production wording."
+  ],
+  "independence": {
+    "statement": "No production implementation, Signal execution/basis helpers, outcome labels, tests, prior model outputs, prior expectations/oracles, external APIs, web or network were used for this separate source-only preflight. Only current-source-manifest.json and the exact files it lists were read. Existing files were unchanged; only the two current-oracle artifacts were created.",
+    "method": "Python standard library verified file/content hashes, parsed JSON and rendered the original filing HTML text for manual semantic reading. Relevant complete Business Strategy/Recent Developments/MD&A/product-description paragraphs were read, including qualifications and the latest contradictory status. HTML source literals and offsets are retained, rather than treating stripped/normalized prose as a source literal.",
+    "qualification_limit": "Admitted source-review entries were checked against exact source identity, hashes and availability. Their linked proof files, semantic-review files and prior oracle were not opened. This is acceptance of the explicitly permitted qualification review, not a new independent archive or publication audit."
+  },
+  "limits": [
+    "Source-only preflight does not run any production stage or demonstrate model obedience.",
+    "Two issuer reports are a bounded evidence packet. Negative claims about all possible sources or future outcomes are not supported.",
+    "Issuer claims are attributed disclosures; technological viability, demand, profitability and repeatability are not independently verified.",
+    "This output provides no completed commercialization success label and no research-gain or investment-outcome claim."
+  ],
+  "offset_convention": {
+    "content": "Zero-based half-open Unicode character and UTF-8 byte offsets into the decoded original document.content HTML. literal is exact raw HTML, including tags/entities/page breaks. visible_text_for_review_only is a reading aid and is not literal evidence.",
+    "serialized_file": "Zero-based half-open character and UTF-8 byte offsets into the JSON envelope file. serialized_file_literal is the exact escaped spelling physically present in that file."
+  }
+}

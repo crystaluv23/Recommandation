@@ -32,6 +32,15 @@ def item_for(docs):
     return replace(signal_input(docs[0]), documents=docs[:10], eligible_documents=docs)
 
 
+def catalog_groups(catalog, card):
+    """Independently decode the public page-local coordinate representation."""
+    if 'fact_group_terms' not in catalog:
+        return card.get('fact_groups', [])
+    return [dict(zip(catalog['fact_group_fields'],
+        [catalog['fact_group_terms'][value] for value in row[:4]] + row[4:], strict=True))
+        for row in card.get('fact_groups', [])]
+
+
 class ReadingCaller:
     """Scripted transport only; no fresh-model or semantic acceptance claim."""
 
@@ -72,6 +81,24 @@ def executor(docs, caller):
 
 
 class SignalSourceReadingTests(TestCase):
+    def test_registry_loaded_immutable_spec_and_nested_source_metadata_are_isolated(self):
+        from stock_opportunity_agent.signal_library import SignalSpec
+        d = replace(document(CLAUSE), metadata={'nested': {'values': [1, 1.0, True]}})
+        item = item_for((d,))
+        item = replace(item, spec=replace(item.spec, parameters={'positive_min': 1.0,
+            'negative_max': 1.0, 'routing_need_phrases': ['guidance updates']}))
+        loaded = SignalSpec.from_dict(item.spec.to_dict())
+        frozen_input = replace(item, spec=loaded)
+        before = canonical_json_hash({'spec': loaded.to_dict(), 'source': d.to_dict()})
+        s = SignalSourceSession(frozen_input, AS_OF)
+        self.assertEqual(catalog_signature(frozen_input, AS_OF), s.signature)
+        copied = s.item.eligible_documents[0]
+        self.assertEqual(before, canonical_json_hash({'spec': s.item.spec.to_dict(), 'source': copied.to_dict()}))
+        d.metadata['nested']['values'].append('after-freeze')
+        self.assertEqual(copied.metadata['nested']['values'], [1, 1.0, True])
+        with self.assertRaises(TypeError):
+            s.item.spec.parameters['added'] = 1
+
     def test_resolver_pool_uses_original_filters_and_is_isolated(self):
         docs = sources(12)
         wrong = replace(docs[0], document_id="wrong", company_id="other")
@@ -158,11 +185,82 @@ class SignalSourceReadingTests(TestCase):
         self.assertEqual(s.catalog()["next_cursor"], 20)
         page = s.apply({"catalog_cursor": 20})
         self.assertEqual(len(page["cards"]), 20)
+        self.assertEqual(page["limits"]["remaining_exchanges"], page["remaining_exchanges"])
+        self.assertEqual(s.history[-1]["result"]["limits"]["remaining_exchanges"], 1)
         card = page["cards"][-1]
         s.apply({"reads": [{"source_ref": card["source_ref"], "offset": 0, "length": card["coordinate_length"]}]})
         self.assertEqual(s.exchanges, 2)
         with self.assertRaises(ValidationError):
             s.apply({"catalog_cursor": 40})
+
+    def test_page_summaries_expose_direct_navigation_without_disclosing_extra_cards(self):
+        docs = sources(57)[::-1]
+        s = SignalSourceSession(item_for(docs), AS_OF)
+        catalog = s.catalog()
+        self.assertEqual(len(catalog['cards']), 20)
+        self.assertEqual([p['cursor'] for p in catalog['pages']], [0, 20, 40])
+        self.assertEqual(sum(p['count'] for p in catalog['pages']), 57)
+        newest_page = max(catalog['pages'], key=lambda p:p['newest_available_at'])
+        self.assertEqual(newest_page['cursor'], 40)
+        self.assertEqual(newest_page['newest_available_at'], AS_OF.isoformat())
+        self.assertEqual(s.exchanges, 0)
+        self.assertEqual(s.rows, [])
+        later = s.apply({'catalog_cursor': newest_page['cursor']})
+        self.assertEqual(len(later['cards']), 17)
+        self.assertEqual(s.exchanges, 1)
+
+    def test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation(self):
+        docs = tuple(RawInfoDocument.create(document_id=d.document_id, company_id=d.company_id,
+            source_type=d.source_type, published_at=d.published_at, available_at=d.available_at,
+            content=('A' * 29199 + '.') if i == 0 else 'B' * 139 + '.')
+            for i, d in enumerate(sources(21)))
+        s = SignalSourceSession(item_for(docs), AS_OF)
+        first = s.catalog()
+        self.assertEqual(s.characters, 2800)
+        s.apply({'reads':[{'source_ref': first['cards'][0]['source_ref'], 'offset':0, 'length':29200}]})
+        self.assertEqual(s.characters, 32000)
+        before = (s.trace(), set(s.catalogued_handles), deepcopy(s.history))
+        with self.assertRaisesRegex(ValidationError, 'character ceiling'):
+            s.apply({'catalog_cursor':20})
+        self.assertEqual((s.trace(), set(s.catalogued_handles), s.history), before)
+        self.assertEqual(s.catalog()['limits']['remaining_source_characters'], 0)
+
+    def test_catalog_all_new_previews_fit_together_or_none_are_committed(self):
+        for count in (21, 22):
+            with self.subTest(count=count):
+                docs = tuple(RawInfoDocument.create(document_id=d.document_id, company_id=d.company_id,
+                    source_type=d.source_type, published_at=d.published_at, available_at=d.available_at,
+                    content=('A' * 29059 + '.') if i == 0 else 'B' * 139 + '.')
+                    for i, d in enumerate(sources(count)))
+                s = SignalSourceSession(item_for(docs), AS_OF)
+                first = s.catalog()
+                s.apply({'reads':[{'source_ref':first['cards'][0]['source_ref'],'offset':0,'length':29060}]})
+                self.assertEqual(s.characters, 31860)
+                if count == 21:
+                    page = s.apply({'catalog_cursor':20})
+                    self.assertEqual(s.characters, 32000)
+                    self.assertEqual(page['limits']['remaining_source_characters'], 0)
+                else:
+                    before = (s.trace(), set(s.catalogued_handles))
+                    with self.assertRaisesRegex(ValidationError, 'character ceiling'):
+                        s.apply({'catalog_cursor':20})
+                    self.assertEqual((s.trace(), set(s.catalogued_handles)), before)
+
+    def test_catalog_coordinate_sharing_is_lossless_for_all_cards_and_periods(self):
+        rows = [{**row, 'tag': 'FinancialComponentWithLongSourceName'+str(i)}
+                for i in range(20) for row in pair_rows()]
+        docs = tuple(fact_document('grouped-'+str(i), rows) for i in range(20))
+        s = SignalSourceSession(item_for(docs), AS_OF)
+        catalog = s.catalog()
+        ordinary = []
+        for card in catalog['cards']:
+            expected = s._group_page(card['source_ref'], 0)['fact_groups']
+            decoded = catalog_groups(catalog, card)
+            self.assertEqual(decoded, expected)
+            ordinary.append({**card, 'fact_groups': expected})
+        self.assertIn('fact_group_terms', catalog)
+        self.assertLess(len(json.dumps(catalog)), .65 * len(json.dumps({**catalog, 'cards':ordinary})))
+        self.assertEqual(sum(len(catalog_groups(catalog,c)) for c in catalog['cards']), 400)
 
     def test_two_exchanges_allow_ten_distinct_documents_and_no_more(self):
         s = SignalSourceSession(item_for(sources(15)), AS_OF)
@@ -239,7 +337,7 @@ class SignalSourceReadingTests(TestCase):
         d = fact_document("facts", rows)
         s = SignalSourceSession(item_for((d,)), AS_OF)
         card = s.catalog()["cards"][0]
-        first = card["fact_groups"][0]
+        first = catalog_groups(s.catalog(), card)[0]
         s.apply({"reads": [{"source_ref": card["source_ref"], "offset": first["offset"], "length": first["length"]}]})
         chosen_unit = first["unit"]
         visible = [json.loads(r["exact_text"]) for r in s.rows]
@@ -285,7 +383,7 @@ class SignalSourceReadingTests(TestCase):
                 self.assertEqual(len(selected), 3)
                 self.assertTrue(all(r['exact_text'] in d.content for r in s.rows))
                 self.assertTrue(all('2026' not in r['exact_text'] for r in s.rows))
-                self.assertIn('2022-06-30', [g['period_end'] for g in card['fact_groups']])
+                self.assertIn('2022-06-30', [g['period_end'] for g in catalog_groups(s.catalog(), card)])
 
     def test_expanded_pair_does_not_block_unread_interleaved_concept(self):
         from tests.test_mining_fact_semantics import typed_row
@@ -294,7 +392,7 @@ class SignalSourceReadingTests(TestCase):
         d = fact_document('interleaved', [rows[0], other, rows[1]])
         s = SignalSourceSession(item_for((d,)), AS_OF)
         card = s.catalog()['cards'][0]
-        groups = {g['concept']: g for g in card['fact_groups']}
+        groups = {g['concept']: g for g in catalog_groups(s.catalog(), card)}
         first = groups[rows[0]['tag']]
         # Address only the latest row; its earlier comparable expands across
         # an unrelated row without claiming that intervening text was read.

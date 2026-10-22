@@ -1,0 +1,106 @@
+{
+  "scope": "input-only diagnosis; oracle coordinates were never shown to a production role",
+  "oracle_sha256": "7ebb681ae3dee615ee176c96eea0c983a17ad13991a17a256f6c54134691b137",
+  "sources": [
+    {
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "normalized_characters": 354332,
+      "current_signal_card_navigation": "preview140/read_start0/coordinate_length only",
+      "existing_data_section_count": 42,
+      "existing_data_visible_sections": 24,
+      "existing_data_section_coordinates": "raw; not interchangeable with normalized Signal reads",
+      "source_only_review_excerpts": [
+        {
+          "excerpt_id": "annual_msc_origin_sequence_and_tharaldson_delivery",
+          "normalized_start_bound": 18177,
+          "normalized_end_bound": 19714
+        },
+        {
+          "excerpt_id": "annual_mda_alternative_tharaldson_delivery",
+          "normalized_start_bound": 134976,
+          "normalized_end_bound": 136021
+        },
+        {
+          "excerpt_id": "annual_cst_initial_deployment_and_production",
+          "normalized_start_bound": 19713,
+          "normalized_end_bound": 20420
+        },
+        {
+          "excerpt_id": "annual_mda_cst_production",
+          "normalized_start_bound": 136020,
+          "normalized_end_bound": 136623
+        },
+        {
+          "excerpt_id": "annual_cst_pending_customer_approvals_and_certification",
+          "normalized_start_bound": 26630,
+          "normalized_end_bound": 27193
+        },
+        {
+          "excerpt_id": "annual_sequence_distinct_product_description",
+          "normalized_start_bound": 36893,
+          "normalized_end_bound": 37506
+        },
+        {
+          "excerpt_id": "annual_shell_york_demonstration",
+          "normalized_start_bound": 20419,
+          "normalized_end_bound": 21296
+        },
+        {
+          "excerpt_id": "annual_blue_blade_development",
+          "normalized_start_bound": 138217,
+          "normalized_end_bound": 138826
+        },
+        {
+          "excerpt_id": "annual_mature_ethanol_business_scope",
+          "normalized_start_bound": 13967,
+          "normalized_end_bound": 14651
+        }
+      ]
+    },
+    {
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "normalized_characters": 168859,
+      "current_signal_card_navigation": "preview140/read_start0/coordinate_length only",
+      "existing_data_section_count": 21,
+      "existing_data_visible_sections": 21,
+      "existing_data_section_coordinates": "raw; not interchangeable with normalized Signal reads",
+      "source_only_review_excerpts": [
+        {
+          "excerpt_id": "quarterly_msc_sequence_and_tharaldson_operations",
+          "normalized_start_bound": 86772,
+          "normalized_end_bound": 87763
+        },
+        {
+          "excerpt_id": "quarterly_cst_full_production_and_idling",
+          "normalized_start_bound": 87762,
+          "normalized_end_bound": 88718
+        },
+        {
+          "excerpt_id": "quarterly_recent_developments_cst_idling",
+          "normalized_start_bound": 96301,
+          "normalized_end_bound": 96787
+        },
+        {
+          "excerpt_id": "quarterly_shell_york_complete_across_page_break",
+          "normalized_start_bound": 88717,
+          "normalized_end_bound": 89527
+        },
+        {
+          "excerpt_id": "quarterly_blue_blade_exploration",
+          "normalized_start_bound": 86169,
+          "normalized_end_bound": 86773
+        },
+        {
+          "excerpt_id": "quarterly_mature_ethanol_business_scope",
+          "normalized_start_bound": 83571,
+          "normalized_end_bound": 84237
+        },
+        {
+          "excerpt_id": "quarterly_protein_customer_acceptance_and_reliability_limits",
+          "normalized_start_bound": 158131,
+          "normalized_end_bound": 158958
+        }
+      ]
+    }
+  ]
+}

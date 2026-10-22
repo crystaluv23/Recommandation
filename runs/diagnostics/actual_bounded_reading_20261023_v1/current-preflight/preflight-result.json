@@ -1,0 +1,46 @@
+{
+  "scope": "one exact current-v12 qualitative Signal; source/initial-wire preflight only",
+  "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "source_view": 1780,
+  "eligible": 2,
+  "selected": 2,
+  "source_dimensions": [
+    {
+      "document_id": "sec:cik_0001309402:000130940225000008",
+      "source_type": "filing",
+      "raw_characters": 2260647,
+      "normalized_characters": 354332,
+      "available_at": "2025-02-07T20:20:08+00:00"
+    },
+    {
+      "document_id": "sec:cik_0001309402:000130940225000089",
+      "source_type": "filing",
+      "raw_characters": 1359708,
+      "normalized_characters": 168859,
+      "available_at": "2025-05-08T20:34:28+00:00"
+    }
+  ],
+  "actual_initial_catalog_cards": 2,
+  "exact_initial_reservation": 6249,
+  "request_cap": 131072,
+  "inboxes": 0,
+  "network_or_label_or_append_attempts": 0,
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/measurement_input_selection_20261021_v1/plan.json",
+      "sha256": "4d392d1ba3a326a05b2fda304cbd5a6c8f266e7ae98672df852ca404249e3403"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/inputs.json",
+      "sha256": "a75322d2af9d2abc43d9f4b9479608e6630f38a72d0714bf4e8f37d81750a50f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/current-preflight/preflight.py",
+      "sha256": "eca0c15e332befb25fb8fc1e656188e46f762d0318779aaa2d1633f299ea2d0c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/current-preflight/wire-capture/requests/36bf8c8d97dbe45515264f1164fd57f90b6658b21a38a5965f6be8a99db11722.json",
+      "sha256": "b665418e8dbace9a72a3ceeb5136c638b640a6c92bb98481922457c6de5269bc"
+    }
+  ]
+}

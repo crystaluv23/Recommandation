@@ -16,6 +16,11 @@ character ceiling but cannot authorize citations. Final and correction requests
 reuse the identical closed read projection, without edge expansion or budget
 trimming. Unknown/malformed/over-budget reading actions terminate that Signal
 accurately; they cannot spend an extra semantic correction on choosing sources.
+Selection instructions explain the page-local fact-group dictionary and literal
+coordinates, and allow direct navigation using complete page availability
+summaries. Availability metadata cannot establish measurement periods; the role
+must read original rows before extraction. Transport sharing preserves all
+originally disclosed group coordinates and does not add source or token budget.
 
 For a bound source owner, the shared batch payload includes a reversible
 `target_subject` co-reference inventory from that case's known issuer aliases.

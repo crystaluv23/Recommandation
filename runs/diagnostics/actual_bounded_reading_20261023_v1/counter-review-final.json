@@ -1,0 +1,136 @@
+{
+  "schema_version": "independent-deterministic-counter-review-final-v1",
+  "reviewer_agent_id": "/root/actual_f5_source_oracle",
+  "reviewed_at_utc": "2026-10-22T18:03:41.012113+00:00",
+  "head_commit": "36673060441869c78ee5c405930bb677d76f715c",
+  "status": "identified_catalog_preview_budget_defect_closed_in_offline_deterministic_scope",
+  "fresh_findings": [],
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_source_reading.py",
+      "sha256": "0f019755c8aa73a14c913d74c0da747cdf867f35bb0d342eb29858978c83dea2",
+      "diff_against_HEAD_sha256": "f05daded54fe2a06479454cb59ef1e08d94ea46a963cc9902d3becd709aea3a2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "21615077b553a76450444d096882395a425164f99e00aa289f4bbe6d12e3771c",
+      "diff_against_HEAD_sha256": "e5510ece539ef964bec68ecaa3764137982e37d8517dac37d0df27733e4d5f67"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_source_reading.md",
+      "sha256": "23f9da9c58e3f17f4b22e2355c2f7d138de488bbdf8762e37c92938332a13562",
+      "diff_against_HEAD_sha256": "8472bdae9e074f506c14b7dcb4416976e8057b5c91c641bc6940fbf8eceafb1e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_signal_roles.md",
+      "sha256": "3389b09e060302327fab986ec382fae3d75ac61bb4e8ff9ba8af94c94839886a",
+      "diff_against_HEAD_sha256": "1a2ff17bc76d37eb69c6abf1038281a7eb32397717f868e9135d65626ab63b38"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py",
+      "sha256": "ac513c65167282e1e8754e95d4e9d87be336571e5de469e60a62eb80fff44a4e",
+      "diff_against_HEAD_sha256": "40d4af508bc7f411c0a143977314d5a74c1de856c4bc11afc70fd9a060197b7a"
+    }
+  ],
+  "protected_artifacts_unchanged": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/oracle/oracle.json": "37281b548043cba3824317dd8bfe38a49c94ec6a651b823b6ce93eb057016824",
+    "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/current-oracle/oracle.json": "7ebb681ae3dee615ee176c96eea0c983a17ad13991a17a256f6c54134691b137",
+    "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/counter-review.json": "ddeb6a8762c5ed3413004172dc77a6e5c8151b1b63723311e62ad305c9fc380a"
+  },
+  "closure": {
+    "finding_id": "catalog_preview_budget_nonatomic",
+    "prior_review": "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/counter-review.json",
+    "source_examination": "The current diff assembles cards/new preview lengths, validates cumulative source characters before updating catalogued_handles/characters/preview_characters, and then commits the page accounting. Overflow raises before disclosure state or apply exchange/history mutation.",
+    "original_reproduction_now_rejected": true,
+    "exact_fit_still_allowed": true,
+    "partial_page_commit_counterexample_rejected": true,
+    "independent_probes": [
+      {
+        "name": "exact_original_32000_then_one140",
+        "documents": 21,
+        "starting_characters": 32000,
+        "new_page_previews": 1,
+        "new_preview_characters": 140,
+        "accepted": false,
+        "error": "source character ceiling exceeded; catalog previews cannot fit",
+        "ending_characters": 32000,
+        "entire_session_snapshot_unchanged": true,
+        "new_handles_added": 0,
+        "history_unchanged": true,
+        "exchanges_unchanged": true,
+        "direct_catalog_also_atomic": true,
+        "existing_page_revisit_allowed_without_recharge": true
+      },
+      {
+        "name": "exact_fit_31860_plus140",
+        "documents": 21,
+        "starting_characters": 31860,
+        "new_page_previews": 1,
+        "new_preview_characters": 140,
+        "accepted": true,
+        "ending_characters": 32000,
+        "remaining_source_characters": 0,
+        "revisit_does_not_recharge": true,
+        "post_action_remaining_exchanges": 0
+      },
+      {
+        "name": "multi_preview_first_fits_whole_page_rejected",
+        "documents": 22,
+        "starting_characters": 31860,
+        "new_page_previews": 2,
+        "new_preview_characters": 280,
+        "accepted": false,
+        "error": "source character ceiling exceeded; catalog previews cannot fit",
+        "ending_characters": 31860,
+        "entire_session_snapshot_unchanged": true,
+        "new_handles_added": 0,
+        "history_unchanged": true,
+        "exchanges_unchanged": true,
+        "direct_catalog_also_atomic": true,
+        "existing_page_revisit_allowed_without_recharge": true
+      }
+    ]
+  },
+  "offline_tests": {
+    "python": "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "environment": {
+      "PYTHONPATH": "src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "network_guard": "socket.socket.connect/connect_ex and socket.create_connection reject calls",
+    "count": 9,
+    "failures": 0,
+    "tests": [
+      "test_registry_loaded_immutable_spec_and_nested_source_metadata_are_isolated",
+      "test_page_summaries_expose_direct_navigation_without_disclosing_extra_cards",
+      "test_catalog_coordinate_sharing_is_lossless_for_all_cards_and_periods",
+      "test_pages_and_fact_pages_consume_same_two_exchanges",
+      "test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation",
+      "test_invalid_actions_are_atomic_and_integer_strict",
+      "test_character_budget_includes_previews_and_never_clips_long_sentence",
+      "test_structured_read_preserves_prior_currency_and_same_period_conflicts",
+      "test_expanded_pair_does_not_block_unread_interleaved_concept"
+    ],
+    "production_role_calls": 0,
+    "model_answer_authoring": false
+  },
+  "parent_red_evidence": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/preview-ceiling-before.log",
+    "sha256": "d6d83d84efa117fced35ab2e0765fdaaa48746a61c0c16f0cc5543bb4ce15914",
+    "reviewed": true,
+    "result": "The named regression test failed with AssertionError: ValidationError not raised. This is the product red condition for the original ceiling overflow, distinct from fixture hash failure.",
+    "reexecuted_old_code_for_red": false
+  },
+  "limits": [
+    "This closes the reproduced deterministic preview-accounting defect only; no full F5, semantic source-reading, investment or independent research-benefit closure is claimed.",
+    "No fresh model requests, selection decisions, final outputs or downstream consumer receipts were created or reviewed. Model understanding of indexed catalogs and exact outgoing selection/final token affordability remain unproved.",
+    "The nine focused offline tests and three independent in-memory probes do not establish the result of the parent associated240 batch. Parent harness failures and later batch results were not counted as product verification here.",
+    "The red-before log was inspected; fixture-error and candidate-harness-rejected logs were not used as product-red evidence.",
+    "No implementation file or prior review/source oracle was changed by this independent rerun; only counter-review-final.json was created."
+  ],
+  "provenance_caveat": {
+    "prior_report_preserved": true,
+    "detail": "The original32000-to32140 counterexample was executed before the parent atomic edit. The earlier counter-review.json hash capture occurred later and overlapped that edit: its recorded signal_source_reading.py hash0f019755c8aa73a14c913d74c0da747cdf867f35bb0d342eb29858978c83dea2 already matches the fixed file. Therefore the earlier report file hash must not be presented as an exact binding for the pre-fix failing execution. The original failing command output and inspected red-before log remain failure evidence, while this final rerun binds and verifies the current fixed code. No predecessor source hash was independently frozen before the original failing command."
+  },
+  "bindings_still_match_after_report": true
+}

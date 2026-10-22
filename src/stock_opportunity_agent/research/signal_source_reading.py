@@ -9,13 +9,14 @@ from __future__ import annotations
 import json
 import re
 from copy import deepcopy
+from dataclasses import replace
 from datetime import datetime
 from typing import Any, Mapping
 
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.data.raw_info import RawInfoDocument
 from stock_opportunity_agent.models import ValidationError
-from stock_opportunity_agent.signal_library import LLMSignalBatchInput
+from stock_opportunity_agent.signal_library import LLMSignalBatchInput, SignalSpec
 
 
 CATALOG_PREFIX = "source_catalog:v1:"
@@ -41,7 +42,14 @@ class SignalSourceSession:
         from stock_opportunity_agent.research.evolution_core import _company_facts_context
         from stock_opportunity_agent.research.scheme_evolution import _normalized_projection_text
 
-        self.item = deepcopy(item)
+        def copy_documents(documents):
+            return tuple(RawInfoDocument.from_dict(json.loads(json.dumps(d.to_dict())))
+                         for d in documents)
+
+        self.item = replace(item, spec=SignalSpec.from_dict(item.spec.to_dict()),
+            documents=copy_documents(item.documents),
+            eligible_documents=(copy_documents(item.eligible_documents)
+                                if item.eligible_documents is not None else None))
         self.as_of = as_of
         self.signature = catalog_signature(self.item, as_of)
         pool = self.item.eligible_documents or ()
@@ -98,18 +106,48 @@ class SignalSourceSession:
                     "content_hash": d.content_hash, "coordinate_length": len(text),
                     "coordinates": "raw" if handle in self.groups else "normalized_readable",
                     "read_start": 0, "preview": text[:140]}
-            if handle not in self.catalogued_handles:
-                self.catalogued_handles.add(handle)
-                self.characters += len(card["preview"])
-                self.preview_characters += len(card["preview"])
             if handle in self.groups:
                 groups = self.groups[handle]["concepts"]
                 card.update(self._group_page(handle, 0))
                 card["read_start"] = min((r["start"] for c in groups for r in c["records"]), default=0)
             cards.append(card)
+        new_previews = {card["source_ref"]: len(card["preview"]) for card in cards
+                        if card["source_ref"] not in self.catalogued_handles}
+        added = sum(new_previews.values())
+        if self.characters + added > MAX_CHARACTERS:
+            raise ValidationError("source character ceiling exceeded; catalog previews cannot fit")
+        self.catalogued_handles.update(new_previews)
+        self.characters += added
+        self.preview_characters += added
         end = cursor + len(cards)
+        fields = ("taxonomy", "concept", "unit", "period_end", "offset", "length")
+        terms: list[str] = []
+        indexes: dict[str, int] = {}
+        for card in cards:
+            if "fact_groups" not in card:
+                continue
+            packed = []
+            for group in card["fact_groups"]:
+                row = []
+                for field in fields[:4]:
+                    value = group[field]
+                    if value not in indexes:
+                        indexes[value] = len(terms)
+                        terms.append(value)
+                    row.append(indexes[value])
+                packed.append([*row, group["offset"], group["length"]])
+            card["fact_groups"] = packed
+        pages = []
+        for start in range(0, len(handles), PAGE_SIZE):
+            documents = [self.sources[h] for h in handles[start:start + PAGE_SIZE]]
+            pages.append({"cursor": start, "count": len(documents),
+                "newest_available_at": max(d.available_at for d in documents).isoformat(),
+                "oldest_available_at": min(d.available_at for d in documents).isoformat(),
+                "source_types": sorted({d.source_type for d in documents})})
         return {"signature": self.signature, "total": len(handles), "cursor": cursor,
                 "cards": cards, "next_cursor": end if end < len(handles) else None,
+                "pages": pages, "fact_group_fields": list(fields), "fact_group_terms": terms,
+                "fact_group_encoding": "Each fact_groups row has six fields in fact_group_fields order; first four integers index this page's fact_group_terms; offset and length are literal source coordinates.",
                 "limits": {"remaining_exchanges": MAX_EXCHANGES - self.exchanges,
                     "max_documents_per_read": 5, "remaining_documents": MAX_DOCUMENTS - len(self.read_handles),
                     "remaining_source_characters": MAX_CHARACTERS - self.characters},
@@ -201,6 +239,8 @@ class SignalSourceSession:
             raise ValidationError("unknown source reading action or extra fields")
         self.exchanges += 1
         result["remaining_exchanges"] = MAX_EXCHANGES - self.exchanges
+        if "limits" in result:
+            result["limits"]["remaining_exchanges"] = result["remaining_exchanges"]
         self.history.append({"action": deepcopy(dict(action)), "result": deepcopy(result)})
         return result
 

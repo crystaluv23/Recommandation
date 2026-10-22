@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_pages_and_fact_pages_consume_same_two_exchanges (tests.test_signal_source_reading.SignalSourceReadingTests.test_pages_and_fact_pages_consume_same_two_exchanges)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 188, in test_pages_and_fact_pages_consume_same_two_exchanges
+    self.assertEqual(page["limits"]["remaining_exchanges"], page["remaining_exchanges"])
+AssertionError: 2 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

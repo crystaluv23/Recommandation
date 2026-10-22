@@ -1,0 +1,29 @@
+{
+  "scope": "Independent current-v12 commercialization source preflight, not a Mining-created Signal or a change to earlier denominators.",
+  "company_id": "cik_0001309402",
+  "as_of": "2025-05-30T00:00:00+00:00",
+  "definitions": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/spec.json",
+      "sha256": "56325ffe9f5bed14256073f640fece46ba4957d8bb56ecf838ebae173e8d109b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/skill.md",
+      "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a"
+    }
+  ],
+  "qualified_narrative_sources": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000008.json",
+      "sha256": "d8475c646e1169dbd96c151d602682e197e399cadc4f99e57d20bcf0391cf9f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001309402/sec:cik_0001309402:000130940225000089.json",
+      "sha256": "5d7e0a279ba9a231d8c0fdd799cd862293790a64a1f625fd5c22795f6f9a96dc"
+    }
+  ],
+  "source_qualification_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/source-review.json",
+    "sha256": "ba2ce1bd99f5fb15c8e8bd51dd634016dfbbbe15c89898c1f81219c6f1919d57"
+  }
+}

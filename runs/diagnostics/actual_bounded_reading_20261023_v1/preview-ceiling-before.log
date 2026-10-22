@@ -1,0 +1,14 @@
+F
+======================================================================
+FAIL: test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation (tests.test_signal_source_reading.SignalSourceReadingTests.test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 223, in test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation
+    with self.assertRaisesRegex(ValidationError, 'character ceiling'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValidationError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.012s
+
+FAILED (failures=1)

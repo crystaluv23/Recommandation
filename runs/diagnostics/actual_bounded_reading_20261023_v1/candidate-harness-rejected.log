@@ -1,0 +1,1909 @@
+..F....FF.....F.F.....F..FF.F.E..EF.FFFFFFFFFFFFFF.FFFF.F..F.FFF...FF........................................................F...........................................................FFFFFFFFFFFFFFFFFFFFFFFFFFFFF.FFFF..F..FFFFFFFFFF.FFFF..FF...........
+======================================================================
+ERROR: test_canonical_cik_routes_company_facts_and_archives_as_of_subset (test_data_resolution.EvidenceResolverTests.test_canonical_cik_routes_company_facts_and_archives_as_of_subset)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 768, in test_canonical_cik_routes_company_facts_and_archives_as_of_subset
+    scoped = store.load(resolution.documents[0].document_id, as_of=AS_OF)
+                        ~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: tuple index out of range
+
+======================================================================
+ERROR: test_document_selector_falls_through_and_rejects_invented_documents (test_data_resolution.EvidenceResolverTests.test_document_selector_falls_through_and_rejects_invented_documents)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1754, in test_document_selector_falls_through_and_rejects_invented_documents
+    self.assertEqual(resolution.documents[0].document_id, "secondary")
+                     ~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: tuple index out of range
+
+======================================================================
+FAIL: test_catalog_change_invalidates_skip_but_unseen_periods_not_claimed_on_skip (test_signal_source_reading.SignalSourceReadingTests.test_catalog_change_invalidates_skip_but_unseen_periods_not_claimed_on_skip)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 135, in test_catalog_change_invalidates_skip_but_unseen_periods_not_claimed_on_skip
+    ex = executor(docs, caller)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 80, in executor
+    return SignalExecutor(snapshot, RawInfoStore(documents=docs), llm_runner=StructuredLLMSignalRunner(caller))
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_legacy_fingerprint_does_not_skip_reading (test_signal_source_reading.SignalSourceReadingTests.test_legacy_fingerprint_does_not_skip_reading)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 153, in test_legacy_fingerprint_does_not_skip_reading
+    batch = executor(docs, caller).execute_batch(("guidance:v1",), company_id="issuer", as_of=AS_OF,
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 80, in executor
+    return SignalExecutor(snapshot, RawInfoStore(documents=docs), llm_runner=StructuredLLMSignalRunner(caller))
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_native_interruption_restore_uses_exact_inbox_cache_and_receipts (test_signal_source_reading.SignalSourceReadingTests.test_native_interruption_restore_uses_exact_inbox_cache_and_receipts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 430, in test_native_interruption_restore_uses_exact_inbox_cache_and_receipts
+    reopen().execute_batch(("guidance:v1",), company_id="issuer", as_of=AS_OF)
+    ^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 426, in reopen
+    return executor(docs, caller)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 80, in executor
+    return SignalExecutor(snapshot, RawInfoStore(documents=docs), llm_runner=StructuredLLMSignalRunner(caller))
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_rank_eleven_is_read_citable_and_owns_resolution_and_fingerprint (test_signal_source_reading.SignalSourceReadingTests.test_rank_eleven_is_read_citable_and_owns_resolution_and_fingerprint)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 119, in test_rank_eleven_is_read_citable_and_owns_resolution_and_fingerprint
+    ex = executor(docs, caller)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 80, in executor
+    return SignalExecutor(snapshot, RawInfoStore(documents=docs), llm_runner=StructuredLLMSignalRunner(caller))
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_resolver_pool_uses_original_filters_and_is_isolated (test_signal_source_reading.SignalSourceReadingTests.test_resolver_pool_uses_original_filters_and_is_isolated)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 106, in test_resolver_pool_uses_original_filters_and_is_isolated
+    store = RawInfoStore(documents=(*docs, wrong, future))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_unknown_runner_keeps_legacy_static_contract (test_signal_source_reading.SignalSourceReadingTests.test_unknown_runner_keeps_legacy_static_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 264, in test_unknown_runner_keeps_legacy_static_contract
+    ex = executor(docs, ReadingCaller(docs[-1].content_hash))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 80, in executor
+    return SignalExecutor(snapshot, RawInfoStore(documents=docs), llm_runner=StructuredLLMSignalRunner(caller))
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_basic_info_context_budget_keeps_one_span_per_resolved_request (test_data_resolution.EvidenceResolverTests.test_basic_info_context_budget_keeps_one_span_per_resolved_request)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1349, in test_basic_info_context_budget_keeps_one_span_per_resolved_request
+    store = RawInfoStore(documents=documents)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_broad_research_policy_accepts_a_future_registered_data_type (test_data_resolution.EvidenceResolverTests.test_broad_research_policy_accepts_a_future_registered_data_type)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 715, in test_broad_research_policy_accepts_a_future_registered_data_type
+    self.assertEqual(resolution.status, "resolved")
+AssertionError: 'unresolved' != 'resolved'
+- unresolved
+? --
++ resolved
+
+
+======================================================================
+FAIL: test_cached_market_context_projects_rows_to_requested_lookback (test_data_resolution.EvidenceResolverTests.test_cached_market_context_projects_rows_to_requested_lookback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1597, in test_cached_market_context_projects_rows_to_requested_lookback
+    store = RawInfoStore(documents=(raw,))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_empty_local_selection_continues_to_authorized_acquisition (test_data_resolution.EvidenceResolverTests.test_empty_local_selection_continues_to_authorized_acquisition)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1699, in test_empty_local_selection_continues_to_authorized_acquisition
+    RawInfoStore(documents=(irrelevant,)), adapters=(adapter,), policy=policy
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_exact_original_spans_are_deterministic_and_never_rewritten (test_data_resolution.EvidenceResolverTests.test_exact_original_spans_are_deterministic_and_never_rewritten)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1246, in test_exact_original_spans_are_deterministic_and_never_rewritten
+    store = RawInfoStore(documents=(first, second))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_file_backed_oracle_growth_does_not_create_evolution_state (test_data_resolution.EvidenceResolverTests.test_file_backed_oracle_growth_does_not_create_evolution_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1995, in test_file_backed_oracle_growth_does_not_create_evolution_state
+    store.append(document("one", "source fact"))
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_filing_markup_uses_readable_query_windows_with_raw_lineage (test_data_resolution.EvidenceResolverTests.test_filing_markup_uses_readable_query_windows_with_raw_lineage)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1388, in test_filing_markup_uses_readable_query_windows_with_raw_lineage
+    store = RawInfoStore(documents=(raw,))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_finnhub_news_fallback_preserves_window_identity_and_literal_content (test_data_resolution.EvidenceResolverTests.test_finnhub_news_fallback_preserves_window_identity_and_literal_content)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 117, in test_finnhub_news_fallback_preserves_window_identity_and_literal_content
+    self.assertEqual(result.status, "resolved")
+AssertionError: 'unresolved' != 'resolved'
+- unresolved
+? --
++ resolved
+
+
+======================================================================
+FAIL: test_foreign_sec_forms_match_generic_but_not_other_exact_forms (test_data_resolution.EvidenceResolverTests.test_foreign_sec_forms_match_generic_but_not_other_exact_forms)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1153, in test_foreign_sec_forms_match_generic_but_not_other_exact_forms
+    generic = EvidenceResolver(RawInfoStore(documents=(foreign,))).resolve(
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_generic_filing_request_prefers_core_forms_and_skips_failed_body (test_data_resolution.EvidenceResolverTests.test_generic_filing_request_prefers_core_forms_and_skips_failed_body)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 921, in test_generic_filing_request_prefers_core_forms_and_skips_failed_body
+    self.assertEqual(resolution.status, "resolved")
+AssertionError: 'unresolved' != 'resolved'
+- unresolved
+? --
++ resolved
+
+
+======================================================================
+FAIL: test_incomplete_period_contract_continues_authorized_acquisition (test_data_resolution.EvidenceResolverTests.test_incomplete_period_contract_continues_authorized_acquisition)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 182, in test_incomplete_period_contract_continues_authorized_acquisition
+    RawInfoStore(documents=(local,)),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_legacy_news_json_ignores_secondary_ticker_association (test_data_resolution.EvidenceResolverTests.test_legacy_news_json_ignores_secondary_ticker_association)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1488, in test_legacy_news_json_ignores_secondary_ticker_association
+    RawInfoStore(documents=(unrelated, relevant))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_local_hit_skips_api_and_miss_appends_for_same_and_later_execution (test_data_resolution.EvidenceResolverTests.test_local_hit_skips_api_and_miss_appends_for_same_and_later_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1663, in test_local_hit_skips_api_and_miss_appends_for_same_and_later_execution
+    RawInfoStore(documents=(cached,)), adapters=(adapter,), policy=policy
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_operating_menu_acquisition_append_and_cached_pool_agree (test_data_resolution.EvidenceResolverTests.test_operating_menu_acquisition_append_and_cached_pool_agree)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 860, in test_operating_menu_acquisition_append_and_cached_pool_agree
+    self.assertEqual([row.metadata["form"] for row in resolver.load_documents(fresh, as_of=AS_OF)], ["10-K", "10-Q"])
+AssertionError: Lists differ: [] != ['10-K', '10-Q']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'10-K'
+
+- []
++ ['10-K', '10-Q']
+
+======================================================================
+FAIL: test_partial_basic_info_is_visible_but_signal_does_not_execute (test_data_resolution.EvidenceResolverTests.test_partial_basic_info_is_visible_but_signal_does_not_execute)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 249, in test_partial_basic_info_is_visible_but_signal_does_not_execute
+    store = RawInfoStore(documents=(partial,))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_provider_miss_falls_through_to_next_authorized_adapter (test_data_resolution.EvidenceResolverTests.test_provider_miss_falls_through_to_next_authorized_adapter)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1792, in test_provider_miss_falls_through_to_next_authorized_adapter
+    self.assertEqual(resolution.status, "resolved")
+AssertionError: 'unresolved' != 'resolved'
+- unresolved
+? --
++ resolved
+
+
+======================================================================
+FAIL: test_provider_ticker_news_requires_visible_issuer_match (test_data_resolution.EvidenceResolverTests.test_provider_ticker_news_requires_visible_issuer_match)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1423, in test_provider_ticker_news_requires_visible_issuer_match
+    RawInfoStore(documents=(associated_only, target))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_quota_failure_retries_after_known_reset (test_data_resolution.EvidenceResolverTests.test_quota_failure_retries_after_known_reset)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 648, in test_quota_failure_retries_after_known_reset
+    self.assertEqual(second.status, "resolved")
+AssertionError: 'unresolved' != 'resolved'
+- unresolved
+? --
++ resolved
+
+
+======================================================================
+FAIL: test_refetch_replays_idempotently_for_identical_content (test_data_resolution.EvidenceResolverTests.test_refetch_replays_idempotently_for_identical_content)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1631, in test_refetch_replays_idempotently_for_identical_content
+    store = RawInfoStore(documents=(first,))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_resolution_reports_query_coverage_and_deduplicates_source_copies (test_data_resolution.EvidenceResolverTests.test_resolution_reports_query_coverage_and_deduplicates_source_copies)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1294, in test_resolution_reports_query_coverage_and_deduplicates_source_copies
+    RawInfoStore(documents=(duplicate_new, duplicate_old, irrelevant))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_retrieval_contract_preserves_old_comparison_period_before_limit (test_data_resolution.EvidenceResolverTests.test_retrieval_contract_preserves_old_comparison_period_before_limit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 234, in test_retrieval_contract_preserves_old_comparison_period_before_limit
+    RawInfoStore(documents=(*recent, prior))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_retrieval_contract_preserves_required_sources_before_limit (test_data_resolution.EvidenceResolverTests.test_retrieval_contract_preserves_required_sources_before_limit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 148, in test_retrieval_contract_preserves_required_sources_before_limit
+    RawInfoStore(documents=(newest_news, other_news, filing))
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_sec_history_manifest_recovers_foreign_issuer_generic_filing (test_data_resolution.EvidenceResolverTests.test_sec_history_manifest_recovers_foreign_issuer_generic_filing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 997, in test_sec_history_manifest_recovers_foreign_issuer_generic_filing
+    self.assertEqual(result.status, "resolved")
+AssertionError: 'unresolved' != 'resolved'
+- unresolved
+? --
++ resolved
+
+
+======================================================================
+FAIL: test_signal_computes_negative_word_count_while_basic_info_stays_raw (test_data_resolution.EvidenceResolverTests.test_signal_computes_negative_word_count_while_basic_info_stays_raw)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1940, in test_signal_computes_negative_word_count_while_basic_info_stays_raw
+    store = RawInfoStore(documents=(raw,))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_source_alias_authorization_matches_signal_request_semantics (test_data_resolution.EvidenceResolverTests.test_source_alias_authorization_matches_signal_request_semantics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 826, in test_source_alias_authorization_matches_signal_request_semantics
+    self.assertEqual(resolution.status, "resolved")
+AssertionError: 'unresolved' != 'resolved'
+- unresolved
+? --
++ resolved
+
+
+======================================================================
+FAIL: test_specific_sec_forms_do_not_substitute_for_each_other (test_data_resolution.EvidenceResolverTests.test_specific_sec_forms_do_not_substitute_for_each_other)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1513, in test_specific_sec_forms_do_not_substitute_for_each_other
+    resolver = EvidenceResolver(RawInfoStore(documents=(annual, quarterly)))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_stable_signal_source_aliases_route_and_materialize_price_metadata (test_data_resolution.EvidenceResolverTests.test_stable_signal_source_aliases_route_and_materialize_price_metadata)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1213, in test_stable_signal_source_aliases_route_and_materialize_price_metadata
+    self.assertIsNone(resolution.gap)
+AssertionError: DataGap(request_id='prices', reason=<DataGapReason.PROVIDER_ERROR: 'provider_error'>, message='Authorized acquisition adapters did not resolve the request (massive:provider_error).', source_types=('market_data',), provider='massive') is not None
+
+======================================================================
+FAIL: test_unknown_unauthorized_quota_provider_and_historical_gaps (test_data_resolution.EvidenceResolverTests.test_unknown_unauthorized_quota_provider_and_historical_gaps)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1820, in test_unknown_unauthorized_quota_provider_and_historical_gaps
+    RawInfoStore(
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_visible_issuer_match_is_case_insensitive_for_name_derived_brand (test_data_resolution.EvidenceResolverTests.test_visible_issuer_match_is_case_insensitive_for_name_derived_brand)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 1556, in test_visible_issuer_match_is_case_insensitive_for_name_derived_brand
+    resolver = EvidenceResolver(RawInfoStore(documents=(target,)))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_routing_rejects_duplicate_refs_and_preserves_valid_siblings (test_evolution_signal_role_adapters.SignalRoleAdapterTests.test_routing_rejects_duplicate_refs_and_preserves_valid_siblings)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_evolution_signal_role_adapters.py", line 3195, in test_routing_rejects_duplicate_refs_and_preserves_valid_siblings
+    registry.freeze(),
+    ^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 2325, in freeze
+    audit = self.audit_capabilities()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 1918, in audit_capabilities
+    _audit_deterministic_fixture(
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3970, in _audit_deterministic_fixture
+    RawInfoStore(documents=documents),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_actual_gpre_two_exact_groups_preserve_full_pool_basis_within_ten (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_actual_gpre_two_exact_groups_preserve_full_pool_basis_within_ten)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 95, in test_actual_gpre_two_exact_groups_preserve_full_pool_basis_within_ten
+    ex = library.SignalExecutor(frozen,RawInfoStore(documents=docs))
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_actual_override_unknown_callable_and_malformed_declaration_paths (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_actual_override_unknown_callable_and_malformed_declaration_paths)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 214, in test_actual_override_unknown_callable_and_malformed_declaration_paths
+    _,r=self.prepare(s,docs,deterministic_functions={s.function:override})
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 76, in prepare
+    ex = executor(specification,docs,**kwargs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 54, in executor
+    return library.SignalExecutor(snapshot((specification,)),RawInfoStore(documents=docs),**kwargs)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_changed_selected_sources_invalidate_fingerprint_unchanged_replay_skips (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_changed_selected_sources_invalidate_fingerprint_unchanged_replay_skips)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 230, in test_changed_selected_sources_invalidate_fingerprint_unchanged_replay_skips
+    s=spec();ex=executor(s,(*old,current))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 54, in executor
+    return library.SignalExecutor(snapshot((specification,)),RawInfoStore(documents=docs),**kwargs)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_comparison_source_and_exact_share_unit_preserved (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_comparison_source_and_exact_share_unit_preserved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 156, in test_comparison_source_and_exact_share_unit_preserved
+    ex,r=self.prepare(s,(*noise(),current,prior))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 76, in prepare
+    ex = executor(specification,docs,**kwargs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 54, in executor
+    return library.SignalExecutor(snapshot((specification,)),RawInfoStore(documents=docs),**kwargs)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_harmful_optional_fill_does_not_discard_feasible_minimal_operands (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_harmful_optional_fill_does_not_discard_feasible_minimal_operands)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 192, in test_harmful_optional_fill_does_not_discard_feasible_minimal_operands
+    ex,r=self.prepare(s,docs)
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 76, in prepare
+    ex = executor(specification,docs,**kwargs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 54, in executor
+    return library.SignalExecutor(snapshot((specification,)),RawInfoStore(documents=docs),**kwargs)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_latest_unmatched_cashflow_cannot_be_hidden_to_resurrect_old_pair (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_latest_unmatched_cashflow_cannot_be_hidden_to_resurrect_old_pair)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 145, in test_latest_unmatched_cashflow_cannot_be_hidden_to_resurrect_old_pair
+    ex,r=self.prepare(s,(*noise(),old,latest))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 76, in prepare
+    ex = executor(specification,docs,**kwargs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 54, in executor
+    return library.SignalExecutor(snapshot((specification,)),RawInfoStore(documents=docs),**kwargs)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_long_old_repetition_no_longer_displaces_current_readable_cash (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_long_old_repetition_no_longer_displaces_current_readable_cash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 130, in test_long_old_repetition_no_longer_displaces_current_readable_cash
+    ex,r=self.prepare(s,(*old,current))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 76, in prepare
+    ex = executor(specification,docs,**kwargs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 54, in executor
+    return library.SignalExecutor(snapshot((specification,)),RawInfoStore(documents=docs),**kwargs)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_necessary_nonoperand_dominance_witness_survives_bounded_reduction (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_necessary_nonoperand_dominance_witness_survives_bounded_reduction)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 202, in test_necessary_nonoperand_dominance_witness_survives_bounded_reduction
+    ex,r=self.prepare(s,docs)
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 76, in prepare
+    ex = executor(specification,docs,**kwargs)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 54, in executor
+    return library.SignalExecutor(snapshot((specification,)),RawInfoStore(documents=docs),**kwargs)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_unrepresentable_basis_uses_original_authorized_acquisition_then_gap (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_unrepresentable_basis_uses_original_authorized_acquisition_then_gap)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 272, in test_unrepresentable_basis_uses_original_authorized_acquisition_then_gap
+    s=spec();store=RawInfoStore(documents=docs);adapter=FakeAdapter(AcquisitionResult())
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_usd_basis_and_same_filing_comparison_preference_are_not_replaced (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_usd_basis_and_same_filing_comparison_preference_are_not_replaced)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 252, in test_usd_basis_and_same_filing_comparison_preference_are_not_replaced
+    result=executor(s,(*noise(),usd,eur)).execute_batch((s.ref,),company_id=COMPANY,as_of=AS_OF).results[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 54, in executor
+    return library.SignalExecutor(snapshot((specification,)),RawInfoStore(documents=docs),**kwargs)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_zero_denominator_and_stale_current_keep_failure_basis (test_signal_measurement_input_selection.SignalMeasurementInputSelectionTests.test_zero_denominator_and_stale_current_keep_failure_basis)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 171, in test_zero_denominator_and_stale_current_keep_failure_basis
+    result=executor(s,(*noise(),current,zero)).execute_batch((s.ref,),company_id=COMPANY,as_of=AS_OF).results[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_measurement_input_selection.py", line 54, in executor
+    return library.SignalExecutor(snapshot((specification,)),RawInfoStore(documents=docs),**kwargs)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_accession_scoped_schema_is_supported_with_literal_fact_evidence (test_signal_financials.SecFinancialSignalTests.test_accession_scoped_schema_is_supported_with_literal_fact_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 696, in test_accession_scoped_schema_is_supported_with_literal_fact_evidence
+    _snapshot((spec,)), RawInfoStore(documents=(_document("sec_accession", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='sec-company-facts-document-v1', company='cik_0000000001', metadata={}, cik=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='sec-company-facts-document-v1', company='opaque-issuer', metadata={'cik': '0000000001'}, cik=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='sec-company-facts-document-v1', company='cik_0000000002', metadata={'cik': '0000000002'}, cik=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='sec-company-facts-document-v1', company='cik_0000000001', metadata={'cik': '0000000002'}, cik=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='sec-company-facts-document-v1', company='opaque-issuer', metadata={}, cik=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='sec-company-facts-document-v1', company='opaque-issuer-1', metadata={'cik': '0000000001'}, cik=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='sec-company-facts-document-v1', company='cik_0000000001', metadata={}, cik='CIK0000000001')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='legacy', company='cik_0000000001', metadata={}, cik=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='legacy', company='opaque-issuer', metadata={'cik': '0000000001'}, cik=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='legacy', company='cik_0000000002', metadata={'cik': '0000000002'}, cik=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='legacy', company='cik_0000000001', metadata={'cik': '0000000002'}, cik=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='legacy', company='opaque-issuer', metadata={}, cik=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='legacy', company='opaque-issuer-1', metadata={'cik': '0000000001'}, cik=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_both_fact_schemas_enforce_issuer_as_technical_failure (test_signal_financials.SecFinancialSignalTests.test_both_fact_schemas_enforce_issuer_as_technical_failure) (schema='legacy', company='cik_0000000001', metadata={}, cik='CIK0000000001')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 62, in test_both_fact_schemas_enforce_issuer_as_technical_failure
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_canonical_basis_excludes_same_period_partial_and_zero (test_signal_financials.SecFinancialSignalTests.test_canonical_basis_excludes_same_period_partial_and_zero)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 411, in test_canonical_basis_excludes_same_period_partial_and_zero
+    _snapshot((spec,)), RawInfoStore(documents=(_document("feim", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_canonical_basis_uses_total_for_cash_flow_margin (test_signal_financials.SecFinancialSignalTests.test_canonical_basis_uses_total_for_cash_flow_margin)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 437, in test_canonical_basis_uses_total_for_cash_flow_margin
+    _snapshot((spec,)), RawInfoStore(documents=(_document("hertz", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_cash_flow_margin_requires_the_same_reported_duration (test_signal_financials.SecFinancialSignalTests.test_cash_flow_margin_requires_the_same_reported_duration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 816, in test_cash_flow_margin_requires_the_same_reported_duration
+    _snapshot((spec,)), RawInfoStore(documents=(_document("cash_flow", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_ifrs_cash_and_weighted_shares_aliases (test_signal_financials.SecFinancialSignalTests.test_ifrs_cash_and_weighted_shares_aliases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 296, in test_ifrs_cash_and_weighted_shares_aliases
+    result = SignalExecutor(_snapshot(specs), RawInfoStore(documents=(_document(
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_ifrs_namespace_and_revenue_aliases_preserve_pit_gross_margin (test_signal_financials.SecFinancialSignalTests.test_ifrs_namespace_and_revenue_aliases_preserve_pit_gross_margin) (alias='RevenueFromContractsWithCustomers')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 267, in test_ifrs_namespace_and_revenue_aliases_preserve_pit_gross_margin
+    _snapshot((spec,)), RawInfoStore(documents=(_document("ifrs", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_ifrs_namespace_and_revenue_aliases_preserve_pit_gross_margin (test_signal_financials.SecFinancialSignalTests.test_ifrs_namespace_and_revenue_aliases_preserve_pit_gross_margin) (alias='RevenueFromSaleOfGoods')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 267, in test_ifrs_namespace_and_revenue_aliases_preserve_pit_gross_margin
+    _snapshot((spec,)), RawInfoStore(documents=(_document("ifrs", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_implausible_values_are_downgraded_not_deleted (test_signal_financials.SecFinancialSignalTests.test_implausible_values_are_downgraded_not_deleted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 502, in test_implausible_values_are_downgraded_not_deleted
+    _snapshot((spec,)), RawInfoStore(documents=(_document("gate", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_model_view_keeps_numeric_periods_without_changing_result_or_reflection_claim (test_signal_financials.SecFinancialSignalTests.test_model_view_keeps_numeric_periods_without_changing_result_or_reflection_claim)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 137, in test_model_view_keeps_numeric_periods_without_changing_result_or_reflection_claim
+    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_partial_tag_is_excluded_even_for_uncovered_periods (test_signal_financials.SecFinancialSignalTests.test_partial_tag_is_excluded_even_for_uncovered_periods)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 483, in test_partial_tag_is_excluded_even_for_uncovered_periods
+    _snapshot(specs), RawInfoStore(documents=(_document("partial", content),))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_price_momentum_uses_exact_observation_lookback_and_fails_closed (test_signal_financials.SecFinancialSignalTests.test_price_momentum_uses_exact_observation_lookback_and_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 851, in test_price_momentum_uses_exact_observation_lookback_and_fails_closed
+    _snapshot((spec,)), RawInfoStore(documents=(enough,))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_production_companyfacts_normalization_keeps_actual_share_basis_through_consumers (test_signal_financials.SecFinancialSignalTests.test_production_companyfacts_normalization_keeps_actual_share_basis_through_consumers) (tag='WeightedAverageNumberOfSharesOutstandingBasic')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 108, in test_production_companyfacts_normalization_keeps_actual_share_basis_through_consumers
+    store = RawInfoStore(Path(directory), documents=(document,))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_production_companyfacts_normalization_keeps_actual_share_basis_through_consumers (test_signal_financials.SecFinancialSignalTests.test_production_companyfacts_normalization_keeps_actual_share_basis_through_consumers) (tag='WeightedAverageNumberOfDilutedSharesOutstanding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 108, in test_production_companyfacts_normalization_keeps_actual_share_basis_through_consumers
+    store = RawInfoStore(Path(directory), documents=(document,))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_ratios_accept_same_currency_but_never_mix_currencies (test_signal_financials.SecFinancialSignalTests.test_ratios_accept_same_currency_but_never_mix_currencies)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 314, in test_ratios_accept_same_currency_but_never_mix_currencies
+    self.assertTrue(all(x.value is SignalValue.POSITIVE for x in execute().results))
+                                                                 ^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 311, in execute
+    return SignalExecutor(_snapshot(specs), RawInfoStore(documents=(_document(
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_raw_financial_namespaces_are_not_mixed (test_signal_financials.SecFinancialSignalTests.test_raw_financial_namespaces_are_not_mixed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 282, in test_raw_financial_namespaces_are_not_mixed
+    _snapshot((spec,)), RawInfoStore(documents=(_document(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_restatement_crossover_keeps_the_ongoing_basis (test_signal_financials.SecFinancialSignalTests.test_restatement_crossover_keeps_the_ongoing_basis)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 459, in test_restatement_crossover_keeps_the_ongoing_basis
+    _snapshot((spec,)), RawInfoStore(documents=(_document("amd", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_scoped_sec_api_drives_six_financial_signals_and_excludes_future (test_signal_financials.SecFinancialSignalTests.test_scoped_sec_api_drives_six_financial_signals_and_excludes_future)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 558, in test_scoped_sec_api_drives_six_financial_signals_and_excludes_future
+    executor = SignalExecutor(_snapshot(specs), RawInfoStore(documents=(document,)))
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_share_dilution_is_negative (test_signal_financials.SecFinancialSignalTests.test_share_dilution_is_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 780, in test_share_dilution_is_negative
+    _snapshot((spec,)), RawInfoStore(documents=(_document("dilution", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_share_retirement_prefers_split_comparable_same_filing_facts (test_signal_financials.SecFinancialSignalTests.test_share_retirement_prefers_split_comparable_same_filing_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 733, in test_share_retirement_prefers_split_comparable_same_filing_facts
+    _snapshot((spec,)), RawInfoStore(documents=(_document("shares", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_structured_liquidity_migrations_use_exact_sec_facts (test_signal_financials.SecFinancialSignalTests.test_structured_liquidity_migrations_use_exact_sec_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 629, in test_structured_liquidity_migrations_use_exact_sec_facts
+    _snapshot(specs), RawInfoStore(documents=(_document("liquidity", content),))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_unchanged_document_fingerprint_skips_repeat_then_oracle_growth_reexecutes (test_signal_financials.SecFinancialSignalTests.test_unchanged_document_fingerprint_skips_repeat_then_oracle_growth_reexecutes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 873, in test_unchanged_document_fingerprint_skips_repeat_then_oracle_growth_reexecutes
+    store = RawInfoStore(documents=(_document("news_1", "risk increased", "news"),))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_v18_current_revenue_alias_wins_and_stale_fallback_is_unavailable (test_signal_financials.SecFinancialSignalTests.test_v18_current_revenue_alias_wins_and_stale_fallback_is_unavailable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 376, in test_v18_current_revenue_alias_wins_and_stale_fallback_is_unavailable
+    current = execute(fixture["current_payload"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 369, in execute
+    _snapshot(specs), RawInfoStore(documents=(document,))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_zero_cash_instant_cannot_displace_nonzero_balance (test_signal_financials.SecFinancialSignalTests.test_zero_cash_instant_cannot_displace_nonzero_balance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_financials.py", line 532, in test_zero_cash_instant_cannot_displace_nonzero_balance
+    _snapshot((spec,)), RawInfoStore(documents=(_document("cash", content),))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_actual_routing_history_retains_cause_without_private_diagnostics (test_signal_execution_provenance.SignalExecutionProvenanceTests.test_actual_routing_history_retains_cause_without_private_diagnostics) (status=<SignalExecutionStatus.DOMAIN_UNAVAILABLE: 'domain_unavailable'>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_execution_provenance.py", line 176, in test_actual_routing_history_retains_cause_without_private_diagnostics
+    ("Unspecified issuer evidence facet.",), registry.freeze(),
+                                             ^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 2325, in freeze
+    audit = self.audit_capabilities()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 1918, in audit_capabilities
+    _audit_deterministic_fixture(
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3970, in _audit_deterministic_fixture
+    RawInfoStore(documents=documents),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+======================================================================
+FAIL: test_actual_routing_history_retains_cause_without_private_diagnostics (test_signal_execution_provenance.SignalExecutionProvenanceTests.test_actual_routing_history_retains_cause_without_private_diagnostics) (status=<SignalExecutionStatus.VALIDATION_FAILED: 'validation_failed'>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_execution_provenance.py", line 176, in test_actual_routing_history_retains_cause_without_private_diagnostics
+    ("Unspecified issuer evidence facet.",), registry.freeze(),
+                                             ^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 2325, in freeze
+    audit = self.audit_capabilities()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 1918, in audit_capabilities
+    _audit_deterministic_fixture(
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 3970, in _audit_deterministic_fixture
+    RawInfoStore(documents=documents),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 260, in __init__
+    self.append(document)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/verify_candidate.py", line 21, in forbidden
+    raise AssertionError('offline validation cannot access network, labels or append sources')
+AssertionError: offline validation cannot access network, labels or append sources
+
+----------------------------------------------------------------------
+Ran 238 tests in 0.453s
+
+FAILED (failures=86, errors=2)
+network_label_append_attempts=89

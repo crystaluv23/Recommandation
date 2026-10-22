@@ -1,0 +1,23 @@
+E
+======================================================================
+ERROR: test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation (tests.test_signal_source_reading.SignalSourceReadingTests.test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 213, in test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation
+    docs = tuple(replace(d, content=('A' * 29199 + '.') if i == 0 else 'B' * 139 + '.')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 213, in <genexpr>
+    docs = tuple(replace(d, content=('A' * 29199 + '.') if i == 0 else 'B' * 139 + '.')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 11, in __init__
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 164, in __post_init__
+    raise ValidationError("raw info content_hash does not match content")
+stock_opportunity_agent.models.ValidationError: raw info content_hash does not match content
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (errors=1)

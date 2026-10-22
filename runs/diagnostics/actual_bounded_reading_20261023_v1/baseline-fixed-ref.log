@@ -1,0 +1,63 @@
+baseline_revision=36673060441869c78ee5c405930bb677d76f715c
+baseline_source_sha256=2129391dcb03f4a14390adf499d952ef3c8d66cfb01df3fde5c34a75b2ce3a60
+test_registry_loaded_immutable_spec_and_nested_source_metadata_are_isolated (tests.test_signal_source_reading.SignalSourceReadingTests.test_registry_loaded_immutable_spec_and_nested_source_metadata_are_isolated) ... ERROR
+test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation (tests.test_signal_source_reading.SignalSourceReadingTests.test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation) ... FAIL
+
+======================================================================
+ERROR: test_registry_loaded_immutable_spec_and_nested_source_metadata_are_isolated (tests.test_signal_source_reading.SignalSourceReadingTests.test_registry_loaded_immutable_spec_and_nested_source_metadata_are_isolated)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 93, in test_registry_loaded_immutable_spec_and_nested_source_metadata_are_isolated
+    s = SignalSourceSession(frozen_input, AS_OF)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/baseline-source.py", line 44, in __init__
+    self.item = deepcopy(item)
+                ^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/copy.py", line 162, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/copy.py", line 259, in _reconstruct
+    state = deepcopy(state, memo)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/copy.py", line 136, in deepcopy
+    y = copier(x, memo)
+        ^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/copy.py", line 221, in _deepcopy_dict
+    y[deepcopy(key, memo)] = deepcopy(value, memo)
+                             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/copy.py", line 162, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/copy.py", line 259, in _reconstruct
+    state = deepcopy(state, memo)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/copy.py", line 136, in deepcopy
+    y = copier(x, memo)
+        ^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/copy.py", line 221, in _deepcopy_dict
+    y[deepcopy(key, memo)] = deepcopy(value, memo)
+                             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/copy.py", line 162, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/copy.py", line 286, in _reconstruct
+    y[key] = value
+    ~^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 166, in _immutable
+    raise TypeError("frozen Signal snapshot values cannot be mutated")
+TypeError: frozen Signal snapshot values cannot be mutated
+
+======================================================================
+FAIL: test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation (tests.test_signal_source_reading.SignalSourceReadingTests.test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py", line 223, in test_catalog_preview_overflow_is_rejected_without_disclosure_or_mutation
+    with self.assertRaisesRegex(ValidationError, 'character ceiling'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValidationError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.013s
+
+FAILED (failures=1, errors=1)
+expected_baseline_reds=2; no current-product pass claimed

@@ -1,0 +1,123 @@
+{
+  "schema_version": "independent-deterministic-counter-review-v1",
+  "reviewer_agent_id": "/root/actual_f5_source_oracle",
+  "reviewed_at_utc": "2026-10-22T18:02:09.765594+00:00",
+  "head_commit": "36673060441869c78ee5c405930bb677d76f715c",
+  "status": "action_required_related_preexisting_budget_boundary",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_source_reading.py",
+      "sha256": "0f019755c8aa73a14c913d74c0da747cdf867f35bb0d342eb29858978c83dea2",
+      "diff_against_HEAD_sha256": "f05daded54fe2a06479454cb59ef1e08d94ea46a963cc9902d3becd709aea3a2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "21615077b553a76450444d096882395a425164f99e00aa289f4bbe6d12e3771c",
+      "diff_against_HEAD_sha256": "e5510ece539ef964bec68ecaa3764137982e37d8517dac37d0df27733e4d5f67"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_source_reading.md",
+      "sha256": "23f9da9c58e3f17f4b22e2355c2f7d138de488bbdf8762e37c92938332a13562",
+      "diff_against_HEAD_sha256": "8472bdae9e074f506c14b7dcb4416976e8057b5c91c641bc6940fbf8eceafb1e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_signal_roles.md",
+      "sha256": "3389b09e060302327fab986ec382fae3d75ac61bb4e8ff9ba8af94c94839886a",
+      "diff_against_HEAD_sha256": "1a2ff17bc76d37eb69c6abf1038281a7eb32397717f868e9135d65626ab63b38"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_source_reading.py",
+      "sha256": "9b2b31f2e5119ba7db00d5229d146d390e529396b8bccaae5ef92a68340e7642",
+      "diff_against_HEAD_sha256": "218c5ceebe880705ab468ad599c40437e7415ef30a0d9cfe15b092cd302138c5"
+    }
+  ],
+  "source_oracle_baseline_hashes": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/oracle/oracle.json": "37281b548043cba3824317dd8bfe38a49c94ec6a651b823b6ce93eb057016824",
+    "/Users/l/Project/Recommandation/runs/diagnostics/actual_bounded_reading_20261023_v1/current-oracle/oracle.json": "7ebb681ae3dee615ee176c96eea0c983a17ad13991a17a256f6c54134691b137"
+  },
+  "scope": "Read-only diff review of the specified deterministic session, bounded-reading prompt, owning specs and focused session tests. No production role call, external API/network, model-answer authoring, implementation edit or semantic F5 closure.",
+  "findings": [
+    {
+      "finding_id": "catalog_preview_budget_nonatomic",
+      "priority": "P2",
+      "introduced_by_this_diff": false,
+      "file": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_source_reading.py",
+      "line_start": 107,
+      "line_end": 110,
+      "title": "Unseen catalog previews can cross the source-character ceiling after a near-ceiling read",
+      "observed": "Initial 20 previews charge 2800 characters. A complete 29200-character first source is accepted, taking characters to exactly32000. The second allowed action catalog_cursor=20 adds one unseen 140-character preview, is accepted at32140, and reports remaining_source_characters=-140.",
+      "reproduction": {
+        "documents": 21,
+        "first_content": "A repeated29199 times followed by a period",
+        "remaining_contents": "B repeated200 times followed by a period",
+        "initial_catalog_cards": 20,
+        "initial_preview_characters": 2800,
+        "first_read_offset": 0,
+        "first_read_length": 29200,
+        "first_action": "reads(first card,0,29200)",
+        "second_action": {
+          "catalog_cursor": 20
+        },
+        "actual_after_first_read_characters": 32000,
+        "actual_after_second_action_characters": 32140,
+        "actual_remaining_source_characters": -140,
+        "actual_exchanges": 2,
+        "expected": "Reject an unseen page that would exceed the cumulative ceiling before mutating catalogued_handles, counters, rows or history."
+      },
+      "root_cause": "catalog() mutates catalogued_handles and preview/character counters while building cards, with no cumulative MAX_CHARACTERS validation. The strict check exists only in the reads action. These lines predate the reviewed diff.",
+      "risk_limit": "This is a deterministic prepared-budget/trace breach. In the current two-exchange runner, a second-exchange page result is not sent in a third selection call; no actual model source-character egress beyond32000 or citation widening was demonstrated."
+    }
+  ],
+  "positive_checks": [
+    {
+      "area": "immutable Registry-loaded spec and source snapshot",
+      "result": "Focused test constructs an immutable from_dict spec; session construction succeeds, serialization hashes/signature match, nested caller metadata mutation is isolated, and copied spec parameters reject mutation."
+    },
+    {
+      "area": "page-local dictionary coordinates",
+      "result": "Focused test decodes400 grouped coordinates across20 structured cards back to the previous keyed representation. Additional prior-currency/conflict/interleaved controls pass. Packing changes metadata representation only; body mapping and lineage code are unchanged by the diff."
+    },
+    {
+      "area": "direct page summaries",
+      "result": "57-source reversed-order test exposes pages0,20,40 with exact count/date bounds and only20 initial cards, without source rows or read exchanges. Direct later-page action consumes one exchange."
+    },
+    {
+      "area": "post-action exchange counts",
+      "result": "Page response nested limits and outer remaining_exchanges both report1 after the first action; saved history agrees. Exhaustion after the second action is enforced."
+    },
+    {
+      "area": "evidence/identity authority",
+      "result": "No new body-evidence or owner authority path was found in the reviewed changes. Catalog metadata remains marked metadata_is_not_evidence; raw/normalized views, read mapping and final lineage validation were not changed."
+    }
+  ],
+  "offline_tests": {
+    "python": "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "environment": {
+      "PYTHONPATH": "src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "network_guard": "socket.socket.connect/connect_ex and socket.create_connection reject calls",
+    "count": 8,
+    "failures": 0,
+    "tests": [
+      "test_registry_loaded_immutable_spec_and_nested_source_metadata_are_isolated",
+      "test_page_summaries_expose_direct_navigation_without_disclosing_extra_cards",
+      "test_catalog_coordinate_sharing_is_lossless_for_all_cards_and_periods",
+      "test_pages_and_fact_pages_consume_same_two_exchanges",
+      "test_invalid_actions_are_atomic_and_integer_strict",
+      "test_character_budget_includes_previews_and_never_clips_long_sentence",
+      "test_structured_read_preserves_prior_currency_and_same_period_conflicts",
+      "test_expanded_pair_does_not_block_unread_interleaved_concept"
+    ],
+    "additional_counterexample": "Executed the documented near-ceiling read then unseen-page action with network blocked; it reproduced32140 and -140."
+  },
+  "limits": [
+    "No fresh model selection/request, final output, consumer receipt or live persisted production stage was inspected or executed.",
+    "No conclusion is drawn about model comprehension of indexed fact-group dictionaries or complete outgoing token affordability. Those require exact native request and consumer evidence.",
+    "The focused coordinate-sharing test compares with _group_page, so it proves transport reversibility rather than independent correctness of the original source-group index.",
+    "Prompt instructions describe packed catalogs; ordinary keyed single-source group paging remains allowed by the owning spec. Fresh model handling of both representations is unproven.",
+    "Source-only oracle files were hash-read only and remained unchanged. Unrelated dirty files, semantic labels and historical model answers were not reviewed.",
+    "The review is deterministic counterexample analysis, not semantic/source applicability acceptance, research gain, or full F5 closure."
+  ],
+  "followup": "Parent plans atomic preview validation and a red-before regression test; independent rerun remains pending."
+}

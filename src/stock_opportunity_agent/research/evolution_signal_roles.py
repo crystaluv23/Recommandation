@@ -5549,6 +5549,9 @@ class StructuredLLMSignalRunner:
                                 "Use full fact-group coordinates or sentence windows with context on both sides; "
                                 "overlapping/repeated reads, invented handles and extra fields are invalid. "
                                 "Catalog metadata is not evidence. The following final extraction may cite only read text."
+                                " Page summaries allow a direct catalog_cursor jump; their availability dates are not measurement periods. "
+                                "Decode catalog fact_groups using fact_group_fields and the page-local fact_group_terms dictionary; "
+                                "the last two fields are literal offset and length for a read."
                             ),
                             payload={"signal_spec": item.spec.to_dict(), "skill": item.skill,
                                 "as_of": as_of.isoformat(), "source_catalog": session.catalog(),

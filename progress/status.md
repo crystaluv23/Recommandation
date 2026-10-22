@@ -1,6 +1,6 @@
 # 当前状态
 
-更新：2026-10-22。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛。
+更新：2026-10-23。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛。
 独立预测收益是后续里程碑、未知；生产 LLM 节点由 exact inbox/outbox 独立 subagent 处理，外部 LLM API 调用0。
 公开资料只读取证已授权；累计147 managed-provider GET（115行情、32SEC），本轮新增0。
 另公开web取证累计6search/15queries、15web导航+1browser导航尝试；另8次直接公开GET，底层web HTTP数未知，不混入provider计数。host模型tokens/费用及资料成本未测量。
@@ -63,7 +63,6 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
 旧48无清单支持，不推剩余8为LockedTest。失败分母、标签、身份屏蔽与LockedTest保持。
 
 ## 其他局部验收与限制
-
 - [F7三控制](../reports/reviewed-owned-temporal-controls-20261021.md)：partial/partial/full目标3/3，9独立首答/0模型纠错，
   535373逻辑预留；state→17cards/版本→实际Predictor/sink及各32files恢复保真。原完整语义0/1不改，mirror均未触发。
   p01混合belief的原子隔离符合既有placement权限，前轮直接称unknown误判过早；
@@ -94,7 +93,8 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   可选taxonomy现贯穿投影/保存/fact-read；真实同名跨namespace反例拒配、旧fact_ref不变，122关联过；fresh Mining消费仍未验。
 - routing两literal范围误拒已局部修复，停止继续词面补丁；保原0/1及原答，局部修复不等新模型遵循，不重入completed stage或重置预算。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
-  有界阅读已接完整合格目录、实际已读证据/resolution/fingerprint、闭集纠错与native恢复；20聚焦/357关联过；fresh叙事及历史各3角色/首答1of1/0纠错、各25files恢复同；历史原0of1保留，实际源/消费仍open。
+  [真实阅读前置](../reports/actual-bounded-reading-preflight-20261023.md)修Registry非空冻结参数复制、目录400坐标无损共享/直接翻页、额度及预览越界；240关联过/网络0，首请求预留88302→32579；0生产答/GET/外部API。
+  历史v1输入形状不适用、当前商业化v2多义均在模型前停止；独立源审保原件，未改定义/强造正控。长正文仍缺透明定位，F5/实际消费保持open；既有合成首答1of1及历史原0of1不改。
   gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
 - 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。
