@@ -1,0 +1,40 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "candidate_judgment": "unlikely",
+    "confidence": {
+      "level": "medium"
+    },
+    "key_reasons": [
+      "At the exact forecast boundary of 2025-05-30T00:00:00+00:00, the supplied five-trading-day mean adjusted-close baseline is 4.28 and its doubling threshold is 8.56. The outcome requires a qualifying five-session mean at or above that threshold during the following six calendar months.",
+      "The interim filing available May 8 reports a negative ethanol-production gross margin and lower consolidated gross margin for the three months ended March 31, 2025 versus the corresponding 2024 period. This deterioration in the core business is substantive counter-evidence to a near-term earnings recovery capable of supporting the defined share-price repricing.",
+      "Fairmont idling in January 2025, early-2025 restructuring and cost-saving initiatives, and the disclosed strategic-alternatives review provide possible turnaround catalysts. I weigh them positively, but the visible source passages establish actions and a review rather than demonstrated operating acceleration or a transaction milestone. Against the deteriorating operating base, they do not presently make this a credible six-month doubling candidate.",
+      "The computed price card reports a 67.9814% decline from adjusted close 12.93 on September 23, 2024 to 4.14 on May 29, 2025 across 171 trading sessions. This supplies contrary market evidence; the decline alone does not establish undervaluation or an impending rebound.",
+      "The successfully measured liquidity runway uses cash at March 31, 2025 and operating cash outflow for January 1 through March 31, 2025. Its positive categorical state denotes a positive months measurement, not a bullish stock forecast or assured financing through the forecast horizon. Historical cash consumption adds execution risk to the turnaround case."
+    ],
+    "magnitude": null,
+    "session_id": "anonymous-session-id",
+    "uncertainties": [
+      "The strategic review could produce a material equity-value catalyst, and cost savings could improve economics faster than the visible disclosures demonstrate; neither outcome is ruled out.",
+      "The packet does not establish realized restructuring savings, premium-product sales economics, binding new offtake commitments, or the timing and terms of strategic alternatives. Missing quantified projections are distinct from the available price baseline.",
+      "The historical burn-based runway is not a forward liquidity forecast. Unrestricted cash, working-capital changes, committed capital spending, debt maturities, covenant headroom and potential dilution remain unresolved.",
+      "Commodity margins, trade policy and low-carbon incentives could materially change operating expectations. Partial source context and unavailable news coverage limit assessment.",
+      "Collection stopped at the maximum signal rounds after finalization; unresolved research needs remain unresolved, and finalization does not establish that they were answered."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"candidate_judgment\":\"unlikely\",\"confidence\":{\"level\":\"medium\"},\"key_reasons\":[\"At the exact forecast boundary of 2025-05-30T00:00:00+00:00, the supplied five-trading-day mean adjusted-close baseline is 4.28 and its doubling threshold is 8.56. The outcome requires a qualifying five-session mean at or above that threshold during the following six calendar months.\",\"The interim filing available May 8 reports a negative ethanol-production gross margin and lower consolidated gross margin for the three months ended March 31, 2025 versus the corresponding 2024 period. This deterioration in the core business is substantive counter-evidence to a near-term earnings recovery capable of supporting the defined share-price repricing.\",\"Fairmont idling in January 2025, early-2025 restructuring and cost-saving initiatives, and the disclosed strategic-alternatives review provide possible turnaround catalysts. I weigh them positively, but the visible source passages establish actions and a review rather than demonstrated operating acceleration or a transaction milestone. Against the deteriorating operating base, they do not presently make this a credible six-month doubling candidate.\",\"The computed price card reports a 67.9814% decline from adjusted close 12.93 on September 23, 2024 to 4.14 on May 29, 2025 across 171 trading sessions. This supplies contrary market evidence; the decline alone does not establish undervaluation or an impending rebound.\",\"The successfully measured liquidity runway uses cash at March 31, 2025 and operating cash outflow for January 1 through March 31, 2025. Its positive categorical state denotes a positive months measurement, not a bullish stock forecast or assured financing through the forecast horizon. Historical cash consumption adds execution risk to the turnaround case.\"],\"magnitude\":null,\"session_id\":\"anonymous-session-id\",\"uncertainties\":[\"The strategic review could produce a material equity-value catalyst, and cost savings could improve economics faster than the visible disclosures demonstrate; neither outcome is ruled out.\",\"The packet does not establish realized restructuring savings, premium-product sales economics, binding new offtake commitments, or the timing and terms of strategic alternatives. Missing quantified projections are distinct from the available price baseline.\",\"The historical burn-based runway is not a forward liquidity forecast. Unrestricted cash, working-capital changes, committed capital spending, debt maturities, covenant headroom and potential dilution remain unresolved.\",\"Commodity margins, trade policy and low-carbon incentives could materially change operating expectations. Partial source context and unavailable news coverage limit assessment.\",\"Collection stopped at the maximum signal rounds after finalization; unresolved research needs remain unresolved, and finalization does not establish that they were answered.\"]}",
+  "request_hash": "b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88",
+  "response_id": "local-b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88",
+  "usage": {
+    "accounting_tokens": 66957,
+    "agent_id": "/root/financial_context_predictor",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "1bce3f148f0754161cdc4bc7c40c3e0d6ee6688942b9d789ab075a0321dd1737",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "cb300df5938c36aa932a99d9513cd5169500a3eb232627aea85d344795ddd46f",
+    "request_hash": "b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88",
+    "token_usage": null
+  }
+}

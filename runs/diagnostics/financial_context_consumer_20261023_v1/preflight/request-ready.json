@@ -1,0 +1,7 @@
+{
+  "event_type": "request_ready",
+  "model_alias": "independent-subagent",
+  "request_hash": "6586905ddea31b6da96e158e07bf82567392bf356cc47a8a3e7a4a57c3d623da",
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/preflight/requests/6586905ddea31b6da96e158e07bf82567392bf356cc47a8a3e7a4a57c3d623da.json",
+  "stage": "research_controller_reflect"
+}

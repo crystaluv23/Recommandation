@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/verify-cache.py", line 35, in <module>
+    copied_before = {str(Path(r['path']).relative_to(restored)):r['sha256']
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp2zllyzoq/read-only-copy/accepted-prediction.json' is not in the subpath of '/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmp2zllyzoq/read-only-copy'

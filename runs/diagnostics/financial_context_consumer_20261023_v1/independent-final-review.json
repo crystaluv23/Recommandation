@@ -1,0 +1,544 @@
+{
+  "schema_version": "independent-financial-context-consumer-final-review-v1",
+  "scope": "One frozen completed-result F7/F8/F9 consumer subset; read-only audit. No new production/Signal/model call, runner resume, labels/truth/score or network.",
+  "conclusion": "F7 and F8 are supported narrowly for this actual context-only measurement connection. F9 blindness, prediction structure, durable persistence and before-truth boundary are supported. Full F9 factual consistency and full consumer acceptance remain 0/1 because the first Predictor final conflates categorical state with numeric sign despite an explicit request distinction.",
+  "fixed_denominators": {
+    "attempts": 1,
+    "full_semantic_consumer_pass": 0,
+    "F7_context_consumption_pass": 1,
+    "F8_measurement_and_need_propagation_pass": 1,
+    "F9_structure_blindness_persistence_boundary_supported": 1,
+    "F9_full_semantic_pass": 0,
+    "physical_new_responses": 2,
+    "first_reflect_responses": 1,
+    "first_predictor_responses": 1,
+    "corrections": 0,
+    "prior_calls": 2,
+    "prior_inclusive_calls": 4,
+    "old_nine_result_routing_and_maturity_failures_unchanged": true
+  },
+  "frozen_integrity": {
+    "manifest_hash": "257a7e3452ab61c57daa56bf80b1070a3aeab551826ebeae889a141594ed942a",
+    "inputs_hash": "90c44f0ac7cf2c1208be22b7ec2b7afa6d0dad89fb2627dea5d943dffe915ed9",
+    "contract_hash": "b936abdab988d88a6cb38fea2c6562fc9dc14b3623598a99d8b8416c97400081",
+    "oracle_hash": "6917fc7687c0647e6afaeecefa35cfd72db2a0c881d64d787858972455b23880",
+    "addendum_hash": "6b9991552d90f31cf471030ba2ff3a762415743ca0505c4795b2e70bd2d856d9",
+    "source_and_code_hash_checks": [
+      {
+        "group": "source_files",
+        "count": 1856,
+        "all_match": true,
+        "mode": "opaque-byte hash check; no outcome/label content inspection"
+      },
+      {
+        "group": "code_files",
+        "count": 106,
+        "all_match": true,
+        "mode": "opaque-byte hash check; no outcome/label content inspection"
+      }
+    ],
+    "whole_bootstrap_equal_parent": true,
+    "bootstrap_fields": [
+      "bundle",
+      "computed_metrics",
+      "document_channel_set_by_core",
+      "evaluation_anchor",
+      "evaluation_context",
+      "model_context",
+      "plan",
+      "projection_lineage"
+    ],
+    "bootstrap_canonical_hash": "9b5024a2298427548a643aceea28624ca7d47b97221acbe44e17a7d7878b27a8"
+  },
+  "source_and_measurement": {
+    "ref": "liquidity_runway_months:v3",
+    "exact_saved_import_result_resolution_fingerprints": true,
+    "one_result_slot": 1,
+    "new_calculations": 0,
+    "context_intent": {
+      "applicability_hypothesis": "Available matched cash and operating-cash-flow facts may support a runway benchmark; this calculation alone cannot establish unrestricted funding or future milestone affordability.",
+      "context_tags": [
+        "capital_intensive",
+        "cyclical"
+      ],
+      "expected_role": "coverage",
+      "reason_code": "combine_evidence",
+      "selection_reason": "Add a historical burn-based runway estimate to the financing assessment using the latest SEC cash-flow duration and closest preceding same-currency cash balance.",
+      "signal_ref": "liquidity_runway_months:v3",
+      "target_need_indices": [
+        3
+      ]
+    },
+    "no_answer_scope": true,
+    "source_literals": [
+      {
+        "index": 0,
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "record_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+        "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "raw_start": 91559,
+        "raw_end": 92064,
+        "literal_sha256": "3098e6412fc28e03612206b2bf339ac7fb3523ebdb29657a6630500a4984158d",
+        "fact": {
+          "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+          "end": "2025-03-31",
+          "fiscal_period": "Q1",
+          "fiscal_year": 2025,
+          "frame": null,
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "start": "2025-01-01",
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": -55041000
+        }
+      },
+      {
+        "index": 1,
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "record_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+        "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "raw_start": 19452,
+        "raw_end": 20214,
+        "literal_sha256": "18a965903640e222aed8565147465477d6b036b3e99390ba279b49c87852d58c",
+        "fact": {
+          "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+          "end": "2025-03-31",
+          "fiscal_period": "Q1",
+          "fiscal_year": 2025,
+          "frame": "CY2025Q1I",
+          "label": "Cash and Cash Equivalents, at Carrying Value",
+          "start": null,
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 98610000
+        }
+      }
+    ],
+    "fingerprints": [
+      {
+        "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+        "content_hash": "aa05ed7e72b76d7930e5411dbe4c3314c0f0186a7917d0b950bc6f3ada19df12",
+        "available_at": "2024-05-04T00:00:00+00:00",
+        "matches": true
+      },
+      {
+        "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+        "content_hash": "cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+        "available_at": "2024-11-01T00:00:00+00:00",
+        "matches": true
+      },
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "matches": true
+      },
+      {
+        "document_id": "rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b",
+        "content_hash": "b0c4c525055d12686df4ac82390803116324b197cbaac8d8cee83bce385c37f8",
+        "available_at": "2024-08-07T00:00:00+00:00",
+        "matches": true
+      },
+      {
+        "document_id": "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4",
+        "content_hash": "a940180e1345eff4cc5540d3ca668447559f1b2757d87915179da56ee8e5dcfc",
+        "available_at": "2024-02-10T00:00:00+00:00",
+        "matches": true
+      },
+      {
+        "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40",
+        "content_hash": "02d135492926ac406154af88476b4235d6461873e97b5b963681adf7b39c696f",
+        "available_at": "2025-02-08T00:00:00+00:00",
+        "matches": true
+      }
+    ],
+    "independent_arithmetic": {
+      "cash_usd": 98610000,
+      "cash_end": "2025-03-31",
+      "ocf_usd": -55041000,
+      "ocf_period": {
+        "start": "2025-01-01",
+        "end": "2025-03-31"
+      },
+      "reported_months": 3,
+      "absolute_monthly_burn_usd": 18347000,
+      "formula": "cash / (absolute negative operating cash flow / reported months)",
+      "exact_fraction": "98610/18347",
+      "actual_float": 5.374720662778656,
+      "unit": "months",
+      "category": "positive",
+      "frozen_category_mapping": {
+        "max_period_age_days": 550,
+        "negative_runway_min_months": 12,
+        "positive_runway_max_months": 6
+      }
+    },
+    "limits": "Qualified retrospective financial-capture/PIT policy retained; source hash/literal checks do not newly prove historical API vintage, unrestricted cash or future funding adequacy."
+  },
+  "packets": [
+    {
+      "stage": "research_controller_reflect",
+      "request_hash": "b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc",
+      "agent_id": "/root/financial_context_reflect",
+      "request_payload_receipt_cache_checks": true,
+      "raw_outbox_sha256": "4918a10aaf00c44fdff56dcc6eab1b6feb45bf34f06b5c800e3cec0b45e5035a",
+      "payload_utf8_bytes": 31455,
+      "complete_record_canonical_bytes": 51005,
+      "reserved_output_units": 8000,
+      "recorded_accounting_units": 57862,
+      "accounting_minus_output_units": 49862,
+      "raw_issuer_alias_occurrences": {
+        "Green Plains": 0,
+        "GPRE": 0,
+        "0001309402": 0,
+        "cik_0001309402": 0
+      },
+      "validation_feedback": null,
+      "allow_outcomes": false
+    },
+    {
+      "stage": "blind_predictor_predict",
+      "request_hash": "b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88",
+      "agent_id": "/root/financial_context_predictor",
+      "request_payload_receipt_cache_checks": true,
+      "raw_outbox_sha256": "cb300df5938c36aa932a99d9513cd5169500a3eb232627aea85d344795ddd46f",
+      "payload_utf8_bytes": 53704,
+      "complete_record_canonical_bytes": 66201,
+      "reserved_output_units": 2000,
+      "recorded_accounting_units": 66957,
+      "accounting_minus_output_units": 64957,
+      "raw_issuer_alias_occurrences": {
+        "Green Plains": 0,
+        "GPRE": 0,
+        "0001309402": 0,
+        "cik_0001309402": 0
+      },
+      "validation_feedback": null,
+      "allow_outcomes": false
+    }
+  ],
+  "F7": {
+    "status": "supported",
+    "actual_request": "research_controller_reflect",
+    "raw_patch_operations": [
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "kind": "signal",
+          "signal_ref": "liquidity_runway_months:v3",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "claim": "liquidity_runway_months=5.37472"
+        }
+      },
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "kind": "signal",
+          "signal_ref": "liquidity_runway_months:v3",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "claim": "liquidity_runway_months=5.37472"
+        }
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "The historical burn-based runway supplies financing context; its positive numeric sign does not establish bullish stock direction, future funding sufficiency or freedom from dilution."
+      },
+      {
+        "op": "replace",
+        "path": "decision",
+        "value": "finalize"
+      }
+    ],
+    "issued_permissions_and_base_hash_valid": true,
+    "independent_patch_merge_equals_accepted_reflect": true,
+    "accepted_metadata": {
+      "need_dispositions": {
+        "items": [],
+        "prior_state_hash": "687ae13a4e3385e7442a38de00705e8b9f10992e12faf0babc2ddd0eb8dccde1"
+      }
+    },
+    "actual_needs_preserved_exactly": [
+      "What savings targets, implementation dates, cash restructuring costs and production effects of the Fairmont idling and corporate restructuring had been disclosed by prediction time, and what realized savings or operating evidence already supported those targets?",
+      "What Ultra-High Protein sales volumes, realized premiums, incremental production costs, customer qualification progress and binding offtake commitments had been disclosed by prediction time, including any then-published milestones capable of changing earnings expectations within the forecast horizon?",
+      "By prediction time, what specific strategic alternatives, transaction terms, binding commitments, execution obstacles and expected decision dates had been disclosed, and what evidence could support realizable value for common shareholders within the forecast horizon?",
+      "What unrestricted cash, operating cash burn, committed capital spending, debt maturities, covenant headroom and potential equity issuance obligations were disclosed by prediction time, and did those terms allow the proposed turnaround to reach its milestones without material dilution?",
+      "What contemporaneous issuer disclosures quantified sensitivity of cash earnings to ethanol selling prices, corn and energy costs, hedging and low-carbon incentives, and what already-published guidance or contracted economics could support a margin recovery during the forecast horizon?"
+    ],
+    "resolved_questions": [],
+    "no_available_answer_actions_for_all_five": true,
+    "context_only_for_need3": true,
+    "numeric_adoption": "Optional; two supporting Signal-evidence claims were exercised using exact runtime-authorized claim liquidity_runway_months=5.37472. No adoption update was demanded.",
+    "new_belief": "Reflect correctly refers to positive numeric sign and denies bullishness/funding sufficiency; its text is distinguished from the later Predictor categorical/sign conflation.",
+    "runtime": {
+      "must_finalize": true,
+      "trigger": "max_signal_rounds",
+      "budget": 81578
+    }
+  },
+  "F8": {
+    "status": "supported",
+    "accepted_reflect_equals_final_research_state": true,
+    "measurement": {
+      "categorical_state": "positive",
+      "formula": "cash / (absolute negative operating cash flow / reported months)",
+      "numeric_sign": "positive",
+      "period": {
+        "end": "2025-03-31",
+        "start": "2025-01-01"
+      },
+      "unit": "months",
+      "value": 5.374720662778656
+    },
+    "source_observations": [
+      {
+        "end": "2025-03-31",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "start": "2025-01-01",
+        "tag": "NetCashProvidedByUsedInOperatingActivities",
+        "unit": "USD",
+        "value": -55041000
+      },
+      {
+        "end": "2025-03-31",
+        "evidence_group": "supporting",
+        "evidence_index": 1,
+        "tag": "CashAndCashEquivalentsAtCarryingValue",
+        "unit": "USD",
+        "value": 98610000
+      }
+    ],
+    "original_two_literals_preserved": true,
+    "all_five_exact_needs_unresolved": true,
+    "context_equals_sink": true,
+    "runtime_termination": {
+      "phase": "prediction_ready",
+      "stop_reason": "finalized",
+      "termination_trigger": "max_signal_rounds"
+    },
+    "meaning": "Collection hit max_signal_rounds and Reflect finalized. It did not resolve funding/turnaround questions.",
+    "partial_orientation_and_news_gap_preserved": true
+  },
+  "F9": {
+    "status": "partial_full_semantic_not_closed",
+    "native_request": "blind_predictor_predict",
+    "wire_contains_measurement_period_formula_operands_and_five_needs": true,
+    "issuer_alias_masking": true,
+    "no_outcome_or_oracle_answer_in_wire": true,
+    "prediction_class": "unlikely",
+    "magnitude": null,
+    "judgment_scoring": "No fixed class, probability or belief direction was required. unlikely/medium confidence and no probability are not defects.",
+    "raw_to_accepted": "Raw prediction preserved; native derives is_surge=false from unlikely.",
+    "accepted_to_sink_exact": true,
+    "other_factual_assessment": "Baseline 4.28 / threshold 8.56 use supplied anchor; historical price decline keeps correct endpoints and 171-session window; margin weakness/catalysts remain evidence and uncertainty. No assured future funding or unrestricted cash claim observed."
+  },
+  "findings": [
+    {
+      "id": "F9_CATEGORICAL_NUMERIC_SIGN_CONFLATION",
+      "type": "first-final factual-consistency failure",
+      "path": "key_reasons[4]",
+      "raw_outbox": "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/exchange/outbox/b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88.txt",
+      "actual_text": "The successfully measured liquidity runway uses cash at March 31, 2025 and operating cash outflow for January 1 through March 31, 2025. Its positive categorical state denotes a positive months measurement, not a bullish stock forecast or assured financing through the forecast horizon. Historical cash consumption adds execution risk to the turnaround case.",
+      "controlling_frozen_oracle": "F9 audits structure, blindness and factual consistency; numeric/category meaning derives from exact frozen v3 spec.",
+      "controlling_actual_system_clause": "numeric_sign is distinct from the measured predicate's categorical state",
+      "why_wrong": "The categorical positive predicate is runway <=6 months, not the marker that a months number is positive. For example, a hypothetical 13-month value has positive numeric sign but maps to negative under the frozen >=12 rule. This is a logical counterexample, not another Signal execution.",
+      "producer_background": "The actual model view transmits separate categorical_state/numeric_sign fields plus a general distinction, without exact v3 threshold mapping. That omission is separately material background; it does not waive the existing distinction obligation.",
+      "not_a_new_requirement": "No requirement to recite thresholds is added. The defect is the affirmative denotes assertion; no penalty for direction, optional update, probability or citation style.",
+      "impact_limit": "The 5.374720662778656-month measurement/operands and unresolved-funding caveats remain correct. No evidence shows this phrase caused the chosen forecast class. Full F9 semantic acceptance is nonetheless not closed."
+    }
+  ],
+  "durable_stop": {
+    "sink": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/prediction-sink.json",
+      "sha256": "c564fa83c768e3d3b314e26d821c4446d22f23506f3af6c19c0f609117cc2549"
+    },
+    "completion_sink_hash_valid": true,
+    "context_prediction_exact": true,
+    "runtime": {
+      "phase": "prediction_ready",
+      "stop_reason": "finalized",
+      "termination_trigger": "max_signal_rounds"
+    },
+    "native_source_order": "execute_information_plan calls predictor then prediction_sink before ground_truth_provider; stage sink saves immutable prediction-sink and raises ConsumerBoundary. Stage guards forbid label methods, external attempts/network connections, new Signal preparation/apply and source/Registry mutation.",
+    "terminal_completion": true,
+    "before_truth_stop_supported": true,
+    "no_round_cycle_commit_in_stage_code": true,
+    "no_completed_stage_reentry": true
+  },
+  "budget": {
+    "prior_H_init": 61888,
+    "prior_selection": 49144,
+    "prior_logical_total": 111032,
+    "new_reflect_accounting_units": 57862,
+    "new_predictor_accounting_units": 66957,
+    "new_physical_receipts": 2,
+    "corrections": 0,
+    "combined_units": 235851,
+    "case_cap": 256000,
+    "remaining": 20149,
+    "combined_calls": 4,
+    "max_calls": 5,
+    "max_new_responses": 3,
+    "max_request_units": 131072,
+    "Reflect_budget": 81578,
+    "Predictor_budget": 87106,
+    "finalization_reserve": 64000,
+    "all_recorded_native_charges_fit": true,
+    "accounting_limit": "Saved local units include serialized-wire estimates and reserved output, not provider-measured token counts. Full persisted request-record JSON includes diagnostic metadata and is not the same serialization as the wire estimate. This audit independently matches all request hashes and byte counts, accepted usage, receipts and prior-inclusive sums; it does not equate whole-record byte length with runtime wire accounting. Internal agent cost remains unknown despite zero external API charge."
+  },
+  "cache_reconstruction": {
+    "record": {
+      "cache_reads": [
+        "b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc",
+        "b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88"
+      ],
+      "labels": 0,
+      "limitation": "Throwaway-copy reconstruction only, not OS interruption, business continuation or new model behavior.",
+      "new_external_API": 0,
+      "new_handoffs": 0,
+      "prior_inclusive_usage": {
+        "cost": 0.0,
+        "llm_calls": 4,
+        "tokens": 235851
+      },
+      "state": "read_only_cache_reconstruction_verified",
+      "unchanged_stage_files": 25,
+      "unique_existing_receipts": 2
+    },
+    "audit_scope": "Root-provided separate throwaway-copy record reviewed; no replay/resume performed by reviewer. It reports 25 unchanged stage files, two existing cache reads/receipts and zero new handoffs. This is persistence/reconstruction evidence, not fresh model behavior or OS interruption recovery.",
+    "root_report_only": "Root reports initial throwaway verifier stopped before native execution due to macOS /var versus /private/var alias; those separate verifier logs were not independently reviewed here."
+  },
+  "unknowns_and_nonclosures": [
+    "Exact wire-estimator serialization was not independently reproduced; persisted charge/request/receipt consistency and budget fit were independently checked.",
+    "No claim of fresh routing/apply, S4/S5 completion, new research capability, generalization or independent prediction/research benefit.",
+    "No claim old routing 0/1, nine-result denominator or maturity strict 0/1 advanced.",
+    "No label/outcome was inspected, and prediction correctness/calibration is unknown.",
+    "The producer lacked exact classification thresholds in model view. Any general producer/consumer repair belongs to separately authorized future work; this completed case remains unchanged."
+  ],
+  "all_successful_checks": {
+    "manifest_self_hash": true,
+    "inputs_hash": true,
+    "contract_hash": true,
+    "oracle_hash": true,
+    "addendum_hash": true,
+    "source_files_all_hashes": true,
+    "code_files_all_hashes": true,
+    "whole_parent_bootstrap_equality": true,
+    "bootstrap_canonical_hash": true,
+    "exact_imported_subset": true,
+    "context_only_intent": true,
+    "one_slot_zero_import_usage": true,
+    "selection_usage": true,
+    "snapshot_manifest_hash": true,
+    "doc_file_rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902": true,
+    "doc_content_rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902": true,
+    "evidence_identity_literal_pit_0": true,
+    "evidence_identity_literal_pit_1": true,
+    "doc_file_rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130": true,
+    "doc_content_rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130": true,
+    "fingerprint_rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130": true,
+    "doc_file_rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877": true,
+    "doc_content_rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877": true,
+    "fingerprint_rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877": true,
+    "fingerprint_rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902": true,
+    "doc_file_rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b": true,
+    "doc_content_rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b": true,
+    "fingerprint_rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b": true,
+    "doc_file_secfacts:0001309402:0001309402-24-000023:a940180e1345eff4": true,
+    "doc_content_secfacts:0001309402:0001309402-24-000023:a940180e1345eff4": true,
+    "fingerprint_secfacts:0001309402:0001309402-24-000023:a940180e1345eff4": true,
+    "doc_file_secfacts:0001309402:0001309402-25-000008:02d135492926ac40": true,
+    "doc_content_secfacts:0001309402:0001309402-25-000008:02d135492926ac40": true,
+    "fingerprint_secfacts:0001309402:0001309402-25-000008:02d135492926ac40": true,
+    "independent_operands_and_months": true,
+    "exact_v3_spec": true,
+    "v3_category": true,
+    "request_hash_b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc": true,
+    "payload_hash_b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc": true,
+    "receipt_inbox_b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc": true,
+    "raw_cache_receipt_b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc": true,
+    "receipt_cache_ids_b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc": true,
+    "masking_b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc": true,
+    "allow_outcomes_false_b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc": true,
+    "request_hash_b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88": true,
+    "payload_hash_b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88": true,
+    "receipt_inbox_b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88": true,
+    "raw_cache_receipt_b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88": true,
+    "receipt_cache_ids_b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88": true,
+    "masking_b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88": true,
+    "allow_outcomes_false_b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88": true,
+    "exactly_two_first_responses": true,
+    "reflect_patch_base_hash": true,
+    "patch_permission_append_supporting_evidence": true,
+    "patch_permission_append_current_beliefs": true,
+    "patch_permission_replace_decision": true,
+    "raw_merge_to_accepted_reflect": true,
+    "accepted_reflect_metadata": true,
+    "all_exact_five_needs": true,
+    "no_resolved_questions": true,
+    "reflect_actual_inputs": true,
+    "must_finalize_max_rounds": true,
+    "need_transition_no_answer_ownership": true,
+    "accepted_reflect_to_final_context": true,
+    "context_to_sink": true,
+    "prediction_to_sink": true,
+    "completion_sink_hash": true,
+    "runtime_cause_preserved": true,
+    "predictor_wire_five_needs": true,
+    "predictor_wire_measurement_context": true,
+    "F8_value_unit_period_formula": true,
+    "F8_two_source_operands": true,
+    "F8_both_raw_literals": true,
+    "raw_prediction_to_accepted": true,
+    "usage_ledger": true,
+    "prior_usage_not_reset": true,
+    "runtime_budget_fit": true,
+    "zero_correction_two_receipts": true,
+    "labels_and_no_new_apply_markers": true,
+    "semantic_gap_actual_text": true,
+    "distinction_preexisted_in_wire": true,
+    "wire_exact_threshold_mapping_absent": true,
+    "originals_unchanged": true,
+    "review_output_new": true
+  },
+  "protected_stage_and_reference_hashes": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/prediction-sink.json": "c564fa83c768e3d3b314e26d821c4446d22f23506f3af6c19c0f609117cc2549",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/accepted-reflect.json": "2485131cf8ef4c0dc3ee9e634fd91d3f522b08016d5651df310ae3f767bcc0da",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/predictor-input.json": "5e4609919573783ef7862371749e92f851f88ed532be289c1ef87971f934393c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/imported-batch.json": "956ef91688207b6188aeeed53e8e171b28bb42f4c12f20bb810212b56f5e009a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/inputs.json": "a8dc721e15981a29aa5d0c9675975694c9be94191ae642d2b6b20e66151f634d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/manifest.json": "a1a4408e65bd662bc2cee5389d910223422723bb6b8e4411c4449011405c9b6a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/unused_external.json": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/accepted-prediction.json": "190849b3a5382bb8e45a11bb81715295a7068c16dc218b50d1f340e75e19f4ba",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/reflect-input.json": "a2757ca7d922ea5322ccc48d6d53f21c0ba9a578fbb95ad797dddd3b04489b1e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/completion.json": "c7dd7aa0b48f80c3c2681d06cf384824d1cdbcfc7802c20daf9595289d8a4a8b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/declared-context-input.json": "8ce6fdc745d9074fce8496699a15f3f649dc4c5ce4172726e84f97f448468f04",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/contract.json": "04c9408b8891e5916515e30a723a913c1d0a0084d0b9e9f258311c5a0657c259",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/bootstrap.json": "afc0235f0ae6e59d6bcee715370891dd09002a88a661e01b55ace5ee8f2ee02e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/exchange/.dispatch.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/exchange/contract.json": "6ea234e3511b339c86702b29e7da8cc86a0434bc99f325113c370219e86c3326",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/exchange/receipts/b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88.json": "b2e73f87c69d3d59c052990f42b47985669671034388b00739492c890131fe79",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/exchange/receipts/b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc.json": "03312d2100b844ed03253e114c8627f9da8f17e9ba737284e2af0c82469bed84",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/exchange/outbox/b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88.txt": "cb300df5938c36aa932a99d9513cd5169500a3eb232627aea85d344795ddd46f",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/exchange/outbox/b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc.txt": "4918a10aaf00c44fdff56dcc6eab1b6feb45bf34f06b5c800e3cec0b45e5035a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/exchange/inbox/b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88.json": "1bce3f148f0754161cdc4bc7c40c3e0d6ee6688942b9d789ab075a0321dd1737",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/exchange/inbox/b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc.json": "1e876b474e4461e3bbe90d965411590d899e5907608fdb801370691af735f61a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/cache/responses/b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88.json": "f6c849cabf0c18524e3d476b9c27df12ede943c85d7e9684c82a4a6850db5008",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/cache/responses/b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc.json": "92555345765aa56d7e224583bdcc0b77f1a986609c1f103340b9e293d398e671",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/requests/b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88.json": "2168cf02dd79aab4333f13b31a16ce125eac8a18943caf1f1a4dbcab203f8336",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/requests/b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc.json": "6861f4a5f948fc706b009028837f55dd16734883f249edd8a941e0c2a3101f25",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/reference/bootstrap-binding-addendum.json": "6b9991552d90f31cf471030ba2ff3a762415743ca0505c4795b2e70bd2d856d9",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/reference/contract-obligation-mapping.json": "f2323c832de8b343b15d03c684f53e851b83ca4c0aa9c6e606a6cac1df1d4f02",
+    "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/reference/consumer-oracle.json": "6917fc7687c0647e6afaeecefa35cfd72db2a0c881d64d787858972455b23880"
+  },
+  "all_original_files_unchanged": true
+}

@@ -1,0 +1,55 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "70d35d7bf71bdb64b69adb42ee28d7c35a00159d9c5d4e16b297a92dfbc6934a",
+    "operations": [
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "liquidity_runway_months=5.37472",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "liquidity_runway_months:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "liquidity_runway_months=5.37472",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "liquidity_runway_months:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "The historical burn-based runway supplies financing context; its positive numeric sign does not establish bullish stock direction, future funding sufficiency or freedom from dilution."
+      },
+      {
+        "op": "replace",
+        "path": "decision",
+        "value": "finalize"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"70d35d7bf71bdb64b69adb42ee28d7c35a00159d9c5d4e16b297a92dfbc6934a\",\"operations\":[{\"op\":\"append\",\"path\":\"supporting_evidence\",\"value\":{\"kind\":\"signal\",\"signal_ref\":\"liquidity_runway_months:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":0,\"claim\":\"liquidity_runway_months=5.37472\"}},{\"op\":\"append\",\"path\":\"supporting_evidence\",\"value\":{\"kind\":\"signal\",\"signal_ref\":\"liquidity_runway_months:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":1,\"claim\":\"liquidity_runway_months=5.37472\"}},{\"op\":\"append\",\"path\":\"current_beliefs\",\"value\":\"The historical burn-based runway supplies financing context; its positive numeric sign does not establish bullish stock direction, future funding sufficiency or freedom from dilution.\"},{\"op\":\"replace\",\"path\":\"decision\",\"value\":\"finalize\"}]}\n",
+  "request_hash": "b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc",
+  "response_id": "local-b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc",
+  "usage": {
+    "accounting_tokens": 57862,
+    "agent_id": "/root/financial_context_reflect",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "1e876b474e4461e3bbe90d965411590d899e5907608fdb801370691af735f61a",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "4918a10aaf00c44fdff56dcc6eab1b6feb45bf34f06b5c800e3cec0b45e5035a",
+    "request_hash": "b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc",
+    "token_usage": null
+  }
+}

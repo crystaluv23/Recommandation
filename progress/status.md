@@ -7,18 +7,18 @@
 
 ## 最新实证
 
-[原生财务批次与阅读诊断](../reports/current-financial-apply-20261021.md)：当前比较用既有v12精确18版本，
-不替换历史v6。单GPRE/2025-05-30、1780来源view，冻结4389绑定，唯一native批次20.261s/exit0。
-9财务结果为6严格通过、1prior原文版本匹配失败、2期间政策unknown，终态completed_acceptance_failed保留。
-7个定义唯一项的数值/分类/单位/当前期间均同独立源oracle；失败项实际2024申报与oracle2025比较列同事实，
-只fiscal_year/frame不同，预冻清单漏列prior版本；不是改成7/7或9/9。gross_margin/revenue_acceleration定义仍多义。
-独立4389绑定、9实际选文/顺序/fingerprint、21完整证据、9消费者投影核过；仅公开投影，未fresh模型消费。
-唯一完成restore1.636s/24files字节同/0新batch，非OS中断或研究恢复。首prepare前置拒与审计harness错误均保留，不重入。
+[真实财务消费者](../reports/financial-context-consumer-20261023.md)：完整parent bootstrap相等后，只导入已完成strict-pass runway-v3作context；
+2fresh角色首答/0纠错，真实Reflect保5exact needs、2引文/无answer ownership，最终context保数值/期间/operand/版本；
+Predictor→sink先于truth，235851逻辑预留/256000、含旧2calls共4calls、物理新增2，外部API/GET/标签/新apply0。
+独立终审发现Predictor把positive类别误释为月份数为正，实际v3 positive≤6个月；F7/F8本案窄通过，整案语义0/1/F9不关。
+模型已获sign/state区别提示但没收到阈值映射；下一修复分类含义传递，不重入同案或追加求过。4新控+64关联过，25files副本重建同/0交接，非OS恢复。
 
-[typed阅读修复](../reports/gpre-readable-period-selection-20261021.md)已让真实SEC facts数组保完整literal/offset、
-冲突、币种、duration/可比期，整组贯穿32k/token预算；63关联及13独立控制过，0新模型/资料。
-固定词频饱和排序令Q1原rank46→4且两完整operand在31986chars可见，但11文档反例仍漏rank11最新证据；
-独立比较期/币种/冲突见证反例同样失败，因此未装排序callback、未调参求过，整体F5仍open。
+[原生财务批次与阅读诊断](../reports/current-financial-apply-20261021.md)：当前比较用既有v12精确18版本，不替换历史v6。单GPRE/2025-05-30、1780来源view，冻结4389绑定，唯一native批次20.261s/exit0。
+9财务结果为6严格通过、1prior原文版本匹配失败、2期间政策unknown，终态completed_acceptance_failed保留。
+7个定义唯一项的数值/分类/单位/当前期间均同独立源oracle；失败项实际2024申报与oracle2025比较列同事实，只fiscal_year/frame不同，预冻清单漏列prior版本；不是改成7/7或9/9。gross_margin/revenue_acceleration定义仍多义。
+独立4389绑定、9实际选文/顺序/fingerprint、21完整证据、9消费者投影核过；六项未整体fresh消费，单context见最新。完成restore1.636s/24files字节同/0新batch，非OS中断或研究恢复。首prepare前置拒与审计harness错误均保留，不重入。
+
+[typed阅读修复](../reports/gpre-readable-period-selection-20261021.md)保完整facts literal/offset/单位/期间，固定排序能找本案Q1，但11doc/比较期/币种/冲突反例仍失败；未装排序callback，整体F5仍open。
 [有界阅读/Fact taxonomy](../reports/approved-reading-and-taxonomy-20261022.md)两方案已获明确批准并实施；外部LLMAPI继续0。
 方案每Signal至多10正文/32000chars/2读取交换/4角色请求；双Signal需阅读时分别冻结、最坏8请求并受case余量限制。
 完整小输入保既有双Signal共享路径。v143/v6仅run_minimal无override入口，显式v182用v12，一般init另有catalog。
@@ -48,7 +48,7 @@ GPRE六strict-pass结果现经真实Reflect batch/egress到唯一journal，6值/
 [GPRE原生初始化](../reports/gpre-native-initial-20261021.md)现以同1780来源view/default手工研究Plan真实bootstrap，
 核心计算anchor/171bars指标、4请求17投影保partial/news缺口；fresh独立subagent首答1/1、0纠错，61888逻辑预留。
 原答→cache→解析→落盘逐字段同，4引用/5needs独立源审通过；1930绑定及原14保留。中性路径交接避免目录名泄露身份。
-仅本案H_init；路由进展见下，六财务结果仍未fresh Reflect消费/恢复，序列化空carrier不追认为研究prior。
+仅本案H_init；六财务结果未整体fresh消费，本轮单项context连接见最新；序列化空carrier不追认为研究prior。
 [GPRE真实路由](../reports/gpre-native-routing-20261021.md)：18eligible/17原生卡、完整旧state/5needs进入fresh请求；严格首组合0/1。
 shared产品名UHP被误当residual-only，54598纠错请求超过18995余量未发送，原生fallback将合法order partial降context。
 融资partial意图保真进入core首批，entry1/prepare与计算0，未回答问题。1作者/0模型纠错；2journal准备总165630不等实际usage111032。
@@ -94,7 +94,7 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
 - routing两literal范围误拒已局部修复，停止继续词面补丁；保原0/1及原答，局部修复不等新模型遵循，不重入completed stage或重置预算。
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
   [章节导航与真实控制](../reports/narrative-source-navigation-20261023.md)共用数据层matcher、各自坐标/分页、标题原子计预算；251关联/独立24过，网络0。旧v1形状与commercialization/v5净影响多义仍保留，未改定义。
-  私有90日本金到期控制由3fresh角色首答正确事实/0纠错、117566逻辑预留、31138来源chars、29files再开同；冻结更强上下文严审仍0of1，core事实正确不等完整通过。oracle额外义务须先对定义核清；未发布/非Mining，F5/实际消费/MVP仍open。
+  私有90日本金到期控制3fresh角色提取正确事实/0纠错、117566逻辑预留、29files同；更强oracle严审0of1不改。额外义务现已逐条对定义映射，不冒称错对象/日期；未发布/非Mining，整体F5/MVP仍open。
   gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
 - 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

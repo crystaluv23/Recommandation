@@ -1,0 +1,12 @@
+{
+  "external_API": 0,
+  "labels": 0,
+  "prediction_sink": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/stage/prediction-sink.json",
+    "sha256": "c564fa83c768e3d3b314e26d821c4446d22f23506f3af6c19c0f609117cc2549"
+  },
+  "receipts": 2,
+  "scope": "completed context-result consumer subset; no new routing/apply/labels/round commit",
+  "semantic_acceptance": "requires independent review; no round/cycle commit",
+  "state": "completed"
+}

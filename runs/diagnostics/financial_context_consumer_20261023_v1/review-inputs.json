@@ -1,0 +1,45 @@
+{
+  "scope": "Read-only contract mapping and pre-answer consumer expectations. Prior completed stages/0of1 denominators stay unchanged. No labels, code, models or external APIs.",
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_financial_context_consumer_stage.md",
+      "sha256": "d4c1b841c1829e9b233e1fa640801afe3e68c352508d2510e87eab6860abd17f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/inputs.json",
+      "sha256": "a75322d2af9d2abc43d9f4b9479608e6630f38a72d0714bf4e8f37d81750a50f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/initial_state.json",
+      "sha256": "9fdacbae3b14e3cf2cb42de3acabcf20ae584d4a8b18e11414b944f11480cab9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/accepted-selection.json",
+      "sha256": "6dc28a13a4811968dbfcf05954abd8c574a773a331586a865322e9c126ef9ab3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/native-batch.json",
+      "sha256": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/oracle.json",
+      "sha256": "596816095cb1526b1e631ede4fa836bc7d26f7ecbb836fdadd7610b59fe75449"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-definition.json",
+      "sha256": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/oracle.json",
+      "sha256": "182780db4a96a9bfaed3a323027b4d456d56f05b39310248f1abe5af54356429"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/evidence-matching-clarification.json",
+      "sha256": "b4c74fbbb80553b56dc9a23f945b8e0ff2ba1872ac3368bf9c447eec64809aa8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/independent-final-review.json",
+      "sha256": "dd66dfbdfa3c31cbcd284733abe3ce92fdb2a2eaade68d84540aeea357a997c4"
+    }
+  ]
+}

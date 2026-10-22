@@ -1,0 +1,613 @@
+{
+  "combined_case_usage": {
+    "cost": 0.0,
+    "llm_calls": 4,
+    "tokens": 235851
+  },
+  "company_id": "cik_0001309402",
+  "context": {
+    "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
+    "basic_info": {
+      "data_gaps": [
+        {
+          "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+          "provider": null,
+          "reason": "no_matching_documents",
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        }
+      ],
+      "projection_card_counts": {
+        "available_projections": 17,
+        "deferred_projections": 0,
+        "included_cards": 17
+      },
+      "projection_cards": [
+        {
+          "available_at": "2025-05-08T20:34:28+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000089",
+          "exact_text": "g, general and administrative expenses. The CODM manages and allocates resources to the operations of the Company's two segments. This enables the Interim Principal Executive Officer to assess the Company’s overall level of available resources and determine how best to deploy these resources for capital expenditure, research and development projects, and other strategic opportunities that are in line with our long-term strategic goals. The CODM is regularly provided with consolidated expense information or forecasted expense information for the applicable reportable segment. The following tables set forth certain financial data for the company’s operating segments (in thousands): Three Months Ended March 31, 2025 2024 Revenues Ethanol production Revenues from external customers $ 497,458 $ 504,446 Intersegment revenues 314 1,213 Total segment revenues 497,772 505,659 Agribusiness and energy services Revenues from external customers 104,057 92,768 Intersegment revenues 5,772 6,228 Total segment revenues 109,829 98,996 Revenues including intersegment activity 607,601 604,655 Intersegment eliminations ( 6,086 ) ( 7,441 ) $ 601,515 $ 597,214 16 Table of Contents Refer to Note 2 - Revenue , for further disaggregation of revenue by operating segment. Three Months Ended March 31, 2025 2024 Cost of goods sold Ethanol production (1) $ 503,464 $ 508,302 Agribusiness and energy services 101,098 87,986 Intersegment eliminations ( 6,086 ) ( 7,441 ) $ 598,476 $ 588,847 Three Months Ended March 31, 2025 2024 Gross margin Ethanol production (1) $ ( 5,692 ) $ ( 2,643 ) Agribusiness and energy services 8,731 11,010 $ 3,039 $ 8,367 Three Months Ended March 31, 2025 2024 Depreciation and amortization Ethanol production $ 21,035 $ 20,534 Agribusiness and energy services 598 &",
+          "projection_id": "projection_01fe85919029e3da1c7a0940",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-05-08T20:34:28+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000089",
+          "exact_text": "Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _______________________ FORM 10-Q (Mark One) ☒ Quarterly Report Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 For the Quarterly Period Ended March 31, 2025 OR ☐ Transition Report Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 For the transition period from ______ to ______ Commission File Number 001-32924 [MASKED_COMPANY]. (Exact name of registrant as specified in its charter) Iowa 84-1652107 (State or other jurisdiction of incorporation or organization) (I.R.S. Employer Identification No.) 1811 Aksarben Drive , Omaha , NE 68106 ( 402 ) 884-8700 (Address of principal executive offices, including zip code) (Registrant’s telephone number, including area code) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol Name of each exchange on which registered Common Stock, par value $0.001 per share [MASKED_COMPANY] The Nasdaq Stock Market LLC Indicate by check mark whether the registrant (1) has filed all reports required to be filed by Section 13 or 15(d) of the Securities Exchange Act of 1934 during the preceding 12 months (or for such shorter period that the registrant was required to file such reports), and (2) has been subject to such filing requirements for the past 90 days. ☒ Yes ☐ No Indicate by check mark whether the registrant has submitted electronically every Interactive Data File required to be submitted pursuant to Rule 405 of Regulation S-T (§232.405 of this chapter) during the preceding 12 months (or for such shorter period that the registrant was required to submit such files). ☒ Yes ☐ No Indicate by check mark whether the registrant is a large accelerated filer, an accelerated filer, a non-accelerated filer, a smaller reporting company, or an emerging growth company. See the definitions of “large accelerated filer,” “acce",
+          "projection_id": "projection_912baac25f4dbe6b588b664a",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-05-08T20:34:28+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000089",
+          "exact_text": "roach, market approach and cost approach for the specific assets or liabilities being valued. 5. SEGMENT INFORMATION The company reports the financial and operating performance for the following two operating segments: (1) ethanol production, which includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil and (2) agribusiness and energy services, which includes grain handling and storage, commodity marketing and merchant trading for company-produced and third-party ethanol, distillers grains, Ultra-High Protein, renewable corn oil, natural gas and other commodities. Corporate activities include selling, general and administrative expenses, consisting primarily of compensation, professional fees, overhead costs, gain on sale of assets, and restructuring costs not directly related to a specific operating segment. During the normal course of business, the operating segments conduct business with each other. For example, the agribusiness and energy services segment procures grain and natural gas and sells products, including ethanol, distillers grains, Ultra-High Protein and renewable corn oil for the ethanol production segment. These intersegment activities are treated like third-party transactions with origination, marketing and storage fees charged at estimated market values. Consequently, these transactions affect segment performance; however, they do not impact the company’s consolidated results since the revenues and corresponding costs are eliminated. The Chief Operating Decision Maker (\"CODM\") for the company is the Interim Principal Executive Officer. The CODM utilizes EBITDA to assess segment performance, which is derived from revenue less cost of goods sold and selling, general and administrative expenses. The CODM manages and allocates resources to the operations of the Company's two segments. This enables the Interim Principal Executive Officer to assess the Com",
+          "projection_id": "projection_230c2716c36c73afad15f81b",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-02-07T20:20:08+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000008",
+          "exact_text": ". An indirect land usage charge component is included in the GHG emission calculation, which may have an adverse impact on the market for corn-based ethanol in California. The amendments to the LCFS also increase compliance requirements, including a more stringent verification for credits, potential credit forfeitures in the event of increases in operational CI scores, and other changes which could impact our ability to participate in and profit from the program. To expand our production capacity, federal and state regulations may require us to obtain additional permits, achieve EPA’s efficient producer status under the pathway petition program, install advanced technology or reduce drying distillers grains. Compliance with future laws or regulations to decrease carbon dioxide could be costly and may prevent us from operating our plants as profitably, which may have an adverse impact on our operations, cash flows and financial position. We may fail to realize the anticipated benefits of mergers, acquisitions, joint ventures or partnerships. We have increased the size and diversity of our operations through mergers, acquisitions and joint ventures or partnerships and intend to continue exploring potential growth opportunities. Acquisitions involve numerous risks that could harm our business, including: (1) difficulties integrating the operations, technologies, products, existing contracts, accounting processes and personnel and realizing anticipated synergies of the combined business; (2) risks relating to environmental hazards on purchased sites; (3) risks relating to developing the necessary infrastructure for facilities or acquired sites, including access to rail networks; (4) difficulties supporting and transitioning customers; (5) diversion of financial and management resources from existing operations; (6) the purchase price exceeding the value realized; (7) risks of entering new markets or areas outside of our core competencies; (8) potential loss of key",
+          "projection_id": "projection_683d823cc5e2131f37473241",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-02-07T20:20:08+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000008",
+          "exact_text": "Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 10-K x ANNUAL REPORT PURSUANT TO SECTION 13 OR 15(D) OF THE SECURITIES EXCHANGE ACT OF 1934 For the fiscal year ended December 31 , 2024 or o TRANSITION REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the transition period from ____ to _____ Commission file number 001-32924 [MASKED_COMPANY]. (Exact name of registrant as specified in its charter) Iowa 84-1652107 (State or other jurisdiction of incorporation or organization) (I.R.S. Employer Identification No.) 1811 Aksarben Drive , Omaha , NE 68106 ( 402 ) 884-8700 (Address of principal executive offices, including zip code) (Registrant’s telephone number, including area code) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol Name of each exchange on which registered Common Stock, par value $0.001 per share [MASKED_COMPANY] The Nasdaq Stock Market LLC Securities registered pursuant to Section 12(g) of the Act: None Indicate by check mark if the registrant is a well-known seasoned issuer, as defined in Rule 405 of the Securities Act. Yes x No o Indicate by check mark if the registrant is not required to file reports pursuant to Section 13 or Section 15(d) of the Act. Yes o No x Indicate by check mark whether the registrant (1) has filed all reports required to be filed by Section 13 or 15(d) of the Securities Exchange Act of 1934 during the preceding 12 months (or for such shorter period that the registrant was required to file such reports), and (2) has been subject to such filing requirements for the past 90 days. Yes x No o Indicate by check mark whether the registrant has submitted electronically every Interactive Data File required to be submitted pursuant to Rule 405 of Regulation S-T (§232.405 of this chapter) during the preceding 12 months (or for such shorter period that the registrant was required to submit such files). Yes x No o Indicat",
+          "projection_id": "projection_1107279887425e5f0e7b3b45",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-02-07T20:20:08+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000008",
+          "exact_text": "production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil and (2) agribusiness and energy services, which includes grain handling and storage, commodity marketing and merchant trading for company-produced and third-party ethanol, distillers grains, renewable corn oil, natural gas and other commodities. As a result of the Merger, the partnership's operations are included in the ethanol production operating segment. The following changes were made to the company's operating segments: • The revenue and operating results from fuel storage and transportation services previously disclosed within the partnership segment are now included within the ethanol production segment. • Intersegment activities between the partnership and [MASKED_COMPANY] Trade associated with ethanol storage and transportation services previously treated like third-party transactions and eliminated on a consolidated level are now eliminated within the ethanol production segment. Intersegment activities between the remaining terminal and [MASKED_COMPANY] Trade associated with terminal services transacted with the agribusiness and energy services segment will continue to be eliminated on a consolidated level. Corporate activities include selling, general and administrative expenses, consisting primarily of compensation, professional fees and overhead costs not directly related to a specific operating segment, as well as gain on sale of assets. During the normal course of business, the operating segments conduct business with each other. For example, the agribusiness and energy services segment procures grain and natural gas and sells products, including ethanol, distillers grains, Ultra-High Protein and renewable corn oil for the ethanol production segment. These intersegment activities are treated like third-party transactions with origination, marketing and storage fees charged at estimated market values. Consequently, these transactions affe",
+          "projection_id": "projection_e411cedbc6a819ffbfaf04bd",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-02-07T20:20:08+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000008",
+          "exact_text": "025. We buy bulk grain, primarily corn, from area producers, and provide grain drying and storage services to those producers. The grain is used as feedstock for our ethanol plants. Bulk grain commodities are traded on commodity exchanges and inventory values are affected by changes in these markets. To mitigate risks related to market fluctuations from purchase and sale commitments of grain, as well as grain held in inventory, we enter into exchange-traded futures and options contracts that function as economic and designated accounting hedges at times. Seasonality is present within our agribusiness operations. The fall harvest period typically results in higher handling margins and stronger financial results during the fourth quarter of each year. Through [MASKED_COMPANY] Trade, we provide marketing services for our ten ethanol plants for all of the co-products produced at these locations as well as market ethanol for a third party and also provide marketing services to our ethanol plants for natural gas procurement. We market the ethanol we and a third party produce to local, regional, national and international customers. We also purchase ethanol from independent producers for pricing arbitrage. We sell to various markets under sales agreements with integrated energy companies; retailers, traders and resellers in the United States and buyers for export to Brazil, Canada, Philippines, India, Europe and other international markets. Under these agreements, ethanol is priced under both fixed and indexed pricing arrangements. We market distillers grains to local, domestic and international markets through [MASKED_COMPANY] Trade. The bulk of our demand is delivered to geographic regions that do not have significant local corn, distillers grains or high protein ingredients production. We sell to international markets indirectly through exporters. Access to diversified markets allows us to sell product to customers offering the highest net price. Our renewable corn oil is sold",
+          "projection_id": "projection_94fb829ff87c7df46a8c248f",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-02-07T20:20:08+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000008",
+          "exact_text": "emand for the industry, demand for valuable co-products we produce, and the supply 37 Table of Contents and pricing of renewable feedstocks needed to operate our biorefineries. Comparability The following summarizes various events that affect the comparability of our operating results for the past three years: • September 2024 Sale of terminal located in Birmingham, Alabama • September 2023 Sale of ethanol plant located in Atkinson, Nebraska • May 2022 Received a $27.7 million grant from the USDA as part of the Biofuel Producer Program. An additional $3.4 million was received in July 2023. A discussion regarding our financial condition and results of operations for the year ended December 31, 2023, compared to the year ended December 31, 2022, can be found under Item 7 in our Annual Report on Form 10-K for the fiscal year ended December 31, 2023, filed with the SEC on February 9, 2024. Segment Results We report the financial and operating performance for the following two operating segments: (1) ethanol production, which includes the production, storage, and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil and (2) agribusiness and energy services, which includes grain handling and storage, commodity marketing and merchant trading for company-produced and third-party ethanol, distillers grains, renewable corn oil, natural gas and other commodities. As a result of the Merger, the partnership's operations are included in the ethanol production operating segment. The following changes were made to the company's operating segments: • The revenue and operating results from fuel storage and transportation services previously disclosed within the partnership segment are now included within the ethanol production segment. • Intersegment activities between the partnership and [MASKED_COMPANY] Trade associated with ethanol storage and transportation services previously treated like third-party tran",
+          "projection_id": "projection_c20cdef6eb43a8097bee9064",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-02-07T20:20:08+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000008",
+          "exact_text": "ernal customers $ 2,063,382 $ 2,819,986 $ 3,074,195 Intersegment revenues 3,707 4,555 4,445 Total segment revenues 2,067,089 2,824,541 3,078,640 Agribusiness and energy services Revenues from external customers 395,414 475,757 588,654 Intersegment revenues 25,693 25,146 26,961 Total segment revenues 421,107 500,903 615,615 Revenues including intersegment activity 2,488,196 3,325,444 3,694,255 Intersegment eliminations (29,400) (29,701) (31,406) $ 2,458,796 $ 3,295,743 $ 3,662,849 Year Ended December 31, 2024 2023 2022 Cost of goods sold Ethanol production (1)(2) $ 1,983,460 $ 2,705,917 $ 3,018,625 Agribusiness and energy services 374,286 454,776 562,950 Intersegment eliminations (29,400) (29,701) (31,406) $ 2,328,346 $ 3,130,992 $ 3,550,169 Year Ended December 31, 2024 2023 2022 Gross margin Ethanol production (1)(2) $ 83,629 $ 118,624 $ 60,015 Agribusiness and energy services 46,821 46,127 52,665 $ 130,450 $ 164,751 $ 112,680 Year Ended December 31, 2024 2023 2022 Depreciation and amortization Ethanol production $ 82,784 $ 92,712 $ 85,638 Agribusiness and energy services 2,185 2,360 3,466 Corporate activities (3) 5,618 3,172 3,594 $ 90,587 $ 98,244 $ 92,698 39 Table of Contents Year Ended December 31, 2024 2023 2022 Operating income (loss) Ethanol production (2) $ (40,758) $ (19,958) $ (66,485) Agribusiness and energy services 28,156 28,100 36,415 Corporate activities (4) (34,857) (69,720) (68,878) $ (47,459) $ (61,578) $ (98,948) (1) Costs historically reported as operations and maintenance expenses in the consolidated statements of operations are now being reported within cost of goods sold, resulting in increased cost of goods sold and decreased gross margin within the ethanol production segment. (2) Ethanol production includes an inventory lower of cost or net realizable value adjustment of $2.1 million, $2.6 million, and $12.3 million for the years-ended",
+          "projection_id": "projection_3eca53710db08a542a074a4e",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-02-07T20:20:08+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000008",
+          "exact_text": "production segment. • Intersegment activities between the partnership and [MASKED_COMPANY] Trade associated with ethanol storage and transportation services previously treated like third-party transactions and eliminated on a consolidated level are now eliminated within the ethanol production segment. Intersegment activities between the remaining terminal and [MASKED_COMPANY] Trade associated with terminal services transacted with the agribusiness and energy services segment will continue to be eliminated on a consolidated level. Corporate activities include gain on sale of assets and selling, general and administrative expenses, consisting primarily of compensation, professional fees and overhead costs not directly related to a specific operating segment. During the normal course of business, our operating segments do business with each other. For example, our agribusiness and energy services segment procures grain and natural gas and sells products, including ethanol, distillers grains, Ultra-High Protein, and renewable corn oil of our ethanol production segment. These intersegment activities are treated like third-party transactions with origination, marketing and storage fees charged at estimated market values. Consequently, these transactions affect segment performance; however, they do not impact our consolidated results since the revenues and corresponding costs are eliminated. When we evaluate segment performance, we review the following segment information as well as earnings before interest expense, income taxes, depreciation and amortization, or EBITDA, and adjusted EBITDA. 38 Table of Contents The selected operating segment financial information are as follows (in thousands): Year Ended December 31, 2024 2023 2022 Revenues Ethanol production Revenues from external customers $ 2,063,382 $ 2,819,986 $ 3,074,195 Intersegment revenues 3,707 4,555 4,445 Total segment revenues 2,067,089 2,824,541 3,078,640 Agribusiness and energy services &#1",
+          "projection_id": "projection_01deb59d54d5a7d0642e46fd",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-05-08T20:34:28+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000089",
+          "exact_text": "s, import and export restrictions and outright embargos. While the current administration’s efforts to counter trade barriers in certain countries may ultimately benefit the ethanol industry (such as Brazil, where U.S. ethanol has been subject to tariffs since 2020), the risk of reciprocal tariffs by other countries, including Canada and Mexico, may impede exported volumes. We employ maintenance and operations personnel at each of our facilities, which are regulated by the Occupational Safety and Health Administration. 37 Table of Contents Comparability There are various events that could affect comparability of our operating results, including fluctuations in our production rates in 2025 compared to 2024, along with the disposition of our Birmingham, Alabama terminal in September of 2024, the idling of our Fairmont, Minnesota plant in January of 2025 and our corporate restructuring and cost saving initiatives in early 2025. Segment Results We report the financial and operating performance for the following two operating segments: (1) ethanol production, which includes the production, storage, and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil and (2) agribusiness and energy services, which includes grain handling and storage, commodity marketing and merchant trading for company-produced and third-party ethanol, distillers grains, renewable corn oil, natural gas and other commodities. Corporate activities include selling, general and administrative expenses, consisting primarily of compensation, professional fees and overhead costs not directly related to a specific operating segment. During the normal course of business, our operating segments do business with each other. For example, our agribusiness and energy services segment procures grain and natural gas and sells products, including ethanol, distillers grains, Ultra-High Protein, and renewable corn oil of our ethanol production segment. These intersegment activit",
+          "projection_id": "projection_3e669c5732c7c9a0e9b0584f",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-05-08T20:34:28+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000089",
+          "exact_text": "egment procures grain and natural gas and sells products, including ethanol, distillers grains, Ultra-High Protein, and renewable corn oil of our ethanol production segment. These intersegment activities are treated like third-party transactions with origination, marketing and storage fees charged at estimated market values. Consequently, these transactions affect segment performance; however, they do not impact our consolidated results since the revenues and corresponding costs are eliminated. When we evaluate segment performance, we review the following segment information as well as earnings before interest expense, income taxes, depreciation and amortization, or EBITDA, and adjusted EBITDA. The selected operating segment financial information is as follows (in thousands): Three Months Ended March 31, % Variance 2025 2024 Revenues Ethanol production Revenues from external customers $ 497,458 $ 504,446 (1.4)% Intersegment revenues 314 1,213 (74.1) Total segment revenues 497,772 505,659 (1.6) Agribusiness and energy services Revenues from external customers 104,057 92,768 12.2 Intersegment revenues 5,772 6,228 (7.3) Total segment revenues 109,829 98,996 10.9 Revenues including intersegment activity 607,601 604,655 0.5 Intersegment eliminations (6,086) (7,441) (18.2) $ 601,515 $ 597,214 0.7% Three Months Ended March 31, % Variance 2025 2024 Cost of goods sold Ethanol production (1) $ 503,464 $ 508,302 (1.0)% Agribusiness and energy services 101,098 87,986 14.9 Intersegment eliminations (6,086) (7,441) (18.2) $ 598,476 $ 588,847 1.6% 38 Table of Contents Three Months Ended March 31, % Variance 2025 2024 Gross margin Ethanol production (1) $ (5,692) $ (2,643) 115.4% Agribusiness and energy services 8,731 11,010 (20.7) $ 3,039 $ 8,367 (63.7)% Three Months Ended March 31, % Variance 2025 2024 Depreciation and amortiz",
+          "projection_id": "projection_334f61f29c35b5a51b3700a5",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-05-08T20:34:28+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000089",
+          "exact_text": "tions in future operating results due to a number of economic conditions and other factors, including: the status, expected timing, and expected outcome of our Board of Directors' ongoing review of strategic alternatives; the failure to realize the anticipated results from the new products being developed; the failure to realize the anticipated costs savings or other benefits of the Merger; local, regional and national economic conditions and the impact they may have on the company and its customers; disruption caused by health epidemics; conditions in the ethanol and biofuels industry, including a sustained decrease in the level of supply or demand for ethanol and biofuels or a sustained decrease in the price of ethanol or biofuels; competition in the ethanol industry and other industries in which we operate; commodity market risks, including those that may result from weather conditions, changes in government policies, and global political or economic issues; the financial condition of the company’s customers and counterparties; any non-performance by customers and counterparties of their contractual obligations; changes in customer, employee or supplier relationships resulting from the Merger; changes in safety, health, environmental and other governmental policy and regulation, including changes to tax laws, tariffs, renewable fuel programs, and low carbon programs; risks related to acquisition and disposition activities and achieving anticipated results; risks associated with merchant trading; risks related to our equity method investees; the results of any reviews, investigations or other proceedings by government authorities; the performance of the company; and other factors detailed in reports filed with the SEC. We believe our expectations regarding future events are based on reasonable assumptions; however, these assumptions may not be accurate or account for all risks and uncertainties. Consequently, forward-looking statements are not guaranteed. Ac",
+          "projection_id": "projection_d577be7d080627fa1c89be86",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-02-07T20:20:08+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000008",
+          "exact_text": "and other factors, including: the status, expected timing, and expected outcome of our Board of Directors' ongoing review of strategic alternatives; the failure to realize the anticipated results from the new products being developed; the failure to realize the anticipated costs savings or other benefits of the Merger; local, regional and national economic conditions and the impact they may have on the company and its customers; disruption caused by health epidemics; conditions in the ethanol and biofuels industry, including a sustained decrease in the level of supply or demand for ethanol and biofuels or a sustained decrease in the price of ethanol or biofuels; competition in the ethanol industry and other industries in which we operate; commodity market risks, including those that may result from weather conditions; the financial condition of the company’s customers; any non-performance by customers of their contractual obligations; changes in customer, employee or supplier relationships resulting from the merger; changes in safety, health, environmental and other governmental policy and regulation, including changes to tax laws; risks related to acquisition and disposition activities and achieving anticipated results; risks associated with merchant trading; risks related to our equity method investees; the results of any reviews, investigations or other proceedings by government authorities; the performance of the company; and other factors detailed in reports filed with the SEC. We believe our expectations regarding future events are based on reasonable assumptions; however, these assumptions may not be accurate or account for all risks and uncertainties. Consequently, forward-looking statements are not guaranteed. Actual results may vary materially from those expressed or implied in our forward-looking statements. In addition, we are not obligated and do not intend to update our forward-looking statements as a result of new information unless it is requir",
+          "projection_id": "projection_381a2e850767d7425263a73f",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-02-07T20:20:08+00:00",
+          "document_id": "sec:[MASKED_COMPANY]:000130940225000008",
+          "exact_text": "ideration expected to be received in exchange for transferring goods or providing services. Sales, value add, and other taxes the company collects concurrent with revenue-producing activities are excluded from revenue. Revenue by Source The following tables disaggregate revenue by major source (in thousands): Twelve Months Ended December 31, 2024 Ethanol Production Agribusiness & Energy Services Eliminations Total Revenues Revenues from contracts with customers under ASC 606 Ethanol $ — $ — $ — $ — Distillers grains 88,660 10,015 — 98,675 Renewable corn oil — — — — Other 55,613 8,685 — 64,298 Intersegment revenues 3,707 287 ( 3,994 ) — Total revenues from contracts with customers 147,980 18,987 ( 3,994 ) 162,973 Revenues from contracts accounted for as derivatives under ASC 815 (1) Ethanol 1,522,215 329,768 — 1,851,983 Distillers grains 252,694 28,630 — 281,324 Renewable corn oil 136,671 3,346 — 140,017 Other 7,529 14,970 — 22,499 Intersegment revenues — 25,406 ( 25,406 ) — Total revenues from contracts accounted for as derivatives 1,919,109 402,120 ( 25,406 ) 2,295,823 Total Revenues $ 2,067,089 $ 421,107 $ ( 29,400 ) $ 2,458,796 Twelve Months Ended December 31, 2023 Ethanol Production Agribusiness & Energy Services Eliminations Total Revenues Revenues from contracts with customers under ASC 606 Ethanol $ — $ — $ — $ — Distillers grains 85,474 — — 85,474 Renewable corn oil — — — — Other 35,222 &",
+          "projection_id": "projection_8d246ab16605e5fc3861b30e",
+          "request_id": "orientation.v1.operating_report",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "exact_text": "{\"accession_number\":\"0001309402-25-000089\",\"[MASKED_COMPANY]\",\"facts\":[{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"end\":\"2025-05-05\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"start\":null,\"tag\":\"EntityCommonStockSharesOutstanding\",\"taxonomy\":\"dei\",\"unit\":\"shares\",\"value\":65399452},{\"description\":\"Carrying value as of the balance sheet date of liabilities incurred (and for which invoices have typically been received) and payable to vendors for goods and services received that are used in an entity's business. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).\",\"end\":\"2024-12-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Accounts Payable, Current\",\"start\":null,\"tag\":\"AccountsPayableCurrent\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":154817000},{\"description\":\"Carrying value as of the balance sheet date of liabilities incurred (and for which invoices have typically been received) and payable to vendors for goods and services received that are used in an entity's business. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Accounts Payable, Current\",\"start\":null,\"tag\":\"AccountsPayableCurrent\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":102305000},{\"description\":\"Fair value portion of liabilities incurred for goods and services received that",
+          "projection_id": "projection_a864a5b4d2c9074c7d3dc87a",
+          "request_id": "orientation.v1.financial_facts",
+          "truncated": false
+        },
+        {
+          "available_at": "2025-05-30T00:00:00+00:00",
+          "document_id": "massive:[MASKED_COMPANY]:market_data:044bcfc658f55e07be11a2c8",
+          "exact_text": "{\"adjusted_close\":3.62,\"as_of_date\":\"2025-04-15\",\"close\":3.62,\"high\":3.97,\"low\":3.575,\"open\":3.79, \"volume\":2929661},{\"adjusted_close\":3.48,\"as_of_date\":\"2025-04-16\",\"close\":3.48,\"high\":3.67,\"low\":3.41,\"open\":3.58, \"volume\":2203717},{\"adjusted_close\":3.4,\"as_of_date\":\"2025-04-17\",\"close\":3.4,\"high\":3.625,\"low\":3.335,\"open\":3.48, \"volume\":2107538},{\"adjusted_close\":3.3,\"as_of_date\":\"2025-04-21\",\"close\":3.3,\"high\":3.35,\"low\":3.14,\"open\":3.33, \"volume\":1956793},{\"adjusted_close\":3.505,\"as_of_date\":\"2025-04-22\",\"close\":3.505,\"high\":3.62,\"low\":3.34,\"open\":3.34, \"volume\":1772115},{\"adjusted_close\":3.41,\"as_of_date\":\"2025-04-23\",\"close\":3.41,\"high\":3.67,\"low\":3.325,\"open\":3.63, \"volume\":1446674},{\"adjusted_close\":3.58,\"as_of_date\":\"2025-04-24\",\"close\":3.58,\"high\":3.6382,\"low\":3.35,\"open\":3.4, \"volume\":2647458},{\"adjusted_close\":3.58,\"as_of_date\":\"2025-04-25\",\"close\":3.58,\"high\":3.64,\"low\":3.4349,\"open\":3.58, \"volume\":906871},{\"adjusted_close\":3.7,\"as_of_date\":\"2025-04-28\",\"close\":3.7,\"high\":3.845,\"low\":3.6,\"open\":3.6, \"volume\":1431508}",
+          "projection_id": "projection_e4277db0e0865b5916fc40e6",
+          "request_id": "orientation.v1.market_backbone",
+          "truncated": false
+        }
+      ],
+      "source_index": [
+        {
+          "available_projection_count": 22,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "which could have an adverse impact on our business and financial statements. Such disruption has in the past a",
+            "d when a physical position is held contemporaneously within a given market location. Failure to comply with th",
+            "e are unable to meet customer demand or contract delivery requirements due to stalled operations caused by bus",
+            "e increases or decreases, as applicable, the carrying value of the investment. By operating a business through",
+            "$ 2,458,796 $ 3,295,743 $ 3,662,849 Refer to Note 3 &#8211; Revenue , for further disaggregation of revenue by",
+            "ts recorded within selling, general and administrative expenses for the three months ended March 31, 2025 as a",
+            "nagement resources from existing operations; (6) the purchase price exceeding the value realized; (7) risks of",
+            "(5,692) $ (2,643) 115.4% Agribusiness and energy services 8,731 11,010 (20.7) $ 3,039 $ 8,367 (63.7)% Three Mo"
+          ],
+          "omitted_projection_count": 7,
+          "projection_context_truncated": true,
+          "projection_ids": [
+            "projection_01fe85919029e3da1c7a0940",
+            "projection_912baac25f4dbe6b588b664a",
+            "projection_230c2716c36c73afad15f81b",
+            "projection_683d823cc5e2131f37473241",
+            "projection_1107279887425e5f0e7b3b45",
+            "projection_e411cedbc6a819ffbfaf04bd",
+            "projection_94fb829ff87c7df46a8c248f",
+            "projection_c20cdef6eb43a8097bee9064",
+            "projection_3eca53710db08a542a074a4e",
+            "projection_01deb59d54d5a7d0642e46fd",
+            "projection_3e669c5732c7c9a0e9b0584f",
+            "projection_334f61f29c35b5a51b3700a5",
+            "projection_d577be7d080627fa1c89be86",
+            "projection_381a2e850767d7425263a73f",
+            "projection_8d246ab16605e5fc3861b30e"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.operating_report",
+          "source_context_truncated": true,
+          "source_types": [
+            "filing"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 15
+        },
+        {
+          "available_projection_count": 0,
+          "effective_context_truncated": false,
+          "omitted_context_markers": [],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [],
+          "projection_status": "unavailable",
+          "request_id": "orientation.v1.scoped_news",
+          "source_context_truncated": false,
+          "source_types": [
+            "news"
+          ],
+          "status": "unresolved",
+          "visible_projection_count": 0
+        },
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "rrent\",\"start\":null,\"tag\":\"AccountsPayableCurrent\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":102305000},{\"desc",
+            "alueDisclosure\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":97100000},{\"description\":\"Amount, after allowance fo",
+            "igations, or accumulate over time and for which invoices have not yet been received or will not be rendered. E",
+            "change in equity from transactions and other events and circumstances from non-owner sources, net of tax effec",
+            "hat the entity will be required to sell before recovery of the amortized cost basis, as well as changes in the",
+            "version feature and certain tax consequences of equity instruments awarded to employees. Use this element for "
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_a864a5b4d2c9074c7d3dc87a"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.financial_facts",
+          "source_context_truncated": true,
+          "source_types": [
+            "sec_company_facts"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        },
+        {
+          "available_projection_count": 1,
+          "effective_context_truncated": true,
+          "omitted_context_markers": [
+            "{\"adjusted_close\":3.71,\"as_of_date\":\"2025-04-29\",\"close\":3.71,\"high\":3.74,\"low\":3.565,\"open\":3.68,\"retrieved_a",
+            "{\"adjusted_close\":4.65,\"as_of_date\":\"2025-05-12\",\"close\":4.65,\"high\":4.715,\"low\":4.36,\"open\":4.48,\"retrieved_a",
+            "{\"adjusted_close\":4.21,\"as_of_date\":\"2025-05-23\",\"close\":4.21,\"high\":4.37,\"low\":4.17,\"open\":4.28,\"retrieved_at"
+          ],
+          "omitted_projection_count": 0,
+          "projection_context_truncated": false,
+          "projection_ids": [
+            "projection_e4277db0e0865b5916fc40e6"
+          ],
+          "projection_status": "partial_context_budget",
+          "request_id": "orientation.v1.market_backbone",
+          "source_context_truncated": true,
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved",
+          "visible_projection_count": 1
+        }
+      ]
+    },
+    "cited_signal_evidence": [
+      {
+        "evidence": {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+          "timestamp": "2025-05-09T00:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "signal_ref": "liquidity_runway_months:v3"
+      },
+      {
+        "evidence": {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "exact_span": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+          "timestamp": "2025-05-09T00:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 1,
+        "signal_ref": "liquidity_runway_months:v3"
+      }
+    ],
+    "computed_metrics": [
+      {
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "labels": {
+          "trend": "downtrend"
+        },
+        "literal_refs": [
+          {
+            "adjusted_close": 12.93,
+            "as_of_date": "2024-09-23"
+          },
+          {
+            "adjusted_close": 4.14,
+            "as_of_date": "2025-05-29"
+          }
+        ],
+        "metric": "price_shape",
+        "params": {
+          "window_days": 180
+        },
+        "schema_version": "computed-metric-card-v1",
+        "values": {
+          "daily_volatility_pct": 4.6741,
+          "first_close": 12.93,
+          "high": 13.55,
+          "last_close": 4.14,
+          "low": 3.3,
+          "max_drawdown_pct": -75.6458,
+          "return_pct": -67.9814,
+          "window_trading_days": 171
+        }
+      }
+    ],
+    "context_contract": {
+      "assembly_blocks": [
+        {
+          "block_type": "basic_info_cards",
+          "provenance": "projection_id"
+        },
+        {
+          "block_type": "computed_anchor",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "computed_metrics",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "document_channel",
+          "provenance": "runtime_pit_disclosure"
+        },
+        {
+          "block_type": "signal_results",
+          "provenance": "signal_ref"
+        },
+        {
+          "block_type": "cited_signal_evidence",
+          "provenance": "signal_evidence_ref"
+        },
+        {
+          "block_type": "state_evolution",
+          "provenance": "per_round_delta"
+        },
+        {
+          "block_type": "research_state",
+          "provenance": "runtime_validated_state"
+        },
+        {
+          "block_type": "analysis_prompt",
+          "provenance": "plan"
+        }
+      ],
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "complete_trajectory_retained_locally": true,
+      "kind": "typed_append_only_assembly",
+      "numeric_decision_inputs_permitted_only_in": [
+        "prediction_baseline",
+        "computed_metrics"
+      ],
+      "presentation_target_exceeded": true,
+      "target_utf8_bytes": 24000
+    },
+    "document_channel": [],
+    "final_research_state": {
+      "contradictions": [
+        "The reported interim table shows negative ethanol-production gross margin and lower consolidated gross margin than the comparative period, providing counter-evidence to an already-established operating turnaround."
+      ],
+      "current_beliefs": [
+        "The operating segments include ethanol and co-products, including Ultra-High Protein, plus grain handling, storage, marketing and merchant trading. Product inclusion alone does not establish premium-product commercial traction.",
+        "The interim report identifies Fairmont plant idling and corporate restructuring and cost-saving initiatives as events affecting operating comparability; the visible passage does not quantify their economic benefits.",
+        "The interim risk disclosure refers to a Board review of strategic alternatives, identifying its status, expected timing and outcome as uncertainties. This establishes disclosure of a review, without establishing an executable transaction.",
+        "The historical burn-based runway supplies financing context; its positive numeric sign does not establish bullish stock direction, future funding sufficiency or freedom from dilution."
+      ],
+      "decision": "finalize",
+      "hypotheses": [
+        "Inference to test: cost reductions and higher-value co-product commercialization could create a credible cash-earnings inflection within the six-calendar-month horizon, supporting the doubling outcome despite the weak operating base. This fails if contemporaneous unit economics and implementation milestones cannot support a material near-term improvement.",
+        "Inference to test: an executable strategic-alternatives milestone within the forecast horizon could reveal equity value beyond the market's distressed expectations. This fails if disclosures available at prediction time show no credible timetable, realizable equity proceeds or financing path; a review reference alone is insufficient."
+      ],
+      "next_information_needs": [
+        "What savings targets, implementation dates, cash restructuring costs and production effects of the Fairmont idling and corporate restructuring had been disclosed by prediction time, and what realized savings or operating evidence already supported those targets?",
+        "What Ultra-High Protein sales volumes, realized premiums, incremental production costs, customer qualification progress and binding offtake commitments had been disclosed by prediction time, including any then-published milestones capable of changing earnings expectations within the forecast horizon?",
+        "By prediction time, what specific strategic alternatives, transaction terms, binding commitments, execution obstacles and expected decision dates had been disclosed, and what evidence could support realizable value for common shareholders within the forecast horizon?",
+        "What unrestricted cash, operating cash burn, committed capital spending, debt maturities, covenant headroom and potential equity issuance obligations were disclosed by prediction time, and did those terms allow the proposed turnaround to reach its milestones without material dilution?",
+        "What contemporaneous issuer disclosures quantified sensitivity of cash earnings to ethanol selling prices, corn and energy costs, hedging and low-carbon incentives, and what already-published guidance or contracted economics could support a margin recovery during the forecast horizon?"
+      ],
+      "open_questions": [
+        "Whether any demonstrated operating improvement or strategic milestone would be large and credible enough to change market expectations sufficiently remains uncertain; depressed price behavior alone cannot establish mispricing."
+      ],
+      "resolved_questions": [],
+      "supporting_evidence": [
+        {
+          "claim": "The operating segments include ethanol and co-products, including Ultra-High Protein, plus grain handling, storage, marketing and merchant trading. Product inclusion alone does not establish premium-product commercial traction.",
+          "exact_text": "The company reports the financial and operating performance for the following two operating segments: (1) ethanol production, which includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil and (2) agribusiness and energy services, which includes grain handling and storage, commodity marketing and merchant trading for company-produced and third-party ethanol, distillers grains, Ultra-High Protein, renewable corn oil, natural gas and other commodities.",
+          "kind": "basic_info",
+          "projection_id": "projection_230c2716c36c73afad15f81b"
+        },
+        {
+          "claim": "The interim report identifies Fairmont plant idling and corporate restructuring and cost-saving initiatives as events affecting operating comparability; the visible passage does not quantify their economic benefits.",
+          "exact_text": "There are various events that could affect comparability of our operating results, including fluctuations in our production rates in 2025 compared to 2024, along with the disposition of our Birmingham, Alabama terminal in September of 2024, the idling of our Fairmont, Minnesota plant in January of 2025 and our corporate restructuring and cost saving initiatives in early 2025.",
+          "kind": "basic_info",
+          "projection_id": "projection_3e669c5732c7c9a0e9b0584f"
+        },
+        {
+          "claim": "The interim risk disclosure refers to a Board review of strategic alternatives, identifying its status, expected timing and outcome as uncertainties. This establishes disclosure of a review, without establishing an executable transaction.",
+          "exact_text": "the status, expected timing, and expected outcome of our Board of Directors' ongoing review of strategic alternatives;",
+          "kind": "basic_info",
+          "projection_id": "projection_d577be7d080627fa1c89be86"
+        },
+        {
+          "claim": "The reported interim table shows negative ethanol-production gross margin and lower consolidated gross margin than the comparative period, providing counter-evidence to an already-established operating turnaround.",
+          "exact_text": "Three Months Ended March 31, 2025 2024 Gross margin Ethanol production (1) $ ( 5,692 ) $ ( 2,643 ) Agribusiness and energy services 8,731 11,010 $ 3,039 $ 8,367",
+          "kind": "basic_info",
+          "projection_id": "projection_01fe85919029e3da1c7a0940"
+        },
+        {
+          "claim": "liquidity_runway_months=5.37472",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "liquidity_runway_months:v3"
+        },
+        {
+          "claim": "liquidity_runway_months=5.37472",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "liquidity_runway_months:v3"
+        }
+      ]
+    },
+    "prediction_baseline": {
+      "doubling_threshold": 8.559999999999999,
+      "mean_adjusted_close": 4.279999999999999,
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "recent_close": 4.14,
+      "recent_close_date": "2025-05-29",
+      "status": "available",
+      "trading_dates": [
+        "2025-05-22",
+        "2025-05-23",
+        "2025-05-27",
+        "2025-05-28",
+        "2025-05-29"
+      ]
+    },
+    "prediction_time": "2025-05-30T00:00:00+00:00",
+    "runtime_termination": {
+      "phase": "prediction_ready",
+      "stop_reason": "finalized",
+      "termination_trigger": "max_signal_rounds"
+    },
+    "signal_rounds": [
+      {
+        "batch": {
+          "results": [
+            {
+              "execution": {
+                "status": "success"
+              },
+              "input_evidence_available_at": [
+                "2025-05-09T00:00:00+00:00",
+                "2025-05-09T00:00:00+00:00"
+              ],
+              "interpretation": {
+                "measurement_context": {
+                  "categorical_value_is_not_stock_direction": true,
+                  "deferred_observation_count": 0,
+                  "numeric_measurement": {
+                    "categorical_state": "positive",
+                    "formula": "cash / (absolute negative operating cash flow / reported months)",
+                    "numeric_sign": "positive",
+                    "period": {
+                      "end": "2025-03-31",
+                      "start": "2025-01-01"
+                    },
+                    "unit": "months",
+                    "value": 5.374720662778656
+                  },
+                  "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors.",
+                  "source_observations": [
+                    {
+                      "end": "2025-03-31",
+                      "evidence_group": "supporting",
+                      "evidence_index": 0,
+                      "start": "2025-01-01",
+                      "tag": "NetCashProvidedByUsedInOperatingActivities",
+                      "unit": "USD",
+                      "value": -55041000
+                    },
+                    {
+                      "end": "2025-03-31",
+                      "evidence_group": "supporting",
+                      "evidence_index": 1,
+                      "tag": "CashAndCashEquivalentsAtCarryingValue",
+                      "unit": "USD",
+                      "value": 98610000
+                    }
+                  ]
+                },
+                "summary": "liquidity_runway_months=5.37472"
+              },
+              "signal_ref": "liquidity_runway_months:v3",
+              "state": {
+                "confidence": 1.0,
+                "value": "positive"
+              },
+              "status": {
+                "coverage": "sufficient"
+              }
+            }
+          ],
+          "signal_calls": 1
+        },
+        "selected_signals": [
+          "liquidity_runway_months:v3"
+        ]
+      }
+    ],
+    "state_evolution": [
+      {
+        "delta": {
+          "contradictions": {
+            "added": [],
+            "removed": []
+          },
+          "current_beliefs": {
+            "added": [
+              "The historical burn-based runway supplies financing context; its positive numeric sign does not establish bullish stock direction, future funding sufficiency or freedom from dilution."
+            ],
+            "removed": []
+          },
+          "decision": {
+            "from": "continue",
+            "to": "finalize"
+          },
+          "hypotheses": {
+            "added": [],
+            "removed": []
+          },
+          "next_information_needs": {
+            "added": [],
+            "removed": []
+          },
+          "open_questions": {
+            "added": [],
+            "removed": []
+          },
+          "resolved_questions": {
+            "added": [],
+            "removed": []
+          },
+          "supporting_evidence": {
+            "added": [
+              {
+                "claim": "liquidity_runway_months=5.37472",
+                "key": "signal:liquidity_runway_months:v3:supporting:0"
+              },
+              {
+                "claim": "liquidity_runway_months=5.37472",
+                "key": "signal:liquidity_runway_months:v3:supporting:1"
+              }
+            ],
+            "removed_keys": []
+          }
+        },
+        "need_dispositions": {
+          "items": [],
+          "prior_state_hash": "687ae13a4e3385e7442a38de00705e8b9f10992e12faf0babc2ddd0eb8dccde1"
+        },
+        "round": 1
+      }
+    ]
+  },
+  "labels": 0,
+  "new_Signal_calculations": 0,
+  "prediction": {
+    "candidate_judgment": "unlikely",
+    "confidence": {
+      "level": "medium"
+    },
+    "is_surge": false,
+    "key_reasons": [
+      "At the exact forecast boundary of 2025-05-30T00:00:00+00:00, the supplied five-trading-day mean adjusted-close baseline is 4.28 and its doubling threshold is 8.56. The outcome requires a qualifying five-session mean at or above that threshold during the following six calendar months.",
+      "The interim filing available May 8 reports a negative ethanol-production gross margin and lower consolidated gross margin for the three months ended March 31, 2025 versus the corresponding 2024 period. This deterioration in the core business is substantive counter-evidence to a near-term earnings recovery capable of supporting the defined share-price repricing.",
+      "Fairmont idling in January 2025, early-2025 restructuring and cost-saving initiatives, and the disclosed strategic-alternatives review provide possible turnaround catalysts. I weigh them positively, but the visible source passages establish actions and a review rather than demonstrated operating acceleration or a transaction milestone. Against the deteriorating operating base, they do not presently make this a credible six-month doubling candidate.",
+      "The computed price card reports a 67.9814% decline from adjusted close 12.93 on September 23, 2024 to 4.14 on May 29, 2025 across 171 trading sessions. This supplies contrary market evidence; the decline alone does not establish undervaluation or an impending rebound.",
+      "The successfully measured liquidity runway uses cash at March 31, 2025 and operating cash outflow for January 1 through March 31, 2025. Its positive categorical state denotes a positive months measurement, not a bullish stock forecast or assured financing through the forecast horizon. Historical cash consumption adds execution risk to the turnaround case."
+    ],
+    "magnitude": null,
+    "session_id": "anonymous-session-id",
+    "uncertainties": [
+      "The strategic review could produce a material equity-value catalyst, and cost savings could improve economics faster than the visible disclosures demonstrate; neither outcome is ruled out.",
+      "The packet does not establish realized restructuring savings, premium-product sales economics, binding new offtake commitments, or the timing and terms of strategic alternatives. Missing quantified projections are distinct from the available price baseline.",
+      "The historical burn-based runway is not a forward liquidity forecast. Unrestricted cash, working-capital changes, committed capital spending, debt maturities, covenant headroom and potential dilution remain unresolved.",
+      "Commodity margins, trade policy and low-carbon incentives could materially change operating expectations. Partial source context and unavailable news coverage limit assessment.",
+      "Collection stopped at the maximum signal rounds after finalization; unresolved research needs remain unresolved, and finalization does not establish that they were answered."
+    ]
+  },
+  "prediction_time": "2025-05-30T00:00:00+00:00"
+}

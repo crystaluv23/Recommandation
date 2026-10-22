@@ -1,0 +1,18 @@
+{
+  "cache_reads": [
+    "b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc",
+    "b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88"
+  ],
+  "labels": 0,
+  "limitation": "Throwaway-copy reconstruction only, not OS interruption, business continuation or new model behavior.",
+  "new_external_API": 0,
+  "new_handoffs": 0,
+  "prior_inclusive_usage": {
+    "cost": 0.0,
+    "llm_calls": 4,
+    "tokens": 235851
+  },
+  "state": "read_only_cache_reconstruction_verified",
+  "unchanged_stage_files": 25,
+  "unique_existing_receipts": 2
+}

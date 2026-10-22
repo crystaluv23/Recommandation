@@ -1,0 +1,124 @@
+{
+  "schema_version": "pre-answer-contract-obligation-mapping-v1",
+  "scope": "Map the completed private maturity control contractual hierarchy before any new consumer answer. Historical strict first-final1 remains 0/1; this mapping does not reopen that terminal control.",
+  "old_strict_result_unchanged": {
+    "denominator": 1,
+    "final_extraction_responses": 1,
+    "full_frozen_f6_accepted": 0,
+    "full_frozen_f6_rejected_or_incomplete": 1,
+    "correct_categorical_value": 1,
+    "correct_primary_ancora_literal": 1,
+    "f5_primary_source_locating_reading_supported": 1,
+    "structured_corrections": 0,
+    "repair_retries": 0,
+    "denominator_preserved": true,
+    "note": "Two source-reading decisions plus one extraction final are three role responses; they are not three extraction finals. No post-review classification repair is performed."
+  },
+  "old_supported_findings": {
+    "selected_event": "Original Corporate Activities we entered sentence identifies issuer action and secured $30m Ancora facility executed May 7 2025, with July 30 principal maturity.",
+    "state": "Positive presence-only finding is correct; July 30 is 61 calendar days after May 30 within the 90-day window.",
+    "material_terms": "Literal final evidence retains 10% borrowing interest, 0.5% unused fee, 5th-of-month payments, 1,504,140 issued warrants at $0.01 and ten-year exercise period; interpretation disclaims drawn-amount inference and net benefit/direction.",
+    "no_demonstrated_false_claims": [
+      "No wrong actor/borrower is demonstrated.",
+      "No wrong principal-maturity date is demonstrated.",
+      "No use of BlackRock July 31 as principal maturity is demonstrated.",
+      "No exhaustive inventory/absence claim is demonstrated.",
+      "No economic surge/benefit claim is demonstrated."
+    ]
+  },
+  "mapping": [
+    {
+      "topic": "Primary complete literal and facility/actor identity",
+      "control_definition_clause": "Cite complete original-source sentences identifying the borrower/facility and principal maturity. Keep material qualifications and funding/obligation context.",
+      "definition_requires": "Complete original sentences establishing eligible issuer/consolidated borrower action, facility and contractual principal maturity; preserved material financing context.",
+      "definition_does_not_require": "A particular exhibit number, a named company in model prose, or reproducing every raw HTML paragraph. First-person we entered in issuer Corporate Activities can establish source-stated issuer action, subject to source identity.",
+      "old_observation": "Complete we entered Ancora paragraph was cited; canonical record/PIT and original borrower were independently corroborated.",
+      "stronger_frozen_obligation": "Old oracle alternatives and clarification required q_company_reference and q_ancora_borrower_index retained as mapped identity/context anchors. Production roles did not read those anchors.",
+      "old_strict_disposition": "Unmet stronger frozen identity-anchor obligation; no retrospective waiver or wrong-actor characterization."
+    },
+    {
+      "topic": "Literal granularity",
+      "control_definition_clause": "Cite complete original-source sentences identifying the borrower/facility and principal maturity.",
+      "definition_requires": "Complete source sentences and faithful provenance/meaning.",
+      "stronger_frozen_obligation": "No justified whole-HTML-paragraph requirement. Predispatch clarification already allowed sentence subspans/combinations with explicit material context.",
+      "old_observation": "Final cited the full original Ancora paragraph anyway; this is not an unmet item.",
+      "old_strict_disposition": "Literal/source match supported, no failure based on paragraph length."
+    },
+    {
+      "topic": "BlackRock dates and costs",
+      "control_definition_clause": "Measure the presence of a completed or binding debt/credit facility of the issuer or an explicitly consolidated subsidiary whose contractual principal maturity is strictly after the as-of calendar date and no later than 90 calendar days afterward. Use the latest disclosed effective amendment for the same facility. Distinguish principal maturity from fee/interest/collateral/optional redemption dates, proposals, uncommitted funding and third-party customer debt.",
+      "definition_requires": "Use latest effective disclosed amendment for a relied-on facility and do not treat fee/collateral/interest/optional-redemption dates as principal maturity.",
+      "definition_does_not_require": "Enumerating all non-selected facilities or discussing BlackRock when selecting only a correctly identified qualifying Ancora facility.",
+      "old_observation": "BlackRock paragraph was visible/read but not selected or interpreted. Silence does not prove confusion.",
+      "stronger_frozen_obligation": "Oracle mandatory_interpretation_context and clarification inherited unconditional BlackRock July 31-trigger-versus-May 15-2026 maturity and associated cost/warrant terms as retained counter-context.",
+      "old_strict_disposition": "Unmet frozen explicit counter-context obligation; source availability is not final interpretation consumption."
+    },
+    {
+      "topic": "Positive existential and incomplete inventory",
+      "control_definition_clause": "At least one explicitly dated qualifying principal maturity exists in that interval; this means only that the condition is present, with no surge, benefit or investment-direction meaning. Use only disclosed source windows; unknown inventory cannot prove absence.",
+      "definition_requires": "At least one supported qualifying event; no absence proof from incomplete sources.",
+      "definition_does_not_require": "A complete inventory for positive, or a generic later-amendment warning in every positive answer. Neutral requires supplied complete inventory, positive does not.",
+      "old_observation": "Final proved one facility; coverage=sufficient can refer to that condition. It did not assert other events absent.",
+      "stronger_frozen_obligation": "Oracle/clarification demanded explicit finite-window/latest-disclosed/unknown-inventory caveats in retained interpretation/context.",
+      "old_strict_disposition": "Unmet frozen caveat duty; no false-absence accusation."
+    },
+    {
+      "topic": "Ancora versus general economic/liquidity context",
+      "control_definition_clause": "Do not infer any net financing benefit or directional surge effect. Warrants, fees and collateral cannot be concealed in interpretation but do not change a correctly identified principal maturity.",
+      "definition_requires": "Do not infer net benefit/surge direction or conceal material warrants/fees/collateral when interpreting the relied-on financing.",
+      "old_observation": "Chosen Ancora security/costs/warrants and no-drawn/no-net-benefit caveats were retained. No quantified liquidity-improvement claim was made.",
+      "stronger_frozen_obligation": "Old oracle/clarification additionally required joint asset-sale/facility liquidity attribution and subsidiary restrictions plus other date-type counter-context despite not making that economic claim.",
+      "old_strict_disposition": "Broader frozen-context completeness unmet; no fabricated financing benefit observed."
+    }
+  ],
+  "why_old_0of1_stays": "The stronger obligations were frozen before dispatch and remain binding for that strict denominator. Distinguishing their origin does not change the old result. New work derives its own clauses before responses and does not carry these extra obligations into an unrelated historical-runway consumer.",
+  "new_consumer_boundary": "The proposed new profile imports only a completed liquidity result as context. It imports neither this private maturity result nor the old maturity oracle/answer, and is not a correction/reentry of the old control.",
+  "nonmandatory_for_new_consumer": [
+    "Named borrower-index citation or discussion of BlackRock/Ancora is not required unless the new consumer actually uses such facts from permitted input.",
+    "No required belief/probability direction, optional numeric-adoption update or specific citation display naming.",
+    "No new requirement is added based on future consumer responses."
+  ],
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_financial_context_consumer_stage.md",
+      "sha256": "d4c1b841c1829e9b233e1fa640801afe3e68c352508d2510e87eab6860abd17f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/inputs.json",
+      "sha256": "a75322d2af9d2abc43d9f4b9479608e6630f38a72d0714bf4e8f37d81750a50f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/initial_state.json",
+      "sha256": "9fdacbae3b14e3cf2cb42de3acabcf20ae584d4a8b18e11414b944f11480cab9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/accepted-selection.json",
+      "sha256": "6dc28a13a4811968dbfcf05954abd8c574a773a331586a865322e9c126ef9ab3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/native-batch.json",
+      "sha256": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/oracle.json",
+      "sha256": "596816095cb1526b1e631ede4fa836bc7d26f7ecbb836fdadd7610b59fe75449"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-definition.json",
+      "sha256": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/oracle.json",
+      "sha256": "182780db4a96a9bfaed3a323027b4d456d56f05b39310248f1abe5af54356429"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/evidence-matching-clarification.json",
+      "sha256": "b4c74fbbb80553b56dc9a23f945b8e0ff2ba1872ac3368bf9c447eec64809aa8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/independent-final-review.json",
+      "sha256": "dd66dfbdfa3c31cbcd284733abe3ce92fdb2a2eaade68d84540aeea357a997c4"
+    }
+  ],
+  "old_files_unchanged": true
+}

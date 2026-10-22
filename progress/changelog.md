@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-23：旧maturity oracle额外义务逐条对定义映射、strict0of1保留；另冻已完成runway-v3单项context消费者，完整bootstrap相等/1856来源106代码绑定。2fresh原生Reflect/Predictor首答0纠错，前者保5exact needs、2引文/无回答归属，actual finalcontext保测量/期间/operand/版本，sink先于truth。235851逻辑预留/256000、含旧2calls共4、新增物理2；外部API/GET/标签/新apply0。独立终审发现Predictor将positive enum误释为数值正号，F9语义失败、完整单案0of1；既有区分提示仍未阻错，精确分类条件未传入。4新控+64关联过，25files副本cache重建同/0交接；首次验证器temp别名错误在native前留档。下一按分类语义家族修复，不重入同案求过；旧9批/路由/私有控制、完成指针与整体MVP边界不改。见financial-context-consumer报告。
+
 - 2026-10-23：共享数据层Part/Item matcher并在各自原始readable视图建坐标，既有raw卡保持，Signal给20条normalized章节/遗漏及原group分页；标题与preview/body共用32k原子预算，元数据无证据权限。251关联/独立24及raw等价/混合预算反例过，网络0。当前financing-v5净影响独立源审多义，模型前停；另冻结私有90日本金到期actual-source控制，3fresh原生角色首final正确提取Ancora本金日期/费用权证及无方向限定，0纠错，117566逻辑预留/31138来源chars，29files重开同/3receipts。冻结完整oracle严审0of1保留：其部分额外主体/其他facility/库存警告义务超出presence定义；此前未逐条对齐是root验收设计遗漏，不伪称模型错或改分母求过。未发布Signal/非Mining/无Reflect消费，外部API/GET0，无旧stage重入或全后继，整体MVP open。
 
 - 2026-10-23：真实qualified1780来源前置暴露Registry非空冻结参数deepcopy失败，以公开序列化隔离修复；原57合格/target rank46、400组坐标目录无损共享并给完整page可用时间导航，首wire逻辑预留88302→32579。独立反例另见32000正文后翻页预览越界，现整页先验证再原子计费，保exact-fit及拒后状态；240关联过/网络0。真实source-only两审查分别判历史cash-v1来源/val形状不适用、当前commercialization-v2混合新旧技术无唯一状态，均在模型前停，未改旧skill或强造正控。当前两长文354332/168859正文缺透明定位，仍open。0生产模型答/资料GET/外部LLMAPI/完整后继；测试脚本误拦内存fixture的86fail+2error及初hash错误单独留档。见actual-bounded-reading-preflight报告，MVP不闭合。

@@ -1,0 +1,570 @@
+{
+  "schema_version": "pre-answer-completed-financial-context-consumer-oracle-v1",
+  "scope": "Fresh clause-derived F7/F8/F9 completed-result consumer subset. No new routing/Signal application, no maturity-control import, no old failure reclassification, no outcome/probability oracle.",
+  "pre_answer_status": "measurement_and_context_intent_supported; formal dispatch still gated on immutable complete-parent-bootstrap equality and native budget/request-ready preflight",
+  "measurement_import_supported": true,
+  "unsupported_or_dangerous_import_rejected": [
+    "Reject importing the whole prior nine-result batch as if all nine passed.",
+    "Reject private maturity control or its answer/oracle as consumer evidence.",
+    "Reject new Signal application, unexecuted portfolio items, new source acquisition/appends or Registry mutation.",
+    "Reject a wrong spec/ref/issuer/source/PIT/literal/measurement match or any bootstrap mismatch.",
+    "Reject importing retrospective financial facts as current unrestricted cash or assured future funding."
+  ],
+  "controlling_spec": {
+    "path": "/Users/l/Project/Recommandation/spec/scripts/run_financial_context_consumer_stage.md",
+    "sha256": "d4c1b841c1829e9b233e1fa640801afe3e68c352508d2510e87eab6860abd17f",
+    "scope_clause": "This fixed profile tests F7→F8→F9 consumption, not new routing or Signal apply."
+  },
+  "required_import_bindings": {
+    "sample": {
+      "company_id": "cik_0001309402",
+      "identity": {
+        "cik": "0001309402",
+        "company_name": "GREEN PLAINS INC.",
+        "identity_aliases": [
+          "GREEN PLAINS INC.",
+          "GPRE",
+          "GREEN PLAINS"
+        ],
+        "ticker": "GPRE"
+      },
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "sample_id": "h01",
+      "source": "gpre"
+    },
+    "plan_id": "plan_manual_v1",
+    "registry_group": {
+      "name": "latest_v12",
+      "version": 12,
+      "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+      "root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals"
+    },
+    "signal_ref": "liquidity_runway_months:v3",
+    "signal_spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/spec.json",
+    "signal_spec_sha256": "19197cadb4729a131cf3c968ccc369ee0c7c0054ca95b719f7ff247f1b75613e",
+    "callable_declared_contract": {
+      "function": "financial.liquidity_runway_months",
+      "type": "deterministic"
+    },
+    "callable_execution_during_consumer_permitted": false,
+    "saved_context_only_intent_exact": {
+      "applicability_hypothesis": "Available matched cash and operating-cash-flow facts may support a runway benchmark; this calculation alone cannot establish unrestricted funding or future milestone affordability.",
+      "context_tags": [
+        "capital_intensive",
+        "cyclical"
+      ],
+      "expected_role": "coverage",
+      "reason_code": "combine_evidence",
+      "selection_reason": "Add a historical burn-based runway estimate to the financing assessment using the latest SEC cash-flow duration and closest preceding same-currency cash balance.",
+      "signal_ref": "liquidity_runway_months:v3",
+      "target_need_indices": [
+        3
+      ]
+    },
+    "completed_result_exact": {
+      "evidence": {
+        "counter": [],
+        "supporting": [
+          {
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "exact_span": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+            "timestamp": "2025-05-09T00:00:00+00:00"
+          },
+          {
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "exact_span": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+            "timestamp": "2025-05-09T00:00:00+00:00"
+          }
+        ]
+      },
+      "execution": {
+        "status": "success"
+      },
+      "interpretation": {
+        "summary": "liquidity_runway_months=5.37472"
+      },
+      "measurement": {
+        "formula": "cash / (absolute negative operating cash flow / reported months)",
+        "period": {
+          "end": "2025-03-31",
+          "start": "2025-01-01"
+        },
+        "unit": "months",
+        "value": 5.374720662778656
+      },
+      "signal_id": "liquidity_runway_months",
+      "state": {
+        "confidence": 1.0,
+        "value": "positive"
+      },
+      "status": {
+        "coverage": "sufficient"
+      },
+      "version": 3
+    },
+    "completed_resolution_exact": {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 6,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 21,
+        "observed_observation_count": 0,
+        "observed_period_span_days": 1825,
+        "query_evaluated": true,
+        "query_matched_document_count": 6,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 6,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": null,
+      "documents": [
+        {
+          "available_at": "2024-02-10T00:00:00+00:00",
+          "content_hash": "a940180e1345eff4cc5540d3ca668447559f1b2757d87915179da56ee8e5dcfc",
+          "document_id": "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4"
+        },
+        {
+          "available_at": "2025-02-08T00:00:00+00:00",
+          "content_hash": "02d135492926ac406154af88476b4235d6461873e97b5b963681adf7b39c696f",
+          "document_id": "secfacts:0001309402:0001309402-25-000008:02d135492926ac40"
+        },
+        {
+          "available_at": "2024-11-01T00:00:00+00:00",
+          "content_hash": "cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+          "document_id": "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877"
+        },
+        {
+          "available_at": "2024-08-07T00:00:00+00:00",
+          "content_hash": "b0c4c525055d12686df4ac82390803116324b197cbaac8d8cee83bce385c37f8",
+          "document_id": "rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b"
+        },
+        {
+          "available_at": "2024-05-04T00:00:00+00:00",
+          "content_hash": "aa05ed7e72b76d7930e5411dbe4c3314c0f0186a7917d0b950bc6f3ada19df12",
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130"
+        },
+        {
+          "available_at": "2025-05-09T00:00:00+00:00",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902"
+        }
+      ],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [
+              "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4",
+              "secfacts:0001309402:0001309402-25-000008:02d135492926ac40",
+              "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877",
+              "rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b",
+              "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+              "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902"
+            ],
+            "phase": "initial",
+            "request_id": "signal:liquidity_runway_months:v3",
+            "source_types": [
+              "financials",
+              "company_facts"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure cash runway in months from the latest negative operating cash flow duration and closest same-currency cash balance.",
+        "lookback_days": 550,
+        "max_documents": 10,
+        "query": "CashAndCashEquivalentsAtCarryingValue CashAndCashEquivalents CashEquivalents NetCashProvidedByUsedInOperatingActivities CashFlowsFromUsedInOperatingActivities liquidity runway operating cash flow cash burn months",
+        "request_id": "signal:liquidity_runway_months:v3",
+        "source_types": [
+          "financials",
+          "company_facts"
+        ]
+      },
+      "status": "resolved"
+    },
+    "completed_document_fingerprints_exact": [
+      "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130:aa05ed7e72b76d7930e5411dbe4c3314c0f0186a7917d0b950bc6f3ada19df12",
+      "rawcap:v1:3930d4bb51f5f6ac4153610fa53b1df0e5e0b61d1fab9c14f0d056a3692c1877:cedad9eff3b39e03901a8fe9d5144035959ab27e99e667990bb6903e70e0f5b4",
+      "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902:eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+      "rawcap:v1:70bc1592b8b8154aac4eba30a25759d7e02aff322bb12ab0aad13b6484b4920b:b0c4c525055d12686df4ac82390803116324b197cbaac8d8cee83bce385c37f8",
+      "secfacts:0001309402:0001309402-24-000023:a940180e1345eff4:a940180e1345eff4cc5540d3ca668447559f1b2757d87915179da56ee8e5dcfc",
+      "secfacts:0001309402:0001309402-25-000008:02d135492926ac40:02d135492926ac406154af88476b4235d6461873e97b5b963681adf7b39c696f"
+    ],
+    "qualification_snapshot": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json",
+      "sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+      "source_entry": {
+        "manifest_sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+        "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot",
+        "store_type": "reviewed"
+      },
+      "record_entry": {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "path": "documents/1779.json",
+        "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+      }
+    }
+  },
+  "independent_measurement": {
+    "formula": "cash / (absolute negative operating cash flow / reported months)",
+    "cash_usd": 98610000,
+    "cash_balance_as_of": "2025-03-31",
+    "cash_balance_start": null,
+    "ocf_usd": -55041000,
+    "ocf_period": {
+      "start": "2025-01-01",
+      "end": "2025-03-31"
+    },
+    "reported_months": 3,
+    "month_basis": "The supplied Jan 1–Mar 31 Q1 is one reported three-calendar-month quarter. This establishes 3 months for this exact tuple, not a new general period-selection/rounding policy.",
+    "monthly_absolute_burn_usd": 18347000,
+    "runway_exact_fraction": "98610/18347",
+    "runway_decimal": "5.37472066277865591104812775930669864282989044530440944023546",
+    "completed_float": 5.374720662778656,
+    "float_absolute_error": "8.895187224069330135717010955469559055976454E-17",
+    "unit": "months",
+    "period_age_days": 60,
+    "freshness_limit_days": 550,
+    "same_entity_unit_and_period_end": true,
+    "source_records": [
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "snapshot_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json",
+        "record_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+        "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "published_at": "2025-05-08T00:00:00+00:00",
+        "filing_date": "2025-05-08",
+        "fact_index": 174,
+        "raw_start": 91559,
+        "raw_end": 92064,
+        "literal_sha256": "3098e6412fc28e03612206b2bf339ac7fb3523ebdb29657a6630500a4984158d",
+        "literal": "{\"description\":\"Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Net Cash Provided by (Used in) Operating Activities\",\"start\":\"2025-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-55041000}",
+        "fact": {
+          "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+          "end": "2025-03-31",
+          "fiscal_period": "Q1",
+          "fiscal_year": 2025,
+          "frame": null,
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "start": "2025-01-01",
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": -55041000
+        }
+      },
+      {
+        "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+        "snapshot_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json",
+        "record_sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7",
+        "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+        "available_at": "2025-05-09T00:00:00+00:00",
+        "published_at": "2025-05-08T00:00:00+00:00",
+        "filing_date": "2025-05-08",
+        "fact_index": 36,
+        "raw_start": 19452,
+        "raw_end": 20214,
+        "literal_sha256": "18a965903640e222aed8565147465477d6b036b3e99390ba279b49c87852d58c",
+        "literal": "{\"description\":\"Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":\"CY2025Q1I\",\"label\":\"Cash and Cash Equivalents, at Carrying Value\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":98610000}",
+        "fact": {
+          "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+          "end": "2025-03-31",
+          "fiscal_period": "Q1",
+          "fiscal_year": 2025,
+          "frame": "CY2025Q1I",
+          "label": "Cash and Cash Equivalents, at Carrying Value",
+          "start": null,
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "taxonomy": "us-gaap",
+          "unit": "USD",
+          "value": 98610000
+        }
+      }
+    ],
+    "state": "positive",
+    "state_reason": "The frozen v3 thresholds classify runway <= 6 months as positive. Positive is the Signal category and cannot be interpreted as favorable financing/future funding adequacy.",
+    "thresholds": {
+      "max_period_age_days": 550,
+      "negative_runway_min_months": 12,
+      "positive_runway_max_months": 6
+    },
+    "arithmetic_method": "Python standard-library Fraction/Decimal/date arithmetic directly on original raw facts. No Signal/basis helpers or model output used to derive arithmetic.",
+    "prior_arithmetic_oracle_consistency": true
+  },
+  "source_qualification_limits": {
+    "availability_policy": "next_utc_day_after_companyfacts_filed_date",
+    "retrospective_api_extraction": true,
+    "requires_primary_filing_audit": true,
+    "retrieved_at": "2026-10-19T23:39:18.274567+00:00",
+    "interpretation": "The qualified saved record and declared filed-next-UTC-day PIT policy are verified. This review does not establish exact historical API vintage or new primary-filing semantic admission. Retain these existing limits; do not claim live acquisition or unrestricted spendable issuer liquidity."
+  },
+  "f7_reflect_expectations": [
+    {
+      "requirement": "The actual real Reflect request consumes the accepted H_init state, saved context-only selection, exact imported completed liquidity result/resolution/fingerprints and the preserved measurement/source constraints.",
+      "clause": "The controlled selector returns the saved valid context-only intent ... The executor boundary imports the completed native result, resolution and fingerprints ... Native core then invokes real Reflect."
+    },
+    {
+      "requirement": "Persist actual accepted Reflect state and metadata exactly, including any raw/correction lineage; no reviewer-written replacement or fabricated model state.",
+      "clause": "Retain actual accepted Reflect state/metadata, runtime stop cause, Predictor input and raw/persisted prediction."
+    },
+    {
+      "requirement": "The saved liquidity selection owns no answer; do not mark need index 3 or any other original need resolved, fulfilled or answered by the benchmark. Keep all five original need strings exact and unresolved.",
+      "clause": "The imported context intent owns no answer. All five original needs remain unresolved."
+    },
+    {
+      "requirement": "Canonical numeric adoption is optional. If exercised, it must match exact imported measurement, months unit, Q1 period, formula and source facts; reject changed units/periods, overstated precision or fresh invented values. An unchanged state can legitimately pass.",
+      "clause": "Canonical numeric adoption is checked if exercised; unchanged state can be legitimate and must not be failed merely for omitting an optional update."
+    },
+    {
+      "requirement": "Preserve historical cash/burn benchmark versus future adequacy. Do not convert 5.3747 months into assured future cash coverage, unrestricted corporate cash or answered dilution/covenant/capex/milestone questions.",
+      "clause": "It is not current unrestricted cash, an assured future runway or evidence of funding adequacy."
+    }
+  ],
+  "exact_original_need_contract": {
+    "count": 5,
+    "need_strings_in_original_order": [
+      "What savings targets, implementation dates, cash restructuring costs and production effects of the Fairmont idling and corporate restructuring had been disclosed by prediction time, and what realized savings or operating evidence already supported those targets?",
+      "What Ultra-High Protein sales volumes, realized premiums, incremental production costs, customer qualification progress and binding offtake commitments had been disclosed by prediction time, including any then-published milestones capable of changing earnings expectations within the forecast horizon?",
+      "By prediction time, what specific strategic alternatives, transaction terms, binding commitments, execution obstacles and expected decision dates had been disclosed, and what evidence could support realizable value for common shareholders within the forecast horizon?",
+      "What unrestricted cash, operating cash burn, committed capital spending, debt maturities, covenant headroom and potential equity issuance obligations were disclosed by prediction time, and did those terms allow the proposed turnaround to reach its milestones without material dilution?",
+      "What contemporaneous issuer disclosures quantified sensitivity of cash earnings to ethanol selling prices, corn and energy costs, hedging and low-carbon incentives, and what already-published guidance or contracted economics could support a margin recovery during the forecast horizon?"
+    ],
+    "original_resolved_questions": [],
+    "all_original_needs_remain_unresolved": true,
+    "target_need_index": 3,
+    "no_answer_ownership": true,
+    "no_discharge_by_numeric_benchmark": true,
+    "additional_grounded_questions": "Not required; if native schema permits them they cannot replace or silently rewrite/resolve the original five."
+  },
+  "f8_final_context_expectations": [
+    {
+      "requirement": "Compose the final research context through the real native core from actual accepted Reflect state and completed result. Both the actual measurement and all original unresolved questions must reach it.",
+      "clause": "F8 requires the actual measurement and unresolved questions to reach the final context."
+    },
+    {
+      "requirement": "Preserve value 5.374720662778656 months, Q1 2025 period, formula, USD 98,610,000 cash at March 31 and USD −55,041,000 Q1 operating cash flow / 3 reported months, and provenance in auditable final context fields. Do not require a particular prose sentence or redundant citation name when the structured source binding is present.",
+      "clause": "The historical benchmark and its operands retain value, unit, period, formula and provenance."
+    },
+    {
+      "requirement": "Do not equate stopping research collection with answering funding/turnaround needs, or turn a positive Signal enum into a favorable investment conclusion.",
+      "clause": "finalization means this bounded research collection stopped, not that the funding/turnaround questions were answered."
+    }
+  ],
+  "f9_predictor_and_persistence_expectations": [
+    {
+      "requirement": "Invoke the real blind native Predictor on the actual final context; audit its exact input for absence of truth/labels/posthoc outcomes and correct target/horizon/supplied identities under existing masking.",
+      "clause": "invokes real blind Predictor ... Predictor has no frozen probability/label answer; audit structure, blindness and factual consistency, not predictive skill."
+    },
+    {
+      "requirement": "Require a native-schema-valid prediction, raw answer lineage and exact persisted prediction/context. Do not require a particular probability, class, belief direction, adoption update or economic recommendation.",
+      "clause": "calls a durable prediction sink ... Retain ... Predictor input and raw/persisted prediction."
+    },
+    {
+      "requirement": "Stop only after durable sink writes exact context and prediction and before truth/score/Posthoc; record actual runtime stop cause. Do not read labels or update round/cycle pointers.",
+      "clause": "Stop only after that sink writes the exact context/prediction, before truth/score/Posthoc. No label read or round/cycle pointer is permitted."
+    }
+  ],
+  "bootstrap_exact_equality_gate": {
+    "required": true,
+    "clause": "Rebuild Basic Info in genuine execute_information_plan and compare every bootstrap field with the immutable accepted parent. Return its exact state, metadata and usage read-only.",
+    "parent_inputs_sha256": "a75322d2af9d2abc43d9f4b9479608e6630f38a72d0714bf4e8f37d81750a50f",
+    "accepted_initial_state_sha256": "9fdacbae3b14e3cf2cb42de3acabcf20ae584d4a8b18e11414b944f11480cab9",
+    "accepted_initial_state_exact": {
+      "contradictions": [
+        "The reported interim table shows negative ethanol-production gross margin and lower consolidated gross margin than the comparative period, providing counter-evidence to an already-established operating turnaround."
+      ],
+      "current_beliefs": [
+        "The operating segments include ethanol and co-products, including Ultra-High Protein, plus grain handling, storage, marketing and merchant trading. Product inclusion alone does not establish premium-product commercial traction.",
+        "The interim report identifies Fairmont plant idling and corporate restructuring and cost-saving initiatives as events affecting operating comparability; the visible passage does not quantify their economic benefits.",
+        "The interim risk disclosure refers to a Board review of strategic alternatives, identifying its status, expected timing and outcome as uncertainties. This establishes disclosure of a review, without establishing an executable transaction."
+      ],
+      "decision": "continue",
+      "hypotheses": [
+        "Inference to test: cost reductions and higher-value co-product commercialization could create a credible cash-earnings inflection within the six-calendar-month horizon, supporting the doubling outcome despite the weak operating base. This fails if contemporaneous unit economics and implementation milestones cannot support a material near-term improvement.",
+        "Inference to test: an executable strategic-alternatives milestone within the forecast horizon could reveal equity value beyond the market's distressed expectations. This fails if disclosures available at prediction time show no credible timetable, realizable equity proceeds or financing path; a review reference alone is insufficient."
+      ],
+      "next_information_needs": [
+        "What savings targets, implementation dates, cash restructuring costs and production effects of the Fairmont idling and corporate restructuring had been disclosed by prediction time, and what realized savings or operating evidence already supported those targets?",
+        "What Ultra-High Protein sales volumes, realized premiums, incremental production costs, customer qualification progress and binding offtake commitments had been disclosed by prediction time, including any then-published milestones capable of changing earnings expectations within the forecast horizon?",
+        "By prediction time, what specific strategic alternatives, transaction terms, binding commitments, execution obstacles and expected decision dates had been disclosed, and what evidence could support realizable value for common shareholders within the forecast horizon?",
+        "What unrestricted cash, operating cash burn, committed capital spending, debt maturities, covenant headroom and potential equity issuance obligations were disclosed by prediction time, and did those terms allow the proposed turnaround to reach its milestones without material dilution?",
+        "What contemporaneous issuer disclosures quantified sensitivity of cash earnings to ethanol selling prices, corn and energy costs, hedging and low-carbon incentives, and what already-published guidance or contracted economics could support a margin recovery during the forecast horizon?"
+      ],
+      "open_questions": [
+        "Whether any demonstrated operating improvement or strategic milestone would be large and credible enough to change market expectations sufficiently remains uncertain; depressed price behavior alone cannot establish mispricing."
+      ],
+      "resolved_questions": [],
+      "supporting_evidence": [
+        {
+          "claim": "The operating segments include ethanol and co-products, including Ultra-High Protein, plus grain handling, storage, marketing and merchant trading. Product inclusion alone does not establish premium-product commercial traction.",
+          "exact_text": "The company reports the financial and operating performance for the following two operating segments: (1) ethanol production, which includes the production, storage and transportation of ethanol, distillers grains, Ultra-High Protein and renewable corn oil and (2) agribusiness and energy services, which includes grain handling and storage, commodity marketing and merchant trading for company-produced and third-party ethanol, distillers grains, Ultra-High Protein, renewable corn oil, natural gas and other commodities.",
+          "kind": "basic_info",
+          "projection_id": "projection_230c2716c36c73afad15f81b"
+        },
+        {
+          "claim": "The interim report identifies Fairmont plant idling and corporate restructuring and cost-saving initiatives as events affecting operating comparability; the visible passage does not quantify their economic benefits.",
+          "exact_text": "There are various events that could affect comparability of our operating results, including fluctuations in our production rates in 2025 compared to 2024, along with the disposition of our Birmingham, Alabama terminal in September of 2024, the idling of our Fairmont, Minnesota plant in January of 2025 and our corporate restructuring and cost saving initiatives in early 2025.",
+          "kind": "basic_info",
+          "projection_id": "projection_3e669c5732c7c9a0e9b0584f"
+        },
+        {
+          "claim": "The interim risk disclosure refers to a Board review of strategic alternatives, identifying its status, expected timing and outcome as uncertainties. This establishes disclosure of a review, without establishing an executable transaction.",
+          "exact_text": "the status, expected timing, and expected outcome of our Board of Directors' ongoing review of strategic alternatives;",
+          "kind": "basic_info",
+          "projection_id": "projection_d577be7d080627fa1c89be86"
+        },
+        {
+          "claim": "The reported interim table shows negative ethanol-production gross margin and lower consolidated gross margin than the comparative period, providing counter-evidence to an already-established operating turnaround.",
+          "exact_text": "Three Months Ended March 31, 2025 2024 Gross margin Ethanol production (1) $ ( 5,692 ) $ ( 2,643 ) Agribusiness and energy services 8,731 11,010 $ 3,039 $ 8,367",
+          "kind": "basic_info",
+          "projection_id": "projection_01fe85919029e3da1c7a0940"
+        }
+      ]
+    },
+    "accepted_initial_metadata_exact": {},
+    "accepted_initial_usage_exact": {
+      "cost": 0.0,
+      "llm_calls": 1,
+      "tokens": 61888
+    },
+    "complete_parent_bootstrap_binding": "Not present as a persisted bootstrap artifact in the current review allowlist. No expected bootstrap values are invented. Before formal dispatch, bind/hash the immutable accepted parent bootstrap and require whole-structure equality; missing/mismatch must stop preparation.",
+    "independently_checked_at_reference_time": false,
+    "this_is_not_optional": "Measurement support does not waive bootstrap equality. The stage must not claim this gate closed from the present reference alone."
+  },
+  "budget_and_calls": {
+    "prior_h_init_tokens": 61888,
+    "prior_selection_tokens": 49144,
+    "prior_inclusive_tokens": 111032,
+    "prior_inclusive_llm_calls": 2,
+    "original_case_token_cap": 256000,
+    "remaining_before_new_stage_arithmetic": 144968,
+    "max_request_tokens": 131072,
+    "signal_result_slots": 1,
+    "rounds": 1,
+    "finalization_reserve": 64000,
+    "native_predictor_estimates": "Preserve native estimates; this oracle does not replace them with invented constants.",
+    "runtime_max_llm_calls": 5,
+    "new_role_response_ceiling": 3,
+    "new_roles": [
+      "Reflect",
+      "Predictor"
+    ],
+    "correction": "At most one new correction shared by this case; retain each native role existing one-correction ceiling. Tools also consume the same ceiling.",
+    "usage_accounting": "Charge actual prior selection usage and H_init usage exactly; do not reset/relabel logical usage. Physical new receipts must be reported separately.",
+    "controlling_clause": "Prior usage is 61,888 H_init plus 49,144 selection = 111,032 logical units and two calls ... Runtime max_llm_calls stays five ... at most three new role responses ... Tools also consume the same ceiling."
+  },
+  "preflight_and_terminal_gates": {
+    "input_only_preflight": "Separate preflight/ root; stop at first request-ready event before cache/receive/inbox. No consumer answer may be generated for input-only preflight.",
+    "formal_freeze": "Freeze exact sources/code/inputs/oracle before formal prepare. No input hot edits after freeze.",
+    "terminal": "Failure/completion stays terminal and cannot be reentered. Cache-only reconstruction, if exercised, must be separate explicit read-only verifier with no new handoffs.",
+    "no_full_successor": "This diagnostic imports one completed subset only; no full successor/old portfolio execution authorization."
+  },
+  "genuine_optional_preferences_not_acceptance_requirements": [
+    "No mandatory Reflect adoption update or new canonical numeric field.",
+    "No required hypothesis/belief direction or change.",
+    "No fixed Predictor probability, output class or label answer.",
+    "No required named citation display or identical prose wording if canonical provenance/source bindings are preserved.",
+    "No required BlackRock/Ancora discussion or unrelated maturity/control context.",
+    "No need to reapply/reroute any Signal or revisit old failed denominators.",
+    "No requirement that Reflect pronounce the research thesis decidable; retain actual accepted decision and native bounded runtime stop without false resolution."
+  ],
+  "acceptance_denominator_policy": "Freeze one completed-result consumer attempt before dispatch. Independently report F7 consumption/permission+state, F8 measurement+need propagation and F9 blind prediction+durable stop, together with first response/corrections. Do not call it full end-to-end fresh research, fresh Signal execution or independent gain. No post-answer additions to required criteria.",
+  "immutability_and_read_boundary": {
+    "verified_review_input_hashes": [
+      {
+        "path": "/Users/l/Project/Recommandation/spec/scripts/run_financial_context_consumer_stage.md",
+        "sha256": "d4c1b841c1829e9b233e1fa640801afe3e68c352508d2510e87eab6860abd17f"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/inputs.json",
+        "sha256": "a75322d2af9d2abc43d9f4b9479608e6630f38a72d0714bf4e8f37d81750a50f"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/initial_state.json",
+        "sha256": "9fdacbae3b14e3cf2cb42de3acabcf20ae584d4a8b18e11414b944f11480cab9"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/accepted-selection.json",
+        "sha256": "6dc28a13a4811968dbfcf05954abd8c574a773a331586a865322e9c126ef9ab3"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/native-batch.json",
+        "sha256": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/oracle.json",
+        "sha256": "596816095cb1526b1e631ede4fa836bc7d26f7ecbb836fdadd7610b59fe75449"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-definition.json",
+        "sha256": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/oracle.json",
+        "sha256": "182780db4a96a9bfaed3a323027b4d456d56f05b39310248f1abe5af54356429"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/evidence-matching-clarification.json",
+        "sha256": "b4c74fbbb80553b56dc9a23f945b8e0ff2ba1872ac3368bf9c447eec64809aa8"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/independent-final-review.json",
+        "sha256": "dd66dfbdfa3c31cbcd284733abe3ce92fdb2a2eaade68d84540aeea357a997c4"
+      }
+    ],
+    "additional_allowed_exact_files": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/spec.json",
+        "sha256": "19197cadb4729a131cf3c968ccc369ee0c7c0054ca95b719f7ff247f1b75613e"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json",
+        "sha256": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json",
+        "sha256": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+      }
+    ],
+    "all_read_input_hashes": {
+      "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/review-inputs.json": "2f9a60440a49d95d516c537162ad6880a5c527ae04bb6fd59733ca7fb4bfbc62",
+      "/Users/l/Project/Recommandation/spec/scripts/run_financial_context_consumer_stage.md": "d4c1b841c1829e9b233e1fa640801afe3e68c352508d2510e87eab6860abd17f",
+      "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/inputs.json": "a75322d2af9d2abc43d9f4b9479608e6630f38a72d0714bf4e8f37d81750a50f",
+      "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/initial_state.json": "9fdacbae3b14e3cf2cb42de3acabcf20ae584d4a8b18e11414b944f11480cab9",
+      "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_routing_20261021_v1/stage/accepted-selection.json": "6dc28a13a4811968dbfcf05954abd8c574a773a331586a865322e9c126ef9ab3",
+      "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/native-batch.json": "ad71e66be7ba9c1572b31d79c9cf272f2d8d50fe8f72fd425562d2775350b769",
+      "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/oracle/oracle.json": "596816095cb1526b1e631ede4fa836bc7d26f7ecbb836fdadd7610b59fe75449",
+      "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-definition.json": "a5d5e5b83f9c38f808708a0ff38d99f3ec17ecabf8ad54de00901fba583e5edb",
+      "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/oracle.json": "182780db4a96a9bfaed3a323027b4d456d56f05b39310248f1abe5af54356429",
+      "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-oracle/evidence-matching-clarification.json": "b4c74fbbb80553b56dc9a23f945b8e0ff2ba1872ac3368bf9c447eec64809aa8",
+      "/Users/l/Project/Recommandation/runs/diagnostics/narrative_source_navigation_20261023_v1/control-native/independent-final-review.json": "dd66dfbdfa3c31cbcd284733abe3ce92fdb2a2eaade68d84540aeea357a997c4",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/spec.json": "19197cadb4729a131cf3c968ccc369ee0c7c0054ca95b719f7ff247f1b75613e",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/reviewed_snapshot.json": "47546fc9029270e59a99353ac37e73857f0a3bf455ef54fe1428d836116e0c5a",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1779.json": "223cbadaa920d128075279d3669612ef18a1dfadd1f332c8f8c16e2b0b2a29c7"
+    },
+    "old_strict_maturity_0of1_unchanged": true,
+    "old_routing_and_nine_result_verdicts_not_reopened": true,
+    "production_calls": 0,
+    "network_calls": 0,
+    "labels_read": 0,
+    "implementation_or_signal_functions_read": false,
+    "new_consumer_model_answers_read": false,
+    "existing_files_modified": false
+  },
+  "limitations": [
+    "This is an independent source/arithmetic/contract reference, not proof that the future Reflect/Predictor/sink executed or complied.",
+    "The accepted complete parent bootstrap must be bound before formal execution; current reviewed files supply accepted H_init state/metadata/usage but not that whole persisted bootstrap.",
+    "Only the single imported completed v3 result is admitted for this diagnostic scope. Prior nine-result first-entry and routing failures remain unchanged."
+  ]
+}

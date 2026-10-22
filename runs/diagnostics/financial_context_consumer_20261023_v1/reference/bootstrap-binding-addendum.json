@@ -1,0 +1,516 @@
+{
+  "schema_version": "pre-answer-bootstrap-binding-addendum-v1",
+  "scope": "Narrow independent supplement binding the one newly allowlisted immutable accepted-parent bootstrap. No new implementation, future role output, labels, external API or production call was read/executed.",
+  "disposition": "accepted_parent_bootstrap_reference_supported_and_frozen; genuine rebuilt-bootstrap whole-structure equality remains a mandatory formal-stage gate",
+  "what_is_closed": "The earlier consumer oracle limitation that the full accepted-parent bootstrap artifact was missing from the review allowlist is now resolved by this exact artifact. This does not claim that a new implementation has rebuilt it or that any consumer role executed.",
+  "bindings": {
+    "review_inputs_v2_path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/review-inputs-v2.json",
+    "review_inputs_v2_sha256": "2128cbb441bc7967fb7e12834f757f5b460c4fc88fafbf9ccf282c1e2770869b",
+    "accepted_parent_bootstrap_path": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/bootstrap.json",
+    "accepted_parent_bootstrap_file_sha256": "32ce837eaf66c7e8d20c41469ebca8120def925767a5176536fd825a580cd60e",
+    "accepted_parent_bootstrap_canonical_json_sha256": "9b5024a2298427548a643aceea28624ca7d47b97221acbe44e17a7d7878b27a8",
+    "original_consumer_oracle_path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/reference/consumer-oracle.json",
+    "original_consumer_oracle_sha256": "6917fc7687c0647e6afaeecefa35cfd72db2a0c881d64d787858972455b23880",
+    "original_mapping_path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_context_consumer_20261023_v1/reference/contract-obligation-mapping.json",
+    "original_mapping_sha256": "f2323c832de8b343b15d03c684f53e851b83ca4c0aa9c6e606a6cac1df1d4f02"
+  },
+  "whole_structure_equality_only": {
+    "required": true,
+    "required_top_level_fields": [
+      "bundle",
+      "computed_metrics",
+      "document_channel_set_by_core",
+      "evaluation_anchor",
+      "evaluation_context",
+      "model_context",
+      "plan",
+      "projection_lineage"
+    ],
+    "expected_artifact": "/Users/l/Project/Recommandation/runs/diagnostics/gpre_native_initial_20261021_v1/stage/samples/h01/bootstrap.json",
+    "comparison": "Compare the entire parsed rebuilt bootstrap with the entire immutable parent object. All nested fields, source/coverage/data-gap markers, projections, raw-offset lineage, plan, anchor/context, metrics, arrays/order and document-channel flag must agree. Per-field hashes below locate mismatches but cannot replace whole-object equality. File formatting need not be identical; no field may be selectively omitted/rounded/rewritten to make equality pass.",
+    "missing_or_mismatch": "Stop before formal consumer dispatch. Do not repair accepted parent artifacts or reclassify mismatch as acceptable.",
+    "actual_rebuilt_bootstrap_examined": false
+  },
+  "field_hashes": {
+    "bundle": "651ab1e936e641a4d282bfa04225eba8300decb84c19d0adbc16ae8f0d24c375",
+    "computed_metrics": "f27e1cb9b02b958cb3cd445831f88a2e1ec3acc5d0288bb201b8c72f93a46d68",
+    "document_channel_set_by_core": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "evaluation_anchor": "8c15529347cd554bf47f50aadb4368e5f2efee70ed7d402ce86ba460ab201bd9",
+    "evaluation_context": "c736905f30f22826ce7c0b2467507338fa85f081bf5cd19f581b66b751193ee5",
+    "model_context": "0fb6656db90d1832a5ed2303e1e813c7c86b21911a2e26151b2dc5d8006f69d9",
+    "plan": "70ccd414517e130e80e75df2cb553b0c3f4ccac8144f5006868cefa5ee76990b",
+    "projection_lineage": "2f81af01ab775a6ae4d8aeec2e018ce8cd77b81bf4b4cab6de9f6c001240fc6c"
+  },
+  "field_reviews": {
+    "plan": {
+      "plan_id": "plan_manual_v1",
+      "fields": [
+        "analysis_prompt",
+        "basic_info_policy",
+        "initial_research_skill",
+        "parent_ids",
+        "plan_id",
+        "reflection_skill"
+      ],
+      "meaning": "Same accepted plan identity and immutable prompts/policies are bound. Preserve complete plan, not just plan_id. Its reflection instruction about thesis decidability must not be turned into false answer resolution; bounded native runtime stopping can retain unresolved needs.",
+      "full_plan_bound": true
+    },
+    "bundle": {
+      "request_count": 4,
+      "requests": [
+        {
+          "request_id": "orientation.v1.operating_report",
+          "bundle_status": "resolved",
+          "model_status": "resolved",
+          "source_document_count": 2,
+          "raw_context_span_count": 22,
+          "visible_projection_count": 15,
+          "omitted_projection_count": 7,
+          "source_context_truncated": true,
+          "projection_context_truncated": true,
+          "projection_status": "partial_context_budget",
+          "data_gap": null,
+          "source_coverage": {
+            "context_truncated": true,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 2,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 0,
+            "observed_observation_count": 0,
+            "observed_period_span_days": null,
+            "query_evaluated": true,
+            "query_matched_document_count": 2,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 1,
+            "satisfied_source_group_count": 1,
+            "selected_document_count": 2,
+            "selection_truncated": false,
+            "visible_span_count": 22
+          },
+          "omitted_context_markers_hash": "b0667053a805da31da3ebdd12a3883b9dc6819772c2099e533ca25f62aecba00"
+        },
+        {
+          "request_id": "orientation.v1.scoped_news",
+          "bundle_status": "unresolved",
+          "model_status": "unresolved",
+          "source_document_count": 0,
+          "raw_context_span_count": 0,
+          "visible_projection_count": 0,
+          "omitted_projection_count": 0,
+          "source_context_truncated": false,
+          "projection_context_truncated": false,
+          "projection_status": "unavailable",
+          "data_gap": {
+            "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+            "provider": null,
+            "reason": "no_matching_documents",
+            "request_id": "orientation.v1.scoped_news",
+            "source_types": [
+              "news"
+            ]
+          },
+          "source_coverage": {
+            "context_truncated": false,
+            "contract_satisfied": false,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 0,
+            "missing_requirements": [
+              "documents=0/1"
+            ],
+            "observed_distinct_period_count": 0,
+            "observed_observation_count": 0,
+            "observed_period_span_days": null,
+            "query_evaluated": false,
+            "query_matched_document_count": null,
+            "query_requested": false,
+            "query_status": "not_requested",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 0,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "omitted_context_markers_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "request_id": "orientation.v1.financial_facts",
+          "bundle_status": "resolved",
+          "model_status": "resolved",
+          "source_document_count": 2,
+          "raw_context_span_count": 1,
+          "visible_projection_count": 1,
+          "omitted_projection_count": 0,
+          "source_context_truncated": true,
+          "projection_context_truncated": false,
+          "projection_status": "partial_context_budget",
+          "data_gap": null,
+          "source_coverage": {
+            "context_truncated": true,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 8,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 11,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 1825,
+            "query_evaluated": false,
+            "query_matched_document_count": null,
+            "query_requested": false,
+            "query_status": "not_requested",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 2,
+            "selection_truncated": true,
+            "visible_span_count": 1
+          },
+          "omitted_context_markers_hash": "e8bd24c074344234a50e20417905b853ea82649043ebe11cf8227cfd90c4ffbc"
+        },
+        {
+          "request_id": "orientation.v1.market_backbone",
+          "bundle_status": "resolved",
+          "model_status": "resolved",
+          "source_document_count": 1,
+          "raw_context_span_count": 1,
+          "visible_projection_count": 1,
+          "omitted_projection_count": 0,
+          "source_context_truncated": true,
+          "projection_context_truncated": false,
+          "projection_status": "partial_context_budget",
+          "data_gap": null,
+          "source_coverage": {
+            "context_truncated": true,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 2,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 171,
+            "observed_observation_count": 171,
+            "observed_period_span_days": 248,
+            "query_evaluated": false,
+            "query_matched_document_count": null,
+            "query_requested": false,
+            "query_status": "not_requested",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": true,
+            "visible_span_count": 1
+          },
+          "omitted_context_markers_hash": "d620c7a6b2040c65e87cb9561affb6f3044a12b942d8bfa34b77a4c1939aa79a"
+        }
+      ],
+      "appended_documents_count": 0,
+      "meaning": "Preserve partial orientation and genuine no-news gap. Existing source availability does not mean every fact was model-visible or every need was answered."
+    },
+    "model_context": {
+      "max_normalized_characters": 32000,
+      "visible_projection_count": 17,
+      "visible_projection_characters": 31764,
+      "under_normalized_character_cap": true,
+      "request_and_projection_identity_consistency": true,
+      "meaning": "Model-facing partial projections and omissions are part of expected bootstrap. Do not import omitted source content as if H_init had already consumed it."
+    },
+    "projection_lineage": {
+      "schema_version": "basic-info-model-projection-v1",
+      "entry_count": 17,
+      "all_projection_text_and_identity_bindings_match": true,
+      "all_raw_offset_runs_complete_and_contiguous": true,
+      "all_raw_ranges_enclosed_by_same_document_bundle_windows": true,
+      "checks": [
+        {
+          "projection_id": "projection_01fe85919029e3da1c7a0940",
+          "document_id": "sec:cik_0001309402:000130940225000089",
+          "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+          "projection_characters": 1785,
+          "raw_offset_run_count": 225,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_912baac25f4dbe6b588b664a",
+          "document_id": "sec:cik_0001309402:000130940225000089",
+          "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+          "projection_characters": 1930,
+          "raw_offset_run_count": 121,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_230c2716c36c73afad15f81b",
+          "document_id": "sec:cik_0001309402:000130940225000089",
+          "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+          "projection_characters": 1970,
+          "raw_offset_run_count": 23,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_683d823cc5e2131f37473241",
+          "document_id": "sec:cik_0001309402:000130940225000008",
+          "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+          "projection_characters": 1994,
+          "raw_offset_run_count": 9,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_1107279887425e5f0e7b3b45",
+          "document_id": "sec:cik_0001309402:000130940225000008",
+          "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+          "projection_characters": 1989,
+          "raw_offset_run_count": 133,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_e411cedbc6a819ffbfaf04bd",
+          "document_id": "sec:cik_0001309402:000130940225000008",
+          "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+          "projection_characters": 1988,
+          "raw_offset_run_count": 17,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_94fb829ff87c7df46a8c248f",
+          "document_id": "sec:cik_0001309402:000130940225000008",
+          "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+          "projection_characters": 1999,
+          "raw_offset_run_count": 15,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_c20cdef6eb43a8097bee9064",
+          "document_id": "sec:cik_0001309402:000130940225000008",
+          "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+          "projection_characters": 1955,
+          "raw_offset_run_count": 53,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_3eca53710db08a542a074a4e",
+          "document_id": "sec:cik_0001309402:000130940225000008",
+          "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+          "projection_characters": 1892,
+          "raw_offset_run_count": 307,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_01deb59d54d5a7d0642e46fd",
+          "document_id": "sec:cik_0001309402:000130940225000008",
+          "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+          "projection_characters": 1974,
+          "raw_offset_run_count": 67,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_3e669c5732c7c9a0e9b0584f",
+          "document_id": "sec:cik_0001309402:000130940225000089",
+          "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+          "projection_characters": 1994,
+          "raw_offset_run_count": 21,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_334f61f29c35b5a51b3700a5",
+          "document_id": "sec:cik_0001309402:000130940225000089",
+          "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+          "projection_characters": 1844,
+          "raw_offset_run_count": 221,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_d577be7d080627fa1c89be86",
+          "document_id": "sec:cik_0001309402:000130940225000089",
+          "content_hash": "02426a4883598404c37677696a040dccd734a4f971ace58fccfa5fea10dd7799",
+          "projection_characters": 1994,
+          "raw_offset_run_count": 5,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_381a2e850767d7425263a73f",
+          "document_id": "sec:cik_0001309402:000130940225000008",
+          "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+          "projection_characters": 1994,
+          "raw_offset_run_count": 5,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_8d246ab16605e5fc3861b30e",
+          "document_id": "sec:cik_0001309402:000130940225000008",
+          "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+          "projection_characters": 1419,
+          "raw_offset_run_count": 251,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_a864a5b4d2c9074c7d3dc87a",
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+          "projection_characters": 1999,
+          "raw_offset_run_count": 1,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        },
+        {
+          "projection_id": "projection_e4277db0e0865b5916fc40e6",
+          "document_id": "massive:cik_0001309402:market_data:044bcfc658f55e07be11a2c8",
+          "content_hash": "044bcfc658f55e07be11a2c8826617799e2dc942942bb5c2bd7fb811bb613995",
+          "projection_characters": 1044,
+          "raw_offset_run_count": 19,
+          "text_equals_model_context": true,
+          "identity_and_pit_match_bundle": true,
+          "normalized_runs_complete_contiguous_in_bounds": true,
+          "all_raw_runs_enclosed_in_same_source_bundle_spans": true
+        }
+      ],
+      "limit": "Internal lineage consistency checked using the added bootstrap only. Original complete source bodies were not reopened in this narrow addendum; no new raw-source provenance/admission claim follows."
+    },
+    "evaluation_context": {
+      "value": {
+        "evaluation_anchor": {
+          "doubling_threshold": 8.559999999999999,
+          "mean_adjusted_close": 4.279999999999999,
+          "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+          "recent_close": 4.14,
+          "recent_close_date": "2025-05-29",
+          "status": "available",
+          "trading_dates": [
+            "2025-05-22",
+            "2025-05-23",
+            "2025-05-27",
+            "2025-05-28",
+            "2025-05-29"
+          ]
+        },
+        "horizon": "six_calendar_months",
+        "horizon_end": "2025-11-30",
+        "prediction_time": "2025-05-30T00:00:00+00:00"
+      },
+      "top_anchor_exactly_matches_nested_anchor": true,
+      "target_horizon_and_asof_match_frozen_consumer_sample": true,
+      "meaning": "Prediction-time target definition and future horizon endpoint are not realized outcome labels."
+    },
+    "evaluation_anchor": {
+      "value": {
+        "doubling_threshold": 8.559999999999999,
+        "mean_adjusted_close": 4.279999999999999,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 4.14,
+        "recent_close_date": "2025-05-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-05-22",
+          "2025-05-23",
+          "2025-05-27",
+          "2025-05-28",
+          "2025-05-29"
+        ]
+      },
+      "all_five_trading_dates_strictly_before_prediction_date": true,
+      "threshold_is_exactly_two_times_saved_mean": true,
+      "recent_close_matches_accepted_price_shape_summary": true,
+      "limit": "The added artifact does not expose all five raw closing observations, so the saved 5-day mean/adjustment basis is bound as accepted runtime output, not independently recomputed here. Do not claim a new market-measurement/vintage proof."
+    },
+    "computed_metrics": {
+      "value": [
+        {
+          "readable": "price shape (window days 180): window trading days 171; first close $12.93; last close $4.14; high $13.55; low $3.30; return -67.98%; max drawdown -75.65%; daily volatility 4.67%; trend downtrend; observed endpoints 2024-09-23 to 2025-05-29."
+        }
+      ],
+      "meaning": "Preserve the accepted runtime price-shape string, its units/endpoints/window labels and precision exactly; it is historical price behavior, not outcome truth or proof of mispricing.",
+      "limit": "Full underlying series is not supplied in this narrow addendum. No new drawdown/volatility/window-definition calculation was performed; do not reinterpret window days180 as a newly proved calendar span."
+    },
+    "document_channel_set_by_core": {
+      "expected_value": true,
+      "meaning": "Preserve the core-owned document channel setup flag; do not replace it with a reviewer assertion or drop the field."
+    }
+  },
+  "initial_evidence_connection": {
+    "accepted_h_init_supporting_evidence_rows": 4,
+    "bindings": [
+      {
+        "projection_id": "projection_230c2716c36c73afad15f81b",
+        "initial_literal_in_parent_projection": true
+      },
+      {
+        "projection_id": "projection_3e669c5732c7c9a0e9b0584f",
+        "initial_literal_in_parent_projection": true
+      },
+      {
+        "projection_id": "projection_d577be7d080627fa1c89be86",
+        "initial_literal_in_parent_projection": true
+      },
+      {
+        "projection_id": "projection_01fe85919029e3da1c7a0940",
+        "initial_literal_in_parent_projection": true
+      }
+    ],
+    "five_original_needs_still_exact_unresolved": [
+      "What savings targets, implementation dates, cash restructuring costs and production effects of the Fairmont idling and corporate restructuring had been disclosed by prediction time, and what realized savings or operating evidence already supported those targets?",
+      "What Ultra-High Protein sales volumes, realized premiums, incremental production costs, customer qualification progress and binding offtake commitments had been disclosed by prediction time, including any then-published milestones capable of changing earnings expectations within the forecast horizon?",
+      "By prediction time, what specific strategic alternatives, transaction terms, binding commitments, execution obstacles and expected decision dates had been disclosed, and what evidence could support realizable value for common shareholders within the forecast horizon?",
+      "What unrestricted cash, operating cash burn, committed capital spending, debt maturities, covenant headroom and potential equity issuance obligations were disclosed by prediction time, and did those terms allow the proposed turnaround to reach its milestones without material dilution?",
+      "What contemporaneous issuer disclosures quantified sensitivity of cash earnings to ethanol selling prices, corn and energy costs, hedging and low-carbon incentives, and what already-published guidance or contracted economics could support a margin recovery during the forecast horizon?"
+    ],
+    "no_new_answer_ownership": true
+  },
+  "pre_dispatch_qualification": "No newly observed bootstrap input contradicts the declared one-completed-result consumer scope. Supported as an immutable accepted-parent reference with its partial/gap/source limitations intact. Actual rebuilt whole-structure equality, budget/request-ready preflight and code/input freeze still must pass before formal role dispatch.",
+  "non_inferences": [
+    "A bootstrap hash or field equality does not prove financial adequacy, prediction quality, new source acquisition, independent gain or model obedience.",
+    "Projection lineage existence/consistency does not establish all omitted facts were read.",
+    "This addendum adds no optional-adoption, probability, belief-direction, citation-name or unrelated-context requirement to the consumer.",
+    "Old routing, nine-result and strict maturity0of1 verdicts remain unchanged."
+  ],
+  "immutability": {
+    "new_files_only": [
+      "reference/bootstrap-binding-addendum.json"
+    ],
+    "original_oracle_unchanged": true,
+    "original_mapping_unchanged": true,
+    "accepted_bootstrap_unchanged": true
+  }
+}
