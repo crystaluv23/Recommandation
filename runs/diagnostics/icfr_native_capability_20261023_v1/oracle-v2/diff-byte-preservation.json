@@ -1,0 +1,19 @@
+{
+  "reason": "Preserve exact unified-diff bytes, including significant single-space context lines, in gzip; no source/oracle change.",
+  "files": [
+    {
+      "original_name": "stage-spec.diff",
+      "original_sha256": "f837544665751a902744232c188cd00a80bdfd692401f53741400a0553a4c48c",
+      "stored_name": "stage-spec.diff.gz",
+      "stored_sha256": "0fe71f3e34fbdab50b37737678c8a893213c7663c9d080593b203fc534909006",
+      "readback_equal": true
+    },
+    {
+      "original_name": "mining-view-spec.diff",
+      "original_sha256": "9e0007d333f55a3c3d1923fdf5c92e2306629868891fbfe32c69800812ebca12",
+      "stored_name": "mining-view-spec.diff.gz",
+      "stored_sha256": "02b80f5cbc3cddf6994669887d8f94e5b22db4dcfa2e066706763ad0c1d451f5",
+      "readback_equal": true
+    }
+  ]
+}

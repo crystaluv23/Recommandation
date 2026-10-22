@@ -1,0 +1,151 @@
+{
+  "schema_version": "icfr-prospective-oracle-v2-equivalence-v1",
+  "old_oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle/acceptance-obligations.json",
+    "sha256": "9fec7af60c3b34c8c10139504fae9199286eaf6179cf39ef2d012fbdf2855aa5"
+  },
+  "new_oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v2/acceptance-obligations.json",
+    "sha256": "e650fb4f73bc5067ee29193328cd3d091dd3b52e4d3c62e5ed095399000ec0d9"
+  },
+  "protected_original_keys": [
+    "schema_version",
+    "privacy",
+    "prospective_boundary",
+    "source_review",
+    "source_material",
+    "source_scope",
+    "research_semantics",
+    "novelty_baseline",
+    "fixed_denominators",
+    "pipeline_positive_control",
+    "consumer_controls",
+    "counterexample_rejection_rules",
+    "stage_spec_review",
+    "scope_limits",
+    "preauthor_clarification"
+  ],
+  "canonical_encoding": "UTF-8 JSON ensure_ascii=False sort_keys=True separators=(comma,colon)",
+  "old_protected_semantics_sha256": "4951c16c4d3cb976595e0ca12d16388fb13b85e7096fc34831e728ab55914429",
+  "new_protected_semantics_sha256": "4951c16c4d3cb976595e0ca12d16388fb13b85e7096fc34831e728ab55914429",
+  "protected_deep_equality": true,
+  "original_oracle_bytes_unchanged": true,
+  "per_key_canonical_sha256": {
+    "schema_version": {
+      "old": "9a8c3ed33c086068b7639d605283d8ce4248a3b21fe1fe00e3db9ec8d7066cad",
+      "new": "9a8c3ed33c086068b7639d605283d8ce4248a3b21fe1fe00e3db9ec8d7066cad"
+    },
+    "privacy": {
+      "old": "1d06b8673bbeba308a3ae284b0bf728181b480fc463b7f4a74df22dba19cc441",
+      "new": "1d06b8673bbeba308a3ae284b0bf728181b480fc463b7f4a74df22dba19cc441"
+    },
+    "prospective_boundary": {
+      "old": "ee8e8a0f7e5ce76dc164c905b8a3c2931230249d964ecb2f318fcfb511dafa1d",
+      "new": "ee8e8a0f7e5ce76dc164c905b8a3c2931230249d964ecb2f318fcfb511dafa1d"
+    },
+    "source_review": {
+      "old": "81b5285608b36332755bd78214ba8b003b0519745824f816381d82f9c25c7aba",
+      "new": "81b5285608b36332755bd78214ba8b003b0519745824f816381d82f9c25c7aba"
+    },
+    "source_material": {
+      "old": "fe848d561e072d5712e6ec15a08352a8ce2400f9cecc54f5049352fa11feb680",
+      "new": "fe848d561e072d5712e6ec15a08352a8ce2400f9cecc54f5049352fa11feb680"
+    },
+    "source_scope": {
+      "old": "9d9bc43ba1cb11767e5bdd8e975a80989862b2af12db36b55b2a71725b67fc88",
+      "new": "9d9bc43ba1cb11767e5bdd8e975a80989862b2af12db36b55b2a71725b67fc88"
+    },
+    "research_semantics": {
+      "old": "042dcf564c723a6bee992c7a183832120b974604360dd463e3b7821ea3058e04",
+      "new": "042dcf564c723a6bee992c7a183832120b974604360dd463e3b7821ea3058e04"
+    },
+    "novelty_baseline": {
+      "old": "035eb339d45a2db564e29dba6eb0c9adbc2ee8f5fcc03f03db8b296c7397d092",
+      "new": "035eb339d45a2db564e29dba6eb0c9adbc2ee8f5fcc03f03db8b296c7397d092"
+    },
+    "fixed_denominators": {
+      "old": "1cb855f822cd6ebe8cb4a1bbf8b2ecf00547b67c92f2cd1aad8e6953a10c1931",
+      "new": "1cb855f822cd6ebe8cb4a1bbf8b2ecf00547b67c92f2cd1aad8e6953a10c1931"
+    },
+    "pipeline_positive_control": {
+      "old": "4d1551a4fe8a1e73f206e150c7c4f3f496f1a7c26cd85ac4766acdeecec9cf4d",
+      "new": "4d1551a4fe8a1e73f206e150c7c4f3f496f1a7c26cd85ac4766acdeecec9cf4d"
+    },
+    "consumer_controls": {
+      "old": "e2d60c7816598e94b62d3fd5a69c94b8a815faa723363bacddba72760ced2ac1",
+      "new": "e2d60c7816598e94b62d3fd5a69c94b8a815faa723363bacddba72760ced2ac1"
+    },
+    "counterexample_rejection_rules": {
+      "old": "8d54332cd7fb46daeb7039a314dec1ea7d3155d3703c3c86e2dd2876b4f377a6",
+      "new": "8d54332cd7fb46daeb7039a314dec1ea7d3155d3703c3c86e2dd2876b4f377a6"
+    },
+    "stage_spec_review": {
+      "old": "4d78717c9b482af6aa7c812e52c19eb7a14856034f49a667f18133c9ed514a8d",
+      "new": "4d78717c9b482af6aa7c812e52c19eb7a14856034f49a667f18133c9ed514a8d"
+    },
+    "scope_limits": {
+      "old": "eb6d8c98c9d3a827486dafe6f792c7edddd368275287d5c2b5f6af77266dbfb6",
+      "new": "eb6d8c98c9d3a827486dafe6f792c7edddd368275287d5c2b5f6af77266dbfb6"
+    },
+    "preauthor_clarification": {
+      "old": "f03397a4d78756180e4018e3f23b1782a019ca8329085b7b2b649f9e1c3cebff",
+      "new": "f03397a4d78756180e4018e3f23b1782a019ca8329085b7b2b649f9e1c3cebff"
+    }
+  },
+  "predecessor_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop.json",
+      "sha256": "1af38671391550b4000f82ce3383d424c74fa5d49a66974e7f4d1fe229d3dfd2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-cbc9f1ab.tar.gz",
+      "sha256": "458a37029165843be44bba9197501e62b8d02857733280fa3fe3f0bb802dc96f"
+    }
+  ],
+  "old_stage_stop_mapped_files_verified_opaque": 336,
+  "old_stage_stop_mapped_file_mismatches": [],
+  "old_author_content_parsed": false,
+  "new_stage_absent_at_freeze": true,
+  "contract_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_icfr_native_capability_stage.md",
+      "sha256": "ac48b4dbc4dac42985ac8b1d63ff7cfa3e712b46af3f758e60b162cccb36d772"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/vision.md",
+      "sha256": "1da04a9197ab2f037240165cf76751028efdbc98f563bab3d457b8b45e5a59a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/architecture.md",
+      "sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/engineering-mvp.md",
+      "sha256": "5f8d9f326530cd2f4545f0036516b2b17efdd0631d83214b36d359afcd761947"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_signal_roles.md",
+      "sha256": "d05153054efd4a6ab4e26d2cd8048259df4e4fe821f83ea4cad39072e20a2cd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "f0d6473af0291603cb8a17c27ea7787888b1eec783e1a25a6503cdc4de24e045"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "4270e8bf8e43e275c65e6f83dfb8941ed5227e625e1a5b66312e8a8e87836ea3"
+    }
+  ],
+  "stage_spec_resources_and_native_phases_exactly_equal_archive": true,
+  "stage_spec_change": "Only new-stage isolation and predecessor preservation/prospective-freeze section.",
+  "mining_spec_change": "Executed narrative working page only: complete source-bound units, latest12/40000 UTF-8 JSON bytes, explicit omissions/charged revisit, no unit clipping, no unread data or allowance increase; existing whole-request budgets unchanged.",
+  "no_new_measurement_or_research_or_admission_semantics": true,
+  "caps_changed": false,
+  "new_input_view_page_resource": {
+    "max_units": 12,
+    "max_utf8_json_bytes": 40000,
+    "within_existing_request_caps": true
+  },
+  "external_api_or_network_calls": 0,
+  "scope": "Only oracle-v2 written; no stage, answer, runtime, spec or original-oracle write."
+}

@@ -57,7 +57,9 @@ from stock_opportunity_agent.signal_library import SignalExecutor, SignalRegistr
 
 REPO = Path(__file__).resolve().parents[1]
 BASE = REPO / 'runs/diagnostics/icfr_native_capability_20261023_v1'
-STAGE_ROOT = BASE / 'stage'
+STAGE_ROOT = BASE / 'stage-v2'
+STOPPED_STAGE_ROOT = BASE / 'stage'
+ORACLE = BASE / 'oracle-v2/acceptance-obligations.json'
 PARENT = REPO / 'runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1'
 MATERIAL = REPO / 'runs/diagnostics/mining_capability_frontier_20261023_v1/independent'
 SPEC = REPO / 'spec/scripts/run_icfr_native_capability_stage.md'
@@ -107,6 +109,8 @@ def save(path, value):
 
 def _root(root):
     path = Path(root).resolve()
+    if path == STOPPED_STAGE_ROOT.resolve():
+        raise ValidationError('original diagnostic dispatch was stopped; its h013 must remain unanswered')
     if path != STAGE_ROOT.resolve():
         raise ValidationError('stage destination differs from its fixed contract')
     return path
@@ -201,12 +205,43 @@ def _accepted_prefix_authority(obligations):
     return rows + committed + [binding(PARENT / 'completion.json')]
 
 
+def _stopped_predecessor():
+    """Verify preserved old evidence without reentering its frozen runtime."""
+    stop_path = BASE / 'parent-control-stop.json'
+    stop = read(stop_path)
+    if (Path(stop['stage_path']).resolve() != STOPPED_STAGE_ROOT.resolve()
+            or stop['decision'] != 'stop_dispatch_at_confirmed_s4_read_body_projection_gap'
+            or stop['native_stage_status'] != 'pending_independent_role'
+            or stop['native_completion_exists'] or stop['budget_exhaustion']):
+        raise ValidationError('predecessor control-stop authority differs')
+    rows = [{'path': str(STOPPED_STAGE_ROOT / name), 'sha256': sha}
+            for name, sha in stop['stage_files_at_stop'].items()]
+    _check(rows + [stop['runtime_archive']])
+    h = stop['pending_unanswered_request_hash']
+    pending = read(STOPPED_STAGE_ROOT / 'progress.json')['pending']
+    if (pending['request_hash'] != h
+            or (STOPPED_STAGE_ROOT / 'completion.json').exists()
+            or (STOPPED_STAGE_ROOT / 'exchange/outbox' / (h + '.txt')).exists()
+            or (STOPPED_STAGE_ROOT / 'exchange/receipts' / (h + '.json')).exists()):
+        raise ValidationError('stopped predecessor h013 or completion changed')
+    if Budget(STOPPED_STAGE_ROOT).used() != (stop['answered_unique_requests'], stop['logical_reservations']):
+        raise ValidationError('predecessor answered accounting differs')
+    return {'stop_receipt': binding(stop_path), 'runtime_archive': binding(stop['runtime_archive']['path']),
+            'answered_unique_requests': stop['answered_unique_requests'],
+            'logical_reservations': stop['logical_reservations'],
+            'candidate_denominator': 1, 'candidate_acceptance': 'uncompleted',
+            'consumer_denominator': 4, 'consumer_attempted': 0,
+            'new_role_answers_imported': False}, rows
+
+
 def prepare(root=STAGE_ROOT):
     """Freeze source/code/prefix and create legitimate new state without any role."""
     root = _root(root)
     if root.exists():
         raise ValidationError('prepare is single-entry')
-    _check(read(BASE / 'oracle/acceptance-obligations.json')['contract_bindings'])
+    oracle = read(ORACLE)
+    _check(oracle['contract_bindings'] + oracle['predecessor_bindings'])
+    predecessor, predecessor_rows = _stopped_predecessor()
     obligations = read(MATERIAL / 'material-obligations-frozen.json')
     prefix_authority = _accepted_prefix_authority(obligations)
     definitions = read(MATERIAL / 'function-and-definition-map.json')['stable_registry18']
@@ -249,11 +284,11 @@ def prepare(root=STAGE_ROOT):
             raise ValidationError('exact baseline refs differ')
         workspace = EvolutionWorkspace(work)
         history_hash = read(work / 'slow_history/manifest.json')['manifest_hash']
-        contract = {'schema_version': 'icfr-native-capability-stage-v1', 'root': str(root),
+        contract = {'schema_version': 'icfr-native-capability-stage-v2', 'root': str(root),
                     'limits': LIMITS, 'scope_limits': SCOPE_LIMITS, 'controls': list(CONTROLS),
                     'fixed_candidate_denominator': 1, 'fixed_consumer_denominator': 4,
                     'slow_history_manifest_hash': history_hash, 'external_api_calls': 0,
-                    'assignment': ASSIGNMENT, 'need': NEED,
+                    'assignment': ASSIGNMENT, 'need': NEED, 'predecessor_control': predecessor,
                     'provenance': 'current_cycle1 is this isolated diagnostic with accepted-prefix Slow input; not a business commit'}
         save(root / 'contract.json', contract)
         save(work / 'run_contract.json', {'contract': contract, 'contract_hash': digest(contract)})
@@ -270,7 +305,7 @@ def prepare(root=STAGE_ROOT):
         for name in ('slow_input.json', 'slow_memory.json'):
             save(root / 'inputs' / name, read(prefix / name))
         save(root / 'inputs/baseline.json', _snapshot_record(baseline))
-        oracle_files = [BASE / 'oracle/acceptance-obligations.json', MATERIAL / 'material-obligations-frozen.json', MATERIAL / 'material-review.md',
+        oracle_files = [ORACLE, MATERIAL / 'material-obligations-frozen.json', MATERIAL / 'material-review.md',
                         MATERIAL / 'narrative-material-bindings.json',
                         BASE / 'source-review/obligations.json', BASE / 'source-review/bindings-evidence.json',
                         BASE / 'source-review/root-counterreview.json']
@@ -283,7 +318,9 @@ def prepare(root=STAGE_ROOT):
         original_files = [binding(p) for name in ('signals', 'slow_history')
                           for p in sorted((PARENT / 'workspace' / name).rglob('*')) if p.is_file()]
         manifest = {'schema_version': 'icfr-native-stage-manifest-v1', 'code': _code(),
-                    'source_bindings': sources + prefix_authority + [binding(p) for p in oracle_files + prefix_paths] + original_files,
+                    'source_bindings': sources + prefix_authority + predecessor_rows +
+                        [predecessor['stop_receipt'], predecessor['runtime_archive']] +
+                        [binding(p) for p in oracle_files + prefix_paths] + original_files,
                     'contract_hash': digest(contract), 'inputs': _files(root),
                     'baseline_registry_hash': baseline.registry_hash}
         save(root / 'manifest.json', manifest)
@@ -297,8 +334,12 @@ def verify(root):
     """Reject source/code/contract/input drift and business pointer changes."""
     manifest = read(root / 'manifest.json')
     _check(manifest['code'] + manifest['source_bindings'])
-    if digest(read(root / 'contract.json')) != manifest['contract_hash']:
+    contract = read(root / 'contract.json')
+    if digest(contract) != manifest['contract_hash']:
         raise ValidationError('contract drift')
+    predecessor, _ = _stopped_predecessor()
+    if predecessor != contract['predecessor_control']:
+        raise ValidationError('predecessor control binding changed')
     for name, sha in manifest['inputs'].items():
         # Baseline stable manifests change only during the native new transition.
         if name.startswith('workspace/signals/'):
@@ -864,6 +905,7 @@ def submit(root, request_hash, agent_id):
 
 def inspect(root=STAGE_ROOT):
     """Read state, verifying any terminal seal without running native phases."""
+    root = _root(root)
     root = _root(root)
     verify(root)
     if (root / 'completion.json').exists():

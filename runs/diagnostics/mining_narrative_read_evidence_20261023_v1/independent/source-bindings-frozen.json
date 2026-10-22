@@ -1,0 +1,42 @@
+{
+  "purpose": "Read-only fixed10 original loss and two exact saved sources, no semantic oracle passages or original outcome labels supplied to role",
+  "actual_sources": [
+    {
+      "available_at": "2025-05-12T20:05:53+00:00",
+      "case_id": "cik_0001746129:20250731",
+      "case_ref": "case-002",
+      "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+      "content_hash_matches": true,
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "document_id": "sec:cik_0001746129:000114036125018373",
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1495.json",
+      "pit_eligible": true,
+      "requires_primary_filing_audit": null,
+      "sha256": "5563b56655ce50413fd4a88a7f7aa6540359fa088b3bd7584c2e62b0356e41f0",
+      "snapshot_sha256_matches": true,
+      "source_type": "filing"
+    },
+    {
+      "available_at": "2025-08-14T20:01:09+00:00",
+      "case_id": "cik_0002009312:20250930",
+      "case_ref": "case-003",
+      "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+      "content_hash_matches": true,
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "document_id": "sec:cik_0002009312:000149315225011966",
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+      "pit_eligible": true,
+      "requires_primary_filing_audit": null,
+      "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7",
+      "snapshot_sha256_matches": true,
+      "source_type": "filing"
+    }
+  ],
+  "files": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/actual-read-frontier/fixed10-evidence.json": "e47d0308681c6a2e089aaf011e31cdb6d9e1606e05e8579353fda882781864ea",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/actual-read-frontier/bindings.json": "64b1058f557893c7cadda72c7519f816845a6dacc73455343e127783f4774a66",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/seeds/hypothesis/observations/43c87b4466872974ddc73b25721f112ffa4d2e0b54fb58c7e2912dfaed7e9db8.json": "3b626638001ed454b4274b13daf7accbdd1b440c84eb5b86e0a92873d57247e1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1495.json": "5563b56655ce50413fd4a88a7f7aa6540359fa088b3bd7584c2e62b0356e41f0",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7"
+  }
+}

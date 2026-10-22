@@ -1,0 +1,1 @@
+{"action": "read_span", "document_ref": "document-sec:[ANON_ID_0000]:filing:stable", "offset": 0, "length": 38, "rationale": ["Explicit synthetic local transport fixture; not a production role answer."]}

@@ -20,6 +20,61 @@ from stock_opportunity_agent.research.signal_evolution import SignalEvolutionEng
 
 
 class ICFRNativeCapabilityStageTests(TestCase):
+    def test_stopped_old_destination_cannot_be_prepared_advanced_or_submitted(self):
+        for action in (
+            lambda: stage.prepare(stage.STOPPED_STAGE_ROOT),
+            lambda: stage.advance(stage.STOPPED_STAGE_ROOT),
+            lambda: stage.submit(stage.STOPPED_STAGE_ROOT, '0' * 64, '/root/no_author'),
+        ):
+            with self.assertRaisesRegex(ValidationError, 'h013 must remain unanswered'):
+                action()
+
+    def test_predecessor_checks_actual_receipts_and_absence_not_only_a_stop_flag(self):
+        with TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            old = base / 'old'
+            client, budget = self.client(old)
+            with self.assertRaises(LocalRoleRequestPending) as first:
+                client.complete_json(**self.kwargs())
+            self.answer(old, first.exception.pending)
+            client.complete_json(**self.kwargs())
+            with self.assertRaises(LocalRoleRequestPending) as second:
+                client.complete_json(**self.kwargs({'synthetic_next': 1}))
+            pending = second.exception.pending
+            stage.save(old / 'progress.json', {'status': 'pending_independent_role', 'pending': pending})
+            archive = base / 'synthetic-archive-bytes'
+            archive.write_bytes(b'synthetic boundary-only archive, not runtime recovery')
+            files = {p.relative_to(old).as_posix(): stage.binding(p)['sha256']
+                     for p in old.rglob('*') if p.is_file() and p.suffix != '.lock'}
+            count, reservation = budget.used()
+            stage.save(base / 'parent-control-stop.json', {
+                'stage_path': str(old),
+                'decision': 'stop_dispatch_at_confirmed_s4_read_body_projection_gap',
+                'native_stage_status': 'pending_independent_role', 'native_completion_exists': False,
+                'budget_exhaustion': False, 'stage_files_at_stop': files,
+                'runtime_archive': stage.binding(archive),
+                'pending_unanswered_request_hash': pending['request_hash'],
+                'answered_unique_requests': count, 'logical_reservations': reservation})
+            with patch.object(stage, 'BASE', base), patch.object(stage, 'STOPPED_STAGE_ROOT', old):
+                evidence, _ = stage._stopped_predecessor()
+                self.assertEqual(evidence['answered_unique_requests'], 1)
+                self.assertFalse(evidence['new_role_answers_imported'])
+                for path in (Path(pending['outbox_path']), old / 'completion.json'):
+                    path.write_text('{}')
+                    with self.assertRaises(ValidationError):
+                        stage._stopped_predecessor()
+                    path.unlink()
+                original = archive.read_bytes()
+                archive.write_bytes(b'changed')
+                with self.assertRaises(ValidationError):
+                    stage._stopped_predecessor()
+                archive.write_bytes(original)
+                # A changed answered receipt cannot be hidden by a parent stop flag.
+                receipt = old / 'exchange/receipts' / (first.exception.pending['request_hash'] + '.json')
+                receipt.write_text('{}')
+                with self.assertRaises(ValidationError):
+                    stage._stopped_predecessor()
+
     def client(self, root, *, input_only=False):
         stage.save(root / 'contract.json', {'limits': stage.LIMITS})
         budget = stage.Budget(root, input_only=input_only)

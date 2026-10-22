@@ -1,0 +1,18 @@
+..................................................E....................
+======================================================================
+ERROR: test_mining_request_budget (unittest.loader._FailedTest.test_mining_request_budget)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_mining_request_budget
+Traceback (most recent call last):
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_request_budget.py", line 7, in <module>
+    import run_mining_taxonomy_consumer_stage as stage
+ModuleNotFoundError: No module named 'run_mining_taxonomy_consumer_stage'
+
+
+----------------------------------------------------------------------
+Ran 71 tests in 0.981s
+
+FAILED (errors=1)

@@ -1,0 +1,95 @@
+EEEEEEEE
+======================================================================
+ERROR: test_actual_old_abc_source_windows_reach_new_page_after_catalog (tests.test_mining_narrative_read_evidence.MiningNarrativeReadEvidenceTests.test_actual_old_abc_source_windows_reach_new_page_after_catalog)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 249, in test_actual_old_abc_source_windows_reach_new_page_after_catalog
+    page = self.page(controller)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 65, in page
+    return controller._model_view()['narrative_read_evidence']
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'narrative_read_evidence'
+
+======================================================================
+ERROR: test_count_and_byte_omissions_are_whole_explicit_and_revisitable (tests.test_mining_narrative_read_evidence.MiningNarrativeReadEvidenceTests.test_count_and_byte_omissions_are_whole_explicit_and_revisitable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 164, in test_count_and_byte_omissions_are_whole_explicit_and_revisitable
+    page = self.page(controller)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 65, in page
+    return controller._model_view()['narrative_read_evidence']
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'narrative_read_evidence'
+
+======================================================================
+ERROR: test_event_and_document_coalescing_unions_only_actual_read_scopes (tests.test_mining_narrative_read_evidence.MiningNarrativeReadEvidenceTests.test_event_and_document_coalescing_unions_only_actual_read_scopes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 144, in test_event_and_document_coalescing_unions_only_actual_read_scopes
+    first = self.page(controller)['items'][0]
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 65, in page
+    return controller._model_view()['narrative_read_evidence']
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'narrative_read_evidence'
+
+======================================================================
+ERROR: test_hidden_unread_and_undisclosed_metadata_do_not_become_working_evidence (tests.test_mining_narrative_read_evidence.MiningNarrativeReadEvidenceTests.test_hidden_unread_and_undisclosed_metadata_do_not_become_working_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 128, in test_hidden_unread_and_undisclosed_metadata_do_not_become_working_evidence
+    self.assertFalse(self.page(controller)['items'][0]['has_readable_text'])
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 65, in page
+    return controller._model_view()['narrative_read_evidence']
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'narrative_read_evidence'
+
+======================================================================
+ERROR: test_identity_native_estimator_and_actual_wire_include_full_working_page (tests.test_mining_narrative_read_evidence.MiningNarrativeReadEvidenceTests.test_identity_native_estimator_and_actual_wire_include_full_working_page)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 210, in test_identity_native_estimator_and_actual_wire_include_full_working_page
+    self.assertEqual(len(payload['narrative_read_evidence']['items']), 2)
+                         ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'narrative_read_evidence'
+
+======================================================================
+ERROR: test_repeat_reorders_counts_and_charges_without_new_source_units (tests.test_mining_narrative_read_evidence.MiningNarrativeReadEvidenceTests.test_repeat_reorders_counts_and_charges_without_new_source_units)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 115, in test_repeat_reorders_counts_and_charges_without_new_source_units
+    page = self.page(controller)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 65, in page
+    return controller._model_view()['narrative_read_evidence']
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'narrative_read_evidence'
+
+======================================================================
+ERROR: test_two_documents_survive_catalog_and_compute_in_native_payload (tests.test_mining_narrative_read_evidence.MiningNarrativeReadEvidenceTests.test_two_documents_survive_catalog_and_compute_in_native_payload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 79, in test_two_documents_survive_catalog_and_compute_in_native_payload
+    page = caller.calls[0]['payload']['narrative_read_evidence']
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'narrative_read_evidence'
+
+======================================================================
+ERROR: test_two_maximum_unicode_windows_coexist_and_survive_view_mutation (tests.test_mining_narrative_read_evidence.MiningNarrativeReadEvidenceTests.test_two_maximum_unicode_windows_coexist_and_survive_view_mutation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 100, in test_two_maximum_unicode_windows_coexist_and_survive_view_mutation
+    page = self.page(controller)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_narrative_read_evidence.py", line 65, in page
+    return controller._model_view()['narrative_read_evidence']
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'narrative_read_evidence'
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.955s
+
+FAILED (errors=8)

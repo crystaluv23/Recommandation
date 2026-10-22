@@ -1,0 +1,14 @@
+[
+  {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+    "sha256": "cbb8b89a95888faa0d59c5b1f0ed46cb97d9fcd960df5c4a272288c4df4240ee",
+    "archive": "/Users/l/Project/Recommandation/runs/diagnostics/mining_narrative_read_evidence_20261023_v1/independent/old-mining_controller.py.txt",
+    "matches_fixed10_code": true
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+    "sha256": "d8bc2fc8a3ea4a8809126b6657d2279d3944f2e4e28d89a2f56fccea95dd5776",
+    "archive": "/Users/l/Project/Recommandation/runs/diagnostics/mining_narrative_read_evidence_20261023_v1/independent/old-mining_role_model.py.txt",
+    "matches_fixed10_code": true
+  }
+]

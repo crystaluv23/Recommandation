@@ -449,6 +449,29 @@ Mining or a published/reused capability.
   A bounded whole-receipt page discloses omitted ranges; the evidence directory
   also lists each document's read windows. Progress metadata proves a read,
   not its semantic sufficiency, and does not alter existing budget charges.
+  Metadata-only progress is insufficient working evidence: after another action,
+  the model must still be able to compare the actual meaning of already-read
+  windows. Expose a separate `narrative_read_evidence` working page derived only
+  from the same executed source-bound units retained for materialization. Keep
+  complete masked readable text, immutable document/content/raw-window hashes,
+  raw coordinates, visibility, source type/clocks, actual read target refs and
+  case scopes. A document alias or repeated read may coalesce identical raw
+  units; union only scopes/targets actually read, never grant another case's
+  event access. Unread body, hidden markup and undisclosed metadata stay absent.
+  Preserve the original receipt directory separately; do not replace it with
+  model-written summaries, inferred findings or semantic notes.
+  Select most-recently-read complete units, at most12 units/40,000 UTF-8 JSON
+  bytes, allowing two ordinary maximum4000-character Unicode windows plus
+  provenance to coexist. Include explicit counts/coordinates/required sizes
+  for omitted or oversized units and the ordinary `read_span` revisit action;
+  no body unit is clipped. Revisit remains a charged source read and moves its
+  existing unit to the front. This adds no new tool, source read allowance,
+  free extraction, canonical schema or semantic authority. The entire actual
+  request, including this page/disclosure and repeated last result, remains
+  subject to the existing single/aggregate/call budget. Identity masking must
+  cover complete retained text through the same native transport; canonical
+  originals, ledger bytes and S5 source units remain unchanged. Replaying the
+  same accepted actions reconstructs the same view, not fresh model compliance.
 - Structured fact reads also survive later actions in `structured_read_progress`.
   Retain only successful, already-issued masked fact receipts, including their
   exact case/document/hash/availability and taxonomy/concept/unit/period/value

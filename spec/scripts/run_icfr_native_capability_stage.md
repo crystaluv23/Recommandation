@@ -9,7 +9,25 @@ they do not extend, restart or rename any exhausted historical target.
 
 ## Fixed input and oracle boundary
 
-Use a new `runs/diagnostics/icfr_native_capability_20261023_v1/stage` destination.
+This revision uses the new
+`runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2` destination. The
+original `stage` is a separately preserved incomplete control: twelve real
+answers consumed2,001,316 logical reservation units, then the parent stopped
+before dispatching its prepared h013 after confirming S4 lost prior narrative
+body from the view. It remains pending, not completed or budget-exhausted.
+Before prepare, verify its parent-stop receipt, retained stage-file snapshot,
+unchanged unanswered h013 and exact frozen-runtime archive. Record these
+bindings and historical cost in the new contract. Never submit, advance, reset,
+hot edit or import its role answers/caches into this new control. New actors
+start native Mining from the same previously accepted S1/S2 prefix; no prior
+candidate, hidden body, hand-written working note or supplied action is reused.
+The old candidate denominator1/uncompleted and consumer4/unattempted remain
+visible beside this new revision's independently fixed denominators.
+Freeze a separate `oracle-v2/acceptance-obligations.json` before new actors,
+retaining all original source-semantic obligations unchanged and binding this
+spec plus the repaired owning Mining view. Preserve the original oracle bytes.
+This is a new code-version evaluation of the same population and capability,
+not extra calls on an exhausted target or a weaker acceptance set.
 Prepare is single-entry. Bind all runtime source files, this spec/driver/tests,
 the exact approved dev8 metadata/cutoffs/original opaque group map, all263 source
 documents, exact stable18 spec/skill/tests and the accepted prefix/factory.

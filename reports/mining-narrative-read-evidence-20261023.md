@@ -1,0 +1,23 @@
+# Mining跨步骤保留已读叙事正文
+
+本轮修复S4工作视图，不修改测量定义、canonical记录、标签、PIT、typed权限或原S5来源交接。外部LLM API及网络调用0，所有真实生产角色仍由独立fresh subagent处理。
+
+## 断点与旧检查遗漏
+
+原设计明确让narrative_read_progress只保回执，避免复制正文；但角色每次只收到system与当前view，last_action_result又会被下一动作替换。真实ICFR阶段12个首答中出现旧窗重读与目录重取。独立固定前10个请求核实：A/B/C三完整正文只在紧随read的view出现，后续只剩回执；运行时/S5完整readable_text仍在。旧检查证明了读过和交接保真，没有证明模型仍能同时看见两份来源的含义。重读有合理原因，不能据此直接证明模型无能力。
+
+## 实现与证据
+
+先改owning spec，再增加narrative_read_evidence：直接从既有_materialization_reads及receipt顺序派生，保留完整masked可读正文、source类型/时钟、document/content/verbatim hash、原始坐标及真实case/target scopes。原回执目录仍在，没有新增正文store、parser或模型写的语义笔记。相同原窗可合并真实读取的目标和scope；一次event read不会授予另一case的event。hidden/unread正文和未披露metadata不进入页面，S5和ledger不变。
+
+沿既有whole-entry helper，items最多12单元/40000 UTF8 JSON bytes；完整单元入选或明确披露遗漏/超大坐标及所需字节，不裁正文。两个最大4000字符Unicode窗能够同时入页。disclosure、重复last result和全部其他payload仍进入真实请求预算；无新增读取、调用或免费revisit权限。
+
+新增测试最初在旧代码8项因新正文页不存在而失败，这本身不是8个语义错判；真实旧body-presence矩阵及独立旧/新对照才定位原始丢失。实现关联75项通过；父最终452关联全部通过，测试前后相关文件hash稳定、网络tripwire0。实际A/B/C原窗经原生读取和catalog后同时进入新payload；这是离线源投影回归，不是fresh遵循或全Mining通过。身份及原生预receive whole-request成本也在该边界检查，独立审查见同名诊断目录：首批7/8，一项把带padding的raw slice误作既有readable投影的harness预期已保留，只按原read回执修正该组后补验通过；其余七组不重跑，绑定源码不变。8组仅离线控制，其中22067成本及一条本地synthetic回复也不是生产作者。
+
+## 新代码完整控制
+
+新stage-v2保持原263源、stable18、265backlog、六披露/dev8/group、所有资源caps及pipeline1/consumer4。oracle-v2只更新元数据/契约绑定，所有原有语义字段deep-equal；受保护语义canonical SHA256均为4951c16c4d3cb976595e0ca12d16388fb13b85e7096fc34831e728ab55914429。旧oracle和336份旧stage文件保持原样。
+
+原stage仍为parent停止调度后的pending：12答/2001316逻辑预留，h013未派未答；不是完成、预算耗尽或no-pattern。新driver拒绝对旧路径prepare/advance/submit；新prepare和verify核旧停止收据、完整文件映射、归档、h013无答及旧receipt实际计费，前轮分母和成本进入新contract。新stage不导入旧LLM答案/cache、不手写候选，重新从既有接受S1/S2 prefix进入实际双seed链。两个新边界反例确认仅有“停止”标记不能掩盖旧文件/答复漂移。
+
+下一证据必须是新代码下fresh真实候选→忠实S5→技术准入→精确Fast诊断使用；本地修复、oracle相同和工具存在均不关闭S3–S8或整体MVP。完整committed use、magnitude及业务恢复仍未验证，原历史0/2和1/2不改。

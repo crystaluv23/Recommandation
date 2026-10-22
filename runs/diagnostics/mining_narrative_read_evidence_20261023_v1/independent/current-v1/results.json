@@ -1,0 +1,95 @@
+{
+  "before": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "4183dc392b62a77c9e55423ec88b510a266747f08d562329fb4b00426d34af31",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "95a66c54b0fff56ab13693469ee6b3490a79c21ae9ea94d1f17661ffce44b285",
+    "src/stock_opportunity_agent/research/evolution_transport.py": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42",
+    "src/stock_opportunity_agent/research/mining_agent_tools.py": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "4270e8bf8e43e275c65e6f83dfb8941ed5227e625e1a5b66312e8a8e87836ea3"
+  },
+  "after": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "4183dc392b62a77c9e55423ec88b510a266747f08d562329fb4b00426d34af31",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "95a66c54b0fff56ab13693469ee6b3490a79c21ae9ea94d1f17661ffce44b285",
+    "src/stock_opportunity_agent/research/evolution_transport.py": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42",
+    "src/stock_opportunity_agent/research/mining_agent_tools.py": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "4270e8bf8e43e275c65e6f83dfb8941ed5227e625e1a5b66312e8a8e87836ea3"
+  },
+  "stable_sources": true,
+  "results": [
+    {
+      "id": "actual-fixed10-new-vs-old",
+      "passed": true,
+      "detail": {
+        "actual_source_windows": 3,
+        "old_only_latest_body": true,
+        "new_all_three_together": true,
+        "runtime_materialization_and_read_ledger_equal": true,
+        "budgets_equal": true
+      }
+    },
+    {
+      "id": "two-maximum-unicode-windows",
+      "passed": true,
+      "detail": {
+        "full_unicode_windows": 2,
+        "whole_items_json_bytes": 33185
+      }
+    },
+    {
+      "id": "whole-page-omission-and-charged-reread",
+      "passed": false,
+      "error": "",
+      "type": "AssertionError",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_narrative_read_evidence_20261023_v1/independent/controls.py\", line 47, in record\n    try: RESULTS.append(dict(id=name,passed=True,detail=fn()))\n                                                        ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_narrative_read_evidence_20261023_v1/independent/controls.py\", line 130, in whole_page_and_reread\n    assert all(x['readable_text']==body[x['offset']:x['offset']+x['length']] for x in q['items'])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "id": "case-target-scope",
+      "passed": true,
+      "detail": {
+        "shared_raw_unit_coalesced": true,
+        "only_executed_target_case_scopes": true
+      }
+    },
+    {
+      "id": "hidden-unread-metadata",
+      "passed": true,
+      "detail": {
+        "hidden_and_unread_absent": true,
+        "actual_visible_body_present": true
+      }
+    },
+    {
+      "id": "oversized-whole-unit",
+      "passed": true,
+      "detail": {
+        "body_not_clipped_or_included": true,
+        "required_bytes_disclosed": 82619
+      }
+    },
+    {
+      "id": "deterministic-reconstruction",
+      "passed": true,
+      "detail": {
+        "same_accepted_actions_same_complete_view": true,
+        "model_calls": 0
+      }
+    },
+    {
+      "id": "native-wire-identity-reverse-cost",
+      "passed": true,
+      "detail": {
+        "native_full_read_units": 2,
+        "request_hash": "a37f894e0280578979284ff953af5899e2ccd7a01da9e01a8afa6da48476512b",
+        "exact_wire_reservation": 22067,
+        "synthetic_action_handle_restored": true,
+        "small_existing_budget_rejected_before_inbox": true,
+        "actual_production_role_answers": 0,
+        "synthetic_local_answers": 1
+      }
+    }
+  ],
+  "scope": "Local source/input and synthetic boundary controls only; not fresh Mining or semantic/admission/reuse/MVP evidence",
+  "network": 0,
+  "external_API": 0,
+  "production_actor_dispatch": 0,
+  "production_answers": 0
+}

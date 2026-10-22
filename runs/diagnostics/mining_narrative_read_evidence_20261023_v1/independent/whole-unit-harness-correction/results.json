@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "scope": "Only correction of one initial harness expectation; other seven groups not rerun; product hashes exactly equal first run",
+  "initial_failure": "Expected padded raw source slice to equal model-readable projection, which already strips trailing whitespace. This did not establish product clipping.",
+  "correct_expectation": "Compare each whole page unit with the complete masked body actually emitted by its original native read; source/raw hashes and offsets remain separately authoritative.",
+  "result": {
+    "available_units": 13,
+    "included_units": 12,
+    "whole_omission_disclosed": true,
+    "reread_browse_charge": 1
+  },
+  "bindings": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "4183dc392b62a77c9e55423ec88b510a266747f08d562329fb4b00426d34af31",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "95a66c54b0fff56ab13693469ee6b3490a79c21ae9ea94d1f17661ffce44b285",
+    "src/stock_opportunity_agent/research/evolution_transport.py": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42",
+    "src/stock_opportunity_agent/research/mining_agent_tools.py": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "4270e8bf8e43e275c65e6f83dfb8941ed5227e625e1a5b66312e8a8e87836ea3"
+  }
+}

@@ -6,7 +6,7 @@
 
 ## 最新实证
 
-[ICFR原生链/真实阅读缺口](../reports/icfr-native-stage-and-citation-prerequisite-20261023.md)：引用前提/driver440关联过、lint过，已冻完整stage并12fresh首答/0纠错，逻辑预留2001316、外部API/网络0。真实S4旧正文下一步只剩回执，S5原文仍完整；独立核前10wire。h013未dispatch，parent停止调度、原生pending非完成/非预算终态；0候选/0准入/0消费。先修跨步正文保真，不热改冻结stage。
+[叙事阅读跨步保真](../reports/mining-narrative-read-evidence-20261023.md)：S4新增同源已读完整正文工作页，最多12whole units/40000 UTF8bytes，scope/身份/原S5/ledger/预算保持；452关联过/网络0。新oracle语义逐字段同，v2隔离核旧336文件/12实际计费及h013无答。旧stage仍pending、12fresh/2001316、0候选/准入/消费；新完整链待冻，MVP open。
 [能力材料/S4→S5交接](../reports/mining-materialization-evidence-frontier-20261023.md)：263份dev8源/stable18独立核过；ICFR有实际/相反/假设/歧义材料，价格窗口7/8但调整未知/有100天缺口，财务新组合无对应函数，不改定义求过。
 真实692字整行曾裁600、13引用裁12，doc/event后段及relation丢失；现单向whole-unit/实际读窗/source_type交接且绑定原seed，未知先拒，原始/身份/PIT保持。402关联/独立9组过、网络0；5诊断待答/0新作者，不称实现或准入通过。S5显式caller预算止传控制流，不臆继H1额度；旧0/2和1/2不改，真正能力正控仍待。
 [请求预算连接](../reports/mining-request-budget-visibility-20261023.md)：明确scope的成本/余量/下一请求下界进入实际payload，原生普通/patch/identity估算同；生产只接既有single上限、不增aggregate。397关联/独立17组过，网络0。
@@ -96,5 +96,5 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   [章节导航与真实控制](../reports/narrative-source-navigation-20261023.md)共用数据层matcher、各自坐标/分页、标题原子计预算；251关联/独立24过，网络0。旧v1形状与commercialization/v5净影响多义仍保留，未改定义。
   私有90日本金到期控制3fresh角色提取正确事实/0纠错、117566逻辑预留、29files同；更强oracle严审0of1不改。额外义务现已逐条对定义映射，不冒称错对象/日期；未发布/非Mining，整体F5/MVP仍open。
   gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
-- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证；本轮真实正控停在S4正文跨步投影，先按同源完整read单位修复，再验新代码完整链；原0/2和1/2不改。
+- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证；已读叙事跨步正文已局部修复，下一冻新代码同范围完整正控再验fresh链；原0/2和1/2不改。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

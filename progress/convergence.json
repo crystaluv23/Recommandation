@@ -3,9 +3,9 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-22T23:39:32.397765+00:00",
+    "checked_at": "2026-10-22T23:56:45.467849+00:00",
     "thread_id": "01a15f73-622f-7130-905e-927e4e6c17c7",
-    "source": "Active unbudgeted goal reverified live. Twelve genuine new native ICFR role answers expose S4 narrative body projection loss; parent stops this diagnostic dispatch before h013, not goal pause/completion or budget exhaustion. Frozen code/inputs and pending retained; repair before new-code capability evaluation. Canonical A/B still pending independently; no full successor."
+    "source": "Active unbudgeted goal verified live. S4 whole read-unit repair locally verified with452 tests and independent source/wire controls; new stage-v2 retains same population, oracle semantics and caps. Old12-answer pending stage/h013 immutable and uncompleted. Next actual fresh native full candidate-chain evaluation; external LLM API/network0, canonical A/B pending independently, no full successor."
   },
   "acceptance": [
     {
@@ -1906,10 +1906,27 @@
         "runs/diagnostics/icfr_native_capability_20261023_v1/stage/progress.json"
       ],
       "result": "Real fixed stage prepared after cbc9f1ab; all263 sources/stable18/full265 needs preserved. Twelve fresh independent exact inbox/outbox first answers, zero corrections, 2001316 logical reservations and no external LLM API/network/new labels/check/LockedTest. Independent fixed h001-h010 actual-view audit proves prior narrative A/B/C bodies vanish from later S4 views while receipts remain complete and runtime/S5 keeps full readable text. Existing actions cannot return two narrative bodies simultaneously. Necessary continuation versus reasonable reread versus alternate source choice remain distinguished. Parent stopped dispatch before prepared h013, which has no author/outbox/receipt; original stage stays pending, no invented terminal/budget exhaustion/no-pattern. Candidate denominator1 uncompleted/0pass, four consumers unattempted, no admission/use/committed pointers. Frozen182 runtime files archived/readback exact; this is version retention, not OS recovery. Local440/lint pass remains local; no whole-MVP closure."
+    },
+    {
+      "id": "mining-narrative-read-evidence-20261023",
+      "strategy": "complete_executed_narrative_working_units_in_s4_native_view",
+      "failure_families": [
+        "metadata_only_read_progress_loses_source_meaning",
+        "simultaneous_two_source_comparison",
+        "working_body_scope_identity_and_whole_unit_budget"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/mining-narrative-read-evidence-20261023.md",
+        "runs/diagnostics/mining_narrative_read_evidence_20261023_v1/associated-test-bindings-final.json",
+        "runs/diagnostics/mining_narrative_read_evidence_20261023_v1/independent/review.md",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v2/equivalence-evidence.json"
+      ],
+      "result": "Spec-first adds bounded complete executed narrative units derived from existing source-owned reads; same original receipts remain. Full text, source/hash/range/clocks and actual target/case scopes survive catalog/compute, no new semantic notes/tool/read allowance. 452 associated tests pass with stable tested hashes and network0. Independent actual two-doc/three-window old/new source replay retains complete units without changing runtime/S5/ledger/budget; 2max Unicode, omissions/revisit, scope, hidden-body and exact nativewire identity/cost controls pass. First7of8 plus corrected single padding-harness supplement retained, not 8old semantic errors or fresh model compliance. New oracle protected semantics identical; driver v2 checks old336files/archive/h013 absence/12receipt accounting and refuses writes to old stopped root. Old control remains incomplete1/4unattempted, no hot edit. Fresh new-code full candidate chain still required."
     }
   ],
   "review": {
-    "after_iteration": "icfr-native-actual-read-frontier-20261023",
+    "after_iteration": "mining-narrative-read-evidence-20261023",
     "evidence": [
       "reports/icfr-source-and-native-path-preflight-20261023.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/obligations.json",
@@ -1924,7 +1941,10 @@
       "reports/icfr-native-stage-and-citation-prerequisite-20261023.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/independent-review/review.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop.json",
-      "runs/diagnostics/icfr_native_capability_20261023_v1/stage/actual-read-frontier/report.md"
+      "runs/diagnostics/icfr_native_capability_20261023_v1/stage/actual-read-frontier/report.md",
+      "runs/diagnostics/mining_narrative_read_evidence_20261023_v1/independent/review.md",
+      "runs/diagnostics/mining_narrative_read_evidence_20261023_v1/associated-test-bindings-final.json",
+      "reports/mining-narrative-read-evidence-20261023.md"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -2036,21 +2056,22 @@
       "Prior budget/read/locator checks ended before actual S5. They did not exercise longwholefacts, thirteen citations, document/event late reads or relation-only citations through real materializer payloads. Existing helper clippedliteral600/rows12, inferred source type fromoneIDgrammar and engineharvestdroppedread/relations pluscrossseedownership. I initially moved toward a positivecontrol without this consumercheck; independent originalsource/nativecontrols exposed it before freshanswers. Reviewer also assumed H1cap appliedS5; correctedscope ratherthan silentlyextendbudgetpolicy. Localinputpreservation and cleanICFRmaterial are still not freshcandidate/admission/reuse proof.",
       "A full dual-seed capability input carries accepted memory and all265 hypothesis needs: the first12-card page and old fact-module98304 total hid real disposition work. Source hash/2026 retrieval alone neither prove nor refute historical SEC body validity. A zero-author capture exception caught as a seed failure, copied active state, no-op definition loop and proposed independent budgets must not become a production acceptance, new runtime or approved experiment. Four local archive bindings and exact first wires now distinguish these scopes; predicate presence and diagnostic use still do not redefine Signal direction or committed learning.",
       "Whole-unit S5-only checks did not inspect the original Mining instruction or S4 preconditions: headline support and any narrative read still authorized unread/wrong-case citations. Reuse actual S5 source-owned read evidence before acceptance, while leaving semantic truth to original-source review. A new whole-chain diagnostic also needed independent checks for explicit zero allowance and input-only later-phase effects; fixes/tests alone do not establish fresh full-chain behavior.",
-      "The complete S4-to-S5 handoff and new each-citation readiness gate preserve runtime source bytes but do not preserve them in the next S4 model view. I checked first wires and materializer evidence, not two-source narrative meaning across a real action sequence. Genuine fresh roles had to reread bodies because narrative_read_progress only stores receipts, unlike complete structured read progress. Repeated rereading is not by itself a no-capability conclusion. Stop more blind calls at the confirmed producer loss, preserve pending/fixed denominator, and repair the existing bounded source-unit projection before a new-code control; never hot edit this frozen stage or label its pending state terminal."
+      "The complete S4-to-S5 handoff and new each-citation readiness gate preserve runtime source bytes but do not preserve them in the next S4 model view. I checked first wires and materializer evidence, not two-source narrative meaning across a real action sequence. Genuine fresh roles had to reread bodies because narrative_read_progress only stores receipts, unlike complete structured read progress. Repeated rereading is not by itself a no-capability conclusion. Stop more blind calls at the confirmed producer loss, preserve pending/fixed denominator, and repair the existing bounded source-unit projection before a new-code control; never hot edit this frozen stage or label its pending state terminal.",
+      "Metadata-only narrative progress was explicitly the old design, not merely an implementation omission. Because each role receives current view rather than a full conversation, preserving coverage receipts/S5 bytes did not preserve S4 meaning. The new working page derives actual complete masked source units without a second store or inferred summary; it must still prove fresh planning rather than turn offline old-source reconstruction into live compliance. Preserve the first padding-harness mistake and distinguish its corrected expectation from a product fix."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "repair",
-      "strategy": "preserve_executed_narrative_read_units_across_s4_steps",
-      "action": "First update owning Mining view spec, then minimally preserve complete executed narrative readable units with exact source/hash/range/case and visible bounded omissions in the existing model-view read progress. Reuse the actual read/handoff projection and identity transport; do not add invented semantic notes or a hand-written candidate. Verify original fixed10 producer loss, two-document/two-window/hidden/oversize/identity/budget counterexamples and coherent native wire costs. Keep the stopped old stage immutable and h013 unanswered. Only after local repair/source review and a new explicit code-version contract resume genuine full candidate-chain evaluation; do not substitute another leaf endpoint or reset an exhausted target.",
-      "stop": "No more dispatch in stopped pending ICFR stage; no external API/network/GET/new labels/check/LockedTest/full successor, hot edits, hidden clipping, canonical measurement/schema/direction change or fabricated terminal/no-pattern. Stop when actual bounded units cannot fit with explicit omission, a concrete interface choice is required, or there is no distinguishing new evidence.",
-      "new_evidence": "Twelve real production first answers and independent fixed10 inbox/source matrix isolate S4 view body loss despite complete runtime/S5 text; source storage and late materializer clipping are excluded.",
-      "distinguishing_variable": "Complete actual prior narrative bodies present together at the next native S4 request, within fixed size/resource limits, rather than metadata-only receipts and repeated single reads.",
-      "question": "Can the existing bounded S4 view retain actual read meaning across actions without source/case/identity corruption or hidden truncation, allowing the next fresh full-chain author to compare independently read sources?",
-      "pass": "Old actual body-presence counterexamples fail old code and pass new code; complete units, explicit omissions, identity isolation and actual next-wire budget agree, then fresh new-code native chain shows source-grounded planning.",
-      "fail": "Prior bodies still disappear, source/case or literal changes, omissions are silent/unreachable, request accounting differs, or new actual authors remain blocked at this projection.",
-      "on_pass": "Freeze the repaired complete-chain control, carry old12-answer incomplete control and all historical failures explicitly, and evaluate genuine candidate implementation/admission/exact consumption before closing any capability.",
-      "on_fail": "Preserve actual counterexample and stop that mechanism or surface a concrete substantive interface/resource decision; do not extend budgets or run another undifferentiated full loop."
+      "kind": "diagnose",
+      "strategy": "same_population_native_icfr_candidate_chain_v2_with_retained_read_meaning",
+      "action": "Checkpoint the locally repaired source-view/isolated driver and unchanged independent oracle, freeze stage-v2 once with all263 sources/stable18/full265/sixdisclosures/dev8/originalgroups and same declared host ceilings, then dispatch exact current native inboxes to fresh fork_turns=none subagents serially. Preserve old stopped12-answer control and original h013 unanswered. Independently review actual S4/S5 semantics/orientation/source scope before native technical admission; freeze candidate-specific consumer expectations before consumer outputs and require autonomous full-Registry exact use. Do not spend more on static source/leaf scans.",
+      "stop": "No external API/network/GET/new labels/check/LockedTest/full successor or old-stage reentry/hot edit/extra answer. No source pruning, hand-written candidate, forced new-ref selection, changed research semantics/oracle/measurement/direction, hidden clipping or budget reset. Stop on a fixed control result, a concrete first broken boundary, or declared resource exhaustion; technical/budget failure is not no-pattern.",
+      "new_evidence": "Actual old fixed10 body matrix plus452 tests/independent old-new controls isolate and repair the missing simultaneous S4 source meaning while runtime/S5 stays identical. Neworacle criteria and allcaps are unchanged; oldcontrolstop preserved and actual12 costs verified.",
+      "distinguishing_variable": "Fresh native decisions now see complete previously read source texts together, rather than receipts alone; every other source/catalog/axis/acceptance/resource boundary stays fixed.",
+      "question": "With the confirmed view loss repaired, can fresh native authors generate a faithful reusable ICFR measurement, implement/admit the exact definition, and actually retrieve/apply/Reflect/context its exact new version in the four fixed source controls?",
+      "pass": "Actual source-grounded S4 candidate plus faithful S5/fixtures pass independent semantics/orientation and native technical validation; atomic exact version is autonomously executed and retained by the four Fast diagnostic consumers with honest unknowns and scoped reopen equality.",
+      "fail": "Known-material positive control still lacks a genuine candidate, source/definition/semantic/implementation/admission/consumption failure occurs, or actual whole requests exhaust frozen limits.",
+      "on_pass": "Report only the proven diagnostic scope/effect unverified, retain committed-use/magnitude/wholeloop gaps, then choose their named next evidence boundary.",
+      "on_fail": "Retain fixed denominators and exact original wire/answers/corrections/stop reason; diagnose the first actual boundary or request a concrete substantive decision, without further leaf substitutes or hidden budget extensions."
     }
   },
   "successor_prerequisites": [

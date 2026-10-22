@@ -1,0 +1,336 @@
+{
+  "seed": "discovery",
+  "state": "evidence_ready",
+  "budget": {
+    "heavy_remaining": 11,
+    "light_remaining": 3,
+    "browse_remaining": 21
+  },
+  "available_source_families": [
+    "filing"
+  ],
+  "measurable_evidence_manifest": {},
+  "signal_catalog": [],
+  "signal_catalog_disclosure": {
+    "counts": {
+      "available": 0,
+      "included": 0,
+      "omitted_before": 0,
+      "omitted_after": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "max_entry_bytes": 8000,
+    "selection_is_exhaustive": true,
+    "read_action": "inspect_catalog scope=signals item_refs",
+    "read_byte_limit": 16000
+  },
+  "case_refs": [
+    "case-002",
+    "case-003"
+  ],
+  "case_prediction_times": {
+    "case-002": "2025-07-31T00:00:00+00:00",
+    "case-003": "2025-09-30T00:00:00+00:00"
+  },
+  "tool_contracts": {
+    "inspect_catalog": {
+      "default_scope": "signals",
+      "budget_by_scope": {
+        "signals": "light",
+        "evidence": "light",
+        "memory": "browse",
+        "backlog": "light"
+      },
+      "allowed_scopes": [
+        "signals",
+        "evidence",
+        "memory",
+        "backlog"
+      ]
+    },
+    "compute_statistic": {
+      "rules": [
+        "latest_minus_comparable_prior",
+        "latest_over_comparable_prior",
+        "latest_over_latest"
+      ],
+      "operand_count": 2,
+      "operand_scope": "same_case",
+      "operand_order": "numerator_then_denominator_or_latest_then_prior",
+      "numeric_requirements": "finite operands and result; non-zero denominator for ratios"
+    },
+    "read_span": {
+      "target_fields": [
+        "fact_ref",
+        "event_ref",
+        "document_ref"
+      ],
+      "target_count": 1,
+      "offset_min": 0,
+      "length_min": 1,
+      "length_max": 4000,
+      "window_applies_to": [
+        "event_ref",
+        "document_ref"
+      ],
+      "budget_by_target": {
+        "fact_ref": "heavy",
+        "event_ref": "browse",
+        "document_ref": "browse"
+      }
+    }
+  },
+  "known_fact_refs": [],
+  "known_event_refs": [
+    "event-24747d604f79cfb5",
+    "event-99d2c1094c6984b5"
+  ],
+  "known_relation_refs": [],
+  "label_map": {
+    "case-002": "control",
+    "case-003": "control"
+  },
+  "research_axis": {
+    "axis_id": "surge_direction",
+    "population": "eligible_discovery_cases",
+    "positive": "realized_max_multiple >= 2.0",
+    "control": "realized_max_multiple < 2.0"
+  },
+  "evidence_digest": {
+    "fetches": 1,
+    "families_fetched": [
+      "filing"
+    ],
+    "fact_count": 0,
+    "event_count": 2,
+    "relation_count": 0,
+    "cases_with_facts": [],
+    "concept_case_coverage": {},
+    "label_counts": {
+      "positive": 0,
+      "control": 2
+    },
+    "narrative_summary": {
+      "event_count": 2,
+      "family_counts": {
+        "filing": 2
+      },
+      "sample_titles": [
+        "10-Q 2025-05-12",
+        "10-Q 2025-08-14"
+      ],
+      "note": "inspect_catalog with scope=evidence pages titled documents by family and window; copy the result's next_cursor into the next request to reach omitted entries. A page is not the full directory; read_span on event_ref reads the verbatim text"
+    }
+  },
+  "modality_coverage": {
+    "structured": {
+      "available": false,
+      "explored": false,
+      "status": "not_available"
+    },
+    "narrative": {
+      "available": true,
+      "explored": true,
+      "status": "explored"
+    }
+  },
+  "prior_modality_footprints": [],
+  "meta_info": {},
+  "meta_memory_disclosures": [],
+  "slow_method_memory": {},
+  "memory_consumption": {
+    "read_refs": [],
+    "original_disclosure_bytes": 2,
+    "original_disclosure_limit": 48000
+  },
+  "last_action_result": {
+    "action": "read_span",
+    "target": "document_ref",
+    "ref": "document-sec:cik_0001746129:000114036125018373",
+    "document_ref": "document-sec:cik_0001746129:000114036125018373",
+    "offset": 3969625,
+    "length": 4000,
+    "masked": "ITEM 4. Controls and Procedures Our management, with the participation of our Chief Executive Officer and Chief Financial Officer, conducted an evaluation of the effectiveness as of March 31, 2025 of our disclosure controls and procedures, as defined Rules 13a-15(e) and 15d-15(e) under the Exchange Act.&#160; In designing and evaluating the disclosure controls and procedures, management recognizes that any controls and procedures, no matter how well designed and operated, can provide only reasonable assurance of achieving the desired control objectives, and management was required to apply judgment in evaluating its controls and procedures.&#160; Based on this evaluation, our Chief Executive Officer and Chief Financial Officer concluded that our disclosure controls and procedures were effective as of the end of the fiscal quarter covered by this Form 10-Q. Changes in Internal Control over Financial Reporting There was no change in our internal control over financial reporting (as such term is defined in Rules 13a-15(f) and 15d-15(f) under the Exchange Act) that occurred during the three months ended March 31, 2025 that has materially affected, or is reasonably likely to materially affect, such controls. 50 Table of Contents PART II ITEM 1. Legal Proceedings From time to time, we are a party to legal actions that are routine and incidental to our business. Given the nature, scope and complexity of the extensive legal and regulatory landscape applicable to our business, including laws and regulations governing consumer protections, fair lending, fair labor, privacy, information security and anti-money laundering and anti-terrorism laws, we, like all banking organizations, are subject to heightened legal and regulatory compliance and litigation risk. However, based upon available information and in consultation with legal counsel, management is of the opinion that no proceedings exist, either individually or in the aggregate, which, if determined adversely, would have a material adverse effect on our financial statements. ITEM 1A. Risk Factors In addition to th",
+    "verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65",
+    "has_readable_text": true,
+    "readable_chars": 2094,
+    "raw_window_chars": 4000,
+    "next_readable_start": 3973625,
+    "case_refs": [
+      "case-002"
+    ]
+  },
+  "narrative_read_progress": {
+    "items": [
+      {
+        "document_ref": "document-sec:cik_0001746129:000114036125018373",
+        "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+        "offset": 3969625,
+        "length": 4000,
+        "verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65",
+        "has_readable_text": true,
+        "next_readable_start": 3973625,
+        "read_count": 1,
+        "case_refs": [
+          "case-002"
+        ]
+      },
+      {
+        "document_ref": "document-sec:cik_0002009312:000149315225011966",
+        "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+        "offset": 1152908,
+        "length": 4000,
+        "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968",
+        "has_readable_text": true,
+        "next_readable_start": 1156908,
+        "read_count": 1,
+        "case_refs": [
+          "case-003"
+        ]
+      },
+      {
+        "document_ref": "document-sec:cik_0002009312:000149315225011966",
+        "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+        "offset": 1148801,
+        "length": 4000,
+        "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80",
+        "has_readable_text": true,
+        "next_readable_start": 1152908,
+        "read_count": 1,
+        "case_refs": [
+          "case-003"
+        ]
+      }
+    ],
+    "counts": {
+      "available": 3,
+      "included": 3,
+      "omitted_before": 0,
+      "omitted_after": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "max_entry_bytes": 8000,
+    "selection_is_exhaustive": true
+  },
+  "narrative_read_evidence": {
+    "items": [
+      {
+        "document_ref": "document-sec:cik_0001746129:000114036125018373",
+        "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+        "verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65",
+        "offset": 3969625,
+        "length": 4000,
+        "raw_window_chars": 4000,
+        "has_readable_text": true,
+        "readable_chars": 2094,
+        "next_readable_start": 3973625,
+        "source_type": "filing",
+        "published_at": "2025-05-12T20:05:53+00:00",
+        "available_at": "2025-05-12T20:05:53+00:00",
+        "readable_text": "ITEM 4. Controls and Procedures Our management, with the participation of our Chief Executive Officer and Chief Financial Officer, conducted an evaluation of the effectiveness as of March 31, 2025 of our disclosure controls and procedures, as defined Rules 13a-15(e) and 15d-15(e) under the Exchange Act.&#160; In designing and evaluating the disclosure controls and procedures, management recognizes that any controls and procedures, no matter how well designed and operated, can provide only reasonable assurance of achieving the desired control objectives, and management was required to apply judgment in evaluating its controls and procedures.&#160; Based on this evaluation, our Chief Executive Officer and Chief Financial Officer concluded that our disclosure controls and procedures were effective as of the end of the fiscal quarter covered by this Form 10-Q. Changes in Internal Control over Financial Reporting There was no change in our internal control over financial reporting (as such term is defined in Rules 13a-15(f) and 15d-15(f) under the Exchange Act) that occurred during the three months ended March 31, 2025 that has materially affected, or is reasonably likely to materially affect, such controls. 50 Table of Contents PART II ITEM 1. Legal Proceedings From time to time, we are a party to legal actions that are routine and incidental to our business. Given the nature, scope and complexity of the extensive legal and regulatory landscape applicable to our business, including laws and regulations governing consumer protections, fair lending, fair labor, privacy, information security and anti-money laundering and anti-terrorism laws, we, like all banking organizations, are subject to heightened legal and regulatory compliance and litigation risk. However, based upon available information and in consultation with legal counsel, management is of the opinion that no proceedings exist, either individually or in the aggregate, which, if determined adversely, would have a material adverse effect on our financial statements. ITEM 1A. Risk Factors In addition to th",
+        "read_count": 1,
+        "case_refs": [
+          "case-002"
+        ],
+        "read_targets": [
+          {
+            "target": "document_ref",
+            "ref": "document-sec:cik_0001746129:000114036125018373",
+            "case_refs": [
+              "case-002"
+            ]
+          }
+        ]
+      },
+      {
+        "document_ref": "document-sec:cik_0002009312:000149315225011966",
+        "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+        "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968",
+        "offset": 1152908,
+        "length": 4000,
+        "raw_window_chars": 4000,
+        "has_readable_text": true,
+        "readable_chars": 1015,
+        "next_readable_start": 1156908,
+        "source_type": "filing",
+        "published_at": "2025-08-14T20:01:09+00:00",
+        "available_at": "2025-08-14T20:01:09+00:00",
+        "readable_text": "&#160; There were no changes in our internal control over financial reporting during the period covered by this Quarterly Report that materially affected, or are reasonably likely to materially affect, our internal control over financial reporting (as defined in Rules 13a-15(f) and 15d-15(f) under the Exchange Act). &#160; 42 &#160; &#160; PART II&#8212;OTHER INFORMATION &#160; ITEM 1. LEGAL PROCEEDINGS &#160; The Company may be involved in various legal proceedings, claims and other disputes arising from the commercial operations, projects, employees and other matters which, in general, are subject to uncertainties and in which the outcomes are not predictable. The Company determines whether an estimated loss from a contingency should be accrued by assessing whether a loss is deemed probable and can be reasonably estimated. Although the outcomes of these legal proceedings cannot be predicted, the Company does not believe these actions, in the aggregate, will have a material adverse impact on its fin",
+        "read_count": 1,
+        "case_refs": [
+          "case-003"
+        ],
+        "read_targets": [
+          {
+            "target": "document_ref",
+            "ref": "document-sec:cik_0002009312:000149315225011966",
+            "case_refs": [
+              "case-003"
+            ]
+          }
+        ]
+      },
+      {
+        "document_ref": "document-sec:cik_0002009312:000149315225011966",
+        "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+        "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80",
+        "offset": 1148801,
+        "length": 4000,
+        "raw_window_chars": 4000,
+        "has_readable_text": true,
+        "readable_chars": 1631,
+        "next_readable_start": 1152908,
+        "source_type": "filing",
+        "published_at": "2025-08-14T20:01:09+00:00",
+        "available_at": "2025-08-14T20:01:09+00:00",
+        "readable_text": "ITEM 4. CONTROLS AND PROCEDURES &#160; Evaluation of Disclosure Controls and Procedures &#160; Our management, with the participation of our Chief Executive Officer and Chief Financial Officer, evaluated the effectiveness of our disclosure controls and procedures (as defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act at the end of the period covered by this quarterly report. &#160; Based on this evaluation, the Chief Executive Officer and Chief Financial Officer concluded that, as of end of the period covered by this Quarterly Report, our disclosure controls and procedures (as defined in &#167; 240.13a-15(e) or 240.15d-15(e) of Regulation S-K) were effective to provide reasonable assurance that the information required to be disclosed by us in the reports we file or submit under the Exchange Act is recorded, processed, summarized and reported within the time periods specified in the SEC&#8217;s rules and forms, and that such information (i) is accumulated and communicated to management, including our Chief Executive Officer and Chief Financial Officer, as appropriate to allow timely decisions regarding required disclosures and (2) recorded, processed, summarized and reported within the time periods specified in the SEC&#8217;s rules and forms. &#160; We recognize that any controls system, no matter how well designed and operated, can provide only reasonable assurance of achieving its objectives, and our management necessarily applies its judgment in evaluating the benefits of possible controls and procedures relative to their costs. &#160; Changes in Internal Control over Financial Reporting",
+        "read_count": 1,
+        "case_refs": [
+          "case-003"
+        ],
+        "read_targets": [
+          {
+            "target": "document_ref",
+            "ref": "document-sec:cik_0002009312:000149315225011966",
+            "case_refs": [
+              "case-003"
+            ]
+          }
+        ]
+      }
+    ],
+    "counts": {
+      "available": 3,
+      "included": 3,
+      "omitted_before": 0,
+      "omitted_after": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "max_entry_bytes": 40000,
+    "selection_is_exhaustive": true,
+    "omitted_entries": [],
+    "max_items": 12,
+    "selection_order": "most_recent_read_first",
+    "revisit_action": "read_span with a known event_ref or document_ref at these coordinates; ordinary browse cost"
+  },
+  "available_actions": [
+    "inspect_manifest",
+    "inspect_catalog",
+    "fetch_evidence",
+    "compute_statistic",
+    "read_span",
+    "compare_groups",
+    "propose_candidate",
+    "record_deferred",
+    "record_no_pattern"
+  ]
+}

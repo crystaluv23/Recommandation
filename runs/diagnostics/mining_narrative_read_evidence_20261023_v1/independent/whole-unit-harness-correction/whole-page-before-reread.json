@@ -1,0 +1,364 @@
+{
+  "items": [
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "787e9007d7e971e74143daa9236f434d01f7dcd757d735e5cfbbabbd89d6f98d",
+      "offset": 1200,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": null,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_12 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "dc5fdd9633a49c785614387a4da62bda811145be14313dc288a0e1f8a0657c52",
+      "offset": 1100,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 1200,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_11 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "13482a61da9c9e11f08e1e5b2d10c135e5824f396d9bad10b845d98fd301b272",
+      "offset": 1000,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 1100,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_10 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "ea9947ef9fa1836575aab20ed6d9e22b8c673930cc599682b1679d614460fe1e",
+      "offset": 900,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 1000,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_09 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "5638285e72cbe43fb2848916c105cc35612ea95c1edf09393bf7dfb3fe992d62",
+      "offset": 800,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 900,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_08 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "367aee979279f6c85e8f50419c6f3571f8c3d46f5542a2e7ab0ccb775cfd82d1",
+      "offset": 700,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 800,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_07 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "568cb636e00f67b89c995a1c4043d01b798210c727a53030571f74305e5dd29b",
+      "offset": 600,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 700,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_06 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "ed89c882edc4c15d6ce40dc4c138b3918f93c7bce424ada5346bc3cce5ad2e82",
+      "offset": 500,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 600,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_05 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "90d393e65b1c70664f3fcb6b84f3546c8c92f488c635e4f273f5cea64f8b3044",
+      "offset": 400,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 500,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_04 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "451555fb2eb5ac9a1211296ad29734db471ee67abf3c142cc467c312c8891db2",
+      "offset": 300,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 400,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_03 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "21aa0df24ee37a9c4fcd690f70e7842ba9304ab78befa846c8e2ab67658c2be9",
+      "offset": 200,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 300,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_02 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    },
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "verbatim_hash": "3918f39c4ca0b7ca7fb0075e23fc4d5e3f1a5807b7e92e1846166abb00e542bc",
+      "offset": 100,
+      "length": 40,
+      "raw_window_chars": 40,
+      "has_readable_text": true,
+      "readable_chars": 32,
+      "next_readable_start": 200,
+      "source_type": "company_news",
+      "published_at": "2025-01-01T00:00:00+00:00",
+      "available_at": "2025-01-01T00:00:00+00:00",
+      "readable_text": "WINDOW_01 complete exact source.",
+      "read_count": 1,
+      "case_refs": [
+        "case-001"
+      ],
+      "read_targets": [
+        {
+          "target": "document_ref",
+          "ref": "document-thirteen-ranges",
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "available": 13,
+    "included": 12,
+    "omitted_before": 0,
+    "omitted_after": 1,
+    "oversized": 0
+  },
+  "cursor": 0,
+  "next_cursor": 12,
+  "oversized_entries": [],
+  "max_entry_bytes": 40000,
+  "selection_is_exhaustive": false,
+  "omitted_entries": [
+    {
+      "document_ref": "document-thirteen-ranges",
+      "content_hash": "39a16b306b3e396ad50ad6a3973b3c4d06ba7a9b407b6f2e3069d67b8558ef49",
+      "offset": 0,
+      "length": 40,
+      "required_bytes": 633
+    }
+  ],
+  "max_items": 12,
+  "selection_order": "most_recent_read_first",
+  "revisit_action": "read_span with a known event_ref or document_ref at these coordinates; ordinary browse cost"
+}

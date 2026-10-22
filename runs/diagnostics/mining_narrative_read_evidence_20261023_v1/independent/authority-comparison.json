@@ -1,0 +1,18 @@
+{
+  "scope": "AST equality of existing tool/admission/source/budget authority methods, plus pure new view method; not semantic model compliance",
+  "action_enum_equal": true,
+  "unchanged_methods": [
+    "__init__",
+    "_execute_read_span",
+    "_read_narrative_span",
+    "_read_fact_span",
+    "materialization_evidence",
+    "_execute_propose",
+    "_validate_narrative_predicate",
+    "_execute",
+    "_remaining_budget"
+  ],
+  "new_view_self_attribute_writes": [],
+  "old_controller_sha256": "cbb8b89a95888faa0d59c5b1f0ed46cb97d9fcd960df5c4a272288c4df4240ee",
+  "current_controller_sha256": "4183dc392b62a77c9e55423ec88b510a266747f08d562329fb4b00426d34af31"
+}

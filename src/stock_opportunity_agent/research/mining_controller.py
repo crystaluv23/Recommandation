@@ -592,6 +592,7 @@ class LabelAwareMiningController:
                 list(reversed(list(self._read_progress.values()))),
                 max_items=max(1, len(self._read_progress)),
             )
+            view["narrative_read_evidence"] = self._narrative_read_evidence_view()
         if self._fact_read_progress:
             entries = deepcopy(list(reversed(list(self._fact_read_progress.values()))))
             progress = bounded_entry_page(entries)
@@ -627,6 +628,46 @@ class LabelAwareMiningController:
                 "row_rationale": NEED_ROW_RATIONALE_CONTRACT,
             }
         return view
+
+    def _narrative_read_evidence_view(self) -> dict[str, Any]:
+        """Project whole executed narrative units without changing source handoff."""
+        fields = ("document_ref", "content_hash", "verbatim_hash", "offset", "length",
+                  "raw_window_chars", "has_readable_text", "readable_chars", "next_readable_start",
+                  "source_type", "published_at", "available_at")
+        groups: dict[tuple[Any, ...], list[Mapping[str, Any]]] = {}
+        for row in self._materialization_reads.values():
+            if _evidence_source_family(row["source_type"]) in _NARRATIVE_FAMILIES:
+                key = (row["document_ref"], row["content_hash"], row["offset"], row["length"])
+                groups.setdefault(key, []).append(row)
+        entries = []
+        for receipt in reversed(list(self._read_progress.values())):
+            key = (receipt["document_ref"], receipt["content_hash"], receipt["offset"], receipt["length"])
+            reads = groups.get(key)
+            if not reads:
+                continue
+            first = reads[0]
+            unit = {field: first[field] for field in fields}
+            unit["readable_text"] = strip_document_artifacts(str(_mask_identity_values(
+                first["readable_text"], self.identity_aliases, expand_aliases=False)))
+            unit["read_count"] = receipt["read_count"]
+            unit["case_refs"] = sorted({ref for row in reads for ref in row["case_refs"]})
+            # Targets retain their own observed scopes: a document alias must not
+            # turn one case's event read into another case's event permission.
+            unit["read_targets"] = [{"target": row["target"], "ref": row["ref"],
+                                     "case_refs": list(row["case_refs"])} for row in reads]
+            entries.append(unit)
+        page = bounded_entry_page(entries, max_items=12, max_bytes=40_000)
+
+        def location(index: int) -> dict[str, Any]:
+            row = entries[index]
+            return {**{field: row[field] for field in ("document_ref", "content_hash", "offset", "length")},
+                    "required_bytes": json_bytes([row])}
+
+        page["oversized_entries"] = [
+            {**row, **location(row["index"])} for row in page["oversized_entries"]]
+        page["omitted_entries"] = [location(index) for index in range(page["next_cursor"] or len(entries), len(entries))]
+        return {**page, "max_items": 12, "selection_order": "most_recent_read_first",
+                "revisit_action": "read_span with a known event_ref or document_ref at these coordinates; ordinary browse cost"}
 
     def _available_catalog_scopes(self) -> list[str]:
         """Disclose only catalog variants permitted by their actual budgets."""
