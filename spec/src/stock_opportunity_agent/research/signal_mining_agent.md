@@ -68,6 +68,15 @@ corrections and validates the assembled action before any tool executes.
   rule `available_at <= prediction_time`, reusing the shared SEC structured
   fact selector and the unchanged-file parse cache. No full-corpus
   materialization exists in any phase.
+  `fetch_evidence.query` reaches the shared concept selector for each selected
+  structured document, within the same12,000-character projection limit. It
+  ranks complete existing concept units without changing source selection,
+  periods, values, namespace, literal spans or ref identity. An omitted concept
+  may therefore be sought with the existing targeted fetch; no-query projection
+  remains identical. Query coverage counts literal terms present in actually
+  projected fact bindings/spans or disclosed narrative excerpts, never merely
+  in an unprojected document. A lexical match does not establish answer
+  sufficiency, comparability, semantic equivalence or source completeness.
 - Every Fact node binds concept, unit, period, value, an opaque document ref,
   a verbatim exact span, the content hash, and availability time as one
   indivisible unit. A character window may never present a number detached

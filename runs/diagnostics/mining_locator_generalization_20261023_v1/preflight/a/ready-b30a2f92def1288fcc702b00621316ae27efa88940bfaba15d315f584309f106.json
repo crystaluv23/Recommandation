@@ -1,0 +1,7 @@
+{
+  "event_type": "request_ready",
+  "model_alias": "independent-subagent",
+  "request_hash": "b30a2f92def1288fcc702b00621316ae27efa88940bfaba15d315f584309f106",
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/b30a2f92def1288fcc702b00621316ae27efa88940bfaba15d315f584309f106.json",
+  "stage": "mining_controller_step"
+}

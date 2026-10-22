@@ -1,0 +1,628 @@
+{
+  "action": {
+    "action": "fetch_evidence",
+    "case_refs": [
+      "case-001"
+    ],
+    "max_documents": 1,
+    "rationale": [
+      "Controlled module source preparation."
+    ],
+    "source_families": [
+      "sec_company_facts"
+    ]
+  },
+  "facts": [
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "EntityCommonStockSharesOutstanding",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Entity Common Stock, Shares Outstanding\",\"start\":null,\"tag\":\"EntityCommonStockSharesOutstanding\",\"taxonomy\":\"dei\",\"unit\":\"shares\",\"value\":80994098}",
+      "fact_ref": "fact-04581424445a1b1e",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "Entity Common Stock, Shares Outstanding",
+      "taxonomy": "dei",
+      "unit": "shares",
+      "value": "80994098"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "GrossProfit",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2023-07-04\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"GrossProfit\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":125000000}",
+      "fact_ref": "fact-a201b1f1cd0e405a",
+      "period": {
+        "end": "2023-07-04"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "125000000"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "ReserveOfExchangeDifferencesOnTranslation",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-07-04\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"ReserveOfExchangeDifferencesOnTranslation\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":27200000}",
+      "fact_ref": "fact-8e6391a8eb3c9743",
+      "period": {
+        "end": "2024-07-04"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "27200000"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "ReserveOfExchangeDifferencesOnTranslation",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"ReserveOfExchangeDifferencesOnTranslation\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-4412219}",
+      "fact_ref": "fact-2514935a069837df",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "-4412219"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "AcquisitiondateFairValueOfTotalConsiderationTransferred",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-07-01\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"AcquisitiondateFairValueOfTotalConsiderationTransferred\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":1100000}",
+      "fact_ref": "fact-8b45f3b8eb093a03",
+      "period": {
+        "end": "2024-07-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "1100000"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "AcquisitiondateFairValueOfTotalConsiderationTransferred",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-07-01\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"AcquisitiondateFairValueOfTotalConsiderationTransferred\",\"taxonomy\":\"ifrs-full\",\"unit\":\"AUD\",\"value\":1700000}",
+      "fact_ref": "fact-25905ad8eca4a933",
+      "period": {
+        "end": "2024-07-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "AUD",
+      "value": "1700000"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "WeightedAverageShares",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2023-07-01\",\"tag\":\"WeightedAverageShares\",\"taxonomy\":\"ifrs-full\",\"unit\":\"shares\",\"value\":26481860}",
+      "fact_ref": "fact-35455de13663bb52",
+      "period": {
+        "end": "2024-06-30",
+        "start": "2023-07-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "shares",
+      "value": "26481860"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "WeightedAverageShares",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2022-07-01\",\"tag\":\"WeightedAverageShares\",\"taxonomy\":\"ifrs-full\",\"unit\":\"shares\",\"value\":100}",
+      "fact_ref": "fact-80ed1686b06000a6",
+      "period": {
+        "end": "2023-06-30",
+        "start": "2022-07-01"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "shares",
+      "value": "100"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "WarrantLiability",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"WarrantLiability\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":45907114}",
+      "fact_ref": "fact-76961a78c309dfdb",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "45907114"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "TradeAndOtherPayablesToTradeSuppliers",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"TradeAndOtherPayablesToTradeSuppliers\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":6405161}",
+      "fact_ref": "fact-6882752f47b35f47",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "6405161"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "TradeAndOtherPayablesToTradeSuppliers",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"TradeAndOtherPayablesToTradeSuppliers\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":3244725}",
+      "fact_ref": "fact-182cfb4ddcbd4503",
+      "period": {
+        "end": "2023-06-30"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "3244725"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "TradeAndOtherPayables",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"TradeAndOtherPayables\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":4019620}",
+      "fact_ref": "fact-e9b3eaa0ee66f3a9",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "4019620"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "TradeAndOtherCurrentPayablesToRelatedParties",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"TradeAndOtherCurrentPayablesToRelatedParties\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":4268857}",
+      "fact_ref": "fact-b23b2ab97a8f1625",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "4268857"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "TradeAndOtherCurrentPayablesToRelatedParties",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"TradeAndOtherCurrentPayablesToRelatedParties\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":34603}",
+      "fact_ref": "fact-f5912ec4fc9d4937",
+      "period": {
+        "end": "2023-06-30"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "34603"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "TradeAndOtherCurrentPayables",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"TradeAndOtherCurrentPayables\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":13226525}",
+      "fact_ref": "fact-6a7d59e627db113b",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "13226525"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "TradeAndOtherCurrentPayables",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"TradeAndOtherCurrentPayables\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":3267148}",
+      "fact_ref": "fact-4168f3473c5059aa",
+      "period": {
+        "end": "2023-06-30"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "3267148"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "TaxExpenseRelatingToProfitLossFromOrdinaryActivitiesOfDiscontinuedOperations",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2023-07-01\",\"tag\":\"TaxExpenseRelatingToProfitLossFromOrdinaryActivitiesOfDiscontinuedOperations\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-147489253}",
+      "fact_ref": "fact-04976b1e73b64511",
+      "period": {
+        "end": "2024-06-30",
+        "start": "2023-07-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "-147489253"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "TaxExpenseRelatingToProfitLossFromOrdinaryActivitiesOfDiscontinuedOperations",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2022-07-01\",\"tag\":\"TaxExpenseRelatingToProfitLossFromOrdinaryActivitiesOfDiscontinuedOperations\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-5450213}",
+      "fact_ref": "fact-7bba996ecb259cdd",
+      "period": {
+        "end": "2023-06-30",
+        "start": "2022-07-01"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "-5450213"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "TaxEffectOfForeignTaxRates",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2023-07-01\",\"tag\":\"TaxEffectOfForeignTaxRates\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":21038}",
+      "fact_ref": "fact-71a3672e50f2bda5",
+      "period": {
+        "end": "2024-06-30",
+        "start": "2023-07-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "21038"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "ShorttermDepositsClassifiedAsCashEquivalents",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"ShorttermDepositsClassifiedAsCashEquivalents\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":20679}",
+      "fact_ref": "fact-c3cca98fa2fef552",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "20679"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "ShorttermDepositsClassifiedAsCashEquivalents",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"ShorttermDepositsClassifiedAsCashEquivalents\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":21170}",
+      "fact_ref": "fact-2429accbb884ca3d",
+      "period": {
+        "end": "2023-06-30"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "21170"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "SharePremium",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"SharePremium\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":51387912}",
+      "fact_ref": "fact-c4448f4f06ef8829",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "51387912"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "ShareOfProfitLossOfDiscontinuedOperationsOfAssociatesAndJointVenturesAccountedForUsingEquityMethod",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2023-07-01\",\"tag\":\"ShareOfProfitLossOfDiscontinuedOperationsOfAssociatesAndJointVenturesAccountedForUsingEquityMethod\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":474317}",
+      "fact_ref": "fact-f5bec4de50e340d5",
+      "period": {
+        "end": "2024-06-30",
+        "start": "2023-07-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "474317"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "ShareOfProfitLossOfDiscontinuedOperationsOfAssociatesAndJointVenturesAccountedForUsingEquityMethod",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2022-07-01\",\"tag\":\"ShareOfProfitLossOfDiscontinuedOperationsOfAssociatesAndJointVenturesAccountedForUsingEquityMethod\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":3845}",
+      "fact_ref": "fact-2dbb1f1b312faa56",
+      "period": {
+        "end": "2023-06-30",
+        "start": "2022-07-01"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "3845"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2023-07-01\",\"tag\":\"ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-2263}",
+      "fact_ref": "fact-e457685861764c50",
+      "period": {
+        "end": "2024-06-30",
+        "start": "2023-07-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "-2263"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "ShareIssueRelatedCost",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2023-07-01\",\"tag\":\"ShareIssueRelatedCost\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":1875000}",
+      "fact_ref": "fact-beef034c1e5b96e3",
+      "period": {
+        "end": "2024-06-30",
+        "start": "2023-07-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "1875000"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "SellingExpense",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2023-07-01\",\"tag\":\"SellingExpense\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":63410794}",
+      "fact_ref": "fact-bca8bf0aaa4ca7ad",
+      "period": {
+        "end": "2024-06-30",
+        "start": "2023-07-01"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "63410794"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "RightofuseAssets",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"RightofuseAssets\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":30871}",
+      "fact_ref": "fact-a9002680f7753687",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "30871"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "RetainedEarnings",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"RetainedEarnings\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-156728482}",
+      "fact_ref": "fact-2bd27671da61f5ca",
+      "period": {
+        "end": "2024-06-30"
+      },
+      "record_selection": "latest",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "-156728482"
+    },
+    {
+      "available_at": "2024-10-31T00:00:00+00:00",
+      "case_ref": "case-001",
+      "concept": "RetainedEarnings",
+      "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+      "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+      "exact_span": "{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"RetainedEarnings\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-9239229}",
+      "fact_ref": "fact-1f27bea620f7b7c6",
+      "period": {
+        "end": "2023-06-30"
+      },
+      "record_selection": "comparable_prior",
+      "source_display_name": "",
+      "taxonomy": "ifrs-full",
+      "unit": "USD",
+      "value": "-9239229"
+    }
+  ],
+  "ledger": {
+    "cycle_id": 1,
+    "entries": [
+      {
+        "action": "fetch_evidence",
+        "action_id": 1,
+        "case_refs": [
+          "case-001"
+        ],
+        "coverage": {
+          "query_coverage": {
+            "matched_terms": [],
+            "sufficient": false
+          },
+          "unread_same_source": true
+        },
+        "evidence_refs": [
+          "fact-04581424445a1b1e",
+          "fact-a201b1f1cd0e405a",
+          "fact-8e6391a8eb3c9743",
+          "fact-2514935a069837df",
+          "fact-8b45f3b8eb093a03",
+          "fact-25905ad8eca4a933",
+          "fact-35455de13663bb52",
+          "fact-80ed1686b06000a6",
+          "fact-76961a78c309dfdb",
+          "fact-6882752f47b35f47",
+          "fact-182cfb4ddcbd4503",
+          "fact-e9b3eaa0ee66f3a9",
+          "fact-b23b2ab97a8f1625",
+          "fact-f5912ec4fc9d4937",
+          "fact-6a7d59e627db113b",
+          "fact-4168f3473c5059aa",
+          "fact-04976b1e73b64511",
+          "fact-7bba996ecb259cdd",
+          "fact-71a3672e50f2bda5",
+          "fact-c3cca98fa2fef552",
+          "fact-2429accbb884ca3d",
+          "fact-c4448f4f06ef8829",
+          "fact-f5bec4de50e340d5",
+          "fact-2dbb1f1b312faa56",
+          "fact-e457685861764c50",
+          "fact-beef034c1e5b96e3",
+          "fact-bca8bf0aaa4ca7ad",
+          "fact-a9002680f7753687",
+          "fact-2bd27671da61f5ca",
+          "fact-1f27bea620f7b7c6",
+          "relation-02a988c8c73c3bf5",
+          "relation-3ad23767ef7414a4",
+          "relation-4a244b0f3dd2fe28",
+          "relation-4d2215a6f971f53e",
+          "relation-92948d41fe6ce2a9",
+          "relation-999b331f086efcfe",
+          "relation-a083fbff56fa007f",
+          "relation-d550f0861482e67b",
+          "relation-dbb304b51ff8798e"
+        ],
+        "input_hash": "f9296fb0bf9ff928fbd3afb486f7398697178002a6f6c8e07c564c539dd35e83",
+        "note": null,
+        "omitted_coverage": {
+          "excluded_document_ids": [
+            "secfacts:0001951089:0001213900-25-024970:1c3850c9cb8ad739"
+          ]
+        },
+        "output_hash": "05ee28b4e734455cff919d64a70286eeeff227ff331c5fb18ee03767e9aab478",
+        "pit_status": "enforced",
+        "source_types": [
+          "sec_company_facts"
+        ],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 0
+        }
+      }
+    ],
+    "seed_id": "seed-discovery"
+  },
+  "receipt": {
+    "action": "fetch_evidence",
+    "cases_requested": 1,
+    "excluded_document_ids": 1,
+    "families": [
+      "sec_company_facts"
+    ],
+    "narrative_evidence": null,
+    "new_facts": 30,
+    "new_relations": 9,
+    "total_events": 0,
+    "total_facts": 30,
+    "total_relations": 9
+  }
+}

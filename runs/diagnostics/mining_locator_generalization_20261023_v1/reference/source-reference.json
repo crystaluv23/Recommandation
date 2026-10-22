@@ -1,0 +1,290 @@
+{
+  "schema_version": "independent-mining-locator-generalization-source-reference-v1",
+  "created_at_utc": "2026-10-22T21:12:02.519315+00:00",
+  "role": "Independent source reviewer; not production author or fresh consumer.",
+  "read_boundary": "Read only existing static inventory, its first native manifest wire, specified source originals, old0671 original and project contracts/reports. No new production stage/raw/model answer, LabelStore/check/LockedTest, external tool/API/GET.",
+  "binding_sources": {
+    "static_inventory": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_positive_frontier_20261021_v1/oracle/static-inventory.json",
+      "sha256": "9be1e6776429ef5d8d77c5cbdfbf7f2c5ce7e37447fea2ca043d5cdfb504f3b4"
+    },
+    "original_native_manifest_wire": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/exchange/inbox/41b684543a85c2accdcbfccc64df1a80983d7b3ea7f57c147808a14d57e2c1af.json",
+      "sha256": "f20fbbe47e5e16a31e2cbd11400d7a7ab239d39d8964438f02375e720b62a304"
+    },
+    "old_failed_source": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+      "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+    }
+  },
+  "samples": [
+    {
+      "sample_id": "source_1179",
+      "selection": "Original dev8 order, first no-query typed financial document; chosen before any new answer, not by result or label.",
+      "case_ref": "case-001",
+      "case_id": "cik_0001951089:20250530",
+      "prediction_cutoff": "2025-05-30T00:00:00+00:00",
+      "original_opaque_group": "positive",
+      "case_financial_document_count_in_original_inventory": 2,
+      "latest_financial_available_at_in_original_inventory": "2025-03-20T00:00:00+00:00",
+      "source_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1179.json",
+        "sha256": "4e03393bbff52aef5bca7b324502266842811d03f7611c9f28962cfd0ae0379a"
+      },
+      "document_outer_except_content": {
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "company_id": "cik_0001951089",
+        "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+        "document_id": "secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+        "metadata": {
+          "accession_number": "0001213900-24-092156",
+          "acquisition_policy_hash": "1dcfcf2d216f68ba3570cc92f7ac3f8e7b4d0dbd6ae54a87f021f01c34f02e9b",
+          "acquisition_selection": {
+            "available_at_through": "2025-05-30T00:00:00+00:00",
+            "form_allowlist": [
+              "10-K",
+              "10-K/A",
+              "10-Q",
+              "10-Q/A",
+              "20-F",
+              "20-F/A",
+              "40-F",
+              "40-F/A",
+              "6-K",
+              "6-K/A",
+              "8-K",
+              "8-K/A"
+            ],
+            "period_end_from": "0001-01-01",
+            "period_end_through": "2025-05-30",
+            "taxonomy_allowlist": [
+              "dei",
+              "ifrs-full",
+              "srt",
+              "us-gaap"
+            ]
+          },
+          "availability_policy": "next_utc_day_after_companyfacts_filed_date",
+          "cik": "0001951089",
+          "content_scope": "standard_taxonomy_facts_for_accession",
+          "fact_count": 209,
+          "form": "20-F",
+          "period_end_from": "0001-01-01",
+          "period_end_through": "2025-05-30",
+          "requires_primary_filing_audit": true,
+          "retrieved_at": "2026-10-19T23:39:01.039467+00:00",
+          "retrospective_api_extraction": true,
+          "source_key": "sec_edgar",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001951089.json",
+          "symbol": "CRML",
+          "taxonomy_namespaces": [
+            "dei",
+            "ifrs-full"
+          ]
+        },
+        "published_at": "2024-10-30T00:00:00+00:00",
+        "source_type": "sec_company_facts"
+      },
+      "content_headers": {
+        "accession_number": "0001213900-24-092156",
+        "cik": "0001951089",
+        "filing_date": "2024-10-30",
+        "form": "20-F",
+        "schema_version": "sec-company-facts-document-v1"
+      },
+      "target_concept": "CashFlowsFromUsedInOperatingActivities",
+      "operands_in_original_order": [
+        {
+          "source_json_pointer": "/content(JSON)/facts/34",
+          "whole_row": {
+            "description": null,
+            "end": "2023-06-30",
+            "fiscal_period": "FY",
+            "fiscal_year": 2024,
+            "frame": null,
+            "label": null,
+            "start": "2022-07-01",
+            "tag": "CashFlowsFromUsedInOperatingActivities",
+            "taxonomy": "ifrs-full",
+            "unit": "USD",
+            "value": -2378789
+          }
+        },
+        {
+          "source_json_pointer": "/content(JSON)/facts/35",
+          "whole_row": {
+            "description": null,
+            "end": "2024-06-30",
+            "fiscal_period": "FY",
+            "fiscal_year": 2024,
+            "frame": null,
+            "label": null,
+            "start": "2023-07-01",
+            "tag": "CashFlowsFromUsedInOperatingActivities",
+            "taxonomy": "ifrs-full",
+            "unit": "USD",
+            "value": -15122354
+          }
+        }
+      ],
+      "supported_comparison": {
+        "scope": "Within this exact accession/document and company only. Later end versus earlier end, same taxonomy/tag/unit and aligned calendar-duration windows. No cross-case predictive implication.",
+        "prior_locator": "/content(JSON)/facts/34",
+        "current_locator": "/content(JSON)/facts/35",
+        "prior_value": -2378789,
+        "current_value": -15122354,
+        "optional_current_minus_prior": -12743565,
+        "optional_arithmetic_is_not_required": true,
+        "period_interpretation": "Two July-to-June annual duration windows; both raw fiscal_year values are 2024 and fiscal_period FY, not independent calendar-period names.",
+        "direction_interpretation": "Both negative; later cash outflow is larger in magnitude and the signed OCF value is lower."
+      },
+      "source_boundaries": [
+        "sec_company_facts normalized standard-taxonomy facts for one accession; not the primary filing body audit.",
+        "retrospective_api_extraction=true; requires_primary_filing_audit=true; availability is the recorded next-UTC-day policy, not independently proven historical public body time.",
+        "All metadata/acquisition selections retained verbatim above. Historical selected document is not the latest in the original case inventory.",
+        "No full corpus source audit, current-2025 OCF claim, taxonomy equivalence across IFRS/US-GAAP, new measurement, causal/predictive result, absence/no-pattern or complete S3/S4 is established."
+      ]
+    },
+    {
+      "sample_id": "source_0770",
+      "selection": "Original dev8 order, first no-query typed financial document; chosen before any new answer, not by result or label.",
+      "case_ref": "case-002",
+      "case_id": "cik_0001746129:20250731",
+      "prediction_cutoff": "2025-07-31T00:00:00+00:00",
+      "original_opaque_group": "control",
+      "case_financial_document_count_in_original_inventory": 27,
+      "latest_financial_available_at_in_original_inventory": "2025-05-13T00:00:00+00:00",
+      "source_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0770.json",
+        "sha256": "6d4348d8c1a7f99f64a93238a7ea770d21307d56f2ee560101a7c17622dcc0bd"
+      },
+      "document_outer_except_content": {
+        "available_at": "2018-11-15T00:00:00+00:00",
+        "company_id": "cik_0001746129",
+        "content_hash": "4cb97d2eee42f5caac8671264d41e0d7d4455237d2ba654b3a174de4e4cd423b",
+        "document_id": "secfacts:0001746129:0001140361-18-043119:4cb97d2eee42f5ca",
+        "metadata": {
+          "accession_number": "0001140361-18-043119",
+          "acquisition_policy_hash": "8b8fbfbd4bf57efe1adcf7a40ee035479d2d07ecaccc601728c0beea6b4ae295",
+          "acquisition_selection": {
+            "available_at_through": "2025-07-31T00:00:00+00:00",
+            "form_allowlist": [
+              "10-K",
+              "10-K/A",
+              "10-Q",
+              "10-Q/A",
+              "20-F",
+              "20-F/A",
+              "40-F",
+              "40-F/A",
+              "6-K",
+              "6-K/A",
+              "8-K",
+              "8-K/A"
+            ],
+            "period_end_from": "0001-01-01",
+            "period_end_through": "2025-07-31",
+            "taxonomy_allowlist": [
+              "dei",
+              "ifrs-full",
+              "srt",
+              "us-gaap"
+            ]
+          },
+          "availability_policy": "next_utc_day_after_companyfacts_filed_date",
+          "cik": "0001746129",
+          "content_scope": "standard_taxonomy_facts_for_accession",
+          "fact_count": 394,
+          "form": "10-Q",
+          "period_end_from": "0001-01-01",
+          "period_end_through": "2025-07-31",
+          "requires_primary_filing_audit": true,
+          "retrieved_at": "2026-10-19T23:38:52.307310+00:00",
+          "retrospective_api_extraction": true,
+          "source_key": "sec_edgar",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001746129.json",
+          "symbol": "BSVN",
+          "taxonomy_namespaces": [
+            "dei",
+            "us-gaap"
+          ]
+        },
+        "published_at": "2018-11-14T00:00:00+00:00",
+        "source_type": "sec_company_facts"
+      },
+      "content_headers": {
+        "accession_number": "0001140361-18-043119",
+        "cik": "0001746129",
+        "filing_date": "2018-11-14",
+        "form": "10-Q",
+        "schema_version": "sec-company-facts-document-v1"
+      },
+      "target_concept": "NetCashProvidedByUsedInOperatingActivities",
+      "operands_in_original_order": [
+        {
+          "source_json_pointer": "/content(JSON)/facts/257",
+          "whole_row": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2017-09-30",
+            "fiscal_period": "Q3",
+            "fiscal_year": 2018,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2017-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 20727000
+          }
+        },
+        {
+          "source_json_pointer": "/content(JSON)/facts/258",
+          "whole_row": {
+            "description": "Amount of cash inflow (outflow) from operating activities, including discontinued operations. Operating activity cash flows include transactions, adjustments, and changes in value not defined as investing or financing activities.",
+            "end": "2018-09-30",
+            "fiscal_period": "Q3",
+            "fiscal_year": 2018,
+            "frame": null,
+            "label": "Net Cash Provided by (Used in) Operating Activities",
+            "start": "2018-01-01",
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 20122000
+          }
+        }
+      ],
+      "supported_comparison": {
+        "scope": "Within this exact accession/document and company only. Later end versus earlier end, same taxonomy/tag/unit and aligned calendar-duration windows. No cross-case predictive implication.",
+        "prior_locator": "/content(JSON)/facts/257",
+        "current_locator": "/content(JSON)/facts/258",
+        "prior_value": 20727000,
+        "current_value": 20122000,
+        "optional_current_minus_prior": -605000,
+        "optional_arithmetic_is_not_required": true,
+        "period_interpretation": "Two January-through-September nine-month/YTD windows; fiscal_period Q3 does not make them standalone Q3 cash flows; both raw fiscal_year values are 2018.",
+        "direction_interpretation": "Both positive; later cash inflow is smaller and signed OCF value is lower."
+      },
+      "source_boundaries": [
+        "sec_company_facts normalized standard-taxonomy facts for one accession; not the primary filing body audit.",
+        "retrospective_api_extraction=true; requires_primary_filing_audit=true; availability is the recorded next-UTC-day policy, not independently proven historical public body time.",
+        "All metadata/acquisition selections retained verbatim above. Historical selected document is not the latest in the original case inventory.",
+        "No full corpus source audit, current-2025 OCF claim, taxonomy equivalence across IFRS/US-GAAP, new measurement, causal/predictive result, absence/no-pattern or complete S3/S4 is established."
+      ]
+    }
+  ],
+  "generalization_assessment": {
+    "admissible_as_distinct_source_control": true,
+    "meaning": "Two different preselected issuers/accessions/document hashes/periods/value/sign families relative to old0671, with IFRS and US-GAAP shapes. This is within-provider source-instance generalization of comparison-locator/fact-consumption behavior, not a new external provider or research generalization.",
+    "old_target_boundary": "Original actual0671 terminal at98304 and original two-control1/2 remain unchanged; no fifth old-target answer, reentry, renamed target continuation, budget transfer, or retroactive pass.",
+    "necessary_driver_conditions": [
+      "Fresh operation and no old answer/cache continuation; old artifacts unchanged.",
+      "No old0671 source operands or oracle supplied as if new; new source chosen by original dev8 order/first noquery doc, not model answer/outcome.",
+      "Freeze this reference and obligations before first formal inbox; retain same32768 request/98304 aggregate/6decisions including corrections/6heavy including controlled fetch/2000 output limits.",
+      "Report fixed denominator2 separately from old1/2; neither count nor claims extend beyond named module."
+    ]
+  },
+  "unverified": [
+    "Exact new driver/source filtering, current-wire reachability, final freeze timestamps, exact inbox/outbox execution, per-step transport budgets, source preservation and terminal interception await separate preflight/interface review."
+  ]
+}

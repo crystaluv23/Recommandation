@@ -1,0 +1,34 @@
+{
+  "schema_version": "independent-mining-locator-generalization-obligations-supplement-v1",
+  "created_at_utc": "2026-10-22T21:17:41.795451+00:00",
+  "original_reference": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/source-reference.json",
+    "sha256": "03b55378be4faa422310abde07d01f52614123d1a0a49270372eb161da62bd43"
+  },
+  "original_obligations": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/prefreeze-obligations.json",
+    "sha256": "92e5a8278a2cb55ecbb0c62bfc58904864f15ca3ad71fa53105717cae91ceee2"
+  },
+  "originals_unchanged": true,
+  "reason": "Before first formal inbox, target source1179 exists but its OCF pair is omitted from original noquery bounded concept projection. Existing fetch query now reaches shared concept selector. This supplement clarifies controlled preparation without changing source selection or semantic obligations.",
+  "controlled_preparation": {
+    "source_selection": "Historical first noquery document by original dev8 order remains1179 and0770. The actual module preparation now uses one explicit target-concept query fetch, max_documents1, and must assert the exact same selected source document ID/hash.",
+    "autonomous_retrieval_claim_allowed": false,
+    "author_input": "No oracle/ref/answer/path supplied. Actual native source facts are projected by existing12k shared selector, with taxonomy/unit/period/value/literal/ref identity preserved.",
+    "budget": "Controlled fetch still uses one of original heavy6. All subsequent authors independently choose among read_span(fact_ref), compare_groups, compute_statistic, record_deferred. No author fetch or extra allowance.",
+    "noquery_compatibility": "Optional private projector query defaultsNone; unchanged callers and old completed stage retain noquery behavior."
+  },
+  "obligation_mapping": {
+    "O1": "Autonomy refers to production author choices after controlled target-query preparation. Both actual operand reads remain required.",
+    "O2": "All exact-source semantics unchanged; original period/tag/unit/sign/history qualifications apply. Generic arithmetic still optional.",
+    "O3": "Final claim must remain a bounded historical source-consumption conclusion; controlled initial query is not autonomous source discovery. Rationale need not recite every metadata field.",
+    "O4": "Current-wire operand location and complete read receipts remain required. Query presence or lexical query coverage alone is not source reading or comparability.",
+    "O5": "record_deferred intent remains intercepted before domain terminal; no unavailable/no-pattern outcome laundering.",
+    "O6": "No budget increase, sample replacement or terminal0671 reentry. A failing zero-author preflight must be preserved and blocks formal prepare until a separately justified in-budget preflight succeeds."
+  },
+  "no_new_requirements": [
+    "No mandatory ratio/delta, metadata recital, new candidate/measurement, cross-group result, label access or primary-filing truth assertion.",
+    "No new business schema/action/taxonomy whitelist authority supplied by this supplement."
+  ],
+  "evidence_limit": "This is an independent pre-answer contract clarification, not a production answer, fresh-consumer result, API/provider compliance proof or S3/S4 closure."
+}

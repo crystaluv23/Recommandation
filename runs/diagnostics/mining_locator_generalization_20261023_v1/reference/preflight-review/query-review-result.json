@@ -1,0 +1,55 @@
+{
+  "state": "local_query_projection_original_source_review_passed",
+  "sources": [
+    {
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1179.json",
+        "sha256": "4e03393bbff52aef5bca7b324502266842811d03f7611c9f28962cfd0ae0379a"
+      },
+      "noquery_unchanged": true,
+      "old_target_query_operand_count": 0,
+      "current_target_query_operand_count": 2,
+      "exact_whole_original_rows": true,
+      "common_ref_identity_unchanged": true,
+      "before_fact_count": 30,
+      "current_targeted_fact_count": 31
+    },
+    {
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0770.json",
+        "sha256": "6d4348d8c1a7f99f64a93238a7ea770d21307d56f2ee560101a7c17622dcc0bd"
+      },
+      "noquery_unchanged": true,
+      "old_target_query_operand_count": 2,
+      "current_target_query_operand_count": 2,
+      "exact_whole_original_rows": true,
+      "common_ref_identity_unchanged": true,
+      "before_fact_count": 19,
+      "current_targeted_fact_count": 17
+    },
+    {
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/0671.json",
+        "sha256": "ab081c728d390ce68c10d59336be1e8196ab1c4bb33c0febac2fdfb680347c31"
+      },
+      "noquery_unchanged": true,
+      "old_target_query_operand_count": 2,
+      "current_target_query_operand_count": 2,
+      "exact_whole_original_rows": true,
+      "common_ref_identity_unchanged": true,
+      "before_fact_count": 19,
+      "current_targeted_fact_count": 16
+    }
+  ],
+  "old_code": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight-initial-failure/before-mining-agent-tools.py",
+    "sha256": "5fdb3a5ecd30e8039d14734f6bed31920fd7b74c8b97e556ee4024e9a43d92ed"
+  },
+  "new_code": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+    "sha256": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2"
+  },
+  "limits": "Local original-source/noquery projection only; not fresh author or preflight budget success.",
+  "external_API_GET": 0,
+  "role_receives": 0
+}

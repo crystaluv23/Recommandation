@@ -1,0 +1,281 @@
+{
+  "action": "repair existing query propagation; do not replace source/control",
+  "answers": 0,
+  "code_before": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+    "sha256": "5fdb3a5ecd30e8039d14734f6bed31920fd7b74c8b97e556ee4024e9a43d92ed"
+  },
+  "external_API": 0,
+  "new_business_labels": 0,
+  "probes": [
+    {
+      "all_projected_count": 30,
+      "ledger": {
+        "cycle_id": 1,
+        "entries": [
+          {
+            "action": "fetch_evidence",
+            "action_id": 1,
+            "case_refs": [
+              "case-001"
+            ],
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": true
+            },
+            "evidence_refs": [
+              "fact-04581424445a1b1e",
+              "fact-a201b1f1cd0e405a",
+              "fact-8e6391a8eb3c9743",
+              "fact-2514935a069837df",
+              "fact-8b45f3b8eb093a03",
+              "fact-25905ad8eca4a933",
+              "fact-35455de13663bb52",
+              "fact-80ed1686b06000a6",
+              "fact-76961a78c309dfdb",
+              "fact-6882752f47b35f47",
+              "fact-182cfb4ddcbd4503",
+              "fact-e9b3eaa0ee66f3a9",
+              "fact-b23b2ab97a8f1625",
+              "fact-f5912ec4fc9d4937",
+              "fact-6a7d59e627db113b",
+              "fact-4168f3473c5059aa",
+              "fact-04976b1e73b64511",
+              "fact-7bba996ecb259cdd",
+              "fact-71a3672e50f2bda5",
+              "fact-c3cca98fa2fef552",
+              "fact-2429accbb884ca3d",
+              "fact-c4448f4f06ef8829",
+              "fact-f5bec4de50e340d5",
+              "fact-2dbb1f1b312faa56",
+              "fact-e457685861764c50",
+              "fact-beef034c1e5b96e3",
+              "fact-bca8bf0aaa4ca7ad",
+              "fact-a9002680f7753687",
+              "fact-2bd27671da61f5ca",
+              "fact-1f27bea620f7b7c6",
+              "relation-02a988c8c73c3bf5",
+              "relation-3ad23767ef7414a4",
+              "relation-4a244b0f3dd2fe28",
+              "relation-4d2215a6f971f53e",
+              "relation-92948d41fe6ce2a9",
+              "relation-999b331f086efcfe",
+              "relation-a083fbff56fa007f",
+              "relation-d550f0861482e67b",
+              "relation-dbb304b51ff8798e"
+            ],
+            "input_hash": "f9296fb0bf9ff928fbd3afb486f7398697178002a6f6c8e07c564c539dd35e83",
+            "note": null,
+            "omitted_coverage": {
+              "excluded_document_ids": [
+                "secfacts:0001951089:0001213900-25-024970:1c3850c9cb8ad739"
+              ]
+            },
+            "output_hash": "05ee28b4e734455cff919d64a70286eeeff227ff331c5fb18ee03767e9aab478",
+            "pit_status": "enforced",
+            "source_types": [
+              "sec_company_facts"
+            ],
+            "terminal_disposition": null,
+            "usage": {
+              "model_calls": 0
+            }
+          }
+        ],
+        "seed_id": "seed-discovery"
+      },
+      "mode": "no-query",
+      "receipt": {
+        "action": "fetch_evidence",
+        "cases_requested": 1,
+        "excluded_document_ids": 1,
+        "families": [
+          "sec_company_facts"
+        ],
+        "narrative_evidence": null,
+        "new_facts": 30,
+        "new_relations": 9,
+        "total_events": 0,
+        "total_facts": 30,
+        "total_relations": 9
+      },
+      "target_projected_count": 0
+    },
+    {
+      "all_projected_count": 30,
+      "ledger": {
+        "cycle_id": 1,
+        "entries": [
+          {
+            "action": "fetch_evidence",
+            "action_id": 1,
+            "case_refs": [
+              "case-001"
+            ],
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": true
+            },
+            "evidence_refs": [
+              "fact-04581424445a1b1e",
+              "fact-a201b1f1cd0e405a",
+              "fact-8e6391a8eb3c9743",
+              "fact-2514935a069837df",
+              "fact-8b45f3b8eb093a03",
+              "fact-25905ad8eca4a933",
+              "fact-35455de13663bb52",
+              "fact-80ed1686b06000a6",
+              "fact-76961a78c309dfdb",
+              "fact-6882752f47b35f47",
+              "fact-182cfb4ddcbd4503",
+              "fact-e9b3eaa0ee66f3a9",
+              "fact-b23b2ab97a8f1625",
+              "fact-f5912ec4fc9d4937",
+              "fact-6a7d59e627db113b",
+              "fact-4168f3473c5059aa",
+              "fact-04976b1e73b64511",
+              "fact-7bba996ecb259cdd",
+              "fact-71a3672e50f2bda5",
+              "fact-c3cca98fa2fef552",
+              "fact-2429accbb884ca3d",
+              "fact-c4448f4f06ef8829",
+              "fact-f5bec4de50e340d5",
+              "fact-2dbb1f1b312faa56",
+              "fact-e457685861764c50",
+              "fact-beef034c1e5b96e3",
+              "fact-bca8bf0aaa4ca7ad",
+              "fact-a9002680f7753687",
+              "fact-2bd27671da61f5ca",
+              "fact-1f27bea620f7b7c6",
+              "relation-02a988c8c73c3bf5",
+              "relation-3ad23767ef7414a4",
+              "relation-4a244b0f3dd2fe28",
+              "relation-4d2215a6f971f53e",
+              "relation-92948d41fe6ce2a9",
+              "relation-999b331f086efcfe",
+              "relation-a083fbff56fa007f",
+              "relation-d550f0861482e67b",
+              "relation-dbb304b51ff8798e"
+            ],
+            "input_hash": "f9296fb0bf9ff928fbd3afb486f7398697178002a6f6c8e07c564c539dd35e83",
+            "note": null,
+            "omitted_coverage": {
+              "excluded_document_ids": [
+                "secfacts:0001951089:0001213900-25-024970:1c3850c9cb8ad739"
+              ]
+            },
+            "output_hash": "05ee28b4e734455cff919d64a70286eeeff227ff331c5fb18ee03767e9aab478",
+            "pit_status": "enforced",
+            "source_types": [
+              "sec_company_facts"
+            ],
+            "terminal_disposition": null,
+            "usage": {
+              "model_calls": 0
+            }
+          },
+          {
+            "action": "fetch_evidence",
+            "action_id": 2,
+            "case_refs": [
+              "case-001"
+            ],
+            "coverage": {
+              "query_coverage": {
+                "matched_terms": [],
+                "sufficient": false
+              },
+              "unread_same_source": true
+            },
+            "evidence_refs": [
+              "fact-04581424445a1b1e",
+              "fact-a201b1f1cd0e405a",
+              "fact-8e6391a8eb3c9743",
+              "fact-2514935a069837df",
+              "fact-8b45f3b8eb093a03",
+              "fact-25905ad8eca4a933",
+              "fact-35455de13663bb52",
+              "fact-80ed1686b06000a6",
+              "fact-76961a78c309dfdb",
+              "fact-6882752f47b35f47",
+              "fact-182cfb4ddcbd4503",
+              "fact-e9b3eaa0ee66f3a9",
+              "fact-b23b2ab97a8f1625",
+              "fact-f5912ec4fc9d4937",
+              "fact-6a7d59e627db113b",
+              "fact-4168f3473c5059aa",
+              "fact-04976b1e73b64511",
+              "fact-7bba996ecb259cdd",
+              "fact-71a3672e50f2bda5",
+              "fact-c3cca98fa2fef552",
+              "fact-2429accbb884ca3d",
+              "fact-c4448f4f06ef8829",
+              "fact-f5bec4de50e340d5",
+              "fact-2dbb1f1b312faa56",
+              "fact-e457685861764c50",
+              "fact-beef034c1e5b96e3",
+              "fact-bca8bf0aaa4ca7ad",
+              "fact-a9002680f7753687",
+              "fact-2bd27671da61f5ca",
+              "fact-1f27bea620f7b7c6",
+              "relation-02a988c8c73c3bf5",
+              "relation-3ad23767ef7414a4",
+              "relation-4a244b0f3dd2fe28",
+              "relation-4d2215a6f971f53e",
+              "relation-92948d41fe6ce2a9",
+              "relation-999b331f086efcfe",
+              "relation-a083fbff56fa007f",
+              "relation-d550f0861482e67b",
+              "relation-dbb304b51ff8798e"
+            ],
+            "input_hash": "2e0208631ad43d28148bc7f814cb249a6af2ee7ecf6d0392c139525c4474c64f",
+            "note": null,
+            "omitted_coverage": {
+              "excluded_document_ids": [
+                "secfacts:0001951089:0001213900-25-024970:1c3850c9cb8ad739"
+              ]
+            },
+            "output_hash": "05ee28b4e734455cff919d64a70286eeeff227ff331c5fb18ee03767e9aab478",
+            "pit_status": "enforced",
+            "source_types": [
+              "sec_company_facts"
+            ],
+            "terminal_disposition": null,
+            "usage": {
+              "model_calls": 0
+            }
+          }
+        ],
+        "seed_id": "seed-discovery"
+      },
+      "mode": "explicit-target-query",
+      "receipt": {
+        "action": "fetch_evidence",
+        "cases_requested": 1,
+        "excluded_document_ids": 1,
+        "families": [
+          "sec_company_facts"
+        ],
+        "narrative_evidence": null,
+        "new_facts": 0,
+        "new_relations": 0,
+        "total_events": 0,
+        "total_facts": 30,
+        "total_relations": 9
+      },
+      "target_projected_count": 0
+    }
+  ],
+  "production_inboxes": 0,
+  "source": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1179.json",
+    "sha256": "4e03393bbff52aef5bca7b324502266842811d03f7611c9f28962cfd0ae0379a"
+  },
+  "state": "source_positive_but_target_query_not_projected"
+}

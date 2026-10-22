@@ -1,0 +1,13 @@
+{
+  "action": {
+    "action": "read_span",
+    "fact_ref": "fact-969421320623f49b",
+    "rationale": [
+      "Deterministic current-wire-only preflight, not an author answer."
+    ]
+  },
+  "request": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/0350b5ff5bc905f8694b63c21045399d8bc336d7b27b2afe59b66446b4a40f18.json",
+    "sha256": "65b52a2ed46c0b0fd9969d03b85cfc21cb7a5f9669c901c9740c52d2f98a7bc3"
+  }
+}

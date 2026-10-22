@@ -1,0 +1,180 @@
+{
+  "schema_version": "independent-final-query-and-budget-review-v1",
+  "created_at_utc": "2026-10-22T21:23:45.623516+00:00",
+  "verdict": "Local query-propagation repair supported; preflight aggregate budget failed and formal controls correctly not run. Overall Mining/MVP remains open.",
+  "source_review": {
+    "reference_files_unchanged": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/source-reference.json",
+        "sha256": "03b55378be4faa422310abde07d01f52614123d1a0a49270372eb161da62bd43"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/prefreeze-obligations.json",
+        "sha256": "92e5a8278a2cb55ecbb0c62bfc58904864f15ca3ad71fa53105717cae91ceee2"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/prefreeze-obligations-supplement.json",
+        "sha256": "0c20e2560ba69f2da5d37c25495e75547495c1dfe270e369113b41acb5632964"
+      }
+    ],
+    "all_source_bindings_verified": 1785,
+    "controlled_samples": [
+      "original case001 first-source1179 IFRS annual negativeUSD OCF",
+      "original case002 first-source0770 US-GAAP nine-month positiveUSD OCF"
+    ],
+    "scope": "Distinct issuers/accessions/documents/periods/sign variants from old0671; same-provider source-instance controls only, controlled target-query initial fetch, not autonomous retrieval. All retrospective normalized SEC and primary-filing-audit qualifications remain.",
+    "local_query_original_source_proof": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/preflight-review/query-review-result.json",
+      "sha256": "c555eb50eb39672d71696f7c09b9d45bcf187f13c4f343a75918a775c2bccc51"
+    },
+    "supported": "Three actual original noquery FetchResult objects unchanged against exact oldtools. Target query old/current rowcounts0/2,2/2,2/2; original whole rows/spans/value/unit/taxonomy/hash and commonref identities preserved. Typed/legacy crowded-table, unprojected hint, PIT and no-match tests pass.",
+    "not_supported": "New source provider truth, latest/complete retrieval, same-measurement equivalence across namespaces, new measurement, cross-group pattern or forecast benefit."
+  },
+  "budget_review": {
+    "record": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/budget-failure.json",
+      "sha256": "6cada06a3702aefc08e1293920cf92245c81c7612d33ab51c4926446fb55852d"
+    },
+    "requests": [
+      {
+        "step": 1,
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/b30a2f92def1288fcc702b00621316ae27efa88940bfaba15d315f584309f106.json",
+          "sha256": "4b5dd33ba903c439dd442fbc40b5981a9f9358e60947c553dc0103bd327f1568"
+        },
+        "reservation": 22917,
+        "read_receipts": 0
+      },
+      {
+        "step": 2,
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/79014e5255aa0a58fcc41d93ef58b3835307198cc32693632d896b76ce1d8f07.json",
+          "sha256": "b2735748ec1f1a809d9cb919d7ce2f1c8f52e14681d29515b6a8f20baf1aa63f"
+        },
+        "reservation": 24274,
+        "read_receipts": 0
+      },
+      {
+        "step": 3,
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/0350b5ff5bc905f8694b63c21045399d8bc336d7b27b2afe59b66446b4a40f18.json",
+          "sha256": "65b52a2ed46c0b0fd9969d03b85cfc21cb7a5f9669c901c9740c52d2f98a7bc3"
+        },
+        "reservation": 26955,
+        "read_receipts": 1
+      },
+      {
+        "step": 4,
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/b2fe5af9a03d7c2b1d01e1123b3b8cd1b6b4dbfe7d2c7cdbc8acab1664033f53.json",
+          "sha256": "8f20c397ed27cf1ef179b68d2ce15ffd1a982f816c5c67910e24e4a1e08869d3"
+        },
+        "reservation": 28417,
+        "read_receipts": 2
+      }
+    ],
+    "independently_recomputed": {
+      "system_content_bytes": 59864,
+      "user_content_bytes": 30911,
+      "output_allowance": 8000,
+      "framing_and_string_escaping_bytes": 3788,
+      "reservation": 102563,
+      "ceiling": 98304,
+      "excess": 4259
+    },
+    "observed": "Three input-only ready captures/selectors; fourth prepared journal blocked before inbox; sampleb not started; no successful preflight/result and no formalstage.",
+    "decision": "Stop before formal preparation. Original limits/samples remain; no add-budget/replacement/fifth0671answer or complete successor."
+  },
+  "identity_review": {
+    "issuer_aliases_cik_ticker_and_source_url": "Absent from all four actual preflight/a composed native request message bodies by exact and whole-word checks. b has no actual request to audit.",
+    "full_document_handle_anonymity": "Not established: original accession remains in partially masked document_ref of read receipts and last_action_result.",
+    "residual_accession_locations": [
+      {
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/0350b5ff5bc905f8694b63c21045399d8bc336d7b27b2afe59b66446b4a40f18.json",
+          "sha256": "65b52a2ed46c0b0fd9969d03b85cfc21cb7a5f9669c901c9740c52d2f98a7bc3"
+        },
+        "json_paths": [
+          "/last_action_result/document_ref",
+          "/structured_read_progress/items/0/document_ref"
+        ],
+        "residual": "0001213900-24-092156"
+      },
+      {
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/b2fe5af9a03d7c2b1d01e1123b3b8cd1b6b4dbfe7d2c7cdbc8acab1664033f53.json",
+          "sha256": "8f20c397ed27cf1ef179b68d2ce15ffd1a982f816c5c67910e24e4a1e08869d3"
+        },
+        "json_paths": [
+          "/last_action_result/document_ref",
+          "/structured_read_progress/items/0/document_ref",
+          "/structured_read_progress/items/1/document_ref"
+        ],
+        "residual": "0001213900-24-092156"
+      }
+    ],
+    "claim_boundary": "Zero inbox/receive/productionauthor means this is a residual preflight egress identifier, not a demonstrated production-author leak. Query diff did not change identity projection; this review does not establish when residual originated. Do not report full anonymity passed. No identity mechanism expansion performed."
+  },
+  "old_stage_preservation": {
+    "terminals": [
+      {
+        "sample": "actual",
+        "terminal": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/actual/failure.json",
+          "sha256": "01fe5c6a424ac008a8bd3700ea323374cbaad6db3c08ddb3e7d5e20e5dd48fd8"
+        },
+        "state": "terminal_module_failure",
+        "sealed_children_verified": 34
+      },
+      {
+        "sample": "namespace",
+        "terminal": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_taxonomy_consumer_20261023_v1/stage/namespace/completion.json",
+          "sha256": "cbcbb091482d5a2ecbc7f4a60189ad2e98801a3de2747ee25180226bbdd7cdd5"
+        },
+        "state": "completed_module_boundary",
+        "sealed_children_verified": 25
+      }
+    ],
+    "original_result": "Old actual terminalbudget failure and namespace completion remain with all59 sealed childfiles unchanged; fixed formal1/2 remains. No oldstage reentry/extraanswer."
+  },
+  "validation": {
+    "associated_test_record": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/associated-test-bindings.json",
+      "sha256": "ec15361a76f49a0b18e29e5b3151ef6417a1c1571317f9d869443694b4c58754"
+    },
+    "associated_log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/associated-tests.log",
+      "sha256": "a56b13b44ac03e76c17542edd21ae3863f3650fc286f1075f02cb9679eafd6cf"
+    },
+    "tested_files_verified": 119,
+    "associated_tests": 276,
+    "associated_test_result": "pass; networktripwire0; testlog states276/8.464s/OK",
+    "independent_run": "Earlier8 focused tests independently repeated with compatible bundled Python and src:scripts path; direct old/new source review independently executed. Associated276 suite log and119 boundfiles verified here, not rerun unnecessarily."
+  },
+  "inventory_harness_limitation": {
+    "original_attribution_code_files": "budget-failure.json was generated before newdriver.configure(); its106-row code_files includes old shared SPEC and is not a configured preflight or formalmanifest. OriginalJSON remains unchanged.",
+    "configured_supplement": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/configured-inventory-supplement.json",
+      "sha256": "d7b6b6d063cbd1c970f15624351f2fca1912da38b4b38f41f5fb48663fcd59ec"
+    },
+    "configured_bindings_verified": 106,
+    "current_spec_binding": "Associated119testedfiles already bind newdriverSPEC and owning MiningSPEC; configured supplement now binds newSPEC.",
+    "effect": "Administrative attribution correction does not change actual four immutable requestjournals, recomputed budget or stopping outcome; does not grant preflight success."
+  },
+  "zero_counts": {
+    "formal_inboxes": 0,
+    "role_receives": 0,
+    "production_authors": 0,
+    "fresh_semantic_controls_executed": 0,
+    "reviewer_fresh_consumer_count": 0,
+    "external_api_get_calls": 0,
+    "new_business_labels_candidates_publications": 0
+  },
+  "remaining_unknown": [
+    "Fresh author reading and semantic compliance; correction adherence under originalbudget.",
+    "Generalization module semantic acceptance, completeS3/S4, implementation/admission/publication/reuse, wholeFastSlow recovery/MVP and independent researchbenefit.",
+    "Full document-handle identity masking remains unclosed."
+  ],
+  "files_written": "Only this new independent/final-query-and-budget-review.json; source/product/oldartifacts/originalreferences unchanged."
+}

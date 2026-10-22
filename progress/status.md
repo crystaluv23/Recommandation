@@ -6,14 +6,14 @@
 
 ## 最新实证
 
-[Mining出处消费](../reports/mining-taxonomy-consumer-20261023.md)：已读完整fact回执现在跨action保留，按ref去重/重读计预算、8KB whole-unit/遗漏显式；266关联过、网络0。
+[定向query修复](../reports/mining-query-projection-and-generalization-20261023.md)：既有query现贯穿完整concept投影，1179 IFRS目标0→2；3原件noquery与旧版逐字段同，276关联/独立审查过、网络0。
+不同来源两控在正式准备前止：a第4prepared使102563>98304，前三input-only/0inbox作者，b未起；source handle仍有accession坐标，未宣称完整匿名。先核身份与完整请求成本，不增预算/换源强跑。
 预冻两控正式结果1/2：namespace首endpoint通过；actual丢prior locator重compare，第5请求受原98304预算阻断。7fresh/0纠错，answered154184；actual90772+blocked26243、namespace63412，无补答/加预算。
 [比较locator修复](../reports/mining-comparison-locators-20261023.md)现保留实际比较whole units并绑定fact/group/axis快照，变更时progress/last双副本失效；273关联/独立反例过、网络0。
 实际1780视图每次仅凭当前wire选下一ref，正反4输入97641/97599均在原98304内，旧版首读后确实失败；两次action重建view/ledger字节同，0inbox/作者。仅局部可达，非fresh/候选/准入/完整S3/S4。
-两临时pending fixture重放7原cache/0新交接、62非终态文件同、原64不变，非OS恢复；一次独立预算反例JSON覆盖失误已披露，未称原件保真。
+[Mining出处消费](../reports/mining-taxonomy-consumer-20261023.md)完整read回执跨action保留；临时pending fixture7原cache/0交接、62非终态同/原64不变，非OS恢复；一次独立预算JSON覆盖失误已披露。
 [分类链修复](../reports/classification-contract-propagation-20261023.md)保持局部；旧[财务消费者](../reports/financial-context-consumer-20261023.md)F7/F8窄通过、F9语义仍0/1。
 实际critic/Slow仍缺分类声明原件，canonical持久化[方案A/B](../reports/classification-context-persistence-proposal-20261023.md)等用户决策，未改该schema。
-本轮外部API/GET/新业务标签0；各完成stage不重入，整体MVP/独立收益未关闭。
 
 [原生财务批次与阅读诊断](../reports/current-financial-apply-20261021.md)：当前比较用既有v12精确18版本，不替换历史v6。单GPRE/2025-05-30、1780来源view，冻结4389绑定，唯一native批次20.261s/exit0。
 9财务结果为6严格通过、1prior原文版本匹配失败、2期间政策unknown，终态completed_acceptance_failed保留。

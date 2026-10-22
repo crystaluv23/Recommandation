@@ -1,0 +1,125 @@
+{
+  "schema_version": "independent-mining-locator-generalization-prefreeze-obligations-v1",
+  "created_at_utc": "2026-10-22T21:12:02.519315+00:00",
+  "source_reference": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/source-reference.json",
+    "sha256": "03b55378be4faa422310abde07d01f52614123d1a0a49270372eb161da62bd43"
+  },
+  "fixed_denominator": [
+    "source_1179",
+    "source_0770"
+  ],
+  "named_module": "Autonomous bounded consumption of two already-controlled source operands through actual MiningController role/tool/transport boundaries; module record_deferred-intent stop only.",
+  "definition_basis": [
+    {
+      "path": "spec/scripts/run_mining_taxonomy_consumer_stage.md",
+      "sections": [
+        "controlled fetch and actual boundaries",
+        "actor chooses refs/actions",
+        "independent pre-answer reference",
+        "acceptance correct source/namespace/unit/period/value and allowed gaps"
+      ]
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sections": [
+        "Controller discipline",
+        "structured_read_progress",
+        "comparison_progress",
+        "control-plane terminals"
+      ]
+    },
+    {
+      "path": "spec/engineering-mvp.md",
+      "sections": [
+        "Supported scope and evidence",
+        "S3/S4",
+        "Frozen batches and close condition"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "O1",
+      "definition_mapping": "Actor chooses refs/actions; bounded module source consumption.",
+      "must": "Production author chooses its own allowed actions/order/ref handles from actual current request, and actually reads both current and prior whole source operands via read_span(fact_ref). A comparison/directory/ref membership alone does not prove source reading.",
+      "evidence": "Exact raw requests, raw first/corrected answers, action validation/execution, two persisted full read receipts, final intent.",
+      "failure_examples": [
+        "Given oracle refs or scripted path used as author answer.",
+        "Only one operand read; other merely inferred from opaque known_fact_refs."
+      ]
+    },
+    {
+      "id": "O2",
+      "definition_mapping": "Exact-source namespace/concept/unit/period/value and no automatic namespace inference.",
+      "must": "Any material operand/value/period/unit/namespace/sign/comparison claim agrees with the exact source rows in source-reference. Distinguish IFRS CashFlowsFromUsedInOperatingActivities from us-gaap NetCashProvidedByUsedInOperatingActivities. Latest is scoped to this selected document.",
+      "evidence": "Full read receipts plus source-linked final rationale; original raw metadata remains preserved by driver.",
+      "failure_examples": [
+        "1179 cash flow reported as positive, USD replaced by AUD, or prior raw fiscal_year rewritten as2023.",
+        "0770 nine-month YTD cash flows called standalone quarter cash flows.",
+        "Same English meaning treated as proof of automatic cross-taxonomy equivalence."
+      ],
+      "not_required": "Rationale need not restate every original metadata field, raw value or raw fiscal-year decoration when it makes no contrary material claim. Source-link/read receipts must establish its material facts. Generic arithmetic is allowed but no ratio/delta is mandatory."
+    },
+    {
+      "id": "O3",
+      "definition_mapping": "Rationale states what established and uncertain; historical omissions and source scope remain explicit.",
+      "must": "Final intent accurately conveys source-supported historical within-document OCF comparison/inspection and its material uncertainty: bounded one-document source scope cannot establish a cross-group predictive pattern, new reusable measurement, current/latest full-source conclusion or audited primary-filing truth. Concise combined qualification is sufficient.",
+      "evidence": "Original assembled final intent compared with reference and actual tool ledger.",
+      "failure_examples": [
+        "Claims a direction/magnitude Signal, candidate novelty, complete source coverage or cross-group predictive validity from the one-case pair.",
+        "Calls budget/module stop an unavailable-source/no-pattern finding."
+      ],
+      "not_required": "No forced ratio, factor proposal, category quota, separate disclaimer list, or verbatim metadata recital."
+    },
+    {
+      "id": "O4",
+      "definition_mapping": "Structured read progress and executed comparison locators survive intervening actions.",
+      "must": "Actual later request retains whole successful operand receipts; if compare_groups is used, current-to-prior mapping remains reachable from subsequent actual request and tied to unchanged fact/group/axis context. No hidden Python/oracle/previous-ref memory may rescue a missing current-wire mapping in preflight.",
+      "evidence": "Per-step actual serialized request projections, receipts and comparison context snapshots; local preflight may establish wiring but is not fresh author compliance.",
+      "failure_examples": [
+        "Prior locator lost after first read and reachable only from an earlier saved script variable.",
+        "Changed fact/group/axis context presents stale comparison as current."
+      ],
+      "not_required": "No obligatory compare_groups or fixed action order when another permitted autonomous path satisfies both-operand reading."
+    },
+    {
+      "id": "O5",
+      "definition_mapping": "Dedicated boundary saves record_deferred intent before execution; module is not full seed/domain terminal.",
+      "must": "Accept only assembled record_deferred intent as module endpoint and intercept before native terminal execution. Preserve raw/corrected intent and report module result, without manufacturing evidence_unavailable/deferred_budget/no_pattern native state or executing candidate/publication actions.",
+      "evidence": "Boundary class/path, saved intent, ledger/state comparison before/after, terminal seal.",
+      "failure_examples": [
+        "Native record_deferred executes and is then relabeled module success.",
+        "Module stop persisted as no-pattern or source unavailable."
+      ]
+    },
+    {
+      "id": "O6",
+      "definition_mapping": "Frozen input/budget; fixed denominator; no retry/rename/reset of terminal sample.",
+      "must": "Fresh samples stay within per-request32768/aggregate98304/output2000/6decisions including corrections/6heavy including fetch, retain prepared invalid/blocked reservation attempts and full failure denominator2. Formal inbox follows reference/source/code freeze; terminal advance only verifies seal. Old actual0671 remains terminal at its original budget and1/2 remains.",
+      "evidence": "Frozen manifest and hashes, request journals, exact exchange records, budgets, artifact seals and original-source/old-stage preservation checks.",
+      "failure_examples": [
+        "Fifth old0671 request under new sample name.",
+        "Code/source/oracle hot changes, budget reset/top-up or omitted blocked request."
+      ]
+    }
+  ],
+  "accepted_variation": [
+    "Either operand read order.",
+    "Any supported autonomous allowed tool order.",
+    "Optional generic arithmetic accurately scoped to the exact pair.",
+    "Concise supported/unknown rationale without raw metadata recital.",
+    "Natural inability within frozen resources remains honest failure/deferral; it is not an automatic semantic pass."
+  ],
+  "reporting": {
+    "first_answer": "Separate initial behavior from accepted corrected behavior; report corrections and exhausted/blocked requests explicitly.",
+    "fresh_counter": "This source/reference reviewer is not production author/fresh consumer; count only independently authored exact exchange answers.",
+    "closure_limit": "Passing two controls establishes only named fresh source-consumption module evidence, not complete S3/S4, candidates, admission, publication, reuse, recovery, MVP or independent benefit."
+  },
+  "preanswer_independence": {
+    "future_stage_raw_modelanswers_read": false,
+    "reference_to_author_allowed": false,
+    "external_api_get_calls": 0,
+    "new_business_labels_candidates_publications": 0
+  }
+}

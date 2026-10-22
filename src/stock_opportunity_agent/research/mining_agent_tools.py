@@ -140,12 +140,12 @@ def _case_documents(
 
 
 def _facts_from_document(
-    document: RawInfoDocument, *, case_ref: str
+    document: RawInfoDocument, *, case_ref: str, query: str | None = None
 ) -> tuple[EvidenceFact, ...]:
     context = _company_facts_context(
         document,
         max_content_chars=_FACT_PROJECTION_CHARS,
-        query=None,
+        query=query,
     )
     if context is None:
         return ()
@@ -521,9 +521,15 @@ def fetch_case_evidence(
         source_type = document.source_type.casefold()
         structured = "fact" in source_type or "financial" in source_type
         if structured:
-            projected = _facts_from_document(document, case_ref=ref)
+            projected = _facts_from_document(document, case_ref=ref, query=query)
             if projected:
                 facts.extend(projected)
+                disclosed = " ".join(
+                    f"{fact.taxonomy} {fact.concept} {fact.source_display_name} {fact.exact_span}"
+                    for fact in projected
+                )
+                tokens = set(re.findall(r"[a-z0-9]+", disclosed.casefold()))
+                matched_terms.update(term for term in terms if term in tokens)
                 continue
         family = _evidence_source_family(document.source_type)
         if family not in {"filing", "transcript", "news"}:

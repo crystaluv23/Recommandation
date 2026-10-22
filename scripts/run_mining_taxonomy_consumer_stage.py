@@ -183,7 +183,7 @@ def make_client(root, sample, contract, *, input_only=False):
         allow_external=False, environ={}, on_progress=observe)
 
 
-def build_controller(root, sample, client):
+def build_controller(root, sample, client, *, controlled_query=None):
     """Construct the real Controller and execute the declared controlled fetch."""
     if "snapshot" in sample:
         snap = sample["snapshot"]
@@ -227,6 +227,8 @@ def build_controller(root, sample, client):
         label_map={sample["case_ref"]: sample["label"]}, identity_aliases=aliases)
     controlled = {"action": "fetch_evidence", "rationale": ["Controlled module source preparation."],
         "case_refs": [sample["case_ref"]], "source_families": ["sec_company_facts"], "max_documents": 1}
+    if controlled_query is not None:
+        controlled["query"] = controlled_query
     controller._validate_action_shape(controlled)
     LabelAwareMiningController._execute(controller, "fetch_evidence", controlled)
     save(root, "controlled-fetch", {"action": controlled, "receipt": controller._last_action_result,

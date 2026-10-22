@@ -1,0 +1,125 @@
+{
+  "schema_version": "independent-mining-locator-generalization-preflight-interface-review-v1",
+  "created_at_utc": "2026-10-22T21:19:08.564820+00:00",
+  "verdict": "BLOCKED_before_formal_prepare_by_original_aggregate_budget",
+  "read_scope": "Original source/reference, product/script/spec/tests, initial failure, input-only preflight request artifacts. No formal stage/raw/author answers.",
+  "bindings": {
+    "scripts/run_mining_locator_generalization_stage.py": {
+      "path": "/Users/l/Project/Recommandation/scripts/run_mining_locator_generalization_stage.py",
+      "sha256": "26168e13fb9bb0087fd6d11aee9021a8ca119d94b0139ac88da3343faedfe601"
+    },
+    "scripts/run_mining_taxonomy_consumer_stage.py": {
+      "path": "/Users/l/Project/Recommandation/scripts/run_mining_taxonomy_consumer_stage.py",
+      "sha256": "fd99a66c7c6caa73022e342ad9c328a762a215d50871f6345da1dbaec0b45bd9"
+    },
+    "spec/scripts/run_mining_locator_generalization_stage.md": {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_mining_locator_generalization_stage.md",
+      "sha256": "c45220af64e08aa3ddc010d6df5d40e9643cd718bcc49257e5d6324eb8821417"
+    },
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "a0ac59af60534b18b2e9e0232380e123cd5b738ee12bfad2a0fabb00cdbf30a8"
+    },
+    "src/stock_opportunity_agent/research/mining_agent_tools.py": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2"
+    },
+    "tests/test_mining_query_projection.py": {
+      "path": "/Users/l/Project/Recommandation/tests/test_mining_query_projection.py",
+      "sha256": "aa9ad50ffd42200005dd714305b3b4a4ada93557f126b030cadbbb382d301215"
+    },
+    "tests/test_mining_taxonomy_consumer_stage.py": {
+      "path": "/Users/l/Project/Recommandation/tests/test_mining_taxonomy_consumer_stage.py",
+      "sha256": "b569c01367828cf52505c3b74595039d1cb01196dcb8d78b3261c5c4883e63c7"
+    }
+  },
+  "independent_original_source_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/preflight-review/query-review-result.json",
+    "sha256": "c555eb50eb39672d71696f7c09b9d45bcf187f13c4f343a75918a775c2bccc51"
+  },
+  "independent_review_script": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/preflight-review/query-review.py",
+    "sha256": "ee1c83cc333a9dad018f798223c535901ed533418d97883a85f72f68a8d2df24"
+  },
+  "supplement": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/reference/prefreeze-obligations-supplement.json",
+    "sha256": "0c20e2560ba69f2da5d37c25495e75547495c1dfe270e369113b41acb5632964"
+  },
+  "findings": [
+    {
+      "id": "Q1",
+      "state": "local_pass",
+      "finding": "fetch query now reaches shared bounded concept selector. On three actual originals, noquery FetchResult exactly unchanged; complete targeted original rows0->2/2->2/2->2; common ref bindings unchanged. No source edit or per-namespace hardcoding."
+    },
+    {
+      "id": "D1",
+      "state": "static_and_focused_test_pass",
+      "finding": "New driver uses original case001/002 first-source authority, preserves metadata/qualifications, asserts controlled target-query fetch still selects exact1179/0770, and does not pass oracle refs. It reuses native action/transport/receipt path. Initial fetch is controlled, not autonomous."
+    },
+    {
+      "id": "D2",
+      "state": "static_and_focused_test_pass",
+      "finding": "prepare validates preflight source/code inventories then freezes references/current inputs/contract. advance verifies source/code/input/contract hashes. Terminal metadata/self-hash/child bindings checked without reentry; pending reconstruction uses same cached originals. Shared boundary intercepts assembled record_deferred before native domain execution and blocks fetch/proposal/other actions."
+    },
+    {
+      "id": "B1",
+      "state": "blocked",
+      "finding": "Actual a preflight four prepared requests reserve102563>98304 by4259. Single-request values individually fit32768. Fourth request remains preserved before inbox/receive. No preflight result yet at review time; b has no requests. Query source reachability is not sufficient for frozen-budget path reachability. Do not prepare formal stage or increase budget/replace sample to manufacture pass."
+    }
+  ],
+  "preflight_a": {
+    "requests": [
+      {
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/0350b5ff5bc905f8694b63c21045399d8bc336d7b27b2afe59b66446b4a40f18.json",
+          "sha256": "65b52a2ed46c0b0fd9969d03b85cfc21cb7a5f9669c901c9740c52d2f98a7bc3"
+        },
+        "reservation": 26955,
+        "read_receipts": 1
+      },
+      {
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/79014e5255aa0a58fcc41d93ef58b3835307198cc32693632d896b76ce1d8f07.json",
+          "sha256": "b2735748ec1f1a809d9cb919d7ce2f1c8f52e14681d29515b6a8f20baf1aa63f"
+        },
+        "reservation": 24274,
+        "read_receipts": 0
+      },
+      {
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/b2fe5af9a03d7c2b1d01e1123b3b8cd1b6b4dbfe7d2c7cdbc8acab1664033f53.json",
+          "sha256": "8f20c397ed27cf1ef179b68d2ce15ffd1a982f816c5c67910e24e4a1e08869d3"
+        },
+        "reservation": 28417,
+        "read_receipts": 2
+      },
+      {
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_locator_generalization_20261023_v1/preflight/a/requests/b30a2f92def1288fcc702b00621316ae27efa88940bfaba15d315f584309f106.json",
+          "sha256": "4b5dd33ba903c439dd442fbc40b5981a9f9358e60947c553dc0103bd327f1568"
+        },
+        "reservation": 22917,
+        "read_receipts": 0
+      }
+    ],
+    "aggregate": 102563,
+    "limit": 98304,
+    "excess": 4259,
+    "formal_author_answers": 0,
+    "inboxes": 0,
+    "location_note": "Bindings record exact paths at review time. If parent archives this failed preflight before a distinct preflight attempt, preserve byte hashes and explicit old->archive path mapping; never overwrite this failure."
+  },
+  "validation": {
+    "command": "PYTHONPATH=src:scripts /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest tests.test_mining_query_projection tests.test_mining_taxonomy_consumer_stage",
+    "result": "8/8 passed",
+    "harness_error_disclosed": "An initial independent test invocation used systemPython3.9 and omitted scripts fromPYTHONPATH; both test modules failed at import only. Corrected invocation passed. Not a product failure or evidence of model compliance."
+  },
+  "next_gate": "Resolve budget reachability with the same source cases and original limits, preserve failed artifacts, freeze a separately identified zero-inbox preflight and re-review before any formal inbox.",
+  "limits": [
+    "No fresh production author behavior, correction adherence, downstream semantic acceptance or original old-stage artifact preservation has been newly established by these local checks.",
+    "Not complete S3/S4, new measurement, candidate/admission/publication/reuse, recovery, fullMVP or independent research gain."
+  ],
+  "external_api_gets": 0,
+  "new_business_labels_candidates_publications": 0,
+  "fresh_consumer_count": 0
+}
