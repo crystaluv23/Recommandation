@@ -1,0 +1,147 @@
+{
+  "event-fc051aa07fece8a6": {
+    "evidence_kind": "event_read",
+    "event_ref": "event-fc051aa07fece8a6",
+    "case_ref": "case-001",
+    "document_ref": "document-synthetic-doc",
+    "content_hash": "61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4",
+    "available_at": "2025-05-30T00:00:00+00:00",
+    "title": "IssuerPrivateName front material.",
+    "source_family": "news",
+    "published_at": "2025-05-30T00:00:00+00:00",
+    "source_type": "company_news",
+    "read_windows": [
+      {
+        "target": "event_ref",
+        "ref": "event-fc051aa07fece8a6",
+        "document_ref": "document-synthetic-doc",
+        "offset": 2720,
+        "length": 21,
+        "verbatim_hash": "e5a58e1bbef46e33f4027db454cfc3bf2412dde9401aa3009a1d3935cdd6ddec",
+        "has_readable_text": true,
+        "readable_chars": 21,
+        "raw_window_chars": 21,
+        "next_readable_start": 2742,
+        "case_refs": [
+          "case-001"
+        ],
+        "title": "IssuerPrivateName front material.",
+        "source_family": "news",
+        "available_at": "2025-05-30T00:00:00+00:00",
+        "readable_text": "TAIL_MILESTONE exact.",
+        "content_hash": "61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4",
+        "source_type": "company_news",
+        "published_at": "2025-05-30T00:00:00+00:00"
+      },
+      {
+        "target": "document_ref",
+        "ref": "document-synthetic-doc",
+        "document_ref": "document-synthetic-doc",
+        "offset": 2720,
+        "length": 21,
+        "verbatim_hash": "e5a58e1bbef46e33f4027db454cfc3bf2412dde9401aa3009a1d3935cdd6ddec",
+        "has_readable_text": true,
+        "readable_chars": 21,
+        "raw_window_chars": 21,
+        "next_readable_start": 2742,
+        "case_refs": [
+          "case-001",
+          "case-002"
+        ],
+        "readable_text": "TAIL_MILESTONE exact.",
+        "content_hash": "61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4",
+        "source_type": "company_news",
+        "published_at": "2025-05-30T00:00:00+00:00",
+        "available_at": "2025-05-30T00:00:00+00:00"
+      }
+    ]
+  },
+  "event-aaa2dd793c4341ef": {
+    "evidence_kind": "event_read",
+    "event_ref": "event-aaa2dd793c4341ef",
+    "case_ref": "case-002",
+    "document_ref": "document-synthetic-doc",
+    "content_hash": "61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4",
+    "available_at": "2025-05-30T00:00:00+00:00",
+    "title": "IssuerPrivateName front material.",
+    "source_family": "news",
+    "published_at": "2025-05-30T00:00:00+00:00",
+    "source_type": "company_news",
+    "read_windows": [
+      {
+        "target": "document_ref",
+        "ref": "document-synthetic-doc",
+        "document_ref": "document-synthetic-doc",
+        "offset": 2720,
+        "length": 21,
+        "verbatim_hash": "e5a58e1bbef46e33f4027db454cfc3bf2412dde9401aa3009a1d3935cdd6ddec",
+        "has_readable_text": true,
+        "readable_chars": 21,
+        "raw_window_chars": 21,
+        "next_readable_start": 2742,
+        "case_refs": [
+          "case-001",
+          "case-002"
+        ],
+        "readable_text": "TAIL_MILESTONE exact.",
+        "content_hash": "61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4",
+        "source_type": "company_news",
+        "published_at": "2025-05-30T00:00:00+00:00",
+        "available_at": "2025-05-30T00:00:00+00:00"
+      }
+    ]
+  },
+  "document-synthetic-doc": {
+    "evidence_kind": "document_read",
+    "document_ref": "document-synthetic-doc",
+    "content_hash": "61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4",
+    "source_type": "company_news",
+    "published_at": "2025-05-30T00:00:00+00:00",
+    "available_at": "2025-05-30T00:00:00+00:00",
+    "read_windows": [
+      {
+        "target": "event_ref",
+        "ref": "event-fc051aa07fece8a6",
+        "document_ref": "document-synthetic-doc",
+        "offset": 2720,
+        "length": 21,
+        "verbatim_hash": "e5a58e1bbef46e33f4027db454cfc3bf2412dde9401aa3009a1d3935cdd6ddec",
+        "has_readable_text": true,
+        "readable_chars": 21,
+        "raw_window_chars": 21,
+        "next_readable_start": 2742,
+        "case_refs": [
+          "case-001"
+        ],
+        "title": "IssuerPrivateName front material.",
+        "source_family": "news",
+        "available_at": "2025-05-30T00:00:00+00:00",
+        "readable_text": "TAIL_MILESTONE exact.",
+        "content_hash": "61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4",
+        "source_type": "company_news",
+        "published_at": "2025-05-30T00:00:00+00:00"
+      },
+      {
+        "target": "document_ref",
+        "ref": "document-synthetic-doc",
+        "document_ref": "document-synthetic-doc",
+        "offset": 2720,
+        "length": 21,
+        "verbatim_hash": "e5a58e1bbef46e33f4027db454cfc3bf2412dde9401aa3009a1d3935cdd6ddec",
+        "has_readable_text": true,
+        "readable_chars": 21,
+        "raw_window_chars": 21,
+        "next_readable_start": 2742,
+        "case_refs": [
+          "case-001",
+          "case-002"
+        ],
+        "readable_text": "TAIL_MILESTONE exact.",
+        "content_hash": "61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4",
+        "source_type": "company_news",
+        "published_at": "2025-05-30T00:00:00+00:00",
+        "available_at": "2025-05-30T00:00:00+00:00"
+      }
+    ]
+  }
+}

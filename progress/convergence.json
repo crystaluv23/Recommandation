@@ -3,9 +3,9 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-22T22:11:28.879409+00:00",
+    "checked_at": "2026-10-22T22:33:35.901876+00:00",
     "thread_id": "01a15f73-622f-7130-905e-927e4e6c17c7",
-    "source": "Active unbudgeted goal verified live this turn. Previous turn was progress: fresh0of2 exposed hidden requestcost. Explicit scopedbudget metadata/native hardstop/sequentialaccounting now locally repaired and independently checked,0newfresh/0API; oldsealed0of2/1of2 unchanged. Localaccounting is not freshplanning or overallMVP. Next evidence must connect to a source-sufficient genuinecapabilitypositive, not another easier endpoint. Nofullsuccessor; canonicalA/Bstillpending."
+    "source": "Active unbudgeted goal verified live. Prior turn was progress with scopedbudget connection. Current independent materialreview found genuineprospective ICFRfamily plus qualifiedwindowpath; actual692to600 andotherS4toS5losses locallyrepaired,402tests/9independentcontrols pass,5diagnosticpending/0productionanswers. Original0of2/1of2/authority unchanged. Need historicalbody/definition/fullcost freeze before genuinefresh Mining-to-implementation. No fullsuccessor; canonicalA/Bpending."
   },
   "acceptance": [
     {
@@ -1815,22 +1815,55 @@
         "runs/diagnostics/mining_request_budget_20261023_v1/independent/final-scope-v1/final-scope-supplement.json"
       ],
       "result": "Specfirst optionalexplicit single/aggregate/call limits forroleinstance; defaultcomplete native request/hash identicalfrozenold. Budgetpayload discloses completecurrent reservation/remainingafter/nextsharedpromptlowerbound, two fixedwidthdecimalstrings avoid independent89to90two-cycle; noforcedactionorder/toolremoval/semanticauthority. Wrappingmodule estimator nowincludes sameENVELOPE. Productionactualfactory captures only existing Miningmodel single_limit32768, no inventedaggregate. InitialRuntimeBudgetExceeded wasValidationError, independentnativefailedhardstop; corrected MiningRequestBudgetExhausted extendsEvolutionControlFlow, actualcontrollerzero invalidledger/correction/requestbeforestop. Nativezero-usage no-progress wronglycharged1call18055, correctedpredispatch0; malformed/nonobject/identity-rejected answeredcostpreserved. Independent17nativegroups pass inclboundary/exactfit/minus1/typedgrammar/SECunicode/sharedseeds/defaults/sequence.3actualofflinefixtureconsumedrequests plusfutureprepared4 replayidenticalbudgets/hashes/3unchangedphysicalreceipts, notfreshLLM orOSrecovery. Source-onlytwofixedviewtraversals97429/92841fitoriginal98304 with875/5463belowfloor15234/15238; counters explicitly simulated,0receive/inbox/answers,notplanningpass. Constructoralreadyforbidsremote/localregistrationmix, so speculativetransportbranchremoved ratherthanclaimunreachablebugfix; finalassociatedrerun397pass/network0/125bindingsunchanged.75oldstage/1791sourcefileshashsame. Newfresh0,oldmodule0of2andtaxonomy1of2 retained; noAPI/GET/newbusinesslabels/checkLockedTest/candidate/publish/pointer/fullsuccessor; overallMVPandcanonicalA/Bremainopen."
+    },
+    {
+      "id": "mining-materialization-evidence-frontier-20261023",
+      "strategy": "independent_local_material_review_then_complete_seed_bound_source_handoff_to_actual_materialization",
+      "failure_families": [
+        "materialization_clips_indivisible_fact_span_and_cited_units",
+        "raw_document_and_later_event_reads_missing_from_s5",
+        "derived_relation_operands_not_handed_to_materializer",
+        "cross_seed_source_harvest_not_candidate_owned",
+        "source_type_inferred_from_incompatible_document_id",
+        "explicit_s5_caller_budget_recast_as_module_error"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/mining-materialization-evidence-frontier-20261023.md",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/material-obligations-frozen.json",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/material-review.md",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/narrative-material-bindings.json",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/structured-material-gap.json",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/before-controls.json",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v2/results.json",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/review.md",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-test-bindings.json",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-tests.log",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v3/results.json",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v3/prompt-source-contract-audit.json",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-test-bindings-final.json",
+        "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-tests-final.log"
+      ],
+      "result": "Before conclusions independentlyfroze263authorizeddev8sources,originalopaquewirecutoffs/groups,exactstable18. All12functionscovered; parameterizedmomentumwindowgenuinelynewoperandpath7of8butadjustmentunknown/100daygapretainssuppliedobservationsemantics. CleannewICFRactual/contrary/hypothetical/ambiguitysourcefamilyfound,notcandidate/effectproof. InventoryNet/AssetsCurrenttrueusgaapUSDsameinstantmaterialexistsbutnoexactregisteredformula,noborrowedfunction/LLMrecast. Independentbeforecodeactual1179whole692clipped600droppingtaxonomy/literalend,13refs12,documenttailabsent,eventtailreplacedpreview,relation/operandsmissing; sourceidparsermisreadsaccessionastype. SpecfirstController.materialization_evidence exportswholefactswithactualfetchedsource_type,orderedrelations,onlyexecutedreadwindowswithtarget/case/hash/offset/clocks/visibility. Differenttarget/scopeunique,notperexecutionledgerID; eventunreadpreviewexcluded,unknownrefs/dependenciesfailbeforemodel,producingseedonly. S5nativeegressidentitymaskpreserved; originalsource/refs/ledgerunchanged. CallerexplicitcapRuntimeBudgetExceededpropagatescontrolflow,notcontentretry; H1capdoesnotimplicitlygovernS5,reviewinitialwrongscopeassumptionpreserved. Independent9of9 and5diagnosticnativepending spec/skill/tests inputs complete;0answers/receipts/models/network. Actualengineofflinefixtureverifiesseedwindowseparation.402associatedpass/network0/126bindingsunchanged. Initialoldno-source siblingfixture amendedwithsamevalidsyntheticrevenueinputs;newunitunsupportedrule/titleexpectationerrorspreservedandcorrected,notproductrelaxation. Newfresh0,candidate/publish/newbusinesslabels/checkLockedTest/pointer/fullsuccessor0; old0of2and1of2 fixeddenominatorsunchanged. LocalhandoffnotS4/S5/MVPcompletion; sourceauthenticity,actualplanning/fullcandidatechainandcanonicalA/Bremainopen. Finalinitialprompt explicitlynames sourcewindow/operand contract andsourceversusviewhash; independentafterv3ninegroupspass,5nativepayloadsidenticalprioronlypromptcontractadded,402finalrerunpass/network0. Supplementalexpectationoftrailingblank corrected toactualrecordedslice; productinputsunchanged."
     }
   ],
   "review": {
-    "after_iteration": "mining-request-budget-visibility-20261023",
+    "after_iteration": "mining-materialization-evidence-frontier-20261023",
     "evidence": [
-      "reports/mining-request-budget-visibility-20261023.md",
-      "runs/diagnostics/mining_request_budget_20261023_v1/independent/frozen-controls-v1.json",
-      "runs/diagnostics/mining_request_budget_20261023_v1/independent/baseline-results-v1.json",
-      "runs/diagnostics/mining_request_budget_20261023_v1/independent/native-v1/results.json",
-      "runs/diagnostics/mining_request_budget_20261023_v1/independent/predispatch-v1/predispatch-result.json",
-      "runs/diagnostics/mining_request_budget_20261023_v1/independent/independent-final-review-v2.json",
-      "runs/diagnostics/mining_request_budget_20261023_v1/independent/source-views-v2/result.json",
-      "runs/diagnostics/mining_request_budget_20261023_v1/independent/sequential-v1/sequential-results.json",
-      "runs/diagnostics/mining_request_budget_20261023_v1/associated-test-bindings-final.json",
-      "runs/diagnostics/mining_request_budget_20261023_v1/associated-tests-final.log",
-      "runs/diagnostics/mining_request_budget_20261023_v1/independent/final-scope-v1/final-scope-supplement.json"
+      "reports/mining-materialization-evidence-frontier-20261023.md",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/material-obligations-frozen.json",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/material-review.md",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/narrative-material-bindings.json",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/independent/structured-material-gap.json",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/before-controls.json",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v2/results.json",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/review.md",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-test-bindings.json",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-tests.log",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v3/results.json",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v3/prompt-source-contract-audit.json",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-test-bindings-final.json",
+      "runs/diagnostics/mining_capability_frontier_20261023_v1/associated-tests-final.log"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -1938,19 +1971,20 @@
       "The repaired next-locator path is proven only by current-wire deterministic selection, not fresh semantic authorship. Actual source is DGICA/CIK0000800457 despite aGPRE-named aggregate snapshot; identity checks must use actual local metadata rather than folder names. Four-request path has only663/705headroom, so given-action budget fit cannot authorize extra actions. Deterministic reconstructed views are not LLMcache/pending/OS recovery; retain all those missing evidence layers and old1of2.",
       "Default small/USGAAP-priority tables missed that fetch query stopped at document selection and did not reach boundedconceptprojection; source existed but IFRS target stayedunreachable. Locator-only wirefit on19facts did not establish31factgeneralization capacity: complete4step newsource requires102563>98304 beforeanyinbox. Prior issuerCIK/symbol absence checks also left a resolvable accession in document_ref; zeroauthor input-only is not a sentleak, but cannot establish fullhandleanonymity. Retain preflight budgetfailure and attributiondefaultSPEC mistake/configuredsupplement; no easier sample or narrower obligation substitutesforMVP.",
       "A deterministic fourstep compare/read/read/endpoint fit only proved that given path. I omitted a permitted useful compute decision and failed to inspect whether the author saw nativecall costs. Both fresh legalcomputes were semantically correct, then fifth requests exceeded hidden98304aggregate; originaltool heavy2 did not disclose endpoint headroom. Prompt compression is not autonomous resource planning. Independent firstidentityfreeze also postdated initialcandidate, and preserved harnesserrors are not productcounterexamples.",
-      "Budget visibility repair initially reused a RuntimeBudgetExceeded class without verifying its base (ValidationError), and treated defaultempty AgentUsage as proof of consumption. Independent native controls exposed both. I also initially accepted a speculative local/remote estimator mismatch without reading constructorregistration exclusion; removed unreachablechange. Fixedpath fit and scripted budget metadata remain local evidence, not newauthor planning or genuineMining capability. Further endpoint-only iterations would not satisfy the full positive measurement/implementation/admission/reuse objective."
+      "Budget visibility repair initially reused a RuntimeBudgetExceeded class without verifying its base (ValidationError), and treated defaultempty AgentUsage as proof of consumption. Independent native controls exposed both. I also initially accepted a speculative local/remote estimator mismatch without reading constructorregistration exclusion; removed unreachablechange. Fixedpath fit and scripted budget metadata remain local evidence, not newauthor planning or genuineMining capability. Further endpoint-only iterations would not satisfy the full positive measurement/implementation/admission/reuse objective.",
+      "Prior budget/read/locator checks ended before actual S5. They did not exercise longwholefacts, thirteen citations, document/event late reads or relation-only citations through real materializer payloads. Existing helper clippedliteral600/rows12, inferred source type fromoneIDgrammar and engineharvestdroppedread/relations pluscrossseedownership. I initially moved toward a positivecontrol without this consumercheck; independent originalsource/nativecontrols exposed it before freshanswers. Reviewer also assumed H1cap appliedS5; correctedscope ratherthan silentlyextendbudgetpolicy. Localinputpreservation and cleanICFRmaterial are still not freshcandidate/admission/reuse proof."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "source_sufficient_prospective_mining_capability_positive_before_fresh_roles",
-      "action": "Use current approved localDiscovery material and owningmeasurement contracts to prepare a prospective genuinecapabilitypositive for Mining measurement-to-implementation, with source-only independent obligations before any answer. Preserve clear positive/control or magnitude authority and originalPIT/object/unit/period. Trace actualController/materializer/admission/exactreuse interfaces and fullrequest/correction costs under existingapplicablebudgets. Only freeze a freshstage when sources support an unambiguous reusablemeasurement and the wholedeclaredpath is reachable; otherwise identify specificsource/definitiongap withoutnewmechanisms orblindfreshruns. Do not restart two sealedbudgetterminals.",
-      "stop": "NoAPI/network/newbusinesslabels/check/LockedTest, noimplicitresearchdefinition/canonicalchoice, noreset/rename/reentryofsealedtargets, no budgetraise or droppedtools/requiredreads, no easierendpointsubstitution forS3-S8 and nofullsuccessor. Stop a materialchoice if sourceproof/definition/authorizedresources cannot support the genuinepath; canonicalA/Bpending remainsindependent.",
-      "question": "Do authorized localsource materials and existing definitions support a concrete, reusable capabilitypositive whose Mining-to-implementation path can be fairly frozen and completed within existing explicit resources?",
-      "pass": "Independent originalmaterials establish exact object/time/unit/period and a legal observablemeasurement without inventinglabel/definition; actualmoduleinterfaces and completeworkingrequests permit the planned candidatechain under fixedauthority/budgets.",
-      "fail": "Material remains ambiguous/inadequate, path needs unsupportedexecution or a hiddenbudget/definitionchange, or anotherleafendpoint is being presented as Mining capability.",
-      "on_pass": "Freeze prospectiveinputs/code/independentreference/budgets, then use exactcurrentinbox-onlyfreshsubagents for actualroles and inspectraw/repair/persistence/consumerchain; retainalloldfailuredenominators.",
-      "on_fail": "Record the specific material/interface/definition gap and change the hypothesis or prepare a substantive decision only when necessary; do not repeatedlypatchwording orrununconstrainedfullsuccessors."
+      "strategy": "icfr_source_version_definition_and_complete_native_capability_path_preflight",
+      "action": "Use the privatelyfrozen ICFRactual/contrary/hypothetical/ambiguity originalmaterials to verify exacthistoricalbody/version/clock/object and existingallowedmeasurement semantics. Then trace prospective nativeController→spec/skill/tests→technicaladmission→exactreuse entry and complete request/correction costs under explicitlyownedresources, distinguishing H1/controller from S5 budgets. Freeze independent obligations and fullcapabilitypositive before freshmodeloutputs; retainoriginalfullMVPscope, no handwrittensignal substitute. Do not repeat endpoint-only checks or reset sealedtargets.",
+      "stop": "Existingsourceonly/noAPI/network/businesslabel/check/LockedTest;noimplicitdefinition/canonicaldecision or H1toS5budgettransfer;nooldstageadvance/rename/reset;nofalsehistoricalprimarytruth/adjustmentclaims, droppedwholeunits/tools, handwrittencandidateasMining, easierendpointsubstitution orfullsuccessor. Stopifsourceversion/definition/resource path cannotbe supported; surface exact gap and prepare onlynecessarysubstantivechoice.",
+      "question": "Can the exact ICFR source bodies and a semantically unambiguous prospective newmeasurement support a genuinely frozen native Mining-to-implementation control with explicit fullpath resource bounds?",
+      "pass": "Historicalbody/time/object andactual/contrary/hypothetical/ambiguity independentobligations are bound; complete actualinput/candidate/materializer/admission/reuse connections and limits are feasible withoutsemantic orauthoritychanges.",
+      "fail": "Historicalbodyproof, measurementorientation/definition or executable/resource path is unsupported orbeing implicitlychanged; onlyanothernarrowendpoint is reachable.",
+      "on_pass": "Freeze the prospective fullcapabilitycontrol and dispatch only exactnativeinbox freshsubagents serially,inspectoriginalanswers/corrections/persistence/realconsumerinputs,keepalloldfailures.",
+      "on_fail": "Retain explicit missingproof/definition/resource disposition and changehypothesis or prepareconcretedecisionwhennecessary; no blindfresh/fullrun or newmechanismsto manufacturepass."
     }
   },
   "successor_prerequisites": [

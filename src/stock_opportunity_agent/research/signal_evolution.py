@@ -6,7 +6,7 @@ import hashlib
 import json
 import re
 from copy import deepcopy
-from dataclasses import dataclass, field, replace
+from dataclasses import asdict, dataclass, field, is_dataclass, replace
 from datetime import datetime
 from math import comb
 from pathlib import Path
@@ -109,6 +109,7 @@ from stock_opportunity_agent.research.mining_controller import (
 )
 from stock_opportunity_agent.research.mining_role_model import (
     MiningAgentRoleModel,
+    MiningRequestBudgetExhausted,
 )
 from stock_opportunity_agent.research.plan_evolution import (
     EvolutionWorkspace,
@@ -6643,10 +6644,7 @@ class SignalEvolutionEngine:
                 )
             )
             fetched_case_refs[seed] = fetched
-            evidence_by_ref: dict[str, Any] = {
-                **getattr(controller, "_facts", {}),
-                **getattr(controller, "_events", {}),
-            }
+            evidence_by_ref = controller.materialization_evidence()
             cited[seed] = evidence_by_ref
             seed_reports.append(
                 {
@@ -6710,15 +6708,7 @@ class SignalEvolutionEngine:
                 gap_ref, gap = capability_gap
                 capability_gaps[gap_ref] = gap
                 continue
-            evidence = {}
-            for seed_cited in cited.values():
-                evidence.update(
-                    {
-                        ref: item
-                        for ref, item in seed_cited.items()
-                        if ref in set(candidate.get("evidence_refs", ()))
-                    }
-                )
+            evidence = cited.get(candidate_seed, {})
             staged = self._materialize_controller_candidate(
                 candidate,
                 caller=caller,
@@ -6999,53 +6989,36 @@ class SignalEvolutionEngine:
         contract.
         """
 
-        wanted = {str(ref) for ref in candidate.get("evidence_refs", ())}
+        wanted = tuple(dict.fromkeys(str(ref) for ref in candidate.get("evidence_refs", ())))
         excerpts: list[dict[str, Any]] = []
         measurement = candidate.get("measurement")
-        predicate = (
-            measurement.get("predicate")
-            if isinstance(measurement, Mapping)
-            else None
-        )
+        predicate = measurement.get("predicate") if isinstance(measurement, Mapping) else None
         if isinstance(predicate, Mapping):
-            excerpts.append(
-                {"predicate": dict(predicate), "kind": "narrative_predicate"}
-            )
-        for ref, item in evidence.items():
-            if str(ref) not in wanted or len(excerpts) >= 12:
-                continue
-            row = {"ref": str(ref)}
-            for key in (
-                "concept",
-                "unit",
-                "value",
-                "exact_span",
-                "excerpt",
-                "title",
-                "source_family",
-                "published_at",
-                "available_at",
-            ):
-                value = getattr(item, key, None)
-                if value is not None and str(value).strip():
-                    row[key] = str(value)[:600]
-            document_source_type = (
-                SignalEvolutionEngine._evidence_document_source_type(
-                    str(getattr(item, "document_ref", ""))
-                )
-            )
-            if document_source_type:
-                # Structured-fact rows carry no source_family attribute, so
-                # the retrieval vocabulary is derived from the cited
-                # document itself; the model can then align
-                # raw_retrieval.source_types on the first attempt.
-                row.setdefault("document_source_type", document_source_type)
-            period = getattr(item, "period", None)
-            if isinstance(period, Mapping):
-                row["period"] = dict(period)
-            if "exact_span" not in row and "excerpt" not in row:
-                continue
-            excerpts.append(row)
+            excerpts.append({"predicate": dict(predicate), "kind": "narrative_predicate"})
+        included: set[str] = set()
+
+        def include(ref: str) -> None:
+            if ref in included:
+                return
+            item = evidence.get(ref)
+            if item is None:
+                raise ValidationError(f"materialization citation has no source handoff: {ref}")
+            row = dict(item) if isinstance(item, Mapping) else (
+                asdict(item) if is_dataclass(item) else dict(vars(item)))
+            if not any(row.get(key) for key in ("exact_span", "excerpt", "read_windows", "fact_refs")):
+                raise ValidationError(f"materialization citation has no source unit: {ref}")
+            row["ref"] = ref
+            source_type = row.get("source_type") or SignalEvolutionEngine._evidence_document_source_type(
+                str(row.get("document_ref", "")))
+            if source_type:
+                row.setdefault("document_source_type", source_type)
+            included.add(ref)
+            excerpts.append(deepcopy(row))
+            for operand in row.get("fact_refs", ()):
+                include(str(operand))
+
+        for ref in wanted:
+            include(ref)
         return excerpts
 
     def _masked_controller_evidence_excerpts(
@@ -7109,6 +7082,13 @@ class SignalEvolutionEngine:
             self._controller_signal_id_slug(candidate, {})
         )
         last_issues: list[str] = []
+        try:
+            if not candidate.get("evidence_refs"):
+                raise ValidationError("materialization requires cited source units")
+            self._controller_evidence_excerpts(candidate, evidence)
+        except ValidationError as exc:
+            failures[failure_key] = (f"source handoff prerequisite failed: {exc}",)
+            return None
         # Module-staged materialization: spec, then skill (narrative only),
         # then tests — each its own bounded call, and an accepted module is
         # cached across retries so a failing stage never re-renders valid
@@ -7188,12 +7168,21 @@ class SignalEvolutionEngine:
                 stage=f"mining_candidate_materialize_{module}",
                 system_prompt=(
                     "Return exactly one JSON object. " + instruction
+                    + " cited_evidence preserves whole source units: fact exact_span; "
+                    "document/event read_windows[].readable_text with raw coordinates "
+                    "and case scope; relation fact_refs resolve to included operands. "
+                    "Only executed read windows establish narrative support; titles "
+                    "are navigation. content_hash/verbatim_hash bind original raw "
+                    "source, not projected readable_text. Infer no unread body or metadata."
                 ),
                 payload=payload,
                 allow_outcomes=True,
+                anonymous_aliases=tuple(self.slow_role_identity_guards) + tuple(self.validator.forbidden_identity_terms),
                 max_output_tokens=ROLE_OUTPUT_TOKEN_LIMITS["proposer"],
                 temperature=0.2,
             )
+        except RuntimeBudgetExceeded as exc:
+            raise MiningRequestBudgetExhausted(str(exc)) from exc
         except (EvolutionControlFlow, OpenAIClientError):
             raise
         except Exception as exc:
@@ -7282,13 +7271,9 @@ class SignalEvolutionEngine:
             )
         }
         evidence_families = {
-            family
-            for family in (
-                self._evidence_document_source_type(
-                    str(getattr(item, "document_ref", ""))
-                )
-                for item in evidence.values()
-            )
+            str(family)
+            for row in self._controller_evidence_excerpts(candidate, evidence)
+            for family in (row.get("source_type") or row.get("document_source_type"),)
             if family
         }
         if retrieval_families and evidence_families and not (

@@ -103,6 +103,34 @@ Local safety/accounting tests do not prove fresh planning or MVP completion.
 
 ### Shared Evidence Graph
 
+S4-to-S5 handoff exports the producing Controller seed's complete cited source
+units through one runtime interface. Facts retain whole exact spans and every
+binding; relations retain their source operands; raw document/event citations
+retain only actually executed read windows with original target, case scope,
+document/content hash, offsets, source clocks/type and visibility result. Keep
+different event/document targets and case scopes distinct even for the same
+raw range. An event's later reads cannot be replaced by its original preview.
+Unfetched/unread document body and undisclosed metadata are never exported.
+
+Materialization resolves every citation and relation dependency before sending
+spec/skill/tests requests. Missing lineage fails closed as an implementation
+prerequisite failure, never a source-absence or no-pattern conclusion. The
+handoff does not silently clip fields to600 characters, truncate cited units
+to12, or borrow another seed's reads. Complete units enter normal request
+accounting; excessive context is a resource failure, not permission to crop
+evidence. Materialization egress uses the native reversible identity scope for
+source coordinates as well as the existing masked fixture-authoring view.
+S5 honors an explicitly bounded caller's request cap and propagates its budget
+stop as control flow. It does not infer that the separate H1/controller cap
+governs S5; an unconfigured S5 input cap remains unknown. Prospective controls
+must freeze the applicable complete-request/correction bounds before dispatch.
+This is a runtime source handoff, not a new canonical business record or a new
+source read. Historical raw documents, refs, ledger entries and completed
+stages remain unchanged. Verify ordinary facts, long facts, later narrative
+windows, document-only citations, derived operands, source/case/seed mismatch,
+identity masking and actual downstream requests; fixture replay is not fresh
+Mining or a published/reused capability.
+
 - The graph is virtual and lazy. Facts project only from documents already
   selected through the authorized resolver and loaded under the point-in-time
   rule `available_at <= prediction_time`, reusing the shared SEC structured

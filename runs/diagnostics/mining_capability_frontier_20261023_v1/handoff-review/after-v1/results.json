@@ -1,0 +1,93 @@
+{
+  "before": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "cb4f4a489215b0a50b38fde6b887e031445c378a7edd0d45aca60bfe7f71220a",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "3c5ba88287924a7beeb7752ebfc8a0ce541f74833afbda9526195bc51fec093a",
+    "src/stock_opportunity_agent/research/evolution_transport.py": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42"
+  },
+  "after": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "cb4f4a489215b0a50b38fde6b887e031445c378a7edd0d45aca60bfe7f71220a",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "3c5ba88287924a7beeb7752ebfc8a0ce541f74833afbda9526195bc51fec093a",
+    "src/stock_opportunity_agent/research/evolution_transport.py": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42"
+  },
+  "stable_sources": true,
+  "results": [
+    {
+      "id": "actual-whole-fact-source-type-and-13refs",
+      "passed": true,
+      "detail": {
+        "actual_span_chars": 692,
+        "whole_rows": 13
+      }
+    },
+    {
+      "id": "read-window-case-lineage-no-unread-leak",
+      "passed": true,
+      "detail": {
+        "raw_hash": "61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4",
+        "windows": 2
+      }
+    },
+    {
+      "id": "relation-ordered-operands",
+      "passed": true,
+      "detail": {
+        "relation": "relation-3ad23767ef7414a4",
+        "ordered_operands": [
+          "fact-8e6391a8eb3c9743",
+          "fact-2514935a069837df"
+        ]
+      }
+    },
+    {
+      "id": "unknown-before-model",
+      "passed": true,
+      "detail": {
+        "slow_loop:mining_materialize:synthetic_review_observable": [
+          "source handoff prerequisite failed: materialization citation has no source handoff: unknown-ref"
+        ]
+      }
+    },
+    {
+      "id": "legacy-fact-object-helper",
+      "passed": true,
+      "detail": {
+        "legacy_dataclass_fact": true
+      }
+    },
+    {
+      "id": "native-spec-skill-tests-pending",
+      "passed": true,
+      "detail": [
+        {
+          "module": "spec",
+          "request_hash": "595530a295d8573767e8b18ede5fbe06907192c5eff595b51471cd186df510c5",
+          "cited_evidence_count": 2,
+          "inbox": "/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v1/native-spec/local_roles/inbox/595530a295d8573767e8b18ede5fbe06907192c5eff595b51471cd186df510c5.json"
+        },
+        {
+          "module": "skill",
+          "request_hash": "d908f86fd7d875dcdc3d7df2d2cbf93b7dd87093888013b126f55fd700ca0036",
+          "cited_evidence_count": 2,
+          "inbox": "/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v1/native-skill/local_roles/inbox/d908f86fd7d875dcdc3d7df2d2cbf93b7dd87093888013b126f55fd700ca0036.json"
+        },
+        {
+          "module": "tests",
+          "request_hash": "cd1b2cec2e67bb79c4dea3c0f94d0a41e9468396c6bf718f41cfc7c96cac6404",
+          "cited_evidence_count": 2,
+          "inbox": "/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v1/native-tests/local_roles/inbox/cd1b2cec2e67bb79c4dea3c0f94d0a41e9468396c6bf718f41cfc7c96cac6404.json"
+        }
+      ]
+    },
+    {
+      "id": "native-single-request-budget-stop",
+      "passed": false,
+      "type": "AssertionError",
+      "message": "single cap was not forwarded; native inbox prepared",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after_controls.py\", line 181, in budget\n    e._materialize_spec_module(proposal([docref],narrative=True),caller=caller,\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py\", line 7196, in _materialize_spec_module\n    parsed, call_issues = self._materialize_module_call(\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py\", line 7164, in _materialize_module_call\n    parsed, _usage = complete_json_repaired(\n                     ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py\", line 1840, in complete_json_repaired\n    value, usage = caller.complete_json(**kwargs)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py\", line 1049, in complete_json\n    value, usage, _scores = self._complete_json(\n                            ^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py\", line 1138, in _complete_json\n    value, usage, scores = self._complete_json_request(**projected)\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py\", line 1321, in _complete_json_request\n    raw_output, local_usage = self.local_role_exchange.receive(\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/local_role_exchange.py\", line 107, in receive\n    raise LocalRoleRequestPending(pending)\nstock_opportunity_agent.research.local_role_exchange.LocalRoleRequestPending: {\"inbox_path\": \"/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v1/native-budget/local_roles/inbox/595530a295d8573767e8b18ede5fbe06907192c5eff595b51471cd186df510c5.json\", \"inbox_sha256\": \"48090c08de1d26655d7f2f4d1f5fafcb6b36c05fcfe3b8d21ea9de05f2e444ce\", \"outbox_path\": \"/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v1/native-budget/local_roles/outbox/595530a295d8573767e8b18ede5fbe06907192c5eff595b51471cd186df510c5.txt\", \"request_hash\": \"595530a295d8573767e8b18ede5fbe06907192c5eff595b51471cd186df510c5\", \"stage\": \"mining_candidate_materialize_spec\"}\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after_controls.py\", line 36, in record\n    detail = fn()\n             ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after_controls.py\", line 184, in budget\n    assert not isinstance(exc,LocalRoleRequestPending), 'single cap was not forwarded; native inbox prepared'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: single cap was not forwarded; native inbox prepared\n"
+    }
+  ],
+  "network_calls": 0,
+  "model_calls": 0,
+  "authored_answers": 0,
+  "evidence": "local deterministic controls and native pending request serialization only"
+}

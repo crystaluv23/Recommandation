@@ -1,0 +1,35 @@
+test_actual_long_fact_and_thirteenth_unit_are_whole_and_source_typed (tests.test_mining_materialization_handoff.MiningMaterializationHandoffTests.test_actual_long_fact_and_thirteenth_unit_are_whole_and_source_typed) ... ok
+test_explicitly_bounded_native_caller_stops_without_an_inbox_or_module_repair (tests.test_mining_materialization_handoff.MiningMaterializationHandoffTests.test_explicitly_bounded_native_caller_stops_without_an_inbox_or_module_repair) ... ok
+test_late_reads_keep_target_scope_and_never_export_unread_body_or_metadata (tests.test_mining_materialization_handoff.MiningMaterializationHandoffTests.test_late_reads_keep_target_scope_and_never_export_unread_body_or_metadata) ... FAIL
+test_relation_citation_resolves_whole_operands_and_missing_dependency_fails (tests.test_mining_materialization_handoff.MiningMaterializationHandoffTests.test_relation_citation_resolves_whole_operands_and_missing_dependency_fails) ... ERROR
+
+======================================================================
+ERROR: test_relation_citation_resolves_whole_operands_and_missing_dependency_fails (tests.test_mining_materialization_handoff.MiningMaterializationHandoffTests.test_relation_citation_resolves_whole_operands_and_missing_dependency_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_materialization_handoff.py", line 89, in test_relation_citation_resolves_whole_operands_and_missing_dependency_fails
+    execute(controller,'compute_statistic',rule='ratio',fact_refs=[f.fact_ref for f in facts])
+  File "/Users/l/Project/Recommandation/tests/test_mining_materialization_handoff.py", line 23, in execute
+    controller._execute(action, raw)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 974, in _execute
+    return self._execute_compute(raw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 1164, in _execute_compute
+    relation = compute_statistic(
+               ^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py", line 392, in compute_statistic
+    raise ValidationError(f"unknown compute_statistic rule: {rule}; allowed: {sorted(COMPUTE_RULES)}")
+stock_opportunity_agent.models.ValidationError: unknown compute_statistic rule: ratio; allowed: ['latest_minus_comparable_prior', 'latest_over_comparable_prior', 'latest_over_latest']
+
+======================================================================
+FAIL: test_late_reads_keep_target_scope_and_never_export_unread_body_or_metadata (tests.test_mining_materialization_handoff.MiningMaterializationHandoffTests.test_late_reads_keep_target_scope_and_never_export_unread_body_or_metadata)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_materialization_handoff.py", line 80, in test_late_reads_keep_target_scope_and_never_export_unread_body_or_metadata
+    self.assertNotIn(forbidden,serialized)
+AssertionError: 'intro intro' unexpectedly found in '{"evidence_kind": "document_read", "document_ref": "document-fixture-late-read", "content_hash": "f8983df73c1b4c2c980433930b557bff8a2f538f0bc67ccb767903a6586d0341", "source_type": "sec_filing", "published_at": "2025-01-15T12:00:00+00:00", "available_at": "2025-01-15T12:00:00+00:00", "read_windows": [{"target": "document_ref", "ref": "document-fixture-late-read", "document_ref": "document-fixture-late-read", "offset": 4244, "length": 100, "verbatim_hash": "db51450599f6bb2c31e5b2ed0f4213679975ae59a08bf8e9f193ee5ff8ea78d5", "has_readable_text": true, "readable_chars": 11, "raw_window_chars": 22, "next_readable_start": null, "case_refs": ["case-001"], "readable_text": "ACTUAL_TAIL", "content_hash": "f8983df73c1b4c2c980433930b557bff8a2f538f0bc67ccb767903a6586d0341", "source_type": "sec_filing", "published_at": "2025-01-15T12:00:00+00:00", "available_at": "2025-01-15T12:00:00+00:00"}, {"target": "event_ref", "ref": "event-f86950f76398266c", "document_ref": "document-fixture-late-read", "offset": 4244, "length": 100, "verbatim_hash": "db51450599f6bb2c31e5b2ed0f4213679975ae59a08bf8e9f193ee5ff8ea78d5", "has_readable_text": true, "readable_chars": 11, "raw_window_chars": 22, "next_readable_start": null, "case_refs": ["case-001"], "title": "intro intro intro intro intro intro intro intro intro intro intro intro intro intro intro intro intro intro intro intro ", "source_family": "filing", "available_at": "2025-01-15T12:00:00+00:00", "readable_text": "ACTUAL_TAIL", "content_hash": "f8983df73c1b4c2c980433930b557bff8a2f538f0bc67ccb767903a6586d0341", "source_type": "sec_filing", "published_at": "2025-01-15T12:00:00+00:00"}]}'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.014s
+
+FAILED (failures=1, errors=1)

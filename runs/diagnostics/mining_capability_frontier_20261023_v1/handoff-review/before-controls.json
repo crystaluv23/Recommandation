@@ -1,0 +1,1029 @@
+{
+  "real_source_13_whole_facts": {
+    "refs": [
+      "fact-04581424445a1b1e",
+      "fact-a201b1f1cd0e405a",
+      "fact-8e6391a8eb3c9743",
+      "fact-2514935a069837df",
+      "fact-8b45f3b8eb093a03",
+      "fact-25905ad8eca4a933",
+      "fact-35455de13663bb52",
+      "fact-80ed1686b06000a6",
+      "fact-76961a78c309dfdb",
+      "fact-6882752f47b35f47",
+      "fact-182cfb4ddcbd4503",
+      "fact-e9b3eaa0ee66f3a9",
+      "fact-b23b2ab97a8f1625"
+    ],
+    "old_rows": [
+      {
+        "ref": "fact-04581424445a1b1e",
+        "concept": "EntityCommonStockSharesOutstanding",
+        "unit": "shares",
+        "value": "80994098",
+        "exact_span": "{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Entity Common Stock, Shares Outstanding\",\"start\":null,\"",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "end": "2024-06-30"
+        }
+      },
+      {
+        "ref": "fact-a201b1f1cd0e405a",
+        "concept": "GrossProfit",
+        "unit": "USD",
+        "value": "125000000",
+        "exact_span": "{\"description\":null,\"end\":\"2023-07-04\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"GrossProfit\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":125000000}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "end": "2023-07-04"
+        }
+      },
+      {
+        "ref": "fact-8e6391a8eb3c9743",
+        "concept": "ReserveOfExchangeDifferencesOnTranslation",
+        "unit": "USD",
+        "value": "27200000",
+        "exact_span": "{\"description\":null,\"end\":\"2024-07-04\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"ReserveOfExchangeDifferencesOnTranslation\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":27200000}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "end": "2024-07-04"
+        }
+      },
+      {
+        "ref": "fact-2514935a069837df",
+        "concept": "ReserveOfExchangeDifferencesOnTranslation",
+        "unit": "USD",
+        "value": "-4412219",
+        "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"ReserveOfExchangeDifferencesOnTranslation\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-4412219}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "end": "2024-06-30"
+        }
+      },
+      {
+        "ref": "fact-8b45f3b8eb093a03",
+        "concept": "AcquisitiondateFairValueOfTotalConsiderationTransferred",
+        "unit": "USD",
+        "value": "1100000",
+        "exact_span": "{\"description\":null,\"end\":\"2024-07-01\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"AcquisitiondateFairValueOfTotalConsiderationTransferred\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":1100000}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "end": "2024-07-01"
+        }
+      },
+      {
+        "ref": "fact-25905ad8eca4a933",
+        "concept": "AcquisitiondateFairValueOfTotalConsiderationTransferred",
+        "unit": "AUD",
+        "value": "1700000",
+        "exact_span": "{\"description\":null,\"end\":\"2024-07-01\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"AcquisitiondateFairValueOfTotalConsiderationTransferred\",\"taxonomy\":\"ifrs-full\",\"unit\":\"AUD\",\"value\":1700000}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "end": "2024-07-01"
+        }
+      },
+      {
+        "ref": "fact-35455de13663bb52",
+        "concept": "WeightedAverageShares",
+        "unit": "shares",
+        "value": "26481860",
+        "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2023-07-01\",\"tag\":\"WeightedAverageShares\",\"taxonomy\":\"ifrs-full\",\"unit\":\"shares\",\"value\":26481860}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "start": "2023-07-01",
+          "end": "2024-06-30"
+        }
+      },
+      {
+        "ref": "fact-80ed1686b06000a6",
+        "concept": "WeightedAverageShares",
+        "unit": "shares",
+        "value": "100",
+        "exact_span": "{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2022-07-01\",\"tag\":\"WeightedAverageShares\",\"taxonomy\":\"ifrs-full\",\"unit\":\"shares\",\"value\":100}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "start": "2022-07-01",
+          "end": "2023-06-30"
+        }
+      },
+      {
+        "ref": "fact-76961a78c309dfdb",
+        "concept": "WarrantLiability",
+        "unit": "USD",
+        "value": "45907114",
+        "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"WarrantLiability\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":45907114}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "end": "2024-06-30"
+        }
+      },
+      {
+        "ref": "fact-6882752f47b35f47",
+        "concept": "TradeAndOtherPayablesToTradeSuppliers",
+        "unit": "USD",
+        "value": "6405161",
+        "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"TradeAndOtherPayablesToTradeSuppliers\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":6405161}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "end": "2024-06-30"
+        }
+      },
+      {
+        "ref": "fact-182cfb4ddcbd4503",
+        "concept": "TradeAndOtherPayablesToTradeSuppliers",
+        "unit": "USD",
+        "value": "3244725",
+        "exact_span": "{\"description\":null,\"end\":\"2023-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"TradeAndOtherPayablesToTradeSuppliers\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":3244725}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "end": "2023-06-30"
+        }
+      },
+      {
+        "ref": "fact-e9b3eaa0ee66f3a9",
+        "concept": "TradeAndOtherPayables",
+        "unit": "USD",
+        "value": "4019620",
+        "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"TradeAndOtherPayables\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":4019620}",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "document_source_type": "0001213900-24-092156",
+        "period": {
+          "end": "2024-06-30"
+        }
+      }
+    ],
+    "expected_count": 13,
+    "observed_count": 12
+  },
+  "document_ref_tail": {
+    "candidate": {
+      "measurement": {
+        "observable": "synthetic_review_observable",
+        "value_kind": "boolean",
+        "normalization": "Use the cited observation under its original units.",
+        "predicate": {
+          "modality": "narrative",
+          "source_families": [
+            "news"
+          ],
+          "semantic_condition": "A disclosed milestone is present."
+        }
+      },
+      "evidence_refs": [
+        "document-synthetic-narrative"
+      ],
+      "falsifiers": [
+        {
+          "condition": "Unsupported in cited observation.",
+          "expected_observation": "Unavailable."
+        }
+      ]
+    },
+    "native_accepted": true,
+    "unread_rejected": "propose_candidate is inadmissible while available evidence modalities remain unexplored (narrative): fetch structured evidence or read a narrative event/document via read_span. Listing or fetching a narrative family proves availability but is not a grounded read; record_deferred remains the control-plane terminal.",
+    "old_rows": [
+      {
+        "predicate": {
+          "modality": "narrative",
+          "source_families": [
+            "news"
+          ],
+          "semantic_condition": "A disclosed milestone is present."
+        },
+        "kind": "narrative_predicate"
+      }
+    ],
+    "read_state": {
+      "ledger": [
+        {
+          "action_id": 1,
+          "action": "fetch_evidence",
+          "input_hash": "28e4b812b5f9b1c413cc3ae8fcd392162e9f9699d73e527f0853eae7cc186c83",
+          "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+          "case_refs": [
+            "case-001"
+          ],
+          "evidence_refs": [
+            "event-1f15a8427bc303d5"
+          ],
+          "source_types": [
+            "company_news"
+          ],
+          "pit_status": "enforced",
+          "coverage": {
+            "query_coverage": {
+              "matched_terms": [],
+              "sufficient": false
+            },
+            "unread_same_source": false
+          },
+          "omitted_coverage": {
+            "excluded_document_ids": []
+          },
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        },
+        {
+          "action_id": 2,
+          "action": "read_span",
+          "input_hash": "e7b099402a53898610d22f6316be4225b2b78d7f00a816b748e1ee6f2b384f0e",
+          "output_hash": "12a164b799b7f96d934f0ffd1772130d8018ad4d5f72695a748c0b56ecc7123c",
+          "case_refs": [
+            "case-001"
+          ],
+          "evidence_refs": [
+            "document-synthetic-narrative"
+          ],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {},
+          "omitted_coverage": {},
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        }
+      ],
+      "read_progress": [
+        {
+          "document_ref": "document-synthetic-narrative",
+          "content_hash": "a7bdb48f4b9a8b5d255d8a20b07ace4a171c332b55464f93a7ea60b07f231279",
+          "offset": 1680,
+          "length": 47,
+          "verbatim_hash": "ec40440c3347197beb502055c4f7e769e3fb6882ab915000a5206280d48d337f",
+          "has_readable_text": true,
+          "next_readable_start": 1727,
+          "read_count": 1,
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ],
+      "last_action_result": {
+        "action": "read_span",
+        "target": "document_ref",
+        "ref": "document-synthetic-narrative",
+        "document_ref": "document-synthetic-narrative",
+        "offset": 1680,
+        "length": 47,
+        "masked": "TAIL_MILESTONE: testing reached the final stage",
+        "verbatim_hash": "ec40440c3347197beb502055c4f7e769e3fb6882ab915000a5206280d48d337f",
+        "has_readable_text": true,
+        "readable_chars": 47,
+        "raw_window_chars": 47,
+        "next_readable_start": 1727,
+        "case_refs": [
+          "case-001"
+        ]
+      }
+    },
+    "final_state": {
+      "ledger": [
+        {
+          "action_id": 1,
+          "action": "fetch_evidence",
+          "input_hash": "28e4b812b5f9b1c413cc3ae8fcd392162e9f9699d73e527f0853eae7cc186c83",
+          "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+          "case_refs": [
+            "case-001"
+          ],
+          "evidence_refs": [
+            "event-1f15a8427bc303d5"
+          ],
+          "source_types": [
+            "company_news"
+          ],
+          "pit_status": "enforced",
+          "coverage": {
+            "query_coverage": {
+              "matched_terms": [],
+              "sufficient": false
+            },
+            "unread_same_source": false
+          },
+          "omitted_coverage": {
+            "excluded_document_ids": []
+          },
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        },
+        {
+          "action_id": 2,
+          "action": "read_span",
+          "input_hash": "e7b099402a53898610d22f6316be4225b2b78d7f00a816b748e1ee6f2b384f0e",
+          "output_hash": "12a164b799b7f96d934f0ffd1772130d8018ad4d5f72695a748c0b56ecc7123c",
+          "case_refs": [
+            "case-001"
+          ],
+          "evidence_refs": [
+            "document-synthetic-narrative"
+          ],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {},
+          "omitted_coverage": {},
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        },
+        {
+          "action_id": 3,
+          "action": "inspect_catalog",
+          "input_hash": "15ca4fe5fa5e48cf2abd0425351b5485cf6597ba255fc2022e5152713c17ea5b",
+          "output_hash": "1a6fbfc596a86be5660f16309a8a6b925d27b43193fdcaed02734da07d124eab",
+          "case_refs": [],
+          "evidence_refs": [],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {
+            "keys": [
+              "counts",
+              "cursor",
+              "items",
+              "max_entry_bytes",
+              "next_cursor",
+              "oversized_entries",
+              "read_action",
+              "read_byte_limit",
+              "selection_is_exhaustive"
+            ]
+          },
+          "omitted_coverage": {
+            "available": 0,
+            "included": 0,
+            "omitted_before": 0,
+            "omitted_after": 0,
+            "oversized": 0
+          },
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        },
+        {
+          "action_id": 4,
+          "action": "propose_candidate",
+          "input_hash": "ac3f6aa79f94c8e04130bb9dbaa362fec4fe4ad03436f1c4f5480e8b10ceede4",
+          "output_hash": "a965c4d20b7375f0b88752a988cad421d4f766eb0368ddc2606bd6eda71dc3eb",
+          "case_refs": [],
+          "evidence_refs": [
+            "document-synthetic-narrative"
+          ],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {},
+          "omitted_coverage": {},
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": "candidate_proposed",
+          "note": null
+        },
+        {
+          "action_id": 5,
+          "action": "validate_candidate",
+          "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+          "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+          "case_refs": [],
+          "evidence_refs": [
+            "document-synthetic-narrative"
+          ],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {},
+          "omitted_coverage": {},
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": "locally_validated",
+          "note": null
+        }
+      ],
+      "read_progress": [
+        {
+          "document_ref": "document-synthetic-narrative",
+          "content_hash": "a7bdb48f4b9a8b5d255d8a20b07ace4a171c332b55464f93a7ea60b07f231279",
+          "offset": 1680,
+          "length": 47,
+          "verbatim_hash": "ec40440c3347197beb502055c4f7e769e3fb6882ab915000a5206280d48d337f",
+          "has_readable_text": true,
+          "next_readable_start": 1727,
+          "read_count": 1,
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ],
+      "last_action_result": {
+        "action": "inspect_catalog",
+        "scope": "signals",
+        "result": {
+          "items": [],
+          "counts": {
+            "available": 0,
+            "included": 0,
+            "omitted_before": 0,
+            "omitted_after": 0,
+            "oversized": 0
+          },
+          "cursor": 0,
+          "next_cursor": null,
+          "oversized_entries": [],
+          "max_entry_bytes": 8000,
+          "selection_is_exhaustive": true,
+          "read_action": "inspect_catalog scope=signals item_refs",
+          "read_byte_limit": 16000
+        }
+      }
+    },
+    "expected_read_text": "TAIL_MILESTONE: testing reached the final stage",
+    "raw_content_hash": "a7bdb48f4b9a8b5d255d8a20b07ace4a171c332b55464f93a7ea60b07f231279"
+  },
+  "event_ref_tail": {
+    "candidate": {
+      "measurement": {
+        "observable": "synthetic_review_observable",
+        "value_kind": "boolean",
+        "normalization": "Use the cited observation under its original units.",
+        "predicate": {
+          "modality": "narrative",
+          "source_families": [
+            "news"
+          ],
+          "semantic_condition": "A disclosed milestone is present."
+        }
+      },
+      "evidence_refs": [
+        "event-1f15a8427bc303d5"
+      ],
+      "falsifiers": [
+        {
+          "condition": "Unsupported in cited observation.",
+          "expected_observation": "Unavailable."
+        }
+      ]
+    },
+    "native_accepted": true,
+    "unread_rejected": "propose_candidate is inadmissible while available evidence modalities remain unexplored (narrative): fetch structured evidence or read a narrative event/document via read_span. Listing or fetching a narrative family proves availability but is not a grounded read; record_deferred remains the control-plane terminal.",
+    "old_rows": [
+      {
+        "predicate": {
+          "modality": "narrative",
+          "source_families": [
+            "news"
+          ],
+          "semantic_condition": "A disclosed milestone is present."
+        },
+        "kind": "narrative_predicate"
+      },
+      {
+        "ref": "event-1f15a8427bc303d5",
+        "exact_span": "Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front mat",
+        "excerpt": "Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front matter. Public front",
+        "title": "Public front matter.",
+        "source_family": "news",
+        "published_at": "2025-05-30T00:00:00+00:00",
+        "available_at": "2025-05-30T00:00:00+00:00"
+      }
+    ],
+    "read_state": {
+      "ledger": [
+        {
+          "action_id": 1,
+          "action": "fetch_evidence",
+          "input_hash": "28e4b812b5f9b1c413cc3ae8fcd392162e9f9699d73e527f0853eae7cc186c83",
+          "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+          "case_refs": [
+            "case-001"
+          ],
+          "evidence_refs": [
+            "event-1f15a8427bc303d5"
+          ],
+          "source_types": [
+            "company_news"
+          ],
+          "pit_status": "enforced",
+          "coverage": {
+            "query_coverage": {
+              "matched_terms": [],
+              "sufficient": false
+            },
+            "unread_same_source": false
+          },
+          "omitted_coverage": {
+            "excluded_document_ids": []
+          },
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        },
+        {
+          "action_id": 2,
+          "action": "read_span",
+          "input_hash": "a31412319a2d5cd1cb83849e2d4e921e60241548835d75fe0ae8ece1ea9d9703",
+          "output_hash": "01b82305a15c2b4f3ae3ffd235d12fa3af64e42d8c8a1e276d16fc33bf05220a",
+          "case_refs": [
+            "case-001"
+          ],
+          "evidence_refs": [
+            "event-1f15a8427bc303d5"
+          ],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {},
+          "omitted_coverage": {},
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        }
+      ],
+      "read_progress": [
+        {
+          "document_ref": "document-synthetic-narrative",
+          "content_hash": "a7bdb48f4b9a8b5d255d8a20b07ace4a171c332b55464f93a7ea60b07f231279",
+          "offset": 1680,
+          "length": 47,
+          "verbatim_hash": "ec40440c3347197beb502055c4f7e769e3fb6882ab915000a5206280d48d337f",
+          "has_readable_text": true,
+          "next_readable_start": 1727,
+          "read_count": 1,
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ],
+      "last_action_result": {
+        "action": "read_span",
+        "target": "event_ref",
+        "ref": "event-1f15a8427bc303d5",
+        "document_ref": "document-synthetic-narrative",
+        "offset": 1680,
+        "length": 47,
+        "masked": "TAIL_MILESTONE: testing reached the final stage",
+        "verbatim_hash": "ec40440c3347197beb502055c4f7e769e3fb6882ab915000a5206280d48d337f",
+        "has_readable_text": true,
+        "readable_chars": 47,
+        "raw_window_chars": 47,
+        "next_readable_start": 1727,
+        "case_refs": [
+          "case-001"
+        ],
+        "title": "Public front matter.",
+        "source_family": "news",
+        "available_at": "2025-05-30T00:00:00+00:00"
+      }
+    },
+    "final_state": {
+      "ledger": [
+        {
+          "action_id": 1,
+          "action": "fetch_evidence",
+          "input_hash": "28e4b812b5f9b1c413cc3ae8fcd392162e9f9699d73e527f0853eae7cc186c83",
+          "output_hash": "85818409964c1592869942a04ef80d55556afdc88c98d6c56450f7d9ecd83396",
+          "case_refs": [
+            "case-001"
+          ],
+          "evidence_refs": [
+            "event-1f15a8427bc303d5"
+          ],
+          "source_types": [
+            "company_news"
+          ],
+          "pit_status": "enforced",
+          "coverage": {
+            "query_coverage": {
+              "matched_terms": [],
+              "sufficient": false
+            },
+            "unread_same_source": false
+          },
+          "omitted_coverage": {
+            "excluded_document_ids": []
+          },
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        },
+        {
+          "action_id": 2,
+          "action": "read_span",
+          "input_hash": "a31412319a2d5cd1cb83849e2d4e921e60241548835d75fe0ae8ece1ea9d9703",
+          "output_hash": "01b82305a15c2b4f3ae3ffd235d12fa3af64e42d8c8a1e276d16fc33bf05220a",
+          "case_refs": [
+            "case-001"
+          ],
+          "evidence_refs": [
+            "event-1f15a8427bc303d5"
+          ],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {},
+          "omitted_coverage": {},
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        },
+        {
+          "action_id": 3,
+          "action": "inspect_catalog",
+          "input_hash": "15ca4fe5fa5e48cf2abd0425351b5485cf6597ba255fc2022e5152713c17ea5b",
+          "output_hash": "1a6fbfc596a86be5660f16309a8a6b925d27b43193fdcaed02734da07d124eab",
+          "case_refs": [],
+          "evidence_refs": [],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {
+            "keys": [
+              "counts",
+              "cursor",
+              "items",
+              "max_entry_bytes",
+              "next_cursor",
+              "oversized_entries",
+              "read_action",
+              "read_byte_limit",
+              "selection_is_exhaustive"
+            ]
+          },
+          "omitted_coverage": {
+            "available": 0,
+            "included": 0,
+            "omitted_before": 0,
+            "omitted_after": 0,
+            "oversized": 0
+          },
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        },
+        {
+          "action_id": 4,
+          "action": "propose_candidate",
+          "input_hash": "e7023ccd4ff2720eb5cbedb100430a6ded822f2113213f22d1ebf3fd50844d27",
+          "output_hash": "a965c4d20b7375f0b88752a988cad421d4f766eb0368ddc2606bd6eda71dc3eb",
+          "case_refs": [],
+          "evidence_refs": [
+            "event-1f15a8427bc303d5"
+          ],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {},
+          "omitted_coverage": {},
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": "candidate_proposed",
+          "note": null
+        },
+        {
+          "action_id": 5,
+          "action": "validate_candidate",
+          "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+          "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+          "case_refs": [],
+          "evidence_refs": [
+            "event-1f15a8427bc303d5"
+          ],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {},
+          "omitted_coverage": {},
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": "locally_validated",
+          "note": null
+        }
+      ],
+      "read_progress": [
+        {
+          "document_ref": "document-synthetic-narrative",
+          "content_hash": "a7bdb48f4b9a8b5d255d8a20b07ace4a171c332b55464f93a7ea60b07f231279",
+          "offset": 1680,
+          "length": 47,
+          "verbatim_hash": "ec40440c3347197beb502055c4f7e769e3fb6882ab915000a5206280d48d337f",
+          "has_readable_text": true,
+          "next_readable_start": 1727,
+          "read_count": 1,
+          "case_refs": [
+            "case-001"
+          ]
+        }
+      ],
+      "last_action_result": {
+        "action": "inspect_catalog",
+        "scope": "signals",
+        "result": {
+          "items": [],
+          "counts": {
+            "available": 0,
+            "included": 0,
+            "omitted_before": 0,
+            "omitted_after": 0,
+            "oversized": 0
+          },
+          "cursor": 0,
+          "next_cursor": null,
+          "oversized_entries": [],
+          "max_entry_bytes": 8000,
+          "selection_is_exhaustive": true,
+          "read_action": "inspect_catalog scope=signals item_refs",
+          "read_byte_limit": 16000
+        }
+      }
+    },
+    "expected_read_text": "TAIL_MILESTONE: testing reached the final stage",
+    "raw_content_hash": "a7bdb48f4b9a8b5d255d8a20b07ace4a171c332b55464f93a7ea60b07f231279"
+  },
+  "same_document_case_scope": {
+    "event_read": {
+      "action": "read_span",
+      "target": "event_ref",
+      "ref": "event-1f15a8427bc303d5",
+      "document_ref": "document-synthetic-narrative",
+      "offset": 1680,
+      "length": 47,
+      "masked": "TAIL_MILESTONE: testing reached the final stage",
+      "verbatim_hash": "ec40440c3347197beb502055c4f7e769e3fb6882ab915000a5206280d48d337f",
+      "has_readable_text": true,
+      "readable_chars": 47,
+      "raw_window_chars": 47,
+      "next_readable_start": 1727,
+      "case_refs": [
+        "case-001"
+      ],
+      "title": "Public front matter.",
+      "source_family": "news",
+      "available_at": "2025-05-30T00:00:00+00:00"
+    },
+    "document_read": {
+      "action": "read_span",
+      "target": "document_ref",
+      "ref": "document-synthetic-narrative",
+      "document_ref": "document-synthetic-narrative",
+      "offset": 1680,
+      "length": 47,
+      "masked": "TAIL_MILESTONE: testing reached the final stage",
+      "verbatim_hash": "ec40440c3347197beb502055c4f7e769e3fb6882ab915000a5206280d48d337f",
+      "has_readable_text": true,
+      "readable_chars": 47,
+      "raw_window_chars": 47,
+      "next_readable_start": 1727,
+      "case_refs": [
+        "case-001",
+        "case-002"
+      ]
+    },
+    "merged_progress": [
+      {
+        "document_ref": "document-synthetic-narrative",
+        "content_hash": "a7bdb48f4b9a8b5d255d8a20b07ace4a171c332b55464f93a7ea60b07f231279",
+        "offset": 1680,
+        "length": 47,
+        "verbatim_hash": "ec40440c3347197beb502055c4f7e769e3fb6882ab915000a5206280d48d337f",
+        "has_readable_text": true,
+        "next_readable_start": 1727,
+        "read_count": 2,
+        "case_refs": [
+          "case-001",
+          "case-002"
+        ]
+      }
+    ]
+  },
+  "actual_source_relation_only": {
+    "candidate": {
+      "measurement": {
+        "observable": "synthetic_review_observable",
+        "value_kind": "numeric",
+        "normalization": "Use the cited observation under its original units."
+      },
+      "evidence_refs": [
+        "relation-3ad23767ef7414a4"
+      ],
+      "falsifiers": [
+        {
+          "condition": "Unsupported in cited observation.",
+          "expected_observation": "Unavailable."
+        }
+      ]
+    },
+    "native_accepted": true,
+    "relation": {
+      "relation_ref": "relation-3ad23767ef7414a4",
+      "kind": "same_concept_period_pair",
+      "fact_refs": [
+        "fact-8e6391a8eb3c9743",
+        "fact-2514935a069837df"
+      ],
+      "case_ref": "case-001",
+      "rule": null,
+      "value": null
+    },
+    "operands": [
+      {
+        "fact_ref": "fact-8e6391a8eb3c9743",
+        "case_ref": "case-001",
+        "concept": "ReserveOfExchangeDifferencesOnTranslation",
+        "unit": "USD",
+        "period": {
+          "end": "2024-07-04"
+        },
+        "value": "27200000",
+        "record_selection": "latest",
+        "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+        "exact_span": "{\"description\":null,\"end\":\"2024-07-04\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"ReserveOfExchangeDifferencesOnTranslation\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":27200000}",
+        "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "source_display_name": "",
+        "taxonomy": "ifrs-full"
+      },
+      {
+        "fact_ref": "fact-2514935a069837df",
+        "case_ref": "case-001",
+        "concept": "ReserveOfExchangeDifferencesOnTranslation",
+        "unit": "USD",
+        "period": {
+          "end": "2024-06-30"
+        },
+        "value": "-4412219",
+        "record_selection": "comparable_prior",
+        "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+        "exact_span": "{\"description\":null,\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":null,\"tag\":\"ReserveOfExchangeDifferencesOnTranslation\",\"taxonomy\":\"ifrs-full\",\"unit\":\"USD\",\"value\":-4412219}",
+        "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+        "available_at": "2024-10-31T00:00:00+00:00",
+        "source_display_name": "",
+        "taxonomy": "ifrs-full"
+      }
+    ],
+    "old_rows": [],
+    "final_state": {
+      "ledger": [
+        {
+          "action_id": 1,
+          "action": "fetch_evidence",
+          "input_hash": "6998a7c0214174fb949241ab9ecaae0c8d0cfc093f55149ddc31fa7d70fa1563",
+          "output_hash": "05ee28b4e734455cff919d64a70286eeeff227ff331c5fb18ee03767e9aab478",
+          "case_refs": [
+            "case-001"
+          ],
+          "evidence_refs": [
+            "fact-04581424445a1b1e",
+            "fact-a201b1f1cd0e405a",
+            "fact-8e6391a8eb3c9743",
+            "fact-2514935a069837df",
+            "fact-8b45f3b8eb093a03",
+            "fact-25905ad8eca4a933",
+            "fact-35455de13663bb52",
+            "fact-80ed1686b06000a6",
+            "fact-76961a78c309dfdb",
+            "fact-6882752f47b35f47",
+            "fact-182cfb4ddcbd4503",
+            "fact-e9b3eaa0ee66f3a9",
+            "fact-b23b2ab97a8f1625",
+            "fact-f5912ec4fc9d4937",
+            "fact-6a7d59e627db113b",
+            "fact-4168f3473c5059aa",
+            "fact-04976b1e73b64511",
+            "fact-7bba996ecb259cdd",
+            "fact-71a3672e50f2bda5",
+            "fact-c3cca98fa2fef552",
+            "fact-2429accbb884ca3d",
+            "fact-c4448f4f06ef8829",
+            "fact-f5bec4de50e340d5",
+            "fact-2dbb1f1b312faa56",
+            "fact-e457685861764c50",
+            "fact-beef034c1e5b96e3",
+            "fact-bca8bf0aaa4ca7ad",
+            "fact-a9002680f7753687",
+            "fact-2bd27671da61f5ca",
+            "fact-1f27bea620f7b7c6",
+            "relation-02a988c8c73c3bf5",
+            "relation-3ad23767ef7414a4",
+            "relation-4a244b0f3dd2fe28",
+            "relation-4d2215a6f971f53e",
+            "relation-92948d41fe6ce2a9",
+            "relation-999b331f086efcfe",
+            "relation-a083fbff56fa007f",
+            "relation-d550f0861482e67b",
+            "relation-dbb304b51ff8798e"
+          ],
+          "source_types": [
+            "sec_company_facts"
+          ],
+          "pit_status": "enforced",
+          "coverage": {
+            "query_coverage": {
+              "matched_terms": [],
+              "sufficient": false
+            },
+            "unread_same_source": false
+          },
+          "omitted_coverage": {
+            "excluded_document_ids": []
+          },
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": null,
+          "note": null
+        },
+        {
+          "action_id": 2,
+          "action": "propose_candidate",
+          "input_hash": "c0ff3225742966f22316480c7b9598273ddcdd5548112dcb18cb20298fecb323",
+          "output_hash": "a965c4d20b7375f0b88752a988cad421d4f766eb0368ddc2606bd6eda71dc3eb",
+          "case_refs": [],
+          "evidence_refs": [
+            "relation-3ad23767ef7414a4"
+          ],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {},
+          "omitted_coverage": {},
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": "candidate_proposed",
+          "note": null
+        },
+        {
+          "action_id": 3,
+          "action": "validate_candidate",
+          "input_hash": "310a53cd39880a524ddd36d6d1dee9d161b5b022a567894fdef64cf1c566cb35",
+          "output_hash": "9903acb694c86a331b0b6ec67963b613cf2dbdc18891bdc046c4b120a10b304f",
+          "case_refs": [],
+          "evidence_refs": [
+            "relation-3ad23767ef7414a4"
+          ],
+          "source_types": [],
+          "pit_status": "enforced",
+          "coverage": {},
+          "omitted_coverage": {},
+          "usage": {
+            "model_calls": 0
+          },
+          "terminal_disposition": "locally_validated",
+          "note": null
+        }
+      ],
+      "read_progress": [],
+      "last_action_result": {
+        "action": "fetch_evidence",
+        "cases_requested": 1,
+        "families": [
+          "sec_company_facts"
+        ],
+        "new_facts": 30,
+        "total_facts": 30,
+        "total_events": 0,
+        "new_relations": 9,
+        "total_relations": 9,
+        "excluded_document_ids": 0,
+        "narrative_evidence": null
+      }
+    }
+  },
+  "predeclared_postrepair_controls": [
+    "unknown reference fails closed before materialization",
+    "unread document ref never exports body or private metadata",
+    "only actual read ranges export; later unread tail stays absent",
+    "event range remains scoped after same-range document read merges progress",
+    "relation includes ordered complete operand facts and source/hash/PIT bindings",
+    "all cited rows preserved beyond twelve; whole JSON fact remains parseable",
+    "masked native spec, skill, tests payloads preserve source lineage and remove identity",
+    "oversized complete handoff respects actual existing request budget before dispatch",
+    "legacy object-based excerpt helper retains supported fact/event callers"
+  ]
+}

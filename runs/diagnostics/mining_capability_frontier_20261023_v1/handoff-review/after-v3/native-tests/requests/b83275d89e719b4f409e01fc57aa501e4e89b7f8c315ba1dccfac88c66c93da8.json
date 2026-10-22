@@ -1,0 +1,57 @@
+{
+  "request": {
+    "contract_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "max_http_attempts": 1,
+    "max_output_tokens": 4000,
+    "messages": [
+      {
+        "content": "Return exactly one JSON object and no non-JSON text. Return exactly one JSON object. Author the point-in-time fixtures for the already materialized spec and skill: fixture documents must embed the supplied identity-masked evidence spans verbatim. For a narrative predicate, cover confirmed qualifying events, mere proposals or memoranda, cancellations, below-threshold amounts, paraphrases, lookalikes, post-cutoff documents, and evidence-insufficient cases \u2014 each expected value must match the skill's classification rule for that class. A generic-contract funding lookalike the skill scores neutral must not expect unavailable. Return exactly {\"tests\": [...]}. cited_evidence preserves whole source units: fact exact_span; document/event read_windows[].readable_text with raw coordinates and case scope; relation fact_refs resolve to included operands. Only executed read windows establish narrative support; titles are navigation. content_hash/verbatim_hash bind original raw source, not projected readable_text. Infer no unread body or metadata.",
+        "role": "system"
+      },
+      {
+        "content": "{\"candidate\":{\"evidence_refs\":[\"document-synthetic-doc\"],\"falsifiers\":[{\"condition\":\"Unsupported in cited observation.\",\"expected_observation\":\"Unavailable.\"}],\"measurement\":{\"normalization\":\"Use the cited observation under its original units.\",\"observable\":\"synthetic_review_observable\",\"predicate\":{\"modality\":\"narrative\",\"semantic_condition\":\"A disclosed milestone is present.\",\"source_families\":[\"news\"]},\"value_kind\":\"boolean\"}},\"cited_evidence\":[{\"kind\":\"narrative_predicate\",\"predicate\":{\"modality\":\"narrative\",\"semantic_condition\":\"A disclosed milestone is present.\",\"source_families\":[\"news\"]}},{\"available_at\":\"2025-05-30T00:00:00+00:00\",\"content_hash\":\"61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4\",\"document_ref\":\"document-synthetic-doc\",\"document_source_type\":\"company_news\",\"evidence_kind\":\"document_read\",\"published_at\":\"2025-05-30T00:00:00+00:00\",\"read_windows\":[{\"available_at\":\"2025-05-30T00:00:00+00:00\",\"case_refs\":[\"case-001\"],\"content_hash\":\"61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4\",\"document_ref\":\"document-synthetic-doc\",\"has_readable_text\":true,\"length\":21,\"next_readable_start\":2742,\"offset\":2720,\"published_at\":\"2025-05-30T00:00:00+00:00\",\"raw_window_chars\":21,\"readable_chars\":21,\"readable_text\":\"TAIL_MILESTONE exact.\",\"ref\":\"event-fc051aa07fece8a6\",\"source_family\":\"news\",\"source_type\":\"company_news\",\"target\":\"event_ref\",\"title\":\"[MASKED_COMPANY] front material.\",\"verbatim_hash\":\"e5a58e1bbef46e33f4027db454cfc3bf2412dde9401aa3009a1d3935cdd6ddec\"},{\"available_at\":\"2025-05-30T00:00:00+00:00\",\"case_refs\":[\"case-001\",\"case-002\"],\"content_hash\":\"61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4\",\"document_ref\":\"document-synthetic-doc\",\"has_readable_text\":true,\"length\":21,\"next_readable_start\":2742,\"offset\":2720,\"published_at\":\"2025-05-30T00:00:00+00:00\",\"raw_window_chars\":21,\"readable_chars\":21,\"readable_text\":\"TAIL_MILESTONE exact.\",\"ref\":\"document-synthetic-doc\",\"source_type\":\"company_news\",\"target\":\"document_ref\",\"verbatim_hash\":\"e5a58e1bbef46e33f4027db454cfc3bf2412dde9401aa3009a1d3935cdd6ddec\"}],\"ref\":\"document-synthetic-doc\",\"source_type\":\"company_news\"}],\"execution_semantics\":{\"modality\":{\"mixed\":\"Split numeric measurement and narrative fallback into separate Signals.\",\"narrative\":\"A semantic predicate over source text; it requires a grounded LLM skill.\",\"structured\":\"A typed point-in-time measurement whose value is fully determined by inputs and parameters; it requires an exact registered deterministic function. Only parameters actually used by the selected deterministic_function_contract affect its behavior; unknown parameter names do not implement a new guard or formula.\"},\"retrieval\":{\"comparison_requirement\":\"Describes the intended comparison; the resolver does not parse its prose into a semantic coverage check. A deterministic function does not execute this text as a denominator, unit, plausibility or unavailable guard: its disclosed function contract owns those behaviors. Narrative skills may interpret comparison instructions against visible evidence. A text change can clarify intent without changing a deterministic result; do not claim it implements a numerical repair. Passing unchanged fixtures does not demonstrate that a claimed failure-case repair occurred.\",\"execution_order\":\"Coverage must resolve before the function or LLM skill runs.\",\"fixtures\":\"Non-unavailable fixtures must satisfy the same retrieval coverage as production, with literal source evidence and point-in-time dates. Missing-input fixtures may expect unavailable; technical failures are not successful unavailable measurements. For either supported Company Facts JSON body schema, explicitly supply body cik. The default fixture company candidate_fixture_N is opaque, so also supply document metadata.cik matching that body issuer. A canonical cik_########## fixture company must match body cik and any supplied metadata.cik. CIK is a positive integer or plain 1-10 digit string, never bool/float or an identity inferred from alias characters. Use a consistent synthetic issuer without recovering masked Discovery identity; preserve source values, tags, units, periods, filed dates and expected values. content is a string (serialize financial JSON). For deterministic Company Facts, each fact row must retain its canonical JSON literal in content: serialize the whole financial body with json.dumps(sort_keys=True, separators=(',', ':')), or preserve the same canonical fact-row literals inside another body format. Other source types need not be JSON. metadata is an optional object, not a universal requirement for nonfinancial sources. No consumer fills missing issuer bindings. Every fixture's expected value must agree with the skill's own documented applicability boundaries: a lookalike the skill scores neutral must not be expected unavailable, and a documented non-applicable case must not be expected decisive.\",\"minimum_observations\":\"Counts the largest explicit structured series in a document: lists named prices, observations, rows or series, or lists of records with date/timestamp fields. A standalone financial fact is not such a series. Leave null unless this is a real input requirement.\",\"period_requirements\":\"minimum_distinct_periods and minimum_period_span_days check period coverage, not concept completeness or comparable duration. The implementation must still check every required component and period.\",\"source_types\":\"Use source types/formats supported by the supplied evidence; do not invent a provider category.\"},\"value_semantics\":{\"negative\":\"Evidence in the control/opposing direction.\",\"neutral\":\"Available measurement without decisive directional evidence.\",\"orientation\":\"Do not equate numeric sign with Signal direction. Derive a new candidate's orientation from the observed contrast and keep its definition, implementation and fixtures consistent. Report the underlying quantity in interpretation/evidence. Do not reverse an existing stable definition or copy case labels into the skill.\",\"positive\":\"Evidence in the direction of the fixed surge target.\",\"unavailable\":\"Required point-in-time measurement inputs are insufficient.\"}},\"last_issues\":[],\"skill\":\"synthetic placeholder\",\"spec\":{},\"tests_schema\":{\"items\":{\"properties\":{\"as_of\":{\"description\":\"timezone-aware ISO-8601 timestamp\",\"type\":\"string\"},\"company_id\":{\"type\":\"string\"},\"documents\":{\"items\":{\"properties\":{\"content\":{\"description\":\"Literal source text; serialize financial JSON as a string.\",\"type\":\"string\"},\"metadata\":{\"description\":\"Optional source metadata; Company Facts under an opaque fixture company requires explicit matching cik.\",\"type\":\"object\"}},\"required\":[\"document_id\",\"source_type\",\"published_at\",\"available_at\",\"content\"],\"type\":\"object\"},\"minItems\":1,\"type\":\"array\"},\"expected\":{\"enum\":[\"positive\",\"neutral\",\"negative\",\"unavailable\"]},\"name\":{\"type\":\"string\"}},\"required\":[\"name\",\"as_of\",\"expected\",\"documents\"],\"type\":\"object\"},\"minItems\":1,\"type\":\"array\"}}",
+        "role": "user"
+      }
+    ],
+    "model": {
+      "alias": "independent-subagent",
+      "api_key_env_var": "",
+      "default_input_cost_per_million_tokens": 0.0,
+      "default_max_output_tokens": 16384,
+      "default_output_cost_per_million_tokens": 0.0,
+      "default_reasoning_effort": null,
+      "description": "Independent role agent through exact local request/response files; no API transport.",
+      "model": "independent-subagent",
+      "proposal_profile": "independent_agent",
+      "provider": "local",
+      "provider_identity": "local",
+      "provider_route": null,
+      "roles": [
+        "evolution",
+        "judge"
+      ],
+      "web_tools_allowed": false
+    },
+    "response_format": {
+      "type": "json_object"
+    },
+    "schema_version": "evolution-exact-request-v1",
+    "stage": "mining_candidate_materialize_tests",
+    "stage_contract": {
+      "allow_outcomes": true,
+      "payload_hash": "54d48c3fdf6a0bafbe580023a696074de40b9d941bba44cde1dbb15e6866f904",
+      "payload_utf8_bytes": 6994,
+      "registered": true,
+      "required_fields": [
+        "candidate",
+        "spec",
+        "skill",
+        "cited_evidence"
+      ],
+      "schema_version": "research-stage-input-v1",
+      "stage": "mining_candidate_materialize_tests"
+    },
+    "temperature": 0.2
+  },
+  "request_hash": "b83275d89e719b4f409e01fc57aa501e4e89b7f8c315ba1dccfac88c66c93da8"
+}

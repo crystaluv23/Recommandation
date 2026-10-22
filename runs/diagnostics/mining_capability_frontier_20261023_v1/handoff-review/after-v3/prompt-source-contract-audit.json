@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "scope": "existing five native input captures; no new group or authored response",
+  "source_contract": "cited_evidence preserves whole source units: fact exact_span; document/event read_windows[].readable_text with raw coordinates and case scope; relation fact_refs resolve to included operands. Only executed read windows establish narrative support; titles are navigation. content_hash/verbatim_hash bind original raw source, not projected readable_text. Infer no unread body or metadata.",
+  "results": [
+    {
+      "module_input": "native-spec",
+      "request_hash": "3391f3f2d32cf96b2dd7ed0f4f4b29d92af4bd5842e40136b3a2276c0eb54c4c",
+      "inbox_sha256": "c7e0c1b6369ea74d901ea2f0d26d9633db62e7aae9ffd7eebbe769de733a4815",
+      "source_contract_present": true,
+      "only_prompt_change_is_source_contract": true,
+      "payload_equal_after_v2": true,
+      "full_source_units": true
+    },
+    {
+      "module_input": "native-skill",
+      "request_hash": "a12609909149015856a6b0c826d08b451d6c574293ffddee0e800c1923ce7203",
+      "inbox_sha256": "db830a5ce2cedbc7fdba225bf3806e8e7588361a5a7e71a51fd5186071fbf4ea",
+      "source_contract_present": true,
+      "only_prompt_change_is_source_contract": true,
+      "payload_equal_after_v2": true,
+      "full_source_units": true
+    },
+    {
+      "module_input": "native-tests",
+      "request_hash": "b83275d89e719b4f409e01fc57aa501e4e89b7f8c315ba1dccfac88c66c93da8",
+      "inbox_sha256": "1ab09db7392b38c98553c2405245d580c295d818a921b1f88e569f8149c4c92f",
+      "source_contract_present": true,
+      "only_prompt_change_is_source_contract": true,
+      "payload_equal_after_v2": true,
+      "full_source_units": true
+    },
+    {
+      "module_input": "native-real-spec",
+      "request_hash": "d6d5212ebe45344638128a406f4470b7e129af7c6b9191640e590c5db5ce88ae",
+      "inbox_sha256": "8a137dbb22a6456c3ed868e0aca3931ce7a15489304cb8e2baa8ec30859afe42",
+      "source_contract_present": true,
+      "only_prompt_change_is_source_contract": true,
+      "payload_equal_after_v2": true,
+      "full_source_units": true
+    },
+    {
+      "module_input": "native-real-tests",
+      "request_hash": "c4702cf756fc7c12275cc3bde57e873947c1bf983a411e1132c6b4ee587a5bd4",
+      "inbox_sha256": "8ab44fd81edea14e888a36f66612ea2f6ac8cdd2099580029b853bbdda65d3e7",
+      "source_contract_present": true,
+      "only_prompt_change_is_source_contract": true,
+      "payload_equal_after_v2": true,
+      "full_source_units": true
+    }
+  ],
+  "models": 0,
+  "network": 0,
+  "answers": 0,
+  "audit_harness_note": "First supplemental assertion incorrectly expected a trailing blank beyond the requested 21 characters; corrected to compare the source slice at the recorded window length. No production or captured input changed."
+}

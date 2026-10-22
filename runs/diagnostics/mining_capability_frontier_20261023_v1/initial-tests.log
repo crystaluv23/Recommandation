@@ -1,0 +1,12 @@
+======================================================================
+FAIL: test_v147_materialization_modules_reuse_accepted_siblings (tests.test_signal_evolution_engine.DualLoopTests.test_v147_materialization_modules_reuse_accepted_siblings)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_evolution_engine.py", line 8504, in test_v147_materialization_modules_reuse_accepted_siblings
+    self.assertIsNotNone(result)
+AssertionError: unexpectedly None
+
+----------------------------------------------------------------------
+Ran 174 tests in 8.571s
+
+FAILED (failures=1)

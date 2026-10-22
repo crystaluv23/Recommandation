@@ -8491,7 +8491,17 @@ class DualLoopTests(TestCase):
                 },
                 "falsifiers": [],
             }
-            evidence: dict = {}
+            from stock_opportunity_agent.research.mining_agent_tools import project_facts_from_documents
+
+            source = RawInfoDocument.create(
+                document_id="fixture:scope:financials:module-reuse", company_id="fixture-issuer",
+                source_type="financials", published_at=NOW, available_at=NOW,
+                content=sec_company_facts_content(
+                    ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                    ("2024-01-01", "2024-12-31", 125.0, "2025-01-10")))
+            facts = project_facts_from_documents((source,), case_ref="fixture-case")
+            candidate["evidence_refs"] = [fact.fact_ref for fact in facts]
+            evidence = {fact.fact_ref: fact for fact in facts}
             failures: dict = {}
             module_caller = ModuleCaller()
             result = engine._materialize_controller_candidate(

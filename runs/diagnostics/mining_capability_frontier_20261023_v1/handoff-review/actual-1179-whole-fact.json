@@ -1,0 +1,37 @@
+{
+  "source_path": "runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1179.json",
+  "source_file_sha256": "4e03393bbff52aef5bca7b324502266842811d03f7611c9f28962cfd0ae0379a",
+  "document_id": "secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+  "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+  "fact": {
+    "fact_ref": "fact-04581424445a1b1e",
+    "case_ref": "case-001",
+    "concept": "EntityCommonStockSharesOutstanding",
+    "unit": "shares",
+    "period": {
+      "end": "2024-06-30"
+    },
+    "value": "80994098",
+    "record_selection": "latest",
+    "document_ref": "document-secfacts:0001951089:0001213900-24-092156:7bedee718373189a",
+    "exact_span": "{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Entity Common Stock, Shares Outstanding\",\"start\":null,\"tag\":\"EntityCommonStockSharesOutstanding\",\"taxonomy\":\"dei\",\"unit\":\"shares\",\"value\":80994098}",
+    "content_hash": "7bedee718373189a45b8bd30f82b455be3287661d6ba230328d630271af31cc8",
+    "available_at": "2024-10-31T00:00:00+00:00",
+    "source_display_name": "Entity Common Stock, Shares Outstanding",
+    "taxonomy": "dei"
+  },
+  "old_row": {
+    "ref": "fact-04581424445a1b1e",
+    "concept": "EntityCommonStockSharesOutstanding",
+    "unit": "shares",
+    "value": "80994098",
+    "exact_span": "{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"end\":\"2024-06-30\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Entity Common Stock, Shares Outstanding\",\"start\":null,\"",
+    "available_at": "2024-10-31T00:00:00+00:00",
+    "document_source_type": "0001213900-24-092156",
+    "period": {
+      "end": "2024-06-30"
+    }
+  },
+  "omitted_suffix": "tag\":\"EntityCommonStockSharesOutstanding\",\"taxonomy\":\"dei\",\"unit\":\"shares\",\"value\":80994098}",
+  "evidence_kind": "actual_saved_source; synthetic case binding; direct old helper"
+}

@@ -372,6 +372,7 @@ class LabelAwareMiningController:
         self._document_cards: dict[tuple[str, str], dict[str, Any]] = {}
         self._visible_ranges: dict[tuple[str, str], tuple[tuple[int, int], ...]] = {}
         self._read_progress: dict[tuple[str, str, int, int], dict[str, Any]] = {}
+        self._materialization_reads: dict[tuple[Any, ...], dict[str, Any]] = {}
         self._fact_read_progress: dict[str, dict[str, Any]] = {}
         self._comparison_progress: dict[str, dict[str, Any]] = {}
         self._comparison_snapshot: str | None = None
@@ -468,6 +469,37 @@ class LabelAwareMiningController:
 
     # ------------------------------------------------------------------
     # Model boundary
+    def materialization_evidence(self) -> dict[str, dict[str, Any]]:
+        """Export source-bound graph units and executed reads for this seed only."""
+        evidence = {ref: {"evidence_kind": kind, **asdict(item)}
+            for kind, items in (("fact", self._facts), ("relation", self._relations))
+            for ref, item in items.items()}
+        for row in evidence.values():
+            if row["evidence_kind"] != "fact":
+                continue
+            document = self._document_by_ref(row["document_ref"])
+            if document is None or document.content_hash != row["content_hash"]:
+                raise ValidationError("materialization fact source binding is unavailable")
+            row.update(source_type=document.source_type, published_at=document.published_at.isoformat())
+        for event_ref, event in self._events.items():
+            reads = [deepcopy(row) for row in self._materialization_reads.values()
+                if row["document_ref"] == event.document_ref and event.case_ref in row["case_refs"]]
+            if reads:
+                # Discovery previews/anchors never replace the actual raw read.
+                evidence[event_ref] = {"evidence_kind": "event_read",
+                    **{key: value for key, value in asdict(event).items()
+                       if key not in {"exact_span", "excerpt"}},
+                    "source_type": reads[0]["source_type"], "read_windows": reads}
+        for row in self._materialization_reads.values():
+            ref = row["document_ref"]
+            unit = evidence.setdefault(ref, {"evidence_kind": "document_read", "document_ref": ref,
+                **{key: row[key] for key in ("content_hash", "source_type", "published_at", "available_at")},
+                "read_windows": []})
+            if unit["content_hash"] != row["content_hash"]:
+                raise ValidationError("materialization document read hash conflict")
+            unit["read_windows"].append(deepcopy(row))
+        return evidence
+
     def _decide(self, view: Mapping[str, Any]) -> dict[str, Any]:
         self._model_calls += 1
         raw = self.model.next_action(dict(view))
@@ -1239,6 +1271,15 @@ class LabelAwareMiningController:
             entry["title"] = event.title
             entry["source_family"] = event.source_family
             entry["available_at"] = event.available_at
+        read_key = (target_key, target_ref, document.document_id, document.content_hash,
+                    offset, length, tuple(entry["case_refs"]))
+        self._materialization_reads[read_key] = {
+            **{key: value for key, value in entry.items() if key != "masked"},
+            "readable_text": readable, "content_hash": document.content_hash,
+            "source_type": document.source_type,
+            "published_at": document.published_at.isoformat(),
+            "available_at": document.available_at.isoformat(),
+        }
         progress_key = (*identity, offset, length)
         previous_receipt = self._read_progress.pop(progress_key, {})
         self._read_progress[progress_key] = {

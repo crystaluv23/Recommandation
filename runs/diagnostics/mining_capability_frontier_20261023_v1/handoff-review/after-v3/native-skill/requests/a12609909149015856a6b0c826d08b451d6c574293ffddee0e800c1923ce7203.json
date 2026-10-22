@@ -1,0 +1,56 @@
+{
+  "request": {
+    "contract_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "max_http_attempts": 1,
+    "max_output_tokens": 4000,
+    "messages": [
+      {
+        "content": "Return exactly one JSON object and no non-JSON text. Return exactly one JSON object. Author the LLM skill for the already-materialized spec: it judges the semantic condition over the narrative family inside the lookback window, cites verbatim supporting and counter spans, and returns unavailable when evidence is insufficient. The skill's classification rules must assign confirmed qualifying events positive; explicit cancellations or denials negative; documents containing only proposals, memoranda, non-binding intent, lookalikes, or below-threshold mentions neutral (not unavailable); unavailable is reserved for empty or post-cutoff-only corpora and genuinely insufficient text. Return exactly {\"skill\": \"markdown text\"}. cited_evidence preserves whole source units: fact exact_span; document/event read_windows[].readable_text with raw coordinates and case scope; relation fact_refs resolve to included operands. Only executed read windows establish narrative support; titles are navigation. content_hash/verbatim_hash bind original raw source, not projected readable_text. Infer no unread body or metadata.",
+        "role": "system"
+      },
+      {
+        "content": "{\"candidate\":{\"evidence_refs\":[\"document-synthetic-doc\"],\"falsifiers\":[{\"condition\":\"Unsupported in cited observation.\",\"expected_observation\":\"Unavailable.\"}],\"measurement\":{\"normalization\":\"Use the cited observation under its original units.\",\"observable\":\"synthetic_review_observable\",\"predicate\":{\"modality\":\"narrative\",\"semantic_condition\":\"A disclosed milestone is present.\",\"source_families\":[\"news\"]},\"value_kind\":\"boolean\"}},\"cited_evidence\":[{\"kind\":\"narrative_predicate\",\"predicate\":{\"modality\":\"narrative\",\"semantic_condition\":\"A disclosed milestone is present.\",\"source_families\":[\"news\"]}},{\"available_at\":\"2025-05-30T00:00:00+00:00\",\"content_hash\":\"61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4\",\"document_ref\":\"document-synthetic-doc\",\"document_source_type\":\"company_news\",\"evidence_kind\":\"document_read\",\"published_at\":\"2025-05-30T00:00:00+00:00\",\"read_windows\":[{\"available_at\":\"2025-05-30T00:00:00+00:00\",\"case_refs\":[\"case-001\"],\"content_hash\":\"61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4\",\"document_ref\":\"document-synthetic-doc\",\"has_readable_text\":true,\"length\":21,\"next_readable_start\":2742,\"offset\":2720,\"published_at\":\"2025-05-30T00:00:00+00:00\",\"raw_window_chars\":21,\"readable_chars\":21,\"readable_text\":\"TAIL_MILESTONE exact.\",\"ref\":\"event-fc051aa07fece8a6\",\"source_family\":\"news\",\"source_type\":\"company_news\",\"target\":\"event_ref\",\"title\":\"[MASKED_COMPANY] front material.\",\"verbatim_hash\":\"e5a58e1bbef46e33f4027db454cfc3bf2412dde9401aa3009a1d3935cdd6ddec\"},{\"available_at\":\"2025-05-30T00:00:00+00:00\",\"case_refs\":[\"case-001\",\"case-002\"],\"content_hash\":\"61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4\",\"document_ref\":\"document-synthetic-doc\",\"has_readable_text\":true,\"length\":21,\"next_readable_start\":2742,\"offset\":2720,\"published_at\":\"2025-05-30T00:00:00+00:00\",\"raw_window_chars\":21,\"readable_chars\":21,\"readable_text\":\"TAIL_MILESTONE exact.\",\"ref\":\"document-synthetic-doc\",\"source_type\":\"company_news\",\"target\":\"document_ref\",\"verbatim_hash\":\"e5a58e1bbef46e33f4027db454cfc3bf2412dde9401aa3009a1d3935cdd6ddec\"}],\"ref\":\"document-synthetic-doc\",\"source_type\":\"company_news\"}],\"last_issues\":[],\"spec\":{}}",
+        "role": "user"
+      }
+    ],
+    "model": {
+      "alias": "independent-subagent",
+      "api_key_env_var": "",
+      "default_input_cost_per_million_tokens": 0.0,
+      "default_max_output_tokens": 16384,
+      "default_output_cost_per_million_tokens": 0.0,
+      "default_reasoning_effort": null,
+      "description": "Independent role agent through exact local request/response files; no API transport.",
+      "model": "independent-subagent",
+      "proposal_profile": "independent_agent",
+      "provider": "local",
+      "provider_identity": "local",
+      "provider_route": null,
+      "roles": [
+        "evolution",
+        "judge"
+      ],
+      "web_tools_allowed": false
+    },
+    "response_format": {
+      "type": "json_object"
+    },
+    "schema_version": "evolution-exact-request-v1",
+    "stage": "mining_candidate_materialize_skill",
+    "stage_contract": {
+      "allow_outcomes": true,
+      "payload_hash": "9f3e810baad0314b3ba5c442d5a7a020636ffa149f13ecc412aab06a2bfe9acb",
+      "payload_utf8_bytes": 2187,
+      "registered": true,
+      "required_fields": [
+        "candidate",
+        "spec",
+        "cited_evidence"
+      ],
+      "schema_version": "research-stage-input-v1",
+      "stage": "mining_candidate_materialize_skill"
+    },
+    "temperature": 0.2
+  },
+  "request_hash": "a12609909149015856a6b0c826d08b451d6c574293ffddee0e800c1923ce7203"
+}

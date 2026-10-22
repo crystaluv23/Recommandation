@@ -6,13 +6,15 @@
 
 ## 最新实证
 
+[能力材料/S4→S5交接](../reports/mining-materialization-evidence-frontier-20261023.md)：263份dev8源/stable18独立核过；ICFR有实际/相反/假设/歧义材料，价格窗口7/8但调整未知/有100天缺口，财务新组合无对应函数，不改定义求过。
+真实692字整行曾裁600、13引用裁12，doc/event后段及relation丢失；现单向whole-unit/实际读窗/source_type交接且绑定原seed，未知先拒，原始/身份/PIT保持。402关联/独立9组过、网络0；5诊断待答/0新作者，不称实现或准入通过。
+S5显式caller预算止传控制流，不臆继H1额度；下一先核ICFR历史版本/定义/完整成本，再冻真正能力正控，旧0/2和1/2不改。
 [请求预算连接](../reports/mining-request-budget-visibility-20261023.md)：明确scope的成本/余量/下一请求下界进入实际payload，原生普通/patch/identity估算同；生产只接既有single上限、不增aggregate。397关联/独立17组过，网络0。
 原初预算异常误入内容纠错、zero-usage前置拒绝误扣两反例保留后修；顺序cache重建同、默认请求与旧完整字节/hash同。实际两源纯输入四步97429/92841在原98304内，模拟计数/0fresh，不证明规划通过。
 [来源身份/提示成本](../reports/mining-source-identity-and-prompt-20261023.md)显式SEC坐标可逆、完整提示义务保持；原生两控8fresh的双operand/差值准确，但第五超预算/无inbox，端点0/2保留，不重入/加预算。非全匿名/Mining闭环。
 [定向query修复](../reports/mining-query-projection-and-generalization-20261023.md)：query贯穿完整concept投影，1179目标0→2；3原件noquery逐字段同，276关联/独立审查过、网络0。
 预冻两控正式结果1/2：namespace首endpoint通过；actual丢prior locator重compare，第5请求受原98304预算阻断。7fresh/0纠错，answered154184；actual90772+blocked26243、namespace63412，无补答/加预算。
 [比较locator修复](../reports/mining-comparison-locators-20261023.md)现保留实际比较whole units并绑定fact/group/axis快照，变更时progress/last双副本失效；273关联/独立反例过、网络0。
-[Mining出处消费](../reports/mining-taxonomy-consumer-20261023.md)完整read回执跨action保留；临时pending fixture7原cache/0交接、62非终态同/原64不变，非OS恢复；一次独立预算JSON覆盖失误已披露。
 [分类链修复](../reports/classification-contract-propagation-20261023.md)保持局部；旧[财务消费者](../reports/financial-context-consumer-20261023.md)F7/F8窄通过、F9语义仍0/1。
 实际critic/Slow仍缺分类声明原件，canonical持久化[方案A/B](../reports/classification-context-persistence-proposal-20261023.md)等用户决策，未改该schema。
 
@@ -73,8 +75,6 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   14241逻辑预留，仅固定测试作者能力，非新测量Mining/实现/发布/复用或全S5。
 - [F4卡片](../reports/signal-card-measurement-scope-20261020.md)已接精确measurement_scope，独立6及119关联通过；fresh路由现暴露共享对象误拒，整体未关。
   [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md)新合成控制3/3窄通过，原fixed-FY/basic0/3保留。
-- [orientation](../reports/reviewed-orientation-stage-20261020.md)1proposer+3H_init原生接受、42files恢复；
-  均只局部连接，不关整体F1–F9。[镜像纠错](../reports/owned-partial-residual-mirror-20261020.md)仅离线触发通过。
 - [Posthoc](../reports/reviewed-posthoc-stage-20261020.md)唯一纠错后2items独立窄审/19files恢复，尚未提交Fast或证明Slow消费。
   [LabelStore](../reports/label-store-admission-20261020.md)6554记录机械核过、原18误放保留，不证明provider价格/issuer真值。
 

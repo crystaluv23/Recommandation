@@ -1,0 +1,1121 @@
+{
+  "schema_version": "independent-market-material-v1",
+  "scope": "No candidate, return value, label-effect estimate, Signal apply or new production answer was generated. 63 intervals used only as capability/material illustration, not a frozen candidate specification.",
+  "cases": [
+    {
+      "case_ref": "case-001",
+      "source": {
+        "case_ref": "case-001",
+        "case_id": "cik_0001951089:20250530",
+        "cutoff": "2025-05-30T00:00:00+00:00",
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1537.json",
+        "document_id": "massive:cik_0001951089:market_data:4ea5d71c74df9a80ef5d8b0c",
+        "sha256": "0d4c3991699a4053208aa62c86e37db68b5eade2255456a20e2b3d0b07962d30",
+        "snapshot_sha256_matches": true,
+        "content_hash": "4ea5d71c74df9a80ef5d8b0c9d3f8dda49781f66586983a09927a261eed48047",
+        "content_hash_matches": true,
+        "source_type": "market_data",
+        "available_at": "2025-05-30T00:00:00+00:00",
+        "pit_eligible": true,
+        "requires_primary_filing_audit": null
+      },
+      "metadata": {
+        "end": "2025-05-29",
+        "provider": "massive",
+        "start": "2024-04-25",
+        "symbol": "CRML"
+      },
+      "row_count": 179,
+      "first_date": "2024-09-11",
+      "last_date": "2025-05-29",
+      "metadata_prices_match_raw_adjusted_close": true,
+      "strictly_chronological": true,
+      "all_raw_dates_before_cutoff": true,
+      "all_prices_positive_finite": true,
+      "adjusted_close_equals_close_count": 179,
+      "explicit_adjustment_flag_present": false,
+      "max_calendar_gap": {
+        "calendar_days": 4,
+        "left_index": 88,
+        "right_index": 89,
+        "left_date": "2025-01-17",
+        "right_date": "2025-01-21"
+      },
+      "final64_observation_count_sufficient": true,
+      "final64_first_date": "2025-02-27",
+      "stable127_observation_count_sufficient": true,
+      "complete_raw_citations": [
+        {
+          "raw_row_locator": "/0",
+          "raw_start": 1,
+          "raw_end": 197,
+          "raw_span": "{\"adjusted_close\":6.52,\"as_of_date\":\"2024-09-11\",\"close\":6.52,\"high\":6.95,\"low\":6.13,\"open\":6.26,\"retrieved_at\":\"2026-09-11T06:56:16.135925+00:00\",\"source\":\"massive\",\"symbol\":\"CRML\",\"volume\":8732}",
+          "raw_span_sha256": "e639ecc5d88e6c3a07cfa93f643b66017e33e85a64391782adae47cf5c34f6b9",
+          "whole_original_row": {
+            "adjusted_close": 6.52,
+            "as_of_date": "2024-09-11",
+            "close": 6.52,
+            "high": 6.95,
+            "low": 6.13,
+            "open": 6.26,
+            "retrieved_at": "2026-09-11T06:56:16.135925+00:00",
+            "source": "massive",
+            "symbol": "CRML",
+            "volume": 8732
+          }
+        },
+        {
+          "raw_row_locator": "/52",
+          "raw_start": 10259,
+          "raw_end": 10452,
+          "raw_span": "{\"adjusted_close\":6.2,\"as_of_date\":\"2024-11-22\",\"close\":6.2,\"high\":6.2,\"low\":5.61,\"open\":5.82,\"retrieved_at\":\"2026-09-11T06:56:16.135925+00:00\",\"source\":\"massive\",\"symbol\":\"CRML\",\"volume\":7438}",
+          "raw_span_sha256": "62542ab8f0fdb54fbbd58e9aa5bf4037a68aae7b228b35271c3ff15fef1c2ce7",
+          "whole_original_row": {
+            "adjusted_close": 6.2,
+            "as_of_date": "2024-11-22",
+            "close": 6.2,
+            "high": 6.2,
+            "low": 5.61,
+            "open": 5.82,
+            "retrieved_at": "2026-09-11T06:56:16.135925+00:00",
+            "source": "massive",
+            "symbol": "CRML",
+            "volume": 7438
+          }
+        },
+        {
+          "raw_row_locator": "/88",
+          "raw_start": 17397,
+          "raw_end": 17592,
+          "raw_span": "{\"adjusted_close\":8.5,\"as_of_date\":\"2025-01-17\",\"close\":8.5,\"high\":8.625,\"low\":7.7,\"open\":7.7,\"retrieved_at\":\"2026-09-11T06:56:16.135925+00:00\",\"source\":\"massive\",\"symbol\":\"CRML\",\"volume\":103678}",
+          "raw_span_sha256": "2168168cddb67b525d75d6c51fac96f46aa5acbf1f79abd1d305157535fb5f30",
+          "whole_original_row": {
+            "adjusted_close": 8.5,
+            "as_of_date": "2025-01-17",
+            "close": 8.5,
+            "high": 8.625,
+            "low": 7.7,
+            "open": 7.7,
+            "retrieved_at": "2026-09-11T06:56:16.135925+00:00",
+            "source": "massive",
+            "symbol": "CRML",
+            "volume": 103678
+          }
+        },
+        {
+          "raw_row_locator": "/89",
+          "raw_start": 17593,
+          "raw_end": 17790,
+          "raw_span": "{\"adjusted_close\":7.95,\"as_of_date\":\"2025-01-21\",\"close\":7.95,\"high\":9.38,\"low\":6.5,\"open\":9.32,\"retrieved_at\":\"2026-09-11T06:56:16.135925+00:00\",\"source\":\"massive\",\"symbol\":\"CRML\",\"volume\":428964}",
+          "raw_span_sha256": "11aad65c0f28bde4f97c077f1cf85beea9f9e176eb0775d6e4cb352e25538561",
+          "whole_original_row": {
+            "adjusted_close": 7.95,
+            "as_of_date": "2025-01-21",
+            "close": 7.95,
+            "high": 9.38,
+            "low": 6.5,
+            "open": 9.32,
+            "retrieved_at": "2026-09-11T06:56:16.135925+00:00",
+            "source": "massive",
+            "symbol": "CRML",
+            "volume": 428964
+          }
+        },
+        {
+          "raw_row_locator": "/115",
+          "raw_start": 22766,
+          "raw_end": 22965,
+          "raw_span": "{\"adjusted_close\":2.11,\"as_of_date\":\"2025-02-27\",\"close\":2.11,\"high\":2.5993,\"low\":2.0,\"open\":2.42,\"retrieved_at\":\"2026-09-11T06:56:16.135925+00:00\",\"source\":\"massive\",\"symbol\":\"CRML\",\"volume\":766055}",
+          "raw_span_sha256": "f7255e269b4f773efc679a773b4483ba58d657fed8d8f4164f6926555f3d0ad6",
+          "whole_original_row": {
+            "adjusted_close": 2.11,
+            "as_of_date": "2025-02-27",
+            "close": 2.11,
+            "high": 2.5993,
+            "low": 2.0,
+            "open": 2.42,
+            "retrieved_at": "2026-09-11T06:56:16.135925+00:00",
+            "source": "massive",
+            "symbol": "CRML",
+            "volume": 766055
+          }
+        },
+        {
+          "raw_row_locator": "/178",
+          "raw_start": 35359,
+          "raw_end": 35558,
+          "raw_span": "{\"adjusted_close\":1.39,\"as_of_date\":\"2025-05-29\",\"close\":1.39,\"high\":1.44,\"low\":1.37,\"open\":1.43,\"retrieved_at\":\"2026-09-11T06:56:16.135925+00:00\",\"source\":\"massive\",\"symbol\":\"CRML\",\"volume\":1425174}",
+          "raw_span_sha256": "31d056efde72bd14948a91a539df95e8ea5b0ed29ae94dd8d2498f6f9a7f4525",
+          "whole_original_row": {
+            "adjusted_close": 1.39,
+            "as_of_date": "2025-05-29",
+            "close": 1.39,
+            "high": 1.44,
+            "low": 1.37,
+            "open": 1.43,
+            "retrieved_at": "2026-09-11T06:56:16.135925+00:00",
+            "source": "massive",
+            "symbol": "CRML",
+            "volume": 1425174
+          }
+        }
+      ],
+      "interpretation_limits": [
+        "Source adjusted_close label and metadata equality are observable; provider historical split/dividend adjustment semantics are not independently proved.",
+        "retrieved_at is later than the simulated cutoff; as_of_date before cutoff alone is not proof of historical body/adjustment identity.",
+        "Observation intervals are supplied observations, not proven exchange trading days, calendar months or dividend-inclusive total return."
+      ]
+    },
+    {
+      "case_ref": "case-002",
+      "source": {
+        "case_ref": "case-002",
+        "case_id": "cik_0001746129:20250731",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1522.json",
+        "document_id": "massive:cik_0001746129:market_data:db4af39831747ea15b9815cf",
+        "sha256": "e3be2e5be6d1b8300c8652c755c5f171da49111de5452b9331d937d9d93e396b",
+        "snapshot_sha256_matches": true,
+        "content_hash": "db4af39831747ea15b9815cf56ea91cda1f5618080e7ed06850ca292abfc6efb",
+        "content_hash_matches": true,
+        "source_type": "market_data",
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "pit_eligible": true,
+        "requires_primary_filing_audit": null
+      },
+      "metadata": {
+        "end": "2025-07-30",
+        "provider": "massive",
+        "start": "2024-06-26",
+        "symbol": "BSVN"
+      },
+      "row_count": 216,
+      "first_date": "2024-09-18",
+      "last_date": "2025-07-30",
+      "metadata_prices_match_raw_adjusted_close": true,
+      "strictly_chronological": true,
+      "all_raw_dates_before_cutoff": true,
+      "all_prices_positive_finite": true,
+      "adjusted_close_equals_close_count": 216,
+      "explicit_adjustment_flag_present": false,
+      "max_calendar_gap": {
+        "calendar_days": 4,
+        "left_index": 83,
+        "right_index": 84,
+        "left_date": "2025-01-17",
+        "right_date": "2025-01-21"
+      },
+      "final64_observation_count_sufficient": true,
+      "final64_first_date": "2025-04-29",
+      "stable127_observation_count_sufficient": true,
+      "complete_raw_citations": [
+        {
+          "raw_row_locator": "/0",
+          "raw_start": 1,
+          "raw_end": 204,
+          "raw_span": "{\"adjusted_close\":40.42,\"as_of_date\":\"2024-09-18\",\"close\":40.42,\"high\":41.405,\"low\":39.55,\"open\":39.57,\"retrieved_at\":\"2026-09-19T01:20:34.636143+00:00\",\"source\":\"massive\",\"symbol\":\"BSVN\",\"volume\":15156}",
+          "raw_span_sha256": "80f277b8e9320a707823bf7773e396bb198d62c78ad2a02b2feeaeb6c3e1901c",
+          "whole_original_row": {
+            "adjusted_close": 40.42,
+            "as_of_date": "2024-09-18",
+            "close": 40.42,
+            "high": 41.405,
+            "low": 39.55,
+            "open": 39.57,
+            "retrieved_at": "2026-09-19T01:20:34.636143+00:00",
+            "source": "massive",
+            "symbol": "BSVN",
+            "volume": 15156
+          }
+        },
+        {
+          "raw_row_locator": "/83",
+          "raw_start": 16863,
+          "raw_end": 17062,
+          "raw_span": "{\"adjusted_close\":44.4,\"as_of_date\":\"2025-01-17\",\"close\":44.4,\"high\":45.91,\"low\":43.48,\"open\":44.1,\"retrieved_at\":\"2026-09-19T01:20:34.636143+00:00\",\"source\":\"massive\",\"symbol\":\"BSVN\",\"volume\":41646}",
+          "raw_span_sha256": "e7c825c484c1a314f4bc975aa380ebad9064fd241e6d719c2cb76d7543ed6dea",
+          "whole_original_row": {
+            "adjusted_close": 44.4,
+            "as_of_date": "2025-01-17",
+            "close": 44.4,
+            "high": 45.91,
+            "low": 43.48,
+            "open": 44.1,
+            "retrieved_at": "2026-09-19T01:20:34.636143+00:00",
+            "source": "massive",
+            "symbol": "BSVN",
+            "volume": 41646
+          }
+        },
+        {
+          "raw_row_locator": "/84",
+          "raw_start": 17063,
+          "raw_end": 17267,
+          "raw_span": "{\"adjusted_close\":44.79,\"as_of_date\":\"2025-01-21\",\"close\":44.79,\"high\":45.72,\"low\":42.6323,\"open\":45.05,\"retrieved_at\":\"2026-09-19T01:20:34.636143+00:00\",\"source\":\"massive\",\"symbol\":\"BSVN\",\"volume\":38917}",
+          "raw_span_sha256": "fec7a134cd2c1786b41e1858769b52d6551242c4873b6a89343e6d084beeb383",
+          "whole_original_row": {
+            "adjusted_close": 44.79,
+            "as_of_date": "2025-01-21",
+            "close": 44.79,
+            "high": 45.72,
+            "low": 42.6323,
+            "open": 45.05,
+            "retrieved_at": "2026-09-19T01:20:34.636143+00:00",
+            "source": "massive",
+            "symbol": "BSVN",
+            "volume": 38917
+          }
+        },
+        {
+          "raw_row_locator": "/89",
+          "raw_start": 18081,
+          "raw_end": 18283,
+          "raw_span": "{\"adjusted_close\":43.72,\"as_of_date\":\"2025-01-28\",\"close\":43.72,\"high\":43.72,\"low\":42.73,\"open\":43.43,\"retrieved_at\":\"2026-09-19T01:20:34.636143+00:00\",\"source\":\"massive\",\"symbol\":\"BSVN\",\"volume\":11863}",
+          "raw_span_sha256": "cf9c67b6c7e5629bbd061bcc994bb3debd639d5000f2816ade8e9b5652143c0a",
+          "whole_original_row": {
+            "adjusted_close": 43.72,
+            "as_of_date": "2025-01-28",
+            "close": 43.72,
+            "high": 43.72,
+            "low": 42.73,
+            "open": 43.43,
+            "retrieved_at": "2026-09-19T01:20:34.636143+00:00",
+            "source": "massive",
+            "symbol": "BSVN",
+            "volume": 11863
+          }
+        },
+        {
+          "raw_row_locator": "/152",
+          "raw_start": 30890,
+          "raw_end": 31094,
+          "raw_span": "{\"adjusted_close\":36.73,\"as_of_date\":\"2025-04-29\",\"close\":36.73,\"high\":36.96,\"low\":36.0401,\"open\":36.74,\"retrieved_at\":\"2026-09-19T01:20:34.636143+00:00\",\"source\":\"massive\",\"symbol\":\"BSVN\",\"volume\":12409}",
+          "raw_span_sha256": "807a485d36db9b888fff3bae698f3aa0eb80cc306d1b71fe8f3d9566db0a624d",
+          "whole_original_row": {
+            "adjusted_close": 36.73,
+            "as_of_date": "2025-04-29",
+            "close": 36.73,
+            "high": 36.96,
+            "low": 36.0401,
+            "open": 36.74,
+            "retrieved_at": "2026-09-19T01:20:34.636143+00:00",
+            "source": "massive",
+            "symbol": "BSVN",
+            "volume": 12409
+          }
+        },
+        {
+          "raw_row_locator": "/215",
+          "raw_start": 43664,
+          "raw_end": 43868,
+          "raw_span": "{\"adjusted_close\":45.09,\"as_of_date\":\"2025-07-30\",\"close\":45.09,\"high\":47.145,\"low\":44.95,\"open\":47.145,\"retrieved_at\":\"2026-09-19T01:20:34.636143+00:00\",\"source\":\"massive\",\"symbol\":\"BSVN\",\"volume\":11486}",
+          "raw_span_sha256": "05cb347e56d0ee96a4c683a1fd382bf7bf2113041097722819b1b9e4daa0bddc",
+          "whole_original_row": {
+            "adjusted_close": 45.09,
+            "as_of_date": "2025-07-30",
+            "close": 45.09,
+            "high": 47.145,
+            "low": 44.95,
+            "open": 47.145,
+            "retrieved_at": "2026-09-19T01:20:34.636143+00:00",
+            "source": "massive",
+            "symbol": "BSVN",
+            "volume": 11486
+          }
+        }
+      ],
+      "interpretation_limits": [
+        "Source adjusted_close label and metadata equality are observable; provider historical split/dividend adjustment semantics are not independently proved.",
+        "retrieved_at is later than the simulated cutoff; as_of_date before cutoff alone is not proof of historical body/adjustment identity.",
+        "Observation intervals are supplied observations, not proven exchange trading days, calendar months or dividend-inclusive total return."
+      ]
+    },
+    {
+      "case_ref": "case-003",
+      "source": {
+        "case_ref": "case-003",
+        "case_id": "cik_0002009312:20250930",
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1529.json",
+        "document_id": "massive:cik_0002009312:market_data:82d2100463a7e9ceec81e9a1",
+        "sha256": "354bcac4eddb96791d401b646d4de7c787e91d2fca53086368d594952cae2bd2",
+        "snapshot_sha256_matches": true,
+        "content_hash": "82d2100463a7e9ceec81e9a18d4be4e2f50a97b0c85a4024e96b4b67412d95d7",
+        "content_hash_matches": true,
+        "source_type": "market_data",
+        "available_at": "2025-09-30T00:00:00+00:00",
+        "pit_eligible": true,
+        "requires_primary_filing_audit": null
+      },
+      "metadata": {
+        "end": "2025-09-29",
+        "provider": "massive",
+        "start": "2024-08-26",
+        "symbol": "AGH"
+      },
+      "row_count": 158,
+      "first_date": "2025-02-12",
+      "last_date": "2025-09-29",
+      "metadata_prices_match_raw_adjusted_close": true,
+      "strictly_chronological": true,
+      "all_raw_dates_before_cutoff": true,
+      "all_prices_positive_finite": true,
+      "adjusted_close_equals_close_count": 158,
+      "explicit_adjustment_flag_present": false,
+      "max_calendar_gap": {
+        "calendar_days": 4,
+        "left_index": 2,
+        "right_index": 3,
+        "left_date": "2025-02-14",
+        "right_date": "2025-02-18"
+      },
+      "final64_observation_count_sufficient": true,
+      "final64_first_date": "2025-06-30",
+      "stable127_observation_count_sufficient": true,
+      "complete_raw_citations": [
+        {
+          "raw_row_locator": "/0",
+          "raw_start": 1,
+          "raw_end": 199,
+          "raw_span": "{\"adjusted_close\":3.88,\"as_of_date\":\"2025-02-12\",\"close\":3.88,\"high\":4.48,\"low\":3.72,\"open\":4.37,\"retrieved_at\":\"2026-09-28T17:55:57.475807+00:00\",\"source\":\"massive\",\"symbol\":\"AGH\",\"volume\":2345807}",
+          "raw_span_sha256": "3e2ae5c232c14ff8bc37525b22d637966ef00ecc3bb8bc76396428b3f645b7e1",
+          "whole_original_row": {
+            "adjusted_close": 3.88,
+            "as_of_date": "2025-02-12",
+            "close": 3.88,
+            "high": 4.48,
+            "low": 3.72,
+            "open": 4.37,
+            "retrieved_at": "2026-09-28T17:55:57.475807+00:00",
+            "source": "massive",
+            "symbol": "AGH",
+            "volume": 2345807
+          }
+        },
+        {
+          "raw_row_locator": "/2",
+          "raw_start": 400,
+          "raw_end": 599,
+          "raw_span": "{\"adjusted_close\":3.15,\"as_of_date\":\"2025-02-14\",\"close\":3.15,\"high\":3.4961,\"low\":3.02,\"open\":3.35,\"retrieved_at\":\"2026-09-28T17:55:57.475807+00:00\",\"source\":\"massive\",\"symbol\":\"AGH\",\"volume\":177685}",
+          "raw_span_sha256": "d093418437df9ee74e7d62a255344820e9b92bb03cd216d7f2802bad2dc53acf",
+          "whole_original_row": {
+            "adjusted_close": 3.15,
+            "as_of_date": "2025-02-14",
+            "close": 3.15,
+            "high": 3.4961,
+            "low": 3.02,
+            "open": 3.35,
+            "retrieved_at": "2026-09-28T17:55:57.475807+00:00",
+            "source": "massive",
+            "symbol": "AGH",
+            "volume": 177685
+          }
+        },
+        {
+          "raw_row_locator": "/3",
+          "raw_start": 600,
+          "raw_end": 795,
+          "raw_span": "{\"adjusted_close\":2.71,\"as_of_date\":\"2025-02-18\",\"close\":2.71,\"high\":3.6,\"low\":2.3,\"open\":3.08,\"retrieved_at\":\"2026-09-28T17:55:57.475807+00:00\",\"source\":\"massive\",\"symbol\":\"AGH\",\"volume\":662255}",
+          "raw_span_sha256": "2314edaee2a10ebf40229b765212d897572d76bc04926520cf97597aec420756",
+          "whole_original_row": {
+            "adjusted_close": 2.71,
+            "as_of_date": "2025-02-18",
+            "close": 2.71,
+            "high": 3.6,
+            "low": 2.3,
+            "open": 3.08,
+            "retrieved_at": "2026-09-28T17:55:57.475807+00:00",
+            "source": "massive",
+            "symbol": "AGH",
+            "volume": 662255
+          }
+        },
+        {
+          "raw_row_locator": "/31",
+          "raw_start": 6258,
+          "raw_end": 6465,
+          "raw_span": "{\"adjusted_close\":0.6434,\"as_of_date\":\"2025-03-28\",\"close\":0.6434,\"high\":0.6798,\"low\":0.5706,\"open\":0.6479,\"retrieved_at\":\"2026-09-28T17:55:57.475807+00:00\",\"source\":\"massive\",\"symbol\":\"AGH\",\"volume\":221473}",
+          "raw_span_sha256": "4633b73b7cfe1a3095c4f05c4dadc735f4640176432a42c51e687c65c1b108fe",
+          "whole_original_row": {
+            "adjusted_close": 0.6434,
+            "as_of_date": "2025-03-28",
+            "close": 0.6434,
+            "high": 0.6798,
+            "low": 0.5706,
+            "open": 0.6479,
+            "retrieved_at": "2026-09-28T17:55:57.475807+00:00",
+            "source": "massive",
+            "symbol": "AGH",
+            "volume": 221473
+          }
+        },
+        {
+          "raw_row_locator": "/94",
+          "raw_start": 19060,
+          "raw_end": 19261,
+          "raw_span": "{\"adjusted_close\":0.578,\"as_of_date\":\"2025-06-30\",\"close\":0.578,\"high\":0.59,\"low\":0.565,\"open\":0.5859,\"retrieved_at\":\"2026-09-28T17:55:57.475807+00:00\",\"source\":\"massive\",\"symbol\":\"AGH\",\"volume\":35996}",
+          "raw_span_sha256": "4117ce4e9d460138ad931b84fa8e1f0d684e9c95f2b5c38bdf8a459665a48bb0",
+          "whole_original_row": {
+            "adjusted_close": 0.578,
+            "as_of_date": "2025-06-30",
+            "close": 0.578,
+            "high": 0.59,
+            "low": 0.565,
+            "open": 0.5859,
+            "retrieved_at": "2026-09-28T17:55:57.475807+00:00",
+            "source": "massive",
+            "symbol": "AGH",
+            "volume": 35996
+          }
+        },
+        {
+          "raw_row_locator": "/157",
+          "raw_start": 31638,
+          "raw_end": 31835,
+          "raw_span": "{\"adjusted_close\":3.17,\"as_of_date\":\"2025-09-29\",\"close\":3.17,\"high\":3.32,\"low\":2.75,\"open\":2.75,\"retrieved_at\":\"2026-09-28T17:55:57.475807+00:00\",\"source\":\"massive\",\"symbol\":\"AGH\",\"volume\":585980}",
+          "raw_span_sha256": "b504708ff334a393f77bf73b7c70f90cc7081b46262515062b303f1616e6b9e5",
+          "whole_original_row": {
+            "adjusted_close": 3.17,
+            "as_of_date": "2025-09-29",
+            "close": 3.17,
+            "high": 3.32,
+            "low": 2.75,
+            "open": 2.75,
+            "retrieved_at": "2026-09-28T17:55:57.475807+00:00",
+            "source": "massive",
+            "symbol": "AGH",
+            "volume": 585980
+          }
+        }
+      ],
+      "interpretation_limits": [
+        "Source adjusted_close label and metadata equality are observable; provider historical split/dividend adjustment semantics are not independently proved.",
+        "retrieved_at is later than the simulated cutoff; as_of_date before cutoff alone is not proof of historical body/adjustment identity.",
+        "Observation intervals are supplied observations, not proven exchange trading days, calendar months or dividend-inclusive total return."
+      ]
+    },
+    {
+      "case_ref": "case-004",
+      "source": {
+        "case_ref": "case-004",
+        "case_id": "cik_0001361658:20250131",
+        "cutoff": "2025-01-31T00:00:00+00:00",
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1524.json",
+        "document_id": "massive:cik_0001361658:market_data:3d1559852a8fc36a87c58c2a",
+        "sha256": "9dce2c76d04d39264321588e57d909adf5e703c00fe012e4d9ccb5da07f6ddaf",
+        "snapshot_sha256_matches": true,
+        "content_hash": "3d1559852a8fc36a87c58c2a2c0d81cfd0e423d945b196b1146c39559967372e",
+        "content_hash_matches": true,
+        "source_type": "market_data",
+        "available_at": "2025-01-31T00:00:00+00:00",
+        "pit_eligible": true,
+        "requires_primary_filing_audit": null
+      },
+      "metadata": {
+        "end": "2025-01-30",
+        "provider": "massive",
+        "start": "2023-12-28",
+        "symbol": "TNL"
+      },
+      "row_count": 91,
+      "first_date": "2024-09-19",
+      "last_date": "2025-01-30",
+      "metadata_prices_match_raw_adjusted_close": true,
+      "strictly_chronological": true,
+      "all_raw_dates_before_cutoff": true,
+      "all_prices_positive_finite": true,
+      "adjusted_close_equals_close_count": 91,
+      "explicit_adjustment_flag_present": false,
+      "max_calendar_gap": {
+        "calendar_days": 4,
+        "left_index": 82,
+        "right_index": 83,
+        "left_date": "2025-01-17",
+        "right_date": "2025-01-21"
+      },
+      "final64_observation_count_sufficient": true,
+      "final64_first_date": "2024-10-28",
+      "stable127_observation_count_sufficient": false,
+      "complete_raw_citations": [
+        {
+          "raw_row_locator": "/0",
+          "raw_start": 1,
+          "raw_end": 205,
+          "raw_span": "{\"adjusted_close\":44.19,\"as_of_date\":\"2024-09-19\",\"close\":44.19,\"high\":44.53,\"low\":43.475,\"open\":43.74,\"retrieved_at\":\"2026-09-19T06:56:23.113574+00:00\",\"source\":\"massive\",\"symbol\":\"TNL\",\"volume\":1043147}",
+          "raw_span_sha256": "a6b73641c2ed01c9f9f913452e88946eb9d0f3067ce115c39db2bc0c7d3ea932",
+          "whole_original_row": {
+            "adjusted_close": 44.19,
+            "as_of_date": "2024-09-19",
+            "close": 44.19,
+            "high": 44.53,
+            "low": 43.475,
+            "open": 43.74,
+            "retrieved_at": "2026-09-19T06:56:23.113574+00:00",
+            "source": "massive",
+            "symbol": "TNL",
+            "volume": 1043147
+          }
+        },
+        {
+          "raw_row_locator": "/27",
+          "raw_start": 5488,
+          "raw_end": 5690,
+          "raw_span": "{\"adjusted_close\":48.51,\"as_of_date\":\"2024-10-28\",\"close\":48.51,\"high\":48.55,\"low\":47.75,\"open\":48.06,\"retrieved_at\":\"2026-09-19T06:56:23.113574+00:00\",\"source\":\"massive\",\"symbol\":\"TNL\",\"volume\":405813}",
+          "raw_span_sha256": "b23423e1550b8b5187b1148984933bc45d912962a76b2bf9db9bf928b68b279c",
+          "whole_original_row": {
+            "adjusted_close": 48.51,
+            "as_of_date": "2024-10-28",
+            "close": 48.51,
+            "high": 48.55,
+            "low": 47.75,
+            "open": 48.06,
+            "retrieved_at": "2026-09-19T06:56:23.113574+00:00",
+            "source": "massive",
+            "symbol": "TNL",
+            "volume": 405813
+          }
+        },
+        {
+          "raw_row_locator": "/82",
+          "raw_start": 16647,
+          "raw_end": 16849,
+          "raw_span": "{\"adjusted_close\":52.23,\"as_of_date\":\"2025-01-17\",\"close\":52.23,\"high\":52.56,\"low\":52.15,\"open\":52.47,\"retrieved_at\":\"2026-09-19T06:56:23.113574+00:00\",\"source\":\"massive\",\"symbol\":\"TNL\",\"volume\":303677}",
+          "raw_span_sha256": "e7a50743b8fc956cc0bf6b2fe5f09b2a2e8f708f96245cad65478a1d3cc58725",
+          "whole_original_row": {
+            "adjusted_close": 52.23,
+            "as_of_date": "2025-01-17",
+            "close": 52.23,
+            "high": 52.56,
+            "low": 52.15,
+            "open": 52.47,
+            "retrieved_at": "2026-09-19T06:56:23.113574+00:00",
+            "source": "massive",
+            "symbol": "TNL",
+            "volume": 303677
+          }
+        },
+        {
+          "raw_row_locator": "/83",
+          "raw_start": 16850,
+          "raw_end": 17053,
+          "raw_span": "{\"adjusted_close\":53.39,\"as_of_date\":\"2025-01-21\",\"close\":53.39,\"high\":53.54,\"low\":52.615,\"open\":52.84,\"retrieved_at\":\"2026-09-19T06:56:23.113574+00:00\",\"source\":\"massive\",\"symbol\":\"TNL\",\"volume\":444789}",
+          "raw_span_sha256": "13ee09cc3ed4b1c67528c6e4ec544761e1f1016b8d6a1f9f51751d334367feb6",
+          "whole_original_row": {
+            "adjusted_close": 53.39,
+            "as_of_date": "2025-01-21",
+            "close": 53.39,
+            "high": 53.54,
+            "low": 52.615,
+            "open": 52.84,
+            "retrieved_at": "2026-09-19T06:56:23.113574+00:00",
+            "source": "massive",
+            "symbol": "TNL",
+            "volume": 444789
+          }
+        },
+        {
+          "raw_row_locator": "/90",
+          "raw_start": 18274,
+          "raw_end": 18474,
+          "raw_span": "{\"adjusted_close\":55.2,\"as_of_date\":\"2025-01-30\",\"close\":55.2,\"high\":55.86,\"low\":54.73,\"open\":54.84,\"retrieved_at\":\"2026-09-19T06:56:23.113574+00:00\",\"source\":\"massive\",\"symbol\":\"TNL\",\"volume\":405948}",
+          "raw_span_sha256": "2541c51250bad5befbcba62e230f2c1ddf340d1358f198427ad2d607b31f1cbc",
+          "whole_original_row": {
+            "adjusted_close": 55.2,
+            "as_of_date": "2025-01-30",
+            "close": 55.2,
+            "high": 55.86,
+            "low": 54.73,
+            "open": 54.84,
+            "retrieved_at": "2026-09-19T06:56:23.113574+00:00",
+            "source": "massive",
+            "symbol": "TNL",
+            "volume": 405948
+          }
+        }
+      ],
+      "interpretation_limits": [
+        "Source adjusted_close label and metadata equality are observable; provider historical split/dividend adjustment semantics are not independently proved.",
+        "retrieved_at is later than the simulated cutoff; as_of_date before cutoff alone is not proof of historical body/adjustment identity.",
+        "Observation intervals are supplied observations, not proven exchange trading days, calendar months or dividend-inclusive total return."
+      ]
+    },
+    {
+      "case_ref": "case-005",
+      "status": "missing_original_market_document",
+      "unavailable_required": true
+    },
+    {
+      "case_ref": "case-006",
+      "source": {
+        "case_ref": "case-006",
+        "case_id": "cik_0001946703:20250731",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1527.json",
+        "document_id": "massive:cik_0001946703:market_data:fb09c44e83c33ee325493a96",
+        "sha256": "00bcb0bc90f311dbd0d6a17f5f9b44fa9245f16824db1812b0da7fcf337f0118",
+        "snapshot_sha256_matches": true,
+        "content_hash": "fb09c44e83c33ee325493a96d962bf6c1b7d145f0acf272d1717ce24dc102e28",
+        "content_hash_matches": true,
+        "source_type": "market_data",
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "pit_eligible": true,
+        "requires_primary_filing_audit": null
+      },
+      "metadata": {
+        "end": "2025-07-30",
+        "provider": "massive",
+        "start": "2024-06-26",
+        "symbol": "WBUY"
+      },
+      "row_count": 146,
+      "first_date": "2024-09-19",
+      "last_date": "2025-07-30",
+      "metadata_prices_match_raw_adjusted_close": true,
+      "strictly_chronological": true,
+      "all_raw_dates_before_cutoff": true,
+      "all_prices_positive_finite": true,
+      "adjusted_close_equals_close_count": 146,
+      "explicit_adjustment_flag_present": false,
+      "max_calendar_gap": {
+        "calendar_days": 100,
+        "left_index": 88,
+        "right_index": 89,
+        "left_date": "2025-01-28",
+        "right_date": "2025-05-08"
+      },
+      "final64_observation_count_sufficient": true,
+      "final64_first_date": "2025-01-17",
+      "stable127_observation_count_sufficient": true,
+      "complete_raw_citations": [
+        {
+          "raw_row_locator": "/0",
+          "raw_start": 1,
+          "raw_end": 211,
+          "raw_span": "{\"adjusted_close\":0.1588,\"as_of_date\":\"2024-09-19\",\"close\":0.1588,\"high\":0.1588,\"low\":0.1349,\"open\":0.1469,\"retrieved_at\":\"2026-09-19T05:50:14.784893+00:00\",\"source\":\"massive\",\"symbol\":\"WBUY\",\"volume\":13727501}",
+          "raw_span_sha256": "13a2376afe3e5c4a509706def6967c0c249ae4551f081b1e1f53e68798fb15f6",
+          "whole_original_row": {
+            "adjusted_close": 0.1588,
+            "as_of_date": "2024-09-19",
+            "close": 0.1588,
+            "high": 0.1588,
+            "low": 0.1349,
+            "open": 0.1469,
+            "retrieved_at": "2026-09-19T05:50:14.784893+00:00",
+            "source": "massive",
+            "symbol": "WBUY",
+            "volume": 13727501
+          }
+        },
+        {
+          "raw_row_locator": "/19",
+          "raw_start": 3940,
+          "raw_end": 4148,
+          "raw_span": "{\"adjusted_close\":0.1263,\"as_of_date\":\"2024-10-16\",\"close\":0.1263,\"high\":0.134,\"low\":0.1241,\"open\":0.1246,\"retrieved_at\":\"2026-09-19T05:50:14.784893+00:00\",\"source\":\"massive\",\"symbol\":\"WBUY\",\"volume\":1201249}",
+          "raw_span_sha256": "2e345d0ba7ea8b1cdfb1c6a13cd68f1e30a9b5fdb13c5ab09d6fe77e64ad6ece",
+          "whole_original_row": {
+            "adjusted_close": 0.1263,
+            "as_of_date": "2024-10-16",
+            "close": 0.1263,
+            "high": 0.134,
+            "low": 0.1241,
+            "open": 0.1246,
+            "retrieved_at": "2026-09-19T05:50:14.784893+00:00",
+            "source": "massive",
+            "symbol": "WBUY",
+            "volume": 1201249
+          }
+        },
+        {
+          "raw_row_locator": "/82",
+          "raw_start": 16999,
+          "raw_end": 17206,
+          "raw_span": "{\"adjusted_close\":0.1298,\"as_of_date\":\"2025-01-17\",\"close\":0.1298,\"high\":0.133,\"low\":0.1271,\"open\":0.131,\"retrieved_at\":\"2026-09-19T05:50:14.784893+00:00\",\"source\":\"massive\",\"symbol\":\"WBUY\",\"volume\":2381331}",
+          "raw_span_sha256": "07af02bd35175d1fe22a5640846500f7cb7b5db9ae3ba477d0e3eb1fa7751f89",
+          "whole_original_row": {
+            "adjusted_close": 0.1298,
+            "as_of_date": "2025-01-17",
+            "close": 0.1298,
+            "high": 0.133,
+            "low": 0.1271,
+            "open": 0.131,
+            "retrieved_at": "2026-09-19T05:50:14.784893+00:00",
+            "source": "massive",
+            "symbol": "WBUY",
+            "volume": 2381331
+          }
+        },
+        {
+          "raw_row_locator": "/88",
+          "raw_start": 18243,
+          "raw_end": 18450,
+          "raw_span": "{\"adjusted_close\":0.1235,\"as_of_date\":\"2025-01-28\",\"close\":0.1235,\"high\":0.1293,\"low\":0.1175,\"open\":0.12,\"retrieved_at\":\"2026-09-19T05:50:14.784893+00:00\",\"source\":\"massive\",\"symbol\":\"WBUY\",\"volume\":6738958}",
+          "raw_span_sha256": "19b1a1d7127454012690d930971debb5449770c9605e0c11c05efd081ecd83f8",
+          "whole_original_row": {
+            "adjusted_close": 0.1235,
+            "as_of_date": "2025-01-28",
+            "close": 0.1235,
+            "high": 0.1293,
+            "low": 0.1175,
+            "open": 0.12,
+            "retrieved_at": "2026-09-19T05:50:14.784893+00:00",
+            "source": "massive",
+            "symbol": "WBUY",
+            "volume": 6738958
+          }
+        },
+        {
+          "raw_row_locator": "/89",
+          "raw_start": 18451,
+          "raw_end": 18649,
+          "raw_span": "{\"adjusted_close\":7.11,\"as_of_date\":\"2025-05-08\",\"close\":7.11,\"high\":14.0,\"low\":6.6,\"open\":14.0,\"retrieved_at\":\"2026-09-19T05:50:14.784893+00:00\",\"source\":\"massive\",\"symbol\":\"WBUY\",\"volume\":1591148}",
+          "raw_span_sha256": "4af7fd65204822298c1eba30cf51c727ccae31e3b9751253249a5464e67cd634",
+          "whole_original_row": {
+            "adjusted_close": 7.11,
+            "as_of_date": "2025-05-08",
+            "close": 7.11,
+            "high": 14.0,
+            "low": 6.6,
+            "open": 14.0,
+            "retrieved_at": "2026-09-19T05:50:14.784893+00:00",
+            "source": "massive",
+            "symbol": "WBUY",
+            "volume": 1591148
+          }
+        },
+        {
+          "raw_row_locator": "/145",
+          "raw_start": 29582,
+          "raw_end": 29780,
+          "raw_span": "{\"adjusted_close\":4.23,\"as_of_date\":\"2025-07-30\",\"close\":4.23,\"high\":4.74,\"low\":3.7,\"open\":4.74,\"retrieved_at\":\"2026-09-19T05:50:14.784893+00:00\",\"source\":\"massive\",\"symbol\":\"WBUY\",\"volume\":2181468}",
+          "raw_span_sha256": "f96427d814d7ed0b98ad5dec52b049fd624edd2ad7422b52f0a7f5b4eddd6346",
+          "whole_original_row": {
+            "adjusted_close": 4.23,
+            "as_of_date": "2025-07-30",
+            "close": 4.23,
+            "high": 4.74,
+            "low": 3.7,
+            "open": 4.74,
+            "retrieved_at": "2026-09-19T05:50:14.784893+00:00",
+            "source": "massive",
+            "symbol": "WBUY",
+            "volume": 2181468
+          }
+        }
+      ],
+      "interpretation_limits": [
+        "Source adjusted_close label and metadata equality are observable; provider historical split/dividend adjustment semantics are not independently proved.",
+        "retrieved_at is later than the simulated cutoff; as_of_date before cutoff alone is not proof of historical body/adjustment identity.",
+        "Observation intervals are supplied observations, not proven exchange trading days, calendar months or dividend-inclusive total return."
+      ]
+    },
+    {
+      "case_ref": "case-007",
+      "source": {
+        "case_ref": "case-007",
+        "case_id": "cik_0001065059:20250131",
+        "cutoff": "2025-01-31T00:00:00+00:00",
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1531.json",
+        "document_id": "massive:cik_0001065059:market_data:ae54a4489d1414e295dede25",
+        "sha256": "bd6c737b6d5ca80ff0090fe915bd57b5741861d26f850729c68384b0ada5858e",
+        "snapshot_sha256_matches": true,
+        "content_hash": "ae54a4489d1414e295dede2557590b462ba05693aafb717e74a4d0c1c80cb49e",
+        "content_hash_matches": true,
+        "source_type": "market_data",
+        "available_at": "2025-01-31T00:00:00+00:00",
+        "pit_eligible": true,
+        "requires_primary_filing_audit": null
+      },
+      "metadata": {
+        "end": "2025-01-30",
+        "provider": "massive",
+        "start": "2023-12-28",
+        "symbol": "LEU"
+      },
+      "row_count": 91,
+      "first_date": "2024-09-19",
+      "last_date": "2025-01-30",
+      "metadata_prices_match_raw_adjusted_close": true,
+      "strictly_chronological": true,
+      "all_raw_dates_before_cutoff": true,
+      "all_prices_positive_finite": true,
+      "adjusted_close_equals_close_count": 91,
+      "explicit_adjustment_flag_present": false,
+      "max_calendar_gap": {
+        "calendar_days": 4,
+        "left_index": 82,
+        "right_index": 83,
+        "left_date": "2025-01-17",
+        "right_date": "2025-01-21"
+      },
+      "final64_observation_count_sufficient": true,
+      "final64_first_date": "2024-10-28",
+      "stable127_observation_count_sufficient": false,
+      "complete_raw_citations": [
+        {
+          "raw_row_locator": "/0",
+          "raw_start": 1,
+          "raw_end": 202,
+          "raw_span": "{\"adjusted_close\":41.45,\"as_of_date\":\"2024-09-19\",\"close\":41.45,\"high\":41.5,\"low\":40.34,\"open\":41.12,\"retrieved_at\":\"2026-09-19T08:33:28.851873+00:00\",\"source\":\"massive\",\"symbol\":\"LEU\",\"volume\":171753}",
+          "raw_span_sha256": "0f789a6f792182ba16729803c8c2c9b732c19352ca0b32f18ce6f7c4e969466f",
+          "whole_original_row": {
+            "adjusted_close": 41.45,
+            "as_of_date": "2024-09-19",
+            "close": 41.45,
+            "high": 41.5,
+            "low": 40.34,
+            "open": 41.12,
+            "retrieved_at": "2026-09-19T08:33:28.851873+00:00",
+            "source": "massive",
+            "symbol": "LEU",
+            "volume": 171753
+          }
+        },
+        {
+          "raw_row_locator": "/27",
+          "raw_start": 5486,
+          "raw_end": 5687,
+          "raw_span": "{\"adjusted_close\":93.88,\"as_of_date\":\"2024-10-28\",\"close\":93.88,\"high\":98.0,\"low\":89.0,\"open\":90.24,\"retrieved_at\":\"2026-09-19T08:33:28.851873+00:00\",\"source\":\"massive\",\"symbol\":\"LEU\",\"volume\":1835010}",
+          "raw_span_sha256": "2f2673442d5ed30b9dd67b581b849724ed1ac20702bd01c96be610d67c0bcf4a",
+          "whole_original_row": {
+            "adjusted_close": 93.88,
+            "as_of_date": "2024-10-28",
+            "close": 93.88,
+            "high": 98.0,
+            "low": 89.0,
+            "open": 90.24,
+            "retrieved_at": "2026-09-19T08:33:28.851873+00:00",
+            "source": "massive",
+            "symbol": "LEU",
+            "volume": 1835010
+          }
+        },
+        {
+          "raw_row_locator": "/82",
+          "raw_start": 16653,
+          "raw_end": 16857,
+          "raw_span": "{\"adjusted_close\":77.83,\"as_of_date\":\"2025-01-17\",\"close\":77.83,\"high\":79.1162,\"low\":74.13,\"open\":75.22,\"retrieved_at\":\"2026-09-19T08:33:28.851873+00:00\",\"source\":\"massive\",\"symbol\":\"LEU\",\"volume\":699612}",
+          "raw_span_sha256": "830202e5d17e6b5ca6304d3ea466fd3676f93686f54768288e7fc78add56d9bc",
+          "whole_original_row": {
+            "adjusted_close": 77.83,
+            "as_of_date": "2025-01-17",
+            "close": 77.83,
+            "high": 79.1162,
+            "low": 74.13,
+            "open": 75.22,
+            "retrieved_at": "2026-09-19T08:33:28.851873+00:00",
+            "source": "massive",
+            "symbol": "LEU",
+            "volume": 699612
+          }
+        },
+        {
+          "raw_row_locator": "/83",
+          "raw_start": 16858,
+          "raw_end": 17065,
+          "raw_span": "{\"adjusted_close\":88.53,\"as_of_date\":\"2025-01-21\",\"close\":88.53,\"high\":89.3831,\"low\":79.0743,\"open\":81.63,\"retrieved_at\":\"2026-09-19T08:33:28.851873+00:00\",\"source\":\"massive\",\"symbol\":\"LEU\",\"volume\":1369485}",
+          "raw_span_sha256": "b2035583d27b518ba7167888d6174dfd45dc5ccab02aed7e5d3c1e48427f917f",
+          "whole_original_row": {
+            "adjusted_close": 88.53,
+            "as_of_date": "2025-01-21",
+            "close": 88.53,
+            "high": 89.3831,
+            "low": 79.0743,
+            "open": 81.63,
+            "retrieved_at": "2026-09-19T08:33:28.851873+00:00",
+            "source": "massive",
+            "symbol": "LEU",
+            "volume": 1369485
+          }
+        },
+        {
+          "raw_row_locator": "/90",
+          "raw_start": 18281,
+          "raw_end": 18483,
+          "raw_span": "{\"adjusted_close\":85.38,\"as_of_date\":\"2025-01-30\",\"close\":85.38,\"high\":86.88,\"low\":82.64,\"open\":82.78,\"retrieved_at\":\"2026-09-19T08:33:28.851873+00:00\",\"source\":\"massive\",\"symbol\":\"LEU\",\"volume\":552729}",
+          "raw_span_sha256": "489b4b22efc32fd625c96394a981157afc932f73ac469dd55e4e35ffb335361c",
+          "whole_original_row": {
+            "adjusted_close": 85.38,
+            "as_of_date": "2025-01-30",
+            "close": 85.38,
+            "high": 86.88,
+            "low": 82.64,
+            "open": 82.78,
+            "retrieved_at": "2026-09-19T08:33:28.851873+00:00",
+            "source": "massive",
+            "symbol": "LEU",
+            "volume": 552729
+          }
+        }
+      ],
+      "interpretation_limits": [
+        "Source adjusted_close label and metadata equality are observable; provider historical split/dividend adjustment semantics are not independently proved.",
+        "retrieved_at is later than the simulated cutoff; as_of_date before cutoff alone is not proof of historical body/adjustment identity.",
+        "Observation intervals are supplied observations, not proven exchange trading days, calendar months or dividend-inclusive total return."
+      ]
+    },
+    {
+      "case_ref": "case-008",
+      "source": {
+        "case_ref": "case-008",
+        "case_id": "cik_0000800457:20250731",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1520.json",
+        "document_id": "massive:cik_0000800457:market_data:6e1443dd44ca0a702bd84645",
+        "sha256": "0bdc5a14c8f29da437748be3d34b1239a7d88768df7544b265b49b06433a82db",
+        "snapshot_sha256_matches": true,
+        "content_hash": "6e1443dd44ca0a702bd84645b0bbb1f1dfda3cd86995c8d34092d5fe107dbae7",
+        "content_hash_matches": true,
+        "source_type": "market_data",
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "pit_eligible": true,
+        "requires_primary_filing_audit": null
+      },
+      "metadata": {
+        "end": "2025-07-30",
+        "provider": "massive",
+        "start": "2024-06-26",
+        "symbol": "DGICA"
+      },
+      "row_count": 216,
+      "first_date": "2024-09-18",
+      "last_date": "2025-07-30",
+      "metadata_prices_match_raw_adjusted_close": true,
+      "strictly_chronological": true,
+      "all_raw_dates_before_cutoff": true,
+      "all_prices_positive_finite": true,
+      "adjusted_close_equals_close_count": 216,
+      "explicit_adjustment_flag_present": false,
+      "max_calendar_gap": {
+        "calendar_days": 4,
+        "left_index": 83,
+        "right_index": 84,
+        "left_date": "2025-01-17",
+        "right_date": "2025-01-21"
+      },
+      "final64_observation_count_sufficient": true,
+      "final64_first_date": "2025-04-29",
+      "stable127_observation_count_sufficient": true,
+      "complete_raw_citations": [
+        {
+          "raw_row_locator": "/0",
+          "raw_start": 1,
+          "raw_end": 203,
+          "raw_span": "{\"adjusted_close\":15.25,\"as_of_date\":\"2024-09-18\",\"close\":15.25,\"high\":15.41,\"low\":15.2,\"open\":15.26,\"retrieved_at\":\"2026-09-18T20:05:07.557928+00:00\",\"source\":\"massive\",\"symbol\":\"DGICA\",\"volume\":38289}",
+          "raw_span_sha256": "49c004d105f482f00279b4195be43069e53c6ddea42ad33e461b41a3951e2297",
+          "whole_original_row": {
+            "adjusted_close": 15.25,
+            "as_of_date": "2024-09-18",
+            "close": 15.25,
+            "high": 15.41,
+            "low": 15.2,
+            "open": 15.26,
+            "retrieved_at": "2026-09-18T20:05:07.557928+00:00",
+            "source": "massive",
+            "symbol": "DGICA",
+            "volume": 38289
+          }
+        },
+        {
+          "raw_row_locator": "/83",
+          "raw_start": 16941,
+          "raw_end": 17147,
+          "raw_span": "{\"adjusted_close\":14.59,\"as_of_date\":\"2025-01-17\",\"close\":14.59,\"high\":14.7872,\"low\":14.48,\"open\":14.68,\"retrieved_at\":\"2026-09-18T20:05:07.557928+00:00\",\"source\":\"massive\",\"symbol\":\"DGICA\",\"volume\":119141}",
+          "raw_span_sha256": "3ef1325ddff0c3a5fef3d2f78846f43cb1cbec55879c82b42f752152d30feebf",
+          "whole_original_row": {
+            "adjusted_close": 14.59,
+            "as_of_date": "2025-01-17",
+            "close": 14.59,
+            "high": 14.7872,
+            "low": 14.48,
+            "open": 14.68,
+            "retrieved_at": "2026-09-18T20:05:07.557928+00:00",
+            "source": "massive",
+            "symbol": "DGICA",
+            "volume": 119141
+          }
+        },
+        {
+          "raw_row_locator": "/84",
+          "raw_start": 17148,
+          "raw_end": 17351,
+          "raw_span": "{\"adjusted_close\":14.55,\"as_of_date\":\"2025-01-21\",\"close\":14.55,\"high\":14.81,\"low\":14.53,\"open\":14.59,\"retrieved_at\":\"2026-09-18T20:05:07.557928+00:00\",\"source\":\"massive\",\"symbol\":\"DGICA\",\"volume\":75406}",
+          "raw_span_sha256": "acba5cfee6a09ab2ca5aa01c8fa3852e6d1961197af0304ad8dfb8b4a01db631",
+          "whole_original_row": {
+            "adjusted_close": 14.55,
+            "as_of_date": "2025-01-21",
+            "close": 14.55,
+            "high": 14.81,
+            "low": 14.53,
+            "open": 14.59,
+            "retrieved_at": "2026-09-18T20:05:07.557928+00:00",
+            "source": "massive",
+            "symbol": "DGICA",
+            "volume": 75406
+          }
+        },
+        {
+          "raw_row_locator": "/89",
+          "raw_start": 18170,
+          "raw_end": 18372,
+          "raw_span": "{\"adjusted_close\":14.77,\"as_of_date\":\"2025-01-28\",\"close\":14.77,\"high\":14.84,\"low\":14.57,\"open\":14.8,\"retrieved_at\":\"2026-09-18T20:05:07.557928+00:00\",\"source\":\"massive\",\"symbol\":\"DGICA\",\"volume\":67655}",
+          "raw_span_sha256": "93a6c80b9df790e519e03e6347a9cc26f4ed1fd222dc3981b467156c9f736189",
+          "whole_original_row": {
+            "adjusted_close": 14.77,
+            "as_of_date": "2025-01-28",
+            "close": 14.77,
+            "high": 14.84,
+            "low": 14.57,
+            "open": 14.8,
+            "retrieved_at": "2026-09-18T20:05:07.557928+00:00",
+            "source": "massive",
+            "symbol": "DGICA",
+            "volume": 67655
+          }
+        },
+        {
+          "raw_row_locator": "/152",
+          "raw_start": 31065,
+          "raw_end": 31270,
+          "raw_span": "{\"adjusted_close\":19.42,\"as_of_date\":\"2025-04-29\",\"close\":19.42,\"high\":19.545,\"low\":19.05,\"open\":19.39,\"retrieved_at\":\"2026-09-18T20:05:07.557928+00:00\",\"source\":\"massive\",\"symbol\":\"DGICA\",\"volume\":125104}",
+          "raw_span_sha256": "af43ec86bfc53fd364cc49ce99872798e82a1f53fac07dcd43bbb29ef046ac3f",
+          "whole_original_row": {
+            "adjusted_close": 19.42,
+            "as_of_date": "2025-04-29",
+            "close": 19.42,
+            "high": 19.545,
+            "low": 19.05,
+            "open": 19.39,
+            "retrieved_at": "2026-09-18T20:05:07.557928+00:00",
+            "source": "massive",
+            "symbol": "DGICA",
+            "volume": 125104
+          }
+        },
+        {
+          "raw_row_locator": "/215",
+          "raw_start": 43996,
+          "raw_end": 44202,
+          "raw_span": "{\"adjusted_close\":17.33,\"as_of_date\":\"2025-07-30\",\"close\":17.33,\"high\":17.67,\"low\":17.2631,\"open\":17.45,\"retrieved_at\":\"2026-09-18T20:05:07.557928+00:00\",\"source\":\"massive\",\"symbol\":\"DGICA\",\"volume\":134403}",
+          "raw_span_sha256": "02201503719df5ca277351a0edac50f7ea6809e0540a690949f08bca0c94442e",
+          "whole_original_row": {
+            "adjusted_close": 17.33,
+            "as_of_date": "2025-07-30",
+            "close": 17.33,
+            "high": 17.67,
+            "low": 17.2631,
+            "open": 17.45,
+            "retrieved_at": "2026-09-18T20:05:07.557928+00:00",
+            "source": "massive",
+            "symbol": "DGICA",
+            "volume": 134403
+          }
+        }
+      ],
+      "interpretation_limits": [
+        "Source adjusted_close label and metadata equality are observable; provider historical split/dividend adjustment semantics are not independently proved.",
+        "retrieved_at is later than the simulated cutoff; as_of_date before cutoff alone is not proof of historical body/adjustment identity.",
+        "Observation intervals are supplied observations, not proven exchange trading days, calendar months or dividend-inclusive total return."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "before": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "cb4f4a489215b0a50b38fde6b887e031445c378a7edd0d45aca60bfe7f71220a",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "b3d43e4f8155a80f791746d5e1da9aee89e066800c07d0bcb12808b5fc5fc041",
+    "src/stock_opportunity_agent/research/evolution_transport.py": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42"
+  },
+  "after": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "cb4f4a489215b0a50b38fde6b887e031445c378a7edd0d45aca60bfe7f71220a",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "b3d43e4f8155a80f791746d5e1da9aee89e066800c07d0bcb12808b5fc5fc041",
+    "src/stock_opportunity_agent/research/evolution_transport.py": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42"
+  },
+  "stable_sources": true,
+  "results": [
+    {
+      "id": "actual-whole-fact-source-type-and-13refs",
+      "passed": true,
+      "detail": {
+        "actual_span_chars": 692,
+        "whole_rows": 13
+      }
+    },
+    {
+      "id": "read-window-case-lineage-no-unread-leak",
+      "passed": true,
+      "detail": {
+        "raw_hash": "61e86758c3a81cdeafc7de7d5d2266135f6492e8f5ca5d3b91537f75d08e14f4",
+        "windows": 2
+      }
+    },
+    {
+      "id": "relation-ordered-operands",
+      "passed": true,
+      "detail": {
+        "relation": "relation-3ad23767ef7414a4",
+        "ordered_operands": [
+          "fact-8e6391a8eb3c9743",
+          "fact-2514935a069837df"
+        ]
+      }
+    },
+    {
+      "id": "unknown-before-model",
+      "passed": true,
+      "detail": {
+        "slow_loop:mining_materialize:synthetic_review_observable": [
+          "source handoff prerequisite failed: materialization citation has no source handoff: unknown-ref"
+        ]
+      }
+    },
+    {
+      "id": "legacy-fact-object-helper",
+      "passed": true,
+      "detail": {
+        "legacy_dataclass_fact": true
+      }
+    },
+    {
+      "id": "native-spec-skill-tests-pending",
+      "passed": true,
+      "detail": [
+        {
+          "module": "spec",
+          "request_hash": "595530a295d8573767e8b18ede5fbe06907192c5eff595b51471cd186df510c5",
+          "cited_evidence_count": 2,
+          "inbox": "/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v2/native-spec/local_roles/inbox/595530a295d8573767e8b18ede5fbe06907192c5eff595b51471cd186df510c5.json"
+        },
+        {
+          "module": "skill",
+          "request_hash": "d908f86fd7d875dcdc3d7df2d2cbf93b7dd87093888013b126f55fd700ca0036",
+          "cited_evidence_count": 2,
+          "inbox": "/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v2/native-skill/local_roles/inbox/d908f86fd7d875dcdc3d7df2d2cbf93b7dd87093888013b126f55fd700ca0036.json"
+        },
+        {
+          "module": "tests",
+          "request_hash": "cd1b2cec2e67bb79c4dea3c0f94d0a41e9468396c6bf718f41cfc7c96cac6404",
+          "cited_evidence_count": 2,
+          "inbox": "/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/handoff-review/after-v2/native-tests/local_roles/inbox/cd1b2cec2e67bb79c4dea3c0f94d0a41e9468396c6bf718f41cfc7c96cac6404.json"
+        }
+      ]
+    },
+    {
+      "id": "native-real-fact-spec-tests-pending",
+      "passed": true,
+      "detail": [
+        {
+          "module": "spec",
+          "request_hash": "cf8357a78a56193ff535b02100e95e85b411c490cc1dcf0f55894a093f7366df",
+          "span_chars": 692
+        },
+        {
+          "module": "tests",
+          "request_hash": "d89a5163d1ff51f8fa62148256a522d02adc99de1a36bdf9143f81f581c24f60",
+          "span_chars": 692
+        }
+      ]
+    },
+    {
+      "id": "eof-markup-and-unknown-read",
+      "passed": true,
+      "detail": {
+        "requested_length": 200,
+        "actual_raw_chars": 30,
+        "visible": "TAIL_VISIBLE",
+        "read_budget_unchanged_by_export": true
+      }
+    },
+    {
+      "id": "native-explicit-caller-budget-stop",
+      "passed": true,
+      "detail": {
+        "type": "MiningRequestBudgetExhausted",
+        "message": "local role request reservation exceeds remaining case budget",
+        "inboxes": 0,
+        "caller_calls": 1,
+        "cap_owner": "explicit injected caller; no inferred H1/S5 cap"
+      }
+    }
+  ],
+  "network_calls": 0,
+  "model_calls": 0,
+  "authored_answers": 0,
+  "evidence": "local deterministic controls and native pending request serialization only"
+}

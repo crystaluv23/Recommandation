@@ -1,0 +1,64 @@
+{
+  "schema_version": "independent-structured-capability-gap-v1",
+  "material_family": "Same-instant inventory composition of current assets.",
+  "source_rows": [
+    {
+      "case_ref": "case-007",
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1010.json",
+      "document_id": "secfacts:0001065059:0001065059-24-000089:780ab9a6303a60a5",
+      "content_hash": "780ab9a6303a60a5818bb13550f5871ab2288c7dd19dfb3c60f11b8827d4a121",
+      "available_at": "2024-10-30T00:00:00+00:00",
+      "cutoff": "2025-01-31T00:00:00+00:00",
+      "locator": "/facts/24",
+      "whole_original_row": {
+        "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are expected to be realized in cash, sold, or consumed within one year (or the normal operating cycle, if longer). Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
+        "end": "2024-09-30",
+        "fiscal_period": "Q3",
+        "fiscal_year": 2024,
+        "frame": "CY2024Q3I",
+        "label": "Assets, Current",
+        "start": null,
+        "tag": "AssetsCurrent",
+        "taxonomy": "us-gaap",
+        "unit": "USD",
+        "value": 516900000
+      },
+      "row_canonical_sha256": "7cffdb9825d99b044c022667c5d24026d9fb505d0d427d6b6a91dbf4154fc465",
+      "requires_primary_filing_audit": true,
+      "retrospective_api_extraction": true
+    },
+    {
+      "case_ref": "case-007",
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1010.json",
+      "document_id": "secfacts:0001065059:0001065059-24-000089:780ab9a6303a60a5",
+      "content_hash": "780ab9a6303a60a5818bb13550f5871ab2288c7dd19dfb3c60f11b8827d4a121",
+      "available_at": "2024-10-30T00:00:00+00:00",
+      "cutoff": "2025-01-31T00:00:00+00:00",
+      "locator": "/facts/128",
+      "whole_original_row": {
+        "description": "Amount after valuation and LIFO reserves of inventory expected to be sold, or consumed within one year or operating cycle, if longer.",
+        "end": "2024-09-30",
+        "fiscal_period": "Q3",
+        "fiscal_year": 2024,
+        "frame": "CY2024Q3I",
+        "label": "Inventory, Net",
+        "start": null,
+        "tag": "InventoryNet",
+        "taxonomy": "us-gaap",
+        "unit": "USD",
+        "value": 190700000
+      },
+      "row_canonical_sha256": "675f9795095b4eb89b048bf3baeb8bbe5db8fd7e3b149c4a1cc5e3895333580a",
+      "requires_primary_filing_audit": true,
+      "retrospective_api_extraction": true
+    }
+  ],
+  "material_support": "Exact us-gaap InventoryNet and AssetsCurrent instant rows share USD and 2024-09-30; no operating-period subtraction, forecast or foreign taxonomy substitution is required to express this family.",
+  "semantic_unknowns": [
+    "Usefulness or direction for stock opportunity is unknown.",
+    "Primary filing audit remains required.",
+    "Universal cross-issuer balance-sheet scope/alternative concepts/conflicts have not been admitted."
+  ],
+  "exact_existing_function_gap": "None of the 12 registered functions accepts arbitrary numerator/denominator concepts, changes its hard-coded inventory-irrelevant inputs, or implements this family. Using cash/current-liability function with inventory/current-assets prose would be definition drift; LLM-recasting a deterministic structured formula would evade the execution contract.",
+  "execution_state": "No candidate/Signal/source computation or model output was authored."
+}
