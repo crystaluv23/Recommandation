@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "ref": "gross_margin_change:v4",
+      "accepted": true,
+      "reasons": [],
+      "executed_tests": 5
+    },
+    {
+      "ref": "revenue_acceleration:v3",
+      "accepted": true,
+      "reasons": [],
+      "executed_tests": 6
+    }
+  ],
+  "total_fixtures": 11,
+  "real_source_Signal_execution": 0,
+  "network_calls": 0,
+  "models": 0
+}

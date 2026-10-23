@@ -1,0 +1,13 @@
+{
+  "margin_exact": "-1072647553/119744393070",
+  "margin_float": -0.00895781026150388,
+  "full_literal_allowlist_matches": 4,
+  "margin_state": "neutral",
+  "acceleration": "domain_unavailable",
+  "new_fixed_denominator": 2,
+  "available_measurements": 1,
+  "native_batches": 1,
+  "fresh_models": 0,
+  "stable_publications": 0,
+  "scope": "Independent source-only operand Fraction comparison, no product formula import/reexecution"
+}

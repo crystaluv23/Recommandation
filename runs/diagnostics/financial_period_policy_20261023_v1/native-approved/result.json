@@ -1,0 +1,16 @@
+{
+  "status": "completed_pending_independent_semantic_review",
+  "plan_hash": "efad87e12671e882b92d830a069edbe3a9d142405e3af410c5f17441af00e2f5",
+  "fixed_denominator": 2,
+  "native_batches": 1,
+  "signal_calls": 2,
+  "signal_calls_semantics": "Native result count, not instrumented callable invocations",
+  "source_documents": 1780,
+  "originals_unchanged": true,
+  "network": 0,
+  "models": 0,
+  "labels": 0,
+  "append": 0,
+  "publication": 0,
+  "business_pointer_advance": 0
+}

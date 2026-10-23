@@ -1,0 +1,227 @@
+{
+  "schema_version": "independent-generic-lineage-fixtures-v1",
+  "by_ref": {
+    "gross_margin_change:v4": [
+      {
+        "name": "quarter-yoy-margin",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "positive",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      },
+      {
+        "name": "negative-margin",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "negative",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":0},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      },
+      {
+        "name": "missing-current-profit",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "unavailable",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      },
+      {
+        "name": "required-window-conflict",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "unavailable",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          },
+          {
+            "document_id": "conflict",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"conflict\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":101}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      },
+      {
+        "name": "ytd-margin-same-window",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "positive",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2024-06-30\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2023-06-30\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-06-30\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30},{\"end\":\"2023-06-30\",\"start\":\"2023-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      }
+    ],
+    "revenue_acceleration:v3": [
+      {
+        "name": "quarter-immediate-yoy",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "positive",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":120},{\"end\":\"2023-12-31\",\"start\":\"2023-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      },
+      {
+        "name": "negative-acceleration",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "negative",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":80},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":120},{\"end\":\"2023-12-31\",\"start\":\"2023-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      },
+      {
+        "name": "missing-immediate-quarter",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "unavailable",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2023-12-31\",\"start\":\"2023-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      },
+      {
+        "name": "annual-adjacent-yoy",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "positive",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2022-12-31\",\"start\":\"2022-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":80}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      },
+      {
+        "name": "ytd-no-quarter-synthesis",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "unavailable",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2024-06-30\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2023-06-30\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      },
+      {
+        "name": "required-window-conflict",
+        "company_id": "cik_0000000001",
+        "as_of": "2025-05-30T00:00:00+00:00",
+        "expected": "unavailable",
+        "documents": [
+          {
+            "document_id": "synthetic",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":120},{\"end\":\"2023-12-31\",\"start\":\"2023-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          },
+          {
+            "document_id": "conflict",
+            "source_type": "sec_company_facts",
+            "published_at": "2025-05-08T00:00:00+00:00",
+            "available_at": "2025-05-09T00:00:00+00:00",
+            "metadata": {
+              "cik": "0000000001"
+            },
+            "content": "{\"accession_number\":\"conflict\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":101}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}"
+          }
+        ]
+      }
+    ]
+  }
+}

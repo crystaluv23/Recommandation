@@ -1,0 +1,49 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-concept-review.json",
+      "sha256": "d2ad63c7196b0f79c036f1e1e95411b204813325535a92dc35a45c135d663791",
+      "bytes": 1362
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-concept-review.py",
+      "sha256": "c6f7e0eb97e0c2bb44b4dd9d105f8efde94e084347fd7ef59e20165b95f5f0c5",
+      "bytes": 4117
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-counterexample-results.first.json",
+      "sha256": "9f717e71538933a5ecaf8cb1df851ca4b5053bcd9be7e0d1d382bf1ad09545e2",
+      "bytes": 361192
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-counterexample-results.json",
+      "sha256": "4efeefa69e93fc48eda33b86e528278815db8a5820332e1bd8a777f8888bb0e9",
+      "bytes": 361169
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-counterexamples.py",
+      "sha256": "ae8061e4df6ccec19cfeb776dbca0386b9be654a097d31ae8c76624f6e8de81f",
+      "bytes": 13274
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-review-report.json",
+      "sha256": "d7ca4471dfebe3db1169941d15183eddb67b41b1484064e1c70b95ee0d28aeee",
+      "bytes": 2830
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-source-prepare-review.json",
+      "sha256": "c9cb1f773448408eeb408f760887a20ab28e12c95db0a7a92fbb1e7d214b5347",
+      "bytes": 19312
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-source-prepare-review.py",
+      "sha256": "a6a3d55f3899c3a9c8e6c86442bb3d4debd06255e282a06215e08211adfd447f",
+      "bytes": 3896
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-validator-registry/signals/registry.json",
+      "sha256": "4b8894d57dfa621e534ef4eb25263e8f00254cbcb4327f1f98796314ac279dde",
+      "bytes": 19
+    }
+  ]
+}

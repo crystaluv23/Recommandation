@@ -1,0 +1,158 @@
+[
+  {
+    "signal_id": "gross_margin_change",
+    "version": 4,
+    "state": {
+      "value": "neutral",
+      "confidence": 1.0
+    },
+    "interpretation": {
+      "summary": "gross_margin_change=-0.00895781",
+      "measurement_context": {
+        "categorical_value_is_not_stock_direction": true,
+        "classification_contract": {
+          "signal_ref": "gross_margin_change:v4",
+          "spec_hash": "285d76a36aa13f078a3b1d43ffe41fe7bc84aae351cb01c22dcae41d5c3aabea",
+          "definition": "Measure latest reported gross margin (GrossProfit/revenue) minus the same fiscal window one year earlier. Anchor to latest canonical revenue end and shortest explicitly reported duration on a tied end, before requiring current profit or comparators. Require exact month-aligned 3/6/9/12-month windows and same currency; YTD compares identical YTD windows. Missing current/prior gross profit or revenue, zero revenue, unresolved required-window conflicts, stale current periods, unsupported stubs or 52/53-week calendars are unavailable; never replace the latest anchor with an older complete pair. Numeric change >=0.08 is positive, <=-0.02 negative, otherwise neutral; categories describe this measurement, not future returns. Preserve full literal operands and evidence. Default current freshness is 550 days; absolute change above 2 has partial coverage and confidence 0.5 without changing the measurement.",
+          "execution": {
+            "type": "deterministic",
+            "function": "financial.gross_margin_change",
+            "callable_status": "registered",
+            "contract": "With period_policy=same_window_yoy, measure latest GrossProfit/revenue minus\n    the same reported fiscal window's margin one year earlier. Require exact\n    month-aligned 3/6/9/12-month windows, matching currency and latest revenue anchor;\n    no older complete fallback or unresolved conflicts. Missing current profit or\n    any comparator is unavailable. Unknown explicit policies are unavailable.\n    Without period_policy preserve legacy behavior: latest margin minus the previous\n    comparable-duration margin. GrossProfit and revenue must match start, end and units\n    within each period, and revenue comes from the per-issuer canonical total series\n    (dominance-resolved; partial or zero same-period tag values never displace the\n    total). Missing matched periods, zero revenue or stale current facts yield\n    unavailable. Numeric states use positive_min (default 0) and negative_max (default\n    positive_min): value >= positive_min is positive, otherwise value <= negative_max is\n    negative, otherwise neutral. Thresholds do not change the measurement. Values beyond\n    plausible_abs_max (default 2) are downgraded to partial coverage at 0.5 confidence\n    with an implausible_value marker. max_period_age_days (default 550) bounds current\n    SEC period age; older comparative periods remain allowed.\n    ",
+            "parameter_names": [
+              "positive_min",
+              "negative_max",
+              "plausible_abs_max",
+              "max_period_age_days",
+              "period_policy"
+            ],
+            "configured_parameters": {
+              "positive_min": 0.08,
+              "negative_max": -0.02,
+              "period_policy": "same_window_yoy"
+            }
+          },
+          "declaration_available": true,
+          "result_hash": "aa5df7703c4a4b796d1e06fb649e0c1d7a6f31ffc10f28e79b5ce8c174939b33",
+          "contract_hash": "4875e2f403da57567b35d1ac31684e7750d4b916a9e449db446547a56647f0eb"
+        },
+        "numeric_measurement": {
+          "value": -0.00895781026150388,
+          "unit": "fraction_difference",
+          "formula": "current gross profit / revenue - same fiscal window prior-year gross profit / revenue",
+          "period": {
+            "end": "2025-03-31",
+            "start": "2025-01-01"
+          },
+          "numeric_sign": "negative",
+          "categorical_state": "neutral",
+          "display": {
+            "value": -0.8957810261503879,
+            "unit": "percentage_points"
+          }
+        },
+        "source_observations": [
+          {
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 601515000,
+            "tag": "Revenues",
+            "unit": "USD"
+          },
+          {
+            "evidence_group": "supporting",
+            "evidence_index": 1,
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 3039000,
+            "tag": "GrossProfit",
+            "unit": "USD"
+          },
+          {
+            "evidence_group": "supporting",
+            "evidence_index": 2,
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 597214000,
+            "tag": "Revenues",
+            "unit": "USD"
+          },
+          {
+            "evidence_group": "supporting",
+            "evidence_index": 3,
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 8367000,
+            "tag": "GrossProfit",
+            "unit": "USD"
+          }
+        ],
+        "deferred_observation_count": 0,
+        "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+      }
+    },
+    "evidence": {
+      "supporting": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+          "timestamp": "2025-05-09T00:00:00+00:00"
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}",
+          "timestamp": "2025-05-09T00:00:00+00:00"
+        },
+        {
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+          "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+          "timestamp": "2024-05-04T00:00:00+00:00"
+        },
+        {
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+          "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":8367000}",
+          "timestamp": "2024-05-04T00:00:00+00:00"
+        }
+      ],
+      "counter": []
+    },
+    "status": {
+      "coverage": "sufficient"
+    },
+    "execution": {
+      "status": "success"
+    },
+    "measurement": {
+      "value": -0.00895781026150388,
+      "unit": "fraction_difference",
+      "formula": "current gross profit / revenue - same fiscal window prior-year gross profit / revenue",
+      "period": {
+        "end": "2025-03-31",
+        "start": "2025-01-01"
+      }
+    }
+  },
+  {
+    "signal_id": "revenue_acceleration",
+    "version": 3,
+    "state": {
+      "value": "unavailable",
+      "confidence": 0.0
+    },
+    "interpretation": {
+      "summary": "domain_unavailable: a normal domain coverage outcome, not a technical execution gap or failure. Visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+    },
+    "evidence": {
+      "supporting": [],
+      "counter": []
+    },
+    "status": {
+      "coverage": "unavailable"
+    },
+    "execution": {
+      "status": "domain_unavailable"
+    }
+  }
+]

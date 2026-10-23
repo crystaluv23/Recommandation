@@ -1,0 +1,1307 @@
+{
+  "status": "passed",
+  "code_bindings": {
+    "src/stock_opportunity_agent/signal_library.py": "05e79dbfd4e2d2105c34c8ac66ea2821046a79fe8cedc83931917de2eec7639c",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "2d79e35a090966c3f5e38384b5332cc40822cce56af6fc8e5d482b78145e8578"
+  },
+  "actual_prior_spec_provenance": [
+    {
+      "version": 1,
+      "function": "financial.gross_margin_change",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v1/spec.json",
+      "sha256": "a48ea30c8f4d4cab1788bcd7766f8da21cfbd20e5164c9be211ecc146479040b"
+    },
+    {
+      "version": 2,
+      "function": "financial.gross_margin_change",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v2/spec.json",
+      "sha256": "103321bdd23bf1fa2d071d6383474599893de8854edca7bf2e54ba5ef2ded737"
+    },
+    {
+      "version": 3,
+      "function": "financial.gross_margin_change",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/spec.json",
+      "sha256": "7f442b11c3fb3407ad0d7726e4fb28cbaa9f33c7c76ce6b52eaa1c9331bb6f60"
+    },
+    {
+      "version": 1,
+      "function": "financial.revenue_acceleration",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v1/spec.json",
+      "sha256": "18dea9302ba319c3aa0af6a79b3ffd3fbaedff56a139ecc32d1f8196a96ad620"
+    },
+    {
+      "version": 2,
+      "function": "financial.revenue_acceleration",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/spec.json",
+      "sha256": "e2852a024a76e9b1b7f836c101ca02e09150727bbba93dbc6b1d077da76e4a1a"
+    }
+  ],
+  "next_version_checks": [
+    {
+      "previous_spec": {
+        "signal_id": "gross_margin_change",
+        "version": 3,
+        "category": "financial",
+        "definition": {
+          "description": "Measure the latest point-in-time change in gross margin."
+        },
+        "schema": {
+          "value": {
+            "type": "categorical",
+            "values": [
+              "positive",
+              "neutral",
+              "negative",
+              "unavailable"
+            ]
+          },
+          "confidence": {
+            "type": "float"
+          }
+        },
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.gross_margin_change"
+        },
+        "raw_retrieval": {
+          "source_types": [
+            "financials"
+          ],
+          "query_terms": [
+            "revenue",
+            "gross profit"
+          ],
+          "comparison_requirement": "Latest gross margin versus prior comparable period.",
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330
+        },
+        "evidence_policy": {
+          "require_source": true,
+          "require_timestamp": true,
+          "require_exact_span": true
+        },
+        "parameters": {
+          "negative_max": -0.02,
+          "positive_min": 0.08
+        },
+        "modality": "structured"
+      },
+      "next_spec": {
+        "signal_id": "gross_margin_change",
+        "version": 4,
+        "category": "financial",
+        "definition": {
+          "description": "Measure latest reported gross margin (GrossProfit/revenue) minus the same fiscal window one year earlier. Anchor to latest canonical revenue end and shortest explicitly reported duration on a tied end, before requiring current profit or comparators. Require exact month-aligned 3/6/9/12-month windows and same currency; YTD compares identical YTD windows. Missing current/prior gross profit or revenue, zero revenue, unresolved required-window conflicts, stale current periods, unsupported stubs or 52/53-week calendars are unavailable; never replace the latest anchor with an older complete pair. Numeric change >=0.08 is positive, <=-0.02 negative, otherwise neutral; categories describe this measurement, not future returns. Preserve full literal operands and evidence. Default current freshness is 550 days; absolute change above 2 has partial coverage and confidence 0.5 without changing the measurement."
+        },
+        "schema": {
+          "value": {
+            "type": "categorical",
+            "values": [
+              "positive",
+              "neutral",
+              "negative",
+              "unavailable"
+            ]
+          },
+          "confidence": {
+            "type": "float"
+          }
+        },
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.gross_margin_change"
+        },
+        "raw_retrieval": {
+          "source_types": [
+            "financials"
+          ],
+          "query_terms": [
+            "revenue",
+            "gross profit"
+          ],
+          "comparison_requirement": "Latest reported gross margin minus the same fiscal window one year earlier; latest revenue anchor, shortest duration on ties. Exact 3/6/9/12-month boundaries and currency; missing profits, zero revenue or conflicts unavailable.",
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330
+        },
+        "evidence_policy": {
+          "require_source": true,
+          "require_timestamp": true,
+          "require_exact_span": true
+        },
+        "parameters": {
+          "negative_max": -0.02,
+          "positive_min": 0.08,
+          "period_policy": "same_window_yoy"
+        },
+        "modality": "structured"
+      },
+      "good": {
+        "accepted": true,
+        "reasons": [],
+        "executed_tests": 1
+      },
+      "wrong_function": {
+        "accepted": false,
+        "reasons": [
+          "deterministic update must preserve the registered function"
+        ],
+        "executed_tests": 0
+      },
+      "wrong_concept": {
+        "accepted": false,
+        "reasons": [
+          "definition-to-implementation mismatch: description does not name the concept measured by financial.gross_margin_change"
+        ],
+        "executed_tests": 0
+      },
+      "scope": {
+        "signal_ref": "gross_margin_change:v4",
+        "source_types": [
+          "financials"
+        ],
+        "raw_retrieval": {
+          "query_terms": [
+            "revenue",
+            "gross profit"
+          ],
+          "comparison_requirement": "Latest reported gross margin minus the same fiscal window one year earlier; latest revenue anchor, shortest duration on ties. Exact 3/6/9/12-month boundaries and currency; missing profits, zero revenue or conflicts unavailable.",
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330
+        },
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.gross_margin_change",
+          "callable_status": "registered",
+          "contract": "With period_policy=same_window_yoy, measure latest GrossProfit/revenue minus\n    the same reported fiscal window's margin one year earlier. Require exact\n    month-aligned 3/6/9/12-month windows, matching currency and latest revenue anchor;\n    no older complete fallback or unresolved conflicts. Missing current profit or\n    any comparator is unavailable. Unknown explicit policies are unavailable.\n    Without period_policy preserve legacy behavior: latest margin minus the previous\n    comparable-duration margin. GrossProfit and revenue must match start, end and units\n    within each period, and revenue comes from the per-issuer canonical total series\n    (dominance-resolved; partial or zero same-period tag values never displace the\n    total). Missing matched periods, zero revenue or stale current facts yield\n    unavailable. Numeric states use positive_min (default 0) and negative_max (default\n    positive_min): value >= positive_min is positive, otherwise value <= negative_max is\n    negative, otherwise neutral. Thresholds do not change the measurement. Values beyond\n    plausible_abs_max (default 2) are downgraded to partial coverage at 0.5 confidence\n    with an implausible_value marker. max_period_age_days (default 550) bounds current\n    SEC period age; older comparative periods remain allowed.\n    ",
+          "parameter_names": [
+            "positive_min",
+            "negative_max",
+            "plausible_abs_max",
+            "max_period_age_days",
+            "period_policy"
+          ],
+          "configured_parameters": {
+            "positive_min": 0.08,
+            "negative_max": -0.02,
+            "period_policy": "same_window_yoy"
+          }
+        }
+      },
+      "classification_contract": {
+        "signal_ref": "gross_margin_change:v4",
+        "spec_hash": "285d76a36aa13f078a3b1d43ffe41fe7bc84aae351cb01c22dcae41d5c3aabea",
+        "definition": "Measure latest reported gross margin (GrossProfit/revenue) minus the same fiscal window one year earlier. Anchor to latest canonical revenue end and shortest explicitly reported duration on a tied end, before requiring current profit or comparators. Require exact month-aligned 3/6/9/12-month windows and same currency; YTD compares identical YTD windows. Missing current/prior gross profit or revenue, zero revenue, unresolved required-window conflicts, stale current periods, unsupported stubs or 52/53-week calendars are unavailable; never replace the latest anchor with an older complete pair. Numeric change >=0.08 is positive, <=-0.02 negative, otherwise neutral; categories describe this measurement, not future returns. Preserve full literal operands and evidence. Default current freshness is 550 days; absolute change above 2 has partial coverage and confidence 0.5 without changing the measurement.",
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.gross_margin_change",
+          "callable_status": "registered",
+          "contract": "With period_policy=same_window_yoy, measure latest GrossProfit/revenue minus\n    the same reported fiscal window's margin one year earlier. Require exact\n    month-aligned 3/6/9/12-month windows, matching currency and latest revenue anchor;\n    no older complete fallback or unresolved conflicts. Missing current profit or\n    any comparator is unavailable. Unknown explicit policies are unavailable.\n    Without period_policy preserve legacy behavior: latest margin minus the previous\n    comparable-duration margin. GrossProfit and revenue must match start, end and units\n    within each period, and revenue comes from the per-issuer canonical total series\n    (dominance-resolved; partial or zero same-period tag values never displace the\n    total). Missing matched periods, zero revenue or stale current facts yield\n    unavailable. Numeric states use positive_min (default 0) and negative_max (default\n    positive_min): value >= positive_min is positive, otherwise value <= negative_max is\n    negative, otherwise neutral. Thresholds do not change the measurement. Values beyond\n    plausible_abs_max (default 2) are downgraded to partial coverage at 0.5 confidence\n    with an implausible_value marker. max_period_age_days (default 550) bounds current\n    SEC period age; older comparative periods remain allowed.\n    ",
+          "parameter_names": [
+            "positive_min",
+            "negative_max",
+            "plausible_abs_max",
+            "max_period_age_days",
+            "period_policy"
+          ],
+          "configured_parameters": {
+            "positive_min": 0.08,
+            "negative_max": -0.02,
+            "period_policy": "same_window_yoy"
+          }
+        },
+        "declaration_available": true,
+        "result_hash": "6cdd4663713f1c8a3a15b4173390c38613058c1cbcd405670852e487596f79a9",
+        "contract_hash": "e6d13a3796e2533b6ab2b9792dc1cc00ff413fd8586689585f48f346aaf59274"
+      },
+      "unknown_policies": [
+        {
+          "policy": "unknown",
+          "basis_reason": "Unsupported gross-margin period_policy.",
+          "result": {
+            "signal_id": "gross_margin_change",
+            "version": 4,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unsupported gross-margin period_policy."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        },
+        {
+          "policy": "adjacent_yoy",
+          "basis_reason": "Unsupported gross-margin period_policy.",
+          "result": {
+            "signal_id": "gross_margin_change",
+            "version": 4,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unsupported gross-margin period_policy."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        },
+        {
+          "policy": "",
+          "basis_reason": "Unsupported gross-margin period_policy.",
+          "result": {
+            "signal_id": "gross_margin_change",
+            "version": 4,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unsupported gross-margin period_policy."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        },
+        {
+          "policy": null,
+          "basis_reason": "Unsupported gross-margin period_policy.",
+          "result": {
+            "signal_id": "gross_margin_change",
+            "version": 4,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unsupported gross-margin period_policy."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        },
+        {
+          "policy": 0,
+          "basis_reason": "Unsupported gross-margin period_policy.",
+          "result": {
+            "signal_id": "gross_margin_change",
+            "version": 4,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unsupported gross-margin period_policy."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "previous_spec": {
+        "signal_id": "revenue_acceleration",
+        "version": 2,
+        "category": "financial",
+        "definition": {
+          "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period."
+        },
+        "schema": {
+          "value": {
+            "type": "categorical",
+            "values": [
+              "positive",
+              "neutral",
+              "negative",
+              "unavailable"
+            ]
+          },
+          "confidence": {
+            "type": "float"
+          }
+        },
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.revenue_acceleration"
+        },
+        "raw_retrieval": {
+          "source_types": [
+            "financials"
+          ],
+          "query_terms": [
+            "revenue",
+            "sales"
+          ],
+          "comparison_requirement": "Current and prior comparable growth periods.",
+          "minimum_distinct_periods": 3,
+          "minimum_period_span_days": 330
+        },
+        "evidence_policy": {
+          "require_source": true,
+          "require_timestamp": true,
+          "require_exact_span": true
+        },
+        "parameters": {
+          "negative_max": -0.05,
+          "positive_min": 0.05
+        },
+        "modality": "structured"
+      },
+      "next_spec": {
+        "signal_id": "revenue_acceleration",
+        "version": 3,
+        "category": "financial",
+        "definition": {
+          "description": "Measure revenue acceleration as the latest standalone quarter's YoY revenue growth minus the immediately preceding standalone quarter's YoY growth, requiring all four explicitly reported windows. For latest annual inputs, compare adjacent annual YoY growth and require three annual windows. Anchor to latest canonical revenue end, shortest explicitly reported duration on a tied end. Require exact month-aligned 3-month quarterly or 12-month annual boundaries and same currency. Never skip a quarter, mix quarterly with annual growth, synthesize standalone quarters from YTD or fall back to an older complete pair. Missing current/year-ago/adjacent/year-ago-adjacent windows, zero prior-year denominators, unresolved required-window conflicts, stale current periods, cumulative YTD, unsupported stubs or 52/53-week calendars are unavailable. Numeric acceleration >=0.05 is positive, <=-0.05 negative, otherwise neutral; categories describe this measurement, not future returns. Preserve full literal operands and evidence. Default current freshness is 550 days; absolute acceleration above 5 has partial coverage and confidence 0.5 without changing the measurement."
+        },
+        "schema": {
+          "value": {
+            "type": "categorical",
+            "values": [
+              "positive",
+              "neutral",
+              "negative",
+              "unavailable"
+            ]
+          },
+          "confidence": {
+            "type": "float"
+          }
+        },
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.revenue_acceleration"
+        },
+        "raw_retrieval": {
+          "source_types": [
+            "financials"
+          ],
+          "query_terms": [
+            "revenue",
+            "sales"
+          ],
+          "comparison_requirement": "Latest standalone-quarter YoY revenue growth minus immediately prior quarter YoY growth: four reported windows. Annual uses adjacent annual YoY: three windows. Missing/zero/conflicting/mixed/YTD/unsupported windows unavailable.",
+          "minimum_distinct_periods": 3,
+          "minimum_period_span_days": 330
+        },
+        "evidence_policy": {
+          "require_source": true,
+          "require_timestamp": true,
+          "require_exact_span": true
+        },
+        "parameters": {
+          "negative_max": -0.05,
+          "positive_min": 0.05,
+          "period_policy": "adjacent_yoy"
+        },
+        "modality": "structured"
+      },
+      "good": {
+        "accepted": true,
+        "reasons": [],
+        "executed_tests": 1
+      },
+      "wrong_function": {
+        "accepted": false,
+        "reasons": [
+          "deterministic update must preserve the registered function"
+        ],
+        "executed_tests": 0
+      },
+      "wrong_concept": {
+        "accepted": false,
+        "reasons": [
+          "definition-to-implementation mismatch: description does not name the concept measured by financial.revenue_acceleration"
+        ],
+        "executed_tests": 0
+      },
+      "scope": {
+        "signal_ref": "revenue_acceleration:v3",
+        "source_types": [
+          "financials"
+        ],
+        "raw_retrieval": {
+          "query_terms": [
+            "revenue",
+            "sales"
+          ],
+          "comparison_requirement": "Latest standalone-quarter YoY revenue growth minus immediately prior quarter YoY growth: four reported windows. Annual uses adjacent annual YoY: three windows. Missing/zero/conflicting/mixed/YTD/unsupported windows unavailable.",
+          "minimum_distinct_periods": 3,
+          "minimum_period_span_days": 330
+        },
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.revenue_acceleration",
+          "callable_status": "registered",
+          "contract": "With period_policy=adjacent_yoy, measure current standalone quarter YoY growth\n    minus immediately previous quarter YoY growth (four reported windows); annual\n    uses adjacent annual YoY growth (three windows). Require exact month-aligned\n    boundaries, currency and latest anchor; no skipped quarter, YTD derivation,\n    mixed cadence, older complete fallback or unresolved conflicts. Missing inputs\n    are unavailable. An unknown explicit policy is unavailable. Without period_policy,\n    preserve legacy behavior: latest year-over-year revenue growth minus an earlier\n    comparable growth rate. Requires two supported revenue year-over-year pairs from the\n    per-issuer canonical total series (dominance-resolved; never mixed-basis), with\n    matching units and nonzero denominators; incomplete/stale current facts yield\n    unavailable. Numeric states use positive_min (default 0) and negative_max (default\n    positive_min): value >= positive_min is positive, otherwise value <= negative_max is\n    negative, otherwise neutral. Thresholds do not change the measurement. Values beyond\n    plausible_abs_max (default 5) are downgraded to partial coverage at 0.5 confidence\n    with an implausible_value marker. max_period_age_days (default 550) bounds current\n    SEC period age; older comparative periods remain allowed.\n    ",
+          "parameter_names": [
+            "positive_min",
+            "negative_max",
+            "plausible_abs_max",
+            "max_period_age_days",
+            "period_policy"
+          ],
+          "configured_parameters": {
+            "positive_min": 0.05,
+            "negative_max": -0.05,
+            "period_policy": "adjacent_yoy"
+          }
+        }
+      },
+      "classification_contract": {
+        "signal_ref": "revenue_acceleration:v3",
+        "spec_hash": "3c04e97b9086468a53b3c7f92ce0b3dd68f131d44a7cff426770729d7f67396d",
+        "definition": "Measure revenue acceleration as the latest standalone quarter's YoY revenue growth minus the immediately preceding standalone quarter's YoY growth, requiring all four explicitly reported windows. For latest annual inputs, compare adjacent annual YoY growth and require three annual windows. Anchor to latest canonical revenue end, shortest explicitly reported duration on a tied end. Require exact month-aligned 3-month quarterly or 12-month annual boundaries and same currency. Never skip a quarter, mix quarterly with annual growth, synthesize standalone quarters from YTD or fall back to an older complete pair. Missing current/year-ago/adjacent/year-ago-adjacent windows, zero prior-year denominators, unresolved required-window conflicts, stale current periods, cumulative YTD, unsupported stubs or 52/53-week calendars are unavailable. Numeric acceleration >=0.05 is positive, <=-0.05 negative, otherwise neutral; categories describe this measurement, not future returns. Preserve full literal operands and evidence. Default current freshness is 550 days; absolute acceleration above 5 has partial coverage and confidence 0.5 without changing the measurement.",
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.revenue_acceleration",
+          "callable_status": "registered",
+          "contract": "With period_policy=adjacent_yoy, measure current standalone quarter YoY growth\n    minus immediately previous quarter YoY growth (four reported windows); annual\n    uses adjacent annual YoY growth (three windows). Require exact month-aligned\n    boundaries, currency and latest anchor; no skipped quarter, YTD derivation,\n    mixed cadence, older complete fallback or unresolved conflicts. Missing inputs\n    are unavailable. An unknown explicit policy is unavailable. Without period_policy,\n    preserve legacy behavior: latest year-over-year revenue growth minus an earlier\n    comparable growth rate. Requires two supported revenue year-over-year pairs from the\n    per-issuer canonical total series (dominance-resolved; never mixed-basis), with\n    matching units and nonzero denominators; incomplete/stale current facts yield\n    unavailable. Numeric states use positive_min (default 0) and negative_max (default\n    positive_min): value >= positive_min is positive, otherwise value <= negative_max is\n    negative, otherwise neutral. Thresholds do not change the measurement. Values beyond\n    plausible_abs_max (default 5) are downgraded to partial coverage at 0.5 confidence\n    with an implausible_value marker. max_period_age_days (default 550) bounds current\n    SEC period age; older comparative periods remain allowed.\n    ",
+          "parameter_names": [
+            "positive_min",
+            "negative_max",
+            "plausible_abs_max",
+            "max_period_age_days",
+            "period_policy"
+          ],
+          "configured_parameters": {
+            "positive_min": 0.05,
+            "negative_max": -0.05,
+            "period_policy": "adjacent_yoy"
+          }
+        },
+        "declaration_available": true,
+        "result_hash": "17b285fb691de3fc82106116653e92bbe3ac20f47a2e29ffe207dc5ac0008e91",
+        "contract_hash": "61dedae41f840026b7f2e211810cef9b06c1ee6f95f01c3b75b9183a2392c76d"
+      },
+      "unknown_policies": [
+        {
+          "policy": "unknown",
+          "basis_reason": "Unsupported revenue acceleration period_policy.",
+          "result": {
+            "signal_id": "revenue_acceleration",
+            "version": 3,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unsupported revenue acceleration period_policy."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        },
+        {
+          "policy": "same_window_yoy",
+          "basis_reason": "Unsupported revenue acceleration period_policy.",
+          "result": {
+            "signal_id": "revenue_acceleration",
+            "version": 3,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unsupported revenue acceleration period_policy."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        },
+        {
+          "policy": "",
+          "basis_reason": "Unsupported revenue acceleration period_policy.",
+          "result": {
+            "signal_id": "revenue_acceleration",
+            "version": 3,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unsupported revenue acceleration period_policy."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        },
+        {
+          "policy": null,
+          "basis_reason": "Unsupported revenue acceleration period_policy.",
+          "result": {
+            "signal_id": "revenue_acceleration",
+            "version": 3,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unsupported revenue acceleration period_policy."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        },
+        {
+          "policy": 0,
+          "basis_reason": "Unsupported revenue acceleration period_policy.",
+          "result": {
+            "signal_id": "revenue_acceleration",
+            "version": 3,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unsupported revenue acceleration period_policy."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "old_algorithm_bodies_equal_after_explicit_dispatch": [
+    "_revenue_acceleration_signal",
+    "_gross_margin_change_signal",
+    "_revenue_acceleration_input_facts",
+    "_gross_margin_input_facts"
+  ],
+  "old_numeric_result_whole_AST_equal": true,
+  "legacy_replays": [
+    {
+      "ref": "gross_margin_change:v3",
+      "variant": "full",
+      "result": {
+        "signal_id": "gross_margin_change",
+        "version": 3,
+        "state": {
+          "value": "negative",
+          "confidence": 1.0
+        },
+        "interpretation": {
+          "summary": "gross_margin_change=-0.05"
+        },
+        "evidence": {
+          "supporting": [
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":120}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            }
+          ],
+          "counter": []
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "execution": {
+          "status": "success"
+        },
+        "measurement": {
+          "value": -0.04999999999999999,
+          "unit": "fraction_difference",
+          "formula": "current gross profit / revenue - previous gross profit / revenue",
+          "period": {
+            "end": "2025-03-31",
+            "start": "2025-01-01"
+          }
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "gross_margin_change:v3",
+      "variant": "no_current_profit",
+      "result": {
+        "signal_id": "gross_margin_change",
+        "version": 3,
+        "state": {
+          "value": "positive",
+          "confidence": 1.0
+        },
+        "interpretation": {
+          "summary": "gross_margin_change=0.15"
+        },
+        "evidence": {
+          "supporting": [
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":120}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            }
+          ],
+          "counter": []
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "execution": {
+          "status": "success"
+        },
+        "measurement": {
+          "value": 0.15,
+          "unit": "fraction_difference",
+          "formula": "current gross profit / revenue - previous gross profit / revenue",
+          "period": {
+            "end": "2024-12-31",
+            "start": "2024-10-01"
+          }
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "gross_margin_change:v3",
+      "variant": "no_current_yoy",
+      "result": {
+        "signal_id": "gross_margin_change",
+        "version": 3,
+        "state": {
+          "value": "negative",
+          "confidence": 1.0
+        },
+        "interpretation": {
+          "summary": "gross_margin_change=-0.05"
+        },
+        "evidence": {
+          "supporting": [
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":120}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            }
+          ],
+          "counter": []
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "execution": {
+          "status": "success"
+        },
+        "measurement": {
+          "value": -0.04999999999999999,
+          "unit": "fraction_difference",
+          "formula": "current gross profit / revenue - previous gross profit / revenue",
+          "period": {
+            "end": "2025-03-31",
+            "start": "2025-01-01"
+          }
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "gross_margin_change:v3",
+      "variant": "no_quarter4",
+      "result": {
+        "signal_id": "gross_margin_change",
+        "version": 3,
+        "state": {
+          "value": "positive",
+          "confidence": 1.0
+        },
+        "interpretation": {
+          "summary": "gross_margin_change=0.1"
+        },
+        "evidence": {
+          "supporting": [
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            }
+          ],
+          "counter": []
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "execution": {
+          "status": "success"
+        },
+        "measurement": {
+          "value": 0.1,
+          "unit": "fraction_difference",
+          "formula": "current gross profit / revenue - previous gross profit / revenue",
+          "period": {
+            "end": "2025-03-31",
+            "start": "2025-01-01"
+          }
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "gross_margin_change:v3",
+      "variant": "zero_prior",
+      "result": {
+        "signal_id": "gross_margin_change",
+        "version": 3,
+        "state": {
+          "value": "negative",
+          "confidence": 1.0
+        },
+        "interpretation": {
+          "summary": "gross_margin_change=-0.05"
+        },
+        "evidence": {
+          "supporting": [
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":120}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            }
+          ],
+          "counter": []
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "execution": {
+          "status": "success"
+        },
+        "measurement": {
+          "value": -0.04999999999999999,
+          "unit": "fraction_difference",
+          "formula": "current gross profit / revenue - previous gross profit / revenue",
+          "period": {
+            "end": "2025-03-31",
+            "start": "2025-01-01"
+          }
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "gross_margin_change:v3",
+      "variant": "currency",
+      "result": {
+        "signal_id": "gross_margin_change",
+        "version": 3,
+        "state": {
+          "value": "negative",
+          "confidence": 1.0
+        },
+        "interpretation": {
+          "summary": "gross_margin_change=-0.05"
+        },
+        "evidence": {
+          "supporting": [
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":120}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            }
+          ],
+          "counter": []
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "execution": {
+          "status": "success"
+        },
+        "measurement": {
+          "value": -0.04999999999999999,
+          "unit": "fraction_difference",
+          "formula": "current gross profit / revenue - previous gross profit / revenue",
+          "period": {
+            "end": "2025-03-31",
+            "start": "2025-01-01"
+          }
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "gross_margin_change:v3",
+      "variant": "empty",
+      "result": {
+        "signal_id": "gross_margin_change",
+        "version": 3,
+        "state": {
+          "value": "unavailable",
+          "confidence": 0.0
+        },
+        "interpretation": {
+          "summary": "Comparable SEC gross-margin periods were unavailable."
+        },
+        "evidence": {
+          "supporting": [],
+          "counter": []
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "revenue_acceleration:v2",
+      "variant": "full",
+      "result": {
+        "signal_id": "revenue_acceleration",
+        "version": 2,
+        "state": {
+          "value": "positive",
+          "confidence": 1.0
+        },
+        "interpretation": {
+          "summary": "revenue_acceleration=0.3"
+        },
+        "evidence": {
+          "supporting": [
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":120}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2023-12-31\",\"start\":\"2023-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            }
+          ],
+          "counter": []
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "execution": {
+          "status": "success"
+        },
+        "measurement": {
+          "value": 0.30000000000000004,
+          "unit": "fraction_difference",
+          "formula": "latest year-over-year growth - earlier year-over-year growth",
+          "period": {
+            "end": "2025-03-31",
+            "start": "2025-01-01"
+          }
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "revenue_acceleration:v2",
+      "variant": "no_current_profit",
+      "result": {
+        "signal_id": "revenue_acceleration",
+        "version": 2,
+        "state": {
+          "value": "positive",
+          "confidence": 1.0
+        },
+        "interpretation": {
+          "summary": "revenue_acceleration=0.3"
+        },
+        "evidence": {
+          "supporting": [
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":120}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2023-12-31\",\"start\":\"2023-10-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            }
+          ],
+          "counter": []
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "execution": {
+          "status": "success"
+        },
+        "measurement": {
+          "value": 0.30000000000000004,
+          "unit": "fraction_difference",
+          "formula": "latest year-over-year growth - earlier year-over-year growth",
+          "period": {
+            "end": "2025-03-31",
+            "start": "2025-01-01"
+          }
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "revenue_acceleration:v2",
+      "variant": "no_current_yoy",
+      "result": {
+        "signal_id": "revenue_acceleration",
+        "version": 2,
+        "state": {
+          "value": "unavailable",
+          "confidence": 0.0
+        },
+        "interpretation": {
+          "summary": "Two comparable SEC revenue growth periods were unavailable."
+        },
+        "evidence": {
+          "supporting": [],
+          "counter": []
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "revenue_acceleration:v2",
+      "variant": "no_quarter4",
+      "result": {
+        "signal_id": "revenue_acceleration",
+        "version": 2,
+        "state": {
+          "value": "positive",
+          "confidence": 1.0
+        },
+        "interpretation": {
+          "summary": "revenue_acceleration=0.25"
+        },
+        "evidence": {
+          "supporting": [
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "synthetic",
+              "exact_span": "{\"end\":\"2023-03-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":80}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            }
+          ],
+          "counter": []
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "execution": {
+          "status": "success"
+        },
+        "measurement": {
+          "value": 0.25,
+          "unit": "fraction_difference",
+          "formula": "latest year-over-year growth - earlier year-over-year growth",
+          "period": {
+            "end": "2025-03-31",
+            "start": "2025-01-01"
+          }
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "revenue_acceleration:v2",
+      "variant": "zero_prior",
+      "result": {
+        "signal_id": "revenue_acceleration",
+        "version": 2,
+        "state": {
+          "value": "unavailable",
+          "confidence": 0.0
+        },
+        "interpretation": {
+          "summary": "Revenue acceleration history was incomplete."
+        },
+        "evidence": {
+          "supporting": [],
+          "counter": []
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "revenue_acceleration:v2",
+      "variant": "currency",
+      "result": {
+        "signal_id": "revenue_acceleration",
+        "version": 2,
+        "state": {
+          "value": "unavailable",
+          "confidence": 0.0
+        },
+        "interpretation": {
+          "summary": "Two comparable SEC revenue growth periods were unavailable."
+        },
+        "evidence": {
+          "supporting": [],
+          "counter": []
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    },
+    {
+      "ref": "revenue_acceleration:v2",
+      "variant": "empty",
+      "result": {
+        "signal_id": "revenue_acceleration",
+        "version": 2,
+        "state": {
+          "value": "unavailable",
+          "confidence": 0.0
+        },
+        "interpretation": {
+          "summary": "Two comparable SEC revenue growth periods were unavailable."
+        },
+        "evidence": {
+          "supporting": [],
+          "counter": []
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        }
+      },
+      "basis_equal": true,
+      "output_equal": true
+    }
+  ],
+  "legacy_replay_count": 14,
+  "baseline_module_source_sha256": "35be3d0546d1e19f9ddeb76ae89ebf0f1e35bc809c81f5b7af169d4d7e62ad60",
+  "real_source_Signal_execution": 0,
+  "network_calls": 0,
+  "models": 0,
+  "labels": 0
+}

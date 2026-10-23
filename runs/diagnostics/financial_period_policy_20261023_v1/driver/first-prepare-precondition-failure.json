@@ -1,0 +1,9 @@
+{
+  "stage": "prepare_before_native_directory",
+  "real_batches": 0,
+  "error": "Source-only freeze historical implementation binding was incorrectly treated as current source binding",
+  "historical_sha256": "3e4a167b142092d9af8febf525abab25fe3ce966672fc5b8c26e1f114c3063d7",
+  "candidate_sha256": "05e79dbfd4e2d2105c34c8ac66ea2821046a79fe8cedc83931917de2eec7639c",
+  "correction": "Retain historical_code_binding; verify unchanged source bindings separately from independently reviewed current implementation",
+  "old_oracle_modified": false
+}

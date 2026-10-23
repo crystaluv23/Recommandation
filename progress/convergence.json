@@ -2089,7 +2089,9 @@
       "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-review.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-parent-readback.json",
       "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/reread-frontier-review.md",
-      "runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v4.json"
+      "runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v4.json",
+      "reports/classification-meta-context-20261023.md",
+      "reports/financial-period-policy-20261023.md"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -2219,9 +2221,9 @@
       "question": "Do approved contracts preserve exact source, old versions and bounded downstream access?",
       "pass": "Only independently supported local evidence; full Fast/MVP remain open.",
       "fail": "Preserve actual counterexamples and unknown source dispositions before further execution.",
-      "on_pass": "Record only bounded direction candidate/diagnostic consumption evidence; keep full Fast, magnitude, committed S8, whole-loop recovery and effect milestones open.",
+      "on_pass": "Record approved classification/financial local evidence only; Fast/MVP, fresh semantic consumption, committed S8 and independent gain remain open.",
       "on_fail": "Preserve raw failures, original denominators and terminal/pending state; identify the first failed boundary before choosing repair or stopping that strategy.",
-      "new_evidence": "26 answers; independent two-reread eviction/inventory proof with unused budget; explicit approval of A and adjacent financial-period definitions.",
+      "new_evidence": "26 answers; independent two-reread eviction/inventory proof with unused budget; explicit approval of A and adjacent financial-period definitions. Approved A integrated after v4 stop; new financial fixed2 has one source-correct numeric measurement and one correct domain-unavailable. Independent boundaries and actual consumers verified; no fresh model or stable publication.",
       "distinguishing_variable": "Stop low-information sequence and repair approved contracts with exact-source/legacy controls, not renamed Mining run."
     }
   },

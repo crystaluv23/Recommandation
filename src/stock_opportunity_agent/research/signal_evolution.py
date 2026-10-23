@@ -122,6 +122,8 @@ _FUNCTION_DESCRIPTION_CONCEPTS = {
     "financial.revenue_growth_yoy": (("revenue", "growth"),),
     "financial.revenue_acceleration": (("revenue", "accelerat"),),
     "financial.gross_margin_change": (("gross", "margin"),),
+    "financial.revenue_acceleration_adjacent": (("revenue", "accelerat"),),
+    "financial.gross_margin_change_yoy": (("gross", "margin"),),
     "financial.operating_cash_flow_margin": (
         ("operating", "cash", "flow", "margin"),
     ),

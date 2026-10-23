@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "code_bindings": {
+    "src/stock_opportunity_agent/signal_library.py": "2dd6278b4c7162aa7a11b355792214557aa7d6871910e6530a0f5aeb56def494",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "2d79e35a090966c3f5e38384b5332cc40822cce56af6fc8e5d482b78145e8578"
+  },
+  "rows": [
+    {
+      "function": "financial.gross_margin_change_yoy",
+      "positive": {
+        "accepted": true,
+        "reasons": [],
+        "executed": 1
+      },
+      "negative": {
+        "accepted": false,
+        "reasons": [
+          "definition-to-implementation mismatch: description does not name the concept measured by financial.gross_margin_change_yoy"
+        ],
+        "executed": 0
+      }
+    },
+    {
+      "function": "financial.revenue_acceleration_adjacent",
+      "positive": {
+        "accepted": true,
+        "reasons": [],
+        "executed": 1
+      },
+      "negative": {
+        "accepted": false,
+        "reasons": [
+          "definition-to-implementation mismatch: description does not name the concept measured by financial.revenue_acceleration_adjacent"
+        ],
+        "executed": 0
+      }
+    }
+  ],
+  "old_new_concept_aliases_equal": true,
+  "real_gpre_execute_calls": 0,
+  "synthetic_fixture_execute_calls": 2,
+  "synthetic_wrong_concept_pre_execution_rejections": 2,
+  "models": 0,
+  "network_calls": 0
+}

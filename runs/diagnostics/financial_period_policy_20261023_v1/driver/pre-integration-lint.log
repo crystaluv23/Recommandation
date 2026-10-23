@@ -1,0 +1,22 @@
+status: 0
+
+Pre-push lint feedback
+timestamp_utc: 2026-10-23T09:03:43Z
+repo: /Users/l/.codex/worktrees/classification-meta-context/Recommandation
+command: scripts/lint_repo.sh
+
+Repository lint
+root: /Users/l/.codex/worktrees/classification-meta-context/Recommandation
+
+PASS: required meta and lint files exist
+Meta check: PASS (administrative only; not live/learning/benefit acceptance)
+PASS: meta records and convergence review are consistent (administrative only)
+PASS: .githooks/pre-push is executable
+PASS: scripts/lint_repo.sh is executable
+PASS: git core.hooksPath is .githooks
+PASS: no merge conflict markers
+PASS: no trailing whitespace
+PASS: no hand-written outcome label constants
+PASS: local markdown links resolve
+
+Lint result: PASS

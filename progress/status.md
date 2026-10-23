@@ -1,10 +1,11 @@
 # 当前状态
 
-更新：2026-10-23。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛。
-独立预测收益是后续里程碑、未知；生产 LLM 节点由 exact inbox/outbox 独立 subagent 处理，外部 LLM API 调用0。
+更新：2026-10-23。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md) 尚未收敛。独立预测收益是后续里程碑、未知；生产 LLM 节点由 exact inbox/outbox 独立 subagent 处理，外部 LLM API 调用0。
 公开资料只读取证已授权；累计147 managed-provider GET（115行情、32SEC），本轮新增0。另公开web取证累计6search/15queries、15web导航+1browser导航尝试；另8次直接公开GET，底层web HTTP数未知，不混入provider计数。host模型tokens/费用及资料成本未测量。
 
 ## 最新实证
+
+[财务新期间口径](../reports/financial-period-policy-20261023.md)：用户批准相邻期同比加速度与同财务窗口毛利率同比；新v4/v3保留旧函数ID并显式保存policy。245关联/85独立控制过；唯一真实两项批次为1数值正确、1缺Q4正确unavailable，独立原文/消费投影/恢复核过。代码已合入，旧6/1/2不改；未发布后继Registry、未fresh语义消费，Fast/MVP仍open。
 
 [Mining v4](../reports/mining-native-v4-20261023.md): parent stopped low-information reread strategy;26 new answers/5367457;with debt36/7423398, unused44calls/5159514. Native pending/h027 raw only;no reentry/immediate v5/no-pattern. Candidate1 uncompleted, consumers0/4;MVP open.
 
@@ -21,7 +22,7 @@
 
 [原生财务批次与阅读诊断](../reports/current-financial-apply-20261021.md)：当前比较用既有v12精确18版本，不替换历史v6。单GPRE/2025-05-30、1780来源view，冻结4389绑定，唯一native批次20.261s/exit0。
 9财务结果为6严格通过、1prior原文版本匹配失败、2期间政策unknown，终态completed_acceptance_failed保留。
-7个定义唯一项的数值/分类/单位/当前期间均同独立源oracle；失败项实际2024申报与oracle2025比较列同事实，只fiscal_year/frame不同，预冻清单漏列prior版本；不是改成7/7或9/9。gross_margin/revenue_acceleration定义仍多义。
+7个定义唯一项的数值/分类/单位/当前期间均同独立源oracle；失败项实际2024申报与oracle2025比较列同事实，只fiscal_year/frame不同，预冻清单漏列prior版本；不是改成7/7或9/9。旧v3/v2的多义判定保留；批准的新期间口径见上方独立验收。
 独立4389绑定、9实际选文/顺序/fingerprint、21完整证据、9消费者投影核过；六项未整体fresh消费，单context见最新。完成restore1.636s/24files字节同/0新batch，非OS中断或研究恢复。首prepare前置拒与审计harness错误均保留，不重入。
 [typed阅读修复](../reports/gpre-readable-period-selection-20261021.md)保完整facts literal/offset/单位/期间，固定排序能找本案Q1，但11doc/比较期/币种/冲突反例仍失败；未装排序callback，整体F5仍open。
 [有界阅读/Fact taxonomy](../reports/approved-reading-and-taxonomy-20261022.md)两方案已获明确批准并实施；外部LLMAPI继续0。
@@ -95,6 +96,5 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   完整公开会议时间证明仍open；两自动producer guard不替代正常transcript正控，禁止未经证明的输入准入。
   [章节导航与真实控制](../reports/narrative-source-navigation-20261023.md)共用数据层matcher、各自坐标/分页、标题原子计预算；251关联/独立24过，网络0。旧v1形状与commercialization/v5净影响多义仍保留，未改定义。
   私有90日本金到期控制3fresh角色提取正确事实/0纠错、117566逻辑预留、29files同；更强oracle严审0of1不改。额外义务现已逐条对定义映射，不冒称错对象/日期；未发布/非Mining，整体F5/MVP仍open。
-  gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
-- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证；v3已single终止，handle/query定位与保历史消费已局部修；服务本次实际恢复，独立实现审查与v4冻结已完成，正式同额度诊断进行中；原0/2和1/2不改。
+- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证；v3已single终止，handle/query定位与保历史消费已局部修；服务本次实际恢复，独立实现审查与v4冻结已完成，v4低信息策略已停止且封存，不重入或立即v5；原0/2和1/2不改。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

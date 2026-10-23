@@ -1,0 +1,69 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/counterexample-results.first-complete.json",
+      "sha256": "1fe511e893118d8bb06bea77eaa18b2f35bb9ab2558d80b84365135ce57e14de",
+      "bytes": 210986
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/counterexample-results.json",
+      "sha256": "f865f25feeb61a274faf29ac6410dbab3fc0bcc53872fda13af6a15ec2ed8223",
+      "bytes": 258754
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/counterexamples.initial.py",
+      "sha256": "2d01b306585309fa7eb6389b3f53b2b13310bc756fafa2032759df6ee35a983a",
+      "bytes": 9182
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/counterexamples.py",
+      "sha256": "011c241a6d39d62c042a8a048d3b895c47038118417fd966f67f3181af961985",
+      "bytes": 10924
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/counterreview-report.json",
+      "sha256": "937464b99758bc1b8f5f5ba6919c9eb952c00ecb45708b6c86340dafaa791dc7",
+      "bytes": 3826
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/freeze_source_oracle.py",
+      "sha256": "2296976cc5ff78c2cd4ad09bb75816b07288c324090ee3c54c6040785cc8c762",
+      "bytes": 7070
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/harness-first-failures.json",
+      "sha256": "81bea855640a14cedfaecf0f44848e0c80b33a5389f5fb96437023641c2383f6",
+      "bytes": 491
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-only-bindings.json",
+      "sha256": "0f4168ab8553008caec39d7c9a4001b0e911fa0384e774efdc06cef9f2dc8cc1",
+      "bytes": 359896
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-only-freeze.json",
+      "sha256": "4a00ff2c3007140f229140c615c2bd88b030281482a04ad95be3ea5924cc3f1f",
+      "bytes": 1234
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-only-oracle.json",
+      "sha256": "7822cee37a3aa1a68d24689c6056767d17da91f36a151e2722f2b8f83df3284c",
+      "bytes": 22519
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-only-records.json",
+      "sha256": "a0e523dce19d3cb7e67d9e5a7ee3c99e99ff36e2933ab183ce858dff55f47cb1",
+      "bytes": 768293
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-prepare-review.json",
+      "sha256": "449583956e85cb4e645de53459226a005a19c56b77084eb16122de2f2b1d090b",
+      "bytes": 19289
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-prepare-review.py",
+      "sha256": "ea74f95e943e7503484ba72f54620f0bc02fc63b1ef1fe9a59eeb811cab96131",
+      "bytes": 3868
+    }
+  ]
+}

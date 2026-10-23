@@ -1,0 +1,25 @@
+{
+  "frozen_before_new_executor": true,
+  "files": [
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/freeze_source_oracle.py",
+      "sha256": "2296976cc5ff78c2cd4ad09bb75816b07288c324090ee3c54c6040785cc8c762",
+      "bytes": 7070
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-only-oracle.json",
+      "sha256": "7822cee37a3aa1a68d24689c6056767d17da91f36a151e2722f2b8f83df3284c",
+      "bytes": 22519
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-only-records.json",
+      "sha256": "a0e523dce19d3cb7e67d9e5a7ee3c99e99ff36e2933ab183ce858dff55f47cb1",
+      "bytes": 768293
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-only-bindings.json",
+      "sha256": "0f4168ab8553008caec39d7c9a4001b0e911fa0384e774efdc06cef9f2dc8cc1",
+      "bytes": 359896
+    }
+  ]
+}

@@ -8,8 +8,9 @@ import math
 import os
 import re
 from dataclasses import dataclass, field, replace
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from enum import Enum
+from fractions import Fraction
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol
 
@@ -3805,6 +3806,8 @@ def default_deterministic_signal_functions() -> dict[str, DeterministicSignalFun
         "financial.revenue_growth_yoy": _revenue_growth_signal,
         "financial.revenue_acceleration": _revenue_acceleration_signal,
         "financial.gross_margin_change": _gross_margin_change_signal,
+        "financial.revenue_acceleration_adjacent": _revenue_acceleration_adjacent_signal,
+        "financial.gross_margin_change_yoy": _gross_margin_change_yoy_signal,
         "financial.operating_cash_flow_margin": _operating_cash_flow_margin_signal,
         "financial.net_share_retirement_yoy": _net_share_retirement_yoy_signal,
         "financial.cash_to_current_liabilities_ratio": (
@@ -4193,6 +4196,10 @@ def _revenue_growth_input_facts(spec, documents, as_of):
 
 
 def _revenue_acceleration_input_facts(spec, documents, as_of):
+    if "period_policy" in spec.parameters:
+        if spec.parameters["period_policy"] == "adjacent_yoy":
+            return _revenue_acceleration_adjacent_input_facts(spec, documents, as_of)
+        return _SecInputBasis((), "Unsupported revenue acceleration period_policy.")
     series = _canonical_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
     pairs = _yoy_pairs(series)
     if len(pairs) < 2:
@@ -4209,6 +4216,10 @@ def _revenue_acceleration_input_facts(spec, documents, as_of):
 
 
 def _gross_margin_input_facts(spec, documents, as_of):
+    if "period_policy" in spec.parameters:
+        if spec.parameters["period_policy"] == "same_window_yoy":
+            return _gross_margin_yoy_input_facts(spec, documents, as_of)
+        return _SecInputBasis((), "Unsupported gross-margin period_policy.")
     facts = _sec_facts(documents, as_of)
     revenues = _canonical_series(facts, _REVENUE_TAGS)
     gross = _canonical_series(facts, ("GrossProfit",))
@@ -4225,6 +4236,92 @@ def _gross_margin_input_facts(spec, documents, as_of):
     if prior is None:
         return _SecInputBasis(current, "Comparable SEC gross-margin periods were unavailable.")
     return _SecInputBasis((*current, *prior))
+
+
+def _shift_month_start(value: date, months: int) -> date:
+    ordinal = value.year * 12 + value.month - 1 + months
+    return value.replace(year=ordinal // 12, month=ordinal % 12 + 1)
+
+
+def _reported_window_months(fact: _SecFact) -> int | None:
+    try:
+        start, end = date.fromisoformat(fact.start or ""), date.fromisoformat(fact.end)
+        months = (end.year - start.year) * 12 + end.month - start.month + 1
+        if start.day == 1 and months in (3, 6, 9, 12) and _shift_month_start(start, months) - timedelta(days=1) == end:
+            return months
+    except ValueError:
+        pass
+    return None
+
+
+def _reported_fraction(fact: _SecFact) -> Fraction:
+    raw = json.loads(fact.exact_span, parse_float=str)
+    return Fraction(raw["value"] if "value" in raw else raw["val"])
+
+
+def _checked_window_basis(all_facts, selected, reason=None):
+    selected = tuple(fact for fact in selected if fact is not None)
+    witnesses = []
+    for fact in selected:
+        same = [other for other in all_facts if (other.tag, other.start, other.end, other.unit.casefold())
+                == (fact.tag, fact.start, fact.end, fact.unit.casefold())]
+        if len({_reported_fraction(other) for other in same}) > 1:
+            witnesses.extend(same)
+    if witnesses:
+        unique = {(fact.document.document_id, fact.exact_span): fact for fact in (*selected, *witnesses)}
+        return _SecInputBasis(tuple(unique.values()), "Conflicting SEC values for a required reported window; revision authority is unresolved.")
+    return _SecInputBasis(selected, reason)
+
+
+def _strict_revenue_windows(spec, facts, as_of, *, adjacent):
+    series = _canonical_series(facts, _REVENUE_TAGS)
+    if not series:
+        return _SecInputBasis((), "SEC revenue duration windows were unavailable.")
+    current = max(series, key=lambda fact: (fact.end, fact.start or ""))
+    if not _current_sec_fact_is_fresh(spec, current, as_of):
+        return _SecInputBasis((current,), f"Latest SEC revenue window ended {current.end} and is stale.")
+    months = _reported_window_months(current)
+    if months is None or (adjacent and months not in (3, 12)):
+        return _checked_window_basis(facts, (current,), "Latest reported window lacks a supported calendar proof; acceleration requires a standalone quarter or annual window, never cumulative YTD.")
+    try:
+        start = date.fromisoformat(current.start)
+        stop = date.fromisoformat(current.end) + timedelta(days=1)
+        keys = [(_shift_month_start(start, -12), _shift_month_start(stop, -12) - timedelta(days=1))]
+        if adjacent:
+            keys.extend(((_shift_month_start(start, -months), start - timedelta(days=1)),
+                         (_shift_month_start(start, -months-12), _shift_month_start(start, -12) - timedelta(days=1))))
+    except ValueError:
+        return _SecInputBasis((current,), "Required fiscal comparison boundaries are unsupported.")
+    selected = [current]
+    for left, right in keys:
+        selected.append(next((fact for fact in series if fact.start == left.isoformat()
+                              and fact.end == right.isoformat() and fact.unit.casefold() == current.unit.casefold()), None))
+    reason = "Required same-window YoY or immediately adjacent comparison was unavailable; no older-pair fallback." if None in selected else None
+    if reason is None and (selected[1].value == 0 or (adjacent and selected[3].value == 0)):
+        reason = "Required prior-year revenue denominator is zero."
+    return _checked_window_basis(facts, selected, reason)
+
+
+def _revenue_acceleration_adjacent_input_facts(spec, documents, as_of):
+    facts = _sec_facts(documents, as_of)
+    return _strict_revenue_windows(spec, facts, as_of, adjacent=True)
+
+
+def _gross_margin_yoy_input_facts(spec, documents, as_of):
+    facts = _sec_facts(documents, as_of)
+    basis = _strict_revenue_windows(spec, facts, as_of, adjacent=False)
+    if basis.unavailable_reason is not None:
+        return basis
+    current, previous = basis.facts
+    gross = _canonical_series((fact for fact in facts if fact.unit.casefold() == current.unit.casefold()), ("GrossProfit",))
+    selected = []
+    for revenue in (current, previous):
+        selected.extend((revenue, next((fact for fact in gross if fact.start == revenue.start
+            and fact.end == revenue.end and fact.unit.casefold() == revenue.unit.casefold()), None)))
+    reason = "GrossProfit for an exact required revenue window was unavailable; no older-pair fallback." if None in selected else None
+    if current.value == 0 or previous.value == 0:
+        reason = "Required revenue denominator is zero."
+    return _checked_window_basis(facts, selected, reason)
 
 
 def _operating_margin_input_facts(spec, documents, as_of):
@@ -4367,14 +4464,20 @@ def _revenue_growth_signal(
     )
 
 
-@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days", "period_policy")
 @signal_input_facts(_revenue_acceleration_input_facts)
 def _revenue_acceleration_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
-    """Measure revenue acceleration as latest year-over-year revenue growth minus an earlier
+    """With period_policy=adjacent_yoy, measure current standalone quarter YoY growth
+    minus immediately previous quarter YoY growth (four reported windows); annual
+    uses adjacent annual YoY growth (three windows). Require exact month-aligned
+    boundaries, currency and latest anchor; no skipped quarter, YTD derivation,
+    mixed cadence, older complete fallback or unresolved conflicts. Missing inputs
+    are unavailable. An unknown explicit policy is unavailable. Without period_policy,
+    preserve legacy behavior: latest year-over-year revenue growth minus an earlier
     comparable growth rate. Requires two supported revenue year-over-year pairs from the
     per-issuer canonical total series (dominance-resolved; never mixed-basis), with
     matching units and nonzero denominators; incomplete/stale current facts yield
@@ -4386,6 +4489,8 @@ def _revenue_acceleration_signal(
     SEC period age; older comparative periods remain allowed.
     """
 
+    if spec.parameters.get("period_policy") == "adjacent_yoy":
+        return _revenue_acceleration_adjacent_signal(spec, documents, as_of)
     basis = _revenue_acceleration_input_facts(spec, documents, as_of)
     if basis.unavailable_reason is not None:
         return _unavailable_result(spec, basis.unavailable_reason)
@@ -4407,14 +4512,19 @@ def _revenue_acceleration_signal(
     )
 
 
-@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days", "period_policy")
 @signal_input_facts(_gross_margin_input_facts)
 def _gross_margin_change_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
-    """Measure gross-margin change: latest GrossProfit / revenue minus the previous
+    """With period_policy=same_window_yoy, measure latest GrossProfit/revenue minus
+    the same reported fiscal window's margin one year earlier. Require exact
+    month-aligned 3/6/9/12-month windows, matching currency and latest revenue anchor;
+    no older complete fallback or unresolved conflicts. Missing current profit or
+    any comparator is unavailable. Unknown explicit policies are unavailable.
+    Without period_policy preserve legacy behavior: latest margin minus the previous
     comparable-duration margin. GrossProfit and revenue must match start, end and units
     within each period, and revenue comes from the per-issuer canonical total series
     (dominance-resolved; partial or zero same-period tag values never displace the
@@ -4427,6 +4537,8 @@ def _gross_margin_change_signal(
     SEC period age; older comparative periods remain allowed.
     """
 
+    if spec.parameters.get("period_policy") == "same_window_yoy":
+        return _gross_margin_change_yoy_signal(spec, documents, as_of)
     basis = _gross_margin_input_facts(spec, documents, as_of)
     if basis.unavailable_reason is not None:
         return _unavailable_result(spec, basis.unavailable_reason)
@@ -4447,6 +4559,58 @@ def _gross_margin_change_signal(
         ),
         plausible_abs_max=2.0,
     )
+
+
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_input_facts(_revenue_acceleration_adjacent_input_facts)
+def _revenue_acceleration_adjacent_signal(spec, documents, as_of):
+    """Measure current standalone quarter YoY revenue growth minus immediately previous
+    standalone quarter YoY growth (four reported windows); annual uses adjacent annual
+    YoY growth (three windows). Anchor to latest canonical revenue end, shortest reported
+    duration on ties. Require exact month-aligned calendar/fiscal boundaries and currency;
+    no skipped quarter, YTD subtraction, annual/quarter mixing, older-pair fallback or
+    unresolved conflicting values. Missing/stale/zero-denominator/unsupported-calendar
+    inputs are unavailable. Thresholds preserve positive_min/negative_max: >= positive_min
+    is positive, else <= negative_max negative, else neutral (defaults 0/positive_min).
+    max_period_age_days defaults to 550; plausible_abs_max defaults to 5 and downgrades
+    extreme observations to partial/0.5 without changing their measurement or state.
+    """
+    basis = _revenue_acceleration_adjacent_input_facts(spec, documents, as_of)
+    if basis.unavailable_reason is not None:
+        return _unavailable_result(spec, basis.unavailable_reason)
+    current, year_ago, previous, previous_year_ago = basis.facts
+    value = float(_reported_fraction(current) / _reported_fraction(year_ago)
+                  - _reported_fraction(previous) / _reported_fraction(previous_year_ago))
+    return _numeric_result(spec, value, current.document, as_of, label="revenue_acceleration",
+        measurement_unit="fraction_difference",
+        measurement_formula="current window YoY growth - immediately previous same-cadence window YoY growth",
+        measurement_period=current, evidence=_fact_evidence(basis.facts, as_of), plausible_abs_max=5.0)
+
+
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
+@signal_input_facts(_gross_margin_yoy_input_facts)
+def _gross_margin_change_yoy_signal(spec, documents, as_of):
+    """Measure latest GrossProfit/revenue minus the same reported fiscal window's margin
+    one year earlier. Anchor to latest canonical revenue end, shortest reported duration
+    on ties, before matching profit. Require exact 3/6/9/12-month aligned reported windows,
+    matching currencies and exact calendar-year shifts of both boundaries; YTD compares
+    identical YTD windows. Missing/stale/zero-revenue/unsupported-calendar or unresolved
+    conflicting facts are unavailable, never replaced by an older complete pair.
+    Thresholds preserve positive_min/negative_max: >= positive_min positive, else
+    <= negative_max negative, else neutral (defaults 0/positive_min).
+    max_period_age_days defaults to 550; plausible_abs_max defaults to 2 and downgrades
+    extremes to partial/0.5 without changing their measurement or state.
+    """
+    basis = _gross_margin_yoy_input_facts(spec, documents, as_of)
+    if basis.unavailable_reason is not None:
+        return _unavailable_result(spec, basis.unavailable_reason)
+    current, gross, previous, previous_gross = basis.facts
+    value = float(_reported_fraction(gross)/_reported_fraction(current)
+                  - _reported_fraction(previous_gross)/_reported_fraction(previous))
+    return _numeric_result(spec, value,
+        current.document, as_of, label="gross_margin_change", measurement_unit="fraction_difference",
+        measurement_formula="current gross profit / revenue - same fiscal window prior-year gross profit / revenue",
+        measurement_period=current, evidence=_fact_evidence(basis.facts, as_of), plausible_abs_max=2.0)
 
 
 @signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")

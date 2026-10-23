@@ -1,0 +1,88 @@
+{
+  "status": "counterreview_completed_with_open_threshold_finding",
+  "synthetic_controls": {
+    "total": 70,
+    "pass": 67,
+    "failed": 3,
+    "failure_names": [
+      "inherited_acceleration_negative_boundary",
+      "inherited_margin_positive_boundary",
+      "threshold_negative_boundary"
+    ]
+  },
+  "finding": {
+    "priority": "P2",
+    "family": "numeric subtraction rounding crosses inherited classification boundary",
+    "new_acceleration_example": {
+      "operands": "135/100 - 140/100",
+      "mathematical_value": -0.05,
+      "negative_max": -0.05,
+      "observed_value": -0.04999999999999982,
+      "observed_state": "neutral",
+      "expected_state": "negative"
+    },
+    "new_margin_example": {
+      "operands": "18/100 - 10/100",
+      "mathematical_value": 0.08,
+      "positive_min": 0.08,
+      "observed_value": 0.07999999999999999,
+      "observed_state": "neutral",
+      "expected_state": "positive"
+    },
+    "scope": "shared float classifier is preexisting; new functions expose it at exact inherited defaults; no product edits made",
+    "required_disposition": "retain finding or fix new-version arithmetic/category comparison without changing old published callables; do not report all thresholds passed"
+  },
+  "period_findings": "No further period-selection defect observed in tested variants. This finite matrix is not a proof of all financial-calendar semantics.",
+  "normal_and_negative_coverage": [
+    "immediate prior quarter rather than same-quarter annual growth change",
+    "quarter and annual cadence never mixed",
+    "three annual windows, four quarterly windows",
+    "missing current comparator, missing immediate quarter, missing last-year immediate quarter",
+    "latest missing GrossProfit and latest unsupported stub retained through actual ten-document preparation",
+    "annual/YTD not used to synthesize standalone quarter",
+    "non-January fiscal month alignment and leap day",
+    "unsupported 52/53-week/stub fail closed",
+    "every required comparator currency, current zero vs prior zero",
+    "latest freshness",
+    "same-tag same-window conflicts, reversed document ordering, >10 conflict witnesses fail closed",
+    "whole JSON fact literals and result reserialization",
+    "consumer numeric measurement absent on unavailable",
+    "plausibility does not silently change measurement"
+  ],
+  "real_source": {
+    "source_only_oracle_frozen_before_new_real_executor": true,
+    "freeze_sha256": "4a00ff2c3007140f229140c615c2bd88b030281482a04ad95be3ea5924cc3f1f",
+    "source_documents": 1780,
+    "issuer_documents": 61,
+    "margin_expected": -0.00895781026150388,
+    "margin_state": "neutral",
+    "acceleration_expected": "unavailable; explicit 2024Q4 and 2023Q4 absent",
+    "next_unallocated_versions": [
+      "gross_margin_change:v4",
+      "revenue_acceleration:v3"
+    ],
+    "prepare_calls": 2,
+    "selected_counts": [
+      10,
+      10
+    ],
+    "real_source_execute_calls": 0,
+    "old_callables_AST_unchanged": [
+      "_revenue_acceleration_signal",
+      "_gross_margin_change_signal",
+      "_revenue_acceleration_input_facts",
+      "_gross_margin_input_facts"
+    ]
+  },
+  "scope_boundaries": {
+    "product_edits": 0,
+    "spec_edits": 0,
+    "test_edits": 0,
+    "registry_writes": 0,
+    "network_calls": 0,
+    "models": 0,
+    "label_reads": 0,
+    "old_completed_stage_reentries": 0
+  },
+  "harness_history": "initial incompatible Python and optional unavailable classification-product key error retained in harness-first-failures.json; initial complete matrix 50/52 retained. One first matrix old-pair failure was a harness construction error (all four required operands accidentally present); revised construction retains a truly missing Q4. Threshold failure persisted and expanded to both exact inherited defaults."
+}

@@ -1,0 +1,28 @@
+{
+  "gross_margin_change:v4": {
+    "signal_ref": "gross_margin_change:v4",
+    "spec_hash": "285d76a36aa13f078a3b1d43ffe41fe7bc84aae351cb01c22dcae41d5c3aabea",
+    "definition": "Measure latest reported gross margin (GrossProfit/revenue) minus the same fiscal window one year earlier. Anchor to latest canonical revenue end and shortest explicitly reported duration on a tied end, before requiring current profit or comparators. Require exact month-aligned 3/6/9/12-month windows and same currency; YTD compares identical YTD windows. Missing current/prior gross profit or revenue, zero revenue, unresolved required-window conflicts, stale current periods, unsupported stubs or 52/53-week calendars are unavailable; never replace the latest anchor with an older complete pair. Numeric change >=0.08 is positive, <=-0.02 negative, otherwise neutral; categories describe this measurement, not future returns. Preserve full literal operands and evidence. Default current freshness is 550 days; absolute change above 2 has partial coverage and confidence 0.5 without changing the measurement.",
+    "execution": {
+      "type": "deterministic",
+      "function": "financial.gross_margin_change",
+      "callable_status": "registered",
+      "contract": "With period_policy=same_window_yoy, measure latest GrossProfit/revenue minus\n    the same reported fiscal window's margin one year earlier. Require exact\n    month-aligned 3/6/9/12-month windows, matching currency and latest revenue anchor;\n    no older complete fallback or unresolved conflicts. Missing current profit or\n    any comparator is unavailable. Unknown explicit policies are unavailable.\n    Without period_policy preserve legacy behavior: latest margin minus the previous\n    comparable-duration margin. GrossProfit and revenue must match start, end and units\n    within each period, and revenue comes from the per-issuer canonical total series\n    (dominance-resolved; partial or zero same-period tag values never displace the\n    total). Missing matched periods, zero revenue or stale current facts yield\n    unavailable. Numeric states use positive_min (default 0) and negative_max (default\n    positive_min): value >= positive_min is positive, otherwise value <= negative_max is\n    negative, otherwise neutral. Thresholds do not change the measurement. Values beyond\n    plausible_abs_max (default 2) are downgraded to partial coverage at 0.5 confidence\n    with an implausible_value marker. max_period_age_days (default 550) bounds current\n    SEC period age; older comparative periods remain allowed.\n    ",
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max",
+        "max_period_age_days",
+        "period_policy"
+      ],
+      "configured_parameters": {
+        "positive_min": 0.08,
+        "negative_max": -0.02,
+        "period_policy": "same_window_yoy"
+      }
+    },
+    "declaration_available": true,
+    "result_hash": "aa5df7703c4a4b796d1e06fb649e0c1d7a6f31ffc10f28e79b5ce8c174939b33",
+    "contract_hash": "4875e2f403da57567b35d1ac31684e7750d4b916a9e449db446547a56647f0eb"
+  }
+}

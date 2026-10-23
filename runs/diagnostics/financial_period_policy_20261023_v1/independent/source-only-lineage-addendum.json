@@ -1,0 +1,87 @@
+{
+  "schema_version": "source-only-oracle-lineage-binding-addendum-v1",
+  "frozen_before_real_next_version_Signal_execution": true,
+  "original_source_only_freeze_path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-only-freeze.json",
+  "original_source_only_freeze_sha256": "4a00ff2c3007140f229140c615c2bd88b030281482a04ad95be3ea5924cc3f1f",
+  "reason": "The existing deterministic next-version validator requires the registered function identifier to stay fixed. Actual v4/v3 therefore bind the same independently frozen approved formulas to the old registered IDs through an explicit version-owned period_policy. Pure aliases remain implementation kernels. This does not alter source expectations.",
+  "rows": [
+    {
+      "signal_ref": "gross_margin_change:v4",
+      "original_pure_callable": "financial.gross_margin_change_yoy",
+      "actual_registered_callable": "financial.gross_margin_change",
+      "actual_version_owned_policy": "same_window_yoy",
+      "spec_sha256": "285d76a36aa13f078a3b1d43ffe41fe7bc84aae351cb01c22dcae41d5c3aabea",
+      "expected_state": "neutral",
+      "expected_numeric_exact": "-1072647553/119744393070",
+      "expected_numeric_float": -0.00895781026150388,
+      "expected_source_operands_unchanged": true,
+      "missing_explicit_quarters_unchanged": [],
+      "arithmetic_definition_unchanged": true
+    },
+    {
+      "signal_ref": "revenue_acceleration:v3",
+      "original_pure_callable": "financial.revenue_acceleration_adjacent",
+      "actual_registered_callable": "financial.revenue_acceleration",
+      "actual_version_owned_policy": "adjacent_yoy",
+      "spec_sha256": "3c04e97b9086468a53b3c7f92ce0b3dd68f131d44a7cff426770729d7f67396d",
+      "expected_state": "unavailable",
+      "expected_numeric_exact": null,
+      "expected_numeric_float": null,
+      "expected_source_operands_unchanged": true,
+      "missing_explicit_quarters_unchanged": [
+        {
+          "start": "2024-10-01",
+          "end": "2024-12-31",
+          "tag": "Revenues",
+          "found": 0
+        },
+        {
+          "start": "2023-10-01",
+          "end": "2023-12-31",
+          "tag": "Revenues",
+          "found": 0
+        }
+      ],
+      "arithmetic_definition_unchanged": true
+    }
+  ],
+  "fixed_new_denominator": 2,
+  "old_financial9": "completed 6 pass / 1 fail / 2 unknown unchanged",
+  "code_bindings": {
+    "src/stock_opportunity_agent/signal_library.py": "05e79dbfd4e2d2105c34c8ac66ea2821046a79fe8cedc83931917de2eec7639c",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "2d79e35a090966c3f5e38384b5332cc40822cce56af6fc8e5d482b78145e8578"
+  },
+  "input_bindings": [
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/new-version-specs.json",
+      "sha256": "e74a3bd15d5dd35086e3fd961ae037401a4a44493e097ecd37ab8263bb22a1c1"
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/lineage-fixtures.json",
+      "sha256": "a3975f55552aa28a2a5ef7dd691da3ee722c60d75238d760767dafd142d84b79"
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-inputs-validation.json",
+      "sha256": "2672a92e52b0579e9a0da1caa86a2243e327b74454c0557ff53754c777e6a507"
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-review.json",
+      "sha256": "2a4239887d9de312d8fe0b42584301df1ac04a38307a606c37dad3979b76b446"
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-counterexample-results.json",
+      "sha256": "804bced154fa5b3ccea22b3b2a45d4d4408100e49af0322e61fd2e118847e3b6"
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-source-prepare.json",
+      "sha256": "65bdf25e62c55cc725ebb6478bf69426e964690eaeedefb66950a01c80903446"
+    }
+  ],
+  "source_arithmetic_recomputed_from_product": false,
+  "real_source_Signal_execute_calls": 0,
+  "models": 0,
+  "network_calls": 0,
+  "labels_read": 0,
+  "registry_allocation": "independent exact original v182 historical specs verify next v4/v3; only synthetic reviewer Registry written, original registry unchanged",
+  "prior_review_scope_correction": "Earlier concept review used new signal v1 and only established the concept gate. It did not establish next-version lineage. This addendum binds actual next-version validation from exact original v3/v2 baselines and records rejected function-ID replacement."
+}

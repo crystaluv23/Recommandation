@@ -1,0 +1,364 @@
+{
+  "real_source_execute_calls": 0,
+  "real_prepare_calls": 2,
+  "models": 0,
+  "network_calls": 0,
+  "old_functions_AST_unchanged": [
+    "_revenue_acceleration_signal",
+    "_gross_margin_change_signal",
+    "_revenue_acceleration_input_facts",
+    "_gross_margin_input_facts",
+    "_numeric_result"
+  ],
+  "code_sha256": "2dd6278b4c7162aa7a11b355792214557aa7d6871910e6530a0f5aeb56def494",
+  "rows": [
+    {
+      "ref": "gross_margin_change:v4",
+      "resolution": {
+        "request": {
+          "request_id": "signal:gross_margin_change:v4",
+          "description": "Measure the latest point-in-time change in gross margin.",
+          "source_types": [
+            "financials"
+          ],
+          "max_documents": 10,
+          "query": "revenue gross profit",
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330
+        },
+        "status": "resolved",
+        "documents": [
+          {
+            "document_id": "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02",
+            "content_hash": "1f19eaf394ce9e02a4f76765e7f90c85800fa7c9aa804369382a41c0adec0c7e",
+            "available_at": "2021-02-17T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-18-000045:a6c8d5f922c154a1",
+            "content_hash": "a6c8d5f922c154a1d409ccb58889ab9bda40bba9ca94fe1708c6fadba97f490d",
+            "available_at": "2018-02-15T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d",
+            "content_hash": "ba303ecd89c32d2d517f07f5b52f5009d30c81a01f65011b3a8e9b1e82b5b8d4",
+            "available_at": "2020-02-21T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-13-000021:c017c478dd4814d7",
+            "content_hash": "c017c478dd4814d74b2cd866d9608155db5f0dffd55b1351e37a0c3ad1e68ee1",
+            "available_at": "2013-02-16T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-17-000046:aa13e6e6ec12d8fa",
+            "content_hash": "aa13e6e6ec12d8fae5b9c023f18ef20534d938b0d9af641620a550843bf9838c",
+            "available_at": "2017-02-23T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-15-000007:7477df509e311cff",
+            "content_hash": "7477df509e311cff5e8fbc054272749c7070694ddc0de456f8e25fe6a53bfc14",
+            "available_at": "2015-02-11T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-14-000007:653a13cd2ee459e0",
+            "content_hash": "653a13cd2ee459e0a7c8bc3e3a5afefa81a8a2fbe343380f28856158a13ede9a",
+            "available_at": "2014-02-11T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-19-000024:8322f0b00f926f9c",
+            "content_hash": "8322f0b00f926f9cb9331f360d7e9bdb6aff742dab8da2c38ba58882ea32c62e",
+            "available_at": "2019-02-21T00:00:00+00:00"
+          },
+          {
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+            "available_at": "2025-05-09T00:00:00+00:00"
+          },
+          {
+            "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+            "content_hash": "aa05ed7e72b76d7930e5411dbe4c3314c0f0186a7917d0b950bc6f3ada19df12",
+            "available_at": "2024-05-04T00:00:00+00:00"
+          }
+        ],
+        "context_spans": [],
+        "events": [
+          {
+            "kind": "local_query",
+            "details": {
+              "phase": "initial",
+              "request_id": "signal:gross_margin_change:v4",
+              "source_types": [
+                "financials"
+              ],
+              "matched_document_ids": [
+                "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02",
+                "secfacts:0001309402:0001309402-18-000045:a6c8d5f922c154a1",
+                "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d",
+                "secfacts:0001309402:0001309402-13-000021:c017c478dd4814d7",
+                "secfacts:0001309402:0001309402-17-000046:aa13e6e6ec12d8fa",
+                "secfacts:0001309402:0001309402-15-000007:7477df509e311cff",
+                "secfacts:0001309402:0001309402-14-000007:653a13cd2ee459e0",
+                "secfacts:0001309402:0001309402-19-000024:8322f0b00f926f9c",
+                "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130"
+              ]
+            }
+          }
+        ],
+        "appended_documents": [],
+        "data_gap": null,
+        "coverage": {
+          "eligible_document_count": 57,
+          "selected_document_count": 10,
+          "query_matched_document_count": 57,
+          "query_status": "matched",
+          "query_requested": true,
+          "query_evaluated": true,
+          "selection_truncated": true,
+          "deduplicated_document_count": 0,
+          "visible_span_count": 0,
+          "context_truncated": null,
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "observed_distinct_period_count": 67,
+          "observed_period_span_days": 5604,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        },
+        "omitted_context_markers": []
+      },
+      "scope": {
+        "signal_ref": "gross_margin_change:v4",
+        "source_types": [
+          "financials"
+        ],
+        "raw_retrieval": {
+          "query_terms": [
+            "revenue",
+            "gross profit"
+          ],
+          "comparison_requirement": "Latest gross margin versus prior comparable period.",
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330
+        },
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.gross_margin_change_yoy",
+          "callable_status": "registered",
+          "contract": "Measure latest GrossProfit/revenue minus the same reported fiscal window's margin\n    one year earlier. Anchor to latest canonical revenue end, shortest reported duration\n    on ties, before matching profit. Require exact 3/6/9/12-month aligned reported windows,\n    matching currencies and exact calendar-year shifts of both boundaries; YTD compares\n    identical YTD windows. Missing/stale/zero-revenue/unsupported-calendar or unresolved\n    conflicting facts are unavailable, never replaced by an older complete pair.\n    Thresholds preserve positive_min/negative_max: >= positive_min positive, else\n    <= negative_max negative, else neutral (defaults 0/positive_min).\n    max_period_age_days defaults to 550; plausible_abs_max defaults to 2 and downgrades\n    extremes to partial/0.5 without changing their measurement or state.\n    ",
+          "parameter_names": [
+            "positive_min",
+            "negative_max",
+            "plausible_abs_max",
+            "max_period_age_days"
+          ],
+          "configured_parameters": {
+            "positive_min": 0.08,
+            "negative_max": -0.02
+          }
+        }
+      },
+      "selected_basis": [
+        {
+          "tag": "Revenues",
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "unit": "USD",
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}"
+        },
+        {
+          "tag": "GrossProfit",
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "unit": "USD",
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}"
+        },
+        {
+          "tag": "Revenues",
+          "start": "2024-01-01",
+          "end": "2024-03-31",
+          "unit": "USD",
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+          "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}"
+        },
+        {
+          "tag": "GrossProfit",
+          "start": "2024-01-01",
+          "end": "2024-03-31",
+          "unit": "USD",
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+          "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":8367000}"
+        }
+      ],
+      "unavailable_reason": null
+    },
+    {
+      "ref": "revenue_acceleration:v3",
+      "resolution": {
+        "request": {
+          "request_id": "signal:revenue_acceleration:v3",
+          "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period.",
+          "source_types": [
+            "financials"
+          ],
+          "max_documents": 10,
+          "query": "revenue sales",
+          "minimum_distinct_periods": 3,
+          "minimum_period_span_days": 330
+        },
+        "status": "resolved",
+        "documents": [
+          {
+            "document_id": "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02",
+            "content_hash": "1f19eaf394ce9e02a4f76765e7f90c85800fa7c9aa804369382a41c0adec0c7e",
+            "available_at": "2021-02-17T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-18-000045:a6c8d5f922c154a1",
+            "content_hash": "a6c8d5f922c154a1d409ccb58889ab9bda40bba9ca94fe1708c6fadba97f490d",
+            "available_at": "2018-02-15T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d",
+            "content_hash": "ba303ecd89c32d2d517f07f5b52f5009d30c81a01f65011b3a8e9b1e82b5b8d4",
+            "available_at": "2020-02-21T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-16-000149:0f0a4bd4f8b5a055",
+            "content_hash": "0f0a4bd4f8b5a05515dd1bdb0163f4120f6bec15491be5043c098707f1d047b4",
+            "available_at": "2016-02-19T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-17-000046:aa13e6e6ec12d8fa",
+            "content_hash": "aa13e6e6ec12d8fae5b9c023f18ef20534d938b0d9af641620a550843bf9838c",
+            "available_at": "2017-02-23T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-15-000007:7477df509e311cff",
+            "content_hash": "7477df509e311cff5e8fbc054272749c7070694ddc0de456f8e25fe6a53bfc14",
+            "available_at": "2015-02-11T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-14-000007:653a13cd2ee459e0",
+            "content_hash": "653a13cd2ee459e0a7c8bc3e3a5afefa81a8a2fbe343380f28856158a13ede9a",
+            "available_at": "2014-02-11T00:00:00+00:00"
+          },
+          {
+            "document_id": "secfacts:0001309402:0001309402-13-000021:c017c478dd4814d7",
+            "content_hash": "c017c478dd4814d74b2cd866d9608155db5f0dffd55b1351e37a0c3ad1e68ee1",
+            "available_at": "2013-02-16T00:00:00+00:00"
+          },
+          {
+            "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+            "content_hash": "eab48ba69f5ebb474c0088531714c396e463e4be134f00b2d31946c2d52ea2e6",
+            "available_at": "2025-05-09T00:00:00+00:00"
+          },
+          {
+            "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+            "content_hash": "aa05ed7e72b76d7930e5411dbe4c3314c0f0186a7917d0b950bc6f3ada19df12",
+            "available_at": "2024-05-04T00:00:00+00:00"
+          }
+        ],
+        "context_spans": [],
+        "events": [
+          {
+            "kind": "local_query",
+            "details": {
+              "phase": "initial",
+              "request_id": "signal:revenue_acceleration:v3",
+              "source_types": [
+                "financials"
+              ],
+              "matched_document_ids": [
+                "secfacts:0001309402:0001309402-21-000014:1f19eaf394ce9e02",
+                "secfacts:0001309402:0001309402-18-000045:a6c8d5f922c154a1",
+                "secfacts:0001309402:0001309402-20-000006:ba303ecd89c32d2d",
+                "secfacts:0001309402:0001309402-16-000149:0f0a4bd4f8b5a055",
+                "secfacts:0001309402:0001309402-17-000046:aa13e6e6ec12d8fa",
+                "secfacts:0001309402:0001309402-15-000007:7477df509e311cff",
+                "secfacts:0001309402:0001309402-14-000007:653a13cd2ee459e0",
+                "secfacts:0001309402:0001309402-13-000021:c017c478dd4814d7",
+                "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+                "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130"
+              ]
+            }
+          }
+        ],
+        "appended_documents": [],
+        "data_gap": null,
+        "coverage": {
+          "eligible_document_count": 57,
+          "selected_document_count": 10,
+          "query_matched_document_count": 57,
+          "query_status": "matched",
+          "query_requested": true,
+          "query_evaluated": true,
+          "selection_truncated": true,
+          "deduplicated_document_count": 0,
+          "visible_span_count": 0,
+          "context_truncated": null,
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "observed_distinct_period_count": 66,
+          "observed_period_span_days": 5604,
+          "observed_observation_count": 0,
+          "contract_satisfied": true,
+          "missing_requirements": []
+        },
+        "omitted_context_markers": []
+      },
+      "scope": {
+        "signal_ref": "revenue_acceleration:v3",
+        "source_types": [
+          "financials"
+        ],
+        "raw_retrieval": {
+          "query_terms": [
+            "revenue",
+            "sales"
+          ],
+          "comparison_requirement": "Current and prior comparable growth periods.",
+          "minimum_distinct_periods": 3,
+          "minimum_period_span_days": 330
+        },
+        "execution": {
+          "type": "deterministic",
+          "function": "financial.revenue_acceleration_adjacent",
+          "callable_status": "registered",
+          "contract": "Measure current standalone quarter YoY revenue growth minus immediately previous\n    standalone quarter YoY growth (four reported windows); annual uses adjacent annual\n    YoY growth (three windows). Anchor to latest canonical revenue end, shortest reported\n    duration on ties. Require exact month-aligned calendar/fiscal boundaries and currency;\n    no skipped quarter, YTD subtraction, annual/quarter mixing, older-pair fallback or\n    unresolved conflicting values. Missing/stale/zero-denominator/unsupported-calendar\n    inputs are unavailable. Thresholds preserve positive_min/negative_max: >= positive_min\n    is positive, else <= negative_max negative, else neutral (defaults 0/positive_min).\n    max_period_age_days defaults to 550; plausible_abs_max defaults to 5 and downgrades\n    extreme observations to partial/0.5 without changing their measurement or state.\n    ",
+          "parameter_names": [
+            "positive_min",
+            "negative_max",
+            "plausible_abs_max",
+            "max_period_age_days"
+          ],
+          "configured_parameters": {
+            "positive_min": 0.05,
+            "negative_max": -0.05
+          }
+        }
+      },
+      "selected_basis": [
+        {
+          "tag": "Revenues",
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "unit": "USD",
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}"
+        },
+        {
+          "tag": "Revenues",
+          "start": "2024-01-01",
+          "end": "2024-03-31",
+          "unit": "USD",
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+          "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}"
+        }
+      ],
+      "unavailable_reason": "Required same-window YoY or immediately adjacent comparison was unavailable; no older-pair fallback."
+    }
+  ]
+}

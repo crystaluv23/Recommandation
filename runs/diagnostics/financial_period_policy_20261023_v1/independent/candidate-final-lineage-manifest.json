@@ -1,0 +1,234 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-inputs-validation.json",
+      "sha256": "2672a92e52b0579e9a0da1caa86a2243e327b74454c0557ff53754c777e6a507",
+      "bytes": 386
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/gross_margin_change/manifest.json",
+      "sha256": "0580a2fd679384ec3ba9f8315bcfec6b2b2bab219a3d089d9e2d9dd3d5d38478",
+      "bytes": 91
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/gross_margin_change/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/gross_margin_change/versions/v1/spec.json",
+      "sha256": "a48ea30c8f4d4cab1788bcd7766f8da21cfbd20e5164c9be211ecc146479040b",
+      "bytes": 998
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/gross_margin_change/versions/v1/tests.json",
+      "sha256": "7246a46ff9ccf76099211132d929db0aa4911c088ca34f60588fedbd6dbe753c",
+      "bytes": 18
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/gross_margin_change/versions/v2/spec.json",
+      "sha256": "103321bdd23bf1fa2d071d6383474599893de8854edca7bf2e54ba5ef2ded737",
+      "bytes": 998
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/gross_margin_change/versions/v2/tests.json",
+      "sha256": "7246a46ff9ccf76099211132d929db0aa4911c088ca34f60588fedbd6dbe753c",
+      "bytes": 18
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/gross_margin_change/versions/v3/spec.json",
+      "sha256": "7f442b11c3fb3407ad0d7726e4fb28cbaa9f33c7c76ce6b52eaa1c9331bb6f60",
+      "bytes": 1026
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/gross_margin_change/versions/v3/tests.json",
+      "sha256": "7246a46ff9ccf76099211132d929db0aa4911c088ca34f60588fedbd6dbe753c",
+      "bytes": 18
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/revenue_acceleration/manifest.json",
+      "sha256": "7a2a8d5811732bc0a0c651876b84d50563863a114170ca34e434682f72488703",
+      "bytes": 92
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/revenue_acceleration/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/revenue_acceleration/versions/v1/spec.json",
+      "sha256": "18dea9302ba319c3aa0af6a79b3ffd3fbaedff56a139ecc32d1f8196a96ad620",
+      "bytes": 1027
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/revenue_acceleration/versions/v1/tests.json",
+      "sha256": "7246a46ff9ccf76099211132d929db0aa4911c088ca34f60588fedbd6dbe753c",
+      "bytes": 18
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/revenue_acceleration/versions/v2/spec.json",
+      "sha256": "e2852a024a76e9b1b7f836c101ca02e09150727bbba93dbc6b1d077da76e4a1a",
+      "bytes": 1055
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/financial/revenue_acceleration/versions/v2/tests.json",
+      "sha256": "7246a46ff9ccf76099211132d929db0aa4911c088ca34f60588fedbd6dbe753c",
+      "bytes": 18
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-registry/signals/registry.json",
+      "sha256": "4b8894d57dfa621e534ef4eb25263e8f00254cbcb4327f1f98796314ac279dde",
+      "bytes": 19
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-review.json",
+      "sha256": "2a4239887d9de312d8fe0b42584301df1ac04a38307a606c37dad3979b76b446",
+      "bytes": 51220
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-review.py",
+      "sha256": "a72609ef3b1c7713146260b4cdeee1918d47b68a2685718e8b8557466916f494",
+      "bytes": 12187
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-source-prepare.json",
+      "sha256": "65bdf25e62c55cc725ebb6478bf69426e964690eaeedefb66950a01c80903446",
+      "bytes": 27813
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-declared-lineage-source-prepare.py",
+      "sha256": "7573332db87f31d05b2ade10aa5191a9b9ee86b2b11b31599883cb3d2c94e5fc",
+      "bytes": 2987
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-final-lineage-review-report.json",
+      "sha256": "9feb750be194cb623d8dc9569050866121022b8e4e36ad1036dd98400eceed60",
+      "bytes": 3676
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-counterexample-results.json",
+      "sha256": "804bced154fa5b3ccea22b3b2a45d4d4408100e49af0322e61fd2e118847e3b6",
+      "bytes": 379878
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-counterexamples.py",
+      "sha256": "26629b76b8bb5fe8da72bfc7b1dabe5f06aa6878cd08ba7cab20d6ed6444a5f6",
+      "bytes": 13338
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/gross_margin_change/manifest.json",
+      "sha256": "0580a2fd679384ec3ba9f8315bcfec6b2b2bab219a3d089d9e2d9dd3d5d38478",
+      "bytes": 91
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/gross_margin_change/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/gross_margin_change/versions/v1/spec.json",
+      "sha256": "a48ea30c8f4d4cab1788bcd7766f8da21cfbd20e5164c9be211ecc146479040b",
+      "bytes": 998
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/gross_margin_change/versions/v1/tests.json",
+      "sha256": "7246a46ff9ccf76099211132d929db0aa4911c088ca34f60588fedbd6dbe753c",
+      "bytes": 18
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/gross_margin_change/versions/v2/spec.json",
+      "sha256": "103321bdd23bf1fa2d071d6383474599893de8854edca7bf2e54ba5ef2ded737",
+      "bytes": 998
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/gross_margin_change/versions/v2/tests.json",
+      "sha256": "7246a46ff9ccf76099211132d929db0aa4911c088ca34f60588fedbd6dbe753c",
+      "bytes": 18
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/gross_margin_change/versions/v3/spec.json",
+      "sha256": "7f442b11c3fb3407ad0d7726e4fb28cbaa9f33c7c76ce6b52eaa1c9331bb6f60",
+      "bytes": 1026
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/gross_margin_change/versions/v3/tests.json",
+      "sha256": "7246a46ff9ccf76099211132d929db0aa4911c088ca34f60588fedbd6dbe753c",
+      "bytes": 18
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/revenue_acceleration/manifest.json",
+      "sha256": "7a2a8d5811732bc0a0c651876b84d50563863a114170ca34e434682f72488703",
+      "bytes": 92
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/revenue_acceleration/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/revenue_acceleration/versions/v1/spec.json",
+      "sha256": "18dea9302ba319c3aa0af6a79b3ffd3fbaedff56a139ecc32d1f8196a96ad620",
+      "bytes": 1027
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/revenue_acceleration/versions/v1/tests.json",
+      "sha256": "7246a46ff9ccf76099211132d929db0aa4911c088ca34f60588fedbd6dbe753c",
+      "bytes": 18
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/revenue_acceleration/versions/v2/spec.json",
+      "sha256": "e2852a024a76e9b1b7f836c101ca02e09150727bbba93dbc6b1d077da76e4a1a",
+      "bytes": 1055
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/financial/revenue_acceleration/versions/v2/tests.json",
+      "sha256": "7246a46ff9ccf76099211132d929db0aa4911c088ca34f60588fedbd6dbe753c",
+      "bytes": 18
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-registry/signals/registry.json",
+      "sha256": "4b8894d57dfa621e534ef4eb25263e8f00254cbcb4327f1f98796314ac279dde",
+      "bytes": 19
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-review.json",
+      "sha256": "0fd58d7b7565fb9bb2ac483cc85941a23297e858bd3d68aa09105ee75991d101",
+      "bytes": 46660
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-review.py",
+      "sha256": "8a6b476dd722f91335d67fa5b50ce8b4a3d168fbc8760754985622ce1657c929",
+      "bytes": 9338
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-source-prepare.json",
+      "sha256": "7ea8a7735174aefc86eb8b1e1b1d49e2b05ca0b46da2a6a26359cd3447bd7c1c",
+      "bytes": 23253
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/candidate-lineage-source-prepare.py",
+      "sha256": "fb51efe3c3b121f7c43f126ab97886d87d6bbe0bc39f261179735d9bf4d0cbc2",
+      "bytes": 2969
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/lineage-fixtures.json",
+      "sha256": "a3975f55552aa28a2a5ef7dd691da3ee722c60d75238d760767dafd142d84b79",
+      "bytes": 13174
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/materialize-declared-lineage-inputs.py",
+      "sha256": "9931183ad093da4538ce93be250be01f213b8df164f365b30efeca944df4b900",
+      "bytes": 4327
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/new-version-specs.json",
+      "sha256": "e74a3bd15d5dd35086e3fd961ae037401a4a44493e097ecd37ab8263bb22a1c1",
+      "bytes": 5196
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/source-only-lineage-addendum.json",
+      "sha256": "8b087399a593a67a4a88d7f5b135ed6e22778d73b4a4d8364ac4685535846d5c",
+      "bytes": 5054
+    }
+  ]
+}

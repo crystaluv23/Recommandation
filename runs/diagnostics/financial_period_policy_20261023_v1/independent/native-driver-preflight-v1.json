@@ -1,0 +1,50 @@
+{
+  "status": "prepared_plan_rejected_before_execution",
+  "plan_hash": "057227dc35a2b47ab285b3c835f16d3d9d323b1ad4cb240af9de38ac287a223f",
+  "frozen_binding_counts": {
+    "source_bindings": 1799,
+    "code_bindings": 98,
+    "old_completed_stage": 24,
+    "independent_bindings": 40
+  },
+  "authorized_post_finding_driver_drift": [
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/run_native.py",
+      "frozen": "acacd3ac1d91d8cddba747a201dd895178240948c5f778cffb847d59c431de6c",
+      "current": "4224ab9b9435a417e4083eea5e2e41c3b61d936a28cb89dfad3fc02223935950"
+    }
+  ],
+  "all_other_bindings_verified_unchanged": true,
+  "historical_code_layering": "Only exact preimplementation signal_library.py path is excluded from immutable source checks and retained as historical_code_binding. Current signal_library.py candidate SHA05e79 is separately frozen. No source/oracle values removed. This split is valid.",
+  "consumer_finding": {
+    "priority": "P1",
+    "original_driver_pattern": "classification_contract=contracts[r.ref]",
+    "expected_unavailable_ref": "revenue_acceleration:v3",
+    "synthetic_reproduction": {
+      "type": "KeyError",
+      "error": "'revenue_acceleration:v3'",
+      "status": "domain_unavailable"
+    },
+    "reason": "Executor emits classification products only for SUCCESS. The source-only oracle expects acceleration DOMAIN_UNAVAILABLE, so old driver contract lookup predictably failed after saving native-batch.",
+    "bounded_correction": "Optional contracts.get(r.ref) preserves domain-unavailable projection without inventing a classification contract. Driver has since been corrected by parent; original prepared plan remains rejected and must not execute.",
+    "next_action": "Refreeze corrected driver into a new native-approved plan after this preflight report completes; retain original native plan/first prepare precondition failure."
+  },
+  "other_guards": {
+    "single_irreversible_allowance": "execution-start.json created before execution; checks execution-start/native-batch/result/failure prohibit reentry; write_new uses exclusive create",
+    "fixed_two_refs": true,
+    "reviewed_view_count_guard": 1780,
+    "raw_batch_saved_before_consumer": true,
+    "stable_publication": "No promotion/registry mutation call path; register_stable/freeze patched forbidden",
+    "old_completed_stage": "24 original files bound before and after; no old executor entry",
+    "network_models_labels_appends": "network sockets, StructuredRoleClient methods, LabelStore entrypoints and both store appends patched forbidden"
+  },
+  "binding_claim_scope": {
+    "actual_code_bindings": 98,
+    "actual_top_level_independent_bindings": 40,
+    "nested_reviewer_registry_files": "Not directly listed by top-level glob. They are unused by native execution and separately evidenced; do not describe this list as recursive all-independent-file binding."
+  },
+  "initial_preflight_script_error": "The parent applied the announced driver correction during read-only hash verification, so first all-bindings-equal assertion failed on driver drift. Revised report explicitly records this authorized drift and confirms all other bindings. No real-source execution occurred.",
+  "actual_real_source_Signal_execution_by_reviewer": 0,
+  "source_only_freeze_sha256": "4a00ff2c3007140f229140c615c2bd88b030281482a04ad95be3ea5924cc3f1f",
+  "new_preflight_report_only": true
+}

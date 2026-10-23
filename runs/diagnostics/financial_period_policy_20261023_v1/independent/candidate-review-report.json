@@ -1,0 +1,54 @@
+{
+  "status": "candidate_review_passed_with_explicit_float_representation_limit",
+  "code_bindings": {
+    "src/stock_opportunity_agent/signal_library.py": "2dd6278b4c7162aa7a11b355792214557aa7d6871910e6530a0f5aeb56def494",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "2d79e35a090966c3f5e38384b5332cc40822cce56af6fc8e5d482b78145e8578"
+  },
+  "synthetic_period_numeric_consumer_controls": 85,
+  "synthetic_period_numeric_consumer_passed": 85,
+  "original_threshold_failures_now_pass": [
+    "inherited_acceleration_negative_boundary",
+    "inherited_margin_positive_boundary",
+    "threshold_negative_boundary"
+  ],
+  "additional_controls": [
+    "one_ten_millionth above and below each inherited exact threshold",
+    "canonical JSON scientific notation values",
+    "Revenues 2^53 / 2^53+1 integer conflict survives float collapse and ten-document prepare",
+    "GrossProfit 2^53 / 2^53+1 integer conflict survives float collapse and ten-document prepare",
+    "equal exact integer duplicates accepted",
+    "all original period/latest guard/zero/currency/PIT/literal/consumer/persistence checks"
+  ],
+  "real_source_prepare": {
+    "calls": 2,
+    "selected_documents": [
+      10,
+      10
+    ],
+    "real_source_Signal_execution_calls": 0,
+    "basis_matches_frozen_source_oracle": true
+  },
+  "actual_validator": {
+    "positive_fixtures_executed_and_accepted": 2,
+    "wrong_cash_concept_rejected_before_fixture_execution": 2,
+    "old_new_concept_export_equal": true
+  },
+  "old_AST_equal_to_ba309796": [
+    "_revenue_acceleration_signal",
+    "_gross_margin_change_signal",
+    "_revenue_acceleration_input_facts",
+    "_gross_margin_input_facts",
+    "_numeric_result"
+  ],
+  "protected_prior_evidence": {
+    "original_manifest_files_verified_unchanged": 13,
+    "source_only_freeze_sha256": "4a00ff2c3007140f229140c615c2bd88b030281482a04ad95be3ea5924cc3f1f",
+    "old_financial9_outcome": "6 pass / 1 fail / 2 unknown, unchanged"
+  },
+  "numeric_scope_limit": "Declared final float representation remains: margin exact .08 - 1e-18 converts to .08 and classifies positive. This is observable and retained as a representation limitation, not claimed arbitrary-precision category semantics. No epsilon added.",
+  "harness_history": "candidate-counterexample-results.first.json retains 84/85 due my mistaken expectation for sub-ULP acceleration; exact -.05+1e-18 converts to -.049999999999999996 (above float -.05), correctly neutral. Corrected expected neutral in final candidate-only script; no product edits. GrossProfit collapse control additionally strengthened from 2^52 to 2^53.",
+  "changes_by_reviewer": "only new independent candidate scripts/results and isolated synthetic validator Registry; no product/spec/test/old-stage edits",
+  "network_calls": 0,
+  "models": 0,
+  "labels_read": 0
+}

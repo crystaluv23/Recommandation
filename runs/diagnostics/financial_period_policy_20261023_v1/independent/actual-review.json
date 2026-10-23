@@ -1,0 +1,268 @@
+{
+  "status": "independent_actual_review_passed_with_one_numeric_measurement_and_one_domain_abstention",
+  "plan_hash": "efad87e12671e882b92d830a069edbe3a9d142405e3af410c5f17441af00e2f5",
+  "fixed_new_denominator": 2,
+  "source_backed_numeric_measurements": 1,
+  "source_missing_correct_domain_abstentions": 1,
+  "numeric_passes_claimed": 1,
+  "rows": [
+    {
+      "ref": "gross_margin_change:v4",
+      "disposition": "one_source_backed_numeric_measurement_matches_frozen_oracle",
+      "result": {
+        "signal_id": "gross_margin_change",
+        "version": 4,
+        "state": {
+          "value": "neutral",
+          "confidence": 1.0
+        },
+        "interpretation": {
+          "summary": "gross_margin_change=-0.00895781"
+        },
+        "evidence": {
+          "supporting": [
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+              "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}",
+              "timestamp": "2025-05-09T00:00:00+00:00"
+            },
+            {
+              "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+              "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}",
+              "timestamp": "2024-05-04T00:00:00+00:00"
+            },
+            {
+              "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+              "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":8367000}",
+              "timestamp": "2024-05-04T00:00:00+00:00"
+            }
+          ],
+          "counter": []
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "execution": {
+          "status": "success"
+        },
+        "measurement": {
+          "value": -0.00895781026150388,
+          "unit": "fraction_difference",
+          "formula": "current gross profit / revenue - same fiscal window prior-year gross profit / revenue",
+          "period": {
+            "end": "2025-03-31",
+            "start": "2025-01-01"
+          }
+        }
+      },
+      "selected_document_count": 10,
+      "fingerprint_verified": true,
+      "full_issuer_pool_equals_selected_basis": true,
+      "reconstructed_pure_basis": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "tag": "Revenues",
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "unit": "USD",
+          "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}"
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "tag": "GrossProfit",
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "unit": "USD",
+          "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":3039000}"
+        },
+        {
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+          "tag": "Revenues",
+          "start": "2024-01-01",
+          "end": "2024-03-31",
+          "unit": "USD",
+          "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}"
+        },
+        {
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+          "tag": "GrossProfit",
+          "start": "2024-01-01",
+          "end": "2024-03-31",
+          "unit": "USD",
+          "exact_span": "{\"description\":\"Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Gross Profit\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":8367000}"
+        }
+      ],
+      "basis_unavailable_reason": null,
+      "source_literal_inventory": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "raw_start": 131454,
+          "raw_end": 131972,
+          "fact_index": 267,
+          "literal_sha256": "88f647704f9e49766487ca3b69ceac3b03b35b569c34600f3a5cf5fcb95a92c9",
+          "fact": {
+            "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Revenues",
+            "start": "2025-01-01",
+            "tag": "Revenues",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 601515000
+          },
+          "source_only_permitted_versions": 1
+        },
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "raw_start": 59692,
+          "raw_end": 60030,
+          "fact_index": 103,
+          "literal_sha256": "a39673b810adae45835bd90f6e2c4ff043860a86276bf4bb3fc359b8f056d9e1",
+          "fact": {
+            "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+            "end": "2025-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2025,
+            "frame": null,
+            "label": "Gross Profit",
+            "start": "2025-01-01",
+            "tag": "GrossProfit",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 3039000
+          },
+          "source_only_permitted_versions": 1
+        },
+        {
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+          "raw_start": 132582,
+          "raw_end": 133100,
+          "fact_index": 270,
+          "literal_sha256": "c5492221b4bee5b5e53e21cd9490e8aa17493ac3e1c72bca7816eeab3f5e8ac0",
+          "fact": {
+            "description": "Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).",
+            "end": "2024-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2024,
+            "frame": null,
+            "label": "Revenues",
+            "start": "2024-01-01",
+            "tag": "Revenues",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 597214000
+          },
+          "source_only_permitted_versions": 2
+        },
+        {
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+          "raw_start": 59149,
+          "raw_end": 59487,
+          "fact_index": 102,
+          "literal_sha256": "9242b89fd049801f042aebe581ec79d31df890bbb575d2d3566265c2fedf3411",
+          "fact": {
+            "description": "Aggregate revenue less cost of goods and services sold or operating expenses directly attributable to the revenue generation activity.",
+            "end": "2024-03-31",
+            "fiscal_period": "Q1",
+            "fiscal_year": 2024,
+            "frame": null,
+            "label": "Gross Profit",
+            "start": "2024-01-01",
+            "tag": "GrossProfit",
+            "taxonomy": "us-gaap",
+            "unit": "USD",
+            "value": 8367000
+          },
+          "source_only_permitted_versions": 2
+        }
+      ],
+      "persistence_and_saved_projection_equal": true
+    },
+    {
+      "ref": "revenue_acceleration:v3",
+      "disposition": "correct_domain_abstention_for_two_missing_quarters_not_numeric_pass",
+      "result": {
+        "signal_id": "revenue_acceleration",
+        "version": 3,
+        "state": {
+          "value": "unavailable",
+          "confidence": 0.0
+        },
+        "interpretation": {
+          "summary": "Required same-window YoY or immediately adjacent comparison was unavailable; no older-pair fallback."
+        },
+        "evidence": {
+          "supporting": [],
+          "counter": []
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        }
+      },
+      "selected_document_count": 10,
+      "fingerprint_verified": true,
+      "full_issuer_pool_equals_selected_basis": true,
+      "reconstructed_pure_basis": [
+        {
+          "document_id": "rawcap:v1:64c9e4f193885e37ae497a75841bec6dec372f9fddf1ef7649710c28c40fc902",
+          "tag": "Revenues",
+          "start": "2025-01-01",
+          "end": "2025-03-31",
+          "unit": "USD",
+          "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2025-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2025,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":601515000}"
+        },
+        {
+          "document_id": "rawcap:v1:074b3bc1f1fdd816c51c6fa872f18d11b40cc04635eb61d5349be127ac8e0130",
+          "tag": "Revenues",
+          "start": "2024-01-01",
+          "end": "2024-03-31",
+          "unit": "USD",
+          "exact_span": "{\"description\":\"Amount of revenue recognized from goods sold, services rendered, insurance premiums, or other activities that constitute an earning process. Includes, but is not limited to, investment and interest income before deduction of interest expense when recognized as a component of revenue, and sales and trading gain (loss).\",\"end\":\"2024-03-31\",\"fiscal_period\":\"Q1\",\"fiscal_year\":2024,\"frame\":null,\"label\":\"Revenues\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":597214000}"
+        }
+      ],
+      "basis_unavailable_reason": "Required same-window YoY or immediately adjacent comparison was unavailable; no older-pair fallback.",
+      "source_literal_inventory": [],
+      "persistence_and_saved_projection_equal": true
+    }
+  ],
+  "source_only_freeze_sha256": "4a00ff2c3007140f229140c615c2bd88b030281482a04ad95be3ea5924cc3f1f",
+  "source_only_lineage_addendum_sha256": "8b087399a593a67a4a88d7f5b135ed6e22778d73b4a4d8364ac4685535846d5c",
+  "verified_originals": {
+    "source_bindings": 1799,
+    "current_code_bindings": 98,
+    "old_completed_stage_files": 24,
+    "prepared_independent_top_level_files": 41
+  },
+  "actual_usage": {
+    "llm_calls": 0,
+    "tokens": 0,
+    "cost": 0.0
+  },
+  "actual_result_count": 2,
+  "call_count_limit": "signal_calls counts native results; function-invocation count not instrumented",
+  "old_financial9": "6 pass / 1 fail / 2 unknown remains completed and unchanged",
+  "preservation_scope": "Saved JSON deserialize/reserialize and public model projection regeneration only; not OS crash recovery or fresh-model consumption",
+  "unavailable_consumer_scope": "Unavailable projection intentionally has no success classification contract or numeric measurement; it states generic domain abstention. Exact missing-Q4 reason and version-owned policy remain in raw batch/plan and addendum, not fabricated into a success contract.",
+  "product_status": "No stable Registry publication, business pointer advance, Slow reuse, full successor, new model execution or predictive benefit established.",
+  "reviewer_calls": {
+    "real_Signal_execute": 0,
+    "real_prepare": 0,
+    "pure_basis_reconstruction": 4,
+    "projection_regeneration": 2,
+    "models": 0,
+    "network": 0,
+    "labels": 0,
+    "append": 0
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "status": "rejected_before_execution",
+  "plan_hash": "057227dc35a2b47ab285b3c835f16d3d9d323b1ad4cb240af9de38ac287a223f",
+  "reason": "Diagnostic consumer indexed missing classification contract for expected domain-unavailable; optional contract required",
+  "real_batches": 0,
+  "execution_marker_exists": false,
+  "old_plan_preserved": true,
+  "next_action": "Separate freshly frozen corrected diagnostic; original attempt never executes"
+}

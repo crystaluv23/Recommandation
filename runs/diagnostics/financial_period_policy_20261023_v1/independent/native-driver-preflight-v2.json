@@ -1,0 +1,43 @@
+{
+  "status": "safe_to_execute_frozen_bounded_diagnostic",
+  "plan_hash": "efad87e12671e882b92d830a069edbe3a9d142405e3af410c5f17441af00e2f5",
+  "driver_sha256": "4224ab9b9435a417e4083eea5e2e41c3b61d936a28cb89dfad3fc02223935950",
+  "driver_diff_from_rejected_plan": "Exactly OUT native to native-approved and mandatory contracts[r.ref] to optional contracts.get(r.ref), proven by reversing both edits and reproducing original frozen driver SHA256.",
+  "verified_bindings": {
+    "source_bindings": 1799,
+    "code_bindings": 98,
+    "old_completed_stage": 24,
+    "independent_bindings": 41
+  },
+  "fixed_refs": [
+    "gross_margin_change:v4",
+    "revenue_acceleration:v3"
+  ],
+  "fixed_denominator": 2,
+  "specs_source_addendum_match": true,
+  "historical_code_source_layering_valid": true,
+  "current_signal_library_sha256": "05e79dbfd4e2d2105c34c8ac66ea2821046a79fe8cedc83931917de2eec7639c",
+  "preserved_rejected_plan": {
+    "plan_hash": "057227dc35a2b47ab285b3c835f16d3d9d323b1ad4cb240af9de38ac287a223f",
+    "rejection_record_sha256": "6c7e4e15a00e3482adc23bf65ffdacf7131909d82c8cdcb17298301fa0310b36",
+    "real_batches": 0
+  },
+  "first_prepare_precondition_failure_preserved_sha256": "e361195af31b63006a01cae856ced894edef6e816ab69df808de03fbb905ca0d",
+  "guard_assessment": {
+    "native_approved_empty_except_plan": true,
+    "one_exclusive_execution_start_consumes_attempt": true,
+    "any_terminal_marker_rejects_reentry": true,
+    "source_snapshot_count_and_hash_verified": true,
+    "network_model_label_append_paths_guarded": true,
+    "no_stable_publication_or_business_pointer_write_path": true,
+    "old_completed_stage_not_reentered_and_24_files_bound": true,
+    "native_batch_saved_before_any_consumer_projection": true,
+    "optional_contract_unavailable_projection_synthetic_passed": true,
+    "zero_real_source_Signal_execution_by_reviewer": true
+  },
+  "binding_scope": "98 code bindings and 41 top-level independent files; no recursive-all-independent claim.",
+  "source_only_freeze_sha256": "4a00ff2c3007140f229140c615c2bd88b030281482a04ad95be3ea5924cc3f1f",
+  "source_only_lineage_addendum_sha256": "8b087399a593a67a4a88d7f5b135ed6e22778d73b4a4d8364ac4685535846d5c",
+  "limitations": "Preflight verifies bounded harness safety and exact frozen inputs, not actual result correctness or independent research benefit. Parent must perform one actual executor batch and separately review persisted outputs.",
+  "reviewer_files_written": "Only this new unbound v2 preflight report; existing bound files untouched."
+}

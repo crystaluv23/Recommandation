@@ -7,6 +7,11 @@ usage context is validated against actually disclosed Experience refs, then
 preserved deterministically inside the materialized Signal parameters. It does
 not change admission, research labels or causal-effect status.
 
+The approved explicit-period functions `financial.gross_margin_change_yoy` and
+`financial.revenue_acceleration_adjacent` retain the existing gross-margin and
+revenue-acceleration description-to-implementation concept checks. New function
+names cannot bypass those validation or authoring requirements.
+
 Saved case classification declarations are independently scoped runtime sources
 in the same meta index. H1's optional source selector considers readable complete
 declaration units even when the bounded initial meta catalog deferred them; its

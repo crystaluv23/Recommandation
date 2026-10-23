@@ -1,0 +1,78 @@
+{
+  "status": "next_version_lineage_and_policy_dispatch_review_passed",
+  "code_bindings": {
+    "src/stock_opportunity_agent/signal_library.py": "05e79dbfd4e2d2105c34c8ac66ea2821046a79fe8cedc83931917de2eec7639c",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "2d79e35a090966c3f5e38384b5332cc40822cce56af6fc8e5d482b78145e8578"
+  },
+  "approved_new_specs_path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/new-version-specs.json",
+  "approved_new_specs_sha256": "e74a3bd15d5dd35086e3fd961ae037401a4a44493e097ecd37ab8263bb22a1c1",
+  "generic_fixtures_path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/lineage-fixtures.json",
+  "generic_fixtures_sha256": "a3975f55552aa28a2a5ef7dd691da3ee722c60d75238d760767dafd142d84b79",
+  "source_only_lineage_addendum_sha256": "8b087399a593a67a4a88d7f5b135ed6e22778d73b4a4d8364ac4685535846d5c",
+  "old_source_only_freeze_sha256": "4a00ff2c3007140f229140c615c2bd88b030281482a04ad95be3ea5924cc3f1f",
+  "synthetic_policy_dispatch_controls": {
+    "total": 85,
+    "passed": 85,
+    "failed": 0
+  },
+  "actual_next_version_validator": {
+    "baseline": "original exact specs registered sequentially gross_margin_change v1/v2/v3 and revenue_acceleration v1/v2 in reviewer-only synthetic Registry",
+    "accepted_refs": [
+      "gross_margin_change:v4",
+      "revenue_acceleration:v3"
+    ],
+    "generic_fixtures_passed": 11,
+    "changed_registered_function_ID_rejected": 2,
+    "wrong_description_concept_rejected": 2,
+    "unknown_policy_inputs_unavailable": 10,
+    "policy_in_scope_and_classification_contract": true
+  },
+  "legacy_preservation": {
+    "base": "ba309796",
+    "old_default_runtime_outputs_and_basis_equal": 14,
+    "original_algorithm_bodies_AST_equal_after_stripping_only_added_dispatch_and_docs": [
+      "_revenue_acceleration_signal",
+      "_gross_margin_change_signal",
+      "_revenue_acceleration_input_facts",
+      "_gross_margin_input_facts"
+    ],
+    "common_numeric_result_whole_AST_equal": true,
+    "scope_limit": "Legacy runtime comparison uses synthetic source variants, not completed stage reentry or a claim that expanded public docstrings are byte-identical."
+  },
+  "real_source_preparation": {
+    "calls": 2,
+    "counts": [
+      10,
+      10
+    ],
+    "full61_issuer_pool_equals_selected_basis": true,
+    "real_GPRE_Signal_execution": 0
+  },
+  "source_oracle_results_unchanged": {
+    "new_fixed_denominator": 2,
+    "gross_margin_change:v4": {
+      "exact": "3039000/601515000 - 8367000/597214000",
+      "numeric": -0.00895781026150388,
+      "state": "neutral"
+    },
+    "revenue_acceleration:v3": {
+      "state": "unavailable",
+      "missing": [
+        "2024Q4 explicitly reported revenue",
+        "2023Q4 explicitly reported revenue"
+      ]
+    }
+  },
+  "prior_review_scope_correction": "new-signal-v1 concept positive controls did not establish deterministic next-version lineage; this gap is retained and corrected by actual existing v3/v2 lineage review. No admission guard was relaxed.",
+  "prior_evidence_all_verified_unchanged": 24,
+  "reviewer_scope": {
+    "product_spec_test_edits": 0,
+    "original_registry_writes": 0,
+    "original_completed_stage_reentry": 0,
+    "network_calls": 0,
+    "models": 0,
+    "labels_read": 0,
+    "real_source_Signal_execute_calls": 0
+  },
+  "final_float_limit_unchanged": "The explicit final float measurement/classification representation can round sub-ULP differences; no epsilon or arbitrary-precision category guarantee introduced."
+}

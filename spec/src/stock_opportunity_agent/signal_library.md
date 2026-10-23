@@ -133,6 +133,55 @@ This module is separate from `signals.py`, whose existing rules measure fixed
 
 ## Callable-owned financial input selection
 
+### Approved comparison policies (2026-10-23)
+
+New versions preserve the registered callable identifiers and explicitly declare
+`parameters.period_policy`: `same_window_yoy` for `financial.gross_margin_change`,
+`adjacent_yoy` for `financial.revenue_acceleration`. Absence retains legacy behavior;
+unknown policies fail closed. Full classification declarations preserve the consumed
+policy and its meaning. The separately registered pure kernels remain available:
+`financial.gross_margin_change_yoy` subtracts the margin for the same
+reported fiscal window one year earlier; `financial.revenue_acceleration_adjacent`
+subtracts the immediately previous standalone quarter's YoY revenue growth from
+the current standalone quarter's YoY growth. Annual inputs compare adjacent annual
+YoY growth, requiring three annual windows; quarter inputs require four windows.
+Never skip a quarter, subtract annual from quarterly growth, synthesize standalone
+quarters from YTD, or choose a formula based on which data happen to exist.
+
+Anchor both functions to the latest canonical revenue end, before testing whether
+other operands exist. At a shared end prefer the shortest explicitly reported
+duration (a reported standalone quarter before cumulative YTD). Missing current
+GrossProfit, current YoY comparator, adjacent quarter or its comparator is
+unavailable; an older complete pair cannot replace the current anchor. Preserve
+existing canonical total-tag/currency resolution, PIT, freshness, literal evidence,
+classification thresholds and plausibility policy.
+
+The initial supported calendar proof is exact reported month-aligned windows:
+3/6/9/12-month windows for margin, 3/12-month windows for acceleration, with exact
+calendar shifts of both boundaries. Non-January fiscal years and leap days are
+supported. A stub, ambiguous fiscal calendar or 52/53-week period without a
+separate reviewed calendar adapter remains unavailable; SEC filing `fy`/`fp`
+metadata alone never proves a comparative fact's actual fiscal position. YTD
+margin compares the same YTD window one year earlier; YTD acceleration is unknown.
+Contradictory values for a selected tag/currency/window remain unavailable unless
+an authoritative revision policy resolves them; this implementation does not
+infer revision authority from document order. Full conflict witnesses and current
+anchor guards enter the shared callable-owned input basis, so bounded selection
+cannot silently erase a contradiction or fall back to an older complete pair.
+
+New formulas calculate intermediate ratios from exact numeric operands in the
+verified complete literal (including large integers), converting only the final
+measurement to the existing float representation. This prevents avoidable
+intermediate cancellation from flipping declared threshold boundaries; it adds
+no comparison epsilon and leaves historical arithmetic/classifiers unchanged.
+Required-window conflicts compare those literal numeric values as well.
+
+New definitions are staged only after checking version allocation and inherit
+existing thresholds. Independent normal, missing-quarter, annual/YTD, fiscal-year,
+conflict, source-selection and consumer checks precede technical admission.
+The old financial9 outcome (6 pass/1 fail/2 unknown) is immutable; a separate new
+measurement does not reclassify that completed batch or prove predictive benefit.
+
 For deterministic SEC financial functions, input preparation uses the actual
 final callable in `SignalExecutor.deterministic_functions`, including overrides.
 A callable may declare a lightweight `__signal_input_facts__` pure helper. The
