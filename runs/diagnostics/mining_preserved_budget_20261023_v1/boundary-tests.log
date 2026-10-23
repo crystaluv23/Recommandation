@@ -1,0 +1,7 @@
+test_historical_prefix_token_exact_fit_plus_one_and_malformed_answer (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_token_exact_fit_plus_one_and_malformed_answer) ... ok
+test_historical_prefix_shared_seeds_replay_without_future_receipt_counters (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_shared_seeds_replay_without_future_receipt_counters) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.387s
+
+OK

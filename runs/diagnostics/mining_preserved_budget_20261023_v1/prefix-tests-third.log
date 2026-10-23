@@ -1,0 +1,9 @@
+test_historical_prefix_and_new_answers_charge_once_without_cache_import (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_and_new_answers_charge_once_without_cache_import) ... ok
+test_historical_prefix_uses_original_scope_and_global_ceilings (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_uses_original_scope_and_global_ceilings) ... ok
+test_historical_prefix_drift_missing_reset_and_extra_inbox_fail_closed (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_drift_missing_reset_and_extra_inbox_fail_closed) ... ok
+test_historical_prefix_shared_seeds_replay_without_future_receipt_counters (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_shared_seeds_replay_without_future_receipt_counters) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.461s
+
+OK

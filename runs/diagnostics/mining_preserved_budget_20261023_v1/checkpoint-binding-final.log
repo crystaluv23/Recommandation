@@ -1,0 +1,7 @@
+test_historical_prefix_shared_seeds_replay_without_future_receipt_counters (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_shared_seeds_replay_without_future_receipt_counters) ... ok
+test_native_shared_model_budget_prefix_replays_after_completed_seed (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_native_shared_model_budget_prefix_replays_after_completed_seed) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.207s
+
+OK

@@ -4,13 +4,13 @@ This bounded, zero-external-API engineering control composes the existing native
 Mining, materialization, technical admission and Fast consumption functions. It
 is not a complete Slow cycle, a scored Fast round or a successor experiment.
 The user has authorized the continuing MVP goal and independent subagents in
-place of external LLM APIs. The following are new diagnostic host ceilings;
+place of external LLM APIs. The following are inherited, unchanged diagnostic ceilings;
 they do not extend, restart or rename any exhausted historical target.
 
 ## Fixed input and oracle boundary
 
 This revision uses the new
-`runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3` destination. The
+`runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4` destination. The
 original `stage` is a separately preserved incomplete control: twelve real
 answers consumed2,001,316 logical reservation units, then the parent stopped
 before dispatching its prepared h013 after confirming S4 lost prior narrative
@@ -38,7 +38,17 @@ relations without a still-established operand snapshot cannot authorize a
 candidate citation; the existing charged compute action can reestablish it.
 It changes no input population, measurement or admission semantics, original
 failure denominators or resource ceilings.
-Freeze a separate `oracle-v3/acceptance-obligations.json` before new actors,
+The sealed `stage-v3` remains terminal after its single-request ceiling blocked
+the eleventh prepare: ten answered requests consumed2,055,941 logical units;
+there is no h011 inbox. Preserve its completion/failure, all retained files,
+actual wire/answer/receipt costs and exact182-file runtime archive. Reject all
+mutating entry points at all three old roots. This new code evaluation repairs
+reference representation and query-origin navigation, with the same population,
+obligations and original ceilings. It is authorized by the user-adopted MVP rule
+allowing post-repair evaluation on a new version while retaining failures and
+forbidding added calls. It does not resume the terminal stage.
+
+Freeze a separate `oracle-v4/acceptance-obligations.json` before new actors,
 retaining all original source-semantic obligations unchanged and binding this
 spec plus the repaired owning Mining view. Preserve the original oracle bytes.
 This is a new code-version evaluation of the same population and capability,
@@ -94,6 +104,26 @@ Disclose the Mining aggregate/call scope through the existing native
 prefix-replay accounting. A single-limit-only view must not hide the new
 aggregate ceiling. Do not derive payload counters from all persisted future
 receipts at replay start: that would change earlier request hashes.
+
+Carry v3's ten answered wire identities/costs as an immutable historical resource
+prefix, charged once to both global and Mining. New local receipts remain
+separate and must not reuse a historical identity. Thus the new Mining work has
+at most70 answered requests and10,526,971 logical units available; neither
+original ceiling is increased. Never import the old answers, cache, ledger,
+candidate or action sequence. At every gate reverify the old terminal seal,
+archive and actual receipts; a missing, changed or reset prefix stops execution.
+Initialize the shared native Mining model from this historical prefix exactly
+once per reconstruction, before the first seed. Ordinary local cache replay
+then accrues new usage in order. A completed-seed checkpoint stores its exact
+answered Mining identities/costs; restored counters must equal that snapshot
+plus the historical prefix, and cannot include later receipts. Bind the accepted
+terminal checkpoint's exact bytes in a separate immutable receipt; reverify it
+before restoring counters. A missing receipt or jointly rewritten snapshot and
+counters is a control stop, not an opportunity to recreate an earlier prefix.
+Restore model
+usage separately as new evaluation usage, without fabricating host tokens or
+new calls from historical reservations. Report historical, newly answered and
+combined logical consumption separately. Input-only does not consume an answer.
 
 All LLM stages use StructuredRoleClient, allow_external=False, environ={}, the
 registered independent-subagent backend and LocalRoleExchange. The driver

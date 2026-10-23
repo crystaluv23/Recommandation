@@ -1,0 +1,15 @@
+test_historical_prefix_shared_seeds_replay_without_future_receipt_counters (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_shared_seeds_replay_without_future_receipt_counters) ... FAIL
+
+======================================================================
+FAIL: test_historical_prefix_shared_seeds_replay_without_future_receipt_counters (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_shared_seeds_replay_without_future_receipt_counters)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_icfr_native_capability_stage.py", line 276, in test_historical_prefix_shared_seeds_replay_without_future_receipt_counters
+    with self.assertRaises(stage.StageBudgetStop):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: StageBudgetStop not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.148s
+
+FAILED (failures=1)

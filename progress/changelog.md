@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-23：spec-first将v3真实10答/2055941作为新代码验收不可变资源前缀，保持global/Mining原cap、local回执独立、旧identity禁入新cache；共享model一次初始化、有序replay和完成seed快照两端等额。自审共同改写快照/计数反例揭等额保护不足，补不可变checkpoint字节receipt；future回执/丢失checkpoint不冒充早期消耗，首失败及两次harness误把初始化目录/contract当缓存均保留。最终497关联通过/源码hash稳/网络0。独立方案审已核用户附件授权和实余70/10526971；实现独立审查及fresh派发遇工具agent thread limit reached，未建正式v4 oracle/stage，0新作者/API/业务推进。三旧oracle/263源/v3的316文件同，原失败/分母/MVP open保持。见[报告](../reports/mining-preserved-budget-20261023.md)。
+
 - 2026-10-23：spec-first将真实query选窗raw origins沿普通fetch/ledger coverage/12whole8000工作页交付普通read，保JSON转义/重复key/逆序字段、metadata与hidden gap/4000界；canonical Event及真实read引用门不改。首492中491过/1真实case顺序回归，修canonical case与同fetch片段顺序后492过，源码hash稳/网络0；独立原8组漏排序，追加10组及4337旧helper逐字比较通过，首失败/harness错误保留。同263源/18版本/265needs临时原生重建旧10答ledger/evidence同，明确假设query/read两状态零receive232555/234197，不当作新作者或两次消费；保旧10/2055941及316封存、263原件。0外部API/新标签/候选/业务推进，不重入v3/加cap，下一准备保消费新代码验收；MVP open。见[报告](../reports/mining-query-navigation-20261023.md)。
 
 - 2026-10-23：spec-first修Mining大图完整引用表示，超过8192bytes索引使用确定性短handle/完整映射指纹，保全部事实/关系/正文及typed权限/canonical记录，小图wire不改。独立反例抓原件JSON误改、按前缀猜kind、默认目录/manifest重复投影漏项，修后24/24；首失败保留。原native identity/cache/patch回归及481关联过、源码hash稳/网络0；旧v3 frozen合同拒新版正确，测试仅用临时绑定fixture并新增拒新代码断言，原oracle不改。实际blocked全输入4221引用完整往返，零receive精确230052（原264980），保旧消费10/2055941及316封存；0新作者/候选/准入/业务推进。下一修既有query真实origin交付，无预算reset/旧stage续答，MVP open。见[报告](../reports/mining-reference-handles-20261023.md)。

@@ -3,9 +3,9 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-22T23:56:45.467849+00:00",
+    "checked_at": "2026-10-23T03:39:54+00:00",
     "thread_id": "01a15f73-622f-7130-905e-927e4e6c17c7",
-    "source": "Active unbudgeted goal verified live. S4 whole read-unit repair locally verified with452 tests and independent source/wire controls; new stage-v2 retains same population, oracle semantics and caps. Old12-answer pending stage/h013 immutable and uncompleted. Next actual fresh native full candidate-chain evaluation; external LLM API/network0, canonical A/B pending independently, no full successor."
+    "source": "Live get_goal confirms active unbudgeted MVP goal. Separate collaboration service returns agent thread limit reached; no actor or formal v4 stage created. Local497/preserved-source checks are not fresh capability proof. Existing user authority remains, no budget reset or API fallback."
   },
   "acceptance": [
     {
@@ -1995,10 +1995,27 @@
         "runs/diagnostics/mining_query_navigation_20261023_v1/independent/full-native-readonly-review.md"
       ],
       "result": "Spec-first exact shared selection origins preserve existing excerpt/clipped; HTML and news JSON escape/decoded duplicate keys/reverse fields map true raw fragments, virtual/non-string/gap/oversize explicit. Ordinary charged fetch ledger coverage derives12whole/8000 working navigation, never read/exploration/citation permission. First492 has491pass/1real order-invariance regression; canonicalcase and within-fetch projection order fixed, final492pass/stablehash/socket0. Independent first8groups miss ordering, final10groups/4337oldfunction literal comparisons and all6case permutations pass, oldfailures preserved. Temporary realEngine factory replays onlyold10answers; canonical ledger/evidence JSONhash same, then explicit hypothetical query/read tool actions yield full native request_ready captures232555/234197 each with oldspent10/2055941, not fresh outputs or consecutive newlyconsumed requests.263sources/18baseline/265needs remain,316sealedfiles/312hashrows unchanged. No API/newlabels/inbox/receipt/candidate/admission/use/businesspointer; fresh full capability still required."
+    },
+    {
+      "id": "mining-preserved-budget-20261023",
+      "strategy": "immutable_historical_consumption_and_native_prefix_recovery",
+      "failure_families": [
+        "new_evaluation_resource_reset",
+        "shared_model_prefix_double_charge_or_future_receipt_backfill",
+        "subagent_service_thread_limit"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/mining-preserved-budget-20261023.md",
+        "runs/diagnostics/mining_preserved_budget_20261023_v1/associated-test-bindings.json",
+        "runs/diagnostics/mining_preserved_budget_20261023_v1/preserved-inputs.json",
+        "runs/diagnostics/mining_preserved_budget_20261023_v1/independent/initial-review.md"
+      ],
+      "result": "Same original ceilings and source/semantic population; verified v3 ten answered wires/2055941 are immutable global+mining prefix, new records separate, historical identities cannot enter new cache. Shared model initialized once; local cache replay remains ordered; completed-seed counters equal historical plus only that local answered snapshot at save/restore, future receipts or a lost earlier checkpoint cannot replace prefix.497 offline associated pass, code hashes stable/socket0; exact-fit/+1, malformed, drift/reset, dual seeds and native full factory temporary controls covered. Earlier harness directory/contract assertions failed before corrected file checks, not product failures. Independent scheme review confirms adopted user attachment authorizes postrepair same-budget new-code evaluation, but implementation counterreview/fresh dispatch tool returns agent thread limit reached, including after interrupting old pending_init children; stop dispatch, no API fallback/new oracle/stage/actor. Old3 oracle bytes/263sources and v3 312seal rows/316files unchanged, total historical33/5894676 remains visible. No candidate/admission/consumer/business progress; engineering MVP open. Further parent counterexample jointly rewrote completed snapshot and counters consistently; old equality-only check accepted it. Retained actual failing test and prebinding497 evidence, added immutable accepted-checkpoint byte receipt and missing/rewritten receipt controls; full final497 includes that fix. This is parent local evidence, not independent implementation approval."
     }
   ],
   "review": {
-    "after_iteration": "mining-query-origin-navigation-20261023",
+    "after_iteration": "mining-preserved-budget-20261023",
     "evidence": [
       "reports/icfr-source-and-native-path-preflight-20261023.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/obligations.json",
@@ -2037,7 +2054,11 @@
       "runs/diagnostics/mining_query_navigation_20261023_v1/associated-test-bindings.json",
       "runs/diagnostics/mining_query_navigation_20261023_v1/independent/review-result-revision-2.md",
       "runs/diagnostics/mining_query_navigation_20261023_v1/full-native-result.json",
-      "runs/diagnostics/mining_query_navigation_20261023_v1/independent/full-native-readonly-review.md"
+      "runs/diagnostics/mining_query_navigation_20261023_v1/independent/full-native-readonly-review.md",
+      "reports/mining-preserved-budget-20261023.md",
+      "runs/diagnostics/mining_preserved_budget_20261023_v1/associated-test-bindings.json",
+      "runs/diagnostics/mining_preserved_budget_20261023_v1/preserved-inputs.json",
+      "runs/diagnostics/mining_preserved_budget_20261023_v1/independent/initial-review.md"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -2154,21 +2175,15 @@
       "The source-body repair preserved S4 meaning but left inspected catalog pages/section locators/next_cursor only in last_action_result. Stateless roles therefore legitimately recovered cursor0 and exhausted scarce light budget; h009 retained all three bodies while losing directory navigation. Prior source/handoff tests and script-held locators missed this related dependency. Audit all four catalog scopes and preserve exact historical responses without reviving stale permissions; no candidate failure or no-pattern inferred from unread material.",
       "Actual context retention now works, but source selection changes graph growth: broad null/32 fetch2879facts1342relations versus earlier targeted2088/952. Focused source/working-page tests and first-wire fits do not establish complete future native request affordability. The annual source also discloses43section anchors while displaying24; determine actual addressability and total-message cost from frozen original artifacts before another interface or resource decision, rather than call a budget terminal no-pattern or automatically rename/restart it.",
       "First handle projection relied on recursively named reference slots and therefore rewrote opaque source JSON/semantic thresholds; source originals and typed operation containers need schema-owned boundaries in every duplicate working-view copy. Independent controls found defaultscope=None and inspect_manifest copies missed after first literal repair. Complete actual payload roundtrip/native zero-receive fit and synthetic preservation do not prove fresh role planning or any candidate, and a code-specific immutable oracle refusal must not be repaired by refreshing that sealed oracle.",
-      "The true-origin repair initially concatenated per-case navigation in input order and reversed all rows for recency; isolated source geometry and the first independent8groups did not test whole-fetch case permutations or same-fetch projection order. Existing accounting regression found it, canonical case order and newest-fetch grouping now preserve both. Script hypothetical query/read after old-answer reconstruction is only a mechanical/full-cost probe: it supplies no fresh decision and cannot count its two captures as sequential answered requests or replace real candidate/admission/use evidence."
+      "The true-origin repair initially concatenated per-case navigation in input order and reversed all rows for recency; isolated source geometry and the first independent8groups did not test whole-fetch case permutations or same-fetch projection order. Existing accounting regression found it, canonical case order and newest-fetch grouping now preserve both. Script hypothetical query/read after old-answer reconstruction is only a mechanical/full-cost probe: it supplies no fresh decision and cannot count its two captures as sequential answered requests or replace real candidate/admission/use evidence.",
+      "Postrepair new-code evaluation permission does not permit resetting an exhausted target or importing earlier answers. Preserve exact old receipt costs in both role-visible reserved counters and hard gates, reconstruct only local ordered caches, and test both sides of completed-seed snapshots. Empty exchange directories and exchange/contract.json are normal transport initialization, not imported answers. Independent authorization review is not independent implementation acceptance. Subagent service thread limit stops further dispatch; offline tests cannot substitute for fresh model behavior and no external API fallback is authorized. Matching counters and snapshot can be jointly rewritten; bind accepted checkpoint bytes in a separate immutable receipt before restoring. The added joint-rewrite test actually failed the earlier implementation, so earlier497 did not close this family."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "prospective_new_code_control_with_preserved_v3_resource_accounting",
-      "action": "Outside sealed stages, prepare a concrete new-code capability evaluation contract retaining the same263sources/stable18/full265/dev8/semantic oracle obligations and original caps. Audit exact oldv3 answered receipt prefix10/2055941 as already spent under the original mining/global ceilings, never clear or import its answers as new. Bind all prior stopped/terminal controls and exact archives, validate prefix-aware single/aggregate/call/cache accounting and native input-only preparation before any fresh role. No sealed reentry, new cap, forced source/candidate or full business successor.",
-      "stop": "No external API/network/newlabels/check/LockedTest/fullbusinessrun, oldstage advance/reentry/h011 or automatic cap reset. Stop preparation on authority/prefix/hash/accounting contradiction or repeated no-information checks; no production role before complete prospective freeze.",
-      "new_evidence": "Exact navigation working path now locally verified with original source/permission/cost boundaries: final492, independent10/4337 comparisons, original263/fullfactory reconstruction exact and two full hypothetical-state captures fit originalsingle. This removes the specific query origin omission without proving fresh planning or completion.",
-      "distinguishing_variable": "New frozen code only, with repaired lossless graph representation/exact navigation; same input/cohort/semantic obligations and original caps, explicit immutable oldv3 answered-cost prefix rather than budget reset.",
-      "question": "Can a prospectively frozen current-code evaluation preserve all original semantic/source obligations and charge the oldv3 answered prefix without resetting budget or reusing answers, while making the repaired full native path available to fresh independent roles?",
-      "pass": "Frozen contract/oracle retains original protected obligations and exact inputs, strict oldstage immutability/no unanswered response import; prefix-aware unique receipt accounting consumes original10/2055941 and correctly gates all original ceilings/remaining calls; deterministic native input-only control and negative reset/reentry/replay/changed-prefix tests pass before actor dispatch.",
-      "fail": "Any mismatch in original source/semantic/cap authority, oldstage mutation or answer import, cleared/duplicated spent cost, resource-boundary conflict or new input-only native failure.",
-      "on_pass": "Freeze reviewable new-code evaluation and dispatch exact pending native inbox serially to fresh fork-none subagents; independently audit source/candidate/implementation meaning before admission and require all fixed exact-version consumers. Preserve old failures and honest technical stops.",
-      "on_fail": "Keep evaluation unstarted and preserve the conflicting artifacts; narrow the diagnostic or request only a genuinely new resource/definition decision if current authorization cannot cover it. Never rename/reset a limited target."
+      "kind": "stop",
+      "strategy": "stop_fresh_dispatch_at_subagent_thread_limit",
+      "action": "Checkpoint locally verified immutable-budget/native-recovery changes and preserve all old controls. Do not create formal v4 oracle/stage or dispatch actors while the subagent tool reports its thread limit. Implementation independent counterreview and prospective freeze remain prerequisites before any later fresh same-budget code-version evaluation.",
+      "stop": "Current subagent service thread limit prevents implementation reviewer/fresh actors. No alternate agent entry, external API, new/reset goal, new resource ceiling, sealed v3 reentry or h011. Resume dispatch only after actual service availability under the continuing user authorization; no assumption that an idle interval restores service."
     }
   },
   "successor_prerequisites": [

@@ -1,0 +1,17 @@
+{
+  "reason": "Parent staged a still-running test log; lint correctly rejected the incomplete line with trailing space. Preserve exact rejected index bytes and feedback; stage the completed log only after process completion.",
+  "files": [
+    {
+      "path": "first-lint-feedback.txt.gz",
+      "original_sha256": "4a840deae7b4082e7d384cb1b7865c20d68d893c7907d389db32a3a8bea4e394",
+      "gzip_sha256": "06b0ace7b5a9ddb58224e9a27f6f29cd30a8a4c6b0d81cc6c0907982f4f1acb2",
+      "lossless": true
+    },
+    {
+      "path": "prematurely-staged-associated-tests.log.gz",
+      "original_sha256": "e1f28c861d9fe56ea0ecff6d634ef0e7869af1621b5866ec2d3c56c981281566",
+      "gzip_sha256": "3d2da12db71c4bfab1d12fe8fb7f51b51fd2d9ce31ddf1f1db720a586dc3684a",
+      "lossless": true
+    }
+  ]
+}

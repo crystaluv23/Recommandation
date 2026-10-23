@@ -28,6 +28,11 @@ class ICFRNativeCapabilityStageTests(TestCase):
             ):
                 with self.assertRaisesRegex(ValidationError, 'h013 must remain unanswered'):
                     action()
+        for action in (lambda: stage.prepare(stage.SEALED_STAGE_V3_ROOT),
+                       lambda: stage.advance(stage.SEALED_STAGE_V3_ROOT),
+                       lambda: stage.submit(stage.SEALED_STAGE_V3_ROOT, '0' * 64, '/root/no_author')):
+            with self.assertRaisesRegex(ValidationError, 'v3 is sealed terminal'):
+                action()
 
     def test_predecessor_checks_actual_receipts_and_absence_not_only_a_stop_flag(self):
         with TemporaryDirectory() as temporary:
@@ -97,6 +102,200 @@ class ICFRNativeCapabilityStageTests(TestCase):
         Path(pending['outbox_path']).write_text(text)
         return LocalRoleExchange(root / 'exchange', max_calls=728).submit(
             pending['request_hash'], agent_id='/root/synthetic_test_actor')
+
+    def historical_fixture(self, base):
+        """Build a small synthetic sealed prefix; never submit a production answer."""
+        old = base / 'old'
+        client, old_budget = self.client(old)
+        with self.assertRaises(LocalRoleRequestPending) as caught:
+            client.complete_json(**self.kwargs({'synthetic_historical': 1}))
+        self.answer(old, caught.exception.pending)
+        result = {'status': 'terminal_resource_or_control_stop',
+                  'error_type': 'MiningRequestBudgetExhausted', 'error': 'Synthetic resource stop.'}
+        stage.save(old / 'failure.json', result)
+        stage.save(old / 'completion.json', {'result': result, 'files': stage._files(old)})
+        archive = base / 'synthetic-runtime.txt'
+        archive.write_text('Synthetic runtime boundary fixture only.')
+        prefix = {'stage_root': str(old), 'completion': stage.binding(old / 'completion.json'),
+                  'runtime_archive': stage.binding(archive), 'answered_records': old_budget.records(),
+                  'answered_usage': list(old_budget.used())}
+        root = base / 'new'
+        stage.save(root / 'contract.json', {'schema_version': 'icfr-native-capability-stage-v4',
+                   'limits': stage.LIMITS, 'historical_resource_prefix': prefix})
+        budget = stage.Budget(root)
+        return stage.make_client(root, budget), budget, prefix
+
+    def test_historical_prefix_and_new_answers_charge_once_without_cache_import(self):
+        with TemporaryDirectory() as temporary:
+            client, budget, prefix = self.historical_fixture(Path(temporary))
+            calls, tokens = prefix['answered_usage']
+            self.assertEqual(budget.used(), (calls, tokens))
+            self.assertEqual(budget.used('mining'), (calls, tokens))
+            self.assertEqual(budget.used('candidate:first'), (0, 0))
+            self.assertEqual(budget.records(), {})
+            for name in ('inbox', 'outbox', 'receipts'):
+                self.assertFalse(list((budget.root / 'exchange' / name).glob('*')))
+            self.assertFalse(list((budget.root / 'transport/cache').rglob('*.json')))
+            with self.assertRaises(LocalRoleRequestPending) as caught:
+                client.complete_json(**self.kwargs({'synthetic_new': 1}))
+            self.assertEqual(budget.used(), (calls, tokens))
+            self.answer(budget.root, caught.exception.pending)
+            for _ in range(2):
+                replay = stage.make_client(budget.root, stage.Budget(budget.root))
+                replay.complete_json(**self.kwargs({'synthetic_new': 1}))
+                new_tokens = next(iter(budget.records().values()))['reservation']
+                self.assertEqual(budget.used(), (calls + 1, tokens + new_tokens))
+            self.assertEqual(budget.consumption(), {'historical': [calls, tokens],
+                'newly_answered': [1, new_tokens], 'combined': [calls + 1, tokens + new_tokens]})
+            # The old cache identity cannot be admitted even in another new scope.
+            old_hash = next(iter(prefix['answered_records']))
+            budget.scope = 'candidate:first'
+            old_wire = prefix['answered_records'][old_hash]['request']['path']
+            with self.assertRaisesRegex(stage.StageBudgetStop, 'cannot enter a new cache'):
+                budget({'event_type': 'request_ready', 'request_hash': old_hash, 'request_path': old_wire})
+
+    def test_historical_prefix_uses_original_scope_and_global_ceilings(self):
+        for exhausted in ('mining', 'global'):
+            with self.subTest(exhausted=exhausted), TemporaryDirectory() as temporary:
+                client, budget, prefix = self.historical_fixture(Path(temporary))
+                limits = dict(stage.SCOPE_LIMITS)
+                limits[exhausted] = (prefix['answered_usage'][0], limits[exhausted][1])
+                with patch.object(stage, 'SCOPE_LIMITS', limits):
+                    with self.assertRaises(stage.StageBudgetStop):
+                        client.complete_json(**self.kwargs({'synthetic_new': exhausted}))
+                self.assertFalse((budget.root / 'exchange/inbox').exists())
+                self.assertEqual(budget.records(), {})
+
+    def test_historical_prefix_drift_missing_reset_and_extra_inbox_fail_closed(self):
+        for changed in ('completion', 'archive', 'answer', 'record', 'usage', 'boolean', 'negative',
+                        'missing', 'extra_inbox'):
+            with self.subTest(changed=changed), TemporaryDirectory() as temporary:
+                client, budget, prefix = self.historical_fixture(Path(temporary))
+                old = Path(prefix['stage_root'])
+                contract = stage.read(budget.root / 'contract.json')
+                if changed in ('completion', 'archive', 'answer'):
+                    path = (old / 'completion.json' if changed == 'completion' else
+                            Path(prefix['runtime_archive']['path']) if changed == 'archive' else
+                            next((old / 'exchange/outbox').glob('*.txt')))
+                    path.write_bytes(path.read_bytes() + b' ')
+                elif changed == 'extra_inbox':
+                    stage.save(old / 'exchange/inbox' / ('f' * 64 + '.json'), {})
+                else:
+                    if changed == 'record':
+                        contract['historical_resource_prefix']['answered_records'] = {}
+                    elif changed == 'usage':
+                        contract['historical_resource_prefix']['answered_usage'] = [0, 0]
+                    elif changed in ('boolean', 'negative'):
+                        contract['historical_resource_prefix']['answered_usage'][0] = (
+                            True if changed == 'boolean' else -1)
+                    else:
+                        del contract['historical_resource_prefix']
+                    stage.atomic_write_json(budget.root / 'contract.json', contract)
+                with self.assertRaises(stage.StageBudgetStop):
+                    client.complete_json(**self.kwargs({'synthetic_new': changed}))
+                self.assertEqual(budget.records(), {})
+
+    def test_historical_prefix_token_exact_fit_plus_one_and_malformed_answer(self):
+        for scope in ('global', 'mining'):
+            for exact in (False, True):
+                with self.subTest(scope=scope, exact=exact), TemporaryDirectory() as temporary:
+                    client, budget, prefix = self.historical_fixture(Path(temporary))
+                    kwargs = self.kwargs({'synthetic_exact_fit': scope})
+                    budget.input_only = True
+                    with self.assertRaises(stage.InputCaptured) as caught:
+                        client.complete_json(**kwargs)
+                    reservation = json.loads(str(caught.exception))['reservation']
+                    self.assertEqual(budget.used(), tuple(prefix['answered_usage']))
+                    budget.input_only = False
+                    limits = dict(stage.SCOPE_LIMITS)
+                    limits[scope] = (limits[scope][0], prefix['answered_usage'][1] + reservation - int(not exact))
+                    with patch.object(stage, 'SCOPE_LIMITS', limits):
+                        if not exact:
+                            with self.assertRaises(stage.StageBudgetStop):
+                                client.complete_json(**kwargs)
+                            self.assertFalse(list((budget.root / 'exchange/inbox').glob('*.json')))
+                        else:
+                            with self.assertRaises(LocalRoleRequestPending) as caught:
+                                client.complete_json(**kwargs)
+                            self.answer(budget.root, caught.exception.pending, '{')
+                            with self.assertRaises(StructuredOutputInvalid):
+                                client.complete_json(**kwargs)
+                            self.assertEqual(budget.used(), (prefix['answered_usage'][0] + 1,
+                                                            prefix['answered_usage'][1] + reservation))
+
+    def test_historical_prefix_shared_seeds_replay_without_future_receipt_counters(self):
+        with TemporaryDirectory() as temporary:
+            client, budget, prefix = self.historical_fixture(Path(temporary))
+            engine = object.__new__(stage.Engine)
+            engine.stage_root = budget.root
+            engine.workspace = SimpleNamespace(experiments_root=budget.root / 'experiments')
+            def controller(model, seed):
+                return engine._new_mining_controller(cycle_id=1, store=RawInfoStore(), model=model,
+                    case_pairs=(), measurable_evidence_manifest={}, signal_catalog=(), seed=seed,
+                    label_map={}, backlog_needs=())
+            calls, tokens = prefix['answered_usage']
+            model = MiningAgentRoleModel(client, max_request_tokens=262144)
+            with self.assertRaises(LocalRoleRequestPending) as caught:
+                controller(model, 'hypothesis').run()
+            payload = json.loads(stage.read(caught.exception.pending['inbox_path'])['messages'][1]['content'])
+            self.assertEqual(payload['request_budget']['calls_used'], calls)
+            self.assertEqual(payload['request_budget']['used'], tokens)
+            self.assertEqual(model.usage.llm_calls, 0)
+            self.answer(budget.root, caught.exception.pending,
+                        json.dumps({'action': 'record_deferred', 'rationale': ['Synthetic termination.']}))
+            model = MiningAgentRoleModel(client, max_request_tokens=262144)
+            controller(model, 'hypothesis').run()
+            self.assertEqual(model.reserved_calls, calls + 1)
+            self.assertEqual(model.usage.llm_calls, 1)
+            with self.assertRaises(LocalRoleRequestPending) as caught:
+                controller(model, 'discovery').run()
+            pending = caught.exception.pending
+            for _ in range(2):
+                model = MiningAgentRoleModel(client, max_request_tokens=262144)
+                controller(model, 'hypothesis').run()
+                self.assertEqual(model.reserved_calls, calls + 1)
+                with self.assertRaises(LocalRoleRequestPending) as caught:
+                    controller(model, 'discovery').run()
+                self.assertEqual(caught.exception.pending, pending)
+            self.answer(budget.root, pending,
+                        json.dumps({'action': 'record_deferred', 'rationale': ['Synthetic discovery termination.']}))
+            model = MiningAgentRoleModel(client, max_request_tokens=262144)
+            controller(model, 'hypothesis').run()
+            controller(model, 'discovery').run()
+            self.assertEqual(model.reserved_calls, calls + 2)
+            checkpoint = budget.root / 'seeds/hypothesis/terminal.json'
+            saved = stage.read(checkpoint)
+            original = checkpoint.read_bytes()
+            receipt_path = checkpoint.with_name('terminal-binding.json')
+            original_receipt = receipt_path.read_bytes()
+            receipt_path.unlink()
+            with self.assertRaisesRegex(stage.StageBudgetStop, 'checkpoint binding'):
+                controller(MiningAgentRoleModel(client, max_request_tokens=262144), 'hypothesis').run()
+            receipt_path.write_bytes(original_receipt)
+            # Even a mutually consistent rewrite must not authorize future usage
+            # as the accepted earlier seed's original prefix.
+            future = stage.read(checkpoint)
+            future['answered_mining_prefix'] = budget.records()
+            future['model_prefix']['calls'] = model.reserved_calls
+            future['model_prefix']['tokens'] = model.reserved_tokens
+            stage.atomic_write_json(checkpoint, future)
+            with self.assertRaises(stage.StageBudgetStop):
+                controller(MiningAgentRoleModel(client, max_request_tokens=262144), 'hypothesis').run()
+            checkpoint.write_bytes(original)
+            saved['model_prefix']['calls'] = calls
+            stage.atomic_write_json(checkpoint, saved)
+            with self.assertRaisesRegex(stage.StageBudgetStop, 'checkpoint binding|reset or changed'):
+                controller(MiningAgentRoleModel(client, max_request_tokens=262144), 'hypothesis').run()
+            checkpoint.write_bytes(original)
+            saved = stage.read(checkpoint)
+            saved['answered_mining_prefix'] = budget.records()
+            stage.atomic_write_json(checkpoint, saved)
+            with self.assertRaisesRegex(stage.StageBudgetStop, 'checkpoint binding|reset or changed'):
+                controller(MiningAgentRoleModel(client, max_request_tokens=262144), 'hypothesis').run()
+            checkpoint.unlink()
+            # A lost earlier checkpoint cannot absorb receipts from the later seed.
+            with self.assertRaisesRegex(stage.StageBudgetStop, 'unconsumed or missing'):
+                controller(MiningAgentRoleModel(client, max_request_tokens=262144), 'hypothesis').run()
 
     def test_unique_answer_budget_and_pending_replay(self):
         with TemporaryDirectory() as temporary:
@@ -256,7 +455,7 @@ class ICFRNativeCapabilityStageTests(TestCase):
         # production oracle when active implementation/spec bytes change.
         with TemporaryDirectory() as temporary:
             root = Path(temporary) / 'stage'
-            original = stage.read(stage.ORACLE)
+            original = stage.read(stage.PRIOR_ORACLE)
             oracle = {**original, 'contract_bindings': [stage.binding(Path(row['path']))
                        for row in original['contract_bindings']]}
             fixture = Path(temporary) / 'fixture-oracle.json'
@@ -277,6 +476,8 @@ class ICFRNativeCapabilityStageTests(TestCase):
                 payload = json.loads(stage.read(pending['inbox_path'])['messages'][1]['content'])
                 self.assertEqual(payload['request_budget']['call_limit'], 80)
                 self.assertEqual(payload['request_budget']['total_limit'], 12 * stage.MIB)
+                self.assertEqual(payload['request_budget']['calls_used'], 10)
+                self.assertEqual(payload['request_budget']['used'], 2055941)
                 self.assertEqual(payload['backlog_disclosure']['total_backlog_count'], 265)
                 self.assertEqual(len(payload['meta_memory_disclosures']), 6)
                 self.assertEqual(len(stage.read(root / 'private-oracle.json')['source_documents']), 263)
@@ -284,7 +485,9 @@ class ICFRNativeCapabilityStageTests(TestCase):
                 self.assertNotIn('actual_management_icfr_conclusion', json.dumps(payload))
                 # Receipt count/final budget state is not inserted into early role payloads.
                 self.assertEqual(stage.advance(root)['pending'], pending)
-                self.assertEqual(stage.Budget(root).used(), (0, 0))
+                self.assertEqual(stage.Budget(root).used(), (10, 2055941))
+                self.assertEqual(stage.Budget(root).records(), {})
+                self.assertFalse(list((root / 'transport/cache/responses').rglob('*.json')))
                 with self.assertRaises(ValidationError):
                     stage.submit(root, '0' * 64, '/root/not_current')
                 # Deterministic input drift is rejected before native construction.
@@ -297,7 +500,7 @@ class ICFRNativeCapabilityStageTests(TestCase):
         # update. A changed checkout must not silently reuse that evaluation.
         with TemporaryDirectory() as temporary:
             root = Path(temporary) / 'not-created'
-            with patch.object(stage, 'STAGE_ROOT', root):
+            with patch.object(stage, 'STAGE_ROOT', root), patch.object(stage, 'ORACLE', stage.PRIOR_ORACLE):
                 with self.assertRaisesRegex(ValidationError, 'frozen bytes drifted'):
                     stage.prepare(root)
                 self.assertFalse(root.exists())
@@ -305,9 +508,11 @@ class ICFRNativeCapabilityStageTests(TestCase):
     def test_terminal_reentry_and_scoped_reopen(self):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
+            self.client(root)
             with patch.object(stage, 'STAGE_ROOT', root), patch.object(stage, 'verify', return_value={}):
                 stage.save(root / 'an-output.json', {'native': True})
-                expected = {'status': 'completed_acceptance_failed'}
+                expected = {'status': 'completed_acceptance_failed', 'logical_consumption': {
+                    'historical': [0, 0], 'newly_answered': [0, 0], 'combined': [0, 0]}}
                 stage._seal(root, expected)
                 self.assertEqual(stage.inspect(root), expected)
                 with self.assertRaises(ValidationError):

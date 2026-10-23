@@ -57,10 +57,12 @@ from stock_opportunity_agent.signal_library import SignalExecutor, SignalRegistr
 
 REPO = Path(__file__).resolve().parents[1]
 BASE = REPO / 'runs/diagnostics/icfr_native_capability_20261023_v1'
-STAGE_ROOT = BASE / 'stage-v3'
+STAGE_ROOT = BASE / 'stage-v4'
 STOPPED_STAGE_ROOT = BASE / 'stage'
 STOPPED_STAGE_V2_ROOT = BASE / 'stage-v2'
-ORACLE = BASE / 'oracle-v3/acceptance-obligations.json'
+SEALED_STAGE_V3_ROOT = BASE / 'stage-v3'
+PRIOR_ORACLE = BASE / 'oracle-v3/acceptance-obligations.json'
+ORACLE = BASE / 'oracle-v4/acceptance-obligations.json'
 PARENT = REPO / 'runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1'
 MATERIAL = REPO / 'runs/diagnostics/mining_capability_frontier_20261023_v1/independent'
 SPEC = REPO / 'spec/scripts/run_icfr_native_capability_stage.md'
@@ -112,6 +114,8 @@ def _root(root):
     path = Path(root).resolve()
     if path in {STOPPED_STAGE_ROOT.resolve(), STOPPED_STAGE_V2_ROOT.resolve()}:
         raise ValidationError('diagnostic dispatch was stopped; h013 must remain unanswered in v1 and h012 in v2')
+    if path == SEALED_STAGE_V3_ROOT.resolve():
+        raise ValidationError('v3 is sealed terminal; no h011 or stage reentry is permitted')
     if path != STAGE_ROOT.resolve():
         raise ValidationError('stage destination differs from its fixed contract')
     return path
@@ -253,7 +257,60 @@ def _stopped_predecessors():
     second, second_rows = _stopped_predecessor(root=STOPPED_STAGE_V2_ROOT,
         stop_path=BASE / 'parent-control-stop-v2.json',
         decision='stop_dispatch_at_confirmed_catalog_navigation_projection_gap', files_key='stage_files')
-    return [first, second], first_rows + second_rows
+    third, third_rows = _sealed_v3_predecessor()
+    return [first, second, third], first_rows + second_rows + third_rows
+
+
+def _terminal_resource_prefix(prefix):
+    """Reverify a frozen terminal and its actual answered wires without reentry."""
+    usage = prefix['answered_usage']
+    if (not isinstance(usage, list) or len(usage) != 2
+            or any(type(value) is not int or value < 0 for value in usage)):
+        raise ValidationError('historical consumption requires nonnegative integer counts')
+    root = Path(prefix['stage_root'])
+    completion = root / 'completion.json'
+    if Path(prefix['completion']['path']).resolve() != completion.resolve():
+        raise ValidationError('historical completion path differs')
+    _check([prefix['completion'], prefix['runtime_archive']])
+    seal = read(completion)
+    result = seal['result']
+    if (result.get('status') != 'terminal_resource_or_control_stop'
+            or result.get('error_type') != 'MiningRequestBudgetExhausted'
+            or result != read(root / 'failure.json') or seal['files'] != _files(root)):
+        raise ValidationError('historical terminal seal or resource stop changed')
+    if read(root / 'contract.json').get('historical_resource_prefix') is not None:
+        raise ValidationError('nested historical resource prefix is not supported')
+    rows = Budget(root).records()
+    hashes = set(rows)
+    if (hashes != {p.stem for p in (root / 'exchange/inbox').glob('*.json')}
+            or hashes != {p.stem for p in (root / 'exchange/outbox').glob('*.txt')}
+            or any(row['scopes'] != ['mining'] for row in rows.values())
+            or rows != prefix['answered_records']):
+        raise ValidationError('historical answered identities or scopes changed')
+    usage = (len(rows), sum(row['reservation'] for row in rows.values()))
+    if list(usage) != prefix['answered_usage']:
+        raise ValidationError('historical answered consumption changed')
+    return rows
+
+
+def _sealed_v3_predecessor():
+    """Keep the exact v3 failure and charge its verified answered consumption."""
+    root = SEALED_STAGE_V3_ROOT
+    completion = binding(root / 'completion.json')
+    archive = binding(BASE / 'frozen-runtime-9ae48904.tar.gz')
+    if (completion['sha256'] != '9f79f2d634fd9b07a3e9e90a334c28c2e187685d39d7ceae161ee5a81c9eb32b'
+            or archive['sha256'] != '02acdd0479bae8d2cbbd53743224db580c42d1b5e5503d5d4d356adb004291f1'):
+        raise ValidationError('original v3 terminal or runtime authority differs')
+    prefix = {'stage_root': str(root), 'completion': completion, 'runtime_archive': archive,
+              'answered_records': Budget(root).records(), 'answered_usage': [10, 2055941]}
+    _terminal_resource_prefix(prefix)
+    rows = [binding(p) for p in sorted(root.rglob('*')) if p.is_file()]
+    evidence = {'stop_receipt': completion, 'runtime_archive': archive,
+                'answered_unique_requests': 10, 'logical_reservations': 2055941,
+                'candidate_denominator': 1, 'candidate_acceptance': 'uncompleted',
+                'consumer_denominator': 4, 'consumer_attempted': 0,
+                'new_role_answers_imported': False, 'resource_prefix': prefix}
+    return evidence, rows
 
 
 def prepare(root=STAGE_ROOT):
@@ -306,11 +363,12 @@ def prepare(root=STAGE_ROOT):
             raise ValidationError('exact baseline refs differ')
         workspace = EvolutionWorkspace(work)
         history_hash = read(work / 'slow_history/manifest.json')['manifest_hash']
-        contract = {'schema_version': 'icfr-native-capability-stage-v3', 'root': str(root),
+        contract = {'schema_version': 'icfr-native-capability-stage-v4', 'root': str(root),
                     'limits': LIMITS, 'scope_limits': SCOPE_LIMITS, 'controls': list(CONTROLS),
                     'fixed_candidate_denominator': 1, 'fixed_consumer_denominator': 4,
                     'slow_history_manifest_hash': history_hash, 'external_api_calls': 0,
                     'assignment': ASSIGNMENT, 'need': NEED, 'predecessor_controls': predecessors,
+                    'historical_resource_prefix': predecessors[-1]['resource_prefix'],
                     'provenance': 'current_cycle1 is this isolated diagnostic with accepted-prefix Slow input; not a business commit'}
         save(root / 'contract.json', contract)
         save(work / 'run_contract.json', {'contract': contract, 'contract_hash': digest(contract)})
@@ -435,18 +493,48 @@ class Budget:
                     scopes.append(scope)
                 if meta['initial_scope'] not in scopes:
                     raise ValidationError('original answered scope membership is missing')
-                rows[h] = {**meta, 'scopes': scopes}
+                rows[h] = {**meta, 'scopes': sorted(scopes)}
         except (OSError, KeyError, TypeError, ValueError, ValidationError) as exc:
             raise StageBudgetStop('answered accounting proof invalid: ' + str(exc)) from exc
         return rows
 
-    def used(self, scope=None):
-        """Count each submitted answer once globally and once per applicable scope."""
-        rows = self.records().values()
+    def historical_records(self):
+        """Verify historical consumption independently of newly received answers."""
+        contract = read(self.root / 'contract.json')
+        prefix = contract.get('historical_resource_prefix')
+        if prefix is None:
+            if contract.get('schema_version') == 'icfr-native-capability-stage-v4':
+                raise StageBudgetStop('historical resource prefix is missing')
+            return {}
+        try:
+            return _terminal_resource_prefix(prefix)
+        except (OSError, KeyError, TypeError, ValueError, ValidationError) as exc:
+            raise StageBudgetStop('historical resource prefix invalid: ' + str(exc)) from exc
+
+    @staticmethod
+    def _count(rows, scope):
+        rows = rows.values()
         if scope is not None:
             rows = [r for r in rows if scope in r['scopes']]
         rows = list(rows)
         return len(rows), sum(r['reservation'] for r in rows)
+
+    def historical_used(self, scope=None):
+        """Return the immutable prefix, never a future local replay counter."""
+        return self._count(self.historical_records(), scope)
+
+    def used(self, scope=None):
+        """Charge historical and new answers once; reject identity reuse."""
+        historical, local = self.historical_records(), self.records()
+        if historical.keys() & local.keys():
+            raise StageBudgetStop('historical answered identity reused in new evaluation')
+        return self._count({**historical, **local}, scope)
+
+    def consumption(self):
+        """Keep combined logical reservations distinct from new evaluation usage."""
+        return {'historical': list(self.historical_used()),
+                'newly_answered': list(self._count(self.records(), None)),
+                'combined': list(self.used())}
 
     def remaining(self):
         """Return the current scope/global logical reservation remainder."""
@@ -466,6 +554,8 @@ class Budget:
             return
         request = read(event['request_path'])['request']
         h = event['request_hash']
+        if h in self.historical_records():
+            raise StageBudgetStop('historical answered identity cannot enter a new cache')
         reservation = len(json.dumps(request['messages'], ensure_ascii=False, sort_keys=True,
                                      separators=(',', ':')).encode()) + request['max_output_tokens']
         meta_path = self.root / 'request-scopes' / (h + '.json')
@@ -546,13 +636,36 @@ class Engine(SignalEvolutionEngine):
     def _new_mining_controller(self, *, cycle_id, **kwargs):
         model = kwargs['model']
         model.request_limits.update(total_limit=12 * MIB, call_limit=80)
+        budget = model.caller.budget
+        historical_calls, historical_tokens = budget.historical_used('mining')
+        if not getattr(model, '_historical_prefix_initialized', False):
+            if model.reserved_calls or model.reserved_tokens:
+                raise StageBudgetStop('historical prefix must precede new model consumption')
+            model.reserved_calls, model.reserved_tokens = historical_calls, historical_tokens
+            model._historical_prefix_initialized = True
         controller = super()._new_mining_controller(cycle_id=cycle_id, **kwargs)
         root, seed = self.stage_root, kwargs['seed']
         native = controller.run
         def run():
             checkpoint = root / 'seeds' / seed / 'terminal.json'
+            checkpoint_receipt = root / 'seeds' / seed / 'terminal-binding.json'
             if checkpoint.exists():
+                try:
+                    receipt = read(checkpoint_receipt)
+                    if Path(receipt['path']).resolve() != checkpoint.resolve():
+                        raise ValidationError('completed checkpoint path differs')
+                    _check([receipt])
+                except (OSError, KeyError, TypeError, ValueError, ValidationError) as exc:
+                    raise StageBudgetStop('completed-seed checkpoint binding invalid: ' + str(exc)) from exc
                 saved = read(checkpoint)
+                snapshot = saved['answered_mining_prefix']
+                local = budget.records()
+                if any(local.get(h) != row or 'mining' not in row['scopes'] for h, row in snapshot.items()):
+                    raise StageBudgetStop('completed-seed answered snapshot differs')
+                expected = (historical_calls + len(snapshot),
+                            historical_tokens + sum(row['reservation'] for row in snapshot.values()))
+                if (saved['model_prefix']['calls'], saved['model_prefix']['tokens']) != expected:
+                    raise StageBudgetStop('completed-seed resource prefix was reset or changed')
                 for row in saved['result']['ledger']:
                     controller.ledger.append(LedgerEntry(**row))
                 controller.materialization_evidence = lambda: deepcopy(saved['evidence'])
@@ -566,10 +679,17 @@ class Engine(SignalEvolutionEngine):
                 return ControllerResult(**result)
             try:
                 result = native()
+                snapshot = {h: row for h, row in budget.records().items() if 'mining' in row['scopes']}
+                expected = (historical_calls + len(snapshot),
+                            historical_tokens + sum(row['reservation'] for row in snapshot.values()))
+                if (model.reserved_calls, model.reserved_tokens) != expected:
+                    raise StageBudgetStop('completed-seed snapshot includes unconsumed or missing answers')
                 saved = {'result': asdict(result), 'evidence': controller.materialization_evidence(),
+                         'answered_mining_prefix': snapshot,
                          'model_prefix': {'tokens': model.reserved_tokens, 'calls': model.reserved_calls,
                                           'usage': asdict(model.usage)}}
                 save(checkpoint, saved)
+                save(checkpoint_receipt, binding(checkpoint))
                 return result
             finally:
                 observation = {'ledger': controller.ledger.to_dict(),
@@ -811,6 +931,7 @@ def _fast(root, engine, client, case_ref, case):
 
 def _seal(root, result):
     verify(root)
+    result = {**result, 'logical_consumption': Budget(root).consumption()}
     if (root / 'publication.json').exists():
         _check(read(root / 'publication.json')['published_files'])
     for use_path in (root / 'fast').glob('*/use.json'):

@@ -1,0 +1,17 @@
+test_historical_prefix_and_new_answers_charge_once_without_cache_import (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_and_new_answers_charge_once_without_cache_import) ... FAIL
+test_historical_prefix_uses_original_scope_and_global_ceilings (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_uses_original_scope_and_global_ceilings) ... ok
+test_historical_prefix_drift_missing_reset_and_extra_inbox_fail_closed (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_drift_missing_reset_and_extra_inbox_fail_closed) ... ok
+test_historical_prefix_shared_seeds_replay_without_future_receipt_counters (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_shared_seeds_replay_without_future_receipt_counters) ... ok
+
+======================================================================
+FAIL: test_historical_prefix_and_new_answers_charge_once_without_cache_import (tests.test_icfr_native_capability_stage.ICFRNativeCapabilityStageTests.test_historical_prefix_and_new_answers_charge_once_without_cache_import)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_icfr_native_capability_stage.py", line 136, in test_historical_prefix_and_new_answers_charge_once_without_cache_import
+    self.assertFalse([p for p in (budget.root / 'exchange').rglob('*') if p.is_file()])
+AssertionError: [PosixPath('/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpuv9rvtfu/new/exchange/contract.json')] is not false
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.405s
+
+FAILED (failures=1)
